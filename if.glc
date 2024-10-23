@@ -1,0 +1,144 @@
+{alias 'glc = %glc}
+{at(%glc)
+{at(/stmt-space)
+   {:wr-if(stmt`/stmt, w`/wtr, header`bool) @case:wr @inline;
+      {+s`/stmt-if = stmt}
+      w:bool(s.not);
+      s.expr:wr(w, header);
+   }
+   {:rd-if(space`/stmt-space, r`/rdr) @case:rd @inline;
+      `:quick-alloc-one(+(s`/stmt-if));
+      s.not = r:bool;
+      s.expr:rd(r);
+      space:stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #if);
+   }
+   {:wr-if-elif(stmt`/stmt, w`/wtr, header`bool) @case:wr @inline;
+      {+s`/stmt-if-elif = stmt}
+      w:bool(s.not);
+      s.expr:wr(w, header);
+   }
+   {:rd-if-elif(space`/stmt-space, r`/rdr) @case:rd @inline;
+      `:quick-alloc-one(+(s`/stmt-if-elif));
+      s.not = r:bool;
+      s.expr:rd(r);
+      space:stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #if-elif);
+   }
+   {:wr-if-else(stmt`/stmt, w`/wtr, header`bool) @case:wr @inline;
+   }
+   {:rd-if-else(space`/stmt-space, r`/rdr) @case:rd @inline;
+      `:quick-alloc-one(+(s`/stmt-if-else));
+      space:stmt-push(s.base, 0, 0, 0, 0, #if-else);
+   }
+   {:wr-if-end(stmt`/stmt, w`/wtr, header`bool) @case:wr @inline;
+   }
+   {:rd-if-end(space`/stmt-space, r`/rdr) @case:rd @inline;
+      `:quick-alloc-one(+(s`/stmt-if-end));
+      space:stmt-push(s.base, 0, 0, 0, 0, #if-end);
+   }
+}
+{at(/stmt)
+   {:write-if(stmt`/stmt) @case:write @inline;
+      {+s`/stmt-if = stmt}
+      {if(s.not)
+         `.out:printf("if(!(");
+         s.expr:write-value(s.val);
+         `.out:printf(")) {\n");
+      }{else
+         `.out:printf("if(");
+         s.expr:write-value(s.val);
+         `.out:printf(") {\n");
+      }
+   }
+   {:process-if(stmt`/stmt, ok`bool&) @case:process @inline;
+      {+s`/stmt-if = stmt}
+      {if!(s.expr:value(1, `false, s.val))
+         {return}
+      }
+      ok = `true;
+   }
+   {:write-if-elif(stmt`/stmt) @case:write @inline;
+      {+s`/stmt-if-elif = stmt}
+      {if(s.not)
+         `.out:printf("} else if(!(");
+         s.expr:write-value(s.val);
+         `.out:printf(")) {\n");
+      }{else
+         `.out:printf("} else if(");
+         s.expr:write-value(s.val);
+         `.out:printf(") {\n");
+      }
+   }
+   {:process-if-elif(stmt`/stmt, ok`bool&) @case:process @inline;
+      {+s`/stmt-if-elif = stmt}
+      {if!(s.expr:value(1, `false, s.val))
+         {return}
+      }
+      ok = `true;
+   }
+   {:write-if-else(stmt`/stmt) @case:write @inline;
+      {+s`/stmt-if-else = stmt}
+      `.out:printf("} else {\n");
+   }
+   {:process-if-else(stmt`/stmt, ok`bool&) @case:process @inline;
+      {+s`/stmt-if-else = stmt}
+      ok = `true;
+   }
+   {:write-if-end(stmt`/stmt) @case:write @inline;
+      {+s`/stmt-if-end = stmt}
+      `.out:printf("}\n");
+   }
+   {:process-if-end(stmt`/stmt, ok`bool&) @case:process @inline;
+      {+s`/stmt-if-end = stmt}
+      ok = `true;
+   }
+}
+{{:stmt-if-begin()}
+   :stmt-space-begin;
+   .decl-func-ctx-space.flags |= #skip-lvar-decl;
+}
+{{:stmt-elif-begin()}
+}
+{/stmt-if-else(
+   .base`/stmt+,
+   )
+}
+{/stmt-if-end(
+   .base`/stmt+,
+   )
+}
+{{:stmt-if-set(not`bool, expr\expr, begin-row`int, begin-col`int, end-row`int, end-col`int)}
+   :quick-alloc-one(+(s/stmt-if));
+   s.not = not;
+   s.expr = expr;
+   :stmt-push(s.base, begin-row, begin-col, end-row, end-col, #if);
+   :stmt-space-begin;
+}
+{{:stmt-elif-set(not`bool, expr\expr, begin-row`int, begin-col`int, end-row`int, end-col`int)}
+   :quick-alloc-one(+(s/stmt-if));
+   s.not = not;
+   s.expr = expr;
+   :stmt-push(s.base, begin-row, begin-col, end-row, end-col, #if-elif);
+   :stmt-space-begin;
+}
+{{:stmt-else-set()}
+   :quick-alloc-one(+(s/stmt-if-else));
+   :stmt-push(s.base, 0, 0, 0, 0, #if-else);
+   :stmt-space-begin;
+}
+{{:stmt-if-end()}
+   :stmt-space-end;
+}
+{{:stmt-elif-end()}
+   :stmt-space-end;
+}
+{{:stmt-else-end()}
+   :stmt-space-end;
+}
+{{:stmt-if-end-ifs()}
+   :quick-alloc-one(+(s/stmt-if-end));
+   :stmt-push(s.base, 0, 0, 0, 0, #if-end);
+   :stmt-space-end;
+}
+ 
+
+}

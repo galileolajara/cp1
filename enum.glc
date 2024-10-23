@@ -1,0 +1,168 @@
+{alias 'glc = %glc}
+{at(%glc)
+{\enum(#nil = -1, #0, #1)`int
+   {:wr(f`this, w`/wtr) @inline;
+      w:n(f + #1);
+   }
+   {:rd(f`this&, r`/rdr) @inline;
+      f = (r:n - #1)`\func;
+   }
+   {:ptr(f`this)`/enum @inline;
+      {return `.enum-v[f]}
+   }
+   {{:output(e-i`this)}
+      +num = e-i`num;
+      +n3 = num >> 3;
+      +n17 = 1 << (num & 7);
+      {if((`.enum-is-outputted[n3] & n17) != 0) {return}}
+      `.enum-is-outputted[n3] |= n17;
+      +e = e-i:ptr;
+
+      e.base-type:output(e.file, e.begin-row, e.begin-col);
+
+      {if(e.include != #nil)
+         e.include:output;
+      }
+
+      `` {if((e.flags & #no-decl) == #0)
+         `.enum-outputted-v[`.enum-outputted-c++] = e-i;
+      `` }
+   }
+}
+{\enum-flags(
+   #0,
+   #real-name = 1,
+   #no-decl = 2,
+   )`tnum
+   {:wr(e`this, w`/wtr) @inline;
+      w:n1(e);
+   }
+   {:rd(e`this&, r`/rdr) @inline;
+      e = r:n1`\enum-flags;
+   }
+}
+{gvar .enum-c\enum}
+{gvar .enum-cap\enum}
+{gvar .enum-v/enum[]}
+{gvar .decl-enum-row`int}
+{gvar .decl-enum-col`int}
+{gvar .decl-enum-at\at}
+{gvar .decl-enum-flags\enum-flags}
+{gvar .decl-enum-last-cvar\cvar}
+{{:decl-var-as-evar()}
+   +evar = .decl-evar-c++;
+   {if(.decl-evar-cap <= .decl-evar-c)
+      :grow(.decl-evar-cap, .decl-evar-c);
+      :realloc(.decl-evar-v, .decl-evar-cap);
+   }
+   .decl-evar-v[evar]:copy-from(.decl-var);
+}
+{{:decl-at-begin-enum(name\id, row`int, col`int)}
+   .decl-enum-row = row;
+   .decl-enum-col = col;
+   .build-at = .decl-at;
+   :decl-at-add(name, #enum);
+   .decl-at-v[.decl-at-c++] = .decl-at;
+   .decl-at = .build-at;
+   .decl-enum-at = .build-at;
+   .decl-enum-flags = #0;
+   .decl-enum-last-cvar = #nil;
+   `` 'c.out:printf("began enum at:\n");
+   `` +at-i = .build-at;
+   `` {do()
+   ``    +at = at-i:ptr;
+   ``    'c.out:printf("- %s\n", at.name.id:str);
+   ``    at-i = at.parent;
+   ``    {if(at-i == #root) {break}}
+   `` }
+}
+{{:enum-base-begin()}
+   .decl-at = .decl-at:ptr.parent;
+}
+`` {{:enum-base-end()}
+``    .decl-at = .decl-enum-at;
+`` }
+{{:decl-enum-end(base-type\at, row`int, col`int)}
+   +s-idx = .enum-c++;
+   {if(.enum-cap <= .enum-c)
+      +old-cap = .enum-cap;
+      :grow(.enum-cap, .enum-c);
+      :realloc(.enum-v, .enum-cap, old-cap);
+   }
+   {+s/enum}
+   :quick-alloc-one(s);
+   .enum-v[s-idx] = s;
+   s.begin-row = .decl-enum-row;
+   s.begin-col = .decl-enum-col;
+   s.end-row = row;
+   s.end-col = col;
+   s.include = .decl-include;
+   s.at = .decl-enum-at;
+   s.base-type = base-type;
+   .decl-at = .decl-enum-at;
+   s.flags = .decl-enum-flags;
+   .decl-enum-last-cvar = #nil;
+   `` s.name = .decl-enum-name;
+   `` s.evar-c = .decl-evar-c;
+   `` 'c.out:printf("There are %u evars\n", s.evar-c);
+   `` {do{+i = 0}{(.decl-evar-c) i ++}
+   ``    +a = s.evar-v[i];
+   ``    a.decl:copy-from(.decl-evar-v[i]);
+   ``    `` 'c.out:printf("- %s\n", a.name:str);
+   `` }
+}
+{gvar .last-cvar\cvar}
+{{:enum-add-cvar(name\id, row`int, col`int)}
+   +c-idx = .cvar-c++;
+   .last-cvar = c-idx;
+   {if(.cvar-cap <= .cvar-c)
+      +old-cap = .cvar-cap;
+      :grow(.cvar-cap, .cvar-c);
+      :realloc(.cvar-v, .cvar-cap, old-cap);
+   }
+   +c = c-idx:ptr;
+   c.row = row;
+   c.col = col;
+   c.include = .decl-include;
+   c.at = .decl-at;
+   c.decl.name = name;
+   c.decl.type = .decl-enum-at;
+   c.decl.type-info:init;
+   c.flags = #as-enum;
+   c.last-cvar = .decl-enum-last-cvar;
+   .decl-enum-last-cvar = c-idx;
+}
+{{:decl-add-cvar(name\id, row`int, col`int)}
+   +c-idx = .cvar-c++;
+   .last-cvar = c-idx;
+   {if(.cvar-cap <= .cvar-c)
+      +old-cap = .cvar-cap;
+      :grow(.cvar-cap, .cvar-c);
+      :realloc(.cvar-v, .cvar-cap, old-cap);
+   }
+   +c = c-idx:ptr;
+   c.row = row;
+   c.col = col;
+   c.include = .decl-include;
+   c.at = .decl-at;
+   .decl-var.name = name;
+   c.decl:copy-from(.decl-var);
+   c.flags = #0;
+}
+{{:enum-set-cvar-expr(set\expr)}
+   +c = .last-cvar:ptr;
+   c.flags |= #set-expr;
+   c.expr-set = set;
+}
+{{:cvar-attr-real-name(name\id)}
+   +c = .last-cvar:ptr;
+   c.decl.flags |= #real-name;
+   c.decl.real-name = name;
+}
+{{:cvar-attr-no-decl()}
+   +c = .last-cvar:ptr;
+   c.decl.flags |= #no-decl;
+}
+ 
+
+}

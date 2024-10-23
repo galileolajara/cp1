@@ -1,0 +1,9 @@
+{include(<stdlib.h>)
+   {alias 'c = %stdc}
+   {at(%stdc)
+      {:malloc(size`size)`ref @real-name(malloc) @no-decl}
+      {:free(ref`ref) @real-name(free) @no-decl}
+      {:exit(code\exit) @real-name(exit) @no-decl}
+      {\exit(#success, #failure)`int}
+   }
+}

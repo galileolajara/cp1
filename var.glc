@@ -1,0 +1,306 @@
+{alias 'glc = %glc}
+{alias 'c = %stdc}
+{at(%glc)
+{\decl-var()`num
+   {:ptr(v`this)/decl-var @inline;
+      {return .var-v[v]}
+   }
+}
+{\decl-var-type(#gvar, #fvar)`tnum}
+{cvar #decl-var-size-limit`int = 8}
+{at(/decl-var)
+   {{:process(vd`this, row`int, col`int)`bool}
+      +at-i = vd.type;
+      +at = at-i:ptr;
+      {if(&&, at.type != #basic, at.decl.struct == #nil)
+         'c.out:printf("%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", `.ctx-func.file:path, row, col, at.name.id:str, vd.name:str);
+         {return `false}
+      }
+      at-i:output(`.ctx-func.file, row, col);
+      {if!(at-i:finalize(vd.type-info, row, col)) {return `false}}
+      {do{+i = 0}{(vd.size-c) i++}
+         {if!(vd.size-expr-v[i]:value(1, `false, vd.size-value-v[i])) {return `false}}
+      }
+      {return `true}
+   }
+   {{:write(vd`this, var-type`\decl-var-type)}
+      {if((vd.flags & #real-name) != #0)
+         `.out:printf("%s", vd.real-name:str);
+         {return}
+      }
+      {switch(var-type)
+         {case(#gvar)
+            `.out:printf("_G%s", vd.name:c-name);
+         }
+         {case(#fvar)
+            `.out:printf("_F%s", vd.name:c-name);
+         }
+      }
+   }
+   {{:write-lvar(vd`this, lvar`\lvar)}
+      `.out:printf("_L%s_%u", vd.name:c-name, lvar);
+   }
+   {{:write-type(vd`this, var-type`\decl-var-type)}
+      {if(vd.type-info.const)
+         `.out:printf("const ");
+      }
+      vd.type:write-type-info(vd.type-info, 0 - vd.size-c);
+      `.out:printf(" ");
+      vd:write(var-type);
+      {do{+i = 0}{(vd.size-c) i++}
+         `.out:printf("[");
+         vd.size-expr-v[i]:write-value(vd.size-value-v[i]);
+         `.out:printf("]");
+      }
+   }
+   {{:write-lvar-type(vd`this, lvar`\lvar)}
+      {if(vd.type-info.const)
+         `.out:printf("const ");
+      }
+      vd.type:write-type-info(vd.type-info, 0 - vd.size-c);
+      `.out:printf(" ");
+      vd:write-lvar(lvar);
+      {do{+i = 0}{(vd.size-c) i++}
+         `.out:printf("[");
+         vd.size-expr-v[i]:write-value(vd.size-value-v[i]);
+         `.out:printf("]");
+      }
+   }
+   {{:wr(vd`this, w`/wtr, header`bool)}
+      vd.name:wr(w, header);
+      vd.type:wr(w, header);
+      vd.flags:wr(w);
+      {if((vd.flags & #real-name) != #0)
+         vd.real-name:wr(w, header);
+      }
+      vd.type-info:wr(w);
+      `` 'c.out:printf("%s, vd.size-c %d\n", vd.name:str, vd.size-c);
+      w:n1(vd.size-c);
+      {do{+i = 0}{(vd.size-c) i++}
+         vd.size-expr-v[i]:wr(w, header);
+      }
+   }
+   {{:rd(vd`this, r`/rdr)}
+      vd.name:rd(r);
+      vd.type:rd(r);
+      vd.flags:rd(r);
+      {if((vd.flags & #real-name) != #0)
+         vd.real-name:rd(r);
+      }
+      vd.type-info:rd(r);
+      vd.size-c = r:n1;
+      {if(vd.size-c > 0)
+         `:quick-alloc-arr(vd.size-expr-v, vd.size-c);
+         `:quick-alloc-arr(vd.size-value-v, vd.size-c);
+         {do{+i = 0}{(vd.size-c) i++}
+            vd.size-expr-v[i]:rd(r);
+         }
+      }
+   }
+   {{:copy-from(vd`this, src`/decl-var)}
+      vd.name = src.name;
+      vd.type = src.type;
+      vd.flags = src.flags;
+      vd.real-name = src.real-name;
+      vd.type-info:copy-from(src.type-info);
+      vd.type-info.built-in = src.type-info.built-in;
+      vd.size-c = src.size-c;
+      {if(vd.size-c > 0)
+         `:quick-alloc-arr(vd.size-expr-v, vd.size-c);
+         {do{+i = 0}{(vd.size-c) i++}
+            vd.size-expr-v[i] = src.size-expr-v[i];
+         }
+      }
+   }
+}
+{cvar #type-info-star-limit`int = 8}
+{/value(.ref`tint, .paren`bool, .type`\at, .info`/type-info+)
+	{{:set(v`this, ref`tint, paren`bool, type`\at, info`/type-info)}
+		+c = info.ref-v[info.array-c];
+		v.type = type;
+		v.ref = (c + 2) - ref;
+		v.info:init;
+		v.info:copy-from(info);
+		v.info.ref-v[v.info.array-c] = ref - 1;
+		v.info:count;
+		v.paren = paren;
+	}
+   {{:rd(v`this, r/rdr)}
+      v.ref = r:n1;
+      v.paren = r:n1 != 0;
+      v.type:rd(r);
+      v.info:rd(r);
+   }
+   {{:wr(v`this, w/wtr, header`bool)}
+      w:n1(v.ref);
+      w:bool(v.paren);
+      v.type:wr(w, header);
+      v.info:wr(w);
+   }
+}
+{/type-info(.ref-v`tint[#type-info-star-limit], .array-c`tint, .star-c`tint, .built-in`bool, .const`bool)
+	{{:init(ti`this)}
+		ti.ref-v[0] = 0;
+		ti.array-c = 0;
+		ti.star-c = 0;
+		ti.built-in = `false;
+		ti.const = `false;
+	}
+   {{:rd(ti`this, r`/rdr)}
+      +c = r:n1;
+      {do{+i = 0}{(c) i++}
+         ti.ref-v[i] = r:n1;
+      }
+      ti.array-c = r:n1;
+      ti.star-c = r:n1;
+      ti.built-in = r:n1 != 0;
+      ti.const = r:n1 != 0;
+   }
+   {{:wr(ti`this, w`/wtr)}
+      +c = 0;
+      {do(`#type-info-star-limit)
+         {if(ti.ref-v[c] == 0)
+            {break}
+         }
+         c++;
+      }
+      w:n1(c);
+      {do{+i = 0}{(c) i++}
+         w:n1(ti.ref-v[i]);
+      }
+      w:n1(ti.array-c);
+      w:n1(ti.star-c);
+      w:bool(ti.built-in);
+      w:bool(ti.const);
+   }
+	{{:copy-from(ti`this, ti2`/type-info)}
+		'c:memcpy(ti.ref-v, ti2.ref-v, `#type-info-star-limit);
+		ti.array-c = ti2.array-c;
+		ti.star-c = ti2.star-c;
+		ti.const = ti2.const;
+      `` intentionally did not copy .built-in
+	}
+	{{:finalize(ti`this)}
+		{+ref-v`tint[`#type-info-star-limit]}
+		+c = ti.array-c;
+		+star-c = ti.array-c;
+		{do{+i = 0}(c + 1)
+			ref-v[i] = ti.ref-v[i];
+			star-c += ref-v[i];
+			i += 1;
+		}
+		{do{+i = 0, j = c}(c + 1)
+			ti.ref-v[i] = ref-v[j];
+			i += 1;
+			j -= 1;
+		}
+		ti.star-c = star-c;
+	}
+	{{:count(ti`this)}
+		+star-c = ti.array-c;
+		{do{+i = ti.array-c}(i + 1)
+			star-c += ti.ref-v[i];
+			i -= 1;
+		}
+		ti.star-c = star-c;
+	}
+}
+{gvar .gvar-c\gvar}
+{gvar .gvar-cap\gvar}
+{gvar .gvar-v/decl-gvar+[]}
+
+{gvar .decl-var-row`int}
+{gvar .decl-var-col`int}
+`` {gvar .decl-var-name\id}
+`` {gvar .decl-var-type\at}
+`` {gvar .decl-var-type-info/type-info+}
+{cvar #type-info-stack-limit`int = 8}
+`` {gvar .stack-type-info/type-info+} `` [#type-info-stack-limit]}
+`` {gvar .stack-type-info-c`tint}
+{gvar .decl-var/decl-var+}
+{\var-flags(
+   #0,
+   #real-name = 1,
+   #extern = 2,
+   #no-decl = 4,
+   )`num
+   {:rd(f`this&, r`/rdr) @inline;
+      f = r:n`\var-flags;
+   }
+   {:wr(f`this, w`/wtr) @inline;
+      w:n(f);
+   }
+}
+{{:decl-var-begin(name\id, row`int, col`int)}
+   .decl-var.name = name;
+   .decl-var-row = row;
+   .decl-var-col = col;
+   .decl-var.type-info:init;
+   .decl-var.flags = #0;
+   .decl-var.real-name = #nil;
+   .decl-var.size-c = 0;
+   `` 'c.out:printf("var-begin %s\n", name:str);
+}
+{{:decl-var-end()}
+}
+{{:decl-var-attr-real-name(name\id)}
+   {if((.decl-var.flags & #real-name) != #0)
+      'c.out:printf("%u:%u: error @real-name specified more than once\n", .last-row, .last-col);
+      'c:exit(#failure);
+   }
+   .decl-var.flags |= #real-name;
+   .decl-var.real-name = name;
+}
+{{:decl-var-attr-extern()}
+   {if((.decl-var.flags & #extern) != #0)
+      'c.out:printf("%u:%u: error @extern specified more than once\n", .last-row, .last-col);
+      'c:exit(#failure);
+   }
+   .decl-var.flags |= #extern;
+}
+{{:decl-var-attr-no-decl()}
+   {if((.decl-var.flags & #no-decl) != #0)
+      'c.out:printf("%u:%u: error @no-decl specified more than once\n", .last-row, .last-col);
+      'c:exit(#failure);
+   }
+   .decl-var.flags |= #no-decl;
+}
+{{:decl-var-type(type\at)}
+   {if(type != #nil)
+      +at = type:ptr;
+      {if(at.type == #module)
+         'c.out:printf("%u:%u: module '%%%s' cannot be used as a type\n", .last-row, .last-col, at.name.id:str);
+         'c:exit(#failure);
+      }
+   }
+   .decl-var.type = type;
+   .decl-var.size-c = 0;
+   .decl-var.type-info:init;
+   .decl-var.flags = #0;
+   `` .stack-type-info = .decl-var.type-info;
+}
+{{:decl-var-this()}
+   +type = .decl-at;
+   +at = type:ptr;
+   {if(at.type == #module)
+      'c.out:printf("%u:%u: module '%%%s' cannot be used as a type\n", .last-row, .last-col, at.name.id:str);
+      'c:exit(#failure);
+   }
+   .decl-var.type = type;
+   `` .stack-type-info = .decl-var.type-info;
+}
+{{:decl-var-as-gvar()}
+   +gvar-idx = .gvar-c++;
+   {if(.gvar-cap <= .gvar-c)
+      +old-cap = .gvar-cap;
+      :grow(.gvar-cap, .gvar-c);
+      :realloc(.gvar-v, .gvar-cap, old-cap);
+   }
+   +gvar = .gvar-v[gvar-idx];
+   gvar.include = .decl-include;
+   gvar.at = .decl-at;
+   gvar.decl:copy-from(.decl-var);
+}
+ 
+
+}

@@ -1,0 +1,885 @@
+{alias 'glc = %glc}
+{alias 'c = %stdc}
+{at(%glc)
+{gvar .include-stdbool`bool}
+{gvar .include-stddef`bool}
+{gvar .expr-is-processed`tnum[]}
+{gvar .func-head-outputted-c`int}
+{gvar .func-head-outputted-v\func[]}
+{gvar .func-body-outputted-c`int}
+{gvar .func-body-outputted-v\func[]}
+{/basic-type(
+   .method-c`int,
+   .method-cap`int,
+   .method-v`\func[],
+   )
+}
+{gvar .basic-type/basic-type+[\basic-type-id#COUNT]}
+{:basic-type(t\basic-type-id)\at @inline;
+   {return t}
+}
+{gvar .ctx-begin-row`int}
+{gvar .ctx-begin-col`int}
+{gvar .ctx-end-row`int}
+{gvar .ctx-end-col`int}
+{gvar .ctx-func/decl-func}
+{gvar .ctx-func-id\func}
+{gvar .file-c\file}
+{gvar .file-cap\file}
+{gvar .file-v/file+[]}
+{\file(#nil = -1, #0)`int
+   {:ptr(f`this)`/file @inline;
+      {return `.file-v[f]}
+   }
+   {:path(f`this)`char[] @inline;
+      {return f:ptr.path}
+   }
+}
+{/file(
+   .path`char[],
+   .data`ref,
+   .id-table`\id[],
+   .at-table`\at[],
+   .cvar-table`\cvar[],
+   )
+}
+{gvar .id-table\id[]}
+{gvar .include-table-cap`int}
+{gvar .include-table\include[]}
+{gvar .at-table\at[]}
+{gvar .cvar-table\cvar[]}
+{{:id-add(id-len`tnum, id-str`ref)\id}
+   {do{+j = 0}{(.id-c) j++}
+      {if(&&, .id-len-v[j] == id-len, 'c:memcmp(.id-str-v[j], id-str, id-len) == 0)
+         {return j}
+      }
+   }
+   +id-idx = .id-c++;
+   {if(.id-cap <= .id-c)
+      +old-cap = .id-cap;
+      :grow(.id-cap, .id-c);
+      :realloc(.id-len-v, .id-cap, old-cap);
+      :realloc(.id-str-v, .id-cap, old-cap);
+   }
+   .id-len-v[id-idx] = id-len;
+   .id-str-v[id-idx] = id-str;
+   {return id-idx}
+}
+{{:read(in-path`char[])}
+   `` 'c.out:printf("reading %s -------------------\n", in-path);
+   {if!('c\file:open(++in-fd, in-path, #read))
+      'c.out:printf("Cannot open file for reading: %s\n", in-path);
+      'c:exit(#failure);
+   }
+   +in-size = in-fd:seek(0, #end);
+   {+r-begin/rdr+}
+   `` {if(`true)
+   ``    r-begin.ref = in-fd:map(`null, in-size, #read, #shared, 0);
+   `` }{else
+      r-begin.ref = 'c:malloc(in-size);
+      in-fd:seek(0, #set);
+      in-fd:read(r-begin.ref, in-size);
+   `` }
+   in-fd:close;
+
+   +file-idx = .file-c++;
+   {if(.file-cap <= .file-c)
+      +old-cap = .file-cap;
+      :grow(.file-cap, .file-c);
+      :realloc(.file-v, .file-cap, old-cap);
+   }
+   +file = .file-v[file-idx];
+   file.path = in-path;
+   file.data = r-begin.ref;
+
+   {+r/rdr+}
+   r.ref = r-begin.ref;
+   {if(`true)
+      +id-c = r:n;
+      `` 'c.out:printf("There are %u ids\n", id-c);
+      :quick-alloc-arr(.id-table, id-c);
+      file.id-table = .id-table;
+      {do{+i = 0}{(id-c) i++}
+         +id-len = r:n1;
+         +id-str = r.char;
+         r.pos += id-len + 1;
+         .id-table[i] = :id-add(id-len, id-str);
+      }
+   }
+   {if(`true)
+      +include-c = r:n;
+      `` 'c.out:printf("There are %u includes\n", include-c);
+      {if(.include-table-cap <= include-c)
+         +old-cap = .include-table-cap;
+         :grow(.include-table-cap, include-c);
+         :realloc(.include-table, .include-table-cap, old-cap);
+      }
+      {do{+i = 0}{(include-c) i++}
+         +include-len = r:n1;
+         +include-str = r.ref;
+         r.pos += include-len + 1;
+         +found = -1;
+         {do{+j = 0}{(.include-c) j++}
+            {if(&&, .include-len-v[j] == include-len, 'c:memcmp(.include-str-v[j], include-str, include-len) == 0)
+               found = j;
+               {break}
+            }
+         }
+         {if(found == -1)
+            +include-idx = .include-c++;
+            {if(.include-cap <= .include-c)
+               +old-cap = .include-cap;
+               :grow(.include-cap, .include-c);
+               :realloc(.include-len-v, .include-cap, old-cap);
+               :realloc(.include-str-v, .include-cap, old-cap);
+            }
+            .include-len-v[include-idx] = include-len;
+            .include-str-v[include-idx] = include-str;
+            .include-table[i] = include-idx\include;
+         }{else
+            .include-table[i] = found\include;
+         }
+      }
+   }
+   {if(`true)
+      +at-c = r:n;
+      `` 'c.out:printf("There are %u at\n", at-c);
+      :quick-alloc-arr(.at-table, at-c);
+      file.at-table = .at-table;
+      {+at-type\name-type}
+      {do{+i = 0}{(at-c) i++}
+         at-type:rd(r);
+         {if(at-type == #basic)
+            \basic-type-id:rd(+basic, r);
+            +found = -1;
+            {do{+j = 0}{(.at-c) j++}
+               +at = .at-v[j];
+               {if(&&, at.type == #basic, at.name.basic == basic)
+                  found = j;
+                  {break}
+               }
+            }
+            {if(found == -1)
+               +at-idx = .at-c++;
+               {if(.at-cap <= .at-c)
+                  +old-cap = .at-cap;
+                  :grow(.at-cap, .at-c);
+                  :realloc(.at-v, .at-cap, old-cap);
+               }
+               +at = .at-v[at-idx];
+               at:init(#basic, #root, basic\id);
+               .at-table[i] = at-idx\at;
+            }{else
+               .at-table[i] = found\at;
+            }
+         }{else
+            \at:rd(+at-parent, r);
+            \id:rd(+at-name, r);
+            `` 'c.out:printf("read at type %u %s %s\n", at-type, at-type:glc-name, at-name:str);
+            `` 'c.out:printf("- parent %u\n", at-parent);
+            `` 'c.out:printf("- name %s\n", at-name:str);
+            +found = -1;
+            {do{+j = 0}{(.at-c) j++}
+               +at = .at-v[j];
+               {if(&&, at.parent == at-parent, at.type == at-type, at.name.id == at-name)
+                  found = j;
+                  {break}
+               }
+            }
+            `` 'c.out:printf("found %d\n", found);
+            `` 'c.out:printf("at %u, name-c %u, found %d\n", i, at-name-c, found);
+            {if(found == -1)
+               +at-idx = .at-c++;
+               {if(.at-cap <= .at-c)
+                  +old-cap = .at-cap;
+                  :grow(.at-cap, .at-c);
+                  :realloc(.at-v, .at-cap, old-cap);
+               }
+               +at = .at-v[at-idx];
+               at:init(at-type, at-parent, at-name);
+               .at-table[i] = at-idx\at;
+            }{else
+               .at-table[i] = found\at;
+            }
+         }
+      }
+   }
+   {if(`true)
+      +cvar-c = r:n\cvar;
+      :quick-alloc-arr(.cvar-table, cvar-c);
+      file.cvar-table = .cvar-table;
+      `` 'c.out:printf("There are %u cvars\n", cvar-c);
+      'c.out:flush;
+      +cvar-begin = .cvar-c;
+      .cvar-c += cvar-c;
+      {if(.cvar-cap <= .cvar-c)
+         +old-cap = .cvar-cap;
+         :grow(.cvar-cap, .cvar-c);
+         :realloc(.cvar-v, .cvar-cap, old-cap);
+      }
+      `` :malloc(.cvar-table, .cvar-c);
+      `` file.cvar-table = .cvar-table;
+      {do{+cvar-idx = cvar-begin, i = 0}{(cvar-c) cvar-idx++; i++}
+         +cvar = .cvar-v[cvar-idx];
+         cvar.file = file-idx;
+         cvar.include:rd(r);
+         cvar.at:rd(r);
+         cvar.decl:rd(r);
+         cvar.flags:rd(r);
+         `` .cvar-table[i] = cvar-idx;
+
+         +at = cvar.at:ptr;
+         +at-cvar-idx = at.cvar-c++;
+         {if(at.cvar-cap <= at.cvar-c)
+            +old-cap = at.cvar-cap;
+            :grow(at.cvar-cap, at.cvar-c);
+            :realloc(at.cvar-v, at.cvar-cap, old-cap);
+         }
+         at.cvar-v[at-cvar-idx] = cvar-idx;
+         {if((cvar.flags & #set-expr) != #0)
+            cvar.expr-set:rd(r);
+         }{else
+            cvar.last-cvar:rd(r);
+         }
+         .cvar-table[i] = cvar-idx;
+      }
+   }
+   {if(`true)
+      +gvar-c = r:n\gvar;
+      `` 'c.out:printf("There are %u gvars\n", gvar-c);
+      'c.out:flush;
+      +gvar-begin = .gvar-c;
+      .gvar-c += gvar-c;
+      {if(.gvar-cap <= .gvar-c)
+         +old-cap = .gvar-cap;
+         :grow(.gvar-cap, .gvar-c);
+         :realloc(.gvar-v, .gvar-cap, old-cap);
+      }
+      `` :malloc(.gvar-table, .gvar-c);
+      `` file.gvar-table = .gvar-table;
+      {do{+gvar-idx = gvar-begin, i = 0}{(gvar-c) gvar-idx++; i++}
+         +gvar = .gvar-v[gvar-idx];
+         gvar.include:rd(r);
+         gvar.at:rd(r);
+         gvar.decl:rd(r);
+         `` .gvar-table[i] = gvar-idx;
+
+         +at = gvar.at:ptr;
+         +at-gvar-idx = at.gvar-c++;
+         {if(at.gvar-cap <= at.gvar-c)
+            +old-cap = at.gvar-cap;
+            :grow(at.gvar-cap, at.gvar-c);
+            :realloc(at.gvar-v, at.gvar-cap, old-cap);
+         }
+         at.gvar-v[at-gvar-idx] = gvar-idx;
+      }
+   }
+   +enum-c = r:n\enum;
+   `` 'c.out:printf("There are %u enums\n", enum-c);
+      'c.out:flush;
+   +e-idx-begin = .enum-c;
+   .enum-c += enum-c;
+   {if(.enum-cap <= .enum-c)
+      +old-cap = .enum-cap;
+      :grow(.enum-cap, .enum-c);
+      :realloc(.enum-v, .enum-cap, old-cap);
+   }
+   {do{+e-idx = e-idx-begin}{(enum-c) e-idx++}
+      {+e/enum}
+      :quick-alloc-one(e);
+      .enum-v[e-idx] = e;
+      e.file = file-idx;
+      e.begin-row = r:n;
+      e.begin-col = r:n;
+      e.end-row = r:n;
+      e.end-col = r:n;
+      e.include:rd(r);
+      e.at:rd(r);
+      e.base-type:rd(r);
+      e.flags:rd(r);
+      +at-i = e.at;
+      +at = at-i:ptr;
+      at.decl.enum = e-idx;
+      {if((e.flags & #real-name) != #0)
+         e.real-name:rd(r);
+      }{else
+         e.real-name = #nil;
+      }
+      `` 'c.out:printf("printing at of enum:\n");
+      `` {do()
+      ``    {if(at.type == #basic)
+      ``       'c.out:printf("- #basic #%s\n", at.name.basic:glc-name);
+      ``    }{else
+      ``       'c.out:printf("- #%s %s\n", at.type:glc-name, at.name.id:str);
+      ``    }
+      ``    {if(at.parent == #root) {break}}
+      ``    at = at.parent:ptr;
+      `` }
+   }
+   +struct-c = r:n\struct;
+   `` 'c.out:printf("There are %u structs\n", struct-c);
+   +s-idx-begin = .struct-c;
+   .struct-c += struct-c;
+   {if(.struct-cap <= .struct-c)
+      +old-cap = .struct-cap;
+      :grow(.struct-cap, .struct-c);
+      :realloc(.struct-v, .struct-cap, old-cap);
+   }
+   {do{+s-idx = s-idx-begin}{(struct-c) s-idx++}
+      +fvar-c = r:n1;
+      {+s/struct}
+      :quick-alloc-plus(s, /fvar[`size] * fvar-c);
+      .struct-v[s-idx] = s;
+      s.file = file-idx;
+      s.fvar-c = fvar-c;
+      s.begin-row = r:n;
+      s.begin-col = r:n;
+      s.end-row = r:n;
+      s.end-col = r:n;
+      s.include:rd(r);
+      s.at:rd(r);
+      s.flags:rd(r);
+      +at-i = s.at;
+      +at = at-i:ptr;
+      `` 'c.out:printf("at(%d) is a struct: %s, parent is %d\n", at-i, at.name.id:str, at.parent);
+      at.decl.struct = s-idx;
+      `` s.name:rd(r);
+      `` 'c.out:printf("%u:%u - %u:%u: /%s(", s.begin-row, s.begin-col, s.end-row, s.end-col, s.name:str);
+      {do{+j = 0}{(fvar-c) j++}
+         +fvar = s.fvar-v[j];
+         fvar.decl:rd(r);
+         `` {if(j != 0)
+         ``    'c.out:printf(", ");
+         `` }
+         `` fvar.decl.type:write('c.out);
+         `` 'c.out:printf(" %s", fvar.decl.name:str);
+      }
+      `` 'c.out:printf(")\n");
+      {if((s.flags & #real-name) != #0)
+         s.real-name:rd(r);
+      }{else
+         s.real-name = #nil;
+      }
+   }
+   +func-c = r:n\func;
+   `` 'c.out:printf("There are %u functions\n", func-c);
+      'c.out:flush;
+   +f-idx-begin = .func-c;
+   .func-c += func-c;
+   {if(.func-cap <= .func-c)
+      +old-cap = .func-cap;
+      :grow(.func-cap, .func-c);
+      :realloc(.func-v, .func-cap, old-cap);
+   }
+   {do{+f-idx = f-idx-begin}{(func-c) f-idx++}
+      +farg-c = r:n1;
+      {+f/decl-func}
+      :quick-alloc-plus(f, /farg[`size] * farg-c);
+      .func-v[f-idx] = f;
+      f.farg-c = farg-c;
+      f.file = file-idx;
+      f.begin-row = r:n;
+      f.begin-col = r:n;
+      f.end-row = r:n;
+      f.end-col = r:n;
+      f.include:rd(r);
+      f.at:rd(r);
+      f.decl:rd(r);
+      {+r0/rdr+}
+      r0.ref = f;
+      `` 'c.out:printf("func :%s was declared on an at:\n", f.decl.name:str);
+      `` {if(`true)
+      ``    +at-i = f.at;
+      ``    {do()
+      ``       +at = at-i:ptr;
+      ``       'c.out:printf("- %s\n", at.name.id:str);
+      ``       at-i = at.parent;
+      ``       {if(at-i == #root) {break}}
+      ``    }
+      `` }
+      `` 'c.out:printf("%u:%u - %u:%u: :%s(", f.begin-row, f.begin-col, f.end-row, f.end-col, f.decl.name:str);
+      f.lvar-c = #0;
+      .ctx-func = f;
+      .ctx-func-id = f-idx;
+      `` :grow(f.lvar-cap, farg-c);
+      `` :malloc(f.lvar-v, f.lvar-cap);
+      {do{+j = 0}{(farg-c) j++}
+         +farg = f.farg-v[j];
+         farg:rd(r);
+         `` {if(j != 0)
+         ``    'c.out:printf(", ");
+         `` }
+         `` farg.decl.type:write('c.out);
+         `` 'c.out:printf(" %s", farg.decl.name:str);
+      }
+      +this-idx = r:n1`tint;
+      f.this-idx = this-idx;
+      {if(this-idx != -1)
+         f.this-group = r:n1;
+      }
+      +group-c = r:n1;
+      f.group-c = group-c;
+      {do{+i = 0}{(group-c) i++}
+         f.group-v[i] = r:n1;
+      }
+      `` 'c.out:printf(")\n");
+      f.flags:rd(r);
+      {if((f.flags & #real-name) != #0)
+         f.real-name:rd(r);
+      }
+      {if((f.flags & #case) != #0)
+         f.case:rd(r);
+      }
+      +at-i = f.at;
+      +at = at-i:ptr;
+      +at-func-idx = at.func-c++;
+      {if(at.func-cap <= at.func-c)
+         +old-cap = at.func-cap;
+         :grow(at.func-cap, at.func-c);
+         :realloc(at.func-v, at.func-cap, old-cap);
+      }
+      at.func-v[at-func-idx] = f-idx;
+   }
+   \func:rd(+func-main, r);
+   {if(func-main != #nil)
+      {if(.func-main != #nil)
+         +first = .func-main:ptr;
+         +second = func-main:ptr;
+         'c.out:printf("There are more than one function with @main attribute, first is %u:%u and second is %u:%u\n", first.begin-row, first.begin-col, second.begin-row, second.begin-col);
+         'c:exit(#failure);
+      }
+      .func-main = func-main;
+   }
+   {do{+f-idx = f-idx-begin}{(func-c) f-idx++}
+      +f = .func-v[f-idx];
+      {if((f.flags & #has-body) == #0) {continue}}
+      +size = r:n4;
+      f.body-file-pos = r.pos - r-begin.pos;
+      r.pos += size;
+   }
+}
+{gvar .out'c/file}
+{gvar .process-first\func}
+{gvar .process-last\func}
+{gvar .func-in-process`tnum[]}
+{gvar .include-is-outputted`tnum[]}
+{gvar .include-outputted-c`int}
+{gvar .include-outputted-v\include[]}
+{gvar .cvar-is-outputted`tnum[]}
+{gvar .cvar-outputted-c`int}
+{gvar .cvar-outputted-v\cvar[]}
+{gvar .gvar-is-outputted`tnum[]}
+{gvar .gvar-outputted-c`int}
+{gvar .gvar-outputted-v\gvar[]}
+{gvar .enum-is-outputted`tnum[]}
+{gvar .enum-outputted-c`int}
+{gvar .enum-outputted-v\enum[]}
+{gvar .struct-is-outputted`tnum[]}
+{gvar .struct-outputted-c`int}
+{gvar .struct-outputted-v\struct[]}
+{{:main(arg-c`int, arg-v`char[][])`int @main}
+   :quick-alloc-init;
+   .func-main = #nil;
+   {if(arg-c < 2)
+      'c.out:printf("usage: %s file.glc-t\n", arg-v[0]);
+      {return 0}
+   }
+
+   {do{+type = 0\basic-type-id}{(\basic-type-id#COUNT) type++}
+      +at-idx = .at-c++;
+      {if(.at-cap <= .at-c)
+         +old-cap = .at-cap;
+         :grow(.at-cap, .at-c);
+         :realloc(.at-v, .at-cap, old-cap);
+      }
+      +at = .at-v[at-idx];
+      at:init(#basic, #root, type\id);
+   }
+
+   `` {if(`true)
+   ``    +at-i = :basic-type(#bool);
+   `` }
+
+   {do{+i = 1}{(arg-c - 2) i++}
+      +in-path = arg-v[i];
+      :read(in-path);
+   }
+
+   {do{+f-idx = 0\func}{(.func-c) f-idx++}
+      +f = f-idx:ptr;
+      {if(f.this-idx != -1)
+         +at = f.at:ptr;
+         `` 'c.out:printf("at(%d).type = #%s, %d\n", f.at, at.type:glc-name, at.decl.struct);
+         `` 'c.out:flush;
+         {if(at.type == #struct)
+            {if(at.decl.enum == #nil)
+               'c.out:printf("%s:%u:%u: function using '`this' was declared on struct /%s that was not defined\n", f.file:path, f.begin-row, f.begin-col, at.name.id:str);
+               'c:exit(#failure);
+            }
+            +t = at.decl.struct:ptr;
+            +t-method-idx = t.method-c++;
+            {if(t.method-cap <= t.method-c)
+               +old-cap = t.method-cap;
+               :grow(t.method-cap, t.method-c);
+               :realloc(t.method-v, t.method-cap, old-cap);
+            }
+            t.method-v[t-method-idx] = f-idx;
+         }{elif(at.type == #enum)
+            {if(at.decl.enum == #nil)
+               'c.out:printf("%s:%u:%u: function using '`this' was declared on enum \\%s that was not defined\n", f.file:path, f.begin-row, f.begin-col, at.name.id:str);
+               'c:exit(#failure);
+            }
+            +t = at.decl.enum:ptr;
+            +t-method-idx = t.method-c++;
+            {if(t.method-cap <= t.method-c)
+               +old-cap = t.method-cap;
+               :grow(t.method-cap, t.method-c);
+               :realloc(t.method-v, t.method-cap, old-cap);
+            }
+            t.method-v[t-method-idx] = f-idx;
+         }{elif(at.type == #basic)
+            +t = .basic-type[at.name.basic];
+            +t-method-idx = t.method-c++;
+            {if(t.method-cap <= t.method-c)
+               +old-cap = t.method-cap;
+               :grow(t.method-cap, t.method-c);
+               :realloc(t.method-v, t.method-cap, old-cap);
+            }
+            t.method-v[t-method-idx] = f-idx;
+         }{else
+            'c.out:printf("%s:%u:%u: function using '`this' was declared on a type that's not a struct or enum\n", f.file:path, f.begin-row, f.begin-col);
+            'c:exit(#failure);
+         }
+      }
+   }
+
+   {if(.func-main != #nil)
+      +f = .func-main:ptr;
+      f.real-name = :id-add(4, "main");
+      f.flags |= #real-name;
+   }
+
+   :quick-alloc-arr(.id-c-name-v, .id-c); 
+   {if(`true)
+      +func-c8 = (.func-c + 7) >> 3;
+      :quick-alloc-arr(.func-in-process, func-c8);
+      :quick-alloc-arr(.func-head-outputted-v, .func-c);
+      :quick-alloc-arr(.func-body-outputted-v, .func-c);
+   }
+   {if(`true)
+      +include-c8 = (.include-c + 7) >> 3;
+      :quick-alloc-arr(.include-is-outputted, include-c8);
+      :quick-alloc-arr(.include-outputted-v, .include-c);
+   }
+   {if(`true)
+      +cvar-c8 = (.cvar-c + 7) >> 3;
+      :quick-alloc-arr(.cvar-is-outputted, cvar-c8);
+      :quick-alloc-arr(.cvar-outputted-v, .cvar-c);
+   }
+   {if(`true)
+      +gvar-c8 = (.gvar-c + 7) >> 3;
+      :quick-alloc-arr(.gvar-is-outputted, gvar-c8);
+      :quick-alloc-arr(.gvar-outputted-v, .gvar-c);
+   }
+   {if(`true)
+      +enum-c8 = (.enum-c + 7) >> 3;
+      :quick-alloc-arr(.enum-is-outputted, enum-c8);
+      :quick-alloc-arr(.enum-outputted-v, .enum-c);
+   }
+   {if(`true)
+      +struct-c8 = (.struct-c + 7) >> 3;
+      :quick-alloc-arr(.struct-is-outputted, struct-c8);
+      :quick-alloc-arr(.struct-outputted-v, .struct-c);
+   }
+
+   `` process the main function
+   .process-first = #nil;
+   .process-last = #nil;
+   {if(.func-main != #nil)
+      .func-main:process-later;
+   }
+
+   {while(.process-first != #nil)
+      +f-i = .process-first;
+      .process-first = #nil;
+      .process-last = #nil;
+      {do()
+         {if!(f-i:process-now) {return -1}}
+         +f = f-i:ptr;
+         f-i = f.process-next; 
+         {if(f-i == #nil) {break}}
+      }
+   }
+
+   'c.out:printf("finished processing, writing...\n");
+   .out = 'c:fopen(arg-v[arg-c - 1], "w");
+   {do{+i = 0}{(.func-head-outputted-c) i++}
+      +f-idx = .func-head-outputted-v[i];
+      +f = f-idx:ptr;
+      +row = f.begin-row;
+      +col = f.begin-col;
+      {if(f.decl.type != #nil)
+         f.decl.type:output(f.file, row, col);
+      }
+      {do{+i = 0}{(f.farg-c) i++}
+         f.farg-v[i].decl.type:output(f.file, row, col);
+      }
+      {if(f.include != #nil)
+         f.include:output;
+      }
+      {if((f.flags & #glc-name) != #0)
+         +at = f.at:ptr;
+         {do{+i = 0, v = at.cvar-v}{(at.cvar-c) i++}
+            +cvar = v[i];
+            {if((cvar:ptr.flags & #as-enum) != #0)
+               cvar:process;
+            }
+         }
+      }
+   }
+   .out:printf("#include <stdint.h>\n");
+   {if(.include-stdbool)
+      .out:printf("#include <stdbool.h>\n");
+   }
+   {if(.include-stddef)
+      .out:printf("#include <stddef.h>\n");
+   }
+   {do{+i = 0}{(.include-outputted-c) i++}
+      +inc = .include-outputted-v[i];
+      .out:printf("#include %s\n", inc:str);
+   }
+   {do{+i = 0}{(.cvar-outputted-c) i++}
+      +c-i = .cvar-outputted-v[i];
+      +c = c-i:ptr;
+      {if((c.decl.flags & #no-decl) != #0)
+         {continue}
+      }
+      .out:printf("#define ");
+      c-i:write;
+      .out:printf(" ");
+      {if((c.flags & #set-expr) != #0)
+         .out:printf("(");
+         c.expr-set:write;
+         .out:printf(")");
+      }{elif(c.last-cvar != #nil)
+         .out:printf("(");
+         c.last-cvar:write;
+         .out:printf(" + 1)");
+      }{else
+         .out:printf("0");
+      }
+      .out:printf("\n");
+   }
+   {do{+i = 0}{(.enum-outputted-c) i++}
+      +e-i = .enum-outputted-v[i];
+      +e = e-i:ptr;
+      .out:printf("typedef ");
+      e.base-type:write;
+      .out:printf(" ");
+      e.at:write;
+      .out:printf(";\n");
+   }
+   {do{+i = 0}{(.struct-outputted-c) i++}
+      +s-i = .struct-outputted-v[i];
+      +s = s-i:ptr;
+      {if((s.flags & #union) != #0)
+         .out:printf("union ");
+      }{else
+         .out:printf("struct ");
+      }
+      s.at:write-space;
+      {if((s.flags & #union) != #0)
+         .out:printf(";\nunion ");
+      }{else
+         .out:printf(";\nstruct ");
+      }
+      s.at:write-space;
+      .out:printf(" {\n");
+      {do{+j = 0}{(s.fvar-c) j++}
+         +fvar = s.fvar-v[j];
+         fvar.decl:write-type(#fvar);
+         .out:printf(";\n");
+      }
+      .out:printf("};\n");
+   }
+   {do{+i = 0}{(.gvar-outputted-c) i++}
+      +g-i = .gvar-outputted-v[i];
+      +g = g-i:ptr;
+      {if((g.decl.flags & #no-decl) != #0) {continue}}
+      {if((g.decl.flags & #extern) != #0)
+         .out:printf("extern ");
+      }
+      g.decl:write-type(#gvar);
+      .out:printf(";\n");
+   }
+   {do{+i = 0}{(.func-head-outputted-c) i++}
+      +f-idx = .func-head-outputted-v[i];
+      +f = f-idx:ptr;
+      {if((f.flags & #no-decl) != #0) {continue}}
+      .ctx-func = f;
+      {if(f.decl.type == #nil)
+         .out:printf("void");
+      }{else
+         f.decl.type:write-type-info(f.decl.type-info, 0);
+      }
+      .out:printf(" ");
+      f:write;
+      .out:printf("(");
+      `` {if(.func-main == f-idx)
+      ``    .out:printf(" main(");
+      `` }{else
+      ``    .out:printf(" %s(", f.decl.name:c-name);
+      `` }
+      {do{+j = 0}{(f.farg-c) j++}
+         {if(j != 0)
+            .out:printf(", ");
+         }
+         f.farg-v[j].decl:write-lvar-type(j\lvar);
+      }
+      {if((f.flags & #glc-name) != #0)
+         .out:printf(") {\nswitch(_Le_0) {\n");
+         +at = f.at:ptr;
+         {do{+i = 0, v = at.cvar-v}{(at.cvar-c) i++}
+            +cvar-i = v[i];
+            +cvar = cvar-i:ptr;
+            {if((cvar.flags & #as-enum) == #0) {continue}}
+            .out:printf("case ");
+            cvar-i:write;
+            .out:printf(": return \"%s\";\n", cvar.decl.name:str);
+         }
+         .out:printf("}\nreturn \"(ERROR)\";\n}\n");
+      }{else
+         .out:printf(");\n");
+      }
+   }
+   {do{+i = 0}{(.func-body-outputted-c) i++}
+      +f-idx = .func-body-outputted-v[i];
+      +f = f-idx:ptr;
+      .ctx-func = f;
+      .nest-id = 0;
+      {if(f.decl.type == #nil)
+         .out:printf("void");
+      }{else
+         f.decl.type:write-type-info(f.decl.type-info, 0);
+      }
+      .out:printf(" ");
+      f:write;
+      .out:printf("(");
+      `` {if(.func-main == f-idx)
+      ``    .out:printf(" main(");
+      `` }{else
+      ``    .out:printf(" %s(", f.decl.name:c-name);
+      `` }
+      {do{+j = 0}{(f.farg-c) j++}
+         {if(j != 0)
+            .out:printf(", ");
+         }
+         f.farg-v[j].decl:write-lvar-type(j\lvar);
+      }
+      .out:printf(") {\n");
+      f.stmt-space:write;
+      .out:printf("}\n");
+   }
+   {return 0}
+}
+{at(\func)
+   {{:process-later(f-idx`this)}
+      +num = f-idx`num;
+      +n3 = num >> 3;
+      +n17 = 1 << (num & 7);
+      {if((`.func-in-process[n3] & n17) != 0) {return}}
+      `.func-in-process[n3] |= n17;
+      +f = f-idx:ptr;
+      {if(f.decl.type != #nil)
+         f.decl.type:finalize(f.decl.type-info, f.begin-row, f.begin-col);
+      }
+      `.func-head-outputted-v[`.func-head-outputted-c++] = f-idx;
+      {if((f.flags & #has-body) != #0)
+         f.process-next = #nil;
+         {if(`.process-first == #nil)
+            `.process-first = f-idx;
+            `.process-last = f-idx;
+         }{else
+            +f-last = `.process-last:ptr;
+            f-last.process-next = f-idx;
+            `.process-last = f-idx;
+         }
+      }
+   }
+   {{:process-now(f-idx`this)`bool}
+      +f = f-idx:ptr;
+      `.ctx-func = f;
+      `` 'c.out:printf("func :%s\n", f.decl.name:str);
+
+      `` f.lvar-c = #0;
+      `` :grow(f.lvar-cap, f.farg-c);
+      `` :malloc(f.lvar-v, f.farg-c);
+      `` {do{+i = 0}{(f.farg-c) i ++}
+      ``    +farg = f.farg-v[i];
+      ``    f.lvar-v[i].row = f.begin-row;
+      ``    f.lvar-v[i].col = f.begin-col;
+      ``    f.lvar-v[i].decl:copy-from(farg.decl);
+      ``    f.lvar-v[i].flags = #0;
+      ``    `` 'c.out:printf("%u:%u: lvar '%s' has a type of %d\n", f.begin-row, f.begin-col, f.lvar-v[i].decl.name:str, f.lvar-v[i].decl.type);
+      `` }
+      `` f.lvar-c = f.farg-c\lvar;
+      {+r`/rdr+}
+      +file = f.file:ptr;
+      r.ref = file.data;
+      `.id-table = file.id-table;
+      `.at-table = file.at-table;
+      `.cvar-table = file.cvar-table;
+      r.pos += f.body-file-pos;
+      `` +stmt-c = r:n;
+      `` 'c.out:printf("  function has %u statements\n", stmt-c);
+      `` f.stmt-c = 0;
+      `` f.stmt-cap = 0;
+      `` f.stmt-v = `null;
+      `` {if(`true)
+      ``    `` add a stmt lvars
+      ``    :quick-alloc-one(+(s/stmt-space));
+      ``    s.lvar-c = 0;
+      ``    :grow(s.lvar-cap, s.lvar-c);
+      ``    :malloc(s.lvar-v, s.lvar-cap);
+      ``    f:stmt-push(s.base, f.begin-row, f.begin-col, f.begin-row, f.begin-col, #space);
+      `` }
+      f:lvars-rd(r);
+      f.stmt-space:rd(r, `null);
+      +s = f.stmt-space.stmt-first;
+      {while(s != `null)
+         `.ctx-begin-row = s.begin-row;
+         `.ctx-begin-col = s.begin-col;
+         `.ctx-end-row = s.end-row;
+         `.ctx-end-col = s.end-col;
+         `` 'c.out:printf("%s %u:%u - %u:%u\n", f.decl.name:str, s.begin-row, s.begin-col, s.end-row, s.end-col);
+         {if!(s:process)
+            {return `false}
+         }
+         s = s.stmt-next;
+      }
+      `` {do{+i = 0}{(f.stmt-c) i ++}
+      ``    +s = f.stmt-v[i];
+      ``    .ctx-begin-row = s.begin-row;
+      ``    .ctx-begin-col = s.begin-col;
+      ``    .ctx-end-row = s.end-row;
+      ``    .ctx-end-col = s.end-col;
+      ``    {if!(s:process(f-idx))
+      ``       {return `false}
+      ``    }
+      `` }
+
+      {if((f.flags & #no-body) == #0)
+         `.func-body-outputted-v[`.func-body-outputted-c++] = f-idx;
+      }
+      {return `true}
+   }
+   {:is-set(f-idx`this, v`tnum[])`bool @inline;
+      {return (v[f-idx >> 3] & (1 << (f-idx & 7))) != 0}
+   }
+   {:set(f-idx`this, v`tnum[]) @inline;
+      v[f-idx >> 3] |= 1 << (f-idx & 7);
+   }
+}
+ 
+
+}

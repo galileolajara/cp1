@@ -1,0 +1,8 @@
+{include(<string.h>)
+   {at(%stdc)
+      {:strlen(str`char[])`size @real-name @no-decl}
+      {:memcpy(dst`char[], src`char[], n`size)`ref @real-name @no-decl}
+      {:memcmp(s1`char[], s2`char[], n`size)`int @real-name @no-decl}
+      {:memset(dst`char[], c`int, n`size)`ref @real-name @no-decl}
+   }
+}

@@ -1,0 +1,150 @@
+{alias 'glc = %glc}
+{alias 'c = %stdc}
+{at(%glc)
+{\str(#nil = -1, #0)`int}
+{gvar .str-c`int}
+{gvar .str-cap`int}
+{gvar .str-ptr`ref[]}
+{gvar .str-len`int[]}
+{gvar .string-buf`char[] @extern}
+{gvar .string-len`int @extern}
+{{:expr-str(prev\expr)\expr}
+   +len = .string-len;
+   :quick-alloc-plus(+(n/expr-str-node), len + 1);
+   n.len = len;
+   'c:memcpy(n.buf, .string-buf, len);
+   n.buf[len] = ''\0;
+   n.next = `null;
+   {if(prev == #nil)
+      :quick-alloc-one(+(e/expr-str));
+      +e-idx = :expr-push(e.base, #str);
+      e.node-c = 1;
+      e.first = n;
+      e.last = n;
+      {return e-idx}
+   }{else
+      {+e/expr-str = prev:ptr}
+      e.node-c++;
+      e.last.next = n;
+      e.last = n;
+      {return prev}
+   }
+}
+{:write-str-node(len`int, ptr`ref)}
+{at(\expr)
+   {:wr-str(expr`/expr, w`/wtr, header`bool) @case:wr @inline;
+      {+e`/expr-str = expr}
+      w:n(e.node-c);
+      +n = e.first;
+      {do()
+         w:n(n.len);
+         w:copy(n.buf, n.len);
+         n = n.next;
+         {if(n == `null) {break}}
+      }
+   }
+   {:rd-str(e-idx`\expr, r`/rdr) @case:rd @inline;
+      +node-c = r:n;
+      `:quick-alloc-one(+(e`/expr-str));
+      e-idx:set(e.base, #str);
+      +first = `true;
+      {do(node-c)
+         +len = r:n;
+         `:quick-alloc-plus(+(n`/expr-str-node), len + 1);
+         n.len = len;
+         r:copy(n.buf, len);
+         n.buf[len] = 0;
+         n.next = `null;
+         {if(first)
+            first = `false;
+            e.first = n;
+            e.last = n;
+         }{else
+            e.last.next = n;
+            e.last = n;
+         }
+      }
+   }
+   {:write-str(expr`/expr) @case:write @inline;
+      {+e`/expr-str = expr}
+      +n = e.first;
+      {do()
+         `:write-str-node(n.len, n.buf);
+         `` .out:putc(''\");
+         `` +i = 0;
+         `` +len = n.len;
+         `` {while(i < len)
+         ``    {switch(n.buf[i])
+         ``       {case(''\0)
+         ``          .out:putc(''\\);
+         ``          .out:putc(''0);
+         ``       }
+         ``       {case(''\')
+         ``          .out:putc(''\\);
+         ``          .out:putc(''\');
+         ``       }
+         ``       {case(''\")
+         ``          .out:putc(''\\);
+         ``          .out:putc(''\");
+         ``       }
+         ``       {case(''\\)
+         ``          .out:putc(''\\);
+         ``          .out:putc(''\\);
+         ``       }
+         ``       {case(''\a)
+         ``          .out:putc(''\\);
+         ``          .out:putc(''a);
+         ``       }
+         ``       {case(''\b)
+         ``          .out:putc(''\\);
+         ``          .out:putc(''b);
+         ``       }
+         ``       {case(''\f)
+         ``          .out:putc(''\\);
+         ``          .out:putc(''f);
+         ``       }
+         ``       {case(''\n)
+         ``          .out:putc(''\\);
+         ``          .out:putc(''n);
+         ``       }
+         ``       {case(''\r)
+         ``          .out:putc(''\\);
+         ``          .out:putc(''r);
+         ``       }
+         ``       {case(''\t)
+         ``          .out:putc(''\\);
+         ``          .out:putc(''t);
+         ``       }
+         ``       {case(''\v)
+         ``          .out:putc(''\\);
+         ``          .out:putc(''v);
+         ``       }
+         ``       {default
+         ``          .out:putc(n.buf[i]);
+         ``       }
+         ``    }
+         ``    i ++;
+         `` }
+         `` .out:putc(''\");
+         n = n.next;
+         {if(n == `null) {break}}
+         `.out:putc(''\n);
+      }
+   }
+   {:value-str(s`this, ref`int, paren`bool, v`/value, ok`bool&) @case:value @inline;
+      v.type = `:basic-type(#char);
+      v.info:init;
+      v.info.array-c = 1;
+      v.info.ref-v[0] = ''\0;
+      v.info.ref-v[1] = ''\0;
+      v.info.star-c = 1;
+      v.ref = 1;
+      ok = `true;
+   }
+   {:process-str(expr`/expr, ok`bool&) @case:process @inline;
+      ok = `true;
+   }
+}
+ 
+
+}

@@ -1,0 +1,47 @@
+{alias 'glc = %glc}
+{at(%glc)
+{{:expr-bool(value`bool)\expr}
+   :quick-alloc-one(+(e/expr-bool));
+   +e-idx = :expr-push(e.base, #bool);
+   e.value = value;
+   {return e-idx}
+}
+{at(\expr)
+   {:wr-bool(expr`/expr, w`/wtr, header`bool) @case:wr @inline;
+      {+e`/expr-bool = expr}
+      w:bool(e.value);
+   }
+   {:rd-bool(e-idx`\expr, r`/rdr) @case:rd @inline;
+      `:quick-alloc-one(+(e`/expr-bool));
+      e-idx:set(e.base, #bool);
+      e.value = r:bool;
+   }
+   {:write-bool(expr`/expr) @case:write @inline;
+      {+e`/expr-bool = expr}
+      {if(e.value)
+         `.out:printf("true");
+      }{else
+         `.out:printf("false");
+      }
+   }
+   {:process-bool(expr`/expr, ok`bool&) @case:process @inline;
+      `.include-stdbool = `true;
+      ok = `true;
+   }
+   {:type-bool(expr`/expr, at`\at&) @case:type @inline;
+      at = `:basic-type(#bool);
+   }
+   {:value-bool(le`this, ref`int, paren`bool, v`/value, ok`bool&) @case:value @inline;
+      v.type = `:basic-type(#bool);
+      v.info:init;
+      v.info.array-c = 0;
+      v.info.ref-v[0] = ''\0;
+      v.info.star-c = 0;
+      v.ref = 1;
+      v.paren = `false;
+      ok = `true;
+   }
+}
+ 
+
+}

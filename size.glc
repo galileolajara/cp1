@@ -1,0 +1,46 @@
+{alias 'glc = %glc}
+{at(%glc)
+{{:expr-size-of-type(at\at)\expr}
+   :quick-alloc-one(+(e/expr-size-of-type));
+   +e-idx = :expr-push(e.base, #size-of-type);
+   e.type = at;
+   {return e-idx}
+}
+{at(\expr)
+   {:wr-size-of-type(expr`/expr, w`/wtr, header`bool) @case:wr @inline;
+      {+e`/expr-size-of-type = expr}
+      e.type:wr(w, header);
+   }
+   {:rd-size-of-type(e-idx`\expr, r`/rdr) @case:rd @inline;
+      `:quick-alloc-one(+(e`/expr-size-of-type));
+      e-idx:set(e.base, #size-of-type);
+      e.type:rd(r);
+   }
+   {:write-size-of-type(expr`/expr) @case:write @inline;
+      {+e`/expr-size-of-type = expr}
+      `.out:printf("sizeof(");
+      e.type:write;
+      `.out:printf(")");
+   }
+   {:process-size-of-type(expr`/expr, ok`bool&) @case:process @inline;
+      {+e`/expr-size-of-type = expr}
+      e.type:output(`.ctx-func.file, `.ctx-begin-row, `.ctx-begin-col);
+      ok = `true;
+   }
+   {:type-size-of-type(expr`/expr, at`\at&) @case:type @inline;
+      at = `:basic-type(#size);
+   }
+   {:value-size-of-type(le`this, ref`int, paren`bool, v`/value, ok`bool&) @case:value @inline;
+      v.type = `:basic-type(#size);
+      v.info:init;
+      v.info.array-c = 0;
+      v.info.ref-v[0] = ''\0;
+      v.info.star-c = 0;
+      v.ref = 1;
+      v.paren = `false;
+      ok = `true;
+   }
+}
+ 
+
+}

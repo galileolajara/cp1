@@ -1,0 +1,233 @@
+{alias 'glc = %glc}
+{at(%glc)
+{{:main(arg-c`int, arg-v`char[][])`int @main}
+   +in-path = arg-v[1];
+   +out-new-path = arg-v[2];
+   +out-old-path = arg-v[3];
+   {if!('c\file:open(++in-fd, in-path, #read))
+      'c.out:printf("Cannot open file for reading: %s\n", in-path);
+      'c:exit(#failure);
+   }
+   +in-size = in-fd:seek(0, #end);
+   in-fd:seek(0, #set);
+   {+r/rdr+}
+   +padding = 64;
+   r.ref = 'c:malloc(in-size + padding);
+   in-fd:read(r.ref, in-size);
+   {do{+i = in-size}(padding)
+      r.1[i ++] = 0;
+   }
+
+   {+r-end/rdr+}
+   r-end.ref = r.ref;
+   r-end.pos += in-size;
+
+   {+w-new-begin/wtr+}
+   w-new-begin.ref = 'c:malloc(in-size << 1);
+   {+w-old-begin/wtr+}
+   w-old-begin.ref = 'c:malloc(in-size << 1);
+
+   {+w-new/wtr+}
+   w-new.ref = w-new-begin.ref;
+   {+w-old/wtr+}
+   w-old.ref = w-old-begin.ref;
+   {while(r.pos < r-end.pos)
+      {if(&&, r.1[0] == ''`~, r.1[1] == ''.)
+         w-old.1[0] = ''.;
+         w-old.pos ++;
+         w-new.1[0] = ''`~;
+         w-new.1[1] = ''.;
+         w-new.pos += 2;
+         r.pos += 2;
+      }{elif(&&, r.1[0] == ''`~, r.1[1] == ''`~, r.1[2] == ''.)
+         w-old.1[0] = ''.;
+         w-old.pos ++;
+         w-new.1[0] = ''`~;
+         w-new.1[1] = ''`~;
+         w-new.1[2] = ''.;
+         w-new.pos += 3;
+         r.pos += 3;
+      }{elif(&&, r.1[0] == ''`~, r.1[1] == '':)
+         w-old.1[0] = '':;
+         w-old.pos ++;
+         w-new.1[0] = ''`~;
+         w-new.1[1] = '':;
+         w-new.pos += 2;
+         r.pos += 2;
+      }{elif(&&, r.1[0] == ''`~, r.1[1] == ''`~, r.1[2] == '':)
+         w-old.1[0] = '':;
+         w-old.pos ++;
+         w-new.1[0] = ''`~;
+         w-new.1[1] = ''`~;
+         w-new.1[2] = '':;
+         w-new.pos += 3;
+         r.pos += 3;
+      }{elif(&&, r.1[0] == ''`~, r.1[1] == ''#)
+         w-old.1[0] = ''#;
+         w-old.pos ++;
+         w-new.1[0] = ''`~;
+         w-new.1[1] = ''#;
+         w-new.pos += 2;
+         r.pos += 2;
+      }{elif(&&, r.1[0] == ''`~, r.1[1] == ''`~, r.1[2] == ''#)
+         w-old.1[0] = ''#;
+         w-old.pos ++;
+         w-new.1[0] = ''`~;
+         w-new.1[1] = ''`~;
+         w-new.1[2] = ''#;
+         w-new.pos += 3;
+         r.pos += 3;
+      }{elif(&&, r.1[0] == ''`~, r.1[1] == ''/)
+         w-old.1[0] = ''/;
+         w-old.pos ++;
+         w-new.1[0] = ''`~;
+         w-new.1[1] = ''/;
+         w-new.pos += 2;
+         r.pos += 2;
+      }{elif(&&, r.1[0] == ''`~, r.1[1] == ''\\)
+         w-old.1[0] = ''\\;
+         w-old.pos ++;
+         w-new.1[0] = ''`~;
+         w-new.1[1] = ''\\;
+         w-new.pos += 2;
+         r.pos += 2;
+      }{elif(&&, r.1[0] == ''`~, r.1[1] == ''=, r.1[2] == '' )
+         `` found a code that's only for the new glc
+         r.pos += 3;
+         {+r-new-line/rdr+}
+         r-new-line.pos = r.pos;
+         {while(r-new-line.1[0] != ''\n)
+            r-new-line.pos ++;
+         }
+         {while(r.pos < r-new-line.pos)
+            w-new.1[0] = r.1[0];
+            w-new.pos ++;
+            r.pos ++;
+         }
+         r.pos = r-new-line.pos;
+         {continue}
+      }{elif(&&, r.1[0] == ''`~, r.1[1] == ''-, r.1[2] == '' )
+         `` found a code that's only for the old glc
+         r.pos += 3;
+         {+r-new-line/rdr+}
+         r-new-line.pos = r.pos;
+         {while(r-new-line.1[0] != ''\n)
+            r-new-line.pos ++;
+         }
+         {while(r.pos < r-new-line.pos)
+            w-old.1[0] = r.1[0];
+            w-old.pos ++;
+            r.pos ++;
+         }
+         r.pos = r-new-line.pos;
+         {continue}
+      }{elif(&&, r.1[0] == ''+, r.1[1] == ''+, r.1[2] != ''\")
+         `` increment operator
+         +c = r.1[2];
+         {if(||, (&&, c >= ''a, c <= ''z), (&&, c >= ''A, c <= ''Z))
+            `` don't change
+         }{else
+            `` insert space
+            w-old.1[0] = '' ;
+            w-old.pos ++;
+         }
+      }{elif(&&, r.1[0] == ''-, r.1[1] == ''-, r.1[2] != ''\")
+         `` decrement operator
+         +c = r.1[2];
+         {if(||, (&&, c >= ''a, c <= ''z), (&&, c >= ''A, c <= ''Z))
+            `` don't change
+         }{else
+            `` insert space
+            w-old.1[0] = '' ;
+            w-old.pos ++;
+         }
+      }{elif('c:memcmp(r.ref, " @glc-name", 10) == 0)
+         r.pos += 10;
+         w-new:copy(" @glc-name", 10);
+         {continue}
+      }{elif('c:memcmp(r.ref, "@real-name", 10) == 0)
+         r.pos += 10;
+         w-new:copy("@real-name", 10);
+         w-old:copy("@realName", 9);
+         {continue}
+      }{elif('c:memcmp(r.ref, "@no-decl", 8) == 0)
+         r.pos += 8;
+         w-new:copy("@no-decl", 8);
+         w-old:copy("@noDecl", 7);
+         {continue}
+      }{elif('c:memcmp(r.ref, "@no-body", 8) == 0)
+         r.pos += 8;
+         w-new:copy("@no-body", 8);
+         w-old:copy("@noBody", 7);
+         {continue}
+      }{elif(&&, r.1[0] == ''\', r.1[1] == ''\', r.1[2] == ''`~)
+         r.pos += 3;
+         w-new.1[0] = ''\';
+         w-new.1[1] = ''\';
+         w-new.1[2] = ''`~;
+         w-new.pos += 3;
+         w-old.1[0] = ''\';
+         w-old.1[1] = ''\';
+         w-old.1[2] = ''`~;
+         w-old.1[3] = ''~;
+         w-old.pos += 4;
+         {continue}
+      }
+      {if(&&, r.1[0] == ''_, r.1[1] == ''z)
+         `` slow algorithm for changing /type[`size] to `sizeOf[/type]
+         /rdr:set(+r-bracket, r.ref);
+         +limit = 32;
+         {while(r-bracket.1[0] != ''[)
+            r-bracket.pos ++;
+            limit --;
+            {if(limit == 0) {break}}
+         }
+         {if(limit != 0)
+            {if('c:memcmp(& r-bracket.1[1], "`size]", 6) == 0)
+               r.pos += 2;
+               w-new:copy(r.ref, (r-bracket.pos + 7) - r.pos);
+               w-old:copy("`sizeOf[", 8);
+               {if(&&, r.1[0] == ''`~, r.1[1] == ''/)
+                  r.pos ++;
+               }
+               w-old:copy(r.ref, r-bracket.pos - r.pos);
+               w-old.1[0] = ''];
+               w-old.pos ++;
+
+               r.pos = r-bracket.pos + 7;
+            }
+         }
+      }
+      +c = r.1[0];
+      r.pos ++;
+      w-new.1[0] = c;
+      w-new.pos ++;
+      w-old.1[0] = c;
+      w-old.pos ++;
+   }
+
+   `` remove the {glc header
+   w-new-begin.1[0] = '' ;
+   w-new-begin.1[1] = '' ;
+   w-new-begin.1[2] = '' ;
+   w-new-begin.1[3] = '' ;
+   `` remove the } footer
+   w-new.1[-2] = '' ;
+
+   {if!('c\file:create(++out-new-fd, out-new-path, #truncate | #write, 0644))
+      'c.out:printf("Cannot open file for writing: %s\n", in-path);
+      'c:exit(#failure);
+   }
+   out-new-fd:write(w-new-begin.ref, w-new.pos - w-new-begin.pos);
+   out-new-fd:close;
+   {if!('c\file:create(++out-old-fd, out-old-path, #truncate | #write, 0644))
+      'c.out:printf("Cannot open file for writing: %s\n", in-path);
+      'c:exit(#failure);
+   }
+   out-old-fd:write(w-old-begin.ref, w-old.pos - w-old-begin.pos);
+   out-old-fd:close;
+   {return 0}
+}
+}
+
+}

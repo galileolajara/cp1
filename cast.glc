@@ -1,0 +1,52 @@
+{alias 'glc = %glc}
+{at(%glc)
+{{:expr-cast-fast(expr\expr, type\at)\expr}
+   :quick-alloc-one(+(e/expr-cast-fast));
+   +e-idx = :expr-push(e.base, #cast-fast);
+   e.expr = expr;
+   e.type = type;
+   {return e-idx}
+}
+{at(/expr-cast-fast)
+   {:write-value(e`this, v`/value) @inline;
+      `.out:printf("(");
+      e.type:write-type-info(v.info, 0);
+      `.out:printf(")(");
+      e.expr:write-value(e.val);
+      `.out:printf(")");
+   }
+}
+{at(\expr)
+   {:wr-cast-fast(expr`/expr, w`/wtr, header`bool) @case:wr @inline;
+      {+e`/expr-cast-fast = expr}
+      e.expr:wr(w, header);
+      e.type:wr(w, header);
+   }
+   {:rd-cast-fast(e-idx`\expr, r`/rdr) @case:rd @inline;
+      `:quick-alloc-one(+(e`/expr-cast-fast));
+      e-idx:set(e.base, #cast-fast);
+      e.expr:rd(r);
+      e.type:rd(r);
+   }
+   {:value-cast-fast(e`this, ref`tint, paren`bool, v`/value, ok`bool&) @case:value @inline;
+      {+expr`/expr-cast-fast = e:ptr}
+      expr.expr:value(ref, paren, v);
+      v.type = expr.type;
+      ok = `true;
+	}
+   {:type-cast-fast(expr`/expr, at`\at&) @case:type @inline;
+      {+e`/expr-cast-fast = expr}
+      at = e.type;
+   }
+   {:process-cast-fast(expr`/expr, ok`bool&) @case:process @inline;
+      {+e`/expr-cast-fast = expr}
+		{if!(e.expr:value(1, `false, e.val))
+			{return}
+      }
+      e.type:output(`.ctx-func.file, `.ctx-begin-row, `.ctx-begin-col);
+      ok = `true;
+   }
+}
+ 
+
+}
