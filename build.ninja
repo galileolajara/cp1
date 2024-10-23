@@ -34,51 +34,51 @@ build stdc/stdlib.glc-t stdc/stdlib.glc-h: parser stdc/stdlib.glc | bin/parser
 build stdc/unistd.glc-t stdc/unistd.glc-h: parser stdc/unistd.glc | bin/parser
 build stdc/string.glc-t stdc/string.glc-h: parser stdc/string.glc | bin/parser
 
-build compiler.glc-t: parser compiler.glc | bin/parser
-build parser.glc-t: parser parser.glc | bin/parser
-build export.glc-t: parser export.glc | bin/parser
-build var.glc-t: parser var.glc | bin/parser
-build enum.glc-t: parser enum.glc | bin/parser
-build expr.glc-t: parser expr.glc | bin/parser
-build lvar.glc-t: parser lvar.glc | bin/parser
-build func.glc-t: parser func.glc | bin/parser
-build stmt.glc-t: parser stmt.glc | bin/parser
-build struct.glc-t: parser struct.glc | bin/parser
-build space.glc-t: parser space.glc | bin/parser
-build return.glc-t: parser return.glc | bin/parser
-build continue.glc-t: parser continue.glc | bin/parser
-build gvar.glc-t: parser gvar.glc | bin/parser
-build fvar.glc-t: parser fvar.glc | bin/parser
-build assign.glc-t: parser assign.glc | bin/parser
-build size.glc-t: parser size.glc | bin/parser
-build int.glc-t: parser int.glc | bin/parser
-build null.glc-t: parser null.glc | bin/parser
-build call.glc-t: parser call.glc | bin/parser
-build char.glc-t: parser char.glc | bin/parser
-build bool.glc-t: parser bool.glc | bin/parser
-build compare.glc-t: parser compare.glc | bin/parser
-build while.glc-t: parser while.glc | bin/parser
-build do.glc-t: parser do.glc | bin/parser
-build if.glc-t: parser if.glc | bin/parser
-build switch.glc-t: parser switch.glc | bin/parser
-build index.glc-t: parser index.glc | bin/parser
-build cast.glc-t: parser cast.glc | bin/parser
-build ref.glc-t: parser ref.glc | bin/parser
-build unary.glc-t: parser unary.glc | bin/parser
-build cvar.glc-t: parser cvar.glc | bin/parser
-build str.glc-t: parser str.glc | bin/parser
-build bools.glc-t: parser bools.glc | bin/parser
-build math.glc-t: parser math.glc | bin/parser
-build break.glc-t: parser break.glc | bin/parser
-build rdr.glc-t: parser rdr.glc | bin/parser
-build wtr.glc-t: parser wtr.glc | bin/parser
+build glc/compiler.glc-t: parser glc/compiler.glc | bin/parser
+build glc/parser.glc-t: parser glc/parser.glc | bin/parser
+build glc/export.glc-t: parser glc/export.glc | bin/parser
+build glc/var.glc-t: parser glc/var.glc | bin/parser
+build glc/enum.glc-t: parser glc/enum.glc | bin/parser
+build glc/expr.glc-t: parser glc/expr.glc | bin/parser
+build glc/lvar.glc-t: parser glc/lvar.glc | bin/parser
+build glc/func.glc-t: parser glc/func.glc | bin/parser
+build glc/stmt.glc-t: parser glc/stmt.glc | bin/parser
+build glc/struct.glc-t: parser glc/struct.glc | bin/parser
+build glc/space.glc-t: parser glc/space.glc | bin/parser
+build glc/return.glc-t: parser glc/return.glc | bin/parser
+build glc/continue.glc-t: parser glc/continue.glc | bin/parser
+build glc/gvar.glc-t: parser glc/gvar.glc | bin/parser
+build glc/fvar.glc-t: parser glc/fvar.glc | bin/parser
+build glc/assign.glc-t: parser glc/assign.glc | bin/parser
+build glc/size.glc-t: parser glc/size.glc | bin/parser
+build glc/int.glc-t: parser glc/int.glc | bin/parser
+build glc/null.glc-t: parser glc/null.glc | bin/parser
+build glc/call.glc-t: parser glc/call.glc | bin/parser
+build glc/char.glc-t: parser glc/char.glc | bin/parser
+build glc/bool.glc-t: parser glc/bool.glc | bin/parser
+build glc/compare.glc-t: parser glc/compare.glc | bin/parser
+build glc/while.glc-t: parser glc/while.glc | bin/parser
+build glc/do.glc-t: parser glc/do.glc | bin/parser
+build glc/if.glc-t: parser glc/if.glc | bin/parser
+build glc/switch.glc-t: parser glc/switch.glc | bin/parser
+build glc/index.glc-t: parser glc/index.glc | bin/parser
+build glc/cast.glc-t: parser glc/cast.glc | bin/parser
+build glc/ref.glc-t: parser glc/ref.glc | bin/parser
+build glc/unary.glc-t: parser glc/unary.glc | bin/parser
+build glc/cvar.glc-t: parser glc/cvar.glc | bin/parser
+build glc/str.glc-t: parser glc/str.glc | bin/parser
+build glc/bools.glc-t: parser glc/bools.glc | bin/parser
+build glc/math.glc-t: parser glc/math.glc | bin/parser
+build glc/break.glc-t: parser glc/break.glc | bin/parser
+build glc/rdr.glc-t: parser glc/rdr.glc | bin/parser
+build glc/wtr.glc-t: parser glc/wtr.glc | bin/parser
 build out/token.glc: node token.glc.js | out/glc_parser.h
 build out/token.glc-t: parser out/token.glc | bin/parser
-build out/compiler-common.glc out/parser-common.glc: node split.js common.glc
+build out/compiler-common.glc out/parser-common.glc: node split.js glc/common.glc
 build out/compiler-common.glc-t: parser out/compiler-common.glc | bin/parser
 build out/parser-common.glc-t: parser out/parser-common.glc | bin/parser
-build out/parser2.glc.c: compiler parser.glc-t out/token.glc-t break.glc-t math.glc-t bools.glc-t str.glc-t cvar.glc-t unary.glc-t ref.glc-t cast.glc-t index.glc-t switch.glc-t if.glc-t do.glc-t while.glc-t compare.glc-t bool.glc-t char.glc-t call.glc-t null.glc-t int.glc-t size.glc-t assign.glc-t fvar.glc-t gvar.glc-t continue.glc-t return.glc-t space.glc-t export.glc-t rdr.glc-t wtr.glc-t var.glc-t func.glc-t lvar.glc-t enum.glc-t expr.glc-t stmt.glc-t out/parser-common.glc-t struct.glc-t stdc/stdio.glc-t stdc/fcntl.glc-t stdc/stdlib.glc-t stdc/unistd.glc-t stdc/string.glc-t | bin/compiler
-build out/compiler2.glc.c: compiler compiler.glc-t out/compiler-common.glc-t rdr.glc-t wtr.glc-t func.glc-t struct.glc-t enum.glc-t expr.glc-t stmt.glc-t var.glc-t assign.glc-t compare.glc-t bool.glc-t char.glc-t math.glc-t unary.glc-t ref.glc-t cast.glc-t lvar.glc-t fvar.glc-t gvar.glc-t cvar.glc-t bools.glc-t call.glc-t str.glc-t int.glc-t size.glc-t null.glc-t index.glc-t if.glc-t switch.glc-t do.glc-t while.glc-t continue.glc-t break.glc-t return.glc-t space.glc-t export.glc-t stdc/stdio.glc-t stdc/fcntl.glc-t stdc/stdlib.glc-t stdc/unistd.glc-t stdc/string.glc-t | bin/compiler
+build out/parser2.glc.c: compiler glc/parser.glc-t out/token.glc-t glc/break.glc-t glc/math.glc-t glc/bools.glc-t glc/str.glc-t glc/cvar.glc-t glc/unary.glc-t glc/ref.glc-t glc/cast.glc-t glc/index.glc-t glc/switch.glc-t glc/if.glc-t glc/do.glc-t glc/while.glc-t glc/compare.glc-t glc/bool.glc-t glc/char.glc-t glc/call.glc-t glc/null.glc-t glc/int.glc-t glc/size.glc-t glc/assign.glc-t glc/fvar.glc-t glc/gvar.glc-t glc/continue.glc-t glc/return.glc-t glc/space.glc-t glc/export.glc-t glc/rdr.glc-t glc/wtr.glc-t glc/var.glc-t glc/func.glc-t glc/lvar.glc-t glc/enum.glc-t glc/expr.glc-t glc/stmt.glc-t out/parser-common.glc-t glc/struct.glc-t stdc/stdio.glc-t stdc/fcntl.glc-t stdc/stdlib.glc-t stdc/unistd.glc-t stdc/string.glc-t | bin/compiler
+build out/compiler2.glc.c: compiler glc/compiler.glc-t out/compiler-common.glc-t glc/rdr.glc-t glc/wtr.glc-t glc/func.glc-t glc/struct.glc-t glc/enum.glc-t glc/expr.glc-t glc/stmt.glc-t glc/var.glc-t glc/assign.glc-t glc/compare.glc-t glc/bool.glc-t glc/char.glc-t glc/math.glc-t glc/unary.glc-t glc/ref.glc-t glc/cast.glc-t glc/lvar.glc-t glc/fvar.glc-t glc/gvar.glc-t glc/cvar.glc-t glc/bools.glc-t glc/call.glc-t glc/str.glc-t glc/int.glc-t glc/size.glc-t glc/null.glc-t glc/index.glc-t glc/if.glc-t glc/switch.glc-t glc/do.glc-t glc/while.glc-t glc/continue.glc-t glc/break.glc-t glc/return.glc-t glc/space.glc-t glc/export.glc-t stdc/stdio.glc-t stdc/fcntl.glc-t stdc/stdlib.glc-t stdc/unistd.glc-t stdc/string.glc-t | bin/compiler
 build out/export.h: node export.js out/parser2.glc.c
 build out/lexer.c: re2c lexer-re2c.c
 build out/lemon: ld-unsanitized lemon.c
