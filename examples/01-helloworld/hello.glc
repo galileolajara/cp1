@@ -1,0 +1,5 @@
+{alias 'c = %stdc}
+{{:main()`int}
+   'c.out:printf("Hello world!\n");
+   {return 0}
+}

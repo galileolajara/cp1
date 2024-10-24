@@ -1,0 +1,45 @@
+{alias 'c = %stdc}
+{/coord(.x`int, .y`int) `` a struct
+   {{:init(s`this)} `` a method
+      s.x = 0;
+      s.y = 0;
+   }
+   {{:walk(s`this, dir`\dir)} `` a method
+      dir:print;
+      {switch(dir)
+         {case(#left) s.x++}
+         {case(#up) s.y++}
+         {case(#right) s.x--}
+         {case(#down) s.y--}
+      }
+   }
+}
+{\dir(#left, #up, #right, #down)`tnum `` an 8-bit enum
+   {{:print(d`this)} `` a method
+      {switch(d)
+         {case(#left) 'c.out:printf("Going left...\n")}
+         {case(#up) 'c.out:printf("Going up...\n")}
+         {case(#right) 'c.out:printf("Going right...\n")}
+         {case(#down) 'c.out:printf("Going down...\n")}
+      }
+   }
+}
+{at(`int) `` access the namespace of int, then add a "print" and "increment" method
+   {{:print(i`this)}
+      'c.out:printf("Int's value is %d\n", i);
+   }
+   {{:inc(i`this&)}
+      i++;
+   }
+}
+{{:main()`int}
+   /coord:init(+s); `` s is automatically declared as a coord allocated in the stack
+   s:walk(#left);
+   s:walk(#down);
+   'c.out:printf("The location is at (%d, %d)\n", s.x, s.y);
+   +i = 7;
+   i:print;
+   i:inc;
+   i:print;
+   {return 0}
+}
