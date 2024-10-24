@@ -23,9 +23,9 @@
       w.1[3] = n >> 24;
       w.pos += 4;
    }
-   `` {include("num.c")
+   {include("num.c")
       {:n(w`this, n`num) @real-name(Fputnum) @no-decl}
-   `` }
+   }
    {:copy(w`this, data`ref, size`int) @inline;
       'c:memcpy(w.ref, data, size);
       w.pos += size;

@@ -22,6 +22,7 @@ void _Mglc_Pstmt_return_5(_Mglc_Eexpr _Le_0, int32_t _Lbegin_row_1, int32_t _Lbe
 void _Mglc_Pstmt_continue_5(_Mglc_Eid _Lid_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4);
 void _Mglc_Pstmt_break_5(_Mglc_Eid _Lid_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4);
 void _Mglc_Pfunc_attr_main_0();
+void _Mglc_Pfunc_attr_decl_0();
 void _Mglc_Pfunc_attr_glc_name_0();
 void _Mglc_Pfunc_attr_process_0();
 void _Mglc_Pfunc_attr_var_args_0();

@@ -1,0 +1,26 @@
+{alias 'c = %stdc}
+{{:main()`int}
+   {do{+i = 0}()
+      'c.out:printf("This is a forever loop unless you {break}\n");
+      i++;
+      {if(i == 5) {break}}
+   }
+   {do{+count = 1}{(3) count++}
+      'c.out:printf("This is a loop that will run 3 times. %d...\n", count);
+   }
+   {while{+i = 0}{(i < 4) i++}
+      'c.out:printf("This is a loop that will run 4 times\n");
+   }
+   {do(2)
+      'c.out:printf("Declaring variables are optional. This will loop two times.\n");
+   }
+   {do{+i = 0}{(3)
+         i++;
+         'c.out:printf("Codes here will run later just like the i++ in for loops.\n");
+      }
+      'c.out:printf("Hello\n");
+      {if(i == 1) {continue}}
+      'c.out:printf("World\n");
+   }
+   {return 0}
+}

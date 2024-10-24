@@ -23,6 +23,7 @@
    #real-name = 64,
    #case = 128,
    #glc-name = 256,
+   #decl = 512,
    )`num
    {:wr(e`this, w`/wtr) @inline;
       w:n(e);
@@ -105,6 +106,8 @@
 {gvar .decl-func-flags\func-flags}
 {gvar .decl-func-flags2\func-flags2}
 {gvar .decl-func-real-name\id}
+{gvar .decl-func-decl-str`char[]}
+{gvar .decl-func-decl-len`int}
 {gvar .decl-func-case\id}
 `` {cvar #glc-farg-limit = 1024}
 {gvar .decl-farg-v/farg+[]}
@@ -133,6 +136,8 @@
    .decl-func-this-group = -1;
    .decl-func-real-name = #nil;
    .decl-func-case = #nil;
+   .decl-func-decl-str = `null;
+   .decl-func-decl-len = 0;
    :quick-alloc-one(.decl-func-space);
    .decl-func-ctx-space = .decl-func-space;
 }
@@ -224,6 +229,8 @@
          .func-main = f-idx;
       }
    }
+   f.decl-str = .decl-func-decl-str;
+   f.decl-len = .decl-func-decl-len;
    +space = .decl-func-space;
    f.stmt-space = space;
    {do{+i = 0}{(.decl-farg-c) i++}
@@ -287,6 +294,17 @@
    }
    .decl-func-flags |= #real-name;
    .decl-func-real-name = name;
+}
+{{:func-attr-decl()}
+   {if((.decl-func-flags & #decl) != #0)
+      'c.out:printf("%s:%u:%u: Error @decl specified more than once\n", .input-path, .last-row, .last-col);
+      'c:exit(#failure);
+   }
+   .decl-func-flags |= #decl;
+   .decl-func-decl-str = :quick-alloc(.string-len + 1);
+   'c:memcpy(.decl-func-decl-str, .string-buf, .string-len);
+   .decl-func-decl-str[.string-len] = 0;
+   .decl-func-decl-len = .string-len;
 }
 {{:func-attr-case(name\id)}
    {if((.decl-func-flags & #case) != #0)

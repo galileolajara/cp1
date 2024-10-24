@@ -430,6 +430,14 @@
       {if((f.flags & #case) != #0)
          f.case:rd(r);
       }
+      {if((f.flags & #decl) != #0)
+         +len = r:n;
+         f.decl-len = len;
+         f.decl-str = :quick-alloc(len + 1);
+         'c:memcpy(f.decl-str, r.ref, len);
+         f.decl-str[len] = 0;
+         r.pos += len;
+      }
       +at-i = f.at;
       +at = at-i:ptr;
       +at-func-idx = at.func-c++;
@@ -716,6 +724,10 @@
       +f-idx = .func-head-outputted-v[i];
       +f = f-idx:ptr;
       {if((f.flags & #no-decl) != #0) {continue}}
+      {if((f.flags & #decl) != #0)
+         .out:printf("%.*s\n", f.decl-len, f.decl-str);
+         {continue}
+      }
       .ctx-func = f;
       {if(f.decl.type == #nil)
          .out:printf("void");

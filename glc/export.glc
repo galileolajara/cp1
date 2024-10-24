@@ -26,6 +26,7 @@
    :stmt-continue(#nil, 0, 0, 0, 0);
    :stmt-break(#nil, 0, 0, 0, 0);
    :func-attr-main;
+   :func-attr-decl;
    :func-attr-glc-name;
    :func-attr-process;
    :func-attr-var-args;

@@ -404,6 +404,10 @@
       {if((f.flags & #case) != #0)
          f.case:wr(w, header);
       }
+      {if((f.flags & #decl) != #0)
+         w:n(f.decl-len);
+         w:copy(f.decl-str, f.decl-len);
+      }
    }
    .func-main:wr(w);
    {do{+i = 0}(.func-c)

@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "alloc.h"
+#include "num.c"
 #include <string.h>
 #define _Mglc_Efunc_Cnil (-1)
 #define _Mglc_Einclude_Cnil (-1)
@@ -62,7 +62,9 @@
 #define _Mglc_Etoken_Cspace_at_case (_Mglc_Etoken_Cspace_at_main + 1)
 #define _Mglc_Etoken_Cspace_at_process (_Mglc_Etoken_Cspace_at_case + 1)
 #define _Mglc_Etoken_Cspace_at_glc_name (_Mglc_Etoken_Cspace_at_process + 1)
-#define _Mglc_Etoken_Cspace_at_var_args (_Mglc_Etoken_Cspace_at_glc_name + 1)
+#define _Mglc_Etoken_Cspace_at_decl (_Mglc_Etoken_Cspace_at_glc_name + 1)
+#define _Mglc_Etoken_Cstring (_Mglc_Etoken_Cspace_at_decl + 1)
+#define _Mglc_Etoken_Cspace_at_var_args (_Mglc_Etoken_Cstring + 1)
 #define _Mglc_Etoken_Cspace_at_no_body (_Mglc_Etoken_Cspace_at_var_args + 1)
 #define _Mglc_Etoken_Cspace_at_real_name (_Mglc_Etoken_Cspace_at_no_body + 1)
 #define _Mglc_Etoken_Cgrave_ref (_Mglc_Etoken_Cspace_at_real_name + 1)
@@ -80,8 +82,7 @@
 #define _Mglc_Etoken_Cnum_dec (_Mglc_Etoken_Campersand + 1)
 #define _Mglc_Etoken_Cnum_hex (_Mglc_Etoken_Cnum_dec + 1)
 #define _Mglc_Etoken_Cnum_oct (_Mglc_Etoken_Cnum_hex + 1)
-#define _Mglc_Etoken_Cstring (_Mglc_Etoken_Cnum_oct + 1)
-#define _Mglc_Etoken_Cchar1 (_Mglc_Etoken_Cstring + 1)
+#define _Mglc_Etoken_Cchar1 (_Mglc_Etoken_Cnum_oct + 1)
 #define _Mglc_Etoken_Cchar2 (_Mglc_Etoken_Cchar1 + 1)
 #define _Mglc_Eid_Cnil (-1)
 #define _Mglc_Eid_C0 (_Mglc_Eid_Cnil + 1)
@@ -111,6 +112,7 @@
 #define _Mglc_Efunc_flags_Creal_name (64)
 #define _Mglc_Efunc_flags_C0 0
 #define _Mglc_Efunc_flags_Ccase (128)
+#define _Mglc_Efunc_flags_Cdecl (512)
 #define _Mglc_Efunc_flags2_C0 0
 #define _Mglc_Efunc_flags2_Cmain (1)
 #define _Mglc_Eat_Croot (_Mglc_Eat_Cnil + 1)
@@ -354,6 +356,8 @@ _Mglc_Einclude _Finclude;
 _Mglc_Eat _Fat;
 _Mglc_Efunc_flags _Fflags;
 _Mglc_Eid _Freal_name;
+char* _Fdecl_str;
+int32_t _Fdecl_len;
 _Mglc_Eid _Fcase;
 struct _Mglc_Sdecl_var _Fdecl;
 struct _Mglc_Sstmt_space* _Fstmt_space;
@@ -764,6 +768,8 @@ int8_t _Gdecl_func_this_idx;
 int8_t _Gdecl_func_this_group;
 _Mglc_Eid _Gdecl_func_real_name;
 _Mglc_Eid _Gdecl_func_case;
+char* _Gdecl_func_decl_str;
+int32_t _Gdecl_func_decl_len;
 struct _Mglc_Sstmt_space* _Gdecl_func_space;
 struct _Mglc_Sstmt_space* _Gdecl_func_ctx_space;
 struct _Mglc_Sdecl_func* _Gctx_func;
@@ -786,6 +792,8 @@ uint8_t _Gexpr_call_cgrp_c[_Mglc_Cexpr_call_nest_limit];
 uint8_t _Gexpr_call_cgrp_v[_Mglc_Cexpr_call_nest_limit][_Mglc_Cexpr_carg_group_limit];
 _Mglc_Eexpr _Gexpr_call_carg_v[_Mglc_Cexpr_call_nest_limit][_Mglc_Cglc_carg_limit];
 uint8_t _Gnest_stack_c;
+extern int32_t _Gstring_len;
+extern char* _Gstring_buf;
 int32_t _Gdecl_include_row;
 int32_t _Gdecl_include_col;
 _Mglc_Eat _Gbuild_at;
@@ -805,8 +813,6 @@ _Mglc_Ecvar _Gdecl_enum_last_cvar;
 _Mglc_Eenum _Genum_cap;
 _Mglc_Ecvar _Glast_cvar;
 _Mglc_Ecvar _Gcvar_cap;
-extern int32_t _Gstring_len;
-extern char* _Gstring_buf;
 uint32_t _Gswitch_expr_c;
 uint32_t _Gswitch_expr_cap;
 _Mglc_Eexpr* _Gswitch_expr_v;
@@ -823,6 +829,7 @@ void _Mglc_Pget_row_col_4(int32_t* _Lout_row_0, int32_t* _Lout_col_1, void* _Len
 void _Mglc_Pparse_comment_4(union _Mglc_Srdr* _Lr_0, union _Mglc_Swtr* _Lw_1, char _Lending_2, void* _Lin_data_3);
 void _Mglc_Pparse_string_4(union _Mglc_Srdr* _Lr_0, union _Mglc_Swtr* _Lw_1, char _Lending_2, void* _Lin_data_3);
 void _Mglc_Pparse_str_init_1(int32_t _Lmax_size_0);
+#define _Mglc_Pmalloc_arr_2(r, c) r = malloc(sizeof(r[0]) * (c)); memset(r, 0, sizeof(r[0]) * (c))
 struct _Mglc_Sparser* _Mglc_Sparser_Palloc_0();
 void _Mglc_Slexer_Pinit_3(struct _Mglc_Slexer* _Llex_0, uint8_t* _Ldata_1, size_t _Lsize_2);
 _Mglc_Etoken glc_lexer_scan(struct _Mglc_Slexer* _Llex_0);
@@ -872,6 +879,7 @@ void _Mglc_Pstmt_return_5(_Mglc_Eexpr _Le_0, int32_t _Lbegin_row_1, int32_t _Lbe
 void _Mglc_Pstmt_continue_5(_Mglc_Eid _Lid_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4);
 void _Mglc_Pstmt_break_5(_Mglc_Eid _Lid_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4);
 void _Mglc_Pfunc_attr_main_0();
+void _Mglc_Pfunc_attr_decl_0();
 void _Mglc_Pfunc_attr_glc_name_0();
 void _Mglc_Pfunc_attr_process_0();
 void _Mglc_Pfunc_attr_var_args_0();
@@ -962,6 +970,8 @@ _Mglc_Eexpr _Mglc_Pexpr_bool_1(bool _Lvalue_0);
 _Mglc_Eexpr _Mglc_Pexpr_char_1(int32_t _Lvalue_0);
 void _Mglc_Pcvar_attr_real_name_1(_Mglc_Eid _Lname_0);
 void _Mglc_Pcvar_attr_no_decl_0();
+#define _Mglc_Pgrow_2(cap, c) cap = Fpow2gteq(c + 8)
+#define _Mglc_Prealloc_3(r, c, oldc) r = realloc(r, sizeof(r[0]) * (c)); memset(r + (oldc), 0, sizeof(r[0]) * ((c) - (oldc)))
 void _Mglc_Eat_Pput_to_header_1(_Mglc_Eat _Lat_0);
 void _Mglc_Einclude_Pwr_2(_Mglc_Einclude _Li_0, union _Mglc_Swtr* _Lw_1);
 void _Mglc_Sdecl_var_Pwr_3(struct _Mglc_Sdecl_var* _Lvd_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
@@ -977,6 +987,8 @@ void _Mglc_Efunc_Pwr_2(_Mglc_Efunc _Lf_0, union _Mglc_Swtr* _Lw_1);
 void _Mglc_Sdecl_func_Plvars_wr_3(struct _Mglc_Sdecl_func* _Lf_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
 void _Mglc_Sstmt_space_Pwr_3(struct _Mglc_Sstmt_space* _Lspace_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
 void _Mglc_Swtr_Pn4_2(union _Mglc_Swtr* _Lw_0, uint32_t _Ln_1);
+#define _Mglc_Pquick_alloc_one_1(r) r = qalloc(sizeof(r[0]))
+#define _Mglc_Pquick_alloc_plus_2(r, plus) r = qalloc(sizeof(r[0]) + plus)
 void _Mglc_Sdecl_var_Pcopy_from_2(struct _Mglc_Sdecl_var* _Lvd_0, struct _Mglc_Sdecl_var* _Lsrc_1);
 void _Mglc_Sfarg_Pcopy_from_2(struct _Mglc_Sfarg* _Lf_0, struct _Mglc_Sfarg* _Lsrc_1);
 uint8_t _Mglc_Eid_Plen_1(_Mglc_Eid _Lid_0);
@@ -1034,6 +1046,8 @@ case _Mglc_Etoken_Cspace_at_main: return "space-at-main";
 case _Mglc_Etoken_Cspace_at_case: return "space-at-case";
 case _Mglc_Etoken_Cspace_at_process: return "space-at-process";
 case _Mglc_Etoken_Cspace_at_glc_name: return "space-at-glc-name";
+case _Mglc_Etoken_Cspace_at_decl: return "space-at-decl";
+case _Mglc_Etoken_Cstring: return "string";
 case _Mglc_Etoken_Cspace_at_var_args: return "space-at-var-args";
 case _Mglc_Etoken_Cspace_at_no_body: return "space-at-no-body";
 case _Mglc_Etoken_Cspace_at_real_name: return "space-at-real-name";
@@ -1052,7 +1066,6 @@ case _Mglc_Etoken_Campersand: return "ampersand";
 case _Mglc_Etoken_Cnum_dec: return "num-dec";
 case _Mglc_Etoken_Cnum_hex: return "num-hex";
 case _Mglc_Etoken_Cnum_oct: return "num-oct";
-case _Mglc_Etoken_Cstring: return "string";
 case _Mglc_Etoken_Cchar1: return "char1";
 case _Mglc_Etoken_Cchar2: return "char2";
 case _Mglc_Etoken_Cgrave_true: return "grave-true";
@@ -1212,6 +1225,7 @@ case _Mglc_Estmt_type_Cnil: return "nil";
 return "(ERROR)";
 }
 void _Mglc_Stype_info_Pcopy_from_2(struct _Mglc_Stype_info* _Lti_0, struct _Mglc_Stype_info* _Lti2_1);
+#define _Mglc_Pquick_alloc_arr_2(r, c) r = qalloc(sizeof(r[0]) * (c))
 void _Mglc_Pfunc_stmt_add_1(struct _Mglc_Sstmt* _Ls_0);
 void _Mglc_Swtr_Pbool_2(union _Mglc_Swtr* _Lw_0, bool _Lval_1);
 void _Mglc_Emath_Pwr_2(_Mglc_Emath _Le_0, union _Mglc_Swtr* _Lw_1);
@@ -1779,6 +1793,7 @@ _Mglc_Pstmt_return_5(_Mglc_Eexpr_Cnil, 0, 0, 0, 0);
 _Mglc_Pstmt_continue_5(_Mglc_Eid_Cnil, 0, 0, 0, 0);
 _Mglc_Pstmt_break_5(_Mglc_Eid_Cnil, 0, 0, 0, 0);
 _Mglc_Pfunc_attr_main_0();
+_Mglc_Pfunc_attr_decl_0();
 _Mglc_Pfunc_attr_glc_name_0();
 _Mglc_Pfunc_attr_process_0();
 _Mglc_Pfunc_attr_var_args_0();
@@ -2322,6 +2337,10 @@ _Mglc_Eid_Pwr_3((*_Lf_3)._Freal_name, _Lw_0, _Lheader_1);
 if(((*_Lf_3)._Fflags & _Mglc_Efunc_flags_Ccase) != _Mglc_Efunc_flags_C0) {
 _Mglc_Eid_Pwr_3((*_Lf_3)._Fcase, _Lw_0, _Lheader_1);
 }
+if(((*_Lf_3)._Fflags & _Mglc_Efunc_flags_Cdecl) != _Mglc_Efunc_flags_C0) {
+Fputnum(_Lw_0, (*_Lf_3)._Fdecl_len);
+_Mglc_Swtr_Pcopy_3(_Lw_0, (*_Lf_3)._Fdecl_str, (*_Lf_3)._Fdecl_len);
+}
 continue_0:;
 }
 break_0:;
@@ -2390,6 +2409,8 @@ _Gdecl_func_this_idx = -1;
 _Gdecl_func_this_group = -1;
 _Gdecl_func_real_name = _Mglc_Eid_Cnil;
 _Gdecl_func_case = _Mglc_Eid_Cnil;
+_Gdecl_func_decl_str = NULL;
+_Gdecl_func_decl_len = 0;
 _Mglc_Pquick_alloc_one_1(_Gdecl_func_space);
 _Gdecl_func_ctx_space = _Gdecl_func_space;
 }
@@ -2463,6 +2484,8 @@ exit(_Mstdc_Eexit_Cfailure);
 _Gfunc_main = _Lf_idx_2;
 }
 }
+(*_Lf_4)._Fdecl_str = _Gdecl_func_decl_str;
+(*_Lf_4)._Fdecl_len = _Gdecl_func_decl_len;
 _Lspace_9 = _Gdecl_func_space;
 (*_Lf_4)._Fstmt_space = _Lspace_9;
 int32_t _Li_10;
@@ -2774,6 +2797,17 @@ fprintf(stdout, "There cannot be more than one function with @main attribute, fi
 exit(_Mstdc_Eexit_Cfailure);
 }
 _Gdecl_func_flags2 |= _Mglc_Efunc_flags2_Cmain;
+}
+void _Mglc_Pfunc_attr_decl_0() {
+if((_Gdecl_func_flags & _Mglc_Efunc_flags_Cdecl) != _Mglc_Efunc_flags_C0) {
+fprintf(stdout, "%s:%u:%u: Error @decl specified more than once\n", input_path, _Glast_row, _Glast_col);
+exit(_Mstdc_Eexit_Cfailure);
+}
+_Gdecl_func_flags |= _Mglc_Efunc_flags_Cdecl;
+_Gdecl_func_decl_str = qalloc(_Gstring_len + 1);
+memcpy(_Gdecl_func_decl_str, _Gstring_buf, _Gstring_len);
+_Gdecl_func_decl_str[_Gstring_len] = 0;
+_Gdecl_func_decl_len = _Gstring_len;
 }
 void _Mglc_Pfunc_attr_glc_name_0() {
 if((_Gdecl_func_flags & _Mglc_Efunc_flags_Cglc_name) != _Mglc_Efunc_flags_C0) {

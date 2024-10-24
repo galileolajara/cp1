@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include "alloc.h"
+#include "num.c"
 #include <string.h>
 #define _Mglc_Efunc_Cnil (-1)
 #define _Mglc_Ebasic_type_id_Croot 0
@@ -47,6 +47,7 @@
 #define _Mglc_Edecl_var_type_Cfvar (_Mglc_Edecl_var_type_Cgvar + 1)
 #define _Mglc_Evar_flags_Cextern (2)
 #define _Mglc_Efunc_flags_Cno_decl (16)
+#define _Mglc_Efunc_flags_Cdecl (512)
 #define _Mglc_Estruct_Cnil (-1)
 #define _Mglc_Eenum_flags_Creal_name (1)
 #define _Mglc_Eenum_flags_C0 0
@@ -277,6 +278,8 @@ _Mglc_Einclude _Finclude;
 _Mglc_Eat _Fat;
 _Mglc_Efunc_flags _Fflags;
 _Mglc_Eid _Freal_name;
+char* _Fdecl_str;
+int32_t _Fdecl_len;
 _Mglc_Eid _Fcase;
 struct _Mglc_Sdecl_var _Fdecl;
 struct _Mglc_Sstmt_space _Fstmt_space;
@@ -753,6 +756,8 @@ union _Mglc_Scase_stack _Gcase_stack_v[64];
 uint8_t _Gcase_stack_c;
 int32_t main(int32_t _Larg_c_0, char** _Larg_v_1);
 void _Mglc_Pquick_alloc_init_0();
+#define _Mglc_Pgrow_2(cap, c) cap = Fpow2gteq(c + 8)
+#define _Mglc_Prealloc_3(r, c, oldc) r = realloc(r, sizeof(r[0]) * (c)); memset(r + (oldc), 0, sizeof(r[0]) * ((c) - (oldc)))
 void _Mglc_Sat_Pinit_4(struct _Mglc_Sat* _Lat_0, _Mglc_Ename_type _Ltype_1, _Mglc_Eat _Lparent_2, _Mglc_Eid _Lname_3);
 void _Mglc_Pread_1(char* _Lin_path_0);
 struct _Mglc_Sdecl_func* _Mglc_Efunc_Pptr_1(_Mglc_Efunc _Lf_0);
@@ -762,6 +767,7 @@ char* _Mglc_Eid_Pstr_1(_Mglc_Eid _Lid_0);
 struct _Mglc_Sstruct* _Mglc_Estruct_Pptr_1(_Mglc_Estruct _Ls_0);
 struct _Mglc_Senum* _Mglc_Eenum_Pptr_1(_Mglc_Eenum _Lf_0);
 _Mglc_Eid _Mglc_Pid_add_2(uint8_t _Lid_len_0, void* _Lid_str_1);
+#define _Mglc_Pquick_alloc_arr_2(r, c) r = qalloc(sizeof(r[0]) * (c))
 void _Mglc_Efunc_Pprocess_later_1(_Mglc_Efunc _Lf_idx_0);
 bool _Mglc_Efunc_Pprocess_now_1(_Mglc_Efunc _Lf_idx_0);
 void _Mglc_Eat_Poutput_4(_Mglc_Eat _Lat_i_0, _Mglc_Efile _Lfile_1, int32_t _Lrow_2, int32_t _Lcol_3);
@@ -790,14 +796,16 @@ void _Mglc_Sdecl_var_Prd_2(struct _Mglc_Sdecl_var* _Lvd_0, union _Mglc_Srdr* _Lr
 void _Mglc_Ecvar_flags_Prd_2(_Mglc_Ecvar_flags* _Lf_0, union _Mglc_Srdr* _Lr_1);
 void _Mglc_Eexpr_Prd_2(_Mglc_Eexpr* _Le_0, union _Mglc_Srdr* _Lr_1);
 void _Mglc_Ecvar_Prd_2(_Mglc_Ecvar* _Lc_0, union _Mglc_Srdr* _Lr_1);
+#define _Mglc_Pquick_alloc_one_1(r) r = qalloc(sizeof(r[0]))
 void _Mglc_Eenum_flags_Prd_2(_Mglc_Eenum_flags* _Le_0, union _Mglc_Srdr* _Lr_1);
+#define _Mglc_Pquick_alloc_plus_2(r, plus) r = qalloc(sizeof(r[0]) + plus)
 void _Mglc_Estruct_flags_Prd_2(_Mglc_Estruct_flags* _Lf_0, union _Mglc_Srdr* _Lr_1);
 void _Mglc_Sfarg_Prd_2(struct _Mglc_Sfarg* _Lf_0, union _Mglc_Srdr* _Lr_1);
 void _Mglc_Efunc_flags_Prd_2(_Mglc_Efunc_flags* _Le_0, union _Mglc_Srdr* _Lr_1);
+void* qalloc(int32_t _Lsize_0);
 void _Mglc_Efunc_Prd_2(_Mglc_Efunc* _Lf_0, union _Mglc_Srdr* _Lr_1);
 uint32_t _Mglc_Srdr_Pn4_1(union _Mglc_Srdr* _Lr_0);
 struct _Mglc_Sfile* _Mglc_Efile_Pptr_1(_Mglc_Efile _Lf_0);
-void* qalloc(int32_t _Lsize_0);
 bool _Mglc_Eat_Pfinalize_4(_Mglc_Eat _Lat_i_0, struct _Mglc_Stype_info* _Lti_1, int32_t _Lrow_2, int32_t _Lcol_3);
 void _Mglc_Sdecl_func_Plvars_rd_2(struct _Mglc_Sdecl_func* _Lf_0, union _Mglc_Srdr* _Lr_1);
 void _Mglc_Sstmt_space_Prd_3(struct _Mglc_Sstmt_space* _Lspace_0, union _Mglc_Srdr* _Lr_1, struct _Mglc_Sstmt_space* _Lparent_2);
@@ -1414,6 +1422,10 @@ _Lf_57 = _Mglc_Efunc_Pptr_1(_Lf_idx_56);
 if(((*_Lf_57)._Fflags & _Mglc_Efunc_flags_Cno_decl) != _Mglc_Efunc_flags_C0) {
 goto continue_14;
 }
+if(((*_Lf_57)._Fflags & _Mglc_Efunc_flags_Cdecl) != _Mglc_Efunc_flags_C0) {
+fprintf(_Gout, "%.*s\n", (*_Lf_57)._Fdecl_len, (*_Lf_57)._Fdecl_str);
+goto continue_14;
+}
 _Gctx_func = _Lf_57;
 if((*_Lf_57)._Fdecl._Ftype == _Mglc_Eat_Cnil) {
 fprintf(_Gout, "void");
@@ -1536,7 +1548,7 @@ _Mglc_Estruct _Lstruct_c_64;
 _Mglc_Estruct _Ls_idx_begin_65;
 _Mglc_Efunc _Lfunc_c_74;
 _Mglc_Efunc _Lf_idx_begin_75;
-_Mglc_Efunc _Lfunc_main_90;
+_Mglc_Efunc _Lfunc_main_91;
 if(!(_Mstdc_Efile_Popen_3(&_Lin_fd_1, _Lin_path_0, O_RDONLY))) {
 fprintf(stdout, "Cannot open file for reading: %s\n", _Lin_path_0);
 exit(_Mstdc_Eexit_Cfailure);
@@ -1922,9 +1934,9 @@ struct _Mglc_Sdecl_func* _Lf_79;
 union _Mglc_Srdr _Lr0_80;
 int8_t _Lthis_idx_83;
 uint8_t _Lgroup_c_84;
-_Mglc_Eat _Lat_i_86;
-struct _Mglc_Sat* _Lat_87;
-int32_t _Lat_func_idx_88;
+_Mglc_Eat _Lat_i_87;
+struct _Mglc_Sat* _Lat_88;
+int32_t _Lat_func_idx_89;
 _Lfarg_c_78 = _Mglc_Srdr_Pn1_1(&_Lr_7);
 _Mglc_Pquick_alloc_plus_2(_Lf_79, sizeof(struct _Mglc_Sfarg) * _Lfarg_c_78);
 _Gfunc_v[_Lf_idx_77] = _Lf_79;
@@ -1975,47 +1987,56 @@ _Mglc_Eid_Prd_2(&(*_Lf_79)._Freal_name, &_Lr_7);
 if(((*_Lf_79)._Fflags & _Mglc_Efunc_flags_Ccase) != _Mglc_Efunc_flags_C0) {
 _Mglc_Eid_Prd_2(&(*_Lf_79)._Fcase, &_Lr_7);
 }
-_Lat_i_86 = (*_Lf_79)._Fat;
-_Lat_87 = _Mglc_Eat_Pptr_1(_Lat_i_86);
-_Lat_func_idx_88 = (*_Lat_87)._Ffunc_c++;
-if((*_Lat_87)._Ffunc_cap <= (*_Lat_87)._Ffunc_c) {
-int32_t _Lold_cap_89;
-_Lold_cap_89 = (*_Lat_87)._Ffunc_cap;
-_Mglc_Pgrow_2((*_Lat_87)._Ffunc_cap, (*_Lat_87)._Ffunc_c);
-_Mglc_Prealloc_3((*_Lat_87)._Ffunc_v, (*_Lat_87)._Ffunc_cap, _Lold_cap_89);
+if(((*_Lf_79)._Fflags & _Mglc_Efunc_flags_Cdecl) != _Mglc_Efunc_flags_C0) {
+uint32_t _Llen_86;
+_Llen_86 = Fgetnum(&_Lr_7);
+(*_Lf_79)._Fdecl_len = _Llen_86;
+(*_Lf_79)._Fdecl_str = qalloc(_Llen_86 + 1);
+memcpy((*_Lf_79)._Fdecl_str, _Lr_7._Fref, _Llen_86);
+(*_Lf_79)._Fdecl_str[_Llen_86] = 0;
+_Lr_7._Fpos += _Llen_86;
 }
-(*_Lat_87)._Ffunc_v[_Lat_func_idx_88] = _Lf_idx_77;
+_Lat_i_87 = (*_Lf_79)._Fat;
+_Lat_88 = _Mglc_Eat_Pptr_1(_Lat_i_87);
+_Lat_func_idx_89 = (*_Lat_88)._Ffunc_c++;
+if((*_Lat_88)._Ffunc_cap <= (*_Lat_88)._Ffunc_c) {
+int32_t _Lold_cap_90;
+_Lold_cap_90 = (*_Lat_88)._Ffunc_cap;
+_Mglc_Pgrow_2((*_Lat_88)._Ffunc_cap, (*_Lat_88)._Ffunc_c);
+_Mglc_Prealloc_3((*_Lat_88)._Ffunc_v, (*_Lat_88)._Ffunc_cap, _Lold_cap_90);
+}
+(*_Lat_88)._Ffunc_v[_Lat_func_idx_89] = _Lf_idx_77;
 continue_11:;
 _Lf_idx_77++;
 }
 break_11:;
-_Mglc_Efunc_Prd_2(&_Lfunc_main_90, &_Lr_7);
-if(_Lfunc_main_90 != _Mglc_Efunc_Cnil) {
+_Mglc_Efunc_Prd_2(&_Lfunc_main_91, &_Lr_7);
+if(_Lfunc_main_91 != _Mglc_Efunc_Cnil) {
 if(_Gfunc_main != _Mglc_Efunc_Cnil) {
-struct _Mglc_Sdecl_func* _Lfirst_91;
-struct _Mglc_Sdecl_func* _Lsecond_92;
-_Lfirst_91 = _Mglc_Efunc_Pptr_1(_Gfunc_main);
-_Lsecond_92 = _Mglc_Efunc_Pptr_1(_Lfunc_main_90);
-fprintf(stdout, "There are more than one function with @main attribute, first is %u:%u and second is %u:%u\n", (*_Lfirst_91)._Fbegin_row, (*_Lfirst_91)._Fbegin_col, (*_Lsecond_92)._Fbegin_row, (*_Lsecond_92)._Fbegin_col);
+struct _Mglc_Sdecl_func* _Lfirst_92;
+struct _Mglc_Sdecl_func* _Lsecond_93;
+_Lfirst_92 = _Mglc_Efunc_Pptr_1(_Gfunc_main);
+_Lsecond_93 = _Mglc_Efunc_Pptr_1(_Lfunc_main_91);
+fprintf(stdout, "There are more than one function with @main attribute, first is %u:%u and second is %u:%u\n", (*_Lfirst_92)._Fbegin_row, (*_Lfirst_92)._Fbegin_col, (*_Lsecond_93)._Fbegin_row, (*_Lsecond_93)._Fbegin_col);
 exit(_Mstdc_Eexit_Cfailure);
 }
-_Gfunc_main = _Lfunc_main_90;
+_Gfunc_main = _Lfunc_main_91;
 }
-_Mglc_Efunc _Lf_idx_93;
-_Lf_idx_93 = _Lf_idx_begin_75;
+_Mglc_Efunc _Lf_idx_94;
+_Lf_idx_94 = _Lf_idx_begin_75;
 for(int i = _Lfunc_c_74; i > 0; ) {
 i --;
-struct _Mglc_Sdecl_func* _Lf_94;
-uint32_t _Lsize_95;
-_Lf_94 = _Gfunc_v[_Lf_idx_93];
-if(((*_Lf_94)._Fflags & _Mglc_Efunc_flags_Chas_body) == _Mglc_Efunc_flags_C0) {
+struct _Mglc_Sdecl_func* _Lf_95;
+uint32_t _Lsize_96;
+_Lf_95 = _Gfunc_v[_Lf_idx_94];
+if(((*_Lf_95)._Fflags & _Mglc_Efunc_flags_Chas_body) == _Mglc_Efunc_flags_C0) {
 goto continue_14;
 }
-_Lsize_95 = _Mglc_Srdr_Pn4_1(&_Lr_7);
-(*_Lf_94)._Fbody_file_pos = (_Lr_7._Fpos - _Lr_begin_3._Fpos);
-_Lr_7._Fpos += _Lsize_95;
+_Lsize_96 = _Mglc_Srdr_Pn4_1(&_Lr_7);
+(*_Lf_95)._Fbody_file_pos = (_Lr_7._Fpos - _Lr_begin_3._Fpos);
+_Lr_7._Fpos += _Lsize_96;
 continue_14:;
-_Lf_idx_93++;
+_Lf_idx_94++;
 }
 break_14:;
 }
@@ -2715,21 +2736,6 @@ _Mglc_Sdecl_var_Prd_2(&(*_Lf_0)._Fdecl, _Lr_1);
 void _Mglc_Efunc_flags_Prd_2(_Mglc_Efunc_flags* _Le_0, union _Mglc_Srdr* _Lr_1) {
 (*_Le_0) = (_Mglc_Efunc_flags)(Fgetnum(_Lr_1));
 }
-void _Mglc_Efunc_Prd_2(_Mglc_Efunc* _Lf_0, union _Mglc_Srdr* _Lr_1) {
-(*_Lf_0) = ((_Mglc_Efunc)(Fgetnum(_Lr_1) - _Mglc_Efunc_C1));
-}
-uint32_t _Mglc_Srdr_Pn4_1(union _Mglc_Srdr* _Lr_0) {
-uint32_t _Lval_1;
-_Lval_1 = (uint32_t)((*_Lr_0)._F1[0]);
-_Lval_1 |= ((*_Lr_0)._F1[1] << 8);
-_Lval_1 |= ((*_Lr_0)._F1[2] << 16);
-_Lval_1 |= ((*_Lr_0)._F1[3] << 24);
-(*_Lr_0)._Fpos += 4;
-return _Lval_1;
-}
-struct _Mglc_Sfile* _Mglc_Efile_Pptr_1(_Mglc_Efile _Lf_0) {
-return &_Gfile_v[_Lf_0];
-}
 void* qalloc(int32_t _Lsize_0) {
 if(sizeof(void*) == 8) {
 _Lsize_0 = ((_Lsize_0 + 7) & (-1 ^ 7));
@@ -2748,6 +2754,21 @@ _Gquick_alloc_v = malloc(_Gquick_alloc_cap);
 memset(_Gquick_alloc_v, 0, _Gquick_alloc_cap);
 _Gquick_alloc_c = _Lsize_0;
 return _Gquick_alloc_v;
+}
+void _Mglc_Efunc_Prd_2(_Mglc_Efunc* _Lf_0, union _Mglc_Srdr* _Lr_1) {
+(*_Lf_0) = ((_Mglc_Efunc)(Fgetnum(_Lr_1) - _Mglc_Efunc_C1));
+}
+uint32_t _Mglc_Srdr_Pn4_1(union _Mglc_Srdr* _Lr_0) {
+uint32_t _Lval_1;
+_Lval_1 = (uint32_t)((*_Lr_0)._F1[0]);
+_Lval_1 |= ((*_Lr_0)._F1[1] << 8);
+_Lval_1 |= ((*_Lr_0)._F1[2] << 16);
+_Lval_1 |= ((*_Lr_0)._F1[3] << 24);
+(*_Lr_0)._Fpos += 4;
+return _Lval_1;
+}
+struct _Mglc_Sfile* _Mglc_Efile_Pptr_1(_Mglc_Efile _Lf_0) {
+return &_Gfile_v[_Lf_0];
 }
 bool _Mglc_Eat_Pfinalize_4(_Mglc_Eat _Lat_i_0, struct _Mglc_Stype_info* _Lti_1, int32_t _Lrow_2, int32_t _Lcol_3) {
 struct _Mglc_Sat* _Lat_4;

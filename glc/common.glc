@@ -322,6 +322,8 @@ end-if
    `` .name\id,
    .flags`\func-flags,
    .real-name`\id,
+   .decl-str`char[],
+   .decl-len`int,
    .case`\id,
    `` .type\at,
    .decl`/decl-var+,
@@ -389,20 +391,48 @@ end-if
    .quick-alloc-c = size;
    {return .quick-alloc-v}
 }
-{include("alloc.h")
-   {:quick-alloc-one(r`ref) @no-decl @no-body @inline;
-      :quick-alloc(0);
+{:quick-alloc-one(r`ref)
+   @no-body
+   @decl('<#define _Mglc_Pquick_alloc_one_1(r) r = qalloc(sizeof(r[0]))>)
+   @inline;
+   :quick-alloc(0);
+}
+{:quick-alloc-arr(r`ref, c`int)
+   @no-body
+   @decl('<#define _Mglc_Pquick_alloc_arr_2(r, c) r = qalloc(sizeof(r[0]) * (c))>)
+   @inline;
+   :quick-alloc(0);
+}
+{:quick-alloc-plus(r`ref, plus`int)
+   @no-body
+   @decl('<#define _Mglc_Pquick_alloc_plus_2(r, plus) r = qalloc(sizeof(r[0]) + plus)>)
+   @inline;
+   :quick-alloc(0);
+}
+{:malloc(r`ref)
+   @no-body
+   @decl('<#define _Mglc_Pmalloc_1(r) r = malloc(sizeof(r[0])); memset(r, 0, sizeof(r[0]))>)
+   @inline;
+   'c:malloc(0);
+}
+{:malloc-arr(r`ref, c`int)
+   @no-body
+   @decl('<#define _Mglc_Pmalloc_arr_2(r, c) r = malloc(sizeof(r[0]) * (c)); memset(r, 0, sizeof(r[0]) * (c))>)
+   @inline;
+   'c:malloc(0);
+}
+{:realloc(r`ref, c`int, old-c`int)
+   @no-body
+   @decl('<#define _Mglc_Prealloc_3(r, c, oldc) r = realloc(r, sizeof(r[0]) * (c)); memset(r + (oldc), 0, sizeof(r[0]) * ((c) - (oldc)))>)
+   @inline;
+   'c:realloc(`null, 0);
+}
+{include("num.c")
+   {:grow(cap`int, c`int)
+      @no-body
+      @decl('<#define _Mglc_Pgrow_2(cap, c) cap = Fpow2gteq(c + 8)>)
+      @inline;
    }
-   {:quick-alloc-arr(r`ref, c`int) @no-decl @no-body @inline;
-      :quick-alloc(0);
-   }
-   {:quick-alloc-plus(r`ref, plus`int) @no-decl @no-body @inline;
-      :quick-alloc(0);
-   }
-   {:malloc(r`ref) @no-decl}
-   {:malloc-arr(r`ref, c`int) @no-decl}
-   {:realloc(r`ref, c`int, old-c`int) @no-decl}
-   {:grow(cap`int, c`int) @no-decl}
 }
 {cvar #decl-at-name-limit`int = 3}
 {/at-name(.id`\id, .basic`\basic-type-id) @union

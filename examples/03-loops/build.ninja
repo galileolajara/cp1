@@ -7,7 +7,7 @@ rule compiler
 rule ld
  command = clang -o $out $in
 
-build methods.glc-t: parser methods.glc
+build loops.glc-t: parser loops.glc
 build stdc/stdio.glc-t: parser stdc/stdio.glc
-build out/methods.c: compiler methods.glc-t stdc/stdio.glc-t
-build out/methods: ld out/methods.c
+build out/loops.c: compiler loops.glc-t stdc/stdio.glc-t
+build out/loops: ld out/loops.c

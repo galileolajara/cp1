@@ -30,9 +30,9 @@
    {:id(r`this)\id @inline;
       {return r:n}
    }
-   `` {include("num.c")
+   {include("num.c")
       {:n(r`this)`num @real-name(Fgetnum) @no-decl}
-   `` }
+   }
    {:tok(r`this)\token @inline;
       {return r:n1}
    }
