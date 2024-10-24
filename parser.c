@@ -70,18 +70,15 @@ struct glc_lexer {
    const char *ctx_marker;
 };
 
-void* _Mglc_Sparser_Palloc_0()
-{
+void* _Mglc_Sparser_Palloc_0() {
    return glcParseAlloc(malloc);
 }
 
-void _Mglc_Sparser_Pfree_1(void* parser)
-{
+void _Mglc_Sparser_Pfree_1(void* parser) {
    glcParseFree(parser, free);
 }
 
-int _Mglc_Pchar_escape_value_1(char c)
-{
+int _Mglc_Pchar_escape_value_1(char c) {
    switch(c) {
       case 'a': return '\a';
       case 'b': return '\b';

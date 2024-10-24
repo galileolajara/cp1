@@ -148,7 +148,7 @@
          method-c = t.method-c;
          method-v = t.method-v;
       }{else
-         {if(at.decl.struct == #nil)
+         {if(&&, at.decl.struct == #nil, at.type != #basic, at.type != #module)
             {if(at.type == #struct)
                ++c = ''/;
             }{else
@@ -321,6 +321,15 @@
          ++at = `.ctx-func.at:ptr;
       }{else
          at = at-idx:ptr;
+      }
+      {if(&&, at.decl.struct == #nil, at.type != #basic, at.type != #module)
+         {if(at.type == #struct)
+            ++c = ''/;
+         }{else
+            c = ''\\;
+         }
+         'c.out:printf("%s:%u:%u - %u:%u: Cannot call function :%s because the type %c%s is not defined\n", `.ctx-func.file:path, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, func-name:str, c, at.name.id:str);
+         {return}
       }
       +found = -1;
       +similar-c = 0;

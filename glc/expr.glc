@@ -238,7 +238,7 @@
 ``       }
 ``    }
 `` }
-   {:glc-name(e`this)`char[]}
+   {:glc-name(e`this)`char[] @glc-name}
 }
 {/expr-lvar(
    .base`/expr+,

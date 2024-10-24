@@ -445,7 +445,7 @@ end-if
    {:wr(i`this, w`/wtr) @inline;
       w:n1(i);
    }
-   {:glc-name(e`this)`char[]}
+   {:glc-name(e`this)`char[] @glc-name}
 }
 {gvar .at-c\at}
 {gvar .at-cap\at}
