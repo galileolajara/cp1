@@ -1,4 +1,4 @@
-# New programming language that tries to be as simple as C
+# New programming language aiming to be as simple as C
 I noticed that many new languages like Zig, Rust, V, Odin, C3, etc aren't candidates for the most simplest newer language, just like how simple C is among others. So I thought of sharing my own language in the hopes that it others might find it fitting for their search of a simplest newer language. Aside from being simple, it also aims to have very fast incremental compilation.
 
 What does Hello World look like?
