@@ -20,15 +20,14 @@ ninja
 out/methods
 ```
 
-GLC is a programming language for people who love the simplicity of C language and are looking for a language that can take advantage of C's features.
+GLC is a programming language for people who love the simplicity of C language and looking for few modern features absent in C.
 -
-The main goal of GLC is to provide a good programming experience:
-- With very fast compilation speed and very fast incremental compilation
-- That will help them use C in simplistic and concise way
-- That will help them organize and shorten thier codes using namespaces
-- That gives them an ability to use methods on structs, unions and typedefs
-- You can build tools that easily parses GLC codes because GLC have tools-friendly syntax
-- and still be able to use C's features and tools because GLC outputs C source files
+Why use GLC instead of C?:
+- You want shorter codes through use of methods on structs, unions, enums and typedefs.
+- You want to organize and shorten (further) your codes using namespaces.
+- You build tools and scripts that parses your code, because GLC's syntax is tools-friendly.
+- Faster development through very fast compilation speed and very fast incremental compilation.
+- Still be able to use C's features and tools because GLC outputs C source files.
 
 GLC compared to Zig, Odin, V, C3, Rust, Cppfront
 -
