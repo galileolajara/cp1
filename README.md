@@ -41,7 +41,7 @@ GLC compared to Zig, Odin, V, C3, Rust, Cppfront
 
 Primary Objective of GLC
 -
-The development of GLC started in 2012 when I'm involved in programming mobile games and needed a language that have fast incremental compilation speed.
+The development of GLC started in 2012 when I'm involved in programming games and game servers and needed a language that have fast incremental compilation speed.
 During that time, I was a fan of mobile CPUs such as Intel Atom hence GLC was born out of a necessity to really have fast compilation speeds.
 If you are searching for a language that compilation speed is #1 problem that's being solved, you might want to try GLC.
 
