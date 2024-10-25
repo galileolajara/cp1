@@ -725,7 +725,21 @@
       +f = f-idx:ptr;
       {if((f.flags & #no-decl) != #0) {continue}}
       {if((f.flags & #decl) != #0)
-         .out:printf("%.*s\n", f.decl-len, f.decl-str);
+         {if(&&, f.decl-str[0] == ''#, f.decl-str[1] == '' )
+            .out:printf("#define ");
+            f:write;
+            .out:printf("(");
+            {do{+j = 0}{(f.farg-c) j++}
+               {if(j != 0)
+                  .out:printf(", ");
+               }
+               .out:printf("%s", f.farg-v[j].decl.name:str);
+            }
+            .out:printf(") ");
+            .out:printf("%.*s\n", f.decl-len - 2, & f.decl-str[2]);
+         }{else
+            .out:printf("%.*s\n", f.decl-len, f.decl-str);
+         }
          {continue}
       }
       .ctx-func = f;

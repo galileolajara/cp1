@@ -781,8 +781,8 @@ void _Mglc_Eat_Pwrite_1(_Mglc_Eat _Lat_idx_0);
 void _Mglc_Eat_Pwrite_space_1(_Mglc_Eat _Lat_idx_0);
 void _Mglc_Sdecl_var_Pwrite_type_2(struct _Mglc_Sdecl_var* _Lvd_0, _Mglc_Edecl_var_type _Lvar_type_1);
 struct _Mglc_Sdecl_gvar* _Mglc_Egvar_Pptr_1(_Mglc_Egvar _Lg_0);
-bool _Mglc_Eat_Pwrite_type_info_3(_Mglc_Eat _Ltd_0, struct _Mglc_Stype_info* _Lti_1, int32_t _Ladd_2);
 void _Mglc_Sdecl_func_Pwrite_1(struct _Mglc_Sdecl_func* _Lf_0);
+bool _Mglc_Eat_Pwrite_type_info_3(_Mglc_Eat _Ltd_0, struct _Mglc_Stype_info* _Lti_1, int32_t _Ladd_2);
 void _Mglc_Sdecl_var_Pwrite_lvar_type_2(struct _Mglc_Sdecl_var* _Lvd_0, _Mglc_Elvar _Llvar_1);
 void _Mglc_Sstmt_space_Pwrite_1(struct _Mglc_Sstmt_space* _Lspace_0);
 bool _Mstdc_Efile_Popen_3(_Mstdc_Efile* _Lfile_0, char* _Lpath_1, _Mstdc_Eopen_flags _Lflags_2);
@@ -1423,7 +1423,27 @@ if(((*_Lf_57)._Fflags & _Mglc_Efunc_flags_Cno_decl) != _Mglc_Efunc_flags_C0) {
 goto continue_14;
 }
 if(((*_Lf_57)._Fflags & _Mglc_Efunc_flags_Cdecl) != _Mglc_Efunc_flags_C0) {
+if((((*_Lf_57)._Fdecl_str[0] == '#') && ((*_Lf_57)._Fdecl_str[1] == ' '))) {
+fprintf(_Gout, "#define ");
+_Mglc_Sdecl_func_Pwrite_1(_Lf_57);
+fprintf(_Gout, "(");
+int32_t _Lj_58;
+_Lj_58 = 0;
+for(int i = (*_Lf_57)._Ffarg_c; i > 0; ) {
+i --;
+if(_Lj_58 != 0) {
+fprintf(_Gout, ", ");
+}
+fprintf(_Gout, "%s", _Mglc_Eid_Pstr_1((*_Lf_57)._Ffarg_v[_Lj_58]._Fdecl._Fname));
+continue_15:;
+_Lj_58++;
+}
+break_15:;
+fprintf(_Gout, ") ");
+fprintf(_Gout, "%.*s\n", (*_Lf_57)._Fdecl_len - 2, &(*_Lf_57)._Fdecl_str[2]);
+} else {
 fprintf(_Gout, "%.*s\n", (*_Lf_57)._Fdecl_len, (*_Lf_57)._Fdecl_str);
+}
 goto continue_14;
 }
 _Gctx_func = _Lf_57;
@@ -1435,42 +1455,42 @@ _Mglc_Eat_Pwrite_type_info_3((*_Lf_57)._Fdecl._Ftype, &(*_Lf_57)._Fdecl._Ftype_i
 fprintf(_Gout, " ");
 _Mglc_Sdecl_func_Pwrite_1(_Lf_57);
 fprintf(_Gout, "(");
-int32_t _Lj_58;
-_Lj_58 = 0;
+int32_t _Lj_59;
+_Lj_59 = 0;
 for(int i = (*_Lf_57)._Ffarg_c; i > 0; ) {
 i --;
-if(_Lj_58 != 0) {
+if(_Lj_59 != 0) {
 fprintf(_Gout, ", ");
 }
-_Mglc_Sdecl_var_Pwrite_lvar_type_2(&(*_Lf_57)._Ffarg_v[_Lj_58]._Fdecl, (_Mglc_Elvar)(_Lj_58));
-continue_15:;
-_Lj_58++;
-}
-break_15:;
-if(((*_Lf_57)._Fflags & _Mglc_Efunc_flags_Cglc_name) != _Mglc_Efunc_flags_C0) {
-struct _Mglc_Sat* _Lat_59;
-fprintf(_Gout, ") {\nswitch(_Le_0) {\n");
-_Lat_59 = _Mglc_Eat_Pptr_1((*_Lf_57)._Fat);
-int32_t _Li_60;
-_Mglc_Ecvar* _Lv_61;
-_Li_60 = 0;
-_Lv_61 = (*_Lat_59)._Fcvar_v;
-for(int i = (*_Lat_59)._Fcvar_c; i > 0; ) {
-i --;
-_Mglc_Ecvar _Lcvar_i_62;
-struct _Mglc_Scvar* _Lcvar_63;
-_Lcvar_i_62 = _Lv_61[_Li_60];
-_Lcvar_63 = _Mglc_Ecvar_Pptr_1(_Lcvar_i_62);
-if(((*_Lcvar_63)._Fflags & _Mglc_Ecvar_flags_Cas_enum) == _Mglc_Ecvar_flags_C0) {
-goto continue_16;
-}
-fprintf(_Gout, "case ");
-_Mglc_Ecvar_Pwrite_1(_Lcvar_i_62);
-fprintf(_Gout, ": return \"%s\";\n", _Mglc_Eid_Pstr_1((*_Lcvar_63)._Fdecl._Fname));
+_Mglc_Sdecl_var_Pwrite_lvar_type_2(&(*_Lf_57)._Ffarg_v[_Lj_59]._Fdecl, (_Mglc_Elvar)(_Lj_59));
 continue_16:;
-_Li_60++;
+_Lj_59++;
 }
 break_16:;
+if(((*_Lf_57)._Fflags & _Mglc_Efunc_flags_Cglc_name) != _Mglc_Efunc_flags_C0) {
+struct _Mglc_Sat* _Lat_60;
+fprintf(_Gout, ") {\nswitch(_Le_0) {\n");
+_Lat_60 = _Mglc_Eat_Pptr_1((*_Lf_57)._Fat);
+int32_t _Li_61;
+_Mglc_Ecvar* _Lv_62;
+_Li_61 = 0;
+_Lv_62 = (*_Lat_60)._Fcvar_v;
+for(int i = (*_Lat_60)._Fcvar_c; i > 0; ) {
+i --;
+_Mglc_Ecvar _Lcvar_i_63;
+struct _Mglc_Scvar* _Lcvar_64;
+_Lcvar_i_63 = _Lv_62[_Li_61];
+_Lcvar_64 = _Mglc_Ecvar_Pptr_1(_Lcvar_i_63);
+if(((*_Lcvar_64)._Fflags & _Mglc_Ecvar_flags_Cas_enum) == _Mglc_Ecvar_flags_C0) {
+goto continue_17;
+}
+fprintf(_Gout, "case ");
+_Mglc_Ecvar_Pwrite_1(_Lcvar_i_63);
+fprintf(_Gout, ": return \"%s\";\n", _Mglc_Eid_Pstr_1((*_Lcvar_64)._Fdecl._Fname));
+continue_17:;
+_Li_61++;
+}
+break_17:;
 fprintf(_Gout, "}\nreturn \"(ERROR)\";\n}\n");
 } else {
 fprintf(_Gout, ");\n");
@@ -1479,43 +1499,43 @@ continue_14:;
 _Li_55++;
 }
 break_14:;
-int32_t _Li_64;
-_Li_64 = 0;
+int32_t _Li_65;
+_Li_65 = 0;
 for(int i = _Gfunc_body_outputted_c; i > 0; ) {
 i --;
-_Mglc_Efunc _Lf_idx_65;
-struct _Mglc_Sdecl_func* _Lf_66;
-_Lf_idx_65 = _Gfunc_body_outputted_v[_Li_64];
-_Lf_66 = _Mglc_Efunc_Pptr_1(_Lf_idx_65);
-_Gctx_func = _Lf_66;
+_Mglc_Efunc _Lf_idx_66;
+struct _Mglc_Sdecl_func* _Lf_67;
+_Lf_idx_66 = _Gfunc_body_outputted_v[_Li_65];
+_Lf_67 = _Mglc_Efunc_Pptr_1(_Lf_idx_66);
+_Gctx_func = _Lf_67;
 _Gnest_id = 0;
-if((*_Lf_66)._Fdecl._Ftype == _Mglc_Eat_Cnil) {
+if((*_Lf_67)._Fdecl._Ftype == _Mglc_Eat_Cnil) {
 fprintf(_Gout, "void");
 } else {
-_Mglc_Eat_Pwrite_type_info_3((*_Lf_66)._Fdecl._Ftype, &(*_Lf_66)._Fdecl._Ftype_info, 0);
+_Mglc_Eat_Pwrite_type_info_3((*_Lf_67)._Fdecl._Ftype, &(*_Lf_67)._Fdecl._Ftype_info, 0);
 }
 fprintf(_Gout, " ");
-_Mglc_Sdecl_func_Pwrite_1(_Lf_66);
+_Mglc_Sdecl_func_Pwrite_1(_Lf_67);
 fprintf(_Gout, "(");
-int32_t _Lj_67;
-_Lj_67 = 0;
-for(int i = (*_Lf_66)._Ffarg_c; i > 0; ) {
+int32_t _Lj_68;
+_Lj_68 = 0;
+for(int i = (*_Lf_67)._Ffarg_c; i > 0; ) {
 i --;
-if(_Lj_67 != 0) {
+if(_Lj_68 != 0) {
 fprintf(_Gout, ", ");
 }
-_Mglc_Sdecl_var_Pwrite_lvar_type_2(&(*_Lf_66)._Ffarg_v[_Lj_67]._Fdecl, (_Mglc_Elvar)(_Lj_67));
+_Mglc_Sdecl_var_Pwrite_lvar_type_2(&(*_Lf_67)._Ffarg_v[_Lj_68]._Fdecl, (_Mglc_Elvar)(_Lj_68));
+continue_19:;
+_Lj_68++;
+}
+break_19:;
+fprintf(_Gout, ") {\n");
+_Mglc_Sstmt_space_Pwrite_1(&(*_Lf_67)._Fstmt_space);
+fprintf(_Gout, "}\n");
 continue_18:;
-_Lj_67++;
+_Li_65++;
 }
 break_18:;
-fprintf(_Gout, ") {\n");
-_Mglc_Sstmt_space_Pwrite_1(&(*_Lf_66)._Fstmt_space);
-fprintf(_Gout, "}\n");
-continue_17:;
-_Li_64++;
-}
-break_17:;
 return 0;
 }
 void _Mglc_Pquick_alloc_init_0() {
@@ -2461,16 +2481,6 @@ break_0:;
 struct _Mglc_Sdecl_gvar* _Mglc_Egvar_Pptr_1(_Mglc_Egvar _Lg_0) {
 return &_Ggvar_v[_Lg_0];
 }
-bool _Mglc_Eat_Pwrite_type_info_3(_Mglc_Eat _Ltd_0, struct _Mglc_Stype_info* _Lti_1, int32_t _Ladd_2) {
-int32_t _Ls_3;
-_Mglc_Stype_info_Pcount_1(_Lti_1);
-_Mglc_Eat_Pwrite_type_1(_Ltd_0);
-_Ls_3 = (_Mglc_Eat_Pcount_stars0_2(_Ltd_0, _Lti_1) + _Ladd_2);
-if(_Ls_3 > 0) {
-_Mstdc_Sfile_Pwrite_3(_Gout, "********************************", _Ls_3);
-}
-return true;
-}
 void _Mglc_Sdecl_func_Pwrite_1(struct _Mglc_Sdecl_func* _Lf_0) {
 if(((*_Lf_0)._Fflags & _Mglc_Efunc_flags_Creal_name) != _Mglc_Efunc_flags_C0) {
 fprintf(_Gout, "%s", _Mglc_Eid_Pstr_1((*_Lf_0)._Freal_name));
@@ -2487,6 +2497,16 @@ _Li_1++;
 }
 break_0:;
 }
+}
+bool _Mglc_Eat_Pwrite_type_info_3(_Mglc_Eat _Ltd_0, struct _Mglc_Stype_info* _Lti_1, int32_t _Ladd_2) {
+int32_t _Ls_3;
+_Mglc_Stype_info_Pcount_1(_Lti_1);
+_Mglc_Eat_Pwrite_type_1(_Ltd_0);
+_Ls_3 = (_Mglc_Eat_Pcount_stars0_2(_Ltd_0, _Lti_1) + _Ladd_2);
+if(_Ls_3 > 0) {
+_Mstdc_Sfile_Pwrite_3(_Gout, "********************************", _Ls_3);
+}
+return true;
 }
 void _Mglc_Sdecl_var_Pwrite_lvar_type_2(struct _Mglc_Sdecl_var* _Lvd_0, _Mglc_Elvar _Llvar_1) {
 if((*_Lvd_0)._Ftype_info._Fconst) {
