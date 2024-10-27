@@ -161,14 +161,14 @@
             `` 'c.out:printf("read at type %u %s %s\n", at-type, at-type:glc-name, at-name:str);
             `` 'c.out:printf("- parent %u\n", at-parent);
             `` 'c.out:printf("- name %s\n", at-name:str);
-            +found = -1;
-            {do{+j = 0}{(.at-c) j++}
-               +at = .at-v[j];
-               {if(&&, at.parent == at-parent, at.type == at-type, at.name.id == at-name)
-                  found = j;
-                  {break}
-               }
-            }
+            +found = .at-map:get-or-insert(at-parent, at-type, at-name, .at-c);
+            `` {do{+j = 0}{(.at-c) j++}
+            ``    +at = .at-v[j];
+            ``    {if(&&, at.parent == at-parent, at.type == at-type, at.name.id == at-name)
+            ``       found = j;
+            ``       {break}
+            ``    }
+            `` }
             `` 'c.out:printf("found %d\n", found);
             `` 'c.out:printf("at %u, name-c %u, found %d\n", i, at-name-c, found);
             {if(found == -1)
@@ -479,6 +479,7 @@
 
    .id-map:init;
    .include-map:init;
+   .at-map:init;
    :quick-alloc-init;
    .func-main = #nil;
 

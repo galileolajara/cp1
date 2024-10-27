@@ -273,6 +273,10 @@ struct _Mglc_Smap;
 struct _Mglc_Smap {
 uint64_t _Fdata[(_Mglc_Chash_table_size + 7) >> 3];
 };
+struct _Mglc_Sat_map;
+struct _Mglc_Sat_map {
+uint64_t _Fdata[(_Mglc_Chash_table_size + 7) >> 3];
+};
 union _Mglc_Srdr;
 union _Mglc_Srdr {
 void* _Fref;
@@ -720,6 +724,7 @@ _Mglc_Eexpr _Fexpr;
 };
 struct _Mglc_Smap _Gid_map;
 struct _Mglc_Smap _Ginclude_map;
+struct _Mglc_Sat_map _Gat_map;
 _Mglc_Efunc _Gfunc_main;
 _Mglc_Einclude _Gdecl_include;
 char* input_path;
@@ -831,6 +836,7 @@ struct _Mglc_Sexpr** _Gexpr_v;
 int32_t main(int32_t _Largc_0, char** _Largv_1);
 void _Mglc_Pexport_0();
 void _Mglc_Smap_Pinit_1(struct _Mglc_Smap* _Lm_0);
+void _Mglc_Sat_map_Pinit_1(struct _Mglc_Sat_map* _Lm_0);
 void _Mglc_Pquick_alloc_init_0();
 bool _Mstdc_Efile_Popen_3(_Mstdc_Efile* _Lfile_0, char* _Lpath_1, _Mstdc_Eopen_flags _Lflags_2);
 void _Mglc_Pget_row_col_4(int32_t* _Lout_row_0, int32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3);
@@ -1237,6 +1243,7 @@ return "(ERROR)";
 void _Mglc_Stype_info_Pcopy_from_2(struct _Mglc_Stype_info* _Lti_0, struct _Mglc_Stype_info* _Lti2_1);
 #define _Mglc_Pquick_alloc_arr_2(r, c) r = qalloc(sizeof(r[0]) * (c))
 void _Mglc_Pfunc_stmt_add_1(struct _Mglc_Sstmt* _Ls_0);
+int32_t _Mglc_Sat_map_Pget_or_insert_5(struct _Mglc_Sat_map* _Lm_0, _Mglc_Eat _Lparent_1, _Mglc_Ename_type _Ltype_2, _Mglc_Eid _Lname_3, int32_t _Lval_4);
 void _Mglc_Swtr_Pbool_2(union _Mglc_Swtr* _Lw_0, bool _Lval_1);
 void _Mglc_Emath_Pwr_2(_Mglc_Emath _Le_0, union _Mglc_Swtr* _Lw_1);
 void _Mglc_Ebools_Pwr_2(_Mglc_Ebools _Le_0, union _Mglc_Swtr* _Lw_1);
@@ -1266,6 +1273,7 @@ _Mglc_Pexport_0();
 }
 _Mglc_Smap_Pinit_1(&_Gid_map);
 _Mglc_Smap_Pinit_1(&_Ginclude_map);
+_Mglc_Sat_map_Pinit_1(&_Gat_map);
 _Mglc_Pquick_alloc_init_0();
 _Gfunc_main = _Mglc_Efunc_Cnil;
 _Gdecl_include = _Mglc_Einclude_Cnil;
@@ -4086,33 +4094,25 @@ _Lat_5 = (&_Gat_v[_Lbuild_idx_3]);
 return _Lbuild_idx_3;
 }
 _Mglc_Eat _Mglc_Pat_create_3(_Mglc_Eat _Lparent_0, _Mglc_Ename_type _Ltype_1, _Mglc_Eid _Lname_2) {
-_Mglc_Eat _Lbuild_idx_5;
-struct _Mglc_Sat* _Lat_7;
-_Mglc_Eat _Li_3;
-_Li_3 = (_Mglc_Eat)(0);
-for(int i = _Gat_c; i > 0; ) {
-i --;
-struct _Mglc_Sat* _Lat_4;
-_Lat_4 = (&_Gat_v[_Li_3]);
-if((((*_Lat_4)._Fparent == _Lparent_0) && ((*_Lat_4)._Ftype == _Ltype_1) && ((*_Lat_4)._Fname._Fid == _Lname_2))) {
-return _Li_3;
+int32_t _Lfound_3;
+_Mglc_Eat _Lbuild_idx_4;
+struct _Mglc_Sat* _Lat_6;
+_Lfound_3 = _Mglc_Sat_map_Pget_or_insert_5(&_Gat_map, _Lparent_0, _Ltype_1, _Lname_2, _Gat_c);
+if(_Lfound_3 != -1) {
+return _Lfound_3;
 }
-continue_0:;
-_Li_3++;
-}
-break_0:;
-_Lbuild_idx_5 = _Gat_c++;
+_Lbuild_idx_4 = _Gat_c++;
 if(_Gat_cap <= _Gat_c) {
-_Mglc_Eat _Lold_cap_6;
-_Lold_cap_6 = _Gat_cap;
+_Mglc_Eat _Lold_cap_5;
+_Lold_cap_5 = _Gat_cap;
 _Mglc_Pgrow_2(_Gat_cap, _Gat_c);
-_Mglc_Prealloc_3(_Gat_v, _Gat_cap, _Lold_cap_6);
+_Mglc_Prealloc_3(_Gat_v, _Gat_cap, _Lold_cap_5);
 }
-_Lat_7 = (&_Gat_v[_Lbuild_idx_5]);
-(*_Lat_7)._Fparent = _Lparent_0;
-(*_Lat_7)._Ftype = _Ltype_1;
-(*_Lat_7)._Fname._Fid = _Lname_2;
-return _Lbuild_idx_5;
+_Lat_6 = (&_Gat_v[_Lbuild_idx_4]);
+(*_Lat_6)._Fparent = _Lparent_0;
+(*_Lat_6)._Ftype = _Ltype_1;
+(*_Lat_6)._Fname._Fid = _Lname_2;
+return _Lbuild_idx_4;
 }
 void _Mglc_Ptype_info_arr_1(_Mglc_Eexpr _Lexpr_0) {
 struct _Mglc_Stype_info* _Lti_1;

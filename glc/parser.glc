@@ -158,15 +158,17 @@
    {return .build-at}
 }
 {{:at-create(parent\at, type\name-type, name\id)\at}
-   {do{+i = 0\at}{(.at-c) i++}
-      +at = .at-v[i];
-      {if(&&,
-         at.parent == parent,
-         at.type == type,
-         at.name.id == name)
-         {return i}
-      }
-   }
+   +found = .at-map:get-or-insert(parent, type, name, .at-c);
+   {if(found != -1) {return found}}
+   `` {do{+i = 0\at}{(.at-c) i++}
+   ``    +at = .at-v[i];
+   ``    {if(&&,
+   ``       at.parent == parent,
+   ``       at.type == type,
+   ``       at.name.id == name)
+   ``       {return i}
+   ``    }
+   `` }
    +build-idx = .at-c++;
    {if(.at-cap <= .at-c)
       +old-cap = .at-cap;
@@ -734,6 +736,7 @@
    {if(`false) :export}
    .id-map:init;
    .include-map:init;
+   .at-map:init;
    :quick-alloc-init;
    .func-main = #nil;
    .decl-include = #nil;

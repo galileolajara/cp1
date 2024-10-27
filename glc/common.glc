@@ -1,12 +1,17 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
+{/at-map(.data`lnum[(`#hash-table-size + 7) >> 3])
+   {:init(m`this)}
+   {:get-or-insert(m`this, parent`\at, type`\name-type, name`\id, val`int)`int}
+}
 {/map(.data`lnum[(`#hash-table-size + 7) >> 3])
    {:init(m`this)}
    {:get-or-insert(m`this, str`char[], len`tnum, val`int)`int}
 }
 {gvar .id-map/map+}
 {gvar .include-map/map+}
+{gvar .at-map/at-map+}
 {/struct(
 if-compiler
    .file`\file,
