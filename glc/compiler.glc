@@ -154,27 +154,7 @@
          at-type:rd(r);
          {if(at-type == #basic)
             \basic-type-id:rd(+basic, r);
-            +found = -1;
-            {do{+j = 0}{(.at-c) j++}
-               +at = .at-v[j];
-               {if(&&, at.type == #basic, at.name.basic == basic)
-                  found = j;
-                  {break}
-               }
-            }
-            {if(found == -1)
-               +at-idx = .at-c++;
-               {if(.at-cap <= .at-c)
-                  +old-cap = .at-cap;
-                  :grow(.at-cap, .at-c);
-                  :realloc(.at-v, .at-cap, old-cap);
-               }
-               +at = .at-v[at-idx];
-               at:init(#basic, #root, basic\id);
-               .at-table[i] = at-idx\at;
-            }{else
-               .at-table[i] = found\at;
-            }
+            .at-table[i] = :basic-type(basic);
          }{else
             \at:rd(+at-parent, r);
             \id:rd(+at-name, r);
