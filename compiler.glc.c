@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include "num.c"
 #include <string.h>
+#define _Mglc_Chash_table_size (64)
 #define _Mglc_Efunc_Cnil (-1)
 #define _Mglc_Ebasic_type_id_Croot 0
 #define _Mglc_Ebasic_type_id_Cref (_Mglc_Ebasic_type_id_Croot + 1)
@@ -180,6 +181,10 @@ typedef uint8_t _Mglc_Eunary;
 typedef int32_t _Mglc_Efvar;
 typedef uint8_t _Mglc_Ebools;
 typedef uint8_t _Mglc_Eexpr_int;
+struct _Mglc_Smap;
+struct _Mglc_Smap {
+uint64_t _Fdata[(_Mglc_Chash_table_size + 7) >> 3];
+};
 union _Mglc_Sat_name;
 union _Mglc_Sat_name {
 _Mglc_Eid _Fid;
@@ -671,6 +676,8 @@ union _Mglc_Scase_stack {
 struct _Mglc_Sstmt_case* _Fcase;
 struct _Mglc_Sstmt_default* _Fdefault;
 };
+struct _Mglc_Smap _Gid_map;
+struct _Mglc_Smap _Ginclude_map;
 _Mglc_Efunc _Gfunc_main;
 _Mglc_Eat _Gat_c;
 _Mglc_Eat _Gat_cap;
@@ -711,6 +718,7 @@ int32_t _Ggvar_outputted_c;
 struct _Mglc_Sdecl_func* _Gctx_func;
 int32_t _Gfunc_body_outputted_c;
 int32_t _Gnest_id;
+int32_t _Gquick_alloc_c;
 int32_t _Gquick_alloc_cap;
 void* _Gquick_alloc_v;
 _Mglc_Efile _Gfile_c;
@@ -719,9 +727,9 @@ struct _Mglc_Sfile* _Gfile_v;
 _Mglc_Eid* _Gid_table;
 int32_t _Ginclude_table_cap;
 _Mglc_Einclude* _Ginclude_table;
+int32_t _Ginclude_cap;
 uint8_t* _Ginclude_len_v;
 char** _Ginclude_str_v;
-int32_t _Ginclude_cap;
 _Mglc_Eat* _Gat_table;
 _Mglc_Ecvar* _Gcvar_table;
 _Mglc_Ecvar _Gcvar_cap;
@@ -736,8 +744,8 @@ _Mglc_Efunc _Gfunc_cap;
 struct _Mglc_Sdecl_func** _Gfunc_v;
 _Mglc_Efunc _Gctx_func_id;
 char** _Gid_str_v;
-uint8_t* _Gid_len_v;
 int32_t _Gid_cap;
+uint8_t* _Gid_len_v;
 int32_t _Gctx_begin_row;
 int32_t _Gctx_begin_col;
 int32_t _Gctx_end_row;
@@ -746,7 +754,6 @@ int32_t _Gexpr_c;
 int32_t _Gexpr_cap;
 struct _Mglc_Sexpr** _Gexpr_v;
 uint8_t* _Gexpr_is_processed;
-int32_t _Gquick_alloc_c;
 int32_t _Gnest_stack_id_v[64];
 uint8_t _Gnest_stack_c;
 union _Mglc_Snest _Gnest_stack_ptr_v[64];
@@ -755,8 +762,10 @@ uint8_t _Gswitch_stack_c;
 union _Mglc_Scase_stack _Gcase_stack_v[64];
 uint8_t _Gcase_stack_c;
 int32_t main(int32_t _Larg_c_0, char** _Larg_v_1);
+void qalloc_undo(int32_t _Lsize_0);
+void _Mglc_Smap_Pinit_1(struct _Mglc_Smap* _Lm_0);
 void _Mglc_Pquick_alloc_init_0();
-#define _Mglc_Pgrow_2(cap, c) cap = Fpow2gteq(c + 8)
+#define _Mglc_Pgrow_2(cap, c) cap = Fpow2gteq((c) + 8)
 #define _Mglc_Prealloc_3(r, c, oldc) r = realloc(r, sizeof(r[0]) * (c)); memset(r + (oldc), 0, sizeof(r[0]) * ((c) - (oldc)))
 void _Mglc_Sat_Pinit_4(struct _Mglc_Sat* _Lat_0, _Mglc_Ename_type _Ltype_1, _Mglc_Eat _Lparent_2, _Mglc_Eid _Lname_3);
 void _Mglc_Pread_1(char* _Lin_path_0);
@@ -766,7 +775,7 @@ char* _Mglc_Efile_Ppath_1(_Mglc_Efile _Lf_0);
 char* _Mglc_Eid_Pstr_1(_Mglc_Eid _Lid_0);
 struct _Mglc_Sstruct* _Mglc_Estruct_Pptr_1(_Mglc_Estruct _Ls_0);
 struct _Mglc_Senum* _Mglc_Eenum_Pptr_1(_Mglc_Eenum _Lf_0);
-_Mglc_Eid _Mglc_Pid_add_2(uint8_t _Lid_len_0, void* _Lid_str_1);
+_Mglc_Eid _Mglc_Pid_add_2(uint8_t _Lid_len_0, char* _Lid_str_1);
 #define _Mglc_Pquick_alloc_arr_2(r, c) r = qalloc(sizeof(r[0]) * (c))
 void _Mglc_Efunc_Pprocess_later_1(_Mglc_Efunc _Lf_idx_0);
 bool _Mglc_Efunc_Pprocess_now_1(_Mglc_Efunc _Lf_idx_0);
@@ -787,6 +796,7 @@ void _Mglc_Sdecl_var_Pwrite_lvar_type_2(struct _Mglc_Sdecl_var* _Lvd_0, _Mglc_El
 void _Mglc_Sstmt_space_Pwrite_1(struct _Mglc_Sstmt_space* _Lspace_0);
 bool _Mstdc_Efile_Popen_3(_Mstdc_Efile* _Lfile_0, char* _Lpath_1, _Mstdc_Eopen_flags _Lflags_2);
 uint8_t _Mglc_Srdr_Pn1_1(union _Mglc_Srdr* _Lr_0);
+int32_t _Mglc_Smap_Pget_or_insert_4(struct _Mglc_Smap* _Lm_0, char* _Lstr_1, uint8_t _Llen_2, int32_t _Lval_3);
 void _Mglc_Ename_type_Prd_2(_Mglc_Ename_type* _Li_0, union _Mglc_Srdr* _Lr_1);
 void _Mglc_Ebasic_type_id_Prd_2(_Mglc_Ebasic_type_id* _Le_0, union _Mglc_Srdr* _Lr_1);
 void _Mglc_Eat_Prd_2(_Mglc_Eat* _Li_0, union _Mglc_Srdr* _Lr_1);
@@ -1068,12 +1078,17 @@ void _Mglc_Eexpr_Ptype_index_2(struct _Mglc_Sexpr* _Lexpr_0, _Mglc_Eat* _Lat_1);
 _Mglc_Eat _Mglc_Pbasic_type_1(_Mglc_Ebasic_type_id _Lt_0);
 void _Mglc_Svalue_Pset_5(struct _Mglc_Svalue* _Lv_0, int8_t _Lref_1, bool _Lparen_2, _Mglc_Eat _Ltype_3, struct _Mglc_Stype_info* _Linfo_4);
 int32_t main(int32_t _Larg_c_0, char** _Larg_v_1) {
-_Mglc_Pquick_alloc_init_0();
-_Gfunc_main = _Mglc_Efunc_Cnil;
 if(_Larg_c_0 < 2) {
 fprintf(stdout, "usage: %s file.glc-t\n", _Larg_v_1[0]);
 return 0;
 }
+if(false) {
+qalloc_undo(0);
+}
+_Mglc_Smap_Pinit_1(&_Gid_map);
+_Mglc_Smap_Pinit_1(&_Ginclude_map);
+_Mglc_Pquick_alloc_init_0();
+_Gfunc_main = _Mglc_Efunc_Cnil;
 _Mglc_Ebasic_type_id _Ltype_2;
 _Ltype_2 = (_Mglc_Ebasic_type_id)(0);
 for(int i = _Mglc_Ebasic_type_id_CCOUNT; i > 0; ) {
@@ -1538,6 +1553,14 @@ _Li_65++;
 break_18:;
 return 0;
 }
+void qalloc_undo(int32_t _Lsize_0) {
+if(sizeof(void*) == 8) {
+_Lsize_0 = ((_Lsize_0 + 7) & (-1 ^ 7));
+} else {
+_Lsize_0 = ((_Lsize_0 + 3) & (-1 ^ 3));
+}
+_Gquick_alloc_c -= _Lsize_0;
+}
 void _Mglc_Pquick_alloc_init_0() {
 _Gquick_alloc_cap = (16 * 1024);
 _Gquick_alloc_v = malloc(_Gquick_alloc_cap);
@@ -1562,13 +1585,13 @@ union _Mglc_Srdr _Lr_begin_3;
 _Mglc_Efile _Lfile_idx_4;
 struct _Mglc_Sfile* _Lfile_6;
 union _Mglc_Srdr _Lr_7;
-_Mglc_Eenum _Lenum_c_57;
-_Mglc_Eenum _Le_idx_begin_58;
-_Mglc_Estruct _Lstruct_c_64;
-_Mglc_Estruct _Ls_idx_begin_65;
-_Mglc_Efunc _Lfunc_c_74;
-_Mglc_Efunc _Lf_idx_begin_75;
-_Mglc_Efunc _Lfunc_main_91;
+_Mglc_Eenum _Lenum_c_56;
+_Mglc_Eenum _Le_idx_begin_57;
+_Mglc_Estruct _Lstruct_c_63;
+_Mglc_Estruct _Ls_idx_begin_64;
+_Mglc_Efunc _Lfunc_c_73;
+_Mglc_Efunc _Lf_idx_begin_74;
+_Mglc_Efunc _Lfunc_main_90;
 if(!(_Mstdc_Efile_Popen_3(&_Lin_fd_1, _Lin_path_0, O_RDONLY))) {
 fprintf(stdout, "Cannot open file for reading: %s\n", _Lin_path_0);
 exit(_Mstdc_Eexit_Cfailure);
@@ -1628,32 +1651,20 @@ int32_t _Lfound_17;
 _Linclude_len_15 = _Mglc_Srdr_Pn1_1(&_Lr_7);
 _Linclude_str_16 = _Lr_7._Fref;
 _Lr_7._Fpos += (_Linclude_len_15 + 1);
-_Lfound_17 = -1;
-int32_t _Lj_18;
-_Lj_18 = 0;
-for(int i = _Ginclude_c; i > 0; ) {
-i --;
-if(((_Ginclude_len_v[_Lj_18] == _Linclude_len_15) && (memcmp(_Ginclude_str_v[_Lj_18], _Linclude_str_16, _Linclude_len_15) == 0))) {
-_Lfound_17 = _Lj_18;
-goto break_2;
-}
-continue_2:;
-_Lj_18++;
-}
-break_2:;
+_Lfound_17 = _Mglc_Smap_Pget_or_insert_4(&_Ginclude_map, _Linclude_str_16, _Linclude_len_15, _Ginclude_c);
 if(_Lfound_17 == -1) {
-int32_t _Linclude_idx_19;
-_Linclude_idx_19 = _Ginclude_c++;
+int32_t _Linclude_idx_18;
+_Linclude_idx_18 = _Ginclude_c++;
 if(_Ginclude_cap <= _Ginclude_c) {
-int32_t _Lold_cap_20;
-_Lold_cap_20 = _Ginclude_cap;
+int32_t _Lold_cap_19;
+_Lold_cap_19 = _Ginclude_cap;
 _Mglc_Pgrow_2(_Ginclude_cap, _Ginclude_c);
-_Mglc_Prealloc_3(_Ginclude_len_v, _Ginclude_cap, _Lold_cap_20);
-_Mglc_Prealloc_3(_Ginclude_str_v, _Ginclude_cap, _Lold_cap_20);
+_Mglc_Prealloc_3(_Ginclude_len_v, _Ginclude_cap, _Lold_cap_19);
+_Mglc_Prealloc_3(_Ginclude_str_v, _Ginclude_cap, _Lold_cap_19);
 }
-_Ginclude_len_v[_Linclude_idx_19] = _Linclude_len_15;
-_Ginclude_str_v[_Linclude_idx_19] = _Linclude_str_16;
-_Ginclude_table[_Li_14] = (_Mglc_Einclude)(_Linclude_idx_19);
+_Ginclude_len_v[_Linclude_idx_18] = _Linclude_len_15;
+_Ginclude_str_v[_Linclude_idx_18] = _Linclude_str_16;
+_Ginclude_table[_Li_14] = (_Mglc_Einclude)(_Linclude_idx_18);
 } else {
 _Ginclude_table[_Li_14] = (_Mglc_Einclude)(_Lfound_17);
 }
@@ -1663,402 +1674,402 @@ _Li_14++;
 break_1:;
 }
 if(true) {
-uint32_t _Lat_c_21;
-_Mglc_Ename_type _Lat_type_22;
-_Lat_c_21 = Fgetnum(&_Lr_7);
-_Mglc_Pquick_alloc_arr_2(_Gat_table, _Lat_c_21);
+uint32_t _Lat_c_20;
+_Mglc_Ename_type _Lat_type_21;
+_Lat_c_20 = Fgetnum(&_Lr_7);
+_Mglc_Pquick_alloc_arr_2(_Gat_table, _Lat_c_20);
 (*_Lfile_6)._Fat_table = _Gat_table;
-int32_t _Li_23;
-_Li_23 = 0;
-for(int i = _Lat_c_21; i > 0; ) {
+int32_t _Li_22;
+_Li_22 = 0;
+for(int i = _Lat_c_20; i > 0; ) {
 i --;
-_Mglc_Ename_type_Prd_2(&_Lat_type_22, &_Lr_7);
-if(_Lat_type_22 == _Mglc_Ename_type_Cbasic) {
-_Mglc_Ebasic_type_id _Lbasic_24;
-int32_t _Lfound_25;
-_Mglc_Ebasic_type_id_Prd_2(&_Lbasic_24, &_Lr_7);
-_Lfound_25 = -1;
-int32_t _Lj_26;
-_Lj_26 = 0;
+_Mglc_Ename_type_Prd_2(&_Lat_type_21, &_Lr_7);
+if(_Lat_type_21 == _Mglc_Ename_type_Cbasic) {
+_Mglc_Ebasic_type_id _Lbasic_23;
+int32_t _Lfound_24;
+_Mglc_Ebasic_type_id_Prd_2(&_Lbasic_23, &_Lr_7);
+_Lfound_24 = -1;
+int32_t _Lj_25;
+_Lj_25 = 0;
 for(int i = _Gat_c; i > 0; ) {
 i --;
-struct _Mglc_Sat* _Lat_27;
-_Lat_27 = (&_Gat_v[_Lj_26]);
-if((((*_Lat_27)._Ftype == _Mglc_Ename_type_Cbasic) && ((*_Lat_27)._Fname._Fbasic == _Lbasic_24))) {
-_Lfound_25 = _Lj_26;
+struct _Mglc_Sat* _Lat_26;
+_Lat_26 = (&_Gat_v[_Lj_25]);
+if((((*_Lat_26)._Ftype == _Mglc_Ename_type_Cbasic) && ((*_Lat_26)._Fname._Fbasic == _Lbasic_23))) {
+_Lfound_24 = _Lj_25;
+goto break_3;
+}
+continue_3:;
+_Lj_25++;
+}
+break_3:;
+if(_Lfound_24 == -1) {
+_Mglc_Eat _Lat_idx_27;
+struct _Mglc_Sat* _Lat_29;
+_Lat_idx_27 = _Gat_c++;
+if(_Gat_cap <= _Gat_c) {
+_Mglc_Eat _Lold_cap_28;
+_Lold_cap_28 = _Gat_cap;
+_Mglc_Pgrow_2(_Gat_cap, _Gat_c);
+_Mglc_Prealloc_3(_Gat_v, _Gat_cap, _Lold_cap_28);
+}
+_Lat_29 = (&_Gat_v[_Lat_idx_27]);
+_Mglc_Sat_Pinit_4(_Lat_29, _Mglc_Ename_type_Cbasic, _Mglc_Eat_Croot, (_Mglc_Eid)(_Lbasic_23));
+_Gat_table[_Li_22] = (_Mglc_Eat)(_Lat_idx_27);
+} else {
+_Gat_table[_Li_22] = (_Mglc_Eat)(_Lfound_24);
+}
+} else {
+_Mglc_Eat _Lat_parent_30;
+_Mglc_Eid _Lat_name_31;
+int32_t _Lfound_32;
+_Mglc_Eat_Prd_2(&_Lat_parent_30, &_Lr_7);
+_Mglc_Eid_Prd_2(&_Lat_name_31, &_Lr_7);
+_Lfound_32 = -1;
+int32_t _Lj_33;
+_Lj_33 = 0;
+for(int i = _Gat_c; i > 0; ) {
+i --;
+struct _Mglc_Sat* _Lat_34;
+_Lat_34 = (&_Gat_v[_Lj_33]);
+if((((*_Lat_34)._Fparent == _Lat_parent_30) && ((*_Lat_34)._Ftype == _Lat_type_21) && ((*_Lat_34)._Fname._Fid == _Lat_name_31))) {
+_Lfound_32 = _Lj_33;
 goto break_4;
 }
 continue_4:;
-_Lj_26++;
+_Lj_33++;
 }
 break_4:;
-if(_Lfound_25 == -1) {
-_Mglc_Eat _Lat_idx_28;
-struct _Mglc_Sat* _Lat_30;
-_Lat_idx_28 = _Gat_c++;
+if(_Lfound_32 == -1) {
+_Mglc_Eat _Lat_idx_35;
+struct _Mglc_Sat* _Lat_37;
+_Lat_idx_35 = _Gat_c++;
 if(_Gat_cap <= _Gat_c) {
-_Mglc_Eat _Lold_cap_29;
-_Lold_cap_29 = _Gat_cap;
+_Mglc_Eat _Lold_cap_36;
+_Lold_cap_36 = _Gat_cap;
 _Mglc_Pgrow_2(_Gat_cap, _Gat_c);
-_Mglc_Prealloc_3(_Gat_v, _Gat_cap, _Lold_cap_29);
+_Mglc_Prealloc_3(_Gat_v, _Gat_cap, _Lold_cap_36);
 }
-_Lat_30 = (&_Gat_v[_Lat_idx_28]);
-_Mglc_Sat_Pinit_4(_Lat_30, _Mglc_Ename_type_Cbasic, _Mglc_Eat_Croot, (_Mglc_Eid)(_Lbasic_24));
-_Gat_table[_Li_23] = (_Mglc_Eat)(_Lat_idx_28);
+_Lat_37 = (&_Gat_v[_Lat_idx_35]);
+_Mglc_Sat_Pinit_4(_Lat_37, _Lat_type_21, _Lat_parent_30, _Lat_name_31);
+_Gat_table[_Li_22] = (_Mglc_Eat)(_Lat_idx_35);
 } else {
-_Gat_table[_Li_23] = (_Mglc_Eat)(_Lfound_25);
-}
-} else {
-_Mglc_Eat _Lat_parent_31;
-_Mglc_Eid _Lat_name_32;
-int32_t _Lfound_33;
-_Mglc_Eat_Prd_2(&_Lat_parent_31, &_Lr_7);
-_Mglc_Eid_Prd_2(&_Lat_name_32, &_Lr_7);
-_Lfound_33 = -1;
-int32_t _Lj_34;
-_Lj_34 = 0;
-for(int i = _Gat_c; i > 0; ) {
-i --;
-struct _Mglc_Sat* _Lat_35;
-_Lat_35 = (&_Gat_v[_Lj_34]);
-if((((*_Lat_35)._Fparent == _Lat_parent_31) && ((*_Lat_35)._Ftype == _Lat_type_22) && ((*_Lat_35)._Fname._Fid == _Lat_name_32))) {
-_Lfound_33 = _Lj_34;
-goto break_5;
-}
-continue_5:;
-_Lj_34++;
-}
-break_5:;
-if(_Lfound_33 == -1) {
-_Mglc_Eat _Lat_idx_36;
-struct _Mglc_Sat* _Lat_38;
-_Lat_idx_36 = _Gat_c++;
-if(_Gat_cap <= _Gat_c) {
-_Mglc_Eat _Lold_cap_37;
-_Lold_cap_37 = _Gat_cap;
-_Mglc_Pgrow_2(_Gat_cap, _Gat_c);
-_Mglc_Prealloc_3(_Gat_v, _Gat_cap, _Lold_cap_37);
-}
-_Lat_38 = (&_Gat_v[_Lat_idx_36]);
-_Mglc_Sat_Pinit_4(_Lat_38, _Lat_type_22, _Lat_parent_31, _Lat_name_32);
-_Gat_table[_Li_23] = (_Mglc_Eat)(_Lat_idx_36);
-} else {
-_Gat_table[_Li_23] = (_Mglc_Eat)(_Lfound_33);
+_Gat_table[_Li_22] = (_Mglc_Eat)(_Lfound_32);
 }
 }
-continue_3:;
-_Li_23++;
+continue_2:;
+_Li_22++;
 }
-break_3:;
+break_2:;
 }
 if(true) {
-_Mglc_Ecvar _Lcvar_c_39;
-_Mglc_Ecvar _Lcvar_begin_40;
-_Lcvar_c_39 = (_Mglc_Ecvar)(Fgetnum(&_Lr_7));
-_Mglc_Pquick_alloc_arr_2(_Gcvar_table, _Lcvar_c_39);
+_Mglc_Ecvar _Lcvar_c_38;
+_Mglc_Ecvar _Lcvar_begin_39;
+_Lcvar_c_38 = (_Mglc_Ecvar)(Fgetnum(&_Lr_7));
+_Mglc_Pquick_alloc_arr_2(_Gcvar_table, _Lcvar_c_38);
 (*_Lfile_6)._Fcvar_table = _Gcvar_table;
 fflush(stdout);
-_Lcvar_begin_40 = _Gcvar_c;
-_Gcvar_c += _Lcvar_c_39;
+_Lcvar_begin_39 = _Gcvar_c;
+_Gcvar_c += _Lcvar_c_38;
 if(_Gcvar_cap <= _Gcvar_c) {
-_Mglc_Ecvar _Lold_cap_41;
-_Lold_cap_41 = _Gcvar_cap;
+_Mglc_Ecvar _Lold_cap_40;
+_Lold_cap_40 = _Gcvar_cap;
 _Mglc_Pgrow_2(_Gcvar_cap, _Gcvar_c);
-_Mglc_Prealloc_3(_Gcvar_v, _Gcvar_cap, _Lold_cap_41);
+_Mglc_Prealloc_3(_Gcvar_v, _Gcvar_cap, _Lold_cap_40);
 }
-_Mglc_Ecvar _Lcvar_idx_42;
-int32_t _Li_43;
-_Lcvar_idx_42 = _Lcvar_begin_40;
-_Li_43 = 0;
-for(int i = _Lcvar_c_39; i > 0; ) {
+_Mglc_Ecvar _Lcvar_idx_41;
+int32_t _Li_42;
+_Lcvar_idx_41 = _Lcvar_begin_39;
+_Li_42 = 0;
+for(int i = _Lcvar_c_38; i > 0; ) {
 i --;
-struct _Mglc_Scvar* _Lcvar_44;
-struct _Mglc_Sat* _Lat_45;
-int32_t _Lat_cvar_idx_46;
-_Lcvar_44 = (&_Gcvar_v[_Lcvar_idx_42]);
-(*_Lcvar_44)._Ffile = _Lfile_idx_4;
-_Mglc_Einclude_Prd_2(&(*_Lcvar_44)._Finclude, &_Lr_7);
-_Mglc_Eat_Prd_2(&(*_Lcvar_44)._Fat, &_Lr_7);
-_Mglc_Sdecl_var_Prd_2(&(*_Lcvar_44)._Fdecl, &_Lr_7);
-_Mglc_Ecvar_flags_Prd_2(&(*_Lcvar_44)._Fflags, &_Lr_7);
-_Lat_45 = _Mglc_Eat_Pptr_1((*_Lcvar_44)._Fat);
-_Lat_cvar_idx_46 = (*_Lat_45)._Fcvar_c++;
-if((*_Lat_45)._Fcvar_cap <= (*_Lat_45)._Fcvar_c) {
-int32_t _Lold_cap_47;
-_Lold_cap_47 = (*_Lat_45)._Fcvar_cap;
-_Mglc_Pgrow_2((*_Lat_45)._Fcvar_cap, (*_Lat_45)._Fcvar_c);
-_Mglc_Prealloc_3((*_Lat_45)._Fcvar_v, (*_Lat_45)._Fcvar_cap, _Lold_cap_47);
+struct _Mglc_Scvar* _Lcvar_43;
+struct _Mglc_Sat* _Lat_44;
+int32_t _Lat_cvar_idx_45;
+_Lcvar_43 = (&_Gcvar_v[_Lcvar_idx_41]);
+(*_Lcvar_43)._Ffile = _Lfile_idx_4;
+_Mglc_Einclude_Prd_2(&(*_Lcvar_43)._Finclude, &_Lr_7);
+_Mglc_Eat_Prd_2(&(*_Lcvar_43)._Fat, &_Lr_7);
+_Mglc_Sdecl_var_Prd_2(&(*_Lcvar_43)._Fdecl, &_Lr_7);
+_Mglc_Ecvar_flags_Prd_2(&(*_Lcvar_43)._Fflags, &_Lr_7);
+_Lat_44 = _Mglc_Eat_Pptr_1((*_Lcvar_43)._Fat);
+_Lat_cvar_idx_45 = (*_Lat_44)._Fcvar_c++;
+if((*_Lat_44)._Fcvar_cap <= (*_Lat_44)._Fcvar_c) {
+int32_t _Lold_cap_46;
+_Lold_cap_46 = (*_Lat_44)._Fcvar_cap;
+_Mglc_Pgrow_2((*_Lat_44)._Fcvar_cap, (*_Lat_44)._Fcvar_c);
+_Mglc_Prealloc_3((*_Lat_44)._Fcvar_v, (*_Lat_44)._Fcvar_cap, _Lold_cap_46);
 }
-(*_Lat_45)._Fcvar_v[_Lat_cvar_idx_46] = _Lcvar_idx_42;
-if(((*_Lcvar_44)._Fflags & _Mglc_Ecvar_flags_Cset_expr) != _Mglc_Ecvar_flags_C0) {
-_Mglc_Eexpr_Prd_2(&(*_Lcvar_44)._Fexpr_set, &_Lr_7);
+(*_Lat_44)._Fcvar_v[_Lat_cvar_idx_45] = _Lcvar_idx_41;
+if(((*_Lcvar_43)._Fflags & _Mglc_Ecvar_flags_Cset_expr) != _Mglc_Ecvar_flags_C0) {
+_Mglc_Eexpr_Prd_2(&(*_Lcvar_43)._Fexpr_set, &_Lr_7);
 } else {
-_Mglc_Ecvar_Prd_2(&(*_Lcvar_44)._Flast_cvar, &_Lr_7);
+_Mglc_Ecvar_Prd_2(&(*_Lcvar_43)._Flast_cvar, &_Lr_7);
 }
-_Gcvar_table[_Li_43] = _Lcvar_idx_42;
+_Gcvar_table[_Li_42] = _Lcvar_idx_41;
+continue_5:;
+_Lcvar_idx_41++;
+_Li_42++;
+}
+break_5:;
+}
+if(true) {
+_Mglc_Egvar _Lgvar_c_47;
+_Mglc_Egvar _Lgvar_begin_48;
+_Lgvar_c_47 = (_Mglc_Egvar)(Fgetnum(&_Lr_7));
+fflush(stdout);
+_Lgvar_begin_48 = _Ggvar_c;
+_Ggvar_c += _Lgvar_c_47;
+if(_Ggvar_cap <= _Ggvar_c) {
+_Mglc_Egvar _Lold_cap_49;
+_Lold_cap_49 = _Ggvar_cap;
+_Mglc_Pgrow_2(_Ggvar_cap, _Ggvar_c);
+_Mglc_Prealloc_3(_Ggvar_v, _Ggvar_cap, _Lold_cap_49);
+}
+_Mglc_Egvar _Lgvar_idx_50;
+int32_t _Li_51;
+_Lgvar_idx_50 = _Lgvar_begin_48;
+_Li_51 = 0;
+for(int i = _Lgvar_c_47; i > 0; ) {
+i --;
+struct _Mglc_Sdecl_gvar* _Lgvar_52;
+struct _Mglc_Sat* _Lat_53;
+int32_t _Lat_gvar_idx_54;
+_Lgvar_52 = (&_Ggvar_v[_Lgvar_idx_50]);
+_Mglc_Einclude_Prd_2(&(*_Lgvar_52)._Finclude, &_Lr_7);
+_Mglc_Eat_Prd_2(&(*_Lgvar_52)._Fat, &_Lr_7);
+_Mglc_Sdecl_var_Prd_2(&(*_Lgvar_52)._Fdecl, &_Lr_7);
+_Lat_53 = _Mglc_Eat_Pptr_1((*_Lgvar_52)._Fat);
+_Lat_gvar_idx_54 = (*_Lat_53)._Fgvar_c++;
+if((*_Lat_53)._Fgvar_cap <= (*_Lat_53)._Fgvar_c) {
+int32_t _Lold_cap_55;
+_Lold_cap_55 = (*_Lat_53)._Fgvar_cap;
+_Mglc_Pgrow_2((*_Lat_53)._Fgvar_cap, (*_Lat_53)._Fgvar_c);
+_Mglc_Prealloc_3((*_Lat_53)._Fgvar_v, (*_Lat_53)._Fgvar_cap, _Lold_cap_55);
+}
+(*_Lat_53)._Fgvar_v[_Lat_gvar_idx_54] = _Lgvar_idx_50;
 continue_6:;
-_Lcvar_idx_42++;
-_Li_43++;
+_Lgvar_idx_50++;
+_Li_51++;
 }
 break_6:;
 }
-if(true) {
-_Mglc_Egvar _Lgvar_c_48;
-_Mglc_Egvar _Lgvar_begin_49;
-_Lgvar_c_48 = (_Mglc_Egvar)(Fgetnum(&_Lr_7));
+_Lenum_c_56 = (_Mglc_Eenum)(Fgetnum(&_Lr_7));
 fflush(stdout);
-_Lgvar_begin_49 = _Ggvar_c;
-_Ggvar_c += _Lgvar_c_48;
-if(_Ggvar_cap <= _Ggvar_c) {
-_Mglc_Egvar _Lold_cap_50;
-_Lold_cap_50 = _Ggvar_cap;
-_Mglc_Pgrow_2(_Ggvar_cap, _Ggvar_c);
-_Mglc_Prealloc_3(_Ggvar_v, _Ggvar_cap, _Lold_cap_50);
+_Le_idx_begin_57 = _Genum_c;
+_Genum_c += _Lenum_c_56;
+if(_Genum_cap <= _Genum_c) {
+_Mglc_Eenum _Lold_cap_58;
+_Lold_cap_58 = _Genum_cap;
+_Mglc_Pgrow_2(_Genum_cap, _Genum_c);
+_Mglc_Prealloc_3(_Genum_v, _Genum_cap, _Lold_cap_58);
 }
-_Mglc_Egvar _Lgvar_idx_51;
-int32_t _Li_52;
-_Lgvar_idx_51 = _Lgvar_begin_49;
-_Li_52 = 0;
-for(int i = _Lgvar_c_48; i > 0; ) {
+_Mglc_Eenum _Le_idx_59;
+_Le_idx_59 = _Le_idx_begin_57;
+for(int i = _Lenum_c_56; i > 0; ) {
 i --;
-struct _Mglc_Sdecl_gvar* _Lgvar_53;
-struct _Mglc_Sat* _Lat_54;
-int32_t _Lat_gvar_idx_55;
-_Lgvar_53 = (&_Ggvar_v[_Lgvar_idx_51]);
-_Mglc_Einclude_Prd_2(&(*_Lgvar_53)._Finclude, &_Lr_7);
-_Mglc_Eat_Prd_2(&(*_Lgvar_53)._Fat, &_Lr_7);
-_Mglc_Sdecl_var_Prd_2(&(*_Lgvar_53)._Fdecl, &_Lr_7);
-_Lat_54 = _Mglc_Eat_Pptr_1((*_Lgvar_53)._Fat);
-_Lat_gvar_idx_55 = (*_Lat_54)._Fgvar_c++;
-if((*_Lat_54)._Fgvar_cap <= (*_Lat_54)._Fgvar_c) {
-int32_t _Lold_cap_56;
-_Lold_cap_56 = (*_Lat_54)._Fgvar_cap;
-_Mglc_Pgrow_2((*_Lat_54)._Fgvar_cap, (*_Lat_54)._Fgvar_c);
-_Mglc_Prealloc_3((*_Lat_54)._Fgvar_v, (*_Lat_54)._Fgvar_cap, _Lold_cap_56);
+struct _Mglc_Senum* _Le_60;
+_Mglc_Eat _Lat_i_61;
+struct _Mglc_Sat* _Lat_62;
+_Mglc_Pquick_alloc_one_1(_Le_60);
+_Genum_v[_Le_idx_59] = _Le_60;
+(*_Le_60)._Ffile = _Lfile_idx_4;
+(*_Le_60)._Fbegin_row = Fgetnum(&_Lr_7);
+(*_Le_60)._Fbegin_col = Fgetnum(&_Lr_7);
+(*_Le_60)._Fend_row = Fgetnum(&_Lr_7);
+(*_Le_60)._Fend_col = Fgetnum(&_Lr_7);
+_Mglc_Einclude_Prd_2(&(*_Le_60)._Finclude, &_Lr_7);
+_Mglc_Eat_Prd_2(&(*_Le_60)._Fat, &_Lr_7);
+_Mglc_Eat_Prd_2(&(*_Le_60)._Fbase_type, &_Lr_7);
+_Mglc_Eenum_flags_Prd_2(&(*_Le_60)._Fflags, &_Lr_7);
+_Lat_i_61 = (*_Le_60)._Fat;
+_Lat_62 = _Mglc_Eat_Pptr_1(_Lat_i_61);
+(*_Lat_62)._Fdecl._Fenum = _Le_idx_59;
+if(((*_Le_60)._Fflags & _Mglc_Eenum_flags_Creal_name) != _Mglc_Eenum_flags_C0) {
+_Mglc_Eid_Prd_2(&(*_Le_60)._Freal_name, &_Lr_7);
+} else {
+(*_Le_60)._Freal_name = _Mglc_Eid_Cnil;
 }
-(*_Lat_54)._Fgvar_v[_Lat_gvar_idx_55] = _Lgvar_idx_51;
 continue_7:;
-_Lgvar_idx_51++;
-_Li_52++;
+_Le_idx_59++;
 }
 break_7:;
-}
-_Lenum_c_57 = (_Mglc_Eenum)(Fgetnum(&_Lr_7));
-fflush(stdout);
-_Le_idx_begin_58 = _Genum_c;
-_Genum_c += _Lenum_c_57;
-if(_Genum_cap <= _Genum_c) {
-_Mglc_Eenum _Lold_cap_59;
-_Lold_cap_59 = _Genum_cap;
-_Mglc_Pgrow_2(_Genum_cap, _Genum_c);
-_Mglc_Prealloc_3(_Genum_v, _Genum_cap, _Lold_cap_59);
-}
-_Mglc_Eenum _Le_idx_60;
-_Le_idx_60 = _Le_idx_begin_58;
-for(int i = _Lenum_c_57; i > 0; ) {
-i --;
-struct _Mglc_Senum* _Le_61;
-_Mglc_Eat _Lat_i_62;
-struct _Mglc_Sat* _Lat_63;
-_Mglc_Pquick_alloc_one_1(_Le_61);
-_Genum_v[_Le_idx_60] = _Le_61;
-(*_Le_61)._Ffile = _Lfile_idx_4;
-(*_Le_61)._Fbegin_row = Fgetnum(&_Lr_7);
-(*_Le_61)._Fbegin_col = Fgetnum(&_Lr_7);
-(*_Le_61)._Fend_row = Fgetnum(&_Lr_7);
-(*_Le_61)._Fend_col = Fgetnum(&_Lr_7);
-_Mglc_Einclude_Prd_2(&(*_Le_61)._Finclude, &_Lr_7);
-_Mglc_Eat_Prd_2(&(*_Le_61)._Fat, &_Lr_7);
-_Mglc_Eat_Prd_2(&(*_Le_61)._Fbase_type, &_Lr_7);
-_Mglc_Eenum_flags_Prd_2(&(*_Le_61)._Fflags, &_Lr_7);
-_Lat_i_62 = (*_Le_61)._Fat;
-_Lat_63 = _Mglc_Eat_Pptr_1(_Lat_i_62);
-(*_Lat_63)._Fdecl._Fenum = _Le_idx_60;
-if(((*_Le_61)._Fflags & _Mglc_Eenum_flags_Creal_name) != _Mglc_Eenum_flags_C0) {
-_Mglc_Eid_Prd_2(&(*_Le_61)._Freal_name, &_Lr_7);
-} else {
-(*_Le_61)._Freal_name = _Mglc_Eid_Cnil;
-}
-continue_8:;
-_Le_idx_60++;
-}
-break_8:;
-_Lstruct_c_64 = (_Mglc_Estruct)(Fgetnum(&_Lr_7));
-_Ls_idx_begin_65 = _Gstruct_c;
-_Gstruct_c += _Lstruct_c_64;
+_Lstruct_c_63 = (_Mglc_Estruct)(Fgetnum(&_Lr_7));
+_Ls_idx_begin_64 = _Gstruct_c;
+_Gstruct_c += _Lstruct_c_63;
 if(_Gstruct_cap <= _Gstruct_c) {
-_Mglc_Estruct _Lold_cap_66;
-_Lold_cap_66 = _Gstruct_cap;
+_Mglc_Estruct _Lold_cap_65;
+_Lold_cap_65 = _Gstruct_cap;
 _Mglc_Pgrow_2(_Gstruct_cap, _Gstruct_c);
-_Mglc_Prealloc_3(_Gstruct_v, _Gstruct_cap, _Lold_cap_66);
+_Mglc_Prealloc_3(_Gstruct_v, _Gstruct_cap, _Lold_cap_65);
 }
-_Mglc_Estruct _Ls_idx_67;
-_Ls_idx_67 = _Ls_idx_begin_65;
-for(int i = _Lstruct_c_64; i > 0; ) {
+_Mglc_Estruct _Ls_idx_66;
+_Ls_idx_66 = _Ls_idx_begin_64;
+for(int i = _Lstruct_c_63; i > 0; ) {
 i --;
-uint8_t _Lfvar_c_68;
-struct _Mglc_Sstruct* _Ls_69;
-_Mglc_Eat _Lat_i_70;
-struct _Mglc_Sat* _Lat_71;
-_Lfvar_c_68 = _Mglc_Srdr_Pn1_1(&_Lr_7);
-_Mglc_Pquick_alloc_plus_2(_Ls_69, sizeof(struct _Mglc_Sfvar) * _Lfvar_c_68);
-_Gstruct_v[_Ls_idx_67] = _Ls_69;
-(*_Ls_69)._Ffile = _Lfile_idx_4;
-(*_Ls_69)._Ffvar_c = _Lfvar_c_68;
-(*_Ls_69)._Fbegin_row = Fgetnum(&_Lr_7);
-(*_Ls_69)._Fbegin_col = Fgetnum(&_Lr_7);
-(*_Ls_69)._Fend_row = Fgetnum(&_Lr_7);
-(*_Ls_69)._Fend_col = Fgetnum(&_Lr_7);
-_Mglc_Einclude_Prd_2(&(*_Ls_69)._Finclude, &_Lr_7);
-_Mglc_Eat_Prd_2(&(*_Ls_69)._Fat, &_Lr_7);
-_Mglc_Estruct_flags_Prd_2(&(*_Ls_69)._Fflags, &_Lr_7);
-_Lat_i_70 = (*_Ls_69)._Fat;
-_Lat_71 = _Mglc_Eat_Pptr_1(_Lat_i_70);
-(*_Lat_71)._Fdecl._Fstruct = _Ls_idx_67;
-int32_t _Lj_72;
-_Lj_72 = 0;
-for(int i = _Lfvar_c_68; i > 0; ) {
+uint8_t _Lfvar_c_67;
+struct _Mglc_Sstruct* _Ls_68;
+_Mglc_Eat _Lat_i_69;
+struct _Mglc_Sat* _Lat_70;
+_Lfvar_c_67 = _Mglc_Srdr_Pn1_1(&_Lr_7);
+_Mglc_Pquick_alloc_plus_2(_Ls_68, sizeof(struct _Mglc_Sfvar) * _Lfvar_c_67);
+_Gstruct_v[_Ls_idx_66] = _Ls_68;
+(*_Ls_68)._Ffile = _Lfile_idx_4;
+(*_Ls_68)._Ffvar_c = _Lfvar_c_67;
+(*_Ls_68)._Fbegin_row = Fgetnum(&_Lr_7);
+(*_Ls_68)._Fbegin_col = Fgetnum(&_Lr_7);
+(*_Ls_68)._Fend_row = Fgetnum(&_Lr_7);
+(*_Ls_68)._Fend_col = Fgetnum(&_Lr_7);
+_Mglc_Einclude_Prd_2(&(*_Ls_68)._Finclude, &_Lr_7);
+_Mglc_Eat_Prd_2(&(*_Ls_68)._Fat, &_Lr_7);
+_Mglc_Estruct_flags_Prd_2(&(*_Ls_68)._Fflags, &_Lr_7);
+_Lat_i_69 = (*_Ls_68)._Fat;
+_Lat_70 = _Mglc_Eat_Pptr_1(_Lat_i_69);
+(*_Lat_70)._Fdecl._Fstruct = _Ls_idx_66;
+int32_t _Lj_71;
+_Lj_71 = 0;
+for(int i = _Lfvar_c_67; i > 0; ) {
 i --;
-struct _Mglc_Sfvar* _Lfvar_73;
-_Lfvar_73 = (&(*_Ls_69)._Ffvar_v[_Lj_72]);
-_Mglc_Sdecl_var_Prd_2(&(*_Lfvar_73)._Fdecl, &_Lr_7);
-continue_10:;
-_Lj_72++;
-}
-break_10:;
-if(((*_Ls_69)._Fflags & _Mglc_Estruct_flags_Creal_name) != _Mglc_Estruct_flags_C0) {
-_Mglc_Eid_Prd_2(&(*_Ls_69)._Freal_name, &_Lr_7);
-} else {
-(*_Ls_69)._Freal_name = _Mglc_Eid_Cnil;
-}
+struct _Mglc_Sfvar* _Lfvar_72;
+_Lfvar_72 = (&(*_Ls_68)._Ffvar_v[_Lj_71]);
+_Mglc_Sdecl_var_Prd_2(&(*_Lfvar_72)._Fdecl, &_Lr_7);
 continue_9:;
-_Ls_idx_67++;
+_Lj_71++;
 }
 break_9:;
-_Lfunc_c_74 = (_Mglc_Efunc)(Fgetnum(&_Lr_7));
+if(((*_Ls_68)._Fflags & _Mglc_Estruct_flags_Creal_name) != _Mglc_Estruct_flags_C0) {
+_Mglc_Eid_Prd_2(&(*_Ls_68)._Freal_name, &_Lr_7);
+} else {
+(*_Ls_68)._Freal_name = _Mglc_Eid_Cnil;
+}
+continue_8:;
+_Ls_idx_66++;
+}
+break_8:;
+_Lfunc_c_73 = (_Mglc_Efunc)(Fgetnum(&_Lr_7));
 fflush(stdout);
-_Lf_idx_begin_75 = _Gfunc_c;
-_Gfunc_c += _Lfunc_c_74;
+_Lf_idx_begin_74 = _Gfunc_c;
+_Gfunc_c += _Lfunc_c_73;
 if(_Gfunc_cap <= _Gfunc_c) {
-_Mglc_Efunc _Lold_cap_76;
-_Lold_cap_76 = _Gfunc_cap;
+_Mglc_Efunc _Lold_cap_75;
+_Lold_cap_75 = _Gfunc_cap;
 _Mglc_Pgrow_2(_Gfunc_cap, _Gfunc_c);
-_Mglc_Prealloc_3(_Gfunc_v, _Gfunc_cap, _Lold_cap_76);
+_Mglc_Prealloc_3(_Gfunc_v, _Gfunc_cap, _Lold_cap_75);
 }
-_Mglc_Efunc _Lf_idx_77;
-_Lf_idx_77 = _Lf_idx_begin_75;
-for(int i = _Lfunc_c_74; i > 0; ) {
+_Mglc_Efunc _Lf_idx_76;
+_Lf_idx_76 = _Lf_idx_begin_74;
+for(int i = _Lfunc_c_73; i > 0; ) {
 i --;
-uint8_t _Lfarg_c_78;
-struct _Mglc_Sdecl_func* _Lf_79;
-union _Mglc_Srdr _Lr0_80;
-int8_t _Lthis_idx_83;
-uint8_t _Lgroup_c_84;
-_Mglc_Eat _Lat_i_87;
-struct _Mglc_Sat* _Lat_88;
-int32_t _Lat_func_idx_89;
-_Lfarg_c_78 = _Mglc_Srdr_Pn1_1(&_Lr_7);
-_Mglc_Pquick_alloc_plus_2(_Lf_79, sizeof(struct _Mglc_Sfarg) * _Lfarg_c_78);
-_Gfunc_v[_Lf_idx_77] = _Lf_79;
-(*_Lf_79)._Ffarg_c = _Lfarg_c_78;
-(*_Lf_79)._Ffile = _Lfile_idx_4;
-(*_Lf_79)._Fbegin_row = Fgetnum(&_Lr_7);
-(*_Lf_79)._Fbegin_col = Fgetnum(&_Lr_7);
-(*_Lf_79)._Fend_row = Fgetnum(&_Lr_7);
-(*_Lf_79)._Fend_col = Fgetnum(&_Lr_7);
-_Mglc_Einclude_Prd_2(&(*_Lf_79)._Finclude, &_Lr_7);
-_Mglc_Eat_Prd_2(&(*_Lf_79)._Fat, &_Lr_7);
-_Mglc_Sdecl_var_Prd_2(&(*_Lf_79)._Fdecl, &_Lr_7);
-_Lr0_80._Fref = _Lf_79;
-(*_Lf_79)._Flvar_c = _Mglc_Elvar_C0;
-_Gctx_func = _Lf_79;
-_Gctx_func_id = _Lf_idx_77;
-int32_t _Lj_81;
-_Lj_81 = 0;
-for(int i = _Lfarg_c_78; i > 0; ) {
+uint8_t _Lfarg_c_77;
+struct _Mglc_Sdecl_func* _Lf_78;
+union _Mglc_Srdr _Lr0_79;
+int8_t _Lthis_idx_82;
+uint8_t _Lgroup_c_83;
+_Mglc_Eat _Lat_i_86;
+struct _Mglc_Sat* _Lat_87;
+int32_t _Lat_func_idx_88;
+_Lfarg_c_77 = _Mglc_Srdr_Pn1_1(&_Lr_7);
+_Mglc_Pquick_alloc_plus_2(_Lf_78, sizeof(struct _Mglc_Sfarg) * _Lfarg_c_77);
+_Gfunc_v[_Lf_idx_76] = _Lf_78;
+(*_Lf_78)._Ffarg_c = _Lfarg_c_77;
+(*_Lf_78)._Ffile = _Lfile_idx_4;
+(*_Lf_78)._Fbegin_row = Fgetnum(&_Lr_7);
+(*_Lf_78)._Fbegin_col = Fgetnum(&_Lr_7);
+(*_Lf_78)._Fend_row = Fgetnum(&_Lr_7);
+(*_Lf_78)._Fend_col = Fgetnum(&_Lr_7);
+_Mglc_Einclude_Prd_2(&(*_Lf_78)._Finclude, &_Lr_7);
+_Mglc_Eat_Prd_2(&(*_Lf_78)._Fat, &_Lr_7);
+_Mglc_Sdecl_var_Prd_2(&(*_Lf_78)._Fdecl, &_Lr_7);
+_Lr0_79._Fref = _Lf_78;
+(*_Lf_78)._Flvar_c = _Mglc_Elvar_C0;
+_Gctx_func = _Lf_78;
+_Gctx_func_id = _Lf_idx_76;
+int32_t _Lj_80;
+_Lj_80 = 0;
+for(int i = _Lfarg_c_77; i > 0; ) {
 i --;
-struct _Mglc_Sfarg* _Lfarg_82;
-_Lfarg_82 = (&(*_Lf_79)._Ffarg_v[_Lj_81]);
-_Mglc_Sfarg_Prd_2(_Lfarg_82, &_Lr_7);
-continue_12:;
-_Lj_81++;
-}
-break_12:;
-_Lthis_idx_83 = (int8_t)(_Mglc_Srdr_Pn1_1(&_Lr_7));
-(*_Lf_79)._Fthis_idx = _Lthis_idx_83;
-if(_Lthis_idx_83 != -1) {
-(*_Lf_79)._Fthis_group = _Mglc_Srdr_Pn1_1(&_Lr_7);
-}
-_Lgroup_c_84 = _Mglc_Srdr_Pn1_1(&_Lr_7);
-(*_Lf_79)._Fgroup_c = _Lgroup_c_84;
-int32_t _Li_85;
-_Li_85 = 0;
-for(int i = _Lgroup_c_84; i > 0; ) {
-i --;
-(*_Lf_79)._Fgroup_v[_Li_85] = _Mglc_Srdr_Pn1_1(&_Lr_7);
-continue_13:;
-_Li_85++;
-}
-break_13:;
-_Mglc_Efunc_flags_Prd_2(&(*_Lf_79)._Fflags, &_Lr_7);
-if(((*_Lf_79)._Fflags & _Mglc_Efunc_flags_Creal_name) != _Mglc_Efunc_flags_C0) {
-_Mglc_Eid_Prd_2(&(*_Lf_79)._Freal_name, &_Lr_7);
-}
-if(((*_Lf_79)._Fflags & _Mglc_Efunc_flags_Ccase) != _Mglc_Efunc_flags_C0) {
-_Mglc_Eid_Prd_2(&(*_Lf_79)._Fcase, &_Lr_7);
-}
-if(((*_Lf_79)._Fflags & _Mglc_Efunc_flags_Cdecl) != _Mglc_Efunc_flags_C0) {
-uint32_t _Llen_86;
-_Llen_86 = Fgetnum(&_Lr_7);
-(*_Lf_79)._Fdecl_len = _Llen_86;
-(*_Lf_79)._Fdecl_str = qalloc(_Llen_86 + 1);
-memcpy((*_Lf_79)._Fdecl_str, _Lr_7._Fref, _Llen_86);
-(*_Lf_79)._Fdecl_str[_Llen_86] = 0;
-_Lr_7._Fpos += _Llen_86;
-}
-_Lat_i_87 = (*_Lf_79)._Fat;
-_Lat_88 = _Mglc_Eat_Pptr_1(_Lat_i_87);
-_Lat_func_idx_89 = (*_Lat_88)._Ffunc_c++;
-if((*_Lat_88)._Ffunc_cap <= (*_Lat_88)._Ffunc_c) {
-int32_t _Lold_cap_90;
-_Lold_cap_90 = (*_Lat_88)._Ffunc_cap;
-_Mglc_Pgrow_2((*_Lat_88)._Ffunc_cap, (*_Lat_88)._Ffunc_c);
-_Mglc_Prealloc_3((*_Lat_88)._Ffunc_v, (*_Lat_88)._Ffunc_cap, _Lold_cap_90);
-}
-(*_Lat_88)._Ffunc_v[_Lat_func_idx_89] = _Lf_idx_77;
+struct _Mglc_Sfarg* _Lfarg_81;
+_Lfarg_81 = (&(*_Lf_78)._Ffarg_v[_Lj_80]);
+_Mglc_Sfarg_Prd_2(_Lfarg_81, &_Lr_7);
 continue_11:;
-_Lf_idx_77++;
+_Lj_80++;
 }
 break_11:;
-_Mglc_Efunc_Prd_2(&_Lfunc_main_91, &_Lr_7);
-if(_Lfunc_main_91 != _Mglc_Efunc_Cnil) {
+_Lthis_idx_82 = (int8_t)(_Mglc_Srdr_Pn1_1(&_Lr_7));
+(*_Lf_78)._Fthis_idx = _Lthis_idx_82;
+if(_Lthis_idx_82 != -1) {
+(*_Lf_78)._Fthis_group = _Mglc_Srdr_Pn1_1(&_Lr_7);
+}
+_Lgroup_c_83 = _Mglc_Srdr_Pn1_1(&_Lr_7);
+(*_Lf_78)._Fgroup_c = _Lgroup_c_83;
+int32_t _Li_84;
+_Li_84 = 0;
+for(int i = _Lgroup_c_83; i > 0; ) {
+i --;
+(*_Lf_78)._Fgroup_v[_Li_84] = _Mglc_Srdr_Pn1_1(&_Lr_7);
+continue_12:;
+_Li_84++;
+}
+break_12:;
+_Mglc_Efunc_flags_Prd_2(&(*_Lf_78)._Fflags, &_Lr_7);
+if(((*_Lf_78)._Fflags & _Mglc_Efunc_flags_Creal_name) != _Mglc_Efunc_flags_C0) {
+_Mglc_Eid_Prd_2(&(*_Lf_78)._Freal_name, &_Lr_7);
+}
+if(((*_Lf_78)._Fflags & _Mglc_Efunc_flags_Ccase) != _Mglc_Efunc_flags_C0) {
+_Mglc_Eid_Prd_2(&(*_Lf_78)._Fcase, &_Lr_7);
+}
+if(((*_Lf_78)._Fflags & _Mglc_Efunc_flags_Cdecl) != _Mglc_Efunc_flags_C0) {
+uint32_t _Llen_85;
+_Llen_85 = Fgetnum(&_Lr_7);
+(*_Lf_78)._Fdecl_len = _Llen_85;
+(*_Lf_78)._Fdecl_str = qalloc(_Llen_85 + 1);
+memcpy((*_Lf_78)._Fdecl_str, _Lr_7._Fref, _Llen_85);
+(*_Lf_78)._Fdecl_str[_Llen_85] = 0;
+_Lr_7._Fpos += _Llen_85;
+}
+_Lat_i_86 = (*_Lf_78)._Fat;
+_Lat_87 = _Mglc_Eat_Pptr_1(_Lat_i_86);
+_Lat_func_idx_88 = (*_Lat_87)._Ffunc_c++;
+if((*_Lat_87)._Ffunc_cap <= (*_Lat_87)._Ffunc_c) {
+int32_t _Lold_cap_89;
+_Lold_cap_89 = (*_Lat_87)._Ffunc_cap;
+_Mglc_Pgrow_2((*_Lat_87)._Ffunc_cap, (*_Lat_87)._Ffunc_c);
+_Mglc_Prealloc_3((*_Lat_87)._Ffunc_v, (*_Lat_87)._Ffunc_cap, _Lold_cap_89);
+}
+(*_Lat_87)._Ffunc_v[_Lat_func_idx_88] = _Lf_idx_76;
+continue_10:;
+_Lf_idx_76++;
+}
+break_10:;
+_Mglc_Efunc_Prd_2(&_Lfunc_main_90, &_Lr_7);
+if(_Lfunc_main_90 != _Mglc_Efunc_Cnil) {
 if(_Gfunc_main != _Mglc_Efunc_Cnil) {
-struct _Mglc_Sdecl_func* _Lfirst_92;
-struct _Mglc_Sdecl_func* _Lsecond_93;
-_Lfirst_92 = _Mglc_Efunc_Pptr_1(_Gfunc_main);
-_Lsecond_93 = _Mglc_Efunc_Pptr_1(_Lfunc_main_91);
-fprintf(stdout, "There are more than one function with @main attribute, first is %u:%u and second is %u:%u\n", (*_Lfirst_92)._Fbegin_row, (*_Lfirst_92)._Fbegin_col, (*_Lsecond_93)._Fbegin_row, (*_Lsecond_93)._Fbegin_col);
+struct _Mglc_Sdecl_func* _Lfirst_91;
+struct _Mglc_Sdecl_func* _Lsecond_92;
+_Lfirst_91 = _Mglc_Efunc_Pptr_1(_Gfunc_main);
+_Lsecond_92 = _Mglc_Efunc_Pptr_1(_Lfunc_main_90);
+fprintf(stdout, "There are more than one function with @main attribute, first is %u:%u and second is %u:%u\n", (*_Lfirst_91)._Fbegin_row, (*_Lfirst_91)._Fbegin_col, (*_Lsecond_92)._Fbegin_row, (*_Lsecond_92)._Fbegin_col);
 exit(_Mstdc_Eexit_Cfailure);
 }
-_Gfunc_main = _Lfunc_main_91;
+_Gfunc_main = _Lfunc_main_90;
 }
-_Mglc_Efunc _Lf_idx_94;
-_Lf_idx_94 = _Lf_idx_begin_75;
-for(int i = _Lfunc_c_74; i > 0; ) {
+_Mglc_Efunc _Lf_idx_93;
+_Lf_idx_93 = _Lf_idx_begin_74;
+for(int i = _Lfunc_c_73; i > 0; ) {
 i --;
-struct _Mglc_Sdecl_func* _Lf_95;
-uint32_t _Lsize_96;
-_Lf_95 = _Gfunc_v[_Lf_idx_94];
-if(((*_Lf_95)._Fflags & _Mglc_Efunc_flags_Chas_body) == _Mglc_Efunc_flags_C0) {
-goto continue_14;
+struct _Mglc_Sdecl_func* _Lf_94;
+uint32_t _Lsize_95;
+_Lf_94 = _Gfunc_v[_Lf_idx_93];
+if(((*_Lf_94)._Fflags & _Mglc_Efunc_flags_Chas_body) == _Mglc_Efunc_flags_C0) {
+goto continue_13;
 }
-_Lsize_96 = _Mglc_Srdr_Pn4_1(&_Lr_7);
-(*_Lf_95)._Fbody_file_pos = (_Lr_7._Fpos - _Lr_begin_3._Fpos);
-_Lr_7._Fpos += _Lsize_96;
-continue_14:;
-_Lf_idx_94++;
+_Lsize_95 = _Mglc_Srdr_Pn4_1(&_Lr_7);
+(*_Lf_94)._Fbody_file_pos = (_Lr_7._Fpos - _Lr_begin_3._Fpos);
+_Lr_7._Fpos += _Lsize_95;
+continue_13:;
+_Lf_idx_93++;
 }
-break_14:;
+break_13:;
 }
 struct _Mglc_Sdecl_func* _Mglc_Efunc_Pptr_1(_Mglc_Efunc _Lf_0) {
 return _Gfunc_v[_Lf_0];
@@ -2078,19 +2089,13 @@ return _Gstruct_v[_Ls_0];
 struct _Mglc_Senum* _Mglc_Eenum_Pptr_1(_Mglc_Eenum _Lf_0) {
 return _Genum_v[_Lf_0];
 }
-_Mglc_Eid _Mglc_Pid_add_2(uint8_t _Lid_len_0, void* _Lid_str_1) {
+_Mglc_Eid _Mglc_Pid_add_2(uint8_t _Lid_len_0, char* _Lid_str_1) {
+int32_t _Lfound_2;
 int32_t _Lid_idx_3;
-int32_t _Lj_2;
-_Lj_2 = 0;
-for(int i = _Gid_c; i > 0; ) {
-i --;
-if(((_Gid_len_v[_Lj_2] == _Lid_len_0) && (memcmp(_Gid_str_v[_Lj_2], _Lid_str_1, _Lid_len_0) == 0))) {
-return _Lj_2;
+_Lfound_2 = _Mglc_Smap_Pget_or_insert_4(&_Gid_map, _Lid_str_1, _Lid_len_0, _Gid_c);
+if(_Lfound_2 != -1) {
+return _Lfound_2;
 }
-continue_0:;
-_Lj_2++;
-}
-break_0:;
 _Lid_idx_3 = _Gid_c++;
 if(_Gid_cap <= _Gid_c) {
 int32_t _Lold_cap_4;

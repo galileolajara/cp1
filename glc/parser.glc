@@ -300,26 +300,46 @@
          'c:exit(#failure);
       }
       +len = length`tnum;
-      {do{+i = 0}{(`.id-c) i++}
-         {if(`.id-len-v[i] == len)
-            {if('c:memcmp(`.id-str-v[i], r-start.ref, len) == 0)
-               {return i}
-            }
+      +found = `.id-map:get-or-insert(r-start.ref, len, `.id-c);
+      {if(found == -1)
+         `` inserted
+         +id = `.id-c++;
+         {if(`.id-cap <= `.id-c)
+            +old-cap = `.id-cap;
+            `:grow(`.id-cap, `.id-c);
+            `:realloc(`.id-str-v, `.id-cap, old-cap);
+            `:realloc(`.id-len-v, `.id-cap, old-cap);
          }
+         {+text`char[] = `:quick-alloc(len + 1)}
+         'c:memcpy(text, r-start.ref, len);
+         text[len] = 0;
+         `.id-str-v[id] = text;
+         `.id-len-v[id] = len;
+         {return id}
+      }{else
+         `` found
+         {return found}
       }
-      +id = `.id-c++;
-      {if(`.id-cap <= `.id-c)
-         +old-cap = `.id-cap;
-         `:grow(`.id-cap, `.id-c);
-         `:realloc(`.id-str-v, `.id-cap, old-cap);
-         `:realloc(`.id-len-v, `.id-cap, old-cap);
-      }
-      {+text`char[] = `:quick-alloc(len + 1)}
-      'c:memcpy(text, r-start.ref, len);
-      text[len] = 0;
-      `.id-str-v[id] = text;
-      `.id-len-v[id] = len;
-      {return id}
+      `` {do{+i = 0}{(`.id-c) i++}
+      ``    {if(`.id-len-v[i] == len)
+      ``       {if('c:memcmp(`.id-str-v[i], r-start.ref, len) == 0)
+      ``          {return i}
+      ``       }
+      ``    }
+      `` }
+      `` +id = `.id-c++;
+      `` {if(`.id-cap <= `.id-c)
+      ``    +old-cap = `.id-cap;
+      ``    `:grow(`.id-cap, `.id-c);
+      ``    `:realloc(`.id-str-v, `.id-cap, old-cap);
+      ``    `:realloc(`.id-len-v, `.id-cap, old-cap);
+      `` }
+      `` {+text`char[] = `:quick-alloc(len + 1)}
+      `` 'c:memcpy(text, r-start.ref, len);
+      `` text[len] = 0;
+      `` `.id-str-v[id] = text;
+      `` `.id-len-v[id] = len;
+      `` {return id}
    }
    {{:get-include(lex`this)`int}
       {+r-start`/rdr+}
@@ -333,26 +353,46 @@
          'c:exit(#failure);
       }
       +len = length`tnum;
-      {do{+i = 0}{(`.include-c) i++}
-         {if(`.include-len-v[i] == len)
-            {if('c:memcmp(`.include-str-v[i], r-start.ref, len) == 0)
-               {return i}
-            }
+      +found = `.include-map:get-or-insert(r-start.ref, len, `.include-c);
+      {if(found == -1)
+         `` inserted
+         +include = `.include-c++;
+         {if(`.include-cap <= `.include-c)
+            +old-cap = `.include-cap;
+            `:grow(`.include-cap, `.include-c);
+            `:realloc(`.include-str-v, `.include-cap, old-cap);
+            `:realloc(`.include-len-v, `.include-cap, old-cap);
          }
+         {+text`char[] = `:quick-alloc(len + 1)}
+         'c:memcpy(text, r-start.ref, len);
+         text[len] = 0;
+         `.include-str-v[include] = text;
+         `.include-len-v[include] = len;
+         {return include}
+      }{else
+         `` found
+         {return found}
       }
-      +include = `.include-c++;
-      {if(`.include-cap <= `.include-c)
-         +old-cap = `.include-cap;
-         `:grow(`.include-cap, `.include-c);
-         `:realloc(`.include-str-v, `.include-cap, old-cap);
-         `:realloc(`.include-len-v, `.include-cap, old-cap);
-      }
-      {+text`char[] = `:quick-alloc(len + 1)}
-      'c:memcpy(text, r-start.ref, len);
-      text[len] = 0;
-      `.include-str-v[include] = text;
-      `.include-len-v[include] = len;
-      {return include}
+      `` {do{+i = 0}{(`.include-c) i++}
+      ``    {if(`.include-len-v[i] == len)
+      ``       {if('c:memcmp(`.include-str-v[i], r-start.ref, len) == 0)
+      ``          {return i}
+      ``       }
+      ``    }
+      `` }
+      `` +include = `.include-c++;
+      `` {if(`.include-cap <= `.include-c)
+      ``    +old-cap = `.include-cap;
+      ``    `:grow(`.include-cap, `.include-c);
+      ``    `:realloc(`.include-str-v, `.include-cap, old-cap);
+      ``    `:realloc(`.include-len-v, `.include-cap, old-cap);
+      `` }
+      `` {+text`char[] = `:quick-alloc(len + 1)}
+      `` 'c:memcpy(text, r-start.ref, len);
+      `` text[len] = 0;
+      `` `.include-str-v[include] = text;
+      `` `.include-len-v[include] = len;
+      `` {return include}
    }
 }
 {/parser()
@@ -692,6 +732,8 @@
 {:char-escape-value(c`char)`int}
 {{:main(argc`int, argv`char[][])`int @main}
    {if(`false) :export}
+   .id-map:init;
+   .include-map:init;
    :quick-alloc-init;
    .func-main = #nil;
    .decl-include = #nil;

@@ -1,3 +1,4 @@
+void qalloc_undo(int32_t _Lsize_0);
 void _Mglc_Pdecl_func_begin_3(_Mglc_Eid _Lname_0, int32_t _Lrow_1, int32_t _Lcol_2);
 void _Mglc_Pdecl_func_end_2(int32_t _Lrow_0, int32_t _Lcol_1);
 void _Mglc_Pdecl_struct_end_2(int32_t _Lrow_0, int32_t _Lcol_1);

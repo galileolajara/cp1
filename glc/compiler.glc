@@ -48,12 +48,14 @@
 {gvar .include-table\include[]}
 {gvar .at-table\at[]}
 {gvar .cvar-table\cvar[]}
-{{:id-add(id-len`tnum, id-str`ref)\id}
-   {do{+j = 0}{(.id-c) j++}
-      {if(&&, .id-len-v[j] == id-len, 'c:memcmp(.id-str-v[j], id-str, id-len) == 0)
-         {return j}
-      }
-   }
+{{:id-add(id-len`tnum, id-str`char[])\id}
+   +found = .id-map:get-or-insert(id-str, id-len, .id-c);
+   {if(found != -1) {return found}}
+   `` {do{+j = 0}{(.id-c) j++}
+   ``    {if(&&, .id-len-v[j] == id-len, 'c:memcmp(.id-str-v[j], id-str, id-len) == 0)
+   ``       {return j}
+   ``    }
+   `` }
    +id-idx = .id-c++;
    {if(.id-cap <= .id-c)
       +old-cap = .id-cap;
@@ -118,13 +120,14 @@
          +include-len = r:n1;
          +include-str = r.ref;
          r.pos += include-len + 1;
-         +found = -1;
-         {do{+j = 0}{(.include-c) j++}
-            {if(&&, .include-len-v[j] == include-len, 'c:memcmp(.include-str-v[j], include-str, include-len) == 0)
-               found = j;
-               {break}
-            }
-         }
+         +found = .include-map:get-or-insert(include-str, include-len, .include-c);
+         `` +found = -1;
+         `` {do{+j = 0}{(.include-c) j++}
+         ``    {if(&&, .include-len-v[j] == include-len, 'c:memcmp(.include-str-v[j], include-str, include-len) == 0)
+         ``       found = j;
+         ``       {break}
+         ``    }
+         `` }
          {if(found == -1)
             +include-idx = .include-c++;
             {if(.include-cap <= .include-c)
@@ -486,12 +489,18 @@
 {gvar .struct-outputted-c`int}
 {gvar .struct-outputted-v\struct[]}
 {{:main(arg-c`int, arg-v`char[][])`int @main}
-   :quick-alloc-init;
-   .func-main = #nil;
    {if(arg-c < 2)
       'c.out:printf("usage: %s file.glc-t\n", arg-v[0]);
       {return 0}
    }
+   {if(`false)
+      :quick-alloc-undo(0);
+   }
+
+   .id-map:init;
+   .include-map:init;
+   :quick-alloc-init;
+   .func-main = #nil;
 
    {do{+type = 0\basic-type-id}{(\basic-type-id#COUNT) type++}
       +at-idx = .at-c++;

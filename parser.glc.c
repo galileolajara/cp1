@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include "num.c"
 #include <string.h>
+#define _Mglc_Chash_table_size (64)
 #define _Mglc_Efunc_Cnil (-1)
 #define _Mglc_Einclude_Cnil (-1)
 #define _Mstdc_Eexit_Csuccess 0
@@ -268,6 +269,10 @@ typedef uint32_t _Mglc_Efunc_flags2;
 typedef uint8_t _Mglc_Eexpr_type;
 typedef uint8_t _Mglc_Eexpr_flags;
 typedef int32_t _Mglc_Ealias;
+struct _Mglc_Smap;
+struct _Mglc_Smap {
+uint64_t _Fdata[(_Mglc_Chash_table_size + 7) >> 3];
+};
 union _Mglc_Srdr;
 union _Mglc_Srdr {
 void* _Fref;
@@ -713,6 +718,8 @@ struct _Mglc_Sstmt _Fbase;
 bool _Fnot;
 _Mglc_Eexpr _Fexpr;
 };
+struct _Mglc_Smap _Gid_map;
+struct _Mglc_Smap _Ginclude_map;
 _Mglc_Efunc _Gfunc_main;
 _Mglc_Einclude _Gdecl_include;
 char* input_path;
@@ -823,6 +830,7 @@ int32_t _Gexpr_cap;
 struct _Mglc_Sexpr** _Gexpr_v;
 int32_t main(int32_t _Largc_0, char** _Largv_1);
 void _Mglc_Pexport_0();
+void _Mglc_Smap_Pinit_1(struct _Mglc_Smap* _Lm_0);
 void _Mglc_Pquick_alloc_init_0();
 bool _Mstdc_Efile_Popen_3(_Mstdc_Efile* _Lfile_0, char* _Lpath_1, _Mstdc_Eopen_flags _Lflags_2);
 void _Mglc_Pget_row_col_4(int32_t* _Lout_row_0, int32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3);
@@ -855,6 +863,7 @@ void _Mglc_Pwrite_func_2(union _Mglc_Swtr* _Lw_0, bool _Lheader_1);
 bool _Mstdc_Efile_Popen_4(_Mstdc_Efile* _Lfile_0, char* _Lpath_1, _Mstdc_Eopen_flags _Lflags_2, int32_t _Lmode_3);
 void _Mglc_Eat_Pwr_header_2(_Mglc_Eat _Lid_0, union _Mglc_Swtr* _Lw_1);
 void _Mglc_Eid_Pwr_header_2(_Mglc_Eid _Lid_0, union _Mglc_Swtr* _Lw_1);
+void qalloc_undo(int32_t _Lsize_0);
 void _Mglc_Pdecl_func_begin_3(_Mglc_Eid _Lname_0, int32_t _Lrow_1, int32_t _Lcol_2);
 void _Mglc_Pdecl_func_end_2(int32_t _Lrow_0, int32_t _Lcol_1);
 void _Mglc_Pdecl_struct_end_2(int32_t _Lrow_0, int32_t _Lcol_1);
@@ -970,7 +979,8 @@ _Mglc_Eexpr _Mglc_Pexpr_bool_1(bool _Lvalue_0);
 _Mglc_Eexpr _Mglc_Pexpr_char_1(int32_t _Lvalue_0);
 void _Mglc_Pcvar_attr_real_name_1(_Mglc_Eid _Lname_0);
 void _Mglc_Pcvar_attr_no_decl_0();
-#define _Mglc_Pgrow_2(cap, c) cap = Fpow2gteq(c + 8)
+int32_t _Mglc_Smap_Pget_or_insert_4(struct _Mglc_Smap* _Lm_0, char* _Lstr_1, uint8_t _Llen_2, int32_t _Lval_3);
+#define _Mglc_Pgrow_2(cap, c) cap = Fpow2gteq((c) + 8)
 #define _Mglc_Prealloc_3(r, c, oldc) r = realloc(r, sizeof(r[0]) * (c)); memset(r + (oldc), 0, sizeof(r[0]) * ((c) - (oldc)))
 void _Mglc_Eat_Pput_to_header_1(_Mglc_Eat _Lat_0);
 void _Mglc_Einclude_Pwr_2(_Mglc_Einclude _Li_0, union _Mglc_Swtr* _Lw_1);
@@ -1254,6 +1264,8 @@ char _Lfinal_path_51[512];
 if(false) {
 _Mglc_Pexport_0();
 }
+_Mglc_Smap_Pinit_1(&_Gid_map);
+_Mglc_Smap_Pinit_1(&_Ginclude_map);
 _Mglc_Pquick_alloc_init_0();
 _Gfunc_main = _Mglc_Efunc_Cnil;
 _Gdecl_include = _Mglc_Einclude_Cnil;
@@ -1769,6 +1781,7 @@ rename(_Lout_path_42, _Lfinal_path_51);
 return 0;
 }
 void _Mglc_Pexport_0() {
+qalloc_undo(0);
 _Mglc_Pdecl_func_begin_3(_Mglc_Eid_C0, 0, 0);
 _Mglc_Pdecl_func_end_2(0, 0);
 _Mglc_Pdecl_struct_end_2(0, 0);
@@ -1994,8 +2007,7 @@ union _Mglc_Srdr _Lr_start_3;
 union _Mglc_Srdr _Lr_cursor_4;
 size_t _Llength_5;
 uint8_t _Llen_6;
-int32_t _Lid_8;
-char* _Ltext_10;
+int32_t _Lfound_7;
 _Lr_start_3._Fref = (*_Llex_0)._Fstart;
 _Lr_start_3._Fpos += _Lbegin_1;
 _Lr_cursor_4._Fref = (*_Llex_0)._Fcursor;
@@ -2005,19 +2017,10 @@ fprintf(stdout, "too long id was detected\n");
 exit(_Mstdc_Eexit_Cfailure);
 }
 _Llen_6 = (uint8_t)(_Llength_5);
-int32_t _Li_7;
-_Li_7 = 0;
-for(int i = _Gid_c; i > 0; ) {
-i --;
-if(_Gid_len_v[_Li_7] == _Llen_6) {
-if(memcmp(_Gid_str_v[_Li_7], _Lr_start_3._Fref, _Llen_6) == 0) {
-return _Li_7;
-}
-}
-continue_0:;
-_Li_7++;
-}
-break_0:;
+_Lfound_7 = _Mglc_Smap_Pget_or_insert_4(&_Gid_map, _Lr_start_3._Fref, _Llen_6, _Gid_c);
+if(_Lfound_7 == -1) {
+int32_t _Lid_8;
+char* _Ltext_10;
 _Lid_8 = _Gid_c++;
 if(_Gid_cap <= _Gid_c) {
 int32_t _Lold_cap_9;
@@ -2032,6 +2035,9 @@ _Ltext_10[_Llen_6] = 0;
 _Gid_str_v[_Lid_8] = _Ltext_10;
 _Gid_len_v[_Lid_8] = _Llen_6;
 return _Lid_8;
+} else {
+return _Lfound_7;
+}
 }
 uint32_t _Mglc_Slexer_Pget_num_dec_1(struct _Mglc_Slexer* _Llex_0) {
 union _Mglc_Srdr _Lr_start_1;
@@ -2090,8 +2096,7 @@ union _Mglc_Srdr _Lr_start_1;
 union _Mglc_Srdr _Lr_cursor_2;
 size_t _Llength_3;
 uint8_t _Llen_4;
-int32_t _Linclude_6;
-char* _Ltext_8;
+int32_t _Lfound_5;
 _Lr_start_1._Fref = (*_Llex_0)._Fstart;
 _Lr_start_1._Fpos += 9;
 _Lr_cursor_2._Fref = (*_Llex_0)._Fcursor;
@@ -2101,19 +2106,10 @@ fprintf(stdout, "too long include was detected\n");
 exit(_Mstdc_Eexit_Cfailure);
 }
 _Llen_4 = (uint8_t)(_Llength_3);
-int32_t _Li_5;
-_Li_5 = 0;
-for(int i = _Ginclude_c; i > 0; ) {
-i --;
-if(_Ginclude_len_v[_Li_5] == _Llen_4) {
-if(memcmp(_Ginclude_str_v[_Li_5], _Lr_start_1._Fref, _Llen_4) == 0) {
-return _Li_5;
-}
-}
-continue_0:;
-_Li_5++;
-}
-break_0:;
+_Lfound_5 = _Mglc_Smap_Pget_or_insert_4(&_Ginclude_map, _Lr_start_1._Fref, _Llen_4, _Ginclude_c);
+if(_Lfound_5 == -1) {
+int32_t _Linclude_6;
+char* _Ltext_8;
 _Linclude_6 = _Ginclude_c++;
 if(_Ginclude_cap <= _Ginclude_c) {
 int32_t _Lold_cap_7;
@@ -2128,6 +2124,9 @@ _Ltext_8[_Llen_4] = 0;
 _Ginclude_str_v[_Linclude_6] = _Ltext_8;
 _Ginclude_len_v[_Linclude_6] = _Llen_4;
 return _Linclude_6;
+} else {
+return _Lfound_5;
+}
 }
 void* qalloc(int32_t _Lsize_0) {
 if(sizeof(void*) == 8) {
@@ -2395,6 +2394,14 @@ Fputnum(_Lw_1, 0);
 } else {
 Fputnum(_Lw_1, 1 + _Gid_in_header_idx_v[_Lid_0]);
 }
+}
+void qalloc_undo(int32_t _Lsize_0) {
+if(sizeof(void*) == 8) {
+_Lsize_0 = ((_Lsize_0 + 7) & (-1 ^ 7));
+} else {
+_Lsize_0 = ((_Lsize_0 + 3) & (-1 ^ 3));
+}
+_Gquick_alloc_c -= _Lsize_0;
 }
 void _Mglc_Pdecl_func_begin_3(_Mglc_Eid _Lname_0, int32_t _Lrow_1, int32_t _Lcol_2) {
 _Gdecl_func_name = _Lname_0;

@@ -1,6 +1,12 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
+{/map(.data`lnum[(`#hash-table-size + 7) >> 3])
+   {:init(m`this)}
+   {:get-or-insert(m`this, str`char[], len`tnum, val`int)`int}
+}
+{gvar .id-map/map+}
+{gvar .include-map/map+}
 {/struct(
 if-compiler
    .file`\file,
@@ -390,6 +396,14 @@ end-if
    `` 'c.out:printf("expanding to %u\n", .quick-alloc-cap);
    .quick-alloc-c = size;
    {return .quick-alloc-v}
+}
+{{:quick-alloc-undo(size`int) @real-name(qalloc_undo)}
+   {if(`ref[`size] == 8)
+      size = (size + 7) & (-1 ^ 7);
+   }{else
+      size = (size + 3) & (-1 ^ 3);
+   }
+   .quick-alloc-c -= size;
 }
 {:quick-alloc-one(r`ref)
    @no-body
