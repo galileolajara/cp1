@@ -19,7 +19,7 @@ struct string_compare {
 };
 typedef ankerl::unordered_dense::map<ShortString, int, string_hash, string_compare> map_t;
 struct ParentTypeName {
-   int parent_and_type; // type is at 28th - 32nd bit
+   int parent_and_type; // type is at 30th - 32nd bit
    int name;
 };
 struct ParentTypeName_hash {
