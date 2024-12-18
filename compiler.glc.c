@@ -1025,7 +1025,7 @@ void _Mglc_Sstmt_Pwrite_space_1(struct _Mglc_Sstmt* _Lstmt_0);
 void _Mglc_Eexpr_Pset_3(_Mglc_Eexpr _Le_0, struct _Mglc_Sexpr* _Lexpr_1, _Mglc_Eexpr_type _Ltype_2);
 void _Mglc_Eassign_Prd_2(_Mglc_Eassign* _Ls_0, union _Mglc_Srdr* _Lr_1);
 void _Mglc_Ecompare_Prd_2(_Mglc_Ecompare* _Le_0, union _Mglc_Srdr* _Lr_1);
-bool _Mglc_Srdr_Pbool_1(union _Mglc_Srdr* _Lr_0);
+bool _Mglc_Srdr_Pb_1(union _Mglc_Srdr* _Lr_0);
 void _Mglc_Emath_Prd_2(_Mglc_Emath* _Le_0, union _Mglc_Srdr* _Lr_1);
 void _Mglc_Eunary_Prd_2(_Mglc_Eunary* _Lu_0, union _Mglc_Srdr* _Lr_1);
 void _Mglc_Ebools_Prd_2(_Mglc_Ebools* _Le_0, union _Mglc_Srdr* _Lr_1);
@@ -1140,7 +1140,7 @@ if((*_Lat_10)._Ftype == _Mglc_Ename_type_Cstruct) {
 struct _Mglc_Sstruct* _Lt_11;
 int32_t _Lt_method_idx_12;
 if((*_Lat_10)._Fdecl._Fenum == _Mglc_Eenum_Cnil) {
-fprintf(stdout, "%s:%u:%u: function using '`this' was declared on struct /%s that was not defined\n", _Mglc_Efile_Ppath_1((*_Lf_9)._Ffile), (*_Lf_9)._Fbegin_row, (*_Lf_9)._Fbegin_col, _Mglc_Eid_Pstr_1((*_Lat_10)._Fname._Fid));
+fprintf(stdout, "%s:%u:%u: function using ':this' was declared on struct /%s that was not defined\n", _Mglc_Efile_Ppath_1((*_Lf_9)._Ffile), (*_Lf_9)._Fbegin_row, (*_Lf_9)._Fbegin_col, _Mglc_Eid_Pstr_1((*_Lat_10)._Fname._Fid));
 exit(_Mstdc_Eexit_Cfailure);
 }
 _Lt_11 = _Mglc_Estruct_Pptr_1((*_Lat_10)._Fdecl._Fstruct);
@@ -1156,7 +1156,7 @@ _Mglc_Prealloc_3((*_Lt_11)._Fmethod_v, (*_Lt_11)._Fmethod_cap, _Lold_cap_13);
 struct _Mglc_Senum* _Lt_14;
 int32_t _Lt_method_idx_15;
 if((*_Lat_10)._Fdecl._Fenum == _Mglc_Eenum_Cnil) {
-fprintf(stdout, "%s:%u:%u: function using '`this' was declared on enum \\%s that was not defined\n", _Mglc_Efile_Ppath_1((*_Lf_9)._Ffile), (*_Lf_9)._Fbegin_row, (*_Lf_9)._Fbegin_col, _Mglc_Eid_Pstr_1((*_Lat_10)._Fname._Fid));
+fprintf(stdout, "%s:%u:%u: function using ':this' was declared on enum \\%s that was not defined\n", _Mglc_Efile_Ppath_1((*_Lf_9)._Ffile), (*_Lf_9)._Fbegin_row, (*_Lf_9)._Fbegin_col, _Mglc_Eid_Pstr_1((*_Lat_10)._Fname._Fid));
 exit(_Mstdc_Eexit_Cfailure);
 }
 _Lt_14 = _Mglc_Eenum_Pptr_1((*_Lat_10)._Fdecl._Fenum);
@@ -1181,7 +1181,7 @@ _Mglc_Prealloc_3((*_Lt_17)._Fmethod_v, (*_Lt_17)._Fmethod_cap, _Lold_cap_19);
 }
 (*_Lt_17)._Fmethod_v[_Lt_method_idx_18] = _Lf_idx_8;
 } else {
-fprintf(stdout, "%s:%u:%u: function using '`this' was declared on a type that's not a struct or enum\n", _Mglc_Efile_Ppath_1((*_Lf_9)._Ffile), (*_Lf_9)._Fbegin_row, (*_Lf_9)._Fbegin_col);
+fprintf(stdout, "%s:%u:%u: function using ':this' was declared on a type that's not a struct or enum\n", _Mglc_Efile_Ppath_1((*_Lf_9)._Ffile), (*_Lf_9)._Fbegin_row, (*_Lf_9)._Fbegin_col);
 exit(_Mstdc_Eexit_Cfailure);
 }
 }
@@ -3743,7 +3743,7 @@ void _Mglc_Eexpr_Prd_bool_2(_Mglc_Eexpr _Le_idx_0, union _Mglc_Srdr* _Lr_1) {
 struct _Mglc_Sexpr_bool* _Le_2;
 _Mglc_Pquick_alloc_one_1(_Le_2);
 _Mglc_Eexpr_Pset_3(_Le_idx_0, &(*_Le_2)._Fbase, _Mglc_Eexpr_type_Cbool);
-(*_Le_2)._Fvalue = _Mglc_Srdr_Pbool_1(_Lr_1);
+(*_Le_2)._Fvalue = _Mglc_Srdr_Pb_1(_Lr_1);
 }
 void _Mglc_Eexpr_Prd_char_2(_Mglc_Eexpr _Le_idx_0, union _Mglc_Srdr* _Lr_1) {
 struct _Mglc_Sexpr_char* _Le_2;
@@ -4036,14 +4036,14 @@ _Mglc_Sstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gc
 void _Mglc_Sstmt_space_Prd_if_2(struct _Mglc_Sstmt_space* _Lspace_0, union _Mglc_Srdr* _Lr_1) {
 struct _Mglc_Sstmt_if* _Ls_2;
 _Mglc_Pquick_alloc_one_1(_Ls_2);
-(*_Ls_2)._Fnot = _Mglc_Srdr_Pbool_1(_Lr_1);
+(*_Ls_2)._Fnot = _Mglc_Srdr_Pb_1(_Lr_1);
 _Mglc_Eexpr_Prd_2(&(*_Ls_2)._Fexpr, _Lr_1);
 _Mglc_Sstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Estmt_type_Cif);
 }
 void _Mglc_Sstmt_space_Prd_if_elif_2(struct _Mglc_Sstmt_space* _Lspace_0, union _Mglc_Srdr* _Lr_1) {
 struct _Mglc_Sstmt_if_elif* _Ls_2;
 _Mglc_Pquick_alloc_one_1(_Ls_2);
-(*_Ls_2)._Fnot = _Mglc_Srdr_Pbool_1(_Lr_1);
+(*_Ls_2)._Fnot = _Mglc_Srdr_Pb_1(_Lr_1);
 _Mglc_Eexpr_Prd_2(&(*_Ls_2)._Fexpr, _Lr_1);
 _Mglc_Sstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Estmt_type_Cif_elif);
 }
@@ -4079,7 +4079,7 @@ continue_0:;
 _Li_4++;
 }
 break_0:;
-(*_Ls_3)._Ffall_through = _Mglc_Srdr_Pbool_1(_Lr_1);
+(*_Ls_3)._Ffall_through = _Mglc_Srdr_Pb_1(_Lr_1);
 _Mglc_Sstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_3)._Fbase, _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Estmt_type_Ccase);
 }
 void _Mglc_Sstmt_space_Prd_case_end_2(struct _Mglc_Sstmt_space* _Lspace_0, union _Mglc_Srdr* _Lr_1) {
@@ -4090,7 +4090,7 @@ _Mglc_Sstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gc
 void _Mglc_Sstmt_space_Prd_default_2(struct _Mglc_Sstmt_space* _Lspace_0, union _Mglc_Srdr* _Lr_1) {
 struct _Mglc_Sstmt_default* _Ls_2;
 _Mglc_Pquick_alloc_one_1(_Ls_2);
-(*_Ls_2)._Ffall_through = _Mglc_Srdr_Pbool_1(_Lr_1);
+(*_Ls_2)._Ffall_through = _Mglc_Srdr_Pb_1(_Lr_1);
 _Mglc_Sstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Estmt_type_Cdefault);
 }
 void _Mglc_Sstmt_space_Prd_default_end_2(struct _Mglc_Sstmt_space* _Lspace_0, union _Mglc_Srdr* _Lr_1) {
@@ -4108,7 +4108,7 @@ struct _Mglc_Sstmt_do* _Ls_2;
 _Mglc_Pquick_alloc_one_1(_Ls_2);
 _Mglc_Eexpr_Prd_2(&(*_Ls_2)._Fexpr, _Lr_1);
 _Mglc_Sstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Estmt_type_Cdo);
-if(_Mglc_Srdr_Pbool_1(_Lr_1)) {
+if(_Mglc_Srdr_Pb_1(_Lr_1)) {
 struct _Mglc_Sstmt_space* _Lspace2_3;
 _Mglc_Pquick_alloc_one_1(_Lspace2_3);
 (*_Ls_2)._Fcontinue = _Lspace2_3;
@@ -4132,7 +4132,7 @@ struct _Mglc_Sstmt_while* _Ls_2;
 _Mglc_Pquick_alloc_one_1(_Ls_2);
 _Mglc_Eexpr_Prd_2(&(*_Ls_2)._Fexpr, _Lr_1);
 _Mglc_Sstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Estmt_type_Cwhile);
-if(_Mglc_Srdr_Pbool_1(_Lr_1)) {
+if(_Mglc_Srdr_Pb_1(_Lr_1)) {
 struct _Mglc_Sstmt_space* _Lspace2_3;
 _Mglc_Pquick_alloc_one_1(_Lspace2_3);
 (*_Ls_2)._Fcontinue = _Lspace2_3;
@@ -5374,7 +5374,7 @@ void _Mglc_Eassign_Prd_2(_Mglc_Eassign* _Ls_0, union _Mglc_Srdr* _Lr_1) {
 void _Mglc_Ecompare_Prd_2(_Mglc_Ecompare* _Le_0, union _Mglc_Srdr* _Lr_1) {
 (*_Le_0) = (_Mglc_Ecompare)(_Mglc_Srdr_Pn1_1(_Lr_1));
 }
-bool _Mglc_Srdr_Pbool_1(union _Mglc_Srdr* _Lr_0) {
+bool _Mglc_Srdr_Pb_1(union _Mglc_Srdr* _Lr_0) {
 return _Mglc_Srdr_Pn1_1(_Lr_0) != 0;
 }
 void _Mglc_Emath_Prd_2(_Mglc_Emath* _Le_0, union _Mglc_Srdr* _Lr_1) {

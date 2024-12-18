@@ -1244,7 +1244,7 @@ void _Mglc_Stype_info_Pcopy_from_2(struct _Mglc_Stype_info* _Lti_0, struct _Mglc
 #define _Mglc_Pquick_alloc_arr_2(r, c) r = qalloc(sizeof(r[0]) * (c))
 void _Mglc_Pfunc_stmt_add_1(struct _Mglc_Sstmt* _Ls_0);
 int32_t _Mglc_Sat_map_Pget_or_insert_5(struct _Mglc_Sat_map* _Lm_0, _Mglc_Eat _Lparent_1, _Mglc_Ename_type _Ltype_2, _Mglc_Eid _Lname_3, int32_t _Lval_4);
-void _Mglc_Swtr_Pbool_2(union _Mglc_Swtr* _Lw_0, bool _Lval_1);
+void _Mglc_Swtr_Pb_2(union _Mglc_Swtr* _Lw_0, bool _Lval_1);
 void _Mglc_Emath_Pwr_2(_Mglc_Emath _Le_0, union _Mglc_Swtr* _Lw_1);
 void _Mglc_Ebools_Pwr_2(_Mglc_Ebools _Le_0, union _Mglc_Swtr* _Lw_1);
 void _Mglc_Eunary_Pwr_2(_Mglc_Eunary _Lu_0, union _Mglc_Swtr* _Lw_1);
@@ -4206,8 +4206,8 @@ _Li_3++;
 break_1:;
 _Mglc_Swtr_Pn1_2(_Lw_1, (*_Lti_0)._Farray_c);
 _Mglc_Swtr_Pn1_2(_Lw_1, (*_Lti_0)._Fstar_c);
-_Mglc_Swtr_Pbool_2(_Lw_1, (*_Lti_0)._Fbuilt_in);
-_Mglc_Swtr_Pbool_2(_Lw_1, (*_Lti_0)._Fconst);
+_Mglc_Swtr_Pb_2(_Lw_1, (*_Lti_0)._Fbuilt_in);
+_Mglc_Swtr_Pb_2(_Lw_1, (*_Lti_0)._Fconst);
 }
 void _Mglc_Eexpr_type_Pwr_2(_Mglc_Eexpr_type _Le_0, union _Mglc_Swtr* _Lw_1) {
 _Mglc_Swtr_Pn1_2(_Lw_1, _Le_0);
@@ -4302,7 +4302,7 @@ _Mglc_Ecompare_Pwr_2((*_Le_3)._Ftype, _Lw_1);
 void _Mglc_Eexpr_Pwr_bool_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2) {
 struct _Mglc_Sexpr_bool* _Le_3;
 _Le_3 = _Lexpr_0;
-_Mglc_Swtr_Pbool_2(_Lw_1, (*_Le_3)._Fvalue);
+_Mglc_Swtr_Pb_2(_Lw_1, (*_Le_3)._Fvalue);
 }
 void _Mglc_Eexpr_Pwr_char_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2) {
 struct _Mglc_Sexpr_char* _Le_3;
@@ -4433,14 +4433,14 @@ continue_0:;
 _Li_4++;
 }
 break_0:;
-_Mglc_Swtr_Pbool_2(_Lw_1, (*_Ls_3)._Ffall_through);
+_Mglc_Swtr_Pb_2(_Lw_1, (*_Ls_3)._Ffall_through);
 }
 void _Mglc_Sstmt_space_Pwr_case_end_3(struct _Mglc_Sstmt* _Lstmt_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2) {
 }
 void _Mglc_Sstmt_space_Pwr_default_3(struct _Mglc_Sstmt* _Lstmt_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2) {
 struct _Mglc_Sstmt_default* _Ls_3;
 _Ls_3 = _Lstmt_0;
-_Mglc_Swtr_Pbool_2(_Lw_1, (*_Ls_3)._Ffall_through);
+_Mglc_Swtr_Pb_2(_Lw_1, (*_Ls_3)._Ffall_through);
 }
 void _Mglc_Sstmt_space_Pwr_default_end_3(struct _Mglc_Sstmt* _Lstmt_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2) {
 }
@@ -4449,13 +4449,13 @@ void _Mglc_Sstmt_space_Pwr_switch_end_3(struct _Mglc_Sstmt* _Lstmt_0, union _Mgl
 void _Mglc_Sstmt_space_Pwr_if_3(struct _Mglc_Sstmt* _Lstmt_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2) {
 struct _Mglc_Sstmt_if* _Ls_3;
 _Ls_3 = _Lstmt_0;
-_Mglc_Swtr_Pbool_2(_Lw_1, (*_Ls_3)._Fnot);
+_Mglc_Swtr_Pb_2(_Lw_1, (*_Ls_3)._Fnot);
 _Mglc_Eexpr_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
 }
 void _Mglc_Sstmt_space_Pwr_if_elif_3(struct _Mglc_Sstmt* _Lstmt_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2) {
 struct _Mglc_Sstmt_if_elif* _Ls_3;
 _Ls_3 = _Lstmt_0;
-_Mglc_Swtr_Pbool_2(_Lw_1, (*_Ls_3)._Fnot);
+_Mglc_Swtr_Pb_2(_Lw_1, (*_Ls_3)._Fnot);
 _Mglc_Eexpr_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
 }
 void _Mglc_Sstmt_space_Pwr_if_else_3(struct _Mglc_Sstmt* _Lstmt_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2) {
@@ -4467,10 +4467,10 @@ struct _Mglc_Sstmt_do* _Ls_3;
 _Ls_3 = _Lstmt_0;
 _Mglc_Eexpr_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
 if((*_Ls_3)._Fcontinue != NULL) {
-_Mglc_Swtr_Pbool_2(_Lw_1, true);
+_Mglc_Swtr_Pb_2(_Lw_1, true);
 _Mglc_Sstmt_space_Pwr_3((*_Ls_3)._Fcontinue, _Lw_1, _Lheader_2);
 } else {
-_Mglc_Swtr_Pbool_2(_Lw_1, false);
+_Mglc_Swtr_Pb_2(_Lw_1, false);
 }
 }
 void _Mglc_Sstmt_space_Pwr_do_end_3(struct _Mglc_Sstmt* _Lstmt_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2) {
@@ -4480,10 +4480,10 @@ struct _Mglc_Sstmt_while* _Ls_3;
 _Ls_3 = _Lstmt_0;
 _Mglc_Eexpr_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
 if((*_Ls_3)._Fcontinue != NULL) {
-_Mglc_Swtr_Pbool_2(_Lw_1, true);
+_Mglc_Swtr_Pb_2(_Lw_1, true);
 _Mglc_Sstmt_space_Pwr_3((*_Ls_3)._Fcontinue, _Lw_1, _Lheader_2);
 } else {
-_Mglc_Swtr_Pbool_2(_Lw_1, false);
+_Mglc_Swtr_Pb_2(_Lw_1, false);
 }
 }
 void _Mglc_Sstmt_space_Pwr_while_end_3(struct _Mglc_Sstmt* _Lstmt_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2) {
@@ -4524,7 +4524,7 @@ if((*_Gdecl_func_ctx_space)._Fstmt_last == NULL) {
 (*_Gdecl_func_ctx_space)._Fstmt_last = _Ls_0;
 }
 }
-void _Mglc_Swtr_Pbool_2(union _Mglc_Swtr* _Lw_0, bool _Lval_1) {
+void _Mglc_Swtr_Pb_2(union _Mglc_Swtr* _Lw_0, bool _Lval_1) {
 if(_Lval_1) {
 _Mglc_Swtr_Pn1_2(_Lw_0, 1);
 } else {
