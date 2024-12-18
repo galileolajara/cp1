@@ -1017,6 +1017,10 @@
          psr:parse(t, tok);
       }{else
          {switch(t)
+            {case(#id-lparen)
+               tok.id = lex:get-id(0, 1);
+               psr:parse(t, tok);
+            }
             {case(#char1)
                {+r/rdr+}
                r.ref = lex.start;
@@ -1058,6 +1062,9 @@
             }
             {case(#id)
                tok.id = lex:get-id(0, 0);
+               {if(lex.cursor[0] == ''()
+                  t = #id-lparen;
+               }
                psr:parse(t, tok);
             }
             {default

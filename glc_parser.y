@@ -209,7 +209,7 @@ fargs ::= fargs farg_next_group farg_list rparen_or_comma.
 fargs ::= fargs farg_next_group RPAREN.
 func_attr ::= SPACE_AT_MAIN.
    { _Mglc_Pfunc_attr_main_0(); }
-func_attr ::= SPACE_AT_CASE ID_COLON(e).
+func_attr ::= SPACE_AT_CASE DOT ID_LPAREN(e) LPAREN RPAREN.
    { _Mglc_Pfunc_attr_case_1(e.basic.id); }
 func_attr ::= SPACE_AT_PROCESS.
    { _Mglc_Pfunc_attr_process_0(); }
@@ -492,13 +492,12 @@ expr_in_paren(l) ::= lparen_or_space opExpr(r) rparen_or_space.
    { l.basic.id = r.basic.id; }
 expr_in_paren(l) ::= exprs(r).
    { l.basic.id = r.basic.id; }
-funcExpr(l) ::= ID_COLON(func).
+funcExpr(l) ::= ID_LPAREN(func).
    { l.basic.id = -1; l.basic.id2 = func.basic.id; _Mglc_Pexpr_push_call_2(func.basic.row, func.basic.col); }
-funcExpr(l) ::= at(at) ID_COLON(func).
+funcExpr(l) ::= at(at) ID_LPAREN(func).
    { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _Mglc_Pexpr_push_call_2(func.basic.row, func.basic.col); }
-methodExpr(l) ::= value4fix(e) ID_COLON(func).
+methodExpr(l) ::= value4fix(e) DOT ID_LPAREN(func).
    { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _Mglc_Pexpr_push_call_2(func.basic.row, func.basic.col); }
-call_args_optional ::= .
 call_args_optional ::= lparen_or_space RPAREN.
 call_args_optional ::= call_args.
 call_arg ::= expr(e).
@@ -688,7 +687,7 @@ stmt_switch_begin ::= LCBRACE_SWITCH.
    { _Mglc_Pstmt_switch_begin_0(); }
 switch_expr ::= begin_pos(begin) if_expr_val(e) end_pos(end).
    { _Mglc_Pstmt_switch_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, -1); }
-switch_expr ::= begin_pos(begin) if_expr_val(e) callExpr_func(cases) end_pos(end).
+switch_expr ::= begin_pos(begin) if_expr_val(e) DOT callExpr_func(cases) end_pos(end).
    { _Mglc_Pstmt_switch_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, cases.basic.id); }
 switch_case_expr ::= expr(e).
    { _Mglc_Pstmt_switch_expr_add_1(e.basic.id); }
