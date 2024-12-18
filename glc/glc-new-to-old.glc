@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{{:main(arg-c`int, arg-v`char[][])`int @main}
+{{:main(arg-c:int, arg-v:char[][]):int @main}
    +in-path = arg-v[1];
    +out-new-path = arg-v[2];
    +out-old-path = arg-v[3];
@@ -174,7 +174,7 @@
          {continue}
       }
       {if(&&, r.1[0] == ''_, r.1[1] == ''z)
-         `` slow algorithm for changing /type[`size] to `sizeOf[/type]
+         `` slow algorithm for changing /type[:size] to :sizeOf[/type]
          /rdr:set(+r-bracket, r.ref);
          +limit = 32;
          {while(r-bracket.1[0] != ''[)
@@ -183,10 +183,10 @@
             {if(limit == 0) {break}}
          }
          {if(limit != 0)
-            {if('c:memcmp(& r-bracket.1[1], "`size]", 6) == 0)
+            {if('c:memcmp(& r-bracket.1[1], ":size]", 6) == 0)
                r.pos += 2;
                w-new:copy(r.ref, (r-bracket.pos + 7) - r.pos);
-               w-old:copy("`sizeOf[", 8);
+               w-old:copy(":sizeOf[", 8);
                {if(&&, r.1[0] == ''`~, r.1[1] == ''/)
                   r.pos ++;
                }

@@ -2,7 +2,7 @@
 {alias 'c = %stdc}
 {at(%glc)
 {at(/stmt-space)
-   {:wr-expr(stmt`/stmt, w`/wtr, header`bool) @case:wr @inline;
+   {:wr-expr(stmt`/stmt, w`/wtr, header:bool) @case:wr @inline;
       {+s`/stmt-expr = stmt}
       s.expr:wr(w, header);
    }
@@ -18,37 +18,37 @@
       s.expr:write;
       `.out:printf(";\n");
    }
-   {:process-expr(stmt`/stmt, ok`bool&) @case:process @inline;
+   {:process-expr(stmt`/stmt, ok:bool&) @case:process @inline;
       {+s`/stmt-expr = stmt}
       {if!(s.expr:process)
          {return}
       }
-      ok = `true;
+      ok = :true;
    }
 }
 {\expr-type(
    #nil, #call-method, #lvar, #gvar, #math, #assign, #bools,
    #func, #method, #fvar, #int, #cvar, #str, #index, #unary,
    #compare, #bool, #null, #cast-fast, #ref, #char, #size-of-type,
-   )`tnum
-   {:wr(e`this, w`/wtr) @inline;
+   ):tnum
+   {:wr(e:this, w`/wtr) @inline;
       w:n1(e);
    }
-   {:rd(e`this&, r`/rdr) @inline;
+   {:rd(e:this&, r`/rdr) @inline;
       e = r:n1`\expr-type;
    }
-   {:glc-name(e`this)`char[] @glc-name}
+   {:glc-name(e:this):char[] @glc-name}
 }
-{cvar #debug-rd-wr`bool = `true}
-{\expr(#nil = -1, #0, #1)`int
-   {:set(e`this, expr`/expr, type`\expr-type) @inline;
+{cvar #debug-rd-wr:bool = :true}
+{\expr(#nil = -1, #0, #1):int
+   {:set(e:this, expr`/expr, type`\expr-type) @inline;
       `.expr-v[e] = expr;
       expr.type = type;
    }
-   {:ptr(e`this)`/expr @inline;
+   {:ptr(e:this)`/expr @inline;
       {return `.expr-v[e]}
    }
-   {{:write-value(e`this, v`/value)`bool}
+   {{:write-value(e:this, v`/value):bool}
       +expr = e:ptr;
       +ref = v.ref;
       `` 'c.out:printf("write-value v.ref = %d\n", ref);
@@ -76,12 +76,12 @@
       {if(v.paren)
          `.out:write(")", 1);
       }
-      {return `true}
+      {return :true}
    }
-	{{:value(e`this, ref`int, paren`bool, v`/value)`bool}
-      {if!(e:process) {return `false}}
+	{{:value(e:this, ref:int, paren:bool, v`/value):bool}
+      {if!(e:process) {return :false}}
       +expr = e:ptr;
-      +ok = `false;
+      +ok = :false;
       {switch(expr.type):value(e, ref, paren, v, ok)
          {default
             'c.out:printf("%u:%u - %u:%u: :value not implemented for #%s\n",
@@ -90,7 +90,7 @@
       }
       {return ok}
    }
-   {{:type(e`this)`\at}
+   {{:type(e:this)`\at}
       {if!(e:process) {return #nil}}
       +expr = e:ptr;
       +at = `\at#nil;
@@ -102,12 +102,12 @@
       }
       {return at}
    }
-   {{:try-deduce(e-idx`this, at`\at)}
+   {{:try-deduce(e-idx:this, at`\at)}
       +expr = e-idx:ptr;
       {switch(expr.type):try-deduce(expr, at)
       }
    }
-   {{:wr(e`this, w`/wtr, header`bool)}
+   {{:wr(e:this, w`/wtr, header:bool)}
       {if(`#debug-rd-wr)
          w:n1(255);
       }
@@ -127,7 +127,7 @@
          w:n1(255);
       }
    }
-   {{:rd(e`this&, r`/rdr)}
+   {{:rd(e:this&, r`/rdr)}
       {if(`#debug-rd-wr)
          {if(r:n1 != 255)
             'c.out:printf("Error reading expr\n");
@@ -162,26 +162,26 @@
          }
       }
    }
-   {{:process(e`this)`bool}
+   {{:process(e:this):bool}
       {if(e == #nil)
          'c.out:printf("%s:%u:%u - %u:%u: Processed a nil expression\n",
             `.ctx-func.file:path, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col);
-         {return `false}
+         {return :false}
       }
-      +num = e`num;
+      +num = e:num;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((`.expr-is-processed[n3] & n17) != #0) {return `true}}
+      {if((`.expr-is-processed[n3] & n17) != #0) {return :true}}
       `.expr-is-processed[n3] |= n17;
       +expr = e:ptr;
-      `` {if(expr.flags & #processed) {return `true}}
+      `` {if(expr.flags & #processed) {return :true}}
       `` expr.flags |= #processed;
-      +ok = `false;
+      +ok = :false;
       {switch(expr.type):process(expr, ok)
          {default
             'c.out:printf("%s:%u:%u - %u:%u: :process not implemented for expression #%s\n",
                `.ctx-func.file:path, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type:glc-name);
-            {return `false}
+            {return :false}
          }
       }
       {if!(ok)
@@ -189,7 +189,7 @@
       }
       {return ok}
    }
-   {{:write(e`this)}
+   {{:write(e:this)}
       +expr = e:ptr;
       {switch(expr.type):write(expr)
          {default
@@ -198,12 +198,12 @@
       }
    }
 }
-{\expr-flags(#0, #processed = 1)`tnum}
+{\expr-flags(#0, #processed = 1):tnum}
 {/expr(
    .type`\expr-type,
    .flags`\expr-flags,
    )
-   {{:write(e`this, out'c/file)}
+   {{:write(e:this, out'c/file)}
       {switch(e.type)
          {case(#call)
             {+e2/expr-call = e}
@@ -212,14 +212,14 @@
       }
    }
 }
-{\basic-type-id(#root, #ref, #bool, #char, #tint, #tnum, #int, #num, #float, #size, #lnum, #COUNT)`tnum
-   {:wr(e`this, w`/wtr) @inline;
+{\basic-type-id(#root, #ref, #bool, #char, #tint, #tnum, #int, #num, #float, #size, #lnum, #COUNT):tnum
+   {:wr(e:this, w`/wtr) @inline;
       w:n1(e);
    }
-   {:rd(e`this&, r`/rdr) @inline;
+   {:rd(e:this&, r`/rdr) @inline;
       e = r:n1`\basic-type-id;
    }
-`` {{:write(e`this, out'c/file)}
+`` {{:write(e:this, out'c/file)}
 ``    {switch(e)
 ``       {case(#ref)
 ``          out:printf("void*");
@@ -238,7 +238,7 @@
 ``       }
 ``    }
 `` }
-   {:glc-name(e`this)`char[] @glc-name}
+   {:glc-name(e:this):char[] @glc-name}
 }
 {/expr-lvar(
    .base`/expr+,
@@ -247,12 +247,12 @@
 }
 {/expr-char(
    .base`/expr+,
-   .value`char,
+   .value:char,
    )
 }
 {/expr-bool(
    .base`/expr+,
-   .value`bool,
+   .value:bool,
    )
 }
 {/expr-null(
@@ -261,19 +261,19 @@
 }
 {/expr-str-node(
    .next`/expr-str-node,
-   .len`int,
-   .buf`char[0],
+   .len:int,
+   .buf:char[0],
    )
 }
 {/expr-str(
    .base`/expr+,
-   .node-c`int,
+   .node-c:int,
    .first`/expr-str-node,
    .last`/expr-str-node,
    )
 }
-{gvar .expr-c`int}
-{gvar .expr-cap`int}
+{gvar .expr-c:int}
+{gvar .expr-cap:int}
 {gvar .expr-v/expr[]}
 {{:expr-push(e/expr, type\expr-type)\expr}
    e.type = type;
@@ -288,7 +288,7 @@
 }
 {/expr-int(
    .base`/expr+,
-   .value`int,
+   .value:int,
    .type`\expr-int,
    )
 }

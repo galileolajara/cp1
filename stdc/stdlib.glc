@@ -1,14 +1,14 @@
 {include(<stdlib.h>)
    {alias 'c = %stdc}
    {at(%stdc)
-      {:malloc(size`size)`ref @real-name(malloc) @no-decl}
-      {:malloc-one(var`ref)
+      {:malloc(size:size):ref @real-name(malloc) @no-decl}
+      {:malloc-one(var:ref)
          @decl('<#define _Mstdc_Pmalloc_one_1(var) var = malloc(sizeof(var[0]))>)}
-      {:malloc-arr(var`ref, count`size)
+      {:malloc-arr(var:ref, count:size)
          @decl('<#define _Mstdc_Pmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))>)}
-      {:realloc(size`size, new-size`size)`ref @real-name @no-decl}
-      {:free(ref`ref) @real-name(free) @no-decl}
+      {:realloc(size:size, new-size:size):ref @real-name @no-decl}
+      {:free(ref:ref) @real-name(free) @no-decl}
       {:exit(code\exit) @real-name(exit) @no-decl}
-      {\exit(#success, #failure)`int}
+      {\exit(#success, #failure):int}
    }
 }

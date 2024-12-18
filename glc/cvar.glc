@@ -1,8 +1,8 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{\cvar(#nil = -1, #0)`int
-   {:rd(c`this&, r`/rdr) @inline;
+{\cvar(#nil = -1, #0):int
+   {:rd(c:this&, r`/rdr) @inline;
       +idx = (r:n - 1)`\cvar;
       {if(idx == #nil)
          c = #nil;
@@ -10,22 +10,22 @@
          c = `.cvar-table[idx];
       }
    }
-   {:wr(g`this, w`/wtr) @inline;
+   {:wr(g:this, w`/wtr) @inline;
       w:n(g + 1);
    }
-   {{:process(c`this)`bool}
-      +num = c`num;
+   {{:process(c:this):bool}
+      +num = c:num;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((`.cvar-is-outputted[n3] & n17) != 0) {return `true}}
+      {if((`.cvar-is-outputted[n3] & n17) != 0) {return :true}}
       `.cvar-is-outputted[n3] |= n17;
 
       +cvar = c:ptr;
 
       {if((cvar.flags & #set-expr) != #0)
-         {if!(cvar.expr-set:process) {return `false}}
+         {if!(cvar.expr-set:process) {return :false}}
       }{elif(cvar.last-cvar != #nil)
-         {if!(cvar.last-cvar:process) {return `false}}
+         {if!(cvar.last-cvar:process) {return :false}}
       }
 
       +at-i = cvar.decl.type;
@@ -33,7 +33,7 @@
          +at = at-i:ptr;
          {if(&&, at.type != #basic, at.decl.struct == #nil)
             'c.out:printf("Error, the type '%s' used in cvar '.%s' was not defined\n", at.name.id:str, cvar.decl.name:str);
-            {return `false}
+            {return :false}
          }
          at-i:output(cvar.file, cvar.row, cvar.col);
       }
@@ -42,12 +42,12 @@
          `.cvar-outputted-v[`.cvar-outputted-c++] = c;
       `` }
       
-      {return `true}
+      {return :true}
    }
-   {:ptr(c`this)`/cvar @inline;
+   {:ptr(c:this)`/cvar @inline;
       {return `.cvar-v[c]}
    }
-   {:write(c`this) @inline;
+   {:write(c:this) @inline;
       +cvar = c:ptr;
       {if((cvar.decl.flags & #real-name) != #0)
          `.out:printf("%s", cvar.decl.real-name:str);
@@ -62,11 +62,11 @@
    #set-expr = 1,
    #as-enum = 2,
    `` #real-name = 2,
-   )`tnum
-   {:wr(f`this, w`/wtr) @inline;
+   ):tnum
+   {:wr(f:this, w`/wtr) @inline;
       w:n1(f);
    }
-   {:rd(f`this&, r`/rdr) @inline;
+   {:rd(f:this&, r`/rdr) @inline;
       f = r:n1`\cvar-flags;
    }
 }
@@ -85,7 +85,7 @@
       {+e`/expr-cvar = expr}
       e.cvar:write;
    }
-   {:wr-cvar(expr`/expr, w`/wtr, header`bool) @case:wr @inline;
+   {:wr-cvar(expr`/expr, w`/wtr, header:bool) @case:wr @inline;
       {+e`/expr-cvar = expr}
       e.at:wr(w, header);
       e.name:wr(w, header);
@@ -97,21 +97,21 @@
       e.name:rd(r);
       e.try = #nil;
    }
-   {:value-cvar(e`this, ref`tint, paren`bool, v`/value, ok`bool&) @case:value @inline;
+   {:value-cvar(e:this, ref:tint, paren:bool, v`/value, ok:bool&) @case:value @inline;
       {+expr`/expr-cvar = e:ptr}
       +cvar = expr.cvar:ptr;
       v:set(ref, paren, cvar.decl.type, cvar.decl.type-info);
       {if(v.ref == 1)
-         v.paren = `false;
+         v.paren = :false;
       }
-      ok = `true;
+      ok = :true;
    }
    {:type-cvar(expr`/expr, at`\at&) @case:type @inline;
       {+e`/expr-cvar = expr}
       +cvar = e.cvar:ptr;
       at = cvar.decl.type;
    }
-   {:process-cvar(expr`/expr, ok`bool&) @case:process @inline;
+   {:process-cvar(expr`/expr, ok:bool&) @case:process @inline;
       {+e`/expr-cvar = expr}
       +name = e.name;
       {if(e.try != #nil)
@@ -125,7 +125,7 @@
             {if(cvar:ptr.decl.name == name)
                {if!(cvar:process) {return}}
                e.cvar = cvar;
-               ok = `true;
+               ok = :true;
                {return}
             }
          }
@@ -144,7 +144,7 @@
          {if(cvar:ptr.decl.name == name)
             {if!(cvar:process) {return}}
             e.cvar = cvar;
-            ok = `true;
+            ok = :true;
             {return}
          }
       }

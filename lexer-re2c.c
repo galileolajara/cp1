@@ -162,21 +162,21 @@ int glc_lexer_scan(struct glc_lexer* l) {
    "(&&," spaces                    { return GLC_TOKEN_LPAREN_AMP_AMP_COMMA_SPACE; }
    "(||," spaces                    { return GLC_TOKEN_LPAREN_PIPE_PIPE_COMMA_SPACE; }
 
-   "`ref"                           { return GLC_TOKEN_GRAVE_REF; }
-   "`bool"                          { return GLC_TOKEN_GRAVE_BOOL; }
-   "`char"                          { return GLC_TOKEN_GRAVE_CHAR; }
-   "`tnum"                          { return GLC_TOKEN_GRAVE_TNUM; }
-   "`tint"                          { return GLC_TOKEN_GRAVE_TINT; }
-   "`int"                           { return GLC_TOKEN_GRAVE_INT; }
-   "`num"                           { return GLC_TOKEN_GRAVE_NUM; }
-   "`float"                         { return GLC_TOKEN_GRAVE_FLOAT; }
-   "`size"                          { return GLC_TOKEN_GRAVE_SIZE; }
-   "`lnum"                          { return GLC_TOKEN_GRAVE_LNUM; }
+   ":ref"                           { return GLC_TOKEN_GRAVE_REF; }
+   ":bool"                          { return GLC_TOKEN_GRAVE_BOOL; }
+   ":char"                          { return GLC_TOKEN_GRAVE_CHAR; }
+   ":tnum"                          { return GLC_TOKEN_GRAVE_TNUM; }
+   ":tint"                          { return GLC_TOKEN_GRAVE_TINT; }
+   ":int"                           { return GLC_TOKEN_GRAVE_INT; }
+   ":num"                           { return GLC_TOKEN_GRAVE_NUM; }
+   ":float"                         { return GLC_TOKEN_GRAVE_FLOAT; }
+   ":size"                          { return GLC_TOKEN_GRAVE_SIZE; }
+   ":lnum"                          { return GLC_TOKEN_GRAVE_LNUM; }
 
-   "`this"                          { return GLC_TOKEN_GRAVE_THIS; }
-   "`true"                          { return GLC_TOKEN_GRAVE_TRUE; }
-   "`false"                         { return GLC_TOKEN_GRAVE_FALSE; }
-   "`null"                          { return GLC_TOKEN_GRAVE_NULL; }
+   ":this"                          { return GLC_TOKEN_GRAVE_THIS; }
+   ":true"                          { return GLC_TOKEN_GRAVE_TRUE; }
+   ":false"                         { return GLC_TOKEN_GRAVE_FALSE; }
+   ":null"                          { return GLC_TOKEN_GRAVE_NULL; }
 
    spaces "==" spaces               { return GLC_TOKEN_SPACE_EQUAL_EQUAL_SPACE; }
    spaces "!=" spaces               { return GLC_TOKEN_SPACE_EXPOINT_EQUAL_SPACE; }

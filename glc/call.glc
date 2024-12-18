@@ -1,14 +1,14 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{{:farg-process(e\expr, ca-ref`tint, ca-value/value, fd-arg/decl-var)`bool}
+{{:farg-process(e\expr, ca-ref:tint, ca-value/value, fd-arg/decl-var):bool}
    +ce = e:ptr;
-   {+r`int}
+   {+r:int}
    {if(ca-ref != 0)
       r = 1 + ca-ref;
    }{else
       r = 1;
-      r += fd-arg.type-info.ref-v[fd-arg.type-info.array-c]`int;
+      r += fd-arg.type-info.ref-v[fd-arg.type-info.array-c]:int;
    }
    `` 'c.out:printf("r %d, %d %d %d\n", r, j, fd-arg.type-info.array-c, fd-arg.type-info.ref-v[fd-arg.type-info.array-c]);
    {if(ce.type == #lvar)
@@ -19,47 +19,47 @@
          {if((lvar.flags & #set-expr) == #0)
             `` {if(vd.type-info.array-c != fd-arg.type-info.array-c)
             ``    'c.err:printf("%s:%u:%u: Type deduction failed for lvar '%s', array dimension mismatch\n", .ctx-func.file:path, lvar.row, lvar.col, vd.name:str);
-            ``    {return `false}
+            ``    {return :false}
             `` }
             vd.type = fd-arg.type;
             vd.type-info:init;
             vd.type-info:copy-from(fd-arg.type-info);
             {if(fd-arg.type-info.built-in)
-               vd.type-info.built-in = `true;
+               vd.type-info.built-in = :true;
                vd.type-info.ref-v[0] = ''\0;
             }{elif(vd.type-info.ref-v[vd.type-info.array-c] + vd.type:pointer)
-               vd.type-info.ref-v[vd.type-info.array-c] -= 1`char;
+               vd.type-info.ref-v[vd.type-info.array-c] -= 1:char;
                vd.type-info.star-c -= 1;
             }
          }
       }
    }
    e:try-deduce(fd-arg.type);
-   {if!(e:value(r, `false, ca-value)) {return `false}}
-   {return `true}
+   {if!(e:value(r, :false, ca-value)) {return :false}}
+   {return :true}
 }
 {at(\expr)
-   {:value-func(e`this, ref`int, paren`bool, v`/value, ok`bool&) @case:value @inline;
+   {:value-func(e:this, ref:int, paren:bool, v`/value, ok:bool&) @case:value @inline;
       {+expr`/expr-func = e:ptr}
       +f = expr.func-idx:ptr;
       v:set(ref, paren, f.decl.type, f.decl.type-info);
       {if(v.ref == 1)
-         v.paren = `false;
+         v.paren = :false;
       }
-      ok = `true;
+      ok = :true;
    }
    {:type-func(expr`/expr, at`\at&) @case:type @inline;
       {+e`/expr-func = expr}
       at = e.func-idx:ptr.decl.type;
    }
-   {:value-method(e`this, ref`int, paren`bool, v`/value, ok`bool&) @case:value @inline;
+   {:value-method(e:this, ref:int, paren:bool, v`/value, ok:bool&) @case:value @inline;
       {+expr`/expr-method = e:ptr}
       +f = expr.func-idx:ptr;
       v:set(ref, paren, f.decl.type, f.decl.type-info);
       {if(v.ref == 1)
-         v.paren = `false;
+         v.paren = :false;
       }
-      ok = `true;
+      ok = :true;
    }
    {:type-method(expr`/expr, at`\at&) @case:type @inline;
       {+e`/expr-method = expr}
@@ -70,11 +70,11 @@
       +f = e.func-idx:ptr;
       f:write;
       `.out:printf("(");
-      +first = `true;
+      +first = :true;
       +i = 0;
       {do{(f.this-idx) i++}
          {if(first)
-            first = `false;
+            first = :false;
          }{else
             `.out:printf(", ");
          }
@@ -82,7 +82,7 @@
          ca.expr:write-value(ca.value);
       }
       {if(first)
-         first = `false;
+         first = :false;
       }{else
          `.out:printf(", ");
       }
@@ -94,7 +94,7 @@
       }
       `.out:printf(")");
    }
-   {:wr-method(expr`/expr, w`/wtr, header`bool) @case:wr @inline;
+   {:wr-method(expr`/expr, w`/wtr, header:bool) @case:wr @inline;
       {+e`/expr-method = expr}
       e.this:wr(w, header);
       e.func-name:wr(w, header);
@@ -111,12 +111,12 @@
       `\expr:rd(+this-expr, r);
       `\id:rd(+func-name, r);
       +group-c = r:n1;
-      {+group-v`tint[`#expr-carg-group-limit]}
+      {+group-v:tint[`#expr-carg-group-limit]}
       {do{+i = 0}{(group-c) i++}
          group-v[i] = r:n1;
       }
       +carg-c = r:n1;
-      `:quick-alloc-plus(+(e`/expr-method), `/carg[`size] * carg-c);
+      `:quick-alloc-plus(+(e`/expr-method), `/carg[:size] * carg-c);
       e-idx:set(e.base, #method);
       e.this = this-expr;
       e.func-name = func-name;
@@ -129,7 +129,7 @@
          e.carg-v[i].expr:rd(r);
       }
    }
-   {:process-method(expr`/expr, ok`bool&) @case:process @inline;
+   {:process-method(expr`/expr, ok:bool&) @case:process @inline;
       {+e`/expr-method = expr}
       +func-name = e.func-name;
       +group-c = e.group-c;
@@ -176,18 +176,18 @@
          found = i;
          similar-c++;
          {if(f.group-c != group-c) {continue}}
-         +match = `true;
+         +match = :true;
          {if((f.flags & #var-args) != #0)
             {if(f.farg-c > carg-c1) {continue}}
             {do{+j = 0}{(group-c - 1) j++}
                {if(f.this-group == j)
                   {if(f.group-v[j] != (group-v[j] + 1))
-                     match = `false;
+                     match = :false;
                      {break}
                   }
                }{else
                   {if(f.group-v[j] != group-v[j])
-                     match = `false;
+                     match = :false;
                      {break}
                   }
                }
@@ -196,11 +196,11 @@
                +j = group-c - 1;
                {if(f.this-group == j)
                   {if(f.group-v[j] > (group-v[j] + 1))
-                     match = `false;
+                     match = :false;
                   }
                }{else
                   {if(f.group-v[j] > group-v[j])
-                     match = `false;
+                     match = :false;
                   }
                }
             }
@@ -209,12 +209,12 @@
             {do{+j = 0}{(group-c) j++}
                {if(f.this-group == j)
                   {if(f.group-v[j] != (group-v[j] + 1))
-                     match = `false;
+                     match = :false;
                      {break}
                   }
                }{else
                   {if(f.group-v[j] != group-v[j])
-                     match = `false;
+                     match = :false;
                      {break}
                   }
                }
@@ -237,16 +237,16 @@
          {if((f.flags & #var-args) != #0)
             {do{(e.carg-c - k) k++}
                +ca = e.carg-v[k];
-               {+r`int}
+               {+r:int}
                {if(ca.ref)
                   r = 1 + ca.ref;
                }{else
                   r = 1;
                }
-               {if!(ca.expr:value(r, `false, ca.value)) {return}}
+               {if!(ca.expr:value(r, :false, ca.value)) {return}}
             }
          }
-         ok = `true;
+         ok = :true;
          {return}
       }
       'c.out:printf("%s:%u:%u - %u:%u: Cannot find method :%s with %u argument/s\n", `.ctx-func.file:path, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, func-name:str, carg-c);
@@ -274,7 +274,7 @@
       }
       `.out:printf(")");
    }
-   {:wr-func(expr`/expr, w`/wtr, header`bool) @case:wr @inline;
+   {:wr-func(expr`/expr, w`/wtr, header:bool) @case:wr @inline;
       {+e`/expr-func = expr}
       e.at:wr(w, header);
       e.func-name:wr(w, header);
@@ -291,13 +291,13 @@
       `\at:rd(+at-idx, r);
       `\id:rd(+func-name, r);
       +group-c = r:n1;
-      {+group-v`tint[`#expr-carg-group-limit]}
+      {+group-v:tint[`#expr-carg-group-limit]}
       {do{+i = 0}{(group-c) i++}
          group-v[i] = r:n1;
       }
       +carg-c = r:n1;
 
-      `:quick-alloc-plus(+(e`/expr-func), `/carg[`size] * carg-c);
+      `:quick-alloc-plus(+(e`/expr-func), `/carg[:size] * carg-c);
       e-idx:set(e.base, #func);
       e.at = at-idx;
       e.func-name = func-name;
@@ -310,7 +310,7 @@
          e.carg-v[i].expr:rd(r);
       }
    }
-   {:process-func(expr`/expr, ok`bool&) @case:process @inline;
+   {:process-func(expr`/expr, ok:bool&) @case:process @inline;
       {+e`/expr-func = expr}
       +func-name = e.func-name;
       +carg-c = e.carg-c;
@@ -341,26 +341,26 @@
          found = i;
          similar-c++;
          {if(f.group-c != group-c) {continue}}
-         +match = `true;
+         +match = :true;
          {if((f.flags & #var-args) != #0)
             {if(f.farg-c > carg-c) {continue}}
             {do{+j = 0}{(group-c - 1) j++}
                {if(f.group-v[j] != group-v[j])
-                  match = `false;
+                  match = :false;
                   {break}
                }
             }
             {if(match)
                +j = group-c - 1;
                {if(f.group-v[j] > group-v[j])
-                  match = `false;
+                  match = :false;
                }
             }
          }{else
             {if(f.farg-c != carg-c) {continue}}
             {do{+j = 0}{(group-c) j++}
                {if(f.group-v[j] != group-v[j])
-                  match = `false;
+                  match = :false;
                   {break}
                }
             }
@@ -376,17 +376,17 @@
          {if((f.flags & #var-args) != #0)
             {do{(e.carg-c - j) j++}
                +ca = e.carg-v[j];
-               {+r`int}
+               {+r:int}
                {if(ca.ref)
                   r = 1 + ca.ref;
                }{else
                   r = 1;
                }
-               {if!(ca.expr:value(r, `false, ca.value)) {return}}
+               {if!(ca.expr:value(r, :false, ca.value)) {return}}
             }
          }
          e.func-idx = f-idx;
-         ok = `true;
+         ok = :true;
          {return}
       }
       'c.out:printf("%s:%u:%u - %u:%u: Cannot find function :%s with %u argument/s\n", `.ctx-func.file:path, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, func-name:str, carg-c);
@@ -401,7 +401,7 @@
          }
       }
    }
-   {:process-case-func(expr`/expr, f-idx`\func)`bool @inline;
+   {:process-case-func(expr`/expr, f-idx`\func):bool @inline;
       {+e`/expr-func = expr}
       +func-name = e.func-name;
       +carg-c = e.carg-c;
@@ -413,23 +413,23 @@
       +j = 0;
       {do{(f.farg-c) j++}
          +ca = e.carg-v[j];
-         {if!(`:farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl)) {return `false}}
+         {if!(`:farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl)) {return :false}}
       }
       e.func-idx = f-idx;
       {if((f.flags & #var-args) != #0)
          {do{(e.carg-c - j) j++}
             +ca = e.carg-v[j];
-            {+r`int}
+            {+r:int}
             {if(ca.ref)
                r = 1 + ca.ref;
             }{else
                r = 1;
             }
-            {if!(ca.expr:value(r, `false, ca.value)) {return `false}}
+            {if!(ca.expr:value(r, :false, ca.value)) {return :false}}
          }
       }
       e.func-idx = f-idx;
-      {return `true}
+      {return :true}
    }
 }
  

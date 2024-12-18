@@ -1,23 +1,23 @@
 {include(<fcntl.h>)
    {alias 'c = %stdc}
    {at(%stdc)
-      {\file(#nil = -1)`int
-         {:open(file'c\file&, path`char[], flags`\open-flags)`bool @inline;
+      {\file(#nil = -1):int
+         {:open(file'c\file&, path:char[], flags`\open-flags):bool @inline;
             +fd = 'c:open(path, flags);
             {if(fd != -1)
                file = fd;
-               {return `true}
+               {return :true}
             }{else
-               {return `false}
+               {return :false}
             }
          }
-         {:open(file`this&, path`char[], flags`\open-flags, mode`int)`bool @inline;
+         {:open(file:this&, path:char[], flags`\open-flags, mode:int):bool @inline;
             +fd = 'c:open(path, flags, mode);
             {if(fd != -1)
                file = fd;
-               {return `true}
+               {return :true}
             }{else
-               {return `false}
+               {return :false}
             }
          }
       }
@@ -27,9 +27,9 @@
          #write @no-decl @real-name(O_WRONLY),
          #rdwr @no-decl @real-name(O_RDWR),
          #truncate @no-decl @real-name(O_TRUNC),
-         )`int
+         ):int
       }
-      {:open(path`char[], flags\open-flags)`int @real-name(open) @no-decl}
-      {:open(path`char[], flags\open-flags, mode`int)`int @real-name(open) @no-decl}
+      {:open(path:char[], flags\open-flags):int @real-name(open) @no-decl}
+      {:open(path:char[], flags\open-flags, mode:int):int @real-name(open) @no-decl}
    }
 }

@@ -1,10 +1,10 @@
 {alias 'glc = %glc}
 {at(%glc)
-{\compare(#eq, #not-eq, #lt, #le, #gt, #ge)`tnum
-   {:wr(e`this, w`/wtr) @inline;
+{\compare(#eq, #not-eq, #lt, #le, #gt, #ge):tnum
+   {:wr(e:this, w`/wtr) @inline;
       w:n1(e);
    }
-   {:rd(e`this&, r`/rdr) @inline;
+   {:rd(e:this&, r`/rdr) @inline;
       e = r:n1`\compare;
    }
 }
@@ -17,7 +17,7 @@
    {return e-idx}
 }
 {at(\expr)
-   {:wr-compare(expr`/expr, w`/wtr, header`bool) @case:wr @inline;
+   {:wr-compare(expr`/expr, w`/wtr, header:bool) @case:wr @inline;
       {+e`/expr-compare = expr}
       e.left:wr(w, header);
       e.right:wr(w, header);
@@ -55,7 +55,7 @@
       }
       e.right:write-value(e.right-val);
    }
-   {:value-compare(e`this, ref`tint, paren`bool, v`/value, ok`bool&) @case:value @inline;
+   {:value-compare(e:this, ref:tint, paren:bool, v`/value, ok:bool&) @case:value @inline;
       {+expr`/expr-compare = e:ptr}
 		v.type = `:basic-type(#bool);
 		v.info:init;
@@ -64,22 +64,22 @@
 		v.info.star-c = 0;
 		v.ref = 1;
 		v.paren = paren;
-      ok = `true;
+      ok = :true;
 	}
    {:type-compare(expr`/expr, at`\at&) @case:type @inline;
       {+e`/expr-compare = expr}
       at = `:basic-type(#bool);
    }
-   {:process-compare(expr`/expr, ok`bool&) @case:process @inline;
+   {:process-compare(expr`/expr, ok:bool&) @case:process @inline;
       {+e`/expr-compare = expr}
-		{if!(e.left:value(1, `true, e.left-val))
+		{if!(e.left:value(1, :true, e.left-val))
 			{return}
       }
 		e.right:try-deduce(e.left-val.type);
-		{if!(e.right:value(1, `true, e.right-val))
+		{if!(e.right:value(1, :true, e.right-val))
 			{return}
       }
-      ok = `true;
+      ok = :true;
    }
 }
  

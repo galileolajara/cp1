@@ -1,13 +1,13 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{\gvar-flags(#0, #no-decl = 1)`tnum}
-{\gvar(#nil = -1, #0)`int
-   {{:process(g`this)`bool}
-      +num = g`num;
+{\gvar-flags(#0, #no-decl = 1):tnum}
+{\gvar(#nil = -1, #0):int
+   {{:process(g:this):bool}
+      +num = g:num;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((`.gvar-is-outputted[n3] & n17) != 0) {return `true}}
+      {if((`.gvar-is-outputted[n3] & n17) != 0) {return :true}}
       `.gvar-is-outputted[n3] |= n17;
 
       +gvar = g:ptr;
@@ -15,23 +15,23 @@
       +at = at-i:ptr;
       {if(&&, at.type != #basic, at.decl.struct == #nil)
          'c.out:printf("Error, the type '%s' used in gvar '.%s' was not defined\n", at.name.id:str, gvar.decl.name:str);
-         {return `false}
+         {return :false}
       }
       `` at-i:output(gvar.file, gvar.row, gvar.col);
-      `` {if!(at-i:finalize(gvar.decl.type-info, gvar.row, gvar.col)) {return `false}}
-      {if!(gvar.decl:process(gvar.row, gvar.col)) {return `false}}
+      `` {if!(at-i:finalize(gvar.decl.type-info, gvar.row, gvar.col)) {return :false}}
+      {if!(gvar.decl:process(gvar.row, gvar.col)) {return :false}}
 
       {if((gvar.flags & #no-decl) == #0)
          `.gvar-outputted-v[`.gvar-outputted-c++] = g;
       }
       
-      {return `true}
+      {return :true}
    }
-   {{:write(g`this)}
+   {{:write(g:this)}
       +gvar = g:ptr;
       gvar.decl:write(#gvar);
    }
-   `` {{:write(g`this)}
+   `` {{:write(g:this)}
    ``    +gvar = g:ptr;
    ``    {if((gvar.decl.flags & #real-name) != #0)
    ``       .out:printf("%s", gvar.decl.real-name:str);
@@ -40,7 +40,7 @@
    ``    gvar.at:write-space;
    ``    .out:printf("_G%s", gvar.decl.name:c-name);
    `` }
-   {:ptr(g`this)`/decl-gvar @inline;
+   {:ptr(g:this)`/decl-gvar @inline;
       {return `.gvar-v[g]}
    }
 }
@@ -52,21 +52,21 @@
    {return e-idx}
 }
 {at(\expr)
-   {:value-gvar(g`this, ref`int, paren`bool, v`/value, ok`bool&) @case:value @inline;
+   {:value-gvar(g:this, ref:int, paren:bool, v`/value, ok:bool&) @case:value @inline;
       {+e`/expr-gvar = g:ptr}
       +gvar = e.gvar:ptr;
       v:set(ref, paren, gvar.decl.type, gvar.decl.type-info);
       {if(v.ref == 1)
-         v.paren = `false;
+         v.paren = :false;
       }
-      ok = `true;
+      ok = :true;
    }
    {:type-gvar(expr`/expr, at`\at&) @case:type @inline;
       {+e`/expr-gvar = expr}
       +gvar = e.gvar:ptr;
       at = gvar.decl.type;
    }
-   {:wr-gvar(expr`/expr, w`/wtr, header`bool) @case:wr @inline;
+   {:wr-gvar(expr`/expr, w`/wtr, header:bool) @case:wr @inline;
       {+e`/expr-gvar = expr}
       e.at:wr(w, header);
       e.name:wr(w, header);
@@ -98,10 +98,10 @@
       {+e`/expr-gvar = expr}
       e.gvar:write;
    }
-   {:process-gvar(expr`/expr, ok`bool&) @case:process @inline;
+   {:process-gvar(expr`/expr, ok:bool&) @case:process @inline;
       {+e`/expr-gvar = expr}
       {if!(e.gvar:process) {return}}
-      ok = `true;
+      ok = :true;
    }
 }
  

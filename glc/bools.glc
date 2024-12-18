@@ -19,11 +19,11 @@
    e.item-v[i].expr = right;
    {return bools}
 }
-{\bools(#and, #or)`tnum
-   {:wr(e`this, w`/wtr) @inline;
+{\bools(#and, #or):tnum
+   {:wr(e:this, w`/wtr) @inline;
       w:n1(e);
    }
-   {:rd(e`this&, r`/rdr) @inline;
+   {:rd(e:this&, r`/rdr) @inline;
       e = r:n1`\bools;
    }
 }
@@ -31,25 +31,25 @@
    {:type-bools(expr`/expr, at`\at&) @case:type @inline;
       at = `:basic-type(#bool);
    }
-   {:value-bools(e`this, ref`int, paren`bool, v`/value, ok`bool&) @case:value @inline;
+   {:value-bools(e:this, ref:int, paren:bool, v`/value, ok:bool&) @case:value @inline;
       v.type = `:basic-type(#bool);
       v.info:init;
       v.info.array-c = 0;
       v.info.ref-v[0] = ''\0;
       v.info.star-c = 0;
       v.ref = 1;
-      v.paren = `false;
-      ok = `true;
+      v.paren = :false;
+      ok = :true;
    }
-   {:process-bools(expr`/expr, ok`bool&) @case:process @inline;
+   {:process-bools(expr`/expr, ok:bool&) @case:process @inline;
       {+e`/expr-bools = expr}
-		{if!(e.left:value(1, `true, e.left-val)) {return}}
-		{if!(e.right:value(1, `true, e.right-val)) {return}}
+		{if!(e.left:value(1, :true, e.left-val)) {return}}
+		{if!(e.right:value(1, :true, e.right-val)) {return}}
       {do{+i = 0}{(e.item-c) i++}
          +item = e.item-v[i];
-         {if!(item.expr:value(1, `true, item.val)) {return}}
+         {if!(item.expr:value(1, :true, item.val)) {return}}
       }
-      ok = `true;
+      ok = :true;
    }
    {:write-bools(expr`/expr) @case:write @inline;
       {+e`/expr-bools = expr}
@@ -80,7 +80,7 @@
          }
       }
    }
-   {:wr-bools(expr`/expr, w`/wtr, header`bool) @case:wr @inline;
+   {:wr-bools(expr`/expr, w`/wtr, header:bool) @case:wr @inline;
       {+e`/expr-bools = expr}
       e.left:wr(w, header);
       e.right:wr(w, header);

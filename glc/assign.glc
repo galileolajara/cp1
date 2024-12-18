@@ -2,11 +2,11 @@
 {at(%glc)
 {\assign(#eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
              #lshift-eq, #rshift-eq, #and-eq, #or-eq, #xor-eq,
-             )`tnum
-   {:wr(s`this, w`/wtr) @inline;
+             ):tnum
+   {:wr(s:this, w`/wtr) @inline;
       w:n1(s);
    }
-   {:rd(s`this&, r`/rdr) @inline;
+   {:rd(s:this&, r`/rdr) @inline;
       s = r:n1`\assign;
    }
 }
@@ -19,7 +19,7 @@
    {return e-idx}
 }
 {at(\expr)
-   {:wr-assign(expr`/expr, w`/wtr, header`bool) @case:wr @inline;
+   {:wr-assign(expr`/expr, w`/wtr, header:bool) @case:wr @inline;
       {+e`/expr-assign = expr}
       e.left:wr(w, header);
       e.right:wr(w, header);
@@ -73,42 +73,42 @@
       {+e`/expr-assign = expr}
       at = e.left:type;
    }
-   {:value-assign(e`this, ref`tint, paren`bool, v`/value, ok`bool&) @case:value @inline;
+   {:value-assign(e:this, ref:tint, paren:bool, v`/value, ok:bool&) @case:value @inline;
       {+expr`/expr-assign = e:ptr}
-		{if(expr.left:value(1, paren, v) == `false)
+		{if(expr.left:value(1, paren, v) == :false)
          {return}
       }
 		v.paren = paren;
 		v.ref = ref;
-      ok = `true;
+      ok = :true;
 	}
-   {:process-assign(expr`/expr, ok`bool&) @case:process @inline;
+   {:process-assign(expr`/expr, ok:bool&) @case:process @inline;
       {+e`/expr-assign = expr}
       +left-e = e.left:ptr;
       {if(left-e.type == #lvar)
          {+left`/expr-lvar = left-e}
          +lvar = left.lvar:ptr;
          {if(lvar.decl.type == #nil)
-            {if!(e.right:value(1, `true, e.right-val))
+            {if!(e.right:value(1, :true, e.right-val))
                {return}
             }
             lvar.decl.type = e.right-val.type;
             +at = lvar.decl.type:ptr;
             lvar.decl.type-info:init;
             lvar.decl.type-info:copy-from(e.right-val.info);
-            e.left:value(1, `true, e.left-val);
-            ok = `true;
+            e.left:value(1, :true, e.left-val);
+            ok = :true;
             {return}
          }
       }
-		{if!(e.left:value(1, `true, e.left-val))
+		{if!(e.left:value(1, :true, e.left-val))
 			{return}
       }
 		e.right:try-deduce(e.left:type);
-		{if!(e.right:value(1, `true, e.right-val))
+		{if!(e.right:value(1, :true, e.right-val))
 			{return}
       }
-      ok = `true;
+      ok = :true;
    }
 }
  

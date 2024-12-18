@@ -2,21 +2,21 @@
 {alias 'c = %stdc}
 {at(%glc)
 {/wtr(
-   .ref`ref,
-   .pos`size,
-   .1`tnum[],
-   .4`num[],
+   .ref:ref,
+   .pos:size,
+   .1:tnum[],
+   .4:num[],
    ) @union
-   {:n1(w`this, n`tnum) @inline;
+   {:n1(w:this, n:tnum) @inline;
       w.1[0] = n;
       w.pos++;
    }
-   {:n2(w`this, n`num) @inline;
+   {:n2(w:this, n:num) @inline;
       w.1[0] = n;
       w.1[1] = n >> 8;
       w.pos += 2;
    }
-   {:n4(w`this, n`num) @inline;
+   {:n4(w:this, n:num) @inline;
       w.1[0] = n;
       w.1[1] = n >> 8;
       w.1[2] = n >> 16;
@@ -24,13 +24,13 @@
       w.pos += 4;
    }
    {include("num.c")
-      {:n(w`this, n`num) @real-name(Fputnum) @no-decl}
+      {:n(w:this, n:num) @real-name(Fputnum) @no-decl}
    }
-   {:copy(w`this, data`ref, size`int) @inline;
+   {:copy(w:this, data:ref, size:int) @inline;
       'c:memcpy(w.ref, data, size);
       w.pos += size;
    }
-   {:bool(w`this, val`bool) @inline;
+   {:b(w:this, val:bool) @inline;
       {if(val) w:n1(1)}
       {else w:n1(0)}
    }

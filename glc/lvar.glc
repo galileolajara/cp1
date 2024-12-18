@@ -1,29 +1,29 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{\lvar(#nil = -1, #0)`int
-   {:rd(l`this&, r`/rdr) @inline;
+{\lvar(#nil = -1, #0):int
+   {:rd(l:this&, r`/rdr) @inline;
       l = (r:n - 1)`\lvar;
    }
-   {:wr(l`this, w`/wtr) @inline;
+   {:wr(l:this, w`/wtr) @inline;
       w:n(l + 1);
    }
-   {:process(l`this)`bool @inline;
+   {:process(l:this):bool @inline;
       +lvar = l:ptr;
-      {if((lvar.flags & #processed) != #0) {return `true}}
+      {if((lvar.flags & #processed) != #0) {return :true}}
       lvar.flags |= #processed;
       +at-i = lvar.decl.type;
       {if(at-i == #nil)
          {if((lvar.flags & #set-expr) != #0)
-            {if!(lvar.set-expr:value(1, `false, ++v)) {return `false}}
+            {if!(lvar.set-expr:value(1, :false, ++v)) {return :false}}
             lvar.decl.type = v.type;
             lvar.decl.type-info:init;
             lvar.decl.type-info:copy-from(v.info);
          }{else
             'c.out:printf("%s:%u:%u: Variable '%s' doesn't have a type or a value\n", `.ctx-func.file:path, lvar.row, lvar.col, lvar.decl.name:str);
-            {return `false}
+            {return :false}
          }
-         {return `true}
+         {return :true}
       }
       {return lvar.decl:process(lvar.row, lvar.col)}
    }
@@ -32,23 +32,23 @@
    #0,
    #set-expr = 1,
    #processed = 2,
-   )`tnum
-   {:rd(f`this&, r`/rdr) @inline;
+   ):tnum
+   {:rd(f:this&, r`/rdr) @inline;
       f = r:n1`\lvar-flags;
    }
-   {:wr(f`this, w`/wtr) @inline;
+   {:wr(f:this, w`/wtr) @inline;
       w:n1(f);
    }
 }
 {/lvar(
-   .row`int,
-   .col`int,
+   .row:int,
+   .col:int,
    .decl`/decl-var+,
    .flags`\lvar-flags,
    .set-expr`\expr,
    )
 }
-{{:expr-lvar(name\id, decl`tnum, row`int, col`int)\expr}
+{{:expr-lvar(name\id, decl:tnum, row:int, col:int)\expr}
    {if(decl == 0)
       +space = .decl-func-ctx-space;
       {do()
@@ -68,7 +68,7 @@
             {return e-idx}
          }
          space = space.parent;
-         {if(space == `null) {break}}
+         {if(space == :null) {break}}
       }
       'c.out:printf("%s:%u:%u: lvar '%s' was not found\n", .input-path, row, col, name:str);
       'c:exit(#failure);
@@ -77,7 +77,7 @@
       +space = .decl-func-ctx-space;
       {while(decl > 1)
          space = space.parent;
-         {if(space == `null)
+         {if(space == :null)
             'c.out:printf("%s:%u:%u: Cannot declare lvar '%s' with too much '+'\n", .input-path, row, col, name:str);
             'c:exit(#failure);
          }
@@ -104,16 +104,16 @@
       +lvar = e.lvar:ptr;
       at = lvar.decl.type;
    }
-   {:value-lvar(e`this, ref`tint, paren`bool, v`/value, ok`bool&) @case:value @inline;
+   {:value-lvar(e:this, ref:tint, paren:bool, v`/value, ok:bool&) @case:value @inline;
       {+expr`/expr-lvar = e:ptr}
       +lvar = expr.lvar:ptr;
       v:set(ref, paren, lvar.decl.type, lvar.decl.type-info);
       {if(v.ref == 1)
-         v.paren = `false;
+         v.paren = :false;
       }
-      ok = `true;
+      ok = :true;
    }
-   {:wr-lvar(expr`/expr, w`/wtr, header`bool) @case:wr @inline;
+   {:wr-lvar(expr`/expr, w`/wtr, header:bool) @case:wr @inline;
       {+e`/expr-lvar = expr}
       e.lvar:wr(w);
    }
@@ -122,10 +122,10 @@
       e-idx:set(e.base, #lvar);
       e.lvar:rd(r);
    }
-   {:process-lvar(expr`/expr, ok`bool&) @case:process @inline;
+   {:process-lvar(expr`/expr, ok:bool&) @case:process @inline;
       {+e`/expr-lvar = expr}
       {if!(e.lvar:process) {return}}
-      ok = `true;
+      ok = :true;
    }
 }
  

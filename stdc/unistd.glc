@@ -2,15 +2,15 @@
    {alias 'c = %stdc}
    {at(%stdc)
       {at(\file)
-         {:seek(fd`this, offset`size, seek`\seek)`size @no-decl @real-name(lseek)}
-         {:read(fd`this, buf`ref, size`size)`size @no-decl @real-name}
-         {:close(fd`this)`int @no-decl @real-name}
-         {:write(fd`this, buf`ref, size`size)`size @no-decl @real-name}
+         {:seek(fd:this, offset:size, seek`\seek):size @no-decl @real-name(lseek)}
+         {:read(fd:this, buf:ref, size:size):size @no-decl @real-name}
+         {:close(fd:this):int @no-decl @real-name}
+         {:write(fd:this, buf:ref, size:size):size @no-decl @real-name}
       }
       {\seek(
          #set @real-name(SEEK_SET) @no-decl,
          #end @real-name(SEEK_END) @no-decl,
-         )`int}
-      {:seek(fd`int, offset`size, seek\seek)`size @no-decl @real-name(lseek)}
+         ):int}
+      {:seek(fd:int, offset:size, seek\seek):size @no-decl @real-name(lseek)}
    }
 }

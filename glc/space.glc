@@ -4,7 +4,7 @@
 {\stmt-space-flags(
    #0,
    #skip-lvar-decl = 1,
-   )`tnum
+   ):tnum
 }
 {/stmt-space(
    .base`/stmt+,
@@ -12,8 +12,8 @@
    .flags`\stmt-space-flags,
    .stmt-first`/stmt,
    .stmt-last`/stmt,
-   .lvar-c`int,
-   .lvar-cap`int,
+   .lvar-c:int,
+   .lvar-cap:int,
    .lvar-v`\lvar[],
    )
    {:rd-space(space`/stmt-space, r`/rdr) @case:rd @inline;
@@ -21,10 +21,10 @@
       s:rd(r, space);
       space:stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #space);
    }
-   {{:write(space`this)}
+   {{:write(space:this)}
       `` .out:printf("{ // space begin \n");
       {+i, lvar-c}
-      {if(space.parent == `null)
+      {if(space.parent == :null)
          `` dont write arguments
          i = `.ctx-func.farg-c;
          lvar-c = space.lvar-c - `.ctx-func.farg-c;
@@ -44,13 +44,13 @@
          `.out:printf(";\n");
       }
       +s = space.stmt-first;
-      {while(s != `null)
+      {while(s != :null)
          s:write;
          s = s.stmt-next;
       }
       `` .out:printf("} // space end\n");
    }
-   {{:lvar-new(space`this, name`\id, row`int, col`int)`\lvar}
+   {{:lvar-new(space:this, name`\id, row:int, col:int)`\lvar}
       +v = space.lvar-v;
       {do{+i = 0}{(space.lvar-c) i++}
          +lvar = v[i]:ptr;
@@ -80,17 +80,17 @@
       item.decl.name = name;
       {return lvar}
    }
-   {:wr-space(stmt`/stmt, w`/wtr, header`bool) @case:wr @inline;
+   {:wr-space(stmt`/stmt, w`/wtr, header:bool) @case:wr @inline;
       {+s`/stmt-space = stmt}
       s:wr(w, header);
    }
-   {{:wr(space`this, w`/wtr, header`bool)}
+   {{:wr(space:this, w`/wtr, header:bool)}
       w:n(space.lvar-c);
       {do{+i = 0}{(space.lvar-c) i++}
          space.lvar-v[i]:wr(w);
       }
       +stmt = space.stmt-first;
-      {while(stmt != `null)
+      {while(stmt != :null)
          stmt.type:wr(w);
          {if(`#debug-rd-wr)
             w:n1(255);
@@ -112,14 +112,14 @@
       }
       `\stmt-type#nil:wr(w);
    }
-   {:stmt-push(s`this, s2`/stmt, begin-row`int, begin-col`int, end-row`int, end-col`int, type`\stmt-type) @inline;
+   {:stmt-push(s:this, s2`/stmt, begin-row:int, begin-col:int, end-row:int, end-col:int, type`\stmt-type) @inline;
       s2.begin-row = begin-row;
       s2.begin-col = begin-col;
       s2.end-row = end-row;
       s2.end-col = end-col;
       s2.type = type;
-      s2.stmt-next = `null;
-      {if(s.stmt-last == `null)
+      s2.stmt-next = :null;
+      {if(s.stmt-last == :null)
          s.stmt-first = s2;
          s.stmt-last = s2;
       }{else
@@ -127,10 +127,10 @@
          s.stmt-last = s2;
       }
    }
-   {{:rd(space`this, r`/rdr, parent`/stmt-space)}
+   {{:rd(space:this, r`/rdr, parent`/stmt-space)}
       space.parent = parent;
-      space.stmt-first = `null;
-      space.stmt-last = `null;
+      space.stmt-first = :null;
+      space.stmt-last = :null;
 
       +lvar-c = r:n;
       space.lvar-c = lvar-c;
@@ -172,14 +172,14 @@
          }
       }
    }
-   {{:process(space`this)`bool}
+   {{:process(space:this):bool}
       +s = space.stmt-first;
-      {while(s != `null)
-         {if!(s:process) {return `false}}
+      {while(s != :null)
+         {if!(s:process) {return :false}}
          s = s.stmt-next;
       }
       {+i, lvar-c}
-      {if(space.parent == `null)
+      {if(space.parent == :null)
          `` don't process arguments
          i = `.ctx-func.farg-c;
          lvar-c = space.lvar-c - `.ctx-func.farg-c;
@@ -190,14 +190,14 @@
       {do{(lvar-c) i++}
          space.lvar-v[i]:process;
       }
-      {return `true}
+      {return :true}
    }
 }
 {at(/stmt)
-   {:process-space(stmt`/stmt, ok`bool&) @case:process @inline;
+   {:process-space(stmt`/stmt, ok:bool&) @case:process @inline;
       {+space`/stmt-space = stmt}
       {if!(space:process) {return}}
-      ok = `true;
+      ok = :true;
    }
    {:write-space(stmt`/stmt) @case:write @inline;
       {+space`/stmt-space = stmt}
@@ -205,15 +205,15 @@
    }
 }
 {{:stmt-space-begin()/stmt-space}
-   {return :stmt-space-begin(`true)}
+   {return :stmt-space-begin(:true)}
 }
-{{:stmt-space-begin(attach`bool)/stmt-space}
+{{:stmt-space-begin(attach:bool)/stmt-space}
    +parent = .decl-func-ctx-space;
    :quick-alloc-one(.decl-func-ctx-space);
    +space = .decl-func-ctx-space;
    space.parent = parent;
    {if(attach)
-      {if(parent.stmt-last == `null)
+      {if(parent.stmt-last == :null)
          parent.stmt-first = space.base;
          parent.stmt-last = space.base;
       }{else
@@ -224,7 +224,7 @@
    {return space}
 }
 {{:stmt-space-begin-detach()/stmt-space}
-   {return :stmt-space-begin(`false)}
+   {return :stmt-space-begin(:false)}
 }
 {{:stmt-space-end()/stmt-space}
    +ret = .decl-func-ctx-space;

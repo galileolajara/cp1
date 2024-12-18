@@ -1,10 +1,10 @@
 {alias 'glc = %glc}
 {at(%glc)
-{\math(#add, #sub, #mul, #div, #lshift, #rshift, #and, #or, #xor)`tnum
-   {:wr(e`this, w`/wtr) @inline;
+{\math(#add, #sub, #mul, #div, #lshift, #rshift, #and, #or, #xor):tnum
+   {:wr(e:this, w`/wtr) @inline;
       w:n1(e);
    }
-   {:rd(e`this&, r`/rdr) @inline;
+   {:rd(e:this&, r`/rdr) @inline;
       e = r:n1`\math;
    }
 }
@@ -37,7 +37,7 @@
          e.item-v[i].expr:try-deduce(at);
       }
    }
-   {:wr-math(expr`/expr, w`/wtr, header`bool) @case:wr @inline;
+   {:wr-math(expr`/expr, w`/wtr, header:bool) @case:wr @inline;
       {+e`/expr-math = expr}
       e.left:wr(w, header);
       e.right:wr(w, header);
@@ -140,9 +140,9 @@
          }
       }
    }
-   {:value-math(e`this, ref`tint, paren`bool, v`/value, ok`bool&) @case:value @inline;
+   {:value-math(e:this, ref:tint, paren:bool, v`/value, ok:bool&) @case:value @inline;
       {+expr`/expr-math = e:ptr}
-		`` {if(expr.left:value(1, paren, v) == `false)
+		`` {if(expr.left:value(1, paren, v) == :false)
       ``    {return}
       `` }
 		{if!(expr.left:value(1, paren, v)) {return}}
@@ -156,26 +156,26 @@
       `` }
 		v.paren = paren;
 		v.ref = ref;
-      ok = `true;
+      ok = :true;
 	}
    {:type-math(expr`/expr, at`\at&) @case:type @inline;
       {+e`/expr-math = expr}
       at = e.left:type;
    }
-   {:process-math(expr`/expr, ok`bool&) @case:process @inline;
+   {:process-math(expr`/expr, ok:bool&) @case:process @inline;
       {+e`/expr-math = expr}
-		{if!(e.left:value(1, `true, e.left-val))
+		{if!(e.left:value(1, :true, e.left-val))
 			{return}
       }
 		e.right:try-deduce(e.left-val.type);
-		{if!(e.right:value(1, `true, e.right-val))
+		{if!(e.right:value(1, :true, e.right-val))
 			{return}
       }
       {do{+i = 0}{(e.item-c) i++}
          +item = e.item-v[i];
-         {if!(item.expr:value(1, `true, item.val)) {return}}
+         {if!(item.expr:value(1, :true, item.val)) {return}}
       }
-      ok = `true;
+      ok = :true;
    }
 }
  
