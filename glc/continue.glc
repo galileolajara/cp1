@@ -7,32 +7,32 @@
    )
 }
 {{:stmt-continue(id\id, begin-row:int, begin-col:int, end-row:int, end-col:int)}
-   :quick-alloc-one(+(s/stmt-continue));
-   :stmt-push(s.base, begin-row, begin-col, end-row, end-col, #continue);
+   quick-alloc-one(+(s/stmt-continue));
+   stmt-push(s.base, begin-row, begin-col, end-row, end-col, #continue);
    `` s.id = id;
    {if(.nest-stack-c <= 0)
-      'c.out:printf("%s:%u:%u: Cannot have a continue because it's not inside a loop\n", .input-path, begin-row, begin-col);
-      'c:exit(#failure);
+      'c.out.printf("%s:%u:%u: Cannot have a continue because it's not inside a loop\n", .input-path, begin-row, begin-col);
+      'c.exit(#failure);
    }
    s.nest = .nest-stack-c - 1;
 }
 {at(/stmt-space)
-   {:wr-continue(stmt`/stmt, w`/wtr, header:bool) @case:wr @inline;
+   {:wr-continue(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline;
       {+s`/stmt-continue = stmt}
-      w:n1(s.nest);
+      w.n1(s.nest);
    }
-   {:rd-continue(space`/stmt-space, r`/rdr) @case:rd @inline;
-      `:quick-alloc-one(+(s`/stmt-continue));
-      s.nest = r:n1;
-      space:stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #continue);
+   {:rd-continue(space`/stmt-space, r`/rdr) @case.rd() @inline;
+      `.quick-alloc-one(+(s`/stmt-continue));
+      s.nest = r.n1();
+      space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #continue);
    }
 }
 {at(/stmt)
-   {:write-continue(stmt`/stmt) @case:write @inline;
+   {:write-continue(stmt`/stmt) @case.write() @inline;
       {+s`/stmt-continue = stmt}
-      `.out:printf("goto continue_%u;\n", `.nest-stack-id-v[s.nest]);
+      `.out.printf("goto continue_%u;\n", `.nest-stack-id-v[s.nest]);
    }
-   {:process-continue(stmt`/stmt, ok:bool&) @case:process @inline;
+   {:process-continue(stmt`/stmt, ok:bool&) @case.process() @inline;
       {+s`/stmt-continue = stmt}
       ok = :true;
    }

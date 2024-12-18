@@ -3,7 +3,7 @@
    {at(%stdc)
       {\file(#nil = -1):int
          {:open(file'c\file&, path:char[], flags`\open-flags):bool @inline;
-            +fd = 'c:open(path, flags);
+            +fd = 'c.open(path, flags);
             {if(fd != -1)
                file = fd;
                {return :true}
@@ -12,7 +12,7 @@
             }
          }
          {:open(file:this&, path:char[], flags`\open-flags, mode:int):bool @inline;
-            +fd = 'c:open(path, flags, mode);
+            +fd = 'c.open(path, flags, mode);
             {if(fd != -1)
                file = fd;
                {return :true}

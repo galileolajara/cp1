@@ -371,9 +371,9 @@ union _Mglc_Srdr;
 union _Mglc_Srdr {
 void* _Fref;
 size_t _Fpos;
-uint8_t* _F1;
+uint8_t* _Fp1;
 char* _Fchar;
-uint32_t* _F4;
+uint32_t* _Fp4;
 };
 struct _Mglc_Sfile;
 struct _Mglc_Sfile {
@@ -2291,7 +2291,7 @@ case _Mglc_Eexpr_type_Cindex:;
 _Mglc_Eexpr_Pwrite_index_1(_Lexpr_1);
 break;
 default:;
-fprintf(stdout, "%s:%u:%u - %u:%u: :write not implemented in expression #%s\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eexpr_type_Pglc_name_1((*_Lexpr_1)._Ftype));
+fprintf(stdout, "%s:%u:%u - %u:%u: write() not implemented in expression #%s\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eexpr_type_Pglc_name_1((*_Lexpr_1)._Ftype));
 break;
 }
 }
@@ -2542,7 +2542,7 @@ return false;
 }
 uint8_t _Mglc_Srdr_Pn1_1(union _Mglc_Srdr* _Lr_0) {
 uint8_t _Lval_1;
-_Lval_1 = (*_Lr_0)._F1[0];
+_Lval_1 = (*_Lr_0)._Fp1[0];
 (*_Lr_0)._Fpos++;
 return _Lval_1;
 }
@@ -2693,7 +2693,7 @@ case _Mglc_Eexpr_type_Cindex:;
 _Mglc_Eexpr_Prd_index_2(_Le_idx_3, _Lr_1);
 break;
 default:;
-fprintf(stdout, ":rd was not implemented in expression #%s\n", _Mglc_Eexpr_type_Pglc_name_1(_Ltype_2));
+fprintf(stdout, "rd() was not implemented in expression #%s\n", _Mglc_Eexpr_type_Pglc_name_1(_Ltype_2));
 exit(_Mstdc_Eexit_Cfailure);
 break;
 }
@@ -2751,10 +2751,10 @@ void _Mglc_Efunc_Prd_2(_Mglc_Efunc* _Lf_0, union _Mglc_Srdr* _Lr_1) {
 }
 uint32_t _Mglc_Srdr_Pn4_1(union _Mglc_Srdr* _Lr_0) {
 uint32_t _Lval_1;
-_Lval_1 = (uint32_t)((*_Lr_0)._F1[0]);
-_Lval_1 |= ((*_Lr_0)._F1[1] << 8);
-_Lval_1 |= ((*_Lr_0)._F1[2] << 16);
-_Lval_1 |= ((*_Lr_0)._F1[3] << 24);
+_Lval_1 = (uint32_t)((*_Lr_0)._Fp1[0]);
+_Lval_1 |= ((*_Lr_0)._Fp1[1] << 8);
+_Lval_1 |= ((*_Lr_0)._Fp1[2] << 16);
+_Lval_1 |= ((*_Lr_0)._Fp1[3] << 24);
 (*_Lr_0)._Fpos += 4;
 return _Lval_1;
 }
@@ -2904,7 +2904,7 @@ case _Mglc_Estmt_type_Cspace:;
 _Mglc_Sstmt_space_Prd_space_2(_Lspace_0, _Lr_1);
 break;
 default:;
-fprintf(stdout, ":rd not yet implemented in stmt #%s\n", _Mglc_Estmt_type_Pglc_name_1(_Ltype_5));
+fprintf(stdout, "rd() not yet implemented in stmt #%s\n", _Mglc_Estmt_type_Pglc_name_1(_Ltype_5));
 exit(_Mstdc_Eexit_Cfailure);
 break;
 }
@@ -2985,7 +2985,7 @@ case _Mglc_Estmt_type_Cspace:;
 _Mglc_Sstmt_Pprocess_space_2(_Ls_0, &_Lok_1);
 break;
 default:;
-fprintf(stdout, "%s:%u:%u - %u:%u: :process is not implemented in statement #%s\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), (*_Ls_0)._Fbegin_row, (*_Ls_0)._Fbegin_col, (*_Ls_0)._Fend_row, (*_Ls_0)._Fend_col, _Mglc_Estmt_type_Pglc_name_1((*_Ls_0)._Ftype));
+fprintf(stdout, "%s:%u:%u - %u:%u: process() is not implemented in statement #%s\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), (*_Ls_0)._Fbegin_row, (*_Ls_0)._Fbegin_col, (*_Ls_0)._Fend_row, (*_Ls_0)._Fend_col, _Mglc_Estmt_type_Pglc_name_1((*_Ls_0)._Ftype));
 break;
 }
 if(!(_Lok_1)) {
@@ -3128,7 +3128,7 @@ case _Mglc_Eexpr_type_Cindex:;
 _Mglc_Eexpr_Pprocess_index_2(_Lexpr_4, &_Lok_5);
 break;
 default:;
-fprintf(stdout, "%s:%u:%u - %u:%u: :process not implemented for expression #%s\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eexpr_type_Pglc_name_1((*_Lexpr_4)._Ftype));
+fprintf(stdout, "%s:%u:%u - %u:%u: process() not implemented for expression #%s\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eexpr_type_Pglc_name_1((*_Lexpr_4)._Ftype));
 return false;
 break;
 }
@@ -3695,7 +3695,7 @@ case _Mglc_Estmt_type_Cspace:;
 _Mglc_Sstmt_Pwrite_space_1(_Ls_0);
 break;
 default:;
-fprintf(stdout, ":write not yet implemented in stmt #%s\n", _Mglc_Estmt_type_Pglc_name_1((*_Ls_0)._Ftype));
+fprintf(stdout, "write() not yet implemented in stmt #%s\n", _Mglc_Estmt_type_Pglc_name_1((*_Ls_0)._Ftype));
 exit(_Mstdc_Eexit_Cfailure);
 break;
 }
@@ -5475,7 +5475,7 @@ case _Mglc_Eexpr_type_Cindex:;
 _Mglc_Eexpr_Pvalue_index_5(_Le_0, _Lref_1, _Lparen_2, _Lv_3, &_Lok_5);
 break;
 default:;
-fprintf(stdout, "%u:%u - %u:%u: :value not implemented for #%s\n", _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eexpr_type_Pglc_name_1((*_Lexpr_4)._Ftype));
+fprintf(stdout, "%u:%u - %u:%u: value() not implemented for #%s\n", _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eexpr_type_Pglc_name_1((*_Lexpr_4)._Ftype));
 break;
 }
 return _Lok_5;
@@ -5656,7 +5656,7 @@ case _Mglc_Eexpr_type_Cindex:;
 _Mglc_Eexpr_Ptype_index_2(_Lexpr_1, &_Lat_2);
 break;
 default:;
-fprintf(stdout, "%u:%u - %u:%u: :type not implemented for #%s\n", _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eexpr_type_Pglc_name_1((*_Lexpr_1)._Ftype));
+fprintf(stdout, "%u:%u - %u:%u: type() not implemented for #%s\n", _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eexpr_type_Pglc_name_1((*_Lexpr_1)._Ftype));
 break;
 }
 return _Lat_2;

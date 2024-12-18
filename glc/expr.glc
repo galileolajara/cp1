@@ -2,25 +2,25 @@
 {alias 'c = %stdc}
 {at(%glc)
 {at(/stmt-space)
-   {:wr-expr(stmt`/stmt, w`/wtr, header:bool) @case:wr @inline;
+   {:wr-expr(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline;
       {+s`/stmt-expr = stmt}
-      s.expr:wr(w, header);
+      s.expr.wr(w, header);
    }
-   {:rd-expr(space`/stmt-space, r`/rdr) @case:rd @inline;
-      `:quick-alloc-one(+(s`/stmt-expr));
-      s.expr:rd(r);
-      space:stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #expr);
+   {:rd-expr(space`/stmt-space, r`/rdr) @case.rd() @inline;
+      `.quick-alloc-one(+(s`/stmt-expr));
+      s.expr.rd(r);
+      space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #expr);
    }
 }
 {at(/stmt)
-   {:write-expr(stmt`/stmt) @case:write @inline;
+   {:write-expr(stmt`/stmt) @case.write() @inline;
       {+s`/stmt-expr = stmt}
-      s.expr:write;
-      `.out:printf(";\n");
+      s.expr.write();
+      `.out.printf(";\n");
    }
-   {:process-expr(stmt`/stmt, ok:bool&) @case:process @inline;
+   {:process-expr(stmt`/stmt, ok:bool&) @case.process() @inline;
       {+s`/stmt-expr = stmt}
-      {if!(s.expr:process)
+      {if!(s.expr.process())
          {return}
       }
       ok = :true;
@@ -32,10 +32,10 @@
    #compare, #bool, #null, #cast-fast, #ref, #char, #size-of-type,
    ):tnum
    {:wr(e:this, w`/wtr) @inline;
-      w:n1(e);
+      w.n1(e);
    }
    {:rd(e:this&, r`/rdr) @inline;
-      e = r:n1`\expr-type;
+      e = r.n1()`\expr-type;
    }
    {:glc-name(e:this):char[] @glc-name}
 }
@@ -49,123 +49,123 @@
       {return `.expr-v[e]}
    }
    {{:write-value(e:this, v`/value):bool}
-      +expr = e:ptr;
+      +expr = e.ptr();
       +ref = v.ref;
-      `` 'c.out:printf("write-value v.ref = %d\n", ref);
+      `` 'c.out.printf("write-value v.ref = %d\n", ref);
       {if(v.paren)
          {if(ref <= 0)
-            `.out:write("(&", 2);
+            `.out.write("(&", 2);
          }{else
-            `.out:write("(*******************************", ref);
+            `.out.write("(*******************************", ref);
          }
       }{else
          {if(ref <= 0)
-            `.out:write("&", 1);
+            `.out.write("&", 1);
          }{elif(ref > 1)
-            `.out:write("*******************************", ref - 1);
+            `.out.write("*******************************", ref - 1);
          }
       }
 
       {if(expr.type == #cast-fast)
          {+e`/expr-cast-fast = expr}
-         e:write-value(v);
+         e.write-value(v);
       }{else
-         e:write;
+         e.write();
       }
 
       {if(v.paren)
-         `.out:write(")", 1);
+         `.out.write(")", 1);
       }
       {return :true}
    }
 	{{:value(e:this, ref:int, paren:bool, v`/value):bool}
-      {if!(e:process) {return :false}}
-      +expr = e:ptr;
+      {if!(e.process()) {return :false}}
+      +expr = e.ptr();
       +ok = :false;
-      {switch(expr.type):value(e, ref, paren, v, ok)
+      {switch(expr.type).value(e, ref, paren, v, ok)
          {default
-            'c.out:printf("%u:%u - %u:%u: :value not implemented for #%s\n",
-               `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type:glc-name);
+            'c.out.printf("%u:%u - %u:%u: value() not implemented for #%s\n",
+               `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type.glc-name());
          }
       }
       {return ok}
    }
    {{:type(e:this)`\at}
-      {if!(e:process) {return #nil}}
-      +expr = e:ptr;
+      {if!(e.process()) {return #nil}}
+      +expr = e.ptr();
       +at = `\at#nil;
-      {switch(expr.type):type(expr, at)
+      {switch(expr.type).type(expr, at)
          {default
-            'c.out:printf("%u:%u - %u:%u: :type not implemented for #%s\n",
-               `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type:glc-name);
+            'c.out.printf("%u:%u - %u:%u: type() not implemented for #%s\n",
+               `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type.glc-name());
          }
       }
       {return at}
    }
    {{:try-deduce(e-idx:this, at`\at)}
-      +expr = e-idx:ptr;
-      {switch(expr.type):try-deduce(expr, at)
+      +expr = e-idx.ptr();
+      {switch(expr.type).try-deduce(expr, at)
       }
    }
    {{:wr(e:this, w`/wtr, header:bool)}
       {if(`#debug-rd-wr)
-         w:n1(255);
+         w.n1(255);
       }
       {if(e == #nil)
-         `\expr-type#nil:wr(w);
+         `\expr-type#nil.wr(w);
       }{else
-         +expr = e:ptr;
-         expr.type:wr(w);
-         {switch(expr.type):wr(expr, w, header)
+         +expr = e.ptr();
+         expr.type.wr(w);
+         {switch(expr.type).wr(expr, w, header)
             {default
-               'c.out:printf(":wr was not implemented in expression #%s\n", expr.type:glc-name);
-               'c:exit(#failure);
+               'c.out.printf("wr() was not implemented in expression #%s\n", expr.type.glc-name());
+               'c.exit(#failure);
             }
          }
       }
       {if(`#debug-rd-wr)
-         w:n1(255);
+         w.n1(255);
       }
    }
    {{:rd(e:this&, r`/rdr)}
       {if(`#debug-rd-wr)
-         {if(r:n1 != 255)
-            'c.out:printf("Error reading expr\n");
-            'c.out:flush;
-            'c:exit(#failure);
+         {if(r.n1() != 255)
+            'c.out.printf("Error reading expr\n");
+            'c.out.flush();
+            'c.exit(#failure);
          }
       }
-      `\expr-type:rd(+type, r);
+      `\expr-type.rd(+type, r);
       {if(type == #nil)
          e = #nil;
       }{else
          +e-idx = (`.expr-c++)`\expr;
          {if(`.expr-cap <= `.expr-c)
             +old-cap = `.expr-cap;
-            `:grow(`.expr-cap, `.expr-c);
-            `:realloc(`.expr-v, `.expr-cap, old-cap);
-            `:realloc(`.expr-is-processed, (`.expr-cap + 7) >> 3, (old-cap + 7) >> 3);
+            `.grow(`.expr-cap, `.expr-c);
+            `.realloc(`.expr-v, `.expr-cap, old-cap);
+            `.realloc(`.expr-is-processed, (`.expr-cap + 7) >> 3, (old-cap + 7) >> 3);
          }
          e = e-idx;
-         {switch(type):rd(e-idx, r)
+         {switch(type).rd(e-idx, r)
             {default
-               'c.out:printf(":rd was not implemented in expression #%s\n", type:glc-name);
-               'c:exit(#failure);
+               'c.out.printf("rd() was not implemented in expression #%s\n", type.glc-name());
+               'c.exit(#failure);
             }
          }
       }
       {if(`#debug-rd-wr)
-         {if(r:n1 != 255)
-            'c.out:printf("Error reading expr\n");
-            'c.out:flush;
-            'c:exit(#failure);
+         {if(r.n1() != 255)
+            'c.out.printf("Error reading expr\n");
+            'c.out.flush();
+            'c.exit(#failure);
          }
       }
    }
    {{:process(e:this):bool}
       {if(e == #nil)
-         'c.out:printf("%s:%u:%u - %u:%u: Processed a nil expression\n",
-            `.ctx-func.file:path, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col);
+         'c.out.printf("%s:%u:%u - %u:%u: Processed a nil expression\n",
+            `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col);
          {return :false}
       }
       +num = e:num;
@@ -173,27 +173,27 @@
       +n17 = 1 << (num & 7);
       {if((`.expr-is-processed[n3] & n17) != #0) {return :true}}
       `.expr-is-processed[n3] |= n17;
-      +expr = e:ptr;
+      +expr = e.ptr();
       `` {if(expr.flags & #processed) {return :true}}
       `` expr.flags |= #processed;
       +ok = :false;
-      {switch(expr.type):process(expr, ok)
+      {switch(expr.type).process(expr, ok)
          {default
-            'c.out:printf("%s:%u:%u - %u:%u: :process not implemented for expression #%s\n",
-               `.ctx-func.file:path, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type:glc-name);
+            'c.out.printf("%s:%u:%u - %u:%u: process() not implemented for expression #%s\n",
+               `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type.glc-name());
             {return :false}
          }
       }
       {if!(ok)
-         'c.out:printf("%s:%u:%u - %u:%u: Processing of expression #%s failed\n", `.ctx-func.file:path, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type:glc-name);
+         'c.out.printf("%s:%u:%u - %u:%u: Processing of expression #%s failed\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type.glc-name());
       }
       {return ok}
    }
    {{:write(e:this)}
-      +expr = e:ptr;
-      {switch(expr.type):write(expr)
+      +expr = e.ptr();
+      {switch(expr.type).write(expr)
          {default
-            'c.out:printf("%s:%u:%u - %u:%u: :write not implemented in expression #%s\n", `.ctx-func.file:path, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type:glc-name);
+            'c.out.printf("%s:%u:%u - %u:%u: write() not implemented in expression #%s\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type.glc-name());
          }
       }
    }
@@ -207,34 +207,34 @@
       {switch(e.type)
          {case(#call)
             {+e2/expr-call = e}
-            e2:write(out);
+            e2.write(out);
          }
       }
    }
 }
 {\basic-type-id(#root, #ref, #bool, #char, #tint, #tnum, #int, #num, #float, #size, #lnum, #COUNT):tnum
    {:wr(e:this, w`/wtr) @inline;
-      w:n1(e);
+      w.n1(e);
    }
    {:rd(e:this&, r`/rdr) @inline;
-      e = r:n1`\basic-type-id;
+      e = r.n1()`\basic-type-id;
    }
 `` {{:write(e:this, out'c/file)}
 ``    {switch(e)
 ``       {case(#ref)
-``          out:printf("void*");
+``          out.printf("void*");
 ``       }
 ``       {case(#int)
-``          out:printf("int");
+``          out.printf("int");
 ``       }
 ``       {case(#num)
-``          out:printf("unsigned int");
+``          out.printf("unsigned int");
 ``       }
 ``       {case(#float)
-``          out:printf("float");
+``          out.printf("float");
 ``       }
 ``       {case(#bool)
-``          out:printf("bool");
+``          out.printf("bool");
 ``       }
 ``    }
 `` }
@@ -280,8 +280,8 @@
    +e-idx = .expr-c++;
    {if(.expr-cap <= .expr-c)
       +old-cap = .expr-cap;
-      :grow(.expr-cap, .expr-c);
-      :realloc(.expr-v, .expr-cap, old-cap);
+      grow(.expr-cap, .expr-c);
+      realloc(.expr-v, .expr-cap, old-cap);
    }
    .expr-v[e-idx] = e;
    {return e-idx}

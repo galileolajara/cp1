@@ -16,13 +16,13 @@
    .lvar-cap:int,
    .lvar-v`\lvar[],
    )
-   {:rd-space(space`/stmt-space, r`/rdr) @case:rd @inline;
-      `:quick-alloc-one(+(s`/stmt-space));
-      s:rd(r, space);
-      space:stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #space);
+   {:rd-space(space`/stmt-space, r`/rdr) @case.rd() @inline;
+      `.quick-alloc-one(+(s`/stmt-space));
+      s.rd(r, space);
+      space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #space);
    }
    {{:write(space:this)}
-      `` .out:printf("{ // space begin \n");
+      `` .out.printf("{ // space begin \n");
       {+i, lvar-c}
       {if(space.parent == :null)
          `` dont write arguments
@@ -34,83 +34,83 @@
       }
       {do{(lvar-c) i++}
          +lvar-i = space.lvar-v[i];
-         +lvar = lvar-i:ptr;
-         `` 'c.out:printf("%s %s\n", lvar.decl.type:ptr.type:glc-name, lvar.decl.type:ptr.name.basic:glc-name);
-         lvar.decl:write-lvar-type(lvar-i);
+         +lvar = lvar-i.ptr();
+         `` 'c.out.printf("%s %s\n", lvar.decl.type.ptr().type.glc-name(), lvar.decl.type.ptr().name.basic.glc-name());
+         lvar.decl.write-lvar-type(lvar-i);
          {if((lvar.flags & #set-expr) != #0)
-            `.out:printf(" = ");
-            lvar.set-expr:write;
+            `.out.printf(" = ");
+            lvar.set-expr.write();
          }
-         `.out:printf(";\n");
+         `.out.printf(";\n");
       }
       +s = space.stmt-first;
       {while(s != :null)
-         s:write;
+         s.write();
          s = s.stmt-next;
       }
-      `` .out:printf("} // space end\n");
+      `` .out.printf("} // space end\n");
    }
    {{:lvar-new(space:this, name`\id, row:int, col:int)`\lvar}
       +v = space.lvar-v;
       {do{+i = 0}{(space.lvar-c) i++}
-         +lvar = v[i]:ptr;
+         +lvar = v[i].ptr();
          {if(lvar.decl.name == name)
-            'c.out:printf("%u:%u: lvar '%s' was already declared at %u:%u\n", row, col, name:str, lvar.row, lvar.col);
-            'c:exit(#failure);
+            'c.out.printf("%u:%u: lvar '%s' was already declared at %u:%u\n", row, col, name.str(), lvar.row, lvar.col);
+            'c.exit(#failure);
          }
       }
       +i = space.lvar-c++;
       {if(space.lvar-cap <= space.lvar-c)
          +old-cap = space.lvar-cap;
-         `:grow(space.lvar-cap, space.lvar-c);
-         `:realloc(space.lvar-v, space.lvar-cap, old-cap);
+         `.grow(space.lvar-cap, space.lvar-c);
+         `.realloc(space.lvar-v, space.lvar-cap, old-cap);
       }
       +f = `.ctx-func;
       +lvar = f.lvar-c++;
       space.lvar-v[i] = lvar;
       {if(f.lvar-cap <= f.lvar-c)
          +old-cap = f.lvar-cap;
-         `:grow(f.lvar-cap, f.lvar-c);
-         `:realloc(f.lvar-v, f.lvar-cap, old-cap);
+         `.grow(f.lvar-cap, f.lvar-c);
+         `.realloc(f.lvar-v, f.lvar-cap, old-cap);
       }
-      `:quick-alloc-one(+(item`/lvar));
+      `.quick-alloc-one(+(item`/lvar));
       f.lvar-v[lvar] = item;
       item.row = row;
       item.col = col;
       item.decl.name = name;
       {return lvar}
    }
-   {:wr-space(stmt`/stmt, w`/wtr, header:bool) @case:wr @inline;
+   {:wr-space(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline;
       {+s`/stmt-space = stmt}
-      s:wr(w, header);
+      s.wr(w, header);
    }
    {{:wr(space:this, w`/wtr, header:bool)}
-      w:n(space.lvar-c);
+      w.n(space.lvar-c);
       {do{+i = 0}{(space.lvar-c) i++}
-         space.lvar-v[i]:wr(w);
+         space.lvar-v[i].wr(w);
       }
       +stmt = space.stmt-first;
       {while(stmt != :null)
-         stmt.type:wr(w);
+         stmt.type.wr(w);
          {if(`#debug-rd-wr)
-            w:n1(255);
+            w.n1(255);
          }
-         w:n(stmt.begin-row);
-         w:n(stmt.begin-col);
-         w:n(stmt.end-row);
-         w:n(stmt.end-col);
-         {switch(stmt.type):wr(stmt, w, header)
+         w.n(stmt.begin-row);
+         w.n(stmt.begin-col);
+         w.n(stmt.end-row);
+         w.n(stmt.end-col);
+         {switch(stmt.type).wr(stmt, w, header)
             {default
-               'c.out:printf(":wr not yet implemented in stmt #%s\n", stmt.type:glc-name);
-               'c:exit(#failure);
+               'c.out.printf("wr() not yet implemented in stmt #%s\n", stmt.type.glc-name());
+               'c.exit(#failure);
             }
          }
          {if(`#debug-rd-wr)
-            w:n1(255);
+            w.n1(255);
          }
          stmt = stmt.stmt-next;
       }
-      `\stmt-type#nil:wr(w);
+      `\stmt-type#nil.wr(w);
    }
    {:stmt-push(s:this, s2`/stmt, begin-row:int, begin-col:int, end-row:int, end-col:int, type`\stmt-type) @inline;
       s2.begin-row = begin-row;
@@ -132,42 +132,42 @@
       space.stmt-first = :null;
       space.stmt-last = :null;
 
-      +lvar-c = r:n;
+      +lvar-c = r.n();
       space.lvar-c = lvar-c;
-      `:quick-alloc-arr(space.lvar-v, lvar-c);
+      `.quick-alloc-arr(space.lvar-v, lvar-c);
       {do{+i = 0}{(lvar-c) i++}
-         space.lvar-v[i]:rd(r);
+         space.lvar-v[i].rd(r);
       }
 
       {do()
-         `\stmt-type:rd(+type, r);
+         `\stmt-type.rd(+type, r);
          {if(type == #nil) {break}}
          {if(`#debug-rd-wr)
-            {if(r:n1 != 255)
-               'c.out:printf("Error reading stmt\n");
-               'c.out:flush;
-               'c:exit(#failure);
+            {if(r.n1() != 255)
+               'c.out.printf("Error reading stmt\n");
+               'c.out.flush();
+               'c.exit(#failure);
             }
          }
-         +begin-row = r:n;
-         +begin-col = r:n;
-         +end-row = r:n;
-         +end-col = r:n;
+         +begin-row = r.n();
+         +begin-col = r.n();
+         +end-row = r.n();
+         +end-col = r.n();
          `.ctx-begin-row = begin-row;
          `.ctx-begin-col = begin-col;
          `.ctx-end-row = end-row;
          `.ctx-end-col = end-col;
-         {switch(type):rd(space, r)
+         {switch(type).rd(space, r)
             {default
-               'c.out:printf(":rd not yet implemented in stmt #%s\n", type:glc-name);
-               'c:exit(#failure);
+               'c.out.printf("rd() not yet implemented in stmt #%s\n", type.glc-name());
+               'c.exit(#failure);
             }
          }
          {if(`#debug-rd-wr)
-            {if(r:n1 != 255)
-               'c.out:printf("Error reading stmt\n");
-               'c.out:flush;
-               'c:exit(#failure);
+            {if(r.n1() != 255)
+               'c.out.printf("Error reading stmt\n");
+               'c.out.flush();
+               'c.exit(#failure);
             }
          }
       }
@@ -175,7 +175,7 @@
    {{:process(space:this):bool}
       +s = space.stmt-first;
       {while(s != :null)
-         {if!(s:process) {return :false}}
+         {if!(s.process()) {return :false}}
          s = s.stmt-next;
       }
       {+i, lvar-c}
@@ -188,28 +188,28 @@
          lvar-c = space.lvar-c;
       }
       {do{(lvar-c) i++}
-         space.lvar-v[i]:process;
+         space.lvar-v[i].process();
       }
       {return :true}
    }
 }
 {at(/stmt)
-   {:process-space(stmt`/stmt, ok:bool&) @case:process @inline;
+   {:process-space(stmt`/stmt, ok:bool&) @case.process() @inline;
       {+space`/stmt-space = stmt}
-      {if!(space:process) {return}}
+      {if!(space.process()) {return}}
       ok = :true;
    }
-   {:write-space(stmt`/stmt) @case:write @inline;
+   {:write-space(stmt`/stmt) @case.write() @inline;
       {+space`/stmt-space = stmt}
-      space:write;
+      space.write();
    }
 }
 {{:stmt-space-begin()/stmt-space}
-   {return :stmt-space-begin(:true)}
+   {return stmt-space-begin(:true)}
 }
 {{:stmt-space-begin(attach:bool)/stmt-space}
    +parent = .decl-func-ctx-space;
-   :quick-alloc-one(.decl-func-ctx-space);
+   quick-alloc-one(.decl-func-ctx-space);
    +space = .decl-func-ctx-space;
    space.parent = parent;
    {if(attach)
@@ -224,7 +224,7 @@
    {return space}
 }
 {{:stmt-space-begin-detach()/stmt-space}
-   {return :stmt-space-begin(:false)}
+   {return stmt-space-begin(:false)}
 }
 {{:stmt-space-end()/stmt-space}
    +ret = .decl-func-ctx-space;

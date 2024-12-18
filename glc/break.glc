@@ -7,32 +7,32 @@
    )
 }
 {{:stmt-break(id\id, begin-row:int, begin-col:int, end-row:int, end-col:int)}
-   :quick-alloc-one(+(s/stmt-break));
-   :stmt-push(s.base, begin-row, begin-col, end-row, end-col, #break);
+   quick-alloc-one(+(s/stmt-break));
+   stmt-push(s.base, begin-row, begin-col, end-row, end-col, #break);
    `` s.id = id;
    {if(.nest-stack-c <= 0)
-      'c.out:printf("%s:%u:%u: Cannot have a break because it's not inside a loop\n", .input-path, begin-row, begin-col);
-      'c:exit(#failure);
+      'c.out.printf("%s:%u:%u: Cannot have a break because it's not inside a loop\n", .input-path, begin-row, begin-col);
+      'c.exit(#failure);
    }
    s.nest = .nest-stack-c - 1;
 }
 {at(/stmt-space)
-   {:wr-break(stmt`/stmt, w`/wtr, header:bool) @case:wr @inline;
+   {:wr-break(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline;
       {+s`/stmt-break = stmt}
-      w:n1(s.nest);
+      w.n1(s.nest);
    }
-   {:rd-break(space`/stmt-space, r`/rdr) @case:rd @inline;
-      `:quick-alloc-one(+(s`/stmt-break));
-      s.nest = r:n1;
-      space:stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #break);
+   {:rd-break(space`/stmt-space, r`/rdr) @case.rd() @inline;
+      `.quick-alloc-one(+(s`/stmt-break));
+      s.nest = r.n1();
+      space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #break);
    }
 }
 {at(/stmt)
-   {:write-break(stmt`/stmt) @case:write @inline;
+   {:write-break(stmt`/stmt) @case.write() @inline;
       {+s`/stmt-break = stmt}
-      `.out:printf("goto break_%u;\n", `.nest-stack-id-v[s.nest]);
+      `.out.printf("goto break_%u;\n", `.nest-stack-id-v[s.nest]);
    }
-   {:process-break(stmt`/stmt, ok:bool&) @case:process @inline;
+   {:process-break(stmt`/stmt, ok:bool&) @case.process() @inline;
       {+s`/stmt-break = stmt}
       ok = :true;
    }

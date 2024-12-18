@@ -9,10 +9,10 @@
    #nil = 255,
    ):tnum
    {:wr(s:this, w`/wtr) @inline;
-      w:n1(s);
+      w.n1(s);
    }
    {:rd(s:this&, r`/rdr) @inline;
-      s = r:n1`\stmt-type;
+      s = r.n1()`\stmt-type;
    }
    {:glc-name(e:this):char[] @glc-name}
 }
@@ -25,10 +25,10 @@
    .stmt-next`/stmt,
    )
    {{:write(s:this)}
-      {switch(s.type):write(s)
+      {switch(s.type).write(s)
          {default
-            'c.out:printf(":write not yet implemented in stmt #%s\n", s.type:glc-name);
-            'c:exit(#failure);
+            'c.out.printf("write() not yet implemented in stmt #%s\n", s.type.glc-name());
+            'c.exit(#failure);
          }
       }
    }
@@ -38,15 +38,15 @@
       `.ctx-begin-col = s.begin-col;
       `.ctx-end-row = s.end-row;
       `.ctx-end-col = s.end-col;
-      {switch(s.type):process(s, ok)
+      {switch(s.type).process(s, ok)
          {default
-            'c.out:printf("%s:%u:%u - %u:%u: :process is not implemented in statement #%s\n",
-            `.ctx-func.file:path, s.begin-row, s.begin-col, s.end-row, s.end-col, s.type:glc-name);
+            'c.out.printf("%s:%u:%u - %u:%u: process() is not implemented in statement #%s\n",
+            `.ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.glc-name());
          }
       }
       {if!(ok)
-         'c.out:printf("%s:%u:%u - %u:%u: Processing of statement #%s failed\n",
-            `.ctx-func.file:path, s.begin-row, s.begin-col, s.end-row, s.end-col, s.type:glc-name);
+         'c.out.printf("%s:%u:%u - %u:%u: Processing of statement #%s failed\n",
+            `.ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.glc-name());
       }
       {return ok}
    }
@@ -63,14 +63,14 @@
    )
 }
 {{:stmt-push(s/stmt, begin-row:int, begin-col:int, end-row:int, end-col:int, type\stmt-type)}
-   `` 'c.out:printf("%s:%u:%u - %u:%u :stmt-push\n", .input-path, begin-row, begin-col, end-row, end-col);
-   `` 'c.out:flush;
+   `` 'c.out.printf("%s:%u:%u - %u:%u stmt-push()\n", .input-path, begin-row, begin-col, end-row, end-col);
+   `` 'c.out.flush();
    s.begin-row = begin-row;
    s.begin-col = begin-col;
    s.end-row = end-row;
    s.end-col = end-col;
    s.type = type;
-   :func-stmt-add(s);
+   func-stmt-add(s);
 }
 {{:func-stmt-add(s/stmt)}
    s.stmt-next = :null;
@@ -83,19 +83,19 @@
    }
 }
 {{:expr2stmt(e\expr, begin-row:int, begin-col:int, end-row:int, end-col:int)}
-   :quick-alloc-one(+(s/stmt-expr));
-   :stmt-push(s.base, begin-row, begin-col, end-row, end-col, #expr);
+   quick-alloc-one(+(s/stmt-expr));
+   stmt-push(s.base, begin-row, begin-col, end-row, end-col, #expr);
    s.expr = e;
 }
 {{:stmt-lvar-add(name\id, set\expr, row:int, col:int)}
-   +lvar-i = .decl-func-ctx-space:lvar-new(name, row, col);
-   +lvar = lvar-i:ptr;
+   +lvar-i = .decl-func-ctx-space.lvar-new(name, row, col);
+   +lvar = lvar-i.ptr();
    .decl-var.name = name;
-   lvar.decl:copy-from(.decl-var);
-   `` 'c.out:printf("%s %d\n", .decl-var.name:str, .decl-var.type-info.built-in);
+   lvar.decl.copy-from(.decl-var);
+   `` 'c.out.printf("%s %d\n", .decl-var.name.str(), .decl-var.type-info.built-in);
    {if(set != #nil)
-      +e = :expr-assign(:expr-lvar(name, 0, row, col), set, #eq);
-      :expr2stmt(e, row, col, row, col);
+      +e = expr-assign(expr-lvar(name, 0, row, col), set, #eq);
+      expr2stmt(e, row, col, row, col);
    }
 }
 {{:stmt-lvar-end(end-row:int, end-col:int)}

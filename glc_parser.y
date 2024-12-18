@@ -52,7 +52,7 @@ enum_cvar_begin_decl ::= ID_HASH(e) typeAndInfo_optional.
    { _Mglc_Pdecl_add_cvar_3(e.basic.id, e.basic.row, e.basic.col); }
 struct_decl_begin ::= LCBRACE(pos) ID_FSLASH(name).
    { _Mglc_Pdecl_at_begin_struct_3(name.basic.id, pos.basic.row, pos.basic.col); }
-fvar_decl_name ::= ID_DOT(name).
+fvar_decl_name ::= DOT ID(name).
    { _Mglc_Pdecl_var_begin_3(name.basic.id, name.basic.row, name.basic.col); }
 lvar_decl_name ::= ID(name).
    { _Mglc_Pdecl_var_begin_3(name.basic.id, name.basic.row, name.basic.col); }
@@ -396,11 +396,11 @@ valueonly(l) ::= fvarExpr(r).
    { l.basic.id = r.basic.id; }
 valueonly(l) ::= gvarExpr(r).
    { l.basic.id = r.basic.id; }
-gvarExpr(l) ::= ID_DOT(r).
+gvarExpr(l) ::= DOT ID(r).
    { l.basic.id = _Mglc_Pexpr_gvar_2(-1, r.basic.id); }
-gvarExpr(l) ::= at(at) ID_DOT(r).
+gvarExpr(l) ::= at(at) DOT ID(r).
    { l.basic.id = _Mglc_Pexpr_gvar_2(at.basic.id, r.basic.id); }
-fvarExpr(l) ::= value4fix(e) ID_DOT(r).
+fvarExpr(l) ::= value4fix(e) DOT ID(r).
    { l.basic.id = _Mglc_Pexpr_fvar_2(e.basic.id, r.basic.id); }
 expr_and1(l) ::= expr(left) COMMA_SPACE expr(right).
    { l.basic.id = _Mglc_Pexpr_bools_3(left.basic.id, right.basic.id, 0); }
@@ -494,7 +494,7 @@ expr_in_paren(l) ::= exprs(r).
    { l.basic.id = r.basic.id; }
 funcExpr(l) ::= ID_LPAREN(func).
    { l.basic.id = -1; l.basic.id2 = func.basic.id; _Mglc_Pexpr_push_call_2(func.basic.row, func.basic.col); }
-funcExpr(l) ::= at(at) ID_LPAREN(func).
+funcExpr(l) ::= at(at) DOT ID_LPAREN(func).
    { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _Mglc_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 methodExpr(l) ::= value4fix(e) DOT ID_LPAREN(func).
    { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _Mglc_Pexpr_push_call_2(func.basic.row, func.basic.col); }

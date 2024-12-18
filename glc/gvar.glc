@@ -10,16 +10,16 @@
       {if((`.gvar-is-outputted[n3] & n17) != 0) {return :true}}
       `.gvar-is-outputted[n3] |= n17;
 
-      +gvar = g:ptr;
+      +gvar = g.ptr();
       +at-i = gvar.decl.type;
-      +at = at-i:ptr;
+      +at = at-i.ptr();
       {if(&&, at.type != #basic, at.decl.struct == #nil)
-         'c.out:printf("Error, the type '%s' used in gvar '.%s' was not defined\n", at.name.id:str, gvar.decl.name:str);
+         'c.out.printf("Error, the type '%s' used in gvar '.%s' was not defined\n", at.name.id.str(), gvar.decl.name.str());
          {return :false}
       }
-      `` at-i:output(gvar.file, gvar.row, gvar.col);
-      `` {if!(at-i:finalize(gvar.decl.type-info, gvar.row, gvar.col)) {return :false}}
-      {if!(gvar.decl:process(gvar.row, gvar.col)) {return :false}}
+      `` at-i.output(gvar.file, gvar.row, gvar.col);
+      `` {if!(at-i.finalize(gvar.decl.type-info, gvar.row, gvar.col)) {return :false}}
+      {if!(gvar.decl.process(gvar.row, gvar.col)) {return :false}}
 
       {if((gvar.flags & #no-decl) == #0)
          `.gvar-outputted-v[`.gvar-outputted-c++] = g;
@@ -28,79 +28,79 @@
       {return :true}
    }
    {{:write(g:this)}
-      +gvar = g:ptr;
-      gvar.decl:write(#gvar);
+      +gvar = g.ptr();
+      gvar.decl.write(#gvar);
    }
    `` {{:write(g:this)}
-   ``    +gvar = g:ptr;
+   ``    +gvar = g.ptr();
    ``    {if((gvar.decl.flags & #real-name) != #0)
-   ``       .out:printf("%s", gvar.decl.real-name:str);
+   ``       .out.printf("%s", gvar.decl.real-name.str());
    ``       {return}
    ``    }
-   ``    gvar.at:write-space;
-   ``    .out:printf("_G%s", gvar.decl.name:c-name);
+   ``    gvar.at.write-space();
+   ``    .out.printf("_G%s", gvar.decl.name.c-name());
    `` }
    {:ptr(g:this)`/decl-gvar @inline;
       {return `.gvar-v[g]}
    }
 }
 {{:expr-gvar(at\at, name\id)\expr}
-   :quick-alloc-one(+(e/expr-gvar));
-   +e-idx = :expr-push(e.base, #gvar);
+   quick-alloc-one(+(e/expr-gvar));
+   +e-idx = expr-push(e.base, #gvar);
    e.at = at;
    e.name = name;
    {return e-idx}
 }
 {at(\expr)
-   {:value-gvar(g:this, ref:int, paren:bool, v`/value, ok:bool&) @case:value @inline;
-      {+e`/expr-gvar = g:ptr}
-      +gvar = e.gvar:ptr;
-      v:set(ref, paren, gvar.decl.type, gvar.decl.type-info);
+   {:value-gvar(g:this, ref:int, paren:bool, v`/value, ok:bool&) @case.value() @inline;
+      {+e`/expr-gvar = g.ptr()}
+      +gvar = e.gvar.ptr();
+      v.set(ref, paren, gvar.decl.type, gvar.decl.type-info);
       {if(v.ref == 1)
          v.paren = :false;
       }
       ok = :true;
    }
-   {:type-gvar(expr`/expr, at`\at&) @case:type @inline;
+   {:type-gvar(expr`/expr, at`\at&) @case.type() @inline;
       {+e`/expr-gvar = expr}
-      +gvar = e.gvar:ptr;
+      +gvar = e.gvar.ptr();
       at = gvar.decl.type;
    }
-   {:wr-gvar(expr`/expr, w`/wtr, header:bool) @case:wr @inline;
+   {:wr-gvar(expr`/expr, w`/wtr, header:bool) @case.wr() @inline;
       {+e`/expr-gvar = expr}
-      e.at:wr(w, header);
-      e.name:wr(w, header);
+      e.at.wr(w, header);
+      e.name.wr(w, header);
    }
-   {:rd-gvar(e-idx`\expr, r`/rdr) @case:rd @inline;
-      `:quick-alloc-one(+(e`/expr-gvar));
-      e-idx:set(e.base, #gvar);
-      `\at:rd(+at-idx, r);
-      `\id:rd(+name, r);
+   {:rd-gvar(e-idx`\expr, r`/rdr) @case.rd() @inline;
+      `.quick-alloc-one(+(e`/expr-gvar));
+      e-idx.set(e.base, #gvar);
+      `\at.rd(+at-idx, r);
+      `\id.rd(+name, r);
       {if(at-idx == #nil)
          at-idx = `.ctx-func.at;
       }
-      +at = at-idx:ptr;
+      +at = at-idx.ptr();
       +found = `\gvar#nil;
       {do{+i = 0}{(at.gvar-c) i++}
          +gvar = at.gvar-v[i];
-         {if(gvar:ptr.decl.name == name)
+         {if(gvar.ptr().decl.name == name)
             found = gvar;
             {break}
          }
       }
       {if(found == #nil)
-         'c.out:printf("%s:%u:%u - %u:%u: Cannot find gvar '.%s'\n", `.ctx-func.file:path, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, name:str);
-         'c:exit(#failure);
+         'c.out.printf("%s:%u:%u - %u:%u: Cannot find gvar '.%s'\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, name.str());
+         'c.exit(#failure);
       }
       e.gvar = found;
    }
-   {:write-gvar(expr`/expr) @case:write @inline;
+   {:write-gvar(expr`/expr) @case.write() @inline;
       {+e`/expr-gvar = expr}
-      e.gvar:write;
+      e.gvar.write();
    }
-   {:process-gvar(expr`/expr, ok:bool&) @case:process @inline;
+   {:process-gvar(expr`/expr, ok:bool&) @case.process() @inline;
       {+e`/expr-gvar = expr}
-      {if!(e.gvar:process) {return}}
+      {if!(e.gvar.process()) {return}}
       ok = :true;
    }
 }

@@ -31,8 +31,8 @@
 #define _Mglc_Etoken_Cid_bslash (_Mglc_Etoken_Cid_fslash + 1)
 #define _Mglc_Etoken_Cid_quote (_Mglc_Etoken_Cid_bslash + 1)
 #define _Mglc_Etoken_Cid_hash (_Mglc_Etoken_Cid_quote + 1)
-#define _Mglc_Etoken_Cid_dot (_Mglc_Etoken_Cid_hash + 1)
-#define _Mglc_Etoken_Cid (_Mglc_Etoken_Cid_dot + 1)
+#define _Mglc_Etoken_Cdot (_Mglc_Etoken_Cid_hash + 1)
+#define _Mglc_Etoken_Cid (_Mglc_Etoken_Cdot + 1)
 #define _Mglc_Etoken_Cspace_at_real_name_str (_Mglc_Etoken_Cid + 1)
 #define _Mglc_Etoken_Cspace_at_no_decl (_Mglc_Etoken_Cspace_at_real_name_str + 1)
 #define _Mglc_Etoken_Cspace_equal_space (_Mglc_Etoken_Cspace_at_no_decl + 1)
@@ -61,7 +61,8 @@
 #define _Mglc_Etoken_Ccomma_space (_Mglc_Etoken_Cgrave_this + 1)
 #define _Mglc_Etoken_Cspace_at_main (_Mglc_Etoken_Ccomma_space + 1)
 #define _Mglc_Etoken_Cspace_at_case (_Mglc_Etoken_Cspace_at_main + 1)
-#define _Mglc_Etoken_Cspace_at_process (_Mglc_Etoken_Cspace_at_case + 1)
+#define _Mglc_Etoken_Cid_lparen (_Mglc_Etoken_Cspace_at_case + 1)
+#define _Mglc_Etoken_Cspace_at_process (_Mglc_Etoken_Cid_lparen + 1)
 #define _Mglc_Etoken_Cspace_at_glc_name (_Mglc_Etoken_Cspace_at_process + 1)
 #define _Mglc_Etoken_Cspace_at_decl (_Mglc_Etoken_Cspace_at_glc_name + 1)
 #define _Mglc_Etoken_Cstring (_Mglc_Etoken_Cspace_at_decl + 1)
@@ -281,16 +282,16 @@ union _Mglc_Srdr;
 union _Mglc_Srdr {
 void* _Fref;
 size_t _Fpos;
-uint8_t* _F1;
+uint8_t* _Fp1;
 char* _Fchar;
-uint32_t* _F4;
+uint32_t* _Fp4;
 };
 union _Mglc_Swtr;
 union _Mglc_Swtr {
 void* _Fref;
 size_t _Fpos;
-uint8_t* _F1;
-uint32_t* _F4;
+uint8_t* _Fp1;
+uint32_t* _Fp4;
 };
 union _Mglc_Sat_name;
 union _Mglc_Sat_name {
@@ -1030,7 +1031,7 @@ case _Mglc_Etoken_Cid_fslash: return "id-fslash";
 case _Mglc_Etoken_Cid_bslash: return "id-bslash";
 case _Mglc_Etoken_Cid_quote: return "id-quote";
 case _Mglc_Etoken_Cid_hash: return "id-hash";
-case _Mglc_Etoken_Cid_dot: return "id-dot";
+case _Mglc_Etoken_Cdot: return "dot";
 case _Mglc_Etoken_Cid: return "id";
 case _Mglc_Etoken_Cspace_at_real_name_str: return "space-at-real-name-str";
 case _Mglc_Etoken_Cspace_at_no_decl: return "space-at-no-decl";
@@ -1060,6 +1061,7 @@ case _Mglc_Etoken_Cgrave_this: return "grave-this";
 case _Mglc_Etoken_Ccomma_space: return "comma-space";
 case _Mglc_Etoken_Cspace_at_main: return "space-at-main";
 case _Mglc_Etoken_Cspace_at_case: return "space-at-case";
+case _Mglc_Etoken_Cid_lparen: return "id-lparen";
 case _Mglc_Etoken_Cspace_at_process: return "space-at-process";
 case _Mglc_Etoken_Cspace_at_glc_name: return "space-at-glc-name";
 case _Mglc_Etoken_Cspace_at_decl: return "space-at-decl";
@@ -1315,11 +1317,11 @@ _Lr_6._Fref = _Lin_data_4;
 _Lnew_data_7 = malloc(_Lin_size_3 + 1);
 _Lw_8._Fref = _Lnew_data_7;
 while(_Lr_6._Fpos < _Lr_end_5._Fpos) {
-if(_Lr_6._F1[0] == '`') {
-if(((_Lr_6._F1[1] == '`') && ((_Lr_6._F1[2] == ' ') || (_Lr_6._F1[2] == '\t')))) {
+if(_Lr_6._Fp1[0] == '`') {
+if(((_Lr_6._Fp1[1] == '`') && ((_Lr_6._Fp1[2] == ' ') || (_Lr_6._Fp1[2] == '\t')))) {
 _Lr_6._Fpos += 3;
 while(1) {
-if(_Lr_6._F1[0] == '\n') {
+if(_Lr_6._Fp1[0] == '\n') {
 goto break_1;
 }
 _Lr_6._Fpos++;
@@ -1334,62 +1336,62 @@ continue_1:;
 }
 break_1:;
 goto continue_0;
-} else if(_Lr_6._F1[1] == '\"') {
+} else if(_Lr_6._Fp1[1] == '\"') {
 _Mglc_Pparse_comment_4(&_Lr_6, &_Lw_8, '\"', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == '|') {
+} else if(_Lr_6._Fp1[1] == '|') {
 _Mglc_Pparse_comment_4(&_Lr_6, &_Lw_8, '|', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == ';') {
+} else if(_Lr_6._Fp1[1] == ';') {
 _Mglc_Pparse_comment_4(&_Lr_6, &_Lw_8, ';', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == '_') {
+} else if(_Lr_6._Fp1[1] == '_') {
 _Mglc_Pparse_comment_4(&_Lr_6, &_Lw_8, '_', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == '+') {
+} else if(_Lr_6._Fp1[1] == '+') {
 _Mglc_Pparse_comment_4(&_Lr_6, &_Lw_8, '+', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == '<') {
+} else if(_Lr_6._Fp1[1] == '<') {
 _Mglc_Pparse_comment_4(&_Lr_6, &_Lw_8, '>', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == '[') {
+} else if(_Lr_6._Fp1[1] == '[') {
 _Mglc_Pparse_comment_4(&_Lr_6, &_Lw_8, ']', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == '{') {
+} else if(_Lr_6._Fp1[1] == '{') {
 _Mglc_Pparse_comment_4(&_Lr_6, &_Lw_8, '}', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == '(') {
+} else if(_Lr_6._Fp1[1] == '(') {
 _Mglc_Pparse_comment_4(&_Lr_6, &_Lw_8, ')', _Lin_data_4);
 goto continue_0;
 }
-} else if(_Lr_6._F1[0] == '\'') {
-if(_Lr_6._F1[1] == '\'') {
-if(_Lr_6._F1[2] == '\\') {
-_Lw_8._F1[0] = '\'';
-_Lw_8._F1[1] = '\'';
-_Lw_8._F1[2] = '\\';
-_Lw_8._F1[3] = _Lr_6._F1[3];
+} else if(_Lr_6._Fp1[0] == '\'') {
+if(_Lr_6._Fp1[1] == '\'') {
+if(_Lr_6._Fp1[2] == '\\') {
+_Lw_8._Fp1[0] = '\'';
+_Lw_8._Fp1[1] = '\'';
+_Lw_8._Fp1[2] = '\\';
+_Lw_8._Fp1[3] = _Lr_6._Fp1[3];
 _Lw_8._Fpos += 4;
 _Lr_6._Fpos += 4;
 goto continue_0;
 } else {
-_Lw_8._F1[0] = '\'';
-_Lw_8._F1[1] = '\'';
-_Lw_8._F1[2] = _Lr_6._F1[2];
+_Lw_8._Fp1[0] = '\'';
+_Lw_8._Fp1[1] = '\'';
+_Lw_8._Fp1[2] = _Lr_6._Fp1[2];
 _Lw_8._Fpos += 3;
 _Lr_6._Fpos += 3;
 goto continue_0;
 }
-} else if((((_Lr_6._F1[2] == ' ') || (_Lr_6._F1[2] == '\t')) && ((_Lr_6._F1[1] == '-') || (_Lr_6._F1[1] == '=')))) {
-_Lw_8._F1[0] = '\'';
-_Lw_8._F1[1] = _Lr_6._F1[1];
-_Lw_8._F1[2] = _Lr_6._F1[2];
+} else if((((_Lr_6._Fp1[2] == ' ') || (_Lr_6._Fp1[2] == '\t')) && ((_Lr_6._Fp1[1] == '-') || (_Lr_6._Fp1[1] == '=')))) {
+_Lw_8._Fp1[0] = '\'';
+_Lw_8._Fp1[1] = _Lr_6._Fp1[1];
+_Lw_8._Fp1[2] = _Lr_6._Fp1[2];
 _Lw_8._Fpos += 3;
 _Lr_6._Fpos += 3;
 while(1) {
 uint8_t _Lc_11;
-_Lc_11 = _Lr_6._F1[0];
-_Lw_8._F1[0] = _Lc_11;
+_Lc_11 = _Lr_6._Fp1[0];
+_Lw_8._Fp1[0] = _Lc_11;
 _Lw_8._Fpos++;
 _Lr_6._Fpos++;
 if(_Lc_11 == '\n') {
@@ -1406,52 +1408,52 @@ continue_2:;
 }
 break_2:;
 goto continue_0;
-} else if(_Lr_6._F1[1] == '\"') {
+} else if(_Lr_6._Fp1[1] == '\"') {
 _Mglc_Pparse_string_4(&_Lr_6, &_Lw_8, '\"', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == '|') {
+} else if(_Lr_6._Fp1[1] == '|') {
 _Mglc_Pparse_string_4(&_Lr_6, &_Lw_8, '|', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == ';') {
+} else if(_Lr_6._Fp1[1] == ';') {
 _Mglc_Pparse_string_4(&_Lr_6, &_Lw_8, ';', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == '_') {
+} else if(_Lr_6._Fp1[1] == '_') {
 _Mglc_Pparse_string_4(&_Lr_6, &_Lw_8, '_', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == '+') {
+} else if(_Lr_6._Fp1[1] == '+') {
 _Mglc_Pparse_string_4(&_Lr_6, &_Lw_8, '+', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == '<') {
+} else if(_Lr_6._Fp1[1] == '<') {
 _Mglc_Pparse_string_4(&_Lr_6, &_Lw_8, '>', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == '[') {
+} else if(_Lr_6._Fp1[1] == '[') {
 _Mglc_Pparse_string_4(&_Lr_6, &_Lw_8, ']', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == '{') {
+} else if(_Lr_6._Fp1[1] == '{') {
 _Mglc_Pparse_string_4(&_Lr_6, &_Lw_8, '}', _Lin_data_4);
 goto continue_0;
-} else if(_Lr_6._F1[1] == '(') {
+} else if(_Lr_6._Fp1[1] == '(') {
 _Mglc_Pparse_string_4(&_Lr_6, &_Lw_8, ')', _Lin_data_4);
 goto continue_0;
 }
-} else if(_Lr_6._F1[0] == '\"') {
-_Lw_8._F1[0] = '\"';
+} else if(_Lr_6._Fp1[0] == '\"') {
+_Lw_8._Fp1[0] = '\"';
 _Lw_8._Fpos++;
 _Lr_6._Fpos++;
 while(1) {
-if(_Lr_6._F1[0] == '\n') {
+if(_Lr_6._Fp1[0] == '\n') {
 int32_t _Lrow_14;
 int32_t _Lcol_15;
 _Mglc_Pget_row_col_4(&_Lrow_14, &_Lcol_15, _Lr_6._Fref, _Lin_data_4);
 fprintf(stdout, "%s:%u:%u: Unterminated string\n", input_path, _Lrow_14, _Lcol_15);
 exit(_Mstdc_Eexit_Cfailure);
-} else if(_Lr_6._F1[0] == '\"') {
-_Lw_8._F1[0] = '\"';
+} else if(_Lr_6._Fp1[0] == '\"') {
+_Lw_8._Fp1[0] = '\"';
 _Lw_8._Fpos++;
 _Lr_6._Fpos++;
 goto break_3;
-} else if(_Lr_6._F1[0] == '\\') {
-switch(_Lr_6._F1[1]) {
+} else if(_Lr_6._Fp1[0] == '\\') {
+switch(_Lr_6._Fp1[1]) {
 case '0':;
 break;
 case '\\':;
@@ -1478,16 +1480,16 @@ default:;
 int32_t _Lrow_16;
 int32_t _Lcol_17;
 _Mglc_Pget_row_col_4(&_Lrow_16, &_Lcol_17, _Lr_6._Fref, _Lin_data_4);
-fprintf(stdout, "%s:%u:%u: Encountered invalid escape sequence in the string: '\\%c'\n", input_path, _Lrow_16, _Lcol_17, _Lr_6._F1[1]);
+fprintf(stdout, "%s:%u:%u: Encountered invalid escape sequence in the string: '\\%c'\n", input_path, _Lrow_16, _Lcol_17, _Lr_6._Fp1[1]);
 exit(_Mstdc_Eexit_Cfailure);
 break;
 }
-_Lw_8._F1[0] = '\\';
-_Lw_8._F1[1] = _Lr_6._F1[1];
+_Lw_8._Fp1[0] = '\\';
+_Lw_8._Fp1[1] = _Lr_6._Fp1[1];
 _Lw_8._Fpos += 2;
 _Lr_6._Fpos += 2;
 } else {
-_Lw_8._F1[0] = _Lr_6._F1[0];
+_Lw_8._Fp1[0] = _Lr_6._Fp1[0];
 _Lw_8._Fpos++;
 _Lr_6._Fpos++;
 }
@@ -1503,13 +1505,13 @@ continue_3:;
 break_3:;
 goto continue_0;
 }
-_Lw_8._F1[0] = _Lr_6._F1[0];
+_Lw_8._Fp1[0] = _Lr_6._Fp1[0];
 _Lw_8._Fpos++;
 _Lr_6._Fpos++;
 continue_0:;
 }
 break_0:;
-_Lw_8._F1[0] = '\0';
+_Lw_8._Fp1[0] = '\0';
 free(_Lin_data_4);
 _Lin_data_4 = _Lnew_data_7;
 _Lw_begin_20._Fref = _Lnew_data_7;
@@ -1551,7 +1553,7 @@ _Lt_27 = glc_lexer_scan(&_Llex_23);
 if(true) {
 uint8_t* _Lpos_28;
 _Lpos_28 = _Llex_23._Fstart;
-while(_Lpos_28 < _Lr_end_21._F1) {
+while(_Lpos_28 < _Lr_end_21._Fp1) {
 if(((_Lpos_28[0] == ' ') || (_Lpos_28[0] == '\t'))) {
 _Ltok_26._Fcol++;
 } else if(_Lpos_28[0] == '\n') {
@@ -1574,16 +1576,20 @@ _Ltok_26._Fid = _Mglc_Slexer_Pget_id_3(&_Llex_23, 1, 0);
 glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
 } else {
 switch(_Lt_27) {
+case _Mglc_Etoken_Cid_lparen:;
+_Ltok_26._Fid = _Mglc_Slexer_Pget_id_3(&_Llex_23, 0, 1);
+glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
+break;
 case _Mglc_Etoken_Cchar1:;
 union _Mglc_Srdr _Lr_29;
 _Lr_29._Fref = _Llex_23._Fstart;
-_Ltok_26._Fid = _Lr_29._F1[2];
+_Ltok_26._Fid = _Lr_29._Fp1[2];
 glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
 break;
 case _Mglc_Etoken_Cchar2:;
 union _Mglc_Srdr _Lr_30;
 _Lr_30._Fref = _Llex_23._Fstart;
-_Ltok_26._Fid = _Mglc_Pchar_escape_value_1(_Lr_30._F1[3]);
+_Ltok_26._Fid = _Mglc_Pchar_escape_value_1(_Lr_30._Fp1[3]);
 glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
 break;
 case _Mglc_Etoken_Cspace_at_real_name_str:;
@@ -1594,7 +1600,7 @@ _Lstart_32 = 11;
 while(1) {
 _Lstart_32++;
 _Lr_start_31._Fpos++;
-if(_Lr_start_31._F1[0] == '@') {
+if(_Lr_start_31._Fp1[0] == '@') {
 goto break_6;
 }
 continue_6:;
@@ -1617,6 +1623,9 @@ glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
 break;
 case _Mglc_Etoken_Cid:;
 _Ltok_26._Fid = _Mglc_Slexer_Pget_id_3(&_Llex_23, 0, 0);
+if(_Llex_23._Fcursor[0] == '(') {
+_Lt_27 = _Mglc_Etoken_Cid_lparen;
+}
 glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
 break;
 default:;
@@ -1931,7 +1940,7 @@ _Lcol_5 = 1;
 _Lr_6._Fref = _Lbegin_3;
 _Lr_end_7._Fref = _Lend_2;
 while(_Lr_6._Fpos < _Lr_end_7._Fpos) {
-if(_Lr_6._F1[0] == '\n') {
+if(_Lr_6._Fp1[0] == '\n') {
 _Lrow_4++;
 _Lcol_5 = 1;
 } else {
@@ -1942,7 +1951,7 @@ continue_0:;
 }
 break_0:;
 (*_Lout_row_0) = _Lrow_4;
-if(_Lr_6._F1[0] == '\n') {
+if(_Lr_6._Fp1[0] == '\n') {
 (*_Lout_col_1) = (_Lcol_5 - 1);
 } else {
 (*_Lout_col_1) = _Lcol_5;
@@ -1954,7 +1963,7 @@ _Lr_begin_4._Fpos = (*_Lr_0)._Fpos;
 (*_Lr_0)._Fpos += 2;
 while(1) {
 uint8_t _Lc_5;
-_Lc_5 = (*_Lr_0)._F1[0];
+_Lc_5 = (*_Lr_0)._Fp1[0];
 if(_Lc_5 == '\n') {
 int32_t _Lrow_6;
 int32_t _Lcol_7;
@@ -1968,7 +1977,7 @@ size_t _Llen_8;
 _Llen_8 = ((*_Lr_0)._Fpos - _Lr_begin_4._Fpos);
 for(int i = _Llen_8; i > 0; ) {
 i --;
-(*_Lw_1)._F1[0] = ' ';
+(*_Lw_1)._Fp1[0] = ' ';
 (*_Lw_1)._Fpos++;
 continue_1:;
 }
@@ -1980,13 +1989,13 @@ continue_0:;
 break_0:;
 }
 void _Mglc_Pparse_string_4(union _Mglc_Srdr* _Lr_0, union _Mglc_Swtr* _Lw_1, char _Lending_2, void* _Lin_data_3) {
-(*_Lw_1)._F1[0] = '\'';
-(*_Lw_1)._F1[1] = (*_Lr_0)._F1[1];
+(*_Lw_1)._Fp1[0] = '\'';
+(*_Lw_1)._Fp1[1] = (*_Lr_0)._Fp1[1];
 (*_Lw_1)._Fpos += 2;
 (*_Lr_0)._Fpos += 2;
 while(1) {
 uint8_t _Lc_4;
-_Lc_4 = (*_Lr_0)._F1[0];
+_Lc_4 = (*_Lr_0)._Fp1[0];
 if(_Lc_4 == '\n') {
 int32_t _Lrow_5;
 int32_t _Lcol_6;
@@ -1994,7 +2003,7 @@ _Mglc_Pget_row_col_4(&_Lrow_5, &_Lcol_6, (*_Lr_0)._Fref, _Lin_data_3);
 fprintf(stdout, "%s:%u:%u: Unterminated string\n", input_path, _Lrow_5, _Lcol_6);
 exit(_Mstdc_Eexit_Cfailure);
 }
-(*_Lw_1)._F1[0] = _Lc_4;
+(*_Lw_1)._Fp1[0] = _Lc_4;
 (*_Lw_1)._Fpos++;
 (*_Lr_0)._Fpos++;
 if(_Lc_4 == _Lending_2) {
@@ -2062,7 +2071,7 @@ exit(_Mstdc_Eexit_Cfailure);
 _Lval_4 = (uint64_t)(0);
 for(int i = _Llength_3; i > 0; ) {
 i --;
-_Lval_4 = ((_Lval_4 * (uint64_t)(10)) + (_Lr_start_1._F1[0] - '0'));
+_Lval_4 = ((_Lval_4 * (uint64_t)(10)) + (_Lr_start_1._Fp1[0] - '0'));
 _Lr_start_1._Fpos++;
 continue_0:;
 }
@@ -2088,7 +2097,7 @@ exit(_Mstdc_Eexit_Cfailure);
 _Lval_4 = (uint64_t)(0);
 for(int i = _Llength_3; i > 0; ) {
 i --;
-_Lval_4 = ((_Lval_4 * (uint64_t)(8)) + (_Lr_start_1._F1[0] - '0'));
+_Lval_4 = ((_Lval_4 * (uint64_t)(8)) + (_Lr_start_1._Fp1[0] - '0'));
 _Lr_start_1._Fpos++;
 continue_0:;
 }
@@ -2156,7 +2165,7 @@ _Gquick_alloc_c = _Lsize_0;
 return _Gquick_alloc_v;
 }
 void _Mglc_Swtr_Pn1_2(union _Mglc_Swtr* _Lw_0, uint8_t _Ln_1) {
-(*_Lw_0)._F1[0] = _Ln_1;
+(*_Lw_0)._Fp1[0] = _Ln_1;
 (*_Lw_0)._Fpos++;
 }
 void _Mglc_Swtr_Pcopy_3(union _Mglc_Swtr* _Lw_0, void* _Ldata_1, int32_t _Lsize_2) {
@@ -2369,7 +2378,7 @@ if((*_Lf_7)._Fflags & _Mglc_Efunc_flags_Cinline) {
 goto continue_3;
 }
 }
-_Lpos_4_8._F1 = (*_Lw_0)._F1;
+_Lpos_4_8._Fp1 = (*_Lw_0)._Fp1;
 (*_Lw_0)._Fpos += 4;
 _Lpos_4_next_9 = (*_Lw_0)._Fpos;
 _Mglc_Sdecl_func_Plvars_wr_3(_Lf_7, _Lw_0, _Lheader_1);
@@ -3794,7 +3803,7 @@ case _Mglc_Eexpr_type_Clvar:;
 _Mglc_Eexpr_Pwr_lvar_3(_Lexpr_3, _Lw_1, _Lheader_2);
 break;
 default:;
-fprintf(stdout, ":wr was not implemented in expression #%s\n", _Mglc_Eexpr_type_Pglc_name_1((*_Lexpr_3)._Ftype));
+fprintf(stdout, "wr() was not implemented in expression #%s\n", _Mglc_Eexpr_type_Pglc_name_1((*_Lexpr_3)._Ftype));
 exit(_Mstdc_Eexit_Cfailure);
 break;
 }
@@ -3925,7 +3934,7 @@ case _Mglc_Estmt_type_Cexpr:;
 _Mglc_Sstmt_space_Pwr_expr_3(_Lstmt_4, _Lw_1, _Lheader_2);
 break;
 default:;
-fprintf(stdout, ":wr not yet implemented in stmt #%s\n", _Mglc_Estmt_type_Pglc_name_1((*_Lstmt_4)._Ftype));
+fprintf(stdout, "wr() not yet implemented in stmt #%s\n", _Mglc_Estmt_type_Pglc_name_1((*_Lstmt_4)._Ftype));
 exit(_Mstdc_Eexit_Cfailure);
 break;
 }
@@ -3939,10 +3948,10 @@ break_1:;
 _Mglc_Estmt_type_Pwr_2(_Mglc_Estmt_type_Cnil, _Lw_1);
 }
 void _Mglc_Swtr_Pn4_2(union _Mglc_Swtr* _Lw_0, uint32_t _Ln_1) {
-(*_Lw_0)._F1[0] = _Ln_1;
-(*_Lw_0)._F1[1] = (_Ln_1 >> 8);
-(*_Lw_0)._F1[2] = (_Ln_1 >> 16);
-(*_Lw_0)._F1[3] = (_Ln_1 >> 24);
+(*_Lw_0)._Fp1[0] = _Ln_1;
+(*_Lw_0)._Fp1[1] = (_Ln_1 >> 8);
+(*_Lw_0)._Fp1[2] = (_Ln_1 >> 16);
+(*_Lw_0)._Fp1[3] = (_Ln_1 >> 24);
 (*_Lw_0)._Fpos += 4;
 }
 void _Mglc_Sdecl_var_Pcopy_from_2(struct _Mglc_Sdecl_var* _Lvd_0, struct _Mglc_Sdecl_var* _Lsrc_1) {
