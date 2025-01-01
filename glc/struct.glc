@@ -2,16 +2,16 @@
 {alias 'c = %stdc}
 {at(%glc)
 {\struct(#nil = -1, #0, #1):int
-   {wr(s:this, w`/wtr) @inline;
+   {wr(s:this, w`/wtr) @inline
       w.n(s + #1);
    }
-   {rd(s:this&, r`/rdr) @inline;
+   {rd(s:this&, r`/rdr) @inline
       s = (r.n() - #1)`\func;
    }
-   {ptr(s:this)`/struct @inline;
+   {ptr(s:this)`/struct @inline
       {return `.struct-v[s]}
    }
-   {{output(s-i:this)}
+   {output(s-i:this)
       +num = s-i:num;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
@@ -39,10 +39,10 @@
 {/fvar(
    .decl`/decl-var+,
    )
-   {{rd(f:this, r`/rdr)}
+   {rd(f:this, r`/rdr)
       f.decl.rd(r);
    }
-   {{wr(f:this, w`/wtr, header:bool)}
+   {wr(f:this, w`/wtr, header:bool)
       f.decl.wr(w, header);
    }
 }
@@ -59,10 +59,10 @@
    #no-decl = 2,
    #union = 4,
    ):tnum
-   {wr(f:this, w`/wtr) @inline;
+   {wr(f:this, w`/wtr) @inline
       w.n1(f);
    }
-   {rd(f:this&, r`/rdr) @inline;
+   {rd(f:this&, r`/rdr) @inline
       f = r.n1()`\struct-flags;
    }
 }
@@ -70,7 +70,7 @@
 {gvar .decl-fvar-c:num}
 {gvar .decl-fvar-cap:num}
 {gvar .decl-fvar-v/decl-var+[]}
-{{decl-var-as-fvar()}
+{decl-var-as-fvar()
    +fvar = .decl-fvar-c++;
    {if(.decl-fvar-cap <= .decl-fvar-c)
       +old-cap = .decl-fvar-cap;
@@ -79,7 +79,7 @@
    }
    .decl-fvar-v[fvar].copy-from(.decl-var);
 }
-{{decl-at-begin-struct(name\id, row:int, col:int)}
+{decl-at-begin-struct(name\id, row:int, col:int)
    .decl-struct-row = row;
    .decl-struct-col = col;
    .build-at = .decl-at;
@@ -99,7 +99,7 @@
    ``    {if(at-i == #root) {break}}
    `` }
 }
-{{decl-struct-end(row:int, col:int)}
+{decl-struct-end(row:int, col:int)
    +s-idx = .struct-c++;
    {if(.struct-cap <= .struct-c)
       +old-cap = .struct-cap;
@@ -126,7 +126,7 @@
    }
    s.real-name = .decl-struct-real-name;
 }
-{{struct-attr-real-name(name\id)}
+{struct-attr-real-name(name\id)
    {if((.decl-struct-flags & #real-name) != #0)
       'c.out.printf("%u:%u: error @real-name specified more than once\n", .last-row, .last-col);
       'c.exit(#failure);
@@ -134,14 +134,14 @@
    .decl-struct-flags |= #real-name;
    .decl-struct-real-name = name;
 }
-{{struct-attr-no-decl()}
+{struct-attr-no-decl()
    {if((.decl-struct-flags & #no-decl) != #0)
       'c.out.printf("%u:%u: error @no-decl specified more than once\n", .last-row, .last-col);
       'c.exit(#failure);
    }
    .decl-struct-flags |= #no-decl;
 }
-{{struct-attr-union()}
+{struct-attr-union()
    {if((.decl-struct-flags & #union) != #0)
       'c.out.printf("%u:%u: error @union specified more than once\n", .last-row, .last-col);
       'c.exit(#failure);

@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{{main(arg-c:int, arg-v:char[][]):int @main}
+{main(arg-c:int, arg-v:char[][]):int @main
    +in-path = arg-v[1];
    +out-new-path = arg-v[2];
    +out-old-path = arg-v[3];

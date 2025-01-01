@@ -2,23 +2,23 @@
 {alias 'c = %stdc}
 {at(%glc)
 {at(/stmt-space)
-   {wr-expr(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline;
+   {wr-expr(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline
       {+s`/stmt-expr = stmt}
       s.expr.wr(w, header);
    }
-   {rd-expr(space`/stmt-space, r`/rdr) @case.rd() @inline;
+   {rd-expr(space`/stmt-space, r`/rdr) @case.rd() @inline
       `.quick-alloc-one(+(s`/stmt-expr));
       s.expr.rd(r);
       space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #expr);
    }
 }
 {at(/stmt)
-   {write-expr(stmt`/stmt) @case.write() @inline;
+   {write-expr(stmt`/stmt) @case.write() @inline
       {+s`/stmt-expr = stmt}
       s.expr.write();
       `.out.printf(";\n");
    }
-   {process-expr(stmt`/stmt, ok:bool&) @case.process() @inline;
+   {process-expr(stmt`/stmt, ok:bool&) @case.process() @inline
       {+s`/stmt-expr = stmt}
       {if!(s.expr.process())
          {return}
@@ -31,24 +31,24 @@
    #func, #method, #fvar, #int, #cvar, #str, #index, #unary,
    #compare, #bool, #null, #cast-fast, #ref, #char, #size-of-type,
    ):tnum
-   {wr(e:this, w`/wtr) @inline;
+   {wr(e:this, w`/wtr) @inline
       w.n1(e);
    }
-   {rd(e:this&, r`/rdr) @inline;
+   {rd(e:this&, r`/rdr) @inline
       e = r.n1()`\expr-type;
    }
    {glc-name(e:this):char[] @glc-name}
 }
 {cvar #debug-rd-wr:bool = :true}
 {\expr(#nil = -1, #0, #1):int
-   {set(e:this, expr`/expr, type`\expr-type) @inline;
+   {set(e:this, expr`/expr, type`\expr-type) @inline
       `.expr-v[e] = expr;
       expr.type = type;
    }
-   {ptr(e:this)`/expr @inline;
+   {ptr(e:this)`/expr @inline
       {return `.expr-v[e]}
    }
-   {{write-value(e:this, v`/value):bool}
+   {write-value(e:this, v`/value):bool
       +expr = e.ptr();
       +ref = v.ref;
       `` 'c.out.printf("write-value v.ref = %d\n", ref);
@@ -78,7 +78,7 @@
       }
       {return :true}
    }
-	{{value(e:this, ref:int, paren:bool, v`/value):bool}
+	{value(e:this, ref:int, paren:bool, v`/value):bool
       {if!(e.process()) {return :false}}
       +expr = e.ptr();
       +ok = :false;
@@ -90,7 +90,7 @@
       }
       {return ok}
    }
-   {{type(e:this)`\at}
+   {type(e:this)`\at
       {if!(e.process()) {return #nil}}
       +expr = e.ptr();
       +at = `\at#nil;
@@ -102,12 +102,12 @@
       }
       {return at}
    }
-   {{try-deduce(e-idx:this, at`\at)}
+   {try-deduce(e-idx:this, at`\at)
       +expr = e-idx.ptr();
       {switch(expr.type).try-deduce(expr, at)
       }
    }
-   {{wr(e:this, w`/wtr, header:bool)}
+   {wr(e:this, w`/wtr, header:bool)
       {if(`#debug-rd-wr)
          w.n1(255);
       }
@@ -127,7 +127,7 @@
          w.n1(255);
       }
    }
-   {{rd(e:this&, r`/rdr)}
+   {rd(e:this&, r`/rdr)
       {if(`#debug-rd-wr)
          {if(r.n1() != 255)
             'c.out.printf("Error reading expr\n");
@@ -162,7 +162,7 @@
          }
       }
    }
-   {{process(e:this):bool}
+   {process(e:this):bool
       {if(e == #nil)
          'c.out.printf("%s:%u:%u - %u:%u: Processed a nil expression\n",
             `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col);
@@ -189,7 +189,7 @@
       }
       {return ok}
    }
-   {{write(e:this)}
+   {write(e:this)
       +expr = e.ptr();
       {switch(expr.type).write(expr)
          {default
@@ -203,7 +203,7 @@
    .type`\expr-type,
    .flags`\expr-flags,
    )
-   {{write(e:this, out'c/file)}
+   {write(e:this, out'c/file)
       {switch(e.type)
          {case(#call)
             {+e2/expr-call = e}
@@ -213,13 +213,13 @@
    }
 }
 {\basic-type-id(#root, #ref, #bool, #char, #tint, #tnum, #int, #num, #float, #size, #lnum, #COUNT):tnum
-   {wr(e:this, w`/wtr) @inline;
+   {wr(e:this, w`/wtr) @inline
       w.n1(e);
    }
-   {rd(e:this&, r`/rdr) @inline;
+   {rd(e:this&, r`/rdr) @inline
       e = r.n1()`\basic-type-id;
    }
-`` {{write(e:this, out'c/file)}
+`` {write(e:this, out'c/file)
 ``    {switch(e)
 ``       {case(#ref)
 ``          out.printf("void*");
@@ -275,7 +275,7 @@
 {gvar .expr-c:int}
 {gvar .expr-cap:int}
 {gvar .expr-v/expr[]}
-{{expr-push(e/expr, type\expr-type)\expr}
+{expr-push(e/expr, type\expr-type)\expr
    e.type = type;
    +e-idx = .expr-c++;
    {if(.expr-cap <= .expr-c)

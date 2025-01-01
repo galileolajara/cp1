@@ -3,14 +3,14 @@
 {\assign(#eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
              #lshift-eq, #rshift-eq, #and-eq, #or-eq, #xor-eq,
              ):tnum
-   {wr(s:this, w`/wtr) @inline;
+   {wr(s:this, w`/wtr) @inline
       w.n1(s);
    }
-   {rd(s:this&, r`/rdr) @inline;
+   {rd(s:this&, r`/rdr) @inline
       s = r.n1()`\assign;
    }
 }
-{{expr-assign(left\expr, right\expr, type\assign)\expr}
+{expr-assign(left\expr, right\expr, type\assign)\expr
    quick-alloc-one(+(e/expr-assign));
    +e-idx = expr-push(e.base, #assign);
    e.left = left;
@@ -19,13 +19,13 @@
    {return e-idx}
 }
 {at(\expr)
-   {wr-assign(expr`/expr, w`/wtr, header:bool) @case.wr() @inline;
+   {wr-assign(expr`/expr, w`/wtr, header:bool) @case.wr() @inline
       {+e`/expr-assign = expr}
       e.left.wr(w, header);
       e.right.wr(w, header);
       e.type.wr(w);
    }
-   {write-assign(expr`/expr) @case.write() @inline;
+   {write-assign(expr`/expr) @case.write() @inline
       {+e`/expr-assign = expr}
       e.left.write-value(e.left-val);
       {switch(e.type)
@@ -62,18 +62,18 @@
       }
       e.right.write-value(e.right-val);
    }
-   {rd-assign(e-idx`\expr, r`/rdr) @case.rd() @inline;
+   {rd-assign(e-idx`\expr, r`/rdr) @case.rd() @inline
       `.quick-alloc-one(+(e`/expr-assign));
       e-idx.set(e.base, #assign);
       e.left.rd(r);
       e.right.rd(r);
       e.type.rd(r);
    }
-   {type-assign(expr`/expr, at`\at&) @case.type() @inline;
+   {type-assign(expr`/expr, at`\at&) @case.type() @inline
       {+e`/expr-assign = expr}
       at = e.left.type();
    }
-   {value-assign(e:this, ref:tint, paren:bool, v`/value, ok:bool&) @case.value() @inline;
+   {value-assign(e:this, ref:tint, paren:bool, v`/value, ok:bool&) @case.value() @inline
       {+expr`/expr-assign = e.ptr()}
 		{if(expr.left.value(1, paren, v) == :false)
          {return}
@@ -82,7 +82,7 @@
 		v.ref = ref;
       ok = :true;
 	}
-   {process-assign(expr`/expr, ok:bool&) @case.process() @inline;
+   {process-assign(expr`/expr, ok:bool&) @case.process() @inline
       {+e`/expr-assign = expr}
       +left-e = e.left.ptr();
       {if(left-e.type == #lvar)

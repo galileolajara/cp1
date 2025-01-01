@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {at(%glc)
 {\expr-int(#dec, #hex, #oct):tnum}
-{{expr-int(value:int, type\expr-int)\expr}
+{expr-int(value:int, type\expr-int)\expr
    quick-alloc-one(+(e/expr-int));
    +e-idx = expr-push(e.base, #int);
    e.value = value;
@@ -9,28 +9,28 @@
    {return e-idx}
 }
 {at(\expr)
-   {wr-int(expr`/expr, w`/wtr, header:bool) @case.wr() @inline;
+   {wr-int(expr`/expr, w`/wtr, header:bool) @case.wr() @inline
       {+e`/expr-int = expr}
       w.n1(e.type);
       w.n(e.value);
    }
-   {rd-int(e-idx`\expr, r`/rdr) @case.rd() @inline;
+   {rd-int(e-idx`\expr, r`/rdr) @case.rd() @inline
       `.quick-alloc-one(+(e`/expr-int));
       e-idx.set(e.base, #int);
       e.type = r.n1()`\expr-int;
       e.value = r.n();
    }
-   {write-int(expr`/expr) @case.write() @inline;
+   {write-int(expr`/expr) @case.write() @inline
       {+e`/expr-int = expr}
       `.out.printf("%d", e.value);
    }
-   {process-int(expr`/expr, ok:bool&) @case.process() @inline;
+   {process-int(expr`/expr, ok:bool&) @case.process() @inline
       ok = :true;
    }
-   {type-int(expr`/expr, at`\at&) @case.type() @inline;
+   {type-int(expr`/expr, at`\at&) @case.type() @inline
       at = `.basic-type(#int);
    }
-   {value-int(le:this, ref:int, paren:bool, v`/value, ok:bool&) @case.value() @inline;
+   {value-int(le:this, ref:int, paren:bool, v`/value, ok:bool&) @case.value() @inline
       v.type = `.basic-type(#int);
       v.info.init();
       v.info.array-c = 0;

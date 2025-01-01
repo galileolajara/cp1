@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{{expr-char(value:int)\expr}
+{expr-char(value:int)\expr
    quick-alloc-one(+(e/expr-char));
    +e-idx = expr-push(e.base, #char);
    e.value = value;
@@ -8,26 +8,26 @@
 }
 {write-char(c:char)}
 {at(\expr)
-   {wr-char(expr`/expr, w`/wtr, header:bool) @case.wr() @inline;
+   {wr-char(expr`/expr, w`/wtr, header:bool) @case.wr() @inline
       {+e`/expr-char = expr}
       w.n(e.value);
    }
-   {rd-char(e-idx`\expr, r`/rdr) @case.rd() @inline;
+   {rd-char(e-idx`\expr, r`/rdr) @case.rd() @inline
       `.quick-alloc-one(+(e`/expr-char));
       e-idx.set(e.base, #char);
       e.value = r.n();
    }
-   {write-char(expr`/expr) @case.write() @inline;
+   {write-char(expr`/expr) @case.write() @inline
       {+e`/expr-char = expr}
       `.write-char(e.value);
    }
-   {process-char(expr`/expr, ok:bool&) @case.process() @inline;
+   {process-char(expr`/expr, ok:bool&) @case.process() @inline
       ok = :true;
    }
-   {type-char(expr`/expr, at`\at&) @case.type() @inline;
+   {type-char(expr`/expr, at`\at&) @case.type() @inline
       at = `.basic-type(#char);
    }
-   {value-char(le:this, ref:int, paren:bool, v`/value, ok:bool&) @case.value() @inline;
+   {value-char(le:this, ref:int, paren:bool, v`/value, ok:bool&) @case.value() @inline
       v.type = `.basic-type(#char);
       v.info.init();
       v.info.array-c = 0;

@@ -4,18 +4,18 @@
 {gvar .switch-stack-v/stmt-switch[64]}
 {gvar .switch-stack-c:tnum}
 {at(/stmt-space)
-   {wr-switch(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline;
+   {wr-switch(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline
       {+s`/stmt-switch = stmt}
       s.expr.wr(w, header);
       s.cases.wr(w, header);
    }
-   {rd-switch(space`/stmt-space, r`/rdr) @case.rd() @inline;
+   {rd-switch(space`/stmt-space, r`/rdr) @case.rd() @inline
       `.quick-alloc-one(+(s`/stmt-switch));
       s.expr.rd(r);
       s.cases.rd(r);
       space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #switch);
    }
-   {wr-case(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline;
+   {wr-case(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline
       {+s`/stmt-case = stmt}
       w.n(s.expr-c);
       {do{+i = 0}{(s.expr-c) i++}
@@ -23,7 +23,7 @@
       }
       w.b(s.fall-through);
    }
-   {rd-case(space`/stmt-space, r`/rdr) @case.rd() @inline;
+   {rd-case(space`/stmt-space, r`/rdr) @case.rd() @inline
       +expr-c = r.n();
       `.quick-alloc-plus(+(s`/stmt-case), `/stmt-case-item[:size] * expr-c);
       s.expr-c = expr-c;
@@ -33,30 +33,30 @@
       s.fall-through = r.b();
       space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #case);
    }
-   {wr-case-end(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline;
+   {wr-case-end(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline
    }
-   {rd-case-end(space`/stmt-space, r`/rdr) @case.rd() @inline;
+   {rd-case-end(space`/stmt-space, r`/rdr) @case.rd() @inline
       `.quick-alloc-one(+(s`/stmt-case-end));
       space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #case-end);
    }
-   {wr-default(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline;
+   {wr-default(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline
       {+s`/stmt-default = stmt}
       w.b(s.fall-through);
    }
-   {rd-default(space`/stmt-space, r`/rdr) @case.rd() @inline;
+   {rd-default(space`/stmt-space, r`/rdr) @case.rd() @inline
       `.quick-alloc-one(+(s`/stmt-default));
       s.fall-through = r.b();
       space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #default);
    }
-   {wr-default-end(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline;
+   {wr-default-end(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline
    }
-   {rd-default-end(space`/stmt-space, r`/rdr) @case.rd() @inline;
+   {rd-default-end(space`/stmt-space, r`/rdr) @case.rd() @inline
       `.quick-alloc-one(+(s`/stmt-default-end));
       space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #default-end);
    }
-   {wr-switch-end(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline;
+   {wr-switch-end(stmt`/stmt, w`/wtr, header:bool) @case.wr() @inline
    }
-   {rd-switch-end(space`/stmt-space, r`/rdr) @case.rd() @inline;
+   {rd-switch-end(space`/stmt-space, r`/rdr) @case.rd() @inline
       `.quick-alloc-one(+(s`/stmt-switch-end));
       space.stmt-push(s.base, 0, 0, 0, 0, #switch-end);
    }
@@ -65,7 +65,7 @@
 {gvar .case-stack-v/case-stack+[64]}
 {gvar .case-stack-c:tnum}
 {at(/stmt)
-   {write-switch(stmt`/stmt) @case.write() @inline;
+   {write-switch(stmt`/stmt) @case.write() @inline
       {+s`/stmt-switch = stmt}
       `.out.printf("switch(");
       s.expr.write-value(s.val);
@@ -84,7 +84,7 @@
          }
       }
    }
-   {process-switch(stmt`/stmt, ok:bool&) @case.process() @inline;
+   {process-switch(stmt`/stmt, ok:bool&) @case.process() @inline
       {+s`/stmt-switch = stmt}
       `.switch-stack-v[`.switch-stack-c++] = s;
       {if!(s.expr.value(1, :false, s.val))
@@ -170,7 +170,7 @@
       }
       ok = :true;
    }
-   {write-case(stmt`/stmt) @case.write() @inline;
+   {write-case(stmt`/stmt) @case.write() @inline
       {+s`/stmt-case = stmt}
       {do{+i = 0}{(s.expr-c) i++}
          `.out.printf("case ");
@@ -179,7 +179,7 @@
       }
       `.case-stack-v[`.case-stack-c++].case = s;
    }
-   {process-case(stmt`/stmt, ok:bool&) @case.process() @inline;
+   {process-case(stmt`/stmt, ok:bool&) @case.process() @inline
       {+s`/stmt-case = stmt}
       +switch = `.switch-stack-v[`.switch-stack-c - 1];
       {if(switch.val.type != #nil)
@@ -206,41 +206,41 @@
       }
       ok = :true;
    }
-   {write-case-end(stmt`/stmt) @case.write() @inline;
+   {write-case-end(stmt`/stmt) @case.write() @inline
       {+s`/stmt-case-end = stmt}
       +case = `.case-stack-v[`.case-stack-c -= 1].case;
       {if!(case.fall-through)
          `.out.printf("break;\n");
       }
    }
-   {process-case-end(stmt`/stmt, ok:bool&) @case.process() @inline;
+   {process-case-end(stmt`/stmt, ok:bool&) @case.process() @inline
       {+s`/stmt-case-end = stmt}
       ok = :true;
    }
-   {write-default(stmt`/stmt) @case.write() @inline;
+   {write-default(stmt`/stmt) @case.write() @inline
       {+s`/stmt-default = stmt}
       `.out.printf("default:;\n");
       `.case-stack-v[`.case-stack-c++].default = s;
    }
-   {process-default(stmt`/stmt, ok:bool&) @case.process() @inline;
+   {process-default(stmt`/stmt, ok:bool&) @case.process() @inline
       ok = :true;
    }
-   {write-default-end(stmt`/stmt) @case.write() @inline;
+   {write-default-end(stmt`/stmt) @case.write() @inline
       {+s`/stmt-default-end = stmt}
       +default = `.case-stack-v[`.case-stack-c -= 1].default;
       {if!(default.fall-through)
          `.out.printf("break;\n");
       }
    }
-   {process-default-end(stmt`/stmt, ok:bool&) @case.process() @inline;
+   {process-default-end(stmt`/stmt, ok:bool&) @case.process() @inline
       {+s`/stmt-default-end = stmt}
       ok = :true;
    }
-   {write-switch-end(stmt`/stmt) @case.write() @inline;
+   {write-switch-end(stmt`/stmt) @case.write() @inline
       {+s`/stmt-switch-end = stmt}
       `.out.printf("}\n");
    }
-   {process-switch-end(stmt`/stmt, ok:bool&) @case.process() @inline;
+   {process-switch-end(stmt`/stmt, ok:bool&) @case.process() @inline
       `.switch-stack-c -= 1;
       {+s`/stmt-switch-end = stmt}
       ok = :true;
@@ -258,7 +258,7 @@
 {gvar .switch-expr-c:num}
 {gvar .switch-expr-cap:num}
 {gvar .switch-expr-v\expr[]}
-{{stmt-switch-expr-add(expr\expr)}
+{stmt-switch-expr-add(expr\expr)
    +expr-i = .switch-expr-c++;
    {if(.switch-expr-cap <= .switch-expr-c)
       +old-cap = .switch-expr-cap;
@@ -287,7 +287,7 @@
    .base`/stmt+,
    )
 }
-{{stmt-switch-case-begin(begin-row:int, begin-col:int, end-row:int, end-col:int, fall-through:bool)}
+{stmt-switch-case-begin(begin-row:int, begin-col:int, end-row:int, end-col:int, fall-through:bool)
    +expr-c = .switch-expr-c;
    .switch-expr-c = 0;
    quick-alloc-plus(+(s/stmt-case), /stmt-case-item[:size] * expr-c);
@@ -299,34 +299,34 @@
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #case);
    stmt-space-begin();
 }
-{{stmt-switch-case-end()}
+{stmt-switch-case-end()
    stmt-space-end();
    quick-alloc-one(+(s/stmt-case-end));
    stmt-push(s.base, 0, 0, 0, 0, #case-end);
 }
-{{stmt-switch-default-begin(begin-row:int, begin-col:int, end-row:int, end-col:int, fall-through:bool)}
+{stmt-switch-default-begin(begin-row:int, begin-col:int, end-row:int, end-col:int, fall-through:bool)
    quick-alloc-one(+(s/stmt-default));
    s.fall-through = fall-through;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #default);
    stmt-space-begin();
 }
-{{stmt-switch-default-end()}
+{stmt-switch-default-end()
    stmt-space-end();
    quick-alloc-one(+(s/stmt-default-end));
    stmt-push(s.base, 0, 0, 0, 0, #default-end);
 }
-{{stmt-switch-begin()}
+{stmt-switch-begin()
    stmt-space-begin();
    .decl-func-ctx-space.flags |= #skip-lvar-decl;
 }
-{{stmt-switch-set(expr\expr, begin-row:int, begin-col:int, end-row:int, end-col:int, cases\expr)}
+{stmt-switch-set(expr\expr, begin-row:int, begin-col:int, end-row:int, end-col:int, cases\expr)
    quick-alloc-one(+(s/stmt-switch));
    s.expr = expr;
    s.cases = cases;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #switch);
    .switch-expr-c = 0;
 }
-{{stmt-switch-end()}
+{stmt-switch-end()
    quick-alloc-one(+(s/stmt-switch-end));
    stmt-push(s.base, 0, 0, 0, 0, #switch-end);
    stmt-space-end();

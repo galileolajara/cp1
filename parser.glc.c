@@ -24,14 +24,14 @@
 #define _Mglc_Etoken_Cplus (_Mglc_Etoken_Cnil + 1)
 #define _Mglc_Etoken_Cminus (_Mglc_Etoken_Cplus + 1)
 #define _Mglc_Etoken_Cspace (_Mglc_Etoken_Cminus + 1)
-#define _Mglc_Etoken_Clcbrace (_Mglc_Etoken_Cspace + 1)
-#define _Mglc_Etoken_Cid_lparen (_Mglc_Etoken_Clcbrace + 1)
+#define _Mglc_Etoken_Cid_lparen (_Mglc_Etoken_Cspace + 1)
 #define _Mglc_Etoken_Cid_modulo (_Mglc_Etoken_Cid_lparen + 1)
 #define _Mglc_Etoken_Cid_fslash (_Mglc_Etoken_Cid_modulo + 1)
 #define _Mglc_Etoken_Cid_bslash (_Mglc_Etoken_Cid_fslash + 1)
 #define _Mglc_Etoken_Cid_quote (_Mglc_Etoken_Cid_bslash + 1)
 #define _Mglc_Etoken_Cid_hash (_Mglc_Etoken_Cid_quote + 1)
-#define _Mglc_Etoken_Cdot (_Mglc_Etoken_Cid_hash + 1)
+#define _Mglc_Etoken_Clcbrace (_Mglc_Etoken_Cid_hash + 1)
+#define _Mglc_Etoken_Cdot (_Mglc_Etoken_Clcbrace + 1)
 #define _Mglc_Etoken_Cid (_Mglc_Etoken_Cdot + 1)
 #define _Mglc_Etoken_Cspace_at_real_name_str (_Mglc_Etoken_Cid + 1)
 #define _Mglc_Etoken_Cspace_at_no_decl (_Mglc_Etoken_Cspace_at_real_name_str + 1)
@@ -62,7 +62,8 @@
 #define _Mglc_Etoken_Cspace_at_main (_Mglc_Etoken_Ccomma_space + 1)
 #define _Mglc_Etoken_Cspace_at_case (_Mglc_Etoken_Cspace_at_main + 1)
 #define _Mglc_Etoken_Cspace_at_process (_Mglc_Etoken_Cspace_at_case + 1)
-#define _Mglc_Etoken_Cspace_at_glc_name (_Mglc_Etoken_Cspace_at_process + 1)
+#define _Mglc_Etoken_Cspace_at_inline (_Mglc_Etoken_Cspace_at_process + 1)
+#define _Mglc_Etoken_Cspace_at_glc_name (_Mglc_Etoken_Cspace_at_inline + 1)
 #define _Mglc_Etoken_Cspace_at_decl (_Mglc_Etoken_Cspace_at_glc_name + 1)
 #define _Mglc_Etoken_Cstring (_Mglc_Etoken_Cspace_at_decl + 1)
 #define _Mglc_Etoken_Cspace_at_var_args (_Mglc_Etoken_Cstring + 1)
@@ -78,8 +79,7 @@
 #define _Mglc_Etoken_Cgrave_float (_Mglc_Etoken_Cgrave_num + 1)
 #define _Mglc_Etoken_Cgrave_size (_Mglc_Etoken_Cgrave_float + 1)
 #define _Mglc_Etoken_Cgrave_lnum (_Mglc_Etoken_Cgrave_size + 1)
-#define _Mglc_Etoken_Cspace_at_inline_scolon (_Mglc_Etoken_Cgrave_lnum + 1)
-#define _Mglc_Etoken_Campersand (_Mglc_Etoken_Cspace_at_inline_scolon + 1)
+#define _Mglc_Etoken_Campersand (_Mglc_Etoken_Cgrave_lnum + 1)
 #define _Mglc_Etoken_Cnum_dec (_Mglc_Etoken_Campersand + 1)
 #define _Mglc_Etoken_Cnum_hex (_Mglc_Etoken_Cnum_dec + 1)
 #define _Mglc_Etoken_Cnum_oct (_Mglc_Etoken_Cnum_hex + 1)
@@ -882,7 +882,7 @@ void _Mglc_Pdecl_var_as_farg_2(int32_t _Lrow_0, int32_t _Lcol_1);
 void _Mglc_Pfarg_next_group_0();
 void _Mglc_Pdecl_var_as_this_0();
 void _Mglc_Pdecl_var_as_fvar_0();
-void _Mglc_Pfunc_body_end_1(bool _Linline_0);
+void _Mglc_Pfunc_body_end_0();
 void _Mglc_Pexpr_push_call_2(int32_t _Lrow_0, int32_t _Lcol_1);
 _Mglc_Eexpr _Mglc_Pexpr_pop_func_2(_Mglc_Eat _Lat_0, _Mglc_Eid _Lfunc_name_1);
 _Mglc_Eexpr _Mglc_Pexpr_pop_method_2(_Mglc_Eexpr _Lthis_0, _Mglc_Eid _Lfunc_name_1);
@@ -897,6 +897,7 @@ void _Mglc_Pfunc_attr_main_0();
 void _Mglc_Pfunc_attr_decl_0();
 void _Mglc_Pfunc_attr_glc_name_0();
 void _Mglc_Pfunc_attr_process_0();
+void _Mglc_Pfunc_attr_inline_0();
 void _Mglc_Pfunc_attr_var_args_0();
 void _Mglc_Pfunc_attr_no_decl_0();
 void _Mglc_Pfunc_attr_no_body_0();
@@ -1023,13 +1024,13 @@ case _Mglc_Etoken_Cnil: return "nil";
 case _Mglc_Etoken_Cplus: return "plus";
 case _Mglc_Etoken_Cminus: return "minus";
 case _Mglc_Etoken_Cspace: return "space";
-case _Mglc_Etoken_Clcbrace: return "lcbrace";
 case _Mglc_Etoken_Cid_lparen: return "id-lparen";
 case _Mglc_Etoken_Cid_modulo: return "id-modulo";
 case _Mglc_Etoken_Cid_fslash: return "id-fslash";
 case _Mglc_Etoken_Cid_bslash: return "id-bslash";
 case _Mglc_Etoken_Cid_quote: return "id-quote";
 case _Mglc_Etoken_Cid_hash: return "id-hash";
+case _Mglc_Etoken_Clcbrace: return "lcbrace";
 case _Mglc_Etoken_Cdot: return "dot";
 case _Mglc_Etoken_Cid: return "id";
 case _Mglc_Etoken_Cspace_at_real_name_str: return "space-at-real-name-str";
@@ -1061,6 +1062,7 @@ case _Mglc_Etoken_Ccomma_space: return "comma-space";
 case _Mglc_Etoken_Cspace_at_main: return "space-at-main";
 case _Mglc_Etoken_Cspace_at_case: return "space-at-case";
 case _Mglc_Etoken_Cspace_at_process: return "space-at-process";
+case _Mglc_Etoken_Cspace_at_inline: return "space-at-inline";
 case _Mglc_Etoken_Cspace_at_glc_name: return "space-at-glc-name";
 case _Mglc_Etoken_Cspace_at_decl: return "space-at-decl";
 case _Mglc_Etoken_Cstring: return "string";
@@ -1077,7 +1079,6 @@ case _Mglc_Etoken_Cgrave_num: return "grave-num";
 case _Mglc_Etoken_Cgrave_float: return "grave-float";
 case _Mglc_Etoken_Cgrave_size: return "grave-size";
 case _Mglc_Etoken_Cgrave_lnum: return "grave-lnum";
-case _Mglc_Etoken_Cspace_at_inline_scolon: return "space-at-inline-scolon";
 case _Mglc_Etoken_Campersand: return "ampersand";
 case _Mglc_Etoken_Cnum_dec: return "num-dec";
 case _Mglc_Etoken_Cnum_hex: return "num-hex";
@@ -1254,20 +1255,20 @@ int32_t main(int32_t _Largc_0, char** _Largv_1) {
 _Mstdc_Efile _Lin_fd_2;
 size_t _Lin_size_3;
 uint8_t* _Lin_data_4;
-union _Mglc_Srdr _Lr_end_21;
-struct _Mglc_Sparser* _Lpsr_22;
-struct _Mglc_Slexer _Llex_23;
-int32_t _Lnext_row_24;
-int32_t _Lnext_col_25;
-struct _Mglc_Stoken _Ltok_26;
-union _Mglc_Swtr _Lw_begin_34;
-union _Mglc_Swtr _Lw_35;
-int32_t _Lid_bit8_c_37;
-_Mglc_Eat _Lat_bit8_c_39;
-char _Lout_path_42[512];
-size_t _Lin_path_len_43;
-_Mstdc_Efile _Lout_fd_44;
-char _Lfinal_path_51[512];
+union _Mglc_Srdr _Lr_end_32;
+struct _Mglc_Sparser* _Lpsr_33;
+struct _Mglc_Slexer _Llex_34;
+int32_t _Lnext_row_35;
+int32_t _Lnext_col_36;
+struct _Mglc_Stoken _Ltok_37;
+union _Mglc_Swtr _Lw_begin_45;
+union _Mglc_Swtr _Lw_46;
+int32_t _Lid_bit8_c_48;
+_Mglc_Eat _Lat_bit8_c_50;
+char _Lout_path_53[512];
+size_t _Lin_path_len_54;
+_Mstdc_Efile _Lout_fd_55;
+char _Lfinal_path_62[512];
 if(false) {
 _Mglc_Pexport_0();
 }
@@ -1308,7 +1309,7 @@ union _Mglc_Srdr _Lr_end_5;
 union _Mglc_Srdr _Lr_6;
 void* _Lnew_data_7;
 union _Mglc_Swtr _Lw_8;
-union _Mglc_Swtr _Lw_begin_20;
+union _Mglc_Swtr _Lw_begin_31;
 _Lr_end_5._Fref = _Lin_data_4;
 _Lr_end_5._Fpos += _Lin_size_3;
 _Lr_6._Fref = _Lin_data_4;
@@ -1453,32 +1454,54 @@ goto break_3;
 } else if(_Lr_6._Fp1[0] == '\\') {
 switch(_Lr_6._Fp1[1]) {
 case '0':;
+int32_t _Lnothing_16;
+_Lnothing_16 = 1;
 break;
 case '\\':;
+int32_t _Lnothing_17;
+_Lnothing_17 = 1;
 break;
 case '\"':;
+int32_t _Lnothing_18;
+_Lnothing_18 = 1;
 break;
 case '\'':;
+int32_t _Lnothing_19;
+_Lnothing_19 = 1;
 break;
 case 'a':;
+int32_t _Lnothing_20;
+_Lnothing_20 = 1;
 break;
 case 'b':;
+int32_t _Lnothing_21;
+_Lnothing_21 = 1;
 break;
 case 'f':;
+int32_t _Lnothing_22;
+_Lnothing_22 = 1;
 break;
 case 'n':;
+int32_t _Lnothing_23;
+_Lnothing_23 = 1;
 break;
 case 'r':;
+int32_t _Lnothing_24;
+_Lnothing_24 = 1;
 break;
 case 't':;
+int32_t _Lnothing_25;
+_Lnothing_25 = 1;
 break;
 case 'v':;
+int32_t _Lnothing_26;
+_Lnothing_26 = 1;
 break;
 default:;
-int32_t _Lrow_16;
-int32_t _Lcol_17;
-_Mglc_Pget_row_col_4(&_Lrow_16, &_Lcol_17, _Lr_6._Fref, _Lin_data_4);
-fprintf(stdout, "%s:%u:%u: Encountered invalid escape sequence in the string: '\\%c'\n", input_path, _Lrow_16, _Lcol_17, _Lr_6._Fp1[1]);
+int32_t _Lrow_27;
+int32_t _Lcol_28;
+_Mglc_Pget_row_col_4(&_Lrow_27, &_Lcol_28, _Lr_6._Fref, _Lin_data_4);
+fprintf(stdout, "%s:%u:%u: Encountered invalid escape sequence in the string: '\\%c'\n", input_path, _Lrow_27, _Lcol_28, _Lr_6._Fp1[1]);
 exit(_Mstdc_Eexit_Cfailure);
 break;
 }
@@ -1492,10 +1515,10 @@ _Lw_8._Fpos++;
 _Lr_6._Fpos++;
 }
 if(_Lr_6._Fpos >= _Lr_end_5._Fpos) {
-int32_t _Lrow_18;
-int32_t _Lcol_19;
-_Mglc_Pget_row_col_4(&_Lrow_18, &_Lcol_19, _Lr_6._Fref, _Lin_data_4);
-fprintf(stdout, "%s:%u:%u: Unterminated string\n", input_path, _Lrow_18, _Lcol_19);
+int32_t _Lrow_29;
+int32_t _Lcol_30;
+_Mglc_Pget_row_col_4(&_Lrow_29, &_Lcol_30, _Lr_6._Fref, _Lin_data_4);
+fprintf(stdout, "%s:%u:%u: Unterminated string\n", input_path, _Lrow_29, _Lcol_30);
 exit(_Mstdc_Eexit_Cfailure);
 }
 continue_3:;
@@ -1512,11 +1535,11 @@ break_0:;
 _Lw_8._Fp1[0] = '\0';
 free(_Lin_data_4);
 _Lin_data_4 = _Lnew_data_7;
-_Lw_begin_20._Fref = _Lnew_data_7;
-_Lin_size_3 = (_Lw_8._Fpos - _Lw_begin_20._Fpos);
+_Lw_begin_31._Fref = _Lnew_data_7;
+_Lin_size_3 = (_Lw_8._Fpos - _Lw_begin_31._Fpos);
 }
-_Lr_end_21._Fref = _Lin_data_4;
-_Lr_end_21._Fpos += _Lin_size_3;
+_Lr_end_32._Fref = _Lin_data_4;
+_Lr_end_32._Fpos += _Lin_size_3;
 _Mglc_Pparse_str_init_1(_Lin_size_3);
 _Gid_cap = 64;
 _Mglc_Pmalloc_arr_2(_Gid_str_v, _Gid_cap);
@@ -1536,263 +1559,263 @@ _Gstruct_cap = (_Mglc_Estruct)(32);
 _Mglc_Pmalloc_arr_2(_Gstruct_v, _Gstruct_cap);
 _Gdecl_fvar_cap = 32;
 _Mglc_Pmalloc_arr_2(_Gdecl_fvar_v, _Gdecl_fvar_cap);
-_Lpsr_22 = _Mglc_Sparser_Palloc_0();
-_Mglc_Slexer_Pinit_3(&_Llex_23, _Lin_data_4, _Lin_size_3);
-_Lnext_row_24 = 1;
-_Lnext_col_25 = 1;
+_Lpsr_33 = _Mglc_Sparser_Palloc_0();
+_Mglc_Slexer_Pinit_3(&_Llex_34, _Lin_data_4, _Lin_size_3);
+_Lnext_row_35 = 1;
+_Lnext_col_36 = 1;
 _Grow = 1;
 _Gcol = 1;
 while(1) {
-_Mglc_Etoken _Lt_27;
-uint8_t* _Lpos_33;
-_Ltok_26._Frow = _Lnext_row_24;
-_Ltok_26._Fcol = _Lnext_col_25;
-_Lt_27 = glc_lexer_scan(&_Llex_23);
+_Mglc_Etoken _Lt_38;
+uint8_t* _Lpos_44;
+_Ltok_37._Frow = _Lnext_row_35;
+_Ltok_37._Fcol = _Lnext_col_36;
+_Lt_38 = glc_lexer_scan(&_Llex_34);
 if(true) {
-uint8_t* _Lpos_28;
-_Lpos_28 = _Llex_23._Fstart;
-while(_Lpos_28 < _Lr_end_21._Fp1) {
-if(((_Lpos_28[0] == ' ') || (_Lpos_28[0] == '\t'))) {
-_Ltok_26._Fcol++;
-} else if(_Lpos_28[0] == '\n') {
-_Ltok_26._Frow++;
-_Ltok_26._Fcol = 1;
+uint8_t* _Lpos_39;
+_Lpos_39 = _Llex_34._Fstart;
+while(_Lpos_39 < _Lr_end_32._Fp1) {
+if(((_Lpos_39[0] == ' ') || (_Lpos_39[0] == '\t'))) {
+_Ltok_37._Fcol++;
+} else if(_Lpos_39[0] == '\n') {
+_Ltok_37._Frow++;
+_Ltok_37._Fcol = 1;
 } else {
 goto break_5;
 }
-_Lpos_28++;
+_Lpos_39++;
 continue_5:;
 }
 break_5:;
 }
 _Glast_row = _Grow;
 _Glast_col = _Gcol;
-_Grow = _Ltok_26._Frow;
-_Gcol = _Ltok_26._Fcol;
-if(((_Lt_27 >= _Mglc_Etoken_Cid_modulo) && (_Lt_27 < _Mglc_Etoken_Cid))) {
-_Ltok_26._Fid = _Mglc_Slexer_Pget_id_3(&_Llex_23, 1, 0);
-glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
+_Grow = _Ltok_37._Frow;
+_Gcol = _Ltok_37._Fcol;
+if(((_Lt_38 >= _Mglc_Etoken_Cid_modulo) && (_Lt_38 < _Mglc_Etoken_Cid))) {
+_Ltok_37._Fid = _Mglc_Slexer_Pget_id_3(&_Llex_34, 1, 0);
+glcParse(_Lpsr_33, _Lt_38, &_Ltok_37);
 } else {
-switch(_Lt_27) {
+switch(_Lt_38) {
 case _Mglc_Etoken_Cid_lparen:;
-_Ltok_26._Fid = _Mglc_Slexer_Pget_id_3(&_Llex_23, 0, 1);
-glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
+_Ltok_37._Fid = _Mglc_Slexer_Pget_id_3(&_Llex_34, 0, 1);
+glcParse(_Lpsr_33, _Lt_38, &_Ltok_37);
 break;
 case _Mglc_Etoken_Cchar1:;
-union _Mglc_Srdr _Lr_29;
-_Lr_29._Fref = _Llex_23._Fstart;
-_Ltok_26._Fid = _Lr_29._Fp1[2];
-glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
+union _Mglc_Srdr _Lr_40;
+_Lr_40._Fref = _Llex_34._Fstart;
+_Ltok_37._Fid = _Lr_40._Fp1[2];
+glcParse(_Lpsr_33, _Lt_38, &_Ltok_37);
 break;
 case _Mglc_Etoken_Cchar2:;
-union _Mglc_Srdr _Lr_30;
-_Lr_30._Fref = _Llex_23._Fstart;
-_Ltok_26._Fid = _Mglc_Pchar_escape_value_1(_Lr_30._Fp1[3]);
-glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
+union _Mglc_Srdr _Lr_41;
+_Lr_41._Fref = _Llex_34._Fstart;
+_Ltok_37._Fid = _Mglc_Pchar_escape_value_1(_Lr_41._Fp1[3]);
+glcParse(_Lpsr_33, _Lt_38, &_Ltok_37);
 break;
 case _Mglc_Etoken_Cspace_at_real_name_str:;
-union _Mglc_Srdr _Lr_start_31;
-int32_t _Lstart_32;
-_Lr_start_31._Fref = _Llex_23._Fstart;
-_Lstart_32 = 11;
+union _Mglc_Srdr _Lr_start_42;
+int32_t _Lstart_43;
+_Lr_start_42._Fref = _Llex_34._Fstart;
+_Lstart_43 = 11;
 while(1) {
-_Lstart_32++;
-_Lr_start_31._Fpos++;
-if(_Lr_start_31._Fp1[0] == '@') {
+_Lstart_43++;
+_Lr_start_42._Fpos++;
+if(_Lr_start_42._Fp1[0] == '@') {
 goto break_6;
 }
 continue_6:;
 }
 break_6:;
-_Ltok_26._Fid = _Mglc_Slexer_Pget_id_3(&_Llex_23, _Lstart_32, 1);
-glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
+_Ltok_37._Fid = _Mglc_Slexer_Pget_id_3(&_Llex_34, _Lstart_43, 1);
+glcParse(_Lpsr_33, _Lt_38, &_Ltok_37);
 break;
 case _Mglc_Etoken_Cnum_dec:;
-_Ltok_26._Fid = _Mglc_Slexer_Pget_num_dec_1(&_Llex_23);
-glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
+_Ltok_37._Fid = _Mglc_Slexer_Pget_num_dec_1(&_Llex_34);
+glcParse(_Lpsr_33, _Lt_38, &_Ltok_37);
 break;
 case _Mglc_Etoken_Cnum_oct:;
-_Ltok_26._Fid = _Mglc_Slexer_Pget_num_oct_1(&_Llex_23);
-glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
+_Ltok_37._Fid = _Mglc_Slexer_Pget_num_oct_1(&_Llex_34);
+glcParse(_Lpsr_33, _Lt_38, &_Ltok_37);
 break;
 case _Mglc_Etoken_Cinclude:;
-_Ltok_26._Fid = _Mglc_Slexer_Pget_include_1(&_Llex_23);
-glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
+_Ltok_37._Fid = _Mglc_Slexer_Pget_include_1(&_Llex_34);
+glcParse(_Lpsr_33, _Lt_38, &_Ltok_37);
 break;
 case _Mglc_Etoken_Cid:;
-_Ltok_26._Fid = _Mglc_Slexer_Pget_id_3(&_Llex_23, 0, 0);
-if(_Llex_23._Fcursor[0] == '(') {
-_Lt_27 = _Mglc_Etoken_Cid_lparen;
+_Ltok_37._Fid = _Mglc_Slexer_Pget_id_3(&_Llex_34, 0, 0);
+if(_Llex_34._Fcursor[0] == '(') {
+_Lt_38 = _Mglc_Etoken_Cid_lparen;
 }
-glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
+glcParse(_Lpsr_33, _Lt_38, &_Ltok_37);
 break;
 default:;
-glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
+glcParse(_Lpsr_33, _Lt_38, &_Ltok_37);
 break;
 }
 }
-if(_Lt_27 == _Mglc_Etoken_Cend) {
+if(_Lt_38 == _Mglc_Etoken_Cend) {
 goto break_4;
 }
-_Lpos_33 = _Llex_23._Fstart;
-while(_Lpos_33 < _Llex_23._Fcursor) {
-if((_Lpos_33[0] & 128) == 0) {
-if(_Lpos_33[0] == '\n') {
-_Lnext_row_24++;
-_Lnext_col_25 = 1;
+_Lpos_44 = _Llex_34._Fstart;
+while(_Lpos_44 < _Llex_34._Fcursor) {
+if((_Lpos_44[0] & 128) == 0) {
+if(_Lpos_44[0] == '\n') {
+_Lnext_row_35++;
+_Lnext_col_36 = 1;
 } else {
-_Lnext_col_25++;
+_Lnext_col_36++;
 }
 }
-_Lpos_33++;
+_Lpos_44++;
 continue_7:;
 }
 break_7:;
 continue_4:;
 }
 break_4:;
-glcParse(_Lpsr_22, _Mglc_Etoken_Cnil, &_Ltok_26);
-_Mglc_Sparser_Pfree_1(_Lpsr_22);
+glcParse(_Lpsr_33, _Mglc_Etoken_Cnil, &_Ltok_37);
+_Mglc_Sparser_Pfree_1(_Lpsr_33);
 fprintf(stdout, "parsing finished\n");
-_Lw_begin_34._Fref = qalloc((_Lin_size_3 << 2) + 1024);
-_Lw_35._Fref = _Lw_begin_34._Fref;
-Fputnum(&_Lw_35, _Gid_c);
-int32_t _Li_36;
-_Li_36 = 0;
-for(int i = _Gid_c; i > 0; ) {
-i --;
-_Mglc_Swtr_Pn1_2(&_Lw_35, _Gid_len_v[_Li_36]);
-_Mglc_Swtr_Pcopy_3(&_Lw_35, _Gid_str_v[_Li_36], _Gid_len_v[_Li_36]);
-_Mglc_Swtr_Pn1_2(&_Lw_35, 0);
-continue_8:;
-_Li_36++;
-}
-break_8:;
-_Lid_bit8_c_37 = ((_Gid_c + 7) >> 3);
-_Mglc_Pmalloc_arr_2(_Gid_in_header_v, _Lid_bit8_c_37);
-_Mglc_Pmalloc_arr_2(_Gid_in_header_idx_v, _Gid_c);
-_Mglc_Pmalloc_arr_2(_Gid_in_header_id_v, _Gid_c);
-Fputnum(&_Lw_35, _Ginclude_c);
-int32_t _Li_38;
-_Li_38 = 0;
-for(int i = _Ginclude_c; i > 0; ) {
-i --;
-_Mglc_Swtr_Pn1_2(&_Lw_35, _Ginclude_len_v[_Li_38]);
-_Mglc_Swtr_Pcopy_3(&_Lw_35, _Ginclude_str_v[_Li_38], _Ginclude_len_v[_Li_38]);
-_Mglc_Swtr_Pn1_2(&_Lw_35, 0);
-continue_9:;
-_Li_38++;
-}
-break_9:;
-_Lat_bit8_c_39 = ((_Gat_c + 7) >> 3);
-_Mglc_Pmalloc_arr_2(_Gat_in_header_v, _Lat_bit8_c_39);
-_Mglc_Pmalloc_arr_2(_Gat_in_header_idx_v, _Gat_c);
-_Mglc_Pmalloc_arr_2(_Gat_in_header_at_v, _Gat_c);
-Fputnum(&_Lw_35, _Gat_c);
-int32_t _Li_40;
-_Li_40 = 0;
-for(int i = _Gat_c; i > 0; ) {
-i --;
-struct _Mglc_Sat* _Lat_41;
-_Lat_41 = (&_Gat_v[_Li_40]);
-_Mglc_Ename_type_Pwr_2((*_Lat_41)._Ftype, &_Lw_35);
-if((*_Lat_41)._Ftype == _Mglc_Ename_type_Cbasic) {
-_Mglc_Ebasic_type_id_Pwr_2((*_Lat_41)._Fname._Fbasic, &_Lw_35);
-} else {
-_Mglc_Eat_Pwr_3((*_Lat_41)._Fparent, &_Lw_35, false);
-_Mglc_Eid_Pwr_3((*_Lat_41)._Fname._Fid, &_Lw_35, false);
-}
-continue_10:;
-_Li_40++;
-}
-break_10:;
-_Mglc_Pwrite_cvar_2(&_Lw_35, false);
-_Mglc_Pwrite_gvar_2(&_Lw_35, false);
-_Mglc_Pwrite_enum_2(&_Lw_35, false);
-_Mglc_Pwrite_struct_2(&_Lw_35, false);
-_Mglc_Pwrite_func_2(&_Lw_35, false);
-_Lin_path_len_43 = strlen(input_path);
-memcpy(_Lout_path_42, input_path, _Lin_path_len_43);
-_Lout_path_42[_Lin_path_len_43] = '-';
-_Lout_path_42[(_Lin_path_len_43 + 1)] = 't';
-_Lout_path_42[(_Lin_path_len_43 + 2)] = '.';
-_Lout_path_42[(_Lin_path_len_43 + 3)] = 't';
-_Lout_path_42[(_Lin_path_len_43 + 4)] = 'm';
-_Lout_path_42[(_Lin_path_len_43 + 5)] = 'p';
-_Lout_path_42[(_Lin_path_len_43 + 6)] = 0;
-if(!(_Mstdc_Efile_Popen_4(&_Lout_fd_44, _Lout_path_42, O_CREAT | O_TRUNC | O_WRONLY, 420))) {
-fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_42);
-exit(_Mstdc_Eexit_Cfailure);
-}
-write(_Lout_fd_44, _Lw_begin_34._Fref, _Lw_35._Fpos - _Lw_begin_34._Fpos);
-close(_Lout_fd_44);
-_Lw_35._Fref = _Lw_begin_34._Fref;
-Fputnum(&_Lw_35, _Gid_in_header_c);
-int32_t _Lj_45;
-_Lj_45 = 0;
-for(int i = _Gid_in_header_c; i > 0; ) {
-i --;
-uint32_t _Li_46;
-_Li_46 = _Gid_in_header_id_v[_Lj_45];
-_Mglc_Swtr_Pn1_2(&_Lw_35, _Gid_len_v[_Li_46]);
-_Mglc_Swtr_Pcopy_3(&_Lw_35, _Gid_str_v[_Li_46], _Gid_len_v[_Li_46]);
-_Mglc_Swtr_Pn1_2(&_Lw_35, 0);
-continue_11:;
-_Lj_45++;
-}
-break_11:;
-Fputnum(&_Lw_35, _Ginclude_c);
+_Lw_begin_45._Fref = qalloc((_Lin_size_3 << 2) + 1024);
+_Lw_46._Fref = _Lw_begin_45._Fref;
+Fputnum(&_Lw_46, _Gid_c);
 int32_t _Li_47;
 _Li_47 = 0;
-for(int i = _Ginclude_c; i > 0; ) {
+for(int i = _Gid_c; i > 0; ) {
 i --;
-_Mglc_Swtr_Pn1_2(&_Lw_35, _Ginclude_len_v[_Li_47]);
-_Mglc_Swtr_Pcopy_3(&_Lw_35, _Ginclude_str_v[_Li_47], _Ginclude_len_v[_Li_47]);
-_Mglc_Swtr_Pn1_2(&_Lw_35, 0);
-continue_12:;
+_Mglc_Swtr_Pn1_2(&_Lw_46, _Gid_len_v[_Li_47]);
+_Mglc_Swtr_Pcopy_3(&_Lw_46, _Gid_str_v[_Li_47], _Gid_len_v[_Li_47]);
+_Mglc_Swtr_Pn1_2(&_Lw_46, 0);
+continue_8:;
 _Li_47++;
 }
-break_12:;
-Fputnum(&_Lw_35, _Gat_in_header_c);
-int32_t _Lj_48;
-_Lj_48 = 0;
-for(int i = _Gat_in_header_c; i > 0; ) {
+break_8:;
+_Lid_bit8_c_48 = ((_Gid_c + 7) >> 3);
+_Mglc_Pmalloc_arr_2(_Gid_in_header_v, _Lid_bit8_c_48);
+_Mglc_Pmalloc_arr_2(_Gid_in_header_idx_v, _Gid_c);
+_Mglc_Pmalloc_arr_2(_Gid_in_header_id_v, _Gid_c);
+Fputnum(&_Lw_46, _Ginclude_c);
+int32_t _Li_49;
+_Li_49 = 0;
+for(int i = _Ginclude_c; i > 0; ) {
 i --;
-uint32_t _Li_49;
-struct _Mglc_Sat* _Lat_50;
-_Li_49 = _Gat_in_header_at_v[_Lj_48];
-_Lat_50 = (&_Gat_v[_Li_49]);
-_Mglc_Ename_type_Pwr_2((*_Lat_50)._Ftype, &_Lw_35);
-if((*_Lat_50)._Ftype == _Mglc_Ename_type_Cbasic) {
-_Mglc_Ebasic_type_id_Pwr_2((*_Lat_50)._Fname._Fbasic, &_Lw_35);
+_Mglc_Swtr_Pn1_2(&_Lw_46, _Ginclude_len_v[_Li_49]);
+_Mglc_Swtr_Pcopy_3(&_Lw_46, _Ginclude_str_v[_Li_49], _Ginclude_len_v[_Li_49]);
+_Mglc_Swtr_Pn1_2(&_Lw_46, 0);
+continue_9:;
+_Li_49++;
+}
+break_9:;
+_Lat_bit8_c_50 = ((_Gat_c + 7) >> 3);
+_Mglc_Pmalloc_arr_2(_Gat_in_header_v, _Lat_bit8_c_50);
+_Mglc_Pmalloc_arr_2(_Gat_in_header_idx_v, _Gat_c);
+_Mglc_Pmalloc_arr_2(_Gat_in_header_at_v, _Gat_c);
+Fputnum(&_Lw_46, _Gat_c);
+int32_t _Li_51;
+_Li_51 = 0;
+for(int i = _Gat_c; i > 0; ) {
+i --;
+struct _Mglc_Sat* _Lat_52;
+_Lat_52 = (&_Gat_v[_Li_51]);
+_Mglc_Ename_type_Pwr_2((*_Lat_52)._Ftype, &_Lw_46);
+if((*_Lat_52)._Ftype == _Mglc_Ename_type_Cbasic) {
+_Mglc_Ebasic_type_id_Pwr_2((*_Lat_52)._Fname._Fbasic, &_Lw_46);
 } else {
-_Mglc_Eat_Pwr_header_2((*_Lat_50)._Fparent, &_Lw_35);
-_Mglc_Eid_Pwr_header_2((*_Lat_50)._Fname._Fid, &_Lw_35);
+_Mglc_Eat_Pwr_3((*_Lat_52)._Fparent, &_Lw_46, false);
+_Mglc_Eid_Pwr_3((*_Lat_52)._Fname._Fid, &_Lw_46, false);
 }
-continue_13:;
-_Lj_48++;
+continue_10:;
+_Li_51++;
 }
-break_13:;
-_Mglc_Pwrite_cvar_2(&_Lw_35, true);
-_Mglc_Pwrite_gvar_2(&_Lw_35, true);
-_Mglc_Pwrite_enum_2(&_Lw_35, true);
-_Mglc_Pwrite_struct_2(&_Lw_35, true);
-_Mglc_Pwrite_func_2(&_Lw_35, true);
-_Lout_path_42[(_Lin_path_len_43 + 1)] = 'h';
-if(!(_Mstdc_Efile_Popen_4(&_Lout_fd_44, _Lout_path_42, O_CREAT | O_TRUNC | O_WRONLY, 420))) {
-fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_42);
+break_10:;
+_Mglc_Pwrite_cvar_2(&_Lw_46, false);
+_Mglc_Pwrite_gvar_2(&_Lw_46, false);
+_Mglc_Pwrite_enum_2(&_Lw_46, false);
+_Mglc_Pwrite_struct_2(&_Lw_46, false);
+_Mglc_Pwrite_func_2(&_Lw_46, false);
+_Lin_path_len_54 = strlen(input_path);
+memcpy(_Lout_path_53, input_path, _Lin_path_len_54);
+_Lout_path_53[_Lin_path_len_54] = '-';
+_Lout_path_53[(_Lin_path_len_54 + 1)] = 't';
+_Lout_path_53[(_Lin_path_len_54 + 2)] = '.';
+_Lout_path_53[(_Lin_path_len_54 + 3)] = 't';
+_Lout_path_53[(_Lin_path_len_54 + 4)] = 'm';
+_Lout_path_53[(_Lin_path_len_54 + 5)] = 'p';
+_Lout_path_53[(_Lin_path_len_54 + 6)] = 0;
+if(!(_Mstdc_Efile_Popen_4(&_Lout_fd_55, _Lout_path_53, O_CREAT | O_TRUNC | O_WRONLY, 420))) {
+fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_53);
 exit(_Mstdc_Eexit_Cfailure);
 }
-write(_Lout_fd_44, _Lw_begin_34._Fref, _Lw_35._Fpos - _Lw_begin_34._Fpos);
-close(_Lout_fd_44);
-_Lout_path_42[(_Lin_path_len_43 + 1)] = 't';
-memcpy(_Lfinal_path_51, _Lout_path_42, _Lin_path_len_43 + 2);
-_Lfinal_path_51[(_Lin_path_len_43 + 2)] = 0;
-rename(_Lout_path_42, _Lfinal_path_51);
-_Lout_path_42[(_Lin_path_len_43 + 1)] = 'h';
-memcpy(_Lfinal_path_51, _Lout_path_42, _Lin_path_len_43 + 2);
-_Lfinal_path_51[(_Lin_path_len_43 + 2)] = 0;
-rename(_Lout_path_42, _Lfinal_path_51);
+write(_Lout_fd_55, _Lw_begin_45._Fref, _Lw_46._Fpos - _Lw_begin_45._Fpos);
+close(_Lout_fd_55);
+_Lw_46._Fref = _Lw_begin_45._Fref;
+Fputnum(&_Lw_46, _Gid_in_header_c);
+int32_t _Lj_56;
+_Lj_56 = 0;
+for(int i = _Gid_in_header_c; i > 0; ) {
+i --;
+uint32_t _Li_57;
+_Li_57 = _Gid_in_header_id_v[_Lj_56];
+_Mglc_Swtr_Pn1_2(&_Lw_46, _Gid_len_v[_Li_57]);
+_Mglc_Swtr_Pcopy_3(&_Lw_46, _Gid_str_v[_Li_57], _Gid_len_v[_Li_57]);
+_Mglc_Swtr_Pn1_2(&_Lw_46, 0);
+continue_11:;
+_Lj_56++;
+}
+break_11:;
+Fputnum(&_Lw_46, _Ginclude_c);
+int32_t _Li_58;
+_Li_58 = 0;
+for(int i = _Ginclude_c; i > 0; ) {
+i --;
+_Mglc_Swtr_Pn1_2(&_Lw_46, _Ginclude_len_v[_Li_58]);
+_Mglc_Swtr_Pcopy_3(&_Lw_46, _Ginclude_str_v[_Li_58], _Ginclude_len_v[_Li_58]);
+_Mglc_Swtr_Pn1_2(&_Lw_46, 0);
+continue_12:;
+_Li_58++;
+}
+break_12:;
+Fputnum(&_Lw_46, _Gat_in_header_c);
+int32_t _Lj_59;
+_Lj_59 = 0;
+for(int i = _Gat_in_header_c; i > 0; ) {
+i --;
+uint32_t _Li_60;
+struct _Mglc_Sat* _Lat_61;
+_Li_60 = _Gat_in_header_at_v[_Lj_59];
+_Lat_61 = (&_Gat_v[_Li_60]);
+_Mglc_Ename_type_Pwr_2((*_Lat_61)._Ftype, &_Lw_46);
+if((*_Lat_61)._Ftype == _Mglc_Ename_type_Cbasic) {
+_Mglc_Ebasic_type_id_Pwr_2((*_Lat_61)._Fname._Fbasic, &_Lw_46);
+} else {
+_Mglc_Eat_Pwr_header_2((*_Lat_61)._Fparent, &_Lw_46);
+_Mglc_Eid_Pwr_header_2((*_Lat_61)._Fname._Fid, &_Lw_46);
+}
+continue_13:;
+_Lj_59++;
+}
+break_13:;
+_Mglc_Pwrite_cvar_2(&_Lw_46, true);
+_Mglc_Pwrite_gvar_2(&_Lw_46, true);
+_Mglc_Pwrite_enum_2(&_Lw_46, true);
+_Mglc_Pwrite_struct_2(&_Lw_46, true);
+_Mglc_Pwrite_func_2(&_Lw_46, true);
+_Lout_path_53[(_Lin_path_len_54 + 1)] = 'h';
+if(!(_Mstdc_Efile_Popen_4(&_Lout_fd_55, _Lout_path_53, O_CREAT | O_TRUNC | O_WRONLY, 420))) {
+fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_53);
+exit(_Mstdc_Eexit_Cfailure);
+}
+write(_Lout_fd_55, _Lw_begin_45._Fref, _Lw_46._Fpos - _Lw_begin_45._Fpos);
+close(_Lout_fd_55);
+_Lout_path_53[(_Lin_path_len_54 + 1)] = 't';
+memcpy(_Lfinal_path_62, _Lout_path_53, _Lin_path_len_54 + 2);
+_Lfinal_path_62[(_Lin_path_len_54 + 2)] = 0;
+rename(_Lout_path_53, _Lfinal_path_62);
+_Lout_path_53[(_Lin_path_len_54 + 1)] = 'h';
+memcpy(_Lfinal_path_62, _Lout_path_53, _Lin_path_len_54 + 2);
+_Lfinal_path_62[(_Lin_path_len_54 + 2)] = 0;
+rename(_Lout_path_53, _Lfinal_path_62);
 return 0;
 }
 void _Mglc_Pexport_0() {
@@ -1809,7 +1832,7 @@ _Mglc_Pdecl_var_as_farg_2(0, 0);
 _Mglc_Pfarg_next_group_0();
 _Mglc_Pdecl_var_as_this_0();
 _Mglc_Pdecl_var_as_fvar_0();
-_Mglc_Pfunc_body_end_1(false);
+_Mglc_Pfunc_body_end_0();
 _Mglc_Pexpr_push_call_2(0, 0);
 _Mglc_Pexpr_pop_func_2(_Mglc_Eat_Cnil, _Mglc_Eid_Cnil);
 _Mglc_Pexpr_pop_method_2(_Mglc_Eexpr_Cnil, _Mglc_Eid_Cnil);
@@ -1824,6 +1847,7 @@ _Mglc_Pfunc_attr_main_0();
 _Mglc_Pfunc_attr_decl_0();
 _Mglc_Pfunc_attr_glc_name_0();
 _Mglc_Pfunc_attr_process_0();
+_Mglc_Pfunc_attr_inline_0();
 _Mglc_Pfunc_attr_var_args_0();
 _Mglc_Pfunc_attr_no_decl_0();
 _Mglc_Pfunc_attr_no_body_0();
@@ -2364,24 +2388,26 @@ _Li_6 = 0;
 for(int i = _Gfunc_c; i > 0; ) {
 i --;
 struct _Mglc_Sdecl_func* _Lf_7;
-union _Mglc_Swtr _Lpos_4_8;
-size_t _Lpos_4_next_9;
+union _Mglc_Swtr _Lpos_4_9;
+size_t _Lpos_4_next_10;
 _Lf_7 = _Gfunc_v[_Li_6++];
 if(((*_Lf_7)._Fflags & _Mglc_Efunc_flags_Chas_body) == _Mglc_Efunc_flags_C0) {
 goto continue_3;
 }
 if(_Lheader_1) {
 if((*_Lf_7)._Fflags & _Mglc_Efunc_flags_Cinline) {
+int32_t _Lnothing_8;
+_Lnothing_8 = 1;
 } else {
 goto continue_3;
 }
 }
-_Lpos_4_8._Fp1 = (*_Lw_0)._Fp1;
+_Lpos_4_9._Fp1 = (*_Lw_0)._Fp1;
 (*_Lw_0)._Fpos += 4;
-_Lpos_4_next_9 = (*_Lw_0)._Fpos;
+_Lpos_4_next_10 = (*_Lw_0)._Fpos;
 _Mglc_Sdecl_func_Plvars_wr_3(_Lf_7, _Lw_0, _Lheader_1);
 _Mglc_Sstmt_space_Pwr_3((*_Lf_7)._Fstmt_space, _Lw_0, _Lheader_1);
-_Mglc_Swtr_Pn4_2(&_Lpos_4_8, (*_Lw_0)._Fpos - _Lpos_4_next_9);
+_Mglc_Swtr_Pn4_2(&_Lpos_4_9, (*_Lw_0)._Fpos - _Lpos_4_next_10);
 continue_3:;
 }
 break_3:;
@@ -2638,20 +2664,17 @@ _Mglc_Prealloc_3(_Gdecl_fvar_v, _Gdecl_fvar_cap, _Lold_cap_1);
 }
 _Mglc_Sdecl_var_Pcopy_from_2(&_Gdecl_fvar_v[_Lfvar_0], &_Gdecl_var);
 }
-void _Mglc_Pfunc_body_end_1(bool _Linline_0) {
-struct _Mglc_Sdecl_func* _Lf_1;
-int32_t _Lc_2;
-struct _Mglc_Sstmt* _Ls_3;
-_Lf_1 = _Gfunc_v[(_Gfunc_c - 1)];
-(*_Lf_1)._Fflags |= _Mglc_Efunc_flags_Chas_body;
-if(_Linline_0) {
-(*_Lf_1)._Fflags |= _Mglc_Efunc_flags_Cinline;
-}
-_Lc_2 = 0;
-_Ls_3 = (*(*_Lf_1)._Fstmt_space)._Fstmt_first;
-while(_Ls_3 != NULL) {
-_Lc_2++;
-_Ls_3 = (*_Ls_3)._Fstmt_next;
+void _Mglc_Pfunc_body_end_0() {
+struct _Mglc_Sdecl_func* _Lf_0;
+int32_t _Lc_1;
+struct _Mglc_Sstmt* _Ls_2;
+_Lf_0 = _Gfunc_v[(_Gfunc_c - 1)];
+(*_Lf_0)._Fflags |= _Mglc_Efunc_flags_Chas_body;
+_Lc_1 = 0;
+_Ls_2 = (*(*_Lf_0)._Fstmt_space)._Fstmt_first;
+while(_Ls_2 != NULL) {
+_Lc_1++;
+_Ls_2 = (*_Ls_2)._Fstmt_next;
 continue_0:;
 }
 break_0:;
@@ -2844,6 +2867,13 @@ fprintf(stdout, "%s:%u:%u: Error @process specified more than once\n", input_pat
 exit(_Mstdc_Eexit_Cfailure);
 }
 _Gdecl_func_flags |= _Mglc_Efunc_flags_Cprocess;
+}
+void _Mglc_Pfunc_attr_inline_0() {
+if((_Gdecl_func_flags & _Mglc_Efunc_flags_Cinline) != _Mglc_Efunc_flags_C0) {
+fprintf(stdout, "%s:%u:%u: Error @inline specified more than once\n", input_path, _Glast_row, _Glast_col);
+exit(_Mstdc_Eexit_Cfailure);
+}
+_Gdecl_func_flags |= _Mglc_Efunc_flags_Cinline;
 }
 void _Mglc_Pfunc_attr_var_args_0() {
 if((_Gdecl_func_flags & _Mglc_Efunc_flags_Cvar_args) != _Mglc_Efunc_flags_C0) {

@@ -16,15 +16,15 @@
 {gvar .decl-include\include}
 {gvar .decl-include-row:int}
 {gvar .decl-include-col:int}
-{{type-info-begin()}
+{type-info-begin()
    .decl-var.size-c = 0;
    .decl-var.type-info.init();
    .decl-var.flags = #0;
 }
-{{type-info-finalize()}
+{type-info-finalize()
    .decl-var.type-info.finalize();
 }
-{{type-info-arr(expr-v\expr[], expr-c:tnum)}
+{type-info-arr(expr-v\expr[], expr-c:tnum)
    {+r/rdr+}
    r.ref = expr-v;
    {if(expr-v == :null)
@@ -37,7 +37,7 @@
       type-info-arr(expr-v[i -= 1]);
    }
 }
-{{type-info-arr(expr\expr)}
+{type-info-arr(expr\expr)
    +ti = .decl-var.type-info;
 	ti.array-c += 1;
 	ti.ref-v[ti.array-c] = 0;
@@ -50,15 +50,15 @@
       `` 'c.out.printf("%s, vd.size-c = %d\n", vd.name.str(), vd.size-c);
 	}
 }
-{{type-info-ref(c:tint)}
+{type-info-ref(c:tint)
    +ti = .decl-var.type-info;
 	ti.ref-v[ti.array-c] += c;
 }
-{{type-info-static()}
+{type-info-static()
    `` 'c.out.printf("built-in\n");
    .decl-var.type-info.built-in = :true;
 }
-{{decl-include-begin(inc\include, row:int, col:int)}
+{decl-include-begin(inc\include, row:int, col:int)
    {if(.decl-include != #nil)
       'c.out.printf("%s:%u:%u: Cannot {include inside another {include of %u:%u\n", .input-path, row, col, .decl-include-row, .decl-include-col);
       'c.exit(#failure);
@@ -67,14 +67,14 @@
    .decl-include-row = row;
    .decl-include-col = col;
 }
-{{decl-include-end()}
+{decl-include-end()
    .decl-include = #nil;
 }
 {gvar .build-at\at}
-{{at-push(name\id, type\name-type, row:int, col:int)}
+{at-push(name\id, type\name-type, row:int, col:int)
    .build-at = at-create(.build-at, type, name);
 }
-{{at-basic-type(type\basic-type-id)\at}
+{at-basic-type(type\basic-type-id)\at
    {do{+i = 0\at}{(.at-c) i++}
       +at = .at-v[i];
       {if(&&, at.type == #basic, at.name.basic == type)
@@ -93,7 +93,7 @@
    at.name.basic = type;
    {return build-idx}
 }
-{{at-begin()}
+{at-begin()
    .build-at = .decl-at;
 }
 {\alias(#nil = -1, #0):int}
@@ -103,7 +103,7 @@
 {gvar .at-alias-at-v\at[]}
 {gvar .at-alias-pos-v/row-col+[]}
 {/row-col(.row:int, .col:int)}
-{{at-alias(name\id, row:int, col:int)}
+{at-alias(name\id, row:int, col:int)
    {do{+i = 0}{(.at-alias-c) i++}
       {if(.at-alias-name-v[i] == name)
          .build-at = .at-alias-at-v[i];
@@ -113,7 +113,7 @@
    'c.out.printf("%s:%u:%u: Cannot recognize the alias '%s\n", .input-path, row, col, name.str());
    'c.exit(#failure);
 }
-{{decl-alias(name\id, at\at, row:int, col:int)}
+{decl-alias(name\id, at\at, row:int, col:int)
    {if(at.ptr().type != #module)
       'c.out.printf("%s:%u:%u: Alias can only work on namespaces that ends with '%%'\n", .input-path, row, col);
       'c.exit(#failure);
@@ -139,10 +139,10 @@
    .at-alias-pos-v[alias-idx].row = row;
    .at-alias-pos-v[alias-idx].col = col;
 }
-{{at-root()}
+{at-root()
    .build-at = #root;
 }
-{{at-graves(graves:tint, row:int, col:int)}
+{at-graves(graves:tint, row:int, col:int)
    .build-at = .decl-at;
    {while(graves > 0)
       graves--;
@@ -154,10 +154,10 @@
       .build-at = at.parent;
    }
 }
-{{at-done()\at}
+{at-done()\at
    {return .build-at}
 }
-{{at-create(parent\at, type\name-type, name\id)\at}
+{at-create(parent\at, type\name-type, name\id)\at
    +found = .at-map.get-or-insert(parent, type, name, .at-c);
    {if(found != -1) {return found}}
    `` {do{+i = 0\at}{(.at-c) i++}
@@ -181,7 +181,7 @@
    at.name.id = name;
    {return build-idx}
 }
-{{at-create-basic(basic\basic-type-id)\at}
+{at-create-basic(basic\basic-type-id)\at
    {do{+i = 0\at}{(.at-c) i++}
       +at = .at-v[i];
       {if(&&,
@@ -207,21 +207,21 @@
 {cvar #decl-at-nest-limit:int = 8}
 {gvar .decl-at-v\at[#decl-at-nest-limit]}
 {gvar .decl-at-c:tnum}
-{{err-msg-namespace-limit(row:int, col:int)}
+{err-msg-namespace-limit(row:int, col:int)
    'c.out.printf("%s:%u:%u: Max number of ids in namespace reached\n", .input-path, row, col);
    'c.exit(#failure);
 }
-{{decl-at-add(name\id, type\name-type)}
+{decl-at-add(name\id, type\name-type)
    .build-at = at-create(.build-at, type, name);
 }
-{{decl-at-basic(type\basic-type-id)}
+{decl-at-basic(type\basic-type-id)
    .build-at = at-create-basic(type);
 }
-{{decl-at-begin(row:int, col:int)}
+{decl-at-begin(row:int, col:int)
    .decl-at-v[.decl-at-c++] = .decl-at;
    .decl-at = .build-at;
 }
-{{decl-at-end()}
+{decl-at-end()
    .decl-at-c--;
    .decl-at = .decl-at-v[.decl-at-c];
 }
@@ -241,14 +241,14 @@
    .marker:tnum[],
    .ctx-marker:tnum[],
    )
-   {{init(lex:this, data:tnum[], size:size)}
+   {init(lex:this, data:tnum[], size:size)
       lex.start = data;
       lex.cursor = data;
       lex.content = data;
       lex.limit = & data[size];
    }
    {scan(lex:this)`\token @real-name(glc_lexer_scan)}
-   {{get-num-oct(lex:this):num}
+   {get-num-oct(lex:this):num
       {+r-start`/rdr+}
       r-start.ref = lex.start;
       {+r-cursor`/rdr+}
@@ -269,7 +269,7 @@
       }
       {return val:num}
    }
-   {{get-num-dec(lex:this):num}
+   {get-num-dec(lex:this):num
       {+r-start`/rdr+}
       r-start.ref = lex.start;
       {+r-cursor`/rdr+}
@@ -290,7 +290,7 @@
       }
       {return val:num}
    }
-   {{get-id(lex:this, begin:tnum, end:tnum):int}
+   {get-id(lex:this, begin:tnum, end:tnum):int
       {+r-start`/rdr+}
       r-start.ref = lex.start;
       r-start.pos += begin;
@@ -343,7 +343,7 @@
       `` `.id-len-v[id] = len;
       `` {return id}
    }
-   {{get-include(lex:this):int}
+   {get-include(lex:this):int
       {+r-start`/rdr+}
       r-start.ref = lex.start;
       r-start.pos += 9;
@@ -406,7 +406,7 @@
 {gvar .last-col:int @extern}
 {gvar .row:int @extern}
 {gvar .col:int @extern}
-{write-func(w/wtr, header:bool) @inline;
+{write-func(w/wtr, header:bool) @inline
    w.n(.func-c);
    {do{+i = 0}(.func-c)
       +f = .func-v[i++];
@@ -458,6 +458,7 @@
       {if(header)
          {if(f.flags & #inline)
             `` proceed
+            +nothing = 1;
          }{else
             `` remove #has-body flag
             {continue}
@@ -472,7 +473,7 @@
       pos-4.n4(w.pos - pos-4-next);
    }
 }
-{{write-cvar(w/wtr, header:bool)}
+{write-cvar(w/wtr, header:bool)
    w.n(.cvar-c);
    {do{+i = 0}{(.cvar-c) i++}
       +cvar = .cvar-v[i];
@@ -487,7 +488,7 @@
       }
    }
 }
-{{write-gvar(w/wtr, header:bool)}
+{write-gvar(w/wtr, header:bool)
    w.n(.gvar-c);
    {do{+i = 0}{(.gvar-c) i++}
       +gvar = .gvar-v[i];
@@ -496,7 +497,7 @@
       gvar.decl.wr(w, header);
    }
 }
-{{write-enum(w/wtr, header:bool)}
+{write-enum(w/wtr, header:bool)
    w.n(.enum-c);
    {do{+i = 0}(.enum-c)
       +e = .enum-v[i++];
@@ -513,7 +514,7 @@
       }
    }
 }
-{{write-struct(w/wtr, header:bool)}
+{write-struct(w/wtr, header:bool)
    w.n(.struct-c);
    {do{+i = 0}(.struct-c)
       +s = .struct-v[i++];
@@ -535,11 +536,11 @@
       }
    }
 }
-{{token-name(tok\token):char[]}
+{token-name(tok\token):char[]
    {return tok.glc-name()}
 }
 {parse-str-init(max-size:int)}
-{{get-row-col(out-row:int&, out-col:int&, end:ref, begin:ref)}
+{get-row-col(out-row:int&, out-col:int&, end:ref, begin:ref)
    +row = 1;
    +col = 1;
    {+r/rdr+}
@@ -562,7 +563,7 @@
       out-col = col;
    }
 }
-{{parse-string(r/rdr, w/wtr, ending:char, in-data:ref)}
+{parse-string(r/rdr, w/wtr, ending:char, in-data:ref)
    w.p1[0] = ''\';
    w.p1[1] = r.p1[1];
    w.pos += 2;
@@ -582,7 +583,7 @@
       }
    }
 }
-{{parse-comment(r/rdr, w/wtr, ending:char, in-data:ref)}
+{parse-comment(r/rdr, w/wtr, ending:char, in-data:ref)
    {+r-begin/rdr+}
    r-begin.pos = r.pos;
    r.pos += 2;
@@ -605,7 +606,7 @@
    }
 }
 {gvar .input-path:char[] @real-name(input_path)}
-{{convert-old-to-new(in-data:ref, in-out-size:int&):ref}
+{convert-old-to-new(in-data:ref, in-out-size:int&):ref
    +in-size = in-out-size;
    {+r/rdr+}
    r.ref = in-data;
@@ -732,7 +733,7 @@
    {return w-begin.ref}
 }
 {char-escape-value(c:char):int}
-{{main(argc:int, argv:char[][]):int @main}
+{main(argc:int, argv:char[][]):int @main
    {if(:false) export()}
    .id-map.init();
    .include-map.init();
@@ -907,17 +908,17 @@
                   {break}
                }{elif(r.p1[0] == ''\\)
                   {switch(r.p1[1])
-                     {case(''0) }
-                     {case(''\\) }
-                     {case(''\") }
-                     {case(''\') }
-                     {case(''a) }
-                     {case(''b) }
-                     {case(''f) }
-                     {case(''n) }
-                     {case(''r) }
-                     {case(''t) }
-                     {case(''v) }
+                     {case(''0)  +nothing = 1; }
+                     {case(''\\) +nothing = 1; }
+                     {case(''\") +nothing = 1; }
+                     {case(''\') +nothing = 1; }
+                     {case(''a)  +nothing = 1; }
+                     {case(''b)  +nothing = 1; }
+                     {case(''f)  +nothing = 1; }
+                     {case(''n)  +nothing = 1; }
+                     {case(''r)  +nothing = 1; }
+                     {case(''t)  +nothing = 1; }
+                     {case(''v)  +nothing = 1; }
                      {default
                         get-row-col(+row, +col, r.ref, in-data);
                         'c.out.printf("%s:%u:%u: Encountered invalid escape sequence in the string: '\\%c'\n", .input-path, row, col, r.p1[1]);

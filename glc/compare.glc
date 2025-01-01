@@ -1,14 +1,14 @@
 {alias 'glc = %glc}
 {at(%glc)
 {\compare(#eq, #not-eq, #lt, #le, #gt, #ge):tnum
-   {wr(e:this, w`/wtr) @inline;
+   {wr(e:this, w`/wtr) @inline
       w.n1(e);
    }
-   {rd(e:this&, r`/rdr) @inline;
+   {rd(e:this&, r`/rdr) @inline
       e = r.n1()`\compare;
    }
 }
-{{expr-compare(left\expr, right\expr, type\compare)\expr}
+{expr-compare(left\expr, right\expr, type\compare)\expr
    quick-alloc-one(+(e/expr-compare));
    +e-idx = expr-push(e.base, #compare);
    e.left = left;
@@ -17,20 +17,20 @@
    {return e-idx}
 }
 {at(\expr)
-   {wr-compare(expr`/expr, w`/wtr, header:bool) @case.wr() @inline;
+   {wr-compare(expr`/expr, w`/wtr, header:bool) @case.wr() @inline
       {+e`/expr-compare = expr}
       e.left.wr(w, header);
       e.right.wr(w, header);
       e.type.wr(w);
    }
-   {rd-compare(e-idx`\expr, r`/rdr) @case.rd() @inline;
+   {rd-compare(e-idx`\expr, r`/rdr) @case.rd() @inline
       `.quick-alloc-one(+(e`/expr-compare));
       e-idx.set(e.base, #compare);
       e.left.rd(r);
       e.right.rd(r);
       e.type.rd(r);
    }
-   {write-compare(expr`/expr) @case.write() @inline;
+   {write-compare(expr`/expr) @case.write() @inline
       {+e`/expr-compare = expr}
       e.left.write-value(e.left-val);
       {switch(e.type)
@@ -55,7 +55,7 @@
       }
       e.right.write-value(e.right-val);
    }
-   {value-compare(e:this, ref:tint, paren:bool, v`/value, ok:bool&) @case.value() @inline;
+   {value-compare(e:this, ref:tint, paren:bool, v`/value, ok:bool&) @case.value() @inline
       {+expr`/expr-compare = e.ptr()}
 		v.type = `.basic-type(#bool);
 		v.info.init();
@@ -66,11 +66,11 @@
 		v.paren = paren;
       ok = :true;
 	}
-   {type-compare(expr`/expr, at`\at&) @case.type() @inline;
+   {type-compare(expr`/expr, at`\at&) @case.type() @inline
       {+e`/expr-compare = expr}
       at = `.basic-type(#bool);
    }
-   {process-compare(expr`/expr, ok:bool&) @case.process() @inline;
+   {process-compare(expr`/expr, ok:bool&) @case.process() @inline
       {+e`/expr-compare = expr}
 		{if!(e.left.value(1, :true, e.left-val))
 			{return}
