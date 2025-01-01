@@ -15,7 +15,7 @@
    farg-next-group();
    decl-var-as-this();
    decl-var-as-fvar();
-   func-body-end(:false);
+   func-body-end();
    expr-push-call(0, 0);
    expr-pop-func(#nil, #nil);
    expr-pop-method(#nil, #nil);
@@ -30,6 +30,7 @@
    func-attr-decl();
    func-attr-glc-name();
    func-attr-process();
+   func-attr-inline();
    func-attr-var-args();
    func-attr-no-decl();
    func-attr-no-body();

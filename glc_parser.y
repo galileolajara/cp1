@@ -36,8 +36,8 @@ end_pos(t) ::= .
    { t.basic.row = _Grow; t.basic.col = _Gcol - 1; }
 
 // NOTE BEGIN: Order of declaration of the following must not be changed:
-func_decl_begin ::= LCBRACE(pos) ID_LPAREN(name).
-   { _Mglc_Pdecl_func_begin_3(name.basic.id, pos.basic.row, pos.basic.col); }
+func_decl_begin ::= ID_LPAREN(name).
+   { _Mglc_Pdecl_func_begin_3(name.basic.id, name.basic.row, name.basic.col); }
 at_name ::= ID_MODULO(e).
    { _Mglc_Pat_push_4(e.basic.id, 0, e.basic.row, e.basic.col); }
 at_name ::= ID_FSLASH(e).
@@ -213,6 +213,8 @@ func_attr ::= SPACE_AT_CASE DOT ID_LPAREN(e) LPAREN RPAREN.
    { _Mglc_Pfunc_attr_case_1(e.basic.id); }
 func_attr ::= SPACE_AT_PROCESS.
    { _Mglc_Pfunc_attr_process_0(); }
+func_attr ::= SPACE_AT_INLINE.
+   { _Mglc_Pfunc_attr_inline_0(); }
 func_attr ::= SPACE_AT_GLC_NAME.
    { _Mglc_Pfunc_attr_glc_name_0(); }
 func_attr ::= SPACE_AT_DECL LPAREN STRING RPAREN.
@@ -227,14 +229,16 @@ func_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _Mglc_Pfunc_attr_real_name_1(e.basic.id); }
 func_attr ::= SPACE_AT_REAL_NAME.
    { _Mglc_Pfunc_attr_real_name_1(-1); }
-func_attrs(l) ::= RCBRACE(r).
+/* func_attrs(l) ::= LCBRACE_SPACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-func_attrs(l) ::= func_attr RCBRACE(r).
+func_attrs(l) ::= func_attr LCBRACE_SPACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 func_attrs_base ::= func_attr.
 func_attrs_base ::= func_attrs_base func_attr.
-func_attrs(l) ::= func_attrs_base func_attr RCBRACE(r).
-   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
+func_attrs(l) ::= func_attrs_base func_attr LCBRACE_SPACE(r). */
+func_attrs ::= func_attr.
+func_attrs ::= func_attrs func_attr.
+/*   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; } */
 type_basic_id(l) ::= GRAVE_REF.
    { l.basic.id = 1; }
 type_basic_id(l) ::= GRAVE_BOOL.
@@ -261,16 +265,18 @@ type_basic_id(l) ::= GRAVE_LNUM.
 // expr_type(l) ::= expr_type_custom(r). { l.basic.id = r.basic.id; }
 // expr_type(l) ::= at(r). { l.basic.id = _Mglc_Pexpr_type_1(r.basic.id); }
 func_type ::= typeAndInfo_optional.
-func_decl ::= func_decl_begin fargs func_type func_attrs(end).
-   { _Mglc_Pdecl_func_end_2(end.basic.row, end.basic.col); }
-func_attrs_inline(l) ::= SPACE_AT_INLINE_SCOLON(r).
+func_decl ::= LCBRACE func_decl_begin fargs func_type func_attrs.
+   { _Mglc_Pdecl_func_end_2(_Grow, _Gcol); }
+func_decl ::= LCBRACE func_decl_begin fargs func_type.
+   { _Mglc_Pdecl_func_end_2(_Grow, _Gcol); }
+/* func_attrs_inline(l) ::= SPACE_AT_INLINE_SCOLON(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 func_attrs_inline(l) ::= func_attr SPACE_AT_INLINE_SCOLON(r).
    { l.basic.row = r.basic.row; l.basic.col = l.basic.col; }
 func_attrs_inline(l) ::= func_attrs_base func_attr SPACE_AT_INLINE_SCOLON(r).
    { l.basic.row = r.basic.row; l.basic.col = l.basic.col; }
 func_decl_inline ::= func_decl_begin fargs func_type func_attrs_inline(end).
-   { _Mglc_Pdecl_func_end_2(end.basic.row, end.basic.col); }
+   { _Mglc_Pdecl_func_end_2(end.basic.row, end.basic.col); } */
 fvar_decl ::= fvar_decl_name.
    { _Mglc_Pdecl_var_end_0(); }
 fvar ::= fvar_decl typeAndInfo_optional.
@@ -756,7 +762,7 @@ decl_var_attrs_list ::= decl_var_attrs_list decl_var_attr.
 decl_var_attrs_optional ::= .
 decl_var_attrs_optional ::= decl_var_attrs_list.
 
-decl_func ::= func_decl.
+decl_func ::= func_decl RCBRACE.
 stmt_brace ::= stmt.
 stmt_expr ::= expr2stmt.
 stmts_brace ::= stmt_brace.
@@ -765,9 +771,9 @@ stmts_brace ::= stmts_brace SPACE stmt_brace.
 stmts_expr ::= stmt_expr.
 stmts_expr ::= stmts_expr SCOLON_SPACE stmt_expr.
 stmts_expr ::= stmts_brace SPACE stmt_expr.
-stmts_optional ::= rcbrace_or_space.
-stmts_optional ::= SPACE stmts_brace rcbrace_or_space.
-stmts_optional ::= SPACE stmts_expr rcbrace_or_scolon.
+stmts_optional ::= RCBRACE.
+stmts_optional ::= stmts_brace rcbrace_or_space.
+stmts_optional ::= stmts_expr rcbrace_or_scolon.
 decl_struct_attr ::= SPACE_AT_NO_DECL.
    { _Mglc_Pstruct_attr_no_decl_0(); }
 decl_struct_attr ::= SPACE_AT_REAL_NAME_STR(e).
@@ -780,10 +786,10 @@ decl_struct_attrs_optional ::= end_pos(end).
    { _Mglc_Pdecl_struct_end_2(end.basic.row, end.basic.col); }
 decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos(end).
    { _Mglc_Pdecl_struct_end_2(end.basic.row, end.basic.col); }
-decl_func ::= LCBRACE func_decl stmts_optional.
-   { _Mglc_Pfunc_body_end_1(false); }
-decl_func ::= func_decl_inline stmts_optional.
-   { _Mglc_Pfunc_body_end_1(true); }
+decl_func ::= func_decl SPACE stmts_optional.
+   { _Mglc_Pfunc_body_end_0(); }
+/* decl_func ::= func_decl_inline stmts_optional.
+   { _Mglc_Pfunc_body_end_1(true); } */
 decl_struct_close_or_at ::= rcbrace_or_space.
    { _Mglc_Pdecl_at_end_0(); }
 decl_struct_close_or_at ::= SPACE decls rcbrace_or_space.

@@ -259,6 +259,13 @@
    }
    .decl-func-flags |= #process;
 }
+{{func-attr-inline()}
+   {if((.decl-func-flags & #inline) != #0)
+      'c.out.printf("%s:%u:%u: Error @inline specified more than once\n", .input-path, .last-row, .last-col);
+      'c.exit(#failure);
+   }
+   .decl-func-flags |= #inline;
+}
 {{func-attr-glc-name()}
    {if((.decl-func-flags & #glc-name) != #0)
       'c.out.printf("%s:%u:%u: Error @glc-name specified more than once\n", .input-path, .last-row, .last-col);
@@ -322,12 +329,9 @@
    .decl-func-flags |= #case;
    .decl-func-case = name;
 }
-{{func-body-end(inline:bool)}
+{{func-body-end()}
    +f = .func-v[.func-c - 1];
    f.flags |= #has-body;
-   {if(inline)
-      f.flags |= #inline;
-   }
    +c = 0;
    +s = f.stmt-space.stmt-first;
    {while(s != :null)

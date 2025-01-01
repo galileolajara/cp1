@@ -126,7 +126,7 @@ int glc_lexer_scan(struct glc_lexer* l) {
    "{include(" '"' [^"\n]* '")'     { return GLC_TOKEN_INCLUDE; }
    "{include(" '<' [^>\n]* '>)'     { return GLC_TOKEN_INCLUDE; }
 
-   spaces "@inline;"                { return GLC_TOKEN_SPACE_AT_INLINE_SCOLON; }
+   spaces "@inline"                 { return GLC_TOKEN_SPACE_AT_INLINE; }
    spaces "@main"                   { return GLC_TOKEN_SPACE_AT_MAIN; }
    spaces "@process"                { return GLC_TOKEN_SPACE_AT_PROCESS; }
    spaces "@real-name(" [^)]* ")"   { return GLC_TOKEN_SPACE_AT_REAL_NAME_STR; }
