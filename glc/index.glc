@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{{:expr-index(left\expr, right-v\expr[], right-c:int)\expr}
+{{expr-index(left\expr, right-v\expr[], right-c:int)\expr}
    {do{+i = right-c}(right-c)
       quick-alloc-one(+(e/expr-index));
       ++e-idx = expr-push(e.base, #index);
@@ -11,29 +11,29 @@
    {return e-idx}
 }
 {at(\expr)
-   {:wr-index(expr`/expr, w`/wtr, header:bool) @case.wr() @inline;
+   {wr-index(expr`/expr, w`/wtr, header:bool) @case.wr() @inline;
       {+e`/expr-index = expr}
       e.left.wr(w, header);
       e.right.wr(w, header);
    }
-   {:write-index(expr`/expr) @case.write() @inline;
+   {write-index(expr`/expr) @case.write() @inline;
       {+e`/expr-index = expr}
       e.left.write-value(e.left-val);
       `.out.printf("[");
       e.right.write-value(e.right-val);
       `.out.printf("]");
    }
-   {:rd-index(e-idx`\expr, r`/rdr) @case.rd() @inline;
+   {rd-index(e-idx`\expr, r`/rdr) @case.rd() @inline;
       `.quick-alloc-one(+(e`/expr-index));
       e-idx.set(e.base, #index);
       e.left.rd(r);
       e.right.rd(r);
    }
-   {:type-index(expr`/expr, at`\at&) @case.type() @inline;
+   {type-index(expr`/expr, at`\at&) @case.type() @inline;
       {+e`/expr-index = expr}
       at = e.left.type();
    }
-   {:value-index(e:this, ref:tint, paren:bool, v`/value, ok:bool&) @case.value() @inline;
+   {value-index(e:this, ref:tint, paren:bool, v`/value, ok:bool&) @case.value() @inline;
       {+expr`/expr-index = e.ptr()}
 		v.type = expr.left-val.type;
 		v.info.init();
@@ -50,7 +50,7 @@
 		}
       ok = :true;
    }
-   {:process-index(expr`/expr, ok:bool&) @case.process() @inline;
+   {process-index(expr`/expr, ok:bool&) @case.process() @inline;
       {+e`/expr-index = expr}
    	{if!(e.left.value(1, :true, e.left-val))
    		{return}

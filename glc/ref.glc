@@ -1,26 +1,26 @@
 {alias 'glc = %glc}
 {at(%glc)
-{{:expr-ref(expr\expr)\expr}
+{{expr-ref(expr\expr)\expr}
    quick-alloc-one(+(e/expr-ref));
    +e-idx = expr-push(e.base, #ref);
    e.expr = expr;
    {return e-idx}
 }
 {at(\expr)
-   {:wr-ref(expr`/expr, w`/wtr, header:bool) @case.wr() @inline;
+   {wr-ref(expr`/expr, w`/wtr, header:bool) @case.wr() @inline;
       {+e`/expr-ref = expr}
       e.expr.wr(w, header);
    }
-   {:rd-ref(e-idx`\expr, r`/rdr) @case.rd() @inline;
+   {rd-ref(e-idx`\expr, r`/rdr) @case.rd() @inline;
       `.quick-alloc-one(+(e`/expr-ref));
       e-idx.set(e.base, #ref);
       e.expr.rd(r);
    }
-   {:write-ref(expr`/expr) @case.write() @inline;
+   {write-ref(expr`/expr) @case.write() @inline;
       {+e`/expr-ref = expr}
       e.expr.write-value(e.val);
    }
-   {:value-ref(e:this, ref:tint, paren:bool, v`/value, ok:bool&) @case.value() @inline;
+   {value-ref(e:this, ref:tint, paren:bool, v`/value, ok:bool&) @case.value() @inline;
       {+expr`/expr-ref = e.ptr()}
 		v.type = `.basic-type(#ref);
 		v.info.init();
@@ -30,10 +30,10 @@
 		v.ref = 1;
       ok = :true;
 	}
-   {:type-ref(expr`/expr, at`\at&) @case.type() @inline;
+   {type-ref(expr`/expr, at`\at&) @case.type() @inline;
       at = `.basic-type(#ref);
    }
-   {:process-ref(expr`/expr, ok:bool&) @case.process() @inline;
+   {process-ref(expr`/expr, ok:bool&) @case.process() @inline;
       {+e`/expr-ref = expr}
 		{if!(e.expr.value(2, :false, e.val))
 			{return}

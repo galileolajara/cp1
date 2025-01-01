@@ -45,10 +45,10 @@ int glc_lexer_scan(struct glc_lexer* l) {
    spaces? ";" spaces               { return GLC_TOKEN_SCOLON_SPACE; }
    spaces                           { return GLC_TOKEN_SPACE; }
    "{+" spaces?                     { return GLC_TOKEN_LCBRACE_PLUS_OR_SPACE; }
-   "{gvar"                          { return GLC_TOKEN_LCBRACE_GVAR; }
-   "{cvar"                          { return GLC_TOKEN_LCBRACE_CVAR; }
-   "{at"                            { return GLC_TOKEN_LCBRACE_AT; }
-   "{alias"                         { return GLC_TOKEN_LCBRACE_ALIAS; }
+   "{gvar" spaces                   { return GLC_TOKEN_LCBRACE_GVAR_SPACE; }
+   "{cvar" spaces                   { return GLC_TOKEN_LCBRACE_CVAR_SPACE; }
+   "{at("                           { return GLC_TOKEN_LCBRACE_AT_LPAREN; }
+   "{alias" spaces                  { return GLC_TOKEN_LCBRACE_ALIAS_SPACE; }
    "+"                              { return GLC_TOKEN_PLUS; }
    "-"                              { return GLC_TOKEN_MINUS; }
    "!"                              { return GLC_TOKEN_EXPOINT; }
@@ -202,7 +202,7 @@ int glc_lexer_scan(struct glc_lexer* l) {
 
    "."                              { return GLC_TOKEN_DOT; }
 
-   ":" id                           { return GLC_TOKEN_ID_COLON; }
+   // ":" id                           { return GLC_TOKEN_ID_COLON; }
    "/" id                           { return GLC_TOKEN_ID_FSLASH; }
    "\\" id                          { return GLC_TOKEN_ID_BSLASH; }
    "%" id                           { return GLC_TOKEN_ID_MODULO; }

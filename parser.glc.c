@@ -25,8 +25,8 @@
 #define _Mglc_Etoken_Cminus (_Mglc_Etoken_Cplus + 1)
 #define _Mglc_Etoken_Cspace (_Mglc_Etoken_Cminus + 1)
 #define _Mglc_Etoken_Clcbrace (_Mglc_Etoken_Cspace + 1)
-#define _Mglc_Etoken_Cid_colon (_Mglc_Etoken_Clcbrace + 1)
-#define _Mglc_Etoken_Cid_modulo (_Mglc_Etoken_Cid_colon + 1)
+#define _Mglc_Etoken_Cid_lparen (_Mglc_Etoken_Clcbrace + 1)
+#define _Mglc_Etoken_Cid_modulo (_Mglc_Etoken_Cid_lparen + 1)
 #define _Mglc_Etoken_Cid_fslash (_Mglc_Etoken_Cid_modulo + 1)
 #define _Mglc_Etoken_Cid_bslash (_Mglc_Etoken_Cid_fslash + 1)
 #define _Mglc_Etoken_Cid_quote (_Mglc_Etoken_Cid_bslash + 1)
@@ -40,14 +40,14 @@
 #define _Mglc_Etoken_Cspace_rcbrace (_Mglc_Etoken_Cinclude + 1)
 #define _Mglc_Etoken_Cquote (_Mglc_Etoken_Cspace_rcbrace + 1)
 #define _Mglc_Etoken_Cgrave (_Mglc_Etoken_Cquote + 1)
-#define _Mglc_Etoken_Clcbrace_at (_Mglc_Etoken_Cgrave + 1)
-#define _Mglc_Etoken_Clparen (_Mglc_Etoken_Clcbrace_at + 1)
-#define _Mglc_Etoken_Crparen (_Mglc_Etoken_Clparen + 1)
-#define _Mglc_Etoken_Clcbrace_cvar (_Mglc_Etoken_Crparen + 1)
-#define _Mglc_Etoken_Cend (_Mglc_Etoken_Clcbrace_cvar + 1)
-#define _Mglc_Etoken_Clcbrace_alias (_Mglc_Etoken_Cend + 1)
-#define _Mglc_Etoken_Crcbrace (_Mglc_Etoken_Clcbrace_alias + 1)
-#define _Mglc_Etoken_Clparen_space (_Mglc_Etoken_Crcbrace + 1)
+#define _Mglc_Etoken_Clcbrace_at_lparen (_Mglc_Etoken_Cgrave + 1)
+#define _Mglc_Etoken_Crparen (_Mglc_Etoken_Clcbrace_at_lparen + 1)
+#define _Mglc_Etoken_Clcbrace_cvar_space (_Mglc_Etoken_Crparen + 1)
+#define _Mglc_Etoken_Crcbrace (_Mglc_Etoken_Clcbrace_cvar_space + 1)
+#define _Mglc_Etoken_Cend (_Mglc_Etoken_Crcbrace + 1)
+#define _Mglc_Etoken_Clcbrace_alias_space (_Mglc_Etoken_Cend + 1)
+#define _Mglc_Etoken_Clparen (_Mglc_Etoken_Clcbrace_alias_space + 1)
+#define _Mglc_Etoken_Clparen_space (_Mglc_Etoken_Clparen + 1)
 #define _Mglc_Etoken_Cspace_rparen (_Mglc_Etoken_Clparen_space + 1)
 #define _Mglc_Etoken_Ccomma_space_rparen (_Mglc_Etoken_Cspace_rparen + 1)
 #define _Mglc_Etoken_Ccomma_space_rcbrace (_Mglc_Etoken_Ccomma_space_rparen + 1)
@@ -61,8 +61,7 @@
 #define _Mglc_Etoken_Ccomma_space (_Mglc_Etoken_Cgrave_this + 1)
 #define _Mglc_Etoken_Cspace_at_main (_Mglc_Etoken_Ccomma_space + 1)
 #define _Mglc_Etoken_Cspace_at_case (_Mglc_Etoken_Cspace_at_main + 1)
-#define _Mglc_Etoken_Cid_lparen (_Mglc_Etoken_Cspace_at_case + 1)
-#define _Mglc_Etoken_Cspace_at_process (_Mglc_Etoken_Cid_lparen + 1)
+#define _Mglc_Etoken_Cspace_at_process (_Mglc_Etoken_Cspace_at_case + 1)
 #define _Mglc_Etoken_Cspace_at_glc_name (_Mglc_Etoken_Cspace_at_process + 1)
 #define _Mglc_Etoken_Cspace_at_decl (_Mglc_Etoken_Cspace_at_glc_name + 1)
 #define _Mglc_Etoken_Cstring (_Mglc_Etoken_Cspace_at_decl + 1)
@@ -233,7 +232,7 @@
 #define _Mglc_Etoken_Cspace_at_extern (_Mglc_Etoken_Clcbrace_plus_or_space + 1)
 #define _Mglc_Etoken_Cscolon_space (_Mglc_Etoken_Cspace_at_extern + 1)
 #define _Mglc_Etoken_Cspace_at_union (_Mglc_Etoken_Cscolon_space + 1)
-#define _Mglc_Etoken_Clcbrace_gvar (_Mglc_Etoken_Cspace_at_union + 1)
+#define _Mglc_Etoken_Clcbrace_gvar_space (_Mglc_Etoken_Cspace_at_union + 1)
 typedef int32_t _Mglc_Efunc;
 typedef int32_t _Mglc_Einclude;
 typedef int32_t _Mstdc_Efile;
@@ -1025,7 +1024,7 @@ case _Mglc_Etoken_Cplus: return "plus";
 case _Mglc_Etoken_Cminus: return "minus";
 case _Mglc_Etoken_Cspace: return "space";
 case _Mglc_Etoken_Clcbrace: return "lcbrace";
-case _Mglc_Etoken_Cid_colon: return "id-colon";
+case _Mglc_Etoken_Cid_lparen: return "id-lparen";
 case _Mglc_Etoken_Cid_modulo: return "id-modulo";
 case _Mglc_Etoken_Cid_fslash: return "id-fslash";
 case _Mglc_Etoken_Cid_bslash: return "id-bslash";
@@ -1040,13 +1039,13 @@ case _Mglc_Etoken_Cinclude: return "include";
 case _Mglc_Etoken_Cspace_rcbrace: return "space-rcbrace";
 case _Mglc_Etoken_Cquote: return "quote";
 case _Mglc_Etoken_Cgrave: return "grave";
-case _Mglc_Etoken_Clcbrace_at: return "lcbrace-at";
-case _Mglc_Etoken_Clparen: return "lparen";
+case _Mglc_Etoken_Clcbrace_at_lparen: return "lcbrace-at-lparen";
 case _Mglc_Etoken_Crparen: return "rparen";
-case _Mglc_Etoken_Clcbrace_cvar: return "lcbrace-cvar";
-case _Mglc_Etoken_Cend: return "end";
-case _Mglc_Etoken_Clcbrace_alias: return "lcbrace-alias";
+case _Mglc_Etoken_Clcbrace_cvar_space: return "lcbrace-cvar-space";
 case _Mglc_Etoken_Crcbrace: return "rcbrace";
+case _Mglc_Etoken_Cend: return "end";
+case _Mglc_Etoken_Clcbrace_alias_space: return "lcbrace-alias-space";
+case _Mglc_Etoken_Clparen: return "lparen";
 case _Mglc_Etoken_Clparen_space: return "lparen-space";
 case _Mglc_Etoken_Cspace_rparen: return "space-rparen";
 case _Mglc_Etoken_Ccomma_space_rparen: return "comma-space-rparen";
@@ -1061,7 +1060,6 @@ case _Mglc_Etoken_Cgrave_this: return "grave-this";
 case _Mglc_Etoken_Ccomma_space: return "comma-space";
 case _Mglc_Etoken_Cspace_at_main: return "space-at-main";
 case _Mglc_Etoken_Cspace_at_case: return "space-at-case";
-case _Mglc_Etoken_Cid_lparen: return "id-lparen";
 case _Mglc_Etoken_Cspace_at_process: return "space-at-process";
 case _Mglc_Etoken_Cspace_at_glc_name: return "space-at-glc-name";
 case _Mglc_Etoken_Cspace_at_decl: return "space-at-decl";
@@ -1134,7 +1132,7 @@ case _Mglc_Etoken_Clcbrace_plus_or_space: return "lcbrace-plus-or-space";
 case _Mglc_Etoken_Cspace_at_extern: return "space-at-extern";
 case _Mglc_Etoken_Cscolon_space: return "scolon-space";
 case _Mglc_Etoken_Cspace_at_union: return "space-at-union";
-case _Mglc_Etoken_Clcbrace_gvar: return "lcbrace-gvar";
+case _Mglc_Etoken_Clcbrace_gvar_space: return "lcbrace-gvar-space";
 }
 return "(ERROR)";
 }
@@ -1571,7 +1569,7 @@ _Glast_row = _Grow;
 _Glast_col = _Gcol;
 _Grow = _Ltok_26._Frow;
 _Gcol = _Ltok_26._Fcol;
-if(((_Lt_27 >= _Mglc_Etoken_Cid_colon) && (_Lt_27 < _Mglc_Etoken_Cid))) {
+if(((_Lt_27 >= _Mglc_Etoken_Cid_modulo) && (_Lt_27 < _Mglc_Etoken_Cid))) {
 _Ltok_26._Fid = _Mglc_Slexer_Pget_id_3(&_Llex_23, 1, 0);
 glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
 } else {

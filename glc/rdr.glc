@@ -8,18 +8,18 @@
    .char:char[],
    .p4:num[],
    ) @union
-   {:n1(r:this):tnum @inline;
+   {n1(r:this):tnum @inline;
       +val = r.p1[0];
       r.pos++;
       {return val}
    }
-   {:n2(r:this):num @inline;
+   {n2(r:this):num @inline;
       +val = r.p1[0]:num;
       val |= r.p1[1] << 8;
       r.pos += 2;
       {return val}
    }
-   {:n4(r:this):num @inline;
+   {n4(r:this):num @inline;
       +val = r.p1[0]:num;
       val |= r.p1[1] << 8;
       val |= r.p1[2] << 16;
@@ -27,23 +27,23 @@
       r.pos += 4;
       {return val}
    }
-   {:id(r:this)\id @inline;
+   {id(r:this)\id @inline;
       {return r.n()}
    }
    {include("num.c")
-      {:n(r:this):num @real-name(Fgetnum) @no-decl}
+      {n(r:this):num @real-name(Fgetnum) @no-decl}
    }
-   {:tok(r:this)\token @inline;
+   {tok(r:this)\token @inline;
       {return r.n1()}
    }
-   {:copy(r:this, data:ref, size:int) @inline;
+   {copy(r:this, data:ref, size:int) @inline;
       'c.memcpy(data, r.ref, size);
       r.pos += size;
    }
-   {:b(r:this):bool @inline;
+   {b(r:this):bool @inline;
       {return r.n1() != 0}
    }
-   {:set(r:this, ref:ref) @inline;
+   {set(r:this, ref:ref) @inline;
       r.ref = ref;
    }
 }

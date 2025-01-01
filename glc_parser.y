@@ -36,7 +36,7 @@ end_pos(t) ::= .
    { t.basic.row = _Grow; t.basic.col = _Gcol - 1; }
 
 // NOTE BEGIN: Order of declaration of the following must not be changed:
-func_decl_begin ::= LCBRACE(pos) ID_COLON(name).
+func_decl_begin ::= LCBRACE(pos) ID_LPAREN(name).
    { _Mglc_Pdecl_func_begin_3(name.basic.id, pos.basic.row, pos.basic.col); }
 at_name ::= ID_MODULO(e).
    { _Mglc_Pat_push_4(e.basic.id, 0, e.basic.row, e.basic.col); }
@@ -118,7 +118,7 @@ decl_at_names ::= decl_at_names decl_at_name.
 decl_at_namespace ::= decl_at_names.
 decl_at_namespace ::= type_basic_id(e).
    { _Mglc_Pdecl_at_basic_1(e.basic.id); }
-decl_at_begin ::= LCBRACE_AT(pos) LPAREN decl_at_namespace RPAREN.
+decl_at_begin ::= LCBRACE_AT_LPAREN(pos) decl_at_namespace RPAREN.
    { _Mglc_Pdecl_at_begin_2(pos.basic.row, pos.basic.col); }
 decl_at ::= decl_at_begin SPACE decls SPACE_RCBRACE.
    { _Mglc_Pdecl_at_end_0(); }
@@ -126,8 +126,8 @@ decl_at ::= decl_at_begin SPACE_RCBRACE.
    { _Mglc_Pdecl_at_end_0(); }
 decl ::= decl_at.
 
-decl_cvar ::= LCBRACE_CVAR SPACE enum_cvars_decl rcbrace_or_comma.
-decl_cvar ::= LCBRACE_CVAR rcbrace_or_space.
+decl_cvar ::= LCBRACE_CVAR_SPACE enum_cvars_decl rcbrace_or_comma.
+decl_cvar ::= LCBRACE_CVAR_SPACE RCBRACE.
 decl ::= decl_cvar.
 
 space_or_end ::= SPACE END.
@@ -137,7 +137,7 @@ decl ::= decl_func.
 decl ::= decl_struct.
 decl ::= decl_enum.
 decl ::= decl_gvars.
-decl ::= LCBRACE_ALIAS SPACE ID_QUOTE(short) SPACE_EQUAL_SPACE at(long) RCBRACE.
+decl ::= LCBRACE_ALIAS_SPACE ID_QUOTE(short) SPACE_EQUAL_SPACE at(long) RCBRACE.
    { _Mglc_Pdecl_alias_4(short.basic.id, long.basic.id, short.basic.row, short.basic.col); }
 decls ::= decl.
 decls ::= decls SPACE decl.
@@ -808,5 +808,5 @@ decl_gvar ::= fvar_decl expr_type_apply typeInfo_optional decl_var_attrs_optiona
    { _Mglc_Pdecl_var_as_gvar_0(); }
 decl_gvar_list ::= decl_gvar.
 decl_gvar_list ::= decl_gvar_list decl_gvar.
-decl_gvars ::= LCBRACE_GVAR SPACE_RCBRACE.
-decl_gvars ::= LCBRACE_GVAR SPACE decl_gvar_list rcbrace_or_comma.
+decl_gvars ::= LCBRACE_GVAR_SPACE RCBRACE.
+decl_gvars ::= LCBRACE_GVAR_SPACE decl_gvar_list rcbrace_or_comma.

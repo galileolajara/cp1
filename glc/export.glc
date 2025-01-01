@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{{:export()}
+{{export()}
    quick-alloc-undo(0);
    decl-func-begin(#0, 0, 0);
    decl-func-end(0, 0);

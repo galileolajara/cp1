@@ -15,7 +15,7 @@
    )
 }
 {gvar .basic-type/basic-type+[\basic-type-id#COUNT]}
-{:basic-type(t\basic-type-id)\at @inline;
+{basic-type(t\basic-type-id)\at @inline;
    {return t}
 }
 {gvar .ctx-begin-row:int}
@@ -28,10 +28,10 @@
 {gvar .file-cap\file}
 {gvar .file-v/file+[]}
 {\file(#nil = -1, #0):int
-   {:ptr(f:this)`/file @inline;
+   {ptr(f:this)`/file @inline;
       {return `.file-v[f]}
    }
-   {:path(f:this):char[] @inline;
+   {path(f:this):char[] @inline;
       {return f.ptr().path}
    }
 }
@@ -48,7 +48,7 @@
 {gvar .include-table\include[]}
 {gvar .at-table\at[]}
 {gvar .cvar-table\cvar[]}
-{{:id-add(id-len:tnum, id-str:char[])\id}
+{{id-add(id-len:tnum, id-str:char[])\id}
    +found = .id-map.get-or-insert(id-str, id-len, .id-c);
    {if(found != -1) {return found}}
    `` {do{+j = 0}{(.id-c) j++}
@@ -67,7 +67,7 @@
    .id-str-v[id-idx] = id-str;
    {return id-idx}
 }
-{{:read(in-path:char[])}
+{{read(in-path:char[])}
    `` 'c.out.printf("reading %s -------------------\n", in-path);
    {if!('c\file.open(++in-fd, in-path, #read))
       'c.out.printf("Cannot open file for reading: %s\n", in-path);
@@ -468,7 +468,7 @@
 {gvar .struct-is-outputted:tnum[]}
 {gvar .struct-outputted-c:int}
 {gvar .struct-outputted-v\struct[]}
-{{:main(arg-c:int, arg-v:char[][]):int @main}
+{{main(arg-c:int, arg-v:char[][]):int @main}
    {if(arg-c < 2)
       'c.out.printf("usage: %s file.glc-t\n", arg-v[0]);
       {return 0}
@@ -799,7 +799,7 @@
    {return 0}
 }
 {at(\func)
-   {{:process-later(f-idx:this)}
+   {{process-later(f-idx:this)}
       +num = f-idx:num;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
@@ -822,7 +822,7 @@
          }
       }
    }
-   {{:process-now(f-idx:this):bool}
+   {{process-now(f-idx:this):bool}
       +f = f-idx.ptr();
       `.ctx-func = f;
       `` 'c.out.printf("func :%s\n", f.decl.name.str());
@@ -889,10 +889,10 @@
       }
       {return :true}
    }
-   {:is-set(f-idx:this, v:tnum[]):bool @inline;
+   {is-set(f-idx:this, v:tnum[]):bool @inline;
       {return (v[f-idx >> 3] & (1 << (f-idx & 7))) != 0}
    }
-   {:set(f-idx:this, v:tnum[]) @inline;
+   {set(f-idx:this, v:tnum[]) @inline;
       v[f-idx >> 3] |= 1 << (f-idx & 7);
    }
 }
