@@ -9,4 +9,4 @@ lines.push("):int");
 lines.push("{glc-name(e:this):char[] @glc-name}");
 lines.push("}");
 lines.push("}\n");
-fs.writeFileSync("out/token.glc", lines.join("\n"));
+fs.writeFileSync("out/token.glc2", lines.join("\n"));
