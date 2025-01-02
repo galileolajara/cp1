@@ -1,11 +1,11 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{/wtr(
-   .ref:ref,
-   .pos:size,
-   .p1:tnum[],
-   .p4:num[],
+{:wtr(
+   ref:ref,
+   pos:size,
+   p1:tnum[],
+   p4:num[],
    ) @union
    {n1(w:this, n:tnum) @inline
       w.p1[0] = n;

@@ -1,23 +1,23 @@
 {alias 'glc = %glc}
 {at(%glc)
 {\math(#add, #sub, #mul, #div, #lshift, #rshift, #and, #or, #xor):tnum
-   {wr(e:this, w`/wtr) @inline
+   {wr(e:this, w`:wtr) @inline
       w.n1(e);
    }
-   {rd(e:this&, r`/rdr) @inline
+   {rd(e:this&, r`:rdr) @inline
       e = r.n1()`\math;
    }
 }
 {expr-math(left\expr, right\expr, type\math)\expr
-   quick-alloc-one(+(e/expr-math));
+   quick-alloc-one(+(e:expr-math));
    +e-idx = expr-push(e.base, #math);
    e.left = left;
    e.right = right;
    e.type = type;
-   {return e-idx}
+   :return e-idx;
 }
 {expr-math-add(expr\expr, right\expr)\expr
-   {+e/expr-math = expr.ptr()}
+   {+e:expr-math = expr.ptr()}
    +i = e.item-c++;
    {if(e.item-cap <= e.item-c)
       +old-cap = e.item-cap;
@@ -26,19 +26,19 @@
    }
    +item = e.item-v[i];
    item.expr = right;
-   {return expr}
+   :return expr;
 }
 {at(\expr)
-   {try-deduce-math(expr`/expr, at`\at) @case.try-deduce() @inline
-      {+e`/expr-math = expr}
+   {try-deduce-math(expr`:expr, at`\at) @case.try-deduce() @inline
+      {+e`:expr-math = expr}
       e.left.try-deduce(at);
       e.right.try-deduce(at);
       {do{+i = 0}{(e.item-c) i++}
          e.item-v[i].expr.try-deduce(at);
       }
    }
-   {wr-math(expr`/expr, w`/wtr, header:bool) @case.wr() @inline
-      {+e`/expr-math = expr}
+   {wr-math(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
+      {+e`:expr-math = expr}
       e.left.wr(w, header);
       e.right.wr(w, header);
       e.type.wr(w);
@@ -47,8 +47,8 @@
          e.item-v[i].expr.wr(w, header);
       }
    }
-   {rd-math(e-idx`\expr, r`/rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`/expr-math));
+   {rd-math(e-idx`\expr, r`:rdr) @case.rd() @inline
+      `.quick-alloc-one(+(e`:expr-math));
       e-idx.set(e.base, #math);
       e.left.rd(r);
       e.right.rd(r);
@@ -62,8 +62,8 @@
          }
       }
    }
-   {write-math(expr`/expr) @case.write() @inline
-      {+e`/expr-math = expr}
+   {write-math(expr`:expr) @case.write() @inline
+      {+e`:expr-math = expr}
       {switch(e.type)
          {case(#add)
             e.left.write-value(e.left-val);
@@ -140,12 +140,12 @@
          }
       }
    }
-   {value-math(e:this, ref:tint, paren:bool, v`/value, ok:bool&) @case.value() @inline
-      {+expr`/expr-math = e.ptr()}
+   {value-math(e:this, ref:tint, paren:bool, v`:value, ok:bool&) @case.value() @inline
+      {+expr`:expr-math = e.ptr()}
 		`` {if(expr.left.value(1, paren, v) == :false)
-      ``    {return}
+      ``    :return;
       `` }
-		{if!(expr.left.value(1, paren, v)) {return}}
+		{if!(expr.left.value(1, paren, v)) :return}
 		`` +left = e.left.type();
 		`` +right = e.right.type();
       `` +left-size = left.real.basicType.to()Size;
@@ -158,22 +158,22 @@
 		v.ref = ref;
       ok = :true;
 	}
-   {type-math(expr`/expr, at`\at&) @case.type() @inline
-      {+e`/expr-math = expr}
+   {type-math(expr`:expr, at`\at&) @case.type() @inline
+      {+e`:expr-math = expr}
       at = e.left.type();
    }
-   {process-math(expr`/expr, ok:bool&) @case.process() @inline
-      {+e`/expr-math = expr}
+   {process-math(expr`:expr, ok:bool&) @case.process() @inline
+      {+e`:expr-math = expr}
 		{if!(e.left.value(1, :true, e.left-val))
-			{return}
+			:return;
       }
 		e.right.try-deduce(e.left-val.type);
 		{if!(e.right.value(1, :true, e.right-val))
-			{return}
+			:return;
       }
       {do{+i = 0}{(e.item-c) i++}
          +item = e.item-v[i];
-         {if!(item.expr.value(1, :true, item.val)) {return}}
+         {if!(item.expr.value(1, :true, item.val)) :return}
       }
       ok = :true;
    }

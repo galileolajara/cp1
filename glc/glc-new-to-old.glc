@@ -10,7 +10,7 @@
    }
    +in-size = in-fd.seek(0, #end);
    in-fd.seek(0, #set);
-   {+r/rdr+}
+   {+r:rdr+}
    +padding = 64;
    r.ref = 'c.malloc(in-size + padding);
    in-fd.read(r.ref, in-size);
@@ -18,18 +18,18 @@
       r.1[i ++] = 0;
    }
 
-   {+r-end/rdr+}
+   {+r-end:rdr+}
    r-end.ref = r.ref;
    r-end.pos += in-size;
 
-   {+w-new-begin/wtr+}
+   {+w-new-begin:wtr+}
    w-new-begin.ref = 'c.malloc(in-size << 1);
-   {+w-old-begin/wtr+}
+   {+w-old-begin:wtr+}
    w-old-begin.ref = 'c.malloc(in-size << 1);
 
-   {+w-new/wtr+}
+   {+w-new:wtr+}
    w-new.ref = w-new-begin.ref;
-   {+w-old/wtr+}
+   {+w-old:wtr+}
    w-old.ref = w-old-begin.ref;
    {while(r.pos < r-end.pos)
       {if(&&, r.1[0] == ''`~, r.1[1] == ''.)
@@ -94,7 +94,7 @@
       }{elif(&&, r.1[0] == ''`~, r.1[1] == ''=, r.1[2] == '' )
          `` found a code that's only for the new glc
          r.pos += 3;
-         {+r-new-line/rdr+}
+         {+r-new-line:rdr+}
          r-new-line.pos = r.pos;
          {while(r-new-line.1[0] != ''\n)
             r-new-line.pos ++;
@@ -109,7 +109,7 @@
       }{elif(&&, r.1[0] == ''`~, r.1[1] == ''-, r.1[2] == '' )
          `` found a code that's only for the old glc
          r.pos += 3;
-         {+r-new-line/rdr+}
+         {+r-new-line:rdr+}
          r-new-line.pos = r.pos;
          {while(r-new-line.1[0] != ''\n)
             r-new-line.pos ++;
@@ -174,8 +174,8 @@
          {continue}
       }
       {if(&&, r.1[0] == ''_, r.1[1] == ''z)
-         `` slow algorithm for changing /type[:size] to :sizeOf[/type]
-         /rdr.set(+r-bracket, r.ref);
+         `` slow algorithm for changing :type[:size] to :sizeOf[:type]
+         :rdr.set(+r-bracket, r.ref);
          +limit = 32;
          {while(r-bracket.1[0] != ''[)
             r-bracket.pos ++;
@@ -226,7 +226,7 @@
    }
    out-old-fd.write(w-old-begin.ref, w-old.pos - w-old-begin.pos);
    out-old-fd.close();
-   {return 0}
+   :return 0;
 }
 }
 

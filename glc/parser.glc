@@ -1,21 +1,21 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{gvar .hello:bool}
-{gvar .ctx-func/decl-func}
-{gvar .id-in-header-v:tnum[]}
-{gvar .id-in-header-idx-v:num[]}
-{gvar .id-in-header-id-v:num[]}
-{gvar .id-in-header-c:int}
+{gvar hello:bool}
+{gvar ctx-func:decl-func}
+{gvar id-in-header-v:tnum[]}
+{gvar id-in-header-idx-v:num[]}
+{gvar id-in-header-id-v:num[]}
+{gvar id-in-header-c:int}
 
-{gvar .at-in-header-v:tnum[]}
-{gvar .at-in-header-idx-v:num[]}
-{gvar .at-in-header-at-v:num[]}
-{gvar .at-in-header-c:int}
+{gvar at-in-header-v:tnum[]}
+{gvar at-in-header-idx-v:num[]}
+{gvar at-in-header-at-v:num[]}
+{gvar at-in-header-c:int}
 
-{gvar .decl-include\include}
-{gvar .decl-include-row:int}
-{gvar .decl-include-col:int}
+{gvar decl-include\include}
+{gvar decl-include-row:int}
+{gvar decl-include-col:int}
 {type-info-begin()
    .decl-var.size-c = 0;
    .decl-var.type-info.init();
@@ -25,13 +25,13 @@
    .decl-var.type-info.finalize();
 }
 {type-info-arr(expr-v\expr[], expr-c:tnum)
-   {+r/rdr+}
+   {+r:rdr+}
    r.ref = expr-v;
    {if(expr-v == :null)
       +ti = .decl-var.type-info;
       ti.array-c += 1;
       ti.ref-v[ti.array-c] = 0;
-      {return}
+      :return;
    }
    {do{+i = expr-c}(expr-c)
       type-info-arr(expr-v[i -= 1]);
@@ -62,7 +62,7 @@
    {if(.decl-include != #nil)
       'c.out.printf("%s:%u:%u: Cannot {include inside another {include of %u:%u\n", .input-path, row, col, .decl-include-row, .decl-include-col);
       'c.exit(#failure);
-      {return}}
+      :return}
    .decl-include = inc;
    .decl-include-row = row;
    .decl-include-col = col;
@@ -70,7 +70,7 @@
 {decl-include-end()
    .decl-include = #nil;
 }
-{gvar .build-at\at}
+{gvar build-at\at}
 {at-push(name\id, type\name-type, row:int, col:int)
    .build-at = at-create(.build-at, type, name);
 }
@@ -78,7 +78,7 @@
    {do{+i = 0\at}{(.at-c) i++}
       +at = .at-v[i];
       {if(&&, at.type == #basic, at.name.basic == type)
-         {return i}
+         :return i;
       }
    }
    +build-idx = .at-c++;
@@ -91,23 +91,23 @@
    at.parent = #root;
    at.type = #basic;
    at.name.basic = type;
-   {return build-idx}
+   :return build-idx;
 }
 {at-begin()
    .build-at = .decl-at;
 }
 {\alias(#nil = -1, #0):int}
-{gvar .at-alias-c\alias}
-{gvar .at-alias-cap\alias}
-{gvar .at-alias-name-v\id[]}
-{gvar .at-alias-at-v\at[]}
-{gvar .at-alias-pos-v/row-col+[]}
-{/row-col(.row:int, .col:int)}
+{gvar at-alias-c\alias}
+{gvar at-alias-cap\alias}
+{gvar at-alias-name-v\id[]}
+{gvar at-alias-at-v\at[]}
+{gvar at-alias-pos-v:row-col+[]}
+{:row-col(row:int, col:int)}
 {at-alias(name\id, row:int, col:int)
    {do{+i = 0}{(.at-alias-c) i++}
       {if(.at-alias-name-v[i] == name)
          .build-at = .at-alias-at-v[i];
-         {return}
+         :return;
       }
    }
    'c.out.printf("%s:%u:%u: Cannot recognize the alias '%s\n", .input-path, row, col, name.str());
@@ -117,13 +117,13 @@
    {if(at.ptr().type != #module)
       'c.out.printf("%s:%u:%u: Alias can only work on namespaces that ends with '%%'\n", .input-path, row, col);
       'c.exit(#failure);
-      {return}
+      :return;
    }
    {do{+i = 0}{(.at-alias-c) i++}
       {if(.at-alias-name-v[i] == name)
          'c.out.printf("%s:%u:%u: Alias '%s was already declared at %u:%u\n", .input-path, row, col, name.str(), .at-alias-pos-v[i].row, .at-alias-pos-v[i].col);
          'c.exit(#failure);
-         {return}
+         :return;
       }
    }
    +alias-idx = .at-alias-c++;
@@ -155,18 +155,18 @@
    }
 }
 {at-done()\at
-   {return .build-at}
+   :return .build-at;
 }
 {at-create(parent\at, type\name-type, name\id)\at
    +found = .at-map.get-or-insert(parent, type, name, .at-c);
-   {if(found != -1) {return found}}
+   {if(found != -1) :return found}
    `` {do{+i = 0\at}{(.at-c) i++}
    ``    +at = .at-v[i];
    ``    {if(&&,
    ``       at.parent == parent,
    ``       at.type == type,
    ``       at.name.id == name)
-   ``       {return i}
+   ``       :return i;
    ``    }
    `` }
    +build-idx = .at-c++;
@@ -179,7 +179,7 @@
    at.parent = parent;
    at.type = type;
    at.name.id = name;
-   {return build-idx}
+   :return build-idx;
 }
 {at-create-basic(basic\basic-type-id)\at
    {do{+i = 0\at}{(.at-c) i++}
@@ -187,7 +187,7 @@
       {if(&&,
          at.type == #basic,
          at.name.basic == basic)
-         {return i}
+         :return i;
       }
    }
    +build-idx = .at-c++;
@@ -200,13 +200,13 @@
    at.parent = #root;
    at.type = #basic;
    at.name.basic = basic;
-   {return build-idx}
+   :return build-idx;
 }
 
-{gvar .decl-at\at}
+{gvar decl-at\at}
 {cvar #decl-at-nest-limit:int = 8}
-{gvar .decl-at-v\at[#decl-at-nest-limit]}
-{gvar .decl-at-c:tnum}
+{gvar decl-at-v\at[#decl-at-nest-limit]}
+{gvar decl-at-c:tnum}
 {err-msg-namespace-limit(row:int, col:int)
    'c.out.printf("%s:%u:%u: Max number of ids in namespace reached\n", .input-path, row, col);
    'c.exit(#failure);
@@ -225,21 +225,21 @@
    .decl-at-c--;
    .decl-at = .decl-at-v[.decl-at-c];
 }
-{/token(
-   .row:int,
-   .col:int,
-   .id:int,
-   .id2:int,
-   .val:int[12],
+{:token(
+   row:int,
+   col:int,
+   id:int,
+   id2:int,
+   val:int[12],
    )
 }
-{/lexer(
-   .content:tnum[],
-   .start:tnum[],
-   .cursor:tnum[],
-   .limit:tnum[],
-   .marker:tnum[],
-   .ctx-marker:tnum[],
+{:lexer(
+   content:tnum[],
+   start:tnum[],
+   cursor:tnum[],
+   limit:tnum[],
+   marker:tnum[],
+   ctx-marker:tnum[],
    )
    {init(lex:this, data:tnum[], size:size)
       lex.start = data;
@@ -249,9 +249,9 @@
    }
    {scan(lex:this)`\token @real-name(glc_lexer_scan)}
    {get-num-oct(lex:this):num
-      {+r-start`/rdr+}
+      {+r-start`:rdr+}
       r-start.ref = lex.start;
-      {+r-cursor`/rdr+}
+      {+r-cursor`:rdr+}
       r-cursor.ref = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
       {if(length > 12)
@@ -267,12 +267,12 @@
          'c.out.printf("%s:%u:%u: Integer literal was out of bounds\n", `.input-path, `.row, `.col);
          'c.exit(#failure);
       }
-      {return val:num}
+      :return val:num;
    }
    {get-num-dec(lex:this):num
-      {+r-start`/rdr+}
+      {+r-start`:rdr+}
       r-start.ref = lex.start;
-      {+r-cursor`/rdr+}
+      {+r-cursor`:rdr+}
       r-cursor.ref = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
       {if(length > 10)
@@ -288,13 +288,13 @@
          'c.out.printf("%s:%u:%u: Integer literal was out of bounds\n", `.input-path, `.row, `.col);
          'c.exit(#failure);
       }
-      {return val:num}
+      :return val:num;
    }
    {get-id(lex:this, begin:tnum, end:tnum):int
-      {+r-start`/rdr+}
+      {+r-start`:rdr+}
       r-start.ref = lex.start;
       r-start.pos += begin;
-      {+r-cursor`/rdr+}
+      {+r-cursor`:rdr+}
       r-cursor.ref = lex.cursor;
       +length = r-cursor.pos - r-start.pos - end;
       {if(length > 255)
@@ -317,15 +317,15 @@
          text[len] = 0;
          `.id-str-v[id] = text;
          `.id-len-v[id] = len;
-         {return id}
+         :return id;
       }{else
          `` found
-         {return found}
+         :return found;
       }
       `` {do{+i = 0}{(`.id-c) i++}
       ``    {if(`.id-len-v[i] == len)
       ``       {if('c.memcmp(`.id-str-v[i], r-start.ref, len) == 0)
-      ``          {return i}
+      ``          :return i;
       ``       }
       ``    }
       `` }
@@ -341,13 +341,13 @@
       `` text[len] = 0;
       `` `.id-str-v[id] = text;
       `` `.id-len-v[id] = len;
-      `` {return id}
+      `` :return id;
    }
    {get-include(lex:this):int
-      {+r-start`/rdr+}
+      {+r-start`:rdr+}
       r-start.ref = lex.start;
       r-start.pos += 9;
-      {+r-cursor`/rdr+}
+      {+r-cursor`:rdr+}
       r-cursor.ref = lex.cursor;
       +length = r-cursor.pos - r-start.pos - 1;
       {if(length > 255)
@@ -370,15 +370,15 @@
          text[len] = 0;
          `.include-str-v[include] = text;
          `.include-len-v[include] = len;
-         {return include}
+         :return include;
       }{else
          `` found
-         {return found}
+         :return found;
       }
       `` {do{+i = 0}{(`.include-c) i++}
       ``    {if(`.include-len-v[i] == len)
       ``       {if('c.memcmp(`.include-str-v[i], r-start.ref, len) == 0)
-      ``          {return i}
+      ``          :return i;
       ``       }
       ``    }
       `` }
@@ -394,19 +394,19 @@
       `` text[len] = 0;
       `` `.include-str-v[include] = text;
       `` `.include-len-v[include] = len;
-      `` {return include}
+      `` :return include;
    }
 }
-{/parser()
-   {alloc()`/parser}
+{:parser()
+   {alloc()`:parser}
    {free(psr:this)}
-   {parse(psr:this, t`\token, tok`/token+) @real-name(glcParse)}
+   {parse(psr:this, t`\token, tok`:token+) @real-name(glcParse)}
 }
-{gvar .last-row:int @extern}
-{gvar .last-col:int @extern}
-{gvar .row:int @extern}
-{gvar .col:int @extern}
-{write-func(w/wtr, header:bool) @inline
+{gvar last-row:int @extern}
+{gvar last-col:int @extern}
+{gvar row:int @extern}
+{gvar col:int @extern}
+{write-func(w:wtr, header:bool) @inline
    w.n(.func-c);
    {do{+i = 0}(.func-c)
       +f = .func-v[i++];
@@ -463,7 +463,7 @@
             {continue}
          }
       }
-      {+pos-4/wtr+}
+      {+pos-4:wtr+}
       pos-4.p1 = w.p1;
       w.pos += 4;
       +pos-4-next = w.pos;
@@ -472,7 +472,7 @@
       pos-4.n4(w.pos - pos-4-next);
    }
 }
-{write-cvar(w/wtr, header:bool)
+{write-cvar(w:wtr, header:bool)
    w.n(.cvar-c);
    {do{+i = 0}{(.cvar-c) i++}
       +cvar = .cvar-v[i];
@@ -487,7 +487,7 @@
       }
    }
 }
-{write-gvar(w/wtr, header:bool)
+{write-gvar(w:wtr, header:bool)
    w.n(.gvar-c);
    {do{+i = 0}{(.gvar-c) i++}
       +gvar = .gvar-v[i];
@@ -496,7 +496,7 @@
       gvar.decl.wr(w, header);
    }
 }
-{write-enum(w/wtr, header:bool)
+{write-enum(w:wtr, header:bool)
    w.n(.enum-c);
    {do{+i = 0}(.enum-c)
       +e = .enum-v[i++];
@@ -513,7 +513,7 @@
       }
    }
 }
-{write-struct(w/wtr, header:bool)
+{write-struct(w:wtr, header:bool)
    w.n(.struct-c);
    {do{+i = 0}(.struct-c)
       +s = .struct-v[i++];
@@ -536,15 +536,15 @@
    }
 }
 {token-name(tok\token):char[]
-   {return tok.glc-name()}
+   :return tok.glc-name();
 }
 {parse-str-init(max-size:int)}
 {get-row-col(out-row:int&, out-col:int&, end:ref, begin:ref)
    +row = 1;
    +col = 1;
-   {+r/rdr+}
+   {+r:rdr+}
    r.ref = begin;
-   {+r-end/rdr+}
+   {+r-end:rdr+}
    r-end.ref = end;
    {while(r.pos < r-end.pos)
       {if(r.p1[0] == ''\n)
@@ -562,7 +562,7 @@
       out-col = col;
    }
 }
-{parse-string(r/rdr, w/wtr, ending:char, in-data:ref)
+{parse-string(r:rdr, w:wtr, ending:char, in-data:ref)
    w.p1[0] = ''\';
    w.p1[1] = r.p1[1];
    w.pos += 2;
@@ -578,12 +578,12 @@
       w.pos++;
       r.pos++;
       {if(c == ending)
-         {return}
+         :return;
       }
    }
 }
-{parse-comment(r/rdr, w/wtr, ending:char, in-data:ref)
-   {+r-begin/rdr+}
+{parse-comment(r:rdr, w:wtr, ending:char, in-data:ref)
+   {+r-begin:rdr+}
    r-begin.pos = r.pos;
    r.pos += 2;
    {do()
@@ -600,14 +600,14 @@
             w.p1[0] = '' ;
             w.pos++;
          }
-         {return}
+         :return;
       }
    }
 }
-{gvar .input-path:char[] @real-name(input_path)}
+{gvar input-path:char[] @real-name(input_path)}
 {convert-old-to-new(in-data:ref, in-out-size:int&):ref
    +in-size = in-out-size;
-   {+r/rdr+}
+   {+r:rdr+}
    r.ref = in-data;
    {if(&&, r.p1[0] == ''{, r.p1[1] == ''g, r.p1[2] == ''l, r.p1[3] == ''c, r.p1[4] == ''\n, r.p1[in-size - 2] == ''}, r.p1[in-size - 1] == ''\n)
       `` remove the {glc and } from head and tail of the file
@@ -617,12 +617,12 @@
       r.p1[3] = '' ;
       r.p1[in-size - 2] = '' ;
    }
-   {+r-end/rdr+}
+   {+r-end:rdr+}
    r-end.ref = in-data;
    r-end.pos += in-size;
-   {+w-begin/wtr+}
+   {+w-begin:wtr+}
    w-begin.ref = 'c.malloc(in-size << 1);
-   {+w/wtr+}
+   {+w:wtr+}
    w.ref = w-begin.ref;
    {while(r.pos < r-end.pos)
       {if(&&, r.p1[0] == ''@, r.p1[1] == ''r, r.p1[2] == ''e, r.p1[3] == ''a, r.p1[4] == ''l, r.p1[5] == ''N, r.p1[6] == ''a, r.p1[7] == ''m, r.p1[8] == ''e)
@@ -664,9 +664,9 @@
          w.pos += 8;
          r.pos += 7;
       }{elif(&&, r.p1[0] == ''`, r.p1[1] == ''s, r.p1[2] == ''i, r.p1[3] == ''z, r.p1[4] == ''e, r.p1[5] == ''O, r.p1[6] == ''f, r.p1[7] == ''[)
-         `` :sizeOf[/type] -> /type[:size]
+         `` :sizeOf[:type] -> :type[:size]
          r.pos += 8;
-         {+r-type/rdr+}
+         {+r-type:rdr+}
          r-type.ref = r.ref;
          {do()
             +c = r.p1[0];
@@ -729,7 +729,7 @@
    out-fd.write(w-begin.ref, w.pos - w-begin.pos);
    out-fd.close();
    in-out-size = w.pos - w-begin.pos;
-   {return w-begin.ref}
+   :return w-begin.ref;
 }
 {char-escape-value(c:char):int}
 {main(argc:int, argv:char[][]):int @main
@@ -742,7 +742,7 @@
    .decl-include = #nil;
    {if(argc != 2)
       'c.out.printf("usage: %s file.glc\n", argv[0]);
-      {return 0}
+      :return 0;
    }
    .input-path = argv[1];
    'c.out.printf("reading %s\n", .input-path);
@@ -769,13 +769,13 @@
    }
    {if(:true)
       `` in-data = convert-old-to-new(in-data, in-size);
-      {+r-end/rdr+}
+      {+r-end:rdr+}
       r-end.ref = in-data;
       r-end.pos += in-size;
-      {+r/rdr+}
+      {+r:rdr+}
       r.ref = in-data;
       {+new-data = 'c.malloc(in-size + 1)}
-      {+w/wtr+}
+      {+w:wtr+}
       w.ref = new-data;
       {while(r.pos < r-end.pos)
          {if(r.p1[0] == ''`)
@@ -948,15 +948,15 @@
       w.p1[0] = ''\0;
       'c.free(in-data);
       in-data = new-data;
-      {+w-begin/wtr+}
+      {+w-begin:wtr+}
       w-begin.ref = new-data;
       in-size = w.pos - w-begin.pos;
-      `` 'c\file.open(+fd, "out/parsed.glc", #write | #truncate | #create, 0644);
+      `` 'c\file.open(+fd, "out:parsed.glc", #write | #truncate | #create, 0644);
       `` fd.write(in-data, in-size);
       `` fd.close();
       `` 'c.out.write(in-data, in-size);
    }
-   {+r-end/rdr+}
+   {+r-end:rdr+}
    r-end.ref = in-data;
    r-end.pos += in-size;
    parse-str-init(in-size);
@@ -980,13 +980,13 @@
    .decl-fvar-cap = 32;
    malloc-arr(.decl-fvar-v, .decl-fvar-cap);
 
-   +psr = /parser.alloc();
-   /lexer.init(+lex, in-data, in-size);
+   +psr = :parser.alloc();
+   :lexer.init(+lex, in-data, in-size);
    +next-row = 1;
    +next-col = 1;
    .row = 1;
    .col = 1;
-   {+tok/token+}
+   {+tok:token+}
    {do()
       tok.row = next-row;
       tok.col = next-col;
@@ -1022,20 +1022,20 @@
                psr.parse(t, tok);
             }
             {case(#char1)
-               {+r/rdr+}
+               {+r:rdr+}
                r.ref = lex.start;
                tok.id = r.p1[2];
                psr.parse(t, tok);
             }
             {case(#char2)
-               {+r/rdr+}
+               {+r:rdr+}
                r.ref = lex.start;
                tok.id = char-escape-value(r.p1[3]);
                psr.parse(t, tok);
             }
             {case(#space-at-real-name-str)
                `` find the '@' character and start counting from there
-               {+r-start/rdr+}
+               {+r-start:rdr+}
                r-start.ref = lex.start;
                +start = 11;
                {do()
@@ -1089,9 +1089,9 @@
    psr.parse(#nil, tok);
    psr.free();
    'c.out.printf("parsing finished\n");
-   {+w-begin/wtr+}
+   {+w-begin:wtr+}
    w-begin.ref = quick-alloc((in-size << 2) + 1024);
-   {+w/wtr+}
+   {+w:wtr+}
    w.ref = w-begin.ref;
    w.n(.id-c);
    {do{+i = 0}{(.id-c) i++}
@@ -1200,7 +1200,7 @@
    'c.memcpy(final-path, out-path, in-path-len + 2);
    final-path[in-path-len + 2] = 0;
    'c.rename(out-path, final-path);
-   {return 0}
+   :return 0;
 }
  
 

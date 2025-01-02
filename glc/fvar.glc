@@ -3,30 +3,30 @@
 {at(%glc)
 {\fvar(#nil = -1, #0):int}
 {expr-fvar(expr\expr, member\id)\expr
-   quick-alloc-one(+(e/expr-fvar));
+   quick-alloc-one(+(e:expr-fvar));
    +e-idx = expr-push(e.base, #fvar);
    e.expr = expr;
    e.member = member;
-   {return e-idx}
+   :return e-idx;
 }
 {at(\expr)
-   {wr-fvar(expr`/expr, w`/wtr, header:bool) @case.wr() @inline
-      {+e`/expr-fvar = expr}
+   {wr-fvar(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
+      {+e`:expr-fvar = expr}
       e.expr.wr(w, header);
       e.member.wr(w, header);
    }
-   {rd-fvar(e-idx`\expr, r`/rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`/expr-fvar));
+   {rd-fvar(e-idx`\expr, r`:rdr) @case.rd() @inline
+      `.quick-alloc-one(+(e`:expr-fvar));
       e-idx.set(e.base, #fvar);
       e.expr.rd(r);
       e.member.rd(r);
    }
-   {type-fvar(expr`/expr, at`\at&) @case.type() @inline
-      {+e`/expr-fvar = expr}
+   {type-fvar(expr`:expr, at`\at&) @case.type() @inline
+      {+e`:expr-fvar = expr}
       at = e.val.type.ptr().decl.struct.ptr().fvar-v[e.fvar].decl.type;
    }
-   {value-fvar(expr:this, ref:tint, paren:bool, v`/value, ok:bool&) @case.value() @inline
-      {+e`/expr-fvar = expr.ptr()}
+   {value-fvar(expr:this, ref:tint, paren:bool, v`:value, ok:bool&) @case.value() @inline
+      {+e`:expr-fvar = expr.ptr()}
       +fvar = e.val.type.ptr().decl.struct.ptr().fvar-v[e.fvar];
       v.set(ref, paren, fvar.decl.type, fvar.decl.type-info);
       {if(v.ref == 1)
@@ -34,32 +34,32 @@
       }
       ok = :true;
    }
-   {write-fvar(expr`/expr) @case.write() @inline
-      {+e`/expr-fvar = expr}
+   {write-fvar(expr`:expr) @case.write() @inline
+      {+e`:expr-fvar = expr}
       e.expr.write-value(e.val);
       `.out.printf(".");
       e.val.type.ptr().decl.struct.ptr().fvar-v[e.fvar].decl.write(#fvar);
    }
-   {process-fvar(expr`/expr, ok:bool&) @case.process() @inline
-      {+e`/expr-fvar = expr}
+   {process-fvar(expr`:expr, ok:bool&) @case.process() @inline
+      {+e`:expr-fvar = expr}
       +type-i = e.expr.type();
       {if(type-i == #nil)
          'c.out.printf("%s:%u:%u - %u:%u Cannot get member '.%s' from an expression of unknown type\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, e.member.str());
-         {return}
+         :return;
       }
       +type = type-i.ptr();
       {if(type.type != #struct)
          'c.out.printf("%s:%u:%u - %u:%u Cannot get member '.%s' because the type is not a struct or union\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, e.member.str());
-         {return}
+         :return;
       }
-      {if!(e.expr.value(1 - type-i.pointer(), :true, e.val)) {return}}
+      {if!(e.expr.value(1 - type-i.pointer(), :true, e.val)) :return}
       {if(e.val.info.array-c > 0)
          'c.out.printf("%s:%u:%u - %u:%u Cannot get member '.%s' because the expression is an array(%d)\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, e.member.str(), e.val.info.array-c);
-         {return}
+         :return;
       }
       {if(type.decl.struct == #nil)
          'c.out.printf("%s:%u:%u - %u:%u Cannot get member '.%s' because the type '/%s' was not defined\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, e.member.str(), type.name.id.str());
-         {return}
+         :return;
       }
       +struct-i = type.decl.struct;
       +struct = struct-i.ptr();
@@ -68,7 +68,7 @@
          {if(struct.fvar-v[i].decl.name == member)
             e.fvar = i;
             ok = :true;
-            {return}
+            :return;
          }
       }
       'c.out.printf("%s:%u:%u - %u:%u Cannot find member named '.%s' from type '/%s'\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, e.member.str(), type.name.id.str());

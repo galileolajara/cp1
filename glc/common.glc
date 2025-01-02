@@ -1,377 +1,377 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{/at-map(.data:lnum[(`#hash-table-size + 7) >> 3])
+{:at-map(data:lnum[(`#hash-table-size + 7) >> 3])
    {init(m:this)}
    {get-or-insert(m:this, parent`\at, type`\name-type, name`\id, val:int):int}
 }
-{/map(.data:lnum[(`#hash-table-size + 7) >> 3])
+{:map(data:lnum[(`#hash-table-size + 7) >> 3])
    {init(m:this)}
    {get-or-insert(m:this, str:char[], len:tnum, val:int):int}
 }
-{gvar .id-map/map+}
-{gvar .include-map/map+}
-{gvar .at-map/at-map+}
-{/struct(
+{gvar id-map:map+}
+{gvar include-map:map+}
+{gvar at-map:at-map+}
+{:struct(
 if-compiler
-   .file`\file,
+   file`\file,
 end-if
-   .begin-row:int,
-   .begin-col:int,
-   .end-row:int,
-   .end-col:int,
-   .include`\include,
-   .at`\at,
-   .flags`\struct-flags,
-   .real-name`\id,
+   begin-row:int,
+   begin-col:int,
+   end-row:int,
+   end-col:int,
+   include`\include,
+   at`\at,
+   flags`\struct-flags,
+   real-name`\id,
 if-compiler
-   .method-c:int,
-   .method-cap:int,
-   .method-v`\func[],
+   method-c:int,
+   method-cap:int,
+   method-v`\func[],
 end-if
-   .fvar-c:num,
-   .fvar-v`/fvar+[0],
+   fvar-c:num,
+   fvar-v`:fvar+[0],
    )
 }
-{/stmt-if(
-   .base`/stmt+,
-   .not:bool,
-   .expr`\expr,
+{:stmt-if(
+   base`:stmt+,
+   not:bool,
+   expr`\expr,
 if-compiler
-   .val`/value+
-end-if
-   )
-}
-{/stmt-if-elif(
-   .base`/stmt+,
-   .not:bool,
-   .expr`\expr,
-if-compiler
-   .val`/value+
+   val`:value+
 end-if
    )
 }
-{/stmt-switch(
-   .base`/stmt+,
-   .expr`\expr,
+{:stmt-if-elif(
+   base`:stmt+,
+   not:bool,
+   expr`\expr,
 if-compiler
-   .val`/value+,
-end-if
-   .cases`\expr,
-if-compiler
-   .case-func-c:num,
-   .case-func-v`/stmt-switch-case-func+[],
+   val`:value+
 end-if
    )
 }
-{/stmt-case-item(
-   .expr`\expr,
+{:stmt-switch(
+   base`:stmt+,
+   expr`\expr,
 if-compiler
-   .val`/value+,
+   val`:value+,
+end-if
+   cases`\expr,
+if-compiler
+   case-func-c:num,
+   case-func-v`:stmt-switch-case-func+[],
+end-if
+   )
+}
+{:stmt-case-item(
+   expr`\expr,
+if-compiler
+   val`:value+,
 end-if
    )
 }
 {at(\lvar)
 if-compiler
-   {ptr(l:this)`/lvar @inline
-      {return `.ctx-func.lvar-v[l]}
+   {ptr(l:this)`:lvar @inline
+      :return `.ctx-func.lvar-v[l];
    }
    {name(l:this)`\id @inline
-      {return l.ptr().decl.name}
+      :return l.ptr().decl.name;
    }
 end-if
 if-parser
-   {ptr(l:this)`/lvar @inline
-      {return `.ctx-func.lvar-v[l]}
+   {ptr(l:this)`:lvar @inline
+      :return `.ctx-func.lvar-v[l];
    }
    {name(l:this)`\id @inline
-      {return l.ptr().decl.name}
+      :return l.ptr().decl.name;
    }
 end-if
 }
-{/enum(
+{:enum(
 if-compiler
-   .file`\file,
+   file`\file,
 end-if
-   .begin-row:int,
-   .begin-col:int,
-   .end-row:int,
-   .end-col:int,
-   .include`\include,
-   .at`\at,
-   .base-type`\at,
-   .flags`\enum-flags,
-   .real-name`\id,
+   begin-row:int,
+   begin-col:int,
+   end-row:int,
+   end-col:int,
+   include`\include,
+   at`\at,
+   base-type`\at,
+   flags`\enum-flags,
+   real-name`\id,
 if-compiler
-   .method-c:int,
-   .method-cap:int,
-   .method-v`\func[],
-end-if
-   )
-}
-{/expr-compare(
-   .base`/expr+,
-   .left`\expr,
-   .right`\expr,
-   .type`\compare,
-if-compiler
-   .left-val`/value+,
-   .right-val`/value+,
+   method-c:int,
+   method-cap:int,
+   method-v`\func[],
 end-if
    )
 }
-{/expr-assign(
-   .base`/expr+,
-   .left`\expr,
-   .right`\expr,
-   .type`\assign,
+{:expr-compare(
+   base`:expr+,
+   left`\expr,
+   right`\expr,
+   type`\compare,
 if-compiler
-   .left-val`/value+,
-   .right-val`/value+,
+   left-val`:value+,
+   right-val`:value+,
 end-if
    )
 }
-{/expr-index(
-   .base`/expr+,
-   .left`\expr,
-   .right`\expr,
+{:expr-assign(
+   base`:expr+,
+   left`\expr,
+   right`\expr,
+   type`\assign,
 if-compiler
-   .left-val`/value+,
-   .right-val`/value+,
+   left-val`:value+,
+   right-val`:value+,
 end-if
    )
 }
-{/expr-math-item(
-   .expr`\expr,
+{:expr-index(
+   base`:expr+,
+   left`\expr,
+   right`\expr,
 if-compiler
-   .val`/value+,
+   left-val`:value+,
+   right-val`:value+,
 end-if
    )
 }
-{/expr-math(
-   .base`/expr+,
-   .left`\expr,
-   .right`\expr,
-   .type`\math,
+{:expr-math-item(
+   expr`\expr,
 if-compiler
-   .left-val`/value+,
-   .right-val`/value+,
+   val`:value+,
 end-if
-   .item-c:tnum,
+   )
+}
+{:expr-math(
+   base`:expr+,
+   left`\expr,
+   right`\expr,
+   type`\math,
+if-compiler
+   left-val`:value+,
+   right-val`:value+,
+end-if
+   item-c:tnum,
 if-parser
-   .item-cap:tnum,
+   item-cap:tnum,
 end-if
-   .item-v`/expr-math-item+[],
+   item-v`:expr-math-item+[],
    )
 }
-{/expr-bools-item(
-   .expr`\expr,
+{:expr-bools-item(
+   expr`\expr,
 if-compiler
-   .val`/value+,
+   val`:value+,
 end-if
    )
 }
-{/expr-bools(
-   .base`/expr+,
-   .left`\expr,
-   .right`\expr,
-   .type`\bools,
+{:expr-bools(
+   base`:expr+,
+   left`\expr,
+   right`\expr,
+   type`\bools,
 if-compiler
-   .left-val`/value+,
-   .right-val`/value+,
+   left-val`:value+,
+   right-val`:value+,
 end-if
-   .item-c:tnum,
+   item-c:tnum,
 if-parser
-   .item-cap:tnum,
+   item-cap:tnum,
 end-if
-   .item-v`/expr-bools-item+[],
+   item-v`:expr-bools-item+[],
    )
 }
-{/expr-fvar(
-   .base`/expr+,
-   .expr`\expr,
-   .member`\id,
+{:expr-fvar(
+   base`:expr+,
+   expr`\expr,
+   member`\id,
 if-compiler
-   .fvar`\fvar,
-   .val`/value+,
+   fvar`\fvar,
+   val`:value+,
 end-if
    )
 }
-{/expr-cvar(
-   .base`/expr+,
-   .at`\at,
-   .name`\id,
+{:expr-cvar(
+   base`:expr+,
+   at`\at,
+   name`\id,
 if-compiler
-   .cvar`\cvar,
-   .try`\at,
+   cvar`\cvar,
+   try`\at,
 end-if
    )
 }
-{/expr-ref(
-   .base`/expr+,
-   .expr`\expr,
+{:expr-ref(
+   base`:expr+,
+   expr`\expr,
 if-compiler
-   .val`/value+,
+   val`:value+,
 end-if
    )
 }
-{/expr-unary(
-   .base`/expr+,
-   .expr`\expr,
-   .type`\unary,
+{:expr-unary(
+   base`:expr+,
+   expr`\expr,
+   type`\unary,
 if-compiler
-   .val`/value+,
+   val`:value+,
 end-if
    )
 }
-{/expr-cast-fast(
-   .base`/expr+,
-   .expr`\expr,
-   .type`\at,
+{:expr-cast-fast(
+   base`:expr+,
+   expr`\expr,
+   type`\at,
 if-compiler
-   .val`/value+,
+   val`:value+,
 end-if
    )
 }
-{/expr-gvar(
-   .base`/expr+,
+{:expr-gvar(
+   base`:expr+,
 if-parser
-   .at`\at,
-   .name`\id,
+   at`\at,
+   name`\id,
 end-if
 if-compiler
-   .gvar`\gvar,
+   gvar`\gvar,
 end-if
    )
 }
-{/decl-gvar(
+{:decl-gvar(
 if-compiler
-   .file`\file,
+   file`\file,
 end-if
-   .row:int,
-   .col:int,
-   .include`\include,
-   .at`\at,
-   .flags`\gvar-flags,
-   .decl`/decl-var+,
+   row:int,
+   col:int,
+   include`\include,
+   at`\at,
+   flags`\gvar-flags,
+   decl`:decl-var+,
    )
 }
-{/cvar(
+{:cvar(
 if-compiler
-   .file`\file,
+   file`\file,
 end-if
-   .row:int,
-   .col:int,
-   .include`\include,
-   .at`\at,
-   .flags`\cvar-flags,
-   `` .real-name\id,
-   .decl`/decl-var+,
-   .expr-set`\expr,
-   .last-cvar`\cvar,
+   row:int,
+   col:int,
+   include`\include,
+   at`\at,
+   flags`\cvar-flags,
+   `` real-name\id,
+   decl`:decl-var+,
+   expr-set`\expr,
+   last-cvar`\cvar,
    )
 }
-{/decl-var(
-   .name`\id,
-   .type`\at,
-   .flags`\var-flags,
-   .real-name`\id,
-   .type-info`/type-info+,
-   .size-c:tnum,
-   .size-expr-v`\expr[],
+{:decl-var(
+   name`\id,
+   type`\at,
+   flags`\var-flags,
+   real-name`\id,
+   type-info`:type-info+,
+   size-c:tnum,
+   size-expr-v`\expr[],
 if-compiler
-   .size-value-v`/value+[],
-end-if
-   )
-}
-{/carg(
-   .ref:tint,
-   .expr`\expr,
-if-compiler
-   .value`/value+,
+   size-value-v`:value+[],
 end-if
    )
 }
-{/expr-func(
-   .base`/expr+,
-   .at`\at,
-   .func-name`\id,
+{:carg(
+   ref:tint,
+   expr`\expr,
 if-compiler
-   .func-idx`\func,
+   value`:value+,
 end-if
-   .group-c:tnum,
-   .group-v:tnum[`#expr-carg-group-limit],
-   .carg-c:tnum,
-   .carg-v`/carg+[0],
    )
 }
-{/expr-method(
-   .base`/expr+,
-   .this`\expr,
-   .func-name`\id,
+{:expr-func(
+   base`:expr+,
+   at`\at,
+   func-name`\id,
 if-compiler
-   .func-idx`\func,
-   .this-value`/value+,
+   func-idx`\func,
 end-if
-   .group-c:tnum,
-   .group-v:tnum[`#expr-carg-group-limit],
-   .carg-c:tnum,
-   .carg-v`/carg+[0],
+   group-c:tnum,
+   group-v:tnum[`#expr-carg-group-limit],
+   carg-c:tnum,
+   carg-v`:carg+[0],
    )
 }
-{/decl-func(
+{:expr-method(
+   base`:expr+,
+   this`\expr,
+   func-name`\id,
 if-compiler
-   .process-next`\func,
-   .file`\file,
+   func-idx`\func,
+   this-value`:value+,
 end-if
-   .begin-row:int,
-   .begin-col:int,
-   .end-row:int,
-   .end-col:int,
-   .include`\include,
-   .at`\at,
-   `` .name\id,
-   .flags`\func-flags,
-   .real-name`\id,
-   .decl-str:char[],
-   .decl-len:int,
-   .case`\id,
-   `` .type\at,
-   .decl`/decl-var+,
+   group-c:tnum,
+   group-v:tnum[`#expr-carg-group-limit],
+   carg-c:tnum,
+   carg-v`:carg+[0],
+   )
+}
+{:decl-func(
+if-compiler
+   process-next`\func,
+   file`\file,
+end-if
+   begin-row:int,
+   begin-col:int,
+   end-row:int,
+   end-col:int,
+   include`\include,
+   at`\at,
+   `` name\id,
+   flags`\func-flags,
+   real-name`\id,
+   decl-str:char[],
+   decl-len:int,
+   case`\id,
+   `` type\at,
+   decl`:decl-var+,
 if-parser
-   .stmt-space`/stmt-space,
+   stmt-space`:stmt-space,
 end-if
 if-compiler
-   .stmt-space`/stmt-space+,
+   stmt-space`:stmt-space+,
 end-if
-``    .stmt-c:num,
+``    stmt-c:num,
 `` if-compiler
-``    .stmt-cap:num,
+``    stmt-cap:num,
 `` end-if
-``    .stmt-v/stmt[],
+``    stmt-v:stmt[],
 if-compiler
-   .lvar-c`\lvar,
-   `` .lvar-cap\lvar,
-   .lvar-v`/lvar+[],
-   `` .lvar-name-v\id[],
-   .body-file-pos:num,
+   lvar-c`\lvar,
+   `` lvar-cap\lvar,
+   lvar-v`:lvar+[],
+   `` lvar-name-v\id[],
+   body-file-pos:num,
 end-if
 if-parser
-   .lvar-c`\lvar,
-   .lvar-cap`\lvar,
-   .lvar-v`/lvar[],
+   lvar-c`\lvar,
+   lvar-cap`\lvar,
+   lvar-v`:lvar[],
 end-if
-   .this-idx:tint,
-   .this-group:tint,
-   .group-c:tint,
-   .group-v:tint[`#expr-carg-group-limit],
-   .farg-c:tnum,
-   .farg-v`/farg+[0],
+   this-idx:tint,
+   this-group:tint,
+   group-c:tint,
+   group-v:tint[`#expr-carg-group-limit],
+   farg-c:tnum,
+   farg-v`:farg+[0],
    )
 }
-{gvar .quick-alloc-c:int}
-{gvar .quick-alloc-cap:int}
-{gvar .quick-alloc-v:ref}
+{gvar quick-alloc-c:int}
+{gvar quick-alloc-cap:int}
+{gvar quick-alloc-v:ref}
 {quick-alloc-init()
    .quick-alloc-cap = 16 * 1024;
    .quick-alloc-v = 'c.malloc(.quick-alloc-cap);
@@ -380,7 +380,7 @@ end-if
 {quick-alloc(size:int):ref @real-name(qalloc)
    `` +mem = 'c.malloc(size);
    `` 'c.memset(mem, 0, size);
-   `` {return mem}
+   `` :return mem;
    `` snap to :size
    {if(:ref[:size] == 8)
       size = (size + 7) & (-1 ^ 7);
@@ -388,11 +388,11 @@ end-if
       size = (size + 3) & (-1 ^ 3);
    }
    {if(size <= (.quick-alloc-cap - .quick-alloc-c))
-      {+r/rdr+}
+      {+r:rdr+}
       r.ref = .quick-alloc-v;
       r.pos += .quick-alloc-c;
       .quick-alloc-c += size;
-      {return r.ref}
+      :return r.ref;
    }
    `` expand
    grow(.quick-alloc-cap, .quick-alloc-c + size);
@@ -400,7 +400,7 @@ end-if
    'c.memset(.quick-alloc-v, 0, .quick-alloc-cap);
    `` 'c.out.printf("expanding to %u\n", .quick-alloc-cap);
    .quick-alloc-c = size;
-   {return .quick-alloc-v}
+   :return .quick-alloc-v;
 }
 {quick-alloc-undo(size:int) @real-name(qalloc_undo)
    {if(:ref[:size] == 8)
@@ -454,24 +454,24 @@ end-if
    }
 }
 {cvar #decl-at-name-limit:int = 3}
-{/at-name(.id`\id, .basic`\basic-type-id) @union
+{:at-name(id`\id, basic`\basic-type-id) @union
 }
-{/at-type(.struct`\struct, .enum`\enum) @union}
-{/at(
-   .type`\name-type,
-   .parent`\at,
-   .name`/at-name+,
+{:at-type(struct`\struct, enum`\enum) @union}
+{:at(
+   type`\name-type,
+   parent`\at,
+   name`:at-name+,
 if-compiler
-   .func-c:int,
-   .func-cap:int,
-   .func-v`\func[],
-   .gvar-c:int,
-   .gvar-cap:int,
-   .gvar-v`\gvar[],
-   .cvar-c:int,
-   .cvar-cap:int,
-   .cvar-v`\cvar[],
-   .decl`/at-type+,
+   func-c:int,
+   func-cap:int,
+   func-v`\func[],
+   gvar-c:int,
+   gvar-cap:int,
+   gvar-v`\gvar[],
+   cvar-c:int,
+   cvar-cap:int,
+   cvar-v`\cvar[],
+   decl`:at-type+,
 end-if
    )
    {init(at:this, type`\name-type, parent`\at, name`\id)
@@ -488,40 +488,40 @@ end-if
    }
 }
 {\name-type(#module, #struct, #enum, #basic):tnum
-   {rd(i:this&, r`/rdr) @inline
+   {rd(i:this&, r`:rdr) @inline
       i = r.n1()`\name-type;
    }
-   {wr(i:this, w`/wtr) @inline
+   {wr(i:this, w`:wtr) @inline
       w.n1(i);
    }
    {glc-name(e:this):char[] @glc-name}
 }
-{gvar .at-c\at}
-{gvar .at-cap\at}
-{gvar .at-v/at+[]}
+{gvar at-c\at}
+{gvar at-cap\at}
+{gvar at-v:at+[]}
 {\at(#nil = -1, #root):int
-   {finalize(at-i:this, ti`/type-info, row:int, col:int):bool
+   {finalize(at-i:this, ti`:type-info, row:int, col:int):bool
       +at = at-i.ptr();
       {if(at.type == #struct)
          {if(ti.built-in)
 				{if(ti.ref-v[0] != 0)
 					'c.out.printf("%s:%d:%d: Can't use plus symbol (+) because type '/%s' has reference\n", `.ctx-func.file.path(), row, col, at.name.id.str());
-					{return :false}
+					:return :false;
 				}
             ti.ref-v[0] = -1;
          `` }{else
          ``    {if!(ti.built-in)
          ``       'c.err.printf("%s:%d:%d: Missing plus symbol (+) because type '/%s' is a value\n", .ctx-func.file.path(), row, col, at.name.id.str());
-         ``       {return :false}
+         ``       :return :false;
          ``    }
          }
       }{else
 			{if(ti.built-in)
 				'c.out.printf("%s:%d:%d: Can't use plus symbol (+) because type is not a struct\n", `.ctx-func.file.path(), row, col);
-				{return :false}
+				:return :false;
 			}
       }
-      {return :true}
+      :return :true;
    }
    {output(at-i:this, file`\file, row:int, col:int)
       +at = at-i.ptr();
@@ -552,31 +552,31 @@ end-if
          }
       }
    }
-	{write-type-info(td:this, ti`/type-info, add:int):bool
+	{write-type-info(td:this, ti`:type-info, add:int):bool
 		ti.count();
       td.write-type();
       +s = td.count-stars0(ti) + add;
       {if(s > 0)
          `.out.write("********************************", s);
       }
-		{return :true}
+		:return :true;
 	}
-	{count-stars(td:this, ti`/type-info):int
+	{count-stars(td:this, ti`:type-info):int
 		{if(td == #root)
-			{return td.count-stars0(ti) + 1}
+			:return td.count-stars0(ti) + 1;
 		}{else
-			{return td.count-stars0(ti)}
+			:return td.count-stars0(ti);
 		}
 	}
    {pointer(td:this):int @inline
       {if(td.ptr().type == #struct)
-         {return 1}
+         :return 1;
       }{else
-         {return 0}
+         :return 0;
       }
    }
-	{count-stars0(td:this, ti`/type-info):int
-      {return ti.star-c + td.pointer()}
+	{count-stars0(td:this, ti`:type-info):int
+      :return ti.star-c + td.pointer();
 	}
    {write-type(td:this):bool
       td.write();
@@ -584,14 +584,14 @@ end-if
 `` 		{if(td.real.baseDecl == :null)
 `` 			+loc = td.location;
 `` 			'c.err.printf("%s:%d:%d: base type was null\n", loc.path, loc.row, loc.col);
-`` 			{return :false}
+`` 			:return :false;
 `` 		}
-`` 		{return td.real.baseDecl.write()Type(t)}
+`` 		:return td.real.baseDecl.write()Type(t);
 `` 	}
 `` 	{if(td.real.basicType == #none)
 `` 		{if(td.real.typeDef)
 `` 		}{else
-`` 			{if(/Config.target == #c)
+`` 			{if(:Config.target == #c)
 `` 				{if(td.real.is-union())
 `` 					t.write("union "#);
 `` 				}{else
@@ -603,12 +603,12 @@ end-if
 `` 	}{else
 `` 		td.write(t);
 `` 	}
-   	{return :true}
+   	:return :true;
    }
-   {ptr(i:this)`/at @inline
-      {return `.at-v[i]}
+   {ptr(i:this)`:at @inline
+      :return `.at-v[i];
    }
-   {rd(i:this&, r`/rdr) @inline
+   {rd(i:this&, r`:rdr) @inline
       +idx = (r.n() - 1)`\at;
       {if(idx == #nil)
          i = #nil;
@@ -626,14 +626,14 @@ end-if
          }
       }
    }
-   {wr-header(id:this, w`/wtr) @inline
+   {wr-header(id:this, w`:wtr) @inline
       {if(id == #nil)
          w.n(0);
       }{else
          w.n(1 + `.at-in-header-idx-v[id]);
       }
    }
-   {wr(at:this, w`/wtr, header:bool) @inline
+   {wr(at:this, w`:wtr, header:bool) @inline
       {if(at == #nil)
          w.n(0);
       }{else
@@ -658,7 +658,7 @@ end-if
             {if(t-idx != #nil)
                {if((t.flags & #real-name) != #0)
                   `.out.printf("%s", t.real-name.str());
-                  {return}
+                  :return;
                }
             }
             {if((t.flags & #union) != #0)
@@ -675,7 +675,7 @@ end-if
                +t = t-idx.ptr();
                {if((t.flags & #real-name) != #0)
                   `.out.printf("%s", t.real-name.str());
-                  {return}
+                  :return;
                }
             }
             {if(at.parent != #root) at.parent.write-space()}
@@ -763,12 +763,12 @@ end-if
 
 {\include(#nil = -1, #0):int
    {str(i:this):char[] @inline
-      {return `.include-str-v[i]}
+      :return `.include-str-v[i];
    }
-   {wr(i:this, w`/wtr) @inline
+   {wr(i:this, w`:wtr) @inline
       w.n(i + 1);
    }
-   {rd(i:this&, r`/rdr) @inline
+   {rd(i:this&, r`:rdr) @inline
       +idx = (r.n() - 1)`\include;
       {if(idx == #nil)
          i = #nil;
@@ -780,26 +780,26 @@ end-if
       +num = this:num;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((`.include-is-outputted[n3] & n17) != 0) {return}}
+      {if((`.include-is-outputted[n3] & n17) != 0) :return}
       `.include-is-outputted[n3] |= n17;
       `.include-outputted-v[`.include-outputted-c++] = this;
    }
 }
 
-{gvar .id-c:int}
-{gvar .id-cap:int}
-{gvar .id-str-v:char[][]}
-{gvar .id-len-v:tnum[]}
-{gvar .id-c-name-v:char[][]}
-{gvar .include-c:int}
-{gvar .include-cap:int}
-{gvar .include-str-v:char[][]}
-{gvar .include-len-v:tnum[]}
-{gvar .func-main\func}
+{gvar id-c:int}
+{gvar id-cap:int}
+{gvar id-str-v:char[][]}
+{gvar id-len-v:tnum[]}
+{gvar id-c-name-v:char[][]}
+{gvar include-c:int}
+{gvar include-cap:int}
+{gvar include-str-v:char[][]}
+{gvar include-len-v:tnum[]}
+{gvar func-main\func}
 {\id(#nil = -1, #0):int
    {c-name(id:this):char[]
       {+c-name:char[] = `.id-c-name-v[id]}
-      {if(c-name != :null) {return c-name}}
+      {if(c-name != :null) :return c-name}
       +len = `.id-len-v[id];
       +str = `.id-str-v[id];
       c-name = `.quick-alloc(len + 1);
@@ -812,22 +812,22 @@ end-if
          }
       }
       c-name[len] = ''\0;
-      {return c-name}
+      :return c-name;
    }
    {str(id:this):char[] @inline
-      {return `.id-str-v[id]}
+      :return `.id-str-v[id];
    }
    {len(id:this):tnum @inline
-      {return `.id-len-v[id]}
+      :return `.id-len-v[id];
    }
-   {wr-header(id:this, w`/wtr) @inline
+   {wr-header(id:this, w`:wtr) @inline
       {if(id == #nil)
          w.n(0);
       }{else
          w.n(1 + `.id-in-header-idx-v[id]);
       }
    }
-   {wr(id:this, w`/wtr, header:bool) @inline
+   {wr(id:this, w`:wtr, header:bool) @inline
       {if(id == #nil)
          w.n(0);
       }{else
@@ -843,7 +843,7 @@ end-if
          }
       }
    }
-   {rd(id:this&, r`/rdr) @inline
+   {rd(id:this&, r`:rdr) @inline
       +idx = (r.n() - 1)`\id;
       {if(idx == #nil)
          id = #nil;

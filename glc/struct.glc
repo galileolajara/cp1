@@ -2,20 +2,20 @@
 {alias 'c = %stdc}
 {at(%glc)
 {\struct(#nil = -1, #0, #1):int
-   {wr(s:this, w`/wtr) @inline
+   {wr(s:this, w`:wtr) @inline
       w.n(s + #1);
    }
-   {rd(s:this&, r`/rdr) @inline
+   {rd(s:this&, r`:rdr) @inline
       s = (r.n() - #1)`\func;
    }
-   {ptr(s:this)`/struct @inline
-      {return `.struct-v[s]}
+   {ptr(s:this)`:struct @inline
+      :return `.struct-v[s];
    }
    {output(s-i:this)
       +num = s-i:num;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((`.struct-is-outputted[n3] & n17) != 0) {return}}
+      {if((`.struct-is-outputted[n3] & n17) != 0) :return}
       `.struct-is-outputted[n3] |= n17;
       +s = s-i.ptr();
 
@@ -23,8 +23,8 @@
       +col = s.begin-col;
       {do{+i = 0}{(s.fvar-c) i++}
          `` s.fvar-v[i].decl.type.output(s.file, row, col);
-         `` {if!(s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col)) {return}}
-         {if!(s.fvar-v[i].decl.process(row, col)) {return}}
+         `` {if!(s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col)) :return}
+         {if!(s.fvar-v[i].decl.process(row, col)) :return}
       }
 
       {if(s.include != #nil)
@@ -36,40 +36,40 @@
       }
    }
 }
-{/fvar(
-   .decl`/decl-var+,
+{:fvar(
+   decl`:decl-var+,
    )
-   {rd(f:this, r`/rdr)
+   {rd(f:this, r`:rdr)
       f.decl.rd(r);
    }
-   {wr(f:this, w`/wtr, header:bool)
+   {wr(f:this, w`:wtr, header:bool)
       f.decl.wr(w, header);
    }
 }
-{gvar .struct-c\struct}
-{gvar .struct-cap\struct}
-{gvar .struct-v/struct[]}
-{gvar .decl-struct-row:int}
-{gvar .decl-struct-col:int}
-{gvar .decl-struct-at\at}
-{gvar .decl-struct-real-name\id}
+{gvar struct-c\struct}
+{gvar struct-cap\struct}
+{gvar struct-v:struct[]}
+{gvar decl-struct-row:int}
+{gvar decl-struct-col:int}
+{gvar decl-struct-at\at}
+{gvar decl-struct-real-name\id}
 {\struct-flags(
    #0,
    #real-name = 1,
    #no-decl = 2,
    #union = 4,
    ):tnum
-   {wr(f:this, w`/wtr) @inline
+   {wr(f:this, w`:wtr) @inline
       w.n1(f);
    }
-   {rd(f:this&, r`/rdr) @inline
+   {rd(f:this&, r`:rdr) @inline
       f = r.n1()`\struct-flags;
    }
 }
-{gvar .decl-struct-flags\struct-flags}
-{gvar .decl-fvar-c:num}
-{gvar .decl-fvar-cap:num}
-{gvar .decl-fvar-v/decl-var+[]}
+{gvar decl-struct-flags\struct-flags}
+{gvar decl-fvar-c:num}
+{gvar decl-fvar-cap:num}
+{gvar decl-fvar-v:decl-var+[]}
 {decl-var-as-fvar()
    +fvar = .decl-fvar-c++;
    {if(.decl-fvar-cap <= .decl-fvar-c)
@@ -106,8 +106,8 @@
       grow(.struct-cap, .struct-c);
       realloc(.struct-v, .struct-cap, old-cap);
    }
-   {+s/struct}
-   quick-alloc-plus(s, /fvar[:size] * .decl-fvar-c);
+   {+s:struct}
+   quick-alloc-plus(s, :fvar[:size] * .decl-fvar-c);
    .struct-v[s-idx] = s;
    s.begin-row = .decl-struct-row;
    s.begin-col = .decl-struct-col;

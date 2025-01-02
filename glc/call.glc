@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{farg-process(e\expr, ca-ref:tint, ca-value/value, fd-arg/decl-var):bool
+{farg-process(e\expr, ca-ref:tint, ca-value:value, fd-arg:decl-var):bool
    +ce = e.ptr();
    {+r:int}
    {if(ca-ref != 0)
@@ -12,14 +12,14 @@
    }
    `` 'c.out.printf("r %d, %d %d %d\n", r, j, fd-arg.type-info.array-c, fd-arg.type-info.ref-v[fd-arg.type-info.array-c]);
    {if(ce.type == #lvar)
-      {+ve/expr-lvar = ce}
+      {+ve:expr-lvar = ce}
       +lvar = ve.lvar.ptr();
       +vd = lvar.decl;
       {if(vd.type == #nil)
          {if((lvar.flags & #set-expr) == #0)
             `` {if(vd.type-info.array-c != fd-arg.type-info.array-c)
             ``    'c.err.printf("%s:%u:%u: Type deduction failed for lvar '%s', array dimension mismatch\n", .ctx-func.file.path(), lvar.row, lvar.col, vd.name.str());
-            ``    {return :false}
+            ``    :return :false;
             `` }
             vd.type = fd-arg.type;
             vd.type-info.init();
@@ -35,12 +35,12 @@
       }
    }
    e.try-deduce(fd-arg.type);
-   {if!(e.value(r, :false, ca-value)) {return :false}}
-   {return :true}
+   {if!(e.value(r, :false, ca-value)) :return :false}
+   :return :true;
 }
 {at(\expr)
-   {value-func(e:this, ref:int, paren:bool, v`/value, ok:bool&) @case.value() @inline
-      {+expr`/expr-func = e.ptr()}
+   {value-func(e:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
+      {+expr`:expr-func = e.ptr()}
       +f = expr.func-idx.ptr();
       v.set(ref, paren, f.decl.type, f.decl.type-info);
       {if(v.ref == 1)
@@ -48,12 +48,12 @@
       }
       ok = :true;
    }
-   {type-func(expr`/expr, at`\at&) @case.type() @inline
-      {+e`/expr-func = expr}
+   {type-func(expr`:expr, at`\at&) @case.type() @inline
+      {+e`:expr-func = expr}
       at = e.func-idx.ptr().decl.type;
    }
-   {value-method(e:this, ref:int, paren:bool, v`/value, ok:bool&) @case.value() @inline
-      {+expr`/expr-method = e.ptr()}
+   {value-method(e:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
+      {+expr`:expr-method = e.ptr()}
       +f = expr.func-idx.ptr();
       v.set(ref, paren, f.decl.type, f.decl.type-info);
       {if(v.ref == 1)
@@ -61,12 +61,12 @@
       }
       ok = :true;
    }
-   {type-method(expr`/expr, at`\at&) @case.type() @inline
-      {+e`/expr-method = expr}
+   {type-method(expr`:expr, at`\at&) @case.type() @inline
+      {+e`:expr-method = expr}
       at = e.func-idx.ptr().decl.type;
    }
-   {write-method(expr`/expr) @case.write() @inline
-      {+e`/expr-method = expr}
+   {write-method(expr`:expr) @case.write() @inline
+      {+e`:expr-method = expr}
       +f = e.func-idx.ptr();
       f.write();
       `.out.printf("(");
@@ -94,8 +94,8 @@
       }
       `.out.printf(")");
    }
-   {wr-method(expr`/expr, w`/wtr, header:bool) @case.wr() @inline
-      {+e`/expr-method = expr}
+   {wr-method(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
+      {+e`:expr-method = expr}
       e.this.wr(w, header);
       e.func-name.wr(w, header);
       w.n1(e.group-c);
@@ -107,7 +107,7 @@
          e.carg-v[i].expr.wr(w, header);
       }
    }
-   {rd-method(e-idx`\expr, r`/rdr) @case.rd() @inline
+   {rd-method(e-idx`\expr, r`:rdr) @case.rd() @inline
       `\expr.rd(+this-expr, r);
       `\id.rd(+func-name, r);
       +group-c = r.n1();
@@ -116,7 +116,7 @@
          group-v[i] = r.n1();
       }
       +carg-c = r.n1();
-      `.quick-alloc-plus(+(e`/expr-method), `/carg[:size] * carg-c);
+      `.quick-alloc-plus(+(e`:expr-method), `:carg[:size] * carg-c);
       e-idx.set(e.base, #method);
       e.this = this-expr;
       e.func-name = func-name;
@@ -129,8 +129,8 @@
          e.carg-v[i].expr.rd(r);
       }
    }
-   {process-method(expr`/expr, ok:bool&) @case.process() @inline
-      {+e`/expr-method = expr}
+   {process-method(expr`:expr, ok:bool&) @case.process() @inline
+      {+e`:expr-method = expr}
       +func-name = e.func-name;
       +group-c = e.group-c;
       +group-v = e.group-v;
@@ -139,7 +139,7 @@
       +at-idx = e.this.type();
       {if(at-idx == #nil)
          'c.out.printf("%s:%u:%u - %u:%u: Cannot call method :%s on a value without a type\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, func-name.str());
-         {return}
+         :return;
       }
       +at = at-idx.ptr();
       {+method-c, method-v}
@@ -155,7 +155,7 @@
                c = ''\\;
             }
             'c.out.printf("%s:%u:%u - %u:%u: Cannot call method :%s because the type %c%s is not defined\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, func-name.str(), c, at.name.id.str());
-            {return}
+            :return;
          }
          {if(at.type == #struct)
             +t = at.decl.struct.ptr();
@@ -226,12 +226,12 @@
          +k = 0;
          {do{(f.this-idx) j++; k++}
             +ca = e.carg-v[k];
-            {if!(`.farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl)) {return}}
+            {if!(`.farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl)) :return}
          }
-         {if!(`.farg-process(e.this, 0, e.this-value, f.farg-v[j++].decl)) {return}}
+         {if!(`.farg-process(e.this, 0, e.this-value, f.farg-v[j++].decl)) :return}
          {do{((f.farg-c - 1) - f.this-idx) j++; k++}
             +ca = e.carg-v[k];
-            {if!(`.farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl)) {return}}
+            {if!(`.farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl)) :return}
          }
          e.func-idx = f-idx;
          {if((f.flags & #var-args) != #0)
@@ -243,15 +243,15 @@
                }{else
                   r = 1;
                }
-               {if!(ca.expr.value(r, :false, ca.value)) {return}}
+               {if!(ca.expr.value(r, :false, ca.value)) :return}
             }
          }
          ok = :true;
-         {return}
+         :return;
       }
-      'c.out.printf("%s:%u:%u - %u:%u: Cannot find method :%s with %u argument/s\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, func-name.str(), carg-c);
+      'c.out.printf("%s:%u:%u - %u:%u: Cannot find method :%s with %u argument:s\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, func-name.str(), carg-c);
       {if(found != -1)
-         'c.out.printf("But found %u functions with different no. of argument/s:\n", similar-c);
+         'c.out.printf("But found %u functions with different no. of argument:s:\n", similar-c);
          {do{+i = 0}{(at.func-c) i++}
             +f-idx = at.func-v[i];
             +f = `.func-v[f-idx];
@@ -261,8 +261,8 @@
          }
       }
    }
-   {write-func(expr`/expr) @case.write() @inline
-      {+e`/expr-func = expr}
+   {write-func(expr`:expr) @case.write() @inline
+      {+e`:expr-func = expr}
       +f = e.func-idx.ptr();
       f.write();
       `.out.printf("(");
@@ -274,8 +274,8 @@
       }
       `.out.printf(")");
    }
-   {wr-func(expr`/expr, w`/wtr, header:bool) @case.wr() @inline
-      {+e`/expr-func = expr}
+   {wr-func(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
+      {+e`:expr-func = expr}
       e.at.wr(w, header);
       e.func-name.wr(w, header);
       w.n1(e.group-c);
@@ -287,7 +287,7 @@
          e.carg-v[i].expr.wr(w, header);
       }
    }
-   {rd-func(e-idx`\expr, r`/rdr) @case.rd() @inline
+   {rd-func(e-idx`\expr, r`:rdr) @case.rd() @inline
       `\at.rd(+at-idx, r);
       `\id.rd(+func-name, r);
       +group-c = r.n1();
@@ -297,7 +297,7 @@
       }
       +carg-c = r.n1();
 
-      `.quick-alloc-plus(+(e`/expr-func), `/carg[:size] * carg-c);
+      `.quick-alloc-plus(+(e`:expr-func), `:carg[:size] * carg-c);
       e-idx.set(e.base, #func);
       e.at = at-idx;
       e.func-name = func-name;
@@ -310,8 +310,8 @@
          e.carg-v[i].expr.rd(r);
       }
    }
-   {process-func(expr`/expr, ok:bool&) @case.process() @inline
-      {+e`/expr-func = expr}
+   {process-func(expr`:expr, ok:bool&) @case.process() @inline
+      {+e`:expr-func = expr}
       +func-name = e.func-name;
       +carg-c = e.carg-c;
       +group-c = e.group-c;
@@ -329,7 +329,7 @@
             c = ''\\;
          }
          'c.out.printf("%s:%u:%u - %u:%u: Cannot call function :%s because the type %c%s is not defined\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, func-name.str(), c, at.name.id.str());
-         {return}
+         :return;
       }
       +found = -1;
       +similar-c = 0;
@@ -370,7 +370,7 @@
          +j = 0;
          {do{(f.farg-c) j++}
             +ca = e.carg-v[j];
-            {if!(`.farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl)) {return}}
+            {if!(`.farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl)) :return}
          }
          e.func-idx = f-idx;
          {if((f.flags & #var-args) != #0)
@@ -382,16 +382,16 @@
                }{else
                   r = 1;
                }
-               {if!(ca.expr.value(r, :false, ca.value)) {return}}
+               {if!(ca.expr.value(r, :false, ca.value)) :return}
             }
          }
          e.func-idx = f-idx;
          ok = :true;
-         {return}
+         :return;
       }
-      'c.out.printf("%s:%u:%u - %u:%u: Cannot find function :%s with %u argument/s\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, func-name.str(), carg-c);
+      'c.out.printf("%s:%u:%u - %u:%u: Cannot find function :%s with %u argument:s\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, func-name.str(), carg-c);
       {if(found != -1)
-         'c.out.printf("But found %u functions with different no. of argument/s:\n", similar-c);
+         'c.out.printf("But found %u functions with different no. of argument:s:\n", similar-c);
          {do{+i = 0}{(at.func-c) i++}
             +f-idx = at.func-v[i];
             +f = `.func-v[f-idx];
@@ -401,8 +401,8 @@
          }
       }
    }
-   {process-case-func(expr`/expr, f-idx`\func):bool @inline
-      {+e`/expr-func = expr}
+   {process-case-func(expr`:expr, f-idx`\func):bool @inline
+      {+e`:expr-func = expr}
       +func-name = e.func-name;
       +carg-c = e.carg-c;
       +group-c = e.group-c;
@@ -413,7 +413,7 @@
       +j = 0;
       {do{(f.farg-c) j++}
          +ca = e.carg-v[j];
-         {if!(`.farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl)) {return :false}}
+         {if!(`.farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl)) :return :false}
       }
       e.func-idx = f-idx;
       {if((f.flags & #var-args) != #0)
@@ -425,11 +425,11 @@
             }{else
                r = 1;
             }
-            {if!(ca.expr.value(r, :false, ca.value)) {return :false}}
+            {if!(ca.expr.value(r, :false, ca.value)) :return :false}
          }
       }
       e.func-idx = f-idx;
-      {return :true}
+      :return :true;
    }
 }
  

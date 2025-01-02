@@ -4951,9 +4951,9 @@ continue_0:;
 _Li_18++;
 }
 break_0:;
-fprintf(stdout, "%s:%u:%u - %u:%u: Cannot find method :%s with %u argument/s\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lfunc_name_3), _Lcarg_c_6);
+fprintf(stdout, "%s:%u:%u - %u:%u: Cannot find method :%s with %u argument:s\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lfunc_name_3), _Lcarg_c_6);
 if(_Lfound_16 != -1) {
-fprintf(stdout, "But found %u functions with different no. of argument/s:\n", _Lsimilar_c_17);
+fprintf(stdout, "But found %u functions with different no. of argument:s:\n", _Lsimilar_c_17);
 int32_t _Li_31;
 _Li_31 = 0;
 for(int i = (*_Lat_9)._Ffunc_c; i > 0; ) {
@@ -5106,9 +5106,9 @@ continue_0:;
 _Li_12++;
 }
 break_0:;
-fprintf(stdout, "%s:%u:%u - %u:%u: Cannot find function :%s with %u argument/s\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lfunc_name_3), _Lcarg_c_4);
+fprintf(stdout, "%s:%u:%u - %u:%u: Cannot find function :%s with %u argument:s\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lfunc_name_3), _Lcarg_c_4);
 if(_Lfound_10 != -1) {
-fprintf(stdout, "But found %u functions with different no. of argument/s:\n", _Lsimilar_c_11);
+fprintf(stdout, "But found %u functions with different no. of argument:s:\n", _Lsimilar_c_11);
 int32_t _Li_23;
 _Li_23 = 0;
 for(int i = (*_Lat_8)._Ffunc_c; i > 0; ) {

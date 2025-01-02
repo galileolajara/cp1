@@ -40,7 +40,7 @@ func_decl_begin ::= ID_LPAREN(name).
    { _Mglc_Pdecl_func_begin_3(name.basic.id, name.basic.row, name.basic.col); }
 at_name ::= ID_MODULO(e).
    { _Mglc_Pat_push_4(e.basic.id, 0, e.basic.row, e.basic.col); }
-at_name ::= ID_FSLASH(e).
+at_name ::= ID_COLON(e).
    { _Mglc_Pat_push_4(e.basic.id, 1, e.basic.row, e.basic.col); }
 at_name ::= ID_BSLASH(e).
    { _Mglc_Pat_push_4(e.basic.id, 2, e.basic.row, e.basic.col); }
@@ -50,9 +50,9 @@ enum_cvar_begin ::= ID_HASH(e).
    { _Mglc_Penum_add_cvar_3(e.basic.id, e.basic.row, e.basic.col); }
 enum_cvar_begin_decl ::= ID_HASH(e) typeAndInfo_optional.
    { _Mglc_Pdecl_add_cvar_3(e.basic.id, e.basic.row, e.basic.col); }
-struct_decl_begin ::= LCBRACE(pos) ID_FSLASH(name).
+struct_decl_begin ::= LCBRACE(pos) ID_COLON(name).
    { _Mglc_Pdecl_at_begin_struct_3(name.basic.id, pos.basic.row, pos.basic.col); }
-fvar_decl_name ::= DOT ID(name).
+fvar_decl_name ::= ID(name).
    { _Mglc_Pdecl_var_begin_3(name.basic.id, name.basic.row, name.basic.col); }
 lvar_decl_name ::= ID(name).
    { _Mglc_Pdecl_var_begin_3(name.basic.id, name.basic.row, name.basic.col); }
@@ -107,7 +107,7 @@ at(l) ::= at_graves.
    { l.basic.id = _Mglc_Pat_done_0(); }
 decl_at_name ::= ID_MODULO(e).
    { _Mglc_Pdecl_at_add_2(e.basic.id, 0); }
-decl_at_name ::= ID_FSLASH(e).
+decl_at_name ::= ID_COLON(e).
    { _Mglc_Pdecl_at_add_2(e.basic.id, 1); }
 decl_at_name ::= ID_BSLASH(e).
    { _Mglc_Pdecl_at_add_2(e.basic.id, 2); }
@@ -726,10 +726,10 @@ stmt ::= stmt_break.
 stmt_break ::= begin_pos(begin) LCBRACE_BREAK rcbrace_or_space end_pos(end).
    { _Mglc_Pstmt_break_5(-1, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
 
-stmt ::= stmt_return.
-stmt_return ::= begin_pos(begin) LCBRACE_RETURN rcbrace_or_space end_pos(end).
+stmt_expr ::= stmt_return.
+stmt_return ::= begin_pos(begin) RETURN end_pos(end).
    { _Mglc_Pstmt_return_5(-1, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
-stmt_return ::= begin_pos(begin) LCBRACE_RETURN SPACE expr(e) rcbrace_or_space end_pos(end).
+stmt_return ::= begin_pos(begin) RETURN SPACE expr(e) end_pos(end).
    { _Mglc_Pstmt_return_5(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
 
 typeAndInfo ::= expr_type_apply typeInfo_optional.

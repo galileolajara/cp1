@@ -1,20 +1,20 @@
 {alias 'glc = %glc}
 {at(%glc)
 {\enum(#nil = -1, #0, #1):int
-   {wr(f:this, w`/wtr) @inline
+   {wr(f:this, w`:wtr) @inline
       w.n(f + #1);
    }
-   {rd(f:this&, r`/rdr) @inline
+   {rd(f:this&, r`:rdr) @inline
       f = (r.n() - #1)`\func;
    }
-   {ptr(f:this)`/enum @inline
-      {return `.enum-v[f]}
+   {ptr(f:this)`:enum @inline
+      :return `.enum-v[f];
    }
    {output(e-i:this)
       +num = e-i:num;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((`.enum-is-outputted[n3] & n17) != 0) {return}}
+      {if((`.enum-is-outputted[n3] & n17) != 0) :return}
       `.enum-is-outputted[n3] |= n17;
       +e = e-i.ptr();
 
@@ -34,21 +34,21 @@
    #real-name = 1,
    #no-decl = 2,
    ):tnum
-   {wr(e:this, w`/wtr) @inline
+   {wr(e:this, w`:wtr) @inline
       w.n1(e);
    }
-   {rd(e:this&, r`/rdr) @inline
+   {rd(e:this&, r`:rdr) @inline
       e = r.n1()`\enum-flags;
    }
 }
-{gvar .enum-c\enum}
-{gvar .enum-cap\enum}
-{gvar .enum-v/enum[]}
-{gvar .decl-enum-row:int}
-{gvar .decl-enum-col:int}
-{gvar .decl-enum-at\at}
-{gvar .decl-enum-flags\enum-flags}
-{gvar .decl-enum-last-cvar\cvar}
+{gvar enum-c\enum}
+{gvar enum-cap\enum}
+{gvar enum-v:enum[]}
+{gvar decl-enum-row:int}
+{gvar decl-enum-col:int}
+{gvar decl-enum-at\at}
+{gvar decl-enum-flags\enum-flags}
+{gvar decl-enum-last-cvar\cvar}
 {decl-var-as-evar()
    +evar = .decl-evar-c++;
    {if(.decl-evar-cap <= .decl-evar-c)
@@ -89,7 +89,7 @@
       grow(.enum-cap, .enum-c);
       realloc(.enum-v, .enum-cap, old-cap);
    }
-   {+s/enum}
+   {+s:enum}
    quick-alloc-one(s);
    .enum-v[s-idx] = s;
    s.begin-row = .decl-enum-row;
@@ -111,7 +111,7 @@
    ``    `` 'c.out.printf("- %s\n", a.name.str());
    `` }
 }
-{gvar .last-cvar\cvar}
+{gvar last-cvar\cvar}
 {enum-add-cvar(name\id, row:int, col:int)
    +c-idx = .cvar-c++;
    .last-cvar = c-idx;

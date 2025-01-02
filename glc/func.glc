@@ -2,14 +2,14 @@
 {alias 'c = %stdc}
 {at(%glc)
 {\func(#nil = -1, #0, #1):int
-   {wr(f:this, w`/wtr) @inline
+   {wr(f:this, w`:wtr) @inline
       w.n(f + #1);
    }
-   {rd(f:this&, r`/rdr) @inline
+   {rd(f:this&, r`:rdr) @inline
       f = (r.n() - #1)`\func;
    }
-   {ptr(f:this)`/decl-func @inline
-      {return `.func-v[f]}
+   {ptr(f:this)`:decl-func @inline
+      :return `.func-v[f];
    }
 }
 {\func-flags(
@@ -25,10 +25,10 @@
    #glc-name = 256,
    #decl = 512,
    ):num
-   {wr(e:this, w`/wtr) @inline
+   {wr(e:this, w`:wtr) @inline
       w.n(e);
    }
-   {rd(e:this&, r`/rdr) @inline
+   {rd(e:this&, r`:rdr) @inline
       e = r.n()`\func-flags;
    }
 }
@@ -37,7 +37,7 @@
    #main = 1,
    ):num
 }
-{at(/decl-func)
+{at(:decl-func)
    {write(f:this)
       {if((f.flags & #real-name) != #0)
          `.out.printf("%s", f.real-name.str());
@@ -49,7 +49,7 @@
          }
       }
    }
-   {lvars-rd(f:this, r`/rdr)
+   {lvars-rd(f:this, r`:rdr)
       +lvar-c = r.n()`\lvar;
       f.lvar-c = lvar-c;
       `.quick-alloc-arr(f.lvar-v, lvar-c);
@@ -65,7 +65,7 @@
          `` 'c.out.printf("lvar %s has type of %s\n", l.decl.name.str(), l.decl.type.ptr().name.basic.glc-name());
       }
    }
-   {lvars-wr(f:this, w`/wtr, header:bool)
+   {lvars-wr(f:this, w`:wtr, header:bool)
       w.n(f.lvar-c);
       {do{+i = 0}{(f.lvar-c) i++}
          +l = f.lvar-v[i];
@@ -79,49 +79,49 @@
       }
    }
 }
-{/farg(
-   .row:int,
-   .col:int,
-   .decl`/decl-var+,
+{:farg(
+   row:int,
+   col:int,
+   decl`:decl-var+,
    )
-   {rd(f:this, r`/rdr)
+   {rd(f:this, r`:rdr)
       f.decl.rd(r);
    }
-   {wr(f:this, w`/wtr, header:bool)
+   {wr(f:this, w`:wtr, header:bool)
       f.decl.wr(w, header);
    }
-   {copy-from(f:this, src`/farg)
+   {copy-from(f:this, src`:farg)
       f.row = src.row;
       f.col = src.col;
       f.decl.copy-from(src.decl);
    }
 }
-{gvar .func-c\func}
-{gvar .func-cap\func}
-{gvar .func-v/decl-func[]}
-{gvar .decl-func-name\id}
-`` {gvar .decl-func/decl-var+}
-{gvar .decl-func-row:int}
-{gvar .decl-func-col:int}
-{gvar .decl-func-flags\func-flags}
-{gvar .decl-func-flags2\func-flags2}
-{gvar .decl-func-real-name\id}
-{gvar .decl-func-decl-str:char[]}
-{gvar .decl-func-decl-len:int}
-{gvar .decl-func-case\id}
+{gvar func-c\func}
+{gvar func-cap\func}
+{gvar func-v:decl-func[]}
+{gvar decl-func-name\id}
+`` {gvar decl-func:decl-var+}
+{gvar decl-func-row:int}
+{gvar decl-func-col:int}
+{gvar decl-func-flags\func-flags}
+{gvar decl-func-flags2\func-flags2}
+{gvar decl-func-real-name\id}
+{gvar decl-func-decl-str:char[]}
+{gvar decl-func-decl-len:int}
+{gvar decl-func-case\id}
 `` {cvar #glc-farg-limit = 1024}
-{gvar .decl-farg-v/farg+[]}
-{gvar .decl-farg-group-c:tint}
-{gvar .decl-farg-group-v:tint[#expr-carg-group-limit]}
-{gvar .decl-farg-c:int}
-{gvar .decl-farg-cap:int}
-{gvar .decl-func-this-idx:tint}
-{gvar .decl-func-this-group:tint}
-{gvar .decl-func-space/stmt-space}
-{gvar .decl-func-ctx-space/stmt-space}
-`` {gvar .decl-stmt-c:num}
-`` {gvar .decl-stmt-cap:num}
-`` {gvar .decl-stmt-v/stmt[]}
+{gvar decl-farg-v:farg+[]}
+{gvar decl-farg-group-c:tint}
+{gvar decl-farg-group-v:tint[#expr-carg-group-limit]}
+{gvar decl-farg-c:int}
+{gvar decl-farg-cap:int}
+{gvar decl-func-this-idx:tint}
+{gvar decl-func-this-group:tint}
+{gvar decl-func-space:stmt-space}
+{gvar decl-func-ctx-space:stmt-space}
+`` {gvar decl-stmt-c:num}
+`` {gvar decl-stmt-cap:num}
+`` {gvar decl-stmt-v:stmt[]}
 {decl-func-begin(name\id, row:int, col:int)
    .decl-func-name = name;
    .decl-func-row = row;
@@ -171,10 +171,10 @@
    .decl-farg-v[farg-idx].decl.type = .decl-at;
    .decl-farg-group-v[.decl-farg-group-c - 1]++;
 }
-`` {gvar .lvar-c\lvar}
-`` {gvar .lvar-cap\lvar}
-`` {gvar .lvar-v/lvar[]}
-`` {gvar .lvar-name-v\id[]}
+`` {gvar lvar-c\lvar}
+`` {gvar lvar-cap\lvar}
+`` {gvar lvar-v:lvar[]}
+`` {gvar lvar-name-v\id[]}
 {decl-func-end(row:int, col:int)
    +f-idx = (.func-c++)\func;
    {if(.func-cap <= .func-c)
@@ -182,8 +182,8 @@
       grow(.func-cap, .func-c);
       realloc(.func-v, .func-cap, old-cap);
    }
-   {+f/decl-func}
-   quick-alloc-plus(f, /farg[:size] * .decl-farg-c);
+   {+f:decl-func}
+   quick-alloc-plus(f, :farg[:size] * .decl-farg-c);
    .ctx-func = f;
    .nest-id = 0;
    .func-v[f-idx] = f;
@@ -341,12 +341,12 @@
 }
 {cvar #expr-call-nest-limit:int = 8}
 {cvar #expr-carg-group-limit:int = 4}
-{gvar .expr-call-c:tint}
+{gvar expr-call-c:tint}
 {cvar #glc-carg-limit:int = 64}
-{gvar .expr-call-carg-c:tnum[#expr-call-nest-limit]}
-{gvar .expr-call-carg-v\expr[#expr-call-nest-limit][#glc-carg-limit]}
-{gvar .expr-call-cgrp-c:tnum[#expr-call-nest-limit]}
-{gvar .expr-call-cgrp-v:tnum[#expr-call-nest-limit][#expr-carg-group-limit]}
+{gvar expr-call-carg-c:tnum[#expr-call-nest-limit]}
+{gvar expr-call-carg-v\expr[#expr-call-nest-limit][#glc-carg-limit]}
+{gvar expr-call-cgrp-c:tnum[#expr-call-nest-limit]}
+{gvar expr-call-cgrp-v:tnum[#expr-call-nest-limit][#expr-carg-group-limit]}
 {expr-push-call(row:int, col:int)
    +call-idx = .expr-call-c++;
    {if(call-idx >= #expr-call-nest-limit)
@@ -376,7 +376,7 @@
    }
    {if(:true)
       `` calculate the string length
-      {+e/expr-str = expr.ptr()}
+      {+e:expr-str = expr.ptr()}
       +len = 0;
       +s = e.first;
       {do()
@@ -393,8 +393,8 @@
 {expr-pop-func(at\at, func-name\id)\expr
    +call-idx = .expr-call-c -= 1;
    +carg-c = .expr-call-carg-c[call-idx];
-   {+e/expr-func}
-   quick-alloc-plus(e, /carg[:size] * carg-c);
+   {+e:expr-func}
+   quick-alloc-plus(e, :carg[:size] * carg-c);
    +e-idx = expr-push(e.base, #func);
    e.at = at;
    e.func-name = func-name;
@@ -407,13 +407,13 @@
    {do{+i = 0}{(e.group-c) i++}
       e.group-v[i] = .expr-call-cgrp-v[call-idx][i];
    }
-   {return e-idx}
+   :return e-idx;
 }
 {expr-pop-method(this\expr, func-name\id)\expr
    +call-idx = .expr-call-c -= 1;
    +carg-c = .expr-call-carg-c[call-idx];
-   {+e/expr-method}
-   quick-alloc-plus(e, /carg[:size] * carg-c);
+   {+e:expr-method}
+   quick-alloc-plus(e, :carg[:size] * carg-c);
    +e-idx = expr-push(e.base, #method);
    e.this = this;
    e.func-name = func-name;
@@ -425,7 +425,7 @@
    {do{+i = 0}{(e.group-c) i++}
       e.group-v[i] = .expr-call-cgrp-v[call-idx][i];
    }
-   {return e-idx}
+   :return e-idx;
 }
  
 

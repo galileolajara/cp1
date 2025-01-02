@@ -1,17 +1,17 @@
 {include(<stdio.h>)
    {alias 'c = %stdc}
    {at(%stdc)
-      {gvar .out/file @real-name(stdout) @no-decl}
-      {/file() @real-name(FILE) @no-decl
+      {gvar out:file @real-name(stdout) @no-decl}
+      {:file() @real-name(FILE) @no-decl
          {printf(f:this, str:char[]):int @var-args @no-decl @real-name(fprintf)}
          {flush(f:this):int @no-decl @real-name(fflush)}
          {write(f:this, buf:ref, size:size):size @inline
-            {return `.fwrite(buf, 1, size, f)}
+            :return `.fwrite(buf, 1, size, f);
          }
          {putc(c:int, f:this):int @no-decl @real-name(fputc)}
       }
       {rename(old:char[], new:char[]):int @no-decl @real-name}
-      {fopen(path:char[], mode:char[])/file @no-decl @real-name}
-      {fwrite(buf:ref, size1:size, size2:size, f/file):size @no-decl @real-name}
+      {fopen(path:char[], mode:char[]):file @no-decl @real-name}
+      {fwrite(buf:ref, size1:size, size2:size, f:file):size @no-decl @real-name}
    }
 }
