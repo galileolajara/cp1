@@ -458,7 +458,6 @@
       {if(header)
          {if(f.flags & #inline)
             `` proceed
-            +nothing = 1;
          }{else
             `` remove #has-body flag
             {continue}
@@ -908,17 +907,17 @@
                   {break}
                }{elif(r.p1[0] == ''\\)
                   {switch(r.p1[1])
-                     {case(''0)  +nothing = 1; }
-                     {case(''\\) +nothing = 1; }
-                     {case(''\") +nothing = 1; }
-                     {case(''\') +nothing = 1; }
-                     {case(''a)  +nothing = 1; }
-                     {case(''b)  +nothing = 1; }
-                     {case(''f)  +nothing = 1; }
-                     {case(''n)  +nothing = 1; }
-                     {case(''r)  +nothing = 1; }
-                     {case(''t)  +nothing = 1; }
-                     {case(''v)  +nothing = 1; }
+                     {case(''0) }
+                     {case(''\\) }
+                     {case(''\") }
+                     {case(''\') }
+                     {case(''a) }
+                     {case(''b) }
+                     {case(''f) }
+                     {case(''n) }
+                     {case(''r) }
+                     {case(''t) }
+                     {case(''v) }
                      {default
                         get-row-col(+row, +col, r.ref, in-data);
                         'c.out.printf("%s:%u:%u: Encountered invalid escape sequence in the string: '\\%c'\n", .input-path, row, col, r.p1[1]);
