@@ -45,12 +45,12 @@
    }
    {rd-str(e-idx`\expr, r`:rdr) @case.rd() @inline
       +node-c = r.n();
-      `.quick-alloc-one(+(e`:expr-str));
+      quick-alloc-one(+(e`:expr-str));
       e-idx.set(e.base, #str);
       +first = :true;
       {do(node-c)
          +len = r.n();
-         `.quick-alloc-plus(+(n`:expr-str-node), len + 1);
+         quick-alloc-plus(+(n`:expr-str-node), len + 1);
          n.len = len;
          r.copy(n.buf, len);
          n.buf[len] = 0;
@@ -69,7 +69,7 @@
       {+e`:expr-str = expr}
       +n = e.first;
       {do()
-         `.write-str-node(n.len, n.buf);
+         write-str-node(n.len, n.buf);
          `` .out.putc(''\");
          `` +i = 0;
          `` +len = n.len;
@@ -132,7 +132,7 @@
       }
    }
    {value-str(s:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
-      v.type = `.basic-type(#char);
+      v.type = basic-type(#char);
       v.info.init();
       v.info.array-c = 1;
       v.info.ref-v[0] = ''\0;

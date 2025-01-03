@@ -16,7 +16,7 @@
       e.member.wr(w, header);
    }
    {rd-fvar(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-fvar));
+      quick-alloc-one(+(e`:expr-fvar));
       e-idx.set(e.base, #fvar);
       e.expr.rd(r);
       e.member.rd(r);

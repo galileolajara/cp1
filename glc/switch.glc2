@@ -10,7 +10,7 @@
       s.cases.wr(w, header);
    }
    {rd-switch(space`:stmt-space, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(s`:stmt-switch));
+      quick-alloc-one(+(s`:stmt-switch));
       s.expr.rd(r);
       s.cases.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #switch);
@@ -25,7 +25,7 @@
    }
    {rd-case(space`:stmt-space, r`:rdr) @case.rd() @inline
       +expr-c = r.n();
-      `.quick-alloc-plus(+(s`:stmt-case), `:stmt-case-item[:size] * expr-c);
+      quick-alloc-plus(+(s`:stmt-case), `:stmt-case-item[:size] * expr-c);
       s.expr-c = expr-c;
       {do{+i = 0}{(expr-c) i++}
          s.expr-v[i].expr.rd(r);
@@ -36,7 +36,7 @@
    {wr-case-end(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
    }
    {rd-case-end(space`:stmt-space, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(s`:stmt-case-end));
+      quick-alloc-one(+(s`:stmt-case-end));
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #case-end);
    }
    {wr-default(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
@@ -44,20 +44,20 @@
       w.b(s.fall-through);
    }
    {rd-default(space`:stmt-space, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(s`:stmt-default));
+      quick-alloc-one(+(s`:stmt-default));
       s.fall-through = r.b();
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #default);
    }
    {wr-default-end(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
    }
    {rd-default-end(space`:stmt-space, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(s`:stmt-default-end));
+      quick-alloc-one(+(s`:stmt-default-end));
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #default-end);
    }
    {wr-switch-end(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
    }
    {rd-switch-end(space`:stmt-space, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(s`:stmt-switch-end));
+      quick-alloc-one(+(s`:stmt-switch-end));
       space.stmt-push(s.base, 0, 0, 0, 0, #switch-end);
    }
 }
@@ -116,8 +116,8 @@
                   +ci = case-c++;
                   {if(case-cap <= case-c)
                      +old-cap = case-cap;
-                     `.grow(case-cap, case-c);
-                     `.realloc(case-v, case-cap, old-cap);
+                     grow(case-cap, case-c);
+                     realloc(case-v, case-cap, old-cap);
                   }
                   case-v[ci] = func-i;
                }
@@ -128,7 +128,7 @@
             +func-name-str = func-name.str();
             +func-name-len = func-name.len();
             s.case-func-c = case-c;
-            `.quick-alloc-arr(s.case-func-v, case-c);
+            quick-alloc-arr(s.case-func-v, case-c);
             +func-v = s.case-func-v;
             {do{+i = 0}{(case-c) i++}
                +func-i = case-v[i];

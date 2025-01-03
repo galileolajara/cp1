@@ -90,8 +90,8 @@
       vd.type-info.rd(r);
       vd.size-c = r.n1();
       {if(vd.size-c > 0)
-         `.quick-alloc-arr(vd.size-expr-v, vd.size-c);
-         `.quick-alloc-arr(vd.size-value-v, vd.size-c);
+         quick-alloc-arr(vd.size-expr-v, vd.size-c);
+         quick-alloc-arr(vd.size-value-v, vd.size-c);
          {do{+i = 0}{(vd.size-c) i++}
             vd.size-expr-v[i].rd(r);
          }
@@ -106,7 +106,7 @@
       vd.type-info.built-in = src.type-info.built-in;
       vd.size-c = src.size-c;
       {if(vd.size-c > 0)
-         `.quick-alloc-arr(vd.size-expr-v, vd.size-c);
+         quick-alloc-arr(vd.size-expr-v, vd.size-c);
          {do{+i = 0}{(vd.size-c) i++}
             vd.size-expr-v[i] = src.size-expr-v[i];
          }

@@ -72,14 +72,14 @@
       e.name.wr(w, header);
    }
    {rd-gvar(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-gvar));
+      quick-alloc-one(+(e`:expr-gvar));
       e-idx.set(e.base, #gvar);
       `\at.rd(+at-idx, r);
       `\id.rd(+name, r);
-      +try-more = :false;
+      +try-parent = :false;
       {if(at-idx == #nil)
          at-idx = .ctx-func.at;
-         try-more = :true;
+         try-parent = :true;
       }
       {do()
          +at = at-idx.ptr();
@@ -90,7 +90,7 @@
                :return;
             }
          }
-         {if!(try-more) {continue}}
+         {if!(try-parent) {break}}
          {if(at-idx == #root) {break}}
          at-idx = at.parent;
       }

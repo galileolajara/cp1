@@ -24,7 +24,7 @@
       e.type.wr(w);
    }
    {rd-compare(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-compare));
+      quick-alloc-one(+(e`:expr-compare));
       e-idx.set(e.base, #compare);
       e.left.rd(r);
       e.right.rd(r);
@@ -57,7 +57,7 @@
    }
    {value-compare(e:this, ref:tint, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+expr`:expr-compare = e.ptr()}
-		v.type = `.basic-type(#bool);
+		v.type = basic-type(#bool);
 		v.info.init();
 		v.info.array-c = 0;
 		v.info.ref-v[0] = ''\0;
@@ -68,7 +68,7 @@
 	}
    {type-compare(expr`:expr, at`\at&) @case.type() @inline
       {+e`:expr-compare = expr}
-      at = `.basic-type(#bool);
+      at = basic-type(#bool);
    }
    {process-compare(expr`:expr, ok:bool&) @case.process() @inline
       {+e`:expr-compare = expr}

@@ -63,7 +63,7 @@
       e.right.write-value(e.right-val);
    }
    {rd-assign(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-assign));
+      quick-alloc-one(+(e`:expr-assign));
       e-idx.set(e.base, #assign);
       e.left.rd(r);
       e.right.rd(r);

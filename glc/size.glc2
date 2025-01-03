@@ -12,7 +12,7 @@
       e.type.wr(w, header);
    }
    {rd-size-of-type(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-size-of-type));
+      quick-alloc-one(+(e`:expr-size-of-type));
       e-idx.set(e.base, #size-of-type);
       e.type.rd(r);
    }
@@ -28,10 +28,10 @@
       ok = :true;
    }
    {type-size-of-type(expr`:expr, at`\at&) @case.type() @inline
-      at = `.basic-type(#size);
+      at = basic-type(#size);
    }
    {value-size-of-type(le:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
-      v.type = `.basic-type(#size);
+      v.type = basic-type(#size);
       v.info.init();
       v.info.array-c = 0;
       v.info.ref-v[0] = ''\0;

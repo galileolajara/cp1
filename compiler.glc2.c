@@ -3810,15 +3810,15 @@ void _Mglc_Eexpr_Prd_gvar_2(_Mglc_Eexpr _Le_idx_0, union _Mglc_Srdr* _Lr_1) {
 struct _Mglc_Sexpr_gvar* _Le_2;
 _Mglc_Eat _Lat_idx_3;
 _Mglc_Eid _Lname_4;
-bool _Ltry_more_5;
+bool _Ltry_parent_5;
 _Mglc_Pquick_alloc_one_1(_Le_2);
 _Mglc_Eexpr_Pset_3(_Le_idx_0, &(*_Le_2)._Fbase, _Mglc_Eexpr_type_Cgvar);
 _Mglc_Eat_Prd_2(&_Lat_idx_3, _Lr_1);
 _Mglc_Eid_Prd_2(&_Lname_4, _Lr_1);
-_Ltry_more_5 = false;
+_Ltry_parent_5 = false;
 if(_Lat_idx_3 == _Mglc_Eat_Cnil) {
 _Lat_idx_3 = (*_Gctx_func)._Fat;
-_Ltry_more_5 = true;
+_Ltry_parent_5 = true;
 }
 while(1) {
 struct _Mglc_Sat* _Lat_6;
@@ -3837,8 +3837,8 @@ continue_1:;
 _Li_7++;
 }
 break_1:;
-if(!(_Ltry_more_5)) {
-goto continue_0;
+if(!(_Ltry_parent_5)) {
+goto break_0;
 }
 if(_Lat_idx_3 == _Mglc_Eat_Croot) {
 goto break_0;
@@ -4986,153 +4986,142 @@ uint8_t _Lcarg_c_4;
 uint8_t _Lgroup_c_5;
 uint8_t* _Lgroup_v_6;
 _Mglc_Eat _Lat_idx_7;
-struct _Mglc_Sat* _Lat_8;
-int32_t _Lfound_10;
-int32_t _Lsimilar_c_11;
+bool _Ltry_parent_8;
 _Le_2 = _Lexpr_0;
 _Lfunc_name_3 = (*_Le_2)._Ffunc_name;
 _Lcarg_c_4 = (*_Le_2)._Fcarg_c;
 _Lgroup_c_5 = (*_Le_2)._Fgroup_c;
 _Lgroup_v_6 = (*_Le_2)._Fgroup_v;
 _Lat_idx_7 = (*_Le_2)._Fat;
+_Ltry_parent_8 = false;
 if(_Lat_idx_7 == _Mglc_Eat_Cnil) {
-_Lat_8 = _Mglc_Eat_Pptr_1((*_Gctx_func)._Fat);
-} else {
-_Lat_8 = _Mglc_Eat_Pptr_1(_Lat_idx_7);
+_Lat_idx_7 = (*_Gctx_func)._Fat;
+_Ltry_parent_8 = true;
 }
-if((((*_Lat_8)._Fdecl._Fstruct == _Mglc_Estruct_Cnil) && ((*_Lat_8)._Ftype != _Mglc_Ename_type_Cbasic) && ((*_Lat_8)._Ftype != _Mglc_Ename_type_Cmodule))) {
-char _Lc_9;
-if((*_Lat_8)._Ftype == _Mglc_Ename_type_Cstruct) {
-_Lc_9 = '/';
+while(1) {
+struct _Mglc_Sat* _Lat_9;
+_Lat_9 = _Mglc_Eat_Pptr_1(_Lat_idx_7);
+if((((*_Lat_9)._Fdecl._Fstruct == _Mglc_Estruct_Cnil) && ((*_Lat_9)._Ftype != _Mglc_Ename_type_Cbasic) && ((*_Lat_9)._Ftype != _Mglc_Ename_type_Cmodule))) {
+char _Lc_10;
+if((*_Lat_9)._Ftype == _Mglc_Ename_type_Cstruct) {
+_Lc_10 = '/';
 } else {
-_Lc_9 = '\\';
+_Lc_10 = '\\';
 }
-fprintf(stdout, "%s:%u:%u - %u:%u: Cannot call function :%s because the type %c%s is not defined\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lfunc_name_3), _Lc_9, _Mglc_Eid_Pstr_1((*_Lat_8)._Fname._Fid));
+fprintf(stdout, "%s:%u:%u - %u:%u: Cannot call function :%s because the type %c%s is not defined\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lfunc_name_3), _Lc_10, _Mglc_Eid_Pstr_1((*_Lat_9)._Fname._Fid));
 return;
 }
-_Lfound_10 = -1;
-_Lsimilar_c_11 = 0;
-int32_t _Li_12;
-_Li_12 = 0;
-for(int i = (*_Lat_8)._Ffunc_c; i > 0; ) {
+int32_t _Li_11;
+_Li_11 = 0;
+for(int i = (*_Lat_9)._Ffunc_c; i > 0; ) {
 i --;
-_Mglc_Efunc _Lf_idx_13;
-struct _Mglc_Sdecl_func* _Lf_14;
-bool _Lmatch_15;
-int32_t _Lj_19;
-_Lf_idx_13 = (*_Lat_8)._Ffunc_v[_Li_12];
-_Lf_14 = _Mglc_Efunc_Pptr_1(_Lf_idx_13);
-if((*_Lf_14)._Fdecl._Fname != _Lfunc_name_3) {
-goto continue_0;
+_Mglc_Efunc _Lf_idx_12;
+struct _Mglc_Sdecl_func* _Lf_13;
+bool _Lmatch_14;
+int32_t _Lj_18;
+_Lf_idx_12 = (*_Lat_9)._Ffunc_v[_Li_11];
+_Lf_13 = _Mglc_Efunc_Pptr_1(_Lf_idx_12);
+if((*_Lf_13)._Fdecl._Fname != _Lfunc_name_3) {
+goto continue_1;
 }
-_Lfound_10 = _Li_12;
-_Lsimilar_c_11++;
-if((*_Lf_14)._Fgroup_c != _Lgroup_c_5) {
-goto continue_0;
+if((*_Lf_13)._Fgroup_c != _Lgroup_c_5) {
+goto continue_1;
 }
-_Lmatch_15 = true;
-if(((*_Lf_14)._Fflags & _Mglc_Efunc_flags_Cvar_args) != _Mglc_Efunc_flags_C0) {
-if((*_Lf_14)._Ffarg_c > _Lcarg_c_4) {
-goto continue_0;
+_Lmatch_14 = true;
+if(((*_Lf_13)._Fflags & _Mglc_Efunc_flags_Cvar_args) != _Mglc_Efunc_flags_C0) {
+if((*_Lf_13)._Ffarg_c > _Lcarg_c_4) {
+goto continue_1;
 }
-int32_t _Lj_16;
-_Lj_16 = 0;
+int32_t _Lj_15;
+_Lj_15 = 0;
 for(int i = _Lgroup_c_5 - 1; i > 0; ) {
 i --;
-if((*_Lf_14)._Fgroup_v[_Lj_16] != _Lgroup_v_6[_Lj_16]) {
-_Lmatch_15 = false;
-goto break_1;
-}
-continue_1:;
-_Lj_16++;
-}
-break_1:;
-if(_Lmatch_15) {
-uint8_t _Lj_17;
-_Lj_17 = (_Lgroup_c_5 - 1);
-if((*_Lf_14)._Fgroup_v[_Lj_17] > _Lgroup_v_6[_Lj_17]) {
-_Lmatch_15 = false;
-}
-}
-} else {
-if((*_Lf_14)._Ffarg_c != _Lcarg_c_4) {
-goto continue_0;
-}
-int32_t _Lj_18;
-_Lj_18 = 0;
-for(int i = _Lgroup_c_5; i > 0; ) {
-i --;
-if((*_Lf_14)._Fgroup_v[_Lj_18] != _Lgroup_v_6[_Lj_18]) {
-_Lmatch_15 = false;
+if((*_Lf_13)._Fgroup_v[_Lj_15] != _Lgroup_v_6[_Lj_15]) {
+_Lmatch_14 = false;
 goto break_2;
 }
 continue_2:;
-_Lj_18++;
+_Lj_15++;
 }
 break_2:;
+if(_Lmatch_14) {
+uint8_t _Lj_16;
+_Lj_16 = (_Lgroup_c_5 - 1);
+if((*_Lf_13)._Fgroup_v[_Lj_16] > _Lgroup_v_6[_Lj_16]) {
+_Lmatch_14 = false;
 }
-if(!(_Lmatch_15)) {
-goto continue_0;
 }
-_Mglc_Efunc_Pprocess_later_1(_Lf_idx_13);
-_Lj_19 = 0;
-for(int i = (*_Lf_14)._Ffarg_c; i > 0; ) {
+} else {
+if((*_Lf_13)._Ffarg_c != _Lcarg_c_4) {
+goto continue_1;
+}
+int32_t _Lj_17;
+_Lj_17 = 0;
+for(int i = _Lgroup_c_5; i > 0; ) {
 i --;
-struct _Mglc_Scarg* _Lca_20;
-_Lca_20 = (&(*_Le_2)._Fcarg_v[_Lj_19]);
-if(!(_Mglc_Pfarg_process_4((*_Lca_20)._Fexpr, (*_Lca_20)._Fref, &(*_Lca_20)._Fvalue, &(*_Lf_14)._Ffarg_v[_Lj_19]._Fdecl))) {
-return;
+if((*_Lf_13)._Fgroup_v[_Lj_17] != _Lgroup_v_6[_Lj_17]) {
+_Lmatch_14 = false;
+goto break_3;
 }
 continue_3:;
-_Lj_19++;
+_Lj_17++;
 }
 break_3:;
-(*_Le_2)._Ffunc_idx = _Lf_idx_13;
-if(((*_Lf_14)._Fflags & _Mglc_Efunc_flags_Cvar_args) != _Mglc_Efunc_flags_C0) {
-for(int i = (*_Le_2)._Fcarg_c - _Lj_19; i > 0; ) {
-i --;
-struct _Mglc_Scarg* _Lca_21;
-int32_t _Lr_22;
-_Lca_21 = (&(*_Le_2)._Fcarg_v[_Lj_19]);
-if((*_Lca_21)._Fref) {
-_Lr_22 = (1 + (*_Lca_21)._Fref);
-} else {
-_Lr_22 = 1;
 }
-if(!(_Mglc_Eexpr_Pvalue_4((*_Lca_21)._Fexpr, _Lr_22, false, &(*_Lca_21)._Fvalue))) {
+if(!(_Lmatch_14)) {
+goto continue_1;
+}
+_Mglc_Efunc_Pprocess_later_1(_Lf_idx_12);
+_Lj_18 = 0;
+for(int i = (*_Lf_13)._Ffarg_c; i > 0; ) {
+i --;
+struct _Mglc_Scarg* _Lca_19;
+_Lca_19 = (&(*_Le_2)._Fcarg_v[_Lj_18]);
+if(!(_Mglc_Pfarg_process_4((*_Lca_19)._Fexpr, (*_Lca_19)._Fref, &(*_Lca_19)._Fvalue, &(*_Lf_13)._Ffarg_v[_Lj_18]._Fdecl))) {
 return;
 }
 continue_4:;
-_Lj_19++;
+_Lj_18++;
 }
 break_4:;
-}
-(*_Le_2)._Ffunc_idx = _Lf_idx_13;
-(*_Lok_1) = true;
-return;
-continue_0:;
-_Li_12++;
-}
-break_0:;
-fprintf(stdout, "%s:%u:%u - %u:%u: Cannot find function :%s with %u argument:s\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lfunc_name_3), _Lcarg_c_4);
-if(_Lfound_10 != -1) {
-fprintf(stdout, "But found %u functions with different no. of argument:s:\n", _Lsimilar_c_11);
-int32_t _Li_23;
-_Li_23 = 0;
-for(int i = (*_Lat_8)._Ffunc_c; i > 0; ) {
+(*_Le_2)._Ffunc_idx = _Lf_idx_12;
+if(((*_Lf_13)._Fflags & _Mglc_Efunc_flags_Cvar_args) != _Mglc_Efunc_flags_C0) {
+for(int i = (*_Le_2)._Fcarg_c - _Lj_18; i > 0; ) {
 i --;
-_Mglc_Efunc _Lf_idx_24;
-struct _Mglc_Sdecl_func* _Lf_25;
-_Lf_idx_24 = (*_Lat_8)._Ffunc_v[_Li_23];
-_Lf_25 = _Gfunc_v[_Lf_idx_24];
-if((*_Lf_25)._Fdecl._Fname == _Lfunc_name_3) {
-fprintf(stdout, "- :%s with %u args\n", _Mglc_Eid_Pstr_1(_Lfunc_name_3), (*_Lf_25)._Ffarg_c);
+struct _Mglc_Scarg* _Lca_20;
+int32_t _Lr_21;
+_Lca_20 = (&(*_Le_2)._Fcarg_v[_Lj_18]);
+if((*_Lca_20)._Fref) {
+_Lr_21 = (1 + (*_Lca_20)._Fref);
+} else {
+_Lr_21 = 1;
+}
+if(!(_Mglc_Eexpr_Pvalue_4((*_Lca_20)._Fexpr, _Lr_21, false, &(*_Lca_20)._Fvalue))) {
+return;
 }
 continue_5:;
-_Li_23++;
+_Lj_18++;
 }
 break_5:;
 }
+(*_Le_2)._Ffunc_idx = _Lf_idx_12;
+(*_Lok_1) = true;
+return;
+continue_1:;
+_Li_11++;
+}
+break_1:;
+if(!(_Ltry_parent_8)) {
+goto break_0;
+}
+if(_Lat_idx_7 == _Mglc_Eat_Croot) {
+goto break_0;
+}
+_Lat_idx_7 = (*_Lat_9)._Fparent;
+continue_0:;
+}
+break_0:;
+fprintf(stdout, "%s:%u:%u - %u:%u: Cannot find function :%s with %u argument:s\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lfunc_name_3), _Lcarg_c_4);
 }
 void _Mglc_Eexpr_Pprocess_str_2(struct _Mglc_Sexpr* _Lexpr_0, bool* _Lok_1) {
 (*_Lok_1) = true;

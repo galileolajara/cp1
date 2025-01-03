@@ -48,7 +48,7 @@
       }
    }
    {rd-math(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-math));
+      quick-alloc-one(+(e`:expr-math));
       e-idx.set(e.base, #math);
       e.left.rd(r);
       e.right.rd(r);
@@ -56,7 +56,7 @@
       +item-c = r.n1();
       {if(item-c > 0)
          e.item-c = item-c;
-         `.quick-alloc-arr(e.item-v, item-c);
+         quick-alloc-arr(e.item-v, item-c);
          {do{+i = 0}{(e.item-c) i++}
             e.item-v[i].expr.rd(r);
          }

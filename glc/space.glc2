@@ -17,7 +17,7 @@
    lvar-v`\lvar[],
    )
    {rd-space(space`:stmt-space, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(s`:stmt-space));
+      quick-alloc-one(+(s`:stmt-space));
       s.rd(r, space);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #space);
    }
@@ -62,18 +62,18 @@
       +i = space.lvar-c++;
       {if(space.lvar-cap <= space.lvar-c)
          +old-cap = space.lvar-cap;
-         `.grow(space.lvar-cap, space.lvar-c);
-         `.realloc(space.lvar-v, space.lvar-cap, old-cap);
+         grow(space.lvar-cap, space.lvar-c);
+         realloc(space.lvar-v, space.lvar-cap, old-cap);
       }
       +f = .ctx-func;
       +lvar = f.lvar-c++;
       space.lvar-v[i] = lvar;
       {if(f.lvar-cap <= f.lvar-c)
          +old-cap = f.lvar-cap;
-         `.grow(f.lvar-cap, f.lvar-c);
-         `.realloc(f.lvar-v, f.lvar-cap, old-cap);
+         grow(f.lvar-cap, f.lvar-c);
+         realloc(f.lvar-v, f.lvar-cap, old-cap);
       }
-      `.quick-alloc-one(+(item`:lvar));
+      quick-alloc-one(+(item`:lvar));
       f.lvar-v[lvar] = item;
       item.row = row;
       item.col = col;
@@ -134,7 +134,7 @@
 
       +lvar-c = r.n();
       space.lvar-c = lvar-c;
-      `.quick-alloc-arr(space.lvar-v, lvar-c);
+      quick-alloc-arr(space.lvar-v, lvar-c);
       {do{+i = 0}{(lvar-c) i++}
          space.lvar-v[i].rd(r);
       }

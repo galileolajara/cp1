@@ -7,7 +7,7 @@
       s.expr.wr(w, header);
    }
    {rd-expr(space`:stmt-space, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(s`:stmt-expr));
+      quick-alloc-one(+(s`:stmt-expr));
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #expr);
    }
@@ -142,9 +142,9 @@
          +e-idx = (.expr-c++)`\expr;
          {if(.expr-cap <= .expr-c)
             +old-cap = .expr-cap;
-            `.grow(.expr-cap, .expr-c);
-            `.realloc(.expr-v, .expr-cap, old-cap);
-            `.realloc(.expr-is-processed, (.expr-cap + 7) >> 3, (old-cap + 7) >> 3);
+            grow(.expr-cap, .expr-c);
+            realloc(.expr-v, .expr-cap, old-cap);
+            realloc(.expr-is-processed, (.expr-cap + 7) >> 3, (old-cap + 7) >> 3);
          }
          e = e-idx;
          {switch(type).rd(e-idx, r)

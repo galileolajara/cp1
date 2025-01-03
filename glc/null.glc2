@@ -10,7 +10,7 @@
       {+e`:expr-null = expr}
    }
    {rd-null(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-null));
+      quick-alloc-one(+(e`:expr-null));
       e-idx.set(e.base, #null);
    }
    {write-null(expr`:expr) @case.write() @inline
@@ -22,10 +22,10 @@
       ok = :true;
    }
    {type-null(expr`:expr, at`\at&) @case.type() @inline
-      at = `.basic-type(#ref);
+      at = basic-type(#ref);
    }
    {value-null(le:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
-      v.type = `.basic-type(#ref);
+      v.type = basic-type(#ref);
       v.info.init();
       v.info.array-c = 0;
       v.info.ref-v[0] = ''\0;

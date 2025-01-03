@@ -118,7 +118,7 @@
       e.lvar.wr(w);
    }
    {rd-lvar(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-lvar));
+      quick-alloc-one(+(e`:expr-lvar));
       e-idx.set(e.base, #lvar);
       e.lvar.rd(r);
    }

@@ -29,10 +29,10 @@
 }
 {at(\expr)
    {type-bools(expr`:expr, at`\at&) @case.type() @inline
-      at = `.basic-type(#bool);
+      at = basic-type(#bool);
    }
    {value-bools(e:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
-      v.type = `.basic-type(#bool);
+      v.type = basic-type(#bool);
       v.info.init();
       v.info.array-c = 0;
       v.info.ref-v[0] = ''\0;
@@ -91,14 +91,14 @@
       e.type.wr(w);
    }
    {rd-bools(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-bools));
+      quick-alloc-one(+(e`:expr-bools));
       e-idx.set(e.base, #bools);
       e.left.rd(r);
       e.right.rd(r);
       +item-c = r.n1();
       {if(item-c > 0)
          e.item-c = item-c;
-         `.quick-alloc-arr(e.item-v, item-c);
+         quick-alloc-arr(e.item-v, item-c);
          {do{+i = 0}{(item-c) i++}
             e.item-v[i].expr.rd(r);
          }

@@ -12,7 +12,7 @@
       e.expr.wr(w, header);
    }
    {rd-ref(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-ref));
+      quick-alloc-one(+(e`:expr-ref));
       e-idx.set(e.base, #ref);
       e.expr.rd(r);
    }
@@ -22,7 +22,7 @@
    }
    {value-ref(e:this, ref:tint, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+expr`:expr-ref = e.ptr()}
-		v.type = `.basic-type(#ref);
+		v.type = basic-type(#ref);
 		v.info.init();
 		v.info.array-c = 0;
 		v.info.ref-v[0] = 1;
@@ -31,7 +31,7 @@
       ok = :true;
 	}
    {type-ref(expr`:expr, at`\at&) @case.type() @inline
-      at = `.basic-type(#ref);
+      at = basic-type(#ref);
    }
    {process-ref(expr`:expr, ok:bool&) @case.process() @inline
       {+e`:expr-ref = expr}

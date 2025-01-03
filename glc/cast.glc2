@@ -23,7 +23,7 @@
       e.type.wr(w, header);
    }
    {rd-cast-fast(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-cast-fast));
+      quick-alloc-one(+(e`:expr-cast-fast));
       e-idx.set(e.base, #cast-fast);
       e.expr.rd(r);
       e.type.rd(r);

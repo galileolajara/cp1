@@ -802,7 +802,7 @@ end-if
       {if(c-name != :null) :return c-name}
       +len = .id-len-v[id];
       +str = .id-str-v[id];
-      c-name = `.quick-alloc(len + 1);
+      c-name = quick-alloc(len + 1);
       .id-c-name-v[id] = c-name;
       {do{+i = 0}{(len) i++}
          {if(str[i] == ''-)

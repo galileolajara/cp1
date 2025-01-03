@@ -22,7 +22,7 @@
       w.n1(s.nest);
    }
    {rd-break(space`:stmt-space, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(s`:stmt-break));
+      quick-alloc-one(+(s`:stmt-break));
       s.nest = r.n1();
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #break);
    }

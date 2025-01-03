@@ -13,7 +13,7 @@
       w.n(e.value);
    }
    {rd-char(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-char));
+      quick-alloc-one(+(e`:expr-char));
       e-idx.set(e.base, #char);
       e.value = r.n();
    }
@@ -25,10 +25,10 @@
       ok = :true;
    }
    {type-char(expr`:expr, at`\at&) @case.type() @inline
-      at = `.basic-type(#char);
+      at = basic-type(#char);
    }
    {value-char(le:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
-      v.type = `.basic-type(#char);
+      v.type = basic-type(#char);
       v.info.init();
       v.info.array-c = 0;
       v.info.ref-v[0] = ''\0;

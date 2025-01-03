@@ -52,7 +52,7 @@
    {lvars-rd(f:this, r`:rdr)
       +lvar-c = r.n()`\lvar;
       f.lvar-c = lvar-c;
-      `.quick-alloc-arr(f.lvar-v, lvar-c);
+      quick-alloc-arr(f.lvar-v, lvar-c);
       {do{+i = 0}{(f.lvar-c) i++}
          +l = f.lvar-v[i];
          l.row = r.n();

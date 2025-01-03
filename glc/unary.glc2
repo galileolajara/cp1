@@ -22,7 +22,7 @@
       e.type.wr(w);
    }
    {rd-unary(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-unary));
+      quick-alloc-one(+(e`:expr-unary));
       e-idx.set(e.base, #unary);
       e.expr.rd(r);
       e.type.rd(r);

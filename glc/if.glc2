@@ -7,7 +7,7 @@
       s.expr.wr(w, header);
    }
    {rd-if(space`:stmt-space, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(s`:stmt-if));
+      quick-alloc-one(+(s`:stmt-if));
       s.not = r.b();
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #if);
@@ -18,7 +18,7 @@
       s.expr.wr(w, header);
    }
    {rd-if-elif(space`:stmt-space, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(s`:stmt-if-elif));
+      quick-alloc-one(+(s`:stmt-if-elif));
       s.not = r.b();
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #if-elif);
@@ -26,13 +26,13 @@
    {wr-if-else(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
    }
    {rd-if-else(space`:stmt-space, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(s`:stmt-if-else));
+      quick-alloc-one(+(s`:stmt-if-else));
       space.stmt-push(s.base, 0, 0, 0, 0, #if-else);
    }
    {wr-if-end(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
    }
    {rd-if-end(space`:stmt-space, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(s`:stmt-if-end));
+      quick-alloc-one(+(s`:stmt-if-end));
       space.stmt-push(s.base, 0, 0, 0, 0, #if-end);
    }
 }

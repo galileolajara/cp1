@@ -11,7 +11,7 @@
       s.expr.wr(w, header);
    }
    {rd-return(space`:stmt-space, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(s`:stmt-return));
+      quick-alloc-one(+(s`:stmt-return));
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #return);
    }

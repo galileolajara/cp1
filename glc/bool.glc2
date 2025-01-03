@@ -12,7 +12,7 @@
       w.b(e.value);
    }
    {rd-bool(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-bool));
+      quick-alloc-one(+(e`:expr-bool));
       e-idx.set(e.base, #bool);
       e.value = r.b();
    }
@@ -29,10 +29,10 @@
       ok = :true;
    }
    {type-bool(expr`:expr, at`\at&) @case.type() @inline
-      at = `.basic-type(#bool);
+      at = basic-type(#bool);
    }
    {value-bool(le:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
-      v.type = `.basic-type(#bool);
+      v.type = basic-type(#bool);
       v.info.init();
       v.info.array-c = 0;
       v.info.ref-v[0] = ''\0;

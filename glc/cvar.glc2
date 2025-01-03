@@ -91,7 +91,7 @@
       e.name.wr(w, header);
    }
    {rd-cvar(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-cvar));
+      quick-alloc-one(+(e`:expr-cvar));
       e-idx.set(e.base, #cvar);
       e.at.rd(r);
       e.name.rd(r);

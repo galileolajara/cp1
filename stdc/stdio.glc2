@@ -6,7 +6,7 @@
          {printf(f:this, str:char[]):int @var-args @no-decl @real-name(fprintf)}
          {flush(f:this):int @no-decl @real-name(fflush)}
          {write(f:this, buf:ref, size:size):size @inline
-            :return `.fwrite(buf, 1, size, f);
+            :return fwrite(buf, 1, size, f);
          }
          {putc(c:int, f:this):int @no-decl @real-name(fputc)}
       }

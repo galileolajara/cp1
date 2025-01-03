@@ -24,7 +24,7 @@
       .out.printf("]");
    }
    {rd-index(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `.quick-alloc-one(+(e`:expr-index));
+      quick-alloc-one(+(e`:expr-index));
       e-idx.set(e.base, #index);
       e.left.rd(r);
       e.right.rd(r);

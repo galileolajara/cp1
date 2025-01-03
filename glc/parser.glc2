@@ -308,11 +308,11 @@
          +id = .id-c++;
          {if(.id-cap <= .id-c)
             +old-cap = .id-cap;
-            `.grow(.id-cap, .id-c);
-            `.realloc(.id-str-v, .id-cap, old-cap);
-            `.realloc(.id-len-v, .id-cap, old-cap);
+            grow(.id-cap, .id-c);
+            realloc(.id-str-v, .id-cap, old-cap);
+            realloc(.id-len-v, .id-cap, old-cap);
          }
-         {+text:char[] = `.quick-alloc(len + 1)}
+         {+text:char[] = quick-alloc(len + 1)}
          'c.memcpy(text, r-start.ref, len);
          text[len] = 0;
          .id-str-v[id] = text;
@@ -332,11 +332,11 @@
       `` +id = .id-c++;
       `` {if(.id-cap <= .id-c)
       ``    +old-cap = .id-cap;
-      ``    `.grow(.id-cap, .id-c);
-      ``    `.realloc(.id-str-v, .id-cap, old-cap);
-      ``    `.realloc(.id-len-v, .id-cap, old-cap);
+      ``    grow(.id-cap, .id-c);
+      ``    realloc(.id-str-v, .id-cap, old-cap);
+      ``    realloc(.id-len-v, .id-cap, old-cap);
       `` }
-      `` {+text:char[] = `.quick-alloc(len + 1)}
+      `` {+text:char[] = quick-alloc(len + 1)}
       `` 'c.memcpy(text, r-start.ref, len);
       `` text[len] = 0;
       `` .id-str-v[id] = text;
@@ -361,11 +361,11 @@
          +include = .include-c++;
          {if(.include-cap <= .include-c)
             +old-cap = .include-cap;
-            `.grow(.include-cap, .include-c);
-            `.realloc(.include-str-v, .include-cap, old-cap);
-            `.realloc(.include-len-v, .include-cap, old-cap);
+            grow(.include-cap, .include-c);
+            realloc(.include-str-v, .include-cap, old-cap);
+            realloc(.include-len-v, .include-cap, old-cap);
          }
-         {+text:char[] = `.quick-alloc(len + 1)}
+         {+text:char[] = quick-alloc(len + 1)}
          'c.memcpy(text, r-start.ref, len);
          text[len] = 0;
          .include-str-v[include] = text;
@@ -385,11 +385,11 @@
       `` +include = .include-c++;
       `` {if(.include-cap <= .include-c)
       ``    +old-cap = .include-cap;
-      ``    `.grow(.include-cap, .include-c);
-      ``    `.realloc(.include-str-v, .include-cap, old-cap);
-      ``    `.realloc(.include-len-v, .include-cap, old-cap);
+      ``    grow(.include-cap, .include-c);
+      ``    realloc(.include-str-v, .include-cap, old-cap);
+      ``    realloc(.include-len-v, .include-cap, old-cap);
       `` }
-      `` {+text:char[] = `.quick-alloc(len + 1)}
+      `` {+text:char[] = quick-alloc(len + 1)}
       `` 'c.memcpy(text, r-start.ref, len);
       `` text[len] = 0;
       `` .include-str-v[include] = text;
