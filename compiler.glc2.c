@@ -3811,7 +3811,6 @@ struct _Mglc_Sexpr_gvar* _Le_2;
 _Mglc_Eat _Lat_idx_3;
 _Mglc_Eid _Lname_4;
 bool _Ltry_more_5;
-struct _Mglc_Sat* _Lat_6;
 _Mglc_Pquick_alloc_one_1(_Le_2);
 _Mglc_Eexpr_Pset_3(_Le_idx_0, &(*_Le_2)._Fbase, _Mglc_Eexpr_type_Cgvar);
 _Mglc_Eat_Prd_2(&_Lat_idx_3, _Lr_1);
@@ -3821,6 +3820,8 @@ if(_Lat_idx_3 == _Mglc_Eat_Cnil) {
 _Lat_idx_3 = (*_Gctx_func)._Fat;
 _Ltry_more_5 = true;
 }
+while(1) {
+struct _Mglc_Sat* _Lat_6;
 _Lat_6 = _Mglc_Eat_Pptr_1(_Lat_idx_3);
 int32_t _Li_7;
 _Li_7 = 0;
@@ -3832,32 +3833,20 @@ if((*_Mglc_Egvar_Pptr_1(_Lgvar_8))._Fdecl._Fname == _Lname_4) {
 (*_Le_2)._Fgvar = _Lgvar_8;
 return;
 }
-continue_0:;
+continue_1:;
 _Li_7++;
 }
-break_0:;
-if(_Ltry_more_5) {
-while(_Lat_idx_3 != _Mglc_Eat_Croot) {
-_Lat_idx_3 = (*_Lat_6)._Fparent;
-_Lat_6 = _Mglc_Eat_Pptr_1(_Lat_idx_3);
-int32_t _Li_9;
-_Li_9 = 0;
-for(int i = (*_Lat_6)._Fgvar_c; i > 0; ) {
-i --;
-_Mglc_Egvar _Lgvar_10;
-_Lgvar_10 = (*_Lat_6)._Fgvar_v[_Li_9];
-if((*_Mglc_Egvar_Pptr_1(_Lgvar_10))._Fdecl._Fname == _Lname_4) {
-(*_Le_2)._Fgvar = _Lgvar_10;
-return;
-}
-continue_2:;
-_Li_9++;
-}
-break_2:;
-continue_1:;
-}
 break_1:;
+if(!(_Ltry_more_5)) {
+goto continue_0;
 }
+if(_Lat_idx_3 == _Mglc_Eat_Croot) {
+goto break_0;
+}
+_Lat_idx_3 = (*_Lat_6)._Fparent;
+continue_0:;
+}
+break_0:;
 fprintf(stdout, "%s:%u:%u - %u:%u: Cannot find gvar '.%s'\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lname_4));
 exit(_Mstdc_Eexit_Cfailure);
 }

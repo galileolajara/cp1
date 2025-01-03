@@ -81,26 +81,18 @@
          at-idx = .ctx-func.at;
          try-more = :true;
       }
-      +at = at-idx.ptr();
-      {do{+i = 0}{(at.gvar-c) i++}
-         +gvar = at.gvar-v[i];
-         {if(gvar.ptr().decl.name == name)
-            e.gvar = gvar;
-            :return;
-         }
-      }
-      {if(try-more)
-         {while(at-idx != #root)
-            at-idx = at.parent;
-            at = at-idx.ptr();
-            {do{+i = 0}{(at.gvar-c) i++}
-               +gvar = at.gvar-v[i];
-               {if(gvar.ptr().decl.name == name)
-                  e.gvar = gvar;
-                  :return;
-               }
+      {do()
+         +at = at-idx.ptr();
+         {do{+i = 0}{(at.gvar-c) i++}
+            +gvar = at.gvar-v[i];
+            {if(gvar.ptr().decl.name == name)
+               e.gvar = gvar;
+               :return;
             }
          }
+         {if!(try-more) {continue}}
+         {if(at-idx == #root) {break}}
+         at-idx = at.parent;
       }
       'c.out.printf("%s:%u:%u - %u:%u: Cannot find gvar '.%s'\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, name.str());
       'c.exit(#failure);
