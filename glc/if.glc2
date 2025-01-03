@@ -10,7 +10,7 @@
       `.quick-alloc-one(+(s`:stmt-if));
       s.not = r.b();
       s.expr.rd(r);
-      space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #if);
+      space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #if);
    }
    {wr-if-elif(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
       {+s`:stmt-if-elif = stmt}
@@ -21,7 +21,7 @@
       `.quick-alloc-one(+(s`:stmt-if-elif));
       s.not = r.b();
       s.expr.rd(r);
-      space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #if-elif);
+      space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #if-elif);
    }
    {wr-if-else(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
    }
@@ -40,13 +40,13 @@
    {write-if(stmt`:stmt) @case.write() @inline
       {+s`:stmt-if = stmt}
       {if(s.not)
-         `.out.printf("if(!(");
+         .out.printf("if(!(");
          s.expr.write-value(s.val);
-         `.out.printf(")) {\n");
+         .out.printf(")) {\n");
       }{else
-         `.out.printf("if(");
+         .out.printf("if(");
          s.expr.write-value(s.val);
-         `.out.printf(") {\n");
+         .out.printf(") {\n");
       }
    }
    {process-if(stmt`:stmt, ok:bool&) @case.process() @inline
@@ -59,13 +59,13 @@
    {write-if-elif(stmt`:stmt) @case.write() @inline
       {+s`:stmt-if-elif = stmt}
       {if(s.not)
-         `.out.printf("} else if(!(");
+         .out.printf("} else if(!(");
          s.expr.write-value(s.val);
-         `.out.printf(")) {\n");
+         .out.printf(")) {\n");
       }{else
-         `.out.printf("} else if(");
+         .out.printf("} else if(");
          s.expr.write-value(s.val);
-         `.out.printf(") {\n");
+         .out.printf(") {\n");
       }
    }
    {process-if-elif(stmt`:stmt, ok:bool&) @case.process() @inline
@@ -77,7 +77,7 @@
    }
    {write-if-else(stmt`:stmt) @case.write() @inline
       {+s`:stmt-if-else = stmt}
-      `.out.printf("} else {\n");
+      .out.printf("} else {\n");
    }
    {process-if-else(stmt`:stmt, ok:bool&) @case.process() @inline
       {+s`:stmt-if-else = stmt}
@@ -85,7 +85,7 @@
    }
    {write-if-end(stmt`:stmt) @case.write() @inline
       {+s`:stmt-if-end = stmt}
-      `.out.printf("}\n");
+      .out.printf("}\n");
    }
    {process-if-end(stmt`:stmt, ok:bool&) @case.process() @inline
       {+s`:stmt-if-end = stmt}

@@ -29,7 +29,7 @@
 {gvar file-v:file+[]}
 {\file(#nil = -1, #0):int
    {ptr(f:this)`:file @inline
-      :return `.file-v[f];
+      :return .file-v[f];
    }
    {path(f:this):char[] @inline
       :return f.ptr().path;
@@ -803,28 +803,28 @@
       +num = f-idx:num;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((`.func-in-process[n3] & n17) != 0) :return}
-      `.func-in-process[n3] |= n17;
+      {if((.func-in-process[n3] & n17) != 0) :return}
+      .func-in-process[n3] |= n17;
       +f = f-idx.ptr();
       {if(f.decl.type != #nil)
          f.decl.type.finalize(f.decl.type-info, f.begin-row, f.begin-col);
       }
-      `.func-head-outputted-v[`.func-head-outputted-c++] = f-idx;
+      .func-head-outputted-v[.func-head-outputted-c++] = f-idx;
       {if((f.flags & #has-body) != #0)
          f.process-next = #nil;
-         {if(`.process-first == #nil)
-            `.process-first = f-idx;
-            `.process-last = f-idx;
+         {if(.process-first == #nil)
+            .process-first = f-idx;
+            .process-last = f-idx;
          }{else
-            +f-last = `.process-last.ptr();
+            +f-last = .process-last.ptr();
             f-last.process-next = f-idx;
-            `.process-last = f-idx;
+            .process-last = f-idx;
          }
       }
    }
    {process-now(f-idx:this):bool
       +f = f-idx.ptr();
-      `.ctx-func = f;
+      .ctx-func = f;
       `` 'c.out.printf("func :%s\n", f.decl.name.str());
 
       `` f.lvar-c = #0;
@@ -842,9 +842,9 @@
       {+r`:rdr+}
       +file = f.file.ptr();
       r.ref = file.data;
-      `.id-table = file.id-table;
-      `.at-table = file.at-table;
-      `.cvar-table = file.cvar-table;
+      .id-table = file.id-table;
+      .at-table = file.at-table;
+      .cvar-table = file.cvar-table;
       r.pos += f.body-file-pos;
       `` +stmt-c = r.n();
       `` 'c.out.printf("  function has %u statements\n", stmt-c);
@@ -863,10 +863,10 @@
       f.stmt-space.rd(r, :null);
       +s = f.stmt-space.stmt-first;
       {while(s != :null)
-         `.ctx-begin-row = s.begin-row;
-         `.ctx-begin-col = s.begin-col;
-         `.ctx-end-row = s.end-row;
-         `.ctx-end-col = s.end-col;
+         .ctx-begin-row = s.begin-row;
+         .ctx-begin-col = s.begin-col;
+         .ctx-end-row = s.end-row;
+         .ctx-end-col = s.end-col;
          `` 'c.out.printf("%s %u:%u - %u:%u\n", f.decl.name.str(), s.begin-row, s.begin-col, s.end-row, s.end-col);
          {if!(s.process())
             :return :false;
@@ -885,7 +885,7 @@
       `` }
 
       {if((f.flags & #no-body) == #0)
-         `.func-body-outputted-v[`.func-body-outputted-c++] = f-idx;
+         .func-body-outputted-v[.func-body-outputted-c++] = f-idx;
       }
       :return :true;
    }

@@ -9,14 +9,14 @@
    {rd-expr(space`:stmt-space, r`:rdr) @case.rd() @inline
       `.quick-alloc-one(+(s`:stmt-expr));
       s.expr.rd(r);
-      space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #expr);
+      space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #expr);
    }
 }
 {at(:stmt)
    {write-expr(stmt`:stmt) @case.write() @inline
       {+s`:stmt-expr = stmt}
       s.expr.write();
-      `.out.printf(";\n");
+      .out.printf(";\n");
    }
    {process-expr(stmt`:stmt, ok:bool&) @case.process() @inline
       {+s`:stmt-expr = stmt}
@@ -42,11 +42,11 @@
 {cvar #debug-rd-wr:bool = :true}
 {\expr(#nil = -1, #0, #1):int
    {set(e:this, expr`:expr, type`\expr-type) @inline
-      `.expr-v[e] = expr;
+      .expr-v[e] = expr;
       expr.type = type;
    }
    {ptr(e:this)`:expr @inline
-      :return `.expr-v[e];
+      :return .expr-v[e];
    }
    {write-value(e:this, v`:value):bool
       +expr = e.ptr();
@@ -54,15 +54,15 @@
       `` 'c.out.printf("write-value v.ref = %d\n", ref);
       {if(v.paren)
          {if(ref <= 0)
-            `.out.write("(&", 2);
+            .out.write("(&", 2);
          }{else
-            `.out.write("(*******************************", ref);
+            .out.write("(*******************************", ref);
          }
       }{else
          {if(ref <= 0)
-            `.out.write("&", 1);
+            .out.write("&", 1);
          }{elif(ref > 1)
-            `.out.write("*******************************", ref - 1);
+            .out.write("*******************************", ref - 1);
          }
       }
 
@@ -74,7 +74,7 @@
       }
 
       {if(v.paren)
-         `.out.write(")", 1);
+         .out.write(")", 1);
       }
       :return :true;
    }
@@ -85,7 +85,7 @@
       {switch(expr.type).value(e, ref, paren, v, ok)
          {default
             'c.out.printf("%u:%u - %u:%u: value() not implemented for #%s\n",
-               `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type.glc-name());
+               .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.glc-name());
          }
       }
       :return ok;
@@ -97,7 +97,7 @@
       {switch(expr.type).type(expr, at)
          {default
             'c.out.printf("%u:%u - %u:%u: type() not implemented for #%s\n",
-               `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type.glc-name());
+               .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.glc-name());
          }
       }
       :return at;
@@ -139,12 +139,12 @@
       {if(type == #nil)
          e = #nil;
       }{else
-         +e-idx = (`.expr-c++)`\expr;
-         {if(`.expr-cap <= `.expr-c)
-            +old-cap = `.expr-cap;
-            `.grow(`.expr-cap, `.expr-c);
-            `.realloc(`.expr-v, `.expr-cap, old-cap);
-            `.realloc(`.expr-is-processed, (`.expr-cap + 7) >> 3, (old-cap + 7) >> 3);
+         +e-idx = (.expr-c++)`\expr;
+         {if(.expr-cap <= .expr-c)
+            +old-cap = .expr-cap;
+            `.grow(.expr-cap, .expr-c);
+            `.realloc(.expr-v, .expr-cap, old-cap);
+            `.realloc(.expr-is-processed, (.expr-cap + 7) >> 3, (old-cap + 7) >> 3);
          }
          e = e-idx;
          {switch(type).rd(e-idx, r)
@@ -165,14 +165,14 @@
    {process(e:this):bool
       {if(e == #nil)
          'c.out.printf("%s:%u:%u - %u:%u: Processed a nil expression\n",
-            `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col);
+            .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col);
          :return :false;
       }
       +num = e:num;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((`.expr-is-processed[n3] & n17) != #0) :return :true}
-      `.expr-is-processed[n3] |= n17;
+      {if((.expr-is-processed[n3] & n17) != #0) :return :true}
+      .expr-is-processed[n3] |= n17;
       +expr = e.ptr();
       `` {if(expr.flags & #processed) :return :true}
       `` expr.flags |= #processed;
@@ -180,12 +180,12 @@
       {switch(expr.type).process(expr, ok)
          {default
             'c.out.printf("%s:%u:%u - %u:%u: process() not implemented for expression #%s\n",
-               `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type.glc-name());
+               .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.glc-name());
             :return :false;
          }
       }
       {if!(ok)
-         'c.out.printf("%s:%u:%u - %u:%u: Processing of expression #%s failed\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type.glc-name());
+         'c.out.printf("%s:%u:%u - %u:%u: Processing of expression #%s failed\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.glc-name());
       }
       :return ok;
    }
@@ -193,7 +193,7 @@
       +expr = e.ptr();
       {switch(expr.type).write(expr)
          {default
-            'c.out.printf("%s:%u:%u - %u:%u: write() not implemented in expression #%s\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, expr.type.glc-name());
+            'c.out.printf("%s:%u:%u - %u:%u: write() not implemented in expression #%s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.glc-name());
          }
       }
    }

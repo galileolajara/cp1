@@ -74,7 +74,7 @@ end-if
 {at(\lvar)
 if-compiler
    {ptr(l:this)`:lvar @inline
-      :return `.ctx-func.lvar-v[l];
+      :return .ctx-func.lvar-v[l];
    }
    {name(l:this)`\id @inline
       :return l.ptr().decl.name;
@@ -82,7 +82,7 @@ if-compiler
 end-if
 if-parser
    {ptr(l:this)`:lvar @inline
-      :return `.ctx-func.lvar-v[l];
+      :return .ctx-func.lvar-v[l];
    }
    {name(l:this)`\id @inline
       :return l.ptr().decl.name;
@@ -505,7 +505,7 @@ end-if
       {if(at.type == #struct)
          {if(ti.built-in)
 				{if(ti.ref-v[0] != 0)
-					'c.out.printf("%s:%d:%d: Can't use plus symbol (+) because type '/%s' has reference\n", `.ctx-func.file.path(), row, col, at.name.id.str());
+					'c.out.printf("%s:%d:%d: Can't use plus symbol (+) because type '/%s' has reference\n", .ctx-func.file.path(), row, col, at.name.id.str());
 					:return :false;
 				}
             ti.ref-v[0] = -1;
@@ -517,7 +517,7 @@ end-if
          }
       }{else
 			{if(ti.built-in)
-				'c.out.printf("%s:%d:%d: Can't use plus symbol (+) because type is not a struct\n", `.ctx-func.file.path(), row, col);
+				'c.out.printf("%s:%d:%d: Can't use plus symbol (+) because type is not a struct\n", .ctx-func.file.path(), row, col);
 				:return :false;
 			}
       }
@@ -543,10 +543,10 @@ end-if
          {case(#basic)
             {switch(at.name.basic)
                {case(#bool)
-                  `.include-stdbool = :true;
+                  .include-stdbool = :true;
                }
                {case(#size)
-                  `.include-stddef = :true;
+                  .include-stddef = :true;
                }
             }
          }
@@ -557,7 +557,7 @@ end-if
       td.write-type();
       +s = td.count-stars0(ti) + add;
       {if(s > 0)
-         `.out.write("********************************", s);
+         .out.write("********************************", s);
       }
 		:return :true;
 	}
@@ -606,21 +606,21 @@ end-if
    	:return :true;
    }
    {ptr(i:this)`:at @inline
-      :return `.at-v[i];
+      :return .at-v[i];
    }
    {rd(i:this&, r`:rdr) @inline
       +idx = (r.n() - 1)`\at;
       {if(idx == #nil)
          i = #nil;
       }{else
-         i = `.at-table[idx];
+         i = .at-table[idx];
       }
    }
    {put-to-header(at:this)
-      {if((`.at-in-header-v[at >> 3] & (1 << (at & 7))) == 0)
-         `.at-in-header-v[at >> 3] |= 1 << (at & 7);
-         `.at-in-header-idx-v[at] = `.at-in-header-c;
-         `.at-in-header-at-v[`.at-in-header-c++] = at;
+      {if((.at-in-header-v[at >> 3] & (1 << (at & 7))) == 0)
+         .at-in-header-v[at >> 3] |= 1 << (at & 7);
+         .at-in-header-idx-v[at] = .at-in-header-c;
+         .at-in-header-at-v[.at-in-header-c++] = at;
          {if(at != #root)
             at.ptr().parent.put-to-header();
          }
@@ -630,7 +630,7 @@ end-if
       {if(id == #nil)
          w.n(0);
       }{else
-         w.n(1 + `.at-in-header-idx-v[id]);
+         w.n(1 + .at-in-header-idx-v[id]);
       }
    }
    {wr(at:this, w`:wtr, header:bool) @inline
@@ -638,7 +638,7 @@ end-if
          w.n(0);
       }{else
          {if(header)
-            w.n(1 + `.at-in-header-idx-v[at]);
+            w.n(1 + .at-in-header-idx-v[at]);
          }{else
             w.n(1 + at);
             at.put-to-header();
@@ -650,68 +650,68 @@ end-if
       {switch(at.type)
          {case(#module)
             {if(at.parent != #root) at.parent.write-space()}
-            `.out.printf("_M%s", at.name.id.c-name());
+            .out.printf("_M%s", at.name.id.c-name());
          }
          {case(#struct)
             +t-idx = at.decl.struct;
             +t = t-idx.ptr();
             {if(t-idx != #nil)
                {if((t.flags & #real-name) != #0)
-                  `.out.printf("%s", t.real-name.str());
+                  .out.printf("%s", t.real-name.str());
                   :return;
                }
             }
             {if((t.flags & #union) != #0)
-               `.out.printf("union ");
+               .out.printf("union ");
             }{else
-               `.out.printf("struct ");
+               .out.printf("struct ");
             }
             {if(at.parent != #root) at.parent.write-space()}
-            `.out.printf("_S%s", at.name.id.c-name());
+            .out.printf("_S%s", at.name.id.c-name());
          }
          {case(#enum)
             +t-idx = at.decl.enum;
             {if(t-idx != #nil)
                +t = t-idx.ptr();
                {if((t.flags & #real-name) != #0)
-                  `.out.printf("%s", t.real-name.str());
+                  .out.printf("%s", t.real-name.str());
                   :return;
                }
             }
             {if(at.parent != #root) at.parent.write-space()}
-            `.out.printf("_E%s", at.name.id.c-name());
+            .out.printf("_E%s", at.name.id.c-name());
          }
          {case(#basic)
             {switch(at.name.basic)
                {case(#ref)
-                  `.out.printf("void*");
+                  .out.printf("void*");
                }
                {case(#tnum)
-                  `.out.printf("uint8_t");
+                  .out.printf("uint8_t");
                }
                {case(#tint)
-                  `.out.printf("int8_t");
+                  .out.printf("int8_t");
                }
                {case(#int)
-                  `.out.printf("int32_t");
+                  .out.printf("int32_t");
                }
                {case(#num)
-                  `.out.printf("uint32_t");
+                  .out.printf("uint32_t");
                }
                {case(#lnum)
-                  `.out.printf("uint64_t");
+                  .out.printf("uint64_t");
                }
                {case(#float)
-                  `.out.printf("float");
+                  .out.printf("float");
                }
                {case(#bool)
-                  `.out.printf("bool");
+                  .out.printf("bool");
                }
                {case(#char)
-                  `.out.printf("char");
+                  .out.printf("char");
                }
                {case(#size)
-                  `.out.printf("size_t");
+                  .out.printf("size_t");
                }
             }
          }
@@ -722,38 +722,38 @@ end-if
       {switch(at.type)
          {case(#module)
             {if(at.parent != #root) at.parent.write-space()}
-            `.out.printf("_M%s", at.name.id.c-name());
+            .out.printf("_M%s", at.name.id.c-name());
          }
          {case(#struct)
             {if(at.parent != #root) at.parent.write-space()}
-            `.out.printf("_S%s", at.name.id.c-name());
+            .out.printf("_S%s", at.name.id.c-name());
          }
          {case(#enum)
             {if(at.parent != #root) at.parent.write-space()}
-            `.out.printf("_E%s", at.name.id.c-name());
+            .out.printf("_E%s", at.name.id.c-name());
          }
          {case(#basic)
             {switch(at.name.basic)
                {case(#ref)
-                  `.out.printf("_Tref");
+                  .out.printf("_Tref");
                }
                {case(#int)
-                  `.out.printf("_Tint");
+                  .out.printf("_Tint");
                }
                {case(#num)
-                  `.out.printf("_Tnum");
+                  .out.printf("_Tnum");
                }
                {case(#float)
-                  `.out.printf("_Tfloat");
+                  .out.printf("_Tfloat");
                }
                {case(#bool)
-                  `.out.printf("_Tbool");
+                  .out.printf("_Tbool");
                }
                {case(#char)
-                  `.out.printf("_Tchar");
+                  .out.printf("_Tchar");
                }
                {case(#size)
-                  `.out.printf("_Tsize");
+                  .out.printf("_Tsize");
                }
             }
          }
@@ -763,7 +763,7 @@ end-if
 
 {\include(#nil = -1, #0):int
    {str(i:this):char[] @inline
-      :return `.include-str-v[i];
+      :return .include-str-v[i];
    }
    {wr(i:this, w`:wtr) @inline
       w.n(i + 1);
@@ -773,16 +773,16 @@ end-if
       {if(idx == #nil)
          i = #nil;
       }{else
-         i = `.include-table[idx];
+         i = .include-table[idx];
       }
    }
    {output(this:this) @inline
       +num = this:num;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((`.include-is-outputted[n3] & n17) != 0) :return}
-      `.include-is-outputted[n3] |= n17;
-      `.include-outputted-v[`.include-outputted-c++] = this;
+      {if((.include-is-outputted[n3] & n17) != 0) :return}
+      .include-is-outputted[n3] |= n17;
+      .include-outputted-v[.include-outputted-c++] = this;
    }
 }
 
@@ -798,12 +798,12 @@ end-if
 {gvar func-main\func}
 {\id(#nil = -1, #0):int
    {c-name(id:this):char[]
-      {+c-name:char[] = `.id-c-name-v[id]}
+      {+c-name:char[] = .id-c-name-v[id]}
       {if(c-name != :null) :return c-name}
-      +len = `.id-len-v[id];
-      +str = `.id-str-v[id];
+      +len = .id-len-v[id];
+      +str = .id-str-v[id];
       c-name = `.quick-alloc(len + 1);
-      `.id-c-name-v[id] = c-name;
+      .id-c-name-v[id] = c-name;
       {do{+i = 0}{(len) i++}
          {if(str[i] == ''-)
             c-name[i] = ''_;
@@ -815,16 +815,16 @@ end-if
       :return c-name;
    }
    {str(id:this):char[] @inline
-      :return `.id-str-v[id];
+      :return .id-str-v[id];
    }
    {len(id:this):tnum @inline
-      :return `.id-len-v[id];
+      :return .id-len-v[id];
    }
    {wr-header(id:this, w`:wtr) @inline
       {if(id == #nil)
          w.n(0);
       }{else
-         w.n(1 + `.id-in-header-idx-v[id]);
+         w.n(1 + .id-in-header-idx-v[id]);
       }
    }
    {wr(id:this, w`:wtr, header:bool) @inline
@@ -832,13 +832,13 @@ end-if
          w.n(0);
       }{else
          {if(header)
-            w.n(1 + `.id-in-header-idx-v[id]);
+            w.n(1 + .id-in-header-idx-v[id]);
          }{else
             w.n(1 + id);
-            {if((`.id-in-header-v[id >> 3] & (1 << (id & 7))) == 0)
-               `.id-in-header-v[id >> 3] |= 1 << (id & 7);
-               `.id-in-header-idx-v[id] = `.id-in-header-c;
-               `.id-in-header-id-v[`.id-in-header-c++] = id;
+            {if((.id-in-header-v[id >> 3] & (1 << (id & 7))) == 0)
+               .id-in-header-v[id >> 3] |= 1 << (id & 7);
+               .id-in-header-idx-v[id] = .id-in-header-c;
+               .id-in-header-id-v[.id-in-header-c++] = id;
             }
          }
       }
@@ -848,7 +848,7 @@ end-if
       {if(idx == #nil)
          id = #nil;
       }{else
-         id = `.id-table[idx];
+         id = .id-table[idx];
       }
    }
 }

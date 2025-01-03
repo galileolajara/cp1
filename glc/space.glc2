@@ -19,15 +19,15 @@
    {rd-space(space`:stmt-space, r`:rdr) @case.rd() @inline
       `.quick-alloc-one(+(s`:stmt-space));
       s.rd(r, space);
-      space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #space);
+      space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #space);
    }
    {write(space:this)
       `` .out.printf("{ // space begin \n");
       {+i, lvar-c}
       {if(space.parent == :null)
          `` dont write arguments
-         i = `.ctx-func.farg-c;
-         lvar-c = space.lvar-c - `.ctx-func.farg-c;
+         i = .ctx-func.farg-c;
+         lvar-c = space.lvar-c - .ctx-func.farg-c;
       }{else
          i = 0;
          lvar-c = space.lvar-c;
@@ -38,10 +38,10 @@
          `` 'c.out.printf("%s %s\n", lvar.decl.type.ptr().type.glc-name(), lvar.decl.type.ptr().name.basic.glc-name());
          lvar.decl.write-lvar-type(lvar-i);
          {if((lvar.flags & #set-expr) != #0)
-            `.out.printf(" = ");
+            .out.printf(" = ");
             lvar.set-expr.write();
          }
-         `.out.printf(";\n");
+         .out.printf(";\n");
       }
       +s = space.stmt-first;
       {while(s != :null)
@@ -65,7 +65,7 @@
          `.grow(space.lvar-cap, space.lvar-c);
          `.realloc(space.lvar-v, space.lvar-cap, old-cap);
       }
-      +f = `.ctx-func;
+      +f = .ctx-func;
       +lvar = f.lvar-c++;
       space.lvar-v[i] = lvar;
       {if(f.lvar-cap <= f.lvar-c)
@@ -153,10 +153,10 @@
          +begin-col = r.n();
          +end-row = r.n();
          +end-col = r.n();
-         `.ctx-begin-row = begin-row;
-         `.ctx-begin-col = begin-col;
-         `.ctx-end-row = end-row;
-         `.ctx-end-col = end-col;
+         .ctx-begin-row = begin-row;
+         .ctx-begin-col = begin-col;
+         .ctx-end-row = end-row;
+         .ctx-end-col = end-col;
          {switch(type).rd(space, r)
             {default
                'c.out.printf("rd() not yet implemented in stmt #%s\n", type.glc-name());
@@ -181,8 +181,8 @@
       {+i, lvar-c}
       {if(space.parent == :null)
          `` don't process arguments
-         i = `.ctx-func.farg-c;
-         lvar-c = space.lvar-c - `.ctx-func.farg-c;
+         i = .ctx-func.farg-c;
+         lvar-c = space.lvar-c - .ctx-func.farg-c;
       }{else
          i = 0;
          lvar-c = space.lvar-c;

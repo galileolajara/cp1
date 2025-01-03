@@ -67,74 +67,74 @@
       {switch(e.type)
          {case(#add)
             e.left.write-value(e.left-val);
-            `.out.printf(" + ");
+            .out.printf(" + ");
             e.right.write-value(e.right-val);
             {do{+i = 0}{(e.item-c) i++}
-               `.out.printf(" + ");
+               .out.printf(" + ");
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
          }
          {case(#sub)
             e.left.write-value(e.left-val);
-            `.out.printf(" - ");
+            .out.printf(" - ");
             e.right.write-value(e.right-val);
             {do{+i = 0}{(e.item-c) i++}
-               `.out.printf(" - ");
+               .out.printf(" - ");
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
          }
          {case(#mul)
             e.left.write-value(e.left-val);
-            `.out.printf(" * ");
+            .out.printf(" * ");
             e.right.write-value(e.right-val);
             {do{+i = 0}{(e.item-c) i++}
-               `.out.printf(" * ");
+               .out.printf(" * ");
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
          }
          {case(#div)
             e.left.write-value(e.left-val);
-            `.out.printf(" / ");
+            .out.printf(" / ");
             e.right.write-value(e.right-val);
             {do{+i = 0}{(e.item-c) i++}
-               `.out.printf(" / ");
+               .out.printf(" / ");
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
          }
          {case(#lshift)
             e.left.write-value(e.left-val);
-            `.out.printf(" << ");
+            .out.printf(" << ");
             e.right.write-value(e.right-val);
          }
          {case(#rshift)
             e.left.write-value(e.left-val);
-            `.out.printf(" >> ");
+            .out.printf(" >> ");
             e.right.write-value(e.right-val);
          }
          {case(#and)
             e.left.write-value(e.left-val);
-            `.out.printf(" & ");
+            .out.printf(" & ");
             e.right.write-value(e.right-val);
             {do{+i = 0}{(e.item-c) i++}
-               `.out.printf(" & ");
+               .out.printf(" & ");
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
          }
          {case(#or)
             e.left.write-value(e.left-val);
-            `.out.printf(" | ");
+            .out.printf(" | ");
             e.right.write-value(e.right-val);
             {do{+i = 0}{(e.item-c) i++}
-               `.out.printf(" | ");
+               .out.printf(" | ");
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
          }
          {case(#xor)
             e.left.write-value(e.left-val);
-            `.out.printf(" ^ ");
+            .out.printf(" ^ ");
             e.right.write-value(e.right-val);
             {do{+i = 0}{(e.item-c) i++}
-               `.out.printf(" ^ ");
+               .out.printf(" ^ ");
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
          }

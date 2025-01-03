@@ -20,7 +20,7 @@
             lvar.decl.type-info.init();
             lvar.decl.type-info.copy-from(v.info);
          }{else
-            'c.out.printf("%s:%u:%u: Variable '%s' doesn't have a type or a value\n", `.ctx-func.file.path(), lvar.row, lvar.col, lvar.decl.name.str());
+            'c.out.printf("%s:%u:%u: Variable '%s' doesn't have a type or a value\n", .ctx-func.file.path(), lvar.row, lvar.col, lvar.decl.name.str());
             :return :false;
          }
          :return :true;

@@ -19,20 +19,20 @@
    {rd-do(space`:stmt-space, r`:rdr) @case.rd() @inline
       `.quick-alloc-one(+(s`:stmt-do));
       s.expr.rd(r);
-      space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #do);
+      space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #do);
       {if(r.b())
          `.quick-alloc-one(+(space2`:stmt-space));
          s.continue = space2;
          space2.rd(r, space);
       }
-      `.nest-stack-id-v[`.nest-stack-c] = `.nest-id++;
-      `.nest-stack-ptr-v[`.nest-stack-c].do = s;
-      `.nest-stack-c++;
+      .nest-stack-id-v[.nest-stack-c] = .nest-id++;
+      .nest-stack-ptr-v[.nest-stack-c].do = s;
+      .nest-stack-c++;
    }
    {wr-do-end(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
    }
    {rd-do-end(space`:stmt-space, r`:rdr) @case.rd() @inline
-      +do = `.nest-stack-ptr-v[`.nest-stack-c -= 1].do;
+      +do = .nest-stack-ptr-v[.nest-stack-c -= 1].do;
       `.quick-alloc-one(+(s`:stmt-do-end));
       s.do = do;
       do.end = s;
@@ -42,15 +42,15 @@
 {at(:stmt)
    {write-do(stmt`:stmt) @case.write() @inline
       {+s`:stmt-do = stmt}
-      `.nest-stack-id-v[`.nest-stack-c] = `.nest-id++;
-      `.nest-stack-ptr-v[`.nest-stack-c].do = s;
-      `.nest-stack-c++;
+      .nest-stack-id-v[.nest-stack-c] = .nest-id++;
+      .nest-stack-ptr-v[.nest-stack-c].do = s;
+      .nest-stack-c++;
       {if(s.expr == #nil)
-         `.out.printf("while(1) {\n");
+         .out.printf("while(1) {\n");
       }{else
-         `.out.printf("for(int i = ");
+         .out.printf("for(int i = ");
          s.expr.write();
-         `.out.printf("; i > 0; ) {\ni --;\n");
+         .out.printf("; i > 0; ) {\ni --;\n");
       }
    }
    {process-do(stmt`:stmt, ok:bool&) @case.process() @inline
@@ -63,14 +63,14 @@
       ok = :true;
    }
    {write-do-end(stmt`:stmt) @case.write() @inline
-      +id = `.nest-stack-id-v[`.nest-stack-c -= 1];
+      +id = .nest-stack-id-v[.nest-stack-c -= 1];
       {+s`:stmt-do-end = stmt}
-      `.out.printf("continue_%u:;\n", id);
+      .out.printf("continue_%u:;\n", id);
       +continue = s.do.continue;
       {if(continue != :null)
          continue.write();
       }
-      `.out.printf("}\nbreak_%u:;\n", id);
+      .out.printf("}\nbreak_%u:;\n", id);
    }
    {process-do-end(stmt`:stmt, ok:bool&) @case.process() @inline
       {+s`:stmt-do-end = stmt}

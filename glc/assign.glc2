@@ -30,34 +30,34 @@
       e.left.write-value(e.left-val);
       {switch(e.type)
          {case(#eq)
-            `.out.printf(" = ");
+            .out.printf(" = ");
          }
          {case(#plus-eq)
-            `.out.printf(" += ");
+            .out.printf(" += ");
          }
          {case(#minus-eq)
-            `.out.printf(" -= ");
+            .out.printf(" -= ");
          }
          {case(#mul-eq)
-            `.out.printf(" *= ");
+            .out.printf(" *= ");
          }
          {case(#div-eq)
-            `.out.printf(" /= ");
+            .out.printf(" /= ");
          }
          {case(#lshift-eq)
-            `.out.printf(" <<= ");
+            .out.printf(" <<= ");
          }
          {case(#rshift-eq)
-            `.out.printf(" >>= ");
+            .out.printf(" >>= ");
          }
          {case(#and-eq)
-            `.out.printf(" &= ");
+            .out.printf(" &= ");
          }
          {case(#or-eq)
-            `.out.printf(" |= ");
+            .out.printf(" |= ");
          }
          {case(#xor-eq)
-            `.out.printf(" ^= ");
+            .out.printf(" ^= ");
          }
       }
       e.right.write-value(e.right-val);

@@ -140,7 +140,6 @@
 #define _Mglc_Eunary_Cdec (_Mglc_Eunary_Cinc + 1)
 #define _Mglc_Ebools_Cand 0
 #define _Mglc_Ebools_Cor (_Mglc_Ebools_Cand + 1)
-#define _Mglc_Egvar_Cnil (-1)
 #define _Mglc_Efunc_flags_Cvar_args (8)
 #define _Mglc_Elvar_flags_Cprocessed (2)
 #define _Mglc_Egvar_flags_Cno_decl (1)
@@ -3811,36 +3810,56 @@ void _Mglc_Eexpr_Prd_gvar_2(_Mglc_Eexpr _Le_idx_0, union _Mglc_Srdr* _Lr_1) {
 struct _Mglc_Sexpr_gvar* _Le_2;
 _Mglc_Eat _Lat_idx_3;
 _Mglc_Eid _Lname_4;
-struct _Mglc_Sat* _Lat_5;
-_Mglc_Egvar _Lfound_6;
+bool _Ltry_more_5;
+struct _Mglc_Sat* _Lat_6;
 _Mglc_Pquick_alloc_one_1(_Le_2);
 _Mglc_Eexpr_Pset_3(_Le_idx_0, &(*_Le_2)._Fbase, _Mglc_Eexpr_type_Cgvar);
 _Mglc_Eat_Prd_2(&_Lat_idx_3, _Lr_1);
 _Mglc_Eid_Prd_2(&_Lname_4, _Lr_1);
+_Ltry_more_5 = false;
 if(_Lat_idx_3 == _Mglc_Eat_Cnil) {
 _Lat_idx_3 = (*_Gctx_func)._Fat;
+_Ltry_more_5 = true;
 }
-_Lat_5 = _Mglc_Eat_Pptr_1(_Lat_idx_3);
-_Lfound_6 = _Mglc_Egvar_Cnil;
+_Lat_6 = _Mglc_Eat_Pptr_1(_Lat_idx_3);
 int32_t _Li_7;
 _Li_7 = 0;
-for(int i = (*_Lat_5)._Fgvar_c; i > 0; ) {
+for(int i = (*_Lat_6)._Fgvar_c; i > 0; ) {
 i --;
 _Mglc_Egvar _Lgvar_8;
-_Lgvar_8 = (*_Lat_5)._Fgvar_v[_Li_7];
+_Lgvar_8 = (*_Lat_6)._Fgvar_v[_Li_7];
 if((*_Mglc_Egvar_Pptr_1(_Lgvar_8))._Fdecl._Fname == _Lname_4) {
-_Lfound_6 = _Lgvar_8;
-goto break_0;
+(*_Le_2)._Fgvar = _Lgvar_8;
+return;
 }
 continue_0:;
 _Li_7++;
 }
 break_0:;
-if(_Lfound_6 == _Mglc_Egvar_Cnil) {
+if(_Ltry_more_5) {
+while(_Lat_idx_3 != _Mglc_Eat_Croot) {
+_Lat_idx_3 = (*_Lat_6)._Fparent;
+_Lat_6 = _Mglc_Eat_Pptr_1(_Lat_idx_3);
+int32_t _Li_9;
+_Li_9 = 0;
+for(int i = (*_Lat_6)._Fgvar_c; i > 0; ) {
+i --;
+_Mglc_Egvar _Lgvar_10;
+_Lgvar_10 = (*_Lat_6)._Fgvar_v[_Li_9];
+if((*_Mglc_Egvar_Pptr_1(_Lgvar_10))._Fdecl._Fname == _Lname_4) {
+(*_Le_2)._Fgvar = _Lgvar_10;
+return;
+}
+continue_2:;
+_Li_9++;
+}
+break_2:;
+continue_1:;
+}
+break_1:;
+}
 fprintf(stdout, "%s:%u:%u - %u:%u: Cannot find gvar '.%s'\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lname_4));
 exit(_Mstdc_Eexit_Cfailure);
-}
-(*_Le_2)._Fgvar = _Lfound_6;
 }
 void _Mglc_Eexpr_Prd_cvar_2(_Mglc_Eexpr _Le_idx_0, union _Mglc_Srdr* _Lr_1) {
 struct _Mglc_Sexpr_cvar* _Le_2;

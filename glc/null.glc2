@@ -15,10 +15,10 @@
    }
    {write-null(expr`:expr) @case.write() @inline
       {+e`:expr-null = expr}
-      `.out.printf("NULL");
+      .out.printf("NULL");
    }
    {process-null(expr`:expr, ok:bool&) @case.process() @inline
-      `.include-stddef = :true;
+      .include-stddef = :true;
       ok = :true;
    }
    {type-null(expr`:expr, at`\at&) @case.type() @inline

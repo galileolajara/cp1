@@ -7,7 +7,7 @@
       {if(idx == #nil)
          c = #nil;
       }{else
-         c = `.cvar-table[idx];
+         c = .cvar-table[idx];
       }
    }
    {wr(g:this, w`:wtr) @inline
@@ -17,8 +17,8 @@
       +num = c:num;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((`.cvar-is-outputted[n3] & n17) != 0) :return :true}
-      `.cvar-is-outputted[n3] |= n17;
+      {if((.cvar-is-outputted[n3] & n17) != 0) :return :true}
+      .cvar-is-outputted[n3] |= n17;
 
       +cvar = c.ptr();
 
@@ -39,21 +39,21 @@
       }
 
       `` {if((gvar.flags & #no-decl) == #0)
-         `.cvar-outputted-v[`.cvar-outputted-c++] = c;
+         .cvar-outputted-v[.cvar-outputted-c++] = c;
       `` }
       
       :return :true;
    }
    {ptr(c:this)`:cvar @inline
-      :return `.cvar-v[c];
+      :return .cvar-v[c];
    }
    {write(c:this) @inline
       +cvar = c.ptr();
       {if((cvar.decl.flags & #real-name) != #0)
-         `.out.printf("%s", cvar.decl.real-name.str());
+         .out.printf("%s", cvar.decl.real-name.str());
       }{else
          cvar.at.write-space();
-         `.out.printf("_C%s", cvar.decl.name.c-name());
+         .out.printf("_C%s", cvar.decl.name.c-name());
       }
    }
 }
@@ -135,7 +135,7 @@
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
       }{else
-         +at = `.ctx-func.at.ptr();
+         +at = .ctx-func.at.ptr();
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
       }
@@ -149,7 +149,7 @@
          }
       }
       'c.out.printf("%s:%u:%u - %u:%u: Cannot find #%s\n",
-         `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, name.str());
+         .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, name.str());
    }
    {try-deduce-cvar(expr`:expr, at`\at) @case.try-deduce() @inline
       {+e`:expr-cvar = expr}

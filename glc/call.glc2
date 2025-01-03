@@ -69,14 +69,14 @@
       {+e`:expr-method = expr}
       +f = e.func-idx.ptr();
       f.write();
-      `.out.printf("(");
+      .out.printf("(");
       +first = :true;
       +i = 0;
       {do{(f.this-idx) i++}
          {if(first)
             first = :false;
          }{else
-            `.out.printf(", ");
+            .out.printf(", ");
          }
          +ca = e.carg-v[i];
          ca.expr.write-value(ca.value);
@@ -84,15 +84,15 @@
       {if(first)
          first = :false;
       }{else
-         `.out.printf(", ");
+         .out.printf(", ");
       }
       e.this.write-value(e.this-value);
       {do{(e.carg-c - f.this-idx) i++}
-         `.out.printf(", ");
+         .out.printf(", ");
          +ca = e.carg-v[i];
          ca.expr.write-value(ca.value);
       }
-      `.out.printf(")");
+      .out.printf(")");
    }
    {wr-method(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-method = expr}
@@ -138,13 +138,13 @@
       +carg-c1 = carg-c + 1;
       +at-idx = e.this.type();
       {if(at-idx == #nil)
-         'c.out.printf("%s:%u:%u - %u:%u: Cannot call method :%s on a value without a type\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, func-name.str());
+         'c.out.printf("%s:%u:%u - %u:%u: Cannot call method :%s on a value without a type\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str());
          :return;
       }
       +at = at-idx.ptr();
       {+method-c, method-v}
       {if(at.type == #basic)
-         +t = `.basic-type[at.name.basic];
+         +t = .basic-type[at.name.basic];
          method-c = t.method-c;
          method-v = t.method-v;
       }{else
@@ -154,7 +154,7 @@
             }{else
                c = ''\\;
             }
-            'c.out.printf("%s:%u:%u - %u:%u: Cannot call method :%s because the type %c%s is not defined\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, func-name.str(), c, at.name.id.str());
+            'c.out.printf("%s:%u:%u - %u:%u: Cannot call method :%s because the type %c%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), c, at.name.id.str());
             :return;
          }
          {if(at.type == #struct)
@@ -249,12 +249,12 @@
          ok = :true;
          :return;
       }
-      'c.out.printf("%s:%u:%u - %u:%u: Cannot find method :%s with %u argument:s\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, func-name.str(), carg-c);
+      'c.out.printf("%s:%u:%u - %u:%u: Cannot find method :%s with %u argument:s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
       {if(found != -1)
          'c.out.printf("But found %u functions with different no. of argument:s:\n", similar-c);
          {do{+i = 0}{(at.func-c) i++}
             +f-idx = at.func-v[i];
-            +f = `.func-v[f-idx];
+            +f = .func-v[f-idx];
             {if(f.decl.name == func-name)
                'c.out.printf("- :%s with %u args\n", func-name.str(), f.farg-c);
             }
@@ -265,14 +265,14 @@
       {+e`:expr-func = expr}
       +f = e.func-idx.ptr();
       f.write();
-      `.out.printf("(");
+      .out.printf("(");
       {do{+i = 0}{(e.carg-c) i++}
          {if(i != 0)
-            `.out.printf(", ");
+            .out.printf(", ");
          }
          e.carg-v[i].expr.write-value(e.carg-v[i].value);
       }
-      `.out.printf(")");
+      .out.printf(")");
    }
    {wr-func(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-func = expr}
@@ -318,7 +318,7 @@
       +group-v = e.group-v;
       +at-idx = e.at;
       {if(at-idx == #nil)
-         ++at = `.ctx-func.at.ptr();
+         ++at = .ctx-func.at.ptr();
       }{else
          at = at-idx.ptr();
       }
@@ -328,7 +328,7 @@
          }{else
             c = ''\\;
          }
-         'c.out.printf("%s:%u:%u - %u:%u: Cannot call function :%s because the type %c%s is not defined\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, func-name.str(), c, at.name.id.str());
+         'c.out.printf("%s:%u:%u - %u:%u: Cannot call function :%s because the type %c%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), c, at.name.id.str());
          :return;
       }
       +found = -1;
@@ -389,12 +389,12 @@
          ok = :true;
          :return;
       }
-      'c.out.printf("%s:%u:%u - %u:%u: Cannot find function :%s with %u argument:s\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, func-name.str(), carg-c);
+      'c.out.printf("%s:%u:%u - %u:%u: Cannot find function :%s with %u argument:s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
       {if(found != -1)
          'c.out.printf("But found %u functions with different no. of argument:s:\n", similar-c);
          {do{+i = 0}{(at.func-c) i++}
             +f-idx = at.func-v[i];
-            +f = `.func-v[f-idx];
+            +f = .func-v[f-idx];
             {if(f.decl.name == func-name)
                'c.out.printf("- :%s with %u args\n", func-name.str(), f.farg-c);
             }
@@ -407,7 +407,7 @@
       +carg-c = e.carg-c;
       +group-c = e.group-c;
       +group-v = e.group-v;
-      +at = `.ctx-func.at.ptr();
+      +at = .ctx-func.at.ptr();
       f-idx.process-later();
       +f = f-idx.ptr();
       +j = 0;

@@ -128,7 +128,7 @@
          `` .out.putc(''\");
          n = n.next;
          {if(n == :null) {break}}
-         `.out.putc(''\n);
+         .out.putc(''\n);
       }
    }
    {value-str(s:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline

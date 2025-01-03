@@ -8,14 +8,14 @@
       f = (r.n() - #1)`\func;
    }
    {ptr(f:this)`:enum @inline
-      :return `.enum-v[f];
+      :return .enum-v[f];
    }
    {output(e-i:this)
       +num = e-i:num;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((`.enum-is-outputted[n3] & n17) != 0) :return}
-      `.enum-is-outputted[n3] |= n17;
+      {if((.enum-is-outputted[n3] & n17) != 0) :return}
+      .enum-is-outputted[n3] |= n17;
       +e = e-i.ptr();
 
       e.base-type.output(e.file, e.begin-row, e.begin-col);
@@ -25,7 +25,7 @@
       }
 
       `` {if((e.flags & #no-decl) == #0)
-         `.enum-outputted-v[`.enum-outputted-c++] = e-i;
+         .enum-outputted-v[.enum-outputted-c++] = e-i;
       `` }
    }
 }

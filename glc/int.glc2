@@ -22,7 +22,7 @@
    }
    {write-int(expr`:expr) @case.write() @inline
       {+e`:expr-int = expr}
-      `.out.printf("%d", e.value);
+      .out.printf("%d", e.value);
    }
    {process-int(expr`:expr, ok:bool&) @case.process() @inline
       ok = :true;

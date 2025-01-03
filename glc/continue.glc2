@@ -24,13 +24,13 @@
    {rd-continue(space`:stmt-space, r`:rdr) @case.rd() @inline
       `.quick-alloc-one(+(s`:stmt-continue));
       s.nest = r.n1();
-      space.stmt-push(s.base, `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, #continue);
+      space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #continue);
    }
 }
 {at(:stmt)
    {write-continue(stmt`:stmt) @case.write() @inline
       {+s`:stmt-continue = stmt}
-      `.out.printf("goto continue_%u;\n", `.nest-stack-id-v[s.nest]);
+      .out.printf("goto continue_%u;\n", .nest-stack-id-v[s.nest]);
    }
    {process-continue(stmt`:stmt, ok:bool&) @case.process() @inline
       {+s`:stmt-continue = stmt}

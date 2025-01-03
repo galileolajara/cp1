@@ -31,16 +31,16 @@
       {+e`:expr-unary = expr}
       {switch(e.type)
          {case(#neg)
-            `.out.printf("-");
+            .out.printf("-");
             e.expr.write-value(e.val);
          }
          {case(#inc)
             e.expr.write-value(e.val);
-            `.out.printf("++");
+            .out.printf("++");
          }
          {case(#dec)
             e.expr.write-value(e.val);
-            `.out.printf("--");
+            .out.printf("--");
          }
       }
    }

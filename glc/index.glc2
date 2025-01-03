@@ -19,9 +19,9 @@
    {write-index(expr`:expr) @case.write() @inline
       {+e`:expr-index = expr}
       e.left.write-value(e.left-val);
-      `.out.printf("[");
+      .out.printf("[");
       e.right.write-value(e.right-val);
-      `.out.printf("]");
+      .out.printf("]");
    }
    {rd-index(e-idx`\expr, r`:rdr) @case.rd() @inline
       `.quick-alloc-one(+(e`:expr-index));

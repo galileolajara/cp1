@@ -55,28 +55,28 @@
       {+e`:expr-bools = expr}
       {switch(e.type)
          {case(#and)
-            `.out.printf("(");
+            .out.printf("(");
             e.left.write-value(e.left-val);
-            `.out.printf(" && ");
+            .out.printf(" && ");
             e.right.write-value(e.right-val);
             {do{+i = 0}{(e.item-c) i++}
-               `.out.printf(" && ");
+               .out.printf(" && ");
                +item = e.item-v[i];
                item.expr.write-value(item.val);
             }
-            `.out.printf(")");
+            .out.printf(")");
          }
          {case(#or)
-            `.out.printf("(");
+            .out.printf("(");
             e.left.write-value(e.left-val);
-            `.out.printf(" || ");
+            .out.printf(" || ");
             e.right.write-value(e.right-val);
             {do{+i = 0}{(e.item-c) i++}
-               `.out.printf(" || ");
+               .out.printf(" || ");
                +item = e.item-v[i];
                item.expr.write-value(item.val);
             }
-            `.out.printf(")");
+            .out.printf(")");
          }
       }
    }

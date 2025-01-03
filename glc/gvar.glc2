@@ -7,8 +7,8 @@
       +num = g:num;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((`.gvar-is-outputted[n3] & n17) != 0) :return :true}
-      `.gvar-is-outputted[n3] |= n17;
+      {if((.gvar-is-outputted[n3] & n17) != 0) :return :true}
+      .gvar-is-outputted[n3] |= n17;
 
       +gvar = g.ptr();
       +at-i = gvar.decl.type;
@@ -22,7 +22,7 @@
       {if!(gvar.decl.process(gvar.row, gvar.col)) :return :false}
 
       {if((gvar.flags & #no-decl) == #0)
-         `.gvar-outputted-v[`.gvar-outputted-c++] = g;
+         .gvar-outputted-v[.gvar-outputted-c++] = g;
       }
       
       :return :true;
@@ -41,7 +41,7 @@
    ``    .out.printf("_G%s", gvar.decl.name.c-name());
    `` }
    {ptr(g:this)`:decl-gvar @inline
-      :return `.gvar-v[g];
+      :return .gvar-v[g];
    }
 }
 {expr-gvar(at\at, name\id)\expr
@@ -76,23 +76,34 @@
       e-idx.set(e.base, #gvar);
       `\at.rd(+at-idx, r);
       `\id.rd(+name, r);
+      +try-more = :false;
       {if(at-idx == #nil)
-         at-idx = `.ctx-func.at;
+         at-idx = .ctx-func.at;
+         try-more = :true;
       }
       +at = at-idx.ptr();
-      +found = `\gvar#nil;
       {do{+i = 0}{(at.gvar-c) i++}
          +gvar = at.gvar-v[i];
          {if(gvar.ptr().decl.name == name)
-            found = gvar;
-            {break}
+            e.gvar = gvar;
+            :return;
          }
       }
-      {if(found == #nil)
-         'c.out.printf("%s:%u:%u - %u:%u: Cannot find gvar '.%s'\n", `.ctx-func.file.path(), `.ctx-begin-row, `.ctx-begin-col, `.ctx-end-row, `.ctx-end-col, name.str());
-         'c.exit(#failure);
+      {if(try-more)
+         {while(at-idx != #root)
+            at-idx = at.parent;
+            at = at-idx.ptr();
+            {do{+i = 0}{(at.gvar-c) i++}
+               +gvar = at.gvar-v[i];
+               {if(gvar.ptr().decl.name == name)
+                  e.gvar = gvar;
+                  :return;
+               }
+            }
+         }
       }
-      e.gvar = found;
+      'c.out.printf("%s:%u:%u - %u:%u: Cannot find gvar '.%s'\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, name.str());
+      'c.exit(#failure);
    }
    {write-gvar(expr`:expr) @case.write() @inline
       {+e`:expr-gvar = expr}

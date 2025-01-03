@@ -9,7 +9,7 @@
       f = (r.n() - #1)`\func;
    }
    {ptr(f:this)`:decl-func @inline
-      :return `.func-v[f];
+      :return .func-v[f];
    }
 }
 {\func-flags(
@@ -40,12 +40,12 @@
 {at(:decl-func)
    {write(f:this)
       {if((f.flags & #real-name) != #0)
-         `.out.printf("%s", f.real-name.str());
+         .out.printf("%s", f.real-name.str());
       }{else
          f.at.write-space();
-         `.out.printf("_P%s", f.decl.name.c-name());
+         .out.printf("_P%s", f.decl.name.c-name());
          {do{+i = 0}{(f.group-c) i++}
-            `.out.printf("_%u", f.group-v[i]);
+            .out.printf("_%u", f.group-v[i]);
          }
       }
    }

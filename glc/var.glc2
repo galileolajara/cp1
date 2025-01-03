@@ -13,10 +13,10 @@
       +at-i = vd.type;
       +at = at-i.ptr();
       {if(&&, at.type != #basic, at.decl.struct == #nil)
-         'c.out.printf("%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", `.ctx-func.file.path(), row, col, at.name.id.str(), vd.name.str());
+         'c.out.printf("%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", .ctx-func.file.path(), row, col, at.name.id.str(), vd.name.str());
          :return :false;
       }
-      at-i.output(`.ctx-func.file, row, col);
+      at-i.output(.ctx-func.file, row, col);
       {if!(at-i.finalize(vd.type-info, row, col)) :return :false}
       {do{+i = 0}{(vd.size-c) i++}
          {if!(vd.size-expr-v[i].value(1, :false, vd.size-value-v[i])) :return :false}
@@ -25,45 +25,45 @@
    }
    {write(vd:this, var-type`\decl-var-type)
       {if((vd.flags & #real-name) != #0)
-         `.out.printf("%s", vd.real-name.str());
+         .out.printf("%s", vd.real-name.str());
          :return;
       }
       {switch(var-type)
          {case(#gvar)
-            `.out.printf("_G%s", vd.name.c-name());
+            .out.printf("_G%s", vd.name.c-name());
          }
          {case(#fvar)
-            `.out.printf("_F%s", vd.name.c-name());
+            .out.printf("_F%s", vd.name.c-name());
          }
       }
    }
    {write-lvar(vd:this, lvar`\lvar)
-      `.out.printf("_L%s_%u", vd.name.c-name(), lvar);
+      .out.printf("_L%s_%u", vd.name.c-name(), lvar);
    }
    {write-type(vd:this, var-type`\decl-var-type)
       {if(vd.type-info.const)
-         `.out.printf("const ");
+         .out.printf("const ");
       }
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
-      `.out.printf(" ");
+      .out.printf(" ");
       vd.write(var-type);
       {do{+i = 0}{(vd.size-c) i++}
-         `.out.printf("[");
+         .out.printf("[");
          vd.size-expr-v[i].write-value(vd.size-value-v[i]);
-         `.out.printf("]");
+         .out.printf("]");
       }
    }
    {write-lvar-type(vd:this, lvar`\lvar)
       {if(vd.type-info.const)
-         `.out.printf("const ");
+         .out.printf("const ");
       }
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
-      `.out.printf(" ");
+      .out.printf(" ");
       vd.write-lvar(lvar);
       {do{+i = 0}{(vd.size-c) i++}
-         `.out.printf("[");
+         .out.printf("[");
          vd.size-expr-v[i].write-value(vd.size-value-v[i]);
-         `.out.printf("]");
+         .out.printf("]");
       }
    }
    {wr(vd:this, w`:wtr, header:bool)

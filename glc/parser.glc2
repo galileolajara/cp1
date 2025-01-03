@@ -255,7 +255,7 @@
       r-cursor.ref = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
       {if(length > 12)
-         'c.out.printf("%s:%u:%u: Integer literal was too long\n", `.input-path, `.row, `.col);
+         'c.out.printf("%s:%u:%u: Integer literal was too long\n", .input-path, .row, .col);
          'c.exit(#failure);
       }
       +val = 0:lnum;
@@ -264,7 +264,7 @@
          r-start.pos++;
       }
       {if(val > 4294967295)
-         'c.out.printf("%s:%u:%u: Integer literal was out of bounds\n", `.input-path, `.row, `.col);
+         'c.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
          'c.exit(#failure);
       }
       :return val:num;
@@ -276,7 +276,7 @@
       r-cursor.ref = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
       {if(length > 10)
-         'c.out.printf("%s:%u:%u: Integer literal was too long\n", `.input-path, `.row, `.col);
+         'c.out.printf("%s:%u:%u: Integer literal was too long\n", .input-path, .row, .col);
          'c.exit(#failure);
       }
       +val = 0:lnum;
@@ -285,7 +285,7 @@
          r-start.pos++;
       }
       {if(val > 4294967295)
-         'c.out.printf("%s:%u:%u: Integer literal was out of bounds\n", `.input-path, `.row, `.col);
+         'c.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
          'c.exit(#failure);
       }
       :return val:num;
@@ -302,45 +302,45 @@
          'c.exit(#failure);
       }
       +len = length:tnum;
-      +found = `.id-map.get-or-insert(r-start.ref, len, `.id-c);
+      +found = .id-map.get-or-insert(r-start.ref, len, .id-c);
       {if(found == -1)
          `` inserted
-         +id = `.id-c++;
-         {if(`.id-cap <= `.id-c)
-            +old-cap = `.id-cap;
-            `.grow(`.id-cap, `.id-c);
-            `.realloc(`.id-str-v, `.id-cap, old-cap);
-            `.realloc(`.id-len-v, `.id-cap, old-cap);
+         +id = .id-c++;
+         {if(.id-cap <= .id-c)
+            +old-cap = .id-cap;
+            `.grow(.id-cap, .id-c);
+            `.realloc(.id-str-v, .id-cap, old-cap);
+            `.realloc(.id-len-v, .id-cap, old-cap);
          }
          {+text:char[] = `.quick-alloc(len + 1)}
          'c.memcpy(text, r-start.ref, len);
          text[len] = 0;
-         `.id-str-v[id] = text;
-         `.id-len-v[id] = len;
+         .id-str-v[id] = text;
+         .id-len-v[id] = len;
          :return id;
       }{else
          `` found
          :return found;
       }
-      `` {do{+i = 0}{(`.id-c) i++}
-      ``    {if(`.id-len-v[i] == len)
-      ``       {if('c.memcmp(`.id-str-v[i], r-start.ref, len) == 0)
+      `` {do{+i = 0}{(.id-c) i++}
+      ``    {if(.id-len-v[i] == len)
+      ``       {if('c.memcmp(.id-str-v[i], r-start.ref, len) == 0)
       ``          :return i;
       ``       }
       ``    }
       `` }
-      `` +id = `.id-c++;
-      `` {if(`.id-cap <= `.id-c)
-      ``    +old-cap = `.id-cap;
-      ``    `.grow(`.id-cap, `.id-c);
-      ``    `.realloc(`.id-str-v, `.id-cap, old-cap);
-      ``    `.realloc(`.id-len-v, `.id-cap, old-cap);
+      `` +id = .id-c++;
+      `` {if(.id-cap <= .id-c)
+      ``    +old-cap = .id-cap;
+      ``    `.grow(.id-cap, .id-c);
+      ``    `.realloc(.id-str-v, .id-cap, old-cap);
+      ``    `.realloc(.id-len-v, .id-cap, old-cap);
       `` }
       `` {+text:char[] = `.quick-alloc(len + 1)}
       `` 'c.memcpy(text, r-start.ref, len);
       `` text[len] = 0;
-      `` `.id-str-v[id] = text;
-      `` `.id-len-v[id] = len;
+      `` .id-str-v[id] = text;
+      `` .id-len-v[id] = len;
       `` :return id;
    }
    {get-include(lex:this):int
@@ -355,45 +355,45 @@
          'c.exit(#failure);
       }
       +len = length:tnum;
-      +found = `.include-map.get-or-insert(r-start.ref, len, `.include-c);
+      +found = .include-map.get-or-insert(r-start.ref, len, .include-c);
       {if(found == -1)
          `` inserted
-         +include = `.include-c++;
-         {if(`.include-cap <= `.include-c)
-            +old-cap = `.include-cap;
-            `.grow(`.include-cap, `.include-c);
-            `.realloc(`.include-str-v, `.include-cap, old-cap);
-            `.realloc(`.include-len-v, `.include-cap, old-cap);
+         +include = .include-c++;
+         {if(.include-cap <= .include-c)
+            +old-cap = .include-cap;
+            `.grow(.include-cap, .include-c);
+            `.realloc(.include-str-v, .include-cap, old-cap);
+            `.realloc(.include-len-v, .include-cap, old-cap);
          }
          {+text:char[] = `.quick-alloc(len + 1)}
          'c.memcpy(text, r-start.ref, len);
          text[len] = 0;
-         `.include-str-v[include] = text;
-         `.include-len-v[include] = len;
+         .include-str-v[include] = text;
+         .include-len-v[include] = len;
          :return include;
       }{else
          `` found
          :return found;
       }
-      `` {do{+i = 0}{(`.include-c) i++}
-      ``    {if(`.include-len-v[i] == len)
-      ``       {if('c.memcmp(`.include-str-v[i], r-start.ref, len) == 0)
+      `` {do{+i = 0}{(.include-c) i++}
+      ``    {if(.include-len-v[i] == len)
+      ``       {if('c.memcmp(.include-str-v[i], r-start.ref, len) == 0)
       ``          :return i;
       ``       }
       ``    }
       `` }
-      `` +include = `.include-c++;
-      `` {if(`.include-cap <= `.include-c)
-      ``    +old-cap = `.include-cap;
-      ``    `.grow(`.include-cap, `.include-c);
-      ``    `.realloc(`.include-str-v, `.include-cap, old-cap);
-      ``    `.realloc(`.include-len-v, `.include-cap, old-cap);
+      `` +include = .include-c++;
+      `` {if(.include-cap <= .include-c)
+      ``    +old-cap = .include-cap;
+      ``    `.grow(.include-cap, .include-c);
+      ``    `.realloc(.include-str-v, .include-cap, old-cap);
+      ``    `.realloc(.include-len-v, .include-cap, old-cap);
       `` }
       `` {+text:char[] = `.quick-alloc(len + 1)}
       `` 'c.memcpy(text, r-start.ref, len);
       `` text[len] = 0;
-      `` `.include-str-v[include] = text;
-      `` `.include-len-v[include] = len;
+      `` .include-str-v[include] = text;
+      `` .include-len-v[include] = len;
       `` :return include;
    }
 }

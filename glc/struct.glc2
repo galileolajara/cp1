@@ -9,14 +9,14 @@
       s = (r.n() - #1)`\func;
    }
    {ptr(s:this)`:struct @inline
-      :return `.struct-v[s];
+      :return .struct-v[s];
    }
    {output(s-i:this)
       +num = s-i:num;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((`.struct-is-outputted[n3] & n17) != 0) :return}
-      `.struct-is-outputted[n3] |= n17;
+      {if((.struct-is-outputted[n3] & n17) != 0) :return}
+      .struct-is-outputted[n3] |= n17;
       +s = s-i.ptr();
 
       +row = s.begin-row;
@@ -32,7 +32,7 @@
       }
 
       {if((s.flags & #no-decl) == #0)
-         `.struct-outputted-v[`.struct-outputted-c++] = s-i;
+         .struct-outputted-v[.struct-outputted-c++] = s-i;
       }
    }
 }

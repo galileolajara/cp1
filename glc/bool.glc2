@@ -19,13 +19,13 @@
    {write-bool(expr`:expr) @case.write() @inline
       {+e`:expr-bool = expr}
       {if(e.value)
-         `.out.printf("true");
+         .out.printf("true");
       }{else
-         `.out.printf("false");
+         .out.printf("false");
       }
    }
    {process-bool(expr`:expr, ok:bool&) @case.process() @inline
-      `.include-stdbool = :true;
+      .include-stdbool = :true;
       ok = :true;
    }
    {type-bool(expr`:expr, at`\at&) @case.type() @inline

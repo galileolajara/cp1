@@ -34,19 +34,19 @@
    }
    {process(s:this):bool
       +ok = :false;
-      `.ctx-begin-row = s.begin-row;
-      `.ctx-begin-col = s.begin-col;
-      `.ctx-end-row = s.end-row;
-      `.ctx-end-col = s.end-col;
+      .ctx-begin-row = s.begin-row;
+      .ctx-begin-col = s.begin-col;
+      .ctx-end-row = s.end-row;
+      .ctx-end-col = s.end-col;
       {switch(s.type).process(s, ok)
          {default
             'c.out.printf("%s:%u:%u - %u:%u: process() is not implemented in statement #%s\n",
-            `.ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.glc-name());
+            .ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.glc-name());
          }
       }
       {if!(ok)
          'c.out.printf("%s:%u:%u - %u:%u: Processing of statement #%s failed\n",
-            `.ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.glc-name());
+            .ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.glc-name());
       }
       :return ok;
    }

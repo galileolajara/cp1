@@ -18,13 +18,13 @@
    }
    {write-size-of-type(expr`:expr) @case.write() @inline
       {+e`:expr-size-of-type = expr}
-      `.out.printf("sizeof(");
+      .out.printf("sizeof(");
       e.type.write();
-      `.out.printf(")");
+      .out.printf(")");
    }
    {process-size-of-type(expr`:expr, ok:bool&) @case.process() @inline
       {+e`:expr-size-of-type = expr}
-      e.type.output(`.ctx-func.file, `.ctx-begin-row, `.ctx-begin-col);
+      e.type.output(.ctx-func.file, .ctx-begin-row, .ctx-begin-col);
       ok = :true;
    }
    {type-size-of-type(expr`:expr, at`\at&) @case.type() @inline

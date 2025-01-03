@@ -9,11 +9,11 @@
 }
 {at(:expr-cast-fast)
    {write-value(e:this, v`:value) @inline
-      `.out.printf("(");
+      .out.printf("(");
       e.type.write-type-info(v.info, 0);
-      `.out.printf(")(");
+      .out.printf(")(");
       e.expr.write-value(e.val);
-      `.out.printf(")");
+      .out.printf(")");
    }
 }
 {at(\expr)
@@ -43,7 +43,7 @@
 		{if!(e.expr.value(1, :false, e.val))
 			:return;
       }
-      e.type.output(`.ctx-func.file, `.ctx-begin-row, `.ctx-begin-col);
+      e.type.output(.ctx-func.file, .ctx-begin-row, .ctx-begin-col);
       ok = :true;
    }
 }
