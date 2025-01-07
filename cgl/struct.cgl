@@ -6,7 +6,7 @@
       w.n(s + #1);
    }
    {rd(s:this&, r`:rdr) @inline
-      s = (r.n() - #1)`\func;
+      s = (r.n() - #1)`:func;
    }
    {ptr(s:this)`:struct @inline
       :return .struct-v[s];
@@ -46,13 +46,13 @@
       f.decl.wr(w, header);
    }
 }
-{gvar struct-c\struct}
-{gvar struct-cap\struct}
+{gvar struct-c:struct}
+{gvar struct-cap:struct}
 {gvar struct-v:struct[]}
 {gvar decl-struct-row:int}
 {gvar decl-struct-col:int}
-{gvar decl-struct-at\at}
-{gvar decl-struct-real-name\id}
+{gvar decl-struct-at:at}
+{gvar decl-struct-real-name:id}
 {:struct-flags[
    #0,
    #real-name = 1,
@@ -63,10 +63,10 @@
       w.n1(f);
    }
    {rd(f:this&, r`:rdr) @inline
-      f = r.n1()`\struct-flags;
+      f = r.n1()`:struct-flags;
    }
 }
-{gvar decl-struct-flags\struct-flags}
+{gvar decl-struct-flags:struct-flags}
 {gvar decl-fvar-c:num}
 {gvar decl-fvar-cap:num}
 {gvar decl-fvar-v:decl-var+[]}
@@ -79,7 +79,7 @@
    }
    .decl-fvar-v[fvar].copy-from(.decl-var);
 }
-{decl-at-begin-struct(name\id, row:int, col:int)
+{decl-at-begin-struct(name:id, row:int, col:int)
    .decl-struct-row = row;
    .decl-struct-col = col;
    .build-at = .decl-at;
@@ -126,7 +126,7 @@
    }
    s.real-name = .decl-struct-real-name;
 }
-{struct-attr-real-name(name\id)
+{struct-attr-real-name(name:id)
    {if((.decl-struct-flags & #real-name) != #0)
       'c.out.printf("%u:%u: error @real-name specified more than once\n", .last-row, .last-col);
       'c.exit(#failure);

@@ -23,7 +23,7 @@
       }
       :return :true;
    }
-   {write(vd:this, var-type`\decl-var-type)
+   {write(vd:this, var-type`:decl-var-type)
       {if((vd.flags & #real-name) != #0)
          .out.printf("%s", vd.real-name.str());
          :return;
@@ -37,10 +37,10 @@
          }
       }
    }
-   {write-lvar(vd:this, lvar`\lvar)
+   {write-lvar(vd:this, lvar`:lvar)
       .out.printf("_L%s_%u", vd.name.c-name(), lvar);
    }
-   {write-type(vd:this, var-type`\decl-var-type)
+   {write-type(vd:this, var-type`:decl-var-type)
       {if(vd.type-info.const)
          .out.printf("const ");
       }
@@ -53,7 +53,7 @@
          .out.printf("]");
       }
    }
-   {write-lvar-type(vd:this, lvar`\lvar)
+   {write-lvar-type(vd:this, lvar`:lvar)
       {if(vd.type-info.const)
          .out.printf("const ");
       }
@@ -114,8 +114,8 @@
    }
 }
 {cvar #type-info-star-limit:int = 8}
-{:value(ref:tint, paren:bool, type`\at, info`:type-info+)
-	{set(v:this, ref:tint, paren:bool, type`\at, info`:type-info)
+{:value(ref:tint, paren:bool, type`:at, info`:type-info+)
+	{set(v:this, ref:tint, paren:bool, type`:at, info`:type-info)
 		+c = info.ref-v[info.array-c];
 		v.type = type;
 		v.ref = (c + 2) - ref;
@@ -205,14 +205,14 @@
 		ti.star-c = star-c;
 	}
 }
-{gvar gvar-c\gvar}
-{gvar gvar-cap\gvar}
+{gvar gvar-c:gvar}
+{gvar gvar-cap:gvar}
 {gvar gvar-v:decl-gvar+[]}
 
 {gvar decl-var-row:int}
 {gvar decl-var-col:int}
-`` {gvar decl-var-name\id}
-`` {gvar decl-var-type\at}
+`` {gvar decl-var-name:id}
+`` {gvar decl-var-type:at}
 `` {gvar decl-var-type-info:type-info+}
 {cvar #type-info-stack-limit:int = 8}
 `` {gvar stack-type-info:type-info+} `` [#type-info-stack-limit]}
@@ -225,13 +225,13 @@
    #no-decl = 4,
    ]:num
    {rd(f:this&, r`:rdr) @inline
-      f = r.n()`\var-flags;
+      f = r.n()`:var-flags;
    }
    {wr(f:this, w`:wtr) @inline
       w.n(f);
    }
 }
-{decl-var-begin(name\id, row:int, col:int)
+{decl-var-begin(name:id, row:int, col:int)
    .decl-var.name = name;
    .decl-var-row = row;
    .decl-var-col = col;
@@ -243,7 +243,7 @@
 }
 {decl-var-end()
 }
-{decl-var-attr-real-name(name\id)
+{decl-var-attr-real-name(name:id)
    {if((.decl-var.flags & #real-name) != #0)
       'c.out.printf("%u:%u: error @real-name specified more than once\n", .last-row, .last-col);
       'c.exit(#failure);
@@ -265,7 +265,7 @@
    }
    .decl-var.flags |= #no-decl;
 }
-{decl-var-type(type\at)
+{decl-var-type(type:at)
    {if(type != #nil)
       +at = type.ptr();
       {if(at.type == #module)

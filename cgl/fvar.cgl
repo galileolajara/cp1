@@ -2,26 +2,26 @@
 {alias 'c = %stdc}
 {at(%glc)
 {:fvar[#nil = -1, #0]:int}
-{expr-fvar(expr\expr, member\id)\expr
+{expr-fvar(expr:expr, member:id):expr
    quick-alloc-one(+(e:expr-fvar));
    +e-idx = expr-push(e.base, #fvar);
    e.expr = expr;
    e.member = member;
    :return e-idx;
 }
-{at(\expr)
+{at(:expr)
    {wr-fvar(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-fvar = expr}
       e.expr.wr(w, header);
       e.member.wr(w, header);
    }
-   {rd-fvar(e-idx`\expr, r`:rdr) @case.rd() @inline
+   {rd-fvar(e-idx`:expr, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-fvar));
       e-idx.set(e.base, #fvar);
       e.expr.rd(r);
       e.member.rd(r);
    }
-   {type-fvar(expr`:expr, at`\at&) @case.type() @inline
+   {type-fvar(expr`:expr, at`:at&) @case.type() @inline
       {+e`:expr-fvar = expr}
       at = e.val.type.ptr().decl.struct.ptr().fvar-v[e.fvar].decl.type;
    }
@@ -48,7 +48,7 @@
          :return;
       }
       +type = type-i.ptr();
-      {if(type.def == #struct)
+      {if(type.def != #struct)
          'c.out.printf("%s:%u:%u - %u:%u Cannot get member '.%s' because the type is not a struct or union\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, e.member.str());
          :return;
       }
@@ -64,7 +64,7 @@
       +struct-i = type.decl.struct;
       +struct = struct-i.ptr();
       +member = e.member;
-      {do{+i = 0`\fvar}{(struct.fvar-c) i++}
+      {do{+i = 0`:fvar}{(struct.fvar-c) i++}
          {if(struct.fvar-v[i].decl.name == member)
             e.fvar = i;
             ok = :true;

@@ -1,15 +1,15 @@
 {alias 'glc = %glc}
 {at(%glc)
-{expr-null()\expr
+{expr-null():expr
    quick-alloc-one(+(e:expr-null));
    +e-idx = expr-push(e.base, #null);
    :return e-idx;
 }
-{at(\expr)
+{at(:expr)
    {wr-null(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-null = expr}
    }
-   {rd-null(e-idx`\expr, r`:rdr) @case.rd() @inline
+   {rd-null(e-idx`:expr, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-null));
       e-idx.set(e.base, #null);
    }
@@ -21,7 +21,7 @@
       .include-stddef = :true;
       ok = :true;
    }
-   {type-null(expr`:expr, at`\at&) @case.type() @inline
+   {type-null(expr`:expr, at`:at&) @case.type() @inline
       at = basic-type(#ref);
    }
    {value-null(le:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline

@@ -61,7 +61,7 @@
       {if(continue != :null)
          continue.write();
       }
-      .out.printf("}\nbreak_%u:;\n", id);
+      .out.printf("}:nbreak_%u:;\n", id);
    }
    {process-while-end(stmt`:stmt, ok:bool&) @case.process() @inline
       {+s`:stmt-while-end = stmt}
@@ -78,7 +78,7 @@
 }
 {:stmt-while(
    base`:stmt+,
-   expr`\expr,
+   expr`:expr,
    continue`:stmt-space,
    end`:stmt-while-end,
    )
@@ -88,7 +88,7 @@
    while`:stmt-while,
    )
 }
-{stmt-while-set(expr\expr, begin-row:int, begin-col:int, end-row:int, end-col:int, continue:stmt-space)
+{stmt-while-set(expr:expr, begin-row:int, begin-col:int, end-row:int, end-col:int, continue:stmt-space)
    quick-alloc-one(+(s:stmt-while));
    .nest-stack-id-v[.nest-stack-c] = .nest-id++;
    .nest-stack-ptr-v[.nest-stack-c].while = s;

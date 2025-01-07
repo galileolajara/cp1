@@ -13,9 +13,8 @@
 #define _Mstdc_Eexit_Csuccess 0
 #define _Mstdc_Eexit_Cfailure (_Mstdc_Eexit_Csuccess + 1)
 #define _Mglc_Ename_type_Cmodule 0
-#define _Mglc_Ename_type_Cstruct (_Mglc_Ename_type_Cmodule + 1)
-#define _Mglc_Ename_type_Cenum (_Mglc_Ename_type_Cstruct + 1)
-#define _Mglc_Ename_type_Cbasic (_Mglc_Ename_type_Cenum + 1)
+#define _Mglc_Ename_type_Cstruct_enum (_Mglc_Ename_type_Cmodule + 1)
+#define _Mglc_Ename_type_Cbasic (_Mglc_Ename_type_Cstruct_enum + 1)
 #define _Mglc_Eat_Cnil (-1)
 #define _Mglc_Ebasic_type_id_Croot 0
 #define _Mglc_Ctype_info_star_limit (8)
@@ -27,8 +26,7 @@
 #define _Mglc_Etoken_Cid_lparen (_Mglc_Etoken_Cspace + 1)
 #define _Mglc_Etoken_Cid_modulo (_Mglc_Etoken_Cid_lparen + 1)
 #define _Mglc_Etoken_Cid_colon (_Mglc_Etoken_Cid_modulo + 1)
-#define _Mglc_Etoken_Cid_bslash (_Mglc_Etoken_Cid_colon + 1)
-#define _Mglc_Etoken_Cid_quote (_Mglc_Etoken_Cid_bslash + 1)
+#define _Mglc_Etoken_Cid_quote (_Mglc_Etoken_Cid_colon + 1)
 #define _Mglc_Etoken_Cid_hash (_Mglc_Etoken_Cid_quote + 1)
 #define _Mglc_Etoken_Clcbrace (_Mglc_Etoken_Cid_hash + 1)
 #define _Mglc_Etoken_Cid (_Mglc_Etoken_Clcbrace + 1)
@@ -39,7 +37,8 @@
 #define _Mglc_Etoken_Cspace_rcbrace (_Mglc_Etoken_Cinclude + 1)
 #define _Mglc_Etoken_Cquote (_Mglc_Etoken_Cspace_rcbrace + 1)
 #define _Mglc_Etoken_Cgrave (_Mglc_Etoken_Cquote + 1)
-#define _Mglc_Etoken_Clcbrace_at_lparen (_Mglc_Etoken_Cgrave + 1)
+#define _Mglc_Etoken_Cid_bslash (_Mglc_Etoken_Cgrave + 1)
+#define _Mglc_Etoken_Clcbrace_at_lparen (_Mglc_Etoken_Cid_bslash + 1)
 #define _Mglc_Etoken_Crparen (_Mglc_Etoken_Clcbrace_at_lparen + 1)
 #define _Mglc_Etoken_Clcbrace_cvar_space (_Mglc_Etoken_Crparen + 1)
 #define _Mglc_Etoken_Crcbrace (_Mglc_Etoken_Clcbrace_cvar_space + 1)
@@ -1027,7 +1026,6 @@ case _Mglc_Etoken_Cspace: return "space";
 case _Mglc_Etoken_Cid_lparen: return "id-lparen";
 case _Mglc_Etoken_Cid_modulo: return "id-modulo";
 case _Mglc_Etoken_Cid_colon: return "id-colon";
-case _Mglc_Etoken_Cid_bslash: return "id-bslash";
 case _Mglc_Etoken_Cid_quote: return "id-quote";
 case _Mglc_Etoken_Cid_hash: return "id-hash";
 case _Mglc_Etoken_Clcbrace: return "lcbrace";
@@ -1039,6 +1037,7 @@ case _Mglc_Etoken_Cinclude: return "include";
 case _Mglc_Etoken_Cspace_rcbrace: return "space-rcbrace";
 case _Mglc_Etoken_Cquote: return "quote";
 case _Mglc_Etoken_Cgrave: return "grave";
+case _Mglc_Etoken_Cid_bslash: return "id-bslash";
 case _Mglc_Etoken_Clcbrace_at_lparen: return "lcbrace-at-lparen";
 case _Mglc_Etoken_Crparen: return "rparen";
 case _Mglc_Etoken_Clcbrace_cvar_space: return "lcbrace-cvar-space";
@@ -3116,7 +3115,7 @@ void _Mglc_Pdecl_at_begin_struct_3(_Mglc_Eid _Lname_0, int32_t _Lrow_1, int32_t 
 _Gdecl_struct_row = _Lrow_1;
 _Gdecl_struct_col = _Lcol_2;
 _Gbuild_at = _Gdecl_at;
-_Mglc_Pdecl_at_add_2(_Lname_0, _Mglc_Ename_type_Cstruct);
+_Mglc_Pdecl_at_add_2(_Lname_0, _Mglc_Ename_type_Cstruct_enum);
 _Gdecl_at_v[_Gdecl_at_c++] = _Gdecl_at;
 _Gdecl_at = _Gbuild_at;
 _Gdecl_struct_at = _Gbuild_at;
@@ -3312,7 +3311,7 @@ void _Mglc_Pdecl_at_begin_enum_3(_Mglc_Eid _Lname_0, int32_t _Lrow_1, int32_t _L
 _Gdecl_enum_row = _Lrow_1;
 _Gdecl_enum_col = _Lcol_2;
 _Gbuild_at = _Gdecl_at;
-_Mglc_Pdecl_at_add_2(_Lname_0, _Mglc_Ename_type_Cenum);
+_Mglc_Pdecl_at_add_2(_Lname_0, _Mglc_Ename_type_Cstruct_enum);
 _Gdecl_at_v[_Gdecl_at_c++] = _Gdecl_at;
 _Gdecl_at = _Gbuild_at;
 _Gdecl_enum_at = _Gbuild_at;

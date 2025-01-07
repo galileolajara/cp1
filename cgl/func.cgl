@@ -6,7 +6,7 @@
       w.n(f + #1);
    }
    {rd(f:this&, r`:rdr) @inline
-      f = (r.n() - #1)`\func;
+      f = (r.n() - #1)`:func;
    }
    {ptr(f:this)`:decl-func @inline
       :return .func-v[f];
@@ -29,7 +29,7 @@
       w.n(e);
    }
    {rd(e:this&, r`:rdr) @inline
-      e = r.n()`\func-flags;
+      e = r.n()`:func-flags;
    }
 }
 {:func-flags2[
@@ -50,7 +50,7 @@
       }
    }
    {lvars-rd(f:this, r`:rdr)
-      +lvar-c = r.n()`\lvar;
+      +lvar-c = r.n()`:lvar;
       f.lvar-c = lvar-c;
       quick-alloc-arr(f.lvar-v, lvar-c);
       {do{+i = 0}{(f.lvar-c) i++}
@@ -96,19 +96,19 @@
       f.decl.copy-from(src.decl);
    }
 }
-{gvar func-c\func}
-{gvar func-cap\func}
+{gvar func-c:func}
+{gvar func-cap:func}
 {gvar func-v:decl-func[]}
-{gvar decl-func-name\id}
+{gvar decl-func-name:id}
 `` {gvar decl-func:decl-var+}
 {gvar decl-func-row:int}
 {gvar decl-func-col:int}
-{gvar decl-func-flags\func-flags}
-{gvar decl-func-flags2\func-flags2}
-{gvar decl-func-real-name\id}
+{gvar decl-func-flags:func-flags}
+{gvar decl-func-flags2:func-flags2}
+{gvar decl-func-real-name:id}
 {gvar decl-func-decl-str:char[]}
 {gvar decl-func-decl-len:int}
-{gvar decl-func-case\id}
+{gvar decl-func-case:id}
 `` {cvar #glc-farg-limit = 1024}
 {gvar decl-farg-v:farg+[]}
 {gvar decl-farg-group-c:tint}
@@ -122,7 +122,7 @@
 `` {gvar decl-stmt-c:num}
 `` {gvar decl-stmt-cap:num}
 `` {gvar decl-stmt-v:stmt[]}
-{decl-func-begin(name\id, row:int, col:int)
+{decl-func-begin(name:id, row:int, col:int)
    .decl-func-name = name;
    .decl-func-row = row;
    .decl-func-col = col;
@@ -171,12 +171,12 @@
    .decl-farg-v[farg-idx].decl.type = .decl-at;
    .decl-farg-group-v[.decl-farg-group-c - 1]++;
 }
-`` {gvar lvar-c\lvar}
-`` {gvar lvar-cap\lvar}
+`` {gvar lvar-c:lvar}
+`` {gvar lvar-cap:lvar}
 `` {gvar lvar-v:lvar[]}
-`` {gvar lvar-name-v\id[]}
+`` {gvar lvar-name-v:id[]}
 {decl-func-end(row:int, col:int)
-   +f-idx = (.func-c++)\func;
+   +f-idx = (.func-c++):func;
    {if(.func-cap <= .func-c)
       +old-cap = .func-cap;
       grow(.func-cap, .func-c);
@@ -294,7 +294,7 @@
    }
    .decl-func-flags |= #no-body;
 }
-{func-attr-real-name(name\id)
+{func-attr-real-name(name:id)
    {if((.decl-func-flags & #real-name) != #0)
       'c.out.printf("%s:%u:%u: Error @real-name specified more than once\n", .input-path, .last-row, .last-col);
       'c.exit(#failure);
@@ -313,7 +313,7 @@
    .decl-func-decl-str[.string-len] = 0;
    .decl-func-decl-len = .string-len;
 }
-{func-attr-case(name\id)
+{func-attr-case(name:id)
    {if((.decl-func-flags & #case) != #0)
       'c.out.printf("%s:%u:%u: Error @case specified more than once\n", .input-path, .last-row, .last-col);
       'c.exit(#failure);
@@ -344,7 +344,7 @@
 {gvar expr-call-c:tint}
 {cvar #glc-carg-limit:int = 64}
 {gvar expr-call-carg-c:tnum[#expr-call-nest-limit]}
-{gvar expr-call-carg-v\expr[#expr-call-nest-limit][#glc-carg-limit]}
+{gvar expr-call-carg-v:expr[#expr-call-nest-limit][#glc-carg-limit]}
 {gvar expr-call-cgrp-c:tnum[#expr-call-nest-limit]}
 {gvar expr-call-cgrp-v:tnum[#expr-call-nest-limit][#expr-carg-group-limit]}
 {expr-push-call(row:int, col:int)
@@ -362,12 +362,12 @@
    .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx]] = 0;
    .expr-call-cgrp-c[call-idx]++;
 }
-{carg-push(expr\expr)
+{carg-push(expr:expr)
    +call-idx = .expr-call-c - 1;
    .expr-call-carg-v[call-idx][.expr-call-carg-c[call-idx]++] = expr;
    .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
 }
-{carg-push-str(expr\expr)
+{carg-push-str(expr:expr)
    {if(:true)
       `` push the string
       +call-idx = .expr-call-c - 1;
@@ -390,7 +390,7 @@
       .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
    }
 }
-{expr-pop-func(at\at, func-name\id)\expr
+{expr-pop-func(at:at, func-name:id):expr
    +call-idx = .expr-call-c -= 1;
    +carg-c = .expr-call-carg-c[call-idx];
    {+e:expr-func}
@@ -409,7 +409,7 @@
    }
    :return e-idx;
 }
-{expr-pop-method(this\expr, func-name\id)\expr
+{expr-pop-method(this:expr, func-name:id):expr
    +call-idx = .expr-call-c -= 1;
    +carg-c = .expr-call-carg-c[call-idx];
    {+e:expr-method}

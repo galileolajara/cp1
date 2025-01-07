@@ -3,7 +3,7 @@
 {at(%glc)
 {:at-map(data:lnum[(`#hash-table-size + 7) >> 3])
    {init(m:this)}
-   {get-or-insert(m:this, parent`\at, type`\name-type, name`\id, val:int):int}
+   {get-or-insert(m:this, parent`:at, type`:name-type, name`:id, val:int):int}
 }
 {:map(data:lnum[(`#hash-table-size + 7) >> 3])
    {init(m:this)}
@@ -14,20 +14,20 @@
 {gvar at-map:at-map+}
 {:struct(
 if-compiler
-   file`\file,
+   file`:file,
 end-if
    begin-row:int,
    begin-col:int,
    end-row:int,
    end-col:int,
-   include`\include,
-   at`\at,
-   flags`\struct-flags,
-   real-name`\id,
+   include`:include,
+   at`:at,
+   flags`:struct-flags,
+   real-name`:id,
 if-compiler
    method-c:int,
    method-cap:int,
-   method-v`\func[],
+   method-v`:func[],
 end-if
    fvar-c:num,
    fvar-v`:fvar+[0],
@@ -36,7 +36,7 @@ end-if
 {:stmt-if(
    base`:stmt+,
    not:bool,
-   expr`\expr,
+   expr`:expr,
 if-compiler
    val`:value+
 end-if
@@ -45,7 +45,7 @@ end-if
 {:stmt-if-elif(
    base`:stmt+,
    not:bool,
-   expr`\expr,
+   expr`:expr,
 if-compiler
    val`:value+
 end-if
@@ -53,11 +53,11 @@ end-if
 }
 {:stmt-switch(
    base`:stmt+,
-   expr`\expr,
+   expr`:expr,
 if-compiler
    val`:value+,
 end-if
-   cases`\expr,
+   cases`:expr,
 if-compiler
    case-func-c:num,
    case-func-v`:stmt-switch-case-func+[],
@@ -65,18 +65,18 @@ end-if
    )
 }
 {:stmt-case-item(
-   expr`\expr,
+   expr`:expr,
 if-compiler
    val`:value+,
 end-if
    )
 }
-{at(\lvar)
+{at(:lvar)
 if-compiler
    {ptr(l:this)`:lvar @inline
       :return .ctx-func.lvar-v[l];
    }
-   {name(l:this)`\id @inline
+   {name(l:this)`:id @inline
       :return l.ptr().decl.name;
    }
 end-if
@@ -84,36 +84,36 @@ if-parser
    {ptr(l:this)`:lvar @inline
       :return .ctx-func.lvar-v[l];
    }
-   {name(l:this)`\id @inline
+   {name(l:this)`:id @inline
       :return l.ptr().decl.name;
    }
 end-if
 }
 {:enum(
 if-compiler
-   file`\file,
+   file`:file,
 end-if
    begin-row:int,
    begin-col:int,
    end-row:int,
    end-col:int,
-   include`\include,
-   at`\at,
-   base-type`\at,
-   flags`\enum-flags,
-   real-name`\id,
+   include`:include,
+   at`:at,
+   base-type`:at,
+   flags`:enum-flags,
+   real-name`:id,
 if-compiler
    method-c:int,
    method-cap:int,
-   method-v`\func[],
+   method-v`:func[],
 end-if
    )
 }
 {:expr-compare(
    base`:expr+,
-   left`\expr,
-   right`\expr,
-   type`\compare,
+   left`:expr,
+   right`:expr,
+   type`:compare,
 if-compiler
    left-val`:value+,
    right-val`:value+,
@@ -122,9 +122,9 @@ end-if
 }
 {:expr-assign(
    base`:expr+,
-   left`\expr,
-   right`\expr,
-   type`\assign,
+   left`:expr,
+   right`:expr,
+   type`:assign,
 if-compiler
    left-val`:value+,
    right-val`:value+,
@@ -133,8 +133,8 @@ end-if
 }
 {:expr-index(
    base`:expr+,
-   left`\expr,
-   right`\expr,
+   left`:expr,
+   right`:expr,
 if-compiler
    left-val`:value+,
    right-val`:value+,
@@ -142,7 +142,7 @@ end-if
    )
 }
 {:expr-math-item(
-   expr`\expr,
+   expr`:expr,
 if-compiler
    val`:value+,
 end-if
@@ -150,9 +150,9 @@ end-if
 }
 {:expr-math(
    base`:expr+,
-   left`\expr,
-   right`\expr,
-   type`\math,
+   left`:expr,
+   right`:expr,
+   type`:math,
 if-compiler
    left-val`:value+,
    right-val`:value+,
@@ -165,7 +165,7 @@ end-if
    )
 }
 {:expr-bools-item(
-   expr`\expr,
+   expr`:expr,
 if-compiler
    val`:value+,
 end-if
@@ -173,9 +173,9 @@ end-if
 }
 {:expr-bools(
    base`:expr+,
-   left`\expr,
-   right`\expr,
-   type`\bools,
+   left`:expr,
+   right`:expr,
+   type`:bools,
 if-compiler
    left-val`:value+,
    right-val`:value+,
@@ -189,27 +189,27 @@ end-if
 }
 {:expr-fvar(
    base`:expr+,
-   expr`\expr,
-   member`\id,
+   expr`:expr,
+   member`:id,
 if-compiler
-   fvar`\fvar,
+   fvar`:fvar,
    val`:value+,
 end-if
    )
 }
 {:expr-cvar(
    base`:expr+,
-   at`\at,
-   name`\id,
+   at`:at,
+   name`:id,
 if-compiler
-   cvar`\cvar,
-   try`\at,
+   cvar`:cvar,
+   try`:at,
 end-if
    )
 }
 {:expr-ref(
    base`:expr+,
-   expr`\expr,
+   expr`:expr,
 if-compiler
    val`:value+,
 end-if
@@ -217,8 +217,8 @@ end-if
 }
 {:expr-unary(
    base`:expr+,
-   expr`\expr,
-   type`\unary,
+   expr`:expr,
+   type`:unary,
 if-compiler
    val`:value+,
 end-if
@@ -226,8 +226,8 @@ end-if
 }
 {:expr-cast-fast(
    base`:expr+,
-   expr`\expr,
-   type`\at,
+   expr`:expr,
+   type`:at,
 if-compiler
    val`:value+,
 end-if
@@ -236,49 +236,49 @@ end-if
 {:expr-gvar(
    base`:expr+,
 if-parser
-   at`\at,
-   name`\id,
+   at`:at,
+   name`:id,
 end-if
 if-compiler
-   gvar`\gvar,
+   gvar`:gvar,
 end-if
    )
 }
 {:decl-gvar(
 if-compiler
-   file`\file,
+   file`:file,
 end-if
    row:int,
    col:int,
-   include`\include,
-   at`\at,
-   flags`\gvar-flags,
+   include`:include,
+   at`:at,
+   flags`:gvar-flags,
    decl`:decl-var+,
    )
 }
 {:cvar(
 if-compiler
-   file`\file,
+   file`:file,
 end-if
    row:int,
    col:int,
-   include`\include,
-   at`\at,
-   flags`\cvar-flags,
-   `` real-name\id,
+   include`:include,
+   at`:at,
+   flags`:cvar-flags,
+   `` real-name:id,
    decl`:decl-var+,
-   expr-set`\expr,
-   last-cvar`\cvar,
+   expr-set`:expr,
+   last-cvar`:cvar,
    )
 }
 {:decl-var(
-   name`\id,
-   type`\at,
-   flags`\var-flags,
-   real-name`\id,
+   name`:id,
+   type`:at,
+   flags`:var-flags,
+   real-name`:id,
    type-info`:type-info+,
    size-c:tnum,
-   size-expr-v`\expr[],
+   size-expr-v`:expr[],
 if-compiler
    size-value-v`:value+[],
 end-if
@@ -286,7 +286,7 @@ end-if
 }
 {:carg(
    ref:tint,
-   expr`\expr,
+   expr`:expr,
 if-compiler
    value`:value+,
 end-if
@@ -294,10 +294,10 @@ end-if
 }
 {:expr-func(
    base`:expr+,
-   at`\at,
-   func-name`\id,
+   at`:at,
+   func-name`:id,
 if-compiler
-   func-idx`\func,
+   func-idx`:func,
 end-if
    group-c:tnum,
    group-v:tnum[`#expr-carg-group-limit],
@@ -307,10 +307,10 @@ end-if
 }
 {:expr-method(
    base`:expr+,
-   this`\expr,
-   func-name`\id,
+   this`:expr,
+   func-name`:id,
 if-compiler
-   func-idx`\func,
+   func-idx`:func,
    this-value`:value+,
 end-if
    group-c:tnum,
@@ -321,22 +321,22 @@ end-if
 }
 {:decl-func(
 if-compiler
-   process-next`\func,
-   file`\file,
+   process-next`:func,
+   file`:file,
 end-if
    begin-row:int,
    begin-col:int,
    end-row:int,
    end-col:int,
-   include`\include,
-   at`\at,
-   `` name\id,
-   flags`\func-flags,
-   real-name`\id,
+   include`:include,
+   at`:at,
+   `` name:id,
+   flags`:func-flags,
+   real-name`:id,
    decl-str:char[],
    decl-len:int,
-   case`\id,
-   `` type\at,
+   case`:id,
+   `` type:at,
    decl`:decl-var+,
 if-parser
    stmt-space`:stmt-space,
@@ -350,15 +350,15 @@ end-if
 `` end-if
 ``    stmt-v:stmt[],
 if-compiler
-   lvar-c`\lvar,
-   `` lvar-cap\lvar,
+   lvar-c`:lvar,
+   `` lvar-cap:lvar,
    lvar-v`:lvar+[],
-   `` lvar-name-v\id[],
+   `` lvar-name-v:id[],
    body-file-pos:num,
 end-if
 if-parser
-   lvar-c`\lvar,
-   lvar-cap`\lvar,
+   lvar-c`:lvar,
+   lvar-cap`:lvar,
    lvar-v`:lvar[],
 end-if
    this-idx:tint,
@@ -454,29 +454,29 @@ end-if
    }
 }
 {cvar #decl-at-name-limit:int = 3}
-{:at-name(id`\id, basic`\basic-type-id) @union
+{:at-name(id`:id, basic`:basic-type-id) @union
 }
-{:at-type(struct`\struct, enum`\enum) @union}
+{:at-type(struct`:struct, enum`:enum) @union}
 {:at-def[#undefined, #module, #struct, #enum, #basic]:tnum}
 {:at(
-   type`\name-type,
-   parent`\at,
+   type`:name-type,
+   parent`:at,
    name`:at-name+,
 if-compiler
    func-c:int,
    func-cap:int,
-   func-v`\func[],
+   func-v`:func[],
    gvar-c:int,
    gvar-cap:int,
-   gvar-v`\gvar[],
+   gvar-v`:gvar[],
    cvar-c:int,
    cvar-cap:int,
-   cvar-v`\cvar[],
+   cvar-v`:cvar[],
    decl`:at-type+,
-   def`\at-def,
+   def`:at-def,
 end-if
    )
-   {init(at:this, type`\name-type, parent`\at, name`\id)
+   {init(at:this, type`:name-type, parent`:at, name`:id)
       at.type = type;
       at.parent = parent;
       at.name.id = name;
@@ -492,15 +492,15 @@ end-if
 }
 {:name-type[#module, #struct-enum, #basic]:tnum
    {rd(i:this&, r`:rdr) @inline
-      i = r.n1()`\name-type;
+      i = r.n1()`:name-type;
    }
    {wr(i:this, w`:wtr) @inline
       w.n1(i);
    }
    {cgl-name(e:this):char[] @cgl-name}
 }
-{gvar at-c\at}
-{gvar at-cap\at}
+{gvar at-c:at}
+{gvar at-cap:at}
 {gvar at-v:at+[]}
 {:at[#nil = -1, #root]:int
    {finalize(at-i:this, ti`:type-info, row:int, col:int):bool
@@ -526,7 +526,7 @@ end-if
       }
       :return :true;
    }
-   {output(at-i:this, file`\file, row:int, col:int)
+   {output(at-i:this, file`:file, row:int, col:int)
       +at = at-i.ptr();
       {switch(at.type)
          {case(#struct-enum)
@@ -613,7 +613,7 @@ end-if
       :return .at-v[i];
    }
    {rd(i:this&, r`:rdr) @inline
-      +idx = (r.n() - 1)`\at;
+      +idx = (r.n() - 1)`:at;
       {if(idx == #nil)
          i = #nil;
       }{else
@@ -775,7 +775,7 @@ end-if
       w.n(i + 1);
    }
    {rd(i:this&, r`:rdr) @inline
-      +idx = (r.n() - 1)`\include;
+      +idx = (r.n() - 1)`:include;
       {if(idx == #nil)
          i = #nil;
       }{else
@@ -801,7 +801,7 @@ end-if
 {gvar include-cap:int}
 {gvar include-str-v:char[][]}
 {gvar include-len-v:tnum[]}
-{gvar func-main\func}
+{gvar func-main:func}
 {:id[#nil = -1, #0]:int
    {c-name(id:this):char[]
       {+c-name:char[] = .id-c-name-v[id]}
@@ -850,7 +850,7 @@ end-if
       }
    }
    {rd(id:this&, r`:rdr) @inline
-      +idx = (r.n() - 1)`\id;
+      +idx = (r.n() - 1)`:id;
       {if(idx == #nil)
          id = #nil;
       }{else

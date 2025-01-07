@@ -12,7 +12,7 @@
 {gvar at-in-header-at-v:num[]}
 {gvar at-in-header-c:int}
 
-{gvar decl-include\include}
+{gvar decl-include:include}
 {gvar decl-include-row:int}
 {gvar decl-include-col:int}
 {type-info-begin()
@@ -23,7 +23,7 @@
 {type-info-finalize()
    .decl-var.type-info.finalize();
 }
-{type-info-arr(expr-v\expr[], expr-c:tnum)
+{type-info-arr(expr-v:expr[], expr-c:tnum)
    {+r:rdr+}
    r.ref = expr-v;
    {if(expr-v == :null)
@@ -36,7 +36,7 @@
       type-info-arr(expr-v[i -= 1]);
    }
 }
-{type-info-arr(expr\expr)
+{type-info-arr(expr:expr)
    +ti = .decl-var.type-info;
 	ti.array-c += 1;
 	ti.ref-v[ti.array-c] = 0;
@@ -57,7 +57,7 @@
    `` 'c.out.printf("built-in\n");
    .decl-var.type-info.built-in = :true;
 }
-{decl-include-begin(inc\include, row:int, col:int)
+{decl-include-begin(inc:include, row:int, col:int)
    {if(.decl-include != #nil)
       'c.out.printf("%s:%u:%u: Cannot {include inside another {include of %u:%u\n", .input-path, row, col, .decl-include-row, .decl-include-col);
       'c.exit(#failure);
@@ -69,12 +69,12 @@
 {decl-include-end()
    .decl-include = #nil;
 }
-{gvar build-at\at}
-{at-push(name\id, type\name-type, row:int, col:int)
+{gvar build-at:at}
+{at-push(name:id, type:name-type, row:int, col:int)
    .build-at = at-create(.build-at, type, name);
 }
-{at-basic-type(type\basic-type-id)\at
-   {do{+i = 0\at}{(.at-c) i++}
+{at-basic-type(type:basic-type-id):at
+   {do{+i = 0:at}{(.at-c) i++}
       +at = .at-v[i];
       {if(&&, at.type == #basic, at.name.basic == type)
          :return i;
@@ -96,13 +96,13 @@
    .build-at = .decl-at;
 }
 {:alias[#nil = -1, #0]:int}
-{gvar at-alias-c\alias}
-{gvar at-alias-cap\alias}
-{gvar at-alias-name-v\id[]}
-{gvar at-alias-at-v\at[]}
+{gvar at-alias-c:alias}
+{gvar at-alias-cap:alias}
+{gvar at-alias-name-v:id[]}
+{gvar at-alias-at-v:at[]}
 {gvar at-alias-pos-v:row-col+[]}
 {:row-col(row:int, col:int)}
-{at-alias(name\id, row:int, col:int)
+{at-alias(name:id, row:int, col:int)
    {do{+i = 0}{(.at-alias-c) i++}
       {if(.at-alias-name-v[i] == name)
          .build-at = .at-alias-at-v[i];
@@ -112,7 +112,7 @@
    'c.out.printf("%s:%u:%u: Cannot recognize the alias '%s\n", .input-path, row, col, name.str());
    'c.exit(#failure);
 }
-{decl-alias(name\id, at\at, row:int, col:int)
+{decl-alias(name:id, at:at, row:int, col:int)
    {if(at.ptr().type != #module)
       'c.out.printf("%s:%u:%u: Alias can only work on namespaces that ends with '%%'\n", .input-path, row, col);
       'c.exit(#failure);
@@ -153,13 +153,13 @@
       .build-at = at.parent;
    }
 }
-{at-done()\at
+{at-done():at
    :return .build-at;
 }
-{at-create(parent\at, type\name-type, name\id)\at
+{at-create(parent:at, type:name-type, name:id):at
    +found = .at-map.get-or-insert(parent, type, name, .at-c);
    {if(found != -1) :return found}
-   `` {do{+i = 0\at}{(.at-c) i++}
+   `` {do{+i = 0:at}{(.at-c) i++}
    ``    +at = .at-v[i];
    ``    {if(&&,
    ``       at.parent == parent,
@@ -180,8 +180,8 @@
    at.name.id = name;
    :return build-idx;
 }
-{at-create-basic(basic\basic-type-id)\at
-   {do{+i = 0\at}{(.at-c) i++}
+{at-create-basic(basic:basic-type-id):at
+   {do{+i = 0:at}{(.at-c) i++}
       +at = .at-v[i];
       {if(&&,
          at.type == #basic,
@@ -202,18 +202,18 @@
    :return build-idx;
 }
 
-{gvar decl-at\at}
+{gvar decl-at:at}
 {cvar #decl-at-nest-limit:int = 8}
-{gvar decl-at-v\at[#decl-at-nest-limit]}
+{gvar decl-at-v:at[#decl-at-nest-limit]}
 {gvar decl-at-c:tnum}
 {err-msg-namespace-limit(row:int, col:int)
    'c.out.printf("%s:%u:%u: Max number of ids in namespace reached\n", .input-path, row, col);
    'c.exit(#failure);
 }
-{decl-at-add(name\id, type\name-type)
+{decl-at-add(name:id, type:name-type)
    .build-at = at-create(.build-at, type, name);
 }
-{decl-at-basic(type\basic-type-id)
+{decl-at-basic(type:basic-type-id)
    .build-at = at-create-basic(type);
 }
 {decl-at-begin(row:int, col:int)
@@ -246,7 +246,7 @@
       lex.content = data;
       lex.limit = & data[size];
    }
-   {scan(lex:this)`\token @real-name(glc_lexer_scan)}
+   {scan(lex:this)`:token @real-name(glc_lexer_scan)}
    {get-num-oct(lex:this):num
       {+r-start`:rdr+}
       r-start.ref = lex.start;
@@ -399,7 +399,7 @@
 {:parser()
    {alloc()`:parser}
    {free(psr:this)}
-   {parse(psr:this, t`\token, tok`:token+) @real-name(glcParse)}
+   {parse(psr:this, t`:token, tok`:token+) @real-name(glcParse)}
 }
 {gvar last-row:int @extern}
 {gvar last-col:int @extern}
@@ -434,7 +434,7 @@
             f.flags.wr(w);
          }{else
             `` remove #has-body flag
-            (f.flags & (-1 ^ \func-flags#has-body))\func-flags.wr(w);
+            (f.flags & (-1 ^ :func-flags#has-body)):func-flags.wr(w);
          }
       }{else
          f.flags.wr(w);
@@ -534,7 +534,7 @@
       }
    }
 }
-{token-name(tok\token):char[]
+{token-name(tok:token):char[]
    :return tok.cgl-name();
 }
 {parse-str-init(max-size:int)}
@@ -721,7 +721,7 @@
    w.p1[0] = 0;
    {+path:char[256]}
    'c.sprintf(path, "glc-edit/%s", .input-path);
-   {if!('c\file.create(++out-fd, path, #write | #truncate, 0644))
+   {if!('c:file.create(++out-fd, path, #write | #truncate, 0644))
       'c.out.printf("Cannot open file for writing: %s\n", path);
       'c.exit(#failure);
    }
@@ -745,7 +745,7 @@
    }
    .input-path = argv[1];
    'c.out.printf("reading %s\n", .input-path);
-   {if!('c\file.open(++in-fd, .input-path, #read))
+   {if!('c:file.open(++in-fd, .input-path, #read))
       'c.out.printf("Cannot open file for reading: %s\n", .input-path);
       'c.exit(#failure);
    }
@@ -950,7 +950,7 @@
       {+w-begin:wtr+}
       w-begin.ref = new-data;
       in-size = w.pos - w-begin.pos;
-      `` 'c\file.open(+fd, "out:parsed.glc", #write | #truncate | #create, 0644);
+      `` 'c:file.open(+fd, "out:parsed.glc", #write | #truncate | #create, 0644);
       `` fd.write(in-data, in-size);
       `` fd.close();
       `` 'c.out.write(in-data, in-size);
@@ -966,15 +966,15 @@
    .include-cap = 64;
    malloc-arr(.include-str-v, .include-cap);
    malloc-arr(.include-len-v, .include-cap);
-   .at-cap = 64\at;
+   .at-cap = 64:at;
    malloc-arr(.at-v, .at-cap);
-   .at-c = 1\at;
+   .at-c = 1:at;
    .at-v[0].type = #basic;
    .at-v[0].parent = #nil;
    .at-v[0].name.basic = #root;
-   .func-cap = 32\func;
+   .func-cap = 32:func;
    malloc-arr(.func-v, .func-cap);
-   .struct-cap = 32\struct;
+   .struct-cap = 32:struct;
    malloc-arr(.struct-v, .struct-cap);
    .decl-fvar-cap = 32;
    malloc-arr(.decl-fvar-v, .decl-fvar-cap);
@@ -1144,7 +1144,7 @@
    out-path[in-path-len + 4] = ''m;
    out-path[in-path-len + 5] = ''p;
    out-path[in-path-len + 6] = 0;
-   {if!('c\file.open(++out-fd, out-path, #create | #truncate | #write, 0644))
+   {if!('c:file.open(++out-fd, out-path, #create | #truncate | #write, 0644))
       'c.out.printf("Cannot open file for writing: %s\n", out-path);
       'c.exit(#failure);
    }
@@ -1184,7 +1184,7 @@
    write-func(w, :true);
 
    out-path[in-path-len + 1] = ''h;
-   {if!('c\file.open(out-fd, out-path, #create | #truncate | #write, 0644))
+   {if!('c:file.open(out-fd, out-path, #create | #truncate | #write, 0644))
       'c.out.printf("Cannot open file for writing: %s\n", out-path);
       'c.exit(#failure);
    }

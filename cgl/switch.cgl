@@ -79,8 +79,8 @@
             v[i].cvar.write();
             .out.printf(":;\n");
             func.func-idx = v[i].func;
-            `\expr.write-func(e);
-            .out.printf(";\nbreak;\n");
+            `:expr.write-func(e);
+            .out.printf(";:nbreak;\n");
          }
       }
    }
@@ -106,7 +106,7 @@
          `` 'c.out.printf("there's a switch that have cases for functions prefixed by ':%s-'\n", func-name.str());
          +case-c = 0;
          +case-cap = 0;
-         {+case-v`\func[] = :null}
+         {+case-v`:func[] = :null}
          {do{+i = 0}{(f.func-c) i++}
             +func-i = f.func-v[i];
             +func = func-i.ptr();
@@ -124,7 +124,7 @@
             }
          }
          {if(case-c > 0)
-            {if!(`\expr.process-case-func(s.cases.ptr(), case-v[0])) :return}
+            {if!(`:expr.process-case-func(s.cases.ptr(), case-v[0])) :return}
             +func-name-str = func-name.str();
             +func-name-len = func-name.len();
             s.case-func-c = case-c;
@@ -136,8 +136,8 @@
                +func-name2 = func.decl.name;
                {+cvar-name-str:char[] = & func-name2.str()[func-name-len + 1]}
                +cvar-name-len = func-name2.len() - (func-name-len + 1);
-               +found-id = `\id#nil;
-               {do{+j = 0`\id}{(.id-c) j++}
+               +found-id = `:id#nil;
+               {do{+j = 0`:id}{(.id-c) j++}
                   {if(&&, j.len() == cvar-name-len, 'c.memcmp(j.str(), cvar-name-str, cvar-name-len) == 0)
                      found-id = j;
                      {break}
@@ -147,7 +147,7 @@
                   'c.out.printf("%s:%u:%u: Cannot find a case for cvar named '#%s'\n", func.file.path(), func.begin-row, func.begin-col, cvar-name-str);
                   :return;
                }
-               +found-cvar = `\cvar#nil;
+               +found-cvar = `:cvar#nil;
                {do{+j = 0}{(type.cvar-c) j++}
                   +cvar-i = type.cvar-v[j];
                   +cvar = cvar-i.ptr();
@@ -247,8 +247,8 @@
    }
 }
 {:stmt-switch-case-func(
-   cvar`\cvar,
-   func`\func,
+   cvar`:cvar,
+   func`:func,
    )
 }
 {:stmt-switch-end(
@@ -257,8 +257,8 @@
 }
 {gvar switch-expr-c:num}
 {gvar switch-expr-cap:num}
-{gvar switch-expr-v\expr[]}
-{stmt-switch-expr-add(expr\expr)
+{gvar switch-expr-v:expr[]}
+{stmt-switch-expr-add(expr:expr)
    +expr-i = .switch-expr-c++;
    {if(.switch-expr-cap <= .switch-expr-c)
       +old-cap = .switch-expr-cap;
@@ -319,7 +319,7 @@
    stmt-space-begin();
    .decl-func-ctx-space.flags |= #skip-lvar-decl;
 }
-{stmt-switch-set(expr\expr, begin-row:int, begin-col:int, end-row:int, end-col:int, cases\expr)
+{stmt-switch-set(expr:expr, begin-row:int, begin-col:int, end-row:int, end-col:int, cases:expr)
    quick-alloc-one(+(s:stmt-switch));
    s.expr = expr;
    s.cases = cases;

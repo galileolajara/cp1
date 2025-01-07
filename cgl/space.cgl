@@ -9,12 +9,12 @@
 {:stmt-space(
    base`:stmt+,
    parent`:stmt-space,
-   flags`\stmt-space-flags,
+   flags`:stmt-space-flags,
    stmt-first`:stmt,
    stmt-last`:stmt,
    lvar-c:int,
    lvar-cap:int,
-   lvar-v`\lvar[],
+   lvar-v`:lvar[],
    )
    {rd-space(space`:stmt-space, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(s`:stmt-space));
@@ -50,7 +50,7 @@
       }
       `` .out.printf("} // space end\n");
    }
-   {lvar-new(space:this, name`\id, row:int, col:int)`\lvar
+   {lvar-new(space:this, name`:id, row:int, col:int)`:lvar
       +v = space.lvar-v;
       {do{+i = 0}{(space.lvar-c) i++}
          +lvar = v[i].ptr();
@@ -110,9 +110,9 @@
          }
          stmt = stmt.stmt-next;
       }
-      `\stmt-type#nil.wr(w);
+      `:stmt-type#nil.wr(w);
    }
-   {stmt-push(s:this, s2`:stmt, begin-row:int, begin-col:int, end-row:int, end-col:int, type`\stmt-type) @inline
+   {stmt-push(s:this, s2`:stmt, begin-row:int, begin-col:int, end-row:int, end-col:int, type`:stmt-type) @inline
       s2.begin-row = begin-row;
       s2.begin-col = begin-col;
       s2.end-row = end-row;
@@ -140,7 +140,7 @@
       }
 
       {do()
-         `\stmt-type.rd(+type, r);
+         `:stmt-type.rd(+type, r);
          {if(type == #nil) {break}}
          {if(`#debug-rd-wr)
             {if(r.n1() != 255)

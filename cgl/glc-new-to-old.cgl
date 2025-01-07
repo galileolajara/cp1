@@ -4,7 +4,7 @@
    +in-path = arg-v[1];
    +out-new-path = arg-v[2];
    +out-old-path = arg-v[3];
-   {if!('c\file.open(++in-fd, in-path, #read))
+   {if!('c:file.open(++in-fd, in-path, #read))
       'c.out.printf("Cannot open file for reading: %s\n", in-path);
       'c.exit(#failure);
    }
@@ -214,13 +214,13 @@
    `` remove the } footer
    w-new.1[-2] = '' ;
 
-   {if!('c\file.create(++out-new-fd, out-new-path, #truncate | #write, 0644))
+   {if!('c:file.create(++out-new-fd, out-new-path, #truncate | #write, 0644))
       'c.out.printf("Cannot open file for writing: %s\n", in-path);
       'c.exit(#failure);
    }
    out-new-fd.write(w-new-begin.ref, w-new.pos - w-new-begin.pos);
    out-new-fd.close();
-   {if!('c\file.create(++out-old-fd, out-old-path, #truncate | #write, 0644))
+   {if!('c:file.create(++out-old-fd, out-old-path, #truncate | #write, 0644))
       'c.out.printf("Cannot open file for writing: %s\n", in-path);
       'c.exit(#failure);
    }

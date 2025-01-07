@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{farg-process(e\expr, ca-ref:tint, ca-value:value, fd-arg:decl-var):bool
+{farg-process(e:expr, ca-ref:tint, ca-value:value, fd-arg:decl-var):bool
    +ce = e.ptr();
    {+r:int}
    {if(ca-ref != 0)
@@ -38,7 +38,7 @@
    {if!(e.value(r, :false, ca-value)) :return :false}
    :return :true;
 }
-{at(\expr)
+{at(:expr)
    {value-func(e:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+expr`:expr-func = e.ptr()}
       +f = expr.func-idx.ptr();
@@ -48,7 +48,7 @@
       }
       ok = :true;
    }
-   {type-func(expr`:expr, at`\at&) @case.type() @inline
+   {type-func(expr`:expr, at`:at&) @case.type() @inline
       {+e`:expr-func = expr}
       at = e.func-idx.ptr().decl.type;
    }
@@ -61,7 +61,7 @@
       }
       ok = :true;
    }
-   {type-method(expr`:expr, at`\at&) @case.type() @inline
+   {type-method(expr`:expr, at`:at&) @case.type() @inline
       {+e`:expr-method = expr}
       at = e.func-idx.ptr().decl.type;
    }
@@ -107,9 +107,9 @@
          e.carg-v[i].expr.wr(w, header);
       }
    }
-   {rd-method(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `\expr.rd(+this-expr, r);
-      `\id.rd(+func-name, r);
+   {rd-method(e-idx`:expr, r`:rdr) @case.rd() @inline
+      `:expr.rd(+this-expr, r);
+      `:id.rd(+func-name, r);
       +group-c = r.n1();
       {+group-v:tint[`#expr-carg-group-limit]}
       {do{+i = 0}{(group-c) i++}
@@ -282,9 +282,9 @@
          e.carg-v[i].expr.wr(w, header);
       }
    }
-   {rd-func(e-idx`\expr, r`:rdr) @case.rd() @inline
-      `\at.rd(+at-idx, r);
-      `\id.rd(+func-name, r);
+   {rd-func(e-idx`:expr, r`:rdr) @case.rd() @inline
+      `:at.rd(+at-idx, r);
+      `:id.rd(+func-name, r);
       +group-c = r.n1();
       {+group-v:tint[`#expr-carg-group-limit]}
       {do{+i = 0}{(group-c) i++}
@@ -397,7 +397,7 @@
       ``    }
       `` }
    }
-   {process-case-func(expr`:expr, f-idx`\func):bool @inline
+   {process-case-func(expr`:expr, f-idx`:func):bool @inline
       {+e`:expr-func = expr}
       +func-name = e.func-name;
       +carg-c = e.carg-c;

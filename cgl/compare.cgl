@@ -5,10 +5,10 @@
       w.n1(e);
    }
    {rd(e:this&, r`:rdr) @inline
-      e = r.n1()`\compare;
+      e = r.n1()`:compare;
    }
 }
-{expr-compare(left\expr, right\expr, type\compare)\expr
+{expr-compare(left:expr, right:expr, type:compare):expr
    quick-alloc-one(+(e:expr-compare));
    +e-idx = expr-push(e.base, #compare);
    e.left = left;
@@ -16,14 +16,14 @@
    e.type = type;
    :return e-idx;
 }
-{at(\expr)
+{at(:expr)
    {wr-compare(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-compare = expr}
       e.left.wr(w, header);
       e.right.wr(w, header);
       e.type.wr(w);
    }
-   {rd-compare(e-idx`\expr, r`:rdr) @case.rd() @inline
+   {rd-compare(e-idx`:expr, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-compare));
       e-idx.set(e.base, #compare);
       e.left.rd(r);
@@ -66,7 +66,7 @@
 		v.paren = paren;
       ok = :true;
 	}
-   {type-compare(expr`:expr, at`\at&) @case.type() @inline
+   {type-compare(expr`:expr, at`:at&) @case.type() @inline
       {+e`:expr-compare = expr}
       at = basic-type(#bool);
    }

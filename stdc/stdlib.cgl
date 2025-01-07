@@ -8,7 +8,7 @@
          @decl('<#define _Mstdc_Pmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))>)}
       {realloc(size:size, new-size:size):ref @real-name @no-decl}
       {free(ref:ref) @real-name(free) @no-decl}
-      {exit(code\exit) @real-name(exit) @no-decl}
+      {exit(code:exit) @real-name(exit) @no-decl}
       {:exit[#success, #failure]:int}
    }
 }

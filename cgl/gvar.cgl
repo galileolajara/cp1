@@ -44,14 +44,14 @@
       :return .gvar-v[g];
    }
 }
-{expr-gvar(at\at, name\id)\expr
+{expr-gvar(at:at, name:id):expr
    quick-alloc-one(+(e:expr-gvar));
    +e-idx = expr-push(e.base, #gvar);
    e.at = at;
    e.name = name;
    :return e-idx;
 }
-{at(\expr)
+{at(:expr)
    {value-gvar(g:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+e`:expr-gvar = g.ptr()}
       +gvar = e.gvar.ptr();
@@ -61,7 +61,7 @@
       }
       ok = :true;
    }
-   {type-gvar(expr`:expr, at`\at&) @case.type() @inline
+   {type-gvar(expr`:expr, at`:at&) @case.type() @inline
       {+e`:expr-gvar = expr}
       +gvar = e.gvar.ptr();
       at = gvar.decl.type;
@@ -71,11 +71,11 @@
       e.at.wr(w, header);
       e.name.wr(w, header);
    }
-   {rd-gvar(e-idx`\expr, r`:rdr) @case.rd() @inline
+   {rd-gvar(e-idx`:expr, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-gvar));
       e-idx.set(e.base, #gvar);
-      `\at.rd(+at-idx, r);
-      `\id.rd(+name, r);
+      `:at.rd(+at-idx, r);
+      `:id.rd(+name, r);
       +try-parent = :false;
       {if(at-idx == #nil)
          at-idx = .ctx-func.at;

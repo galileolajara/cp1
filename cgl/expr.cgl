@@ -35,13 +35,13 @@
       w.n1(e);
    }
    {rd(e:this&, r`:rdr) @inline
-      e = r.n1()`\expr-type;
+      e = r.n1()`:expr-type;
    }
    {cgl-name(e:this):char[] @cgl-name}
 }
 {cvar #debug-rd-wr:bool = :true}
 {:expr[#nil = -1, #0, #1]:int
-   {set(e:this, expr`:expr, type`\expr-type) @inline
+   {set(e:this, expr`:expr, type`:expr-type) @inline
       .expr-v[e] = expr;
       expr.type = type;
    }
@@ -90,10 +90,10 @@
       }
       :return ok;
    }
-   {type(e:this)`\at
+   {type(e:this)`:at
       {if!(e.process()) :return #nil}
       +expr = e.ptr();
-      +at = `\at#nil;
+      +at = `:at#nil;
       {switch(expr.type).type(expr, at)
          {default
             'c.out.printf("%u:%u - %u:%u: type() not implemented for #%s\n",
@@ -102,7 +102,7 @@
       }
       :return at;
    }
-   {try-deduce(e-idx:this, at`\at)
+   {try-deduce(e-idx:this, at`:at)
       +expr = e-idx.ptr();
       {switch(expr.type).try-deduce(expr, at)
       }
@@ -112,7 +112,7 @@
          w.n1(255);
       }
       {if(e == #nil)
-         `\expr-type#nil.wr(w);
+         `:expr-type#nil.wr(w);
       }{else
          +expr = e.ptr();
          expr.type.wr(w);
@@ -135,11 +135,11 @@
             'c.exit(#failure);
          }
       }
-      `\expr-type.rd(+type, r);
+      `:expr-type.rd(+type, r);
       {if(type == #nil)
          e = #nil;
       }{else
-         +e-idx = (.expr-c++)`\expr;
+         +e-idx = (.expr-c++)`:expr;
          {if(.expr-cap <= .expr-c)
             +old-cap = .expr-cap;
             grow(.expr-cap, .expr-c);
@@ -200,8 +200,8 @@
 }
 {:expr-flags[#0, #processed = 1]:tnum}
 {:expr(
-   type`\expr-type,
-   flags`\expr-flags,
+   type`:expr-type,
+   flags`:expr-flags,
    )
    {write(e:this, out'c:file)
       {switch(e.type)
@@ -217,7 +217,7 @@
       w.n1(e);
    }
    {rd(e:this&, r`:rdr) @inline
-      e = r.n1()`\basic-type-id;
+      e = r.n1()`:basic-type-id;
    }
 `` {write(e:this, out'c:file)
 ``    {switch(e)
@@ -242,7 +242,7 @@
 }
 {:expr-lvar(
    base`:expr+,
-   lvar`\lvar,
+   lvar`:lvar,
    )
 }
 {:expr-char(
@@ -275,7 +275,7 @@
 {gvar expr-c:int}
 {gvar expr-cap:int}
 {gvar expr-v:expr[]}
-{expr-push(e:expr, type\expr-type)\expr
+{expr-push(e:expr, type:expr-type):expr
    e.type = type;
    +e-idx = .expr-c++;
    {if(.expr-cap <= .expr-c)
@@ -289,12 +289,12 @@
 {:expr-int(
    base`:expr+,
    value:int,
-   type`\expr-int,
+   type`:expr-int,
    )
 }
 {:expr-size-of-type(
    base`:expr+,
-   type`\at,
+   type`:at,
    )
 }
  

@@ -106,14 +106,14 @@
    base`:stmt+,
    )
 }
-{stmt-if-set(not:bool, expr\expr, begin-row:int, begin-col:int, end-row:int, end-col:int)
+{stmt-if-set(not:bool, expr:expr, begin-row:int, begin-col:int, end-row:int, end-col:int)
    quick-alloc-one(+(s:stmt-if));
    s.not = not;
    s.expr = expr;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #if);
    stmt-space-begin();
 }
-{stmt-elif-set(not:bool, expr\expr, begin-row:int, begin-col:int, end-row:int, end-col:int)
+{stmt-elif-set(not:bool, expr:expr, begin-row:int, begin-col:int, end-row:int, end-col:int)
    quick-alloc-one(+(s:stmt-if));
    s.not = not;
    s.expr = expr;

@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{expr-bools(left\expr, right\expr, type\bools)\expr
+{expr-bools(left:expr, right:expr, type:bools):expr
    quick-alloc-one(+(e:expr-bools));
    +e-idx = expr-push(e.base, #bools);
    e.left = left;
@@ -8,7 +8,7 @@
    e.type = type;
    :return e-idx;
 }
-{expr-bools-add(bools\expr, right\expr)\expr
+{expr-bools-add(bools:expr, right:expr):expr
    {+e:expr-bools = bools.ptr()}
    +i = e.item-c++;
    {if(e.item-cap <= e.item-c)
@@ -24,11 +24,11 @@
       w.n1(e);
    }
    {rd(e:this&, r`:rdr) @inline
-      e = r.n1()`\bools;
+      e = r.n1()`:bools;
    }
 }
-{at(\expr)
-   {type-bools(expr`:expr, at`\at&) @case.type() @inline
+{at(:expr)
+   {type-bools(expr`:expr, at`:at&) @case.type() @inline
       at = basic-type(#bool);
    }
    {value-bools(e:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
@@ -90,7 +90,7 @@
       }
       e.type.wr(w);
    }
-   {rd-bools(e-idx`\expr, r`:rdr) @case.rd() @inline
+   {rd-bools(e-idx`:expr, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-bools));
       e-idx.set(e.base, #bools);
       e.left.rd(r);

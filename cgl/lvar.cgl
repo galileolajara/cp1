@@ -3,7 +3,7 @@
 {at(%glc)
 {:lvar[#nil = -1, #0]:int
    {rd(l:this&, r`:rdr) @inline
-      l = (r.n() - 1)`\lvar;
+      l = (r.n() - 1)`:lvar;
    }
    {wr(l:this, w`:wtr) @inline
       w.n(l + 1);
@@ -34,7 +34,7 @@
    #processed = 2,
    ]:tnum
    {rd(f:this&, r`:rdr) @inline
-      f = r.n1()`\lvar-flags;
+      f = r.n1()`:lvar-flags;
    }
    {wr(f:this, w`:wtr) @inline
       w.n1(f);
@@ -44,16 +44,16 @@
    row:int,
    col:int,
    decl`:decl-var+,
-   flags`\lvar-flags,
-   set-expr`\expr,
+   flags`:lvar-flags,
+   set-expr`:expr,
    )
 }
-{expr-lvar(name\id, decl:tnum, row:int, col:int)\expr
+{expr-lvar(name:id, decl:tnum, row:int, col:int):expr
    {if(decl == 0)
       +space = .decl-func-ctx-space;
       {do()
          +v = space.lvar-v;
-         +found = \lvar#nil;
+         +found = :lvar#nil;
          {do{+i = 0}{(space.lvar-c) i++}
             +lvar = v[i];
             {if(lvar.name() == name)
@@ -94,12 +94,12 @@
       :return e-idx;
    }
 }
-{at(\expr)
+{at(:expr)
    {write-lvar(expr`:expr) @case.write() @inline
       {+e`:expr-lvar = expr}
       e.lvar.ptr().decl.write-lvar(e.lvar);
    }
-   {type-lvar(expr`:expr, at`\at&) @case.type() @inline
+   {type-lvar(expr`:expr, at`:at&) @case.type() @inline
       {+e`:expr-lvar = expr}
       +lvar = e.lvar.ptr();
       at = lvar.decl.type;
@@ -117,7 +117,7 @@
       {+e`:expr-lvar = expr}
       e.lvar.wr(w);
    }
-   {rd-lvar(e-idx`\expr, r`:rdr) @case.rd() @inline
+   {rd-lvar(e-idx`:expr, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-lvar));
       e-idx.set(e.base, #lvar);
       e.lvar.rd(r);

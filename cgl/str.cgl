@@ -8,7 +8,7 @@
 {gvar str-len:int[]}
 {gvar string-buf:char[] @extern}
 {gvar string-len:int @extern}
-{expr-str(prev\expr)\expr
+{expr-str(prev:expr):expr
    +len = .string-len;
    quick-alloc-plus(+(n:expr-str-node), len + 1);
    n.len = len;
@@ -31,7 +31,7 @@
    }
 }
 {write-str-node(len:int, ptr:ref)}
-{at(\expr)
+{at(:expr)
    {wr-str(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-str = expr}
       w.n(e.node-c);
@@ -43,7 +43,7 @@
          {if(n == :null) {break}}
       }
    }
-   {rd-str(e-idx`\expr, r`:rdr) @case.rd() @inline
+   {rd-str(e-idx`:expr, r`:rdr) @case.rd() @inline
       +node-c = r.n();
       quick-alloc-one(+(e`:expr-str));
       e-idx.set(e.base, #str);

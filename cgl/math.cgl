@@ -5,10 +5,10 @@
       w.n1(e);
    }
    {rd(e:this&, r`:rdr) @inline
-      e = r.n1()`\math;
+      e = r.n1()`:math;
    }
 }
-{expr-math(left\expr, right\expr, type\math)\expr
+{expr-math(left:expr, right:expr, type:math):expr
    quick-alloc-one(+(e:expr-math));
    +e-idx = expr-push(e.base, #math);
    e.left = left;
@@ -16,7 +16,7 @@
    e.type = type;
    :return e-idx;
 }
-{expr-math-add(expr\expr, right\expr)\expr
+{expr-math-add(expr:expr, right:expr):expr
    {+e:expr-math = expr.ptr()}
    +i = e.item-c++;
    {if(e.item-cap <= e.item-c)
@@ -28,8 +28,8 @@
    item.expr = right;
    :return expr;
 }
-{at(\expr)
-   {try-deduce-math(expr`:expr, at`\at) @case.try-deduce() @inline
+{at(:expr)
+   {try-deduce-math(expr`:expr, at`:at) @case.try-deduce() @inline
       {+e`:expr-math = expr}
       e.left.try-deduce(at);
       e.right.try-deduce(at);
@@ -47,7 +47,7 @@
          e.item-v[i].expr.wr(w, header);
       }
    }
-   {rd-math(e-idx`\expr, r`:rdr) @case.rd() @inline
+   {rd-math(e-idx`:expr, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-math));
       e-idx.set(e.base, #math);
       e.left.rd(r);
@@ -158,7 +158,7 @@
 		v.ref = ref;
       ok = :true;
 	}
-   {type-math(expr`:expr, at`\at&) @case.type() @inline
+   {type-math(expr`:expr, at`:at&) @case.type() @inline
       {+e`:expr-math = expr}
       at = e.left.type();
    }

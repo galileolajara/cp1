@@ -6,7 +6,7 @@
    nest:tnum,
    )
 }
-{stmt-continue(id\id, begin-row:int, begin-col:int, end-row:int, end-col:int)
+{stmt-continue(id:id, begin-row:int, begin-col:int, end-row:int, end-col:int)
    quick-alloc-one(+(s:stmt-continue));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #continue);
    `` s.id = id;

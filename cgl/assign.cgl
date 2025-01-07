@@ -7,10 +7,10 @@
       w.n1(s);
    }
    {rd(s:this&, r`:rdr) @inline
-      s = r.n1()`\assign;
+      s = r.n1()`:assign;
    }
 }
-{expr-assign(left\expr, right\expr, type\assign)\expr
+{expr-assign(left:expr, right:expr, type:assign):expr
    quick-alloc-one(+(e:expr-assign));
    +e-idx = expr-push(e.base, #assign);
    e.left = left;
@@ -18,7 +18,7 @@
    e.type = type;
    :return e-idx;
 }
-{at(\expr)
+{at(:expr)
    {wr-assign(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-assign = expr}
       e.left.wr(w, header);
@@ -62,14 +62,14 @@
       }
       e.right.write-value(e.right-val);
    }
-   {rd-assign(e-idx`\expr, r`:rdr) @case.rd() @inline
+   {rd-assign(e-idx`:expr, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-assign));
       e-idx.set(e.base, #assign);
       e.left.rd(r);
       e.right.rd(r);
       e.type.rd(r);
    }
-   {type-assign(expr`:expr, at`\at&) @case.type() @inline
+   {type-assign(expr`:expr, at`:at&) @case.type() @inline
       {+e`:expr-assign = expr}
       at = e.left.type();
    }

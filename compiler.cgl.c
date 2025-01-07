@@ -22,9 +22,8 @@
 #define _Mglc_Ebasic_type_id_Clnum (_Mglc_Ebasic_type_id_Csize + 1)
 #define _Mglc_Ebasic_type_id_CCOUNT (_Mglc_Ebasic_type_id_Clnum + 1)
 #define _Mglc_Ename_type_Cmodule 0
-#define _Mglc_Ename_type_Cstruct (_Mglc_Ename_type_Cmodule + 1)
-#define _Mglc_Ename_type_Cenum (_Mglc_Ename_type_Cstruct + 1)
-#define _Mglc_Ename_type_Cbasic (_Mglc_Ename_type_Cenum + 1)
+#define _Mglc_Ename_type_Cstruct_enum (_Mglc_Ename_type_Cmodule + 1)
+#define _Mglc_Ename_type_Cbasic (_Mglc_Ename_type_Cstruct_enum + 1)
 #define _Mglc_Eat_Cnil (-1)
 #define _Mglc_Eat_Croot (_Mglc_Eat_Cnil + 1)
 #define _Mglc_Ctype_info_star_limit (8)
@@ -32,6 +31,10 @@
 #define _Mglc_Eenum_Cnil (-1)
 #define _Mstdc_Eexit_Csuccess 0
 #define _Mstdc_Eexit_Cfailure (_Mstdc_Eexit_Csuccess + 1)
+#define _Mglc_Eat_def_Cundefined 0
+#define _Mglc_Eat_def_Cmodule (_Mglc_Eat_def_Cundefined + 1)
+#define _Mglc_Eat_def_Cstruct (_Mglc_Eat_def_Cmodule + 1)
+#define _Mglc_Eat_def_Cenum (_Mglc_Eat_def_Cstruct + 1)
 #define _Mglc_Efunc_flags_Creal_name (64)
 #define _Mglc_Einclude_Cnil (-1)
 #define _Mglc_Efunc_flags_Ccgl_name (256)
@@ -153,6 +156,7 @@ typedef int32_t _Mglc_Egvar;
 typedef int32_t _Mglc_Ecvar;
 typedef int32_t _Mglc_Estruct;
 typedef int32_t _Mglc_Eenum;
+typedef uint8_t _Mglc_Eat_def;
 typedef int32_t _Mglc_Efile;
 typedef int32_t _Mglc_Einclude;
 typedef uint32_t _Mglc_Efunc_flags;
@@ -213,6 +217,7 @@ int32_t _Fcvar_c;
 int32_t _Fcvar_cap;
 _Mglc_Ecvar* _Fcvar_v;
 union _Mglc_Sat_type _Fdecl;
+_Mglc_Eat_def _Fdef;
 };
 struct _Mglc_Stype_info;
 struct _Mglc_Stype_info {
@@ -1135,13 +1140,14 @@ _Lf_9 = _Mglc_Efunc_Pptr_1(_Lf_idx_8);
 if((*_Lf_9)._Fthis_idx != -1) {
 struct _Mglc_Sat* _Lat_10;
 _Lat_10 = _Mglc_Eat_Pptr_1((*_Lf_9)._Fat);
-if((*_Lat_10)._Ftype == _Mglc_Ename_type_Cstruct) {
-struct _Mglc_Sstruct* _Lt_11;
-int32_t _Lt_method_idx_12;
+if((*_Lat_10)._Ftype == _Mglc_Ename_type_Cstruct_enum) {
 if((*_Lat_10)._Fdecl._Fenum == _Mglc_Eenum_Cnil) {
-fprintf(stdout, "%s:%u:%u: function using ':this' was declared on struct /%s that was not defined\n", _Mglc_Efile_Ppath_1((*_Lf_9)._Ffile), (*_Lf_9)._Fbegin_row, (*_Lf_9)._Fbegin_col, _Mglc_Eid_Pstr_1((*_Lat_10)._Fname._Fid));
+fprintf(stdout, "%s:%u:%u: function using ':this' was declared on :%s which is not defined\n", _Mglc_Efile_Ppath_1((*_Lf_9)._Ffile), (*_Lf_9)._Fbegin_row, (*_Lf_9)._Fbegin_col, _Mglc_Eid_Pstr_1((*_Lat_10)._Fname._Fid));
 exit(_Mstdc_Eexit_Cfailure);
 }
+if((*_Lat_10)._Fdef == _Mglc_Eat_def_Cstruct) {
+struct _Mglc_Sstruct* _Lt_11;
+int32_t _Lt_method_idx_12;
 _Lt_11 = _Mglc_Estruct_Pptr_1((*_Lat_10)._Fdecl._Fstruct);
 _Lt_method_idx_12 = (*_Lt_11)._Fmethod_c++;
 if((*_Lt_11)._Fmethod_cap <= (*_Lt_11)._Fmethod_c) {
@@ -1151,13 +1157,9 @@ _Mglc_Pgrow_2((*_Lt_11)._Fmethod_cap, (*_Lt_11)._Fmethod_c);
 _Mglc_Prealloc_3((*_Lt_11)._Fmethod_v, (*_Lt_11)._Fmethod_cap, _Lold_cap_13);
 }
 (*_Lt_11)._Fmethod_v[_Lt_method_idx_12] = _Lf_idx_8;
-} else if((*_Lat_10)._Ftype == _Mglc_Ename_type_Cenum) {
+} else if((*_Lat_10)._Fdef == _Mglc_Eat_def_Cenum) {
 struct _Mglc_Senum* _Lt_14;
 int32_t _Lt_method_idx_15;
-if((*_Lat_10)._Fdecl._Fenum == _Mglc_Eenum_Cnil) {
-fprintf(stdout, "%s:%u:%u: function using ':this' was declared on enum \\%s that was not defined\n", _Mglc_Efile_Ppath_1((*_Lf_9)._Ffile), (*_Lf_9)._Fbegin_row, (*_Lf_9)._Fbegin_col, _Mglc_Eid_Pstr_1((*_Lat_10)._Fname._Fid));
-exit(_Mstdc_Eexit_Cfailure);
-}
 _Lt_14 = _Mglc_Eenum_Pptr_1((*_Lat_10)._Fdecl._Fenum);
 _Lt_method_idx_15 = (*_Lt_14)._Fmethod_c++;
 if((*_Lt_14)._Fmethod_cap <= (*_Lt_14)._Fmethod_c) {
@@ -1167,6 +1169,10 @@ _Mglc_Pgrow_2((*_Lt_14)._Fmethod_cap, (*_Lt_14)._Fmethod_c);
 _Mglc_Prealloc_3((*_Lt_14)._Fmethod_v, (*_Lt_14)._Fmethod_cap, _Lold_cap_16);
 }
 (*_Lt_14)._Fmethod_v[_Lt_method_idx_15] = _Lf_idx_8;
+} else {
+fprintf(stdout, "%s:%u:%u: function using ':this' was declared on :%s which is not a struct or enum\n", _Mglc_Efile_Ppath_1((*_Lf_9)._Ffile), (*_Lf_9)._Fbegin_row, (*_Lf_9)._Fbegin_col, _Mglc_Eid_Pstr_1((*_Lat_10)._Fname._Fid));
+exit(_Mstdc_Eexit_Cfailure);
+}
 } else if((*_Lat_10)._Ftype == _Mglc_Ename_type_Cbasic) {
 struct _Mglc_Sbasic_type* _Lt_17;
 int32_t _Lt_method_idx_18;
@@ -1584,6 +1590,7 @@ void _Mglc_Sat_Pinit_4(struct _Mglc_Sat* _Lat_0, _Mglc_Ename_type _Ltype_1, _Mgl
 (*_Lat_0)._Fgvar_cap = 0;
 (*_Lat_0)._Fgvar_v = NULL;
 (*_Lat_0)._Fdecl._Fstruct = _Mglc_Estruct_Cnil;
+(*_Lat_0)._Fdef = _Mglc_Eat_def_Cundefined;
 }
 void _Mglc_Pread_1(char* _Lin_path_0) {
 _Mstdc_Efile _Lin_fd_1;
@@ -1846,7 +1853,14 @@ _Mglc_Eat_Prd_2(&(*_Le_52)._Fbase_type, &_Lr_7);
 _Mglc_Eenum_flags_Prd_2(&(*_Le_52)._Fflags, &_Lr_7);
 _Lat_i_53 = (*_Le_52)._Fat;
 _Lat_54 = _Mglc_Eat_Pptr_1(_Lat_i_53);
+if((*_Lat_54)._Fdef != _Mglc_Eat_def_Cundefined) {
+fprintf(stdout, "Cannot define struct :%s because it was already defined as ", _Mglc_Eid_Pstr_1((*_Lat_54)._Fname._Fid));
+if((*_Lat_54)._Fdef == _Mglc_Eat_def_Cstruct) {
+fprintf(stdout, "struct\n");
+}
+}
 (*_Lat_54)._Fdecl._Fenum = _Le_idx_51;
+(*_Lat_54)._Fdef = _Mglc_Eat_def_Cenum;
 if(((*_Le_52)._Fflags & _Mglc_Eenum_flags_Creal_name) != _Mglc_Eenum_flags_C0) {
 _Mglc_Eid_Prd_2(&(*_Le_52)._Freal_name, &_Lr_7);
 } else {
@@ -1887,7 +1901,14 @@ _Mglc_Eat_Prd_2(&(*_Ls_60)._Fat, &_Lr_7);
 _Mglc_Estruct_flags_Prd_2(&(*_Ls_60)._Fflags, &_Lr_7);
 _Lat_i_61 = (*_Ls_60)._Fat;
 _Lat_62 = _Mglc_Eat_Pptr_1(_Lat_i_61);
+if((*_Lat_62)._Fdef != _Mglc_Eat_def_Cundefined) {
+fprintf(stdout, "Cannot define struct :%s because it was already defined as ", _Mglc_Eid_Pstr_1((*_Lat_62)._Fname._Fid));
+if((*_Lat_62)._Fdef == _Mglc_Eat_def_Cenum) {
+fprintf(stdout, "enum\n");
+}
+}
 (*_Lat_62)._Fdecl._Fstruct = _Ls_idx_58;
+(*_Lat_62)._Fdef = _Mglc_Eat_def_Cstruct;
 int32_t _Lj_63;
 _Lj_63 = 0;
 for(int i = _Lfvar_c_59; i > 0; ) {
@@ -2137,19 +2158,20 @@ void _Mglc_Eat_Poutput_4(_Mglc_Eat _Lat_i_0, _Mglc_Efile _Lfile_1, int32_t _Lrow
 struct _Mglc_Sat* _Lat_4;
 _Lat_4 = _Mglc_Eat_Pptr_1(_Lat_i_0);
 switch((*_Lat_4)._Ftype) {
-case _Mglc_Ename_type_Cstruct:;
+case _Mglc_Ename_type_Cstruct_enum:;
+if((*_Lat_4)._Fdef == _Mglc_Eat_def_Cstruct) {
 if((*_Lat_4)._Fdecl._Fstruct == _Mglc_Estruct_Cnil) {
 fprintf(stdout, "%s:%u:%u: Error, struct '/%s' was not defined\n", _Mglc_Efile_Ppath_1(_Lfile_1), _Lrow_2, _Lcol_3, _Mglc_Eid_Pstr_1((*_Lat_4)._Fname._Fid));
 exit(_Mstdc_Eexit_Cfailure);
 }
 _Mglc_Estruct_Poutput_1((*_Lat_4)._Fdecl._Fstruct);
-break;
-case _Mglc_Ename_type_Cenum:;
+} else if((*_Lat_4)._Fdef == _Mglc_Eat_def_Cenum) {
 if((*_Lat_4)._Fdecl._Fenum == _Mglc_Eenum_Cnil) {
 fprintf(stdout, "%s:%u:%u: Error, enum '\\%s' was not defined\n", _Mglc_Efile_Ppath_1(_Lfile_1), _Lrow_2, _Lcol_3, _Mglc_Eid_Pstr_1((*_Lat_4)._Fname._Fid));
 exit(_Mstdc_Eexit_Cfailure);
 }
 _Mglc_Eenum_Poutput_1((*_Lat_4)._Fdecl._Fenum);
+}
 break;
 case _Mglc_Ename_type_Cbasic:;
 switch((*_Lat_4)._Fname._Fbasic) {
@@ -2304,7 +2326,8 @@ _Mglc_Eat_Pwrite_space_1((*_Lat_1)._Fparent);
 }
 fprintf(_Gout, "_M%s", _Mglc_Eid_Pc_name_1((*_Lat_1)._Fname._Fid));
 break;
-case _Mglc_Ename_type_Cstruct:;
+case _Mglc_Ename_type_Cstruct_enum:;
+if((*_Lat_1)._Fdef == _Mglc_Eat_def_Cstruct) {
 _Mglc_Estruct _Lt_idx_2;
 struct _Mglc_Sstruct* _Lt_3;
 _Lt_idx_2 = (*_Lat_1)._Fdecl._Fstruct;
@@ -2324,8 +2347,7 @@ if((*_Lat_1)._Fparent != _Mglc_Eat_Croot) {
 _Mglc_Eat_Pwrite_space_1((*_Lat_1)._Fparent);
 }
 fprintf(_Gout, "_S%s", _Mglc_Eid_Pc_name_1((*_Lat_1)._Fname._Fid));
-break;
-case _Mglc_Ename_type_Cenum:;
+} else if((*_Lat_1)._Fdef == _Mglc_Eat_def_Cenum) {
 _Mglc_Eenum _Lt_idx_4;
 _Lt_idx_4 = (*_Lat_1)._Fdecl._Fenum;
 if(_Lt_idx_4 != _Mglc_Eenum_Cnil) {
@@ -2340,6 +2362,7 @@ if((*_Lat_1)._Fparent != _Mglc_Eat_Croot) {
 _Mglc_Eat_Pwrite_space_1((*_Lat_1)._Fparent);
 }
 fprintf(_Gout, "_E%s", _Mglc_Eid_Pc_name_1((*_Lat_1)._Fname._Fid));
+}
 break;
 case _Mglc_Ename_type_Cbasic:;
 switch((*_Lat_1)._Fname._Fbasic) {
@@ -2387,17 +2410,18 @@ _Mglc_Eat_Pwrite_space_1((*_Lat_1)._Fparent);
 }
 fprintf(_Gout, "_M%s", _Mglc_Eid_Pc_name_1((*_Lat_1)._Fname._Fid));
 break;
-case _Mglc_Ename_type_Cstruct:;
+case _Mglc_Ename_type_Cstruct_enum:;
+if((*_Lat_1)._Fdef == _Mglc_Eat_def_Cstruct) {
 if((*_Lat_1)._Fparent != _Mglc_Eat_Croot) {
 _Mglc_Eat_Pwrite_space_1((*_Lat_1)._Fparent);
 }
 fprintf(_Gout, "_S%s", _Mglc_Eid_Pc_name_1((*_Lat_1)._Fname._Fid));
-break;
-case _Mglc_Ename_type_Cenum:;
+} else if((*_Lat_1)._Fdef == _Mglc_Eat_def_Cenum) {
 if((*_Lat_1)._Fparent != _Mglc_Eat_Croot) {
 _Mglc_Eat_Pwrite_space_1((*_Lat_1)._Fparent);
 }
 fprintf(_Gout, "_E%s", _Mglc_Eid_Pc_name_1((*_Lat_1)._Fname._Fid));
+}
 break;
 case _Mglc_Ename_type_Cbasic:;
 switch((*_Lat_1)._Fname._Fbasic) {
@@ -2763,7 +2787,7 @@ return &_Gfile_v[_Lf_0];
 bool _Mglc_Eat_Pfinalize_4(_Mglc_Eat _Lat_i_0, struct _Mglc_Stype_info* _Lti_1, int32_t _Lrow_2, int32_t _Lcol_3) {
 struct _Mglc_Sat* _Lat_4;
 _Lat_4 = _Mglc_Eat_Pptr_1(_Lat_i_0);
-if((*_Lat_4)._Ftype == _Mglc_Ename_type_Cstruct) {
+if((*_Lat_4)._Fdef == _Mglc_Eat_def_Cstruct) {
 if((*_Lti_1)._Fbuilt_in) {
 if((*_Lti_1)._Fref_v[0] != 0) {
 fprintf(stdout, "%s:%d:%d: Can't use plus symbol (+) because type '/%s' has reference\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Lrow_2, _Lcol_3, _Mglc_Eid_Pstr_1((*_Lat_4)._Fname._Fid));
@@ -4237,7 +4261,7 @@ int32_t _Lcase_c_7;
 int32_t _Lcase_cap_8;
 _Mglc_Efunc* _Lcase_v_9;
 _Ltype_3 = _Mglc_Eat_Pptr_1((*_Ls_2)._Fval._Ftype);
-if((*_Ltype_3)._Ftype != _Mglc_Ename_type_Cenum) {
+if((*_Ltype_3)._Fdef != _Mglc_Eat_def_Cenum) {
 fprintf(stdout, "%s:%u:%u: Error, the expression used for switch must be an enum when using @case attribute\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), (*_Ls_2)._Fbase._Fbegin_row, (*_Ls_2)._Fbase._Fbegin_col);
 return;
 }
@@ -4363,7 +4387,7 @@ _Mglc_Eat _Ltype_i_4;
 struct _Mglc_Sat* _Ltype_5;
 _Ltype_i_4 = (*_Lswitch_3)._Fval._Ftype;
 _Ltype_5 = _Mglc_Eat_Pptr_1(_Ltype_i_4);
-if((*_Ltype_5)._Ftype == _Mglc_Ename_type_Cenum) {
+if((*_Ltype_5)._Fdef == _Mglc_Eat_def_Cenum) {
 int32_t _Li_6;
 _Li_6 = 0;
 for(int i = (*_Ls_2)._Fexpr_c; i > 0; ) {
@@ -4638,7 +4662,7 @@ fprintf(stdout, "%s:%u:%u - %u:%u Cannot get member '.%s' from an expression of 
 return;
 }
 _Ltype_4 = _Mglc_Eat_Pptr_1(_Ltype_i_3);
-if((*_Ltype_4)._Ftype != _Mglc_Ename_type_Cstruct) {
+if((*_Ltype_4)._Fdef != _Mglc_Eat_def_Cstruct) {
 fprintf(stdout, "%s:%u:%u - %u:%u Cannot get member '.%s' because the type is not a struct or union\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1((*_Le_2)._Fmember));
 return;
 }
@@ -4776,8 +4800,8 @@ _Mglc_Eat _Lat_idx_8;
 struct _Mglc_Sat* _Lat_9;
 int32_t _Lmethod_c_10;
 _Mglc_Efunc* _Lmethod_v_11;
-int32_t _Lfound_16;
-int32_t _Lsimilar_c_17;
+int32_t _Lfound_15;
+int32_t _Lsimilar_c_16;
 _Le_2 = _Lexpr_0;
 _Lfunc_name_3 = (*_Le_2)._Ffunc_name;
 _Lgroup_c_4 = (*_Le_2)._Fgroup_c;
@@ -4786,7 +4810,7 @@ _Lcarg_c_6 = (*_Le_2)._Fcarg_c;
 _Lcarg_c1_7 = (_Lcarg_c_6 + 1);
 _Lat_idx_8 = _Mglc_Eexpr_Ptype_1((*_Le_2)._Fthis);
 if(_Lat_idx_8 == _Mglc_Eat_Cnil) {
-fprintf(stdout, "%s:%u:%u - %u:%u: Cannot call method :%s on a value without a type\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lfunc_name_3));
+fprintf(stdout, "%s:%u:%u - %u:%u: Cannot call method %s on a value without a type\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lfunc_name_3));
 return;
 }
 _Lat_9 = _Mglc_Eat_Pptr_1(_Lat_idx_8);
@@ -4797,184 +4821,178 @@ _Lmethod_c_10 = (*_Lt_12)._Fmethod_c;
 _Lmethod_v_11 = (*_Lt_12)._Fmethod_v;
 } else {
 if((((*_Lat_9)._Fdecl._Fstruct == _Mglc_Estruct_Cnil) && ((*_Lat_9)._Ftype != _Mglc_Ename_type_Cbasic) && ((*_Lat_9)._Ftype != _Mglc_Ename_type_Cmodule))) {
-char _Lc_13;
-if((*_Lat_9)._Ftype == _Mglc_Ename_type_Cstruct) {
-_Lc_13 = '/';
-} else {
-_Lc_13 = '\\';
-}
-fprintf(stdout, "%s:%u:%u - %u:%u: Cannot call method :%s because the type %c%s is not defined\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lfunc_name_3), _Lc_13, _Mglc_Eid_Pstr_1((*_Lat_9)._Fname._Fid));
+fprintf(stdout, "%s:%u:%u - %u:%u: Cannot call method %s because the type :%s is not defined\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lfunc_name_3), _Mglc_Eid_Pstr_1((*_Lat_9)._Fname._Fid));
 return;
 }
-if((*_Lat_9)._Ftype == _Mglc_Ename_type_Cstruct) {
-struct _Mglc_Sstruct* _Lt_14;
-_Lt_14 = _Mglc_Estruct_Pptr_1((*_Lat_9)._Fdecl._Fstruct);
+if((*_Lat_9)._Fdef == _Mglc_Eat_def_Cstruct) {
+struct _Mglc_Sstruct* _Lt_13;
+_Lt_13 = _Mglc_Estruct_Pptr_1((*_Lat_9)._Fdecl._Fstruct);
+_Lmethod_c_10 = (*_Lt_13)._Fmethod_c;
+_Lmethod_v_11 = (*_Lt_13)._Fmethod_v;
+} else if((*_Lat_9)._Fdef == _Mglc_Eat_def_Cenum) {
+struct _Mglc_Senum* _Lt_14;
+_Lt_14 = _Mglc_Eenum_Pptr_1((*_Lat_9)._Fdecl._Fenum);
 _Lmethod_c_10 = (*_Lt_14)._Fmethod_c;
 _Lmethod_v_11 = (*_Lt_14)._Fmethod_v;
-} else if((*_Lat_9)._Ftype == _Mglc_Ename_type_Cenum) {
-struct _Mglc_Senum* _Lt_15;
-_Lt_15 = _Mglc_Eenum_Pptr_1((*_Lat_9)._Fdecl._Fenum);
-_Lmethod_c_10 = (*_Lt_15)._Fmethod_c;
-_Lmethod_v_11 = (*_Lt_15)._Fmethod_v;
 }
 }
-_Lfound_16 = -1;
-_Lsimilar_c_17 = 0;
-int32_t _Li_18;
-_Li_18 = 0;
+_Lfound_15 = -1;
+_Lsimilar_c_16 = 0;
+int32_t _Li_17;
+_Li_17 = 0;
 for(int i = _Lmethod_c_10; i > 0; ) {
 i --;
-_Mglc_Efunc _Lf_idx_19;
-struct _Mglc_Sdecl_func* _Lf_20;
-bool _Lmatch_21;
-int32_t _Lj_25;
-int32_t _Lk_26;
-_Lf_idx_19 = _Lmethod_v_11[_Li_18];
-_Lf_20 = _Mglc_Efunc_Pptr_1(_Lf_idx_19);
-if((*_Lf_20)._Fdecl._Fname != _Lfunc_name_3) {
+_Mglc_Efunc _Lf_idx_18;
+struct _Mglc_Sdecl_func* _Lf_19;
+bool _Lmatch_20;
+int32_t _Lj_24;
+int32_t _Lk_25;
+_Lf_idx_18 = _Lmethod_v_11[_Li_17];
+_Lf_19 = _Mglc_Efunc_Pptr_1(_Lf_idx_18);
+if((*_Lf_19)._Fdecl._Fname != _Lfunc_name_3) {
 goto continue_0;
 }
-_Lfound_16 = _Li_18;
-_Lsimilar_c_17++;
-if((*_Lf_20)._Fgroup_c != _Lgroup_c_4) {
+_Lfound_15 = _Li_17;
+_Lsimilar_c_16++;
+if((*_Lf_19)._Fgroup_c != _Lgroup_c_4) {
 goto continue_0;
 }
-_Lmatch_21 = true;
-if(((*_Lf_20)._Fflags & _Mglc_Efunc_flags_Cvar_args) != _Mglc_Efunc_flags_C0) {
-if((*_Lf_20)._Ffarg_c > _Lcarg_c1_7) {
+_Lmatch_20 = true;
+if(((*_Lf_19)._Fflags & _Mglc_Efunc_flags_Cvar_args) != _Mglc_Efunc_flags_C0) {
+if((*_Lf_19)._Ffarg_c > _Lcarg_c1_7) {
 goto continue_0;
 }
-int32_t _Lj_22;
-_Lj_22 = 0;
+int32_t _Lj_21;
+_Lj_21 = 0;
 for(int i = _Lgroup_c_4 - 1; i > 0; ) {
 i --;
-if((*_Lf_20)._Fthis_group == _Lj_22) {
-if((*_Lf_20)._Fgroup_v[_Lj_22] != (_Lgroup_v_5[_Lj_22] + 1)) {
-_Lmatch_21 = false;
+if((*_Lf_19)._Fthis_group == _Lj_21) {
+if((*_Lf_19)._Fgroup_v[_Lj_21] != (_Lgroup_v_5[_Lj_21] + 1)) {
+_Lmatch_20 = false;
 goto break_1;
 }
 } else {
-if((*_Lf_20)._Fgroup_v[_Lj_22] != _Lgroup_v_5[_Lj_22]) {
-_Lmatch_21 = false;
+if((*_Lf_19)._Fgroup_v[_Lj_21] != _Lgroup_v_5[_Lj_21]) {
+_Lmatch_20 = false;
 goto break_1;
 }
 }
 continue_1:;
-_Lj_22++;
+_Lj_21++;
 }
 break_1:;
-if(_Lmatch_21) {
-uint8_t _Lj_23;
-_Lj_23 = (_Lgroup_c_4 - 1);
-if((*_Lf_20)._Fthis_group == _Lj_23) {
-if((*_Lf_20)._Fgroup_v[_Lj_23] > (_Lgroup_v_5[_Lj_23] + 1)) {
-_Lmatch_21 = false;
+if(_Lmatch_20) {
+uint8_t _Lj_22;
+_Lj_22 = (_Lgroup_c_4 - 1);
+if((*_Lf_19)._Fthis_group == _Lj_22) {
+if((*_Lf_19)._Fgroup_v[_Lj_22] > (_Lgroup_v_5[_Lj_22] + 1)) {
+_Lmatch_20 = false;
 }
 } else {
-if((*_Lf_20)._Fgroup_v[_Lj_23] > _Lgroup_v_5[_Lj_23]) {
-_Lmatch_21 = false;
+if((*_Lf_19)._Fgroup_v[_Lj_22] > _Lgroup_v_5[_Lj_22]) {
+_Lmatch_20 = false;
 }
 }
 }
 } else {
-if((*_Lf_20)._Ffarg_c != _Lcarg_c1_7) {
+if((*_Lf_19)._Ffarg_c != _Lcarg_c1_7) {
 goto continue_0;
 }
-int32_t _Lj_24;
-_Lj_24 = 0;
+int32_t _Lj_23;
+_Lj_23 = 0;
 for(int i = _Lgroup_c_4; i > 0; ) {
 i --;
-if((*_Lf_20)._Fthis_group == _Lj_24) {
-if((*_Lf_20)._Fgroup_v[_Lj_24] != (_Lgroup_v_5[_Lj_24] + 1)) {
-_Lmatch_21 = false;
+if((*_Lf_19)._Fthis_group == _Lj_23) {
+if((*_Lf_19)._Fgroup_v[_Lj_23] != (_Lgroup_v_5[_Lj_23] + 1)) {
+_Lmatch_20 = false;
 goto break_2;
 }
 } else {
-if((*_Lf_20)._Fgroup_v[_Lj_24] != _Lgroup_v_5[_Lj_24]) {
-_Lmatch_21 = false;
+if((*_Lf_19)._Fgroup_v[_Lj_23] != _Lgroup_v_5[_Lj_23]) {
+_Lmatch_20 = false;
 goto break_2;
 }
 }
 continue_2:;
-_Lj_24++;
+_Lj_23++;
 }
 break_2:;
 }
-if(!(_Lmatch_21)) {
+if(!(_Lmatch_20)) {
 goto continue_0;
 }
-_Mglc_Efunc_Pprocess_later_1(_Lf_idx_19);
-_Lj_25 = 0;
-_Lk_26 = 0;
-for(int i = (*_Lf_20)._Fthis_idx; i > 0; ) {
+_Mglc_Efunc_Pprocess_later_1(_Lf_idx_18);
+_Lj_24 = 0;
+_Lk_25 = 0;
+for(int i = (*_Lf_19)._Fthis_idx; i > 0; ) {
 i --;
-struct _Mglc_Scarg* _Lca_27;
-_Lca_27 = (&(*_Le_2)._Fcarg_v[_Lk_26]);
-if(!(_Mglc_Pfarg_process_4((*_Lca_27)._Fexpr, (*_Lca_27)._Fref, &(*_Lca_27)._Fvalue, &(*_Lf_20)._Ffarg_v[_Lj_25]._Fdecl))) {
+struct _Mglc_Scarg* _Lca_26;
+_Lca_26 = (&(*_Le_2)._Fcarg_v[_Lk_25]);
+if(!(_Mglc_Pfarg_process_4((*_Lca_26)._Fexpr, (*_Lca_26)._Fref, &(*_Lca_26)._Fvalue, &(*_Lf_19)._Ffarg_v[_Lj_24]._Fdecl))) {
 return;
 }
 continue_3:;
-_Lj_25++;
-_Lk_26++;
+_Lj_24++;
+_Lk_25++;
 }
 break_3:;
-if(!(_Mglc_Pfarg_process_4((*_Le_2)._Fthis, 0, &(*_Le_2)._Fthis_value, &(*_Lf_20)._Ffarg_v[_Lj_25++]._Fdecl))) {
+if(!(_Mglc_Pfarg_process_4((*_Le_2)._Fthis, 0, &(*_Le_2)._Fthis_value, &(*_Lf_19)._Ffarg_v[_Lj_24++]._Fdecl))) {
 return;
 }
-for(int i = ((*_Lf_20)._Ffarg_c - 1) - (*_Lf_20)._Fthis_idx; i > 0; ) {
+for(int i = ((*_Lf_19)._Ffarg_c - 1) - (*_Lf_19)._Fthis_idx; i > 0; ) {
 i --;
-struct _Mglc_Scarg* _Lca_28;
-_Lca_28 = (&(*_Le_2)._Fcarg_v[_Lk_26]);
-if(!(_Mglc_Pfarg_process_4((*_Lca_28)._Fexpr, (*_Lca_28)._Fref, &(*_Lca_28)._Fvalue, &(*_Lf_20)._Ffarg_v[_Lj_25]._Fdecl))) {
+struct _Mglc_Scarg* _Lca_27;
+_Lca_27 = (&(*_Le_2)._Fcarg_v[_Lk_25]);
+if(!(_Mglc_Pfarg_process_4((*_Lca_27)._Fexpr, (*_Lca_27)._Fref, &(*_Lca_27)._Fvalue, &(*_Lf_19)._Ffarg_v[_Lj_24]._Fdecl))) {
 return;
 }
 continue_4:;
-_Lj_25++;
-_Lk_26++;
+_Lj_24++;
+_Lk_25++;
 }
 break_4:;
-(*_Le_2)._Ffunc_idx = _Lf_idx_19;
-if(((*_Lf_20)._Fflags & _Mglc_Efunc_flags_Cvar_args) != _Mglc_Efunc_flags_C0) {
-for(int i = (*_Le_2)._Fcarg_c - _Lk_26; i > 0; ) {
+(*_Le_2)._Ffunc_idx = _Lf_idx_18;
+if(((*_Lf_19)._Fflags & _Mglc_Efunc_flags_Cvar_args) != _Mglc_Efunc_flags_C0) {
+for(int i = (*_Le_2)._Fcarg_c - _Lk_25; i > 0; ) {
 i --;
-struct _Mglc_Scarg* _Lca_29;
-int32_t _Lr_30;
-_Lca_29 = (&(*_Le_2)._Fcarg_v[_Lk_26]);
-if((*_Lca_29)._Fref) {
-_Lr_30 = (1 + (*_Lca_29)._Fref);
+struct _Mglc_Scarg* _Lca_28;
+int32_t _Lr_29;
+_Lca_28 = (&(*_Le_2)._Fcarg_v[_Lk_25]);
+if((*_Lca_28)._Fref) {
+_Lr_29 = (1 + (*_Lca_28)._Fref);
 } else {
-_Lr_30 = 1;
+_Lr_29 = 1;
 }
-if(!(_Mglc_Eexpr_Pvalue_4((*_Lca_29)._Fexpr, _Lr_30, false, &(*_Lca_29)._Fvalue))) {
+if(!(_Mglc_Eexpr_Pvalue_4((*_Lca_28)._Fexpr, _Lr_29, false, &(*_Lca_28)._Fvalue))) {
 return;
 }
 continue_5:;
-_Lk_26++;
+_Lk_25++;
 }
 break_5:;
 }
 (*_Lok_1) = true;
 return;
 continue_0:;
-_Li_18++;
+_Li_17++;
 }
 break_0:;
 fprintf(stdout, "%s:%u:%u - %u:%u: Cannot find method :%s with %u argument:s\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lfunc_name_3), _Lcarg_c_6);
-if(_Lfound_16 != -1) {
-fprintf(stdout, "But found %u functions with different no. of argument:s:\n", _Lsimilar_c_17);
-int32_t _Li_31;
-_Li_31 = 0;
+if(_Lfound_15 != -1) {
+fprintf(stdout, "But found %u functions with different no. of argument:s:\n", _Lsimilar_c_16);
+int32_t _Li_30;
+_Li_30 = 0;
 for(int i = (*_Lat_9)._Ffunc_c; i > 0; ) {
 i --;
-_Mglc_Efunc _Lf_idx_32;
-struct _Mglc_Sdecl_func* _Lf_33;
-_Lf_idx_32 = (*_Lat_9)._Ffunc_v[_Li_31];
-_Lf_33 = _Gfunc_v[_Lf_idx_32];
-if((*_Lf_33)._Fdecl._Fname == _Lfunc_name_3) {
-fprintf(stdout, "- :%s with %u args\n", _Mglc_Eid_Pstr_1(_Lfunc_name_3), (*_Lf_33)._Ffarg_c);
+_Mglc_Efunc _Lf_idx_31;
+struct _Mglc_Sdecl_func* _Lf_32;
+_Lf_idx_31 = (*_Lat_9)._Ffunc_v[_Li_30];
+_Lf_32 = _Gfunc_v[_Lf_idx_31];
+if((*_Lf_32)._Fdecl._Fname == _Lfunc_name_3) {
+fprintf(stdout, "- :%s with %u args\n", _Mglc_Eid_Pstr_1(_Lfunc_name_3), (*_Lf_32)._Ffarg_c);
 }
 continue_6:;
-_Li_31++;
+_Li_30++;
 }
 break_6:;
 }
@@ -5002,113 +5020,107 @@ while(1) {
 struct _Mglc_Sat* _Lat_9;
 _Lat_9 = _Mglc_Eat_Pptr_1(_Lat_idx_7);
 if((((*_Lat_9)._Fdecl._Fstruct == _Mglc_Estruct_Cnil) && ((*_Lat_9)._Ftype != _Mglc_Ename_type_Cbasic) && ((*_Lat_9)._Ftype != _Mglc_Ename_type_Cmodule))) {
-char _Lc_10;
-if((*_Lat_9)._Ftype == _Mglc_Ename_type_Cstruct) {
-_Lc_10 = '/';
-} else {
-_Lc_10 = '\\';
-}
-fprintf(stdout, "%s:%u:%u - %u:%u: Cannot call function :%s because the type %c%s is not defined\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lfunc_name_3), _Lc_10, _Mglc_Eid_Pstr_1((*_Lat_9)._Fname._Fid));
+fprintf(stdout, "%s:%u:%u - %u:%u: Cannot call function %s because the type :%s is not defined\n", _Mglc_Efile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Mglc_Eid_Pstr_1(_Lfunc_name_3), _Mglc_Eid_Pstr_1((*_Lat_9)._Fname._Fid));
 return;
 }
-int32_t _Li_11;
-_Li_11 = 0;
+int32_t _Li_10;
+_Li_10 = 0;
 for(int i = (*_Lat_9)._Ffunc_c; i > 0; ) {
 i --;
-_Mglc_Efunc _Lf_idx_12;
-struct _Mglc_Sdecl_func* _Lf_13;
-bool _Lmatch_14;
-int32_t _Lj_18;
-_Lf_idx_12 = (*_Lat_9)._Ffunc_v[_Li_11];
-_Lf_13 = _Mglc_Efunc_Pptr_1(_Lf_idx_12);
-if((*_Lf_13)._Fdecl._Fname != _Lfunc_name_3) {
+_Mglc_Efunc _Lf_idx_11;
+struct _Mglc_Sdecl_func* _Lf_12;
+bool _Lmatch_13;
+int32_t _Lj_17;
+_Lf_idx_11 = (*_Lat_9)._Ffunc_v[_Li_10];
+_Lf_12 = _Mglc_Efunc_Pptr_1(_Lf_idx_11);
+if((*_Lf_12)._Fdecl._Fname != _Lfunc_name_3) {
 goto continue_1;
 }
-if((*_Lf_13)._Fgroup_c != _Lgroup_c_5) {
+if((*_Lf_12)._Fgroup_c != _Lgroup_c_5) {
 goto continue_1;
 }
-_Lmatch_14 = true;
-if(((*_Lf_13)._Fflags & _Mglc_Efunc_flags_Cvar_args) != _Mglc_Efunc_flags_C0) {
-if((*_Lf_13)._Ffarg_c > _Lcarg_c_4) {
+_Lmatch_13 = true;
+if(((*_Lf_12)._Fflags & _Mglc_Efunc_flags_Cvar_args) != _Mglc_Efunc_flags_C0) {
+if((*_Lf_12)._Ffarg_c > _Lcarg_c_4) {
 goto continue_1;
 }
-int32_t _Lj_15;
-_Lj_15 = 0;
+int32_t _Lj_14;
+_Lj_14 = 0;
 for(int i = _Lgroup_c_5 - 1; i > 0; ) {
 i --;
-if((*_Lf_13)._Fgroup_v[_Lj_15] != _Lgroup_v_6[_Lj_15]) {
-_Lmatch_14 = false;
+if((*_Lf_12)._Fgroup_v[_Lj_14] != _Lgroup_v_6[_Lj_14]) {
+_Lmatch_13 = false;
 goto break_2;
 }
 continue_2:;
-_Lj_15++;
+_Lj_14++;
 }
 break_2:;
-if(_Lmatch_14) {
-uint8_t _Lj_16;
-_Lj_16 = (_Lgroup_c_5 - 1);
-if((*_Lf_13)._Fgroup_v[_Lj_16] > _Lgroup_v_6[_Lj_16]) {
-_Lmatch_14 = false;
+if(_Lmatch_13) {
+uint8_t _Lj_15;
+_Lj_15 = (_Lgroup_c_5 - 1);
+if((*_Lf_12)._Fgroup_v[_Lj_15] > _Lgroup_v_6[_Lj_15]) {
+_Lmatch_13 = false;
 }
 }
 } else {
-if((*_Lf_13)._Ffarg_c != _Lcarg_c_4) {
+if((*_Lf_12)._Ffarg_c != _Lcarg_c_4) {
 goto continue_1;
 }
-int32_t _Lj_17;
-_Lj_17 = 0;
+int32_t _Lj_16;
+_Lj_16 = 0;
 for(int i = _Lgroup_c_5; i > 0; ) {
 i --;
-if((*_Lf_13)._Fgroup_v[_Lj_17] != _Lgroup_v_6[_Lj_17]) {
-_Lmatch_14 = false;
+if((*_Lf_12)._Fgroup_v[_Lj_16] != _Lgroup_v_6[_Lj_16]) {
+_Lmatch_13 = false;
 goto break_3;
 }
 continue_3:;
-_Lj_17++;
+_Lj_16++;
 }
 break_3:;
 }
-if(!(_Lmatch_14)) {
+if(!(_Lmatch_13)) {
 goto continue_1;
 }
-_Mglc_Efunc_Pprocess_later_1(_Lf_idx_12);
-_Lj_18 = 0;
-for(int i = (*_Lf_13)._Ffarg_c; i > 0; ) {
+_Mglc_Efunc_Pprocess_later_1(_Lf_idx_11);
+_Lj_17 = 0;
+for(int i = (*_Lf_12)._Ffarg_c; i > 0; ) {
 i --;
-struct _Mglc_Scarg* _Lca_19;
-_Lca_19 = (&(*_Le_2)._Fcarg_v[_Lj_18]);
-if(!(_Mglc_Pfarg_process_4((*_Lca_19)._Fexpr, (*_Lca_19)._Fref, &(*_Lca_19)._Fvalue, &(*_Lf_13)._Ffarg_v[_Lj_18]._Fdecl))) {
+struct _Mglc_Scarg* _Lca_18;
+_Lca_18 = (&(*_Le_2)._Fcarg_v[_Lj_17]);
+if(!(_Mglc_Pfarg_process_4((*_Lca_18)._Fexpr, (*_Lca_18)._Fref, &(*_Lca_18)._Fvalue, &(*_Lf_12)._Ffarg_v[_Lj_17]._Fdecl))) {
 return;
 }
 continue_4:;
-_Lj_18++;
+_Lj_17++;
 }
 break_4:;
-(*_Le_2)._Ffunc_idx = _Lf_idx_12;
-if(((*_Lf_13)._Fflags & _Mglc_Efunc_flags_Cvar_args) != _Mglc_Efunc_flags_C0) {
-for(int i = (*_Le_2)._Fcarg_c - _Lj_18; i > 0; ) {
+(*_Le_2)._Ffunc_idx = _Lf_idx_11;
+if(((*_Lf_12)._Fflags & _Mglc_Efunc_flags_Cvar_args) != _Mglc_Efunc_flags_C0) {
+for(int i = (*_Le_2)._Fcarg_c - _Lj_17; i > 0; ) {
 i --;
-struct _Mglc_Scarg* _Lca_20;
-int32_t _Lr_21;
-_Lca_20 = (&(*_Le_2)._Fcarg_v[_Lj_18]);
-if((*_Lca_20)._Fref) {
-_Lr_21 = (1 + (*_Lca_20)._Fref);
+struct _Mglc_Scarg* _Lca_19;
+int32_t _Lr_20;
+_Lca_19 = (&(*_Le_2)._Fcarg_v[_Lj_17]);
+if((*_Lca_19)._Fref) {
+_Lr_20 = (1 + (*_Lca_19)._Fref);
 } else {
-_Lr_21 = 1;
+_Lr_20 = 1;
 }
-if(!(_Mglc_Eexpr_Pvalue_4((*_Lca_20)._Fexpr, _Lr_21, false, &(*_Lca_20)._Fvalue))) {
+if(!(_Mglc_Eexpr_Pvalue_4((*_Lca_19)._Fexpr, _Lr_20, false, &(*_Lca_19)._Fvalue))) {
 return;
 }
 continue_5:;
-_Lj_18++;
+_Lj_17++;
 }
 break_5:;
 }
-(*_Le_2)._Ffunc_idx = _Lf_idx_12;
+(*_Le_2)._Ffunc_idx = _Lf_idx_11;
 (*_Lok_1) = true;
 return;
 continue_1:;
-_Li_11++;
+_Li_10++;
 }
 break_1:;
 if(!(_Ltry_parent_8)) {
@@ -5163,7 +5175,7 @@ _Mglc_Eexpr_Pwrite_value_2((*_Le_0)._Fexpr, &(*_Le_0)._Fval);
 fprintf(_Gout, ")");
 }
 int32_t _Mglc_Eat_Ppointer_1(_Mglc_Eat _Ltd_0) {
-if((*_Mglc_Eat_Pptr_1(_Ltd_0))._Ftype == _Mglc_Ename_type_Cstruct) {
+if((*_Mglc_Eat_Pptr_1(_Ltd_0))._Fdef == _Mglc_Eat_def_Cstruct) {
 return 1;
 } else {
 return 0;
