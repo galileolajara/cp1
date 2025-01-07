@@ -1138,7 +1138,7 @@
    +in-path-len = 'c.strlen(.input-path);
    'c.memcpy(out-path, .input-path, in-path-len);
    out-path[in-path-len] = ''-;
-   out-path[in-path-len + 1] = ''t;
+   out-path[in-path-len + 1] = ''b;
    out-path[in-path-len + 2] = ''.;
    out-path[in-path-len + 3] = ''t;
    out-path[in-path-len + 4] = ''m;
@@ -1191,7 +1191,7 @@
    out-fd.write(w-begin.ref, w.pos - w-begin.pos);
    out-fd.close();
    {+final-path:char[512]}
-   out-path[in-path-len + 1] = ''t;
+   out-path[in-path-len + 1] = ''b;
    'c.memcpy(final-path, out-path, in-path-len + 2);
    final-path[in-path-len + 2] = 0;
    'c.rename(out-path, final-path);

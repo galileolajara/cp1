@@ -145,7 +145,7 @@
 #define _Mglc_Estmt_type_Creturn (_Mglc_Estmt_type_Cexpr + 1)
 #define _Mglc_Estmt_type_Ccontinue (_Mglc_Estmt_type_Creturn + 1)
 #define _Mglc_Estmt_type_Cbreak (_Mglc_Estmt_type_Ccontinue + 1)
-#define _Mglc_Efunc_flags_Cglc_name (256)
+#define _Mglc_Efunc_flags_Ccgl_name (256)
 #define _Mglc_Efunc_flags_Cprocess (4)
 #define _Mglc_Efunc_flags_Cvar_args (8)
 #define _Mglc_Efunc_flags_Cno_decl (16)
@@ -895,7 +895,7 @@ void _Mglc_Pstmt_continue_5(_Mglc_Eid _Lid_0, int32_t _Lbegin_row_1, int32_t _Lb
 void _Mglc_Pstmt_break_5(_Mglc_Eid _Lid_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4);
 void _Mglc_Pfunc_attr_main_0();
 void _Mglc_Pfunc_attr_decl_0();
-void _Mglc_Pfunc_attr_glc_name_0();
+void _Mglc_Pfunc_attr_cgl_name_0();
 void _Mglc_Pfunc_attr_process_0();
 void _Mglc_Pfunc_attr_inline_0();
 void _Mglc_Pfunc_attr_var_args_0();
@@ -1018,7 +1018,7 @@ _Mglc_Eexpr _Mglc_Pexpr_push_2(struct _Mglc_Sexpr* _Le_0, _Mglc_Eexpr_type _Ltyp
 struct _Mglc_Sexpr* _Mglc_Eexpr_Pptr_1(_Mglc_Eexpr _Le_0);
 void _Mglc_Pstmt_push_6(struct _Mglc_Sstmt* _Ls_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4, _Mglc_Estmt_type _Ltype_5);
 _Mglc_Eid _Mglc_Elvar_Pname_1(_Mglc_Elvar _Ll_0);
-char* _Mglc_Etoken_Pglc_name_1(_Mglc_Etoken _Le_0) {
+char* _Mglc_Etoken_Pcgl_name_1(_Mglc_Etoken _Le_0) {
 switch(_Le_0) {
 case _Mglc_Etoken_Cnil: return "nil";
 case _Mglc_Etoken_Cplus: return "plus";
@@ -1167,7 +1167,7 @@ void _Mglc_Eexpr_Pwr_assign_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _L
 void _Mglc_Eexpr_Pwr_fvar_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
 void _Mglc_Eexpr_Pwr_gvar_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
 void _Mglc_Eexpr_Pwr_lvar_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
-char* _Mglc_Eexpr_type_Pglc_name_1(_Mglc_Eexpr_type _Le_0) {
+char* _Mglc_Eexpr_type_Pcgl_name_1(_Mglc_Eexpr_type _Le_0) {
 switch(_Le_0) {
 case _Mglc_Eexpr_type_Cnil: return "nil";
 case _Mglc_Eexpr_type_Ccall_method: return "call-method";
@@ -1216,7 +1216,7 @@ void _Mglc_Sstmt_space_Pwr_continue_3(struct _Mglc_Sstmt* _Lstmt_0, union _Mglc_
 void _Mglc_Sstmt_space_Pwr_return_3(struct _Mglc_Sstmt* _Lstmt_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
 void _Mglc_Sstmt_space_Pwr_space_3(struct _Mglc_Sstmt* _Lstmt_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
 void _Mglc_Sstmt_space_Pwr_expr_3(struct _Mglc_Sstmt* _Lstmt_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
-char* _Mglc_Estmt_type_Pglc_name_1(_Mglc_Estmt_type _Le_0) {
+char* _Mglc_Estmt_type_Pcgl_name_1(_Mglc_Estmt_type _Le_0) {
 switch(_Le_0) {
 case _Mglc_Estmt_type_Cspace: return "space";
 case _Mglc_Estmt_type_Cif: return "if";
@@ -1715,7 +1715,7 @@ _Mglc_Pwrite_func_2(&_Lw_35, false);
 _Lin_path_len_43 = strlen(input_path);
 memcpy(_Lout_path_42, input_path, _Lin_path_len_43);
 _Lout_path_42[_Lin_path_len_43] = '-';
-_Lout_path_42[(_Lin_path_len_43 + 1)] = 't';
+_Lout_path_42[(_Lin_path_len_43 + 1)] = 'b';
 _Lout_path_42[(_Lin_path_len_43 + 2)] = '.';
 _Lout_path_42[(_Lin_path_len_43 + 3)] = 't';
 _Lout_path_42[(_Lin_path_len_43 + 4)] = 'm';
@@ -1786,7 +1786,7 @@ exit(_Mstdc_Eexit_Cfailure);
 }
 write(_Lout_fd_44, _Lw_begin_34._Fref, _Lw_35._Fpos - _Lw_begin_34._Fpos);
 close(_Lout_fd_44);
-_Lout_path_42[(_Lin_path_len_43 + 1)] = 't';
+_Lout_path_42[(_Lin_path_len_43 + 1)] = 'b';
 memcpy(_Lfinal_path_51, _Lout_path_42, _Lin_path_len_43 + 2);
 _Lfinal_path_51[(_Lin_path_len_43 + 2)] = 0;
 rename(_Lout_path_42, _Lfinal_path_51);
@@ -1823,7 +1823,7 @@ _Mglc_Pstmt_continue_5(_Mglc_Eid_Cnil, 0, 0, 0, 0);
 _Mglc_Pstmt_break_5(_Mglc_Eid_Cnil, 0, 0, 0, 0);
 _Mglc_Pfunc_attr_main_0();
 _Mglc_Pfunc_attr_decl_0();
-_Mglc_Pfunc_attr_glc_name_0();
+_Mglc_Pfunc_attr_cgl_name_0();
 _Mglc_Pfunc_attr_process_0();
 _Mglc_Pfunc_attr_inline_0();
 _Mglc_Pfunc_attr_var_args_0();
@@ -2830,12 +2830,12 @@ memcpy(_Gdecl_func_decl_str, _Gstring_buf, _Gstring_len);
 _Gdecl_func_decl_str[_Gstring_len] = 0;
 _Gdecl_func_decl_len = _Gstring_len;
 }
-void _Mglc_Pfunc_attr_glc_name_0() {
-if((_Gdecl_func_flags & _Mglc_Efunc_flags_Cglc_name) != _Mglc_Efunc_flags_C0) {
-fprintf(stdout, "%s:%u:%u: Error @glc-name specified more than once\n", input_path, _Glast_row, _Glast_col);
+void _Mglc_Pfunc_attr_cgl_name_0() {
+if((_Gdecl_func_flags & _Mglc_Efunc_flags_Ccgl_name) != _Mglc_Efunc_flags_C0) {
+fprintf(stdout, "%s:%u:%u: Error @cgl-name specified more than once\n", input_path, _Glast_row, _Glast_col);
 exit(_Mstdc_Eexit_Cfailure);
 }
-_Gdecl_func_flags |= _Mglc_Efunc_flags_Cglc_name;
+_Gdecl_func_flags |= _Mglc_Efunc_flags_Ccgl_name;
 }
 void _Mglc_Pfunc_attr_process_0() {
 if((_Gdecl_func_flags & _Mglc_Efunc_flags_Cprocess) != _Mglc_Efunc_flags_C0) {
@@ -3047,7 +3047,7 @@ _Mglc_Prealloc_3((*_Le_2)._Fitem_v, (*_Le_2)._Fitem_cap, _Lold_cap_4);
 return _Lbools_0;
 }
 char* _Mglc_Ptoken_name_1(_Mglc_Etoken _Ltok_0) {
-return _Mglc_Etoken_Pglc_name_1(_Ltok_0);
+return _Mglc_Etoken_Pcgl_name_1(_Ltok_0);
 }
 void _Mglc_Pdecl_var_type_1(_Mglc_Eat _Ltype_0) {
 if(_Ltype_0 != _Mglc_Eat_Cnil) {
@@ -3807,7 +3807,7 @@ case _Mglc_Eexpr_type_Clvar:;
 _Mglc_Eexpr_Pwr_lvar_3(_Lexpr_3, _Lw_1, _Lheader_2);
 break;
 default:;
-fprintf(stdout, "wr() was not implemented in expression #%s\n", _Mglc_Eexpr_type_Pglc_name_1((*_Lexpr_3)._Ftype));
+fprintf(stdout, "wr() was not implemented in expression #%s\n", _Mglc_Eexpr_type_Pcgl_name_1((*_Lexpr_3)._Ftype));
 exit(_Mstdc_Eexit_Cfailure);
 break;
 }
@@ -3938,7 +3938,7 @@ case _Mglc_Estmt_type_Cexpr:;
 _Mglc_Sstmt_space_Pwr_expr_3(_Lstmt_4, _Lw_1, _Lheader_2);
 break;
 default:;
-fprintf(stdout, "wr() not yet implemented in stmt #%s\n", _Mglc_Estmt_type_Pglc_name_1((*_Lstmt_4)._Ftype));
+fprintf(stdout, "wr() not yet implemented in stmt #%s\n", _Mglc_Estmt_type_Pcgl_name_1((*_Lstmt_4)._Ftype));
 exit(_Mstdc_Eexit_Cfailure);
 break;
 }

@@ -3980,7 +3980,7 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 68: /* func_attr ::= SPACE_AT_CGL_NAME */
 #line 219 "cgl_parser.y"
-{ _Mglc_Pfunc_attr_glc_name_0(); }
+{ _Mglc_Pfunc_attr_cgl_name_0(); }
 #line 3984 "out/cgl_parser.c"
         break;
       case 69: /* func_attr ::= SPACE_AT_DECL LPAREN STRING RPAREN */
