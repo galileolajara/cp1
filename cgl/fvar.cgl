@@ -48,7 +48,7 @@
          :return;
       }
       +type = type-i.ptr();
-      {if(type.type != #struct)
+      {if(type.def == #struct)
          'c.out.printf("%s:%u:%u - %u:%u Cannot get member '.%s' because the type is not a struct or union\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, e.member.str());
          :return;
       }

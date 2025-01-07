@@ -457,6 +457,7 @@ end-if
 {:at-name(id`\id, basic`\basic-type-id) @union
 }
 {:at-type(struct`\struct, enum`\enum) @union}
+{:at-def[#undefined, #module, #struct, #enum, #basic]:tnum}
 {:at(
    type`\name-type,
    parent`\at,
@@ -472,6 +473,7 @@ if-compiler
    cvar-cap:int,
    cvar-v`\cvar[],
    decl`:at-type+,
+   def`\at-def,
 end-if
    )
    {init(at:this, type`\name-type, parent`\at, name`\id)
@@ -485,9 +487,10 @@ end-if
       at.gvar-cap = 0;
       at.gvar-v = :null;
       at.decl.struct = #nil;
+      at.def = #undefined;
    }
 }
-{:name-type[#module, #struct, #enum, #basic]:tnum
+{:name-type[#module, #struct-enum, #basic]:tnum
    {rd(i:this&, r`:rdr) @inline
       i = r.n1()`\name-type;
    }
@@ -502,12 +505,12 @@ end-if
 {:at[#nil = -1, #root]:int
    {finalize(at-i:this, ti`:type-info, row:int, col:int):bool
       +at = at-i.ptr();
-      {if(at.type == #struct)
+      {if(at.def == #struct)
          {if(ti.built-in)
-				{if(ti.ref-v[0] != 0)
-					'c.out.printf("%s:%d:%d: Can't use plus symbol (+) because type '/%s' has reference\n", .ctx-func.file.path(), row, col, at.name.id.str());
-					:return :false;
-				}
+            {if(ti.ref-v[0] != 0)
+               'c.out.printf("%s:%d:%d: Can't use plus symbol (+) because type '/%s' has reference\n", .ctx-func.file.path(), row, col, at.name.id.str());
+               :return :false;
+            }
             ti.ref-v[0] = -1;
          `` }{else
          ``    {if!(ti.built-in)
@@ -526,19 +529,20 @@ end-if
    {output(at-i:this, file`\file, row:int, col:int)
       +at = at-i.ptr();
       {switch(at.type)
-         {case(#struct)
-            {if(at.decl.struct == #nil)
-               'c.out.printf("%s:%u:%u: Error, struct '/%s' was not defined\n", file.path(), row, col, at.name.id.str());
-               'c.exit(#failure);
+         {case(#struct-enum)
+            {if(at.def == #struct)
+               {if(at.decl.struct == #nil)
+                  'c.out.printf("%s:%u:%u: Error, struct '/%s' was not defined\n", file.path(), row, col, at.name.id.str());
+                  'c.exit(#failure);
+               }
+               at.decl.struct.output();
+            }{elif(at.def == #enum)
+               {if(at.decl.enum == #nil)
+                  'c.out.printf("%s:%u:%u: Error, enum '\\%s' was not defined\n", file.path(), row, col, at.name.id.str());
+                  'c.exit(#failure);
+               }
+               at.decl.enum.output();
             }
-            at.decl.struct.output();
-         }
-         {case(#enum)
-            {if(at.decl.enum == #nil)
-               'c.out.printf("%s:%u:%u: Error, enum '\\%s' was not defined\n", file.path(), row, col, at.name.id.str());
-               'c.exit(#failure);
-            }
-            at.decl.enum.output();
          }
          {case(#basic)
             {switch(at.name.basic)
@@ -569,7 +573,7 @@ end-if
 		}
 	}
    {pointer(td:this):int @inline
-      {if(td.ptr().type == #struct)
+      {if(td.ptr().def == #struct)
          :return 1;
       }{else
          :return 0;
@@ -652,34 +656,35 @@ end-if
             {if(at.parent != #root) at.parent.write-space()}
             .out.printf("_M%s", at.name.id.c-name());
          }
-         {case(#struct)
-            +t-idx = at.decl.struct;
-            +t = t-idx.ptr();
-            {if(t-idx != #nil)
-               {if((t.flags & #real-name) != #0)
-                  .out.printf("%s", t.real-name.str());
-                  :return;
-               }
-            }
-            {if((t.flags & #union) != #0)
-               .out.printf("union ");
-            }{else
-               .out.printf("struct ");
-            }
-            {if(at.parent != #root) at.parent.write-space()}
-            .out.printf("_S%s", at.name.id.c-name());
-         }
-         {case(#enum)
-            +t-idx = at.decl.enum;
-            {if(t-idx != #nil)
+         {case(#struct-enum)
+            {if(at.def == #struct)
+               +t-idx = at.decl.struct;
                +t = t-idx.ptr();
-               {if((t.flags & #real-name) != #0)
-                  .out.printf("%s", t.real-name.str());
-                  :return;
+               {if(t-idx != #nil)
+                  {if((t.flags & #real-name) != #0)
+                     .out.printf("%s", t.real-name.str());
+                     :return;
+                  }
                }
+               {if((t.flags & #union) != #0)
+                  .out.printf("union ");
+               }{else
+                  .out.printf("struct ");
+               }
+               {if(at.parent != #root) at.parent.write-space()}
+               .out.printf("_S%s", at.name.id.c-name());
+            }{elif(at.def == #enum)
+               +t-idx = at.decl.enum;
+               {if(t-idx != #nil)
+                  +t = t-idx.ptr();
+                  {if((t.flags & #real-name) != #0)
+                     .out.printf("%s", t.real-name.str());
+                     :return;
+                  }
+               }
+               {if(at.parent != #root) at.parent.write-space()}
+               .out.printf("_E%s", at.name.id.c-name());
             }
-            {if(at.parent != #root) at.parent.write-space()}
-            .out.printf("_E%s", at.name.id.c-name());
          }
          {case(#basic)
             {switch(at.name.basic)
@@ -724,13 +729,14 @@ end-if
             {if(at.parent != #root) at.parent.write-space()}
             .out.printf("_M%s", at.name.id.c-name());
          }
-         {case(#struct)
-            {if(at.parent != #root) at.parent.write-space()}
-            .out.printf("_S%s", at.name.id.c-name());
-         }
-         {case(#enum)
-            {if(at.parent != #root) at.parent.write-space()}
-            .out.printf("_E%s", at.name.id.c-name());
+         {case(#struct-enum)
+            {if(at.def == #struct)
+               {if(at.parent != #root) at.parent.write-space()}
+               .out.printf("_S%s", at.name.id.c-name());
+            }{elif(at.def == #enum)
+               {if(at.parent != #root) at.parent.write-space()}
+               .out.printf("_E%s", at.name.id.c-name());
+            }
          }
          {case(#basic)
             {switch(at.name.basic)

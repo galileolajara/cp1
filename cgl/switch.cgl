@@ -96,7 +96,7 @@
       }
       {if(s.cases != #nil)
          +type = s.val.type.ptr();
-         {if(type.type != #enum)
+         {if(type.def != #enum)
             'c.out.printf("%s:%u:%u: Error, the expression used for switch must be an enum when using @case attribute\n", .ctx-func.file.path(), s.base.begin-row, s.base.begin-col);
             :return;
          }
@@ -185,7 +185,7 @@
       {if(switch.val.type != #nil)
          +type-i = switch.val.type;
          +type = type-i.ptr();
-         {if(type.type == #enum)
+         {if(type.def == #enum)
             {do{+i = 0}{(s.expr-c) i++}
                +e-i = s.expr-v[i].expr;
                +e = e-i.ptr();

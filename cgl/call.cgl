@@ -138,7 +138,7 @@
       +carg-c1 = carg-c + 1;
       +at-idx = e.this.type();
       {if(at-idx == #nil)
-         'c.out.printf("%s:%u:%u - %u:%u: Cannot call method :%s on a value without a type\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str());
+         'c.out.printf("%s:%u:%u - %u:%u: Cannot call method %s on a value without a type\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str());
          :return;
       }
       +at = at-idx.ptr();
@@ -149,19 +149,14 @@
          method-v = t.method-v;
       }{else
          {if(&&, at.decl.struct == #nil, at.type != #basic, at.type != #module)
-            {if(at.type == #struct)
-               ++c = ''/;
-            }{else
-               c = ''\\;
-            }
-            'c.out.printf("%s:%u:%u - %u:%u: Cannot call method :%s because the type %c%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), c, at.name.id.str());
+            'c.out.printf("%s:%u:%u - %u:%u: Cannot call method %s because the type :%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), at.name.id.str());
             :return;
          }
-         {if(at.type == #struct)
+         {if(at.def == #struct)
             +t = at.decl.struct.ptr();
             method-c = t.method-c;
             method-v = t.method-v;
-         }{elif(at.type == #enum)
+         }{elif(at.def == #enum)
             +t = at.decl.enum.ptr();
             method-c = t.method-c;
             method-v = t.method-v;
@@ -325,12 +320,7 @@
       {do()
          +at = at-idx.ptr();
          {if(&&, at.decl.struct == #nil, at.type != #basic, at.type != #module)
-            {if(at.type == #struct)
-               ++c = ''/;
-            }{else
-               c = ''\\;
-            }
-            'c.out.printf("%s:%u:%u - %u:%u: Cannot call function :%s because the type %c%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), c, at.name.id.str());
+            'c.out.printf("%s:%u:%u - %u:%u: Cannot call function %s because the type :%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), at.name.id.str());
             :return;
          }
          `` +found = -1;

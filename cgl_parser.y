@@ -42,8 +42,8 @@ at_name ::= ID_MODULO(e).
    { _Mglc_Pat_push_4(e.basic.id, 0, e.basic.row, e.basic.col); }
 at_name ::= ID_COLON(e).
    { _Mglc_Pat_push_4(e.basic.id, 1, e.basic.row, e.basic.col); }
-at_name ::= ID_BSLASH(e).
-   { _Mglc_Pat_push_4(e.basic.id, 2, e.basic.row, e.basic.col); }
+/* at_name ::= ID_BSLASH(e).
+   { _Mglc_Pat_push_4(e.basic.id, 2, e.basic.row, e.basic.col); } */
 at_alias ::= ID_QUOTE(e).
    { _Mglc_Pat_alias_3(e.basic.id, e.basic.row, e.basic.col); }
 enum_cvar_begin ::= ID_HASH(e).

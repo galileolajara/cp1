@@ -283,6 +283,7 @@
       +at-i = e.at;
       +at = at-i.ptr();
       at.decl.enum = e-idx;
+      at.def = #enum;
       {if((e.flags & #real-name) != #0)
          e.real-name.rd(r);
       }{else
@@ -326,6 +327,7 @@
       +at = at-i.ptr();
       `` 'c.out.printf("at(%d) is a struct: %s, parent is %d\n", at-i, at.name.id.str(), at.parent);
       at.decl.struct = s-idx;
+      at.def = #struct;
       `` s.name.rd(r);
       `` 'c.out.printf("%u:%u - %u:%u: /%s(", s.begin-row, s.begin-col, s.end-row, s.end-col, s.name.str());
       {do{+j = 0}{(fvar-c) j++}
@@ -509,32 +511,33 @@
          +at = f.at.ptr();
          `` 'c.out.printf("at(%d).type = #%s, %d\n", f.at, at.type.cgl-name(), at.decl.struct);
          `` 'c.out.flush();
-         {if(at.type == #struct)
+         {if(at.type == #struct-enum)
             {if(at.decl.enum == #nil)
-               'c.out.printf("%s:%u:%u: function using ':this' was declared on struct /%s that was not defined\n", f.file.path(), f.begin-row, f.begin-col, at.name.id.str());
+               'c.out.printf("%s:%u:%u: function using ':this' was declared on :%s which is not defined\n", f.file.path(), f.begin-row, f.begin-col, at.name.id.str());
                'c.exit(#failure);
             }
-            +t = at.decl.struct.ptr();
-            +t-method-idx = t.method-c++;
-            {if(t.method-cap <= t.method-c)
-               +old-cap = t.method-cap;
-               grow(t.method-cap, t.method-c);
-               realloc(t.method-v, t.method-cap, old-cap);
-            }
-            t.method-v[t-method-idx] = f-idx;
-         }{elif(at.type == #enum)
-            {if(at.decl.enum == #nil)
-               'c.out.printf("%s:%u:%u: function using ':this' was declared on enum \\%s that was not defined\n", f.file.path(), f.begin-row, f.begin-col, at.name.id.str());
+            {if(at.def == #struct)
+               +t = at.decl.struct.ptr();
+               +t-method-idx = t.method-c++;
+               {if(t.method-cap <= t.method-c)
+                  +old-cap = t.method-cap;
+                  grow(t.method-cap, t.method-c);
+                  realloc(t.method-v, t.method-cap, old-cap);
+               }
+               t.method-v[t-method-idx] = f-idx;
+            }{elif(at.def == #enum)
+               +t = at.decl.enum.ptr();
+               +t-method-idx = t.method-c++;
+               {if(t.method-cap <= t.method-c)
+                  +old-cap = t.method-cap;
+                  grow(t.method-cap, t.method-c);
+                  realloc(t.method-v, t.method-cap, old-cap);
+               }
+               t.method-v[t-method-idx] = f-idx;
+            }{else
+               'c.out.printf("%s:%u:%u: function using ':this' was declared on :%s which is not a struct or enum\n", f.file.path(), f.begin-row, f.begin-col, at.name.id.str());
                'c.exit(#failure);
             }
-            +t = at.decl.enum.ptr();
-            +t-method-idx = t.method-c++;
-            {if(t.method-cap <= t.method-c)
-               +old-cap = t.method-cap;
-               grow(t.method-cap, t.method-c);
-               realloc(t.method-v, t.method-cap, old-cap);
-            }
-            t.method-v[t-method-idx] = f-idx;
          }{elif(at.type == #basic)
             +t = .basic-type[at.name.basic];
             +t-method-idx = t.method-c++;

@@ -61,7 +61,7 @@
    .decl-enum-row = row;
    .decl-enum-col = col;
    .build-at = .decl-at;
-   decl-at-add(name, #enum);
+   decl-at-add(name, #struct-enum);
    .decl-at-v[.decl-at-c++] = .decl-at;
    .decl-at = .build-at;
    .decl-enum-at = .build-at;
