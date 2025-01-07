@@ -7,12 +7,12 @@ rule cpp
 rule ld-cpp
  command = clang++ $flags -O3 -flto -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out
 
-build out/parser.lc.c.o: c parser.lc.c
-build out/parser.c.o: c parser.c | export.h lexer.c lc_parser.c
-build bin/parser: ld-cpp out/parser.lc.c.o out/parser.c.o out/hashtable.cpp.o
-build out/compiler.lc.c.o: c compiler.lc.c
+build out/parser.cgl.c.o: c parser.cgl.c
+build out/parser.c.o: c parser.c | export.h lexer.c cgl_parser.c
+build bin/parser: ld-cpp out/parser.cgl.c.o out/parser.c.o out/hashtable.cpp.o
+build out/compiler.cgl.c.o: c compiler.cgl.c
 build out/str.c.o: c str.c
-build bin/compiler: ld-cpp out/compiler.lc.c.o out/str.c.o out/hashtable.cpp.o
+build bin/compiler: ld-cpp out/compiler.cgl.c.o out/str.c.o out/hashtable.cpp.o
 
 rule c2
  command = clang $flags -O3 -flto -Werror=format -Wno-incompatible-pointer-types -DGLC_NEW -I. -c $in -o $out
@@ -52,68 +52,68 @@ rule run
 
 build out/hash-table-size: ld-cpp2 hashtable.cpp
  flags = -DGLC_GET_SIZE
-build out/hash-table-size.lc: run out/hash-table-size
+build out/hash-table-size.cgl: run out/hash-table-size
 
-build stdc/stdio.lc-t stdc/stdio.lc-h: parser stdc/stdio.lc | bin/parser
-build stdc/fcntl.lc-t stdc/fcntl.lc-h: parser stdc/fcntl.lc | bin/parser
-build stdc/stdlib.lc-t stdc/stdlib.lc-h: parser stdc/stdlib.lc | bin/parser
-build stdc/unistd.lc-t stdc/unistd.lc-h: parser stdc/unistd.lc | bin/parser
-build stdc/string.lc-t stdc/string.lc-h: parser stdc/string.lc | bin/parser
+build stdc/stdio.cgl-t stdc/stdio.cgl-h: parser stdc/stdio.cgl | bin/parser
+build stdc/fcntl.cgl-t stdc/fcntl.cgl-h: parser stdc/fcntl.cgl | bin/parser
+build stdc/stdlib.cgl-t stdc/stdlib.cgl-h: parser stdc/stdlib.cgl | bin/parser
+build stdc/unistd.cgl-t stdc/unistd.cgl-h: parser stdc/unistd.cgl | bin/parser
+build stdc/string.cgl-t stdc/string.cgl-h: parser stdc/string.cgl | bin/parser
 
-build lc/compiler.lc-t: parser lc/compiler.lc | bin/parser
-build lc/parser.lc-t: parser lc/parser.lc | bin/parser
-build lc/export.lc-t: parser lc/export.lc | bin/parser
-build lc/var.lc-t: parser lc/var.lc | bin/parser
-build lc/enum.lc-t: parser lc/enum.lc | bin/parser
-build lc/expr.lc-t: parser lc/expr.lc | bin/parser
-build lc/lvar.lc-t: parser lc/lvar.lc | bin/parser
-build lc/func.lc-t: parser lc/func.lc | bin/parser
-build lc/stmt.lc-t: parser lc/stmt.lc | bin/parser
-build lc/struct.lc-t: parser lc/struct.lc | bin/parser
-build lc/space.lc-t: parser lc/space.lc | bin/parser
-build lc/return.lc-t: parser lc/return.lc | bin/parser
-build lc/continue.lc-t: parser lc/continue.lc | bin/parser
-build lc/gvar.lc-t: parser lc/gvar.lc | bin/parser
-build lc/fvar.lc-t: parser lc/fvar.lc | bin/parser
-build lc/assign.lc-t: parser lc/assign.lc | bin/parser
-build lc/size.lc-t: parser lc/size.lc | bin/parser
-build lc/int.lc-t: parser lc/int.lc | bin/parser
-build lc/null.lc-t: parser lc/null.lc | bin/parser
-build lc/call.lc-t: parser lc/call.lc | bin/parser
-build lc/char.lc-t: parser lc/char.lc | bin/parser
-build lc/bool.lc-t: parser lc/bool.lc | bin/parser
-build lc/compare.lc-t: parser lc/compare.lc | bin/parser
-build lc/while.lc-t: parser lc/while.lc | bin/parser
-build lc/do.lc-t: parser lc/do.lc | bin/parser
-build lc/if.lc-t: parser lc/if.lc | bin/parser
-build lc/switch.lc-t: parser lc/switch.lc | bin/parser
-build lc/index.lc-t: parser lc/index.lc | bin/parser
-build lc/cast.lc-t: parser lc/cast.lc | bin/parser
-build lc/ref.lc-t: parser lc/ref.lc | bin/parser
-build lc/unary.lc-t: parser lc/unary.lc | bin/parser
-build lc/cvar.lc-t: parser lc/cvar.lc | bin/parser
-build lc/str.lc-t: parser lc/str.lc | bin/parser
-build lc/bools.lc-t: parser lc/bools.lc | bin/parser
-build lc/math.lc-t: parser lc/math.lc | bin/parser
-build lc/break.lc-t: parser lc/break.lc | bin/parser
-build lc/rdr.lc-t: parser lc/rdr.lc | bin/parser
-build lc/wtr.lc-t: parser lc/wtr.lc | bin/parser
-build out/token.lc: node token.lc.js | out/lc_parser.h
-build out/token.lc-t: parser out/token.lc | bin/parser
-build out/hash-table-size.lc-t: parser out/hash-table-size.lc | bin/parser
-build out/compiler-common.lc out/parser-common.lc: node split.js lc/common.lc
-build out/compiler-common.lc-t: parser out/compiler-common.lc | bin/parser
-build out/parser-common.lc-t: parser out/parser-common.lc | bin/parser
-build out/parser2.lc.c: compiler lc/parser.lc-t out/token.lc-t lc/break.lc-t lc/math.lc-t lc/bools.lc-t lc/str.lc-t lc/cvar.lc-t lc/unary.lc-t lc/ref.lc-t lc/cast.lc-t lc/index.lc-t lc/switch.lc-t lc/if.lc-t lc/do.lc-t lc/while.lc-t lc/compare.lc-t lc/bool.lc-t lc/char.lc-t lc/call.lc-t lc/null.lc-t lc/int.lc-t lc/size.lc-t lc/assign.lc-t lc/fvar.lc-t lc/gvar.lc-t lc/continue.lc-t lc/return.lc-t lc/space.lc-t lc/export.lc-t lc/rdr.lc-t lc/wtr.lc-t lc/var.lc-t lc/func.lc-t lc/lvar.lc-t lc/enum.lc-t lc/expr.lc-t lc/stmt.lc-t out/parser-common.lc-t lc/struct.lc-t stdc/stdio.lc-t stdc/fcntl.lc-t stdc/stdlib.lc-t stdc/unistd.lc-t stdc/string.lc-t out/hash-table-size.lc-t | bin/compiler
-build out/compiler2.lc.c: compiler lc/compiler.lc-t out/compiler-common.lc-t lc/rdr.lc-t lc/wtr.lc-t lc/func.lc-t lc/struct.lc-t lc/enum.lc-t lc/expr.lc-t lc/stmt.lc-t lc/var.lc-t lc/assign.lc-t lc/compare.lc-t lc/bool.lc-t lc/char.lc-t lc/math.lc-t lc/unary.lc-t lc/ref.lc-t lc/cast.lc-t lc/lvar.lc-t lc/fvar.lc-t lc/gvar.lc-t lc/cvar.lc-t lc/bools.lc-t lc/call.lc-t lc/str.lc-t lc/int.lc-t lc/size.lc-t lc/null.lc-t lc/index.lc-t lc/if.lc-t lc/switch.lc-t lc/do.lc-t lc/while.lc-t lc/continue.lc-t lc/break.lc-t lc/return.lc-t lc/space.lc-t lc/export.lc-t stdc/stdio.lc-t stdc/fcntl.lc-t stdc/stdlib.lc-t stdc/unistd.lc-t stdc/string.lc-t out/hash-table-size.lc-t | bin/compiler
-build out/export.h: node export.js out/parser2.lc.c
+build cgl/compiler.cgl-t: parser cgl/compiler.cgl | bin/parser
+build cgl/parser.cgl-t: parser cgl/parser.cgl | bin/parser
+build cgl/export.cgl-t: parser cgl/export.cgl | bin/parser
+build cgl/var.cgl-t: parser cgl/var.cgl | bin/parser
+build cgl/enum.cgl-t: parser cgl/enum.cgl | bin/parser
+build cgl/expr.cgl-t: parser cgl/expr.cgl | bin/parser
+build cgl/lvar.cgl-t: parser cgl/lvar.cgl | bin/parser
+build cgl/func.cgl-t: parser cgl/func.cgl | bin/parser
+build cgl/stmt.cgl-t: parser cgl/stmt.cgl | bin/parser
+build cgl/struct.cgl-t: parser cgl/struct.cgl | bin/parser
+build cgl/space.cgl-t: parser cgl/space.cgl | bin/parser
+build cgl/return.cgl-t: parser cgl/return.cgl | bin/parser
+build cgl/continue.cgl-t: parser cgl/continue.cgl | bin/parser
+build cgl/gvar.cgl-t: parser cgl/gvar.cgl | bin/parser
+build cgl/fvar.cgl-t: parser cgl/fvar.cgl | bin/parser
+build cgl/assign.cgl-t: parser cgl/assign.cgl | bin/parser
+build cgl/size.cgl-t: parser cgl/size.cgl | bin/parser
+build cgl/int.cgl-t: parser cgl/int.cgl | bin/parser
+build cgl/null.cgl-t: parser cgl/null.cgl | bin/parser
+build cgl/call.cgl-t: parser cgl/call.cgl | bin/parser
+build cgl/char.cgl-t: parser cgl/char.cgl | bin/parser
+build cgl/bool.cgl-t: parser cgl/bool.cgl | bin/parser
+build cgl/compare.cgl-t: parser cgl/compare.cgl | bin/parser
+build cgl/while.cgl-t: parser cgl/while.cgl | bin/parser
+build cgl/do.cgl-t: parser cgl/do.cgl | bin/parser
+build cgl/if.cgl-t: parser cgl/if.cgl | bin/parser
+build cgl/switch.cgl-t: parser cgl/switch.cgl | bin/parser
+build cgl/index.cgl-t: parser cgl/index.cgl | bin/parser
+build cgl/cast.cgl-t: parser cgl/cast.cgl | bin/parser
+build cgl/ref.cgl-t: parser cgl/ref.cgl | bin/parser
+build cgl/unary.cgl-t: parser cgl/unary.cgl | bin/parser
+build cgl/cvar.cgl-t: parser cgl/cvar.cgl | bin/parser
+build cgl/str.cgl-t: parser cgl/str.cgl | bin/parser
+build cgl/bools.cgl-t: parser cgl/bools.cgl | bin/parser
+build cgl/math.cgl-t: parser cgl/math.cgl | bin/parser
+build cgl/break.cgl-t: parser cgl/break.cgl | bin/parser
+build cgl/rdr.cgl-t: parser cgl/rdr.cgl | bin/parser
+build cgl/wtr.cgl-t: parser cgl/wtr.cgl | bin/parser
+build out/token.cgl: node token.cgl.js | out/cgl_parser.h
+build out/token.cgl-t: parser out/token.cgl | bin/parser
+build out/hash-table-size.cgl-t: parser out/hash-table-size.cgl | bin/parser
+build out/compiler-common.cgl out/parser-common.cgl: node split.js cgl/common.cgl
+build out/compiler-common.cgl-t: parser out/compiler-common.cgl | bin/parser
+build out/parser-common.cgl-t: parser out/parser-common.cgl | bin/parser
+build out/parser2.cgl.c: compiler cgl/parser.cgl-t out/token.cgl-t cgl/break.cgl-t cgl/math.cgl-t cgl/bools.cgl-t cgl/str.cgl-t cgl/cvar.cgl-t cgl/unary.cgl-t cgl/ref.cgl-t cgl/cast.cgl-t cgl/index.cgl-t cgl/switch.cgl-t cgl/if.cgl-t cgl/do.cgl-t cgl/while.cgl-t cgl/compare.cgl-t cgl/bool.cgl-t cgl/char.cgl-t cgl/call.cgl-t cgl/null.cgl-t cgl/int.cgl-t cgl/size.cgl-t cgl/assign.cgl-t cgl/fvar.cgl-t cgl/gvar.cgl-t cgl/continue.cgl-t cgl/return.cgl-t cgl/space.cgl-t cgl/export.cgl-t cgl/rdr.cgl-t cgl/wtr.cgl-t cgl/var.cgl-t cgl/func.cgl-t cgl/lvar.cgl-t cgl/enum.cgl-t cgl/expr.cgl-t cgl/stmt.cgl-t out/parser-common.cgl-t cgl/struct.cgl-t stdc/stdio.cgl-t stdc/fcntl.cgl-t stdc/stdlib.cgl-t stdc/unistd.cgl-t stdc/string.cgl-t out/hash-table-size.cgl-t | bin/compiler
+build out/compiler2.cgl.c: compiler cgl/compiler.cgl-t out/compiler-common.cgl-t cgl/rdr.cgl-t cgl/wtr.cgl-t cgl/func.cgl-t cgl/struct.cgl-t cgl/enum.cgl-t cgl/expr.cgl-t cgl/stmt.cgl-t cgl/var.cgl-t cgl/assign.cgl-t cgl/compare.cgl-t cgl/bool.cgl-t cgl/char.cgl-t cgl/math.cgl-t cgl/unary.cgl-t cgl/ref.cgl-t cgl/cast.cgl-t cgl/lvar.cgl-t cgl/fvar.cgl-t cgl/gvar.cgl-t cgl/cvar.cgl-t cgl/bools.cgl-t cgl/call.cgl-t cgl/str.cgl-t cgl/int.cgl-t cgl/size.cgl-t cgl/null.cgl-t cgl/index.cgl-t cgl/if.cgl-t cgl/switch.cgl-t cgl/do.cgl-t cgl/while.cgl-t cgl/continue.cgl-t cgl/break.cgl-t cgl/return.cgl-t cgl/space.cgl-t cgl/export.cgl-t stdc/stdio.cgl-t stdc/fcntl.cgl-t stdc/stdlib.cgl-t stdc/unistd.cgl-t stdc/string.cgl-t out/hash-table-size.cgl-t | bin/compiler
+build out/export.h: node export.js out/parser2.cgl.c
 build out/lexer.c: re2c lexer-re2c.c
 build out/lemon: ld-unsanitized lemon.c
-build out/lc_parser.c out/lc_parser.h: lemon lc_parser.y | out/lemon
-build out/parser2.lc.c.o: c2 out/parser2.lc.c
-build out/parser2.c.o: c2 parser2.c | out/export.h out/lexer.c out/lc_parser.c
+build out/cgl_parser.c out/cgl_parser.h: lemon cgl_parser.y | out/lemon
+build out/parser2.cgl.c.o: c2 out/parser2.cgl.c
+build out/parser2.c.o: c2 parser2.c | out/export.h out/lexer.c out/cgl_parser.c
 build out/hashtable.cpp.o: cpp2 hashtable.cpp
-build out/parser2: ld-cpp2 out/parser2.lc.c.o out/parser2.c.o out/hashtable.cpp.o
-build out/compiler2.lc.c.o: c2 out/compiler2.lc.c
+build out/parser2: ld-cpp2 out/parser2.cgl.c.o out/parser2.c.o out/hashtable.cpp.o
+build out/compiler2.cgl.c.o: c2 out/compiler2.cgl.c
 build out/str2.c.o: c2 str2.c
-build out/compiler2: ld-cpp2 out/compiler2.lc.c.o out/str2.c.o out/hashtable.cpp.o
+build out/compiler2: ld-cpp2 out/compiler2.cgl.c.o out/str2.c.o out/hashtable.cpp.o
