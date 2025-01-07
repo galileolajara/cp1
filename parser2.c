@@ -56,9 +56,9 @@ int _Gcol;
 extern char* input_path;
 
 #ifdef GLC_NEW
-#include "out/glc_parser.c"
+#include "out/cgl_parser.c"
 #else
-#include "glc_parser.c"
+#include "cgl_parser.c"
 #endif
 
 struct glc_lexer {

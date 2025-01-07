@@ -1,7 +1,6 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{gvar hello:bool}
 {gvar ctx-func:decl-func}
 {gvar id-in-header-v:tnum[]}
 {gvar id-in-header-idx-v:num[]}
