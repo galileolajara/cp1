@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{\cvar(#nil = -1, #0):int
+{\cvar[#nil = -1, #0]:int
    {rd(c:this&, r`:rdr) @inline
       +idx = (r.n() - 1)`\cvar;
       {if(idx == #nil)
@@ -57,12 +57,12 @@
       }
    }
 }
-{\cvar-flags(
+{\cvar-flags[
    #0,
    #set-expr = 1,
    #as-enum = 2,
    `` #real-name = 2,
-   ):tnum
+   ]:tnum
    {wr(f:this, w`:wtr) @inline
       w.n1(f);
    }

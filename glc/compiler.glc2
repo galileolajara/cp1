@@ -27,7 +27,7 @@
 {gvar file-c\file}
 {gvar file-cap\file}
 {gvar file-v:file+[]}
-{\file(#nil = -1, #0):int
+{\file[#nil = -1, #0]:int
    {ptr(f:this)`:file @inline
       :return .file-v[f];
    }
@@ -753,7 +753,7 @@
          f.farg-v[j].decl.write-lvar-type(j\lvar);
       }
       {if((f.flags & #glc-name) != #0)
-         .out.printf(") {\nswitch(_Le_0) {\n");
+         .out.printf(") {\nswitch[_Le_0) {\n");
          +at = f.at.ptr();
          {do{+i = 0, v = at.cvar-v}{(at.cvar-c) i++}
             +cvar-i = v[i];

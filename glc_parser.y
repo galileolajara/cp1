@@ -806,9 +806,9 @@ enum_base_begin ::= .
    { _Mglc_Penum_base_begin_0(); }
 enum_base_end ::= at(at) end_pos(end).
    { _Mglc_Pdecl_enum_end_3(at.basic.id, end.basic.row, end.basic.col); }
-decl_enum ::= enum_decl_begin lparen_or_space RPAREN enum_base_begin enum_base_end
+decl_enum ::= enum_decl_begin lbracket_or_space RBRACKET enum_base_begin enum_base_end
    decl_enum_close_or_at.
-decl_enum ::= enum_decl_begin lparen_or_space enum_cvars rparen_or_comma enum_base_begin enum_base_end
+decl_enum ::= enum_decl_begin lbracket_or_space enum_cvars rbracket_or_comma enum_base_begin enum_base_end
    decl_enum_close_or_at.
 decl_gvar ::= fvar_decl expr_type_apply typeInfo_optional decl_var_attrs_optional.
    { _Mglc_Pdecl_var_as_gvar_0(); }

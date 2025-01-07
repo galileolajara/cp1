@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{\expr-int(#dec, #hex, #oct):tnum}
+{\expr-int[#dec, #hex, #oct]:tnum}
 {expr-int(value:int, type\expr-int)\expr
    quick-alloc-one(+(e:expr-int));
    +e-idx = expr-push(e.base, #int);

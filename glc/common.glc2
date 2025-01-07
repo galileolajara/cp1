@@ -487,7 +487,7 @@ end-if
       at.decl.struct = #nil;
    }
 }
-{\name-type(#module, #struct, #enum, #basic):tnum
+{\name-type[#module, #struct, #enum, #basic]:tnum
    {rd(i:this&, r`:rdr) @inline
       i = r.n1()`\name-type;
    }
@@ -499,7 +499,7 @@ end-if
 {gvar at-c\at}
 {gvar at-cap\at}
 {gvar at-v:at+[]}
-{\at(#nil = -1, #root):int
+{\at[#nil = -1, #root]:int
    {finalize(at-i:this, ti`:type-info, row:int, col:int):bool
       +at = at-i.ptr();
       {if(at.type == #struct)
@@ -761,7 +761,7 @@ end-if
    }
 }
 
-{\include(#nil = -1, #0):int
+{\include[#nil = -1, #0]:int
    {str(i:this):char[] @inline
       :return .include-str-v[i];
    }
@@ -796,7 +796,7 @@ end-if
 {gvar include-str-v:char[][]}
 {gvar include-len-v:tnum[]}
 {gvar func-main\func}
-{\id(#nil = -1, #0):int
+{\id[#nil = -1, #0]:int
    {c-name(id:this):char[]
       {+c-name:char[] = .id-c-name-v[id]}
       {if(c-name != :null) :return c-name}

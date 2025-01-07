@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{\lvar(#nil = -1, #0):int
+{\lvar[#nil = -1, #0]:int
    {rd(l:this&, r`:rdr) @inline
       l = (r.n() - 1)`\lvar;
    }
@@ -28,11 +28,11 @@
       :return lvar.decl.process(lvar.row, lvar.col);
    }
 }
-{\lvar-flags(
+{\lvar-flags[
    #0,
    #set-expr = 1,
    #processed = 2,
-   ):tnum
+   ]:tnum
    {rd(f:this&, r`:rdr) @inline
       f = r.n1()`\lvar-flags;
    }

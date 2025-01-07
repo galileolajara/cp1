@@ -1,8 +1,8 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{\gvar-flags(#0, #no-decl = 1):tnum}
-{\gvar(#nil = -1, #0):int
+{\gvar-flags[#0, #no-decl = 1]:tnum}
+{\gvar[#nil = -1, #0]:int
    {process(g:this):bool
       +num = g:num;
       +n3 = num >> 3;

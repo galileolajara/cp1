@@ -96,7 +96,7 @@
 {at-begin()
    .build-at = .decl-at;
 }
-{\alias(#nil = -1, #0):int}
+{\alias[#nil = -1, #0]:int}
 {gvar at-alias-c\alias}
 {gvar at-alias-cap\alias}
 {gvar at-alias-name-v\id[]}

@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{\enum(#nil = -1, #0, #1):int
+{\enum[#nil = -1, #0, #1]:int
    {wr(f:this, w`:wtr) @inline
       w.n(f + #1);
    }
@@ -29,11 +29,11 @@
       `` }
    }
 }
-{\enum-flags(
+{\enum-flags[
    #0,
    #real-name = 1,
    #no-decl = 2,
-   ):tnum
+   ]:tnum
    {wr(e:this, w`:wtr) @inline
       w.n1(e);
    }

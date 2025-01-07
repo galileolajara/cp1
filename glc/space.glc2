@@ -1,10 +1,10 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{\stmt-space-flags(
+{\stmt-space-flags[
    #0,
    #skip-lvar-decl = 1,
-   ):tnum
+   ]:tnum
 }
 {:stmt-space(
    base`:stmt+,

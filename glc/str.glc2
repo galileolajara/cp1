@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{\str(#nil = -1, #0):int}
+{\str[#nil = -1, #0]:int}
 {gvar str-c:int}
 {gvar str-cap:int}
 {gvar str-ptr:ref[]}

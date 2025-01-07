@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{\struct(#nil = -1, #0, #1):int
+{\struct[#nil = -1, #0, #1]:int
    {wr(s:this, w`:wtr) @inline
       w.n(s + #1);
    }
@@ -53,12 +53,12 @@
 {gvar decl-struct-col:int}
 {gvar decl-struct-at\at}
 {gvar decl-struct-real-name\id}
-{\struct-flags(
+{\struct-flags[
    #0,
    #real-name = 1,
    #no-decl = 2,
    #union = 4,
-   ):tnum
+   ]:tnum
    {wr(f:this, w`:wtr) @inline
       w.n1(f);
    }

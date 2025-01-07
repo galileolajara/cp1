@@ -19,7 +19,7 @@
    e.item-v[i].expr = right;
    :return bools;
 }
-{\bools(#and, #or):tnum
+{\bools[#and, #or]:tnum
    {wr(e:this, w`:wtr) @inline
       w.n1(e);
    }

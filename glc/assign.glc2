@@ -1,8 +1,8 @@
 {alias 'glc = %glc}
 {at(%glc)
-{\assign(#eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
+{\assign[#eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
              #lshift-eq, #rshift-eq, #and-eq, #or-eq, #xor-eq,
-             ):tnum
+             ]:tnum
    {wr(s:this, w`:wtr) @inline
       w.n1(s);
    }

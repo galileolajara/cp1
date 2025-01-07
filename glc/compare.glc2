@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{\compare(#eq, #not-eq, #lt, #le, #gt, #ge):tnum
+{\compare[#eq, #not-eq, #lt, #le, #gt, #ge]:tnum
    {wr(e:this, w`:wtr) @inline
       w.n1(e);
    }
