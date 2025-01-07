@@ -37,7 +37,7 @@
    {rd(e:this&, r`:rdr) @inline
       e = r.n1()`\expr-type;
    }
-   {glc-name(e:this):char[] @glc-name}
+   {cgl-name(e:this):char[] @cgl-name}
 }
 {cvar #debug-rd-wr:bool = :true}
 {:expr[#nil = -1, #0, #1]:int
@@ -85,7 +85,7 @@
       {switch(expr.type).value(e, ref, paren, v, ok)
          {default
             'c.out.printf("%u:%u - %u:%u: value() not implemented for #%s\n",
-               .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.glc-name());
+               .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cgl-name());
          }
       }
       :return ok;
@@ -97,7 +97,7 @@
       {switch(expr.type).type(expr, at)
          {default
             'c.out.printf("%u:%u - %u:%u: type() not implemented for #%s\n",
-               .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.glc-name());
+               .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cgl-name());
          }
       }
       :return at;
@@ -118,7 +118,7 @@
          expr.type.wr(w);
          {switch(expr.type).wr(expr, w, header)
             {default
-               'c.out.printf("wr() was not implemented in expression #%s\n", expr.type.glc-name());
+               'c.out.printf("wr() was not implemented in expression #%s\n", expr.type.cgl-name());
                'c.exit(#failure);
             }
          }
@@ -149,7 +149,7 @@
          e = e-idx;
          {switch(type).rd(e-idx, r)
             {default
-               'c.out.printf("rd() was not implemented in expression #%s\n", type.glc-name());
+               'c.out.printf("rd() was not implemented in expression #%s\n", type.cgl-name());
                'c.exit(#failure);
             }
          }
@@ -180,12 +180,12 @@
       {switch(expr.type).process(expr, ok)
          {default
             'c.out.printf("%s:%u:%u - %u:%u: process() not implemented for expression #%s\n",
-               .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.glc-name());
+               .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cgl-name());
             :return :false;
          }
       }
       {if!(ok)
-         'c.out.printf("%s:%u:%u - %u:%u: Processing of expression #%s failed\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.glc-name());
+         'c.out.printf("%s:%u:%u - %u:%u: Processing of expression #%s failed\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cgl-name());
       }
       :return ok;
    }
@@ -193,7 +193,7 @@
       +expr = e.ptr();
       {switch(expr.type).write(expr)
          {default
-            'c.out.printf("%s:%u:%u - %u:%u: write() not implemented in expression #%s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.glc-name());
+            'c.out.printf("%s:%u:%u - %u:%u: write() not implemented in expression #%s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cgl-name());
          }
       }
    }
@@ -238,7 +238,7 @@
 ``       }
 ``    }
 `` }
-   {glc-name(e:this):char[] @glc-name}
+   {cgl-name(e:this):char[] @cgl-name}
 }
 {:expr-lvar(
    base`:expr+,

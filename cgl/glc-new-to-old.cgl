@@ -141,9 +141,9 @@
             w-old.1[0] = '' ;
             w-old.pos ++;
          }
-      }{elif('c.memcmp(r.ref, " @glc-name", 10) == 0)
+      }{elif('c.memcmp(r.ref, " @cgl-name", 10) == 0)
          r.pos += 10;
-         w-new.copy(" @glc-name", 10);
+         w-new.copy(" @cgl-name", 10);
          {continue}
       }{elif('c.memcmp(r.ref, "@real-name", 10) == 0)
          r.pos += 10;

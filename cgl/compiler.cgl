@@ -158,7 +158,7 @@
          }{else
             \at.rd(+at-parent, r);
             \id.rd(+at-name, r);
-            `` 'c.out.printf("read at type %u %s %s\n", at-type, at-type.glc-name(), at-name.str());
+            `` 'c.out.printf("read at type %u %s %s\n", at-type, at-type.cgl-name(), at-name.str());
             `` 'c.out.printf("- parent %u\n", at-parent);
             `` 'c.out.printf("- name %s\n", at-name.str());
             +found = .at-map.get-or-insert(at-parent, at-type, at-name, .at-c);
@@ -291,9 +291,9 @@
       `` 'c.out.printf("printing at of enum:\n");
       `` {do()
       ``    {if(at.type == #basic)
-      ``       'c.out.printf("- #basic #%s\n", at.name.basic.glc-name());
+      ``       'c.out.printf("- #basic #%s\n", at.name.basic.cgl-name());
       ``    }{else
-      ``       'c.out.printf("- #%s %s\n", at.type.glc-name(), at.name.id.str());
+      ``       'c.out.printf("- #%s %s\n", at.type.cgl-name(), at.name.id.str());
       ``    }
       ``    {if(at.parent == #root) {break}}
       ``    at = at.parent.ptr();
@@ -507,7 +507,7 @@
       +f = f-idx.ptr();
       {if(f.this-idx != -1)
          +at = f.at.ptr();
-         `` 'c.out.printf("at(%d).type = #%s, %d\n", f.at, at.type.glc-name(), at.decl.struct);
+         `` 'c.out.printf("at(%d).type = #%s, %d\n", f.at, at.type.cgl-name(), at.decl.struct);
          `` 'c.out.flush();
          {if(at.type == #struct)
             {if(at.decl.enum == #nil)
@@ -625,7 +625,7 @@
       {if(f.include != #nil)
          f.include.output();
       }
-      {if((f.flags & #glc-name) != #0)
+      {if((f.flags & #cgl-name) != #0)
          +at = f.at.ptr();
          {do{+i = 0, v = at.cvar-v}{(at.cvar-c) i++}
             +cvar = v[i];
@@ -752,7 +752,7 @@
          }
          f.farg-v[j].decl.write-lvar-type(j\lvar);
       }
-      {if((f.flags & #glc-name) != #0)
+      {if((f.flags & #cgl-name) != #0)
          .out.printf(") {\nswitch(_Le_0) {\n");
          +at = f.at.ptr();
          {do{+i = 0, v = at.cvar-v}{(at.cvar-c) i++}

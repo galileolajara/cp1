@@ -35,7 +35,7 @@
       {do{(lvar-c) i++}
          +lvar-i = space.lvar-v[i];
          +lvar = lvar-i.ptr();
-         `` 'c.out.printf("%s %s\n", lvar.decl.type.ptr().type.glc-name(), lvar.decl.type.ptr().name.basic.glc-name());
+         `` 'c.out.printf("%s %s\n", lvar.decl.type.ptr().type.cgl-name(), lvar.decl.type.ptr().name.basic.cgl-name());
          lvar.decl.write-lvar-type(lvar-i);
          {if((lvar.flags & #set-expr) != #0)
             .out.printf(" = ");
@@ -101,7 +101,7 @@
          w.n(stmt.end-col);
          {switch(stmt.type).wr(stmt, w, header)
             {default
-               'c.out.printf("wr() not yet implemented in stmt #%s\n", stmt.type.glc-name());
+               'c.out.printf("wr() not yet implemented in stmt #%s\n", stmt.type.cgl-name());
                'c.exit(#failure);
             }
          }
@@ -159,7 +159,7 @@
          .ctx-end-col = end-col;
          {switch(type).rd(space, r)
             {default
-               'c.out.printf("rd() not yet implemented in stmt #%s\n", type.glc-name());
+               'c.out.printf("rd() not yet implemented in stmt #%s\n", type.cgl-name());
                'c.exit(#failure);
             }
          }

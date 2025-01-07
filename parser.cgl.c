@@ -63,8 +63,8 @@
 #define _Mglc_Etoken_Cdot (_Mglc_Etoken_Cspace_at_case + 1)
 #define _Mglc_Etoken_Cspace_at_process (_Mglc_Etoken_Cdot + 1)
 #define _Mglc_Etoken_Cspace_at_inline (_Mglc_Etoken_Cspace_at_process + 1)
-#define _Mglc_Etoken_Cspace_at_glc_name (_Mglc_Etoken_Cspace_at_inline + 1)
-#define _Mglc_Etoken_Cspace_at_decl (_Mglc_Etoken_Cspace_at_glc_name + 1)
+#define _Mglc_Etoken_Cspace_at_cgl_name (_Mglc_Etoken_Cspace_at_inline + 1)
+#define _Mglc_Etoken_Cspace_at_decl (_Mglc_Etoken_Cspace_at_cgl_name + 1)
 #define _Mglc_Etoken_Cstring (_Mglc_Etoken_Cspace_at_decl + 1)
 #define _Mglc_Etoken_Cspace_at_var_args (_Mglc_Etoken_Cstring + 1)
 #define _Mglc_Etoken_Cspace_at_no_body (_Mglc_Etoken_Cspace_at_var_args + 1)
@@ -1063,7 +1063,7 @@ case _Mglc_Etoken_Cspace_at_case: return "space-at-case";
 case _Mglc_Etoken_Cdot: return "dot";
 case _Mglc_Etoken_Cspace_at_process: return "space-at-process";
 case _Mglc_Etoken_Cspace_at_inline: return "space-at-inline";
-case _Mglc_Etoken_Cspace_at_glc_name: return "space-at-glc-name";
+case _Mglc_Etoken_Cspace_at_cgl_name: return "space-at-cgl-name";
 case _Mglc_Etoken_Cspace_at_decl: return "space-at-decl";
 case _Mglc_Etoken_Cstring: return "string";
 case _Mglc_Etoken_Cspace_at_var_args: return "space-at-var-args";

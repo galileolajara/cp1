@@ -22,7 +22,7 @@
    #no-body = 32,
    #real-name = 64,
    #case = 128,
-   #glc-name = 256,
+   #cgl-name = 256,
    #decl = 512,
    ]:num
    {wr(e:this, w`:wtr) @inline
@@ -62,7 +62,7 @@
          {if((l.flags & #set-expr) != #0)
             l.set-expr.rd(r);
          }
-         `` 'c.out.printf("lvar %s has type of %s\n", l.decl.name.str(), l.decl.type.ptr().name.basic.glc-name());
+         `` 'c.out.printf("lvar %s has type of %s\n", l.decl.name.str(), l.decl.type.ptr().name.basic.cgl-name());
       }
    }
    {lvars-wr(f:this, w`:wtr, header:bool)
@@ -266,12 +266,12 @@
    }
    .decl-func-flags |= #inline
 }
-{func-attr-glc-name()
-   {if((.decl-func-flags & #glc-name) != #0)
-      'c.out.printf("%s:%u:%u: Error @glc-name specified more than once\n", .input-path, .last-row, .last-col);
+{func-attr-cgl-name()
+   {if((.decl-func-flags & #cgl-name) != #0)
+      'c.out.printf("%s:%u:%u: Error @cgl-name specified more than once\n", .input-path, .last-row, .last-col);
       'c.exit(#failure);
    }
-   .decl-func-flags |= #glc-name;
+   .decl-func-flags |= #cgl-name;
 }
 {func-attr-var-args()
    {if((.decl-func-flags & #var-args) != #0)

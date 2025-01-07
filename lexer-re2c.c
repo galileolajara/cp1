@@ -132,7 +132,7 @@ int glc_lexer_scan(struct glc_lexer* l) {
    spaces "@real-name(" [^)]* ")"   { return GLC_TOKEN_SPACE_AT_REAL_NAME_STR; }
    spaces "@real-name"              { return GLC_TOKEN_SPACE_AT_REAL_NAME; }
    spaces "@decl"                   { return GLC_TOKEN_SPACE_AT_DECL; }
-   spaces "@glc-name"               { return GLC_TOKEN_SPACE_AT_GLC_NAME; }
+   spaces "@cgl-name"               { return GLC_TOKEN_SPACE_AT_CGL_NAME; }
    spaces "@case"                   { return GLC_TOKEN_SPACE_AT_CASE; }
    spaces "@union"                  { return GLC_TOKEN_SPACE_AT_UNION; }
    spaces "@extern"                 { return GLC_TOKEN_SPACE_AT_EXTERN; }

@@ -494,7 +494,7 @@ end-if
    {wr(i:this, w`:wtr) @inline
       w.n1(i);
    }
-   {glc-name(e:this):char[] @glc-name}
+   {cgl-name(e:this):char[] @cgl-name}
 }
 {gvar at-c\at}
 {gvar at-cap\at}

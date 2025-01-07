@@ -535,7 +535,7 @@
    }
 }
 {token-name(tok\token):char[]
-   :return tok.glc-name();
+   :return tok.cgl-name();
 }
 {parse-str-init(max-size:int)}
 {get-row-col(out-row:int&, out-col:int&, end:ref, begin:ref)
@@ -1009,7 +1009,7 @@
       .last-col = .col;
       .row = tok.row;
       .col = tok.col;
-      `` 'c.out.printf("%s:%u:%u: token %s\n", .input-path, tok.row, tok.col, t.glc-name());
+      `` 'c.out.printf("%s:%u:%u: token %s\n", .input-path, tok.row, tok.col, t.cgl-name());
       `` 'c.out.flush();
       {if(&&, t >= #id-modulo, t < #id)
          tok.id = lex.get-id(1, 0);

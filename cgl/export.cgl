@@ -28,7 +28,7 @@
    stmt-break(#nil, 0, 0, 0, 0);
    func-attr-main();
    func-attr-decl();
-   func-attr-glc-name();
+   func-attr-cgl-name();
    func-attr-process();
    func-attr-inline();
    func-attr-var-args();

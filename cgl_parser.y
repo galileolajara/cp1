@@ -215,8 +215,8 @@ func_attr ::= SPACE_AT_PROCESS.
    { _Mglc_Pfunc_attr_process_0(); }
 func_attr ::= SPACE_AT_INLINE.
    { _Mglc_Pfunc_attr_inline_0(); }
-func_attr ::= SPACE_AT_GLC_NAME.
-   { _Mglc_Pfunc_attr_glc_name_0(); }
+func_attr ::= SPACE_AT_CGL_NAME.
+   { _Mglc_Pfunc_attr_cgl_name_0(); }
 func_attr ::= SPACE_AT_DECL LPAREN STRING RPAREN.
    { _Mglc_Pfunc_attr_decl_0(); }
 func_attr ::= SPACE_AT_VAR_ARGS.

@@ -14,7 +14,7 @@
    {rd(s:this&, r`:rdr) @inline
       s = r.n1()`\stmt-type;
    }
-   {glc-name(e:this):char[] @glc-name}
+   {cgl-name(e:this):char[] @cgl-name}
 }
 {:stmt(
    begin-row:int,
@@ -27,7 +27,7 @@
    {write(s:this)
       {switch(s.type).write(s)
          {default
-            'c.out.printf("write() not yet implemented in stmt #%s\n", s.type.glc-name());
+            'c.out.printf("write() not yet implemented in stmt #%s\n", s.type.cgl-name());
             'c.exit(#failure);
          }
       }
@@ -41,12 +41,12 @@
       {switch(s.type).process(s, ok)
          {default
             'c.out.printf("%s:%u:%u - %u:%u: process() is not implemented in statement #%s\n",
-            .ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.glc-name());
+            .ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.cgl-name());
          }
       }
       {if!(ok)
          'c.out.printf("%s:%u:%u - %u:%u: Processing of statement #%s failed\n",
-            .ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.glc-name());
+            .ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.cgl-name());
       }
       :return ok;
    }
