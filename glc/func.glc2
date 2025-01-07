@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{\func[#nil = -1, #0, #1]:int
+{:func[#nil = -1, #0, #1]:int
    {wr(f:this, w`:wtr) @inline
       w.n(f + #1);
    }
@@ -12,7 +12,7 @@
       :return .func-v[f];
    }
 }
-{\func-flags[
+{:func-flags[
    #0,
    #has-body = 1,
    #inline = 2,
@@ -32,7 +32,7 @@
       e = r.n()`\func-flags;
    }
 }
-{\func-flags2[
+{:func-flags2[
    #0,
    #main = 1,
    ]:num

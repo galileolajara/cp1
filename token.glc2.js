@@ -1,5 +1,5 @@
 const fs = require("fs");
-let lines = ["{at(%glc)", "{\\token[", "#nil,"];
+let lines = ["{at(%glc)", "{:token[", "#nil,"];
 let txt = fs.readFileSync("out/glc_parser.h").toString();
 for (let line of txt.split("\n")) {
    if (line == "") continue;

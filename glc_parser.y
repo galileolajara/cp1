@@ -72,7 +72,7 @@ enum_cvar ::= enum_cvar_begin cvar_attrs_optional SPACE_EQUAL_SPACE expr(set).
 enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional.
 enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional SPACE_EQUAL_SPACE expr(set).
    { _Mglc_Penum_set_cvar_expr_1(set.basic.id); }
-enum_decl_begin ::= LCBRACE(pos) ID_BSLASH(name).
+enum_decl_begin ::= LCBRACE(pos) ID_COLON(name).
    { _Mglc_Pdecl_at_begin_enum_3(name.basic.id, pos.basic.row, pos.basic.col); }
 
 decl_include ::= INCLUDE(e).

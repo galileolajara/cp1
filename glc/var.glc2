@@ -1,12 +1,12 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{\decl-var[]:num
+{:decl-var[]:num
    {ptr(v:this):decl-var @inline
       :return .var-v[v];
    }
 }
-{\decl-var-type[#gvar, #fvar]:tnum}
+{:decl-var-type[#gvar, #fvar]:tnum}
 {cvar #decl-var-size-limit:int = 8}
 {at(:decl-var)
    {process(vd:this, row:int, col:int):bool
@@ -218,7 +218,7 @@
 `` {gvar stack-type-info:type-info+} `` [#type-info-stack-limit]}
 `` {gvar stack-type-info-c:tint}
 {gvar decl-var:decl-var+}
-{\var-flags[
+{:var-flags[
    #0,
    #real-name = 1,
    #extern = 2,

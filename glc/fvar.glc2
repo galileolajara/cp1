@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{\fvar[#nil = -1, #0]:int}
+{:fvar[#nil = -1, #0]:int}
 {expr-fvar(expr\expr, member\id)\expr
    quick-alloc-one(+(e:expr-fvar));
    +e-idx = expr-push(e.base, #fvar);

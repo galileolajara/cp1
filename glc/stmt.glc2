@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{\stmt-type[
+{:stmt-type[
    #space, #if, #if-elif, #if-else, #if-end,
    #do, #do-end, #while, #while-end,
    #expr, #return, #continue, #break,

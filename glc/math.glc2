@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{\math[#add, #sub, #mul, #div, #lshift, #rshift, #and, #or, #xor]:tnum
+{:math[#add, #sub, #mul, #div, #lshift, #rshift, #and, #or, #xor]:tnum
    {wr(e:this, w`:wtr) @inline
       w.n1(e);
    }

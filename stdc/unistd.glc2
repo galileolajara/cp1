@@ -7,7 +7,7 @@
          {close(fd:this):int @no-decl @real-name}
          {write(fd:this, buf:ref, size:size):size @no-decl @real-name}
       }
-      {\seek[
+      {:seek[
          #set @real-name(SEEK_SET) @no-decl,
          #end @real-name(SEEK_END) @no-decl,
          ]:int}

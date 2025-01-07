@@ -27,7 +27,7 @@
 {gvar file-c\file}
 {gvar file-cap\file}
 {gvar file-v:file+[]}
-{\file[#nil = -1, #0]:int
+{:file[#nil = -1, #0]:int
    {ptr(f:this)`:file @inline
       :return .file-v[f];
    }

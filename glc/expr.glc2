@@ -26,7 +26,7 @@
       ok = :true;
    }
 }
-{\expr-type[
+{:expr-type[
    #nil, #call-method, #lvar, #gvar, #math, #assign, #bools,
    #func, #method, #fvar, #int, #cvar, #str, #index, #unary,
    #compare, #bool, #null, #cast-fast, #ref, #char, #size-of-type,
@@ -40,7 +40,7 @@
    {glc-name(e:this):char[] @glc-name}
 }
 {cvar #debug-rd-wr:bool = :true}
-{\expr[#nil = -1, #0, #1]:int
+{:expr[#nil = -1, #0, #1]:int
    {set(e:this, expr`:expr, type`\expr-type) @inline
       .expr-v[e] = expr;
       expr.type = type;
@@ -198,7 +198,7 @@
       }
    }
 }
-{\expr-flags[#0, #processed = 1]:tnum}
+{:expr-flags[#0, #processed = 1]:tnum}
 {:expr(
    type`\expr-type,
    flags`\expr-flags,
@@ -212,7 +212,7 @@
       }
    }
 }
-{\basic-type-id[#root, #ref, #bool, #char, #tint, #tnum, #int, #num, #float, #size, #lnum, #COUNT]:tnum
+{:basic-type-id[#root, #ref, #bool, #char, #tint, #tnum, #int, #num, #float, #size, #lnum, #COUNT]:tnum
    {wr(e:this, w`:wtr) @inline
       w.n1(e);
    }

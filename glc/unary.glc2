@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{\unary[#neg, #inc, #dec]:tnum
+{:unary[#neg, #inc, #dec]:tnum
    {rd(u:this&, r`:rdr) @inline
       u = r.n1()`\unary;
    }
