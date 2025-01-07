@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{expr-index(left:expr, right-v:expr[], right-c:int):expr
+{expr-index(left:expr-i, right-v:expr-i[], right-c:int):expr-i
    {do{+i = right-c}(right-c)
       quick-alloc-one(+(e:expr-index));
       ++e-idx = expr-push(e.base, #index);
@@ -10,7 +10,7 @@
    }
    :return e-idx;
 }
-{at(:expr)
+{at(:expr-i)
    {wr-index(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-index = expr}
       e.left.wr(w, header);
@@ -23,7 +23,7 @@
       e.right.write-value(e.right-val);
       .out.printf("]");
    }
-   {rd-index(e-idx`:expr, r`:rdr) @case.rd() @inline
+   {rd-index(e-idx`:expr-i, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-index));
       e-idx.set(e.base, #index);
       e.left.rd(r);

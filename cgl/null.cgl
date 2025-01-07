@@ -1,15 +1,15 @@
 {alias 'glc = %glc}
 {at(%glc)
-{expr-null():expr
+{expr-null():expr-i
    quick-alloc-one(+(e:expr-null));
    +e-idx = expr-push(e.base, #null);
    :return e-idx;
 }
-{at(:expr)
+{at(:expr-i)
    {wr-null(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-null = expr}
    }
-   {rd-null(e-idx`:expr, r`:rdr) @case.rd() @inline
+   {rd-null(e-idx`:expr-i, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-null));
       e-idx.set(e.base, #null);
    }

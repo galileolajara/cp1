@@ -82,7 +82,7 @@
 {:farg(
    row:int,
    col:int,
-   decl`:decl-var+,
+   decl`:decl-var-data+,
    )
    {rd(f:this, r`:rdr)
       f.decl.rd(r);
@@ -100,7 +100,7 @@
 {gvar func-cap:func}
 {gvar func-v:decl-func[]}
 {gvar decl-func-name:id}
-`` {gvar decl-func:decl-var+}
+`` {gvar decl-func:decl-var-data+}
 {gvar decl-func-row:int}
 {gvar decl-func-col:int}
 {gvar decl-func-flags:func-flags}
@@ -173,7 +173,7 @@
 }
 `` {gvar lvar-c:lvar}
 `` {gvar lvar-cap:lvar}
-`` {gvar lvar-v:lvar[]}
+`` {gvar lvar-v:lvar-data[]}
 `` {gvar lvar-name-v:id[]}
 {decl-func-end(row:int, col:int)
    +f-idx = (.func-c++):func;
@@ -344,7 +344,7 @@
 {gvar expr-call-c:tint}
 {cvar #glc-carg-limit:int = 64}
 {gvar expr-call-carg-c:tnum[#expr-call-nest-limit]}
-{gvar expr-call-carg-v:expr[#expr-call-nest-limit][#glc-carg-limit]}
+{gvar expr-call-carg-v:expr-i[#expr-call-nest-limit][#glc-carg-limit]}
 {gvar expr-call-cgrp-c:tnum[#expr-call-nest-limit]}
 {gvar expr-call-cgrp-v:tnum[#expr-call-nest-limit][#expr-carg-group-limit]}
 {expr-push-call(row:int, col:int)
@@ -362,12 +362,12 @@
    .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx]] = 0;
    .expr-call-cgrp-c[call-idx]++;
 }
-{carg-push(expr:expr)
+{carg-push(expr:expr-i)
    +call-idx = .expr-call-c - 1;
    .expr-call-carg-v[call-idx][.expr-call-carg-c[call-idx]++] = expr;
    .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
 }
-{carg-push-str(expr:expr)
+{carg-push-str(expr:expr-i)
    {if(:true)
       `` push the string
       +call-idx = .expr-call-c - 1;
@@ -390,7 +390,7 @@
       .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
    }
 }
-{expr-pop-func(at:at, func-name:id):expr
+{expr-pop-func(at:at, func-name:id):expr-i
    +call-idx = .expr-call-c -= 1;
    +carg-c = .expr-call-carg-c[call-idx];
    {+e:expr-func}
@@ -409,7 +409,7 @@
    }
    :return e-idx;
 }
-{expr-pop-method(this:expr, func-name:id):expr
+{expr-pop-method(this:expr-i, func-name:id):expr-i
    +call-idx = .expr-call-c -= 1;
    +carg-c = .expr-call-carg-c[call-idx];
    {+e:expr-method}

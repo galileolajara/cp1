@@ -20,7 +20,7 @@ union glc_token {
    void* pointer;
 };
 
-typedef int _Mglc_Eexpr;
+typedef int _Mglc_Eexpr_i;
 typedef int _Mglc_Eid;
 typedef int _Mglc_Einclude;
 typedef int _Mglc_Eat;
@@ -37,7 +37,7 @@ typedef int8_t _Mglc_Ebools;
 typedef int8_t _Mglc_Etoken;
 struct _Mglc_Sstmt_space;
 struct _Mglc_Sstmt;
-struct _Mglc_Sexpr;
+struct _Mglc_Sexpr_data;
 #ifdef GLC_NEW
 #include "out/export.h"
 #else

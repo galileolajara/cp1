@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{farg-process(e:expr, ca-ref:tint, ca-value:value, fd-arg:decl-var):bool
+{farg-process(e:expr-i, ca-ref:tint, ca-value:value, fd-arg:decl-var-data):bool
    +ce = e.ptr();
    {+r:int}
    {if(ca-ref != 0)
@@ -38,7 +38,7 @@
    {if!(e.value(r, :false, ca-value)) :return :false}
    :return :true;
 }
-{at(:expr)
+{at(:expr-i)
    {value-func(e:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+expr`:expr-func = e.ptr()}
       +f = expr.func-idx.ptr();
@@ -107,8 +107,8 @@
          e.carg-v[i].expr.wr(w, header);
       }
    }
-   {rd-method(e-idx`:expr, r`:rdr) @case.rd() @inline
-      `:expr.rd(+this-expr, r);
+   {rd-method(e-idx`:expr-i, r`:rdr) @case.rd() @inline
+      `:expr-i.rd(+this-expr, r);
       `:id.rd(+func-name, r);
       +group-c = r.n1();
       {+group-v:tint[`#expr-carg-group-limit]}
@@ -282,7 +282,7 @@
          e.carg-v[i].expr.wr(w, header);
       }
    }
-   {rd-func(e-idx`:expr, r`:rdr) @case.rd() @inline
+   {rd-func(e-idx`:expr-i, r`:rdr) @case.rd() @inline
       `:at.rd(+at-idx, r);
       `:id.rd(+func-name, r);
       +group-c = r.n1();

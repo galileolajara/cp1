@@ -1,18 +1,18 @@
 {alias 'glc = %glc}
 {at(%glc)
-{expr-char(value:int):expr
+{expr-char(value:int):expr-i
    quick-alloc-one(+(e:expr-char));
    +e-idx = expr-push(e.base, #char);
    e.value = value;
    :return e-idx;
 }
 {write-char(c:char)}
-{at(:expr)
+{at(:expr-i)
    {wr-char(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-char = expr}
       w.n(e.value);
    }
-   {rd-char(e-idx`:expr, r`:rdr) @case.rd() @inline
+   {rd-char(e-idx`:expr-i, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-char));
       e-idx.set(e.base, #char);
       e.value = r.n();

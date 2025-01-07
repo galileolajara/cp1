@@ -73,7 +73,7 @@
          grow(f.lvar-cap, f.lvar-c);
          realloc(f.lvar-v, f.lvar-cap, old-cap);
       }
-      quick-alloc-one(+(item`:lvar));
+      quick-alloc-one(+(item`:lvar-data));
       f.lvar-v[lvar] = item;
       item.row = row;
       item.col = col;

@@ -8,20 +8,20 @@
       w.n1(u);
    }
 }
-{expr-unary(expr:expr, type:unary):expr
+{expr-unary(expr:expr-i, type:unary):expr-i
    quick-alloc-one(+(e:expr-unary));
    +e-idx = expr-push(e.base, #unary);
    e.expr = expr;
    e.type = type;
    :return e-idx;
 }
-{at(:expr)
+{at(:expr-i)
    {wr-unary(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-unary = expr}
       e.expr.wr(w, header);
       e.type.wr(w);
    }
-   {rd-unary(e-idx`:expr, r`:rdr) @case.rd() @inline
+   {rd-unary(e-idx`:expr-i, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-unary));
       e-idx.set(e.base, #unary);
       e.expr.rd(r);

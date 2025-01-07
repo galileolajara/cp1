@@ -44,7 +44,7 @@
       
       :return :true;
    }
-   {ptr(c:this)`:cvar @inline
+   {ptr(c:this)`:cvar-data @inline
       :return .cvar-v[c];
    }
    {write(c:this) @inline
@@ -72,15 +72,15 @@
 }
 {gvar cvar-c:cvar}
 {gvar cvar-cap:cvar}
-{gvar cvar-v:cvar+[]}
-{expr-cvar(at:at, name:id):expr
+{gvar cvar-v:cvar-data+[]}
+{expr-cvar(at:at, name:id):expr-i
    quick-alloc-one(+(e:expr-cvar));
    +e-idx = expr-push(e.base, #cvar);
    e.at = at;
    e.name = name;
    :return e-idx;
 }
-{at(:expr)
+{at(:expr-i)
    {write-cvar(expr`:expr) @case.write() @inline
       {+e`:expr-cvar = expr}
       e.cvar.write();
@@ -90,7 +90,7 @@
       e.at.wr(w, header);
       e.name.wr(w, header);
    }
-   {rd-cvar(e-idx`:expr, r`:rdr) @case.rd() @inline
+   {rd-cvar(e-idx`:expr-i, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-cvar));
       e-idx.set(e.base, #cvar);
       e.at.rd(r);

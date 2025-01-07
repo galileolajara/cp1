@@ -1,7 +1,7 @@
 {include(<unistd.h>)
    {alias 'c = %stdc}
    {at(%stdc)
-      {at(:file)
+      {at(:fd)
          {seek(fd:this, offset:size, seek`:seek):size @no-decl @real-name(lseek)}
          {read(fd:this, buf:ref, size:size):size @no-decl @real-name}
          {close(fd:this):int @no-decl @real-name}

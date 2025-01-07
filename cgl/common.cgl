@@ -12,7 +12,7 @@
 {gvar id-map:map+}
 {gvar include-map:map+}
 {gvar at-map:at-map+}
-{:struct(
+{:struct-data(
 if-compiler
    file`:file,
 end-if
@@ -30,13 +30,13 @@ if-compiler
    method-v`:func[],
 end-if
    fvar-c:num,
-   fvar-v`:fvar+[0],
+   fvar-v`:fvar-data+[0],
    )
 }
 {:stmt-if(
    base`:stmt+,
    not:bool,
-   expr`:expr,
+   expr`:expr-i,
 if-compiler
    val`:value+
 end-if
@@ -45,7 +45,7 @@ end-if
 {:stmt-if-elif(
    base`:stmt+,
    not:bool,
-   expr`:expr,
+   expr`:expr-i,
 if-compiler
    val`:value+
 end-if
@@ -53,11 +53,11 @@ end-if
 }
 {:stmt-switch(
    base`:stmt+,
-   expr`:expr,
+   expr`:expr-i,
 if-compiler
    val`:value+,
 end-if
-   cases`:expr,
+   cases`:expr-i,
 if-compiler
    case-func-c:num,
    case-func-v`:stmt-switch-case-func+[],
@@ -65,7 +65,7 @@ end-if
    )
 }
 {:stmt-case-item(
-   expr`:expr,
+   expr`:expr-i,
 if-compiler
    val`:value+,
 end-if
@@ -73,7 +73,7 @@ end-if
 }
 {at(:lvar)
 if-compiler
-   {ptr(l:this)`:lvar @inline
+   {ptr(l:this)`:lvar-data @inline
       :return .ctx-func.lvar-v[l];
    }
    {name(l:this)`:id @inline
@@ -81,7 +81,7 @@ if-compiler
    }
 end-if
 if-parser
-   {ptr(l:this)`:lvar @inline
+   {ptr(l:this)`:lvar-data @inline
       :return .ctx-func.lvar-v[l];
    }
    {name(l:this)`:id @inline
@@ -89,7 +89,7 @@ if-parser
    }
 end-if
 }
-{:enum(
+{:enum-data(
 if-compiler
    file`:file,
 end-if
@@ -111,8 +111,8 @@ end-if
 }
 {:expr-compare(
    base`:expr+,
-   left`:expr,
-   right`:expr,
+   left`:expr-i,
+   right`:expr-i,
    type`:compare,
 if-compiler
    left-val`:value+,
@@ -122,8 +122,8 @@ end-if
 }
 {:expr-assign(
    base`:expr+,
-   left`:expr,
-   right`:expr,
+   left`:expr-i,
+   right`:expr-i,
    type`:assign,
 if-compiler
    left-val`:value+,
@@ -133,8 +133,8 @@ end-if
 }
 {:expr-index(
    base`:expr+,
-   left`:expr,
-   right`:expr,
+   left`:expr-i,
+   right`:expr-i,
 if-compiler
    left-val`:value+,
    right-val`:value+,
@@ -142,7 +142,7 @@ end-if
    )
 }
 {:expr-math-item(
-   expr`:expr,
+   expr`:expr-i,
 if-compiler
    val`:value+,
 end-if
@@ -150,8 +150,8 @@ end-if
 }
 {:expr-math(
    base`:expr+,
-   left`:expr,
-   right`:expr,
+   left`:expr-i,
+   right`:expr-i,
    type`:math,
 if-compiler
    left-val`:value+,
@@ -165,7 +165,7 @@ end-if
    )
 }
 {:expr-bools-item(
-   expr`:expr,
+   expr`:expr-i,
 if-compiler
    val`:value+,
 end-if
@@ -173,8 +173,8 @@ end-if
 }
 {:expr-bools(
    base`:expr+,
-   left`:expr,
-   right`:expr,
+   left`:expr-i,
+   right`:expr-i,
    type`:bools,
 if-compiler
    left-val`:value+,
@@ -189,7 +189,7 @@ end-if
 }
 {:expr-fvar(
    base`:expr+,
-   expr`:expr,
+   expr`:expr-i,
    member`:id,
 if-compiler
    fvar`:fvar,
@@ -209,7 +209,7 @@ end-if
 }
 {:expr-ref(
    base`:expr+,
-   expr`:expr,
+   expr`:expr-i,
 if-compiler
    val`:value+,
 end-if
@@ -217,7 +217,7 @@ end-if
 }
 {:expr-unary(
    base`:expr+,
-   expr`:expr,
+   expr`:expr-i,
    type`:unary,
 if-compiler
    val`:value+,
@@ -226,7 +226,7 @@ end-if
 }
 {:expr-cast-fast(
    base`:expr+,
-   expr`:expr,
+   expr`:expr-i,
    type`:at,
 if-compiler
    val`:value+,
@@ -253,10 +253,10 @@ end-if
    include`:include,
    at`:at,
    flags`:gvar-flags,
-   decl`:decl-var+,
+   decl`:decl-var-data+,
    )
 }
-{:cvar(
+{:cvar-data(
 if-compiler
    file`:file,
 end-if
@@ -266,19 +266,19 @@ end-if
    at`:at,
    flags`:cvar-flags,
    `` real-name:id,
-   decl`:decl-var+,
-   expr-set`:expr,
+   decl`:decl-var-data+,
+   expr-set`:expr-i,
    last-cvar`:cvar,
    )
 }
-{:decl-var(
+{:decl-var-data(
    name`:id,
    type`:at,
    flags`:var-flags,
    real-name`:id,
    type-info`:type-info+,
    size-c:tnum,
-   size-expr-v`:expr[],
+   size-expr-v`:expr-i[],
 if-compiler
    size-value-v`:value+[],
 end-if
@@ -286,7 +286,7 @@ end-if
 }
 {:carg(
    ref:tint,
-   expr`:expr,
+   expr`:expr-i,
 if-compiler
    value`:value+,
 end-if
@@ -307,7 +307,7 @@ end-if
 }
 {:expr-method(
    base`:expr+,
-   this`:expr,
+   this`:expr-i,
    func-name`:id,
 if-compiler
    func-idx`:func,
@@ -337,7 +337,7 @@ end-if
    decl-len:int,
    case`:id,
    `` type:at,
-   decl`:decl-var+,
+   decl`:decl-var-data+,
 if-parser
    stmt-space`:stmt-space,
 end-if
@@ -352,14 +352,14 @@ end-if
 if-compiler
    lvar-c`:lvar,
    `` lvar-cap:lvar,
-   lvar-v`:lvar+[],
+   lvar-v`:lvar-data+[],
    `` lvar-name-v:id[],
    body-file-pos:num,
 end-if
 if-parser
    lvar-c`:lvar,
    lvar-cap`:lvar,
-   lvar-v`:lvar[],
+   lvar-v`:lvar-data[],
 end-if
    this-idx:tint,
    this-group:tint,
@@ -458,7 +458,7 @@ end-if
 }
 {:at-type(struct`:struct, enum`:enum) @union}
 {:at-def[#undefined, #module, #struct, #enum, #basic]:tnum}
-{:at(
+{:at-data(
    type`:name-type,
    parent`:at,
    name`:at-name+,
@@ -501,7 +501,7 @@ end-if
 }
 {gvar at-c:at}
 {gvar at-cap:at}
-{gvar at-v:at+[]}
+{gvar at-v:at-data+[]}
 {:at[#nil = -1, #root]:int
    {finalize(at-i:this, ti`:type-info, row:int, col:int):bool
       +at = at-i.ptr();
@@ -609,7 +609,7 @@ end-if
 `` 	}
    	:return :true;
    }
-   {ptr(i:this)`:at @inline
+   {ptr(i:this)`:at-data @inline
       :return .at-v[i];
    }
    {rd(i:this&, r`:rdr) @inline

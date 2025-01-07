@@ -44,14 +44,14 @@
       :return .gvar-v[g];
    }
 }
-{expr-gvar(at:at, name:id):expr
+{expr-gvar(at:at, name:id):expr-i
    quick-alloc-one(+(e:expr-gvar));
    +e-idx = expr-push(e.base, #gvar);
    e.at = at;
    e.name = name;
    :return e-idx;
 }
-{at(:expr)
+{at(:expr-i)
    {value-gvar(g:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+e`:expr-gvar = g.ptr()}
       +gvar = e.gvar.ptr();
@@ -71,7 +71,7 @@
       e.at.wr(w, header);
       e.name.wr(w, header);
    }
-   {rd-gvar(e-idx`:expr, r`:rdr) @case.rd() @inline
+   {rd-gvar(e-idx`:expr-i, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-gvar));
       e-idx.set(e.base, #gvar);
       `:at.rd(+at-idx, r);

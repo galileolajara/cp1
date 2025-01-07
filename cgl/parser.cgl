@@ -23,7 +23,7 @@
 {type-info-finalize()
    .decl-var.type-info.finalize();
 }
-{type-info-arr(expr-v:expr[], expr-c:tnum)
+{type-info-arr(expr-v:expr-i[], expr-c:tnum)
    {+r:rdr+}
    r.ref = expr-v;
    {if(expr-v == :null)
@@ -36,7 +36,7 @@
       type-info-arr(expr-v[i -= 1]);
    }
 }
-{type-info-arr(expr:expr)
+{type-info-arr(expr:expr-i)
    +ti = .decl-var.type-info;
 	ti.array-c += 1;
 	ti.ref-v[ti.array-c] = 0;
@@ -224,7 +224,7 @@
    .decl-at-c--;
    .decl-at = .decl-at-v[.decl-at-c];
 }
-{:token(
+{:token-data(
    row:int,
    col:int,
    id:int,
@@ -399,7 +399,7 @@
 {:parser()
    {alloc()`:parser}
    {free(psr:this)}
-   {parse(psr:this, t`:token, tok`:token+) @real-name(glcParse)}
+   {parse(psr:this, t`:token, tok`:token-data+) @real-name(glcParse)}
 }
 {gvar last-row:int @extern}
 {gvar last-col:int @extern}
@@ -745,7 +745,7 @@
    }
    .input-path = argv[1];
    'c.out.printf("reading %s\n", .input-path);
-   {if!('c:file.open(++in-fd, .input-path, #read))
+   {if!('c:fd.open(++in-fd, .input-path, #read))
       'c.out.printf("Cannot open file for reading: %s\n", .input-path);
       'c.exit(#failure);
    }
@@ -985,7 +985,7 @@
    +next-col = 1;
    .row = 1;
    .col = 1;
-   {+tok:token+}
+   {+tok:token-data+}
    {do()
       tok.row = next-row;
       tok.col = next-col;
@@ -1144,7 +1144,7 @@
    out-path[in-path-len + 4] = ''m;
    out-path[in-path-len + 5] = ''p;
    out-path[in-path-len + 6] = 0;
-   {if!('c:file.open(++out-fd, out-path, #create | #truncate | #write, 0644))
+   {if!('c:fd.open(++out-fd, out-path, #create | #truncate | #write, 0644))
       'c.out.printf("Cannot open file for writing: %s\n", out-path);
       'c.exit(#failure);
    }
@@ -1184,7 +1184,7 @@
    write-func(w, :true);
 
    out-path[in-path-len + 1] = ''h;
-   {if!('c:file.open(out-fd, out-path, #create | #truncate | #write, 0644))
+   {if!('c:fd.open(out-fd, out-path, #create | #truncate | #write, 0644))
       'c.out.printf("Cannot open file for writing: %s\n", out-path);
       'c.exit(#failure);
    }

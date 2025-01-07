@@ -79,8 +79,8 @@
             v[i].cvar.write();
             .out.printf(":;\n");
             func.func-idx = v[i].func;
-            `:expr.write-func(e);
-            .out.printf(";:nbreak;\n");
+            `:expr-i.write-func(e);
+            .out.printf(";\nbreak;\n");
          }
       }
    }
@@ -124,7 +124,7 @@
             }
          }
          {if(case-c > 0)
-            {if!(`:expr.process-case-func(s.cases.ptr(), case-v[0])) :return}
+            {if!(`:expr-i.process-case-func(s.cases.ptr(), case-v[0])) :return}
             +func-name-str = func-name.str();
             +func-name-len = func-name.len();
             s.case-func-c = case-c;
@@ -257,8 +257,8 @@
 }
 {gvar switch-expr-c:num}
 {gvar switch-expr-cap:num}
-{gvar switch-expr-v:expr[]}
-{stmt-switch-expr-add(expr:expr)
+{gvar switch-expr-v:expr-i[]}
+{stmt-switch-expr-add(expr:expr-i)
    +expr-i = .switch-expr-c++;
    {if(.switch-expr-cap <= .switch-expr-c)
       +old-cap = .switch-expr-cap;
@@ -319,7 +319,7 @@
    stmt-space-begin();
    .decl-func-ctx-space.flags |= #skip-lvar-decl;
 }
-{stmt-switch-set(expr:expr, begin-row:int, begin-col:int, end-row:int, end-col:int, cases:expr)
+{stmt-switch-set(expr:expr-i, begin-row:int, begin-col:int, end-row:int, end-col:int, cases:expr-i)
    quick-alloc-one(+(s:stmt-switch));
    s.expr = expr;
    s.cases = cases;

@@ -40,7 +40,7 @@
    {cgl-name(e:this):char[] @cgl-name}
 }
 {cvar #debug-rd-wr:bool = :true}
-{:expr[#nil = -1, #0, #1]:int
+{:expr-i[#nil = -1, #0, #1]:int
    {set(e:this, expr`:expr, type`:expr-type) @inline
       .expr-v[e] = expr;
       expr.type = type;
@@ -139,7 +139,7 @@
       {if(type == #nil)
          e = #nil;
       }{else
-         +e-idx = (.expr-c++)`:expr;
+         +e-idx = (.expr-c++)`:expr-i;
          {if(.expr-cap <= .expr-c)
             +old-cap = .expr-cap;
             grow(.expr-cap, .expr-c);
@@ -275,7 +275,7 @@
 {gvar expr-c:int}
 {gvar expr-cap:int}
 {gvar expr-v:expr[]}
-{expr-push(e:expr, type:expr-type):expr
+{expr-push(e:expr, type:expr-type):expr-i
    e.type = type;
    +e-idx = .expr-c++;
    {if(.expr-cap <= .expr-c)
@@ -286,7 +286,7 @@
    .expr-v[e-idx] = e;
    :return e-idx;
 }
-{:expr-int(
+{:expr-int-data(
    base`:expr+,
    value:int,
    type`:expr-int,

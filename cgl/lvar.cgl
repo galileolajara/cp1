@@ -40,15 +40,15 @@
       w.n1(f);
    }
 }
-{:lvar(
+{:lvar-data(
    row:int,
    col:int,
-   decl`:decl-var+,
+   decl`:decl-var-data+,
    flags`:lvar-flags,
-   set-expr`:expr,
+   set-expr`:expr-i,
    )
 }
-{expr-lvar(name:id, decl:tnum, row:int, col:int):expr
+{expr-lvar(name:id, decl:tnum, row:int, col:int):expr-i
    {if(decl == 0)
       +space = .decl-func-ctx-space;
       {do()
@@ -94,7 +94,7 @@
       :return e-idx;
    }
 }
-{at(:expr)
+{at(:expr-i)
    {write-lvar(expr`:expr) @case.write() @inline
       {+e`:expr-lvar = expr}
       e.lvar.ptr().decl.write-lvar(e.lvar);
@@ -117,7 +117,7 @@
       {+e`:expr-lvar = expr}
       e.lvar.wr(w);
    }
-   {rd-lvar(e-idx`:expr, r`:rdr) @case.rd() @inline
+   {rd-lvar(e-idx`:expr-i, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-lvar));
       e-idx.set(e.base, #lvar);
       e.lvar.rd(r);

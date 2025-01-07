@@ -1,27 +1,27 @@
 {alias 'glc = %glc}
 {at(%glc)
 {:expr-int[#dec, #hex, #oct]:tnum}
-{expr-int(value:int, type:expr-int):expr
-   quick-alloc-one(+(e:expr-int));
+{expr-int(value:int, type:expr-int):expr-i
+   quick-alloc-one(+(e:expr-int-data));
    +e-idx = expr-push(e.base, #int);
    e.value = value;
    e.type = type;
    :return e-idx;
 }
-{at(:expr)
+{at(:expr-i)
    {wr-int(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
-      {+e`:expr-int = expr}
+      {+e`:expr-int-data = expr}
       w.n1(e.type);
       w.n(e.value);
    }
-   {rd-int(e-idx`:expr, r`:rdr) @case.rd() @inline
-      quick-alloc-one(+(e`:expr-int));
+   {rd-int(e-idx`:expr-i, r`:rdr) @case.rd() @inline
+      quick-alloc-one(+(e`:expr-int-data));
       e-idx.set(e.base, #int);
       e.type = r.n1()`:expr-int;
       e.value = r.n();
    }
    {write-int(expr`:expr) @case.write() @inline
-      {+e`:expr-int = expr}
+      {+e`:expr-int-data = expr}
       .out.printf("%d", e.value);
    }
    {process-int(expr`:expr, ok:bool&) @case.process() @inline

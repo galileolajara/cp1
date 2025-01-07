@@ -53,12 +53,12 @@
 }
 {:stmt-expr(
    base`:stmt+,
-   expr`:expr,
+   expr`:expr-i,
    )
 }
 {:stmt-return(
    base`:stmt+,
-   expr`:expr,
+   expr`:expr-i,
    val`:value+,
    )
 }
@@ -82,12 +82,12 @@
       .decl-func-ctx-space.stmt-last = s;
    }
 }
-{expr2stmt(e:expr, begin-row:int, begin-col:int, end-row:int, end-col:int)
+{expr2stmt(e:expr-i, begin-row:int, begin-col:int, end-row:int, end-col:int)
    quick-alloc-one(+(s:stmt-expr));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #expr);
    s.expr = e;
 }
-{stmt-lvar-add(name:id, set:expr, row:int, col:int)
+{stmt-lvar-add(name:id, set:expr-i, row:int, col:int)
    +lvar-i = .decl-func-ctx-space.lvar-new(name, row, col);
    +lvar = lvar-i.ptr();
    .decl-var.name = name;

@@ -26,16 +26,16 @@
 {gvar ctx-func-id:func}
 {gvar file-c:file}
 {gvar file-cap:file}
-{gvar file-v:file+[]}
+{gvar file-v:file-data+[]}
 {:file[#nil = -1, #0]:int
-   {ptr(f:this)`:file @inline
+   {ptr(f:this)`:file-data @inline
       :return .file-v[f];
    }
    {path(f:this):char[] @inline
       :return f.ptr().path;
    }
 }
-{:file(
+{:file-data(
    path:char[],
    data:ref,
    id-table`:id[],
@@ -69,7 +69,7 @@
 }
 {read(in-path:char[])
    `` 'c.out.printf("reading %s -------------------\n", in-path);
-   {if!('c:file.open(++in-fd, in-path, #read))
+   {if!('c:fd.open(++in-fd, in-path, #read))
       'c.out.printf("Cannot open file for reading: %s\n", in-path);
       'c.exit(#failure);
    }
@@ -268,7 +268,7 @@
       realloc(.enum-v, .enum-cap, old-cap);
    }
    {do{+e-idx = e-idx-begin}{(enum-c) e-idx++}
-      {+e:enum}
+      {+e:enum-data}
       quick-alloc-one(e);
       .enum-v[e-idx] = e;
       e.file = file-idx;
@@ -317,8 +317,8 @@
    }
    {do{+s-idx = s-idx-begin}{(struct-c) s-idx++}
       +fvar-c = r.n1();
-      {+s:struct}
-      quick-alloc-plus(s, :fvar[:size] * fvar-c);
+      {+s:struct-data}
+      quick-alloc-plus(s, :fvar-data[:size] * fvar-c);
       .struct-v[s-idx] = s;
       s.file = file-idx;
       s.fvar-c = fvar-c;
@@ -702,9 +702,9 @@
       }
       s.at.write-space();
       {if((s.flags & #union) != #0)
-         .out.printf(";:nunion ");
+         .out.printf(";\nunion ");
       }{else
-         .out.printf(";:nstruct ");
+         .out.printf(";\nstruct ");
       }
       s.at.write-space();
       .out.printf(" {\n");
@@ -778,7 +778,7 @@
             cvar-i.write();
             .out.printf(": return \"%s\";\n", cvar.decl.name.str());
          }
-         .out.printf("}:nreturn \"(ERROR)\";\n}\n");
+         .out.printf("}\nreturn \"(ERROR)\";\n}\n");
       }{else
          .out.printf(");\n");
       }

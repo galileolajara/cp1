@@ -8,7 +8,7 @@
    {rd(s:this&, r`:rdr) @inline
       s = (r.n() - #1)`:func;
    }
-   {ptr(s:this)`:struct @inline
+   {ptr(s:this)`:struct-data @inline
       :return .struct-v[s];
    }
    {output(s-i:this)
@@ -36,8 +36,8 @@
       }
    }
 }
-{:fvar(
-   decl`:decl-var+,
+{:fvar-data(
+   decl`:decl-var-data+,
    )
    {rd(f:this, r`:rdr)
       f.decl.rd(r);
@@ -48,7 +48,7 @@
 }
 {gvar struct-c:struct}
 {gvar struct-cap:struct}
-{gvar struct-v:struct[]}
+{gvar struct-v:struct-data[]}
 {gvar decl-struct-row:int}
 {gvar decl-struct-col:int}
 {gvar decl-struct-at:at}
@@ -69,7 +69,7 @@
 {gvar decl-struct-flags:struct-flags}
 {gvar decl-fvar-c:num}
 {gvar decl-fvar-cap:num}
-{gvar decl-fvar-v:decl-var+[]}
+{gvar decl-fvar-v:decl-var-data+[]}
 {decl-var-as-fvar()
    +fvar = .decl-fvar-c++;
    {if(.decl-fvar-cap <= .decl-fvar-c)
@@ -106,8 +106,8 @@
       grow(.struct-cap, .struct-c);
       realloc(.struct-v, .struct-cap, old-cap);
    }
-   {+s:struct}
-   quick-alloc-plus(s, :fvar[:size] * .decl-fvar-c);
+   {+s:struct-data}
+   quick-alloc-plus(s, :fvar-data[:size] * .decl-fvar-c);
    .struct-v[s-idx] = s;
    s.begin-row = .decl-struct-row;
    s.begin-col = .decl-struct-col;

@@ -2,20 +2,20 @@
 {alias 'c = %stdc}
 {at(%glc)
 {:fvar[#nil = -1, #0]:int}
-{expr-fvar(expr:expr, member:id):expr
+{expr-fvar(expr:expr-i, member:id):expr-i
    quick-alloc-one(+(e:expr-fvar));
    +e-idx = expr-push(e.base, #fvar);
    e.expr = expr;
    e.member = member;
    :return e-idx;
 }
-{at(:expr)
+{at(:expr-i)
    {wr-fvar(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-fvar = expr}
       e.expr.wr(w, header);
       e.member.wr(w, header);
    }
-   {rd-fvar(e-idx`:expr, r`:rdr) @case.rd() @inline
+   {rd-fvar(e-idx`:expr-i, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-fvar));
       e-idx.set(e.base, #fvar);
       e.expr.rd(r);

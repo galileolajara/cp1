@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{expr-cast-fast(expr:expr, type:at):expr
+{expr-cast-fast(expr:expr-i, type:at):expr-i
    quick-alloc-one(+(e:expr-cast-fast));
    +e-idx = expr-push(e.base, #cast-fast);
    e.expr = expr;
@@ -16,13 +16,13 @@
       .out.printf(")");
    }
 }
-{at(:expr)
+{at(:expr-i)
    {wr-cast-fast(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-cast-fast = expr}
       e.expr.wr(w, header);
       e.type.wr(w, header);
    }
-   {rd-cast-fast(e-idx`:expr, r`:rdr) @case.rd() @inline
+   {rd-cast-fast(e-idx`:expr-i, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-cast-fast));
       e-idx.set(e.base, #cast-fast);
       e.expr.rd(r);

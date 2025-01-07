@@ -7,7 +7,7 @@
    {rd(f:this&, r`:rdr) @inline
       f = (r.n() - #1)`:func;
    }
-   {ptr(f:this)`:enum @inline
+   {ptr(f:this)`:enum-data @inline
       :return .enum-v[f];
    }
    {output(e-i:this)
@@ -43,7 +43,7 @@
 }
 {gvar enum-c:enum}
 {gvar enum-cap:enum}
-{gvar enum-v:enum[]}
+{gvar enum-v:enum-data[]}
 {gvar decl-enum-row:int}
 {gvar decl-enum-col:int}
 {gvar decl-enum-at:at}
@@ -89,7 +89,7 @@
       grow(.enum-cap, .enum-c);
       realloc(.enum-v, .enum-cap, old-cap);
    }
-   {+s:enum}
+   {+s:enum-data}
    quick-alloc-one(s);
    .enum-v[s-idx] = s;
    s.begin-row = .decl-enum-row;
@@ -149,7 +149,7 @@
    c.decl.copy-from(.decl-var);
    c.flags = #0;
 }
-{enum-set-cvar-expr(set:expr)
+{enum-set-cvar-expr(set:expr-i)
    +c = .last-cvar.ptr();
    c.flags |= #set-expr;
    c.expr-set = set;
