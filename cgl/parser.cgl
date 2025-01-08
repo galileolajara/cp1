@@ -731,7 +731,7 @@
    :return w-begin.ref;
 }
 {char-escape-value(c:char):i32}
-{main(argc:i32, argv:char[][]):i32 @main
+{main(arg-c:i32, arg-v:char[][]):i32 @main
    {if(:false) export()}
    .id-map.init();
    .include-map.init();
@@ -739,11 +739,11 @@
    quick-alloc-init();
    .func-main = #nil;
    .decl-include = #nil;
-   {if(argc != 2)
-      'c.out.printf("usage: %s file.glc\n", argv[0]);
+   {if(arg-c != 2)
+      'c.out.printf("usage: %s file.glc\n", arg-v[0]);
       :return 0;
    }
-   .input-path = argv[1];
+   .input-path = arg-v[1];
    'c.out.printf("reading %s\n", .input-path);
    {if!('c:fd.open(++in-fd, .input-path, #read))
       'c.out.printf("Cannot open file for reading: %s\n", .input-path);
