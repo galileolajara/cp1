@@ -84,7 +84,7 @@
 #define _Mglc_Eexpr_type_Ccast_fast (_Mglc_Eexpr_type_Cnull + 1)
 #define _Mglc_Eexpr_type_Cref (_Mglc_Eexpr_type_Ccast_fast + 1)
 #define _Mglc_Eexpr_type_Cchar (_Mglc_Eexpr_type_Cref + 1)
-#define _Mglc_Eexpr_type_Cusz_of_type (_Mglc_Eexpr_type_Cchar + 1)
+#define _Mglc_Eexpr_type_Csize_of_type (_Mglc_Eexpr_type_Cchar + 1)
 #define _Mglc_Elvar_flags_Cset_expr (1)
 #define _Mglc_Elvar_flags_C0 0
 #define _Mglc_Cdebug_rd_wr (true)
@@ -853,7 +853,7 @@ void _Mglc_Eexpr_i_Pwrite_method_1(struct _Mglc_Sexpr* _Lexpr_0);
 void _Mglc_Eexpr_i_Pwrite_func_1(struct _Mglc_Sexpr* _Lexpr_0);
 void _Mglc_Eexpr_i_Pwrite_str_1(struct _Mglc_Sexpr* _Lexpr_0);
 void _Mglc_Eexpr_i_Pwrite_i32_1(struct _Mglc_Sexpr* _Lexpr_0);
-void _Mglc_Eexpr_i_Pwrite_usz_of_type_1(struct _Mglc_Sexpr* _Lexpr_0);
+void _Mglc_Eexpr_i_Pwrite_size_of_type_1(struct _Mglc_Sexpr* _Lexpr_0);
 void _Mglc_Eexpr_i_Pwrite_null_1(struct _Mglc_Sexpr* _Lexpr_0);
 void _Mglc_Eexpr_i_Pwrite_index_1(struct _Mglc_Sexpr* _Lexpr_0);
 char* _Mglc_Eexpr_type_Pcgl_name_1(_Mglc_Eexpr_type _Le_0) {
@@ -879,7 +879,7 @@ case _Mglc_Eexpr_type_Cnull: return "null";
 case _Mglc_Eexpr_type_Ccast_fast: return "cast-fast";
 case _Mglc_Eexpr_type_Cref: return "ref";
 case _Mglc_Eexpr_type_Cchar: return "char";
-case _Mglc_Eexpr_type_Cusz_of_type: return "usz-of-type";
+case _Mglc_Eexpr_type_Csize_of_type: return "size-of-type";
 }
 return "(ERROR)";
 }
@@ -912,7 +912,7 @@ void _Mglc_Eexpr_i_Prd_method_2(_Mglc_Eexpr_i _Le_idx_0, union _Mglc_Srdr* _Lr_1
 void _Mglc_Eexpr_i_Prd_func_2(_Mglc_Eexpr_i _Le_idx_0, union _Mglc_Srdr* _Lr_1);
 void _Mglc_Eexpr_i_Prd_str_2(_Mglc_Eexpr_i _Le_idx_0, union _Mglc_Srdr* _Lr_1);
 void _Mglc_Eexpr_i_Prd_i32_2(_Mglc_Eexpr_i _Le_idx_0, union _Mglc_Srdr* _Lr_1);
-void _Mglc_Eexpr_i_Prd_usz_of_type_2(_Mglc_Eexpr_i _Le_idx_0, union _Mglc_Srdr* _Lr_1);
+void _Mglc_Eexpr_i_Prd_size_of_type_2(_Mglc_Eexpr_i _Le_idx_0, union _Mglc_Srdr* _Lr_1);
 void _Mglc_Eexpr_i_Prd_null_2(_Mglc_Eexpr_i _Le_idx_0, union _Mglc_Srdr* _Lr_1);
 void _Mglc_Eexpr_i_Prd_index_2(_Mglc_Eexpr_i _Le_idx_0, union _Mglc_Srdr* _Lr_1);
 void _Mglc_Elvar_flags_Prd_2(_Mglc_Elvar_flags* _Lf_0, union _Mglc_Srdr* _Lr_1);
@@ -999,7 +999,7 @@ void _Mglc_Eexpr_i_Pprocess_method_2(struct _Mglc_Sexpr* _Lexpr_0, bool* _Lok_1)
 void _Mglc_Eexpr_i_Pprocess_func_2(struct _Mglc_Sexpr* _Lexpr_0, bool* _Lok_1);
 void _Mglc_Eexpr_i_Pprocess_str_2(struct _Mglc_Sexpr* _Lexpr_0, bool* _Lok_1);
 void _Mglc_Eexpr_i_Pprocess_i32_2(struct _Mglc_Sexpr* _Lexpr_0, bool* _Lok_1);
-void _Mglc_Eexpr_i_Pprocess_usz_of_type_2(struct _Mglc_Sexpr* _Lexpr_0, bool* _Lok_1);
+void _Mglc_Eexpr_i_Pprocess_size_of_type_2(struct _Mglc_Sexpr* _Lexpr_0, bool* _Lok_1);
 void _Mglc_Eexpr_i_Pprocess_null_2(struct _Mglc_Sexpr* _Lexpr_0, bool* _Lok_1);
 void _Mglc_Eexpr_i_Pprocess_index_2(struct _Mglc_Sexpr* _Lexpr_0, bool* _Lok_1);
 void _Mglc_Pwrite_char_1(char _Lc_0);
@@ -1063,7 +1063,7 @@ void _Mglc_Eexpr_i_Pvalue_func_5(_Mglc_Eexpr_i _Le_0, int32_t _Lref_1, bool _Lpa
 void _Mglc_Eexpr_i_Pvalue_method_5(_Mglc_Eexpr_i _Le_0, int32_t _Lref_1, bool _Lparen_2, struct _Mglc_Svalue* _Lv_3, bool* _Lok_4);
 void _Mglc_Eexpr_i_Pvalue_str_5(_Mglc_Eexpr_i _Ls_0, int32_t _Lref_1, bool _Lparen_2, struct _Mglc_Svalue* _Lv_3, bool* _Lok_4);
 void _Mglc_Eexpr_i_Pvalue_i32_5(_Mglc_Eexpr_i _Lle_0, int32_t _Lref_1, bool _Lparen_2, struct _Mglc_Svalue* _Lv_3, bool* _Lok_4);
-void _Mglc_Eexpr_i_Pvalue_usz_of_type_5(_Mglc_Eexpr_i _Lle_0, int32_t _Lref_1, bool _Lparen_2, struct _Mglc_Svalue* _Lv_3, bool* _Lok_4);
+void _Mglc_Eexpr_i_Pvalue_size_of_type_5(_Mglc_Eexpr_i _Lle_0, int32_t _Lref_1, bool _Lparen_2, struct _Mglc_Svalue* _Lv_3, bool* _Lok_4);
 void _Mglc_Eexpr_i_Pvalue_null_5(_Mglc_Eexpr_i _Lle_0, int32_t _Lref_1, bool _Lparen_2, struct _Mglc_Svalue* _Lv_3, bool* _Lok_4);
 void _Mglc_Eexpr_i_Pvalue_index_5(_Mglc_Eexpr_i _Le_0, int8_t _Lref_1, bool _Lparen_2, struct _Mglc_Svalue* _Lv_3, bool* _Lok_4);
 void _Mglc_Eexpr_i_Ptry_deduce_math_2(struct _Mglc_Sexpr* _Lexpr_0, _Mglc_Eat _Lat_1);
@@ -1084,7 +1084,7 @@ void _Mglc_Eexpr_i_Ptype_bools_2(struct _Mglc_Sexpr* _Lexpr_0, _Mglc_Eat* _Lat_1
 void _Mglc_Eexpr_i_Ptype_func_2(struct _Mglc_Sexpr* _Lexpr_0, _Mglc_Eat* _Lat_1);
 void _Mglc_Eexpr_i_Ptype_method_2(struct _Mglc_Sexpr* _Lexpr_0, _Mglc_Eat* _Lat_1);
 void _Mglc_Eexpr_i_Ptype_i32_2(struct _Mglc_Sexpr* _Lexpr_0, _Mglc_Eat* _Lat_1);
-void _Mglc_Eexpr_i_Ptype_usz_of_type_2(struct _Mglc_Sexpr* _Lexpr_0, _Mglc_Eat* _Lat_1);
+void _Mglc_Eexpr_i_Ptype_size_of_type_2(struct _Mglc_Sexpr* _Lexpr_0, _Mglc_Eat* _Lat_1);
 void _Mglc_Eexpr_i_Ptype_null_2(struct _Mglc_Sexpr* _Lexpr_0, _Mglc_Eat* _Lat_1);
 void _Mglc_Eexpr_i_Ptype_index_2(struct _Mglc_Sexpr* _Lexpr_0, _Mglc_Eat* _Lat_1);
 void _Mglc_Svalue_Pset_5(struct _Mglc_Svalue* _Lv_0, int8_t _Lref_1, bool _Lparen_2, _Mglc_Eat _Ltype_3, struct _Mglc_Stype_info* _Linfo_4);
@@ -1594,7 +1594,7 @@ void _Mglc_Sat_data_Pinit_4(struct _Mglc_Sat_data* _Lat_0, _Mglc_Ename_type _Lty
 }
 void _Mglc_Pread_1(char* _Lin_path_0) {
 _Mstdc_Efd _Lin_fd_1;
-size_t _Lin_usz_2;
+size_t _Lin_size_2;
 union _Mglc_Srdr _Lr_begin_3;
 _Mglc_Efile _Lfile_idx_4;
 struct _Mglc_Sfile_data* _Lfile_6;
@@ -1610,10 +1610,10 @@ if(!(_Mstdc_Efd_Popen_3(&_Lin_fd_1, _Lin_path_0, O_RDONLY))) {
 fprintf(stdout, "Cannot open file for reading: %s\n", _Lin_path_0);
 exit(_Mstdc_Eexit_Cfailure);
 }
-_Lin_usz_2 = lseek(_Lin_fd_1, 0, SEEK_END);
-_Lr_begin_3._Fref = malloc(_Lin_usz_2);
+_Lin_size_2 = lseek(_Lin_fd_1, 0, SEEK_END);
+_Lr_begin_3._Fref = malloc(_Lin_size_2);
 lseek(_Lin_fd_1, 0, SEEK_SET);
-read(_Lin_fd_1, _Lr_begin_3._Fref, _Lin_usz_2);
+read(_Lin_fd_1, _Lr_begin_3._Fref, _Lin_size_2);
 close(_Lin_fd_1);
 _Lfile_idx_4 = _Gfile_c++;
 if(_Gfile_cap <= _Gfile_c) {
@@ -2302,8 +2302,8 @@ break;
 case _Mglc_Eexpr_type_Ci32:;
 _Mglc_Eexpr_i_Pwrite_i32_1(_Lexpr_1);
 break;
-case _Mglc_Eexpr_type_Cusz_of_type:;
-_Mglc_Eexpr_i_Pwrite_usz_of_type_1(_Lexpr_1);
+case _Mglc_Eexpr_type_Csize_of_type:;
+_Mglc_Eexpr_i_Pwrite_size_of_type_1(_Lexpr_1);
 break;
 case _Mglc_Eexpr_type_Cnull:;
 _Mglc_Eexpr_i_Pwrite_null_1(_Lexpr_1);
@@ -2706,8 +2706,8 @@ break;
 case _Mglc_Eexpr_type_Ci32:;
 _Mglc_Eexpr_i_Prd_i32_2(_Le_idx_3, _Lr_1);
 break;
-case _Mglc_Eexpr_type_Cusz_of_type:;
-_Mglc_Eexpr_i_Prd_usz_of_type_2(_Le_idx_3, _Lr_1);
+case _Mglc_Eexpr_type_Csize_of_type:;
+_Mglc_Eexpr_i_Prd_size_of_type_2(_Le_idx_3, _Lr_1);
 break;
 case _Mglc_Eexpr_type_Cnull:;
 _Mglc_Eexpr_i_Prd_null_2(_Le_idx_3, _Lr_1);
@@ -3141,8 +3141,8 @@ break;
 case _Mglc_Eexpr_type_Ci32:;
 _Mglc_Eexpr_i_Pprocess_i32_2(_Lexpr_4, &_Lok_5);
 break;
-case _Mglc_Eexpr_type_Cusz_of_type:;
-_Mglc_Eexpr_i_Pprocess_usz_of_type_2(_Lexpr_4, &_Lok_5);
+case _Mglc_Eexpr_type_Csize_of_type:;
+_Mglc_Eexpr_i_Pprocess_size_of_type_2(_Lexpr_4, &_Lok_5);
 break;
 case _Mglc_Eexpr_type_Cnull:;
 _Mglc_Eexpr_i_Pprocess_null_2(_Lexpr_4, &_Lok_5);
@@ -3564,7 +3564,7 @@ struct _Mglc_Sexpr_int_data* _Le_1;
 _Le_1 = _Lexpr_0;
 fprintf(_Gout, "%d", (*_Le_1)._Fvalue);
 }
-void _Mglc_Eexpr_i_Pwrite_usz_of_type_1(struct _Mglc_Sexpr* _Lexpr_0) {
+void _Mglc_Eexpr_i_Pwrite_size_of_type_1(struct _Mglc_Sexpr* _Lexpr_0) {
 struct _Mglc_Sexpr_size_of_type* _Le_1;
 _Le_1 = _Lexpr_0;
 fprintf(_Gout, "sizeof(");
@@ -4032,10 +4032,10 @@ _Mglc_Eexpr_i_Pset_3(_Le_idx_0, &(*_Le_2)._Fbase, _Mglc_Eexpr_type_Ci32);
 (*_Le_2)._Ftype = (_Mglc_Eexpr_int)(_Mglc_Srdr_Pn1_1(_Lr_1));
 (*_Le_2)._Fvalue = Fgetnum(_Lr_1);
 }
-void _Mglc_Eexpr_i_Prd_usz_of_type_2(_Mglc_Eexpr_i _Le_idx_0, union _Mglc_Srdr* _Lr_1) {
+void _Mglc_Eexpr_i_Prd_size_of_type_2(_Mglc_Eexpr_i _Le_idx_0, union _Mglc_Srdr* _Lr_1) {
 struct _Mglc_Sexpr_size_of_type* _Le_2;
 _Mglc_Pquick_alloc_one_1(_Le_2);
-_Mglc_Eexpr_i_Pset_3(_Le_idx_0, &(*_Le_2)._Fbase, _Mglc_Eexpr_type_Cusz_of_type);
+_Mglc_Eexpr_i_Pset_3(_Le_idx_0, &(*_Le_2)._Fbase, _Mglc_Eexpr_type_Csize_of_type);
 _Mglc_Eat_Prd_2(&(*_Le_2)._Ftype, _Lr_1);
 }
 void _Mglc_Eexpr_i_Prd_null_2(_Mglc_Eexpr_i _Le_idx_0, union _Mglc_Srdr* _Lr_1) {
@@ -5141,7 +5141,7 @@ void _Mglc_Eexpr_i_Pprocess_str_2(struct _Mglc_Sexpr* _Lexpr_0, bool* _Lok_1) {
 void _Mglc_Eexpr_i_Pprocess_i32_2(struct _Mglc_Sexpr* _Lexpr_0, bool* _Lok_1) {
 (*_Lok_1) = true;
 }
-void _Mglc_Eexpr_i_Pprocess_usz_of_type_2(struct _Mglc_Sexpr* _Lexpr_0, bool* _Lok_1) {
+void _Mglc_Eexpr_i_Pprocess_size_of_type_2(struct _Mglc_Sexpr* _Lexpr_0, bool* _Lok_1) {
 struct _Mglc_Sexpr_size_of_type* _Le_2;
 _Le_2 = _Lexpr_0;
 _Mglc_Eat_Poutput_4((*_Le_2)._Ftype, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gctx_begin_col);
@@ -5474,8 +5474,8 @@ break;
 case _Mglc_Eexpr_type_Ci32:;
 _Mglc_Eexpr_i_Pvalue_i32_5(_Le_0, _Lref_1, _Lparen_2, _Lv_3, &_Lok_5);
 break;
-case _Mglc_Eexpr_type_Cusz_of_type:;
-_Mglc_Eexpr_i_Pvalue_usz_of_type_5(_Le_0, _Lref_1, _Lparen_2, _Lv_3, &_Lok_5);
+case _Mglc_Eexpr_type_Csize_of_type:;
+_Mglc_Eexpr_i_Pvalue_size_of_type_5(_Le_0, _Lref_1, _Lparen_2, _Lv_3, &_Lok_5);
 break;
 case _Mglc_Eexpr_type_Cnull:;
 _Mglc_Eexpr_i_Pvalue_null_5(_Le_0, _Lref_1, _Lparen_2, _Lv_3, &_Lok_5);
@@ -5655,8 +5655,8 @@ break;
 case _Mglc_Eexpr_type_Ci32:;
 _Mglc_Eexpr_i_Ptype_i32_2(_Lexpr_1, &_Lat_2);
 break;
-case _Mglc_Eexpr_type_Cusz_of_type:;
-_Mglc_Eexpr_i_Ptype_usz_of_type_2(_Lexpr_1, &_Lat_2);
+case _Mglc_Eexpr_type_Csize_of_type:;
+_Mglc_Eexpr_i_Ptype_size_of_type_2(_Lexpr_1, &_Lat_2);
 break;
 case _Mglc_Eexpr_type_Cnull:;
 _Mglc_Eexpr_i_Ptype_null_2(_Lexpr_1, &_Lat_2);
@@ -5940,7 +5940,7 @@ _Mglc_Stype_info_Pinit_1(&(*_Lv_3)._Finfo);
 (*_Lv_3)._Fparen = false;
 (*_Lok_4) = true;
 }
-void _Mglc_Eexpr_i_Pvalue_usz_of_type_5(_Mglc_Eexpr_i _Lle_0, int32_t _Lref_1, bool _Lparen_2, struct _Mglc_Svalue* _Lv_3, bool* _Lok_4) {
+void _Mglc_Eexpr_i_Pvalue_size_of_type_5(_Mglc_Eexpr_i _Lle_0, int32_t _Lref_1, bool _Lparen_2, struct _Mglc_Svalue* _Lv_3, bool* _Lok_4) {
 (*_Lv_3)._Ftype = _Mglc_Pbasic_type_1(_Mglc_Ebasic_type_id_Cusz);
 _Mglc_Stype_info_Pinit_1(&(*_Lv_3)._Finfo);
 (*_Lv_3)._Finfo._Farray_c = 0;
@@ -6077,7 +6077,7 @@ _Le_2 = _Lexpr_0;
 void _Mglc_Eexpr_i_Ptype_i32_2(struct _Mglc_Sexpr* _Lexpr_0, _Mglc_Eat* _Lat_1) {
 (*_Lat_1) = _Mglc_Pbasic_type_1(_Mglc_Ebasic_type_id_Ci32);
 }
-void _Mglc_Eexpr_i_Ptype_usz_of_type_2(struct _Mglc_Sexpr* _Lexpr_0, _Mglc_Eat* _Lat_1) {
+void _Mglc_Eexpr_i_Ptype_size_of_type_2(struct _Mglc_Sexpr* _Lexpr_0, _Mglc_Eat* _Lat_1) {
 (*_Lat_1) = _Mglc_Pbasic_type_1(_Mglc_Ebasic_type_id_Cusz);
 }
 void _Mglc_Eexpr_i_Ptype_null_2(struct _Mglc_Sexpr* _Lexpr_0, _Mglc_Eat* _Lat_1) {

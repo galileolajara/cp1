@@ -2,35 +2,35 @@
 {at(%glc)
 {expr-size-of-type(at:at):expr-i
    quick-alloc-one(+(e:expr-size-of-type));
-   +e-idx = expr-push(e.base, #usz-of-type);
+   +e-idx = expr-push(e.base, #size-of-type);
    e.type = at;
    :return e-idx;
 }
 {at(:expr-i)
-   {wr-usz-of-type(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
+   {wr-size-of-type(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-size-of-type = expr}
       e.type.wr(w, header);
    }
-   {rd-usz-of-type(e-idx`:expr-i, r`:rdr) @case.rd() @inline
+   {rd-size-of-type(e-idx`:expr-i, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-size-of-type));
-      e-idx.set(e.base, #usz-of-type);
+      e-idx.set(e.base, #size-of-type);
       e.type.rd(r);
    }
-   {write-usz-of-type(expr`:expr) @case.write() @inline
+   {write-size-of-type(expr`:expr) @case.write() @inline
       {+e`:expr-size-of-type = expr}
       .out.printf("sizeof(");
       e.type.write();
       .out.printf(")");
    }
-   {process-usz-of-type(expr`:expr, ok:bool&) @case.process() @inline
+   {process-size-of-type(expr`:expr, ok:bool&) @case.process() @inline
       {+e`:expr-size-of-type = expr}
       e.type.output(.ctx-func.file, .ctx-begin-row, .ctx-begin-col);
       ok = :true;
    }
-   {type-usz-of-type(expr`:expr, at`:at&) @case.type() @inline
+   {type-size-of-type(expr`:expr, at`:at&) @case.type() @inline
       at = basic-type(#usz);
    }
-   {value-usz-of-type(le:this, ref:i32, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-size-of-type(le:this, ref:i32, paren:bool, v`:value, ok:bool&) @case.value() @inline
       v.type = basic-type(#usz);
       v.info.init();
       v.info.array-c = 0;

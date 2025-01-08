@@ -7,7 +7,7 @@
    }
 }
 {:decl-var-type[#gvar, #fvar]:u8}
-{cvar #decl-var-usz-limit:i32 = 8}
+{cvar #decl-var-size-limit:i32 = 8}
 {at(:decl-var-data)
    {process(vd:this, row:i32, col:i32):bool
       +at-i = vd.type;

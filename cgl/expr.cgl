@@ -29,7 +29,7 @@
 {:expr-type[
    #nil, #call-method, #lvar, #gvar, #math, #assign, #bools,
    #func, #method, #fvar, #i32, #cvar, #str, #index, #unary,
-   #compare, #bool, #null, #cast-fast, #ref, #char, #usz-of-type,
+   #compare, #bool, #null, #cast-fast, #ref, #char, #size-of-type,
    ]:u8
    {wr(e:this, w`:wtr) @inline
       w.n1(e);

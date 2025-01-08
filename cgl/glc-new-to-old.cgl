@@ -8,24 +8,24 @@
       'c.out.printf("Cannot open file for reading: %s\n", in-path);
       'c.exit(#failure);
    }
-   +in-usz = in-fd.seek(0, #end);
+   +in-size = in-fd.seek(0, #end);
    in-fd.seek(0, #set);
    {+r:rdr+}
    +padding = 64;
-   r.ref = 'c.malloc(in-usz + padding);
-   in-fd.read(r.ref, in-usz);
-   {do{+i = in-usz}(padding)
+   r.ref = 'c.malloc(in-size + padding);
+   in-fd.read(r.ref, in-size);
+   {do{+i = in-size}(padding)
       r.1[i ++] = 0;
    }
 
    {+r-end:rdr+}
    r-end.ref = r.ref;
-   r-end.pos += in-usz;
+   r-end.pos += in-size;
 
    {+w-new-begin:wtr+}
-   w-new-begin.ref = 'c.malloc(in-usz << 1);
+   w-new-begin.ref = 'c.malloc(in-size << 1);
    {+w-old-begin:wtr+}
-   w-old-begin.ref = 'c.malloc(in-usz << 1);
+   w-old-begin.ref = 'c.malloc(in-size << 1);
 
    {+w-new:wtr+}
    w-new.ref = w-new-begin.ref;
