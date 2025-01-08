@@ -2,13 +2,13 @@
 {alias 'c = %stdc}
 {at(%glc)
 {:struct[#nil = -1, #0, #1]:i32
-   {wr(s:this, w`:wtr) @inline
+   {wr(s:this, w:wtr) @inline
       w.n(s + #1);
    }
-   {rd(s:this&, r`:rdr) @inline
-      s = (r.n() - #1)`:func;
+   {rd(s:this&, r:rdr) @inline
+      s = (r.n() - #1):func;
    }
-   {ptr(s:this)`:struct-data @inline
+   {ptr(s:this):struct-data @inline
       :return .struct-v[s];
    }
    {output(s-i:this)
@@ -25,6 +25,7 @@
       {do{+i = 0}{(s.fvar-c) i++}
          `` s.fvar-v[i].decl.type.output(s.file, row, col);
          `` {if!(s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col)) :return}
+         s.fvar-v[i].decl.type = at-validate(s.fvar-v[i].decl.type, s-at);
          {if!(s.fvar-v[i].decl.process(row, col, s-at)) :return}
       }
 
@@ -38,12 +39,12 @@
    }
 }
 {:fvar-data(
-   decl`:decl-var-data+,
+   decl:decl-var-data+,
    )
-   {rd(f:this, r`:rdr)
+   {rd(f:this, r:rdr)
       f.decl.rd(r);
    }
-   {wr(f:this, w`:wtr, header:bool)
+   {wr(f:this, w:wtr, header:bool)
       f.decl.wr(w, header);
    }
 }
@@ -60,11 +61,11 @@
    #no-decl = 2,
    #union = 4,
    ]:u8
-   {wr(f:this, w`:wtr) @inline
+   {wr(f:this, w:wtr) @inline
       w.n1(f);
    }
-   {rd(f:this&, r`:rdr) @inline
-      f = r.n1()`:struct-flags;
+   {rd(f:this&, r:rdr) @inline
+      f = r.n1():struct-flags;
    }
 }
 {gvar decl-struct-flags:struct-flags}

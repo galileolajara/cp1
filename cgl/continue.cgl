@@ -2,7 +2,7 @@
 {alias 'c = %stdc}
 {at(%glc)
 {:stmt-continue(
-   base`:stmt+,
+   base:stmt+,
    nest:u8,
    )
 }
@@ -17,23 +17,23 @@
    s.nest = .nest-stack-c - 1;
 }
 {at(:stmt-space)
-   {wr-continue(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
-      {+s`:stmt-continue = stmt}
+   {wr-continue(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
+      {+s:stmt-continue = stmt}
       w.n1(s.nest);
    }
-   {rd-continue(space`:stmt-space, r`:rdr) @case.rd() @inline
-      quick-alloc-one(+(s`:stmt-continue));
+   {rd-continue(space:stmt-space, r:rdr) @case.rd() @inline
+      quick-alloc-one(+(s:stmt-continue));
       s.nest = r.n1();
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #continue);
    }
 }
 {at(:stmt)
-   {write-continue(stmt`:stmt) @case.write() @inline
-      {+s`:stmt-continue = stmt}
+   {write-continue(stmt:stmt) @case.write() @inline
+      {+s:stmt-continue = stmt}
       .out.printf("goto continue_%u;\n", .nest-stack-id-v[s.nest]);
    }
-   {process-continue(stmt`:stmt, ok:bool&) @case.process() @inline
-      {+s`:stmt-continue = stmt}
+   {process-continue(stmt:stmt, ok:bool&) @case.process() @inline
+      {+s:stmt-continue = stmt}
       ok = :true;
    }
 }

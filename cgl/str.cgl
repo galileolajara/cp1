@@ -32,8 +32,8 @@
 }
 {write-str-node(len:i32, ptr:ref)}
 {at(:expr-i)
-   {wr-str(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
-      {+e`:expr-str = expr}
+   {wr-str(expr:expr, w:wtr, header:bool) @case.wr() @inline
+      {+e:expr-str = expr}
       w.n(e.node-c);
       +n = e.first;
       {do()
@@ -43,14 +43,14 @@
          {if(n == :null) {break}}
       }
    }
-   {rd-str(e-idx`:expr-i, r`:rdr) @case.rd() @inline
+   {rd-str(e-idx:expr-i, r:rdr) @case.rd() @inline
       +node-c = r.n();
-      quick-alloc-one(+(e`:expr-str));
+      quick-alloc-one(+(e:expr-str));
       e-idx.set(e.base, #str);
       +first = :true;
       {do(node-c)
          +len = r.n();
-         quick-alloc-plus(+(n`:expr-str-node), len + 1);
+         quick-alloc-plus(+(n:expr-str-node), len + 1);
          n.len = len;
          r.copy(n.buf, len);
          n.buf[len] = 0;
@@ -65,8 +65,8 @@
          }
       }
    }
-   {write-str(expr`:expr) @case.write() @inline
-      {+e`:expr-str = expr}
+   {write-str(expr:expr) @case.write() @inline
+      {+e:expr-str = expr}
       +n = e.first;
       {do()
          write-str-node(n.len, n.buf);
@@ -131,7 +131,7 @@
          .out.putc(''\n);
       }
    }
-   {value-str(s:this, ref:i32, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-str(s:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline
       v.type = basic-type(#char);
       v.info.init();
       v.info.array-c = 1;
@@ -141,7 +141,7 @@
       v.ref = 1;
       ok = :true;
    }
-   {process-str(expr`:expr, ok:bool&) @case.process() @inline
+   {process-str(expr:expr, ok:bool&) @case.process() @inline
       ok = :true;
    }
 }

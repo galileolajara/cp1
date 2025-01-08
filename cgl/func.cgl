@@ -2,13 +2,13 @@
 {alias 'c = %stdc}
 {at(%glc)
 {:func[#nil = -1, #0, #1]:i32
-   {wr(f:this, w`:wtr) @inline
+   {wr(f:this, w:wtr) @inline
       w.n(f + #1);
    }
-   {rd(f:this&, r`:rdr) @inline
-      f = (r.n() - #1)`:func;
+   {rd(f:this&, r:rdr) @inline
+      f = (r.n() - #1):func;
    }
-   {ptr(f:this)`:decl-func @inline
+   {ptr(f:this):decl-func @inline
       :return .func-v[f];
    }
 }
@@ -25,11 +25,11 @@
    #cgl-name = 256,
    #decl = 512,
    ]:u32
-   {wr(e:this, w`:wtr) @inline
+   {wr(e:this, w:wtr) @inline
       w.n(e);
    }
-   {rd(e:this&, r`:rdr) @inline
-      e = r.n()`:func-flags;
+   {rd(e:this&, r:rdr) @inline
+      e = r.n():func-flags;
    }
 }
 {:func-flags2[
@@ -49,8 +49,8 @@
          }
       }
    }
-   {lvars-rd(f:this, r`:rdr)
-      +lvar-c = r.n()`:lvar;
+   {lvars-rd(f:this, r:rdr)
+      +lvar-c = r.n():lvar;
       f.lvar-c = lvar-c;
       quick-alloc-arr(f.lvar-v, lvar-c);
       {do{+i = 0}{(f.lvar-c) i++}
@@ -65,7 +65,7 @@
          `` 'c.out.printf("lvar %s has type of %s\n", l.decl.name.str(), l.decl.type.ptr().name.basic.cgl-name());
       }
    }
-   {lvars-wr(f:this, w`:wtr, header:bool)
+   {lvars-wr(f:this, w:wtr, header:bool)
       w.n(f.lvar-c);
       {do{+i = 0}{(f.lvar-c) i++}
          +l = f.lvar-v[i];
@@ -82,15 +82,15 @@
 {:farg(
    row:i32,
    col:i32,
-   decl`:decl-var-data+,
+   decl:decl-var-data+,
    )
-   {rd(f:this, r`:rdr)
+   {rd(f:this, r:rdr)
       f.decl.rd(r);
    }
-   {wr(f:this, w`:wtr, header:bool)
+   {wr(f:this, w:wtr, header:bool)
       f.decl.wr(w, header);
    }
-   {copy-from(f:this, src`:farg)
+   {copy-from(f:this, src:farg)
       f.row = src.row;
       f.col = src.col;
       f.decl.copy-from(src.decl);

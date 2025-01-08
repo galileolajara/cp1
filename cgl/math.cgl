@@ -1,11 +1,11 @@
 {alias 'glc = %glc}
 {at(%glc)
 {:math[#add, #sub, #mul, #div, #lshift, #rshift, #and, #or, #xor]:u8
-   {wr(e:this, w`:wtr) @inline
+   {wr(e:this, w:wtr) @inline
       w.n1(e);
    }
-   {rd(e:this&, r`:rdr) @inline
-      e = r.n1()`:math;
+   {rd(e:this&, r:rdr) @inline
+      e = r.n1():math;
    }
 }
 {expr-math(left:expr-i, right:expr-i, type:math):expr-i
@@ -29,16 +29,16 @@
    :return expr;
 }
 {at(:expr-i)
-   {try-deduce-math(expr`:expr, at`:at) @case.try-deduce() @inline
-      {+e`:expr-math = expr}
+   {try-deduce-math(expr:expr, at:at) @case.try-deduce() @inline
+      {+e:expr-math = expr}
       e.left.try-deduce(at);
       e.right.try-deduce(at);
       {do{+i = 0}{(e.item-c) i++}
          e.item-v[i].expr.try-deduce(at);
       }
    }
-   {wr-math(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
-      {+e`:expr-math = expr}
+   {wr-math(expr:expr, w:wtr, header:bool) @case.wr() @inline
+      {+e:expr-math = expr}
       e.left.wr(w, header);
       e.right.wr(w, header);
       e.type.wr(w);
@@ -47,8 +47,8 @@
          e.item-v[i].expr.wr(w, header);
       }
    }
-   {rd-math(e-idx`:expr-i, r`:rdr) @case.rd() @inline
-      quick-alloc-one(+(e`:expr-math));
+   {rd-math(e-idx:expr-i, r:rdr) @case.rd() @inline
+      quick-alloc-one(+(e:expr-math));
       e-idx.set(e.base, #math);
       e.left.rd(r);
       e.right.rd(r);
@@ -62,8 +62,8 @@
          }
       }
    }
-   {write-math(expr`:expr) @case.write() @inline
-      {+e`:expr-math = expr}
+   {write-math(expr:expr) @case.write() @inline
+      {+e:expr-math = expr}
       {switch(e.type)
          {case(#add)
             e.left.write-value(e.left-val);
@@ -140,8 +140,8 @@
          }
       }
    }
-   {value-math(e:this, ref:i8, paren:bool, v`:value, ok:bool&) @case.value() @inline
-      {+expr`:expr-math = e.ptr()}
+   {value-math(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline
+      {+expr:expr-math = e.ptr()}
 		`` {if(expr.left.value(1, paren, v) == :false)
       ``    :return;
       `` }
@@ -158,12 +158,12 @@
 		v.ref = ref;
       ok = :true;
 	}
-   {type-math(expr`:expr, at`:at&) @case.type() @inline
-      {+e`:expr-math = expr}
+   {type-math(expr:expr, at:at&) @case.type() @inline
+      {+e:expr-math = expr}
       at = e.left.type();
    }
-   {process-math(expr`:expr, ok:bool&) @case.process() @inline
-      {+e`:expr-math = expr}
+   {process-math(expr:expr, ok:bool&) @case.process() @inline
+      {+e:expr-math = expr}
 		{if!(e.left.value(1, :true, e.left-val))
 			:return;
       }

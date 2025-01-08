@@ -2,24 +2,24 @@
 {alias 'c = %stdc}
 {at(%glc)
 {at(:stmt-space)
-   {wr-expr(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
-      {+s`:stmt-expr = stmt}
+   {wr-expr(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
+      {+s:stmt-expr = stmt}
       s.expr.wr(w, header);
    }
-   {rd-expr(space`:stmt-space, r`:rdr) @case.rd() @inline
-      quick-alloc-one(+(s`:stmt-expr));
+   {rd-expr(space:stmt-space, r:rdr) @case.rd() @inline
+      quick-alloc-one(+(s:stmt-expr));
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #expr);
    }
 }
 {at(:stmt)
-   {write-expr(stmt`:stmt) @case.write() @inline
-      {+s`:stmt-expr = stmt}
+   {write-expr(stmt:stmt) @case.write() @inline
+      {+s:stmt-expr = stmt}
       s.expr.write();
       .out.printf(";\n");
    }
-   {process-expr(stmt`:stmt, ok:bool&) @case.process() @inline
-      {+s`:stmt-expr = stmt}
+   {process-expr(stmt:stmt, ok:bool&) @case.process() @inline
+      {+s:stmt-expr = stmt}
       {if!(s.expr.process())
          :return;
       }
@@ -31,24 +31,24 @@
    #func, #method, #fvar, #i32, #cvar, #str, #index, #unary,
    #compare, #bool, #null, #cast-fast, #ref, #char, #size-of-type,
    ]:u8
-   {wr(e:this, w`:wtr) @inline
+   {wr(e:this, w:wtr) @inline
       w.n1(e);
    }
-   {rd(e:this&, r`:rdr) @inline
-      e = r.n1()`:expr-type;
+   {rd(e:this&, r:rdr) @inline
+      e = r.n1():expr-type;
    }
    {cgl-name(e:this):char[] @cgl-name}
 }
 {cvar #debug-rd-wr:bool = :true}
 {:expr-i[#nil = -1, #0, #1]:i32
-   {set(e:this, expr`:expr, type`:expr-type) @inline
+   {set(e:this, expr:expr, type:expr-type) @inline
       .expr-v[e] = expr;
       expr.type = type;
    }
-   {ptr(e:this)`:expr @inline
+   {ptr(e:this):expr @inline
       :return .expr-v[e];
    }
-   {write-value(e:this, v`:value):bool
+   {write-value(e:this, v:value):bool
       +expr = e.ptr();
       +ref = v.ref;
       `` 'c.out.printf("write-value v.ref = %d\n", ref);
@@ -67,7 +67,7 @@
       }
 
       {if(expr.type == #cast-fast)
-         {+e`:expr-cast-fast = expr}
+         {+e:expr-cast-fast = expr}
          e.write-value(v);
       }{else
          e.write();
@@ -78,7 +78,7 @@
       }
       :return :true;
    }
-	{value(e:this, ref:i32, paren:bool, v`:value):bool
+	{value(e:this, ref:i32, paren:bool, v:value):bool
       {if!(e.process()) :return :false}
       +expr = e.ptr();
       +ok = :false;
@@ -90,10 +90,10 @@
       }
       :return ok;
    }
-   {type(e:this)`:at
+   {type(e:this):at
       {if!(e.process()) :return #nil}
       +expr = e.ptr();
-      +at = `:at#nil;
+      +at = :at#nil;
       {switch(expr.type).type(expr, at)
          {default
             'c.out.printf("%u:%u - %u:%u: type() not implemented for #%s\n",
@@ -102,17 +102,17 @@
       }
       :return at;
    }
-   {try-deduce(e-idx:this, at`:at)
+   {try-deduce(e-idx:this, at:at)
       +expr = e-idx.ptr();
       {switch(expr.type).try-deduce(expr, at)
       }
    }
-   {wr(e:this, w`:wtr, header:bool)
+   {wr(e:this, w:wtr, header:bool)
       {if(`#debug-rd-wr)
          w.n1(255);
       }
       {if(e == #nil)
-         `:expr-type#nil.wr(w);
+         :expr-type#nil.wr(w);
       }{else
          +expr = e.ptr();
          expr.type.wr(w);
@@ -127,7 +127,7 @@
          w.n1(255);
       }
    }
-   {rd(e:this&, r`:rdr)
+   {rd(e:this&, r:rdr)
       {if(`#debug-rd-wr)
          {if(r.n1() != 255)
             'c.out.printf("Error reading expr\n");
@@ -135,11 +135,11 @@
             'c.exit(#failure);
          }
       }
-      `:expr-type.rd(+type, r);
+      :expr-type.rd(+type, r);
       {if(type == #nil)
          e = #nil;
       }{else
-         +e-idx = (.expr-c++)`:expr-i;
+         +e-idx = (.expr-c++):expr-i;
          {if(.expr-cap <= .expr-c)
             +old-cap = .expr-cap;
             grow(.expr-cap, .expr-c);
@@ -200,8 +200,8 @@
 }
 {:expr-flags[#0, #processed = 1]:u8}
 {:expr(
-   type`:expr-type,
-   flags`:expr-flags,
+   type:expr-type,
+   flags:expr-flags,
    )
    {write(e:this, out'c:file)
       {switch(e.type)
@@ -213,11 +213,11 @@
    }
 }
 {:basic-type-id[#root, #relative, #ref, #bool, #char, #i8, #u8, #i32, #u32, #float, #usz, #u64, #COUNT]:u8
-   {wr(e:this, w`:wtr) @inline
+   {wr(e:this, w:wtr) @inline
       w.n1(e);
    }
-   {rd(e:this&, r`:rdr) @inline
-      e = r.n1()`:basic-type-id;
+   {rd(e:this&, r:rdr) @inline
+      e = r.n1():basic-type-id;
    }
 `` {write(e:this, out'c:file)
 ``    {switch(e)
@@ -241,35 +241,35 @@
    {cgl-name(e:this):char[] @cgl-name}
 }
 {:expr-lvar(
-   base`:expr+,
-   lvar`:lvar,
+   base:expr+,
+   lvar:lvar,
    )
 }
 {:expr-char(
-   base`:expr+,
+   base:expr+,
    value:char,
    )
 }
 {:expr-bool(
-   base`:expr+,
+   base:expr+,
    value:bool,
    )
 }
 {:expr-null(
-   base`:expr+,
+   base:expr+,
    )
 }
 {:expr-str-node(
-   next`:expr-str-node,
+   next:expr-str-node,
    len:i32,
    buf:char[0],
    )
 }
 {:expr-str(
-   base`:expr+,
+   base:expr+,
    node-c:i32,
-   first`:expr-str-node,
-   last`:expr-str-node,
+   first:expr-str-node,
+   last:expr-str-node,
    )
 }
 {gvar expr-c:i32}
@@ -287,14 +287,14 @@
    :return e-idx;
 }
 {:expr-int-data(
-   base`:expr+,
+   base:expr+,
    value:i32,
-   type`:expr-int,
+   type:expr-int,
    )
 }
 {:expr-size-of-type(
-   base`:expr+,
-   type`:at,
+   base:expr+,
+   type:at,
    )
 }
  

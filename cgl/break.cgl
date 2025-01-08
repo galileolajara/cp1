@@ -2,7 +2,7 @@
 {alias 'c = %stdc}
 {at(%glc)
 {:stmt-break(
-   base`:stmt+,
+   base:stmt+,
    nest:u8,
    )
 }
@@ -17,23 +17,23 @@
    s.nest = .nest-stack-c - 1;
 }
 {at(:stmt-space)
-   {wr-break(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
-      {+s`:stmt-break = stmt}
+   {wr-break(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
+      {+s:stmt-break = stmt}
       w.n1(s.nest);
    }
-   {rd-break(space`:stmt-space, r`:rdr) @case.rd() @inline
-      quick-alloc-one(+(s`:stmt-break));
+   {rd-break(space:stmt-space, r:rdr) @case.rd() @inline
+      quick-alloc-one(+(s:stmt-break));
       s.nest = r.n1();
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #break);
    }
 }
 {at(:stmt)
-   {write-break(stmt`:stmt) @case.write() @inline
-      {+s`:stmt-break = stmt}
+   {write-break(stmt:stmt) @case.write() @inline
+      {+s:stmt-break = stmt}
       .out.printf("goto break_%u;\n", .nest-stack-id-v[s.nest]);
    }
-   {process-break(stmt`:stmt, ok:bool&) @case.process() @inline
-      {+s`:stmt-break = stmt}
+   {process-break(stmt:stmt, ok:bool&) @case.process() @inline
+      {+s:stmt-break = stmt}
       ok = :true;
    }
 }

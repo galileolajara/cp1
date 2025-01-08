@@ -4,28 +4,28 @@
 {gvar switch-stack-v:stmt-switch[64]}
 {gvar switch-stack-c:u8}
 {at(:stmt-space)
-   {wr-switch(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
-      {+s`:stmt-switch = stmt}
+   {wr-switch(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
+      {+s:stmt-switch = stmt}
       s.expr.wr(w, header);
       s.cases.wr(w, header);
    }
-   {rd-switch(space`:stmt-space, r`:rdr) @case.rd() @inline
-      quick-alloc-one(+(s`:stmt-switch));
+   {rd-switch(space:stmt-space, r:rdr) @case.rd() @inline
+      quick-alloc-one(+(s:stmt-switch));
       s.expr.rd(r);
       s.cases.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #switch);
    }
-   {wr-case(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
-      {+s`:stmt-case = stmt}
+   {wr-case(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
+      {+s:stmt-case = stmt}
       w.n(s.expr-c);
       {do{+i = 0}{(s.expr-c) i++}
          s.expr-v[i].expr.wr(w, header);
       }
       w.b(s.fall-through);
    }
-   {rd-case(space`:stmt-space, r`:rdr) @case.rd() @inline
+   {rd-case(space:stmt-space, r:rdr) @case.rd() @inline
       +expr-c = r.n();
-      quick-alloc-plus(+(s`:stmt-case), `:stmt-case-item[:usz] * expr-c);
+      quick-alloc-plus(+(s:stmt-case), :stmt-case-item[:usz] * expr-c);
       s.expr-c = expr-c;
       {do{+i = 0}{(expr-c) i++}
          s.expr-v[i].expr.rd(r);
@@ -33,59 +33,59 @@
       s.fall-through = r.b();
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #case);
    }
-   {wr-case-end(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
+   {wr-case-end(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
    }
-   {rd-case-end(space`:stmt-space, r`:rdr) @case.rd() @inline
-      quick-alloc-one(+(s`:stmt-case-end));
+   {rd-case-end(space:stmt-space, r:rdr) @case.rd() @inline
+      quick-alloc-one(+(s:stmt-case-end));
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #case-end);
    }
-   {wr-default(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
-      {+s`:stmt-default = stmt}
+   {wr-default(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
+      {+s:stmt-default = stmt}
       w.b(s.fall-through);
    }
-   {rd-default(space`:stmt-space, r`:rdr) @case.rd() @inline
-      quick-alloc-one(+(s`:stmt-default));
+   {rd-default(space:stmt-space, r:rdr) @case.rd() @inline
+      quick-alloc-one(+(s:stmt-default));
       s.fall-through = r.b();
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #default);
    }
-   {wr-default-end(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
+   {wr-default-end(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
    }
-   {rd-default-end(space`:stmt-space, r`:rdr) @case.rd() @inline
-      quick-alloc-one(+(s`:stmt-default-end));
+   {rd-default-end(space:stmt-space, r:rdr) @case.rd() @inline
+      quick-alloc-one(+(s:stmt-default-end));
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #default-end);
    }
-   {wr-switch-end(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
+   {wr-switch-end(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
    }
-   {rd-switch-end(space`:stmt-space, r`:rdr) @case.rd() @inline
-      quick-alloc-one(+(s`:stmt-switch-end));
+   {rd-switch-end(space:stmt-space, r:rdr) @case.rd() @inline
+      quick-alloc-one(+(s:stmt-switch-end));
       space.stmt-push(s.base, 0, 0, 0, 0, #switch-end);
    }
 }
-{:case-stack(case`:stmt-case, default`:stmt-default) @union}
+{:case-stack(case:stmt-case, default:stmt-default) @union}
 {gvar case-stack-v:case-stack+[64]}
 {gvar case-stack-c:u8}
 {at(:stmt)
-   {write-switch(stmt`:stmt) @case.write() @inline
-      {+s`:stmt-switch = stmt}
+   {write-switch(stmt:stmt) @case.write() @inline
+      {+s:stmt-switch = stmt}
       .out.printf("switch(");
       s.expr.write-value(s.val);
       .out.printf(") {\n");
       {if(s.case-func-c > 0)
-         {+e`:expr = s.cases.ptr()}
-         {+func`:expr-func = e}
+         {+e:expr = s.cases.ptr()}
+         {+func:expr-func = e}
          +v = s.case-func-v;
          {do{+i = 0}{(s.case-func-c) i++}
             .out.printf("case ");
             v[i].cvar.write();
             .out.printf(":;\n");
             func.func-idx = v[i].func;
-            `:expr-i.write-func(e);
+            :expr-i.write-func(e);
             .out.printf(";\nbreak;\n");
          }
       }
    }
-   {process-switch(stmt`:stmt, ok:bool&) @case.process() @inline
-      {+s`:stmt-switch = stmt}
+   {process-switch(stmt:stmt, ok:bool&) @case.process() @inline
+      {+s:stmt-switch = stmt}
       .switch-stack-v[.switch-stack-c++] = s;
       {if!(s.expr.value(1, :false, s.val))
          :return;
@@ -100,13 +100,13 @@
             'c.out.printf("%s:%u:%u: Error, the expression used for switch must be an enum when using @case attribute\n", .ctx-func.file.path(), s.base.begin-row, s.base.begin-col);
             :return;
          }
-         {+e`:expr-func = s.cases.ptr()}
+         {+e:expr-func = s.cases.ptr()}
          +func-name = e.func-name;
          +f = .ctx-func.at.ptr();
          `` 'c.out.printf("there's a switch that have cases for functions prefixed by ':%s-'\n", func-name.str());
          +case-c = 0;
          +case-cap = 0;
-         {+case-v`:func[] = :null}
+         {+case-v:func[] = :null}
          {do{+i = 0}{(f.func-c) i++}
             +func-i = f.func-v[i];
             +func = func-i.ptr();
@@ -124,7 +124,7 @@
             }
          }
          {if(case-c > 0)
-            {if!(`:expr-i.process-case-func(s.cases.ptr(), case-v[0])) :return}
+            {if!(:expr-i.process-case-func(s.cases.ptr(), case-v[0])) :return}
             +func-name-str = func-name.str();
             +func-name-len = func-name.len();
             s.case-func-c = case-c;
@@ -136,8 +136,8 @@
                +func-name2 = func.decl.name;
                {+cvar-name-str:char[] = & func-name2.str()[func-name-len + 1]}
                +cvar-name-len = func-name2.len() - (func-name-len + 1);
-               +found-id = `:id#nil;
-               {do{+j = 0`:id}{(.id-c) j++}
+               +found-id = :id#nil;
+               {do{+j = 0:id}{(.id-c) j++}
                   {if(&&, j.len() == cvar-name-len, 'c.memcmp(j.str(), cvar-name-str, cvar-name-len) == 0)
                      found-id = j;
                      {break}
@@ -147,7 +147,7 @@
                   'c.out.printf("%s:%u:%u: Cannot find a case for cvar named '#%s'\n", func.file.path(), func.begin-row, func.begin-col, cvar-name-str);
                   :return;
                }
-               +found-cvar = `:cvar#nil;
+               +found-cvar = :cvar#nil;
                {do{+j = 0}{(type.cvar-c) j++}
                   +cvar-i = type.cvar-v[j];
                   +cvar = cvar-i.ptr();
@@ -170,8 +170,8 @@
       }
       ok = :true;
    }
-   {write-case(stmt`:stmt) @case.write() @inline
-      {+s`:stmt-case = stmt}
+   {write-case(stmt:stmt) @case.write() @inline
+      {+s:stmt-case = stmt}
       {do{+i = 0}{(s.expr-c) i++}
          .out.printf("case ");
          s.expr-v[i].expr.write-value(s.expr-v[i].val);
@@ -179,8 +179,8 @@
       }
       .case-stack-v[.case-stack-c++].case = s;
    }
-   {process-case(stmt`:stmt, ok:bool&) @case.process() @inline
-      {+s`:stmt-case = stmt}
+   {process-case(stmt:stmt, ok:bool&) @case.process() @inline
+      {+s:stmt-case = stmt}
       +switch = .switch-stack-v[.switch-stack-c - 1];
       {if(switch.val.type != #nil)
          +type-i = switch.val.type;
@@ -190,7 +190,7 @@
                +e-i = s.expr-v[i].expr;
                +e = e-i.ptr();
                {if(e.type == #cvar)
-                  {+e2`:expr-cvar = e}
+                  {+e2:expr-cvar = e}
                   {if(e2.at == #nil)
                      e2.try = type-i;
                   }
@@ -206,53 +206,53 @@
       }
       ok = :true;
    }
-   {write-case-end(stmt`:stmt) @case.write() @inline
-      {+s`:stmt-case-end = stmt}
+   {write-case-end(stmt:stmt) @case.write() @inline
+      {+s:stmt-case-end = stmt}
       +case = .case-stack-v[.case-stack-c -= 1].case;
       {if!(case.fall-through)
          .out.printf("break;\n");
       }
    }
-   {process-case-end(stmt`:stmt, ok:bool&) @case.process() @inline
-      {+s`:stmt-case-end = stmt}
+   {process-case-end(stmt:stmt, ok:bool&) @case.process() @inline
+      {+s:stmt-case-end = stmt}
       ok = :true;
    }
-   {write-default(stmt`:stmt) @case.write() @inline
-      {+s`:stmt-default = stmt}
+   {write-default(stmt:stmt) @case.write() @inline
+      {+s:stmt-default = stmt}
       .out.printf("default:;\n");
       .case-stack-v[.case-stack-c++].default = s;
    }
-   {process-default(stmt`:stmt, ok:bool&) @case.process() @inline
+   {process-default(stmt:stmt, ok:bool&) @case.process() @inline
       ok = :true;
    }
-   {write-default-end(stmt`:stmt) @case.write() @inline
-      {+s`:stmt-default-end = stmt}
+   {write-default-end(stmt:stmt) @case.write() @inline
+      {+s:stmt-default-end = stmt}
       +default = .case-stack-v[.case-stack-c -= 1].default;
       {if!(default.fall-through)
          .out.printf("break;\n");
       }
    }
-   {process-default-end(stmt`:stmt, ok:bool&) @case.process() @inline
-      {+s`:stmt-default-end = stmt}
+   {process-default-end(stmt:stmt, ok:bool&) @case.process() @inline
+      {+s:stmt-default-end = stmt}
       ok = :true;
    }
-   {write-switch-end(stmt`:stmt) @case.write() @inline
-      {+s`:stmt-switch-end = stmt}
+   {write-switch-end(stmt:stmt) @case.write() @inline
+      {+s:stmt-switch-end = stmt}
       .out.printf("}\n");
    }
-   {process-switch-end(stmt`:stmt, ok:bool&) @case.process() @inline
+   {process-switch-end(stmt:stmt, ok:bool&) @case.process() @inline
       .switch-stack-c -= 1;
-      {+s`:stmt-switch-end = stmt}
+      {+s:stmt-switch-end = stmt}
       ok = :true;
    }
 }
 {:stmt-switch-case-func(
-   cvar`:cvar,
-   func`:func,
+   cvar:cvar,
+   func:func,
    )
 }
 {:stmt-switch-end(
-   base`:stmt+,
+   base:stmt+,
    )
 }
 {gvar switch-expr-c:u32}
@@ -268,23 +268,23 @@
    .switch-expr-v[expr-i] = expr;
 }
 {:stmt-case(
-   base`:stmt+,
+   base:stmt+,
    fall-through:bool,
    expr-c:u32,
-   expr-v`:stmt-case-item+[0],
+   expr-v:stmt-case-item+[0],
    )
 }
 {:stmt-case-end(
-   base`:stmt+,
+   base:stmt+,
    )
 }
 {:stmt-default(
-   base`:stmt+,
+   base:stmt+,
    fall-through:bool,
    )
 }
 {:stmt-default-end(
-   base`:stmt+,
+   base:stmt+,
    )
 }
 {stmt-switch-case-begin(begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, fall-through:bool)

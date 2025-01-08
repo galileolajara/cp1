@@ -8,11 +8,11 @@
    #switch, #case, #default, #case-end, #default-end, #switch-end,
    #nil = 255,
    ]:u8
-   {wr(s:this, w`:wtr) @inline
+   {wr(s:this, w:wtr) @inline
       w.n1(s);
    }
-   {rd(s:this&, r`:rdr) @inline
-      s = r.n1()`:stmt-type;
+   {rd(s:this&, r:rdr) @inline
+      s = r.n1():stmt-type;
    }
    {cgl-name(e:this):char[] @cgl-name}
 }
@@ -21,8 +21,8 @@
    begin-col:i32,
    end-row:i32,
    end-col:i32,
-   type`:stmt-type,
-   stmt-next`:stmt,
+   type:stmt-type,
+   stmt-next:stmt,
    )
    {write(s:this)
       {switch(s.type).write(s)
@@ -52,14 +52,14 @@
    }
 }
 {:stmt-expr(
-   base`:stmt+,
-   expr`:expr-i,
+   base:stmt+,
+   expr:expr-i,
    )
 }
 {:stmt-return(
-   base`:stmt+,
-   expr`:expr-i,
-   val`:value+,
+   base:stmt+,
+   expr:expr-i,
+   val:value+,
    )
 }
 {stmt-push(s:stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:stmt-type)

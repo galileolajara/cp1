@@ -2,7 +2,7 @@
    {alias 'c = %stdc}
    {at(%stdc)
       {at(:fd)
-         {seek(fd:this, offset:usz, seek`:seek):usz @no-decl @real-name(lseek)}
+         {seek(fd:this, offset:usz, seek:seek):usz @no-decl @real-name(lseek)}
          {read(fd:this, buf:ref, size:usz):usz @no-decl @real-name}
          {close(fd:this):i32 @no-decl @real-name}
          {write(fd:this, buf:ref, size:usz):usz @no-decl @real-name}

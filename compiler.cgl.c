@@ -3087,6 +3087,7 @@ int32_t _Li_8;
 _Li_8 = 0;
 for(int i = (*_Ls_4)._Ffvar_c; i > 0; ) {
 i --;
+(*_Ls_4)._Ffvar_v[_Li_8]._Fdecl._Ftype = _Mglc_Pat_validate_2((*_Ls_4)._Ffvar_v[_Li_8]._Fdecl._Ftype, _Ls_at_5);
 if(!(_Mglc_Sdecl_var_data_Pprocess_4(&(*_Ls_4)._Ffvar_v[_Li_8]._Fdecl, _Lrow_6, _Lcol_7, _Ls_at_5))) {
 return;
 }
@@ -4734,6 +4735,7 @@ fprintf(stdout, "%s:%u:%u - %u:%u Cannot get member '.%s' because the type '/%s'
 return;
 }
 _Lstruct_i_5 = (*_Ltype_4)._Fdecl._Fstruct;
+_Mglc_Estruct_Poutput_1(_Lstruct_i_5);
 _Lstruct_6 = _Mglc_Estruct_Pptr_1(_Lstruct_i_5);
 _Lmember_7 = (*_Le_2)._Fmember;
 _Mglc_Efvar _Li_8;

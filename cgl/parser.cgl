@@ -260,11 +260,11 @@
       lex.content = data;
       lex.limit = & data[size];
    }
-   {scan(lex:this)`:token @real-name(glc_lexer_scan)}
+   {scan(lex:this):token @real-name(glc_lexer_scan)}
    {get-u32-oct(lex:this):u32
-      {+r-start`:rdr+}
+      {+r-start:rdr+}
       r-start.ref = lex.start;
-      {+r-cursor`:rdr+}
+      {+r-cursor:rdr+}
       r-cursor.ref = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
       {if(length > 12)
@@ -283,9 +283,9 @@
       :return val:u32;
    }
    {get-u32-dec(lex:this):u32
-      {+r-start`:rdr+}
+      {+r-start:rdr+}
       r-start.ref = lex.start;
-      {+r-cursor`:rdr+}
+      {+r-cursor:rdr+}
       r-cursor.ref = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
       {if(length > 10)
@@ -304,10 +304,10 @@
       :return val:u32;
    }
    {get-id(lex:this, begin:u8, end:u8):i32
-      {+r-start`:rdr+}
+      {+r-start:rdr+}
       r-start.ref = lex.start;
       r-start.pos += begin;
-      {+r-cursor`:rdr+}
+      {+r-cursor:rdr+}
       r-cursor.ref = lex.cursor;
       +length = r-cursor.pos - r-start.pos - end;
       {if(length > 255)
@@ -357,10 +357,10 @@
       `` :return id;
    }
    {get-include(lex:this):i32
-      {+r-start`:rdr+}
+      {+r-start:rdr+}
       r-start.ref = lex.start;
       r-start.pos += 9;
-      {+r-cursor`:rdr+}
+      {+r-cursor:rdr+}
       r-cursor.ref = lex.cursor;
       +length = r-cursor.pos - r-start.pos - 1;
       {if(length > 255)
@@ -411,9 +411,9 @@
    }
 }
 {:parser()
-   {alloc()`:parser}
+   {alloc():parser}
    {free(psr:this)}
-   {parse(psr:this, t`:token, tok`:token-data+) @real-name(glcParse)}
+   {parse(psr:this, t:token, tok:token-data+) @real-name(glcParse)}
 }
 {gvar last-row:i32 @extern}
 {gvar last-col:i32 @extern}

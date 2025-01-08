@@ -20,18 +20,18 @@
    :return bools;
 }
 {:bools[#and, #or]:u8
-   {wr(e:this, w`:wtr) @inline
+   {wr(e:this, w:wtr) @inline
       w.n1(e);
    }
-   {rd(e:this&, r`:rdr) @inline
-      e = r.n1()`:bools;
+   {rd(e:this&, r:rdr) @inline
+      e = r.n1():bools;
    }
 }
 {at(:expr-i)
-   {type-bools(expr`:expr, at`:at&) @case.type() @inline
+   {type-bools(expr:expr, at:at&) @case.type() @inline
       at = basic-type(#bool);
    }
-   {value-bools(e:this, ref:i32, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-bools(e:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline
       v.type = basic-type(#bool);
       v.info.init();
       v.info.array-c = 0;
@@ -41,8 +41,8 @@
       v.paren = :false;
       ok = :true;
    }
-   {process-bools(expr`:expr, ok:bool&) @case.process() @inline
-      {+e`:expr-bools = expr}
+   {process-bools(expr:expr, ok:bool&) @case.process() @inline
+      {+e:expr-bools = expr}
 		{if!(e.left.value(1, :true, e.left-val)) :return}
 		{if!(e.right.value(1, :true, e.right-val)) :return}
       {do{+i = 0}{(e.item-c) i++}
@@ -51,8 +51,8 @@
       }
       ok = :true;
    }
-   {write-bools(expr`:expr) @case.write() @inline
-      {+e`:expr-bools = expr}
+   {write-bools(expr:expr) @case.write() @inline
+      {+e:expr-bools = expr}
       {switch(e.type)
          {case(#and)
             .out.printf("(");
@@ -80,8 +80,8 @@
          }
       }
    }
-   {wr-bools(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
-      {+e`:expr-bools = expr}
+   {wr-bools(expr:expr, w:wtr, header:bool) @case.wr() @inline
+      {+e:expr-bools = expr}
       e.left.wr(w, header);
       e.right.wr(w, header);
       w.n1(e.item-c);
@@ -90,8 +90,8 @@
       }
       e.type.wr(w);
    }
-   {rd-bools(e-idx`:expr-i, r`:rdr) @case.rd() @inline
-      quick-alloc-one(+(e`:expr-bools));
+   {rd-bools(e-idx:expr-i, r:rdr) @case.rd() @inline
+      quick-alloc-one(+(e:expr-bools));
       e-idx.set(e.base, #bools);
       e.left.rd(r);
       e.right.rd(r);

@@ -41,11 +41,11 @@
    :return vd-type;
 }
 {at(:decl-var-data)
-   {validate(vd:this, base-at`:at)
+   {validate(vd:this, base-at:at)
       `` 'c.out.printf("validating the type of %s\n", vd.name.str());
       vd.type = at-validate(vd.type, base-at);
    }
-   {process(vd:this, row:i32, col:i32, base-at`:at):bool
+   {process(vd:this, row:i32, col:i32, base-at:at):bool
       +at-i = at-validate(vd.type, base-at);
       vd.type = at-i;
       +at = at-i.ptr();
@@ -64,7 +64,7 @@
       }
       :return :true;
    }
-   {write(vd:this, var-type`:decl-var-type)
+   {write(vd:this, var-type:decl-var-type)
       {if((vd.flags & #real-name) != #0)
          .out.printf("%s", vd.real-name.str());
          :return;
@@ -78,10 +78,10 @@
          }
       }
    }
-   {write-lvar(vd:this, lvar`:lvar)
+   {write-lvar(vd:this, lvar:lvar)
       .out.printf("_L%s_%u", vd.name.c-name(), lvar);
    }
-   {write-type(vd:this, var-type`:decl-var-type)
+   {write-type(vd:this, var-type:decl-var-type)
       {if(vd.type-info.const)
          .out.printf("const ");
       }
@@ -94,7 +94,7 @@
          .out.printf("]");
       }
    }
-   {write-lvar-type(vd:this, lvar`:lvar)
+   {write-lvar-type(vd:this, lvar:lvar)
       {if(vd.type-info.const)
          .out.printf("const ");
       }
@@ -107,7 +107,7 @@
          .out.printf("]");
       }
    }
-   {wr(vd:this, w`:wtr, header:bool)
+   {wr(vd:this, w:wtr, header:bool)
       vd.name.wr(w, header);
       vd.type.wr(w, header);
       vd.flags.wr(w);
@@ -121,7 +121,7 @@
          vd.size-expr-v[i].wr(w, header);
       }
    }
-   `` {validate(vd-type`:at, at-i`:at, vd-name`:id)`:at
+   `` {validate(vd-type:at, at-i:at, vd-name:id):at
    ``    +type = vd-type.ptr();
    ``    {if(type.type == #basic) :return vd-type}
    ``    +parent = type.parent.ptr();
@@ -141,7 +141,7 @@
    ``       `` at-i.write-space();
    ``       `` .out = old-out;
    ``       {do()
-   ``          {do{+i = 0`:at}{(.at-c) i++}
+   ``          {do{+i = 0:at}{(.at-c) i++}
    ``             {if(&&, .at-v[i].parent == at-i, .at-v[i].type != #basic)
    ``                'c.out.printf("%u) :%s\n", i, .at-v[i].name.id.str());
    ``                {if(.at-v[i].name.id == name.id)
@@ -157,10 +157,10 @@
    ``    }
    ``    :return vd-type;
    `` }
-   {rd(vd:this, r`:rdr)
+   {rd(vd:this, r:rdr)
       vd.name.rd(r);
       vd.type.rd(r);
-      `` `:at.rd(+vd-type, r);
+      `` :at.rd(+vd-type, r);
       `` vd.type = validate(vd-type, default-at, vd.name);
       vd.flags.rd(r);
       {if((vd.flags & #real-name) != #0)
@@ -176,7 +176,7 @@
          }
       }
    }
-   {copy-from(vd:this, src`:decl-var-data)
+   {copy-from(vd:this, src:decl-var-data)
       vd.name = src.name;
       vd.type = src.type;
       vd.flags = src.flags;
@@ -193,8 +193,8 @@
    }
 }
 {cvar #type-info-star-limit:i32 = 8}
-{:value(ref:i8, paren:bool, type`:at, info`:type-info+)
-	{set(v:this, ref:i8, paren:bool, type`:at, info`:type-info)
+{:value(ref:i8, paren:bool, type:at, info:type-info+)
+	{set(v:this, ref:i8, paren:bool, type:at, info:type-info)
 		+c = info.ref-v[info.array-c];
 		v.type = type;
 		v.ref = (c + 2) - ref;
@@ -225,7 +225,7 @@
 		ti.built-in = :false;
 		ti.const = :false;
 	}
-   {rd(ti:this, r`:rdr)
+   {rd(ti:this, r:rdr)
       +c = r.n1();
       {do{+i = 0}{(c) i++}
          ti.ref-v[i] = r.n1();
@@ -235,7 +235,7 @@
       ti.built-in = r.n1() != 0;
       ti.const = r.n1() != 0;
    }
-   {wr(ti:this, w`:wtr)
+   {wr(ti:this, w:wtr)
       +c = 0;
       {do(`#type-info-star-limit)
          {if(ti.ref-v[c] == 0)
@@ -252,7 +252,7 @@
       w.b(ti.built-in);
       w.b(ti.const);
    }
-	{copy-from(ti:this, ti2`:type-info)
+	{copy-from(ti:this, ti2:type-info)
 		'c.memcpy(ti.ref-v, ti2.ref-v, `#type-info-star-limit);
 		ti.array-c = ti2.array-c;
 		ti.star-c = ti2.star-c;
@@ -303,10 +303,10 @@
    #extern = 2,
    #no-decl = 4,
    ]:u32
-   {rd(f:this&, r`:rdr) @inline
-      f = r.n()`:var-flags;
+   {rd(f:this&, r:rdr) @inline
+      f = r.n():var-flags;
    }
-   {wr(f:this, w`:wtr) @inline
+   {wr(f:this, w:wtr) @inline
       w.n(f);
    }
 }

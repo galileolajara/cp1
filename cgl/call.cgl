@@ -40,8 +40,8 @@
    :return :true;
 }
 {at(:expr-i)
-   {value-func(e:this, ref:i32, paren:bool, v`:value, ok:bool&) @case.value() @inline
-      {+expr`:expr-func = e.ptr()}
+   {value-func(e:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline
+      {+expr:expr-func = e.ptr()}
       +f = expr.func-idx.ptr();
       v.set(ref, paren, f.decl.type, f.decl.type-info);
       {if(v.ref == 1)
@@ -49,12 +49,12 @@
       }
       ok = :true;
    }
-   {type-func(expr`:expr, at`:at&) @case.type() @inline
-      {+e`:expr-func = expr}
+   {type-func(expr:expr, at:at&) @case.type() @inline
+      {+e:expr-func = expr}
       at = e.func-idx.ptr().decl.type;
    }
-   {value-method(e:this, ref:i32, paren:bool, v`:value, ok:bool&) @case.value() @inline
-      {+expr`:expr-method = e.ptr()}
+   {value-method(e:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline
+      {+expr:expr-method = e.ptr()}
       +f = expr.func-idx.ptr();
       v.set(ref, paren, f.decl.type, f.decl.type-info);
       {if(v.ref == 1)
@@ -62,12 +62,12 @@
       }
       ok = :true;
    }
-   {type-method(expr`:expr, at`:at&) @case.type() @inline
-      {+e`:expr-method = expr}
+   {type-method(expr:expr, at:at&) @case.type() @inline
+      {+e:expr-method = expr}
       at = e.func-idx.ptr().decl.type;
    }
-   {write-method(expr`:expr) @case.write() @inline
-      {+e`:expr-method = expr}
+   {write-method(expr:expr) @case.write() @inline
+      {+e:expr-method = expr}
       +f = e.func-idx.ptr();
       f.write();
       .out.printf("(");
@@ -95,8 +95,8 @@
       }
       .out.printf(")");
    }
-   {wr-method(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
-      {+e`:expr-method = expr}
+   {wr-method(expr:expr, w:wtr, header:bool) @case.wr() @inline
+      {+e:expr-method = expr}
       e.this.wr(w, header);
       e.func-name.wr(w, header);
       w.n1(e.group-c);
@@ -108,16 +108,16 @@
          e.carg-v[i].expr.wr(w, header);
       }
    }
-   {rd-method(e-idx`:expr-i, r`:rdr) @case.rd() @inline
-      `:expr-i.rd(+this-expr, r);
-      `:id.rd(+func-name, r);
+   {rd-method(e-idx:expr-i, r:rdr) @case.rd() @inline
+      :expr-i.rd(+this-expr, r);
+      :id.rd(+func-name, r);
       +group-c = r.n1();
       {+group-v:i8[`#expr-carg-group-limit]}
       {do{+i = 0}{(group-c) i++}
          group-v[i] = r.n1();
       }
       +carg-c = r.n1();
-      quick-alloc-plus(+(e`:expr-method), `:carg[:usz] * carg-c);
+      quick-alloc-plus(+(e:expr-method), :carg[:usz] * carg-c);
       e-idx.set(e.base, #method);
       e.this = this-expr;
       e.func-name = func-name;
@@ -130,8 +130,8 @@
          e.carg-v[i].expr.rd(r);
       }
    }
-   {process-method(expr`:expr, ok:bool&) @case.process() @inline
-      {+e`:expr-method = expr}
+   {process-method(expr:expr, ok:bool&) @case.process() @inline
+      {+e:expr-method = expr}
       +func-name = e.func-name;
       +group-c = e.group-c;
       +group-v = e.group-v;
@@ -258,8 +258,8 @@
          }
       }
    }
-   {write-func(expr`:expr) @case.write() @inline
-      {+e`:expr-func = expr}
+   {write-func(expr:expr) @case.write() @inline
+      {+e:expr-func = expr}
       +f = e.func-idx.ptr();
       f.write();
       .out.printf("(");
@@ -271,8 +271,8 @@
       }
       .out.printf(")");
    }
-   {wr-func(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
-      {+e`:expr-func = expr}
+   {wr-func(expr:expr, w:wtr, header:bool) @case.wr() @inline
+      {+e:expr-func = expr}
       e.at.wr(w, header);
       e.func-name.wr(w, header);
       w.n1(e.group-c);
@@ -284,9 +284,9 @@
          e.carg-v[i].expr.wr(w, header);
       }
    }
-   {rd-func(e-idx`:expr-i, r`:rdr) @case.rd() @inline
-      `:at.rd(+at-idx, r);
-      `:id.rd(+func-name, r);
+   {rd-func(e-idx:expr-i, r:rdr) @case.rd() @inline
+      :at.rd(+at-idx, r);
+      :id.rd(+func-name, r);
       +group-c = r.n1();
       {+group-v:i8[`#expr-carg-group-limit]}
       {do{+i = 0}{(group-c) i++}
@@ -294,7 +294,7 @@
       }
       +carg-c = r.n1();
 
-      quick-alloc-plus(+(e`:expr-func), `:carg[:usz] * carg-c);
+      quick-alloc-plus(+(e:expr-func), :carg[:usz] * carg-c);
       e-idx.set(e.base, #func);
       e.at = at-idx;
       e.func-name = func-name;
@@ -307,8 +307,8 @@
          e.carg-v[i].expr.rd(r);
       }
    }
-   {process-func(expr`:expr, ok:bool&) @case.process() @inline
-      {+e`:expr-func = expr}
+   {process-func(expr:expr, ok:bool&) @case.process() @inline
+      {+e:expr-func = expr}
       +func-name = e.func-name;
       +carg-c = e.carg-c;
       +group-c = e.group-c;
@@ -403,8 +403,8 @@
       ``    }
       `` }
    }
-   {process-case-func(expr`:expr, f-idx`:func):bool @inline
-      {+e`:expr-func = expr}
+   {process-case-func(expr:expr, f-idx:func):bool @inline
+      {+e:expr-func = expr}
       +func-name = e.func-name;
       +carg-c = e.carg-c;
       +group-c = e.group-c;

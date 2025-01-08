@@ -11,7 +11,7 @@
 {:basic-type(
    method-c:i32,
    method-cap:i32,
-   method-v`:func[],
+   method-v:func[],
    )
 }
 {gvar basic-type:basic-type+[:basic-type-id#COUNT]}
@@ -28,7 +28,7 @@
 {gvar file-cap:file}
 {gvar file-v:file-data+[]}
 {:file[#nil = -1, #0]:i32
-   {ptr(f:this)`:file-data @inline
+   {ptr(f:this):file-data @inline
       :return .file-v[f];
    }
    {path(f:this):char[] @inline
@@ -38,9 +38,9 @@
 {:file-data(
    path:char[],
    data:ref,
-   id-table`:id[],
-   at-table`:at[],
-   cvar-table`:cvar[],
+   id-table:id[],
+   at-table:at[],
+   cvar-table:cvar[],
    )
 }
 {gvar id-table:id[]}
@@ -859,7 +859,7 @@
       ``    `` 'c.out.printf("%u:%u: lvar '%s' has a type of %d\n", f.begin-row, f.begin-col, f.lvar-v[i].decl.name.str(), f.lvar-v[i].decl.type);
       `` }
       `` f.lvar-c = f.farg-c:lvar;
-      {+r`:rdr+}
+      {+r:rdr+}
       +file = f.file.ptr();
       r.ref = file.data;
       .id-table = file.id-table;

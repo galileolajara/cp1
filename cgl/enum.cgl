@@ -1,13 +1,13 @@
 {alias 'glc = %glc}
 {at(%glc)
 {:enum[#nil = -1, #0, #1]:i32
-   {wr(f:this, w`:wtr) @inline
+   {wr(f:this, w:wtr) @inline
       w.n(f + #1);
    }
-   {rd(f:this&, r`:rdr) @inline
-      f = (r.n() - #1)`:func;
+   {rd(f:this&, r:rdr) @inline
+      f = (r.n() - #1):func;
    }
-   {ptr(f:this)`:enum-data @inline
+   {ptr(f:this):enum-data @inline
       :return .enum-v[f];
    }
    {output(e-i:this)
@@ -34,11 +34,11 @@
    #real-name = 1,
    #no-decl = 2,
    ]:u8
-   {wr(e:this, w`:wtr) @inline
+   {wr(e:this, w:wtr) @inline
       w.n1(e);
    }
-   {rd(e:this&, r`:rdr) @inline
-      e = r.n1()`:enum-flags;
+   {rd(e:this&, r:rdr) @inline
+      e = r.n1():enum-flags;
    }
 }
 {gvar enum-c:enum}
