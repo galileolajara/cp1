@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{:cvar[#nil = -1, #0]:int
+{:cvar[#nil = -1, #0]:i32
    {rd(c:this&, r`:rdr) @inline
       +idx = (r.n() - 1)`:cvar;
       {if(idx == #nil)
@@ -14,7 +14,7 @@
       w.n(g + 1);
    }
    {process(c:this):bool
-      +num = c:num;
+      +num = c:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
       {if((.cvar-is-outputted[n3] & n17) != 0) :return :true}
@@ -62,7 +62,7 @@
    #set-expr = 1,
    #as-enum = 2,
    `` #real-name = 2,
-   ]:tnum
+   ]:u8
    {wr(f:this, w`:wtr) @inline
       w.n1(f);
    }
@@ -97,7 +97,7 @@
       e.name.rd(r);
       e.try = #nil;
    }
-   {value-cvar(e:this, ref:tint, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-cvar(e:this, ref:i8, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+expr`:expr-cvar = e.ptr()}
       +cvar = expr.cvar.ptr();
       v.set(ref, paren, cvar.decl.type, cvar.decl.type-info);

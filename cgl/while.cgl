@@ -88,7 +88,7 @@
    while`:stmt-while,
    )
 }
-{stmt-while-set(expr:expr-i, begin-row:int, begin-col:int, end-row:int, end-col:int, continue:stmt-space)
+{stmt-while-set(expr:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, continue:stmt-space)
    quick-alloc-one(+(s:stmt-while));
    .nest-stack-id-v[.nest-stack-c] = .nest-id++;
    .nest-stack-ptr-v[.nest-stack-c].while = s;

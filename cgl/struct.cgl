@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{:struct[#nil = -1, #0, #1]:int
+{:struct[#nil = -1, #0, #1]:i32
    {wr(s:this, w`:wtr) @inline
       w.n(s + #1);
    }
@@ -12,7 +12,7 @@
       :return .struct-v[s];
    }
    {output(s-i:this)
-      +num = s-i:num;
+      +num = s-i:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
       {if((.struct-is-outputted[n3] & n17) != 0) :return}
@@ -49,8 +49,8 @@
 {gvar struct-c:struct}
 {gvar struct-cap:struct}
 {gvar struct-v:struct-data[]}
-{gvar decl-struct-row:int}
-{gvar decl-struct-col:int}
+{gvar decl-struct-row:i32}
+{gvar decl-struct-col:i32}
 {gvar decl-struct-at:at}
 {gvar decl-struct-real-name:id}
 {:struct-flags[
@@ -58,7 +58,7 @@
    #real-name = 1,
    #no-decl = 2,
    #union = 4,
-   ]:tnum
+   ]:u8
    {wr(f:this, w`:wtr) @inline
       w.n1(f);
    }
@@ -67,8 +67,8 @@
    }
 }
 {gvar decl-struct-flags:struct-flags}
-{gvar decl-fvar-c:num}
-{gvar decl-fvar-cap:num}
+{gvar decl-fvar-c:u32}
+{gvar decl-fvar-cap:u32}
 {gvar decl-fvar-v:decl-var-data+[]}
 {decl-var-as-fvar()
    +fvar = .decl-fvar-c++;
@@ -79,7 +79,7 @@
    }
    .decl-fvar-v[fvar].copy-from(.decl-var);
 }
-{decl-at-begin-struct(name:id, row:int, col:int)
+{decl-at-begin-struct(name:id, row:i32, col:i32)
    .decl-struct-row = row;
    .decl-struct-col = col;
    .build-at = .decl-at;
@@ -99,7 +99,7 @@
    ``    {if(at-i == #root) {break}}
    `` }
 }
-{decl-struct-end(row:int, col:int)
+{decl-struct-end(row:i32, col:i32)
    +s-idx = .struct-c++;
    {if(.struct-cap <= .struct-c)
       +old-cap = .struct-cap;
@@ -107,7 +107,7 @@
       realloc(.struct-v, .struct-cap, old-cap);
    }
    {+s:struct-data}
-   quick-alloc-plus(s, :fvar-data[:size] * .decl-fvar-c);
+   quick-alloc-plus(s, :fvar-data[:usz] * .decl-fvar-c);
    .struct-v[s-idx] = s;
    s.begin-row = .decl-struct-row;
    s.begin-col = .decl-struct-col;

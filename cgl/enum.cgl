@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{:enum[#nil = -1, #0, #1]:int
+{:enum[#nil = -1, #0, #1]:i32
    {wr(f:this, w`:wtr) @inline
       w.n(f + #1);
    }
@@ -11,7 +11,7 @@
       :return .enum-v[f];
    }
    {output(e-i:this)
-      +num = e-i:num;
+      +num = e-i:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
       {if((.enum-is-outputted[n3] & n17) != 0) :return}
@@ -33,7 +33,7 @@
    #0,
    #real-name = 1,
    #no-decl = 2,
-   ]:tnum
+   ]:u8
    {wr(e:this, w`:wtr) @inline
       w.n1(e);
    }
@@ -44,8 +44,8 @@
 {gvar enum-c:enum}
 {gvar enum-cap:enum}
 {gvar enum-v:enum-data[]}
-{gvar decl-enum-row:int}
-{gvar decl-enum-col:int}
+{gvar decl-enum-row:i32}
+{gvar decl-enum-col:i32}
 {gvar decl-enum-at:at}
 {gvar decl-enum-flags:enum-flags}
 {gvar decl-enum-last-cvar:cvar}
@@ -57,7 +57,7 @@
    }
    .decl-evar-v[evar].copy-from(.decl-var);
 }
-{decl-at-begin-enum(name:id, row:int, col:int)
+{decl-at-begin-enum(name:id, row:i32, col:i32)
    .decl-enum-row = row;
    .decl-enum-col = col;
    .build-at = .decl-at;
@@ -82,7 +82,7 @@
 `` {enum-base-end()
 ``    .decl-at = .decl-enum-at;
 `` }
-{decl-enum-end(base-type:at, row:int, col:int)
+{decl-enum-end(base-type:at, row:i32, col:i32)
    +s-idx = .enum-c++;
    {if(.enum-cap <= .enum-c)
       +old-cap = .enum-cap;
@@ -112,7 +112,7 @@
    `` }
 }
 {gvar last-cvar:cvar}
-{enum-add-cvar(name:id, row:int, col:int)
+{enum-add-cvar(name:id, row:i32, col:i32)
    +c-idx = .cvar-c++;
    .last-cvar = c-idx;
    {if(.cvar-cap <= .cvar-c)
@@ -132,7 +132,7 @@
    c.last-cvar = .decl-enum-last-cvar;
    .decl-enum-last-cvar = c-idx;
 }
-{decl-add-cvar(name:id, row:int, col:int)
+{decl-add-cvar(name:id, row:i32, col:i32)
    +c-idx = .cvar-c++;
    .last-cvar = c-idx;
    {if(.cvar-cap <= .cvar-c)

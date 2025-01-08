@@ -5,7 +5,7 @@ for (let line of txt.split("\n")) {
    if (line == "") continue;
    lines.push("#" + line.substring(18, line.indexOf(" ", 19)).toLowerCase().split("_").join("-") + ",");
 }
-lines.push("]:int");
+lines.push("]:u32");
 lines.push("{cgl-name(e:this):char[] @cgl-name}");
 lines.push("}");
 lines.push("}\n");

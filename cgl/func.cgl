@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{:func[#nil = -1, #0, #1]:int
+{:func[#nil = -1, #0, #1]:i32
    {wr(f:this, w`:wtr) @inline
       w.n(f + #1);
    }
@@ -24,7 +24,7 @@
    #case = 128,
    #cgl-name = 256,
    #decl = 512,
-   ]:num
+   ]:u32
    {wr(e:this, w`:wtr) @inline
       w.n(e);
    }
@@ -35,7 +35,7 @@
 {:func-flags2[
    #0,
    #main = 1,
-   ]:num
+   ]:u32
 }
 {at(:decl-func)
    {write(f:this)
@@ -80,8 +80,8 @@
    }
 }
 {:farg(
-   row:int,
-   col:int,
+   row:i32,
+   col:i32,
    decl`:decl-var-data+,
    )
    {rd(f:this, r`:rdr)
@@ -101,28 +101,28 @@
 {gvar func-v:decl-func[]}
 {gvar decl-func-name:id}
 `` {gvar decl-func:decl-var-data+}
-{gvar decl-func-row:int}
-{gvar decl-func-col:int}
+{gvar decl-func-row:i32}
+{gvar decl-func-col:i32}
 {gvar decl-func-flags:func-flags}
 {gvar decl-func-flags2:func-flags2}
 {gvar decl-func-real-name:id}
 {gvar decl-func-decl-str:char[]}
-{gvar decl-func-decl-len:int}
+{gvar decl-func-decl-len:i32}
 {gvar decl-func-case:id}
 `` {cvar #glc-farg-limit = 1024}
 {gvar decl-farg-v:farg+[]}
-{gvar decl-farg-group-c:tint}
-{gvar decl-farg-group-v:tint[#expr-carg-group-limit]}
-{gvar decl-farg-c:int}
-{gvar decl-farg-cap:int}
-{gvar decl-func-this-idx:tint}
-{gvar decl-func-this-group:tint}
+{gvar decl-farg-group-c:i8}
+{gvar decl-farg-group-v:i8[#expr-carg-group-limit]}
+{gvar decl-farg-c:i32}
+{gvar decl-farg-cap:i32}
+{gvar decl-func-this-idx:i8}
+{gvar decl-func-this-group:i8}
 {gvar decl-func-space:stmt-space}
 {gvar decl-func-ctx-space:stmt-space}
-`` {gvar decl-stmt-c:num}
-`` {gvar decl-stmt-cap:num}
+`` {gvar decl-stmt-c:u32}
+`` {gvar decl-stmt-cap:u32}
 `` {gvar decl-stmt-v:stmt[]}
-{decl-func-begin(name:id, row:int, col:int)
+{decl-func-begin(name:id, row:i32, col:i32)
    .decl-func-name = name;
    .decl-func-row = row;
    .decl-func-col = col;
@@ -145,7 +145,7 @@
    .decl-farg-group-v[.decl-farg-group-c] = 0;
    .decl-farg-group-c++;
 }
-{decl-var-as-farg(row:int, col:int)
+{decl-var-as-farg(row:i32, col:i32)
    +farg-idx = .decl-farg-c++;
    {if(.decl-farg-cap <= .decl-farg-c)
       +old-cap = .decl-farg-cap;
@@ -175,7 +175,7 @@
 `` {gvar lvar-cap:lvar}
 `` {gvar lvar-v:lvar-data[]}
 `` {gvar lvar-name-v:id[]}
-{decl-func-end(row:int, col:int)
+{decl-func-end(row:i32, col:i32)
    +f-idx = (.func-c++):func;
    {if(.func-cap <= .func-c)
       +old-cap = .func-cap;
@@ -183,7 +183,7 @@
       realloc(.func-v, .func-cap, old-cap);
    }
    {+f:decl-func}
-   quick-alloc-plus(f, :farg[:size] * .decl-farg-c);
+   quick-alloc-plus(f, :farg[:usz] * .decl-farg-c);
    .ctx-func = f;
    .nest-id = 0;
    .func-v[f-idx] = f;
@@ -339,15 +339,15 @@
       s = s.stmt-next;
    }
 }
-{cvar #expr-call-nest-limit:int = 8}
-{cvar #expr-carg-group-limit:int = 4}
-{gvar expr-call-c:tint}
-{cvar #glc-carg-limit:int = 64}
-{gvar expr-call-carg-c:tnum[#expr-call-nest-limit]}
+{cvar #expr-call-nest-limit:i32 = 8}
+{cvar #expr-carg-group-limit:i32 = 4}
+{gvar expr-call-c:i8}
+{cvar #glc-carg-limit:i32 = 64}
+{gvar expr-call-carg-c:u8[#expr-call-nest-limit]}
 {gvar expr-call-carg-v:expr-i[#expr-call-nest-limit][#glc-carg-limit]}
-{gvar expr-call-cgrp-c:tnum[#expr-call-nest-limit]}
-{gvar expr-call-cgrp-v:tnum[#expr-call-nest-limit][#expr-carg-group-limit]}
-{expr-push-call(row:int, col:int)
+{gvar expr-call-cgrp-c:u8[#expr-call-nest-limit]}
+{gvar expr-call-cgrp-v:u8[#expr-call-nest-limit][#expr-carg-group-limit]}
+{expr-push-call(row:i32, col:i32)
    +call-idx = .expr-call-c++;
    {if(call-idx >= #expr-call-nest-limit)
       'c.out.printf("%u:%u: Too much nested calls\n", row, col);
@@ -394,7 +394,7 @@
    +call-idx = .expr-call-c -= 1;
    +carg-c = .expr-call-carg-c[call-idx];
    {+e:expr-func}
-   quick-alloc-plus(e, :carg[:size] * carg-c);
+   quick-alloc-plus(e, :carg[:usz] * carg-c);
    +e-idx = expr-push(e.base, #func);
    e.at = at;
    e.func-name = func-name;
@@ -413,7 +413,7 @@
    +call-idx = .expr-call-c -= 1;
    +carg-c = .expr-call-carg-c[call-idx];
    {+e:expr-method}
-   quick-alloc-plus(e, :carg[:size] * carg-c);
+   quick-alloc-plus(e, :carg[:usz] * carg-c);
    +e-idx = expr-push(e.base, #method);
    e.this = this;
    e.func-name = func-name;

@@ -3,10 +3,10 @@
 {at(%glc)
 {:stmt-break(
    base`:stmt+,
-   nest:tnum,
+   nest:u8,
    )
 }
-{stmt-break(id:id, begin-row:int, begin-col:int, end-row:int, end-col:int)
+{stmt-break(id:id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32)
    quick-alloc-one(+(s:stmt-break));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #break);
    `` s.id = id;

@@ -2,7 +2,7 @@
 {at(%glc)
 {:assign[#eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
              #lshift-eq, #rshift-eq, #and-eq, #or-eq, #xor-eq,
-             ]:tnum
+             ]:u8
    {wr(s:this, w`:wtr) @inline
       w.n1(s);
    }
@@ -73,7 +73,7 @@
       {+e`:expr-assign = expr}
       at = e.left.type();
    }
-   {value-assign(e:this, ref:tint, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-assign(e:this, ref:i8, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+expr`:expr-assign = e.ptr()}
 		{if(expr.left.value(1, paren, v) == :false)
          :return;

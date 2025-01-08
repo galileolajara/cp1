@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{stmt-return(e:expr-i, begin-row:int, begin-col:int, end-row:int, end-col:int)
+{stmt-return(e:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32)
    quick-alloc-one(+(s:stmt-return));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #return);
    s.expr = e;

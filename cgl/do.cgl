@@ -2,9 +2,9 @@
 {at(%glc)
 {:nest(do`:stmt-do, while`:stmt-while, ref:ref) @union}
 {gvar nest-stack-ptr-v:nest+[64]}
-{gvar nest-stack-id-v:int[64]}
-{gvar nest-stack-c:tnum}
-{gvar nest-id:int}
+{gvar nest-stack-id-v:i32[64]}
+{gvar nest-stack-c:u8}
+{gvar nest-id:i32}
 {at(:stmt-space)
    {wr-do(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
       {+s`:stmt-do = stmt}
@@ -97,7 +97,7 @@
    do`:stmt-do,
    )
 }
-{stmt-do-set(expr:expr-i, begin-row:int, begin-col:int, end-row:int, end-col:int, continue:stmt-space)
+{stmt-do-set(expr:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, continue:stmt-space)
    quick-alloc-one(+(s:stmt-do));
    .nest-stack-id-v[.nest-stack-c] = .nest-id++;
    .nest-stack-ptr-v[.nest-stack-c].do = s;

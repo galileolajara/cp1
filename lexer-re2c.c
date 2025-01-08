@@ -165,13 +165,13 @@ int glc_lexer_scan(struct glc_lexer* l) {
    ":ref"                           { return GLC_TOKEN_GRAVE_REF; }
    ":bool"                          { return GLC_TOKEN_GRAVE_BOOL; }
    ":char"                          { return GLC_TOKEN_GRAVE_CHAR; }
-   ":tnum"                          { return GLC_TOKEN_GRAVE_TNUM; }
-   ":tint"                          { return GLC_TOKEN_GRAVE_TINT; }
-   ":int"                           { return GLC_TOKEN_GRAVE_INT; }
-   ":num"                           { return GLC_TOKEN_GRAVE_NUM; }
+   ":u8"                            { return GLC_TOKEN_GRAVE_TNUM; }
+   ":i8"                            { return GLC_TOKEN_GRAVE_TINT; }
+   ":i32"                           { return GLC_TOKEN_GRAVE_INT; }
+   ":u32"                           { return GLC_TOKEN_GRAVE_NUM; }
    ":float"                         { return GLC_TOKEN_GRAVE_FLOAT; }
-   ":size"                          { return GLC_TOKEN_GRAVE_SIZE; }
-   ":lnum"                          { return GLC_TOKEN_GRAVE_LNUM; }
+   ":usz"                           { return GLC_TOKEN_GRAVE_SIZE; }
+   ":u64"                           { return GLC_TOKEN_GRAVE_LNUM; }
 
    ":this"                          { return GLC_TOKEN_GRAVE_THIS; }
    ":true"                          { return GLC_TOKEN_GRAVE_TRUE; }

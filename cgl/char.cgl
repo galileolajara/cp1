@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{expr-char(value:int):expr-i
+{expr-char(value:i32):expr-i
    quick-alloc-one(+(e:expr-char));
    +e-idx = expr-push(e.base, #char);
    e.value = value;
@@ -27,7 +27,7 @@
    {type-char(expr`:expr, at`:at&) @case.type() @inline
       at = basic-type(#char);
    }
-   {value-char(le:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-char(le:this, ref:i32, paren:bool, v`:value, ok:bool&) @case.value() @inline
       v.type = basic-type(#char);
       v.info.init();
       v.info.array-c = 0;

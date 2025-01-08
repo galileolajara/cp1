@@ -19,7 +19,7 @@
    e.item-v[i].expr = right;
    :return bools;
 }
-{:bools[#and, #or]:tnum
+{:bools[#and, #or]:u8
    {wr(e:this, w`:wtr) @inline
       w.n1(e);
    }
@@ -31,7 +31,7 @@
    {type-bools(expr`:expr, at`:at&) @case.type() @inline
       at = basic-type(#bool);
    }
-   {value-bools(e:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-bools(e:this, ref:i32, paren:bool, v`:value, ok:bool&) @case.value() @inline
       v.type = basic-type(#bool);
       v.info.init();
       v.info.array-c = 0;

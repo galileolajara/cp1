@@ -1,10 +1,10 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{:gvar-flags[#0, #no-decl = 1]:tnum}
-{:gvar[#nil = -1, #0]:int
+{:gvar-flags[#0, #no-decl = 1]:u8}
+{:gvar[#nil = -1, #0]:i32
    {process(g:this):bool
-      +num = g:num;
+      +num = g:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
       {if((.gvar-is-outputted[n3] & n17) != 0) :return :true}
@@ -52,7 +52,7 @@
    :return e-idx;
 }
 {at(:expr-i)
-   {value-gvar(g:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-gvar(g:this, ref:i32, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+e`:expr-gvar = g.ptr()}
       +gvar = e.gvar.ptr();
       v.set(ref, paren, gvar.decl.type, gvar.decl.type-info);

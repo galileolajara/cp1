@@ -1,14 +1,14 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{farg-process(e:expr-i, ca-ref:tint, ca-value:value, fd-arg:decl-var-data):bool
+{farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data):bool
    +ce = e.ptr();
-   {+r:int}
+   {+r:i32}
    {if(ca-ref != 0)
       r = 1 + ca-ref;
    }{else
       r = 1;
-      r += fd-arg.type-info.ref-v[fd-arg.type-info.array-c]:int;
+      r += fd-arg.type-info.ref-v[fd-arg.type-info.array-c]:i32;
    }
    `` 'c.out.printf("r %d, %d %d %d\n", r, j, fd-arg.type-info.array-c, fd-arg.type-info.ref-v[fd-arg.type-info.array-c]);
    {if(ce.type == #lvar)
@@ -39,7 +39,7 @@
    :return :true;
 }
 {at(:expr-i)
-   {value-func(e:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-func(e:this, ref:i32, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+expr`:expr-func = e.ptr()}
       +f = expr.func-idx.ptr();
       v.set(ref, paren, f.decl.type, f.decl.type-info);
@@ -52,7 +52,7 @@
       {+e`:expr-func = expr}
       at = e.func-idx.ptr().decl.type;
    }
-   {value-method(e:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-method(e:this, ref:i32, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+expr`:expr-method = e.ptr()}
       +f = expr.func-idx.ptr();
       v.set(ref, paren, f.decl.type, f.decl.type-info);
@@ -111,12 +111,12 @@
       `:expr-i.rd(+this-expr, r);
       `:id.rd(+func-name, r);
       +group-c = r.n1();
-      {+group-v:tint[`#expr-carg-group-limit]}
+      {+group-v:i8[`#expr-carg-group-limit]}
       {do{+i = 0}{(group-c) i++}
          group-v[i] = r.n1();
       }
       +carg-c = r.n1();
-      quick-alloc-plus(+(e`:expr-method), `:carg[:size] * carg-c);
+      quick-alloc-plus(+(e`:expr-method), `:carg[:usz] * carg-c);
       e-idx.set(e.base, #method);
       e.this = this-expr;
       e.func-name = func-name;
@@ -232,7 +232,7 @@
          {if((f.flags & #var-args) != #0)
             {do{(e.carg-c - k) k++}
                +ca = e.carg-v[k];
-               {+r:int}
+               {+r:i32}
                {if(ca.ref)
                   r = 1 + ca.ref;
                }{else
@@ -286,13 +286,13 @@
       `:at.rd(+at-idx, r);
       `:id.rd(+func-name, r);
       +group-c = r.n1();
-      {+group-v:tint[`#expr-carg-group-limit]}
+      {+group-v:i8[`#expr-carg-group-limit]}
       {do{+i = 0}{(group-c) i++}
          group-v[i] = r.n1();
       }
       +carg-c = r.n1();
 
-      quick-alloc-plus(+(e`:expr-func), `:carg[:size] * carg-c);
+      quick-alloc-plus(+(e`:expr-func), `:carg[:usz] * carg-c);
       e-idx.set(e.base, #func);
       e.at = at-idx;
       e.func-name = func-name;
@@ -368,7 +368,7 @@
             {if((f.flags & #var-args) != #0)
                {do{(e.carg-c - j) j++}
                   +ca = e.carg-v[j];
-                  {+r:int}
+                  {+r:i32}
                   {if(ca.ref)
                      r = 1 + ca.ref;
                   }{else
@@ -415,7 +415,7 @@
       {if((f.flags & #var-args) != #0)
          {do{(e.carg-c - j) j++}
             +ca = e.carg-v[j];
-            {+r:int}
+            {+r:i32}
             {if(ca.ref)
                r = 1 + ca.ref;
             }{else

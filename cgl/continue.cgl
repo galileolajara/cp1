@@ -3,10 +3,10 @@
 {at(%glc)
 {:stmt-continue(
    base`:stmt+,
-   nest:tnum,
+   nest:u8,
    )
 }
-{stmt-continue(id:id, begin-row:int, begin-col:int, end-row:int, end-col:int)
+{stmt-continue(id:id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32)
    quick-alloc-one(+(s:stmt-continue));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #continue);
    `` s.id = id;

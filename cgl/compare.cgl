@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{:compare[#eq, #not-eq, #lt, #le, #gt, #ge]:tnum
+{:compare[#eq, #not-eq, #lt, #le, #gt, #ge]:u8
    {wr(e:this, w`:wtr) @inline
       w.n1(e);
    }
@@ -55,7 +55,7 @@
       }
       e.right.write-value(e.right-val);
    }
-   {value-compare(e:this, ref:tint, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-compare(e:this, ref:i8, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+expr`:expr-compare = e.ptr()}
 		v.type = basic-type(#bool);
 		v.info.init();

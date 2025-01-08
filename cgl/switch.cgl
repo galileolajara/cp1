@@ -2,7 +2,7 @@
 {alias 'c = %stdc}
 {at(%glc)
 {gvar switch-stack-v:stmt-switch[64]}
-{gvar switch-stack-c:tnum}
+{gvar switch-stack-c:u8}
 {at(:stmt-space)
    {wr-switch(stmt`:stmt, w`:wtr, header:bool) @case.wr() @inline
       {+s`:stmt-switch = stmt}
@@ -25,7 +25,7 @@
    }
    {rd-case(space`:stmt-space, r`:rdr) @case.rd() @inline
       +expr-c = r.n();
-      quick-alloc-plus(+(s`:stmt-case), `:stmt-case-item[:size] * expr-c);
+      quick-alloc-plus(+(s`:stmt-case), `:stmt-case-item[:usz] * expr-c);
       s.expr-c = expr-c;
       {do{+i = 0}{(expr-c) i++}
          s.expr-v[i].expr.rd(r);
@@ -63,7 +63,7 @@
 }
 {:case-stack(case`:stmt-case, default`:stmt-default) @union}
 {gvar case-stack-v:case-stack+[64]}
-{gvar case-stack-c:tnum}
+{gvar case-stack-c:u8}
 {at(:stmt)
    {write-switch(stmt`:stmt) @case.write() @inline
       {+s`:stmt-switch = stmt}
@@ -255,8 +255,8 @@
    base`:stmt+,
    )
 }
-{gvar switch-expr-c:num}
-{gvar switch-expr-cap:num}
+{gvar switch-expr-c:u32}
+{gvar switch-expr-cap:u32}
 {gvar switch-expr-v:expr-i[]}
 {stmt-switch-expr-add(expr:expr-i)
    +expr-i = .switch-expr-c++;
@@ -270,7 +270,7 @@
 {:stmt-case(
    base`:stmt+,
    fall-through:bool,
-   expr-c:num,
+   expr-c:u32,
    expr-v`:stmt-case-item+[0],
    )
 }
@@ -287,10 +287,10 @@
    base`:stmt+,
    )
 }
-{stmt-switch-case-begin(begin-row:int, begin-col:int, end-row:int, end-col:int, fall-through:bool)
+{stmt-switch-case-begin(begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, fall-through:bool)
    +expr-c = .switch-expr-c;
    .switch-expr-c = 0;
-   quick-alloc-plus(+(s:stmt-case), :stmt-case-item[:size] * expr-c);
+   quick-alloc-plus(+(s:stmt-case), :stmt-case-item[:usz] * expr-c);
    s.fall-through = fall-through;
    s.expr-c = expr-c;
    {do{+i = 0}{(expr-c) i++}
@@ -304,7 +304,7 @@
    quick-alloc-one(+(s:stmt-case-end));
    stmt-push(s.base, 0, 0, 0, 0, #case-end);
 }
-{stmt-switch-default-begin(begin-row:int, begin-col:int, end-row:int, end-col:int, fall-through:bool)
+{stmt-switch-default-begin(begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, fall-through:bool)
    quick-alloc-one(+(s:stmt-default));
    s.fall-through = fall-through;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #default);
@@ -319,7 +319,7 @@
    stmt-space-begin();
    .decl-func-ctx-space.flags |= #skip-lvar-decl;
 }
-{stmt-switch-set(expr:expr-i, begin-row:int, begin-col:int, end-row:int, end-col:int, cases:expr-i)
+{stmt-switch-set(expr:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, cases:expr-i)
    quick-alloc-one(+(s:stmt-switch));
    s.expr = expr;
    s.cases = cases;

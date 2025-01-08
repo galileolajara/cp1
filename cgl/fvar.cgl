@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{:fvar[#nil = -1, #0]:int}
+{:fvar[#nil = -1, #0]:i32}
 {expr-fvar(expr:expr-i, member:id):expr-i
    quick-alloc-one(+(e:expr-fvar));
    +e-idx = expr-push(e.base, #fvar);
@@ -25,7 +25,7 @@
       {+e`:expr-fvar = expr}
       at = e.val.type.ptr().decl.struct.ptr().fvar-v[e.fvar].decl.type;
    }
-   {value-fvar(expr:this, ref:tint, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-fvar(expr:this, ref:i8, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+e`:expr-fvar = expr.ptr()}
       +fvar = e.val.type.ptr().decl.struct.ptr().fvar-v[e.fvar];
       v.set(ref, paren, fvar.decl.type, fvar.decl.type-info);

@@ -20,7 +20,7 @@
       {+e`:expr-ref = expr}
       e.expr.write-value(e.val);
    }
-   {value-ref(e:this, ref:tint, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-ref(e:this, ref:i8, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+expr`:expr-ref = e.ptr()}
 		v.type = basic-type(#ref);
 		v.info.init();

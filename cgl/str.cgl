@@ -1,13 +1,13 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{:str[#nil = -1, #0]:int}
-{gvar str-c:int}
-{gvar str-cap:int}
+{:str[#nil = -1, #0]:i32}
+{gvar str-c:i32}
+{gvar str-cap:i32}
 {gvar str-ptr:ref[]}
-{gvar str-len:int[]}
+{gvar str-len:i32[]}
 {gvar string-buf:char[] @extern}
-{gvar string-len:int @extern}
+{gvar string-len:i32 @extern}
 {expr-str(prev:expr-i):expr-i
    +len = .string-len;
    quick-alloc-plus(+(n:expr-str-node), len + 1);
@@ -30,7 +30,7 @@
       :return prev;
    }
 }
-{write-str-node(len:int, ptr:ref)}
+{write-str-node(len:i32, ptr:ref)}
 {at(:expr-i)
    {wr-str(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-str = expr}
@@ -131,7 +131,7 @@
          .out.putc(''\n);
       }
    }
-   {value-str(s:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-str(s:this, ref:i32, paren:bool, v`:value, ok:bool&) @case.value() @inline
       v.type = basic-type(#char);
       v.info.init();
       v.info.array-c = 1;

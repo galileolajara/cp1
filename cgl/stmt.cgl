@@ -7,7 +7,7 @@
    #expr, #return, #continue, #break,
    #switch, #case, #default, #case-end, #default-end, #switch-end,
    #nil = 255,
-   ]:tnum
+   ]:u8
    {wr(s:this, w`:wtr) @inline
       w.n1(s);
    }
@@ -17,10 +17,10 @@
    {cgl-name(e:this):char[] @cgl-name}
 }
 {:stmt(
-   begin-row:int,
-   begin-col:int,
-   end-row:int,
-   end-col:int,
+   begin-row:i32,
+   begin-col:i32,
+   end-row:i32,
+   end-col:i32,
    type`:stmt-type,
    stmt-next`:stmt,
    )
@@ -62,7 +62,7 @@
    val`:value+,
    )
 }
-{stmt-push(s:stmt, begin-row:int, begin-col:int, end-row:int, end-col:int, type:stmt-type)
+{stmt-push(s:stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:stmt-type)
    `` 'c.out.printf("%s:%u:%u - %u:%u stmt-push()\n", .input-path, begin-row, begin-col, end-row, end-col);
    `` 'c.out.flush();
    s.begin-row = begin-row;
@@ -82,12 +82,12 @@
       .decl-func-ctx-space.stmt-last = s;
    }
 }
-{expr2stmt(e:expr-i, begin-row:int, begin-col:int, end-row:int, end-col:int)
+{expr2stmt(e:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32)
    quick-alloc-one(+(s:stmt-expr));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #expr);
    s.expr = e;
 }
-{stmt-lvar-add(name:id, set:expr-i, row:int, col:int)
+{stmt-lvar-add(name:id, set:expr-i, row:i32, col:i32)
    +lvar-i = .decl-func-ctx-space.lvar-new(name, row, col);
    +lvar = lvar-i.ptr();
    .decl-var.name = name;
@@ -98,7 +98,7 @@
       expr2stmt(e, row, col, row, col);
    }
 }
-{stmt-lvar-end(end-row:int, end-col:int)
+{stmt-lvar-end(end-row:i32, end-col:i32)
 }
  
 

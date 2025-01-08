@@ -30,7 +30,7 @@
    {type-size-of-type(expr`:expr, at`:at&) @case.type() @inline
       at = basic-type(#size);
    }
-   {value-size-of-type(le:this, ref:int, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-size-of-type(le:this, ref:i32, paren:bool, v`:value, ok:bool&) @case.value() @inline
       v.type = basic-type(#size);
       v.info.init();
       v.info.array-c = 0;

@@ -1,6 +1,6 @@
 {alias 'glc = %glc}
 {at(%glc)
-{:math[#add, #sub, #mul, #div, #lshift, #rshift, #and, #or, #xor]:tnum
+{:math[#add, #sub, #mul, #div, #lshift, #rshift, #and, #or, #xor]:u8
    {wr(e:this, w`:wtr) @inline
       w.n1(e);
    }
@@ -140,7 +140,7 @@
          }
       }
    }
-   {value-math(e:this, ref:tint, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-math(e:this, ref:i8, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+expr`:expr-math = e.ptr()}
 		`` {if(expr.left.value(1, paren, v) == :false)
       ``    :return;

@@ -3,14 +3,14 @@
 {at(%glc)
 {gvar include-stdbool:bool}
 {gvar include-stddef:bool}
-{gvar expr-is-processed:tnum[]}
-{gvar func-head-outputted-c:int}
+{gvar expr-is-processed:u8[]}
+{gvar func-head-outputted-c:i32}
 {gvar func-head-outputted-v:func[]}
-{gvar func-body-outputted-c:int}
+{gvar func-body-outputted-c:i32}
 {gvar func-body-outputted-v:func[]}
 {:basic-type(
-   method-c:int,
-   method-cap:int,
+   method-c:i32,
+   method-cap:i32,
    method-v`:func[],
    )
 }
@@ -18,16 +18,16 @@
 {basic-type(t:basic-type-id):at @inline
    :return t;
 }
-{gvar ctx-begin-row:int}
-{gvar ctx-begin-col:int}
-{gvar ctx-end-row:int}
-{gvar ctx-end-col:int}
+{gvar ctx-begin-row:i32}
+{gvar ctx-begin-col:i32}
+{gvar ctx-end-row:i32}
+{gvar ctx-end-col:i32}
 {gvar ctx-func:decl-func}
 {gvar ctx-func-id:func}
 {gvar file-c:file}
 {gvar file-cap:file}
 {gvar file-v:file-data+[]}
-{:file[#nil = -1, #0]:int
+{:file[#nil = -1, #0]:i32
    {ptr(f:this)`:file-data @inline
       :return .file-v[f];
    }
@@ -44,11 +44,11 @@
    )
 }
 {gvar id-table:id[]}
-{gvar include-table-cap:int}
+{gvar include-table-cap:i32}
 {gvar include-table:include[]}
 {gvar at-table:at[]}
 {gvar cvar-table:cvar[]}
-{id-add(id-len:tnum, id-str:char[]):id
+{id-add(id-len:u8, id-str:char[]):id
    +found = .id-map.get-or-insert(id-str, id-len, .id-c);
    {if(found != -1) :return found}
    `` {do{+j = 0}{(.id-c) j++}
@@ -318,7 +318,7 @@
    {do{+s-idx = s-idx-begin}{(struct-c) s-idx++}
       +fvar-c = r.n1();
       {+s:struct-data}
-      quick-alloc-plus(s, :fvar-data[:size] * fvar-c);
+      quick-alloc-plus(s, :fvar-data[:usz] * fvar-c);
       .struct-v[s-idx] = s;
       s.file = file-idx;
       s.fvar-c = fvar-c;
@@ -371,7 +371,7 @@
    {do{+f-idx = f-idx-begin}{(func-c) f-idx++}
       +farg-c = r.n1();
       {+f:decl-func}
-      quick-alloc-plus(f, :farg[:size] * farg-c);
+      quick-alloc-plus(f, :farg[:usz] * farg-c);
       .func-v[f-idx] = f;
       f.farg-c = farg-c;
       f.file = file-idx;
@@ -409,7 +409,7 @@
          `` farg.decl.type.write('c.out);
          `` 'c.out.printf(" %s", farg.decl.name.str());
       }
-      +this-idx = r.n1():tint;
+      +this-idx = r.n1():i8;
       f.this-idx = this-idx;
       {if(this-idx != -1)
          f.this-group = r.n1();
@@ -466,23 +466,23 @@
 {gvar out'c:file}
 {gvar process-first:func}
 {gvar process-last:func}
-{gvar func-in-process:tnum[]}
-{gvar include-is-outputted:tnum[]}
-{gvar include-outputted-c:int}
+{gvar func-in-process:u8[]}
+{gvar include-is-outputted:u8[]}
+{gvar include-outputted-c:i32}
 {gvar include-outputted-v:include[]}
-{gvar cvar-is-outputted:tnum[]}
-{gvar cvar-outputted-c:int}
+{gvar cvar-is-outputted:u8[]}
+{gvar cvar-outputted-c:i32}
 {gvar cvar-outputted-v:cvar[]}
-{gvar gvar-is-outputted:tnum[]}
-{gvar gvar-outputted-c:int}
+{gvar gvar-is-outputted:u8[]}
+{gvar gvar-outputted-c:i32}
 {gvar gvar-outputted-v:gvar[]}
-{gvar enum-is-outputted:tnum[]}
-{gvar enum-outputted-c:int}
+{gvar enum-is-outputted:u8[]}
+{gvar enum-outputted-c:i32}
 {gvar enum-outputted-v:enum[]}
-{gvar struct-is-outputted:tnum[]}
-{gvar struct-outputted-c:int}
+{gvar struct-is-outputted:u8[]}
+{gvar struct-outputted-c:i32}
 {gvar struct-outputted-v:struct[]}
-{main(arg-c:int, arg-v:char[][]):int @main
+{main(arg-c:i32, arg-v:char[][]):i32 @main
    {if(arg-c < 2)
       'c.out.printf("usage: %s file.glc-t\n", arg-v[0]);
       :return 0;
@@ -815,7 +815,7 @@
 }
 {at(:func)
    {process-later(f-idx:this)
-      +num = f-idx:num;
+      +num = f-idx:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
       {if((.func-in-process[n3] & n17) != 0) :return}
@@ -904,10 +904,10 @@
       }
       :return :true;
    }
-   {is-set(f-idx:this, v:tnum[]):bool @inline
+   {is-set(f-idx:this, v:u8[]):bool @inline
       :return (v[f-idx >> 3] & (1 << (f-idx & 7))) != 0;
    }
-   {set(f-idx:this, v:tnum[]) @inline
+   {set(f-idx:this, v:u8[]) @inline
       v[f-idx >> 3] |= 1 << (f-idx & 7);
    }
 }

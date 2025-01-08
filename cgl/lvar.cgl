@@ -1,7 +1,7 @@
 {alias 'glc = %glc}
 {alias 'c = %stdc}
 {at(%glc)
-{:lvar[#nil = -1, #0]:int
+{:lvar[#nil = -1, #0]:i32
    {rd(l:this&, r`:rdr) @inline
       l = (r.n() - 1)`:lvar;
    }
@@ -32,7 +32,7 @@
    #0,
    #set-expr = 1,
    #processed = 2,
-   ]:tnum
+   ]:u8
    {rd(f:this&, r`:rdr) @inline
       f = r.n1()`:lvar-flags;
    }
@@ -41,14 +41,14 @@
    }
 }
 {:lvar-data(
-   row:int,
-   col:int,
+   row:i32,
+   col:i32,
    decl`:decl-var-data+,
    flags`:lvar-flags,
    set-expr`:expr-i,
    )
 }
-{expr-lvar(name:id, decl:tnum, row:int, col:int):expr-i
+{expr-lvar(name:id, decl:u8, row:i32, col:i32):expr-i
    {if(decl == 0)
       +space = .decl-func-ctx-space;
       {do()
@@ -104,7 +104,7 @@
       +lvar = e.lvar.ptr();
       at = lvar.decl.type;
    }
-   {value-lvar(e:this, ref:tint, paren:bool, v`:value, ok:bool&) @case.value() @inline
+   {value-lvar(e:this, ref:i8, paren:bool, v`:value, ok:bool&) @case.value() @inline
       {+expr`:expr-lvar = e.ptr()}
       +lvar = expr.lvar.ptr();
       v.set(ref, paren, lvar.decl.type, lvar.decl.type-info);

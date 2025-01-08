@@ -4,7 +4,7 @@
 {:stmt-space-flags[
    #0,
    #skip-lvar-decl = 1,
-   ]:tnum
+   ]:u8
 }
 {:stmt-space(
    base`:stmt+,
@@ -12,8 +12,8 @@
    flags`:stmt-space-flags,
    stmt-first`:stmt,
    stmt-last`:stmt,
-   lvar-c:int,
-   lvar-cap:int,
+   lvar-c:i32,
+   lvar-cap:i32,
    lvar-v`:lvar[],
    )
    {rd-space(space`:stmt-space, r`:rdr) @case.rd() @inline
@@ -50,7 +50,7 @@
       }
       `` .out.printf("} // space end\n");
    }
-   {lvar-new(space:this, name`:id, row:int, col:int)`:lvar
+   {lvar-new(space:this, name`:id, row:i32, col:i32)`:lvar
       +v = space.lvar-v;
       {do{+i = 0}{(space.lvar-c) i++}
          +lvar = v[i].ptr();
@@ -112,7 +112,7 @@
       }
       `:stmt-type#nil.wr(w);
    }
-   {stmt-push(s:this, s2`:stmt, begin-row:int, begin-col:int, end-row:int, end-col:int, type`:stmt-type) @inline
+   {stmt-push(s:this, s2`:stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type`:stmt-type) @inline
       s2.begin-row = begin-row;
       s2.begin-col = begin-col;
       s2.end-row = end-row;

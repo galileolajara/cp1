@@ -30,7 +30,7 @@
    #nil, #call-method, #lvar, #gvar, #math, #assign, #bools,
    #func, #method, #fvar, #int, #cvar, #str, #index, #unary,
    #compare, #bool, #null, #cast-fast, #ref, #char, #size-of-type,
-   ]:tnum
+   ]:u8
    {wr(e:this, w`:wtr) @inline
       w.n1(e);
    }
@@ -40,7 +40,7 @@
    {cgl-name(e:this):char[] @cgl-name}
 }
 {cvar #debug-rd-wr:bool = :true}
-{:expr-i[#nil = -1, #0, #1]:int
+{:expr-i[#nil = -1, #0, #1]:i32
    {set(e:this, expr`:expr, type`:expr-type) @inline
       .expr-v[e] = expr;
       expr.type = type;
@@ -78,7 +78,7 @@
       }
       :return :true;
    }
-	{value(e:this, ref:int, paren:bool, v`:value):bool
+	{value(e:this, ref:i32, paren:bool, v`:value):bool
       {if!(e.process()) :return :false}
       +expr = e.ptr();
       +ok = :false;
@@ -168,7 +168,7 @@
             .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col);
          :return :false;
       }
-      +num = e:num;
+      +num = e:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
       {if((.expr-is-processed[n3] & n17) != #0) :return :true}
@@ -198,7 +198,7 @@
       }
    }
 }
-{:expr-flags[#0, #processed = 1]:tnum}
+{:expr-flags[#0, #processed = 1]:u8}
 {:expr(
    type`:expr-type,
    flags`:expr-flags,
@@ -212,7 +212,7 @@
       }
    }
 }
-{:basic-type-id[#root, #ref, #bool, #char, #tint, #tnum, #int, #num, #float, #size, #lnum, #COUNT]:tnum
+{:basic-type-id[#root, #ref, #bool, #char, #tint, #tnum, #int, #num, #float, #size, #lnum, #COUNT]:u8
    {wr(e:this, w`:wtr) @inline
       w.n1(e);
    }
@@ -261,19 +261,19 @@
 }
 {:expr-str-node(
    next`:expr-str-node,
-   len:int,
+   len:i32,
    buf:char[0],
    )
 }
 {:expr-str(
    base`:expr+,
-   node-c:int,
+   node-c:i32,
    first`:expr-str-node,
    last`:expr-str-node,
    )
 }
-{gvar expr-c:int}
-{gvar expr-cap:int}
+{gvar expr-c:i32}
+{gvar expr-cap:i32}
 {gvar expr-v:expr[]}
 {expr-push(e:expr, type:expr-type):expr-i
    e.type = type;
@@ -288,7 +288,7 @@
 }
 {:expr-int-data(
    base`:expr+,
-   value:int,
+   value:i32,
    type`:expr-int,
    )
 }
