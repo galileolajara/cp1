@@ -56,6 +56,9 @@ void _Mglc_Pdecl_alias_4(_Mglc_Eid _Lname_0, _Mglc_Eat _Lat_1, int32_t _Lrow_2, 
 void _Mglc_Pat_push_4(_Mglc_Eid _Lname_0, _Mglc_Ename_type _Ltype_1, int32_t _Lrow_2, int32_t _Lcol_3);
 _Mglc_Eat _Mglc_Pat_done_0();
 void _Mglc_Pat_begin_0();
+void _Mglc_Pat_begin_relative_0();
+void _Mglc_Pat_begin_relative_pause_0();
+void _Mglc_Pat_begin_relative_resume_0();
 void _Mglc_Pat_root_0();
 void _Mglc_Pat_alias_3(_Mglc_Eid _Lname_0, int32_t _Lrow_1, int32_t _Lcol_2);
 void _Mglc_Pat_graves_3(int8_t _Lgraves_0, int32_t _Lrow_1, int32_t _Lcol_2);

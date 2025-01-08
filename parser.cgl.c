@@ -17,6 +17,7 @@
 #define _Mglc_Ename_type_Cbasic (_Mglc_Ename_type_Cstruct_enum + 1)
 #define _Mglc_Eat_Cnil (-1)
 #define _Mglc_Ebasic_type_id_Croot 0
+#define _Mglc_Ebasic_type_id_Crelative (_Mglc_Ebasic_type_id_Croot + 1)
 #define _Mglc_Ctype_info_star_limit (8)
 #define _Mglc_Cexpr_carg_group_limit (4)
 #define _Mglc_Etoken_Cnil 0
@@ -92,7 +93,7 @@
 #define _Mglc_Emath_Cadd 0
 #define _Mglc_Ebools_Cand 0
 #define _Mglc_Einclude_C0 (_Mglc_Einclude_Cnil + 1)
-#define _Mglc_Ebasic_type_id_Cref (_Mglc_Ebasic_type_id_Croot + 1)
+#define _Mglc_Ebasic_type_id_Cref (_Mglc_Ebasic_type_id_Crelative + 1)
 #define _Mglc_Ebasic_type_id_Cbool (_Mglc_Ebasic_type_id_Cref + 1)
 #define _Mglc_Ebasic_type_id_Cchar (_Mglc_Ebasic_type_id_Cbool + 1)
 #define _Mglc_Ebasic_type_id_Ci8 (_Mglc_Ebasic_type_id_Cchar + 1)
@@ -154,6 +155,7 @@
 #define _Mglc_Estmt_space_flags_C0 0
 #define _Mglc_Eexpr_type_Cfvar (_Mglc_Eexpr_type_Cmethod + 1)
 #define _Mglc_Cdecl_at_nest_limit (8)
+#define _Mglc_Eat_Crelative (_Mglc_Eat_Croot + 1)
 #define _Mglc_Eexpr_type_Ci32 (_Mglc_Eexpr_type_Cfvar + 1)
 #define _Mglc_Eexpr_type_Ccvar (_Mglc_Eexpr_type_Ci32 + 1)
 #define _Mglc_Eexpr_type_Cstr (_Mglc_Eexpr_type_Ccvar + 1)
@@ -815,6 +817,7 @@ _Mglc_Eid* _Gat_alias_name_v;
 struct _Mglc_Srow_col* _Gat_alias_pos_v;
 _Mglc_Ealias _Gat_alias_cap;
 _Mglc_Eat* _Gat_alias_at_v;
+bool _Gat_begin_relative_pause;
 _Mglc_Egvar _Ggvar_cap;
 int32_t _Gdecl_enum_row;
 int32_t _Gdecl_enum_col;
@@ -926,6 +929,9 @@ void _Mglc_Pdecl_alias_4(_Mglc_Eid _Lname_0, _Mglc_Eat _Lat_1, int32_t _Lrow_2, 
 void _Mglc_Pat_push_4(_Mglc_Eid _Lname_0, _Mglc_Ename_type _Ltype_1, int32_t _Lrow_2, int32_t _Lcol_3);
 _Mglc_Eat _Mglc_Pat_done_0();
 void _Mglc_Pat_begin_0();
+void _Mglc_Pat_begin_relative_0();
+void _Mglc_Pat_begin_relative_pause_0();
+void _Mglc_Pat_begin_relative_resume_0();
 void _Mglc_Pat_root_0();
 void _Mglc_Pat_alias_3(_Mglc_Eid _Lname_0, int32_t _Lrow_1, int32_t _Lcol_2);
 void _Mglc_Pat_graves_3(int8_t _Lgraves_0, int32_t _Lrow_1, int32_t _Lcol_2);
@@ -1526,10 +1532,13 @@ _Mglc_Pmalloc_arr_2(_Ginclude_str_v, _Ginclude_cap);
 _Mglc_Pmalloc_arr_2(_Ginclude_len_v, _Ginclude_cap);
 _Gat_cap = (_Mglc_Eat)(64);
 _Mglc_Pmalloc_arr_2(_Gat_v, _Gat_cap);
-_Gat_c = (_Mglc_Eat)(1);
+_Gat_c = (_Mglc_Eat)(2);
 _Gat_v[0]._Ftype = _Mglc_Ename_type_Cbasic;
 _Gat_v[0]._Fparent = _Mglc_Eat_Cnil;
 _Gat_v[0]._Fname._Fbasic = _Mglc_Ebasic_type_id_Croot;
+_Gat_v[1]._Ftype = _Mglc_Ename_type_Cbasic;
+_Gat_v[1]._Fparent = _Mglc_Eat_Cnil;
+_Gat_v[1]._Fname._Fbasic = _Mglc_Ebasic_type_id_Crelative;
 _Gfunc_cap = (_Mglc_Efunc)(32);
 _Mglc_Pmalloc_arr_2(_Gfunc_v, _Gfunc_cap);
 _Gstruct_cap = (_Mglc_Estruct)(32);
@@ -1854,6 +1863,9 @@ _Mglc_Pdecl_alias_4(_Mglc_Eid_Cnil, _Mglc_Eat_Cnil, 0, 0);
 _Mglc_Pat_push_4(_Mglc_Eid_C0, _Mglc_Ename_type_Cmodule, 0, 0);
 _Mglc_Pat_done_0();
 _Mglc_Pat_begin_0();
+_Mglc_Pat_begin_relative_0();
+_Mglc_Pat_begin_relative_pause_0();
+_Mglc_Pat_begin_relative_resume_0();
 _Mglc_Pat_root_0();
 _Mglc_Pat_alias_3(_Mglc_Eid_Cnil, 0, 0);
 _Mglc_Pat_graves_3(0, 0, 0);
@@ -3170,6 +3182,19 @@ return _Gbuild_at;
 void _Mglc_Pat_begin_0() {
 _Gbuild_at = _Gdecl_at;
 }
+void _Mglc_Pat_begin_relative_0() {
+if(_Gat_begin_relative_pause) {
+_Gbuild_at = _Gdecl_at;
+} else {
+_Gbuild_at = _Mglc_Eat_Crelative;
+}
+}
+void _Mglc_Pat_begin_relative_pause_0() {
+_Gat_begin_relative_pause = true;
+}
+void _Mglc_Pat_begin_relative_resume_0() {
+_Gat_begin_relative_pause = false;
+}
 void _Mglc_Pat_root_0() {
 _Gbuild_at = _Mglc_Eat_Croot;
 }
@@ -3704,7 +3729,7 @@ if((_Gat_in_header_v[(_Lat_0 >> 3)] & (1 << (_Lat_0 & 7))) == 0) {
 _Gat_in_header_v[(_Lat_0 >> 3)] |= (1 << (_Lat_0 & 7));
 _Gat_in_header_idx_v[_Lat_0] = _Gat_in_header_c;
 _Gat_in_header_at_v[_Gat_in_header_c++] = _Lat_0;
-if(_Lat_0 != _Mglc_Eat_Croot) {
+if(((_Lat_0 != _Mglc_Eat_Croot) && (_Lat_0 != _Mglc_Eat_Crelative))) {
 _Mglc_Eat_Pput_to_header_1((*_Mglc_Eat_Pptr_1(_Lat_0))._Fparent);
 }
 }
