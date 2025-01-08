@@ -95,9 +95,9 @@
 #define _Mglc_Ebasic_type_id_Cref (_Mglc_Ebasic_type_id_Croot + 1)
 #define _Mglc_Ebasic_type_id_Cbool (_Mglc_Ebasic_type_id_Cref + 1)
 #define _Mglc_Ebasic_type_id_Cchar (_Mglc_Ebasic_type_id_Cbool + 1)
-#define _Mglc_Ebasic_type_id_Ctint (_Mglc_Ebasic_type_id_Cchar + 1)
-#define _Mglc_Ebasic_type_id_Ctnum (_Mglc_Ebasic_type_id_Ctint + 1)
-#define _Mglc_Ebasic_type_id_Cint (_Mglc_Ebasic_type_id_Ctnum + 1)
+#define _Mglc_Ebasic_type_id_Ci8 (_Mglc_Ebasic_type_id_Cchar + 1)
+#define _Mglc_Ebasic_type_id_Cu8 (_Mglc_Ebasic_type_id_Ci8 + 1)
+#define _Mglc_Ebasic_type_id_Ci32 (_Mglc_Ebasic_type_id_Cu8 + 1)
 #define _Mglc_Eexpr_int_Cdec 0
 #define _Mglc_Eunary_Cneg 0
 #define _Mglc_Ecompare_Ceq 0
@@ -154,8 +154,8 @@
 #define _Mglc_Estmt_space_flags_C0 0
 #define _Mglc_Eexpr_type_Cfvar (_Mglc_Eexpr_type_Cmethod + 1)
 #define _Mglc_Cdecl_at_nest_limit (8)
-#define _Mglc_Eexpr_type_Cint (_Mglc_Eexpr_type_Cfvar + 1)
-#define _Mglc_Eexpr_type_Ccvar (_Mglc_Eexpr_type_Cint + 1)
+#define _Mglc_Eexpr_type_Ci32 (_Mglc_Eexpr_type_Cfvar + 1)
+#define _Mglc_Eexpr_type_Ccvar (_Mglc_Eexpr_type_Ci32 + 1)
 #define _Mglc_Eexpr_type_Cstr (_Mglc_Eexpr_type_Ccvar + 1)
 #define _Mglc_Eexpr_type_Cindex (_Mglc_Eexpr_type_Cstr + 1)
 #define _Mglc_Eexpr_type_Cunary (_Mglc_Eexpr_type_Cindex + 1)
@@ -165,7 +165,7 @@
 #define _Mglc_Eexpr_type_Ccast_fast (_Mglc_Eexpr_type_Cnull + 1)
 #define _Mglc_Eexpr_type_Cref (_Mglc_Eexpr_type_Ccast_fast + 1)
 #define _Mglc_Eexpr_type_Cchar (_Mglc_Eexpr_type_Cref + 1)
-#define _Mglc_Eexpr_type_Csize_of_type (_Mglc_Eexpr_type_Cchar + 1)
+#define _Mglc_Eexpr_type_Cusz_of_type (_Mglc_Eexpr_type_Cchar + 1)
 #define _Mglc_Ecvar_Cnil (-1)
 #define _Mglc_Ecvar_flags_Cas_enum (2)
 #define _Mglc_Estruct_flags_Cunion (4)
@@ -182,7 +182,7 @@
 #define _Mglc_Elvar_flags_Cset_expr (1)
 #define _Mglc_Elvar_flags_C0 0
 #define _Mglc_Estmt_type_Cnil (255)
-#define _Mglc_Cdecl_var_size_limit (8)
+#define _Mglc_Cdecl_var_usz_limit (8)
 #define _Mglc_Etoken_Cgrave_true (_Mglc_Etoken_Cchar2 + 1)
 #define _Mglc_Etoken_Cgrave_false (_Mglc_Etoken_Cgrave_true + 1)
 #define _Mglc_Etoken_Cgrave_null (_Mglc_Etoken_Cgrave_false + 1)
@@ -251,7 +251,7 @@ typedef int32_t _Mglc_Elvar;
 typedef uint8_t _Mglc_Elvar_flags;
 typedef int32_t _Mglc_Estruct;
 typedef uint8_t _Mglc_Estruct_flags;
-typedef int32_t _Mglc_Etoken;
+typedef uint32_t _Mglc_Etoken;
 typedef uint8_t _Mglc_Eassign;
 typedef uint8_t _Mglc_Emath;
 typedef uint8_t _Mglc_Ebools;
@@ -841,7 +841,7 @@ bool _Mstdc_Efd_Popen_3(_Mstdc_Efd* _Lfile_0, char* _Lpath_1, _Mstdc_Eopen_flags
 void _Mglc_Pget_row_col_4(int32_t* _Lout_row_0, int32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3);
 void _Mglc_Pparse_comment_4(union _Mglc_Srdr* _Lr_0, union _Mglc_Swtr* _Lw_1, char _Lending_2, void* _Lin_data_3);
 void _Mglc_Pparse_string_4(union _Mglc_Srdr* _Lr_0, union _Mglc_Swtr* _Lw_1, char _Lending_2, void* _Lin_data_3);
-void _Mglc_Pparse_str_init_1(int32_t _Lmax_size_0);
+void _Mglc_Pparse_str_init_1(int32_t _Lmax_usz_0);
 #define _Mglc_Pmalloc_arr_2(r, c) r = malloc(sizeof(r[0]) * (c)); memset(r, 0, sizeof(r[0]) * (c))
 struct _Mglc_Sparser* _Mglc_Sparser_Palloc_0();
 void _Mglc_Slexer_Pinit_3(struct _Mglc_Slexer* _Llex_0, uint8_t* _Ldata_1, size_t _Lsize_2);
@@ -849,8 +849,8 @@ _Mglc_Etoken glc_lexer_scan(struct _Mglc_Slexer* _Llex_0);
 int32_t _Mglc_Slexer_Pget_id_3(struct _Mglc_Slexer* _Llex_0, uint8_t _Lbegin_1, uint8_t _Lend_2);
 void glcParse(struct _Mglc_Sparser* _Lpsr_0, _Mglc_Etoken _Lt_1, struct _Mglc_Stoken_data* _Ltok_2);
 int32_t _Mglc_Pchar_escape_value_1(char _Lc_0);
-uint32_t _Mglc_Slexer_Pget_num_dec_1(struct _Mglc_Slexer* _Llex_0);
-uint32_t _Mglc_Slexer_Pget_num_oct_1(struct _Mglc_Slexer* _Llex_0);
+uint32_t _Mglc_Slexer_Pget_u32_dec_1(struct _Mglc_Slexer* _Llex_0);
+uint32_t _Mglc_Slexer_Pget_u32_oct_1(struct _Mglc_Slexer* _Llex_0);
 int32_t _Mglc_Slexer_Pget_include_1(struct _Mglc_Slexer* _Llex_0);
 void _Mglc_Sparser_Pfree_1(struct _Mglc_Sparser* _Lpsr_0);
 void* qalloc(int32_t _Lsize_0);
@@ -1160,8 +1160,8 @@ void _Mglc_Eexpr_i_Pwr_char_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _L
 void _Mglc_Eexpr_i_Pwr_method_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
 void _Mglc_Eexpr_i_Pwr_func_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
 void _Mglc_Eexpr_i_Pwr_null_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
-void _Mglc_Eexpr_i_Pwr_int_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
-void _Mglc_Eexpr_i_Pwr_size_of_type_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
+void _Mglc_Eexpr_i_Pwr_i32_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
+void _Mglc_Eexpr_i_Pwr_usz_of_type_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
 void _Mglc_Eexpr_i_Pwr_assign_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
 void _Mglc_Eexpr_i_Pwr_fvar_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
 void _Mglc_Eexpr_i_Pwr_gvar_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2);
@@ -1178,7 +1178,7 @@ case _Mglc_Eexpr_type_Cbools: return "bools";
 case _Mglc_Eexpr_type_Cfunc: return "func";
 case _Mglc_Eexpr_type_Cmethod: return "method";
 case _Mglc_Eexpr_type_Cfvar: return "fvar";
-case _Mglc_Eexpr_type_Cint: return "int";
+case _Mglc_Eexpr_type_Ci32: return "i32";
 case _Mglc_Eexpr_type_Ccvar: return "cvar";
 case _Mglc_Eexpr_type_Cstr: return "str";
 case _Mglc_Eexpr_type_Cindex: return "index";
@@ -1189,7 +1189,7 @@ case _Mglc_Eexpr_type_Cnull: return "null";
 case _Mglc_Eexpr_type_Ccast_fast: return "cast-fast";
 case _Mglc_Eexpr_type_Cref: return "ref";
 case _Mglc_Eexpr_type_Cchar: return "char";
-case _Mglc_Eexpr_type_Csize_of_type: return "size-of-type";
+case _Mglc_Eexpr_type_Cusz_of_type: return "usz-of-type";
 }
 return "(ERROR)";
 }
@@ -1252,7 +1252,7 @@ void _Mglc_Ecompare_Pwr_2(_Mglc_Ecompare _Le_0, union _Mglc_Swtr* _Lw_1);
 void _Mglc_Eassign_Pwr_2(_Mglc_Eassign _Ls_0, union _Mglc_Swtr* _Lw_1);
 int32_t main(int32_t _Largc_0, char** _Largv_1) {
 _Mstdc_Efd _Lin_fd_2;
-size_t _Lin_size_3;
+size_t _Lin_usz_3;
 uint8_t* _Lin_data_4;
 union _Mglc_Srdr _Lr_end_21;
 struct _Mglc_Sparser* _Lpsr_22;
@@ -1287,19 +1287,19 @@ if(!(_Mstdc_Efd_Popen_3(&_Lin_fd_2, input_path, O_RDONLY))) {
 fprintf(stdout, "Cannot open file for reading: %s\n", input_path);
 exit(_Mstdc_Eexit_Cfailure);
 }
-_Lin_size_3 = lseek(_Lin_fd_2, 0, SEEK_END);
-_Lin_data_4 = malloc(_Lin_size_3 + 2);
+_Lin_usz_3 = lseek(_Lin_fd_2, 0, SEEK_END);
+_Lin_data_4 = malloc(_Lin_usz_3 + 2);
 lseek(_Lin_fd_2, 0, SEEK_SET);
-read(_Lin_fd_2, _Lin_data_4, _Lin_size_3);
-_Lin_data_4[_Lin_size_3] = 0;
-_Lin_data_4[(_Lin_size_3 + 1)] = 0;
+read(_Lin_fd_2, _Lin_data_4, _Lin_usz_3);
+_Lin_data_4[_Lin_usz_3] = 0;
+_Lin_data_4[(_Lin_usz_3 + 1)] = 0;
 close(_Lin_fd_2);
-if(((_Lin_data_4[(_Lin_size_3 - 2)] == '\r') && (_Lin_data_4[(_Lin_size_3 - 1)] == '\n'))) {
+if(((_Lin_data_4[(_Lin_usz_3 - 2)] == '\r') && (_Lin_data_4[(_Lin_usz_3 - 1)] == '\n'))) {
 fprintf(stdout, "Error reading file '%s' because it uses Windows-style line endings\n", input_path);
 fprintf(stdout, "Please convert the line endings to Unix-style line endings\n");
 exit(_Mstdc_Eexit_Cfailure);
 }
-if(_Lin_data_4[(_Lin_size_3 - 1)] != '\n') {
+if(_Lin_data_4[(_Lin_usz_3 - 1)] != '\n') {
 fprintf(stdout, "Error reading file '%s' because it doesn't end with a new line\n", input_path);
 exit(_Mstdc_Eexit_Cfailure);
 }
@@ -1310,9 +1310,9 @@ void* _Lnew_data_7;
 union _Mglc_Swtr _Lw_8;
 union _Mglc_Swtr _Lw_begin_20;
 _Lr_end_5._Fref = _Lin_data_4;
-_Lr_end_5._Fpos += _Lin_size_3;
+_Lr_end_5._Fpos += _Lin_usz_3;
 _Lr_6._Fref = _Lin_data_4;
-_Lnew_data_7 = malloc(_Lin_size_3 + 1);
+_Lnew_data_7 = malloc(_Lin_usz_3 + 1);
 _Lw_8._Fref = _Lnew_data_7;
 while(_Lr_6._Fpos < _Lr_end_5._Fpos) {
 if(_Lr_6._Fp1[0] == '`') {
@@ -1513,11 +1513,11 @@ _Lw_8._Fp1[0] = '\0';
 free(_Lin_data_4);
 _Lin_data_4 = _Lnew_data_7;
 _Lw_begin_20._Fref = _Lnew_data_7;
-_Lin_size_3 = (_Lw_8._Fpos - _Lw_begin_20._Fpos);
+_Lin_usz_3 = (_Lw_8._Fpos - _Lw_begin_20._Fpos);
 }
 _Lr_end_21._Fref = _Lin_data_4;
-_Lr_end_21._Fpos += _Lin_size_3;
-_Mglc_Pparse_str_init_1(_Lin_size_3);
+_Lr_end_21._Fpos += _Lin_usz_3;
+_Mglc_Pparse_str_init_1(_Lin_usz_3);
 _Gid_cap = 64;
 _Mglc_Pmalloc_arr_2(_Gid_str_v, _Gid_cap);
 _Mglc_Pmalloc_arr_2(_Gid_len_v, _Gid_cap);
@@ -1537,7 +1537,7 @@ _Mglc_Pmalloc_arr_2(_Gstruct_v, _Gstruct_cap);
 _Gdecl_fvar_cap = 32;
 _Mglc_Pmalloc_arr_2(_Gdecl_fvar_v, _Gdecl_fvar_cap);
 _Lpsr_22 = _Mglc_Sparser_Palloc_0();
-_Mglc_Slexer_Pinit_3(&_Llex_23, _Lin_data_4, _Lin_size_3);
+_Mglc_Slexer_Pinit_3(&_Llex_23, _Lin_data_4, _Lin_usz_3);
 _Lnext_row_24 = 1;
 _Lnext_col_25 = 1;
 _Grow = 1;
@@ -1608,11 +1608,11 @@ _Ltok_26._Fid = _Mglc_Slexer_Pget_id_3(&_Llex_23, _Lstart_32, 1);
 glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
 break;
 case _Mglc_Etoken_Cnum_dec:;
-_Ltok_26._Fid = _Mglc_Slexer_Pget_num_dec_1(&_Llex_23);
+_Ltok_26._Fid = _Mglc_Slexer_Pget_u32_dec_1(&_Llex_23);
 glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
 break;
 case _Mglc_Etoken_Cnum_oct:;
-_Ltok_26._Fid = _Mglc_Slexer_Pget_num_oct_1(&_Llex_23);
+_Ltok_26._Fid = _Mglc_Slexer_Pget_u32_oct_1(&_Llex_23);
 glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
 break;
 case _Mglc_Etoken_Cinclude:;
@@ -1654,7 +1654,7 @@ break_4:;
 glcParse(_Lpsr_22, _Mglc_Etoken_Cnil, &_Ltok_26);
 _Mglc_Sparser_Pfree_1(_Lpsr_22);
 fprintf(stdout, "parsing finished\n");
-_Lw_begin_34._Fref = qalloc((_Lin_size_3 << 2) + 1024);
+_Lw_begin_34._Fref = qalloc((_Lin_usz_3 << 2) + 1024);
 _Lw_35._Fref = _Lw_begin_34._Fref;
 Fputnum(&_Lw_35, _Gid_c);
 int32_t _Li_36;
@@ -1857,7 +1857,7 @@ _Mglc_Pat_begin_0();
 _Mglc_Pat_root_0();
 _Mglc_Pat_alias_3(_Mglc_Eid_Cnil, 0, 0);
 _Mglc_Pat_graves_3(0, 0, 0);
-_Mglc_Pat_basic_type_1(_Mglc_Ebasic_type_id_Cint);
+_Mglc_Pat_basic_type_1(_Mglc_Ebasic_type_id_Ci32);
 _Mglc_Pdecl_var_as_gvar_0();
 _Mglc_Ptype_info_arr_2(NULL, 0);
 _Mglc_Ptype_info_ref_1(0);
@@ -2055,7 +2055,7 @@ return _Lid_8;
 return _Lfound_7;
 }
 }
-uint32_t _Mglc_Slexer_Pget_num_dec_1(struct _Mglc_Slexer* _Llex_0) {
+uint32_t _Mglc_Slexer_Pget_u32_dec_1(struct _Mglc_Slexer* _Llex_0) {
 union _Mglc_Srdr _Lr_start_1;
 union _Mglc_Srdr _Lr_cursor_2;
 size_t _Llength_3;
@@ -2081,7 +2081,7 @@ exit(_Mstdc_Eexit_Cfailure);
 }
 return (uint32_t)(_Lval_4);
 }
-uint32_t _Mglc_Slexer_Pget_num_oct_1(struct _Mglc_Slexer* _Llex_0) {
+uint32_t _Mglc_Slexer_Pget_u32_oct_1(struct _Mglc_Slexer* _Llex_0) {
 union _Mglc_Srdr _Lr_start_1;
 union _Mglc_Srdr _Lr_cursor_2;
 size_t _Llength_3;
@@ -3287,7 +3287,7 @@ _Mglc_Eexpr_i _Mglc_Pexpr_int_2(int32_t _Lvalue_0, _Mglc_Eexpr_int _Ltype_1) {
 struct _Mglc_Sexpr_int_data* _Le_2;
 _Mglc_Eexpr_i _Le_idx_3;
 _Mglc_Pquick_alloc_one_1(_Le_2);
-_Le_idx_3 = _Mglc_Pexpr_push_2(&(*_Le_2)._Fbase, _Mglc_Eexpr_type_Cint);
+_Le_idx_3 = _Mglc_Pexpr_push_2(&(*_Le_2)._Fbase, _Mglc_Eexpr_type_Ci32);
 (*_Le_2)._Fvalue = _Lvalue_0;
 (*_Le_2)._Ftype = _Ltype_1;
 return _Le_idx_3;
@@ -3296,7 +3296,7 @@ _Mglc_Eexpr_i _Mglc_Pexpr_size_of_type_1(_Mglc_Eat _Lat_0) {
 struct _Mglc_Sexpr_size_of_type* _Le_1;
 _Mglc_Eexpr_i _Le_idx_2;
 _Mglc_Pquick_alloc_one_1(_Le_1);
-_Le_idx_2 = _Mglc_Pexpr_push_2(&(*_Le_1)._Fbase, _Mglc_Eexpr_type_Csize_of_type);
+_Le_idx_2 = _Mglc_Pexpr_push_2(&(*_Le_1)._Fbase, _Mglc_Eexpr_type_Cusz_of_type);
 (*_Le_1)._Ftype = _Lat_0;
 return _Le_idx_2;
 }
@@ -3787,11 +3787,11 @@ break;
 case _Mglc_Eexpr_type_Cnull:;
 _Mglc_Eexpr_i_Pwr_null_3(_Lexpr_3, _Lw_1, _Lheader_2);
 break;
-case _Mglc_Eexpr_type_Cint:;
-_Mglc_Eexpr_i_Pwr_int_3(_Lexpr_3, _Lw_1, _Lheader_2);
+case _Mglc_Eexpr_type_Ci32:;
+_Mglc_Eexpr_i_Pwr_i32_3(_Lexpr_3, _Lw_1, _Lheader_2);
 break;
-case _Mglc_Eexpr_type_Csize_of_type:;
-_Mglc_Eexpr_i_Pwr_size_of_type_3(_Lexpr_3, _Lw_1, _Lheader_2);
+case _Mglc_Eexpr_type_Cusz_of_type:;
+_Mglc_Eexpr_i_Pwr_usz_of_type_3(_Lexpr_3, _Lw_1, _Lheader_2);
 break;
 case _Mglc_Eexpr_type_Cassign:;
 _Mglc_Eexpr_i_Pwr_assign_3(_Lexpr_3, _Lw_1, _Lheader_2);
@@ -4135,7 +4135,7 @@ if(_Lexpr_0 != _Mglc_Eexpr_i_Cnil) {
 struct _Mglc_Sdecl_var_data* _Lvd_2;
 _Lvd_2 = (&_Gdecl_var);
 if((*_Lvd_2)._Fsize_c == 0) {
-_Mglc_Pquick_alloc_arr_2((*_Lvd_2)._Fsize_expr_v, _Mglc_Cdecl_var_size_limit);
+_Mglc_Pquick_alloc_arr_2((*_Lvd_2)._Fsize_expr_v, _Mglc_Cdecl_var_usz_limit);
 }
 (*_Lvd_2)._Fsize_expr_v[(*_Lvd_2)._Fsize_c++] = _Lexpr_0;
 }
@@ -4377,13 +4377,13 @@ void _Mglc_Eexpr_i_Pwr_null_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _L
 struct _Mglc_Sexpr_null* _Le_3;
 _Le_3 = _Lexpr_0;
 }
-void _Mglc_Eexpr_i_Pwr_int_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2) {
+void _Mglc_Eexpr_i_Pwr_i32_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2) {
 struct _Mglc_Sexpr_int_data* _Le_3;
 _Le_3 = _Lexpr_0;
 _Mglc_Swtr_Pn1_2(_Lw_1, (*_Le_3)._Ftype);
 Fputnum(_Lw_1, (*_Le_3)._Fvalue);
 }
-void _Mglc_Eexpr_i_Pwr_size_of_type_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2) {
+void _Mglc_Eexpr_i_Pwr_usz_of_type_3(struct _Mglc_Sexpr* _Lexpr_0, union _Mglc_Swtr* _Lw_1, bool _Lheader_2) {
 struct _Mglc_Sexpr_size_of_type* _Le_3;
 _Le_3 = _Lexpr_0;
 _Mglc_Eat_Pwr_3((*_Le_3)._Ftype, _Lw_1, _Lheader_2);

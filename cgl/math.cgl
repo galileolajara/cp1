@@ -148,9 +148,9 @@
 		{if!(expr.left.value(1, paren, v)) :return}
 		`` +left = e.left.type();
 		`` +right = e.right.type();
-      `` +left-size = left.real.basicType.to()Size;
-      `` {if(left-size > 0)
-      `` 	{if(left-size > right.real.basicType.to()Size) 
+      `` +left-usz = left.real.basicType.to()Size;
+      `` {if(left-usz > 0)
+      `` 	{if(left-usz > right.real.basicType.to()Size) 
       `` 		v.decl = left;
       `` 	}
       `` }

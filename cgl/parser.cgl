@@ -43,7 +43,7 @@
 	{if(expr != #nil)
       +vd = .decl-var;
       {if(vd.size-c == 0)
-         quick-alloc-arr(vd.size-expr-v, #decl-var-size-limit);
+         quick-alloc-arr(vd.size-expr-v, #decl-var-usz-limit);
       }
       vd.size-expr-v[vd.size-c++] = expr;
       `` 'c.out.printf("%s, vd.size-c = %d\n", vd.name.str(), vd.size-c);
@@ -247,7 +247,7 @@
       lex.limit = & data[size];
    }
    {scan(lex:this)`:token @real-name(glc_lexer_scan)}
-   {get-num-oct(lex:this):u32
+   {get-u32-oct(lex:this):u32
       {+r-start`:rdr+}
       r-start.ref = lex.start;
       {+r-cursor`:rdr+}
@@ -268,7 +268,7 @@
       }
       :return val:u32;
    }
-   {get-num-dec(lex:this):u32
+   {get-u32-dec(lex:this):u32
       {+r-start`:rdr+}
       r-start.ref = lex.start;
       {+r-cursor`:rdr+}
@@ -537,7 +537,7 @@
 {token-name(tok:token):char[]
    :return tok.cgl-name();
 }
-{parse-str-init(max-size:i32)}
+{parse-str-init(max-usz:i32)}
 {get-row-col(out-row:i32&, out-col:i32&, end:ref, begin:ref)
    +row = 1;
    +col = 1;
@@ -604,23 +604,23 @@
    }
 }
 {gvar input-path:char[] @real-name(input_path)}
-{convert-old-to-new(in-data:ref, in-out-size:i32&):ref
-   +in-size = in-out-size;
+{convert-old-to-new(in-data:ref, in-out-usz:i32&):ref
+   +in-usz = in-out-usz;
    {+r:rdr+}
    r.ref = in-data;
-   {if(&&, r.p1[0] == ''{, r.p1[1] == ''g, r.p1[2] == ''l, r.p1[3] == ''c, r.p1[4] == ''\n, r.p1[in-size - 2] == ''}, r.p1[in-size - 1] == ''\n)
+   {if(&&, r.p1[0] == ''{, r.p1[1] == ''g, r.p1[2] == ''l, r.p1[3] == ''c, r.p1[4] == ''\n, r.p1[in-usz - 2] == ''}, r.p1[in-usz - 1] == ''\n)
       `` remove the {glc and } from head and tail of the file
       r.p1[0] = '' ;
       r.p1[1] = '' ;
       r.p1[2] = '' ;
       r.p1[3] = '' ;
-      r.p1[in-size - 2] = '' ;
+      r.p1[in-usz - 2] = '' ;
    }
    {+r-end:rdr+}
    r-end.ref = in-data;
-   r-end.pos += in-size;
+   r-end.pos += in-usz;
    {+w-begin:wtr+}
-   w-begin.ref = 'c.malloc(in-size << 1);
+   w-begin.ref = 'c.malloc(in-usz << 1);
    {+w:wtr+}
    w.ref = w-begin.ref;
    {while(r.pos < r-end.pos)
@@ -727,7 +727,7 @@
    }
    out-fd.write(w-begin.ref, w.pos - w-begin.pos);
    out-fd.close();
-   in-out-size = w.pos - w-begin.pos;
+   in-out-usz = w.pos - w-begin.pos;
    :return w-begin.ref;
 }
 {char-escape-value(c:char):i32}
@@ -749,31 +749,31 @@
       'c.out.printf("Cannot open file for reading: %s\n", .input-path);
       'c.exit(#failure);
    }
-   +in-size = in-fd.seek(0, #end);
-   {+in-data:u8[] = 'c.malloc(in-size + 2)}
+   +in-usz = in-fd.seek(0, #end);
+   {+in-data:u8[] = 'c.malloc(in-usz + 2)}
    in-fd.seek(0, #set);
-   in-fd.read(in-data, in-size);
-   in-data[in-size] = 0;
-   in-data[in-size + 1] = 0;
+   in-fd.read(in-data, in-usz);
+   in-data[in-usz] = 0;
+   in-data[in-usz + 1] = 0;
    in-fd.close();
 
-   {if(&&, in-data[in-size - 2] == ''\r, in-data[in-size - 1] == ''\n)
+   {if(&&, in-data[in-usz - 2] == ''\r, in-data[in-usz - 1] == ''\n)
       'c.out.printf("Error reading file '%s' because it uses Windows-style line endings\n", .input-path);
       'c.out.printf("Please convert the line endings to Unix-style line endings\n");
       'c.exit(#failure);
    }
-   {if(in-data[in-size - 1] != ''\n)
+   {if(in-data[in-usz - 1] != ''\n)
       'c.out.printf("Error reading file '%s' because it doesn't end with a new line\n", .input-path);
       'c.exit(#failure);
    }
    {if(:true)
-      `` in-data = convert-old-to-new(in-data, in-size);
+      `` in-data = convert-old-to-new(in-data, in-usz);
       {+r-end:rdr+}
       r-end.ref = in-data;
-      r-end.pos += in-size;
+      r-end.pos += in-usz;
       {+r:rdr+}
       r.ref = in-data;
-      {+new-data = 'c.malloc(in-size + 1)}
+      {+new-data = 'c.malloc(in-usz + 1)}
       {+w:wtr+}
       w.ref = new-data;
       {while(r.pos < r-end.pos)
@@ -949,16 +949,16 @@
       in-data = new-data;
       {+w-begin:wtr+}
       w-begin.ref = new-data;
-      in-size = w.pos - w-begin.pos;
+      in-usz = w.pos - w-begin.pos;
       `` 'c:file.open(+fd, "out:parsed.glc", #write | #truncate | #create, 0644);
-      `` fd.write(in-data, in-size);
+      `` fd.write(in-data, in-usz);
       `` fd.close();
-      `` 'c.out.write(in-data, in-size);
+      `` 'c.out.write(in-data, in-usz);
    }
    {+r-end:rdr+}
    r-end.ref = in-data;
-   r-end.pos += in-size;
-   parse-str-init(in-size);
+   r-end.pos += in-usz;
+   parse-str-init(in-usz);
 
    .id-cap = 64;
    malloc-arr(.id-str-v, .id-cap);
@@ -980,7 +980,7 @@
    malloc-arr(.decl-fvar-v, .decl-fvar-cap);
 
    +psr = :parser.alloc();
-   :lexer.init(+lex, in-data, in-size);
+   :lexer.init(+lex, in-data, in-usz);
    +next-row = 1;
    +next-col = 1;
    .row = 1;
@@ -1048,11 +1048,11 @@
                psr.parse(t, tok);
             }
             {case(#num-dec)
-               tok.id = lex.get-num-dec();
+               tok.id = lex.get-u32-dec();
                psr.parse(t, tok);
             }
             {case(#num-oct)
-               tok.id = lex.get-num-oct();
+               tok.id = lex.get-u32-oct();
                psr.parse(t, tok);
             }
             {case(#include)
@@ -1089,7 +1089,7 @@
    psr.free();
    'c.out.printf("parsing finished\n");
    {+w-begin:wtr+}
-   w-begin.ref = quick-alloc((in-size << 2) + 1024);
+   w-begin.ref = quick-alloc((in-usz << 2) + 1024);
    {+w:wtr+}
    w.ref = w-begin.ref;
    w.n(.id-c);

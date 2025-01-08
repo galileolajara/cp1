@@ -3,35 +3,35 @@
 {:expr-int[#dec, #hex, #oct]:u8}
 {expr-int(value:i32, type:expr-int):expr-i
    quick-alloc-one(+(e:expr-int-data));
-   +e-idx = expr-push(e.base, #int);
+   +e-idx = expr-push(e.base, #i32);
    e.value = value;
    e.type = type;
    :return e-idx;
 }
 {at(:expr-i)
-   {wr-int(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
+   {wr-i32(expr`:expr, w`:wtr, header:bool) @case.wr() @inline
       {+e`:expr-int-data = expr}
       w.n1(e.type);
       w.n(e.value);
    }
-   {rd-int(e-idx`:expr-i, r`:rdr) @case.rd() @inline
+   {rd-i32(e-idx`:expr-i, r`:rdr) @case.rd() @inline
       quick-alloc-one(+(e`:expr-int-data));
-      e-idx.set(e.base, #int);
+      e-idx.set(e.base, #i32);
       e.type = r.n1()`:expr-int;
       e.value = r.n();
    }
-   {write-int(expr`:expr) @case.write() @inline
+   {write-i32(expr`:expr) @case.write() @inline
       {+e`:expr-int-data = expr}
       .out.printf("%d", e.value);
    }
-   {process-int(expr`:expr, ok:bool&) @case.process() @inline
+   {process-i32(expr`:expr, ok:bool&) @case.process() @inline
       ok = :true;
    }
-   {type-int(expr`:expr, at`:at&) @case.type() @inline
-      at = basic-type(#int);
+   {type-i32(expr`:expr, at`:at&) @case.type() @inline
+      at = basic-type(#i32);
    }
-   {value-int(le:this, ref:i32, paren:bool, v`:value, ok:bool&) @case.value() @inline
-      v.type = basic-type(#int);
+   {value-i32(le:this, ref:i32, paren:bool, v`:value, ok:bool&) @case.value() @inline
+      v.type = basic-type(#i32);
       v.info.init();
       v.info.array-c = 0;
       v.info.ref-v[0] = ''\0;

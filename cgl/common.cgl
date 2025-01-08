@@ -549,7 +549,7 @@ end-if
                {case(#bool)
                   .include-stdbool = :true;
                }
-               {case(#size)
+               {case(#usz)
                   .include-stddef = :true;
                }
             }
@@ -691,19 +691,19 @@ end-if
                {case(#ref)
                   .out.printf("void*");
                }
-               {case(#tnum)
+               {case(#u8)
                   .out.printf("uint8_t");
                }
-               {case(#tint)
+               {case(#i8)
                   .out.printf("int8_t");
                }
-               {case(#int)
+               {case(#i32)
                   .out.printf("int32_t");
                }
-               {case(#num)
+               {case(#u32)
                   .out.printf("uint32_t");
                }
-               {case(#lnum)
+               {case(#u64)
                   .out.printf("uint64_t");
                }
                {case(#float)
@@ -715,7 +715,7 @@ end-if
                {case(#char)
                   .out.printf("char");
                }
-               {case(#size)
+               {case(#usz)
                   .out.printf("size_t");
                }
             }
@@ -743,10 +743,10 @@ end-if
                {case(#ref)
                   .out.printf("_Tref");
                }
-               {case(#int)
+               {case(#i32)
                   .out.printf("_Tint");
                }
-               {case(#num)
+               {case(#u32)
                   .out.printf("_Tnum");
                }
                {case(#float)
@@ -758,7 +758,7 @@ end-if
                {case(#char)
                   .out.printf("_Tchar");
                }
-               {case(#size)
+               {case(#usz)
                   .out.printf("_Tsize");
                }
             }

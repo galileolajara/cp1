@@ -6,7 +6,7 @@
          @decl('<#define _Mstdc_Pmalloc_one_1(var) var = malloc(sizeof(var[0]))>)}
       {malloc-arr(var:ref, count:usz)
          @decl('<#define _Mstdc_Pmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))>)}
-      {realloc(size:usz, new-size:usz):ref @real-name @no-decl}
+      {realloc(size:usz, new-usz:usz):ref @real-name @no-decl}
       {free(ref:ref) @real-name(free) @no-decl}
       {exit(code:exit) @real-name(exit) @no-decl}
       {:exit[#success, #failure]:i32}

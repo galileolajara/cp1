@@ -73,14 +73,14 @@
       'c.out.printf("Cannot open file for reading: %s\n", in-path);
       'c.exit(#failure);
    }
-   +in-size = in-fd.seek(0, #end);
+   +in-usz = in-fd.seek(0, #end);
    {+r-begin:rdr+}
    `` {if(:true)
-   ``    r-begin.ref = in-fd.map(:null, in-size, #read, #shared, 0);
+   ``    r-begin.ref = in-fd.map(:null, in-usz, #read, #shared, 0);
    `` }{else
-      r-begin.ref = 'c.malloc(in-size);
+      r-begin.ref = 'c.malloc(in-usz);
       in-fd.seek(0, #set);
-      in-fd.read(r-begin.ref, in-size);
+      in-fd.read(r-begin.ref, in-usz);
    `` }
    in-fd.close();
 

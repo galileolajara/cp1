@@ -65,7 +65,7 @@
    at-alias(#nil, 0, 0);
    at-graves(0, 0, 0);
    `` at-create();
-   at-basic-type(#int);
+   at-basic-type(#i32);
    decl-var-as-gvar();
    type-info-arr(:null, 0);
    type-info-ref(0);

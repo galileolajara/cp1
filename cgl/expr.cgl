@@ -28,8 +28,8 @@
 }
 {:expr-type[
    #nil, #call-method, #lvar, #gvar, #math, #assign, #bools,
-   #func, #method, #fvar, #int, #cvar, #str, #index, #unary,
-   #compare, #bool, #null, #cast-fast, #ref, #char, #size-of-type,
+   #func, #method, #fvar, #i32, #cvar, #str, #index, #unary,
+   #compare, #bool, #null, #cast-fast, #ref, #char, #usz-of-type,
    ]:u8
    {wr(e:this, w`:wtr) @inline
       w.n1(e);
@@ -212,7 +212,7 @@
       }
    }
 }
-{:basic-type-id[#root, #ref, #bool, #char, #tint, #tnum, #int, #num, #float, #size, #lnum, #COUNT]:u8
+{:basic-type-id[#root, #ref, #bool, #char, #i8, #u8, #i32, #u32, #float, #usz, #u64, #COUNT]:u8
    {wr(e:this, w`:wtr) @inline
       w.n1(e);
    }
@@ -224,10 +224,10 @@
 ``       {case(#ref)
 ``          out.printf("void*");
 ``       }
-``       {case(#int)
+``       {case(#i32)
 ``          out.printf("int");
 ``       }
-``       {case(#num)
+``       {case(#u32)
 ``          out.printf("unsigned int");
 ``       }
 ``       {case(#float)
