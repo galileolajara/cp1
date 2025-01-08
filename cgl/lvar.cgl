@@ -25,7 +25,7 @@
          }
          :return :true;
       }
-      :return lvar.decl.process(lvar.row, lvar.col);
+      :return lvar.decl.process(lvar.row, lvar.col, .ctx-func.at);
    }
 }
 {:lvar-flags[

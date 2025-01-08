@@ -502,7 +502,7 @@ end-if
 {gvar at-c:at}
 {gvar at-cap:at}
 {gvar at-v:at-data+[]}
-{:at[#nil = -1, #root]:i32
+{:at[#nil = -1, #root, #relative]:i32
    {finalize(at-i:this, ti`:type-info, row:i32, col:i32):bool
       +at = at-i.ptr();
       {if(at.def == #struct)
@@ -625,7 +625,7 @@ end-if
          .at-in-header-v[at >> 3] |= 1 << (at & 7);
          .at-in-header-idx-v[at] = .at-in-header-c;
          .at-in-header-at-v[.at-in-header-c++] = at;
-         {if(at != #root)
+         {if(&&, at != #root, at != #relative)
             at.ptr().parent.put-to-header();
          }
       }

@@ -212,7 +212,7 @@
       }
    }
 }
-{:basic-type-id[#root, #ref, #bool, #char, #i8, #u8, #i32, #u32, #float, #usz, #u64, #COUNT]:u8
+{:basic-type-id[#root, #relative, #ref, #bool, #char, #i8, #u8, #i32, #u32, #float, #usz, #u64, #COUNT]:u8
    {wr(e:this, w`:wtr) @inline
       w.n1(e);
    }

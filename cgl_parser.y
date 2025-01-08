@@ -94,7 +94,7 @@ at_names ::= at_alias.
 at_names ::= at_root at_name.
 at_names ::= at_graves at_name.
 at_begin ::= .
-   { _Mglc_Pat_begin_0(); }
+   { _Mglc_Pat_begin_relative_0(); }
 at_names ::= at_begin at_name.
 at_names ::= at_names at_name.
 at(l) ::= type_basic_id(r).
@@ -118,7 +118,11 @@ decl_at_names ::= decl_at_names decl_at_name.
 decl_at_namespace ::= decl_at_names.
 decl_at_namespace ::= type_basic_id(e).
    { _Mglc_Pdecl_at_basic_1(e.basic.id); }
-decl_at_begin ::= LCBRACE_AT_LPAREN(pos) decl_at_namespace RPAREN.
+decl_at_begin_begin(l) ::= LCBRACE_AT_LPAREN(r).
+   { _Mglc_Pat_begin_relative_pause_0(); l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
+decl_at_begin_end ::= RPAREN.
+   { _Mglc_Pat_begin_relative_resume_0(); }
+decl_at_begin ::= decl_at_begin_begin(pos) decl_at_namespace decl_at_begin_end.
    { _Mglc_Pdecl_at_begin_2(pos.basic.row, pos.basic.col); }
 decl_at ::= decl_at_begin SPACE decls SPACE_RCBRACE.
    { _Mglc_Pdecl_at_end_0(); }
@@ -137,7 +141,11 @@ decl ::= decl_func.
 decl ::= decl_struct.
 decl ::= decl_enum.
 decl ::= decl_gvars.
-decl ::= LCBRACE_ALIAS_SPACE ID_QUOTE(short) SPACE_EQUAL_SPACE at(long) RCBRACE.
+decl_alias_begin ::= LCBRACE_ALIAS_SPACE.
+   { _Mglc_Pat_begin_relative_pause_0(); }
+decl_alias_end ::= RCBRACE.
+   { _Mglc_Pat_begin_relative_resume_0(); }
+decl ::= decl_alias_begin ID_QUOTE(short) SPACE_EQUAL_SPACE at(long) decl_alias_end.
    { _Mglc_Pdecl_alias_4(short.basic.id, long.basic.id, short.basic.row, short.basic.col); }
 decls ::= decl.
 decls ::= decls SPACE decl.
@@ -240,25 +248,25 @@ func_attrs ::= func_attr.
 func_attrs ::= func_attrs func_attr.
 /*   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; } */
 type_basic_id(l) ::= GRAVE_REF.
-   { l.basic.id = 1; }
-type_basic_id(l) ::= GRAVE_BOOL.
    { l.basic.id = 2; }
-type_basic_id(l) ::= GRAVE_CHAR.
+type_basic_id(l) ::= GRAVE_BOOL.
    { l.basic.id = 3; }
-type_basic_id(l) ::= GRAVE_TINT.
+type_basic_id(l) ::= GRAVE_CHAR.
    { l.basic.id = 4; }
-type_basic_id(l) ::= GRAVE_TNUM.
+type_basic_id(l) ::= GRAVE_TINT.
    { l.basic.id = 5; }
-type_basic_id(l) ::= GRAVE_INT.
+type_basic_id(l) ::= GRAVE_TNUM.
    { l.basic.id = 6; }
-type_basic_id(l) ::= GRAVE_NUM.
+type_basic_id(l) ::= GRAVE_INT.
    { l.basic.id = 7; }
-type_basic_id(l) ::= GRAVE_FLOAT.
+type_basic_id(l) ::= GRAVE_NUM.
    { l.basic.id = 8; }
-type_basic_id(l) ::= GRAVE_SIZE.
+type_basic_id(l) ::= GRAVE_FLOAT.
    { l.basic.id = 9; }
-type_basic_id(l) ::= GRAVE_LNUM.
+type_basic_id(l) ::= GRAVE_SIZE.
    { l.basic.id = 10; }
+type_basic_id(l) ::= GRAVE_LNUM.
+   { l.basic.id = 11; }
 // expr_type_basic(l) ::= type_basic_id(r). { l.basic.id = _Mglc_Pexpr_type_basic_1(r.basic.id); }
 // expr_type_custom(l) ::= at(r). { l.basic.id = _Mglc_Pexpr_type_1(r.basic.id); }
 // expr_type(l) ::= expr_type_basic(r). { l.basic.id = r.basic.id; }

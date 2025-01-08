@@ -61,6 +61,9 @@
    at-push(#0, #module, 0, 0);
    at-done();
    at-begin();
+   at-begin-relative();
+   at-begin-relative-pause();
+   at-begin-relative-resume();
    at-root();
    at-alias(#nil, 0, 0);
    at-graves(0, 0, 0);

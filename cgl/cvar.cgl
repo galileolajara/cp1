@@ -114,10 +114,11 @@
    {process-cvar(expr`:expr, ok:bool&) @case.process() @inline
       {+e`:expr-cvar = expr}
       +name = e.name;
+      {+cvar-c, cvar-v}
       {if(e.try != #nil)
          +at = e.try.ptr();
-         ++cvar-c = at.cvar-c;
-         ++cvar-v = at.cvar-v;
+         cvar-c = at.cvar-c;
+         cvar-v = at.cvar-v;
          `` 'c.out.printf("e.try = %d, %s, %s, cvar-c %d\n", e.try, at.name.id.str(), name.str(), cvar-c);
          {do{+i = 0}{(cvar-c) i++}
             +cvar = cvar-v[i];
@@ -131,6 +132,7 @@
          }
       }
       {if(e.at != #nil)
+         e.at = at-validate(e.at, .ctx-func.at);
          +at = e.at.ptr();
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;

@@ -8,11 +8,52 @@
 }
 {:decl-var-type[#gvar, #fvar]:u8}
 {cvar #decl-var-size-limit:i32 = 8}
+{at-validate(vd-type:at, at-i:at):at
+   +type = vd-type.ptr();
+   +parent = type.parent.ptr();
+   {if(&&, parent.type == #basic, parent.name.basic == #relative)
+      +name = type.name;
+      `` 'c.out.printf("type is %s\n", at-i.ptr().type.cgl-name());
+      `` {if(at-i.ptr().type == #module)
+      ``    'c.out.printf("name is %s\n", at-i.ptr().name.id.str());
+      ``    'c.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cgl-name());
+      ``    {if(at-i.ptr().parent.ptr().type == #basic)
+      ``       'c.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cgl-name());
+      ``    }
+      `` }
+      `` 'c.out.printf("relative detected on var %s, finding :%s\n", vd-name.str(), name.id.str());
+      {do()
+         {do{+i = 0:at}{(.at-c) i++}
+            {if(&&, .at-v[i].parent == at-i, .at-v[i].type != #basic)
+               `` 'c.out.printf("%u) :%s, %d\n", i, .at-v[i].name.id.str(), .at-v[i].decl.struct);
+               {if(.at-v[i].name.id == name.id)
+                  `` 'c.out.printf("found\n");
+                  :return i;
+               }
+            }
+         }
+         {if(at-i == #root) {break}}
+         at-i = at-i.ptr().parent;
+      }
+      'c.out.printf("not found\n");
+      'c.exit(#failure);
+   }
+   :return vd-type;
+}
 {at(:decl-var-data)
-   {process(vd:this, row:i32, col:i32):bool
-      +at-i = vd.type;
+   {validate(vd:this, base-at`:at)
+      `` 'c.out.printf("validating the type of %s\n", vd.name.str());
+      vd.type = at-validate(vd.type, base-at);
+   }
+   {process(vd:this, row:i32, col:i32, base-at`:at):bool
+      +at-i = at-validate(vd.type, base-at);
+      vd.type = at-i;
       +at = at-i.ptr();
       {if(&&, at.type != #basic, at.decl.struct == #nil)
+         {if(at.parent.ptr().name.basic == #relative)
+            'c.out.printf("relative path to type was detected\n");
+            :return :false;
+         }
          'c.out.printf("%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", .ctx-func.file.path(), row, col, at.name.id.str(), vd.name.str());
          :return :false;
       }
@@ -80,9 +121,47 @@
          vd.size-expr-v[i].wr(w, header);
       }
    }
+   `` {validate(vd-type`:at, at-i`:at, vd-name`:id)`:at
+   ``    +type = vd-type.ptr();
+   ``    {if(type.type == #basic) :return vd-type}
+   ``    +parent = type.parent.ptr();
+   ``    {if(&&, parent.type == #basic, parent.name.basic == #relative)
+   ``       +name = type.name;
+   ``       'c.out.printf("type is %s\n", at-i.ptr().type.cgl-name());
+   ``       {if(at-i.ptr().type == #module)
+   ``          'c.out.printf("name is %s\n", at-i.ptr().name.id.str());
+   ``          'c.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cgl-name());
+   ``          {if(at-i.ptr().parent.ptr().type == #basic)
+   ``             'c.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cgl-name());
+   ``          }
+   ``       }
+   ``       'c.out.printf("relative detected on var %s, finding :%s\n", vd-name.str(), name.id.str());
+   ``       `` +old-out = .out;
+   ``       `` .out = 'c.out;
+   ``       `` at-i.write-space();
+   ``       `` .out = old-out;
+   ``       {do()
+   ``          {do{+i = 0`:at}{(.at-c) i++}
+   ``             {if(&&, .at-v[i].parent == at-i, .at-v[i].type != #basic)
+   ``                'c.out.printf("%u) :%s\n", i, .at-v[i].name.id.str());
+   ``                {if(.at-v[i].name.id == name.id)
+   ``                   :return i;
+   ``                }
+   ``             }
+   ``          }
+   ``          {if(at-i == #root) {break}}
+   ``          at-i = at-i.ptr().parent;
+   ``       }
+   ``       'c.out.printf("not found\n");
+   ``       'c.exit(#failure);
+   ``    }
+   ``    :return vd-type;
+   `` }
    {rd(vd:this, r`:rdr)
       vd.name.rd(r);
       vd.type.rd(r);
+      `` `:at.rd(+vd-type, r);
+      `` vd.type = validate(vd-type, default-at, vd.name);
       vd.flags.rd(r);
       {if((vd.flags & #real-name) != #0)
          vd.real-name.rd(r);

@@ -13,13 +13,7 @@
       +gvar = g.ptr();
       +at-i = gvar.decl.type;
       +at = at-i.ptr();
-      {if(&&, at.type != #basic, at.decl.struct == #nil)
-         'c.out.printf("Error, the type '%s' used in gvar '.%s' was not defined\n", at.name.id.str(), gvar.decl.name.str());
-         :return :false;
-      }
-      `` at-i.output(gvar.file, gvar.row, gvar.col);
-      `` {if!(at-i.finalize(gvar.decl.type-info, gvar.row, gvar.col)) :return :false}
-      {if!(gvar.decl.process(gvar.row, gvar.col)) :return :false}
+      {if!(gvar.decl.process(gvar.row, gvar.col, gvar.at)) :return :false}
 
       {if((gvar.flags & #no-decl) == #0)
          .gvar-outputted-v[.gvar-outputted-c++] = g;

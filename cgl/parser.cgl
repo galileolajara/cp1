@@ -95,6 +95,20 @@
 {at-begin()
    .build-at = .decl-at;
 }
+{gvar at-begin-relative-pause:bool}
+{at-begin-relative-pause()
+   .at-begin-relative-pause = :true;
+}
+{at-begin-relative-resume()
+   .at-begin-relative-pause = :false;
+}
+{at-begin-relative()
+   {if(.at-begin-relative-pause)
+      .build-at = .decl-at;
+   }{else
+      .build-at = #relative;
+   }
+}
 {:alias[#nil = -1, #0]:i32}
 {gvar at-alias-c:alias}
 {gvar at-alias-cap:alias}
@@ -968,10 +982,13 @@
    malloc-arr(.include-len-v, .include-cap);
    .at-cap = 64:at;
    malloc-arr(.at-v, .at-cap);
-   .at-c = 1:at;
+   .at-c = 2:at;
    .at-v[0].type = #basic;
    .at-v[0].parent = #nil;
    .at-v[0].name.basic = #root;
+   .at-v[1].type = #basic;
+   .at-v[1].parent = #nil;
+   .at-v[1].name.basic = #relative;
    .func-cap = 32:func;
    malloc-arr(.func-v, .func-cap);
    .struct-cap = 32:struct;

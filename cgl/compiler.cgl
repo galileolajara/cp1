@@ -381,6 +381,7 @@
       f.end-col = r.n();
       f.include.rd(r);
       f.at.rd(r);
+      +at-i = f.at;
       f.decl.rd(r);
       {+r0:rdr+}
       r0.ref = f;
@@ -435,7 +436,6 @@
          f.decl-str[len] = 0;
          r.pos += len;
       }
-      +at-i = f.at;
       +at = at-i.ptr();
       +at-func-idx = at.func-c++;
       {if(at.func-cap <= at.func-c)
@@ -821,7 +821,12 @@
       {if((.func-in-process[n3] & n17) != 0) :return}
       .func-in-process[n3] |= n17;
       +f = f-idx.ptr();
+      +f-at = f.at;
+      {do{+j = 0}{(f.farg-c) j++}
+         f.farg-v[j].decl.type = at-validate(f.farg-v[j].decl.type, f-at);
+      }
       {if(f.decl.type != #nil)
+         f.decl.type = at-validate(f.decl.type, f-at);
          f.decl.type.finalize(f.decl.type-info, f.begin-row, f.begin-col);
       }
       .func-head-outputted-v[.func-head-outputted-c++] = f-idx;

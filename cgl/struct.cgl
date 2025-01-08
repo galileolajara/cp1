@@ -18,13 +18,14 @@
       {if((.struct-is-outputted[n3] & n17) != 0) :return}
       .struct-is-outputted[n3] |= n17;
       +s = s-i.ptr();
+      +s-at = s.at;
 
       +row = s.begin-row;
       +col = s.begin-col;
       {do{+i = 0}{(s.fvar-c) i++}
          `` s.fvar-v[i].decl.type.output(s.file, row, col);
          `` {if!(s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col)) :return}
-         {if!(s.fvar-v[i].decl.process(row, col)) :return}
+         {if!(s.fvar-v[i].decl.process(row, col, s-at)) :return}
       }
 
       {if(s.include != #nil)
