@@ -1,5 +1,5 @@
-{alias 'glc = %glc}
-{at(%glc)
+{alias 'glc = :glc}
+{at(:glc)
 {export()
    quick-alloc-undo(0);
    decl-func-begin(#0, 0, 0);

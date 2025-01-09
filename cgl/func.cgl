@@ -1,6 +1,6 @@
-{alias 'glc = %glc}
-{alias 'c = %stdc}
-{at(%glc)
+{alias 'glc = :glc}
+{alias 'c = :stdc}
+{at(:glc)
 {:func[#nil = -1, #0, #1]:i32
    {wr(f:this, w:wtr) @inline
       w.n(f + #1);

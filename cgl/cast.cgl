@@ -1,5 +1,5 @@
-{alias 'glc = %glc}
-{at(%glc)
+{alias 'glc = :glc}
+{at(:glc)
 {expr-cast-fast(expr:expr-i, type:at):expr-i
    quick-alloc-one(+(e:expr-cast-fast));
    +e-idx = expr-push(e.base, #cast-fast);

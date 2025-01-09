@@ -1,6 +1,6 @@
-{alias 'glc = %glc}
-{alias 'c = %stdc}
-{at(%glc)
+{alias 'glc = :glc}
+{alias 'c = :stdc}
+{at(:glc)
 {:decl-var[]:u32
    {ptr(v:this):decl-var-data @inline
       :return .var-v[v];

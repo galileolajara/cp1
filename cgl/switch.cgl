@@ -1,6 +1,6 @@
-{alias 'glc = %glc}
-{alias 'c = %stdc}
-{at(%glc)
+{alias 'glc = :glc}
+{alias 'c = :stdc}
+{at(:glc)
 {gvar switch-stack-v:stmt-switch[64]}
 {gvar switch-stack-c:u8}
 {at(:stmt-space)

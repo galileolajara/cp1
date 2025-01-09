@@ -1,6 +1,6 @@
-{alias 'glc = %glc}
-{alias 'c = %stdc}
-{at(%glc)
+{alias 'glc = :glc}
+{alias 'c = :stdc}
+{at(:glc)
 {:cvar[#nil = -1, #0]:i32
    {rd(c:this&, r:rdr) @inline
       +idx = (r.n() - 1):cvar;

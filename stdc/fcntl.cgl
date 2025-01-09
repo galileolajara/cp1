@@ -1,6 +1,6 @@
 {include(<fcntl.h>)
-   {alias 'c = %stdc}
-   {at(%stdc)
+   {alias 'c = :stdc}
+   {at(:stdc)
       {:fd[#nil = -1]:i32
          {open(file:this&, path:char[], flags:open-flags):bool @inline
             +fd = 'c.open(path, flags);

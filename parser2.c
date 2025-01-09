@@ -20,24 +20,24 @@ union glc_token {
    void* pointer;
 };
 
-typedef int _Mglc_Eexpr_i;
-typedef int _Mglc_Eid;
-typedef int _Mglc_Einclude;
-typedef int _Mglc_Eat;
-typedef int8_t _Mglc_Ebasic_type_id;
-typedef int8_t _Mglc_Eunary;
-typedef int8_t _Mglc_Emath;
-typedef int8_t _Mglc_Eexpr_type;
-typedef int8_t _Mglc_Eexpr_int;
-typedef int8_t _Mglc_Ename_type;
-typedef int8_t _Mglc_Estmt_type;
-typedef int8_t _Mglc_Ecompare;
-typedef int8_t _Mglc_Eassign;
-typedef int8_t _Mglc_Ebools;
-typedef int8_t _Mglc_Etoken;
-struct _Mglc_Sstmt_space;
-struct _Mglc_Sstmt;
-struct _Mglc_Sexpr_data;
+typedef int _Nglc_Nexpr_i;
+typedef int _Nglc_Nid;
+typedef int _Nglc_Ninclude;
+typedef int _Nglc_Nat;
+typedef int8_t _Nglc_Nbasic_type_id;
+typedef int8_t _Nglc_Nunary;
+typedef int8_t _Nglc_Nmath;
+typedef int8_t _Nglc_Nexpr_type;
+typedef int8_t _Nglc_Nexpr_int;
+typedef int8_t _Nglc_Nname_type;
+typedef int8_t _Nglc_Nstmt_type;
+typedef int8_t _Nglc_Ncompare;
+typedef int8_t _Nglc_Nassign;
+typedef int8_t _Nglc_Nbools;
+typedef int8_t _Nglc_Ntoken;
+struct _Nglc_Nstmt_space;
+struct _Nglc_Nstmt;
+struct _Nglc_Nexpr_data;
 #ifdef GLC_NEW
 #include "out/export.h"
 #else
@@ -70,15 +70,15 @@ struct glc_lexer {
    const char *ctx_marker;
 };
 
-void* _Mglc_Sparser_Palloc_0() {
+void* _Nglc_Nparser_Palloc_0() {
    return glcParseAlloc(malloc);
 }
 
-void _Mglc_Sparser_Pfree_1(void* parser) {
+void _Nglc_Nparser_Pfree_1(void* parser) {
    glcParseFree(parser, free);
 }
 
-int _Mglc_Pchar_escape_value_1(char c) {
+int _Nglc_Pchar_escape_value_1(char c) {
    switch(c) {
       case 'a': return '\a';
       case 'b': return '\b';

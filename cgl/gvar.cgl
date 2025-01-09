@@ -1,6 +1,6 @@
-{alias 'glc = %glc}
-{alias 'c = %stdc}
-{at(%glc)
+{alias 'glc = :glc}
+{alias 'c = :stdc}
+{at(:glc)
 {:gvar-flags[#0, #no-decl = 1]:u8}
 {:gvar[#nil = -1, #0]:i32
    {process(g:this):bool

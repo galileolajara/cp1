@@ -4,7 +4,7 @@ let funcs = [];
 let lines = [];
 let get = false;
 for (let line of txt_split) {
-   if (line == "void _Mglc_Pexport_0() {") {
+   if (line == "void _Nglc_Pexport_0() {") {
       get = true;
    } else if (get) {
       if (line == "}") {

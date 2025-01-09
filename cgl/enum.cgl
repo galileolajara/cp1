@@ -1,5 +1,5 @@
-{alias 'glc = %glc}
-{at(%glc)
+{alias 'glc = :glc}
+{at(:glc)
 {:enum[#nil = -1, #0, #1]:i32
    {wr(f:this, w:wtr) @inline
       w.n(f + #1);

@@ -1,6 +1,6 @@
-{alias 'glc = %glc}
-{alias 'c = %stdc}
-{at(%glc)
+{alias 'glc = :glc}
+{alias 'c = :stdc}
+{at(:glc)
 {gvar include-stdbool:bool}
 {gvar include-stddef:bool}
 {gvar expr-is-processed:u8[]}

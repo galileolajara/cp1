@@ -1,5 +1,5 @@
-{alias 'glc = %glc}
-{at(%glc)
+{alias 'glc = :glc}
+{at(:glc)
 {expr-bools(left:expr-i, right:expr-i, type:bools):expr-i
    quick-alloc-one(+(e:expr-bools));
    +e-idx = expr-push(e.base, #bools);

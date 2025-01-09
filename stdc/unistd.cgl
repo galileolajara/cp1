@@ -1,6 +1,6 @@
 {include(<unistd.h>)
-   {alias 'c = %stdc}
-   {at(%stdc)
+   {alias 'c = :stdc}
+   {at(:stdc)
       {at(:fd)
          {seek(fd:this, offset:usz, seek:seek):usz @no-decl @real-name(lseek)}
          {read(fd:this, buf:ref, size:usz):usz @no-decl @real-name}

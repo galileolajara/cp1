@@ -1,5 +1,5 @@
-{alias 'glc = %glc}
-{at(%glc)
+{alias 'glc = :glc}
+{at(:glc)
 {main(arg-c:i32, arg-v:char[][]):i32 @main
    +in-path = arg-v[1];
    +out-new-path = arg-v[2];

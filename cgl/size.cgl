@@ -1,5 +1,5 @@
-{alias 'glc = %glc}
-{at(%glc)
+{alias 'glc = :glc}
+{at(:glc)
 {expr-size-of-type(at:at):expr-i
    quick-alloc-one(+(e:expr-size-of-type));
    +e-idx = expr-push(e.base, #size-of-type);

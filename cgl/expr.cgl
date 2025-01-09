@@ -1,6 +1,6 @@
-{alias 'glc = %glc}
-{alias 'c = %stdc}
-{at(%glc)
+{alias 'glc = :glc}
+{alias 'c = :stdc}
+{at(:glc)
 {at(:stmt-space)
    {wr-expr(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
       {+s:stmt-expr = stmt}

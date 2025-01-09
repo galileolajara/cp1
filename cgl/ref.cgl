@@ -1,5 +1,5 @@
-{alias 'glc = %glc}
-{at(%glc)
+{alias 'glc = :glc}
+{at(:glc)
 {expr-ref(expr:expr-i):expr-i
    quick-alloc-one(+(e:expr-ref));
    +e-idx = expr-push(e.base, #ref);

@@ -1,5 +1,5 @@
-{alias 'glc = %glc}
-{at(%glc)
+{alias 'glc = :glc}
+{at(:glc)
 {at(:stmt-space)
    {wr-if(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
       {+s:stmt-if = stmt}

@@ -1,6 +1,6 @@
 {include(<stdlib.h>)
-   {alias 'c = %stdc}
-   {at(%stdc)
+   {alias 'c = :stdc}
+   {at(:stdc)
       {malloc(size:usz):ref @real-name(malloc) @no-decl}
       {malloc-one(var:ref)
          @decl('<#define _Mstdc_Pmalloc_one_1(var) var = malloc(sizeof(var[0]))>)}

@@ -9,10 +9,10 @@ rule ld-cpp
 
 build out/parser.cgl.c.o: c parser.cgl.c
 build out/parser.c.o: c parser.c | export.h lexer.c cgl_parser.c
-build bin/parser: ld-cpp out/parser.cgl.c.o out/parser.c.o out/hashtable.cpp.o
+#build bin/parser: ld-cpp out/parser.cgl.c.o out/parser.c.o out/hashtable.cpp.o
 build out/compiler.cgl.c.o: c compiler.cgl.c
 build out/str.c.o: c str.c
-build bin/compiler: ld-cpp out/compiler.cgl.c.o out/str.c.o out/hashtable.cpp.o
+#build bin/compiler: ld-cpp out/compiler.cgl.c.o out/str.c.o out/hashtable.cpp.o
 
 rule c2
  command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DGLC_NEW -I. -c $in -o $out

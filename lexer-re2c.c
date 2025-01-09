@@ -5,7 +5,7 @@ extern char* _Gstring_buf;
 extern int _Gstring_len;
 char* _Gstring_buf;
 int _Gstring_len;
-void _Mglc_Pparse_str_init_1(int maxsize) {
+void _Nglc_Pparse_str_init_1(int maxsize) {
    string_mem = malloc(maxsize);
 }
 

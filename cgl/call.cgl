@@ -1,6 +1,6 @@
-{alias 'glc = %glc}
-{alias 'c = %stdc}
-{at(%glc)
+{alias 'glc = :glc}
+{alias 'c = :stdc}
+{at(:glc)
 {farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:at):bool
    +ce = e.ptr();
    {+r:i32}
