@@ -2360,7 +2360,7 @@ fprintf(_Gout, "struct ");
 if((*_Lat_1)._Fparent != _Nglc_Nat_Croot) {
 _Nglc_Nat_Pwrite_space_1((*_Lat_1)._Fparent);
 }
-fprintf(_Gout, "_S%s", _Nglc_Nid_Pc_name_1((*_Lat_1)._Fname._Fid));
+fprintf(_Gout, "_N%s", _Nglc_Nid_Pc_name_1((*_Lat_1)._Fname._Fid));
 } else if((*_Lat_1)._Fdef == _Nglc_Nat_def_Cenum) {
 _Nglc_Nenum _Lt_idx_4;
 _Lt_idx_4 = (*_Lat_1)._Fdecl._Fenum;
@@ -2375,7 +2375,7 @@ return;
 if((*_Lat_1)._Fparent != _Nglc_Nat_Croot) {
 _Nglc_Nat_Pwrite_space_1((*_Lat_1)._Fparent);
 }
-fprintf(_Gout, "_E%s", _Nglc_Nid_Pc_name_1((*_Lat_1)._Fname._Fid));
+fprintf(_Gout, "_N%s", _Nglc_Nid_Pc_name_1((*_Lat_1)._Fname._Fid));
 }
 break;
 case _Nglc_Nname_type_Cbasic:;
@@ -2425,17 +2425,10 @@ _Nglc_Nat_Pwrite_space_1((*_Lat_1)._Fparent);
 fprintf(_Gout, "_M%s", _Nglc_Nid_Pc_name_1((*_Lat_1)._Fname._Fid));
 break;
 case _Nglc_Nname_type_Cstruct_enum:;
-if((*_Lat_1)._Fdef == _Nglc_Nat_def_Cstruct) {
 if((*_Lat_1)._Fparent != _Nglc_Nat_Croot) {
 _Nglc_Nat_Pwrite_space_1((*_Lat_1)._Fparent);
 }
-fprintf(_Gout, "_S%s", _Nglc_Nid_Pc_name_1((*_Lat_1)._Fname._Fid));
-} else if((*_Lat_1)._Fdef == _Nglc_Nat_def_Cenum) {
-if((*_Lat_1)._Fparent != _Nglc_Nat_Croot) {
-_Nglc_Nat_Pwrite_space_1((*_Lat_1)._Fparent);
-}
-fprintf(_Gout, "_E%s", _Nglc_Nid_Pc_name_1((*_Lat_1)._Fname._Fid));
-}
+fprintf(_Gout, "_N%s", _Nglc_Nid_Pc_name_1((*_Lat_1)._Fname._Fid));
 break;
 case _Nglc_Nname_type_Cbasic:;
 switch((*_Lat_1)._Fname._Fbasic) {
@@ -3089,6 +3082,8 @@ for(int i = (*_Ls_4)._Ffvar_c; i > 0; ) {
 i --;
 (*_Ls_4)._Ffvar_v[_Li_8]._Fdecl._Ftype = _Nglc_Pat_validate_2((*_Ls_4)._Ffvar_v[_Li_8]._Fdecl._Ftype, _Ls_at_5);
 if(!(_Nglc_Ndecl_var_data_Pprocess_4(&(*_Ls_4)._Ffvar_v[_Li_8]._Fdecl, _Lrow_6, _Lcol_7, _Ls_at_5))) {
+fprintf(stdout, "err\n");
+exit(_Nstdc_Nexit_Cfailure);
 return;
 }
 continue_0:;
@@ -4570,10 +4565,6 @@ _Lat_i_4 = _Nglc_Pat_validate_2((*_Lvd_0)._Ftype, _Lbase_at_3);
 (*_Lvd_0)._Ftype = _Lat_i_4;
 _Lat_5 = _Nglc_Nat_Pptr_1(_Lat_i_4);
 if((((*_Lat_5)._Ftype != _Nglc_Nname_type_Cbasic) && ((*_Lat_5)._Fdecl._Fstruct == _Nglc_Nstruct_Cnil))) {
-if((*_Nglc_Nat_Pptr_1((*_Lat_5)._Fparent))._Fname._Fbasic == _Nglc_Nbasic_type_id_Crelative) {
-fprintf(stdout, "relative path to type was detected\n");
-return false;
-}
 fprintf(stdout, "%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", _Nglc_Nfile_Ppath_1((*_Gctx_func)._Ffile), _Lrow_1, _Lcol_2, _Nglc_Nid_Pstr_1((*_Lat_5)._Fname._Fid), _Nglc_Nid_Pstr_1((*_Lvd_0)._Fname));
 return false;
 }
@@ -5083,10 +5074,6 @@ _Lat_idx_7 = _Nglc_Pat_validate_2(_Lat_idx_7, (*_Gctx_func)._Fat);
 while(1) {
 struct _Nglc_Nat_data* _Lat_9;
 _Lat_9 = _Nglc_Nat_Pptr_1(_Lat_idx_7);
-if((((*_Lat_9)._Fdecl._Fstruct == _Nglc_Nstruct_Cnil) && ((*_Lat_9)._Ftype != _Nglc_Nname_type_Cbasic) && ((*_Lat_9)._Ftype != _Nglc_Nname_type_Cmodule))) {
-fprintf(stdout, "%s:%u:%u - %u:%u: Cannot call function %s because the type :%s is not defined\n", _Nglc_Nfile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Nglc_Nid_Pstr_1(_Lfunc_name_3), _Nglc_Nid_Pstr_1((*_Lat_9)._Fname._Fid));
-return;
-}
 int32_t _Li_10;
 _Li_10 = 0;
 for(int i = (*_Lat_9)._Ffunc_c; i > 0; ) {

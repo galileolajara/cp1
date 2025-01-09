@@ -3141,11 +3141,6 @@ _Gdecl_at = _Gdecl_at_v[_Gdecl_at_c];
 }
 void _Nglc_Pdecl_alias_4(_Nglc_Nid _Lname_0, _Nglc_Nat _Lat_1, int32_t _Lrow_2, int32_t _Lcol_3) {
 _Nglc_Nalias _Lalias_idx_5;
-if((*_Nglc_Nat_Pptr_1(_Lat_1))._Ftype != _Nglc_Nname_type_Cmodule) {
-fprintf(stdout, "%s:%u:%u: Alias can only work on namespaces that ends with '%%'\n", input_path, _Lrow_2, _Lcol_3);
-exit(_Nstdc_Nexit_Cfailure);
-return;
-}
 int32_t _Li_4;
 _Li_4 = 0;
 for(int i = _Gat_alias_c; i > 0; ) {
