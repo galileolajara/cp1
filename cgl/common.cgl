@@ -672,7 +672,7 @@ end-if
                   .out.printf("struct ");
                }
                {if(at.parent != #root) at.parent.write-space()}
-               .out.printf("_S%s", at.name.id.c-name());
+               .out.printf("_N%s", at.name.id.c-name());
             }{elif(at.def == #enum)
                +t-idx = at.decl.enum;
                {if(t-idx != #nil)
@@ -683,7 +683,7 @@ end-if
                   }
                }
                {if(at.parent != #root) at.parent.write-space()}
-               .out.printf("_E%s", at.name.id.c-name());
+               .out.printf("_N%s", at.name.id.c-name());
             }
          }
          {case(#basic)
@@ -730,13 +730,13 @@ end-if
             .out.printf("_M%s", at.name.id.c-name());
          }
          {case(#struct-enum)
-            {if(at.def == #struct)
+            `` {if(at.def == #struct)
                {if(at.parent != #root) at.parent.write-space()}
-               .out.printf("_S%s", at.name.id.c-name());
-            }{elif(at.def == #enum)
-               {if(at.parent != #root) at.parent.write-space()}
-               .out.printf("_E%s", at.name.id.c-name());
-            }
+               .out.printf("_N%s", at.name.id.c-name());
+            `` }{elif(at.def == #enum)
+            ``    {if(at.parent != #root) at.parent.write-space()}
+            ``    .out.printf("_E%s", at.name.id.c-name());
+            `` }
          }
          {case(#basic)
             {switch(at.name.basic)

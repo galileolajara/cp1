@@ -324,10 +324,10 @@
       }
       {do()
          +at = at-idx.ptr();
-         {if(&&, at.decl.struct == #nil, at.type != #basic, at.type != #module)
-            'c.out.printf("%s:%u:%u - %u:%u: Cannot call function %s because the type :%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), at.name.id.str());
-            :return;
-         }
+         `` {if(&&, at.decl.struct == #nil, at.type != #basic, at.type != #module)
+         ``    'c.out.printf("%s:%u:%u - %u:%u: Cannot call function %s because the type :%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), at.name.id.str());
+         ``    :return;
+         `` }
          `` +found = -1;
          `` +similar-c = 0;
          `` 'c.out.printf("searching from %u functions\n", at.func-c);

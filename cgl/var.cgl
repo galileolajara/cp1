@@ -21,7 +21,7 @@
       ``       'c.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cgl-name());
       ``    }
       `` }
-      `` 'c.out.printf("relative detected on var %s, finding :%s\n", vd-name.str(), name.id.str());
+      `` 'c.out.printf("relative type detected, finding :%s\n", name.id.str());
       {do()
          {do{+i = 0:at}{(.at-c) i++}
             {if(&&, .at-v[i].parent == at-i, .at-v[i].type != #basic)
@@ -50,10 +50,6 @@
       vd.type = at-i;
       +at = at-i.ptr();
       {if(&&, at.type != #basic, at.decl.struct == #nil)
-         {if(at.parent.ptr().name.basic == #relative)
-            'c.out.printf("relative path to type was detected\n");
-            :return :false;
-         }
          'c.out.printf("%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", .ctx-func.file.path(), row, col, at.name.id.str(), vd.name.str());
          :return :false;
       }

@@ -127,11 +127,11 @@
    'c.exit(#failure);
 }
 {decl-alias(name:id, at:at, row:i32, col:i32)
-   {if(at.ptr().type != #module)
-      'c.out.printf("%s:%u:%u: Alias can only work on namespaces that ends with '%%'\n", .input-path, row, col);
-      'c.exit(#failure);
-      :return;
-   }
+   `` {if(at.ptr().type != #module)
+   ``    'c.out.printf("%s:%u:%u: Alias can only work on namespaces that ends with '%%'\n", .input-path, row, col);
+   ``    'c.exit(#failure);
+   ``    :return;
+   `` }
    {do{+i = 0}{(.at-alias-c) i++}
       {if(.at-alias-name-v[i] == name)
          'c.out.printf("%s:%u:%u: Alias '%s was already declared at %u:%u\n", .input-path, row, col, name.str(), .at-alias-pos-v[i].row, .at-alias-pos-v[i].col);
