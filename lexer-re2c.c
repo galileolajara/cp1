@@ -205,7 +205,7 @@ int glc_lexer_scan(struct glc_lexer* l) {
    ":" id                           { return GLC_TOKEN_ID_COLON; }
    // "/" id                           { return GLC_TOKEN_ID_FSLASH; }
    "\\" id                          { return GLC_TOKEN_ID_BSLASH; }
-   "%" id                           { return GLC_TOKEN_ID_MODULO; }
+   // "%" id                           { return GLC_TOKEN_ID_MODULO; }
    "'" id                           { return GLC_TOKEN_ID_QUOTE; }
    "#" id                           { return GLC_TOKEN_ID_HASH; }
    // "." id                           { return GLC_TOKEN_ID_DOT; }

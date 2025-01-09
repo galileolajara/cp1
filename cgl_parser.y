@@ -38,8 +38,8 @@ end_pos(t) ::= .
 // NOTE BEGIN: Order of declaration of the following must not be changed:
 func_decl_begin ::= ID_LPAREN(name).
    { _Nglc_Pdecl_func_begin_3(name.basic.id, name.basic.row, name.basic.col); }
-at_name ::= ID_MODULO(e).
-   { _Nglc_Pat_push_4(e.basic.id, 0, e.basic.row, e.basic.col); }
+/* at_name ::= ID_MODULO(e).
+   { _Nglc_Pat_push_4(e.basic.id, 0, e.basic.row, e.basic.col); } */
 at_name ::= ID_COLON(e).
    { _Nglc_Pat_push_4(e.basic.id, 1, e.basic.row, e.basic.col); }
 /* at_name ::= ID_BSLASH(e).
@@ -105,8 +105,8 @@ at(l) ::= at_root.
    { l.basic.id = _Nglc_Pat_done_0(); }
 at(l) ::= at_graves.
    { l.basic.id = _Nglc_Pat_done_0(); }
-decl_at_name ::= ID_MODULO(e).
-   { _Nglc_Pdecl_at_add_2(e.basic.id, 0); }
+/* decl_at_name ::= ID_MODULO(e).
+   { _Nglc_Pdecl_at_add_2(e.basic.id, 0); } */
 decl_at_name ::= ID_COLON(e).
    { _Nglc_Pdecl_at_add_2(e.basic.id, 1); }
 decl_at_name ::= ID_BSLASH(e).

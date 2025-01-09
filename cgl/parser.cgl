@@ -1028,7 +1028,7 @@
       .col = tok.col;
       `` 'c.out.printf("%s:%u:%u: token %s\n", .input-path, tok.row, tok.col, t.cgl-name());
       `` 'c.out.flush();
-      {if(&&, t >= #id-modulo, t < #id)
+      {if(&&, t >= #id-colon, t < #id)
          tok.id = lex.get-id(1, 0);
          psr.parse(t, tok);
       }{else

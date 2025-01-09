@@ -25,8 +25,7 @@
 #define _Nglc_Ntoken_Cminus (_Nglc_Ntoken_Cplus + 1)
 #define _Nglc_Ntoken_Cspace (_Nglc_Ntoken_Cminus + 1)
 #define _Nglc_Ntoken_Cid_lparen (_Nglc_Ntoken_Cspace + 1)
-#define _Nglc_Ntoken_Cid_modulo (_Nglc_Ntoken_Cid_lparen + 1)
-#define _Nglc_Ntoken_Cid_colon (_Nglc_Ntoken_Cid_modulo + 1)
+#define _Nglc_Ntoken_Cid_colon (_Nglc_Ntoken_Cid_lparen + 1)
 #define _Nglc_Ntoken_Cid_quote (_Nglc_Ntoken_Cid_colon + 1)
 #define _Nglc_Ntoken_Cid_hash (_Nglc_Ntoken_Cid_quote + 1)
 #define _Nglc_Ntoken_Clcbrace (_Nglc_Ntoken_Cid_hash + 1)
@@ -1030,7 +1029,6 @@ case _Nglc_Ntoken_Cplus: return "plus";
 case _Nglc_Ntoken_Cminus: return "minus";
 case _Nglc_Ntoken_Cspace: return "space";
 case _Nglc_Ntoken_Cid_lparen: return "id-lparen";
-case _Nglc_Ntoken_Cid_modulo: return "id-modulo";
 case _Nglc_Ntoken_Cid_colon: return "id-colon";
 case _Nglc_Ntoken_Cid_quote: return "id-quote";
 case _Nglc_Ntoken_Cid_hash: return "id-hash";
@@ -1578,7 +1576,7 @@ _Glast_row = _Grow;
 _Glast_col = _Gcol;
 _Grow = _Ltok_26._Frow;
 _Gcol = _Ltok_26._Fcol;
-if(((_Lt_27 >= _Nglc_Ntoken_Cid_modulo) && (_Lt_27 < _Nglc_Ntoken_Cid))) {
+if(((_Lt_27 >= _Nglc_Ntoken_Cid_colon) && (_Lt_27 < _Nglc_Ntoken_Cid))) {
 _Ltok_26._Fid = _Nglc_Nlexer_Pget_id_3(&_Llex_23, 1, 0);
 glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
 } else {
