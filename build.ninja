@@ -67,7 +67,7 @@ build out/cgl: ld-c2 out/cgl.cgl.c
 build out/parser2.cgl.c.o: c2 out/parser2.cgl.c
 build out/parser2.c.o: c2 parser2.c | out/export.h out/lexer.c out/cgl_parser.c
 build out/hashtable.cpp.o: cpp2 hashtable.cpp
-build out/parser2: ld-cpp2 out/parser2.cgl.c.o out/parser2.c.o out/hashtable.cpp.o
+build out/cgl-parser: ld-cpp2 out/parser2.cgl.c.o out/parser2.c.o out/hashtable.cpp.o
 build out/compiler2.cgl.c.o: c2 out/compiler2.cgl.c
 build out/str2.c.o: c2 str2.c
-build out/compiler2: ld-cpp2 out/compiler2.cgl.c.o out/str2.c.o out/hashtable.cpp.o
+build out/cgl-compiler: ld-cpp2 out/compiler2.cgl.c.o out/str2.c.o out/hashtable.cpp.o

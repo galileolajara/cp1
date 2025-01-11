@@ -1926,7 +1926,7 @@ _Gquick_alloc_cap = (16 * 1024);
 _Gquick_alloc_v = malloc(_Gquick_alloc_cap);
 memset(_Gquick_alloc_v, 0, _Gquick_alloc_cap);
 }
-bool _Nstdc_Nfd_Popen_3(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2) {
+inline bool _Nstdc_Nfd_Popen_3(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2) {
 _Nstdc_Nfd _Lfd_3;
 _Lfd_3 = open(_Lpath_1, _Lflags_2);
 if(_Lfd_3 != -1) {
@@ -1936,7 +1936,7 @@ return true;
 return false;
 }
 }
-int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0) {
+inline int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0) {
 return close(_Lfile_0);
 }
 void _Nglc_Pget_row_col_4(int32_t* _Lout_row_0, int32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3) {
@@ -2173,21 +2173,21 @@ memset(_Gquick_alloc_v, 0, _Gquick_alloc_cap);
 _Gquick_alloc_c = _Lsize_0;
 return _Gquick_alloc_v;
 }
-void _Nglc_Nwtr_Pn1_2(union _Nglc_Nwtr* _Lw_0, uint8_t _Ln_1) {
+inline void _Nglc_Nwtr_Pn1_2(union _Nglc_Nwtr* _Lw_0, uint8_t _Ln_1) {
 (*_Lw_0)._Fp1[0] = _Ln_1;
 (*_Lw_0)._Fpos++;
 }
-void _Nglc_Nwtr_Pcopy_3(union _Nglc_Nwtr* _Lw_0, void* _Ldata_1, int32_t _Lsize_2) {
+inline void _Nglc_Nwtr_Pcopy_3(union _Nglc_Nwtr* _Lw_0, void* _Ldata_1, int32_t _Lsize_2) {
 memcpy((*_Lw_0)._Fref, _Ldata_1, _Lsize_2);
 (*_Lw_0)._Fpos += _Lsize_2;
 }
-void _Nglc_Nname_type_Pwr_2(_Nglc_Nname_type _Li_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nname_type_Pwr_2(_Nglc_Nname_type _Li_0, union _Nglc_Nwtr* _Lw_1) {
 _Nglc_Nwtr_Pn1_2(_Lw_1, _Li_0);
 }
-void _Nglc_Nbasic_type_id_Pwr_2(_Nglc_Nbasic_type_id _Le_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nbasic_type_id_Pwr_2(_Nglc_Nbasic_type_id _Le_0, union _Nglc_Nwtr* _Lw_1) {
 _Nglc_Nwtr_Pn1_2(_Lw_1, _Le_0);
 }
-void _Nglc_Nat_Pwr_3(_Nglc_Nat _Lat_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nat_Pwr_3(_Nglc_Nat _Lat_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 if(_Lat_0 == _Nglc_Nat_Cnil) {
 Fputnum(_Lw_1, 0);
 } else {
@@ -2199,7 +2199,7 @@ _Nglc_Nat_Pput_to_header_1(_Lat_0);
 }
 }
 }
-void _Nglc_Nid_Pwr_3(_Nglc_Nid _Lid_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nid_Pwr_3(_Nglc_Nid _Lid_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 if(_Lid_0 == _Nglc_Nid_Cnil) {
 Fputnum(_Lw_1, 0);
 } else {
@@ -2308,7 +2308,7 @@ continue_0:;
 }
 break_0:;
 }
-void _Nglc_Pwrite_func_2(union _Nglc_Nwtr* _Lw_0, bool _Lheader_1) {
+inline void _Nglc_Pwrite_func_2(union _Nglc_Nwtr* _Lw_0, bool _Lheader_1) {
 Fputnum(_Lw_0, _Gfunc_c);
 int32_t _Li_2;
 _Li_2 = 0;
@@ -2397,7 +2397,7 @@ continue_3:;
 }
 break_3:;
 }
-bool _Nstdc_Nfd_Popen_4(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2, int32_t _Lmode_3) {
+inline bool _Nstdc_Nfd_Popen_4(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2, int32_t _Lmode_3) {
 _Nstdc_Nfd _Lfd_4;
 _Lfd_4 = open(_Lpath_1, _Lflags_2, _Lmode_3);
 if(_Lfd_4 != -1) {
@@ -2407,14 +2407,14 @@ return true;
 return false;
 }
 }
-void _Nglc_Nat_Pwr_header_2(_Nglc_Nat _Lid_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nat_Pwr_header_2(_Nglc_Nat _Lid_0, union _Nglc_Nwtr* _Lw_1) {
 if(_Lid_0 == _Nglc_Nat_Cnil) {
 Fputnum(_Lw_1, 0);
 } else {
 Fputnum(_Lw_1, 1 + _Gat_in_header_idx_v[_Lid_0]);
 }
 }
-void _Nglc_Nid_Pwr_header_2(_Nglc_Nid _Lid_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nid_Pwr_header_2(_Nglc_Nid _Lid_0, union _Nglc_Nwtr* _Lw_1) {
 if(_Lid_0 == _Nglc_Nid_Cnil) {
 Fputnum(_Lw_1, 0);
 } else {
@@ -3727,7 +3727,7 @@ _Nglc_Nat_Pput_to_header_1((*_Nglc_Nat_Pptr_1(_Lat_0))._Fparent);
 }
 }
 }
-void _Nglc_Ninclude_Pwr_2(_Nglc_Ninclude _Li_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Ninclude_Pwr_2(_Nglc_Ninclude _Li_0, union _Nglc_Nwtr* _Lw_1) {
 Fputnum(_Lw_1, _Li_0 + 1);
 }
 void _Nglc_Ndecl_var_data_Pwr_3(struct _Nglc_Ndecl_var_data* _Lvd_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
@@ -3749,7 +3749,7 @@ _Li_3++;
 }
 break_0:;
 }
-void _Nglc_Ncvar_flags_Pwr_2(_Nglc_Ncvar_flags _Lf_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Ncvar_flags_Pwr_2(_Nglc_Ncvar_flags _Lf_0, union _Nglc_Nwtr* _Lw_1) {
 _Nglc_Nwtr_Pn1_2(_Lw_1, _Lf_0);
 }
 void _Nglc_Nexpr_i_Pwr_3(_Nglc_Nexpr_i _Le_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
@@ -3833,13 +3833,13 @@ if(_Nglc_Cdebug_rd_wr) {
 _Nglc_Nwtr_Pn1_2(_Lw_1, 255);
 }
 }
-void _Nglc_Ncvar_Pwr_2(_Nglc_Ncvar _Lg_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Ncvar_Pwr_2(_Nglc_Ncvar _Lg_0, union _Nglc_Nwtr* _Lw_1) {
 Fputnum(_Lw_1, _Lg_0 + 1);
 }
-void _Nglc_Nenum_flags_Pwr_2(_Nglc_Nenum_flags _Le_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nenum_flags_Pwr_2(_Nglc_Nenum_flags _Le_0, union _Nglc_Nwtr* _Lw_1) {
 _Nglc_Nwtr_Pn1_2(_Lw_1, _Le_0);
 }
-void _Nglc_Nstruct_flags_Pwr_2(_Nglc_Nstruct_flags _Lf_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nstruct_flags_Pwr_2(_Nglc_Nstruct_flags _Lf_0, union _Nglc_Nwtr* _Lw_1) {
 _Nglc_Nwtr_Pn1_2(_Lw_1, _Lf_0);
 }
 void _Nglc_Nfvar_data_Pwr_3(struct _Nglc_Nfvar_data* _Lf_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
@@ -3848,10 +3848,10 @@ _Nglc_Ndecl_var_data_Pwr_3(&(*_Lf_0)._Fdecl, _Lw_1, _Lheader_2);
 void _Nglc_Nfarg_Pwr_3(struct _Nglc_Nfarg* _Lf_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 _Nglc_Ndecl_var_data_Pwr_3(&(*_Lf_0)._Fdecl, _Lw_1, _Lheader_2);
 }
-void _Nglc_Nfunc_flags_Pwr_2(_Nglc_Nfunc_flags _Le_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nfunc_flags_Pwr_2(_Nglc_Nfunc_flags _Le_0, union _Nglc_Nwtr* _Lw_1) {
 Fputnum(_Lw_1, _Le_0);
 }
-void _Nglc_Nfunc_Pwr_2(_Nglc_Nfunc _Lf_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nfunc_Pwr_2(_Nglc_Nfunc _Lf_0, union _Nglc_Nwtr* _Lw_1) {
 Fputnum(_Lw_1, _Lf_0 + _Nglc_Nfunc_C1);
 }
 void _Nglc_Ndecl_func_Plvars_wr_3(struct _Nglc_Ndecl_func* _Lf_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
@@ -3968,7 +3968,7 @@ continue_1:;
 break_1:;
 _Nglc_Nstmt_type_Pwr_2(_Nglc_Nstmt_type_Cnil, _Lw_1);
 }
-void _Nglc_Nwtr_Pn4_2(union _Nglc_Nwtr* _Lw_0, uint32_t _Ln_1) {
+inline void _Nglc_Nwtr_Pn4_2(union _Nglc_Nwtr* _Lw_0, uint32_t _Ln_1) {
 (*_Lw_0)._Fp1[0] = _Ln_1;
 (*_Lw_0)._Fp1[1] = (_Ln_1 >> 8);
 (*_Lw_0)._Fp1[2] = (_Ln_1 >> 16);
@@ -4001,13 +4001,13 @@ void _Nglc_Nfarg_Pcopy_from_2(struct _Nglc_Nfarg* _Lf_0, struct _Nglc_Nfarg* _Ls
 (*_Lf_0)._Fcol = (*_Lsrc_1)._Fcol;
 _Nglc_Ndecl_var_data_Pcopy_from_2(&(*_Lf_0)._Fdecl, &(*_Lsrc_1)._Fdecl);
 }
-uint8_t _Nglc_Nid_Plen_1(_Nglc_Nid _Lid_0) {
+inline uint8_t _Nglc_Nid_Plen_1(_Nglc_Nid _Lid_0) {
 return _Gid_len_v[_Lid_0];
 }
-char* _Nglc_Nid_Pstr_1(_Nglc_Nid _Lid_0) {
+inline char* _Nglc_Nid_Pstr_1(_Nglc_Nid _Lid_0) {
 return _Gid_str_v[_Lid_0];
 }
-struct _Nglc_Ndecl_func* _Nglc_Nfunc_Pptr_1(_Nglc_Nfunc _Lf_0) {
+inline struct _Nglc_Ndecl_func* _Nglc_Nfunc_Pptr_1(_Nglc_Nfunc _Lf_0) {
 return _Gfunc_v[_Lf_0];
 }
 _Nglc_Nlvar _Nglc_Nstmt_space_Plvar_new_4(struct _Nglc_Nstmt_space* _Lspace_0, _Nglc_Nid _Lname_1, int32_t _Lrow_2, int32_t _Lcol_3) {
@@ -4054,7 +4054,7 @@ _Nglc_Pquick_alloc_one_1(_Litem_12);
 (*_Litem_12)._Fdecl._Fname = _Lname_1;
 return _Llvar_10;
 }
-struct _Nglc_Nlvar_data* _Nglc_Nlvar_Pptr_1(_Nglc_Nlvar _Ll_0) {
+inline struct _Nglc_Nlvar_data* _Nglc_Nlvar_Pptr_1(_Nglc_Nlvar _Ll_0) {
 return (*_Gctx_func)._Flvar_v[_Ll_0];
 }
 void _Nglc_Ntype_info_Pinit_1(struct _Nglc_Ntype_info* _Lti_0) {
@@ -4077,7 +4077,7 @@ _Nglc_Prealloc_3(_Gexpr_v, _Gexpr_cap, _Lold_cap_3);
 _Gexpr_v[_Le_idx_2] = _Le_0;
 return _Le_idx_2;
 }
-struct _Nglc_Nexpr* _Nglc_Nexpr_i_Pptr_1(_Nglc_Nexpr_i _Le_0) {
+inline struct _Nglc_Nexpr* _Nglc_Nexpr_i_Pptr_1(_Nglc_Nexpr_i _Le_0) {
 return _Gexpr_v[_Le_0];
 }
 void _Nglc_Pstmt_push_6(struct _Nglc_Nstmt* _Ls_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4, _Nglc_Nstmt_type _Ltype_5) {
@@ -4088,10 +4088,10 @@ void _Nglc_Pstmt_push_6(struct _Nglc_Nstmt* _Ls_0, int32_t _Lbegin_row_1, int32_
 (*_Ls_0)._Ftype = _Ltype_5;
 _Nglc_Pfunc_stmt_add_1(_Ls_0);
 }
-_Nglc_Nid _Nglc_Nlvar_Pname_1(_Nglc_Nlvar _Ll_0) {
+inline _Nglc_Nid _Nglc_Nlvar_Pname_1(_Nglc_Nlvar _Ll_0) {
 return (*_Nglc_Nlvar_Pptr_1(_Ll_0))._Fdecl._Fname;
 }
-struct _Nglc_Nat_data* _Nglc_Nat_Pptr_1(_Nglc_Nat _Li_0) {
+inline struct _Nglc_Nat_data* _Nglc_Nat_Pptr_1(_Nglc_Nat _Li_0) {
 return &_Gat_v[_Li_0];
 }
 _Nglc_Nat _Nglc_Pat_create_basic_1(_Nglc_Nbasic_type_id _Lbasic_0) {
@@ -4188,7 +4188,7 @@ continue_1:;
 break_1:;
 (*_Lti_0)._Fstar_c = _Lstar_c_3;
 }
-struct _Nglc_Ncvar_data* _Nglc_Ncvar_Pptr_1(_Nglc_Ncvar _Lc_0) {
+inline struct _Nglc_Ncvar_data* _Nglc_Ncvar_Pptr_1(_Nglc_Ncvar _Lc_0) {
 return &_Gcvar_v[_Lc_0];
 }
 struct _Nglc_Nstmt_space* _Nglc_Pstmt_space_begin_1(bool _Lattach_0) {
@@ -4209,7 +4209,7 @@ if((*_Lparent_1)._Fstmt_last == NULL) {
 }
 return _Lspace_2;
 }
-void _Nglc_Nvar_flags_Pwr_2(_Nglc_Nvar_flags _Lf_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nvar_flags_Pwr_2(_Nglc_Nvar_flags _Lf_0, union _Nglc_Nwtr* _Lw_1) {
 Fputnum(_Lw_1, _Lf_0);
 }
 void _Nglc_Ntype_info_Pwr_2(struct _Nglc_Ntype_info* _Lti_0, union _Nglc_Nwtr* _Lw_1) {
@@ -4239,10 +4239,10 @@ _Nglc_Nwtr_Pn1_2(_Lw_1, (*_Lti_0)._Fstar_c);
 _Nglc_Nwtr_Pb_2(_Lw_1, (*_Lti_0)._Fbuilt_in);
 _Nglc_Nwtr_Pb_2(_Lw_1, (*_Lti_0)._Fconst);
 }
-void _Nglc_Nexpr_type_Pwr_2(_Nglc_Nexpr_type _Le_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nexpr_type_Pwr_2(_Nglc_Nexpr_type _Le_0, union _Nglc_Nwtr* _Lw_1) {
 _Nglc_Nwtr_Pn1_2(_Lw_1, _Le_0);
 }
-void _Nglc_Nexpr_i_Pwr_math_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_math_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_math* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nexpr_i_Pwr_3((*_Le_3)._Fleft, _Lw_1, _Lheader_2);
@@ -4259,7 +4259,7 @@ _Li_4++;
 }
 break_0:;
 }
-void _Nglc_Nexpr_i_Pwr_bools_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_bools_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_bools* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nexpr_i_Pwr_3((*_Le_3)._Fleft, _Lw_1, _Lheader_2);
@@ -4276,7 +4276,7 @@ _Li_4++;
 break_0:;
 _Nglc_Nbools_Pwr_2((*_Le_3)._Ftype, _Lw_1);
 }
-void _Nglc_Nexpr_i_Pwr_str_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_str_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_str* _Le_3;
 struct _Nglc_Nexpr_str_node* _Ln_4;
 _Le_3 = _Lexpr_0;
@@ -4293,53 +4293,53 @@ continue_0:;
 }
 break_0:;
 }
-void _Nglc_Nexpr_i_Pwr_cvar_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_cvar_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_cvar* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nat_Pwr_3((*_Le_3)._Fat, _Lw_1, _Lheader_2);
 _Nglc_Nid_Pwr_3((*_Le_3)._Fname, _Lw_1, _Lheader_2);
 }
-void _Nglc_Nexpr_i_Pwr_unary_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_unary_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_unary* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nexpr_i_Pwr_3((*_Le_3)._Fexpr, _Lw_1, _Lheader_2);
 _Nglc_Nunary_Pwr_2((*_Le_3)._Ftype, _Lw_1);
 }
-void _Nglc_Nexpr_i_Pwr_ref_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_ref_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_ref* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nexpr_i_Pwr_3((*_Le_3)._Fexpr, _Lw_1, _Lheader_2);
 }
-void _Nglc_Nexpr_i_Pwr_cast_fast_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_cast_fast_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_cast_fast* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nexpr_i_Pwr_3((*_Le_3)._Fexpr, _Lw_1, _Lheader_2);
 _Nglc_Nat_Pwr_3((*_Le_3)._Ftype, _Lw_1, _Lheader_2);
 }
-void _Nglc_Nexpr_i_Pwr_index_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_index_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_index* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nexpr_i_Pwr_3((*_Le_3)._Fleft, _Lw_1, _Lheader_2);
 _Nglc_Nexpr_i_Pwr_3((*_Le_3)._Fright, _Lw_1, _Lheader_2);
 }
-void _Nglc_Nexpr_i_Pwr_compare_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_compare_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_compare* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nexpr_i_Pwr_3((*_Le_3)._Fleft, _Lw_1, _Lheader_2);
 _Nglc_Nexpr_i_Pwr_3((*_Le_3)._Fright, _Lw_1, _Lheader_2);
 _Nglc_Ncompare_Pwr_2((*_Le_3)._Ftype, _Lw_1);
 }
-void _Nglc_Nexpr_i_Pwr_bool_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_bool_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_bool* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nwtr_Pb_2(_Lw_1, (*_Le_3)._Fvalue);
 }
-void _Nglc_Nexpr_i_Pwr_char_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_char_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_char* _Le_3;
 _Le_3 = _Lexpr_0;
 Fputnum(_Lw_1, (*_Le_3)._Fvalue);
 }
-void _Nglc_Nexpr_i_Pwr_method_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_method_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_method* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nexpr_i_Pwr_3((*_Le_3)._Fthis, _Lw_1, _Lheader_2);
@@ -4365,7 +4365,7 @@ _Li_5++;
 }
 break_1:;
 }
-void _Nglc_Nexpr_i_Pwr_func_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_func_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_func* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nat_Pwr_3((*_Le_3)._Fat, _Lw_1, _Lheader_2);
@@ -4391,66 +4391,66 @@ _Li_5++;
 }
 break_1:;
 }
-void _Nglc_Nexpr_i_Pwr_null_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_null_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_null* _Le_3;
 _Le_3 = _Lexpr_0;
 }
-void _Nglc_Nexpr_i_Pwr_i32_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_i32_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_int_data* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nwtr_Pn1_2(_Lw_1, (*_Le_3)._Ftype);
 Fputnum(_Lw_1, (*_Le_3)._Fvalue);
 }
-void _Nglc_Nexpr_i_Pwr_size_of_type_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_size_of_type_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_size_of_type* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nat_Pwr_3((*_Le_3)._Ftype, _Lw_1, _Lheader_2);
 }
-void _Nglc_Nexpr_i_Pwr_assign_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_assign_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_assign* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nexpr_i_Pwr_3((*_Le_3)._Fleft, _Lw_1, _Lheader_2);
 _Nglc_Nexpr_i_Pwr_3((*_Le_3)._Fright, _Lw_1, _Lheader_2);
 _Nglc_Nassign_Pwr_2((*_Le_3)._Ftype, _Lw_1);
 }
-void _Nglc_Nexpr_i_Pwr_fvar_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_fvar_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_fvar* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nexpr_i_Pwr_3((*_Le_3)._Fexpr, _Lw_1, _Lheader_2);
 _Nglc_Nid_Pwr_3((*_Le_3)._Fmember, _Lw_1, _Lheader_2);
 }
-void _Nglc_Nexpr_i_Pwr_gvar_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_gvar_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_gvar* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nat_Pwr_3((*_Le_3)._Fat, _Lw_1, _Lheader_2);
 _Nglc_Nid_Pwr_3((*_Le_3)._Fname, _Lw_1, _Lheader_2);
 }
-void _Nglc_Nexpr_i_Pwr_lvar_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nexpr_i_Pwr_lvar_3(struct _Nglc_Nexpr* _Lexpr_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nexpr_lvar* _Le_3;
 _Le_3 = _Lexpr_0;
 _Nglc_Nlvar_Pwr_2((*_Le_3)._Flvar, _Lw_1);
 }
-void _Nglc_Nlvar_flags_Pwr_2(_Nglc_Nlvar_flags _Lf_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nlvar_flags_Pwr_2(_Nglc_Nlvar_flags _Lf_0, union _Nglc_Nwtr* _Lw_1) {
 _Nglc_Nwtr_Pn1_2(_Lw_1, _Lf_0);
 }
-void _Nglc_Nlvar_Pwr_2(_Nglc_Nlvar _Ll_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nlvar_Pwr_2(_Nglc_Nlvar _Ll_0, union _Nglc_Nwtr* _Lw_1) {
 Fputnum(_Lw_1, _Ll_0 + 1);
 }
-void _Nglc_Nstmt_type_Pwr_2(_Nglc_Nstmt_type _Ls_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nstmt_type_Pwr_2(_Nglc_Nstmt_type _Ls_0, union _Nglc_Nwtr* _Lw_1) {
 _Nglc_Nwtr_Pn1_2(_Lw_1, _Ls_0);
 }
-void _Nglc_Nstmt_space_Pwr_break_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_break_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nstmt_break* _Ls_3;
 _Ls_3 = _Lstmt_0;
 _Nglc_Nwtr_Pn1_2(_Lw_1, (*_Ls_3)._Fnest);
 }
-void _Nglc_Nstmt_space_Pwr_switch_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_switch_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nstmt_switch* _Ls_3;
 _Ls_3 = _Lstmt_0;
 _Nglc_Nexpr_i_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
 _Nglc_Nexpr_i_Pwr_3((*_Ls_3)._Fcases, _Lw_1, _Lheader_2);
 }
-void _Nglc_Nstmt_space_Pwr_case_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_case_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nstmt_case* _Ls_3;
 _Ls_3 = _Lstmt_0;
 Fputnum(_Lw_1, (*_Ls_3)._Fexpr_c);
@@ -4465,34 +4465,34 @@ _Li_4++;
 break_0:;
 _Nglc_Nwtr_Pb_2(_Lw_1, (*_Ls_3)._Ffall_through);
 }
-void _Nglc_Nstmt_space_Pwr_case_end_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_case_end_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 }
-void _Nglc_Nstmt_space_Pwr_default_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_default_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nstmt_default* _Ls_3;
 _Ls_3 = _Lstmt_0;
 _Nglc_Nwtr_Pb_2(_Lw_1, (*_Ls_3)._Ffall_through);
 }
-void _Nglc_Nstmt_space_Pwr_default_end_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_default_end_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 }
-void _Nglc_Nstmt_space_Pwr_switch_end_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_switch_end_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 }
-void _Nglc_Nstmt_space_Pwr_if_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_if_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nstmt_if* _Ls_3;
 _Ls_3 = _Lstmt_0;
 _Nglc_Nwtr_Pb_2(_Lw_1, (*_Ls_3)._Fnot);
 _Nglc_Nexpr_i_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
 }
-void _Nglc_Nstmt_space_Pwr_if_elif_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_if_elif_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nstmt_if_elif* _Ls_3;
 _Ls_3 = _Lstmt_0;
 _Nglc_Nwtr_Pb_2(_Lw_1, (*_Ls_3)._Fnot);
 _Nglc_Nexpr_i_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
 }
-void _Nglc_Nstmt_space_Pwr_if_else_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_if_else_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 }
-void _Nglc_Nstmt_space_Pwr_if_end_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_if_end_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 }
-void _Nglc_Nstmt_space_Pwr_do_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_do_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nstmt_do* _Ls_3;
 _Ls_3 = _Lstmt_0;
 _Nglc_Nexpr_i_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
@@ -4503,9 +4503,9 @@ _Nglc_Nstmt_space_Pwr_3((*_Ls_3)._Fcontinu, _Lw_1, _Lheader_2);
 _Nglc_Nwtr_Pb_2(_Lw_1, false);
 }
 }
-void _Nglc_Nstmt_space_Pwr_do_end_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_do_end_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 }
-void _Nglc_Nstmt_space_Pwr_while_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_while_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nstmt_while* _Ls_3;
 _Ls_3 = _Lstmt_0;
 _Nglc_Nexpr_i_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
@@ -4516,24 +4516,24 @@ _Nglc_Nstmt_space_Pwr_3((*_Ls_3)._Fcontinu, _Lw_1, _Lheader_2);
 _Nglc_Nwtr_Pb_2(_Lw_1, false);
 }
 }
-void _Nglc_Nstmt_space_Pwr_while_end_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_while_end_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 }
-void _Nglc_Nstmt_space_Pwr_continue_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_continue_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nstmt_continue* _Ls_3;
 _Ls_3 = _Lstmt_0;
 _Nglc_Nwtr_Pn1_2(_Lw_1, (*_Ls_3)._Fnest);
 }
-void _Nglc_Nstmt_space_Pwr_return_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_return_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nstmt_return* _Ls_3;
 _Ls_3 = _Lstmt_0;
 _Nglc_Nexpr_i_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
 }
-void _Nglc_Nstmt_space_Pwr_space_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_space_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nstmt_space* _Ls_3;
 _Ls_3 = _Lstmt_0;
 _Nglc_Nstmt_space_Pwr_3(_Ls_3, _Lw_1, _Lheader_2);
 }
-void _Nglc_Nstmt_space_Pwr_expr_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
+inline void _Nglc_Nstmt_space_Pwr_expr_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* _Lw_1, bool _Lheader_2) {
 struct _Nglc_Nstmt_expr* _Ls_3;
 _Ls_3 = _Lstmt_0;
 _Nglc_Nexpr_i_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
@@ -4554,25 +4554,25 @@ if((*_Gdecl_func_ctx_space)._Fstmt_last == NULL) {
 (*_Gdecl_func_ctx_space)._Fstmt_last = _Ls_0;
 }
 }
-void _Nglc_Nwtr_Pb_2(union _Nglc_Nwtr* _Lw_0, bool _Lval_1) {
+inline void _Nglc_Nwtr_Pb_2(union _Nglc_Nwtr* _Lw_0, bool _Lval_1) {
 if(_Lval_1) {
 _Nglc_Nwtr_Pn1_2(_Lw_0, 1);
 } else {
 _Nglc_Nwtr_Pn1_2(_Lw_0, 0);
 }
 }
-void _Nglc_Nmath_Pwr_2(_Nglc_Nmath _Le_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nmath_Pwr_2(_Nglc_Nmath _Le_0, union _Nglc_Nwtr* _Lw_1) {
 _Nglc_Nwtr_Pn1_2(_Lw_1, _Le_0);
 }
-void _Nglc_Nbools_Pwr_2(_Nglc_Nbools _Le_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nbools_Pwr_2(_Nglc_Nbools _Le_0, union _Nglc_Nwtr* _Lw_1) {
 _Nglc_Nwtr_Pn1_2(_Lw_1, _Le_0);
 }
-void _Nglc_Nunary_Pwr_2(_Nglc_Nunary _Lu_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nunary_Pwr_2(_Nglc_Nunary _Lu_0, union _Nglc_Nwtr* _Lw_1) {
 _Nglc_Nwtr_Pn1_2(_Lw_1, _Lu_0);
 }
-void _Nglc_Ncompare_Pwr_2(_Nglc_Ncompare _Le_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Ncompare_Pwr_2(_Nglc_Ncompare _Le_0, union _Nglc_Nwtr* _Lw_1) {
 _Nglc_Nwtr_Pn1_2(_Lw_1, _Le_0);
 }
-void _Nglc_Nassign_Pwr_2(_Nglc_Nassign _Ls_0, union _Nglc_Nwtr* _Lw_1) {
+inline void _Nglc_Nassign_Pwr_2(_Nglc_Nassign _Ls_0, union _Nglc_Nwtr* _Lw_1) {
 _Nglc_Nwtr_Pn1_2(_Lw_1, _Ls_0);
 }

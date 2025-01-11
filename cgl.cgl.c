@@ -224,16 +224,16 @@ fprintf(stdout, "  run      Compile and run the cgl codes.\n");
 void _Pprint_to_c_usage_1(char* _Lbin_0) {
 fprintf(stdout, "Usage: %s to-c [output.c] [cgl file/s...]\n", _Lbin_0);
 }
-FILE* _Nstdc_Nfd_Pfopen_2(_Nstdc_Nfd _Lfile_0, char* _Lmode_1) {
+inline FILE* _Nstdc_Nfd_Pfopen_2(_Nstdc_Nfd _Lfile_0, char* _Lmode_1) {
 return fdopen(_Lfile_0, _Lmode_1);
 }
-int32_t _Nstdc_Nfile_Pclose_1(FILE* _Lf_0) {
+inline int32_t _Nstdc_Nfile_Pclose_1(FILE* _Lf_0) {
 return fclose(_Lf_0);
 }
 void _Pprint_run_usage_1(char* _Lbin_0) {
 fprintf(stdout, "Usage: %s run [cgl file/s...]\n", _Lbin_0);
 }
-int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0) {
+inline int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0) {
 return close(_Lfile_0);
 }
 void _Pget_compiler_2(char* _Lbin_0, FILE* _Lninja_f_1) {
