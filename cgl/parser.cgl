@@ -763,6 +763,8 @@
       'c.out.printf("Cannot open file for reading: %s\n", .input-path);
       'c.exit(#failure);
    }
+   // in-fd.stat(+in-stat);
+   // 'c.out.printf("%d\n", in-stat.mtimespec.sec);
    +in-size = in-fd.seek(0, #end);
    {+in-data:u8[] = 'c.malloc(in-size + 2)}
    in-fd.seek(0, #set);
@@ -780,7 +782,7 @@
       'c.out.printf("Error reading file '%s' because it doesn't end with a new line\n", .input-path);
       'c.exit(#failure);
    }
-   {if(true) // process comments
+   {if(true) // Process comments
       // in-data = convert-old-to-new(in-data, in-size);
       {+r-end:rdr+}
       r-end.ref = in-data;
@@ -790,6 +792,18 @@
       {+new-data = 'c.malloc(in-size + 1)}
       {+w:wtr+}
       w.ref = new-data;
+      // Ignore consecutive lines that begins with '#'
+      {while(r.p1[0] == ''#)
+         {do()
+            r.pos++;
+            {if(r.p1[0] == ''\n)
+               w.p1[0] = ''\n;
+               w.pos++;
+               r.pos++;
+               break;
+            }
+         }
+      }
       {while(r.pos < r-end.pos)
          {if(r.p1[0] == ''/)
             {if(&&, r.p1[1] == ''/, (||, r.p1[2] == '' , r.p1[2] == ''\t))

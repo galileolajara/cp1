@@ -103,8 +103,11 @@
       ninja-f.close();
       {+command:char[24 + 9]}
       'c.sprintf(command, "ninja -f %s", ninja-path);
-      'c.system(command);
+      +ret = 'c.system(command);
       'c.unlink(ninja-path);
+      {if(ret != 0)
+         'c.exit(#failure);
+      }
    }{elif('c.strcmp(cmd, "run") == 0)
       {if(arg-c < 3)
          print-run-usage(bin);
@@ -175,12 +178,13 @@
       'c.unlink(ninja-path);
       'c.unlink(c-path);
       {if(ninja-ret != 0)
-         'c.unlink(exe-path);
-         return ninja-ret;
+         'c.exit(#failure);
       }
       +exe-ret = 'c.system(exe-path);
       'c.unlink(exe-path);
-      return exe-ret;
+      {if(exe-ret != 0)
+         'c.exit(#failure);
+      }
    }{else
       print-commands(bin);
       'c.exit(#failure);

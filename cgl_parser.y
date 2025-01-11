@@ -287,7 +287,13 @@ func_decl_inline ::= func_decl_begin fargs func_type func_attrs_inline(end).
    { _Nglc_Pdecl_func_end_2(end.basic.row, end.basic.col); } */
 fvar_decl ::= fvar_decl_name.
    { _Nglc_Pdecl_var_end_0(); }
-fvar ::= fvar_decl typeAndInfo_optional.
+fvar_attr ::= SPACE_AT_REAL_NAME_STR(e).
+   { _Nglc_Pdecl_var_attr_real_name_1(e.basic.id); }
+fvar_attrs_list ::= fvar_attr.
+fvar_attrs_list ::= fvar_attrs_list fvar_attr.
+fvar_attrs_optional ::= .
+fvar_attrs_optional ::= fvar_attrs_list.
+fvar ::= fvar_decl typeAndInfo_optional fvar_attrs_optional.
    { _Nglc_Pdecl_var_as_fvar_0(); }
 struct_fvars ::= fvar.
 struct_fvars ::= struct_fvars COMMA_SPACE fvar.

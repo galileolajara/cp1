@@ -36,6 +36,7 @@ char _Lninja_path_9[24];
 _Nstdc_Nfd _Lninja_fd_10;
 FILE* _Lninja_f_11;
 char _Lcommand_16[24 + 9];
+int32_t _Lret_17;
 if(_Larg_c_0 < 4) {
 _Pprint_to_c_usage_1(_Lbin_2);
 exit(_Nstdc_Nexit_Cfailure);
@@ -103,112 +104,116 @@ break_2:;
 fprintf(_Lninja_f_11, "\n");
 _Nstdc_Nfile_Pclose_1(_Lninja_f_11);
 sprintf(_Lcommand_16, "ninja -f %s", _Lninja_path_9);
-system(_Lcommand_16);
+_Lret_17 = system(_Lcommand_16);
 unlink(_Lninja_path_9);
+if(_Lret_17 != 0) {
+exit(_Nstdc_Nexit_Cfailure);
+}
 } else if(strcmp(_Lcmd_3, "run") == 0) {
-char _Lc_path_20[22];
-_Nstdc_Nfd _Lc_fd_21;
-char _Lexe_path_22[24];
-_Nstdc_Nfd _Lexe_fd_23;
-char _Lninja_path_24[24];
-_Nstdc_Nfd _Lninja_fd_25;
-FILE* _Lninja_f_26;
-char _Lcommand_31[24 + 9];
-int32_t _Lninja_ret_32;
-int32_t _Lexe_ret_33;
+char _Lc_path_21[22];
+_Nstdc_Nfd _Lc_fd_22;
+char _Lexe_path_23[24];
+_Nstdc_Nfd _Lexe_fd_24;
+char _Lninja_path_25[24];
+_Nstdc_Nfd _Lninja_fd_26;
+FILE* _Lninja_f_27;
+char _Lcommand_32[24 + 9];
+int32_t _Lninja_ret_33;
+int32_t _Lexe_ret_34;
 if(_Larg_c_0 < 3) {
 _Pprint_run_usage_1(_Lbin_2);
 exit(_Nstdc_Nexit_Cfailure);
 }
-int32_t _Li_17;
-_Li_17 = 2;
+int32_t _Li_18;
+_Li_18 = 2;
 for(int i = _Larg_c_0 - 2; i > 0; ) {
 i --;
-char* _Lcgl_path_18;
-size_t _Lcgl_path_len_19;
-_Lcgl_path_18 = _Larg_v_1[_Li_17];
-_Lcgl_path_len_19 = strlen(_Lcgl_path_18);
-if(!(((_Lcgl_path_len_19 > 4) && (_Lcgl_path_18[(_Lcgl_path_len_19 - 4)] == '.') && (_Lcgl_path_18[(_Lcgl_path_len_19 - 3)] == 'c') && (_Lcgl_path_18[(_Lcgl_path_len_19 - 2)] == 'g') && (_Lcgl_path_18[(_Lcgl_path_len_19 - 1)] == 'l')))) {
+char* _Lcgl_path_19;
+size_t _Lcgl_path_len_20;
+_Lcgl_path_19 = _Larg_v_1[_Li_18];
+_Lcgl_path_len_20 = strlen(_Lcgl_path_19);
+if(!(((_Lcgl_path_len_20 > 4) && (_Lcgl_path_19[(_Lcgl_path_len_20 - 4)] == '.') && (_Lcgl_path_19[(_Lcgl_path_len_20 - 3)] == 'c') && (_Lcgl_path_19[(_Lcgl_path_len_20 - 2)] == 'g') && (_Lcgl_path_19[(_Lcgl_path_len_20 - 1)] == 'l')))) {
 _Pprint_run_usage_1(_Lbin_2);
-fprintf(stdout, "Error, [cgl file] (which is '%s') must be a filename that ends with '.cgl', for example: main.cgl\n", _Lcgl_path_18);
+fprintf(stdout, "Error, [cgl file] (which is '%s') must be a filename that ends with '.cgl', for example: main.cgl\n", _Lcgl_path_19);
 exit(_Nstdc_Nexit_Cfailure);
 }
 continue_3:;
-_Li_17++;
+_Li_18++;
 }
 break_3:;
 mkdir("cgl-tmp", 32749);
-strcpy(_Lc_path_20, "cgl-tmp/c-XXXXXXXXX");
-_Lc_fd_21 = mkstemp(_Lc_path_20);
-if(_Lc_fd_21 == _Nstdc_Nfd_Cnil) {
+strcpy(_Lc_path_21, "cgl-tmp/c-XXXXXXXXX");
+_Lc_fd_22 = mkstemp(_Lc_path_21);
+if(_Lc_fd_22 == _Nstdc_Nfd_Cnil) {
 _Pprint_run_usage_1(_Lbin_2);
-fprintf(stdout, "Error, cannot open file for reading: %s\n", _Lc_path_20);
+fprintf(stdout, "Error, cannot open file for reading: %s\n", _Lc_path_21);
 exit(_Nstdc_Nexit_Cfailure);
 }
-_Nstdc_Nfd_Pclose_1(_Lc_fd_21);
-unlink(_Lc_path_20);
-strcpy(_Lexe_path_22, "cgl-tmp/exe-XXXXXXXXX");
-_Lexe_fd_23 = mkstemp(_Lexe_path_22);
-if(_Lexe_fd_23 == _Nstdc_Nfd_Cnil) {
+_Nstdc_Nfd_Pclose_1(_Lc_fd_22);
+unlink(_Lc_path_21);
+strcpy(_Lexe_path_23, "cgl-tmp/exe-XXXXXXXXX");
+_Lexe_fd_24 = mkstemp(_Lexe_path_23);
+if(_Lexe_fd_24 == _Nstdc_Nfd_Cnil) {
 _Pprint_run_usage_1(_Lbin_2);
-fprintf(stdout, "Error, cannot open file for reading: %s\n", _Lexe_path_22);
+fprintf(stdout, "Error, cannot open file for reading: %s\n", _Lexe_path_23);
 exit(_Nstdc_Nexit_Cfailure);
 }
-_Nstdc_Nfd_Pclose_1(_Lexe_fd_23);
-unlink(_Lexe_path_22);
-_Lc_path_20[19] = '.';
-_Lc_path_20[20] = 'c';
-_Lc_path_20[21] = '\0';
-strcpy(_Lninja_path_24, "cgl-tmp/ninja-XXXXXXXXX");
-_Lninja_fd_25 = mkstemp(_Lninja_path_24);
-if(_Lninja_fd_25 == _Nstdc_Nfd_Cnil) {
+_Nstdc_Nfd_Pclose_1(_Lexe_fd_24);
+unlink(_Lexe_path_23);
+_Lc_path_21[19] = '.';
+_Lc_path_21[20] = 'c';
+_Lc_path_21[21] = '\0';
+strcpy(_Lninja_path_25, "cgl-tmp/ninja-XXXXXXXXX");
+_Lninja_fd_26 = mkstemp(_Lninja_path_25);
+if(_Lninja_fd_26 == _Nstdc_Nfd_Cnil) {
 _Pprint_run_usage_1(_Lbin_2);
-fprintf(stdout, "Error, cannot open file for reading: %s\n", _Lninja_path_24);
+fprintf(stdout, "Error, cannot open file for reading: %s\n", _Lninja_path_25);
 exit(_Nstdc_Nexit_Cfailure);
 }
-_Lninja_f_26 = _Nstdc_Nfd_Pfopen_2(_Lninja_fd_25, "w");
-fprintf(_Lninja_f_26, "rule parser\n");
-fprintf(_Lninja_f_26, " command = %s-parser $in\n", _Lbin_2);
-fprintf(_Lninja_f_26, "rule compiler\n");
-fprintf(_Lninja_f_26, " command = %s-compiler $in $out\n", _Lbin_2);
-_Pget_compiler_2(_Lbin_2, _Lninja_f_26);
-int32_t _Li_27;
-_Li_27 = 2;
+_Lninja_f_27 = _Nstdc_Nfd_Pfopen_2(_Lninja_fd_26, "w");
+fprintf(_Lninja_f_27, "rule parser\n");
+fprintf(_Lninja_f_27, " command = %s-parser $in\n", _Lbin_2);
+fprintf(_Lninja_f_27, "rule compiler\n");
+fprintf(_Lninja_f_27, " command = %s-compiler $in $out\n", _Lbin_2);
+_Pget_compiler_2(_Lbin_2, _Lninja_f_27);
+int32_t _Li_28;
+_Li_28 = 2;
 for(int i = _Larg_c_0 - 2; i > 0; ) {
 i --;
-char* _Lcgl_path_28;
-_Lcgl_path_28 = _Larg_v_1[_Li_27];
-fprintf(_Lninja_f_26, "build cgl-tmp/%s-b: parser %s\n", _Lcgl_path_28, _Lcgl_path_28);
+char* _Lcgl_path_29;
+_Lcgl_path_29 = _Larg_v_1[_Li_28];
+fprintf(_Lninja_f_27, "build cgl-tmp/%s-b: parser %s\n", _Lcgl_path_29, _Lcgl_path_29);
 continue_4:;
-_Li_27++;
+_Li_28++;
 }
 break_4:;
-fprintf(_Lninja_f_26, "build %s: compiler", _Lc_path_20);
-int32_t _Li_29;
-_Li_29 = 2;
+fprintf(_Lninja_f_27, "build %s: compiler", _Lc_path_21);
+int32_t _Li_30;
+_Li_30 = 2;
 for(int i = _Larg_c_0 - 2; i > 0; ) {
 i --;
-char* _Lcgl_path_30;
-_Lcgl_path_30 = _Larg_v_1[_Li_29];
-fprintf(_Lninja_f_26, " cgl-tmp/%s-b", _Lcgl_path_30);
+char* _Lcgl_path_31;
+_Lcgl_path_31 = _Larg_v_1[_Li_30];
+fprintf(_Lninja_f_27, " cgl-tmp/%s-b", _Lcgl_path_31);
 continue_5:;
-_Li_29++;
+_Li_30++;
 }
 break_5:;
-fprintf(_Lninja_f_26, "\n");
-fprintf(_Lninja_f_26, "build %s: c %s\n", _Lexe_path_22, _Lc_path_20);
-_Nstdc_Nfile_Pclose_1(_Lninja_f_26);
-sprintf(_Lcommand_31, "ninja -f %s", _Lninja_path_24);
-_Lninja_ret_32 = system(_Lcommand_31);
-unlink(_Lninja_path_24);
-unlink(_Lc_path_20);
-if(_Lninja_ret_32 != 0) {
-unlink(_Lexe_path_22);
-return _Lninja_ret_32;
+fprintf(_Lninja_f_27, "\n");
+fprintf(_Lninja_f_27, "build %s: c %s\n", _Lexe_path_23, _Lc_path_21);
+_Nstdc_Nfile_Pclose_1(_Lninja_f_27);
+sprintf(_Lcommand_32, "ninja -f %s", _Lninja_path_25);
+_Lninja_ret_33 = system(_Lcommand_32);
+unlink(_Lninja_path_25);
+unlink(_Lc_path_21);
+if(_Lninja_ret_33 != 0) {
+exit(_Nstdc_Nexit_Cfailure);
 }
-_Lexe_ret_33 = system(_Lexe_path_22);
-unlink(_Lexe_path_22);
-return _Lexe_ret_33;
+_Lexe_ret_34 = system(_Lexe_path_23);
+unlink(_Lexe_path_23);
+if(_Lexe_ret_34 != 0) {
+exit(_Nstdc_Nexit_Cfailure);
+}
 } else {
 _Pprint_commands_1(_Lbin_2);
 exit(_Nstdc_Nexit_Cfailure);
