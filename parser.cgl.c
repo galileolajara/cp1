@@ -1319,8 +1319,8 @@ _Lr_6._Fref = _Lin_data_4;
 _Lnew_data_7 = malloc(_Lin_size_3 + 1);
 _Lw_8._Fref = _Lnew_data_7;
 while(_Lr_6._Fpos < _Lr_end_5._Fpos) {
-if(_Lr_6._Fp1[0] == '`') {
-if(((_Lr_6._Fp1[1] == '`') && ((_Lr_6._Fp1[2] == ' ') || (_Lr_6._Fp1[2] == '\t')))) {
+if(_Lr_6._Fp1[0] == '/') {
+if(((_Lr_6._Fp1[1] == '/') && ((_Lr_6._Fp1[2] == ' ') || (_Lr_6._Fp1[2] == '\t')))) {
 _Lr_6._Fpos += 3;
 while(1) {
 if(_Lr_6._Fp1[0] == '\n') {
@@ -1581,10 +1581,6 @@ _Ltok_26._Fid = _Nglc_Nlexer_Pget_id_3(&_Llex_23, 1, 0);
 glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
 } else {
 switch(_Lt_27) {
-case _Nglc_Ntoken_Cid_lparen:;
-_Ltok_26._Fid = _Nglc_Nlexer_Pget_id_3(&_Llex_23, 0, 1);
-glcParse(_Lpsr_22, _Lt_27, &_Ltok_26);
-break;
 case _Nglc_Ntoken_Cchar1:;
 union _Nglc_Nrdr _Lr_29;
 _Lr_29._Fref = _Llex_23._Fstart;

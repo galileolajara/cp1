@@ -62,7 +62,7 @@
          {if((l.flags & #set-expr) != #0)
             l.set-expr.rd(r);
          }
-         `` 'c.out.printf("lvar %s has type of %s\n", l.decl.name.str(), l.decl.type.ptr().name.basic.cgl-name());
+         // 'c.out.printf("lvar %s has type of %s\n", l.decl.name.str(), l.decl.type.ptr().name.basic.cgl-name());
       }
    }
    {lvars-wr(f:this, w:wtr, header:bool)
@@ -100,7 +100,7 @@
 {gvar func-cap:func}
 {gvar func-v:decl-func[]}
 {gvar decl-func-name:id}
-`` {gvar decl-func:decl-var-data+}
+// {gvar decl-func:decl-var-data+}
 {gvar decl-func-row:i32}
 {gvar decl-func-col:i32}
 {gvar decl-func-flags:func-flags}
@@ -109,7 +109,7 @@
 {gvar decl-func-decl-str:char[]}
 {gvar decl-func-decl-len:i32}
 {gvar decl-func-case:id}
-`` {cvar #glc-farg-limit = 1024}
+// {cvar #glc-farg-limit = 1024}
 {gvar decl-farg-v:farg+[]}
 {gvar decl-farg-group-c:i8}
 {gvar decl-farg-group-v:i8[#expr-carg-group-limit]}
@@ -119,9 +119,9 @@
 {gvar decl-func-this-group:i8}
 {gvar decl-func-space:stmt-space}
 {gvar decl-func-ctx-space:stmt-space}
-`` {gvar decl-stmt-c:u32}
-`` {gvar decl-stmt-cap:u32}
-`` {gvar decl-stmt-v:stmt[]}
+// {gvar decl-stmt-c:u32}
+// {gvar decl-stmt-cap:u32}
+// {gvar decl-stmt-v:stmt[]}
 {decl-func-begin(name:id, row:i32, col:i32)
    .decl-func-name = name;
    .decl-func-row = row;
@@ -129,7 +129,7 @@
    .decl-func-flags = #0;
    .decl-func-flags2 = #0;
    .decl-farg-c = 0;
-   `` .decl-stmt-c = 0;
+   // .decl-stmt-c = 0;
    .decl-farg-group-c = 1;
    .decl-farg-group-v[0] = 0;
    .decl-func-this-idx = -1;
@@ -171,10 +171,10 @@
    .decl-farg-v[farg-idx].decl.type = .decl-at;
    .decl-farg-group-v[.decl-farg-group-c - 1]++;
 }
-`` {gvar lvar-c:lvar}
-`` {gvar lvar-cap:lvar}
-`` {gvar lvar-v:lvar-data[]}
-`` {gvar lvar-name-v:id[]}
+// {gvar lvar-c:lvar}
+// {gvar lvar-cap:lvar}
+// {gvar lvar-v:lvar-data[]}
+// {gvar lvar-name-v:id[]}
 {decl-func-end(row:i32, col:i32)
    +f-idx = (.func-c++):func;
    {if(.func-cap <= .func-c)
@@ -203,7 +203,7 @@
    {if((.decl-func-flags & #case) != #0)
       f.case = .decl-func-case;
    }
-   `` f.at.ptr().func-c ++;
+   // f.at.ptr().func-c ++;
    .decl-var.name = .decl-func-name;
    f.decl.copy-from(.decl-var);
    f.farg-c = .decl-farg-c;
@@ -369,13 +369,13 @@
 }
 {carg-push-str(expr:expr-i)
    {if(:true)
-      `` push the string
+      // push the string
       +call-idx = .expr-call-c - 1;
       .expr-call-carg-v[call-idx][.expr-call-carg-c[call-idx]++] = expr;
       .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
    }
    {if(:true)
-      `` calculate the string length
+      // calculate the string length
       {+e:expr-str = expr.ptr()}
       +len = 0;
       +s = e.first;
@@ -384,7 +384,7 @@
          s = s.next;
          {if(s == :null) {break}}
       }
-      `` push the string length
+      // push the string length
       +call-idx = .expr-call-c - 1;
       .expr-call-carg-v[call-idx][.expr-call-carg-c[call-idx]++] = expr-int(len, #dec);
       .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;

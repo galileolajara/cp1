@@ -10,17 +10,17 @@
       r = 1;
       r += fd-arg.type-info.ref-v[fd-arg.type-info.array-c]:i32;
    }
-   `` 'c.out.printf("r %d, %d %d %d\n", r, j, fd-arg.type-info.array-c, fd-arg.type-info.ref-v[fd-arg.type-info.array-c]);
+   // 'c.out.printf("r %d, %d %d %d\n", r, j, fd-arg.type-info.array-c, fd-arg.type-info.ref-v[fd-arg.type-info.array-c]);
    {if(ce.type == #lvar)
       {+ve:expr-lvar = ce}
       +lvar = ve.lvar.ptr();
       +vd = lvar.decl;
       {if(vd.type == #nil)
          {if((lvar.flags & #set-expr) == #0)
-            `` {if(vd.type-info.array-c != fd-arg.type-info.array-c)
-            ``    'c.err.printf("%s:%u:%u: Type deduction failed for lvar '%s', array dimension mismatch\n", .ctx-func.file.path(), lvar.row, lvar.col, vd.name.str());
-            ``    :return :false;
-            `` }
+            // {if(vd.type-info.array-c != fd-arg.type-info.array-c)
+            //    'c.err.printf("%s:%u:%u: Type deduction failed for lvar '%s', array dimension mismatch\n", .ctx-func.file.path(), lvar.row, lvar.col, vd.name.str());
+            //    :return :false;
+            // }
             vd.type = fd-arg.type;
             vd.type-info.init();
             vd.type-info.copy-from(fd-arg.type-info);
@@ -34,7 +34,7 @@
          }
       }
    }
-   `` fd-arg.validate(base-at);
+   // fd-arg.validate(base-at);
    e.try-deduce(fd-arg.type);
    {if!(e.value(r, :false, ca-value)) :return :false}
    :return :true;
@@ -319,24 +319,24 @@
          at-idx = .ctx-func.at;
          try-parent = :true;
       }{else
-         at-idx = at-validate(at-idx, .ctx-func.at);
+         at-idx = at-validate(at-idx, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
          e.at = at-idx;
       }
       {do()
          +at = at-idx.ptr();
-         `` {if(&&, at.decl.struct == #nil, at.type != #basic, at.type != #module)
-         ``    'c.out.printf("%s:%u:%u - %u:%u: Cannot call function %s because the type :%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), at.name.id.str());
-         ``    :return;
-         `` }
-         `` +found = -1;
-         `` +similar-c = 0;
-         `` 'c.out.printf("searching from %u functions\n", at.func-c);
+         // {if(&&, at.decl.struct == #nil, at.type != #basic, at.type != #module)
+         //    'c.out.printf("%s:%u:%u - %u:%u: Cannot call function %s because the type :%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), at.name.id.str());
+         //    :return;
+         // }
+         // +found = -1;
+         // +similar-c = 0;
+         // 'c.out.printf("searching from %u functions\n", at.func-c);
          {do{+i = 0}{(at.func-c) i++}
             +f-idx = at.func-v[i];
             +f = f-idx.ptr();
             {if(f.decl.name != func-name) {continue}}
-            `` found = i;
-            `` similar-c++;
+            // found = i;
+            // similar-c++;
             {if(f.group-c != group-c) {continue}}
             +match = :true;
             {if((f.flags & #var-args) != #0)
@@ -392,16 +392,16 @@
          at-idx = at.parent;
       }
       'c.out.printf("%s:%u:%u - %u:%u: Cannot find function :%s with %u argument:s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
-      `` {if(found != -1)
-      ``    'c.out.printf("But found %u functions with different no. of argument:s:\n", similar-c);
-      ``    {do{+i = 0}{(at.func-c) i++}
-      ``       +f-idx = at.func-v[i];
-      ``       +f = .func-v[f-idx];
-      ``       {if(f.decl.name == func-name)
-      ``          'c.out.printf("- :%s with %u args\n", func-name.str(), f.farg-c);
-      ``       }
-      ``    }
-      `` }
+      // {if(found != -1)
+      //    'c.out.printf("But found %u functions with different no. of argument:s:\n", similar-c);
+      //    {do{+i = 0}{(at.func-c) i++}
+      //       +f-idx = at.func-v[i];
+      //       +f = .func-v[f-idx];
+      //       {if(f.decl.name == func-name)
+      //          'c.out.printf("- :%s with %u args\n", func-name.str(), f.farg-c);
+      //       }
+      //    }
+      // }
    }
    {process-case-func(expr:expr, f-idx:func):bool @inline
       {+e:expr-func = expr}

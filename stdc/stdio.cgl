@@ -1,6 +1,8 @@
 {include(<stdio.h>)
    {alias 'c = :stdc}
    {at(:stdc)
+      {printf(str:char[]):i32 @var-args @no-decl @real-name(printf)}
+
       {gvar out:file @real-name(stdout) @no-decl}
       {:file() @real-name(FILE) @no-decl
          {printf(f:this, str:char[]):i32 @var-args @no-decl @real-name(fprintf)}

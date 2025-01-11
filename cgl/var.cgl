@@ -8,26 +8,26 @@
 }
 {:decl-var-type[#gvar, #fvar]:u8}
 {cvar #decl-var-size-limit:i32 = 8}
-{at-validate(vd-type:at, at-i:at):at
+{at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at
    +type = vd-type.ptr();
    +parent = type.parent.ptr();
    {if(&&, parent.type == #basic, parent.name.basic == #relative)
       +name = type.name;
-      `` 'c.out.printf("type is %s\n", at-i.ptr().type.cgl-name());
-      `` {if(at-i.ptr().type == #module)
-      ``    'c.out.printf("name is %s\n", at-i.ptr().name.id.str());
-      ``    'c.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cgl-name());
-      ``    {if(at-i.ptr().parent.ptr().type == #basic)
-      ``       'c.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cgl-name());
-      ``    }
-      `` }
-      `` 'c.out.printf("relative type detected, finding :%s\n", name.id.str());
+      // 'c.out.printf("type is %s\n", at-i.ptr().type.cgl-name());
+      // {if(at-i.ptr().type == #module)
+      //    'c.out.printf("name is %s\n", at-i.ptr().name.id.str());
+      //    'c.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cgl-name());
+      //    {if(at-i.ptr().parent.ptr().type == #basic)
+      //       'c.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cgl-name());
+      //    }
+      // }
+      // 'c.out.printf("relative type detected, finding :%s\n", name.id.str());
       {do()
          {do{+i = 0:at}{(.at-c) i++}
             {if(&&, .at-v[i].parent == at-i, .at-v[i].type != #basic)
-               `` 'c.out.printf("%u) :%s, %d\n", i, .at-v[i].name.id.str(), .at-v[i].decl.struct);
+               // 'c.out.printf("%u) :%s, %d\n", i, .at-v[i].name.id.str(), .at-v[i].decl.struct);
                {if(.at-v[i].name.id == name.id)
-                  `` 'c.out.printf("found\n");
+                  // 'c.out.printf("found\n");
                   :return i;
                }
             }
@@ -35,18 +35,18 @@
          {if(at-i == #root) {break}}
          at-i = at-i.ptr().parent;
       }
-      'c.out.printf("not found\n");
+      'c.out.printf("%s:%u:%u: Type :%s was not found\n", file.path(), row, col, name.id.str());
       'c.exit(#failure);
    }
    :return vd-type;
 }
 {at(:decl-var-data)
    {validate(vd:this, base-at:at)
-      `` 'c.out.printf("validating the type of %s\n", vd.name.str());
+      // 'c.out.printf("validating the type of %s\n", vd.name.str());
       vd.type = at-validate(vd.type, base-at);
    }
-   {process(vd:this, row:i32, col:i32, base-at:at):bool
-      +at-i = at-validate(vd.type, base-at);
+   {process(vd:this, file:file, row:i32, col:i32, base-at:at):bool
+      +at-i = at-validate(vd.type, base-at, file, row, col);
       vd.type = at-i;
       +at = at-i.ptr();
       {if(&&, at.type != #basic, at.decl.struct == #nil)
@@ -111,53 +111,53 @@
          vd.real-name.wr(w, header);
       }
       vd.type-info.wr(w);
-      `` 'c.out.printf("%s, vd.size-c %d\n", vd.name.str(), vd.size-c);
+      // 'c.out.printf("%s, vd.size-c %d\n", vd.name.str(), vd.size-c);
       w.n1(vd.size-c);
       {do{+i = 0}{(vd.size-c) i++}
          vd.size-expr-v[i].wr(w, header);
       }
    }
-   `` {validate(vd-type:at, at-i:at, vd-name:id):at
-   ``    +type = vd-type.ptr();
-   ``    {if(type.type == #basic) :return vd-type}
-   ``    +parent = type.parent.ptr();
-   ``    {if(&&, parent.type == #basic, parent.name.basic == #relative)
-   ``       +name = type.name;
-   ``       'c.out.printf("type is %s\n", at-i.ptr().type.cgl-name());
-   ``       {if(at-i.ptr().type == #module)
-   ``          'c.out.printf("name is %s\n", at-i.ptr().name.id.str());
-   ``          'c.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cgl-name());
-   ``          {if(at-i.ptr().parent.ptr().type == #basic)
-   ``             'c.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cgl-name());
-   ``          }
-   ``       }
-   ``       'c.out.printf("relative detected on var %s, finding :%s\n", vd-name.str(), name.id.str());
-   ``       `` +old-out = .out;
-   ``       `` .out = 'c.out;
-   ``       `` at-i.write-space();
-   ``       `` .out = old-out;
-   ``       {do()
-   ``          {do{+i = 0:at}{(.at-c) i++}
-   ``             {if(&&, .at-v[i].parent == at-i, .at-v[i].type != #basic)
-   ``                'c.out.printf("%u) :%s\n", i, .at-v[i].name.id.str());
-   ``                {if(.at-v[i].name.id == name.id)
-   ``                   :return i;
-   ``                }
-   ``             }
-   ``          }
-   ``          {if(at-i == #root) {break}}
-   ``          at-i = at-i.ptr().parent;
-   ``       }
-   ``       'c.out.printf("not found\n");
-   ``       'c.exit(#failure);
-   ``    }
-   ``    :return vd-type;
-   `` }
+   // {validate(vd-type:at, at-i:at, vd-name:id):at
+   //    +type = vd-type.ptr();
+   //    {if(type.type == #basic) :return vd-type}
+   //    +parent = type.parent.ptr();
+   //    {if(&&, parent.type == #basic, parent.name.basic == #relative)
+   //       +name = type.name;
+   //       'c.out.printf("type is %s\n", at-i.ptr().type.cgl-name());
+   //       {if(at-i.ptr().type == #module)
+   //          'c.out.printf("name is %s\n", at-i.ptr().name.id.str());
+   //          'c.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cgl-name());
+   //          {if(at-i.ptr().parent.ptr().type == #basic)
+   //             'c.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cgl-name());
+   //          }
+   //       }
+   //       'c.out.printf("relative detected on var %s, finding :%s\n", vd-name.str(), name.id.str());
+   //       // +old-out = .out;
+   //       // .out = 'c.out;
+   //       // at-i.write-space();
+   //       // .out = old-out;
+   //       {do()
+   //          {do{+i = 0:at}{(.at-c) i++}
+   //             {if(&&, .at-v[i].parent == at-i, .at-v[i].type != #basic)
+   //                'c.out.printf("%u) :%s\n", i, .at-v[i].name.id.str());
+   //                {if(.at-v[i].name.id == name.id)
+   //                   :return i;
+   //                }
+   //             }
+   //          }
+   //          {if(at-i == #root) {break}}
+   //          at-i = at-i.ptr().parent;
+   //       }
+   //       'c.out.printf("not found\n");
+   //       'c.exit(#failure);
+   //    }
+   //    :return vd-type;
+   // }
    {rd(vd:this, r:rdr)
       vd.name.rd(r);
       vd.type.rd(r);
-      `` :at.rd(+vd-type, r);
-      `` vd.type = validate(vd-type, default-at, vd.name);
+      // :at.rd(+vd-type, r);
+      // vd.type = validate(vd-type, default-at, vd.name);
       vd.flags.rd(r);
       {if((vd.flags & #real-name) != #0)
          vd.real-name.rd(r);
@@ -253,7 +253,7 @@
 		ti.array-c = ti2.array-c;
 		ti.star-c = ti2.star-c;
 		ti.const = ti2.const;
-      `` intentionally did not copy .built-in
+      // intentionally did not copy .built-in
 	}
 	{finalize(ti:this)
 		{+ref-v:i8[`#type-info-star-limit]}
@@ -286,12 +286,12 @@
 
 {gvar decl-var-row:i32}
 {gvar decl-var-col:i32}
-`` {gvar decl-var-name:id}
-`` {gvar decl-var-type:at}
-`` {gvar decl-var-type-info:type-info+}
+// {gvar decl-var-name:id}
+// {gvar decl-var-type:at}
+// {gvar decl-var-type-info:type-info+}
 {cvar #type-info-stack-limit:i32 = 8}
-`` {gvar stack-type-info:type-info+} `` [#type-info-stack-limit]}
-`` {gvar stack-type-info-c:i8}
+// {gvar stack-type-info:type-info+} // [#type-info-stack-limit]}
+// {gvar stack-type-info-c:i8}
 {gvar decl-var:decl-var-data+}
 {:var-flags[
    #0,
@@ -314,7 +314,7 @@
    .decl-var.flags = #0;
    .decl-var.real-name = #nil;
    .decl-var.size-c = 0;
-   `` 'c.out.printf("var-begin %s\n", name.str());
+   // 'c.out.printf("var-begin %s\n", name.str());
 }
 {decl-var-end()
 }
@@ -352,7 +352,7 @@
    .decl-var.size-c = 0;
    .decl-var.type-info.init();
    .decl-var.flags = #0;
-   `` .stack-type-info = .decl-var.type-info;
+   // .stack-type-info = .decl-var.type-info;
 }
 {decl-var-this()
    +type = .decl-at;
@@ -362,7 +362,7 @@
       'c.exit(#failure);
    }
    .decl-var.type = type;
-   `` .stack-type-info = .decl-var.type-info;
+   // .stack-type-info = .decl-var.type-info;
 }
 {decl-var-as-gvar()
    +gvar-idx = .gvar-c++;

@@ -46,7 +46,7 @@
          quick-alloc-arr(vd.size-expr-v, #decl-var-size-limit);
       }
       vd.size-expr-v[vd.size-c++] = expr;
-      `` 'c.out.printf("%s, vd.size-c = %d\n", vd.name.str(), vd.size-c);
+      // 'c.out.printf("%s, vd.size-c = %d\n", vd.name.str(), vd.size-c);
 	}
 }
 {type-info-ref(c:i8)
@@ -54,7 +54,7 @@
 	ti.ref-v[ti.array-c] += c;
 }
 {type-info-static()
-   `` 'c.out.printf("built-in\n");
+   // 'c.out.printf("built-in\n");
    .decl-var.type-info.built-in = :true;
 }
 {decl-include-begin(inc:include, row:i32, col:i32)
@@ -127,11 +127,11 @@
    'c.exit(#failure);
 }
 {decl-alias(name:id, at:at, row:i32, col:i32)
-   `` {if(at.ptr().type != #module)
-   ``    'c.out.printf("%s:%u:%u: Alias can only work on namespaces that ends with '%%'\n", .input-path, row, col);
-   ``    'c.exit(#failure);
-   ``    :return;
-   `` }
+   // {if(at.ptr().type != #module)
+   //    'c.out.printf("%s:%u:%u: Alias can only work on namespaces that ends with '%%'\n", .input-path, row, col);
+   //    'c.exit(#failure);
+   //    :return;
+   // }
    {do{+i = 0}{(.at-alias-c) i++}
       {if(.at-alias-name-v[i] == name)
          'c.out.printf("%s:%u:%u: Alias '%s was already declared at %u:%u\n", .input-path, row, col, name.str(), .at-alias-pos-v[i].row, .at-alias-pos-v[i].col);
@@ -173,15 +173,15 @@
 {at-create(parent:at, type:name-type, name:id):at
    +found = .at-map.get-or-insert(parent, type, name, .at-c);
    {if(found != -1) :return found}
-   `` {do{+i = 0:at}{(.at-c) i++}
-   ``    +at = .at-v[i];
-   ``    {if(&&,
-   ``       at.parent == parent,
-   ``       at.type == type,
-   ``       at.name.id == name)
-   ``       :return i;
-   ``    }
-   `` }
+   // {do{+i = 0:at}{(.at-c) i++}
+   //    +at = .at-v[i];
+   //    {if(&&,
+   //       at.parent == parent,
+   //       at.type == type,
+   //       at.name.id == name)
+   //       :return i;
+   //    }
+   // }
    +build-idx = .at-c++;
    {if(.at-cap <= .at-c)
       +old-cap = .at-cap;
@@ -317,7 +317,7 @@
       +len = length:u8;
       +found = .id-map.get-or-insert(r-start.ref, len, .id-c);
       {if(found == -1)
-         `` inserted
+         // inserted
          +id = .id-c++;
          {if(.id-cap <= .id-c)
             +old-cap = .id-cap;
@@ -332,29 +332,29 @@
          .id-len-v[id] = len;
          :return id;
       }{else
-         `` found
+         // found
          :return found;
       }
-      `` {do{+i = 0}{(.id-c) i++}
-      ``    {if(.id-len-v[i] == len)
-      ``       {if('c.memcmp(.id-str-v[i], r-start.ref, len) == 0)
-      ``          :return i;
-      ``       }
-      ``    }
-      `` }
-      `` +id = .id-c++;
-      `` {if(.id-cap <= .id-c)
-      ``    +old-cap = .id-cap;
-      ``    grow(.id-cap, .id-c);
-      ``    realloc(.id-str-v, .id-cap, old-cap);
-      ``    realloc(.id-len-v, .id-cap, old-cap);
-      `` }
-      `` {+text:char[] = quick-alloc(len + 1)}
-      `` 'c.memcpy(text, r-start.ref, len);
-      `` text[len] = 0;
-      `` .id-str-v[id] = text;
-      `` .id-len-v[id] = len;
-      `` :return id;
+      // {do{+i = 0}{(.id-c) i++}
+      //    {if(.id-len-v[i] == len)
+      //       {if('c.memcmp(.id-str-v[i], r-start.ref, len) == 0)
+      //          :return i;
+      //       }
+      //    }
+      // }
+      // +id = .id-c++;
+      // {if(.id-cap <= .id-c)
+      //    +old-cap = .id-cap;
+      //    grow(.id-cap, .id-c);
+      //    realloc(.id-str-v, .id-cap, old-cap);
+      //    realloc(.id-len-v, .id-cap, old-cap);
+      // }
+      // {+text:char[] = quick-alloc(len + 1)}
+      // 'c.memcpy(text, r-start.ref, len);
+      // text[len] = 0;
+      // .id-str-v[id] = text;
+      // .id-len-v[id] = len;
+      // :return id;
    }
    {get-include(lex:this):i32
       {+r-start:rdr+}
@@ -370,7 +370,7 @@
       +len = length:u8;
       +found = .include-map.get-or-insert(r-start.ref, len, .include-c);
       {if(found == -1)
-         `` inserted
+         // inserted
          +include = .include-c++;
          {if(.include-cap <= .include-c)
             +old-cap = .include-cap;
@@ -385,29 +385,29 @@
          .include-len-v[include] = len;
          :return include;
       }{else
-         `` found
+         // found
          :return found;
       }
-      `` {do{+i = 0}{(.include-c) i++}
-      ``    {if(.include-len-v[i] == len)
-      ``       {if('c.memcmp(.include-str-v[i], r-start.ref, len) == 0)
-      ``          :return i;
-      ``       }
-      ``    }
-      `` }
-      `` +include = .include-c++;
-      `` {if(.include-cap <= .include-c)
-      ``    +old-cap = .include-cap;
-      ``    grow(.include-cap, .include-c);
-      ``    realloc(.include-str-v, .include-cap, old-cap);
-      ``    realloc(.include-len-v, .include-cap, old-cap);
-      `` }
-      `` {+text:char[] = quick-alloc(len + 1)}
-      `` 'c.memcpy(text, r-start.ref, len);
-      `` text[len] = 0;
-      `` .include-str-v[include] = text;
-      `` .include-len-v[include] = len;
-      `` :return include;
+      // {do{+i = 0}{(.include-c) i++}
+      //    {if(.include-len-v[i] == len)
+      //       {if('c.memcmp(.include-str-v[i], r-start.ref, len) == 0)
+      //          :return i;
+      //       }
+      //    }
+      // }
+      // +include = .include-c++;
+      // {if(.include-cap <= .include-c)
+      //    +old-cap = .include-cap;
+      //    grow(.include-cap, .include-c);
+      //    realloc(.include-str-v, .include-cap, old-cap);
+      //    realloc(.include-len-v, .include-cap, old-cap);
+      // }
+      // {+text:char[] = quick-alloc(len + 1)}
+      // 'c.memcpy(text, r-start.ref, len);
+      // text[len] = 0;
+      // .include-str-v[include] = text;
+      // .include-len-v[include] = len;
+      // :return include;
    }
 }
 {:parser()
@@ -444,10 +444,10 @@
       }
       {if(header)
          {if(f.flags & #inline)
-            `` proceed
+            // proceed
             f.flags.wr(w);
          }{else
-            `` remove #has-body flag
+            // remove #has-body flag
             (f.flags & (-1 ^ :func-flags#has-body)):func-flags.wr(w);
          }
       }{else
@@ -470,9 +470,9 @@
       {if((f.flags & #has-body) == #0) {continue}}
       {if(header)
          {if(f.flags & #inline)
-            `` proceed
+            // proceed
          }{else
-            `` remove #has-body flag
+            // remove #has-body flag
             {continue}
          }
       }
@@ -538,8 +538,8 @@
       s.include.wr(w);
       s.at.wr(w, header);
       s.flags.wr(w);
-      `` 'c.out.printf("write-struct %s\n", s.at.ptr().name.id.str());
-      `` s.name.wr(w, header);
+      // 'c.out.printf("write-struct %s\n", s.at.ptr().name.id.str());
+      // s.name.wr(w, header);
       {do{+j = 0}{(s.fvar-c) j++}
          s.fvar-v[j].wr(w, header);
       }
@@ -623,7 +623,7 @@
    {+r:rdr+}
    r.ref = in-data;
    {if(&&, r.p1[0] == ''{, r.p1[1] == ''g, r.p1[2] == ''l, r.p1[3] == ''c, r.p1[4] == ''\n, r.p1[in-size - 2] == ''}, r.p1[in-size - 1] == ''\n)
-      `` remove the {glc and } from head and tail of the file
+      // remove the {glc and } from head and tail of the file
       r.p1[0] = '' ;
       r.p1[1] = '' ;
       r.p1[2] = '' ;
@@ -639,7 +639,7 @@
    w.ref = w-begin.ref;
    {while(r.pos < r-end.pos)
       {if(&&, r.p1[0] == ''@, r.p1[1] == ''r, r.p1[2] == ''e, r.p1[3] == ''a, r.p1[4] == ''l, r.p1[5] == ''N, r.p1[6] == ''a, r.p1[7] == ''m, r.p1[8] == ''e)
-         `` realName -> real-name
+         // realName -> real-name
          w.p1[0] = ''@;
          w.p1[1] = ''r;
          w.p1[2] = ''e;
@@ -653,7 +653,7 @@
          w.pos += 10;
          r.pos += 9;
       }{elif(&&, r.p1[0] == ''@, r.p1[1] == ''n, r.p1[2] == ''o, r.p1[3] == ''D, r.p1[4] == ''e, r.p1[5] == ''c, r.p1[6] == ''l)
-         `` noDecl -> no-decl
+         // noDecl -> no-decl
          w.p1[0] = ''@;
          w.p1[1] = ''n;
          w.p1[2] = ''o;
@@ -665,7 +665,7 @@
          w.pos += 8;
          r.pos += 7;
       }{elif(&&, r.p1[0] == ''@, r.p1[1] == ''n, r.p1[2] == ''o, r.p1[3] == ''B, r.p1[4] == ''o, r.p1[5] == ''d, r.p1[6] == ''y)
-         `` noBody -> no-body
+         // noBody -> no-body
          w.p1[0] = ''@;
          w.p1[1] = ''n;
          w.p1[2] = ''o;
@@ -677,7 +677,7 @@
          w.pos += 8;
          r.pos += 7;
       }{elif(&&, r.p1[0] == ''`, r.p1[1] == ''s, r.p1[2] == ''i, r.p1[3] == ''z, r.p1[4] == ''e, r.p1[5] == ''O, r.p1[6] == ''f, r.p1[7] == ''[)
-         `` :uszOf[:type] -> :type[:usz]
+         // :uszOf[:type] -> :type[:usz]
          r.pos += 8;
          {+r-type:rdr+}
          r-type.ref = r.ref;
@@ -701,8 +701,8 @@
             r.pos++;
          }
       }{elif(&&, r.p1[0] == ''`, r.p1[1] == ''-, r.p1[2] == '' )
-         `` comment that's only for the older glc
-         `` but a code for the newer glc
+         // comment that's only for the older glc
+         // but a code for the newer glc
          w.p1[0] = '' ;
          w.p1[1] = '' ;
          w.p1[2] = '' ;
@@ -715,13 +715,13 @@
          w.pos += 3;
          r.pos += 4;
       }{elif(&&, r.p1[0] == '' , r.p1[1] == ''+, r.p1[2] == ''+)
-         `` remove space from increment operator
+         // remove space from increment operator
          w.p1[0] = ''+;
          w.p1[1] = ''+;
          w.pos += 2;
          r.pos += 3;
       }{elif(&&, r.p1[0] == '' , r.p1[1] == ''-, r.p1[2] == ''-)
-         `` remove space from decrement operator
+         // remove space from decrement operator
          w.p1[0] = ''-;
          w.p1[1] = ''-;
          w.pos += 2;
@@ -781,7 +781,7 @@
       'c.exit(#failure);
    }
    {if(:true)
-      `` in-data = convert-old-to-new(in-data, in-size);
+      // in-data = convert-old-to-new(in-data, in-size);
       {+r-end:rdr+}
       r-end.ref = in-data;
       r-end.pos += in-size;
@@ -791,9 +791,9 @@
       {+w:wtr+}
       w.ref = new-data;
       {while(r.pos < r-end.pos)
-         {if(r.p1[0] == ''`)
-            {if(&&, r.p1[1] == ''`, (||, r.p1[2] == '' , r.p1[2] == ''\t))
-               `` comment
+         {if(r.p1[0] == ''/)
+            {if(&&, r.p1[1] == ''/, (||, r.p1[2] == '' , r.p1[2] == ''\t))
+               // comment
                r.pos += 3;
                {do()
                   {if(r.p1[0] == ''\n)
@@ -837,7 +837,7 @@
             }
          }{elif(r.p1[0] == ''\')
             {if(r.p1[1] == ''\')
-               `` char
+               // char
                {if(r.p1[2] == ''\\)
                   w.p1[0] = ''\';
                   w.p1[1] = ''\';
@@ -855,7 +855,7 @@
                   {continue}
                }
             }{elif(&&, (||, r.p1[2] == '' , r.p1[2] == ''\t), (||, r.p1[1] == ''-, r.p1[1] == ''=))
-               `` string
+               // string
                w.p1[0] = ''\';
                w.p1[1] = r.p1[1];
                w.p1[2] = r.p1[2];
@@ -904,7 +904,7 @@
                parse-string(r, w, ''), in-data);
                {continue}
             }
-         }{elif(r.p1[0] == ''\") `` C-string
+         }{elif(r.p1[0] == ''\") // C-string
             w.p1[0] = ''\";
             w.pos++;
             r.pos++;
@@ -964,10 +964,10 @@
       {+w-begin:wtr+}
       w-begin.ref = new-data;
       in-size = w.pos - w-begin.pos;
-      `` 'c:file.open(+fd, "out:parsed.glc", #write | #truncate | #create, 0644);
-      `` fd.write(in-data, in-size);
-      `` fd.close();
-      `` 'c.out.write(in-data, in-size);
+      // 'c:file.open(+fd, "out:parsed.glc", #write | #truncate | #create, 0644);
+      // fd.write(in-data, in-size);
+      // fd.close();
+      // 'c.out.write(in-data, in-size);
    }
    {+r-end:rdr+}
    r-end.ref = in-data;
@@ -1007,8 +1007,8 @@
       tok.row = next-row;
       tok.col = next-col;
       +t = lex.scan();
-      {if(:true) `` t != #space)
-         `` when reporting the row and column of tokens, skip the spaces
+      {if(:true) // t != #space)
+         // when reporting the row and column of tokens, skip the spaces
          +pos = lex.start;
          {while(pos < r-end.p1)
             {if(||, pos[0] == '' , pos[0] == ''\t)
@@ -1026,17 +1026,17 @@
       .last-col = .col;
       .row = tok.row;
       .col = tok.col;
-      `` 'c.out.printf("%s:%u:%u: token %s\n", .input-path, tok.row, tok.col, t.cgl-name());
-      `` 'c.out.flush();
+      // 'c.out.printf("%s:%u:%u: token %s\n", .input-path, tok.row, tok.col, t.cgl-name());
+      // 'c.out.flush();
       {if(&&, t >= #id-colon, t < #id)
          tok.id = lex.get-id(1, 0);
          psr.parse(t, tok);
       }{else
          {switch(t)
-            {case(#id-lparen)
-               tok.id = lex.get-id(0, 1);
-               psr.parse(t, tok);
-            }
+            // {case(#id-lparen)
+            //    tok.id = lex.get-id(0, 1);
+            //    psr.parse(t, tok);
+            // }
             {case(#char1)
                {+r:rdr+}
                r.ref = lex.start;
@@ -1050,7 +1050,7 @@
                psr.parse(t, tok);
             }
             {case(#space-at-real-name-str)
-               `` find the '@' character and start counting from there
+               // find the '@' character and start counting from there
                {+r-start:rdr+}
                r-start.ref = lex.start;
                +start = 11;
@@ -1121,7 +1121,7 @@
    malloc-arr(.id-in-header-id-v, .id-c);
 
    w.n(.include-c);
-   `` 'c.out.printf("There are %u includes\n", .include-c);
+   // 'c.out.printf("There are %u includes\n", .include-c);
    {do{+i = 0}{(.include-c) i++}
       w.n1(.include-len-v[i]);
       w.copy(.include-str-v[i], .include-len-v[i]);

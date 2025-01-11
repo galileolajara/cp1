@@ -24,7 +24,7 @@
    }
    {process-size-of-type(expr:expr, ok:bool&) @case.process() @inline
       {+e:expr-size-of-type = expr}
-      e.type = at-validate(e.type, .ctx-func.at);
+      e.type = at-validate(e.type, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
       e.type.output(.ctx-func.file, .ctx-begin-row, .ctx-begin-col);
       ok = :true;
    }

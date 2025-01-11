@@ -63,8 +63,8 @@
    )
 }
 {stmt-push(s:stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:stmt-type)
-   `` 'c.out.printf("%s:%u:%u - %u:%u stmt-push()\n", .input-path, begin-row, begin-col, end-row, end-col);
-   `` 'c.out.flush();
+   // 'c.out.printf("%s:%u:%u - %u:%u stmt-push()\n", .input-path, begin-row, begin-col, end-row, end-col);
+   // 'c.out.flush();
    s.begin-row = begin-row;
    s.begin-col = begin-col;
    s.end-row = end-row;
@@ -92,7 +92,7 @@
    +lvar = lvar-i.ptr();
    .decl-var.name = name;
    lvar.decl.copy-from(.decl-var);
-   `` 'c.out.printf("%s %d\n", .decl-var.name.str(), .decl-var.type-info.built-in);
+   // 'c.out.printf("%s %d\n", .decl-var.name.str(), .decl-var.type-info.built-in);
    {if(set != #nil)
       +e = expr-assign(expr-lvar(name, 0, row, col), set, #eq);
       expr2stmt(e, row, col, row, col);

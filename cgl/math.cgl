@@ -142,18 +142,18 @@
    }
    {value-math(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline
       {+expr:expr-math = e.ptr()}
-		`` {if(expr.left.value(1, paren, v) == :false)
-      ``    :return;
-      `` }
+		// {if(expr.left.value(1, paren, v) == :false)
+      //    :return;
+      // }
 		{if!(expr.left.value(1, paren, v)) :return}
-		`` +left = e.left.type();
-		`` +right = e.right.type();
-      `` +left-size = left.real.basicType.to()Size;
-      `` {if(left-size > 0)
-      `` 	{if(left-size > right.real.basicType.to()Size) 
-      `` 		v.decl = left;
-      `` 	}
-      `` }
+		// +left = e.left.type();
+		// +right = e.right.type();
+      // +left-size = left.real.basicType.to()Size;
+      // {if(left-size > 0)
+      // 	{if(left-size > right.real.basicType.to()Size) 
+      // 		v.decl = left;
+      // 	}
+      // }
 		v.paren = paren;
 		v.ref = ref;
       ok = :true;

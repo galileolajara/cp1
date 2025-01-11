@@ -19,14 +19,14 @@
       .struct-is-outputted[n3] |= n17;
       +s = s-i.ptr();
       +s-at = s.at;
-
-      +row = s.begin-row;
-      +col = s.begin-col;
+      +s-file = s.file;
+      +s-row = s.begin-row;
+      +s-col = s.begin-col;
       {do{+i = 0}{(s.fvar-c) i++}
-         `` s.fvar-v[i].decl.type.output(s.file, row, col);
-         `` {if!(s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col)) :return}
-         s.fvar-v[i].decl.type = at-validate(s.fvar-v[i].decl.type, s-at);
-         {if!(s.fvar-v[i].decl.process(row, col, s-at))
+         // s.fvar-v[i].decl.type.output(s.file, row, col);
+         // {if!(s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col)) :return}
+         s.fvar-v[i].decl.type = at-validate(s.fvar-v[i].decl.type, s-at, s-file, s-row, s-col);
+         {if!(s.fvar-v[i].decl.process(s-file, s-row, s-col, s-at))
             'c.out.printf("err\n");
             'c.exit(#failure);
             :return;
@@ -96,14 +96,14 @@
    .decl-fvar-c = 0;
    .decl-struct-real-name = #nil;
    .decl-struct-flags = #0;
-   `` 'c.out.printf("began struct at:\n");
-   `` +at-i = .build-at;
-   `` {do()
-   ``    +at = at-i.ptr();
-   ``    'c.out.printf("- %s\n", at.name.id.str());
-   ``    at-i = at.parent;
-   ``    {if(at-i == #root) {break}}
-   `` }
+   // 'c.out.printf("began struct at:\n");
+   // +at-i = .build-at;
+   // {do()
+   //    +at = at-i.ptr();
+   //    'c.out.printf("- %s\n", at.name.id.str());
+   //    at-i = at.parent;
+   //    {if(at-i == #root) {break}}
+   // }
 }
 {decl-struct-end(row:i32, col:i32)
    +s-idx = .struct-c++;
@@ -122,13 +122,13 @@
    s.include = .decl-include;
    s.at = .decl-struct-at;
    s.flags = .decl-struct-flags;
-   `` s.name = .decl-struct-name;
+   // s.name = .decl-struct-name;
    s.fvar-c = .decl-fvar-c;
-   `` 'c.out.printf("There are %u fvars\n", s.fvar-c);
+   // 'c.out.printf("There are %u fvars\n", s.fvar-c);
    {do{+i = 0}{(.decl-fvar-c) i++}
       +a = s.fvar-v[i];
       a.decl.copy-from(.decl-fvar-v[i]);
-      `` 'c.out.printf("- %s\n", a.name.str());
+      // 'c.out.printf("- %s\n", a.name.str());
    }
    s.real-name = .decl-struct-real-name;
 }

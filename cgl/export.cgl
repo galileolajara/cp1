@@ -4,7 +4,7 @@
    quick-alloc-undo(0);
    decl-func-begin(#0, 0, 0);
    decl-func-end(0, 0);
-   `` decl-struct-begin(#0, 0, 0);
+   // decl-struct-begin(#0, 0, 0);
    decl-struct-end(0, 0);
    decl-var-begin(#0, 0, 0);
    decl-var-attr-real-name(#nil);
@@ -47,7 +47,7 @@
    token-name(#nil);
    decl-var-type(#nil);
    decl-var-this();
-   `` stmt-lvar-begin(0, 0);
+   // stmt-lvar-begin(0, 0);
    stmt-lvar-add(#0, #nil, 0, 0);
    stmt-lvar-end(0, 0);
    decl-include-begin(#0, 0, 0);
@@ -67,7 +67,7 @@
    at-root();
    at-alias(#nil, 0, 0);
    at-graves(0, 0, 0);
-   `` at-create();
+   // at-create();
    at-basic-type(#i32);
    decl-var-as-gvar();
    type-info-arr(:null, 0);
@@ -79,7 +79,7 @@
    expr-size-of-type(#nil);
    expr-null();
    decl-at-begin-enum(#nil, 0, 0);
-   `` decl-enum-begin(#nil, 0, 0);
+   // decl-enum-begin(#nil, 0, 0);
    decl-enum-end(#nil, 0, 0);
    expr-cvar(#nil, #nil);
    enum-add-cvar(#nil, 0, 0);
@@ -94,7 +94,7 @@
    expr-cast-fast(#nil, #nil);
    expr-index(#nil, :null, 0);
    enum-base-begin();
-   `` enum-base-end();
+   // enum-base-end();
    stmt-switch-begin();
    stmt-switch-set(#nil, 0, 0, 0, 0, #nil);
    stmt-switch-expr-add(#nil);

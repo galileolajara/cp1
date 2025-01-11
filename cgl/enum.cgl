@@ -24,9 +24,9 @@
          e.include.output();
       }
 
-      `` {if((e.flags & #no-decl) == #0)
+      // {if((e.flags & #no-decl) == #0)
          .enum-outputted-v[.enum-outputted-c++] = e-i;
-      `` }
+      // }
    }
 }
 {:enum-flags[
@@ -67,21 +67,21 @@
    .decl-enum-at = .build-at;
    .decl-enum-flags = #0;
    .decl-enum-last-cvar = #nil;
-   `` 'c.out.printf("began enum at:\n");
-   `` +at-i = .build-at;
-   `` {do()
-   ``    +at = at-i.ptr();
-   ``    'c.out.printf("- %s\n", at.name.id.str());
-   ``    at-i = at.parent;
-   ``    {if(at-i == #root) {break}}
-   `` }
+   // 'c.out.printf("began enum at:\n");
+   // +at-i = .build-at;
+   // {do()
+   //    +at = at-i.ptr();
+   //    'c.out.printf("- %s\n", at.name.id.str());
+   //    at-i = at.parent;
+   //    {if(at-i == #root) {break}}
+   // }
 }
 {enum-base-begin()
    .decl-at = .decl-at.ptr().parent;
 }
-`` {enum-base-end()
-``    .decl-at = .decl-enum-at;
-`` }
+// {enum-base-end()
+//    .decl-at = .decl-enum-at;
+// }
 {decl-enum-end(base-type:at, row:i32, col:i32)
    +s-idx = .enum-c++;
    {if(.enum-cap <= .enum-c)
@@ -102,14 +102,14 @@
    .decl-at = .decl-enum-at;
    s.flags = .decl-enum-flags;
    .decl-enum-last-cvar = #nil;
-   `` s.name = .decl-enum-name;
-   `` s.evar-c = .decl-evar-c;
-   `` 'c.out.printf("There are %u evars\n", s.evar-c);
-   `` {do{+i = 0}{(.decl-evar-c) i ++}
-   ``    +a = s.evar-v[i];
-   ``    a.decl.copy-from(.decl-evar-v[i]);
-   ``    `` 'c.out.printf("- %s\n", a.name.str());
-   `` }
+   // s.name = .decl-enum-name;
+   // s.evar-c = .decl-evar-c;
+   // 'c.out.printf("There are %u evars\n", s.evar-c);
+   // {do{+i = 0}{(.decl-evar-c) i ++}
+   //    +a = s.evar-v[i];
+   //    a.decl.copy-from(.decl-evar-v[i]);
+   //    // 'c.out.printf("- %s\n", a.name.str());
+   // }
 }
 {gvar last-cvar:cvar}
 {enum-add-cvar(name:id, row:i32, col:i32)

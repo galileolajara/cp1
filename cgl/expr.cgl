@@ -51,7 +51,7 @@
    {write-value(e:this, v:value):bool
       +expr = e.ptr();
       +ref = v.ref;
-      `` 'c.out.printf("write-value v.ref = %d\n", ref);
+      // 'c.out.printf("write-value v.ref = %d\n", ref);
       {if(v.paren)
          {if(ref <= 0)
             .out.write("(&", 2);
@@ -174,8 +174,8 @@
       {if((.expr-is-processed[n3] & n17) != #0) :return :true}
       .expr-is-processed[n3] |= n17;
       +expr = e.ptr();
-      `` {if(expr.flags & #processed) :return :true}
-      `` expr.flags |= #processed;
+      // {if(expr.flags & #processed) :return :true}
+      // expr.flags |= #processed;
       +ok = :false;
       {switch(expr.type).process(expr, ok)
          {default
@@ -219,25 +219,25 @@
    {rd(e:this&, r:rdr) @inline
       e = r.n1():basic-type-id;
    }
-`` {write(e:this, out'c:file)
-``    {switch(e)
-``       {case(#ref)
-``          out.printf("void*");
-``       }
-``       {case(#i32)
-``          out.printf("int");
-``       }
-``       {case(#u32)
-``          out.printf("unsigned int");
-``       }
-``       {case(#float)
-``          out.printf("float");
-``       }
-``       {case(#bool)
-``          out.printf("bool");
-``       }
-``    }
-`` }
+// {write(e:this, out'c:file)
+//    {switch(e)
+//       {case(#ref)
+//          out.printf("void*");
+//       }
+//       {case(#i32)
+//          out.printf("int");
+//       }
+//       {case(#u32)
+//          out.printf("unsigned int");
+//       }
+//       {case(#float)
+//          out.printf("float");
+//       }
+//       {case(#bool)
+//          out.printf("bool");
+//       }
+//    }
+// }
    {cgl-name(e:this):char[] @cgl-name}
 }
 {:expr-lvar(

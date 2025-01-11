@@ -38,9 +38,9 @@
          at-i.output(cvar.file, cvar.row, cvar.col);
       }
 
-      `` {if((gvar.flags & #no-decl) == #0)
+      // {if((gvar.flags & #no-decl) == #0)
          .cvar-outputted-v[.cvar-outputted-c++] = c;
-      `` }
+      // }
       
       :return :true;
    }
@@ -61,7 +61,7 @@
    #0,
    #set-expr = 1,
    #as-enum = 2,
-   `` #real-name = 2,
+   // #real-name = 2,
    ]:u8
    {wr(f:this, w:wtr) @inline
       w.n1(f);
@@ -119,10 +119,10 @@
          +at = e.try.ptr();
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
-         `` 'c.out.printf("e.try = %d, %s, %s, cvar-c %d\n", e.try, at.name.id.str(), name.str(), cvar-c);
+         // 'c.out.printf("e.try = %d, %s, %s, cvar-c %d\n", e.try, at.name.id.str(), name.str(), cvar-c);
          {do{+i = 0}{(cvar-c) i++}
             +cvar = cvar-v[i];
-            `` 'c.out.printf("- %s\n", cvar.ptr().decl.name.str());
+            // 'c.out.printf("- %s\n", cvar.ptr().decl.name.str());
             {if(cvar.ptr().decl.name == name)
                {if!(cvar.process()) :return}
                e.cvar = cvar;
@@ -132,7 +132,7 @@
          }
       }
       {if(e.at != #nil)
-         e.at = at-validate(e.at, .ctx-func.at);
+         e.at = at-validate(e.at, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
          +at = e.at.ptr();
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;

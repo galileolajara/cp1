@@ -103,7 +103,7 @@
          {+e:expr-func = s.cases.ptr()}
          +func-name = e.func-name;
          +f = .ctx-func.at.ptr();
-         `` 'c.out.printf("there's a switch that have cases for functions prefixed by ':%s-'\n", func-name.str());
+         // 'c.out.printf("there's a switch that have cases for functions prefixed by ':%s-'\n", func-name.str());
          +case-c = 0;
          +case-cap = 0;
          {+case-v:func[] = :null}
@@ -112,7 +112,7 @@
             +func = func-i.ptr();
             {if((func.flags & #case) != #0)
                {if(func.case == func-name)
-                  `` 'c.out.printf("found function ':%s' to be used as case in switch\n", func.decl.name.str());
+                  // 'c.out.printf("found function ':%s' to be used as case in switch\n", func.decl.name.str());
                   +ci = case-c++;
                   {if(case-cap <= case-c)
                      +old-cap = case-cap;

@@ -9,7 +9,7 @@
 {stmt-break(id:id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32)
    quick-alloc-one(+(s:stmt-break));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #break);
-   `` s.id = id;
+   // s.id = id;
    {if(.nest-stack-c <= 0)
       'c.out.printf("%s:%u:%u: Cannot have a break because it's not inside a loop\n", .input-path, begin-row, begin-col);
       'c.exit(#failure);

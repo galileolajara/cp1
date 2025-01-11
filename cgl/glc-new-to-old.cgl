@@ -92,7 +92,7 @@
          w-new.pos += 2;
          r.pos += 2;
       }{elif(&&, r.1[0] == ''`~, r.1[1] == ''=, r.1[2] == '' )
-         `` found a code that's only for the new glc
+         // found a code that's only for the new glc
          r.pos += 3;
          {+r-new-line:rdr+}
          r-new-line.pos = r.pos;
@@ -107,7 +107,7 @@
          r.pos = r-new-line.pos;
          {continue}
       }{elif(&&, r.1[0] == ''`~, r.1[1] == ''-, r.1[2] == '' )
-         `` found a code that's only for the old glc
+         // found a code that's only for the old glc
          r.pos += 3;
          {+r-new-line:rdr+}
          r-new-line.pos = r.pos;
@@ -122,22 +122,22 @@
          r.pos = r-new-line.pos;
          {continue}
       }{elif(&&, r.1[0] == ''+, r.1[1] == ''+, r.1[2] != ''\")
-         `` increment operator
+         // increment operator
          +c = r.1[2];
          {if(||, (&&, c >= ''a, c <= ''z), (&&, c >= ''A, c <= ''Z))
-            `` don't change
+            // don't change
          }{else
-            `` insert space
+            // insert space
             w-old.1[0] = '' ;
             w-old.pos ++;
          }
       }{elif(&&, r.1[0] == ''-, r.1[1] == ''-, r.1[2] != ''\")
-         `` decrement operator
+         // decrement operator
          +c = r.1[2];
          {if(||, (&&, c >= ''a, c <= ''z), (&&, c >= ''A, c <= ''Z))
-            `` don't change
+            // don't change
          }{else
-            `` insert space
+            // insert space
             w-old.1[0] = '' ;
             w-old.pos ++;
          }
@@ -174,7 +174,7 @@
          {continue}
       }
       {if(&&, r.1[0] == ''_, r.1[1] == ''z)
-         `` slow algorithm for changing :type[:usz] to :uszOf[:type]
+         // slow algorithm for changing :type[:usz] to :uszOf[:type]
          :rdr.set(+r-bracket, r.ref);
          +limit = 32;
          {while(r-bracket.1[0] != ''[)
@@ -206,12 +206,12 @@
       w-old.pos ++;
    }
 
-   `` remove the {glc header
+   // remove the {glc header
    w-new-begin.1[0] = '' ;
    w-new-begin.1[1] = '' ;
    w-new-begin.1[2] = '' ;
    w-new-begin.1[3] = '' ;
-   `` remove the } footer
+   // remove the } footer
    w-new.1[-2] = '' ;
 
    {if!('c:file.create(++out-new-fd, out-new-path, #truncate | #write, 0644))

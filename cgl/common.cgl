@@ -265,7 +265,7 @@ end-if
    include:include,
    at:at,
    flags:cvar-flags,
-   `` real-name:id,
+   // real-name:id,
    decl:decl-var-data+,
    expr-set:expr-i,
    last-cvar:cvar,
@@ -330,13 +330,13 @@ end-if
    end-col:i32,
    include:include,
    at:at,
-   `` name:id,
+   // name:id,
    flags:func-flags,
    real-name:id,
    decl-str:char[],
    decl-len:i32,
    case:id,
-   `` type:at,
+   // type:at,
    decl:decl-var-data+,
 if-parser
    stmt-space:stmt-space,
@@ -344,16 +344,16 @@ end-if
 if-compiler
    stmt-space:stmt-space+,
 end-if
-``    stmt-c:u32,
-`` if-compiler
-``    stmt-cap:u32,
-`` end-if
-``    stmt-v:stmt[],
+//    stmt-c:u32,
+// if-compiler
+//    stmt-cap:u32,
+// end-if
+//    stmt-v:stmt[],
 if-compiler
    lvar-c:lvar,
-   `` lvar-cap:lvar,
+   // lvar-cap:lvar,
    lvar-v:lvar-data+[],
-   `` lvar-name-v:id[],
+   // lvar-name-v:id[],
    body-file-pos:u32,
 end-if
 if-parser
@@ -378,10 +378,10 @@ end-if
    'c.memset(.quick-alloc-v, 0, .quick-alloc-cap);
 }
 {quick-alloc(size:i32):ref @real-name(qalloc)
-   `` +mem = 'c.malloc(size);
-   `` 'c.memset(mem, 0, size);
-   `` :return mem;
-   `` snap to :usz
+   // +mem = 'c.malloc(size);
+   // 'c.memset(mem, 0, size);
+   // :return mem;
+   // snap to :usz
    {if(:ref[:usz] == 8)
       size = (size + 7) & (-1 ^ 7);
    }{else
@@ -394,11 +394,11 @@ end-if
       .quick-alloc-c += size;
       :return r.ref;
    }
-   `` expand
+   // expand
    grow(.quick-alloc-cap, .quick-alloc-c + size);
    .quick-alloc-v = 'c.malloc(.quick-alloc-cap);
    'c.memset(.quick-alloc-v, 0, .quick-alloc-cap);
-   `` 'c.out.printf("expanding to %u\n", .quick-alloc-cap);
+   // 'c.out.printf("expanding to %u\n", .quick-alloc-cap);
    .quick-alloc-c = size;
    :return .quick-alloc-v;
 }
@@ -512,11 +512,11 @@ end-if
                :return :false;
             }
             ti.ref-v[0] = -1;
-         `` }{else
-         ``    {if!(ti.built-in)
-         ``       'c.err.printf("%s:%d:%d: Missing plus symbol (+) because type '/%s' is a value\n", .ctx-func.file.path(), row, col, at.name.id.str());
-         ``       :return :false;
-         ``    }
+         // }{else
+         //    {if!(ti.built-in)
+         //       'c.err.printf("%s:%d:%d: Missing plus symbol (+) because type '/%s' is a value\n", .ctx-func.file.path(), row, col, at.name.id.str());
+         //       :return :false;
+         //    }
          }
       }{else
 			{if(ti.built-in)
@@ -584,29 +584,29 @@ end-if
 	}
    {write-type(td:this):bool
       td.write();
-`` 	{if(td.typeType == #value)
-`` 		{if(td.real.baseDecl == :null)
-`` 			+loc = td.location;
-`` 			'c.err.printf("%s:%d:%d: base type was null\n", loc.path, loc.row, loc.col);
-`` 			:return :false;
-`` 		}
-`` 		:return td.real.baseDecl.write()Type(t);
-`` 	}
-`` 	{if(td.real.basicType == #none)
-`` 		{if(td.real.typeDef)
-`` 		}{else
-`` 			{if(:Config.target == #c)
-`` 				{if(td.real.is-union())
-`` 					t.write("union "#);
-`` 				}{else
-`` 					t.write("struct "#);
-`` 				}
-`` 			}
-`` 		}
-`` 		td.write(t);
-`` 	}{else
-`` 		td.write(t);
-`` 	}
+// 	{if(td.typeType == #value)
+// 		{if(td.real.baseDecl == :null)
+// 			+loc = td.location;
+// 			'c.err.printf("%s:%d:%d: base type was null\n", loc.path, loc.row, loc.col);
+// 			:return :false;
+// 		}
+// 		:return td.real.baseDecl.write()Type(t);
+// 	}
+// 	{if(td.real.basicType == #none)
+// 		{if(td.real.typeDef)
+// 		}{else
+// 			{if(:Config.target == #c)
+// 				{if(td.real.is-union())
+// 					t.write("union "#);
+// 				}{else
+// 					t.write("struct "#);
+// 				}
+// 			}
+// 		}
+// 		td.write(t);
+// 	}{else
+// 		td.write(t);
+// 	}
    	:return :true;
    }
    {ptr(i:this):at-data @inline
@@ -730,13 +730,13 @@ end-if
             .out.printf("_M%s", at.name.id.c-name());
          }
          {case(#struct-enum)
-            `` {if(at.def == #struct)
+            // {if(at.def == #struct)
                {if(at.parent != #root) at.parent.write-space()}
                .out.printf("_N%s", at.name.id.c-name());
-            `` }{elif(at.def == #enum)
-            ``    {if(at.parent != #root) at.parent.write-space()}
-            ``    .out.printf("_E%s", at.name.id.c-name());
-            `` }
+            // }{elif(at.def == #enum)
+            //    {if(at.parent != #root) at.parent.write-space()}
+            //    .out.printf("_E%s", at.name.id.c-name());
+            // }
          }
          {case(#basic)
             {switch(at.name.basic)

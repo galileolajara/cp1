@@ -829,7 +829,7 @@ void* qalloc(int32_t _Lsize_0);
 void _Nglc_Nfunc_Prd_2(_Nglc_Nfunc* _Lf_0, union _Nglc_Nrdr* _Lr_1);
 uint32_t _Nglc_Nrdr_Pn4_1(union _Nglc_Nrdr* _Lr_0);
 struct _Nglc_Nfile_data* _Nglc_Nfile_Pptr_1(_Nglc_Nfile _Lf_0);
-_Nglc_Nat _Nglc_Pat_validate_2(_Nglc_Nat _Lvd_type_0, _Nglc_Nat _Lat_i_1);
+_Nglc_Nat _Nglc_Pat_validate_5(_Nglc_Nat _Lvd_type_0, _Nglc_Nat _Lat_i_1, _Nglc_Nfile _Lfile_2, uint32_t _Lrow_3, uint32_t _Lcol_4);
 bool _Nglc_Nat_Pfinalize_4(_Nglc_Nat _Lat_i_0, struct _Nglc_Ntype_info* _Lti_1, int32_t _Lrow_2, int32_t _Lcol_3);
 void _Nglc_Ndecl_func_Plvars_rd_2(struct _Nglc_Ndecl_func* _Lf_0, union _Nglc_Nrdr* _Lr_1);
 void _Nglc_Nstmt_space_Prd_3(struct _Nglc_Nstmt_space* _Lspace_0, union _Nglc_Nrdr* _Lr_1, struct _Nglc_Nstmt_space* _Lparent_2);
@@ -983,7 +983,7 @@ void _Nglc_Nstmt_Pprocess_continue_2(struct _Nglc_Nstmt* _Lstmt_0, bool* _Lok_1)
 void _Nglc_Nstmt_Pprocess_break_2(struct _Nglc_Nstmt* _Lstmt_0, bool* _Lok_1);
 void _Nglc_Nstmt_Pprocess_return_2(struct _Nglc_Nstmt* _Lstmt_0, bool* _Lok_1);
 void _Nglc_Nstmt_Pprocess_space_2(struct _Nglc_Nstmt* _Lstmt_0, bool* _Lok_1);
-bool _Nglc_Ndecl_var_data_Pprocess_4(struct _Nglc_Ndecl_var_data* _Lvd_0, int32_t _Lrow_1, int32_t _Lcol_2, _Nglc_Nat _Lbase_at_3);
+bool _Nglc_Ndecl_var_data_Pprocess_5(struct _Nglc_Ndecl_var_data* _Lvd_0, _Nglc_Nfile _Lfile_1, int32_t _Lrow_2, int32_t _Lcol_3, _Nglc_Nat _Lbase_at_4);
 void _Nglc_Nexpr_i_Pprocess_assign_2(struct _Nglc_Nexpr* _Lexpr_0, bool* _Lok_1);
 void _Nglc_Nexpr_i_Pprocess_compare_2(struct _Nglc_Nexpr* _Lexpr_0, bool* _Lok_1);
 void _Nglc_Nexpr_i_Pprocess_bool_2(struct _Nglc_Nexpr* _Lexpr_0, bool* _Lok_1);
@@ -2099,6 +2099,9 @@ uint32_t _Ln3_2;
 int32_t _Ln17_3;
 struct _Nglc_Ndecl_func* _Lf_4;
 _Nglc_Nat _Lf_at_5;
+_Nglc_Nfile _Lf_file_6;
+int32_t _Lf_row_7;
+int32_t _Lf_col_8;
 _Lnum_1 = (uint32_t)(_Lf_idx_0);
 _Ln3_2 = (_Lnum_1 >> 3);
 _Ln17_3 = (1 << (_Lnum_1 & 7));
@@ -2108,18 +2111,21 @@ return;
 _Gfunc_in_process[_Ln3_2] |= _Ln17_3;
 _Lf_4 = _Nglc_Nfunc_Pptr_1(_Lf_idx_0);
 _Lf_at_5 = (*_Lf_4)._Fat;
-int32_t _Lj_6;
-_Lj_6 = 0;
+_Lf_file_6 = (*_Lf_4)._Ffile;
+_Lf_row_7 = (*_Lf_4)._Fbegin_row;
+_Lf_col_8 = (*_Lf_4)._Fbegin_col;
+int32_t _Lj_9;
+_Lj_9 = 0;
 for(int i = (*_Lf_4)._Ffarg_c; i > 0; ) {
 i --;
-(*_Lf_4)._Ffarg_v[_Lj_6]._Fdecl._Ftype = _Nglc_Pat_validate_2((*_Lf_4)._Ffarg_v[_Lj_6]._Fdecl._Ftype, _Lf_at_5);
+(*_Lf_4)._Ffarg_v[_Lj_9]._Fdecl._Ftype = _Nglc_Pat_validate_5((*_Lf_4)._Ffarg_v[_Lj_9]._Fdecl._Ftype, _Lf_at_5, _Lf_file_6, (*_Lf_4)._Ffarg_v[_Lj_9]._Frow, (*_Lf_4)._Ffarg_v[_Lj_9]._Fcol);
 continue_0:;
-_Lj_6++;
+_Lj_9++;
 }
 break_0:;
 if((*_Lf_4)._Fdecl._Ftype != _Nglc_Nat_Cnil) {
-(*_Lf_4)._Fdecl._Ftype = _Nglc_Pat_validate_2((*_Lf_4)._Fdecl._Ftype, _Lf_at_5);
-_Nglc_Nat_Pfinalize_4((*_Lf_4)._Fdecl._Ftype, &(*_Lf_4)._Fdecl._Ftype_info, (*_Lf_4)._Fbegin_row, (*_Lf_4)._Fbegin_col);
+(*_Lf_4)._Fdecl._Ftype = _Nglc_Pat_validate_5((*_Lf_4)._Fdecl._Ftype, _Lf_at_5, _Lf_file_6, _Lf_row_7, _Lf_col_8);
+_Nglc_Nat_Pfinalize_4((*_Lf_4)._Fdecl._Ftype, &(*_Lf_4)._Fdecl._Ftype_info, _Lf_row_7, _Lf_col_8);
 }
 _Gfunc_head_outputted_v[_Gfunc_head_outputted_c++] = _Lf_idx_0;
 if(((*_Lf_4)._Fflags & _Nglc_Nfunc_flags_Chas_body) != _Nglc_Nfunc_flags_C0) {
@@ -2128,9 +2134,9 @@ if(_Gprocess_first == _Nglc_Nfunc_Cnil) {
 _Gprocess_first = _Lf_idx_0;
 _Gprocess_last = _Lf_idx_0;
 } else {
-struct _Nglc_Ndecl_func* _Lf_last_7;
-_Lf_last_7 = _Nglc_Nfunc_Pptr_1(_Gprocess_last);
-(*_Lf_last_7)._Fprocess_next = _Lf_idx_0;
+struct _Nglc_Ndecl_func* _Lf_last_10;
+_Lf_last_10 = _Nglc_Nfunc_Pptr_1(_Gprocess_last);
+(*_Lf_last_10)._Fprocess_next = _Lf_idx_0;
 _Gprocess_last = _Lf_idx_0;
 }
 }
@@ -2791,26 +2797,26 @@ return _Lval_1;
 struct _Nglc_Nfile_data* _Nglc_Nfile_Pptr_1(_Nglc_Nfile _Lf_0) {
 return &_Gfile_v[_Lf_0];
 }
-_Nglc_Nat _Nglc_Pat_validate_2(_Nglc_Nat _Lvd_type_0, _Nglc_Nat _Lat_i_1) {
-struct _Nglc_Nat_data* _Ltype_2;
-struct _Nglc_Nat_data* _Lparent_3;
-_Ltype_2 = _Nglc_Nat_Pptr_1(_Lvd_type_0);
-_Lparent_3 = _Nglc_Nat_Pptr_1((*_Ltype_2)._Fparent);
-if((((*_Lparent_3)._Ftype == _Nglc_Nname_type_Cbasic) && ((*_Lparent_3)._Fname._Fbasic == _Nglc_Nbasic_type_id_Crelative))) {
-union _Nglc_Nat_name* _Lname_4;
-_Lname_4 = (&(*_Ltype_2)._Fname);
+_Nglc_Nat _Nglc_Pat_validate_5(_Nglc_Nat _Lvd_type_0, _Nglc_Nat _Lat_i_1, _Nglc_Nfile _Lfile_2, uint32_t _Lrow_3, uint32_t _Lcol_4) {
+struct _Nglc_Nat_data* _Ltype_5;
+struct _Nglc_Nat_data* _Lparent_6;
+_Ltype_5 = _Nglc_Nat_Pptr_1(_Lvd_type_0);
+_Lparent_6 = _Nglc_Nat_Pptr_1((*_Ltype_5)._Fparent);
+if((((*_Lparent_6)._Ftype == _Nglc_Nname_type_Cbasic) && ((*_Lparent_6)._Fname._Fbasic == _Nglc_Nbasic_type_id_Crelative))) {
+union _Nglc_Nat_name* _Lname_7;
+_Lname_7 = (&(*_Ltype_5)._Fname);
 while(1) {
-_Nglc_Nat _Li_5;
-_Li_5 = (_Nglc_Nat)(0);
+_Nglc_Nat _Li_8;
+_Li_8 = (_Nglc_Nat)(0);
 for(int i = _Gat_c; i > 0; ) {
 i --;
-if(((_Gat_v[_Li_5]._Fparent == _Lat_i_1) && (_Gat_v[_Li_5]._Ftype != _Nglc_Nname_type_Cbasic))) {
-if(_Gat_v[_Li_5]._Fname._Fid == (*_Lname_4)._Fid) {
-return _Li_5;
+if(((_Gat_v[_Li_8]._Fparent == _Lat_i_1) && (_Gat_v[_Li_8]._Ftype != _Nglc_Nname_type_Cbasic))) {
+if(_Gat_v[_Li_8]._Fname._Fid == (*_Lname_7)._Fid) {
+return _Li_8;
 }
 }
 continue_1:;
-_Li_5++;
+_Li_8++;
 }
 break_1:;
 if(_Lat_i_1 == _Nglc_Nat_Croot) {
@@ -2820,7 +2826,7 @@ _Lat_i_1 = (*_Nglc_Nat_Pptr_1(_Lat_i_1))._Fparent;
 continue_0:;
 }
 break_0:;
-fprintf(stdout, "not found\n");
+fprintf(stdout, "%s:%u:%u: Type :%s was not found\n", _Nglc_Nfile_Ppath_1(_Lfile_2), _Lrow_3, _Lcol_4, _Nglc_Nid_Pstr_1((*_Lname_7)._Fid));
 exit(_Nstdc_Nexit_Cfailure);
 }
 return _Lvd_type_0;
@@ -3063,8 +3069,9 @@ uint32_t _Ln3_2;
 int32_t _Ln17_3;
 struct _Nglc_Nstruct_data* _Ls_4;
 _Nglc_Nat _Ls_at_5;
-int32_t _Lrow_6;
-int32_t _Lcol_7;
+_Nglc_Nfile _Ls_file_6;
+int32_t _Ls_row_7;
+int32_t _Ls_col_8;
 _Lnum_1 = (uint32_t)(_Ls_i_0);
 _Ln3_2 = (_Lnum_1 >> 3);
 _Ln17_3 = (1 << (_Lnum_1 & 7));
@@ -3074,20 +3081,21 @@ return;
 _Gstruct_is_outputted[_Ln3_2] |= _Ln17_3;
 _Ls_4 = _Nglc_Nstruct_Pptr_1(_Ls_i_0);
 _Ls_at_5 = (*_Ls_4)._Fat;
-_Lrow_6 = (*_Ls_4)._Fbegin_row;
-_Lcol_7 = (*_Ls_4)._Fbegin_col;
-int32_t _Li_8;
-_Li_8 = 0;
+_Ls_file_6 = (*_Ls_4)._Ffile;
+_Ls_row_7 = (*_Ls_4)._Fbegin_row;
+_Ls_col_8 = (*_Ls_4)._Fbegin_col;
+int32_t _Li_9;
+_Li_9 = 0;
 for(int i = (*_Ls_4)._Ffvar_c; i > 0; ) {
 i --;
-(*_Ls_4)._Ffvar_v[_Li_8]._Fdecl._Ftype = _Nglc_Pat_validate_2((*_Ls_4)._Ffvar_v[_Li_8]._Fdecl._Ftype, _Ls_at_5);
-if(!(_Nglc_Ndecl_var_data_Pprocess_4(&(*_Ls_4)._Ffvar_v[_Li_8]._Fdecl, _Lrow_6, _Lcol_7, _Ls_at_5))) {
+(*_Ls_4)._Ffvar_v[_Li_9]._Fdecl._Ftype = _Nglc_Pat_validate_5((*_Ls_4)._Ffvar_v[_Li_9]._Fdecl._Ftype, _Ls_at_5, _Ls_file_6, _Ls_row_7, _Ls_col_8);
+if(!(_Nglc_Ndecl_var_data_Pprocess_5(&(*_Ls_4)._Ffvar_v[_Li_9]._Fdecl, _Ls_file_6, _Ls_row_7, _Ls_col_8, _Ls_at_5))) {
 fprintf(stdout, "err\n");
 exit(_Nstdc_Nexit_Cfailure);
 return;
 }
 continue_0:;
-_Li_8++;
+_Li_9++;
 }
 break_0:;
 if((*_Ls_4)._Finclude != _Nglc_Ninclude_Cnil) {
@@ -4558,29 +4566,29 @@ return;
 }
 (*_Lok_1) = true;
 }
-bool _Nglc_Ndecl_var_data_Pprocess_4(struct _Nglc_Ndecl_var_data* _Lvd_0, int32_t _Lrow_1, int32_t _Lcol_2, _Nglc_Nat _Lbase_at_3) {
-_Nglc_Nat _Lat_i_4;
-struct _Nglc_Nat_data* _Lat_5;
-_Lat_i_4 = _Nglc_Pat_validate_2((*_Lvd_0)._Ftype, _Lbase_at_3);
-(*_Lvd_0)._Ftype = _Lat_i_4;
-_Lat_5 = _Nglc_Nat_Pptr_1(_Lat_i_4);
-if((((*_Lat_5)._Ftype != _Nglc_Nname_type_Cbasic) && ((*_Lat_5)._Fdecl._Fstruct == _Nglc_Nstruct_Cnil))) {
-fprintf(stdout, "%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", _Nglc_Nfile_Ppath_1((*_Gctx_func)._Ffile), _Lrow_1, _Lcol_2, _Nglc_Nid_Pstr_1((*_Lat_5)._Fname._Fid), _Nglc_Nid_Pstr_1((*_Lvd_0)._Fname));
+bool _Nglc_Ndecl_var_data_Pprocess_5(struct _Nglc_Ndecl_var_data* _Lvd_0, _Nglc_Nfile _Lfile_1, int32_t _Lrow_2, int32_t _Lcol_3, _Nglc_Nat _Lbase_at_4) {
+_Nglc_Nat _Lat_i_5;
+struct _Nglc_Nat_data* _Lat_6;
+_Lat_i_5 = _Nglc_Pat_validate_5((*_Lvd_0)._Ftype, _Lbase_at_4, _Lfile_1, _Lrow_2, _Lcol_3);
+(*_Lvd_0)._Ftype = _Lat_i_5;
+_Lat_6 = _Nglc_Nat_Pptr_1(_Lat_i_5);
+if((((*_Lat_6)._Ftype != _Nglc_Nname_type_Cbasic) && ((*_Lat_6)._Fdecl._Fstruct == _Nglc_Nstruct_Cnil))) {
+fprintf(stdout, "%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", _Nglc_Nfile_Ppath_1((*_Gctx_func)._Ffile), _Lrow_2, _Lcol_3, _Nglc_Nid_Pstr_1((*_Lat_6)._Fname._Fid), _Nglc_Nid_Pstr_1((*_Lvd_0)._Fname));
 return false;
 }
-_Nglc_Nat_Poutput_4(_Lat_i_4, (*_Gctx_func)._Ffile, _Lrow_1, _Lcol_2);
-if(!(_Nglc_Nat_Pfinalize_4(_Lat_i_4, &(*_Lvd_0)._Ftype_info, _Lrow_1, _Lcol_2))) {
+_Nglc_Nat_Poutput_4(_Lat_i_5, (*_Gctx_func)._Ffile, _Lrow_2, _Lcol_3);
+if(!(_Nglc_Nat_Pfinalize_4(_Lat_i_5, &(*_Lvd_0)._Ftype_info, _Lrow_2, _Lcol_3))) {
 return false;
 }
-int32_t _Li_6;
-_Li_6 = 0;
+int32_t _Li_7;
+_Li_7 = 0;
 for(int i = (*_Lvd_0)._Fsize_c; i > 0; ) {
 i --;
-if(!(_Nglc_Nexpr_i_Pvalue_4((*_Lvd_0)._Fsize_expr_v[_Li_6], 1, false, &(*_Lvd_0)._Fsize_value_v[_Li_6]))) {
+if(!(_Nglc_Nexpr_i_Pvalue_4((*_Lvd_0)._Fsize_expr_v[_Li_7], 1, false, &(*_Lvd_0)._Fsize_value_v[_Li_7]))) {
 return false;
 }
 continue_0:;
-_Li_6++;
+_Li_7++;
 }
 break_0:;
 return true;
@@ -4684,7 +4692,7 @@ _Le_2 = _Lexpr_0;
 if(!(_Nglc_Nexpr_i_Pvalue_4((*_Le_2)._Fexpr, 1, false, &(*_Le_2)._Fval))) {
 return;
 }
-(*_Le_2)._Ftype = _Nglc_Pat_validate_2((*_Le_2)._Ftype, (*_Gctx_func)._Fat);
+(*_Le_2)._Ftype = _Nglc_Pat_validate_5((*_Le_2)._Ftype, (*_Gctx_func)._Fat, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gctx_begin_col);
 _Nglc_Nat_Poutput_4((*_Le_2)._Ftype, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gctx_begin_col);
 (*_Lok_1) = true;
 }
@@ -4785,7 +4793,7 @@ break_0:;
 }
 if((*_Le_2)._Fat != _Nglc_Nat_Cnil) {
 struct _Nglc_Nat_data* _Lat_9;
-(*_Le_2)._Fat = _Nglc_Pat_validate_2((*_Le_2)._Fat, (*_Gctx_func)._Fat);
+(*_Le_2)._Fat = _Nglc_Pat_validate_5((*_Le_2)._Fat, (*_Gctx_func)._Fat, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gctx_begin_col);
 _Lat_9 = _Nglc_Nat_Pptr_1((*_Le_2)._Fat);
 _Lcvar_c_4 = (*_Lat_9)._Fcvar_c;
 _Lcvar_v_5 = (*_Lat_9)._Fcvar_v;
@@ -5068,7 +5076,7 @@ if(_Lat_idx_7 == _Nglc_Nat_Cnil) {
 _Lat_idx_7 = (*_Gctx_func)._Fat;
 _Ltry_parent_8 = true;
 } else {
-_Lat_idx_7 = _Nglc_Pat_validate_2(_Lat_idx_7, (*_Gctx_func)._Fat);
+_Lat_idx_7 = _Nglc_Pat_validate_5(_Lat_idx_7, (*_Gctx_func)._Fat, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gctx_begin_col);
 (*_Le_2)._Fat = _Lat_idx_7;
 }
 while(1) {
@@ -5197,7 +5205,7 @@ void _Nglc_Nexpr_i_Pprocess_i32_2(struct _Nglc_Nexpr* _Lexpr_0, bool* _Lok_1) {
 void _Nglc_Nexpr_i_Pprocess_size_of_type_2(struct _Nglc_Nexpr* _Lexpr_0, bool* _Lok_1) {
 struct _Nglc_Nexpr_size_of_type* _Le_2;
 _Le_2 = _Lexpr_0;
-(*_Le_2)._Ftype = _Nglc_Pat_validate_2((*_Le_2)._Ftype, (*_Gctx_func)._Fat);
+(*_Le_2)._Ftype = _Nglc_Pat_validate_5((*_Le_2)._Ftype, (*_Gctx_func)._Fat, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gctx_begin_col);
 _Nglc_Nat_Poutput_4((*_Le_2)._Ftype, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gctx_begin_col);
 (*_Lok_1) = true;
 }
@@ -5750,7 +5758,7 @@ return false;
 }
 return true;
 }
-return _Nglc_Ndecl_var_data_Pprocess_4(&(*_Llvar_1)._Fdecl, (*_Llvar_1)._Frow, (*_Llvar_1)._Fcol, (*_Gctx_func)._Fat);
+return _Nglc_Ndecl_var_data_Pprocess_5(&(*_Llvar_1)._Fdecl, (*_Gctx_func)._Ffile, (*_Llvar_1)._Frow, (*_Llvar_1)._Fcol, (*_Gctx_func)._Fat);
 }
 bool _Nglc_Ngvar_Pprocess_1(_Nglc_Ngvar _Lg_0) {
 uint32_t _Lnum_1;
@@ -5769,7 +5777,7 @@ _Ggvar_is_outputted[_Ln3_2] |= _Ln17_3;
 _Lgvar_4 = _Nglc_Ngvar_Pptr_1(_Lg_0);
 _Lat_i_5 = (*_Lgvar_4)._Fdecl._Ftype;
 _Lat_6 = _Nglc_Nat_Pptr_1(_Lat_i_5);
-if(!(_Nglc_Ndecl_var_data_Pprocess_4(&(*_Lgvar_4)._Fdecl, (*_Lgvar_4)._Frow, (*_Lgvar_4)._Fcol, (*_Lgvar_4)._Fat))) {
+if(!(_Nglc_Ndecl_var_data_Pprocess_5(&(*_Lgvar_4)._Fdecl, (*_Lgvar_4)._Ffile, (*_Lgvar_4)._Frow, (*_Lgvar_4)._Fcol, (*_Lgvar_4)._Fat))) {
 return false;
 }
 if(((*_Lgvar_4)._Fflags & _Nglc_Ngvar_flags_Cno_decl) == _Nglc_Ngvar_flags_C0) {

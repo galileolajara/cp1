@@ -13,7 +13,7 @@
       +gvar = g.ptr();
       +at-i = gvar.decl.type;
       +at = at-i.ptr();
-      {if!(gvar.decl.process(gvar.row, gvar.col, gvar.at)) :return :false}
+      {if!(gvar.decl.process(gvar.file, gvar.row, gvar.col, gvar.at)) :return :false}
 
       {if((gvar.flags & #no-decl) == #0)
          .gvar-outputted-v[.gvar-outputted-c++] = g;
@@ -25,15 +25,15 @@
       +gvar = g.ptr();
       gvar.decl.write(#gvar);
    }
-   `` {write(g:this)
-   ``    +gvar = g.ptr();
-   ``    {if((gvar.decl.flags & #real-name) != #0)
-   ``       .out.printf("%s", gvar.decl.real-name.str());
-   ``       :return;
-   ``    }
-   ``    gvar.at.write-space();
-   ``    .out.printf("_G%s", gvar.decl.name.c-name());
-   `` }
+   // {write(g:this)
+   //    +gvar = g.ptr();
+   //    {if((gvar.decl.flags & #real-name) != #0)
+   //       .out.printf("%s", gvar.decl.real-name.str());
+   //       :return;
+   //    }
+   //    gvar.at.write-space();
+   //    .out.printf("_G%s", gvar.decl.name.c-name());
+   // }
    {ptr(g:this):decl-gvar @inline
       :return .gvar-v[g];
    }
