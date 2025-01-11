@@ -21,7 +21,10 @@
             }
          }
          {fopen(file:this, mode:char[]):file @inline
-            return 'c.fdopen(file, mode);
+            return fdopen(file, mode);
+         }
+         {close(file:this):i32 @inline
+            return 'c.close(file);
          }
       }
       {:open-flags[
@@ -32,7 +35,8 @@
          #truncate @no-decl @real-name(O_TRUNC),
          ]:i32
       }
-      {open(path:char[], flags:open-flags):i32 @real-name(open) @no-decl}
-      {open(path:char[], flags:open-flags, mode:i32):i32 @real-name(open) @no-decl}
+      {open(path:char[], flags:open-flags):fd @real-name @no-decl}
+      {open(path:char[], flags:open-flags, mode:i32):fd @real-name @no-decl}
+      {close(fd:fd):i32 @real-name @no-decl}
    }
 }

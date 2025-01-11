@@ -758,7 +758,7 @@
       return 0;
    }
    .input-path = arg-v[1];
-   'c.out.printf("reading %s\n", .input-path);
+   // 'c.out.printf("reading %s\n", .input-path);
    {if!('c:fd.open(++in-fd, .input-path, #read))
       'c.out.printf("Cannot open file for reading: %s\n", .input-path);
       'c.exit(#failure);
@@ -1113,7 +1113,7 @@
    }
    psr.parse(#nil, tok);
    psr.free();
-   'c.out.printf("parsing finished\n");
+   // 'c.out.printf("parsing finished\n");
    {+w-begin:wtr+}
    w-begin.ref = quick-alloc((in-size << 2) + 1024);
    {+w:wtr+}

@@ -624,7 +624,7 @@
       }
    }
 
-   'c.out.printf("finished processing, writing...\n");
+   // 'c.out.printf("finished processing, writing...\n");
    .out = 'c.fopen(arg-v[arg-c - 1], "w");
    {do{+i = 0}{(.func-head-outputted-c) i++}
       +f-idx = .func-head-outputted-v[i];
