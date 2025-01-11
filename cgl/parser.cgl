@@ -780,7 +780,7 @@
       'c.out.printf("Error reading file '%s' because it doesn't end with a new line\n", .input-path);
       'c.exit(#failure);
    }
-   {if(:true)
+   {if(:true) // process comments
       // in-data = convert-old-to-new(in-data, in-size);
       {+r-end:rdr+}
       r-end.ref = in-data;
@@ -793,6 +793,15 @@
       {while(r.pos < r-end.pos)
          {if(r.p1[0] == ''/)
             {if(&&, r.p1[1] == ''/, (||, r.p1[2] == '' , r.p1[2] == ''\t))
+               {if(r.ref == in-data)
+                  // ok
+               }{elif(||, r.p1[-1] == '' , r.p1[-1] == ''\t, r.p1[-1] == ''\n)
+                  // ok
+               }{else
+                  get-row-col(+row, +col, r.ref, in-data);
+                  'c.out.printf("%s:%u:%u: There must be a space or tab before the // comment\n", .input-path, row, col);
+                  'c.exit(#failure);
+               }
                // comment
                r.pos += 3;
                {do()
