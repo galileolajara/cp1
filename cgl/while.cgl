@@ -4,9 +4,9 @@
    {wr-while(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
       {+s:stmt-while = stmt}
       s.expr.wr(w, header);
-      {if(s.continue != null)
+      {if(s.continu != null)
          w.b(true);
-         s.continue.wr(w, header);
+         s.continu.wr(w, header);
       }{else
          w.b(false);
       }
@@ -17,7 +17,7 @@
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #while);
       {if(r.b())
          quick-alloc-one(+(space2:stmt-space));
-         s.continue = space2;
+         s.continu = space2;
          space2.rd(r, space);
       }
       .nest-stack-id-v[.nest-stack-c] = .nest-id++;
@@ -57,17 +57,17 @@
       +id = .nest-stack-id-v[.nest-stack-c -= 1];
       {+s:stmt-while-end = stmt}
       .out.printf("continue_%u:;\n", id);
-      +continue = s.while.continue;
-      {if(continue != null)
-         continue.write();
+      +continu = s.while.continu;
+      {if(continu != null)
+         continu.write();
       }
       .out.printf("}\nbreak_%u:;\n", id);
    }
    {process-while-end(stmt:stmt, ok:bool&) @case.process() @inline
       {+s:stmt-while-end = stmt}
-      +continue = s.while.continue;
-      {if(continue != null)
-         continue.process();
+      +continu = s.while.continu;
+      {if(continu != null)
+         continu.process();
       }
       ok = true;
    }
@@ -79,7 +79,7 @@
 {:stmt-while(
    base:stmt+,
    expr:expr-i,
-   continue:stmt-space,
+   continu:stmt-space,
    end:stmt-while-end,
    )
 }
@@ -88,13 +88,13 @@
    while:stmt-while,
    )
 }
-{stmt-while-set(expr:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, continue:stmt-space)
+{stmt-while-set(expr:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, continu:stmt-space)
    quick-alloc-one(+(s:stmt-while));
    .nest-stack-id-v[.nest-stack-c] = .nest-id++;
    .nest-stack-ptr-v[.nest-stack-c].while = s;
    .nest-stack-c++;
    s.expr = expr;
-   s.continue = continue;
+   s.continu = continu;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #while);
    stmt-space-begin();
 }

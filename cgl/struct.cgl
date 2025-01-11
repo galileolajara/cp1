@@ -102,7 +102,7 @@
    //    +at = at-i.ptr();
    //    'c.out.printf("- %s\n", at.name.id.str());
    //    at-i = at.parent;
-   //    {if(at-i == #root) {break}}
+   //    {if(at-i == #root) break}
    // }
 }
 {decl-struct-end(row:i32, col:i32)

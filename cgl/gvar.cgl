@@ -84,8 +84,8 @@
                return;
             }
          }
-         {if!(try-parent) {break}}
-         {if(at-idx == #root) {break}}
+         {if!(try-parent) break}
+         {if(at-idx == #root) break}
          at-idx = at.parent;
       }
       'c.out.printf("%s:%u:%u - %u:%u: Cannot find gvar '.%s'\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, name.str());

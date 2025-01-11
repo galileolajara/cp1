@@ -9,9 +9,9 @@
    {wr-do(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
       {+s:stmt-do = stmt}
       s.expr.wr(w, header);
-      {if(s.continue != null)
+      {if(s.continu != null)
          w.b(true);
-         s.continue.wr(w, header);
+         s.continu.wr(w, header);
       }{else
          w.b(false);
       }
@@ -22,7 +22,7 @@
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #do);
       {if(r.b())
          quick-alloc-one(+(space2:stmt-space));
-         s.continue = space2;
+         s.continu = space2;
          space2.rd(r, space);
       }
       .nest-stack-id-v[.nest-stack-c] = .nest-id++;
@@ -66,17 +66,17 @@
       +id = .nest-stack-id-v[.nest-stack-c -= 1];
       {+s:stmt-do-end = stmt}
       .out.printf("continue_%u:;\n", id);
-      +continue = s.do.continue;
-      {if(continue != null)
-         continue.write();
+      +continu = s.do.continu;
+      {if(continu != null)
+         continu.write();
       }
       .out.printf("}\nbreak_%u:;\n", id);
    }
    {process-do-end(stmt:stmt, ok:bool&) @case.process() @inline
       {+s:stmt-do-end = stmt}
-      +continue = s.do.continue;
-      {if(continue != null)
-         continue.process();
+      +continu = s.do.continu;
+      {if(continu != null)
+         continu.process();
       }
       ok = true;
    }
@@ -88,7 +88,7 @@
 {:stmt-do(
    base:stmt+,
    expr:expr-i,
-   continue:stmt-space,
+   continu:stmt-space,
    end:stmt-do-end,
    )
 }
@@ -97,13 +97,13 @@
    do:stmt-do,
    )
 }
-{stmt-do-set(expr:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, continue:stmt-space)
+{stmt-do-set(expr:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, continu:stmt-space)
    quick-alloc-one(+(s:stmt-do));
    .nest-stack-id-v[.nest-stack-c] = .nest-id++;
    .nest-stack-ptr-v[.nest-stack-c].do = s;
    .nest-stack-c++;
    s.expr = expr;
-   s.continue = continue;
+   s.continu = continu;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #do);
    stmt-space-begin();
 }

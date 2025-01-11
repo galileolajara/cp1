@@ -58,7 +58,7 @@
             +lvar = v[i];
             {if(lvar.name() == name)
                found = lvar;
-               {break}
+               break;
             }
          }
          {if(found != #nil)
@@ -68,7 +68,7 @@
             return e-idx;
          }
          space = space.parent;
-         {if(space == null) {break}}
+         {if(space == null) break}
       }
       'c.out.printf("%s:%u:%u: lvar '%s' was not found\n", .input-path, row, col, name.str());
       'c.exit(#failure);

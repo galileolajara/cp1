@@ -467,13 +467,13 @@
    .func-main.wr(w);
    {do{+i = 0}(.func-c)
       +f = .func-v[i++];
-      {if((f.flags & #has-body) == #0) {continue}}
+      {if((f.flags & #has-body) == #0) continue}
       {if(header)
          {if(f.flags & #inline)
             // proceed
          }{else
             // remove #has-body flag
-            {continue}
+            continue;
          }
       }
       {+pos-4:wtr+}
@@ -696,7 +696,7 @@
                w.p1[4] = ''z;
                w.p1[5] = ''e;
                w.pos += 6;
-               {break}
+               break;
             }
             r.pos++;
          }
@@ -806,7 +806,7 @@
                r.pos += 3;
                {do()
                   {if(r.p1[0] == ''\n)
-                     {break}
+                     break;
                   }
                   r.pos++;
                   {if(r.pos >= r-end.pos)
@@ -815,34 +815,34 @@
                      'c.exit(#failure);
                   }
                }
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''\")
                parse-comment(r, w, ''\", in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''|)
                parse-comment(r, w, ''|, in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == '';)
                parse-comment(r, w, '';, in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''_)
                parse-comment(r, w, ''_, in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''+)
                parse-comment(r, w, ''+, in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''<)
                parse-comment(r, w, ''>, in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''[)
                parse-comment(r, w, ''], in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''{)
                parse-comment(r, w, ''}, in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''()
                parse-comment(r, w, ''), in-data);
-               {continue}
+               continue;
             }
          }{elif(r.p1[0] == ''\')
             {if(r.p1[1] == ''\')
@@ -854,14 +854,14 @@
                   w.p1[3] = r.p1[3];
                   w.pos += 4;
                   r.pos += 4;
-                  {continue}
+                  continue;
                }{else
                   w.p1[0] = ''\';
                   w.p1[1] = ''\';
                   w.p1[2] = r.p1[2];
                   w.pos += 3;
                   r.pos += 3;
-                  {continue}
+                  continue;
                }
             }{elif(&&, (||, r.p1[2] == '' , r.p1[2] == ''\t), (||, r.p1[1] == ''-, r.p1[1] == ''=))
                // string
@@ -876,7 +876,7 @@
                   w.pos++;
                   r.pos++;
                   {if(c == ''\n)
-                     {break}
+                     break;
                   }
                   {if(r.pos >= r-end.pos)
                      get-row-col(+row, +col, r.ref, in-data);
@@ -884,34 +884,34 @@
                      'c.exit(#failure);
                   }
                }
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''\")
                parse-string(r, w, ''\", in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''|)
                parse-string(r, w, ''|, in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == '';)
                parse-string(r, w, '';, in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''_)
                parse-string(r, w, ''_, in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''+)
                parse-string(r, w, ''+, in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''<)
                parse-string(r, w, ''>, in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''[)
                parse-string(r, w, ''], in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''{)
                parse-string(r, w, ''}, in-data);
-               {continue}
+               continue;
             }{elif(r.p1[1] == ''()
                parse-string(r, w, ''), in-data);
-               {continue}
+               continue;
             }
          }{elif(r.p1[0] == ''\") // C-string
             w.p1[0] = ''\";
@@ -926,7 +926,7 @@
                   w.p1[0] = ''\";
                   w.pos++;
                   r.pos++;
-                  {break}
+                  break;
                }{elif(r.p1[0] == ''\\)
                   {switch(r.p1[1])
                      {case(''0) }
@@ -961,7 +961,7 @@
                   'c.exit(#failure);
                }
             }
-            {continue}
+            continue;
          }
          w.p1[0] = r.p1[0];
          w.pos++;
@@ -1026,7 +1026,7 @@
                tok.row++;
                tok.col = 1;
             }{else
-               {break}
+               break;
             }
             pos++;
          }
@@ -1067,7 +1067,7 @@
                   start++;
                   r-start.pos++;
                   {if(r-start.p1[0] == ''@)
-                     {break}
+                     break;
                   }
                }
                tok.id = lex.get-id(start, 1);
@@ -1097,7 +1097,7 @@
             }
          }
       }
-      {if(t == #end) {break}}
+      {if(t == #end) break}
       +pos = lex.start;
       {while(pos < lex.cursor)
          {if((pos[0] & 128) == 0)

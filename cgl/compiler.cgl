@@ -125,7 +125,7 @@
          // {do{+j = 0}{(.include-c) j++}
          //    {if(&&, .include-len-v[j] == include-len, 'c.memcmp(.include-str-v[j], include-str, include-len) == 0)
          //       found = j;
-         //       {break}
+         //       break;
          //    }
          // }
          {if(found == -1)
@@ -166,7 +166,7 @@
             //    +at = .at-v[j];
             //    {if(&&, at.parent == at-parent, at.type == at-type, at.name.id == at-name)
             //       found = j;
-            //       {break}
+            //       break;
             //    }
             // }
             // 'c.out.printf("found %d\n", found);
@@ -302,7 +302,7 @@
       //    }{else
       //       'c.out.printf("- #%s %s\n", at.type.cgl-name(), at.name.id.str());
       //    }
-      //    {if(at.parent == #root) {break}}
+      //    {if(at.parent == #root) break}
       //    at = at.parent.ptr();
       // }
    }
@@ -392,7 +392,7 @@
       //       +at = at-i.ptr();
       //       'c.out.printf("- %s\n", at.name.id.str());
       //       at-i = at.parent;
-      //       {if(at-i == #root) {break}}
+      //       {if(at-i == #root) break}
       //    }
       // }
       // 'c.out.printf("%u:%u - %u:%u: :%s(", f.begin-row, f.begin-col, f.end-row, f.end-col, f.decl.name.str());
@@ -457,7 +457,7 @@
    }
    {do{+f-idx = f-idx-begin}{(func-c) f-idx++}
       +f = .func-v[f-idx];
-      {if((f.flags & #has-body) == #0) {continue}}
+      {if((f.flags & #has-body) == #0) continue}
       +size = r.n4();
       f.body-file-pos = r.pos - r-begin.pos;
       r.pos += size;
@@ -620,7 +620,7 @@
          {if!(f-i.process-now()) return -1}
          +f = f-i.ptr();
          f-i = f.process-next; 
-         {if(f-i == #nil) {break}}
+         {if(f-i == #nil) break}
       }
    }
 
@@ -665,7 +665,7 @@
       +c-i = .cvar-outputted-v[i];
       +c = c-i.ptr();
       {if((c.decl.flags & #no-decl) != #0)
-         {continue}
+         continue;
       }
       .out.printf("#define ");
       c-i.write();
@@ -718,7 +718,7 @@
    {do{+i = 0}{(.gvar-outputted-c) i++}
       +g-i = .gvar-outputted-v[i];
       +g = g-i.ptr();
-      {if((g.decl.flags & #no-decl) != #0) {continue}}
+      {if((g.decl.flags & #no-decl) != #0) continue}
       {if((g.decl.flags & #extern) != #0)
          .out.printf("extern ");
       }
@@ -728,7 +728,7 @@
    {do{+i = 0}{(.func-head-outputted-c) i++}
       +f-idx = .func-head-outputted-v[i];
       +f = f-idx.ptr();
-      {if((f.flags & #no-decl) != #0) {continue}}
+      {if((f.flags & #no-decl) != #0) continue}
       {if((f.flags & #decl) != #0)
          {if(&&, f.decl-str[0] == ''#, f.decl-str[1] == '' )
             .out.printf("#define ");
@@ -745,7 +745,7 @@
          }{else
             .out.printf("%.*s\n", f.decl-len, f.decl-str);
          }
-         {continue}
+         continue;
       }
       .ctx-func = f;
       {if(f.decl.type == #nil)
@@ -773,7 +773,7 @@
          {do{+i = 0, v = at.cvar-v}{(at.cvar-c) i++}
             +cvar-i = v[i];
             +cvar = cvar-i.ptr();
-            {if((cvar.flags & #as-enum) == #0) {continue}}
+            {if((cvar.flags & #as-enum) == #0) continue}
             .out.printf("case ");
             cvar-i.write();
             .out.printf(": return \"%s\";\n", cvar.decl.name.str());

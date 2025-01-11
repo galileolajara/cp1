@@ -174,9 +174,9 @@ int glc_lexer_scan(struct glc_lexer* l) {
    ":u64"                           { return GLC_TOKEN_GRAVE_LNUM; }
 
    ":this"                          { return GLC_TOKEN_GRAVE_THIS; }
-   "true"                          { return GLC_TOKEN_GRAVE_TRUE; }
-   "false"                         { return GLC_TOKEN_GRAVE_FALSE; }
-   "null"                          { return GLC_TOKEN_GRAVE_NULL; }
+   "true"                          { return GLC_TOKEN_TRUE; }
+   "false"                         { return GLC_TOKEN_FALSE; }
+   "null"                          { return GLC_TOKEN_NULL; }
 
    spaces "==" spaces               { return GLC_TOKEN_SPACE_EQUAL_EQUAL_SPACE; }
    spaces "!=" spaces               { return GLC_TOKEN_SPACE_EXPOINT_EQUAL_SPACE; }
@@ -186,8 +186,8 @@ int glc_lexer_scan(struct glc_lexer* l) {
    spaces ">=" spaces               { return GLC_TOKEN_SPACE_RANGLE_EQUAL_SPACE; }
 
    "return"                        { return GLC_TOKEN_RETURN; }
-   "{continue"                      { return GLC_TOKEN_LCBRACE_CONTINUE; }
-   "{break"                         { return GLC_TOKEN_LCBRACE_BREAK; }
+   "continue"                      { return GLC_TOKEN_CONTINUE; }
+   "break"                         { return GLC_TOKEN_BREAK; }
    "{if"                            { return GLC_TOKEN_LCBRACE_IF; }
    "{switch"                        { return GLC_TOKEN_LCBRACE_SWITCH; }
    "{case"                          { return GLC_TOKEN_LCBRACE_CASE; }

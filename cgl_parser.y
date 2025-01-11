@@ -386,11 +386,11 @@ charExpr(l) ::= CHAR1(c).
    { l.basic.id = _Nglc_Pexpr_char_1(c.basic.id); }
 charExpr(l) ::= CHAR2(c).
    { l.basic.id = _Nglc_Pexpr_char_1(c.basic.id); }
-boolExpr(l) ::= GRAVE_TRUE.
+boolExpr(l) ::= TRUE.
    { l.basic.id = _Nglc_Pexpr_bool_1(1); }
-boolExpr(l) ::= GRAVE_FALSE.
+boolExpr(l) ::= FALSE.
    { l.basic.id = _Nglc_Pexpr_bool_1(0); }
-nullExpr(l) ::= GRAVE_NULL.
+nullExpr(l) ::= NULL.
    { l.basic.id = _Nglc_Pexpr_null_0(); }
 value4arr(l) ::= expr_lvar(r).
    { l.basic.id = r.basic.id; }
@@ -726,12 +726,12 @@ stmt_switch ::= stmt_switch_begin space_begin switch_expr SPACE switch_cases rcb
 stmt_switch ::= stmt_switch_begin space_begin switch_expr rcbrace_or_space.
    { _Nglc_Pstmt_switch_end_0(); }
 
-stmt ::= stmt_continue.
-stmt_continue ::= begin_pos(begin) LCBRACE_CONTINUE rcbrace_or_space end_pos(end).
+stmt_expr ::= stmt_continue.
+stmt_continue ::= begin_pos(begin) CONTINUE end_pos(end).
    { _Nglc_Pstmt_continue_5(-1, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
 
-stmt ::= stmt_break.
-stmt_break ::= begin_pos(begin) LCBRACE_BREAK rcbrace_or_space end_pos(end).
+stmt_expr ::= stmt_break.
+stmt_break ::= begin_pos(begin) BREAK end_pos(end).
    { _Nglc_Pstmt_break_5(-1, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
 
 stmt_expr ::= stmt_return.

@@ -168,23 +168,23 @@
       {do{+i = 0}{(method-c) i++}
          +f-idx = method-v[i];
          +f = f-idx.ptr();
-         {if(f.decl.name != func-name) {continue}}
+         {if(f.decl.name != func-name) continue}
          found = i;
          similar-c++;
-         {if(f.group-c != group-c) {continue}}
+         {if(f.group-c != group-c) continue}
          +match = true;
          {if((f.flags & #var-args) != #0)
-            {if(f.farg-c > carg-c1) {continue}}
+            {if(f.farg-c > carg-c1) continue}
             {do{+j = 0}{(group-c - 1) j++}
                {if(f.this-group == j)
                   {if(f.group-v[j] != (group-v[j] + 1))
                      match = false;
-                     {break}
+                     break;
                   }
                }{else
                   {if(f.group-v[j] != group-v[j])
                      match = false;
-                     {break}
+                     break;
                   }
                }
             }
@@ -201,22 +201,22 @@
                }
             }
          }{else
-            {if(f.farg-c != carg-c1) {continue}}
+            {if(f.farg-c != carg-c1) continue}
             {do{+j = 0}{(group-c) j++}
                {if(f.this-group == j)
                   {if(f.group-v[j] != (group-v[j] + 1))
                      match = false;
-                     {break}
+                     break;
                   }
                }{else
                   {if(f.group-v[j] != group-v[j])
                      match = false;
-                     {break}
+                     break;
                   }
                }
             }
          }
-         {if!(match) {continue}}
+         {if!(match) continue}
          f-idx.process-later();
          +f-at = f.at;
          +j = 0;
@@ -334,17 +334,17 @@
          {do{+i = 0}{(at.func-c) i++}
             +f-idx = at.func-v[i];
             +f = f-idx.ptr();
-            {if(f.decl.name != func-name) {continue}}
+            {if(f.decl.name != func-name) continue}
             // found = i;
             // similar-c++;
-            {if(f.group-c != group-c) {continue}}
+            {if(f.group-c != group-c) continue}
             +match = true;
             {if((f.flags & #var-args) != #0)
-               {if(f.farg-c > carg-c) {continue}}
+               {if(f.farg-c > carg-c) continue}
                {do{+j = 0}{(group-c - 1) j++}
                   {if(f.group-v[j] != group-v[j])
                      match = false;
-                     {break}
+                     break;
                   }
                }
                {if(match)
@@ -354,15 +354,15 @@
                   }
                }
             }{else
-               {if(f.farg-c != carg-c) {continue}}
+               {if(f.farg-c != carg-c) continue}
                {do{+j = 0}{(group-c) j++}
                   {if(f.group-v[j] != group-v[j])
                      match = false;
-                     {break}
+                     break;
                   }
                }
             }
-            {if!(match) {continue}}
+            {if!(match) continue}
             f-idx.process-later();
             +f-at = f.at;
             +j = 0;
@@ -387,8 +387,8 @@
             ok = true;
             return;
          }
-         {if!(try-parent) {break}}
-         {if(at-idx == #root) {break}}
+         {if!(try-parent) break}
+         {if(at-idx == #root) break}
          at-idx = at.parent;
       }
       'c.out.printf("%s:%u:%u - %u:%u: Cannot find function :%s with %u argument:s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);

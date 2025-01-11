@@ -141,7 +141,7 @@
 
       {do()
          :stmt-type.rd(+type, r);
-         {if(type == #nil) {break}}
+         {if(type == #nil) break}
          {if(`#debug-rd-wr)
             {if(r.n1() != 255)
                'c.out.printf("Error reading stmt\n");

@@ -140,7 +140,7 @@
                {do{+j = 0:id}{(.id-c) j++}
                   {if(&&, j.len() == cvar-name-len, 'c.memcmp(j.str(), cvar-name-str, cvar-name-len) == 0)
                      found-id = j;
-                     {break}
+                     break;
                   }
                }
                {if(found-id == #nil)
@@ -153,7 +153,7 @@
                   +cvar = cvar-i.ptr();
                   {if(cvar.decl.name == found-id)
                      found-cvar = cvar-i;
-                     {break}
+                     break;
                   }
                }
                {if(found-cvar == #nil)

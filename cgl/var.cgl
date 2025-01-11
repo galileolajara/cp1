@@ -32,7 +32,7 @@
                }
             }
          }
-         {if(at-i == #root) {break}}
+         {if(at-i == #root) break}
          at-i = at-i.ptr().parent;
       }
       'c.out.printf("%s:%u:%u: Type :%s was not found\n", file.path(), row, col, name.id.str());
@@ -145,7 +145,7 @@
    //                }
    //             }
    //          }
-   //          {if(at-i == #root) {break}}
+   //          {if(at-i == #root) break}
    //          at-i = at-i.ptr().parent;
    //       }
    //       'c.out.printf("not found\n");
@@ -235,7 +235,7 @@
       +c = 0;
       {do(`#type-info-star-limit)
          {if(ti.ref-v[c] == 0)
-            {break}
+            break;
          }
          c++;
       }
