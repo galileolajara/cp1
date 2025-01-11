@@ -717,7 +717,7 @@ uint8_t* _Gstruct_is_outputted;
 _Nglc_Nstruct* _Gstruct_outputted_v;
 _Nglc_Nfunc _Gprocess_first;
 _Nglc_Nfunc _Gprocess_last;
-FILE* _Gout;
+struct FILE* _Gout;
 int32_t _Gfunc_head_outputted_c;
 bool _Ginclude_stdbool;
 bool _Ginclude_stddef;
@@ -892,7 +892,7 @@ bool _Nglc_Nexpr_i_Pwrite_value_2(_Nglc_Nexpr_i _Le_0, struct _Nglc_Nvalue* _Lv_
 void _Nglc_Ntype_info_Pcount_1(struct _Nglc_Ntype_info* _Lti_0);
 bool _Nglc_Nat_Pwrite_type_1(_Nglc_Nat _Ltd_0);
 int32_t _Nglc_Nat_Pcount_stars0_2(_Nglc_Nat _Ltd_0, struct _Nglc_Ntype_info* _Lti_1);
-size_t _Nstdc_Nfile_Pwrite_3(FILE* _Lf_0, void* _Lbuf_1, size_t _Lsize_2);
+size_t _Nstdc_Nfile_Pwrite_3(struct FILE* _Lf_0, void* _Lbuf_1, size_t _Lsize_2);
 void _Nglc_Ndecl_var_data_Pwrite_lvar_2(struct _Nglc_Ndecl_var_data* _Lvd_0, _Nglc_Nlvar _Llvar_1);
 struct _Nglc_Nlvar_data* _Nglc_Nlvar_Pptr_1(_Nglc_Nlvar _Ll_0);
 void _Nglc_Nstmt_Pwrite_1(struct _Nglc_Nstmt* _Ls_0);
@@ -3714,7 +3714,7 @@ return true;
 int32_t _Nglc_Nat_Pcount_stars0_2(_Nglc_Nat _Ltd_0, struct _Nglc_Ntype_info* _Lti_1) {
 return (*_Lti_1)._Fstar_c + _Nglc_Nat_Ppointer_1(_Ltd_0);
 }
-inline size_t _Nstdc_Nfile_Pwrite_3(FILE* _Lf_0, void* _Lbuf_1, size_t _Lsize_2) {
+inline size_t _Nstdc_Nfile_Pwrite_3(struct FILE* _Lf_0, void* _Lbuf_1, size_t _Lsize_2) {
 return fwrite(_Lbuf_1, 1, _Lsize_2, _Lf_0);
 }
 void _Nglc_Ndecl_var_data_Pwrite_lvar_2(struct _Nglc_Ndecl_var_data* _Lvd_0, _Nglc_Nlvar _Llvar_1) {

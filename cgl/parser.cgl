@@ -1,5 +1,6 @@
 {using 'glc = :glc}
 {using 'c = :stdc}
+{using 'sys = :sys}
 {at(:glc)
 {gvar ctx-func:decl-func}
 {gvar id-in-header-v:u8[]}
@@ -763,8 +764,27 @@
       'c.out.printf("Cannot open file for reading: %s\n", .input-path);
       'c.exit(#failure);
    }
-   // in-fd.stat(+in-stat);
-   // 'c.out.printf("%d\n", in-stat.mtimespec.sec);
+   {if(true)
+      {+out-path:char[512]}
+      'c.sprintf(out-path, "cgl-tmp/%s-b", .input-path);
+      {if!('c:fd.open(++fd, out-path, #create | #excl))
+         // Can't create output file
+         {if('c:fd.open(fd, out-path, #read))
+            // Output file already exists
+            {if(fd.seek(0, #end) > 0)
+               // If the output file is not blank, compare the time stamps
+               fd.stat(+out-stat);
+               in-fd.stat(+in-stat);
+               {if(||, out-stat.mtimespec.sec > in-stat.mtimespec.sec, (&&, out-stat.mtimespec.sec == in-stat.mtimespec.sec, out-stat.mtimespec.nsec > in-stat.mtimespec.nsec))
+                  // Skip parsing
+                  'c.out.printf("Skipping parsing of %s because the output file is newer\n", .input-path);
+                  return 0;
+               }
+            }
+         }
+      }
+      fd.close();
+   }
    +in-size = in-fd.seek(0, #end);
    {+in-data:u8[] = 'c.malloc(in-size + 2)}
    in-fd.seek(0, #set);

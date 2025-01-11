@@ -15,11 +15,11 @@ typedef int32_t _Nstdc_Nopen_flags;
 int32_t main(int32_t _Larg_c_0, char** _Larg_v_1);
 void _Pprint_commands_1(char* _Lbin_0);
 void _Pprint_to_c_usage_1(char* _Lbin_0);
-FILE* _Nstdc_Nfd_Pfopen_2(_Nstdc_Nfd _Lfile_0, char* _Lmode_1);
-int32_t _Nstdc_Nfile_Pclose_1(FILE* _Lf_0);
+struct FILE* _Nstdc_Nfd_Pfopen_2(_Nstdc_Nfd _Lfile_0, char* _Lmode_1);
+int32_t _Nstdc_Nfile_Pclose_1(struct FILE* _Lf_0);
 void _Pprint_run_usage_1(char* _Lbin_0);
 int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0);
-void _Pget_compiler_2(char* _Lbin_0, FILE* _Lninja_f_1);
+void _Pget_compiler_2(char* _Lbin_0, struct FILE* _Lninja_f_1);
 int32_t main(int32_t _Larg_c_0, char** _Larg_v_1) {
 char* _Lbin_2;
 char* _Lcmd_3;
@@ -34,7 +34,7 @@ char* _Lc_path_4;
 size_t _Lc_path_len_5;
 char _Lninja_path_9[24];
 _Nstdc_Nfd _Lninja_fd_10;
-FILE* _Lninja_f_11;
+struct FILE* _Lninja_f_11;
 char _Lcommand_16[24 + 9];
 int32_t _Lret_17;
 if(_Larg_c_0 < 4) {
@@ -116,7 +116,7 @@ char _Lexe_path_23[24];
 _Nstdc_Nfd _Lexe_fd_24;
 char _Lninja_path_25[24];
 _Nstdc_Nfd _Lninja_fd_26;
-FILE* _Lninja_f_27;
+struct FILE* _Lninja_f_27;
 char _Lcommand_32[24 + 9];
 int32_t _Lninja_ret_33;
 int32_t _Lexe_ret_34;
@@ -229,10 +229,10 @@ fprintf(stdout, "  run      Compile and run the cgl codes.\n");
 void _Pprint_to_c_usage_1(char* _Lbin_0) {
 fprintf(stdout, "Usage: %s to-c [output.c] [cgl file/s...]\n", _Lbin_0);
 }
-inline FILE* _Nstdc_Nfd_Pfopen_2(_Nstdc_Nfd _Lfile_0, char* _Lmode_1) {
+inline struct FILE* _Nstdc_Nfd_Pfopen_2(_Nstdc_Nfd _Lfile_0, char* _Lmode_1) {
 return fdopen(_Lfile_0, _Lmode_1);
 }
-inline int32_t _Nstdc_Nfile_Pclose_1(FILE* _Lf_0) {
+inline int32_t _Nstdc_Nfile_Pclose_1(struct FILE* _Lf_0) {
 return fclose(_Lf_0);
 }
 void _Pprint_run_usage_1(char* _Lbin_0) {
@@ -241,7 +241,7 @@ fprintf(stdout, "Usage: %s run [cgl file/s...]\n", _Lbin_0);
 inline int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0) {
 return close(_Lfile_0);
 }
-void _Pget_compiler_2(char* _Lbin_0, FILE* _Lninja_f_1) {
+void _Pget_compiler_2(char* _Lbin_0, struct FILE* _Lninja_f_1) {
 char* _LPATH_2;
 char* _Lfound_3;
 _LPATH_2 = strdup(getenv("PATH"));
