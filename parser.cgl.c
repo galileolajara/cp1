@@ -1327,7 +1327,7 @@ if(_Lr_6._Fref == _Lin_data_4) {
 int32_t _Lrow_9;
 int32_t _Lcol_10;
 _Nglc_Pget_row_col_4(&_Lrow_9, &_Lcol_10, _Lr_6._Fref, _Lin_data_4);
-fprintf(stdout, "%s:%u:%u: There must be a space or tab before the // comment, found character '%c'\n", input_path, _Lrow_9, _Lcol_10, _Lr_6._Fp1[-1]);
+fprintf(stdout, "%s:%u:%u: There must be a space or tab before the // comment\n", input_path, _Lrow_9, _Lcol_10);
 exit(_Nstdc_Nexit_Cfailure);
 }
 _Lr_6._Fpos += 3;

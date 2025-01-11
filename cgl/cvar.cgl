@@ -17,15 +17,15 @@
       +num = c:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((.cvar-is-outputted[n3] & n17) != 0) :return :true}
+      {if((.cvar-is-outputted[n3] & n17) != 0) return true}
       .cvar-is-outputted[n3] |= n17;
 
       +cvar = c.ptr();
 
       {if((cvar.flags & #set-expr) != #0)
-         {if!(cvar.expr-set.process()) :return :false}
+         {if!(cvar.expr-set.process()) return false}
       }{elif(cvar.last-cvar != #nil)
-         {if!(cvar.last-cvar.process()) :return :false}
+         {if!(cvar.last-cvar.process()) return false}
       }
 
       +at-i = cvar.decl.type;
@@ -33,7 +33,7 @@
          +at = at-i.ptr();
          {if(&&, at.type != #basic, at.decl.struct == #nil)
             'c.out.printf("Error, the type '%s' used in cvar '.%s' was not defined\n", at.name.id.str(), cvar.decl.name.str());
-            :return :false;
+            return false;
          }
          at-i.output(cvar.file, cvar.row, cvar.col);
       }
@@ -42,10 +42,10 @@
          .cvar-outputted-v[.cvar-outputted-c++] = c;
       // }
       
-      :return :true;
+      return true;
    }
    {ptr(c:this):cvar-data @inline
-      :return .cvar-v[c];
+      return .cvar-v[c];
    }
    {write(c:this) @inline
       +cvar = c.ptr();
@@ -78,7 +78,7 @@
    +e-idx = expr-push(e.base, #cvar);
    e.at = at;
    e.name = name;
-   :return e-idx;
+   return e-idx;
 }
 {at(:expr-i)
    {write-cvar(expr:expr) @case.write() @inline
@@ -102,9 +102,9 @@
       +cvar = expr.cvar.ptr();
       v.set(ref, paren, cvar.decl.type, cvar.decl.type-info);
       {if(v.ref == 1)
-         v.paren = :false;
+         v.paren = false;
       }
-      ok = :true;
+      ok = true;
    }
    {type-cvar(expr:expr, at:at&) @case.type() @inline
       {+e:expr-cvar = expr}
@@ -124,10 +124,10 @@
             +cvar = cvar-v[i];
             // 'c.out.printf("- %s\n", cvar.ptr().decl.name.str());
             {if(cvar.ptr().decl.name == name)
-               {if!(cvar.process()) :return}
+               {if!(cvar.process()) return}
                e.cvar = cvar;
-               ok = :true;
-               :return;
+               ok = true;
+               return;
             }
          }
       }
@@ -144,10 +144,10 @@
       {do{+i = 0}{(cvar-c) i++}
          +cvar = cvar-v[i];
          {if(cvar.ptr().decl.name == name)
-            {if!(cvar.process()) :return}
+            {if!(cvar.process()) return}
             e.cvar = cvar;
-            ok = :true;
-            :return;
+            ok = true;
+            return;
          }
       }
       'c.out.printf("%s:%u:%u - %u:%u: Cannot find #%s\n",

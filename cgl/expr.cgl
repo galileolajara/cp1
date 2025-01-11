@@ -21,9 +21,9 @@
    {process-expr(stmt:stmt, ok:bool&) @case.process() @inline
       {+s:stmt-expr = stmt}
       {if!(s.expr.process())
-         :return;
+         return;
       }
-      ok = :true;
+      ok = true;
    }
 }
 {:expr-type[
@@ -39,14 +39,14 @@
    }
    {cgl-name(e:this):char[] @cgl-name}
 }
-{cvar #debug-rd-wr:bool = :true}
+{cvar #debug-rd-wr:bool = true}
 {:expr-i[#nil = -1, #0, #1]:i32
    {set(e:this, expr:expr, type:expr-type) @inline
       .expr-v[e] = expr;
       expr.type = type;
    }
    {ptr(e:this):expr @inline
-      :return .expr-v[e];
+      return .expr-v[e];
    }
    {write-value(e:this, v:value):bool
       +expr = e.ptr();
@@ -76,22 +76,22 @@
       {if(v.paren)
          .out.write(")", 1);
       }
-      :return :true;
+      return true;
    }
 	{value(e:this, ref:i32, paren:bool, v:value):bool
-      {if!(e.process()) :return :false}
+      {if!(e.process()) return false}
       +expr = e.ptr();
-      +ok = :false;
+      +ok = false;
       {switch(expr.type).value(e, ref, paren, v, ok)
          {default
             'c.out.printf("%u:%u - %u:%u: value() not implemented for #%s\n",
                .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cgl-name());
          }
       }
-      :return ok;
+      return ok;
    }
    {type(e:this):at
-      {if!(e.process()) :return #nil}
+      {if!(e.process()) return #nil}
       +expr = e.ptr();
       +at = :at#nil;
       {switch(expr.type).type(expr, at)
@@ -100,7 +100,7 @@
                .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cgl-name());
          }
       }
-      :return at;
+      return at;
    }
    {try-deduce(e-idx:this, at:at)
       +expr = e-idx.ptr();
@@ -166,28 +166,28 @@
       {if(e == #nil)
          'c.out.printf("%s:%u:%u - %u:%u: Processed a nil expression\n",
             .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col);
-         :return :false;
+         return false;
       }
       +num = e:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((.expr-is-processed[n3] & n17) != #0) :return :true}
+      {if((.expr-is-processed[n3] & n17) != #0) return true}
       .expr-is-processed[n3] |= n17;
       +expr = e.ptr();
-      // {if(expr.flags & #processed) :return :true}
+      // {if(expr.flags & #processed) return true}
       // expr.flags |= #processed;
-      +ok = :false;
+      +ok = false;
       {switch(expr.type).process(expr, ok)
          {default
             'c.out.printf("%s:%u:%u - %u:%u: process() not implemented for expression #%s\n",
                .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cgl-name());
-            :return :false;
+            return false;
          }
       }
       {if!(ok)
          'c.out.printf("%s:%u:%u - %u:%u: Processing of expression #%s failed\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cgl-name());
       }
-      :return ok;
+      return ok;
    }
    {write(e:this)
       +expr = e.ptr();
@@ -284,7 +284,7 @@
       realloc(.expr-v, .expr-cap, old-cap);
    }
    .expr-v[e-idx] = e;
-   :return e-idx;
+   return e-idx;
 }
 {:expr-int-data(
    base:expr+,

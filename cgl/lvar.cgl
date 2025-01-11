@@ -10,22 +10,22 @@
    }
    {process(l:this):bool @inline
       +lvar = l.ptr();
-      {if((lvar.flags & #processed) != #0) :return :true}
+      {if((lvar.flags & #processed) != #0) return true}
       lvar.flags |= #processed;
       +at-i = lvar.decl.type;
       {if(at-i == #nil)
          {if((lvar.flags & #set-expr) != #0)
-            {if!(lvar.set-expr.value(1, :false, ++v)) :return :false}
+            {if!(lvar.set-expr.value(1, false, ++v)) return false}
             lvar.decl.type = v.type;
             lvar.decl.type-info.init();
             lvar.decl.type-info.copy-from(v.info);
          }{else
             'c.out.printf("%s:%u:%u: Variable '%s' doesn't have a type or a value\n", .ctx-func.file.path(), lvar.row, lvar.col, lvar.decl.name.str());
-            :return :false;
+            return false;
          }
-         :return :true;
+         return true;
       }
-      :return lvar.decl.process(.ctx-func.file, lvar.row, lvar.col, .ctx-func.at);
+      return lvar.decl.process(.ctx-func.file, lvar.row, lvar.col, .ctx-func.at);
    }
 }
 {:lvar-flags[
@@ -65,19 +65,19 @@
             quick-alloc-one(+(e:expr-lvar));
             +e-idx = expr-push(e.base, #lvar);
             e.lvar = found;
-            :return e-idx;
+            return e-idx;
          }
          space = space.parent;
-         {if(space == :null) {break}}
+         {if(space == null) {break}}
       }
       'c.out.printf("%s:%u:%u: lvar '%s' was not found\n", .input-path, row, col, name.str());
       'c.exit(#failure);
-      :return #nil;
+      return #nil;
    }{else
       +space = .decl-func-ctx-space;
       {while(decl > 1)
          space = space.parent;
-         {if(space == :null)
+         {if(space == null)
             'c.out.printf("%s:%u:%u: Cannot declare lvar '%s' with too much '+'\n", .input-path, row, col, name.str());
             'c.exit(#failure);
          }
@@ -91,7 +91,7 @@
       +lvar = e.lvar.ptr();
       .decl-var.name = name;
       lvar.decl.copy-from(.decl-var);
-      :return e-idx;
+      return e-idx;
    }
 }
 {at(:expr-i)
@@ -109,9 +109,9 @@
       +lvar = expr.lvar.ptr();
       v.set(ref, paren, lvar.decl.type, lvar.decl.type-info);
       {if(v.ref == 1)
-         v.paren = :false;
+         v.paren = false;
       }
-      ok = :true;
+      ok = true;
    }
    {wr-lvar(expr:expr, w:wtr, header:bool) @case.wr() @inline
       {+e:expr-lvar = expr}
@@ -124,8 +124,8 @@
    }
    {process-lvar(expr:expr, ok:bool&) @case.process() @inline
       {+e:expr-lvar = expr}
-      {if!(e.lvar.process()) :return}
-      ok = :true;
+      {if!(e.lvar.process()) return}
+      ok = true;
    }
 }
  

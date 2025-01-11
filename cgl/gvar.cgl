@@ -7,19 +7,19 @@
       +num = g:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((.gvar-is-outputted[n3] & n17) != 0) :return :true}
+      {if((.gvar-is-outputted[n3] & n17) != 0) return true}
       .gvar-is-outputted[n3] |= n17;
 
       +gvar = g.ptr();
       +at-i = gvar.decl.type;
       +at = at-i.ptr();
-      {if!(gvar.decl.process(gvar.file, gvar.row, gvar.col, gvar.at)) :return :false}
+      {if!(gvar.decl.process(gvar.file, gvar.row, gvar.col, gvar.at)) return false}
 
       {if((gvar.flags & #no-decl) == #0)
          .gvar-outputted-v[.gvar-outputted-c++] = g;
       }
       
-      :return :true;
+      return true;
    }
    {write(g:this)
       +gvar = g.ptr();
@@ -29,13 +29,13 @@
    //    +gvar = g.ptr();
    //    {if((gvar.decl.flags & #real-name) != #0)
    //       .out.printf("%s", gvar.decl.real-name.str());
-   //       :return;
+   //       return;
    //    }
    //    gvar.at.write-space();
    //    .out.printf("_G%s", gvar.decl.name.c-name());
    // }
    {ptr(g:this):decl-gvar @inline
-      :return .gvar-v[g];
+      return .gvar-v[g];
    }
 }
 {expr-gvar(at:at, name:id):expr-i
@@ -43,7 +43,7 @@
    +e-idx = expr-push(e.base, #gvar);
    e.at = at;
    e.name = name;
-   :return e-idx;
+   return e-idx;
 }
 {at(:expr-i)
    {value-gvar(g:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline
@@ -51,9 +51,9 @@
       +gvar = e.gvar.ptr();
       v.set(ref, paren, gvar.decl.type, gvar.decl.type-info);
       {if(v.ref == 1)
-         v.paren = :false;
+         v.paren = false;
       }
-      ok = :true;
+      ok = true;
    }
    {type-gvar(expr:expr, at:at&) @case.type() @inline
       {+e:expr-gvar = expr}
@@ -70,10 +70,10 @@
       e-idx.set(e.base, #gvar);
       :at.rd(+at-idx, r);
       :id.rd(+name, r);
-      +try-parent = :false;
+      +try-parent = false;
       {if(at-idx == #nil)
          at-idx = .ctx-func.at;
-         try-parent = :true;
+         try-parent = true;
       }
       {do()
          +at = at-idx.ptr();
@@ -81,7 +81,7 @@
             +gvar = at.gvar-v[i];
             {if(gvar.ptr().decl.name == name)
                e.gvar = gvar;
-               :return;
+               return;
             }
          }
          {if!(try-parent) {break}}
@@ -97,8 +97,8 @@
    }
    {process-gvar(expr:expr, ok:bool&) @case.process() @inline
       {+e:expr-gvar = expr}
-      {if!(e.gvar.process()) :return}
-      ok = :true;
+      {if!(e.gvar.process()) return}
+      ok = true;
    }
 }
  

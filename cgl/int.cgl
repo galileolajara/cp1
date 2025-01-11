@@ -6,7 +6,7 @@
    +e-idx = expr-push(e.base, #i32);
    e.value = value;
    e.type = type;
-   :return e-idx;
+   return e-idx;
 }
 {at(:expr-i)
    {wr-i32(expr:expr, w:wtr, header:bool) @case.wr() @inline
@@ -25,7 +25,7 @@
       .out.printf("%d", e.value);
    }
    {process-i32(expr:expr, ok:bool&) @case.process() @inline
-      ok = :true;
+      ok = true;
    }
    {type-i32(expr:expr, at:at&) @case.type() @inline
       at = basic-type(#i32);
@@ -37,8 +37,8 @@
       v.info.ref-v[0] = ''\0;
       v.info.star-c = 0;
       v.ref = 1;
-      v.paren = :false;
-      ok = :true;
+      v.paren = false;
+      ok = true;
    }
 }
  

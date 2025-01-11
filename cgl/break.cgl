@@ -34,7 +34,7 @@
    }
    {process-break(stmt:stmt, ok:bool&) @case.process() @inline
       {+s:stmt-break = stmt}
-      ok = :true;
+      ok = true;
    }
 }
  

@@ -226,7 +226,7 @@
    }
    out-old-fd.write(w-old-begin.ref, w-old.pos - w-old-begin.pos);
    out-old-fd.close();
-   :return 0;
+   return 0;
 }
 }
 

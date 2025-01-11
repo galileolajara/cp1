@@ -13,7 +13,7 @@
    +e-idx = expr-push(e.base, #unary);
    e.expr = expr;
    e.type = type;
-   :return e-idx;
+   return e-idx;
 }
 {at(:expr-i)
    {wr-unary(expr:expr, w:wtr, header:bool) @case.wr() @inline
@@ -52,7 +52,7 @@
 		v.info.ref-v[0] = 0;
 		v.info.star-c = 0;
 		v.ref = 1;
-      ok = :true;
+      ok = true;
 	}
    {type-unary(expr:expr, at:at&) @case.type() @inline
       {+e:expr-unary = expr}
@@ -60,10 +60,10 @@
    }
    {process-unary(expr:expr, ok:bool&) @case.process() @inline
       {+e:expr-unary = expr}
-		{if!(e.expr.value(1, :true, e.val))
-			:return;
+		{if!(e.expr.value(1, true, e.val))
+			return;
       }
-      ok = :true;
+      ok = true;
    }
 }
  

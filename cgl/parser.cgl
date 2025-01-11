@@ -26,11 +26,11 @@
 {type-info-arr(expr-v:expr-i[], expr-c:u8)
    {+r:rdr+}
    r.ref = expr-v;
-   {if(expr-v == :null)
+   {if(expr-v == null)
       +ti = .decl-var.type-info;
       ti.array-c += 1;
       ti.ref-v[ti.array-c] = 0;
-      :return;
+      return;
    }
    {do{+i = expr-c}(expr-c)
       type-info-arr(expr-v[i -= 1]);
@@ -55,13 +55,13 @@
 }
 {type-info-static()
    // 'c.out.printf("built-in\n");
-   .decl-var.type-info.built-in = :true;
+   .decl-var.type-info.built-in = true;
 }
 {decl-include-begin(inc:include, row:i32, col:i32)
    {if(.decl-include != #nil)
       'c.out.printf("%s:%u:%u: Cannot {include inside another {include of %u:%u\n", .input-path, row, col, .decl-include-row, .decl-include-col);
       'c.exit(#failure);
-      :return}
+      return}
    .decl-include = inc;
    .decl-include-row = row;
    .decl-include-col = col;
@@ -77,7 +77,7 @@
    {do{+i = 0:at}{(.at-c) i++}
       +at = .at-v[i];
       {if(&&, at.type == #basic, at.name.basic == type)
-         :return i;
+         return i;
       }
    }
    +build-idx = .at-c++;
@@ -90,17 +90,17 @@
    at.parent = #root;
    at.type = #basic;
    at.name.basic = type;
-   :return build-idx;
+   return build-idx;
 }
 {at-begin()
    .build-at = .decl-at;
 }
 {gvar at-begin-relative-pause:bool}
 {at-begin-relative-pause()
-   .at-begin-relative-pause = :true;
+   .at-begin-relative-pause = true;
 }
 {at-begin-relative-resume()
-   .at-begin-relative-pause = :false;
+   .at-begin-relative-pause = false;
 }
 {at-begin-relative()
    {if(.at-begin-relative-pause)
@@ -120,7 +120,7 @@
    {do{+i = 0}{(.at-alias-c) i++}
       {if(.at-alias-name-v[i] == name)
          .build-at = .at-alias-at-v[i];
-         :return;
+         return;
       }
    }
    'c.out.printf("%s:%u:%u: Cannot recognize the alias '%s\n", .input-path, row, col, name.str());
@@ -130,13 +130,13 @@
    // {if(at.ptr().type != #module)
    //    'c.out.printf("%s:%u:%u: Alias can only work on namespaces that ends with '%%'\n", .input-path, row, col);
    //    'c.exit(#failure);
-   //    :return;
+   //    return;
    // }
    {do{+i = 0}{(.at-alias-c) i++}
       {if(.at-alias-name-v[i] == name)
          'c.out.printf("%s:%u:%u: Alias '%s was already declared at %u:%u\n", .input-path, row, col, name.str(), .at-alias-pos-v[i].row, .at-alias-pos-v[i].col);
          'c.exit(#failure);
-         :return;
+         return;
       }
    }
    +alias-idx = .at-alias-c++;
@@ -168,18 +168,18 @@
    }
 }
 {at-done():at
-   :return .build-at;
+   return .build-at;
 }
 {at-create(parent:at, type:name-type, name:id):at
    +found = .at-map.get-or-insert(parent, type, name, .at-c);
-   {if(found != -1) :return found}
+   {if(found != -1) return found}
    // {do{+i = 0:at}{(.at-c) i++}
    //    +at = .at-v[i];
    //    {if(&&,
    //       at.parent == parent,
    //       at.type == type,
    //       at.name.id == name)
-   //       :return i;
+   //       return i;
    //    }
    // }
    +build-idx = .at-c++;
@@ -192,7 +192,7 @@
    at.parent = parent;
    at.type = type;
    at.name.id = name;
-   :return build-idx;
+   return build-idx;
 }
 {at-create-basic(basic:basic-type-id):at
    {do{+i = 0:at}{(.at-c) i++}
@@ -200,7 +200,7 @@
       {if(&&,
          at.type == #basic,
          at.name.basic == basic)
-         :return i;
+         return i;
       }
    }
    +build-idx = .at-c++;
@@ -213,7 +213,7 @@
    at.parent = #root;
    at.type = #basic;
    at.name.basic = basic;
-   :return build-idx;
+   return build-idx;
 }
 
 {gvar decl-at:at}
@@ -280,7 +280,7 @@
          'c.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
          'c.exit(#failure);
       }
-      :return val:u32;
+      return val:u32;
    }
    {get-u32-dec(lex:this):u32
       {+r-start:rdr+}
@@ -301,7 +301,7 @@
          'c.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
          'c.exit(#failure);
       }
-      :return val:u32;
+      return val:u32;
    }
    {get-id(lex:this, begin:u8, end:u8):i32
       {+r-start:rdr+}
@@ -330,15 +330,15 @@
          text[len] = 0;
          .id-str-v[id] = text;
          .id-len-v[id] = len;
-         :return id;
+         return id;
       }{else
          // found
-         :return found;
+         return found;
       }
       // {do{+i = 0}{(.id-c) i++}
       //    {if(.id-len-v[i] == len)
       //       {if('c.memcmp(.id-str-v[i], r-start.ref, len) == 0)
-      //          :return i;
+      //          return i;
       //       }
       //    }
       // }
@@ -354,7 +354,7 @@
       // text[len] = 0;
       // .id-str-v[id] = text;
       // .id-len-v[id] = len;
-      // :return id;
+      // return id;
    }
    {get-include(lex:this):i32
       {+r-start:rdr+}
@@ -383,15 +383,15 @@
          text[len] = 0;
          .include-str-v[include] = text;
          .include-len-v[include] = len;
-         :return include;
+         return include;
       }{else
          // found
-         :return found;
+         return found;
       }
       // {do{+i = 0}{(.include-c) i++}
       //    {if(.include-len-v[i] == len)
       //       {if('c.memcmp(.include-str-v[i], r-start.ref, len) == 0)
-      //          :return i;
+      //          return i;
       //       }
       //    }
       // }
@@ -407,7 +407,7 @@
       // text[len] = 0;
       // .include-str-v[include] = text;
       // .include-len-v[include] = len;
-      // :return include;
+      // return include;
    }
 }
 {:parser()
@@ -549,7 +549,7 @@
    }
 }
 {token-name(tok:token):char[]
-   :return tok.cgl-name();
+   return tok.cgl-name();
 }
 {parse-str-init(max-size:i32)}
 {get-row-col(out-row:i32&, out-col:i32&, end:ref, begin:ref)
@@ -591,7 +591,7 @@
       w.pos++;
       r.pos++;
       {if(c == ending)
-         :return;
+         return;
       }
    }
 }
@@ -613,7 +613,7 @@
             w.p1[0] = '' ;
             w.pos++;
          }
-         :return;
+         return;
       }
    }
 }
@@ -742,11 +742,11 @@
    out-fd.write(w-begin.ref, w.pos - w-begin.pos);
    out-fd.close();
    in-out-size = w.pos - w-begin.pos;
-   :return w-begin.ref;
+   return w-begin.ref;
 }
 {char-escape-value(c:char):i32}
 {main(arg-c:i32, arg-v:char[][]):i32 @main
-   {if(:false) export()}
+   {if(false) export()}
    .id-map.init();
    .include-map.init();
    .at-map.init();
@@ -755,7 +755,7 @@
    .decl-include = #nil;
    {if(arg-c != 2)
       'c.out.printf("usage: %s file.glc\n", arg-v[0]);
-      :return 0;
+      return 0;
    }
    .input-path = arg-v[1];
    'c.out.printf("reading %s\n", .input-path);
@@ -780,7 +780,7 @@
       'c.out.printf("Error reading file '%s' because it doesn't end with a new line\n", .input-path);
       'c.exit(#failure);
    }
-   {if(:true) // process comments
+   {if(true) // process comments
       // in-data = convert-old-to-new(in-data, in-size);
       {+r-end:rdr+}
       r-end.ref = in-data;
@@ -1016,7 +1016,7 @@
       tok.row = next-row;
       tok.col = next-col;
       +t = lex.scan();
-      {if(:true) // t != #space)
+      {if(true) // t != #space)
          // when reporting the row and column of tokens, skip the spaces
          +pos = lex.start;
          {while(pos < r-end.p1)
@@ -1149,16 +1149,16 @@
       {if(at.type == #basic)
          at.name.basic.wr(w);
       }{else
-         at.parent.wr(w, :false);
-         at.name.id.wr(w, :false);
+         at.parent.wr(w, false);
+         at.name.id.wr(w, false);
       }
    }
 
-   write-cvar(w, :false);
-   write-gvar(w, :false);
-   write-enum(w, :false);
-   write-struct(w, :false);
-   write-func(w, :false);
+   write-cvar(w, false);
+   write-gvar(w, false);
+   write-enum(w, false);
+   write-struct(w, false);
+   write-func(w, false);
    
    {+out-path:char[512]}
    +in-path-len = 'c.strlen(.input-path);
@@ -1203,11 +1203,11 @@
          at.name.id.wr-header(w);
       }
    }
-   write-cvar(w, :true);
-   write-gvar(w, :true);
-   write-enum(w, :true);
-   write-struct(w, :true);
-   write-func(w, :true);
+   write-cvar(w, true);
+   write-gvar(w, true);
+   write-enum(w, true);
+   write-struct(w, true);
+   write-func(w, true);
 
    out-path[in-path-len + 1] = ''h;
    {if!('c:fd.open(out-fd, out-path, #create | #truncate | #write, 0644))
@@ -1225,7 +1225,7 @@
    'c.memcpy(final-path, out-path, in-path-len + 2);
    final-path[in-path-len + 2] = 0;
    'c.rename(out-path, final-path);
-   :return 0;
+   return 0;
 }
  
 

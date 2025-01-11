@@ -14,20 +14,20 @@
    n.len = len;
    'c.memcpy(n.buf, .string-buf, len);
    n.buf[len] = ''\0;
-   n.next = :null;
+   n.next = null;
    {if(prev == #nil)
       quick-alloc-one(+(e:expr-str));
       +e-idx = expr-push(e.base, #str);
       e.node-c = 1;
       e.first = n;
       e.last = n;
-      :return e-idx;
+      return e-idx;
    }{else
       {+e:expr-str = prev.ptr()}
       e.node-c++;
       e.last.next = n;
       e.last = n;
-      :return prev;
+      return prev;
    }
 }
 {write-str-node(len:i32, ptr:ref)}
@@ -40,23 +40,23 @@
          w.n(n.len);
          w.copy(n.buf, n.len);
          n = n.next;
-         {if(n == :null) {break}}
+         {if(n == null) {break}}
       }
    }
    {rd-str(e-idx:expr-i, r:rdr) @case.rd() @inline
       +node-c = r.n();
       quick-alloc-one(+(e:expr-str));
       e-idx.set(e.base, #str);
-      +first = :true;
+      +first = true;
       {do(node-c)
          +len = r.n();
          quick-alloc-plus(+(n:expr-str-node), len + 1);
          n.len = len;
          r.copy(n.buf, len);
          n.buf[len] = 0;
-         n.next = :null;
+         n.next = null;
          {if(first)
-            first = :false;
+            first = false;
             e.first = n;
             e.last = n;
          }{else
@@ -127,7 +127,7 @@
          // }
          // .out.putc(''\");
          n = n.next;
-         {if(n == :null) {break}}
+         {if(n == null) {break}}
          .out.putc(''\n);
       }
    }
@@ -139,10 +139,10 @@
       v.info.ref-v[1] = ''\0;
       v.info.star-c = 1;
       v.ref = 1;
-      ok = :true;
+      ok = true;
    }
    {process-str(expr:expr, ok:bool&) @case.process() @inline
-      ok = :true;
+      ok = true;
    }
 }
  

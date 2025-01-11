@@ -24,7 +24,7 @@
    {write(space:this)
       // .out.printf("{ // space begin \n");
       {+i, lvar-c}
-      {if(space.parent == :null)
+      {if(space.parent == null)
          // dont write arguments
          i = .ctx-func.farg-c;
          lvar-c = space.lvar-c - .ctx-func.farg-c;
@@ -44,7 +44,7 @@
          .out.printf(";\n");
       }
       +s = space.stmt-first;
-      {while(s != :null)
+      {while(s != null)
          s.write();
          s = s.stmt-next;
       }
@@ -78,7 +78,7 @@
       item.row = row;
       item.col = col;
       item.decl.name = name;
-      :return lvar;
+      return lvar;
    }
    {wr-space(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
       {+s:stmt-space = stmt}
@@ -90,7 +90,7 @@
          space.lvar-v[i].wr(w);
       }
       +stmt = space.stmt-first;
-      {while(stmt != :null)
+      {while(stmt != null)
          stmt.type.wr(w);
          {if(`#debug-rd-wr)
             w.n1(255);
@@ -118,8 +118,8 @@
       s2.end-row = end-row;
       s2.end-col = end-col;
       s2.type = type;
-      s2.stmt-next = :null;
-      {if(s.stmt-last == :null)
+      s2.stmt-next = null;
+      {if(s.stmt-last == null)
          s.stmt-first = s2;
          s.stmt-last = s2;
       }{else
@@ -129,8 +129,8 @@
    }
    {rd(space:this, r:rdr, parent:stmt-space)
       space.parent = parent;
-      space.stmt-first = :null;
-      space.stmt-last = :null;
+      space.stmt-first = null;
+      space.stmt-last = null;
 
       +lvar-c = r.n();
       space.lvar-c = lvar-c;
@@ -174,12 +174,12 @@
    }
    {process(space:this):bool
       +s = space.stmt-first;
-      {while(s != :null)
-         {if!(s.process()) :return :false}
+      {while(s != null)
+         {if!(s.process()) return false}
          s = s.stmt-next;
       }
       {+i, lvar-c}
-      {if(space.parent == :null)
+      {if(space.parent == null)
          // don't process arguments
          i = .ctx-func.farg-c;
          lvar-c = space.lvar-c - .ctx-func.farg-c;
@@ -190,14 +190,14 @@
       {do{(lvar-c) i++}
          space.lvar-v[i].process();
       }
-      :return :true;
+      return true;
    }
 }
 {at(:stmt)
    {process-space(stmt:stmt, ok:bool&) @case.process() @inline
       {+space:stmt-space = stmt}
-      {if!(space.process()) :return}
-      ok = :true;
+      {if!(space.process()) return}
+      ok = true;
    }
    {write-space(stmt:stmt) @case.write() @inline
       {+space:stmt-space = stmt}
@@ -205,7 +205,7 @@
    }
 }
 {stmt-space-begin():stmt-space
-   :return stmt-space-begin(:true);
+   return stmt-space-begin(true);
 }
 {stmt-space-begin(attach:bool):stmt-space
    +parent = .decl-func-ctx-space;
@@ -213,7 +213,7 @@
    +space = .decl-func-ctx-space;
    space.parent = parent;
    {if(attach)
-      {if(parent.stmt-last == :null)
+      {if(parent.stmt-last == null)
          parent.stmt-first = space.base;
          parent.stmt-last = space.base;
       }{else
@@ -221,15 +221,15 @@
          parent.stmt-last = space.base;
       }
    }
-   :return space;
+   return space;
 }
 {stmt-space-begin-detach():stmt-space
-   :return stmt-space-begin(:false);
+   return stmt-space-begin(false);
 }
 {stmt-space-end():stmt-space
    +ret = .decl-func-ctx-space;
    .decl-func-ctx-space = .decl-func-ctx-space.parent;
-   :return ret;
+   return ret;
 }
  
 

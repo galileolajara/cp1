@@ -31,11 +31,11 @@
       {+s:stmt-return = stmt}
       {if(s.expr != #nil)
          s.expr.try-deduce(.ctx-func.decl.type);
-         {if!(s.expr.value(1 + .ctx-func.decl.type-info.ref-v[.ctx-func.decl.type-info.array-c], :false, s.val))
-            :return;
+         {if!(s.expr.value(1 + .ctx-func.decl.type-info.ref-v[.ctx-func.decl.type-info.array-c], false, s.val))
+            return;
          }
       }
-      ok = :true;
+      ok = true;
    }
 }
  

@@ -14,7 +14,7 @@
    e.left = left;
    e.right = right;
    e.type = type;
-   :return e-idx;
+   return e-idx;
 }
 {at(:expr-i)
    {wr-compare(expr:expr, w:wtr, header:bool) @case.wr() @inline
@@ -64,7 +64,7 @@
 		v.info.star-c = 0;
 		v.ref = 1;
 		v.paren = paren;
-      ok = :true;
+      ok = true;
 	}
    {type-compare(expr:expr, at:at&) @case.type() @inline
       {+e:expr-compare = expr}
@@ -72,14 +72,14 @@
    }
    {process-compare(expr:expr, ok:bool&) @case.process() @inline
       {+e:expr-compare = expr}
-		{if!(e.left.value(1, :true, e.left-val))
-			:return;
+		{if!(e.left.value(1, true, e.left-val))
+			return;
       }
 		e.right.try-deduce(e.left-val.type);
-		{if!(e.right.value(1, :true, e.right-val))
-			:return;
+		{if!(e.right.value(1, true, e.right-val))
+			return;
       }
-      ok = :true;
+      ok = true;
    }
 }
  

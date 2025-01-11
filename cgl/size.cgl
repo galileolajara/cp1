@@ -4,7 +4,7 @@
    quick-alloc-one(+(e:expr-size-of-type));
    +e-idx = expr-push(e.base, #size-of-type);
    e.type = at;
-   :return e-idx;
+   return e-idx;
 }
 {at(:expr-i)
    {wr-size-of-type(expr:expr, w:wtr, header:bool) @case.wr() @inline
@@ -26,7 +26,7 @@
       {+e:expr-size-of-type = expr}
       e.type = at-validate(e.type, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
       e.type.output(.ctx-func.file, .ctx-begin-row, .ctx-begin-col);
-      ok = :true;
+      ok = true;
    }
    {type-size-of-type(expr:expr, at:at&) @case.type() @inline
       at = basic-type(#usz);
@@ -38,8 +38,8 @@
       v.info.ref-v[0] = ''\0;
       v.info.star-c = 0;
       v.ref = 1;
-      v.paren = :false;
-      ok = :true;
+      v.paren = false;
+      ok = true;
    }
 }
  

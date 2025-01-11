@@ -9,11 +9,11 @@
    {wr-do(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
       {+s:stmt-do = stmt}
       s.expr.wr(w, header);
-      {if(s.continue != :null)
-         w.b(:true);
+      {if(s.continue != null)
+         w.b(true);
          s.continue.wr(w, header);
       }{else
-         w.b(:false);
+         w.b(false);
       }
    }
    {rd-do(space:stmt-space, r:rdr) @case.rd() @inline
@@ -57,17 +57,17 @@
       {+s:stmt-do = stmt}
       {if(s.expr != #nil)
          {if!(s.expr.process())
-            :return;
+            return;
          }
       }
-      ok = :true;
+      ok = true;
    }
    {write-do-end(stmt:stmt) @case.write() @inline
       +id = .nest-stack-id-v[.nest-stack-c -= 1];
       {+s:stmt-do-end = stmt}
       .out.printf("continue_%u:;\n", id);
       +continue = s.do.continue;
-      {if(continue != :null)
+      {if(continue != null)
          continue.write();
       }
       .out.printf("}\nbreak_%u:;\n", id);
@@ -75,10 +75,10 @@
    {process-do-end(stmt:stmt, ok:bool&) @case.process() @inline
       {+s:stmt-do-end = stmt}
       +continue = s.do.continue;
-      {if(continue != :null)
+      {if(continue != null)
          continue.process();
       }
-      ok = :true;
+      ok = true;
    }
 }
 {stmt-do-begin()

@@ -34,7 +34,7 @@
    }
    {process-continue(stmt:stmt, ok:bool&) @case.process() @inline
       {+s:stmt-continue = stmt}
-      ok = :true;
+      ok = true;
    }
 }
  

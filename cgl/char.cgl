@@ -4,7 +4,7 @@
    quick-alloc-one(+(e:expr-char));
    +e-idx = expr-push(e.base, #char);
    e.value = value;
-   :return e-idx;
+   return e-idx;
 }
 {write-char(c:char)}
 {at(:expr-i)
@@ -22,7 +22,7 @@
       `.write-char(e.value);
    }
    {process-char(expr:expr, ok:bool&) @case.process() @inline
-      ok = :true;
+      ok = true;
    }
    {type-char(expr:expr, at:at&) @case.type() @inline
       at = basic-type(#char);
@@ -34,8 +34,8 @@
       v.info.ref-v[0] = ''\0;
       v.info.star-c = 0;
       v.ref = 1;
-      v.paren = :false;
-      ok = :true;
+      v.paren = false;
+      ok = true;
    }
 }
  

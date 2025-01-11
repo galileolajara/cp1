@@ -3,7 +3,7 @@
 {at(:glc)
 {:decl-var[]:u32
    {ptr(v:this):decl-var-data @inline
-      :return .var-v[v];
+      return .var-v[v];
    }
 }
 {:decl-var-type[#gvar, #fvar]:u8}
@@ -28,7 +28,7 @@
                // 'c.out.printf("%u) :%s, %d\n", i, .at-v[i].name.id.str(), .at-v[i].decl.struct);
                {if(.at-v[i].name.id == name.id)
                   // 'c.out.printf("found\n");
-                  :return i;
+                  return i;
                }
             }
          }
@@ -38,7 +38,7 @@
       'c.out.printf("%s:%u:%u: Type :%s was not found\n", file.path(), row, col, name.id.str());
       'c.exit(#failure);
    }
-   :return vd-type;
+   return vd-type;
 }
 {at(:decl-var-data)
    {validate(vd:this, base-at:at)
@@ -51,19 +51,19 @@
       +at = at-i.ptr();
       {if(&&, at.type != #basic, at.decl.struct == #nil)
          'c.out.printf("%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", .ctx-func.file.path(), row, col, at.name.id.str(), vd.name.str());
-         :return :false;
+         return false;
       }
       at-i.output(.ctx-func.file, row, col);
-      {if!(at-i.finalize(vd.type-info, row, col)) :return :false}
+      {if!(at-i.finalize(vd.type-info, row, col)) return false}
       {do{+i = 0}{(vd.size-c) i++}
-         {if!(vd.size-expr-v[i].value(1, :false, vd.size-value-v[i])) :return :false}
+         {if!(vd.size-expr-v[i].value(1, false, vd.size-value-v[i])) return false}
       }
-      :return :true;
+      return true;
    }
    {write(vd:this, var-type:decl-var-type)
       {if((vd.flags & #real-name) != #0)
          .out.printf("%s", vd.real-name.str());
-         :return;
+         return;
       }
       {switch(var-type)
          {case(#gvar)
@@ -119,7 +119,7 @@
    }
    // {validate(vd-type:at, at-i:at, vd-name:id):at
    //    +type = vd-type.ptr();
-   //    {if(type.type == #basic) :return vd-type}
+   //    {if(type.type == #basic) return vd-type}
    //    +parent = type.parent.ptr();
    //    {if(&&, parent.type == #basic, parent.name.basic == #relative)
    //       +name = type.name;
@@ -141,7 +141,7 @@
    //             {if(&&, .at-v[i].parent == at-i, .at-v[i].type != #basic)
    //                'c.out.printf("%u) :%s\n", i, .at-v[i].name.id.str());
    //                {if(.at-v[i].name.id == name.id)
-   //                   :return i;
+   //                   return i;
    //                }
    //             }
    //          }
@@ -151,7 +151,7 @@
    //       'c.out.printf("not found\n");
    //       'c.exit(#failure);
    //    }
-   //    :return vd-type;
+   //    return vd-type;
    // }
    {rd(vd:this, r:rdr)
       vd.name.rd(r);
@@ -218,8 +218,8 @@
 		ti.ref-v[0] = 0;
 		ti.array-c = 0;
 		ti.star-c = 0;
-		ti.built-in = :false;
-		ti.const = :false;
+		ti.built-in = false;
+		ti.const = false;
 	}
    {rd(ti:this, r:rdr)
       +c = r.n1();

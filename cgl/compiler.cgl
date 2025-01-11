@@ -16,7 +16,7 @@
 }
 {gvar basic-type:basic-type+[:basic-type-id#COUNT]}
 {basic-type(t:basic-type-id):at @inline
-   :return t;
+   return t;
 }
 {gvar ctx-begin-row:i32}
 {gvar ctx-begin-col:i32}
@@ -29,10 +29,10 @@
 {gvar file-v:file-data+[]}
 {:file[#nil = -1, #0]:i32
    {ptr(f:this):file-data @inline
-      :return .file-v[f];
+      return .file-v[f];
    }
    {path(f:this):char[] @inline
-      :return f.ptr().path;
+      return f.ptr().path;
    }
 }
 {:file-data(
@@ -50,10 +50,10 @@
 {gvar cvar-table:cvar[]}
 {id-add(id-len:u8, id-str:char[]):id
    +found = .id-map.get-or-insert(id-str, id-len, .id-c);
-   {if(found != -1) :return found}
+   {if(found != -1) return found}
    // {do{+j = 0}{(.id-c) j++}
    //    {if(&&, .id-len-v[j] == id-len, 'c.memcmp(.id-str-v[j], id-str, id-len) == 0)
-   //       :return j;
+   //       return j;
    //    }
    // }
    +id-idx = .id-c++;
@@ -65,7 +65,7 @@
    }
    .id-len-v[id-idx] = id-len;
    .id-str-v[id-idx] = id-str;
-   :return id-idx;
+   return id-idx;
 }
 {read(in-path:char[])
    // 'c.out.printf("reading %s -------------------\n", in-path);
@@ -75,8 +75,8 @@
    }
    +in-size = in-fd.seek(0, #end);
    {+r-begin:rdr+}
-   // {if(:true)
-   //    r-begin.ref = in-fd.map(:null, in-size, #read, #shared, 0);
+   // {if(true)
+   //    r-begin.ref = in-fd.map(null, in-size, #read, #shared, 0);
    // }{else
       r-begin.ref = 'c.malloc(in-size);
       in-fd.seek(0, #set);
@@ -96,7 +96,7 @@
 
    {+r:rdr+}
    r.ref = r-begin.ref;
-   {if(:true)
+   {if(true)
       +id-c = r.n();
       // 'c.out.printf("There are %u ids\n", id-c);
       quick-alloc-arr(.id-table, id-c);
@@ -108,7 +108,7 @@
          .id-table[i] = id-add(id-len, id-str);
       }
    }
-   {if(:true)
+   {if(true)
       +include-c = r.n();
       // 'c.out.printf("There are %u includes\n", include-c);
       {if(.include-table-cap <= include-c)
@@ -144,7 +144,7 @@
          }
       }
    }
-   {if(:true)
+   {if(true)
       +at-c = r.n();
       // 'c.out.printf("There are %u at\n", at-c);
       quick-alloc-arr(.at-table, at-c);
@@ -187,7 +187,7 @@
          }
       }
    }
-   {if(:true)
+   {if(true)
       +cvar-c = r.n():cvar;
       quick-alloc-arr(.cvar-table, cvar-c);
       file.cvar-table = .cvar-table;
@@ -227,7 +227,7 @@
          .cvar-table[i] = cvar-idx;
       }
    }
-   {if(:true)
+   {if(true)
       +gvar-c = r.n():gvar;
       // 'c.out.printf("There are %u gvars\n", gvar-c);
       'c.out.flush();
@@ -386,7 +386,7 @@
       {+r0:rdr+}
       r0.ref = f;
       // 'c.out.printf("func :%s was declared on an at:\n", f.decl.name.str());
-      // {if(:true)
+      // {if(true)
       //    +at-i = f.at;
       //    {do()
       //       +at = at-i.ptr();
@@ -485,9 +485,9 @@
 {main(arg-c:i32, arg-v:char[][]):i32 @main
    {if(arg-c < 2)
       'c.out.printf("usage: %s file.glc-t\n", arg-v[0]);
-      :return 0;
+      return 0;
    }
-   {if(:false)
+   {if(false)
       quick-alloc-undo(0);
    }
 
@@ -508,7 +508,7 @@
       at.init(#basic, #root, type:id);
    }
 
-   // {if(:true)
+   // {if(true)
    //    +at-i = basic-type(#bool);
    // }
 
@@ -573,33 +573,33 @@
    }
 
    quick-alloc-arr(.id-c-name-v, .id-c); 
-   {if(:true)
+   {if(true)
       +func-c8 = (.func-c + 7) >> 3;
       quick-alloc-arr(.func-in-process, func-c8);
       quick-alloc-arr(.func-head-outputted-v, .func-c);
       quick-alloc-arr(.func-body-outputted-v, .func-c);
    }
-   {if(:true)
+   {if(true)
       +include-c8 = (.include-c + 7) >> 3;
       quick-alloc-arr(.include-is-outputted, include-c8);
       quick-alloc-arr(.include-outputted-v, .include-c);
    }
-   {if(:true)
+   {if(true)
       +cvar-c8 = (.cvar-c + 7) >> 3;
       quick-alloc-arr(.cvar-is-outputted, cvar-c8);
       quick-alloc-arr(.cvar-outputted-v, .cvar-c);
    }
-   {if(:true)
+   {if(true)
       +gvar-c8 = (.gvar-c + 7) >> 3;
       quick-alloc-arr(.gvar-is-outputted, gvar-c8);
       quick-alloc-arr(.gvar-outputted-v, .gvar-c);
    }
-   {if(:true)
+   {if(true)
       +enum-c8 = (.enum-c + 7) >> 3;
       quick-alloc-arr(.enum-is-outputted, enum-c8);
       quick-alloc-arr(.enum-outputted-v, .enum-c);
    }
-   {if(:true)
+   {if(true)
       +struct-c8 = (.struct-c + 7) >> 3;
       quick-alloc-arr(.struct-is-outputted, struct-c8);
       quick-alloc-arr(.struct-outputted-v, .struct-c);
@@ -617,7 +617,7 @@
       .process-first = #nil;
       .process-last = #nil;
       {do()
-         {if!(f-i.process-now()) :return -1}
+         {if!(f-i.process-now()) return -1}
          +f = f-i.ptr();
          f-i = f.process-next; 
          {if(f-i == #nil) {break}}
@@ -811,14 +811,14 @@
       f.stmt-space.write();
       .out.printf("}\n");
    }
-   :return 0;
+   return 0;
 }
 {at(:func)
    {process-later(f-idx:this)
       +num = f-idx:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((.func-in-process[n3] & n17) != 0) :return}
+      {if((.func-in-process[n3] & n17) != 0) return}
       .func-in-process[n3] |= n17;
       +f = f-idx.ptr();
       +f-at = f.at;
@@ -873,8 +873,8 @@
       // 'c.out.printf("  function has %u statements\n", stmt-c);
       // f.stmt-c = 0;
       // f.stmt-cap = 0;
-      // f.stmt-v = :null;
-      // {if(:true)
+      // f.stmt-v = null;
+      // {if(true)
       //    // add a stmt lvars
       //    quick-alloc-one(+(s:stmt-space));
       //    s.lvar-c = 0;
@@ -883,16 +883,16 @@
       //    f.stmt-push(s.base, f.begin-row, f.begin-col, f.begin-row, f.begin-col, #space);
       // }
       f.lvars-rd(r);
-      f.stmt-space.rd(r, :null);
+      f.stmt-space.rd(r, null);
       +s = f.stmt-space.stmt-first;
-      {while(s != :null)
+      {while(s != null)
          .ctx-begin-row = s.begin-row;
          .ctx-begin-col = s.begin-col;
          .ctx-end-row = s.end-row;
          .ctx-end-col = s.end-col;
          // 'c.out.printf("%s %u:%u - %u:%u\n", f.decl.name.str(), s.begin-row, s.begin-col, s.end-row, s.end-col);
          {if!(s.process())
-            :return :false;
+            return false;
          }
          s = s.stmt-next;
       }
@@ -903,17 +903,17 @@
       //    .ctx-end-row = s.end-row;
       //    .ctx-end-col = s.end-col;
       //    {if!(s.process(f-idx))
-      //       :return :false;
+      //       return false;
       //    }
       // }
 
       {if((f.flags & #no-body) == #0)
          .func-body-outputted-v[.func-body-outputted-c++] = f-idx;
       }
-      :return :true;
+      return true;
    }
    {is-set(f-idx:this, v:u8[]):bool @inline
-      :return (v[f-idx >> 3] & (1 << (f-idx & 7))) != 0;
+      return (v[f-idx >> 3] & (1 << (f-idx & 7))) != 0;
    }
    {set(f-idx:this, v:u8[]) @inline
       v[f-idx >> 3] |= 1 << (f-idx & 7);

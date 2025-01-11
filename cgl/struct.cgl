@@ -9,13 +9,13 @@
       s = (r.n() - #1):func;
    }
    {ptr(s:this):struct-data @inline
-      :return .struct-v[s];
+      return .struct-v[s];
    }
    {output(s-i:this)
       +num = s-i:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((.struct-is-outputted[n3] & n17) != 0) :return}
+      {if((.struct-is-outputted[n3] & n17) != 0) return}
       .struct-is-outputted[n3] |= n17;
       +s = s-i.ptr();
       +s-at = s.at;
@@ -24,12 +24,12 @@
       +s-col = s.begin-col;
       {do{+i = 0}{(s.fvar-c) i++}
          // s.fvar-v[i].decl.type.output(s.file, row, col);
-         // {if!(s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col)) :return}
+         // {if!(s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col)) return}
          s.fvar-v[i].decl.type = at-validate(s.fvar-v[i].decl.type, s-at, s-file, s-row, s-col);
          {if!(s.fvar-v[i].decl.process(s-file, s-row, s-col, s-at))
             'c.out.printf("err\n");
             'c.exit(#failure);
-            :return;
+            return;
          }
       }
 

@@ -16,7 +16,7 @@
    e.left = left;
    e.right = right;
    e.type = type;
-   :return e-idx;
+   return e-idx;
 }
 {at(:expr-i)
    {wr-assign(expr:expr, w:wtr, header:bool) @case.wr() @inline
@@ -75,12 +75,12 @@
    }
    {value-assign(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline
       {+expr:expr-assign = e.ptr()}
-		{if(expr.left.value(1, paren, v) == :false)
-         :return;
+		{if(expr.left.value(1, paren, v) == false)
+         return;
       }
 		v.paren = paren;
 		v.ref = ref;
-      ok = :true;
+      ok = true;
 	}
    {process-assign(expr:expr, ok:bool&) @case.process() @inline
       {+e:expr-assign = expr}
@@ -89,26 +89,26 @@
          {+left:expr-lvar = left-e}
          +lvar = left.lvar.ptr();
          {if(lvar.decl.type == #nil)
-            {if!(e.right.value(1, :true, e.right-val))
-               :return;
+            {if!(e.right.value(1, true, e.right-val))
+               return;
             }
             lvar.decl.type = e.right-val.type;
             +at = lvar.decl.type.ptr();
             lvar.decl.type-info.init();
             lvar.decl.type-info.copy-from(e.right-val.info);
-            e.left.value(1, :true, e.left-val);
-            ok = :true;
-            :return;
+            e.left.value(1, true, e.left-val);
+            ok = true;
+            return;
          }
       }
-		{if!(e.left.value(1, :true, e.left-val))
-			:return;
+		{if!(e.left.value(1, true, e.left-val))
+			return;
       }
 		e.right.try-deduce(e.left.type());
-		{if!(e.right.value(1, :true, e.right-val))
-			:return;
+		{if!(e.right.value(1, true, e.right-val))
+			return;
       }
-      ok = :true;
+      ok = true;
    }
 }
  

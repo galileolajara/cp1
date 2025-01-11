@@ -8,7 +8,7 @@
       e.left = left;
       e.right = right-v[i -= 1];
    }
-   :return e-idx;
+   return e-idx;
 }
 {at(:expr-i)
    {wr-index(expr:expr, w:wtr, header:bool) @case.wr() @inline
@@ -44,21 +44,21 @@
 		v.info.ref-v[v.info.array-c] = ref - 1;
 		v.info.count();
 		{if(v.ref == 1)
-			v.paren = :false;
+			v.paren = false;
 		}{else
 			v.paren = paren;
 		}
-      ok = :true;
+      ok = true;
    }
    {process-index(expr:expr, ok:bool&) @case.process() @inline
       {+e:expr-index = expr}
-   	{if!(e.left.value(1, :true, e.left-val))
-   		:return;
+   	{if!(e.left.value(1, true, e.left-val))
+   		return;
       }
-   	{if!(e.right.value(1, :true, e.right-val))
-   		:return;
+   	{if!(e.right.value(1, true, e.right-val))
+   		return;
       }
-      ok = :true;
+      ok = true;
    }
 }
  

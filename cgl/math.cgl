@@ -14,7 +14,7 @@
    e.left = left;
    e.right = right;
    e.type = type;
-   :return e-idx;
+   return e-idx;
 }
 {expr-math-add(expr:expr-i, right:expr-i):expr-i
    {+e:expr-math = expr.ptr()}
@@ -26,7 +26,7 @@
    }
    +item = e.item-v[i];
    item.expr = right;
-   :return expr;
+   return expr;
 }
 {at(:expr-i)
    {try-deduce-math(expr:expr, at:at) @case.try-deduce() @inline
@@ -142,10 +142,10 @@
    }
    {value-math(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline
       {+expr:expr-math = e.ptr()}
-		// {if(expr.left.value(1, paren, v) == :false)
-      //    :return;
+		// {if(expr.left.value(1, paren, v) == false)
+      //    return;
       // }
-		{if!(expr.left.value(1, paren, v)) :return}
+		{if!(expr.left.value(1, paren, v)) return}
 		// +left = e.left.type();
 		// +right = e.right.type();
       // +left-size = left.real.basicType.to()Size;
@@ -156,7 +156,7 @@
       // }
 		v.paren = paren;
 		v.ref = ref;
-      ok = :true;
+      ok = true;
 	}
    {type-math(expr:expr, at:at&) @case.type() @inline
       {+e:expr-math = expr}
@@ -164,18 +164,18 @@
    }
    {process-math(expr:expr, ok:bool&) @case.process() @inline
       {+e:expr-math = expr}
-		{if!(e.left.value(1, :true, e.left-val))
-			:return;
+		{if!(e.left.value(1, true, e.left-val))
+			return;
       }
 		e.right.try-deduce(e.left-val.type);
-		{if!(e.right.value(1, :true, e.right-val))
-			:return;
+		{if!(e.right.value(1, true, e.right-val))
+			return;
       }
       {do{+i = 0}{(e.item-c) i++}
          +item = e.item-v[i];
-         {if!(item.expr.value(1, :true, item.val)) :return}
+         {if!(item.expr.value(1, true, item.val)) return}
       }
-      ok = :true;
+      ok = true;
    }
 }
  

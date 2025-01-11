@@ -4,7 +4,7 @@
    quick-alloc-one(+(e:expr-bool));
    +e-idx = expr-push(e.base, #bool);
    e.value = value;
-   :return e-idx;
+   return e-idx;
 }
 {at(:expr-i)
    {wr-bool(expr:expr, w:wtr, header:bool) @case.wr() @inline
@@ -25,8 +25,8 @@
       }
    }
    {process-bool(expr:expr, ok:bool&) @case.process() @inline
-      .include-stdbool = :true;
-      ok = :true;
+      .include-stdbool = true;
+      ok = true;
    }
    {type-bool(expr:expr, at:at&) @case.type() @inline
       at = basic-type(#bool);
@@ -38,8 +38,8 @@
       v.info.ref-v[0] = ''\0;
       v.info.star-c = 0;
       v.ref = 1;
-      v.paren = :false;
-      ok = :true;
+      v.paren = false;
+      ok = true;
    }
 }
  

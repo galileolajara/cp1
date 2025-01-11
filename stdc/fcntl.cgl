@@ -6,18 +6,18 @@
             +fd = 'c.open(path, flags);
             {if(fd != -1)
                file = fd;
-               :return :true;
+               return true;
             }{else
-               :return :false;
+               return false;
             }
          }
          {open(file:this&, path:char[], flags:open-flags, mode:i32):bool @inline
             +fd = 'c.open(path, flags, mode);
             {if(fd != -1)
                file = fd;
-               :return :true;
+               return true;
             }{else
-               :return :false;
+               return false;
             }
          }
       }

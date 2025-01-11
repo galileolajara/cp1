@@ -9,7 +9,7 @@
       f = (r.n() - #1):func;
    }
    {ptr(f:this):decl-func @inline
-      :return .func-v[f];
+      return .func-v[f];
    }
 }
 {:func-flags[
@@ -136,7 +136,7 @@
    .decl-func-this-group = -1;
    .decl-func-real-name = #nil;
    .decl-func-case = #nil;
-   .decl-func-decl-str = :null;
+   .decl-func-decl-str = null;
    .decl-func-decl-len = 0;
    quick-alloc-one(.decl-func-space);
    .decl-func-ctx-space = .decl-func-space;
@@ -334,7 +334,7 @@
    f.flags |= #has-body;
    +c = 0;
    +s = f.stmt-space.stmt-first;
-   {while(s != :null)
+   {while(s != null)
       c++;
       s = s.stmt-next;
    }
@@ -368,13 +368,13 @@
    .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
 }
 {carg-push-str(expr:expr-i)
-   {if(:true)
+   {if(true)
       // push the string
       +call-idx = .expr-call-c - 1;
       .expr-call-carg-v[call-idx][.expr-call-carg-c[call-idx]++] = expr;
       .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
    }
-   {if(:true)
+   {if(true)
       // calculate the string length
       {+e:expr-str = expr.ptr()}
       +len = 0;
@@ -382,7 +382,7 @@
       {do()
          len += s.len;
          s = s.next;
-         {if(s == :null) {break}}
+         {if(s == null) {break}}
       }
       // push the string length
       +call-idx = .expr-call-c - 1;
@@ -407,7 +407,7 @@
    {do{+i = 0}{(e.group-c) i++}
       e.group-v[i] = .expr-call-cgrp-v[call-idx][i];
    }
-   :return e-idx;
+   return e-idx;
 }
 {expr-pop-method(this:expr-i, func-name:id):expr-i
    +call-idx = .expr-call-c -= 1;
@@ -425,7 +425,7 @@
    {do{+i = 0}{(e.group-c) i++}
       e.group-v[i] = .expr-call-cgrp-v[call-idx][i];
    }
-   :return e-idx;
+   return e-idx;
 }
  
 

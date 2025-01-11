@@ -74,18 +74,18 @@ end-if
 {at(:lvar)
 if-compiler
    {ptr(l:this):lvar-data @inline
-      :return .ctx-func.lvar-v[l];
+      return .ctx-func.lvar-v[l];
    }
    {name(l:this):id @inline
-      :return l.ptr().decl.name;
+      return l.ptr().decl.name;
    }
 end-if
 if-parser
    {ptr(l:this):lvar-data @inline
-      :return .ctx-func.lvar-v[l];
+      return .ctx-func.lvar-v[l];
    }
    {name(l:this):id @inline
-      :return l.ptr().decl.name;
+      return l.ptr().decl.name;
    }
 end-if
 }
@@ -380,7 +380,7 @@ end-if
 {quick-alloc(size:i32):ref @real-name(qalloc)
    // +mem = 'c.malloc(size);
    // 'c.memset(mem, 0, size);
-   // :return mem;
+   // return mem;
    // snap to :usz
    {if(:ref[:usz] == 8)
       size = (size + 7) & (-1 ^ 7);
@@ -392,7 +392,7 @@ end-if
       r.ref = .quick-alloc-v;
       r.pos += .quick-alloc-c;
       .quick-alloc-c += size;
-      :return r.ref;
+      return r.ref;
    }
    // expand
    grow(.quick-alloc-cap, .quick-alloc-c + size);
@@ -400,7 +400,7 @@ end-if
    'c.memset(.quick-alloc-v, 0, .quick-alloc-cap);
    // 'c.out.printf("expanding to %u\n", .quick-alloc-cap);
    .quick-alloc-c = size;
-   :return .quick-alloc-v;
+   return .quick-alloc-v;
 }
 {quick-alloc-undo(size:i32) @real-name(qalloc_undo)
    {if(:ref[:usz] == 8)
@@ -444,7 +444,7 @@ end-if
    @no-body
    @decl('<# r = realloc(r, sizeof(r[0]) * (c)); memset(r + (oldc), 0, sizeof(r[0]) * ((c) - (oldc)))>)
    @inline
-   'c.realloc(:null, 0);
+   'c.realloc(null, 0);
 }
 {include("num.c")
    {grow(cap:i32, c:i32)
@@ -482,10 +482,10 @@ end-if
       at.name.id = name;
       at.func-c = 0;
       at.func-cap = 0;
-      at.func-v = :null;
+      at.func-v = null;
       at.gvar-c = 0;
       at.gvar-cap = 0;
-      at.gvar-v = :null;
+      at.gvar-v = null;
       at.decl.struct = #nil;
       at.def = #undefined;
    }
@@ -509,22 +509,22 @@ end-if
          {if(ti.built-in)
             {if(ti.ref-v[0] != 0)
                'c.out.printf("%s:%d:%d: Can't use plus symbol (+) because type '/%s' has reference\n", .ctx-func.file.path(), row, col, at.name.id.str());
-               :return :false;
+               return false;
             }
             ti.ref-v[0] = -1;
          // }{else
          //    {if!(ti.built-in)
          //       'c.err.printf("%s:%d:%d: Missing plus symbol (+) because type '/%s' is a value\n", .ctx-func.file.path(), row, col, at.name.id.str());
-         //       :return :false;
+         //       return false;
          //    }
          }
       }{else
 			{if(ti.built-in)
 				'c.out.printf("%s:%d:%d: Can't use plus symbol (+) because type is not a struct\n", .ctx-func.file.path(), row, col);
-				:return :false;
+				return false;
 			}
       }
-      :return :true;
+      return true;
    }
    {output(at-i:this, file:file, row:i32, col:i32)
       +at = at-i.ptr();
@@ -547,10 +547,10 @@ end-if
          {case(#basic)
             {switch(at.name.basic)
                {case(#bool)
-                  .include-stdbool = :true;
+                  .include-stdbool = true;
                }
                {case(#usz)
-                  .include-stddef = :true;
+                  .include-stddef = true;
                }
             }
          }
@@ -563,34 +563,34 @@ end-if
       {if(s > 0)
          .out.write("********************************", s);
       }
-		:return :true;
+		return true;
 	}
 	{count-stars(td:this, ti:type-info):i32
 		{if(td == #root)
-			:return td.count-stars0(ti) + 1;
+			return td.count-stars0(ti) + 1;
 		}{else
-			:return td.count-stars0(ti);
+			return td.count-stars0(ti);
 		}
 	}
    {pointer(td:this):i32 @inline
       {if(td.ptr().def == #struct)
-         :return 1;
+         return 1;
       }{else
-         :return 0;
+         return 0;
       }
    }
 	{count-stars0(td:this, ti:type-info):i32
-      :return ti.star-c + td.pointer();
+      return ti.star-c + td.pointer();
 	}
    {write-type(td:this):bool
       td.write();
 // 	{if(td.typeType == #value)
-// 		{if(td.real.baseDecl == :null)
+// 		{if(td.real.baseDecl == null)
 // 			+loc = td.location;
 // 			'c.err.printf("%s:%d:%d: base type was null\n", loc.path, loc.row, loc.col);
-// 			:return :false;
+// 			return false;
 // 		}
-// 		:return td.real.baseDecl.write()Type(t);
+// 		return td.real.baseDecl.write()Type(t);
 // 	}
 // 	{if(td.real.basicType == #none)
 // 		{if(td.real.typeDef)
@@ -607,10 +607,10 @@ end-if
 // 	}{else
 // 		td.write(t);
 // 	}
-   	:return :true;
+   	return true;
    }
    {ptr(i:this):at-data @inline
-      :return .at-v[i];
+      return .at-v[i];
    }
    {rd(i:this&, r:rdr) @inline
       +idx = (r.n() - 1):at;
@@ -663,7 +663,7 @@ end-if
                {if(t-idx != #nil)
                   {if((t.flags & #real-name) != #0)
                      .out.printf("%s", t.real-name.str());
-                     :return;
+                     return;
                   }
                }
                {if((t.flags & #union) != #0)
@@ -679,7 +679,7 @@ end-if
                   +t = t-idx.ptr();
                   {if((t.flags & #real-name) != #0)
                      .out.printf("%s", t.real-name.str());
-                     :return;
+                     return;
                   }
                }
                {if(at.parent != #root) at.parent.write-space()}
@@ -769,7 +769,7 @@ end-if
 
 {:include[#nil = -1, #0]:i32
    {str(i:this):char[] @inline
-      :return .include-str-v[i];
+      return .include-str-v[i];
    }
    {wr(i:this, w:wtr) @inline
       w.n(i + 1);
@@ -786,7 +786,7 @@ end-if
       +num = this:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((.include-is-outputted[n3] & n17) != 0) :return}
+      {if((.include-is-outputted[n3] & n17) != 0) return}
       .include-is-outputted[n3] |= n17;
       .include-outputted-v[.include-outputted-c++] = this;
    }
@@ -805,7 +805,7 @@ end-if
 {:id[#nil = -1, #0]:i32
    {c-name(id:this):char[]
       {+c-name:char[] = .id-c-name-v[id]}
-      {if(c-name != :null) :return c-name}
+      {if(c-name != null) return c-name}
       +len = .id-len-v[id];
       +str = .id-str-v[id];
       c-name = quick-alloc(len + 1);
@@ -818,13 +818,13 @@ end-if
          }
       }
       c-name[len] = ''\0;
-      :return c-name;
+      return c-name;
    }
    {str(id:this):char[] @inline
-      :return .id-str-v[id];
+      return .id-str-v[id];
    }
    {len(id:this):u8 @inline
-      :return .id-len-v[id];
+      return .id-len-v[id];
    }
    {wr-header(id:this, w:wtr) @inline
       {if(id == #nil)

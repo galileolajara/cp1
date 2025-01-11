@@ -3,7 +3,7 @@
 {expr-null():expr-i
    quick-alloc-one(+(e:expr-null));
    +e-idx = expr-push(e.base, #null);
-   :return e-idx;
+   return e-idx;
 }
 {at(:expr-i)
    {wr-null(expr:expr, w:wtr, header:bool) @case.wr() @inline
@@ -18,8 +18,8 @@
       .out.printf("NULL");
    }
    {process-null(expr:expr, ok:bool&) @case.process() @inline
-      .include-stddef = :true;
-      ok = :true;
+      .include-stddef = true;
+      ok = true;
    }
    {type-null(expr:expr, at:at&) @case.type() @inline
       at = basic-type(#ref);
@@ -31,8 +31,8 @@
       v.info.ref-v[0] = ''\0;
       v.info.star-c = 0;
       v.ref = 1;
-      v.paren = :false;
-      ok = :true;
+      v.paren = false;
+      ok = true;
    }
 }
  

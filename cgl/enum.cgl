@@ -8,13 +8,13 @@
       f = (r.n() - #1):func;
    }
    {ptr(f:this):enum-data @inline
-      :return .enum-v[f];
+      return .enum-v[f];
    }
    {output(e-i:this)
       +num = e-i:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((.enum-is-outputted[n3] & n17) != 0) :return}
+      {if((.enum-is-outputted[n3] & n17) != 0) return}
       .enum-is-outputted[n3] |= n17;
       +e = e-i.ptr();
 

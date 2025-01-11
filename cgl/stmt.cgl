@@ -33,7 +33,7 @@
       }
    }
    {process(s:this):bool
-      +ok = :false;
+      +ok = false;
       .ctx-begin-row = s.begin-row;
       .ctx-begin-col = s.begin-col;
       .ctx-end-row = s.end-row;
@@ -48,7 +48,7 @@
          'c.out.printf("%s:%u:%u - %u:%u: Processing of statement #%s failed\n",
             .ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.cgl-name());
       }
-      :return ok;
+      return ok;
    }
 }
 {:stmt-expr(
@@ -73,8 +73,8 @@
    func-stmt-add(s);
 }
 {func-stmt-add(s:stmt)
-   s.stmt-next = :null;
-   {if(.decl-func-ctx-space.stmt-last == :null)
+   s.stmt-next = null;
+   {if(.decl-func-ctx-space.stmt-last == null)
       .decl-func-ctx-space.stmt-first = s;
       .decl-func-ctx-space.stmt-last = s;
    }{else

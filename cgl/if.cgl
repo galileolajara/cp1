@@ -51,10 +51,10 @@
    }
    {process-if(stmt:stmt, ok:bool&) @case.process() @inline
       {+s:stmt-if = stmt}
-      {if!(s.expr.value(1, :false, s.val))
-         :return;
+      {if!(s.expr.value(1, false, s.val))
+         return;
       }
-      ok = :true;
+      ok = true;
    }
    {write-if-elif(stmt:stmt) @case.write() @inline
       {+s:stmt-if-elif = stmt}
@@ -70,10 +70,10 @@
    }
    {process-if-elif(stmt:stmt, ok:bool&) @case.process() @inline
       {+s:stmt-if-elif = stmt}
-      {if!(s.expr.value(1, :false, s.val))
-         :return;
+      {if!(s.expr.value(1, false, s.val))
+         return;
       }
-      ok = :true;
+      ok = true;
    }
    {write-if-else(stmt:stmt) @case.write() @inline
       {+s:stmt-if-else = stmt}
@@ -81,7 +81,7 @@
    }
    {process-if-else(stmt:stmt, ok:bool&) @case.process() @inline
       {+s:stmt-if-else = stmt}
-      ok = :true;
+      ok = true;
    }
    {write-if-end(stmt:stmt) @case.write() @inline
       {+s:stmt-if-end = stmt}
@@ -89,7 +89,7 @@
    }
    {process-if-end(stmt:stmt, ok:bool&) @case.process() @inline
       {+s:stmt-if-end = stmt}
-      ok = :true;
+      ok = true;
    }
 }
 {stmt-if-begin()
