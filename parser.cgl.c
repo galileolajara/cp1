@@ -1311,6 +1311,7 @@ _Nstdc_Nfd_Pstat_2(_Lfd_4, &_Lout_stat_5);
 _Nstdc_Nfd_Pstat_2(_Lin_fd_2, &_Lin_stat_6);
 if(((_Lout_stat_5.st_mtimespec.tv_sec > _Lin_stat_6.st_mtimespec.tv_sec) || ((_Lout_stat_5.st_mtimespec.tv_sec == _Lin_stat_6.st_mtimespec.tv_sec) && (_Lout_stat_5.st_mtimespec.tv_nsec > _Lin_stat_6.st_mtimespec.tv_nsec)))) {
 fprintf(stdout, "Skipping parsing of %s because the output file is newer\n", input_path);
+return 0;
 }
 }
 }

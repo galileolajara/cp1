@@ -60,6 +60,8 @@ lvar_decl_name ::= ID(name).
 
 cvar_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _Nglc_Pcvar_attr_real_name_1(e.basic.id); }
+cvar_attr ::= SPACE_AT_REAL_NAME.
+   { _Nglc_Pcvar_attr_real_name_1(-1); }
 cvar_attr ::= SPACE_AT_NO_DECL.
    { _Nglc_Pcvar_attr_no_decl_0(); }
 cvar_attrs ::= cvar_attr.
@@ -289,6 +291,8 @@ fvar_decl ::= fvar_decl_name.
    { _Nglc_Pdecl_var_end_0(); }
 fvar_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _Nglc_Pdecl_var_attr_real_name_1(e.basic.id); }
+fvar_attr ::= SPACE_AT_REAL_NAME.
+   { _Nglc_Pdecl_var_attr_real_name_1(-1); }
 fvar_attrs_list ::= fvar_attr.
 fvar_attrs_list ::= fvar_attrs_list fvar_attr.
 fvar_attrs_optional ::= .
@@ -767,6 +771,8 @@ decl_lvar_begin ::= LCBRACE_PLUS_OR_SPACE.
 
 decl_var_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _Nglc_Pdecl_var_attr_real_name_1(e.basic.id); }
+decl_var_attr ::= SPACE_AT_REAL_NAME.
+   { _Nglc_Pdecl_var_attr_real_name_1(-1); }
 decl_var_attr ::= SPACE_AT_EXTERN.
    { _Nglc_Pdecl_var_attr_extern_0(); }
 decl_var_attr ::= SPACE_AT_NO_DECL.
@@ -792,6 +798,8 @@ decl_struct_attr ::= SPACE_AT_NO_DECL.
    { _Nglc_Pstruct_attr_no_decl_0(); }
 decl_struct_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _Nglc_Pstruct_attr_real_name_1(e.basic.id); }
+decl_struct_attr ::= SPACE_AT_REAL_NAME.
+   { _Nglc_Pstruct_attr_real_name_1(-1); }
 decl_struct_attr ::= SPACE_AT_UNION.
    { _Nglc_Pstruct_attr_union_0(); }
 decl_struct_attrs_list ::= decl_struct_attr.

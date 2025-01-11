@@ -2358,10 +2358,18 @@ _Lt_idx_2 = (*_Lat_1)._Fdecl._Fstruct;
 _Lt_3 = _Nglc_Nstruct_Pptr_1(_Lt_idx_2);
 if(_Lt_idx_2 != _Nglc_Nstruct_Cnil) {
 if(((*_Lt_3)._Fflags & _Nglc_Nstruct_flags_Creal_name) != _Nglc_Nstruct_flags_C0) {
+if((*_Lt_3)._Freal_name == _Nglc_Nid_Cnil) {
+if(((*_Lt_3)._Fflags & _Nglc_Nstruct_flags_Cunion) != _Nglc_Nstruct_flags_C0) {
+fprintf(_Gout, "union %s", _Nglc_Nid_Pc_name_1((*_Lat_1)._Fname._Fid));
+} else {
+fprintf(_Gout, "struct %s", _Nglc_Nid_Pc_name_1((*_Lat_1)._Fname._Fid));
+}
+} else {
 if(((*_Lt_3)._Fflags & _Nglc_Nstruct_flags_Cunion) != _Nglc_Nstruct_flags_C0) {
 fprintf(_Gout, "union %s", _Nglc_Nid_Pstr_1((*_Lt_3)._Freal_name));
 } else {
 fprintf(_Gout, "struct %s", _Nglc_Nid_Pstr_1((*_Lt_3)._Freal_name));
+}
 }
 return;
 }

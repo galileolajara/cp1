@@ -62,7 +62,11 @@
    }
    {write(vd:this, var-type:decl-var-type)
       {if((vd.flags & #real-name) != #0)
-         .out.printf("%s", vd.real-name.str());
+         {if(vd.real-name == #nil)
+            .out.printf("%s", vd.name.c-name());
+         }{else
+            .out.printf("%s", vd.real-name.str());
+         }
          return;
       }
       {switch(var-type)

@@ -662,10 +662,18 @@ end-if
                +t = t-idx.ptr();
                {if(t-idx != #nil)
                   {if((t.flags & #real-name) != #0)
-                     {if((t.flags & #union) != #0)
-                        .out.printf("union %s", t.real-name.str());
+                     {if(t.real-name == #nil)
+                        {if((t.flags & #union) != #0)
+                           .out.printf("union %s", at.name.id.c-name());
+                        }{else
+                           .out.printf("struct %s", at.name.id.c-name());
+                        }
                      }{else
-                        .out.printf("struct %s", t.real-name.str());
+                        {if((t.flags & #union) != #0)
+                           .out.printf("union %s", t.real-name.str());
+                        }{else
+                           .out.printf("struct %s", t.real-name.str());
+                        }
                      }
                      return;
                   }
