@@ -643,7 +643,7 @@ struct _Nglc_Nstmt_do;
 struct _Nglc_Nstmt_do {
 struct _Nglc_Nstmt _Fbase;
 _Nglc_Nexpr_i _Fexpr;
-struct _Nglc_Nstmt_space* _Fcontinue;
+struct _Nglc_Nstmt_space* _Fcontinu;
 struct _Nglc_Nstmt_do_end* _Fend;
 };
 struct _Nglc_Nstmt_while_end;
@@ -655,7 +655,7 @@ struct _Nglc_Nstmt_while;
 struct _Nglc_Nstmt_while {
 struct _Nglc_Nstmt _Fbase;
 _Nglc_Nexpr_i _Fexpr;
-struct _Nglc_Nstmt_space* _Fcontinue;
+struct _Nglc_Nstmt_space* _Fcontinu;
 struct _Nglc_Nstmt_while_end* _Fend;
 };
 union _Nglc_Nnest;
@@ -4197,7 +4197,7 @@ _Nglc_Nstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gc
 if(_Nglc_Nrdr_Pb_1(_Lr_1)) {
 struct _Nglc_Nstmt_space* _Lspace2_3;
 _Nglc_Pquick_alloc_one_1(_Lspace2_3);
-(*_Ls_2)._Fcontinue = _Lspace2_3;
+(*_Ls_2)._Fcontinu = _Lspace2_3;
 _Nglc_Nstmt_space_Prd_3(_Lspace2_3, _Lr_1, _Lspace_0);
 }
 _Gnest_stack_id_v[_Gnest_stack_c] = _Gnest_id++;
@@ -4221,7 +4221,7 @@ _Nglc_Nstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gc
 if(_Nglc_Nrdr_Pb_1(_Lr_1)) {
 struct _Nglc_Nstmt_space* _Lspace2_3;
 _Nglc_Pquick_alloc_one_1(_Lspace2_3);
-(*_Ls_2)._Fcontinue = _Lspace2_3;
+(*_Ls_2)._Fcontinu = _Lspace2_3;
 _Nglc_Nstmt_space_Prd_3(_Lspace2_3, _Lr_1, _Lspace_0);
 }
 _Gnest_stack_id_v[_Gnest_stack_c] = _Gnest_id++;
@@ -4509,11 +4509,11 @@ return;
 }
 void _Nglc_Nstmt_Pprocess_do_end_2(struct _Nglc_Nstmt* _Lstmt_0, bool* _Lok_1) {
 struct _Nglc_Nstmt_do_end* _Ls_2;
-struct _Nglc_Nstmt_space* _Lcontinue_3;
+struct _Nglc_Nstmt_space* _Lcontinu_3;
 _Ls_2 = _Lstmt_0;
-_Lcontinue_3 = (*(*_Ls_2)._Fdo)._Fcontinue;
-if(_Lcontinue_3 != NULL) {
-_Nglc_Nstmt_space_Pprocess_1(_Lcontinue_3);
+_Lcontinu_3 = (*(*_Ls_2)._Fdo)._Fcontinu;
+if(_Lcontinu_3 != NULL) {
+_Nglc_Nstmt_space_Pprocess_1(_Lcontinu_3);
 }
 (*_Lok_1) = true;
 }
@@ -4529,11 +4529,11 @@ return;
 }
 void _Nglc_Nstmt_Pprocess_while_end_2(struct _Nglc_Nstmt* _Lstmt_0, bool* _Lok_1) {
 struct _Nglc_Nstmt_while_end* _Ls_2;
-struct _Nglc_Nstmt_space* _Lcontinue_3;
+struct _Nglc_Nstmt_space* _Lcontinu_3;
 _Ls_2 = _Lstmt_0;
-_Lcontinue_3 = (*(*_Ls_2)._Fwhile)._Fcontinue;
-if(_Lcontinue_3 != NULL) {
-_Nglc_Nstmt_space_Pprocess_1(_Lcontinue_3);
+_Lcontinu_3 = (*(*_Ls_2)._Fwhile)._Fcontinu;
+if(_Lcontinu_3 != NULL) {
+_Nglc_Nstmt_space_Pprocess_1(_Lcontinu_3);
 }
 (*_Lok_1) = true;
 }
@@ -5376,13 +5376,13 @@ fprintf(_Gout, "; i > 0; ) {\ni --;\n");
 void _Nglc_Nstmt_Pwrite_do_end_1(struct _Nglc_Nstmt* _Lstmt_0) {
 int32_t _Lid_1;
 struct _Nglc_Nstmt_do_end* _Ls_2;
-struct _Nglc_Nstmt_space* _Lcontinue_3;
+struct _Nglc_Nstmt_space* _Lcontinu_3;
 _Lid_1 = _Gnest_stack_id_v[(_Gnest_stack_c -= 1)];
 _Ls_2 = _Lstmt_0;
 fprintf(_Gout, "continue_%u:;\n", _Lid_1);
-_Lcontinue_3 = (*(*_Ls_2)._Fdo)._Fcontinue;
-if(_Lcontinue_3 != NULL) {
-_Nglc_Nstmt_space_Pwrite_1(_Lcontinue_3);
+_Lcontinu_3 = (*(*_Ls_2)._Fdo)._Fcontinu;
+if(_Lcontinu_3 != NULL) {
+_Nglc_Nstmt_space_Pwrite_1(_Lcontinu_3);
 }
 fprintf(_Gout, "}\nbreak_%u:;\n", _Lid_1);
 }
@@ -5399,13 +5399,13 @@ fprintf(_Gout, ") {\n");
 void _Nglc_Nstmt_Pwrite_while_end_1(struct _Nglc_Nstmt* _Lstmt_0) {
 int32_t _Lid_1;
 struct _Nglc_Nstmt_while_end* _Ls_2;
-struct _Nglc_Nstmt_space* _Lcontinue_3;
+struct _Nglc_Nstmt_space* _Lcontinu_3;
 _Lid_1 = _Gnest_stack_id_v[(_Gnest_stack_c -= 1)];
 _Ls_2 = _Lstmt_0;
 fprintf(_Gout, "continue_%u:;\n", _Lid_1);
-_Lcontinue_3 = (*(*_Ls_2)._Fwhile)._Fcontinue;
-if(_Lcontinue_3 != NULL) {
-_Nglc_Nstmt_space_Pwrite_1(_Lcontinue_3);
+_Lcontinu_3 = (*(*_Ls_2)._Fwhile)._Fcontinu;
+if(_Lcontinu_3 != NULL) {
+_Nglc_Nstmt_space_Pwrite_1(_Lcontinu_3);
 }
 fprintf(_Gout, "}\nbreak_%u:;\n", _Lid_1);
 }

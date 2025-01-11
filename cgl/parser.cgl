@@ -735,7 +735,7 @@
    w.p1[0] = 0;
    {+path:char[256]}
    'c.sprintf(path, "glc-edit/%s", .input-path);
-   {if!('c:file.create(++out-fd, path, #write | #truncate, 0644))
+   {if!('c:file.create(++out-fd, path, #write | #truncate, 0o644))
       'c.out.printf("Cannot open file for writing: %s\n", path);
       'c.exit(#failure);
    }
@@ -754,7 +754,7 @@
    .func-main = #nil;
    .decl-include = #nil;
    {if(arg-c != 2)
-      'c.out.printf("usage: %s file.glc\n", arg-v[0]);
+      'c.out.printf("Usage: %s [file.cgl]\n", arg-v[0]);
       return 0;
    }
    .input-path = arg-v[1];
@@ -1161,16 +1161,9 @@
    write-func(w, false);
    
    {+out-path:char[512]}
-   +in-path-len = 'c.strlen(.input-path);
-   'c.memcpy(out-path, .input-path, in-path-len);
-   out-path[in-path-len] = ''-;
-   out-path[in-path-len + 1] = ''b;
-   out-path[in-path-len + 2] = ''.;
-   out-path[in-path-len + 3] = ''t;
-   out-path[in-path-len + 4] = ''m;
-   out-path[in-path-len + 5] = ''p;
-   out-path[in-path-len + 6] = 0;
-   {if!('c:fd.open(++out-fd, out-path, #create | #truncate | #write, 0644))
+   'c.sprintf(out-path, "cgl-tmp/%s-b.tmp", .input-path);
+   +out-path-len = 'c.strlen(out-path);
+   {if!('c:fd.open(++out-fd, out-path, #create | #truncate | #write, 0o644))
       'c.out.printf("Cannot open file for writing: %s\n", out-path);
       'c.exit(#failure);
    }
@@ -1209,21 +1202,21 @@
    write-struct(w, true);
    write-func(w, true);
 
-   out-path[in-path-len + 1] = ''h;
-   {if!('c:fd.open(out-fd, out-path, #create | #truncate | #write, 0644))
+   out-path[out-path-len - 5] = ''h;
+   {if!('c:fd.open(out-fd, out-path, #create | #truncate | #write, 0o644))
       'c.out.printf("Cannot open file for writing: %s\n", out-path);
       'c.exit(#failure);
    }
    out-fd.write(w-begin.ref, w.pos - w-begin.pos);
    out-fd.close();
    {+final-path:char[512]}
-   out-path[in-path-len + 1] = ''b;
-   'c.memcpy(final-path, out-path, in-path-len + 2);
-   final-path[in-path-len + 2] = 0;
+   out-path[out-path-len - 5] = ''b;
+   'c.memcpy(final-path, out-path, out-path-len - 4);
+   final-path[out-path-len - 4] = 0;
    'c.rename(out-path, final-path);
-   out-path[in-path-len + 1] = ''h;
-   'c.memcpy(final-path, out-path, in-path-len + 2);
-   final-path[in-path-len + 2] = 0;
+   out-path[out-path-len - 5] = ''h;
+   'c.memcpy(final-path, out-path, out-path-len - 4);
+   final-path[out-path-len - 4] = 0;
    'c.rename(out-path, final-path);
    return 0;
 }

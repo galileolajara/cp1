@@ -670,7 +670,7 @@ struct _Nglc_Nstmt_do;
 struct _Nglc_Nstmt_do {
 struct _Nglc_Nstmt _Fbase;
 _Nglc_Nexpr_i _Fexpr;
-struct _Nglc_Nstmt_space* _Fcontinue;
+struct _Nglc_Nstmt_space* _Fcontinu;
 struct _Nglc_Nstmt_do_end* _Fend;
 };
 struct _Nglc_Nstmt_while_end;
@@ -682,7 +682,7 @@ struct _Nglc_Nstmt_while;
 struct _Nglc_Nstmt_while {
 struct _Nglc_Nstmt _Fbase;
 _Nglc_Nexpr_i _Fexpr;
-struct _Nglc_Nstmt_space* _Fcontinue;
+struct _Nglc_Nstmt_space* _Fcontinu;
 struct _Nglc_Nstmt_while_end* _Fend;
 };
 union _Nglc_Nnest;
@@ -971,10 +971,10 @@ void _Nglc_Pstmt_if_begin_0();
 void _Nglc_Pstmt_if_set_6(bool _Lnot_0, _Nglc_Nexpr_i _Lexpr_1, int32_t _Lbegin_row_2, int32_t _Lbegin_col_3, int32_t _Lend_row_4, int32_t _Lend_col_5);
 void _Nglc_Pstmt_if_end_0();
 void _Nglc_Pstmt_do_begin_0();
-void _Nglc_Pstmt_do_set_6(_Nglc_Nexpr_i _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4, struct _Nglc_Nstmt_space* _Lcontinue_5);
+void _Nglc_Pstmt_do_set_6(_Nglc_Nexpr_i _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4, struct _Nglc_Nstmt_space* _Lcontinu_5);
 void _Nglc_Pstmt_do_end_0();
 void _Nglc_Pstmt_while_begin_0();
-void _Nglc_Pstmt_while_set_6(_Nglc_Nexpr_i _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4, struct _Nglc_Nstmt_space* _Lcontinue_5);
+void _Nglc_Pstmt_while_set_6(_Nglc_Nexpr_i _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4, struct _Nglc_Nstmt_space* _Lcontinu_5);
 void _Nglc_Pstmt_while_end_0();
 void _Nglc_Pstmt_elif_begin_0();
 void _Nglc_Pstmt_elif_set_6(bool _Lnot_0, _Nglc_Nexpr_i _Lexpr_1, int32_t _Lbegin_row_2, int32_t _Lbegin_col_3, int32_t _Lend_row_4, int32_t _Lend_col_5);
@@ -3603,14 +3603,14 @@ void _Nglc_Pstmt_do_begin_0() {
 _Nglc_Pstmt_space_begin_0();
 (*_Gdecl_func_ctx_space)._Fflags |= _Nglc_Nstmt_space_flags_Cskip_lvar_decl;
 }
-void _Nglc_Pstmt_do_set_6(_Nglc_Nexpr_i _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4, struct _Nglc_Nstmt_space* _Lcontinue_5) {
+void _Nglc_Pstmt_do_set_6(_Nglc_Nexpr_i _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4, struct _Nglc_Nstmt_space* _Lcontinu_5) {
 struct _Nglc_Nstmt_do* _Ls_6;
 _Nglc_Pquick_alloc_one_1(_Ls_6);
 _Gnest_stack_id_v[_Gnest_stack_c] = _Gnest_id++;
 _Gnest_stack_ptr_v[_Gnest_stack_c]._Fdo = _Ls_6;
 _Gnest_stack_c++;
 (*_Ls_6)._Fexpr = _Lexpr_0;
-(*_Ls_6)._Fcontinue = _Lcontinue_5;
+(*_Ls_6)._Fcontinu = _Lcontinu_5;
 _Nglc_Pstmt_push_6(&(*_Ls_6)._Fbase, _Lbegin_row_1, _Lbegin_col_2, _Lend_row_3, _Lend_col_4, _Nglc_Nstmt_type_Cdo);
 _Nglc_Pstmt_space_begin_0();
 }
@@ -3626,14 +3626,14 @@ void _Nglc_Pstmt_while_begin_0() {
 _Nglc_Pstmt_space_begin_0();
 (*_Gdecl_func_ctx_space)._Fflags |= _Nglc_Nstmt_space_flags_Cskip_lvar_decl;
 }
-void _Nglc_Pstmt_while_set_6(_Nglc_Nexpr_i _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4, struct _Nglc_Nstmt_space* _Lcontinue_5) {
+void _Nglc_Pstmt_while_set_6(_Nglc_Nexpr_i _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4, struct _Nglc_Nstmt_space* _Lcontinu_5) {
 struct _Nglc_Nstmt_while* _Ls_6;
 _Nglc_Pquick_alloc_one_1(_Ls_6);
 _Gnest_stack_id_v[_Gnest_stack_c] = _Gnest_id++;
 _Gnest_stack_ptr_v[_Gnest_stack_c]._Fwhile = _Ls_6;
 _Gnest_stack_c++;
 (*_Ls_6)._Fexpr = _Lexpr_0;
-(*_Ls_6)._Fcontinue = _Lcontinue_5;
+(*_Ls_6)._Fcontinu = _Lcontinu_5;
 _Nglc_Pstmt_push_6(&(*_Ls_6)._Fbase, _Lbegin_row_1, _Lbegin_col_2, _Lend_row_3, _Lend_col_4, _Nglc_Nstmt_type_Cwhile);
 _Nglc_Pstmt_space_begin_0();
 }
@@ -4501,9 +4501,9 @@ void _Nglc_Nstmt_space_Pwr_do_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwtr* 
 struct _Nglc_Nstmt_do* _Ls_3;
 _Ls_3 = _Lstmt_0;
 _Nglc_Nexpr_i_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
-if((*_Ls_3)._Fcontinue != NULL) {
+if((*_Ls_3)._Fcontinu != NULL) {
 _Nglc_Nwtr_Pb_2(_Lw_1, true);
-_Nglc_Nstmt_space_Pwr_3((*_Ls_3)._Fcontinue, _Lw_1, _Lheader_2);
+_Nglc_Nstmt_space_Pwr_3((*_Ls_3)._Fcontinu, _Lw_1, _Lheader_2);
 } else {
 _Nglc_Nwtr_Pb_2(_Lw_1, false);
 }
@@ -4514,9 +4514,9 @@ void _Nglc_Nstmt_space_Pwr_while_3(struct _Nglc_Nstmt* _Lstmt_0, union _Nglc_Nwt
 struct _Nglc_Nstmt_while* _Ls_3;
 _Ls_3 = _Lstmt_0;
 _Nglc_Nexpr_i_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
-if((*_Ls_3)._Fcontinue != NULL) {
+if((*_Ls_3)._Fcontinu != NULL) {
 _Nglc_Nwtr_Pb_2(_Lw_1, true);
-_Nglc_Nstmt_space_Pwr_3((*_Ls_3)._Fcontinue, _Lw_1, _Lheader_2);
+_Nglc_Nstmt_space_Pwr_3((*_Ls_3)._Fcontinu, _Lw_1, _Lheader_2);
 } else {
 _Nglc_Nwtr_Pb_2(_Lw_1, false);
 }

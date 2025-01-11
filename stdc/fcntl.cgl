@@ -20,6 +20,9 @@
                return false;
             }
          }
+         {fopen(file:this, mode:char[]):file @inline
+            return 'c.fdopen(file, mode);
+         }
       }
       {:open-flags[
          #read @no-decl @real-name(O_RDONLY),

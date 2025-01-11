@@ -12,5 +12,7 @@
          #end @real-name(SEEK_END) @no-decl,
          ]:i32}
       {seek(fd:i32, offset:usz, seek:seek):usz @no-decl @real-name(lseek)}
+      {mkstemp(template:char[]):fd @no-decl @real-name}
+      {unlink(path:char[]):i32 @no-decl @real-name}
    }
 }

@@ -1,7 +1,8 @@
 {include(<stdio.h>)
    {alias 'c = :stdc}
    {at(:stdc)
-      {printf(str:char[]):i32 @var-args @no-decl @real-name(printf)}
+      {printf(fmt:char[]):i32 @var-args @no-decl @real-name(printf)}
+      {sprintf(str:char[], fmt:char[]):i32 @var-args @no-decl @real-name(sprintf)}
 
       {gvar out:file @real-name(stdout) @no-decl}
       {:file() @real-name(FILE) @no-decl
@@ -11,9 +12,15 @@
             return fwrite(buf, 1, size, f);
          }
          {putc(c:i32, f:this):i32 @no-decl @real-name(fputc)}
+         {close(f:this):i32 @inline
+            return fclose(f);
+         }
       }
       {rename(old:char[], new:char[]):i32 @no-decl @real-name}
       {fopen(path:char[], mode:char[]):file @no-decl @real-name}
+      {fdopen(fd:fd, mode:char[]):file @no-decl @real-name}
+      {fclose(f:file):i32 @no-decl @real-name}
       {fwrite(buf:ref, size1:usz, size2:usz, f:file):usz @no-decl @real-name}
+      {tempnam(dir:char[], pfx:char[]):char[] @no-decl @real-name}
    }
 }

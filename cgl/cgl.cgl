@@ -1,0 +1,73 @@
+{alias 'c = :stdc}
+{alias 'sys = :sys}
+{print-commands(bin:char[])
+   'c.out.printf("Usage: %s [command] [options]\n", bin);
+   'c.out.printf("Commands:\n");
+   'c.out.printf("  to-c     Build a C file.\n");
+   'c.out.printf("  run      Compile and run the cgl codes.\n");
+}
+{print-to-c-usage(bin:char[])
+   'c.out.printf("Usage: %s to-c [output.c] [cgl file/s...]\n", bin);
+}
+{main(arg-c:i32, arg-v:char[][]):i32
+   +bin = arg-v[0];
+   {if(arg-c < 2)
+      print-commands(bin);
+      'c.exit(#failure);
+   }
+   {if('c.strcmp(arg-v[1], "to-c") == 0)
+      {if(arg-c < 4)
+         print-to-c-usage(bin);
+         'c.exit(#failure);
+      }
+      +c-path = arg-v[2];
+      +c-path-len = 'c.strlen(c-path);
+      {if!(&&, c-path-len > 2, c-path[c-path-len - 2] == ''., c-path[c-path-len - 1] == ''c)
+         print-to-c-usage(bin);
+         'c.out.printf("Error, [output.c] (which is '%s') must be a filename that ends with '.c', for example: main.c\n", c-path);
+         'c.exit(#failure);
+      }
+      {do{+i = 3}{(arg-c - 3) i++}
+         +cgl-path = arg-v[i];
+         +cgl-path-len = 'c.strlen(cgl-path);
+         {if!(&&, cgl-path-len > 4, cgl-path[cgl-path-len - 4] == ''., cgl-path[cgl-path-len - 3] == ''c, cgl-path[cgl-path-len - 2] == ''g, cgl-path[cgl-path-len - 1] == ''l)
+            print-to-c-usage(bin);
+            'c.out.printf("Error, [cgl file] (which is '%s') must be a filename that ends with '.cgl', for example: main.cgl\n", cgl-path);
+            'c.exit(#failure);
+         }
+      }
+      'sys.mkdir("cgl-tmp", 0o755);
+      {+ninja-path:char[24]}
+      'c.strcpy(ninja-path, "cgl-tmp/ninja-XXXXXXXXX");
+      +ninja-fd = 'c.mkstemp(ninja-path);
+      {if(ninja-fd == #nil)
+         print-to-c-usage(bin);
+         'c.out.printf("Error, cannot open file for reading: %s\n", ninja-path);
+         'c.exit(#failure);
+      }
+      +ninja-f = ninja-fd.fopen("w");
+      ninja-f.printf("rule parser\n");
+      ninja-f.printf(" command = %s-parser $in\n", bin);
+      ninja-f.printf("rule compiler\n");
+      ninja-f.printf(" command = %s-compiler $in $out\n", bin);
+      {do{+i = 3}{(arg-c - 3) i++}
+         +cgl-path = arg-v[i];
+         ninja-f.printf("build cgl-tmp/%s-b: parser %s\n", cgl-path, cgl-path);
+      }
+      ninja-f.printf("build %s: compiler", c-path);
+      {do{+i = 3}{(arg-c - 3) i++}
+         +cgl-path = arg-v[i];
+         ninja-f.printf(" cgl-tmp/%s-b", cgl-path);
+      }
+      ninja-f.printf("\n");
+      ninja-f.close();
+      {+cmd:char[24 + 9]}
+      'c.sprintf(cmd, "ninja -f %s", ninja-path);
+      'c.system(cmd);
+      'c.unlink(ninja-path);
+   }{else
+      print-commands(bin);
+      'c.exit(#failure);
+   }
+   return 0;
+}

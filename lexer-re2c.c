@@ -62,7 +62,7 @@ int glc_lexer_scan(struct glc_lexer* l) {
    spaces "]"                       { return GLC_TOKEN_SPACE_RBRACKET; }
 	"0"                              { return GLC_TOKEN_NUM_DEC; }
 	[1-9] [0-9]*                     { return GLC_TOKEN_NUM_DEC; }
-   "0" [0-7]+                       { return GLC_TOKEN_NUM_OCT; }
+   "0o" [0-7]+                       { return GLC_TOKEN_NUM_OCT; }
 	"0x" [0-9a-fA-F]+                { return GLC_TOKEN_NUM_HEX; }
    "\"" {
       goto lex_string;

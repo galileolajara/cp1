@@ -788,6 +788,9 @@
       +f = f-idx.ptr();
       .ctx-func = f;
       .nest-id = 0;
+      {if(f.flags & #inline)
+         .out.printf("inline ");
+      }
       {if(f.decl.type == #nil)
          .out.printf("void");
       }{else
