@@ -141,7 +141,7 @@ decl ::= decl_func.
 decl ::= decl_struct.
 decl ::= decl_enum.
 decl ::= decl_gvars.
-decl_alias_begin ::= LCBRACE_ALIAS_SPACE.
+decl_alias_begin ::= LCBRACE_USING_SPACE.
    { _Nglc_Pat_begin_relative_pause_0(); }
 decl_alias_end ::= RCBRACE.
    { _Nglc_Pat_begin_relative_resume_0(); }

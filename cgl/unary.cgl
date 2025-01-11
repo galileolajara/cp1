@@ -1,4 +1,4 @@
-{alias 'glc = :glc}
+{using 'glc = :glc}
 {at(:glc)
 {:unary[#neg, #inc, #dec]:u8
    {rd(u:this&, r:rdr) @inline

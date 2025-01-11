@@ -1,5 +1,5 @@
 {include(<fcntl.h>)
-   {alias 'c = :stdc}
+   {using 'c = :stdc}
    {at(:stdc)
       {:fd[#nil = -1]:i32
          {open(file:this&, path:char[], flags:open-flags):bool @inline

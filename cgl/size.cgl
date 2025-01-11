@@ -1,4 +1,4 @@
-{alias 'glc = :glc}
+{using 'glc = :glc}
 {at(:glc)
 {expr-size-of-type(at:at):expr-i
    quick-alloc-one(+(e:expr-size-of-type));

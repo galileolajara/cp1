@@ -1,5 +1,5 @@
-{alias 'glc = :glc}
-{alias 'c = :stdc}
+{using 'glc = :glc}
+{using 'c = :stdc}
 {at(:glc)
 {gvar include-stdbool:bool}
 {gvar include-stddef:bool}

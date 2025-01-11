@@ -54,7 +54,7 @@
 #define GLC_TOKEN_LCBRACE_CVAR_SPACE             20
 #define GLC_TOKEN_RCBRACE                        21
 #define GLC_TOKEN_END                            22
-#define GLC_TOKEN_LCBRACE_ALIAS_SPACE            23
+#define GLC_TOKEN_LCBRACE_USING_SPACE            23
 #define GLC_TOKEN_LPAREN                         24
 #define GLC_TOKEN_LPAREN_SPACE                   25
 #define GLC_TOKEN_SPACE_RPAREN                   26
@@ -1824,7 +1824,7 @@ static const char *const yyTokenName[] = {
   /*   20 */ "LCBRACE_CVAR_SPACE",
   /*   21 */ "RCBRACE",
   /*   22 */ "END",
-  /*   23 */ "LCBRACE_ALIAS_SPACE",
+  /*   23 */ "LCBRACE_USING_SPACE",
   /*   24 */ "LPAREN",
   /*   25 */ "LPAREN_SPACE",
   /*   26 */ "SPACE_RPAREN",
@@ -2156,7 +2156,7 @@ static const char *const yyRuleName[] = {
  /*  33 */ "decl_at_begin ::= decl_at_begin_begin decl_at_namespace decl_at_begin_end",
  /*  34 */ "decl_at ::= decl_at_begin SPACE decls SPACE_RCBRACE",
  /*  35 */ "decl_at ::= decl_at_begin SPACE_RCBRACE",
- /*  36 */ "decl_alias_begin ::= LCBRACE_ALIAS_SPACE",
+ /*  36 */ "decl_alias_begin ::= LCBRACE_USING_SPACE",
  /*  37 */ "decl_alias_end ::= RCBRACE",
  /*  38 */ "decl ::= decl_alias_begin ID_QUOTE SPACE_EQUAL_SPACE at decl_alias_end",
  /*  39 */ "lparen_or_space ::= LPAREN",
@@ -2988,7 +2988,7 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    149,  /* (33) decl_at_begin ::= decl_at_begin_begin decl_at_namespace decl_at_begin_end */
    150,  /* (34) decl_at ::= decl_at_begin SPACE decls SPACE_RCBRACE */
    150,  /* (35) decl_at ::= decl_at_begin SPACE_RCBRACE */
-   158,  /* (36) decl_alias_begin ::= LCBRACE_ALIAS_SPACE */
+   158,  /* (36) decl_alias_begin ::= LCBRACE_USING_SPACE */
    159,  /* (37) decl_alias_end ::= RCBRACE */
    135,  /* (38) decl ::= decl_alias_begin ID_QUOTE SPACE_EQUAL_SPACE at decl_alias_end */
    160,  /* (39) lparen_or_space ::= LPAREN */
@@ -3405,7 +3405,7 @@ static const signed char yyRuleInfoNRhs[] = {
    -3,  /* (33) decl_at_begin ::= decl_at_begin_begin decl_at_namespace decl_at_begin_end */
    -4,  /* (34) decl_at ::= decl_at_begin SPACE decls SPACE_RCBRACE */
    -2,  /* (35) decl_at ::= decl_at_begin SPACE_RCBRACE */
-   -1,  /* (36) decl_alias_begin ::= LCBRACE_ALIAS_SPACE */
+   -1,  /* (36) decl_alias_begin ::= LCBRACE_USING_SPACE */
    -1,  /* (37) decl_alias_end ::= RCBRACE */
    -5,  /* (38) decl ::= decl_alias_begin ID_QUOTE SPACE_EQUAL_SPACE at decl_alias_end */
    -1,  /* (39) lparen_or_space ::= LPAREN */
@@ -3987,7 +3987,7 @@ static YYACTIONTYPE yy_reduce(
 { _Nglc_Pdecl_at_end_0(); }
 #line 3988 "out/cgl_parser.c"
         break;
-      case 36: /* decl_alias_begin ::= LCBRACE_ALIAS_SPACE */
+      case 36: /* decl_alias_begin ::= LCBRACE_USING_SPACE */
 #line 145 "cgl_parser.y"
 { _Nglc_Pat_begin_relative_pause_0(); }
 #line 3993 "out/cgl_parser.c"

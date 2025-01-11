@@ -1,4 +1,4 @@
-{alias 'glc = :glc}
+{using 'glc = :glc}
 {at(:glc)
 {expr-bool(value:bool):expr-i
    quick-alloc-one(+(e:expr-bool));

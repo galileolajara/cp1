@@ -43,8 +43,8 @@
 #define _Nglc_Ntoken_Clcbrace_cvar_space (_Nglc_Ntoken_Crparen + 1)
 #define _Nglc_Ntoken_Crcbrace (_Nglc_Ntoken_Clcbrace_cvar_space + 1)
 #define _Nglc_Ntoken_Cend (_Nglc_Ntoken_Crcbrace + 1)
-#define _Nglc_Ntoken_Clcbrace_alias_space (_Nglc_Ntoken_Cend + 1)
-#define _Nglc_Ntoken_Clparen (_Nglc_Ntoken_Clcbrace_alias_space + 1)
+#define _Nglc_Ntoken_Clcbrace_using_space (_Nglc_Ntoken_Cend + 1)
+#define _Nglc_Ntoken_Clparen (_Nglc_Ntoken_Clcbrace_using_space + 1)
 #define _Nglc_Ntoken_Clparen_space (_Nglc_Ntoken_Clparen + 1)
 #define _Nglc_Ntoken_Cspace_rparen (_Nglc_Ntoken_Clparen_space + 1)
 #define _Nglc_Ntoken_Ccomma_space_rparen (_Nglc_Ntoken_Cspace_rparen + 1)
@@ -840,6 +840,7 @@ void _Nglc_Nmap_Pinit_1(struct _Nglc_Nmap* _Lm_0);
 void _Nglc_Nat_map_Pinit_1(struct _Nglc_Nat_map* _Lm_0);
 void _Nglc_Pquick_alloc_init_0();
 bool _Nstdc_Nfd_Popen_3(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2);
+int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0);
 void _Nglc_Pget_row_col_4(int32_t* _Lout_row_0, int32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3);
 void _Nglc_Pparse_comment_4(union _Nglc_Nrdr* _Lr_0, union _Nglc_Nwtr* _Lw_1, char _Lending_2, void* _Lin_data_3);
 void _Nglc_Pparse_string_4(union _Nglc_Nrdr* _Lr_0, union _Nglc_Nwtr* _Lw_1, char _Lending_2, void* _Lin_data_3);
@@ -1047,7 +1048,7 @@ case _Nglc_Ntoken_Crparen: return "rparen";
 case _Nglc_Ntoken_Clcbrace_cvar_space: return "lcbrace-cvar-space";
 case _Nglc_Ntoken_Crcbrace: return "rcbrace";
 case _Nglc_Ntoken_Cend: return "end";
-case _Nglc_Ntoken_Clcbrace_alias_space: return "lcbrace-alias-space";
+case _Nglc_Ntoken_Clcbrace_using_space: return "lcbrace-using-space";
 case _Nglc_Ntoken_Clparen: return "lparen";
 case _Nglc_Ntoken_Clparen_space: return "lparen-space";
 case _Nglc_Ntoken_Cspace_rparen: return "space-rparen";
@@ -1269,7 +1270,7 @@ union _Nglc_Nwtr _Lw_37;
 int32_t _Lid_bit8_c_39;
 _Nglc_Nat _Lat_bit8_c_41;
 char _Lout_path_44[512];
-size_t _Lin_path_len_45;
+size_t _Lout_path_len_45;
 _Nstdc_Nfd _Lout_fd_46;
 char _Lfinal_path_53[512];
 if(false) {
@@ -1282,11 +1283,10 @@ _Nglc_Pquick_alloc_init_0();
 _Gfunc_main = _Nglc_Nfunc_Cnil;
 _Gdecl_include = _Nglc_Ninclude_Cnil;
 if(_Larg_c_0 != 2) {
-fprintf(stdout, "usage: %s file.glc\n", _Larg_v_1[0]);
+fprintf(stdout, "Usage: %s [file.cgl]\n", _Larg_v_1[0]);
 return 0;
 }
 input_path = _Larg_v_1[1];
-fprintf(stdout, "reading %s\n", input_path);
 if(!(_Nstdc_Nfd_Popen_3(&_Lin_fd_2, input_path, O_RDONLY))) {
 fprintf(stdout, "Cannot open file for reading: %s\n", input_path);
 exit(_Nstdc_Nexit_Cfailure);
@@ -1297,7 +1297,7 @@ lseek(_Lin_fd_2, 0, SEEK_SET);
 read(_Lin_fd_2, _Lin_data_4, _Lin_size_3);
 _Lin_data_4[_Lin_size_3] = 0;
 _Lin_data_4[(_Lin_size_3 + 1)] = 0;
-close(_Lin_fd_2);
+_Nstdc_Nfd_Pclose_1(_Lin_fd_2);
 if(((_Lin_data_4[(_Lin_size_3 - 2)] == '\r') && (_Lin_data_4[(_Lin_size_3 - 1)] == '\n'))) {
 fprintf(stdout, "Error reading file '%s' because it uses Windows-style line endings\n", input_path);
 fprintf(stdout, "Please convert the line endings to Unix-style line endings\n");
@@ -1665,7 +1665,6 @@ continue_4:;
 break_4:;
 glcParse(_Lpsr_24, _Nglc_Ntoken_Cnil, &_Ltok_28);
 _Nglc_Nparser_Pfree_1(_Lpsr_24);
-fprintf(stdout, "parsing finished\n");
 _Lw_begin_36._Fref = qalloc((_Lin_size_3 << 2) + 1024);
 _Lw_37._Fref = _Lw_begin_36._Fref;
 Fputnum(&_Lw_37, _Gid_c);
@@ -1723,21 +1722,14 @@ _Nglc_Pwrite_gvar_2(&_Lw_37, false);
 _Nglc_Pwrite_enum_2(&_Lw_37, false);
 _Nglc_Pwrite_struct_2(&_Lw_37, false);
 _Nglc_Pwrite_func_2(&_Lw_37, false);
-_Lin_path_len_45 = strlen(input_path);
-memcpy(_Lout_path_44, input_path, _Lin_path_len_45);
-_Lout_path_44[_Lin_path_len_45] = '-';
-_Lout_path_44[(_Lin_path_len_45 + 1)] = 'b';
-_Lout_path_44[(_Lin_path_len_45 + 2)] = '.';
-_Lout_path_44[(_Lin_path_len_45 + 3)] = 't';
-_Lout_path_44[(_Lin_path_len_45 + 4)] = 'm';
-_Lout_path_44[(_Lin_path_len_45 + 5)] = 'p';
-_Lout_path_44[(_Lin_path_len_45 + 6)] = 0;
-if(!(_Nstdc_Nfd_Popen_4(&_Lout_fd_46, _Lout_path_44, O_CREAT | O_TRUNC | O_WRONLY, 420))) {
+sprintf(_Lout_path_44, "cgl-tmp/%s-b.tmp", input_path);
+_Lout_path_len_45 = strlen(_Lout_path_44);
+if(!(_Nstdc_Nfd_Popen_4(&_Lout_fd_46, _Lout_path_44, O_CREAT | O_TRUNC | O_WRONLY, 32676))) {
 fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_44);
 exit(_Nstdc_Nexit_Cfailure);
 }
 write(_Lout_fd_46, _Lw_begin_36._Fref, _Lw_37._Fpos - _Lw_begin_36._Fpos);
-close(_Lout_fd_46);
+_Nstdc_Nfd_Pclose_1(_Lout_fd_46);
 _Lw_37._Fref = _Lw_begin_36._Fref;
 Fputnum(&_Lw_37, _Gid_in_header_c);
 int32_t _Lj_47;
@@ -1790,20 +1782,20 @@ _Nglc_Pwrite_gvar_2(&_Lw_37, true);
 _Nglc_Pwrite_enum_2(&_Lw_37, true);
 _Nglc_Pwrite_struct_2(&_Lw_37, true);
 _Nglc_Pwrite_func_2(&_Lw_37, true);
-_Lout_path_44[(_Lin_path_len_45 + 1)] = 'h';
-if(!(_Nstdc_Nfd_Popen_4(&_Lout_fd_46, _Lout_path_44, O_CREAT | O_TRUNC | O_WRONLY, 420))) {
+_Lout_path_44[(_Lout_path_len_45 - 5)] = 'h';
+if(!(_Nstdc_Nfd_Popen_4(&_Lout_fd_46, _Lout_path_44, O_CREAT | O_TRUNC | O_WRONLY, 32676))) {
 fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_44);
 exit(_Nstdc_Nexit_Cfailure);
 }
 write(_Lout_fd_46, _Lw_begin_36._Fref, _Lw_37._Fpos - _Lw_begin_36._Fpos);
-close(_Lout_fd_46);
-_Lout_path_44[(_Lin_path_len_45 + 1)] = 'b';
-memcpy(_Lfinal_path_53, _Lout_path_44, _Lin_path_len_45 + 2);
-_Lfinal_path_53[(_Lin_path_len_45 + 2)] = 0;
+_Nstdc_Nfd_Pclose_1(_Lout_fd_46);
+_Lout_path_44[(_Lout_path_len_45 - 5)] = 'b';
+memcpy(_Lfinal_path_53, _Lout_path_44, _Lout_path_len_45 - 4);
+_Lfinal_path_53[(_Lout_path_len_45 - 4)] = 0;
 rename(_Lout_path_44, _Lfinal_path_53);
-_Lout_path_44[(_Lin_path_len_45 + 1)] = 'h';
-memcpy(_Lfinal_path_53, _Lout_path_44, _Lin_path_len_45 + 2);
-_Lfinal_path_53[(_Lin_path_len_45 + 2)] = 0;
+_Lout_path_44[(_Lout_path_len_45 - 5)] = 'h';
+memcpy(_Lfinal_path_53, _Lout_path_44, _Lout_path_len_45 - 4);
+_Lfinal_path_53[(_Lout_path_len_45 - 4)] = 0;
 rename(_Lout_path_44, _Lfinal_path_53);
 return 0;
 }
@@ -1935,7 +1927,7 @@ _Gquick_alloc_v = malloc(_Gquick_alloc_cap);
 memset(_Gquick_alloc_v, 0, _Gquick_alloc_cap);
 }
 bool _Nstdc_Nfd_Popen_3(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2) {
-int32_t _Lfd_3;
+_Nstdc_Nfd _Lfd_3;
 _Lfd_3 = open(_Lpath_1, _Lflags_2);
 if(_Lfd_3 != -1) {
 (*_Lfile_0) = _Lfd_3;
@@ -1943,6 +1935,9 @@ return true;
 } else {
 return false;
 }
+}
+int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0) {
+return close(_Lfile_0);
 }
 void _Nglc_Pget_row_col_4(int32_t* _Lout_row_0, int32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3) {
 int32_t _Lrow_4;
@@ -2403,7 +2398,7 @@ continue_3:;
 break_3:;
 }
 bool _Nstdc_Nfd_Popen_4(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2, int32_t _Lmode_3) {
-int32_t _Lfd_4;
+_Nstdc_Nfd _Lfd_4;
 _Lfd_4 = open(_Lpath_1, _Lflags_2, _Lmode_3);
 if(_Lfd_4 != -1) {
 (*_Lfile_0) = _Lfd_4;

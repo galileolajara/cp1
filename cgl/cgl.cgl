@@ -1,5 +1,5 @@
-{alias 'c = :stdc}
-{alias 'sys = :sys}
+{using 'c = :stdc}
+{using 'sys = :sys}
 {print-commands(bin:char[])
    'c.out.printf("Usage: %s [command] [options]\n", bin);
    'c.out.printf("Commands:\n");

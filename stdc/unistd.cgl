@@ -1,5 +1,5 @@
 {include(<unistd.h>)
-   {alias 'c = :stdc}
+   {using 'c = :stdc}
    {at(:stdc)
       {at(:fd)
          {seek(fd:this, offset:usz, seek:seek):usz @no-decl @real-name(lseek)}

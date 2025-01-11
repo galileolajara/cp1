@@ -1,4 +1,4 @@
-{alias 'glc = :glc}
+{using 'glc = :glc}
 {at(:glc)
 {stmt-return(e:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32)
    quick-alloc-one(+(s:stmt-return));

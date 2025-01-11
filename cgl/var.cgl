@@ -1,5 +1,5 @@
-{alias 'glc = :glc}
-{alias 'c = :stdc}
+{using 'glc = :glc}
+{using 'c = :stdc}
 {at(:glc)
 {:decl-var[]:u32
    {ptr(v:this):decl-var-data @inline

@@ -1,5 +1,5 @@
-{alias 'glc = :glc}
-{alias 'c = :stdc}
+{using 'glc = :glc}
+{using 'c = :stdc}
 {at(:glc)
 {:fvar[#nil = -1, #0]:i32}
 {expr-fvar(expr:expr-i, member:id):expr-i

@@ -1,5 +1,5 @@
 {include(<stdlib.h>)
-   {alias 'c = :stdc}
+   {using 'c = :stdc}
    {at(:stdc)
       {malloc(size:usz):ref @real-name(malloc) @no-decl}
       {malloc-one(var:ref)

@@ -1,4 +1,4 @@
-{alias 'glc = :glc}
+{using 'glc = :glc}
 {at(:glc)
 {:nest(do:stmt-do, while:stmt-while, ref:ref) @union}
 {gvar nest-stack-ptr-v:nest+[64]}

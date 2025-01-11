@@ -48,7 +48,7 @@ int glc_lexer_scan(struct glc_lexer* l) {
    "{gvar" spaces                   { return GLC_TOKEN_LCBRACE_GVAR_SPACE; }
    "{cvar" spaces                   { return GLC_TOKEN_LCBRACE_CVAR_SPACE; }
    "{at("                           { return GLC_TOKEN_LCBRACE_AT_LPAREN; }
-   "{alias" spaces                  { return GLC_TOKEN_LCBRACE_ALIAS_SPACE; }
+   "{using" spaces                  { return GLC_TOKEN_LCBRACE_USING_SPACE; }
    "+"                              { return GLC_TOKEN_PLUS; }
    "-"                              { return GLC_TOKEN_MINUS; }
    "!"                              { return GLC_TOKEN_EXPOINT; }

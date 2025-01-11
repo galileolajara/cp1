@@ -1,4 +1,4 @@
-{alias 'glc = :glc}
+{using 'glc = :glc}
 {at(:glc)
 {:expr-int[#dec, #hex, #oct]:u8}
 {expr-int(value:i32, type:expr-int):expr-i

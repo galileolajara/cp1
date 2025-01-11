@@ -53,6 +53,7 @@
 #define _Nglc_Nvar_flags_Cextern (2)
 #define _Nglc_Nfunc_flags_Cno_decl (16)
 #define _Nglc_Nfunc_flags_Cdecl (512)
+#define _Nglc_Nfunc_flags_Cinline (2)
 #define _Nglc_Nstruct_Cnil (-1)
 #define _Nglc_Nenum_flags_Creal_name (1)
 #define _Nglc_Nenum_flags_C0 0
@@ -806,6 +807,7 @@ bool _Nglc_Nat_Pwrite_type_info_3(_Nglc_Nat _Ltd_0, struct _Nglc_Ntype_info* _Lt
 void _Nglc_Ndecl_var_data_Pwrite_lvar_type_2(struct _Nglc_Ndecl_var_data* _Lvd_0, _Nglc_Nlvar _Llvar_1);
 void _Nglc_Nstmt_space_Pwrite_1(struct _Nglc_Nstmt_space* _Lspace_0);
 bool _Nstdc_Nfd_Popen_3(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2);
+int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0);
 uint8_t _Nglc_Nrdr_Pn1_1(union _Nglc_Nrdr* _Lr_0);
 int32_t _Nglc_Nmap_Pget_or_insert_4(struct _Nglc_Nmap* _Lm_0, char* _Lstr_1, uint8_t _Llen_2, int32_t _Lval_3);
 void _Nglc_Nname_type_Prd_2(_Nglc_Nname_type* _Li_0, union _Nglc_Nrdr* _Lr_1);
@@ -1266,7 +1268,6 @@ break_4:;
 continue_3:;
 }
 break_3:;
-fprintf(stdout, "finished processing, writing...\n");
 _Gout = fopen(_Larg_v_1[(_Larg_c_0 - 1)], "w");
 int32_t _Li_29;
 _Li_29 = 0;
@@ -1539,6 +1540,9 @@ _Lf_idx_66 = _Gfunc_body_outputted_v[_Li_65];
 _Lf_67 = _Nglc_Nfunc_Pptr_1(_Lf_idx_66);
 _Gctx_func = _Lf_67;
 _Gnest_id = 0;
+if((*_Lf_67)._Fflags & _Nglc_Nfunc_flags_Cinline) {
+fprintf(_Gout, "inline ");
+}
 if((*_Lf_67)._Fdecl._Ftype == _Nglc_Nat_Cnil) {
 fprintf(_Gout, "void");
 } else {
@@ -1616,7 +1620,7 @@ _Lin_size_2 = lseek(_Lin_fd_1, 0, SEEK_END);
 _Lr_begin_3._Fref = malloc(_Lin_size_2);
 lseek(_Lin_fd_1, 0, SEEK_SET);
 read(_Lin_fd_1, _Lr_begin_3._Fref, _Lin_size_2);
-close(_Lin_fd_1);
+_Nstdc_Nfd_Pclose_1(_Lin_fd_1);
 _Lfile_idx_4 = _Gfile_c++;
 if(_Gfile_cap <= _Gfile_c) {
 _Nglc_Nfile _Lold_cap_5;
@@ -2567,7 +2571,7 @@ continue_1:;
 break_1:;
 }
 bool _Nstdc_Nfd_Popen_3(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2) {
-int32_t _Lfd_3;
+_Nstdc_Nfd _Lfd_3;
 _Lfd_3 = open(_Lpath_1, _Lflags_2);
 if(_Lfd_3 != -1) {
 (*_Lfile_0) = _Lfd_3;
@@ -2575,6 +2579,9 @@ return true;
 } else {
 return false;
 }
+}
+int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0) {
+return close(_Lfile_0);
 }
 uint8_t _Nglc_Nrdr_Pn1_1(union _Nglc_Nrdr* _Lr_0) {
 uint8_t _Lval_1;

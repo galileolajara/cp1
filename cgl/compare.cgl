@@ -1,4 +1,4 @@
-{alias 'glc = :glc}
+{using 'glc = :glc}
 {at(:glc)
 {:compare[#eq, #not-eq, #lt, #le, #gt, #ge]:u8
    {wr(e:this, w:wtr) @inline

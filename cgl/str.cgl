@@ -1,5 +1,5 @@
-{alias 'glc = :glc}
-{alias 'c = :stdc}
+{using 'glc = :glc}
+{using 'c = :stdc}
 {at(:glc)
 {:str[#nil = -1, #0]:i32}
 {gvar str-c:i32}

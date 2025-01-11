@@ -1,5 +1,5 @@
 {include(<stdio.h>)
-   {alias 'c = :stdc}
+   {using 'c = :stdc}
    {at(:stdc)
       {printf(fmt:char[]):i32 @var-args @no-decl @real-name(printf)}
       {sprintf(str:char[], fmt:char[]):i32 @var-args @no-decl @real-name(sprintf)}

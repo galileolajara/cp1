@@ -1,5 +1,5 @@
-{alias 'glc = :glc}
-{alias 'c = :stdc}
+{using 'glc = :glc}
+{using 'c = :stdc}
 {at(:glc)
 {:func[#nil = -1, #0, #1]:i32
    {wr(f:this, w:wtr) @inline
