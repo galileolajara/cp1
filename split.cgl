@@ -1,0 +1,72 @@
+{using 'c = :stdc}
+{main(arg-c:intc, arg-v:char[][]):intc
+   {if(arg-c != 4)
+      'c.printf("Usage: %s [.cgl input file] [.cgl output file for parser] [.cgl output file for compiler]\n", arg-v[0]);
+      'c.exit(#failure);
+   }
+   {if!('c:fd.open(++in-fd, arg-v[1], #read))
+      'c.printf("Cannot open file for reading: %s\n", arg-v[1]);
+      'c.exit(#failure);
+   }
+   +in-size = in-fd.seek(0, #end);
+   in-fd.seek(0, #set);
+   {+in-data:char[] = 'c.malloc(in-size)}
+   in-fd.read(in-data, in-size);
+   in-fd.close();
+   {if!(&&, in-size > 0, in-data[in-size - 1] == ''\n)
+      'c.printf("Error, file '%s' does not end with a new line\n", arg-v[1]);
+      'c.exit(#failure);
+   }
+   +pos = 0;
+   +parser-f = 'c.fopen(arg-v[2], "w");
+   +compiler-f = 'c.fopen(arg-v[3], "w");
+   +mode = 0;
+   {while(pos < in-size)
+      +start = pos;
+      {do()
+         {if(in-data[pos] == ''\n)
+            break;
+         }
+         pos++;
+      }
+      +len = pos - start;
+      {+line:char[] = & in-data[start]}
+      // 'c.printf("[%.*s]\n", len, line);
+      {if(mode == 0)
+         {if(&&, len == 9, 'c.memcmp(line, "if-parser", 9) == 0)
+            mode = 1;
+            parser-f.printf("\n");
+            compiler-f.printf("\n");
+         }{elif(&&, len == 11, 'c.memcmp(line, "if-compiler", 11) == 0)
+            mode = 2;
+            parser-f.printf("\n");
+            compiler-f.printf("\n");
+         }{else
+            parser-f.printf("%.*s\n", len, line);
+            compiler-f.printf("%.*s\n", len, line);
+         }
+      }{elif(mode == 1)
+         {if(&&, len == 6, 'c.memcmp(line, "end-if", 6) == 0)
+            mode = 0;
+            parser-f.printf("\n");
+            compiler-f.printf("\n");
+         }{else
+            parser-f.printf("%.*s\n", len, line);
+            compiler-f.printf("\n");
+         }
+      }{elif(mode == 2)
+         {if(&&, len == 6, 'c.memcmp(line, "end-if", 6) == 0)
+            mode = 0;
+            parser-f.printf("\n");
+            compiler-f.printf("\n");
+         }{else
+            parser-f.printf("\n");
+            compiler-f.printf("%.*s\n", len, line);
+         }
+      }
+      pos++;
+   }
+   parser-f.close();
+   compiler-f.close();
+   return 0;
+}

@@ -40,9 +40,6 @@ rule lemon
  restat = true
  command = out/lemon -dout $in
 
-rule node
- command = node $in $out
-
 rule cgl-c
  restat = true
  command = bin/cgl c $out $in
@@ -54,11 +51,12 @@ build out/hash-table-size: ld-cpp2 hashtable.cpp
  flags = -DGLC_GET_SIZE
 build out/hash-table-size.cgl: run out/hash-table-size
 
-#build out/token.cgl: node token.cgl.js | out/cgl_parser.h
 build out/token.cgl.c: cgl-c token.cgl stdc/stdio.cgl stdc/stdlib.cgl stdc/fcntl.cgl stdc/unistd.cgl stdc/string.cgl | bin/cgl bin/cgl-parser bin/cgl-compiler
 build out/token: ld-c2 out/token.cgl.c
 build out/token.cgl: run out/token out/cgl_parser.h
-build out/compiler-common.cgl out/parser-common.cgl: node split.js cgl/common.cgl
+build out/split.cgl.c: cgl-c split.cgl stdc/stdio.cgl stdc/stdlib.cgl stdc/fcntl.cgl stdc/unistd.cgl stdc/string.cgl | bin/cgl bin/cgl-parser bin/cgl-compiler
+build out/split: ld-c2 out/split.cgl.c
+build out/parser-common.cgl out/compiler-common.cgl: run out/split cgl/common.cgl
 build out/cgl.cgl.c: cgl-c cgl/cgl.cgl stdc/stdio.cgl stdc/fcntl.cgl stdc/stdlib.cgl stdc/unistd.cgl stdc/string.cgl sys/stat.cgl | bin/cgl bin/cgl-parser bin/cgl-compiler
 build out/parser2.cgl.c: cgl-c cgl/parser.cgl cgl/preprocess.cgl out/token.cgl cgl/break.cgl cgl/math.cgl cgl/bools.cgl cgl/str.cgl cgl/cvar.cgl cgl/unary.cgl cgl/ref.cgl cgl/cast.cgl cgl/index.cgl cgl/switch.cgl cgl/if.cgl cgl/do.cgl cgl/while.cgl cgl/compare.cgl cgl/bool.cgl cgl/char.cgl cgl/call.cgl cgl/null.cgl cgl/int.cgl cgl/size.cgl cgl/assign.cgl cgl/fvar.cgl cgl/gvar.cgl cgl/continue.cgl cgl/return.cgl cgl/space.cgl cgl/export.cgl cgl/rdr.cgl cgl/wtr.cgl cgl/var.cgl cgl/func.cgl cgl/lvar.cgl cgl/enum.cgl cgl/expr.cgl cgl/stmt.cgl out/parser-common.cgl cgl/struct.cgl stdc/stdio.cgl stdc/fcntl.cgl stdc/stdlib.cgl stdc/unistd.cgl stdc/string.cgl sys/stat.cgl out/hash-table-size.cgl | bin/cgl bin/cgl-parser bin/cgl-compiler
 build out/compiler2.cgl.c: cgl-c cgl/compiler.cgl out/compiler-common.cgl cgl/rdr.cgl cgl/wtr.cgl cgl/func.cgl cgl/struct.cgl cgl/enum.cgl cgl/expr.cgl cgl/stmt.cgl cgl/var.cgl cgl/assign.cgl cgl/compare.cgl cgl/bool.cgl cgl/char.cgl cgl/math.cgl cgl/unary.cgl cgl/ref.cgl cgl/cast.cgl cgl/lvar.cgl cgl/fvar.cgl cgl/gvar.cgl cgl/cvar.cgl cgl/bools.cgl cgl/call.cgl cgl/str.cgl cgl/int.cgl cgl/size.cgl cgl/null.cgl cgl/index.cgl cgl/if.cgl cgl/switch.cgl cgl/do.cgl cgl/while.cgl cgl/continue.cgl cgl/break.cgl cgl/return.cgl cgl/space.cgl cgl/export.cgl stdc/stdio.cgl stdc/fcntl.cgl stdc/stdlib.cgl stdc/unistd.cgl stdc/string.cgl out/hash-table-size.cgl | bin/cgl bin/cgl-parser bin/cgl-compiler
