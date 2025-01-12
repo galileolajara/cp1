@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #include "num.c"
 #include <string.h>
 #define _Nglc_Chash_table_size (64)
@@ -32,7 +32,8 @@
 #define _Nglc_Ntoken_Clcbrace (_Nglc_Ntoken_Cid_hash + 1)
 #define _Nglc_Ntoken_Cid (_Nglc_Ntoken_Clcbrace + 1)
 #define _Nglc_Ntoken_Cspace_at_real_name_str (_Nglc_Ntoken_Cid + 1)
-#define _Nglc_Ntoken_Cspace_at_no_decl (_Nglc_Ntoken_Cspace_at_real_name_str + 1)
+#define _Nglc_Ntoken_Cspace_at_real_name (_Nglc_Ntoken_Cspace_at_real_name_str + 1)
+#define _Nglc_Ntoken_Cspace_at_no_decl (_Nglc_Ntoken_Cspace_at_real_name + 1)
 #define _Nglc_Ntoken_Cspace_equal_space (_Nglc_Ntoken_Cspace_at_no_decl + 1)
 #define _Nglc_Ntoken_Cinclude (_Nglc_Ntoken_Cspace_equal_space + 1)
 #define _Nglc_Ntoken_Cspace_rcbrace (_Nglc_Ntoken_Cinclude + 1)
@@ -68,8 +69,7 @@
 #define _Nglc_Ntoken_Cstring (_Nglc_Ntoken_Cspace_at_decl + 1)
 #define _Nglc_Ntoken_Cspace_at_var_args (_Nglc_Ntoken_Cstring + 1)
 #define _Nglc_Ntoken_Cspace_at_no_body (_Nglc_Ntoken_Cspace_at_var_args + 1)
-#define _Nglc_Ntoken_Cspace_at_real_name (_Nglc_Ntoken_Cspace_at_no_body + 1)
-#define _Nglc_Ntoken_Cgrave_ref (_Nglc_Ntoken_Cspace_at_real_name + 1)
+#define _Nglc_Ntoken_Cgrave_ref (_Nglc_Ntoken_Cspace_at_no_body + 1)
 #define _Nglc_Ntoken_Cgrave_bool (_Nglc_Ntoken_Cgrave_ref + 1)
 #define _Nglc_Ntoken_Cgrave_char (_Nglc_Ntoken_Cgrave_bool + 1)
 #define _Nglc_Ntoken_Cgrave_tint (_Nglc_Ntoken_Cgrave_char + 1)
@@ -734,6 +734,7 @@ struct _Nglc_Nat_map _Gat_map;
 _Nglc_Nfunc _Gfunc_main;
 _Nglc_Ninclude _Gdecl_include;
 char* input_path;
+char* _Glock_path;
 int32_t _Gid_cap;
 char** _Gid_str_v;
 uint8_t* _Gid_len_v;
@@ -847,6 +848,7 @@ void _Nglc_Nat_map_Pinit_1(struct _Nglc_Nat_map* _Lm_0);
 void _Nglc_Pquick_alloc_init_0();
 bool _Nstdc_Nfd_Popen_3(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2);
 int32_t _Nstdc_Nfd_Pstat_2(_Nstdc_Nfd _Lfile_0, struct stat* _Lstat_1);
+void _Nglc_Pparser_at_exit_0();
 int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0);
 void _Nglc_Pget_row_col_4(int32_t* _Lout_row_0, int32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3);
 void _Nglc_Pparse_comment_4(union _Nglc_Nrdr* _Lr_0, union _Nglc_Nwtr* _Lw_1, char _Lending_2, void* _Lin_data_3);
@@ -1043,6 +1045,7 @@ case _Nglc_Ntoken_Cid_hash: return "id-hash";
 case _Nglc_Ntoken_Clcbrace: return "lcbrace";
 case _Nglc_Ntoken_Cid: return "id";
 case _Nglc_Ntoken_Cspace_at_real_name_str: return "space-at-real-name-str";
+case _Nglc_Ntoken_Cspace_at_real_name: return "space-at-real-name";
 case _Nglc_Ntoken_Cspace_at_no_decl: return "space-at-no-decl";
 case _Nglc_Ntoken_Cspace_equal_space: return "space-equal-space";
 case _Nglc_Ntoken_Cinclude: return "include";
@@ -1079,7 +1082,6 @@ case _Nglc_Ntoken_Cspace_at_decl: return "space-at-decl";
 case _Nglc_Ntoken_Cstring: return "string";
 case _Nglc_Ntoken_Cspace_at_var_args: return "space-at-var-args";
 case _Nglc_Ntoken_Cspace_at_no_body: return "space-at-no-body";
-case _Nglc_Ntoken_Cspace_at_real_name: return "space-at-real-name";
 case _Nglc_Ntoken_Cgrave_ref: return "grave-ref";
 case _Nglc_Ntoken_Cgrave_bool: return "grave-bool";
 case _Nglc_Ntoken_Cgrave_char: return "grave-char";
@@ -1264,6 +1266,7 @@ void _Nglc_Ncompare_Pwr_2(_Nglc_Ncompare _Le_0, union _Nglc_Nwtr* _Lw_1);
 void _Nglc_Nassign_Pwr_2(_Nglc_Nassign _Ls_0, union _Nglc_Nwtr* _Lw_1);
 int32_t main(int32_t _Larg_c_0, char** _Larg_v_1) {
 _Nstdc_Nfd _Lin_fd_2;
+char* _Llock_path_3;
 size_t _Lin_size_7;
 uint8_t* _Lin_data_8;
 union _Nglc_Nrdr _Lr_end_27;
@@ -1276,7 +1279,7 @@ union _Nglc_Nwtr _Lw_begin_40;
 union _Nglc_Nwtr _Lw_41;
 int32_t _Lid_bit8_c_43;
 _Nglc_Nat _Lat_bit8_c_45;
-char _Lout_path_48[512];
+char* _Lout_path_48;
 size_t _Lout_path_len_49;
 _Nstdc_Nfd _Lout_fd_50;
 char _Lfinal_path_57[512];
@@ -1289,8 +1292,8 @@ _Nglc_Nat_map_Pinit_1(&_Gat_map);
 _Nglc_Pquick_alloc_init_0();
 _Gfunc_main = _Nglc_Nfunc_Cnil;
 _Gdecl_include = _Nglc_Ninclude_Cnil;
-if(_Larg_c_0 != 2) {
-fprintf(stdout, "Usage: %s [file.cgl]\n", _Larg_v_1[0]);
+if(_Larg_c_0 != 3) {
+fprintf(stdout, "Usage: %s [file.cgl] [output.cgl-b]\n", _Larg_v_1[0]);
 return 0;
 }
 input_path = _Larg_v_1[1];
@@ -1298,23 +1301,21 @@ if(!(_Nstdc_Nfd_Popen_3(&_Lin_fd_2, input_path, O_RDONLY))) {
 fprintf(stdout, "Cannot open file for reading: %s\n", input_path);
 exit(_Nstdc_Nexit_Cfailure);
 }
+_Llock_path_3 = _Larg_v_1[2];
+_Glock_path = _Llock_path_3;
 if(true) {
-char _Lout_path_3[512];
 _Nstdc_Nfd _Lfd_4;
-sprintf(_Lout_path_3, "cgl-tmp/%s-b", input_path);
-if(!(_Nstdc_Nfd_Popen_3(&_Lfd_4, _Lout_path_3, O_CREAT | O_EXCL))) {
-if(_Nstdc_Nfd_Popen_3(&_Lfd_4, _Lout_path_3, O_RDONLY)) {
-if(lseek(_Lfd_4, 0, SEEK_END) > 0) {
+if(!(_Nstdc_Nfd_Popen_3(&_Lfd_4, _Llock_path_3, O_CREAT | O_EXCL))) {
 struct stat _Lout_stat_5;
 struct stat _Lin_stat_6;
-_Nstdc_Nfd_Pstat_2(_Lfd_4, &_Lout_stat_5);
+stat(_Llock_path_3, &_Lout_stat_5);
 _Nstdc_Nfd_Pstat_2(_Lin_fd_2, &_Lin_stat_6);
 if(((_Lout_stat_5.st_mtimespec.tv_sec > _Lin_stat_6.st_mtimespec.tv_sec) || ((_Lout_stat_5.st_mtimespec.tv_sec == _Lin_stat_6.st_mtimespec.tv_sec) && (_Lout_stat_5.st_mtimespec.tv_nsec > _Lin_stat_6.st_mtimespec.tv_nsec)))) {
 fprintf(stdout, "Skipping parsing of %s because the output file is newer\n", input_path);
 return 0;
 }
-}
-}
+} else {
+_Nglc_Pparser_at_exit_0();
 }
 _Nstdc_Nfd_Pclose_1(_Lfd_4);
 }
@@ -1764,7 +1765,8 @@ _Nglc_Pwrite_gvar_2(&_Lw_41, false);
 _Nglc_Pwrite_enum_2(&_Lw_41, false);
 _Nglc_Pwrite_struct_2(&_Lw_41, false);
 _Nglc_Pwrite_func_2(&_Lw_41, false);
-sprintf(_Lout_path_48, "cgl-tmp/%s-b.tmp", input_path);
+_Lout_path_48 = malloc(strlen(_Llock_path_3) + 4 + 1);
+sprintf(_Lout_path_48, "%s.tmp", _Llock_path_3);
 _Lout_path_len_49 = strlen(_Lout_path_48);
 if(!(_Nstdc_Nfd_Popen_4(&_Lout_fd_50, _Lout_path_48, O_CREAT | O_TRUNC | O_WRONLY, 32676))) {
 fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_48);
@@ -1835,6 +1837,7 @@ _Lout_path_48[(_Lout_path_len_49 - 5)] = 'b';
 memcpy(_Lfinal_path_57, _Lout_path_48, _Lout_path_len_49 - 4);
 _Lfinal_path_57[(_Lout_path_len_49 - 4)] = 0;
 rename(_Lout_path_48, _Lfinal_path_57);
+_Glock_path = NULL;
 _Lout_path_48[(_Lout_path_len_49 - 5)] = 'h';
 memcpy(_Lfinal_path_57, _Lout_path_48, _Lout_path_len_49 - 4);
 _Lfinal_path_57[(_Lout_path_len_49 - 4)] = 0;

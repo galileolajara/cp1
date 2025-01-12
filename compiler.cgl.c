@@ -3659,7 +3659,11 @@ fprintf(_Gout, "]");
 }
 void _Nglc_Ndecl_var_data_Pwrite_2(struct _Nglc_Ndecl_var_data* _Lvd_0, _Nglc_Ndecl_var_type _Lvar_type_1) {
 if(((*_Lvd_0)._Fflags & _Nglc_Nvar_flags_Creal_name) != _Nglc_Nvar_flags_C0) {
+if((*_Lvd_0)._Freal_name == _Nglc_Nid_Cnil) {
+fprintf(_Gout, "%s", _Nglc_Nid_Pc_name_1((*_Lvd_0)._Fname));
+} else {
 fprintf(_Gout, "%s", _Nglc_Nid_Pstr_1((*_Lvd_0)._Freal_name));
+}
 return;
 }
 switch(_Lvar_type_1) {
