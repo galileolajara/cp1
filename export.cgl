@@ -1,0 +1,101 @@
+{using 'c = :stdc}
+{main(arg-c:intc, arg-v:char[][]):intc
+   {if(arg-c != 3)
+      'c.printf("Usage: %s [.c input file] [.h output file]\n", arg-v[0]);
+      'c.exit(#failure);
+   }
+   {if!('c:fd.open(++in-fd, arg-v[1], #read))
+      'c.printf("Cannot open file for reading: %s\n", arg-v[1]);
+      'c.exit(#failure);
+   }
+   +in-size = in-fd.seek(0, #end);
+   in-fd.seek(0, #set);
+   {+in-data:char[] = 'c.malloc(in-size)}
+   in-fd.read(in-data, in-size);
+   in-fd.close();
+   {if!(&&, in-size > 0, in-data[in-size - 1] == ''\n)
+      'c.printf("Error, file '%s' does not end with a new line\n", arg-v[1]);
+      'c.exit(#failure);
+   }
+   +pos = 0;
+   +get = false;
+   {+func-name-v:char[256][]}
+   {+func-len-v:u8[256]}
+   +func-c = 0;
+   {while(pos < in-size)
+      +start = pos;
+      {do()
+         {if(in-data[pos] == ''\n)
+            break;
+         }
+         pos++;
+      }
+      +len = pos - start;
+      {+line:char[] = & in-data[start]}
+      {if(get)
+         {if(line[0] == ''})
+            break;
+         }
+         +lparen = -1;
+         {do{+i = 0}{(len) i++}
+            {if(line[i] == ''()
+               lparen = i;
+               break;
+            }
+         }
+         // 'c.printf("[%.*s]\n", lparen, line);
+         func-name-v[func-c] = line;
+         func-len-v[func-c] = lparen;
+         func-c++;
+      }{elif(&&, len == 24, 'c.memcmp("void _Nglc_Pexport_0() {", line, 24) == 0)
+         get = true;
+      }
+      pos++;
+   }
+   +out-f = 'c.fopen(arg-v[2], "w");
+   pos = 0;
+   +indent = 0;
+   {while(pos < in-size)
+      +start = pos;
+      {do()
+         {if(in-data[pos] == ''\n)
+            break;
+         }
+         pos++;
+      }
+      +len = pos - start;
+      {+line:char[] = & in-data[start]}
+      {if(len > 0)
+         {if(line[len - 1] == ''{)
+            indent++;
+         }{elif(||, line[len - 1] == ''}, (&&, line[len - 2] == ''}, line[len - 1] == '';))
+            indent--;
+         }{elif(indent == 0)
+            {if(&&, line[len - 2] == ''), line[len - 1] == '';)
+               +lparen = -1;
+               {do{+i = 0}{(len) i++}
+                  {if(line[i] == ''()
+                     lparen = i;
+                     break;
+                  }
+               }
+               +name = lparen;
+               {while(line[name - 1] != '' )
+                  name--;
+               }
+               +func-len = lparen - name;
+               {+func:char[] = & line[name]}
+               {do{+i = 0}{(func-c) i++}
+                  {if(&&, func-len == func-len-v[i], 'c.memcmp(func, func-name-v[i], func-len) == 0)
+                     out-f.printf("%.*s\n", len, line);
+                     break;
+                  }
+               }
+            }
+         }
+      }
+      pos++;
+   }
+   out-f.close();
+   return 0;
+}

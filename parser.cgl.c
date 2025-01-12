@@ -863,7 +863,6 @@ int _Nstdc_Nfd_Pstat_2(_Nstdc_Nfd _Lfile_0, struct stat* _Lstat_1);
 void _Nglc_Pparser_at_exit_0();
 int _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0);
 void _Nglc_Pget_row_col_4(int32_t* _Lout_row_0, int32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3);
-void _Nglc_Pparse_comment_4(union _Nglc_Nrdr* _Lr_0, union _Nglc_Nwtr* _Lw_1, char _Lending_2, void* _Lin_data_3);
 void _Nglc_Pparse_string_4(union _Nglc_Nrdr* _Lr_0, union _Nglc_Nwtr* _Lw_1, char _Lending_2, void* _Lin_data_3);
 void _Nglc_Ppreprocess_init_0();
 void _Nglc_Ppreprocess_2(void** _Lin_out_data_0, size_t* _Lin_out_size_1);
@@ -1424,33 +1423,6 @@ continue_3:;
 }
 break_3:;
 goto continue_2;
-} else if(_Lr_12._Fp1[1] == '\"') {
-_Nglc_Pparse_comment_4(&_Lr_12, &_Lw_14, '\"', _Lin_data_9);
-goto continue_2;
-} else if(_Lr_12._Fp1[1] == '|') {
-_Nglc_Pparse_comment_4(&_Lr_12, &_Lw_14, '|', _Lin_data_9);
-goto continue_2;
-} else if(_Lr_12._Fp1[1] == ';') {
-_Nglc_Pparse_comment_4(&_Lr_12, &_Lw_14, ';', _Lin_data_9);
-goto continue_2;
-} else if(_Lr_12._Fp1[1] == '_') {
-_Nglc_Pparse_comment_4(&_Lr_12, &_Lw_14, '_', _Lin_data_9);
-goto continue_2;
-} else if(_Lr_12._Fp1[1] == '+') {
-_Nglc_Pparse_comment_4(&_Lr_12, &_Lw_14, '+', _Lin_data_9);
-goto continue_2;
-} else if(_Lr_12._Fp1[1] == '<') {
-_Nglc_Pparse_comment_4(&_Lr_12, &_Lw_14, '>', _Lin_data_9);
-goto continue_2;
-} else if(_Lr_12._Fp1[1] == '[') {
-_Nglc_Pparse_comment_4(&_Lr_12, &_Lw_14, ']', _Lin_data_9);
-goto continue_2;
-} else if(_Lr_12._Fp1[1] == '{') {
-_Nglc_Pparse_comment_4(&_Lr_12, &_Lw_14, '}', _Lin_data_9);
-goto continue_2;
-} else if(_Lr_12._Fp1[1] == '(') {
-_Nglc_Pparse_comment_4(&_Lr_12, &_Lw_14, ')', _Lin_data_9);
-goto continue_2;
 }
 } else if(_Lr_12._Fp1[0] == '\'') {
 if(_Lr_12._Fp1[1] == '\'') {
@@ -1496,6 +1468,17 @@ continue_4:;
 }
 break_4:;
 goto continue_2;
+#if 0
+hello
+hello
+hello
+hello
+hello
+hello
+hello
+hello
+hello
+#endif
 } else if(_Lr_12._Fp1[1] == '\"') {
 _Nglc_Pparse_string_4(&_Lr_12, &_Lw_14, '\"', _Lin_data_9);
 goto continue_2;
@@ -2069,37 +2052,6 @@ if(_Lr_6._Fp1[0] == '\n') {
 (*_Lout_col_1) = _Lcol_5;
 }
 }
-void _Nglc_Pparse_comment_4(union _Nglc_Nrdr* _Lr_0, union _Nglc_Nwtr* _Lw_1, char _Lending_2, void* _Lin_data_3) {
-union _Nglc_Nrdr _Lr_begin_4;
-_Lr_begin_4._Fpos = (*_Lr_0)._Fpos;
-(*_Lr_0)._Fpos += 2;
-while(1) {
-uint8_t _Lc_5;
-_Lc_5 = (*_Lr_0)._Fp1[0];
-if(_Lc_5 == '\n') {
-int32_t _Lrow_6;
-int32_t _Lcol_7;
-_Nglc_Pget_row_col_4(&_Lrow_6, &_Lcol_7, (*_Lr_0)._Fref, _Lin_data_3);
-fprintf(stdout, "%s:%u:%u: Unterminated comment\n", input_path, _Lrow_6, _Lcol_7);
-exit(_Nstdc_Nexit_Cfailure);
-}
-(*_Lr_0)._Fpos++;
-if(_Lc_5 == _Lending_2) {
-size_t _Llen_8;
-_Llen_8 = ((*_Lr_0)._Fpos - _Lr_begin_4._Fpos);
-for(int i = _Llen_8; i > 0; ) {
-i --;
-(*_Lw_1)._Fp1[0] = ' ';
-(*_Lw_1)._Fpos++;
-continue_1:;
-}
-break_1:;
-return;
-}
-continue_0:;
-}
-break_0:;
-}
 void _Nglc_Pparse_string_4(union _Nglc_Nrdr* _Lr_0, union _Nglc_Nwtr* _Lw_1, char _Lending_2, void* _Lin_data_3) {
 (*_Lw_1)._Fp1[0] = '\'';
 (*_Lw_1)._Fp1[1] = (*_Lr_0)._Fp1[1];
@@ -2311,13 +2263,6 @@ _Lw_begin_25._Fref = _Lnew_data_7;
 if(_Lpreprocess_2) {
 _Nglc_Ppreprocess_2(_Lin_out_data_0, _Lin_out_size_1);
 } else {
-char _Lpath_26[256];
-_Nstdc_Nfd _Lfd_27;
-sprintf(_Lpath_26, "%s-p", input_path);
-printf("writing the preprocessed file to %s\n", _Lpath_26);
-_Nstdc_Nfd_Popen_4(&_Lfd_27, _Lpath_26, O_WRONLY | O_TRUNC | O_CREAT, 32676);
-write(_Lfd_27, _Lnew_data_7, (_Lw_8._Fpos + 1) - _Lw_begin_25._Fpos);
-_Nstdc_Nfd_Pclose_1(_Lfd_27);
 }
 }
 void _Nglc_Nlexer_Pinit_3(struct _Nglc_Nlexer* _Llex_0, uint8_t* _Ldata_1, size_t _Lsize_2) {

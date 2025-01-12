@@ -30,14 +30,15 @@ uint32_t* _Gcgl_path_real_len_v;
 int32_t main(int32_t _Larg_c_0, char** _Larg_v_1);
 void _Pprint_commands_1(char* _Lbin_0);
 void _Pprint_c_usage_1(char* _Lbin_0);
-void _Pvalidate_cgl_paths_5(int32_t _Lstart_0, int32_t _Larg_c_1, char** _Larg_v_2, char* _Lbin_3, _Ncmd _Lcmd_4);
+bool _Pvalidate_cgl_paths_5(int32_t _Lstart_0, int32_t _Larg_c_1, char** _Larg_v_2, char* _Lbin_3, _Ncmd _Lcmd_4);
+void _Pprint_command_2(int32_t _Larg_c_0, char** _Larg_v_1);
 struct FILE* _Nstdc_Nfd_Pfopen_2(_Nstdc_Nfd _Lfile_0, char* _Lmode_1);
 int _Nstdc_Nfile_Pclose_1(struct FILE* _Lf_0);
 void _Pprint_run_usage_1(char* _Lbin_0);
 int _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0);
 void _Pget_compiler_2(char* _Lbin_0, struct FILE* _Lninja_f_1);
 void _Pprint_usage_2(char* _Lbin_0, _Ncmd _Lcmd_1);
-void _Pcgl_path_input_4(char* _Lcgl_path_0, int32_t _Lcgl_path_len_1, char* _Lbin_2, _Ncmd _Lcmd_3);
+bool _Pcgl_path_input_4(char* _Lcgl_path_0, int32_t _Lcgl_path_len_1, char* _Lbin_2, _Ncmd _Lcmd_3);
 void _Pcgl_path_add_4(char* _Lcgl_path_real_0, int32_t _Lcgl_path_real_len_1, char* _Lcgl_path_2, int32_t _Lcgl_path_len_3);
 bool _Nstdc_Nfd_Popen_3(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2);
 int32_t main(int32_t _Larg_c_0, char** _Larg_v_1) {
@@ -68,7 +69,10 @@ _Pprint_c_usage_1(_Lbin_2);
 printf("Error, [output.c] (which is '%s') must be a filename that ends with '.c', for example: main.c\n", _Lc_path_4);
 exit(_Nstdc_Nexit_Cfailure);
 }
-_Pvalidate_cgl_paths_5(3, _Larg_c_0, _Larg_v_1, _Lbin_2, _Ncmd_Cc);
+if(!(_Pvalidate_cgl_paths_5(3, _Larg_c_0, _Larg_v_1, _Lbin_2, _Ncmd_Cc))) {
+_Pprint_command_2(_Larg_c_0, _Larg_v_1);
+exit(_Nstdc_Nexit_Cfailure);
+}
 mkdir("cgl-tmp", 32749);
 strcpy(_Lninja_path_6, "cgl-tmp/ninja-XXXXXXXXX");
 _Lninja_fd_7 = mkstemp(_Lninja_path_6);
@@ -124,7 +128,10 @@ if(_Larg_c_0 < 3) {
 _Pprint_run_usage_1(_Lbin_2);
 exit(_Nstdc_Nexit_Cfailure);
 }
-_Pvalidate_cgl_paths_5(2, _Larg_c_0, _Larg_v_1, _Lbin_2, _Ncmd_Crun);
+if(!(_Pvalidate_cgl_paths_5(2, _Larg_c_0, _Larg_v_1, _Lbin_2, _Ncmd_Crun))) {
+_Pprint_command_2(_Larg_c_0, _Larg_v_1);
+exit(_Nstdc_Nexit_Cfailure);
+}
 mkdir("cgl-tmp", 32749);
 strcpy(_Lc_path_13, "cgl-tmp/c-XXXXXXXXX");
 _Lc_fd_14 = mkstemp(_Lc_path_13);
@@ -209,7 +216,7 @@ printf("  run      Compile and run the cgl codes.\n");
 void _Pprint_c_usage_1(char* _Lbin_0) {
 printf("Usage: %s c [output.c] [cgl file/s...]\n", _Lbin_0);
 }
-void _Pvalidate_cgl_paths_5(int32_t _Lstart_0, int32_t _Larg_c_1, char** _Larg_v_2, char* _Lbin_3, _Ncmd _Lcmd_4) {
+bool _Pvalidate_cgl_paths_5(int32_t _Lstart_0, int32_t _Larg_c_1, char** _Larg_v_2, char* _Lbin_3, _Ncmd _Lcmd_4) {
 int32_t _Li_5;
 _Li_5 = _Lstart_0;
 for(int i = _Larg_c_1 - _Lstart_0; i > 0; ) {
@@ -223,6 +230,10 @@ printf("Error, [cgl file] (which is '%s') must be a relative filepath (e.g. file
 exit(_Nstdc_Nexit_Cfailure);
 }
 _Lcgl_path_len_7 = strlen(_Lcgl_path_6);
+if(((_Lcgl_path_6[0] == '.') && (_Lcgl_path_6[1] == '/'))) {
+_Lcgl_path_6 = &_Lcgl_path_6[2];
+_Lcgl_path_len_7 -= 2;
+}
 int32_t _Lj_8;
 _Lj_8 = 0;
 for(int i = _Lcgl_path_len_7; i > 0; ) {
@@ -238,11 +249,11 @@ _Lj_8++;
 break_1:;
 int32_t _Lj_9;
 _Lj_9 = 0;
-for(int i = _Lcgl_path_len_7 - 2; i > 0; ) {
+for(int i = _Lcgl_path_len_7 - 1; i > 0; ) {
 i --;
-if(((_Lcgl_path_6[_Lj_9] == '.') && (_Lcgl_path_6[(_Lj_9 + 1)] == '.') && (_Lcgl_path_6[(_Lj_9 + 1)] == '/'))) {
+if(((_Lcgl_path_6[_Lj_9] == '.') && (_Lcgl_path_6[(_Lj_9 + 1)] == '/'))) {
 _Pprint_usage_2(_Lbin_3, _Lcmd_4);
-printf("Error, [cgl file] (which is '%s') must not contain '../'\n", _Lcgl_path_6);
+printf("Error, [cgl file] (which is '%s') must not contain './'\n", _Lcgl_path_6);
 exit(_Nstdc_Nexit_Cfailure);
 }
 continue_2:;
@@ -254,11 +265,28 @@ _Pprint_usage_2(_Lbin_3, _Lcmd_4);
 printf("Error, [cgl file] (which is '%s') must be a filename that ends with '.cgl', for example: main.cgl\n", _Lcgl_path_6);
 exit(_Nstdc_Nexit_Cfailure);
 }
-_Pcgl_path_input_4(_Lcgl_path_6, _Lcgl_path_len_7, _Lbin_3, _Lcmd_4);
+if(!(_Pcgl_path_input_4(_Lcgl_path_6, _Lcgl_path_len_7, _Lbin_3, _Lcmd_4))) {
+_Pprint_usage_2(_Lbin_3, _Lcmd_4);
+return false;
+}
 continue_0:;
 _Li_5++;
 }
 break_0:;
+return true;
+}
+void _Pprint_command_2(int32_t _Larg_c_0, char** _Larg_v_1) {
+printf("Command was:");
+int32_t _Li_2;
+_Li_2 = 0;
+for(int i = _Larg_c_0; i > 0; ) {
+i --;
+printf(" %s", _Larg_v_1[_Li_2]);
+continue_0:;
+_Li_2++;
+}
+break_0:;
+printf("\n");
 }
 inline struct FILE* _Nstdc_Nfd_Pfopen_2(_Nstdc_Nfd _Lfile_0, char* _Lmode_1) {
 return fdopen(_Lfile_0, _Lmode_1);
@@ -321,188 +349,266 @@ _Pprint_run_usage_1(_Lbin_0);
 break;
 }
 }
-void _Pcgl_path_input_4(char* _Lcgl_path_0, int32_t _Lcgl_path_len_1, char* _Lbin_2, _Ncmd _Lcmd_3) {
-_Nstdc_Nfd _Lfd_4;
-size_t _Llen_5;
-char* _Ldata_6;
-int32_t _Lpos_7;
-int32_t _Lline_8;
+bool _Pcgl_path_input_4(char* _Lcgl_path_0, int32_t _Lcgl_path_len_1, char* _Lbin_2, _Ncmd _Lcmd_3) {
+_Nstdc_Nfd _Lfd_5;
+size_t _Llen_6;
+char* _Ldata_7;
+int32_t _Lpos_8;
+int32_t _Lline_9;
+int32_t _Li_4;
+_Li_4 = 0;
+for(int i = _Gcgl_path_c; i > 0; ) {
+i --;
+if(memcmp(_Gcgl_path_v[_Li_4], _Lcgl_path_0, _Lcgl_path_len_1) == 0) {
+return true;
+}
+continue_0:;
+_Li_4++;
+}
+break_0:;
 _Pcgl_path_add_4(_Lcgl_path_0, _Lcgl_path_len_1, _Lcgl_path_0, _Lcgl_path_len_1);
-if(!(_Nstdc_Nfd_Popen_3(&_Lfd_4, _Lcgl_path_0, O_RDONLY))) {
-_Pprint_usage_2(_Lbin_2, _Lcmd_3);
+if(!(_Nstdc_Nfd_Popen_3(&_Lfd_5, _Lcgl_path_0, O_RDONLY))) {
 printf("Error, [cgl file] (which is '%s') cannot be opened for reading\n", _Lcgl_path_0);
-exit(_Nstdc_Nexit_Cfailure);
+return false;
 }
-_Llen_5 = lseek(_Lfd_4, 0, SEEK_END);
-lseek(_Lfd_4, 0, SEEK_SET);
-_Ldata_6 = malloc(_Llen_5 + 1);
-read(_Lfd_4, _Ldata_6, _Llen_5);
-_Nstdc_Nfd_Pclose_1(_Lfd_4);
-_Ldata_6[_Llen_5] = '\0';
-if(!(((_Llen_5 > 0) && (_Ldata_6[(_Llen_5 - 1)] == '\n')))) {
-_Pprint_usage_2(_Lbin_2, _Lcmd_3);
+_Llen_6 = lseek(_Lfd_5, 0, SEEK_END);
+lseek(_Lfd_5, 0, SEEK_SET);
+_Ldata_7 = malloc(_Llen_6 + 1);
+read(_Lfd_5, _Ldata_7, _Llen_6);
+_Nstdc_Nfd_Pclose_1(_Lfd_5);
+_Ldata_7[_Llen_6] = '\0';
+if(!(((_Llen_6 > 0) && (_Ldata_7[(_Llen_6 - 1)] == '\n')))) {
 printf("Error, [cgl file] (which is '%s') must end a new line\n", _Lcgl_path_0);
-exit(_Nstdc_Nexit_Cfailure);
+return false;
 }
-if(_Ldata_6[(_Llen_5 - 2)] == '\r') {
-_Pprint_usage_2(_Lbin_2, _Lcmd_3);
+if(_Ldata_7[(_Llen_6 - 2)] == '\r') {
 printf("Error, [cgl file] (which is '%s') must have Unix line endings '\\n' instead of Windows line endings '\\r\\n'\n", _Lcgl_path_0);
-exit(_Nstdc_Nexit_Cfailure);
+return false;
 }
-_Lpos_7 = 0;
-_Lline_8 = 0;
-while(_Ldata_6[_Lpos_7] == '#') {
-int32_t _Lstart_9;
-_Lline_8++;
-_Lstart_9 = _Lpos_7;
+_Lpos_8 = 0;
+_Lline_9 = 0;
+while(_Ldata_7[_Lpos_8] == '#') {
+int32_t _Lstart_10;
+_Lline_9++;
+_Lstart_10 = _Lpos_8;
 while(1) {
-_Lpos_7++;
-if(_Ldata_6[_Lpos_7] == '\n') {
-if(memcmp("#include <", &_Ldata_6[_Lstart_9], 10) == 0) {
-int32_t _Lend_10;
-char* _Linclude_path_12;
-int32_t _Linclude_path_len_13;
-bool _Lfound_14;
-_Lend_10 = -1;
-int32_t _Lj_11;
-_Lj_11 = _Lstart_9;
-for(int i = _Lpos_7 - _Lstart_9; i > 0; ) {
+_Lpos_8++;
+if(_Ldata_7[_Lpos_8] == '\n') {
+if(memcmp("#import \"", &_Ldata_7[_Lstart_10], 9) == 0) {
+int32_t _Lend_11;
+char* _Limport_13;
+int32_t _Limport_path_len_14;
+char* _Limport_path_17;
+_Lstart_10 += 9;
+_Lend_11 = -1;
+int32_t _Lj_12;
+_Lj_12 = _Lstart_10;
+for(int i = _Lpos_8 - _Lstart_10; i > 0; ) {
 i --;
-if(_Ldata_6[_Lj_11] == '>') {
-_Lend_10 = _Lj_11;
-goto break_2;
-}
-continue_2:;
-_Lj_11++;
-}
-break_2:;
-if(_Lend_10 == -1) {
-printf("%s:%u: #include <...> must end with '>'\n", _Lcgl_path_0, _Lline_8);
-exit(_Nstdc_Nexit_Cfailure);
-}
-_Linclude_path_12 = &_Ldata_6[(_Lstart_9 + 10)];
-_Linclude_path_len_13 = (_Lend_10 - (_Lstart_9 + 10));
-_Lfound_14 = false;
-int32_t _Lj_15;
-_Lj_15 = 0;
-for(int i = _Gincluded_c; i > 0; ) {
-i --;
-if(((_Linclude_path_len_13 == _Gincluded_len_v[_Lj_15]) && (memcmp(_Gincluded_v[_Lj_15], _Linclude_path_12, _Linclude_path_len_13) == 0))) {
-_Lfound_14 = true;
+if(_Ldata_7[_Lj_12] == '\"') {
+_Lend_11 = _Lj_12;
 goto break_3;
 }
 continue_3:;
-_Lj_15++;
+_Lj_12++;
 }
 break_3:;
-if(!(_Lfound_14)) {
-int32_t _Li_16;
-char* _Lpath_17;
-char _Lspec_path_18[128];
-char* _Linclude_dir_19;
-size_t _Linclude_dir_len_20;
-_Nstdc_Nfd _Lspec_fd_22;
-size_t _Lspec_len_23;
-char* _Lspec_data_24;
-int32_t _Lspec_pos_25;
-int32_t _Lspec_line_26;
-_Li_16 = _Gincluded_c++;
+if(_Lend_11 == -1) {
+printf("%s:%u: #import \"...\" must end with '\"'\n", _Lcgl_path_0, _Lline_9);
+return false;
+}
+_Limport_13 = &_Ldata_7[_Lstart_10];
+_Limport_path_len_14 = (_Lend_11 - _Lstart_10);
+if(((_Limport_path_len_14 >= 4) && (_Limport_13[(_Limport_path_len_14 - 4)] == '.') && (_Limport_13[(_Limport_path_len_14 - 3)] == 'c') && (_Limport_13[(_Limport_path_len_14 - 2)] == 'g') && (_Limport_13[(_Limport_path_len_14 - 1)] == 'l'))) {
+printf("%s:%u: #import \"%.*s\" doesn't need a '.cgl' suffix\n", _Lcgl_path_0, _Lline_9, _Limport_path_len_14, _Limport_13);
+return false;
+}
+if(_Limport_13[0] == '/') {
+printf("%s:%u: #import \"%.*s\" must be a relative path, '/' was detected at the beginning of file path\n", _Lcgl_path_0, _Lline_9, _Limport_path_len_14, _Limport_13);
+return false;
+}
+int32_t _Lj_15;
+_Lj_15 = 0;
+for(int i = _Limport_path_len_14; i > 0; ) {
+i --;
+if(_Limport_13[_Lj_15] == '\\') {
+printf("%s:%u: #import \"%.*s\" must not contain backslashes '\\', please use forward slashes '/' instead\n", _Lcgl_path_0, _Lline_9, _Limport_path_len_14, _Limport_13);
+return false;
+}
+continue_4:;
+_Lj_15++;
+}
+break_4:;
+int32_t _Lj_16;
+_Lj_16 = 0;
+for(int i = _Limport_path_len_14 - 1; i > 0; ) {
+i --;
+if(((_Limport_13[_Lj_16] == '.') && (_Limport_13[(_Lj_16 + 1)] == '/'))) {
+printf("%s:%u: #import \"%.*s\" must not contain './'\n", _Lcgl_path_0, _Lline_9, _Limport_path_len_14, _Limport_13);
+return false;
+}
+continue_5:;
+_Lj_16++;
+}
+break_5:;
+_Limport_path_17 = malloc(_Limport_path_len_14 + 5);
+memcpy(_Limport_path_17, _Limport_13, _Limport_path_len_14);
+_Limport_path_17[_Limport_path_len_14++] = '.';
+_Limport_path_17[_Limport_path_len_14++] = 'c';
+_Limport_path_17[_Limport_path_len_14++] = 'g';
+_Limport_path_17[_Limport_path_len_14++] = 'l';
+_Limport_path_17[_Limport_path_len_14] = '\0';
+if(!(_Pcgl_path_input_4(_Limport_path_17, _Limport_path_len_14, _Lbin_2, _Lcmd_3))) {
+printf("Error from #import \"%.*s\" at file '%s' line %u\n", _Limport_path_len_14 - 4, _Limport_13, _Lcgl_path_0, _Lline_9);
+return false;
+}
+} else if(memcmp("#include <", &_Ldata_7[_Lstart_10], 10) == 0) {
+int32_t _Lend_18;
+char* _Linclude_path_20;
+int32_t _Linclude_path_len_21;
+bool _Lfound_22;
+_Lstart_10 += 10;
+_Lend_18 = -1;
+int32_t _Lj_19;
+_Lj_19 = _Lstart_10;
+for(int i = _Lpos_8 - _Lstart_10; i > 0; ) {
+i --;
+if(_Ldata_7[_Lj_19] == '>') {
+_Lend_18 = _Lj_19;
+goto break_6;
+}
+continue_6:;
+_Lj_19++;
+}
+break_6:;
+if(_Lend_18 == -1) {
+printf("%s:%u: #include <...> must end with '>'\n", _Lcgl_path_0, _Lline_9);
+return false;
+}
+_Linclude_path_20 = &_Ldata_7[_Lstart_10];
+_Linclude_path_len_21 = (_Lend_18 - _Lstart_10);
+_Lfound_22 = false;
+int32_t _Lj_23;
+_Lj_23 = 0;
+for(int i = _Gincluded_c; i > 0; ) {
+i --;
+if(((_Linclude_path_len_21 == _Gincluded_len_v[_Lj_23]) && (memcmp(_Gincluded_v[_Lj_23], _Linclude_path_20, _Linclude_path_len_21) == 0))) {
+_Lfound_22 = true;
+goto break_7;
+}
+continue_7:;
+_Lj_23++;
+}
+break_7:;
+if(!(_Lfound_22)) {
+int32_t _Li_24;
+char* _Lpath_25;
+char _Lspec_path_26[128];
+char* _Linclude_dir_27;
+size_t _Linclude_dir_len_28;
+_Nstdc_Nfd _Lspec_fd_30;
+size_t _Lspec_len_31;
+char* _Lspec_data_32;
+int32_t _Lspec_pos_33;
+int32_t _Lspec_line_34;
+_Li_24 = _Gincluded_c++;
 if(_Gincluded_cap < _Gincluded_c) {
 _Gincluded_cap = ((_Gincluded_c << 1) + 8);
 _Gincluded_v = realloc(_Gincluded_v, _Gincluded_cap * sizeof(size_t));
 _Gincluded_len_v = realloc(_Gincluded_len_v, _Gincluded_cap * sizeof(uint32_t));
 }
-_Lpath_17 = malloc(_Linclude_path_len_13 + 1);
-memcpy(_Lpath_17, _Linclude_path_12, _Linclude_path_len_13);
-_Lpath_17[_Linclude_path_len_13] = '\0';
-_Gincluded_v[_Li_16] = _Lpath_17;
-_Gincluded_len_v[_Li_16] = _Linclude_path_len_13;
-_Linclude_dir_19 = "/opt/cgl/include";
-_Linclude_dir_len_20 = strlen(_Linclude_dir_19);
-sprintf(_Lspec_path_18, "%s/%s", _Linclude_dir_19, _Lpath_17);
-size_t _Li_21;
-_Li_21 = (_Linclude_dir_len_20 + 1);
-for(int i = strlen(_Lspec_path_18) - (_Linclude_dir_len_20 + 1); i > 0; ) {
+_Lpath_25 = malloc(_Linclude_path_len_21 + 1);
+memcpy(_Lpath_25, _Linclude_path_20, _Linclude_path_len_21);
+_Lpath_25[_Linclude_path_len_21] = '\0';
+_Gincluded_v[_Li_24] = _Lpath_25;
+_Gincluded_len_v[_Li_24] = _Linclude_path_len_21;
+_Linclude_dir_27 = "/opt/cgl/include";
+_Linclude_dir_len_28 = strlen(_Linclude_dir_27);
+sprintf(_Lspec_path_26, "%s/%s", _Linclude_dir_27, _Lpath_25);
+size_t _Li_29;
+_Li_29 = (_Linclude_dir_len_28 + 1);
+for(int i = strlen(_Lspec_path_26) - (_Linclude_dir_len_28 + 1); i > 0; ) {
 i --;
-if(_Lspec_path_18[_Li_21] == '/') {
-_Lspec_path_18[_Li_21] = '-';
+if(_Lspec_path_26[_Li_29] == '/') {
+_Lspec_path_26[_Li_29] = '-';
 }
-continue_4:;
-_Li_21++;
+continue_8:;
+_Li_29++;
 }
-break_4:;
-if(!(_Nstdc_Nfd_Popen_3(&_Lspec_fd_22, _Lspec_path_18, O_RDONLY))) {
-printf("%s:%u: #include <%s> failed because '%s' does not exists\n", _Lcgl_path_0, _Lline_8, _Lpath_17, _Lspec_path_18);
-exit(_Nstdc_Nexit_Cfailure);
+break_8:;
+if(!(_Nstdc_Nfd_Popen_3(&_Lspec_fd_30, _Lspec_path_26, O_RDONLY))) {
+printf("%s:%u: #include <%s> failed because '%s' does not exists\n", _Lcgl_path_0, _Lline_9, _Lpath_25, _Lspec_path_26);
+return false;
 }
-_Lspec_len_23 = lseek(_Lspec_fd_22, 0, SEEK_END);
-lseek(_Lspec_fd_22, 0, SEEK_SET);
-_Lspec_data_24 = malloc(_Lspec_len_23 + 1);
-read(_Lspec_fd_22, _Lspec_data_24, _Lspec_len_23);
-_Lspec_pos_25 = 0;
-_Lspec_line_26 = 0;
-while(_Lspec_pos_25 < _Lspec_len_23) {
-int32_t _Lstart_27;
-_Lspec_line_26++;
-_Lstart_27 = _Lspec_pos_25;
+_Lspec_len_31 = lseek(_Lspec_fd_30, 0, SEEK_END);
+lseek(_Lspec_fd_30, 0, SEEK_SET);
+_Lspec_data_32 = malloc(_Lspec_len_31 + 1);
+read(_Lspec_fd_30, _Lspec_data_32, _Lspec_len_31);
+_Lspec_pos_33 = 0;
+_Lspec_line_34 = 0;
+while(_Lspec_pos_33 < _Lspec_len_31) {
+int32_t _Lstart_35;
+_Lspec_line_34++;
+_Lstart_35 = _Lspec_pos_33;
 while(1) {
-if(_Lspec_data_24[_Lspec_pos_25] == '\n') {
-if(_Lspec_data_24[_Lstart_27] == '<') {
-int32_t _Lrangle_28;
-_Lstart_27++;
-_Lrangle_28 = -1;
-int32_t _Lj_29;
-_Lj_29 = _Lstart_27;
-for(int i = _Lspec_pos_25 - _Lstart_27; i > 0; ) {
+if(_Lspec_data_32[_Lspec_pos_33] == '\n') {
+if(_Lspec_data_32[_Lstart_35] == '<') {
+int32_t _Lrangle_36;
+_Lstart_35++;
+_Lrangle_36 = -1;
+int32_t _Lj_37;
+_Lj_37 = _Lstart_35;
+for(int i = _Lspec_pos_33 - _Lstart_35; i > 0; ) {
 i --;
-if(_Lspec_data_24[_Lj_29] == '>') {
-_Lrangle_28 = _Lj_29;
-goto break_7;
+if(_Lspec_data_32[_Lj_37] == '>') {
+_Lrangle_36 = _Lj_37;
+goto break_11;
 }
-continue_7:;
-_Lj_29++;
+continue_11:;
+_Lj_37++;
 }
-break_7:;
-if(_Lrangle_28 != -1) {
-char* _Lfile_path_30;
-int32_t _Lfile_path_len_31;
-char* _Lfile_path_dup_32;
-char* _Lreal_path_33;
-size_t _Lreal_path_len_34;
-_Lfile_path_30 = &_Lspec_data_24[_Lstart_27];
-_Lfile_path_len_31 = (_Lrangle_28 - _Lstart_27);
-_Lfile_path_dup_32 = malloc(_Lfile_path_len_31 + 1);
-memcpy(_Lfile_path_dup_32, _Lfile_path_30, _Lfile_path_len_31);
-_Lfile_path_dup_32[_Lfile_path_len_31] = '\0';
-_Lreal_path_33 = malloc(_Linclude_dir_len_20 + 1 + _Lfile_path_len_31 + 1);
-sprintf(_Lreal_path_33, "%s/%.*s", _Linclude_dir_19, _Lfile_path_len_31, _Lfile_path_30);
-_Lreal_path_len_34 = strlen(_Lreal_path_33);
-_Pcgl_path_add_4(_Lreal_path_33, _Lreal_path_len_34, _Lfile_path_dup_32, _Lfile_path_len_31);
-}
-}
-_Lspec_pos_25++;
-goto break_6;
-}
-_Lspec_pos_25++;
-continue_6:;
-}
-break_6:;
-continue_5:;
-}
-break_5:;
-free(_Lspec_data_24);
+break_11:;
+if(_Lrangle_36 != -1) {
+char* _Lfile_path_38;
+int32_t _Lfile_path_len_39;
+char* _Lfile_path_dup_40;
+char* _Lreal_path_41;
+size_t _Lreal_path_len_42;
+_Lfile_path_38 = &_Lspec_data_32[_Lstart_35];
+_Lfile_path_len_39 = (_Lrangle_36 - _Lstart_35);
+_Lfile_path_dup_40 = malloc(_Lfile_path_len_39 + 1);
+memcpy(_Lfile_path_dup_40, _Lfile_path_38, _Lfile_path_len_39);
+_Lfile_path_dup_40[_Lfile_path_len_39] = '\0';
+_Lreal_path_41 = malloc(_Linclude_dir_len_28 + 1 + _Lfile_path_len_39 + 1);
+sprintf(_Lreal_path_41, "%s/%.*s", _Linclude_dir_27, _Lfile_path_len_39, _Lfile_path_38);
+_Lreal_path_len_42 = strlen(_Lreal_path_41);
+_Pcgl_path_add_4(_Lreal_path_41, _Lreal_path_len_42, _Lfile_path_dup_40, _Lfile_path_len_39);
 }
 }
-_Lpos_7++;
-goto break_1;
+_Lspec_pos_33++;
+goto break_10;
 }
+_Lspec_pos_33++;
+continue_10:;
+}
+break_10:;
+continue_9:;
+}
+break_9:;
+free(_Lspec_data_32);
+}
+}
+_Lpos_8++;
+goto break_2;
+}
+continue_2:;
+}
+break_2:;
 continue_1:;
 }
 break_1:;
-continue_0:;
-}
-break_0:;
-free(_Ldata_6);
+free(_Ldata_7);
+return true;
 }
 void _Pcgl_path_add_4(char* _Lcgl_path_real_0, int32_t _Lcgl_path_real_len_1, char* _Lcgl_path_2, int32_t _Lcgl_path_len_3) {
 int32_t _Li_4;

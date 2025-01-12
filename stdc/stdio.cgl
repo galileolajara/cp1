@@ -12,9 +12,7 @@
             return fwrite(buf, 1, size, f);
          }
          {putc(c:intc, f:this):intc @no-decl @real-name(fputc)}
-         {close(f:this):intc @inline
-            return fclose(f);
-         }
+         {close(f:this):intc @no-decl @real-name(fclose)}
       }
       {rename(old:char[], new:char[]):intc @no-decl @real-name}
       {fopen(path:char[], mode:char[]):file @no-decl @real-name}

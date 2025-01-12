@@ -246,7 +246,7 @@
          ok = true;
          return;
       }
-      'c.out.printf("%s:%u:%u - %u:%u: Cannot find method :%s with %u argument:s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
+      'c.out.printf("%s:%u:%u - %u:%u: Cannot find method %s with %u argument:s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
       {if(found != -1)
          'c.out.printf("But found %u functions with different no. of argument:s:\n", similar-c);
          {do{+i = 0}{(at.func-c) i++}
@@ -391,7 +391,7 @@
          {if(at-idx == #root) break}
          at-idx = at.parent;
       }
-      'c.out.printf("%s:%u:%u - %u:%u: Cannot find function :%s with %u argument:s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
+      'c.out.printf("%s:%u:%u - %u:%u: Cannot find function %s with %u argument:s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
       // {if(found != -1)
       //    'c.out.printf("But found %u functions with different no. of argument:s:\n", similar-c);
       //    {do{+i = 0}{(at.func-c) i++}
