@@ -158,6 +158,7 @@
       r.pos += line-len;
    }
 
+   w.p1[0] = ''\0;
    'c.free(in-data);
    in-out-data = new-data;
    {+w-begin:wtr+}
