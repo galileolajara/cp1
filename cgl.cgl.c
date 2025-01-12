@@ -9,9 +9,9 @@
 #include <sys/stat.h>
 #define _Nstdc_Nexit_Csuccess 0
 #define _Nstdc_Nexit_Cfailure (_Nstdc_Nexit_Csuccess + 1)
-#define _Ncmd_Cto_c 0
+#define _Ncmd_Cc 0
 #define _Nstdc_Nfd_Cnil (-1)
-#define _Ncmd_Crun (_Ncmd_Cto_c + 1)
+#define _Ncmd_Crun (_Ncmd_Cc + 1)
 typedef int32_t _Nstdc_Nexit;
 typedef uint8_t _Ncmd;
 typedef int32_t _Nstdc_Nfd;
@@ -29,7 +29,7 @@ uint32_t* _Gcgl_path_len_v;
 uint32_t* _Gcgl_path_real_len_v;
 int32_t main(int32_t _Larg_c_0, char** _Larg_v_1);
 void _Pprint_commands_1(char* _Lbin_0);
-void _Pprint_to_c_usage_1(char* _Lbin_0);
+void _Pprint_c_usage_1(char* _Lbin_0);
 void _Pvalidate_cgl_paths_5(int32_t _Lstart_0, int32_t _Larg_c_1, char** _Larg_v_2, char* _Lbin_3, _Ncmd _Lcmd_4);
 struct FILE* _Nstdc_Nfd_Pfopen_2(_Nstdc_Nfd _Lfile_0, char* _Lmode_1);
 int32_t _Nstdc_Nfile_Pclose_1(struct FILE* _Lf_0);
@@ -49,7 +49,7 @@ _Pprint_commands_1(_Lbin_2);
 exit(_Nstdc_Nexit_Cfailure);
 }
 _Lcmd_3 = _Larg_v_1[1];
-if(strcmp(_Lcmd_3, "to-c") == 0) {
+if(strcmp(_Lcmd_3, "c") == 0) {
 char* _Lc_path_4;
 size_t _Lc_path_len_5;
 char _Lninja_path_6[24];
@@ -58,22 +58,22 @@ struct FILE* _Lninja_f_8;
 char _Lcommand_11[24 + 9];
 int32_t _Lret_12;
 if(_Larg_c_0 < 4) {
-_Pprint_to_c_usage_1(_Lbin_2);
+_Pprint_c_usage_1(_Lbin_2);
 exit(_Nstdc_Nexit_Cfailure);
 }
 _Lc_path_4 = _Larg_v_1[2];
 _Lc_path_len_5 = strlen(_Lc_path_4);
 if(!(((_Lc_path_len_5 > 2) && (_Lc_path_4[(_Lc_path_len_5 - 2)] == '.') && (_Lc_path_4[(_Lc_path_len_5 - 1)] == 'c')))) {
-_Pprint_to_c_usage_1(_Lbin_2);
+_Pprint_c_usage_1(_Lbin_2);
 printf("Error, [output.c] (which is '%s') must be a filename that ends with '.c', for example: main.c\n", _Lc_path_4);
 exit(_Nstdc_Nexit_Cfailure);
 }
-_Pvalidate_cgl_paths_5(3, _Larg_c_0, _Larg_v_1, _Lbin_2, _Ncmd_Cto_c);
+_Pvalidate_cgl_paths_5(3, _Larg_c_0, _Larg_v_1, _Lbin_2, _Ncmd_Cc);
 mkdir("cgl-tmp", 32749);
 strcpy(_Lninja_path_6, "cgl-tmp/ninja-XXXXXXXXX");
 _Lninja_fd_7 = mkstemp(_Lninja_path_6);
 if(_Lninja_fd_7 == _Nstdc_Nfd_Cnil) {
-_Pprint_to_c_usage_1(_Lbin_2);
+_Pprint_c_usage_1(_Lbin_2);
 printf("Error, cannot open file for reading: %s\n", _Lninja_path_6);
 exit(_Nstdc_Nexit_Cfailure);
 }
@@ -203,11 +203,11 @@ return 0;
 void _Pprint_commands_1(char* _Lbin_0) {
 printf("Usage: %s [command] [options]\n", _Lbin_0);
 printf("Commands:\n");
-printf("  to-c     Build a C file.\n");
+printf("  c     Build a C file.\n");
 printf("  run      Compile and run the cgl codes.\n");
 }
-void _Pprint_to_c_usage_1(char* _Lbin_0) {
-printf("Usage: %s to-c [output.c] [cgl file/s...]\n", _Lbin_0);
+void _Pprint_c_usage_1(char* _Lbin_0) {
+printf("Usage: %s c [output.c] [cgl file/s...]\n", _Lbin_0);
 }
 void _Pvalidate_cgl_paths_5(int32_t _Lstart_0, int32_t _Larg_c_1, char** _Larg_v_2, char* _Lbin_3, _Ncmd _Lcmd_4) {
 int32_t _Li_5;
@@ -313,8 +313,8 @@ exit(_Nstdc_Nexit_Cfailure);
 }
 void _Pprint_usage_2(char* _Lbin_0, _Ncmd _Lcmd_1) {
 switch(_Lcmd_1) {
-case _Ncmd_Cto_c:;
-_Pprint_to_c_usage_1(_Lbin_0);
+case _Ncmd_Cc:;
+_Pprint_c_usage_1(_Lbin_0);
 break;
 case _Ncmd_Crun:;
 _Pprint_run_usage_1(_Lbin_0);

@@ -70,62 +70,6 @@
       +n = e.first;
       {do()
          write-str-node(n.len, n.buf);
-         // .out.putc(''\");
-         // +i = 0;
-         // +len = n.len;
-         // {while(i < len)
-         //    {switch(n.buf[i])
-         //       {case(''\0)
-         //          .out.putc(''\\);
-         //          .out.putc(''0);
-         //       }
-         //       {case(''\')
-         //          .out.putc(''\\);
-         //          .out.putc(''\');
-         //       }
-         //       {case(''\")
-         //          .out.putc(''\\);
-         //          .out.putc(''\");
-         //       }
-         //       {case(''\\)
-         //          .out.putc(''\\);
-         //          .out.putc(''\\);
-         //       }
-         //       {case(''\a)
-         //          .out.putc(''\\);
-         //          .out.putc(''a);
-         //       }
-         //       {case(''\b)
-         //          .out.putc(''\\);
-         //          .out.putc(''b);
-         //       }
-         //       {case(''\f)
-         //          .out.putc(''\\);
-         //          .out.putc(''f);
-         //       }
-         //       {case(''\n)
-         //          .out.putc(''\\);
-         //          .out.putc(''n);
-         //       }
-         //       {case(''\r)
-         //          .out.putc(''\\);
-         //          .out.putc(''r);
-         //       }
-         //       {case(''\t)
-         //          .out.putc(''\\);
-         //          .out.putc(''t);
-         //       }
-         //       {case(''\v)
-         //          .out.putc(''\\);
-         //          .out.putc(''v);
-         //       }
-         //       {default
-         //          .out.putc(n.buf[i]);
-         //       }
-         //    }
-         //    i ++;
-         // }
-         // .out.putc(''\");
          n = n.next;
          {if(n == null) break}
          .out.putc(''\n);

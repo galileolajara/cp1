@@ -774,12 +774,12 @@
          'sys.stat(lock-path, +out-stat);
          in-fd.stat(+in-stat);
          {+skip}
-         {if("__APPLE__")
+         "#ifdef __APPLE__";
             skip = (||, out-stat.mtimespec.sec > in-stat.mtimespec.sec, (&&, out-stat.mtimespec.sec == in-stat.mtimespec.sec, out-stat.mtimespec.nsec > in-stat.mtimespec.nsec));
-         }
-         {if("__linux__")
+         "#endif";
+         "#ifdef __linux__";
             skip = (||, out-stat.mtim.sec > in-stat.mtim.sec, (&&, out-stat.mtim.sec == in-stat.mtim.sec, out-stat.mtim.nsec > in-stat.mtim.nsec));
-         }
+         "#endif";
          {if(skip)
             // Skip parsing
             'c.out.printf("Skipping parsing of %s because the output file is newer than the input file\n", .input-path);

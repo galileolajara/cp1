@@ -15,6 +15,17 @@
 {at(:stmt)
    {write-expr(stmt:stmt) @case.write() @inline
       {+s:stmt-expr = stmt}
+		+expr = s.expr.ptr();
+		{if(expr.type == #str)
+			{+e:expr-str = expr}
+			+n = e.first;
+			{do()
+				.out.printf("%.*s\n", n.len, n.buf);
+				n = n.next;
+				{if(n == null) break}
+			}
+			return;
+		}
       s.expr.write();
       .out.printf(";\n");
    }

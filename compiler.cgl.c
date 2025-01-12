@@ -583,18 +583,15 @@ struct _Nglc_Nstmt_if_elif {
 struct _Nglc_Nstmt _Fbase;
 bool _Fnot;
 _Nglc_Nexpr_i _Fexpr;
-struct _Nglc_Nstmt_if* _Fif;
 struct _Nglc_Nvalue _Fval;
 };
 struct _Nglc_Nstmt_if_else;
 struct _Nglc_Nstmt_if_else {
 struct _Nglc_Nstmt _Fbase;
-struct _Nglc_Nstmt_if* _Fif;
 };
 struct _Nglc_Nstmt_if_end;
 struct _Nglc_Nstmt_if_end {
 struct _Nglc_Nstmt _Fbase;
-struct _Nglc_Nstmt_if* _Fif;
 };
 struct _Nglc_Nstmt_switch_case_func;
 struct _Nglc_Nstmt_switch_case_func {
@@ -769,8 +766,6 @@ int32_t _Gexpr_c;
 int32_t _Gexpr_cap;
 struct _Nglc_Nexpr** _Gexpr_v;
 uint8_t* _Gexpr_is_processed;
-uint8_t _Gif_c;
-struct _Nglc_Nstmt_if* _Gif_v[32];
 int32_t _Gnest_stack_id_v[64];
 uint8_t _Gnest_stack_c;
 union _Nglc_Nnest _Gnest_stack_ptr_v[64];
@@ -4162,13 +4157,10 @@ _Nglc_Nstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gc
 }
 inline void _Nglc_Nstmt_space_Prd_if_2(struct _Nglc_Nstmt_space* _Lspace_0, union _Nglc_Nrdr* _Lr_1) {
 struct _Nglc_Nstmt_if* _Ls_2;
-uint8_t _Li_3;
 _Nglc_Pquick_alloc_one_1(_Ls_2);
 (*_Ls_2)._Fnot = _Nglc_Nrdr_Pb_1(_Lr_1);
 _Nglc_Nexpr_i_Prd_2(&(*_Ls_2)._Fexpr, _Lr_1);
 _Nglc_Nstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Nglc_Nstmt_type_Cif);
-_Li_3 = _Gif_c++;
-_Gif_v[_Li_3] = _Ls_2;
 }
 inline void _Nglc_Nstmt_space_Prd_if_elif_2(struct _Nglc_Nstmt_space* _Lspace_0, union _Nglc_Nrdr* _Lr_1) {
 struct _Nglc_Nstmt_if_elif* _Ls_2;
@@ -4176,20 +4168,16 @@ _Nglc_Pquick_alloc_one_1(_Ls_2);
 (*_Ls_2)._Fnot = _Nglc_Nrdr_Pb_1(_Lr_1);
 _Nglc_Nexpr_i_Prd_2(&(*_Ls_2)._Fexpr, _Lr_1);
 _Nglc_Nstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Nglc_Nstmt_type_Cif_elif);
-(*_Ls_2)._Fif = _Gif_v[(_Gif_c - 1)];
 }
 inline void _Nglc_Nstmt_space_Prd_if_else_2(struct _Nglc_Nstmt_space* _Lspace_0, union _Nglc_Nrdr* _Lr_1) {
 struct _Nglc_Nstmt_if_else* _Ls_2;
 _Nglc_Pquick_alloc_one_1(_Ls_2);
 _Nglc_Nstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, 0, 0, 0, 0, _Nglc_Nstmt_type_Cif_else);
-(*_Ls_2)._Fif = _Gif_v[(_Gif_c - 1)];
 }
 inline void _Nglc_Nstmt_space_Prd_if_end_2(struct _Nglc_Nstmt_space* _Lspace_0, union _Nglc_Nrdr* _Lr_1) {
 struct _Nglc_Nstmt_if_end* _Ls_2;
 _Nglc_Pquick_alloc_one_1(_Ls_2);
 _Nglc_Nstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, 0, 0, 0, 0, _Nglc_Nstmt_type_Cif_end);
-_Gif_c--;
-(*_Ls_2)._Fif = _Gif_v[_Gif_c];
 }
 inline void _Nglc_Nstmt_space_Prd_switch_2(struct _Nglc_Nstmt_space* _Lspace_0, union _Nglc_Nrdr* _Lr_1) {
 struct _Nglc_Nstmt_switch* _Ls_2;
@@ -5293,7 +5281,25 @@ return 0;
 }
 inline void _Nglc_Nstmt_Pwrite_expr_1(struct _Nglc_Nstmt* _Lstmt_0) {
 struct _Nglc_Nstmt_expr* _Ls_1;
+struct _Nglc_Nexpr* _Lexpr_2;
 _Ls_1 = _Lstmt_0;
+_Lexpr_2 = _Nglc_Nexpr_i_Pptr_1((*_Ls_1)._Fexpr);
+if((*_Lexpr_2)._Ftype == _Nglc_Nexpr_type_Cstr) {
+struct _Nglc_Nexpr_str* _Le_3;
+struct _Nglc_Nexpr_str_node* _Ln_4;
+_Le_3 = _Lexpr_2;
+_Ln_4 = (*_Le_3)._Ffirst;
+while(1) {
+fprintf(_Gout, "%.*s\n", (*_Ln_4)._Flen, (*_Ln_4)._Fbuf);
+_Ln_4 = (*_Ln_4)._Fnext;
+if(_Ln_4 == NULL) {
+goto break_0;
+}
+continue_0:;
+}
+break_0:;
+return;
+}
 _Nglc_Nexpr_i_Pwrite_1((*_Ls_1)._Fexpr);
 fprintf(_Gout, ";\n");
 }
@@ -5321,9 +5327,6 @@ fprintf(_Gout, ") {\n");
 inline void _Nglc_Nstmt_Pwrite_if_elif_1(struct _Nglc_Nstmt* _Lstmt_0) {
 struct _Nglc_Nstmt_if_elif* _Ls_1;
 _Ls_1 = _Lstmt_0;
-if((*_Nglc_Nexpr_i_Pptr_1((*(*_Ls_1)._Fif)._Fexpr))._Ftype == _Nglc_Nexpr_type_Cstr) {
-return;
-}
 if((*_Ls_1)._Fnot) {
 fprintf(_Gout, "} else if(!(");
 _Nglc_Nexpr_i_Pwrite_value_2((*_Ls_1)._Fexpr, &(*_Ls_1)._Fval);
@@ -5337,19 +5340,11 @@ fprintf(_Gout, ") {\n");
 inline void _Nglc_Nstmt_Pwrite_if_else_1(struct _Nglc_Nstmt* _Lstmt_0) {
 struct _Nglc_Nstmt_if_else* _Ls_1;
 _Ls_1 = _Lstmt_0;
-if((*_Nglc_Nexpr_i_Pptr_1((*(*_Ls_1)._Fif)._Fexpr))._Ftype == _Nglc_Nexpr_type_Cstr) {
-fprintf(_Gout, "#else\n");
-return;
-}
 fprintf(_Gout, "} else {\n");
 }
 inline void _Nglc_Nstmt_Pwrite_if_end_1(struct _Nglc_Nstmt* _Lstmt_0) {
 struct _Nglc_Nstmt_if_end* _Ls_1;
 _Ls_1 = _Lstmt_0;
-if((*_Nglc_Nexpr_i_Pptr_1((*(*_Ls_1)._Fif)._Fexpr))._Ftype == _Nglc_Nexpr_type_Cstr) {
-fprintf(_Gout, "#endif\n");
-return;
-}
 fprintf(_Gout, "}\n");
 }
 inline void _Nglc_Nstmt_Pwrite_switch_1(struct _Nglc_Nstmt* _Lstmt_0) {

@@ -3,11 +3,11 @@
 {print-commands(bin:char[])
    'c.printf("Usage: %s [command] [options]\n", bin);
    'c.printf("Commands:\n");
-   'c.printf("  to-c     Build a C file.\n");
+   'c.printf("  c     Build a C file.\n");
    'c.printf("  run      Compile and run the cgl codes.\n");
 }
-{print-to-c-usage(bin:char[])
-   'c.printf("Usage: %s to-c [output.c] [cgl file/s...]\n", bin);
+{print-c-usage(bin:char[])
+   'c.printf("Usage: %s c [output.c] [cgl file/s...]\n", bin);
 }
 {print-run-usage(bin:char[])
    'c.printf("Usage: %s run [cgl file/s...]\n", bin);
@@ -48,11 +48,11 @@
    'c.printf("Cannot execute '%s run' because the required compiler was not found: tcc clang or gcc\n", bin);
    'c.exit(#failure);
 }
-{:cmd[#to-c, #run]:u8}
+{:cmd[#c, #run]:u8}
 {print-usage(bin:char[], cmd:cmd)
    {switch(cmd)
-      {case(#to-c)
-         print-to-c-usage(bin);
+      {case(#c)
+         print-c-usage(bin);
       }
       {case(#run)
          print-run-usage(bin);
@@ -258,25 +258,25 @@
       'c.exit(#failure);
    }
    +cmd = arg-v[1];
-   {if('c.strcmp(cmd, "to-c") == 0)
+   {if('c.strcmp(cmd, "c") == 0)
       {if(arg-c < 4)
-         print-to-c-usage(bin);
+         print-c-usage(bin);
          'c.exit(#failure);
       }
       +c-path = arg-v[2];
       +c-path-len = 'c.strlen(c-path);
       {if!(&&, c-path-len > 2, c-path[c-path-len - 2] == ''., c-path[c-path-len - 1] == ''c)
-         print-to-c-usage(bin);
+         print-c-usage(bin);
          'c.printf("Error, [output.c] (which is '%s') must be a filename that ends with '.c', for example: main.c\n", c-path);
          'c.exit(#failure);
       }
-      validate-cgl-paths(3, arg-c, arg-v, bin, #to-c);
+      validate-cgl-paths(3, arg-c, arg-v, bin, #c);
       'sys.mkdir("cgl-tmp", 0o755);
       {+ninja-path:char[24]}
       'c.strcpy(ninja-path, "cgl-tmp/ninja-XXXXXXXXX");
       +ninja-fd = 'c.mkstemp(ninja-path);
       {if(ninja-fd == #nil)
-         print-to-c-usage(bin);
+         print-c-usage(bin);
          'c.printf("Error, cannot open file for reading: %s\n", ninja-path);
          'c.exit(#failure);
       }
