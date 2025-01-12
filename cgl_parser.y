@@ -201,7 +201,7 @@ lvar_decl(l) ::= lvar_decl_name(r).
    { _Nglc_Pdecl_var_end_0(); l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 farg ::= lvar_decl(e) typeAndInfo_optional.
    { _Nglc_Pdecl_var_as_farg_2(e.basic.row, e.basic.col); }
-expr_type_this_apply ::= GRAVE_THIS.
+expr_type_this_apply ::= COLON_THIS.
    { _Nglc_Pdecl_var_this_0(); }
 farg ::= lvar_decl expr_type_this_apply typeInfo_optional.
    { _Nglc_Pdecl_var_as_this_0(); }
@@ -249,26 +249,38 @@ func_attrs(l) ::= func_attrs_base func_attr LCBRACE_SPACE(r). */
 func_attrs ::= func_attr.
 func_attrs ::= func_attrs func_attr.
 /*   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; } */
-type_basic_id(l) ::= GRAVE_REF.
+type_basic_id(l) ::= COLON_REF.
    { l.basic.id = 2; }
-type_basic_id(l) ::= GRAVE_BOOL.
+type_basic_id(l) ::= COLON_BOOL.
    { l.basic.id = 3; }
-type_basic_id(l) ::= GRAVE_CHAR.
+type_basic_id(l) ::= COLON_CHAR.
    { l.basic.id = 4; }
-type_basic_id(l) ::= GRAVE_TINT.
+type_basic_id(l) ::= COLON_INTC.
    { l.basic.id = 5; }
-type_basic_id(l) ::= GRAVE_TNUM.
+type_basic_id(l) ::= COLON_I8.
    { l.basic.id = 6; }
-type_basic_id(l) ::= GRAVE_INT.
+type_basic_id(l) ::= COLON_U8.
    { l.basic.id = 7; }
-type_basic_id(l) ::= GRAVE_NUM.
+type_basic_id(l) ::= COLON_I16.
    { l.basic.id = 8; }
-type_basic_id(l) ::= GRAVE_FLOAT.
+type_basic_id(l) ::= COLON_U16.
    { l.basic.id = 9; }
-type_basic_id(l) ::= GRAVE_SIZE.
+type_basic_id(l) ::= COLON_I32.
    { l.basic.id = 10; }
-type_basic_id(l) ::= GRAVE_LNUM.
+type_basic_id(l) ::= COLON_U32.
    { l.basic.id = 11; }
+type_basic_id(l) ::= COLON_I64.
+   { l.basic.id = 12; }
+type_basic_id(l) ::= COLON_U64.
+   { l.basic.id = 13; }
+type_basic_id(l) ::= COLON_ISZ.
+   { l.basic.id = 14; }
+type_basic_id(l) ::= COLON_USZ.
+   { l.basic.id = 15; }
+type_basic_id(l) ::= COLON_F32.
+   { l.basic.id = 16; }
+type_basic_id(l) ::= COLON_F64.
+   { l.basic.id = 17; }
 // expr_type_basic(l) ::= type_basic_id(r). { l.basic.id = _Nglc_Pexpr_type_basic_1(r.basic.id); }
 // expr_type_custom(l) ::= at(r). { l.basic.id = _Nglc_Pexpr_type_1(r.basic.id); }
 // expr_type(l) ::= expr_type_basic(r). { l.basic.id = r.basic.id; }
@@ -606,7 +618,7 @@ exprs(l) ::= expr_and(r).
 exprs(l) ::= expr_or(r).
    { l.basic.id = r.basic.id; }
 
-sizeOfTypeExpr(l) ::= at(at) LBRACKET GRAVE_SIZE RBRACKET.
+sizeOfTypeExpr(l) ::= at(at) LBRACKET COLON_USZ RBRACKET.
    { l.basic.id = _Nglc_Pexpr_size_of_type_1(at.basic.id); }
 
 fastCastExpr(l) ::= value4cast(e) at(at).

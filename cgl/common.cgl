@@ -711,11 +711,26 @@ end-if
                {case(#ref)
                   .out.printf("void*");
                }
-               {case(#u8)
-                  .out.printf("uint8_t");
+               {case(#bool)
+                  .out.printf("bool");
+               }
+               {case(#char)
+                  .out.printf("char");
+               }
+               {case(#intc)
+                  .out.printf("int");
                }
                {case(#i8)
                   .out.printf("int8_t");
+               }
+               {case(#u8)
+                  .out.printf("uint8_t");
+               }
+               {case(#i16)
+                  .out.printf("int16_t");
+               }
+               {case(#u16)
+                  .out.printf("uint16_t");
                }
                {case(#i32)
                   .out.printf("int32_t");
@@ -723,20 +738,23 @@ end-if
                {case(#u32)
                   .out.printf("uint32_t");
                }
+               {case(#i64)
+                  .out.printf("int64_t");
+               }
                {case(#u64)
                   .out.printf("uint64_t");
                }
-               {case(#float)
-                  .out.printf("float");
-               }
-               {case(#bool)
-                  .out.printf("bool");
-               }
-               {case(#char)
-                  .out.printf("char");
+               {case(#isz)
+                  .out.printf("ssize_t");
                }
                {case(#usz)
                   .out.printf("size_t");
+               }
+               {case(#f32)
+                  .out.printf("float");
+               }
+               {case(#f64)
+                  .out.printf("double");
                }
             }
          }
@@ -763,23 +781,50 @@ end-if
                {case(#ref)
                   .out.printf("_Tref");
                }
-               {case(#i32)
-                  .out.printf("_Tint");
-               }
-               {case(#u32)
-                  .out.printf("_Tnum");
-               }
-               {case(#float)
-                  .out.printf("_Tfloat");
-               }
                {case(#bool)
                   .out.printf("_Tbool");
                }
                {case(#char)
                   .out.printf("_Tchar");
                }
+               {case(#intc)
+                  .out.printf("_Tintc");
+               }
+               {case(#i8)
+                  .out.printf("_Ti8");
+               }
+               {case(#u8)
+                  .out.printf("_Tu8");
+               }
+               {case(#i16)
+                  .out.printf("_Ti16");
+               }
+               {case(#u16)
+                  .out.printf("_Tu16");
+               }
+               {case(#i32)
+                  .out.printf("_Ti32");
+               }
+               {case(#u32)
+                  .out.printf("_Tu32");
+               }
+               {case(#i64)
+                  .out.printf("_Ti64");
+               }
+               {case(#u64)
+                  .out.printf("_Tu64");
+               }
+               {case(#isz)
+                  .out.printf("_Tisz");
+               }
                {case(#usz)
-                  .out.printf("_Tsize");
+                  .out.printf("_Tusz");
+               }
+               {case(#f32)
+                  .out.printf("_Tf32");
+               }
+               {case(#f64)
+                  .out.printf("_Tf64");
                }
             }
          }

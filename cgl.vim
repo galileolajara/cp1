@@ -5,7 +5,7 @@ syntax match Default /\([a-zA-Z]\|_\+[a-zA-Z0-9]\)[_a-zA-Z0-9]*\(-[_a-zA-Z0-9]\+
 syntax match Function /\([a-zA-Z]\|_\+[a-zA-Z0-9]\)[_a-zA-Z0-9]*\(-[_a-zA-Z0-9]\+\)*(\@=/
 syntax match Operator "{\@<=\(at\|while\|if\|elif\|else\|switch\|case\|default\|do\|using\|gvar\|cvar\)[a-zA-Z0-9-]\@!"
 syntax match Structure /\(:\|'\)[_a-zA-Z0-9]\+\(-[_a-zA-Z0-9]\+\)*/
-syntax match Operator /:\(ref\|bool\|char\|u8\|i8\|u32\|i32\|float\|usz\|u64\|this\)[a-zA-Z0-9-]\@!/
+syntax match Operator /:\(ref\|bool\|char\|intc\|i8\|u8\|i16\|u16\|i32\|u32\|i64\|u64\|isz\|usz\|f32\|f64\|this\)[a-zA-Z0-9-]\@!/
 syntax match Operator /\(true\|false\|null\|return\|continue\|break\)[a-zA-Z0-9-]\@!/
 syntax match Operator /@\(inline\|main\|case\|process\|real-name\|glc-name\|no-decl\|no-body\|decl\)/
 syntax match String /"\(\\[^\n]\|[^\\\"\n]\)*"/

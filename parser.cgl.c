@@ -57,8 +57,8 @@
 #define _Nglc_Ntoken_Crbracket (_Nglc_Ntoken_Clbracket_space + 1)
 #define _Nglc_Ntoken_Cspace_rbracket (_Nglc_Ntoken_Crbracket + 1)
 #define _Nglc_Ntoken_Ccomma_space_rbracket (_Nglc_Ntoken_Cspace_rbracket + 1)
-#define _Nglc_Ntoken_Cgrave_this (_Nglc_Ntoken_Ccomma_space_rbracket + 1)
-#define _Nglc_Ntoken_Ccomma_space (_Nglc_Ntoken_Cgrave_this + 1)
+#define _Nglc_Ntoken_Ccolon_this (_Nglc_Ntoken_Ccomma_space_rbracket + 1)
+#define _Nglc_Ntoken_Ccomma_space (_Nglc_Ntoken_Ccolon_this + 1)
 #define _Nglc_Ntoken_Cspace_at_main (_Nglc_Ntoken_Ccomma_space + 1)
 #define _Nglc_Ntoken_Cspace_at_case (_Nglc_Ntoken_Cspace_at_main + 1)
 #define _Nglc_Ntoken_Cdot (_Nglc_Ntoken_Cspace_at_case + 1)
@@ -69,17 +69,23 @@
 #define _Nglc_Ntoken_Cstring (_Nglc_Ntoken_Cspace_at_decl + 1)
 #define _Nglc_Ntoken_Cspace_at_var_args (_Nglc_Ntoken_Cstring + 1)
 #define _Nglc_Ntoken_Cspace_at_no_body (_Nglc_Ntoken_Cspace_at_var_args + 1)
-#define _Nglc_Ntoken_Cgrave_ref (_Nglc_Ntoken_Cspace_at_no_body + 1)
-#define _Nglc_Ntoken_Cgrave_bool (_Nglc_Ntoken_Cgrave_ref + 1)
-#define _Nglc_Ntoken_Cgrave_char (_Nglc_Ntoken_Cgrave_bool + 1)
-#define _Nglc_Ntoken_Cgrave_tint (_Nglc_Ntoken_Cgrave_char + 1)
-#define _Nglc_Ntoken_Cgrave_tnum (_Nglc_Ntoken_Cgrave_tint + 1)
-#define _Nglc_Ntoken_Cgrave_int (_Nglc_Ntoken_Cgrave_tnum + 1)
-#define _Nglc_Ntoken_Cgrave_num (_Nglc_Ntoken_Cgrave_int + 1)
-#define _Nglc_Ntoken_Cgrave_float (_Nglc_Ntoken_Cgrave_num + 1)
-#define _Nglc_Ntoken_Cgrave_size (_Nglc_Ntoken_Cgrave_float + 1)
-#define _Nglc_Ntoken_Cgrave_lnum (_Nglc_Ntoken_Cgrave_size + 1)
-#define _Nglc_Ntoken_Campersand (_Nglc_Ntoken_Cgrave_lnum + 1)
+#define _Nglc_Ntoken_Ccolon_ref (_Nglc_Ntoken_Cspace_at_no_body + 1)
+#define _Nglc_Ntoken_Ccolon_bool (_Nglc_Ntoken_Ccolon_ref + 1)
+#define _Nglc_Ntoken_Ccolon_char (_Nglc_Ntoken_Ccolon_bool + 1)
+#define _Nglc_Ntoken_Ccolon_intc (_Nglc_Ntoken_Ccolon_char + 1)
+#define _Nglc_Ntoken_Ccolon_i8 (_Nglc_Ntoken_Ccolon_intc + 1)
+#define _Nglc_Ntoken_Ccolon_u8 (_Nglc_Ntoken_Ccolon_i8 + 1)
+#define _Nglc_Ntoken_Ccolon_i16 (_Nglc_Ntoken_Ccolon_u8 + 1)
+#define _Nglc_Ntoken_Ccolon_u16 (_Nglc_Ntoken_Ccolon_i16 + 1)
+#define _Nglc_Ntoken_Ccolon_i32 (_Nglc_Ntoken_Ccolon_u16 + 1)
+#define _Nglc_Ntoken_Ccolon_u32 (_Nglc_Ntoken_Ccolon_i32 + 1)
+#define _Nglc_Ntoken_Ccolon_i64 (_Nglc_Ntoken_Ccolon_u32 + 1)
+#define _Nglc_Ntoken_Ccolon_u64 (_Nglc_Ntoken_Ccolon_i64 + 1)
+#define _Nglc_Ntoken_Ccolon_isz (_Nglc_Ntoken_Ccolon_u64 + 1)
+#define _Nglc_Ntoken_Ccolon_usz (_Nglc_Ntoken_Ccolon_isz + 1)
+#define _Nglc_Ntoken_Ccolon_f32 (_Nglc_Ntoken_Ccolon_usz + 1)
+#define _Nglc_Ntoken_Ccolon_f64 (_Nglc_Ntoken_Ccolon_f32 + 1)
+#define _Nglc_Ntoken_Campersand (_Nglc_Ntoken_Ccolon_f64 + 1)
 #define _Nglc_Ntoken_Cnum_dec (_Nglc_Ntoken_Campersand + 1)
 #define _Nglc_Ntoken_Cnum_hex (_Nglc_Ntoken_Cnum_dec + 1)
 #define _Nglc_Ntoken_Cnum_oct (_Nglc_Ntoken_Cnum_hex + 1)
@@ -96,9 +102,12 @@
 #define _Nglc_Nbasic_type_id_Cref (_Nglc_Nbasic_type_id_Crelative + 1)
 #define _Nglc_Nbasic_type_id_Cbool (_Nglc_Nbasic_type_id_Cref + 1)
 #define _Nglc_Nbasic_type_id_Cchar (_Nglc_Nbasic_type_id_Cbool + 1)
-#define _Nglc_Nbasic_type_id_Ci8 (_Nglc_Nbasic_type_id_Cchar + 1)
+#define _Nglc_Nbasic_type_id_Cintc (_Nglc_Nbasic_type_id_Cchar + 1)
+#define _Nglc_Nbasic_type_id_Ci8 (_Nglc_Nbasic_type_id_Cintc + 1)
 #define _Nglc_Nbasic_type_id_Cu8 (_Nglc_Nbasic_type_id_Ci8 + 1)
-#define _Nglc_Nbasic_type_id_Ci32 (_Nglc_Nbasic_type_id_Cu8 + 1)
+#define _Nglc_Nbasic_type_id_Ci16 (_Nglc_Nbasic_type_id_Cu8 + 1)
+#define _Nglc_Nbasic_type_id_Cu16 (_Nglc_Nbasic_type_id_Ci16 + 1)
+#define _Nglc_Nbasic_type_id_Ci32 (_Nglc_Nbasic_type_id_Cu16 + 1)
 #define _Nglc_Nexpr_int_Cdec 0
 #define _Nglc_Nunary_Cneg 0
 #define _Nglc_Ncompare_Ceq 0
@@ -1076,7 +1085,7 @@ case _Nglc_Ntoken_Clbracket_space: return "lbracket-space";
 case _Nglc_Ntoken_Crbracket: return "rbracket";
 case _Nglc_Ntoken_Cspace_rbracket: return "space-rbracket";
 case _Nglc_Ntoken_Ccomma_space_rbracket: return "comma-space-rbracket";
-case _Nglc_Ntoken_Cgrave_this: return "grave-this";
+case _Nglc_Ntoken_Ccolon_this: return "colon-this";
 case _Nglc_Ntoken_Ccomma_space: return "comma-space";
 case _Nglc_Ntoken_Cspace_at_main: return "space-at-main";
 case _Nglc_Ntoken_Cspace_at_case: return "space-at-case";
@@ -1088,16 +1097,22 @@ case _Nglc_Ntoken_Cspace_at_decl: return "space-at-decl";
 case _Nglc_Ntoken_Cstring: return "string";
 case _Nglc_Ntoken_Cspace_at_var_args: return "space-at-var-args";
 case _Nglc_Ntoken_Cspace_at_no_body: return "space-at-no-body";
-case _Nglc_Ntoken_Cgrave_ref: return "grave-ref";
-case _Nglc_Ntoken_Cgrave_bool: return "grave-bool";
-case _Nglc_Ntoken_Cgrave_char: return "grave-char";
-case _Nglc_Ntoken_Cgrave_tint: return "grave-tint";
-case _Nglc_Ntoken_Cgrave_tnum: return "grave-tnum";
-case _Nglc_Ntoken_Cgrave_int: return "grave-int";
-case _Nglc_Ntoken_Cgrave_num: return "grave-num";
-case _Nglc_Ntoken_Cgrave_float: return "grave-float";
-case _Nglc_Ntoken_Cgrave_size: return "grave-size";
-case _Nglc_Ntoken_Cgrave_lnum: return "grave-lnum";
+case _Nglc_Ntoken_Ccolon_ref: return "colon-ref";
+case _Nglc_Ntoken_Ccolon_bool: return "colon-bool";
+case _Nglc_Ntoken_Ccolon_char: return "colon-char";
+case _Nglc_Ntoken_Ccolon_intc: return "colon-intc";
+case _Nglc_Ntoken_Ccolon_i8: return "colon-i8";
+case _Nglc_Ntoken_Ccolon_u8: return "colon-u8";
+case _Nglc_Ntoken_Ccolon_i16: return "colon-i16";
+case _Nglc_Ntoken_Ccolon_u16: return "colon-u16";
+case _Nglc_Ntoken_Ccolon_i32: return "colon-i32";
+case _Nglc_Ntoken_Ccolon_u32: return "colon-u32";
+case _Nglc_Ntoken_Ccolon_i64: return "colon-i64";
+case _Nglc_Ntoken_Ccolon_u64: return "colon-u64";
+case _Nglc_Ntoken_Ccolon_isz: return "colon-isz";
+case _Nglc_Ntoken_Ccolon_usz: return "colon-usz";
+case _Nglc_Ntoken_Ccolon_f32: return "colon-f32";
+case _Nglc_Ntoken_Ccolon_f64: return "colon-f64";
 case _Nglc_Ntoken_Campersand: return "ampersand";
 case _Nglc_Ntoken_Cnum_dec: return "num-dec";
 case _Nglc_Ntoken_Cnum_hex: return "num-hex";

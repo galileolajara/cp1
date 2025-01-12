@@ -14,14 +14,20 @@
 #define _Nglc_Nbasic_type_id_Cref (_Nglc_Nbasic_type_id_Crelative + 1)
 #define _Nglc_Nbasic_type_id_Cbool (_Nglc_Nbasic_type_id_Cref + 1)
 #define _Nglc_Nbasic_type_id_Cchar (_Nglc_Nbasic_type_id_Cbool + 1)
-#define _Nglc_Nbasic_type_id_Ci8 (_Nglc_Nbasic_type_id_Cchar + 1)
+#define _Nglc_Nbasic_type_id_Cintc (_Nglc_Nbasic_type_id_Cchar + 1)
+#define _Nglc_Nbasic_type_id_Ci8 (_Nglc_Nbasic_type_id_Cintc + 1)
 #define _Nglc_Nbasic_type_id_Cu8 (_Nglc_Nbasic_type_id_Ci8 + 1)
-#define _Nglc_Nbasic_type_id_Ci32 (_Nglc_Nbasic_type_id_Cu8 + 1)
+#define _Nglc_Nbasic_type_id_Ci16 (_Nglc_Nbasic_type_id_Cu8 + 1)
+#define _Nglc_Nbasic_type_id_Cu16 (_Nglc_Nbasic_type_id_Ci16 + 1)
+#define _Nglc_Nbasic_type_id_Ci32 (_Nglc_Nbasic_type_id_Cu16 + 1)
 #define _Nglc_Nbasic_type_id_Cu32 (_Nglc_Nbasic_type_id_Ci32 + 1)
-#define _Nglc_Nbasic_type_id_Cfloat (_Nglc_Nbasic_type_id_Cu32 + 1)
-#define _Nglc_Nbasic_type_id_Cusz (_Nglc_Nbasic_type_id_Cfloat + 1)
-#define _Nglc_Nbasic_type_id_Cu64 (_Nglc_Nbasic_type_id_Cusz + 1)
-#define _Nglc_Nbasic_type_id_CCOUNT (_Nglc_Nbasic_type_id_Cu64 + 1)
+#define _Nglc_Nbasic_type_id_Ci64 (_Nglc_Nbasic_type_id_Cu32 + 1)
+#define _Nglc_Nbasic_type_id_Cu64 (_Nglc_Nbasic_type_id_Ci64 + 1)
+#define _Nglc_Nbasic_type_id_Cisz (_Nglc_Nbasic_type_id_Cu64 + 1)
+#define _Nglc_Nbasic_type_id_Cusz (_Nglc_Nbasic_type_id_Cisz + 1)
+#define _Nglc_Nbasic_type_id_Cf32 (_Nglc_Nbasic_type_id_Cusz + 1)
+#define _Nglc_Nbasic_type_id_Cf64 (_Nglc_Nbasic_type_id_Cf32 + 1)
+#define _Nglc_Nbasic_type_id_CCOUNT (_Nglc_Nbasic_type_id_Cf64 + 1)
 #define _Nglc_Nname_type_Cmodule 0
 #define _Nglc_Nname_type_Cstruct_enum (_Nglc_Nname_type_Cmodule + 1)
 #define _Nglc_Nname_type_Cbasic (_Nglc_Nname_type_Cstruct_enum + 1)
@@ -2414,11 +2420,26 @@ switch((*_Lat_1)._Fname._Fbasic) {
 case _Nglc_Nbasic_type_id_Cref:;
 fprintf(_Gout, "void*");
 break;
-case _Nglc_Nbasic_type_id_Cu8:;
-fprintf(_Gout, "uint8_t");
+case _Nglc_Nbasic_type_id_Cbool:;
+fprintf(_Gout, "bool");
+break;
+case _Nglc_Nbasic_type_id_Cchar:;
+fprintf(_Gout, "char");
+break;
+case _Nglc_Nbasic_type_id_Cintc:;
+fprintf(_Gout, "int");
 break;
 case _Nglc_Nbasic_type_id_Ci8:;
 fprintf(_Gout, "int8_t");
+break;
+case _Nglc_Nbasic_type_id_Cu8:;
+fprintf(_Gout, "uint8_t");
+break;
+case _Nglc_Nbasic_type_id_Ci16:;
+fprintf(_Gout, "int16_t");
+break;
+case _Nglc_Nbasic_type_id_Cu16:;
+fprintf(_Gout, "uint16_t");
 break;
 case _Nglc_Nbasic_type_id_Ci32:;
 fprintf(_Gout, "int32_t");
@@ -2426,20 +2447,23 @@ break;
 case _Nglc_Nbasic_type_id_Cu32:;
 fprintf(_Gout, "uint32_t");
 break;
+case _Nglc_Nbasic_type_id_Ci64:;
+fprintf(_Gout, "int64_t");
+break;
 case _Nglc_Nbasic_type_id_Cu64:;
 fprintf(_Gout, "uint64_t");
 break;
-case _Nglc_Nbasic_type_id_Cfloat:;
-fprintf(_Gout, "float");
-break;
-case _Nglc_Nbasic_type_id_Cbool:;
-fprintf(_Gout, "bool");
-break;
-case _Nglc_Nbasic_type_id_Cchar:;
-fprintf(_Gout, "char");
+case _Nglc_Nbasic_type_id_Cisz:;
+fprintf(_Gout, "ssize_t");
 break;
 case _Nglc_Nbasic_type_id_Cusz:;
 fprintf(_Gout, "size_t");
+break;
+case _Nglc_Nbasic_type_id_Cf32:;
+fprintf(_Gout, "float");
+break;
+case _Nglc_Nbasic_type_id_Cf64:;
+fprintf(_Gout, "double");
 break;
 }
 break;
@@ -2466,23 +2490,50 @@ switch((*_Lat_1)._Fname._Fbasic) {
 case _Nglc_Nbasic_type_id_Cref:;
 fprintf(_Gout, "_Tref");
 break;
-case _Nglc_Nbasic_type_id_Ci32:;
-fprintf(_Gout, "_Tint");
-break;
-case _Nglc_Nbasic_type_id_Cu32:;
-fprintf(_Gout, "_Tnum");
-break;
-case _Nglc_Nbasic_type_id_Cfloat:;
-fprintf(_Gout, "_Tfloat");
-break;
 case _Nglc_Nbasic_type_id_Cbool:;
 fprintf(_Gout, "_Tbool");
 break;
 case _Nglc_Nbasic_type_id_Cchar:;
 fprintf(_Gout, "_Tchar");
 break;
+case _Nglc_Nbasic_type_id_Cintc:;
+fprintf(_Gout, "_Tintc");
+break;
+case _Nglc_Nbasic_type_id_Ci8:;
+fprintf(_Gout, "_Ti8");
+break;
+case _Nglc_Nbasic_type_id_Cu8:;
+fprintf(_Gout, "_Tu8");
+break;
+case _Nglc_Nbasic_type_id_Ci16:;
+fprintf(_Gout, "_Ti16");
+break;
+case _Nglc_Nbasic_type_id_Cu16:;
+fprintf(_Gout, "_Tu16");
+break;
+case _Nglc_Nbasic_type_id_Ci32:;
+fprintf(_Gout, "_Ti32");
+break;
+case _Nglc_Nbasic_type_id_Cu32:;
+fprintf(_Gout, "_Tu32");
+break;
+case _Nglc_Nbasic_type_id_Ci64:;
+fprintf(_Gout, "_Ti64");
+break;
+case _Nglc_Nbasic_type_id_Cu64:;
+fprintf(_Gout, "_Tu64");
+break;
+case _Nglc_Nbasic_type_id_Cisz:;
+fprintf(_Gout, "_Tisz");
+break;
 case _Nglc_Nbasic_type_id_Cusz:;
-fprintf(_Gout, "_Tsize");
+fprintf(_Gout, "_Tusz");
+break;
+case _Nglc_Nbasic_type_id_Cf32:;
+fprintf(_Gout, "_Tf32");
+break;
+case _Nglc_Nbasic_type_id_Cf64:;
+fprintf(_Gout, "_Tf64");
 break;
 }
 break;

@@ -32,7 +32,7 @@ void _Pprint_commands_1(char* _Lbin_0);
 void _Pprint_c_usage_1(char* _Lbin_0);
 void _Pvalidate_cgl_paths_5(int32_t _Lstart_0, int32_t _Larg_c_1, char** _Larg_v_2, char* _Lbin_3, _Ncmd _Lcmd_4);
 struct FILE* _Nstdc_Nfd_Pfopen_2(_Nstdc_Nfd _Lfile_0, char* _Lmode_1);
-int32_t _Nstdc_Nfile_Pclose_1(struct FILE* _Lf_0);
+int _Nstdc_Nfile_Pclose_1(struct FILE* _Lf_0);
 void _Pprint_run_usage_1(char* _Lbin_0);
 int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0);
 void _Pget_compiler_2(char* _Lbin_0, struct FILE* _Lninja_f_1);
@@ -263,7 +263,7 @@ break_0:;
 inline struct FILE* _Nstdc_Nfd_Pfopen_2(_Nstdc_Nfd _Lfile_0, char* _Lmode_1) {
 return fdopen(_Lfile_0, _Lmode_1);
 }
-inline int32_t _Nstdc_Nfile_Pclose_1(struct FILE* _Lf_0) {
+inline int _Nstdc_Nfile_Pclose_1(struct FILE* _Lf_0) {
 return fclose(_Lf_0);
 }
 void _Pprint_run_usage_1(char* _Lbin_0) {

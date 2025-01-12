@@ -162,21 +162,27 @@ int glc_lexer_scan(struct glc_lexer* l) {
    "(&&," spaces                    { return GLC_TOKEN_LPAREN_AMP_AMP_COMMA_SPACE; }
    "(||," spaces                    { return GLC_TOKEN_LPAREN_PIPE_PIPE_COMMA_SPACE; }
 
-   ":ref"                           { return GLC_TOKEN_GRAVE_REF; }
-   ":bool"                          { return GLC_TOKEN_GRAVE_BOOL; }
-   ":char"                          { return GLC_TOKEN_GRAVE_CHAR; }
-   ":u8"                            { return GLC_TOKEN_GRAVE_TNUM; }
-   ":i8"                            { return GLC_TOKEN_GRAVE_TINT; }
-   ":i32"                           { return GLC_TOKEN_GRAVE_INT; }
-   ":u32"                           { return GLC_TOKEN_GRAVE_NUM; }
-   ":float"                         { return GLC_TOKEN_GRAVE_FLOAT; }
-   ":usz"                           { return GLC_TOKEN_GRAVE_SIZE; }
-   ":u64"                           { return GLC_TOKEN_GRAVE_LNUM; }
+   ":ref"                           { return GLC_TOKEN_COLON_REF; }
+   ":bool"                          { return GLC_TOKEN_COLON_BOOL; }
+   ":char"                          { return GLC_TOKEN_COLON_CHAR; }
+   ":intc"                          { return GLC_TOKEN_COLON_INTC; }
+   ":i8"                            { return GLC_TOKEN_COLON_I8; }
+   ":u8"                            { return GLC_TOKEN_COLON_U8; }
+   ":i16"                           { return GLC_TOKEN_COLON_I16; }
+   ":u16"                           { return GLC_TOKEN_COLON_U16; }
+   ":i32"                           { return GLC_TOKEN_COLON_I32; }
+   ":u32"                           { return GLC_TOKEN_COLON_U32; }
+   ":i64"                           { return GLC_TOKEN_COLON_I64; }
+   ":u64"                           { return GLC_TOKEN_COLON_U64; }
+   ":isz"                           { return GLC_TOKEN_COLON_ISZ; }
+   ":usz"                           { return GLC_TOKEN_COLON_USZ; }
+   ":f32"                           { return GLC_TOKEN_COLON_F32; }
+   ":f64"                           { return GLC_TOKEN_COLON_F64; }
 
-   ":this"                          { return GLC_TOKEN_GRAVE_THIS; }
-   "true"                          { return GLC_TOKEN_TRUE; }
-   "false"                         { return GLC_TOKEN_FALSE; }
-   "null"                          { return GLC_TOKEN_NULL; }
+   ":this"                          { return GLC_TOKEN_COLON_THIS; }
+   "true"                           { return GLC_TOKEN_TRUE; }
+   "false"                          { return GLC_TOKEN_FALSE; }
+   "null"                           { return GLC_TOKEN_NULL; }
 
    spaces "==" spaces               { return GLC_TOKEN_SPACE_EQUAL_EQUAL_SPACE; }
    spaces "!=" spaces               { return GLC_TOKEN_SPACE_EXPOINT_EQUAL_SPACE; }
