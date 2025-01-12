@@ -74,6 +74,15 @@
       'c.exit(#failure);
    }
    +in-size = in-fd.seek(0, #end);
+	{if(in-size == 0)
+		// Retry after 1 second
+		'c.sleep(1);
+		in-size = in-fd.seek(0, #end);
+		{if(in-size == 0)
+			'c.out.printf("Error, file is blank (zero bytes): %s\n", in-path);
+			'c.exit(#failure);
+		}
+	}
    {+r-begin:rdr+}
    // {if(true)
    //    r-begin.ref = in-fd.map(null, in-size, #read, #shared, 0);

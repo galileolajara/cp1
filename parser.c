@@ -90,9 +90,9 @@ struct glc_lexer {
    const char *content;
    const char *start;
    const char *cursor;
-   const char *limit;
+   // const char *limit;
    const char *marker;
-   const char *ctx_marker;
+   // const char *ctx_marker;
 };
 
 void* _Nglc_Nparser_Palloc_0() {

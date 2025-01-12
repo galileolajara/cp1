@@ -411,9 +411,6 @@ struct _Nglc_Nlexer {
 uint8_t* _Fcontent;
 uint8_t* _Fstart;
 uint8_t* _Fcursor;
-uint8_t* _Flimit;
-uint8_t* _Fmarker;
-uint8_t* _Fctx_marker;
 };
 struct _Nglc_Ntoken_data;
 struct _Nglc_Ntoken_data {
@@ -1319,8 +1316,8 @@ struct stat _Lout_stat_5;
 struct stat _Lin_stat_6;
 stat(_Llock_path_3, &_Lout_stat_5);
 _Nstdc_Nfd_Pstat_2(_Lin_fd_2, &_Lin_stat_6);
-if(((_Lout_stat_5.st_mtimespec.tv_sec > _Lin_stat_6.st_mtimespec.tv_sec) || ((_Lout_stat_5.st_mtimespec.tv_sec == _Lin_stat_6.st_mtimespec.tv_sec) && (_Lout_stat_5.st_mtimespec.tv_nsec > _Lin_stat_6.st_mtimespec.tv_nsec)))) {
-fprintf(stdout, "Skipping parsing of %s because the output file is newer\n", input_path);
+if(((_Lout_stat_5.st_mtim.tv_sec > _Lin_stat_6.st_mtim.tv_sec) || ((_Lout_stat_5.st_mtim.tv_sec == _Lin_stat_6.st_mtim.tv_sec) && (_Lout_stat_5.st_mtim.tv_nsec > _Lin_stat_6.st_mtim.tv_nsec)))) {
+fprintf(stdout, "Skipping parsing of %s because the output file is newer than the input file\n", input_path);
 return 0;
 }
 } else {
@@ -2114,8 +2111,6 @@ void* _Lnew_data_6;
 union _Nglc_Nwtr _Lw_7;
 int32_t _Lline_8;
 union _Nglc_Nwtr _Lw_begin_23;
-char _Lpath_24[256];
-_Nstdc_Nfd _Lfd_25;
 _Lin_data_2 = (*_Lin_out_data_0);
 _Lin_size_3 = (*_Lin_out_size_1);
 _Lr_end_4._Fref = _Lin_data_2;
@@ -2272,17 +2267,11 @@ free(_Lin_data_2);
 (*_Lin_out_data_0) = _Lnew_data_6;
 _Lw_begin_23._Fref = _Lnew_data_6;
 (*_Lin_out_size_1) = (_Lw_7._Fpos - _Lw_begin_23._Fpos);
-sprintf(_Lpath_24, "%s-p", input_path);
-printf("writing the preprocessed file to %s\n", _Lpath_24);
-_Nstdc_Nfd_Popen_4(&_Lfd_25, _Lpath_24, O_WRONLY | O_TRUNC | O_CREAT, 32676);
-write(_Lfd_25, _Lnew_data_6, _Lw_7._Fpos - _Lw_begin_23._Fpos);
-_Nstdc_Nfd_Pclose_1(_Lfd_25);
 }
 void _Nglc_Nlexer_Pinit_3(struct _Nglc_Nlexer* _Llex_0, uint8_t* _Ldata_1, size_t _Lsize_2) {
 (*_Llex_0)._Fstart = _Ldata_1;
 (*_Llex_0)._Fcursor = _Ldata_1;
 (*_Llex_0)._Fcontent = _Ldata_1;
-(*_Llex_0)._Flimit = &_Ldata_1[_Lsize_2];
 }
 int32_t _Nglc_Nlexer_Pget_id_3(struct _Nglc_Nlexer* _Llex_0, uint8_t _Lbegin_1, uint8_t _Lend_2) {
 union _Nglc_Nrdr _Lr_start_3;

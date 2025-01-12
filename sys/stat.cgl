@@ -13,11 +13,4 @@
       {fstat(file:i32, stat:stat):i32 @real-name @no-decl}
       {stat(file:char[], stat:stat):i32 @real-name @no-decl}
    }
-   {at(:stdc)
-      {at(:fd)
-         {stat(file:this, stat'sys:stat):i32 @inline
-            return 'sys.fstat(file, stat);
-         }
-      }
-   }
 }

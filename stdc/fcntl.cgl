@@ -1,4 +1,5 @@
 {include(<fcntl.h>)
+   {using 'sys = :sys}
    {using 'c = :stdc}
    {at(:stdc)
       {:fd[#nil = -1]:i32
@@ -25,6 +26,9 @@
          }
          {close(file:this):i32 @inline
             return 'c.close(file);
+         }
+         {stat(file:this, stat'sys:stat):i32 @inline
+            return 'sys.fstat(file, stat);
          }
       }
       {:open-flags[

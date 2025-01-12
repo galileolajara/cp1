@@ -251,15 +251,15 @@
    content:u8[],
    start:u8[],
    cursor:u8[],
-   limit:u8[],
-   marker:u8[],
-   ctx-marker:u8[],
+   // limit:u8[],
+   // marker:u8[],
+   // ctx-marker:u8[],
    )
    {init(lex:this, data:u8[], size:usz)
       lex.start = data;
       lex.cursor = data;
       lex.content = data;
-      lex.limit = & data[size];
+      // lex.limit = & data[size];
    }
    {scan(lex:this):token @real-name(glc_lexer_scan)}
    {get-u32-oct(lex:this):u32
@@ -775,7 +775,7 @@
          in-fd.stat(+in-stat);
          {if(||, out-stat.mtime.sec > in-stat.mtime.sec, (&&, out-stat.mtime.sec == in-stat.mtime.sec, out-stat.mtime.nsec > in-stat.mtime.nsec))
             // Skip parsing
-            'c.out.printf("Skipping parsing of %s because the output file is newer\n", .input-path);
+            'c.out.printf("Skipping parsing of %s because the output file is newer than the input file\n", .input-path);
             return 0;
          }
       }{else
