@@ -175,15 +175,15 @@ typedef uint8_t _Nglc_Nstmt_type;
 typedef uint8_t _Nglc_Nstmt_space_flags;
 typedef int32_t _Nglc_Nlvar;
 typedef uint8_t _Nglc_Nlvar_flags;
-typedef int32_t _Nstdc_Nexit;
+typedef int _Nstdc_Nexit;
 typedef uint8_t _Nglc_Nstruct_flags;
 typedef uint8_t _Nglc_Nenum_flags;
 typedef uint8_t _Nglc_Ncvar_flags;
 typedef uint8_t _Nglc_Ndecl_var_type;
 typedef uint8_t _Nglc_Ngvar_flags;
-typedef int32_t _Nstdc_Nfd;
-typedef int32_t _Nstdc_Nopen_flags;
-typedef int32_t _Nstdc_Nseek;
+typedef int _Nstdc_Nfd;
+typedef int _Nstdc_Nopen_flags;
+typedef int _Nstdc_Nseek;
 typedef uint8_t _Nglc_Nexpr_type;
 typedef uint8_t _Nglc_Nexpr_flags;
 typedef uint8_t _Nglc_Nassign;
@@ -814,7 +814,7 @@ bool _Nglc_Nat_Pwrite_type_info_3(_Nglc_Nat _Ltd_0, struct _Nglc_Ntype_info* _Lt
 void _Nglc_Ndecl_var_data_Pwrite_lvar_type_2(struct _Nglc_Ndecl_var_data* _Lvd_0, _Nglc_Nlvar _Llvar_1);
 void _Nglc_Nstmt_space_Pwrite_1(struct _Nglc_Nstmt_space* _Lspace_0);
 bool _Nstdc_Nfd_Popen_3(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2);
-int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0);
+int _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0);
 uint8_t _Nglc_Nrdr_Pn1_1(union _Nglc_Nrdr* _Lr_0);
 int32_t _Nglc_Nmap_Pget_or_insert_4(struct _Nglc_Nmap* _Lm_0, char* _Lstr_1, uint8_t _Llen_2, int32_t _Lval_3);
 void _Nglc_Nname_type_Prd_2(_Nglc_Nname_type* _Li_0, union _Nglc_Nrdr* _Lr_1);
@@ -2652,7 +2652,7 @@ return true;
 return false;
 }
 }
-inline int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0) {
+inline int _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0) {
 return close(_Lfile_0);
 }
 inline uint8_t _Nglc_Nrdr_Pn1_1(union _Nglc_Nrdr* _Lr_0) {

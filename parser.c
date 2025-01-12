@@ -1,3 +1,6 @@
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#endif
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
@@ -23,14 +26,38 @@ union glc_token {
 void _Nglc_Ppreprocess_def_2(const char*, uint8_t);
 
 void _Nglc_Ppreprocess_init_0() {
+#ifdef _WIN32
+   _Nglc_Ppreprocess_def_2("windows", 7);
+#endif
 #ifdef __APPLE__
    _Nglc_Ppreprocess_def_2("apple", 5);
+	#ifdef TARGET_OS_MAC
+   _Nglc_Ppreprocess_def_2("macos", 5);
+	#endif
 #endif
 #ifdef __linux__
    _Nglc_Ppreprocess_def_2("linux", 5);
 #endif
-#ifdef _WIN32
-   _Nglc_Ppreprocess_def_2("windows", 7);
+#ifdef __unix__
+   _Nglc_Ppreprocess_def_2("unix", 4);
+#endif
+#ifdef BSD
+   _Nglc_Ppreprocess_def_2("bsd", 3);
+#endif
+#ifdef __FreeBSD__
+   _Nglc_Ppreprocess_def_2("freebsd", 7);
+#endif
+#ifdef __OpenBSD__
+   _Nglc_Ppreprocess_def_2("openbsd", 7);
+#endif
+#ifdef __NetBSD__
+   _Nglc_Ppreprocess_def_2("netbsd", 6);
+#endif
+#ifdef __DragonFly__
+   _Nglc_Ppreprocess_def_2("dragonfly", 9);
+#endif
+#if defined(_LP64) || defined(__LP64__)
+   _Nglc_Ppreprocess_def_2("cpu64", 5);
 #endif
 }
 

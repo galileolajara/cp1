@@ -12,11 +12,11 @@
 #define _Ncmd_Cc 0
 #define _Nstdc_Nfd_Cnil (-1)
 #define _Ncmd_Crun (_Ncmd_Cc + 1)
-typedef int32_t _Nstdc_Nexit;
+typedef int _Nstdc_Nexit;
 typedef uint8_t _Ncmd;
-typedef int32_t _Nstdc_Nfd;
-typedef int32_t _Nstdc_Nopen_flags;
-typedef int32_t _Nstdc_Nseek;
+typedef int _Nstdc_Nfd;
+typedef int _Nstdc_Nopen_flags;
+typedef int _Nstdc_Nseek;
 int32_t _Gcgl_path_c;
 char** _Gcgl_path_v;
 char** _Gcgl_path_real_v;
@@ -34,7 +34,7 @@ void _Pvalidate_cgl_paths_5(int32_t _Lstart_0, int32_t _Larg_c_1, char** _Larg_v
 struct FILE* _Nstdc_Nfd_Pfopen_2(_Nstdc_Nfd _Lfile_0, char* _Lmode_1);
 int _Nstdc_Nfile_Pclose_1(struct FILE* _Lf_0);
 void _Pprint_run_usage_1(char* _Lbin_0);
-int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0);
+int _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0);
 void _Pget_compiler_2(char* _Lbin_0, struct FILE* _Lninja_f_1);
 void _Pprint_usage_2(char* _Lbin_0, _Ncmd _Lcmd_1);
 void _Pcgl_path_input_4(char* _Lcgl_path_0, int32_t _Lcgl_path_len_1, char* _Lbin_2, _Ncmd _Lcmd_3);
@@ -56,7 +56,7 @@ char _Lninja_path_6[24];
 _Nstdc_Nfd _Lninja_fd_7;
 struct FILE* _Lninja_f_8;
 char _Lcommand_11[24 + 9];
-int32_t _Lret_12;
+int _Lret_12;
 if(_Larg_c_0 < 4) {
 _Pprint_c_usage_1(_Lbin_2);
 exit(_Nstdc_Nexit_Cfailure);
@@ -118,8 +118,8 @@ char _Lninja_path_17[24];
 _Nstdc_Nfd _Lninja_fd_18;
 struct FILE* _Lninja_f_19;
 char _Lcommand_22[24 + 9];
-int32_t _Lninja_ret_23;
-int32_t _Lexe_ret_24;
+int _Lninja_ret_23;
+int _Lexe_ret_24;
 if(_Larg_c_0 < 3) {
 _Pprint_run_usage_1(_Lbin_2);
 exit(_Nstdc_Nexit_Cfailure);
@@ -269,7 +269,7 @@ return fclose(_Lf_0);
 void _Pprint_run_usage_1(char* _Lbin_0) {
 printf("Usage: %s run [cgl file/s...]\n", _Lbin_0);
 }
-inline int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0) {
+inline int _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0) {
 return close(_Lfile_0);
 }
 void _Pget_compiler_2(char* _Lbin_0, struct FILE* _Lninja_f_1) {

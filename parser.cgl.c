@@ -245,10 +245,10 @@
 #define _Nglc_Ntoken_Clcbrace_gvar_space (_Nglc_Ntoken_Cspace_at_union + 1)
 typedef int32_t _Nglc_Nfunc;
 typedef int32_t _Nglc_Ninclude;
-typedef int32_t _Nstdc_Nfd;
-typedef int32_t _Nstdc_Nopen_flags;
-typedef int32_t _Nstdc_Nexit;
-typedef int32_t _Nstdc_Nseek;
+typedef int _Nstdc_Nfd;
+typedef int _Nstdc_Nopen_flags;
+typedef int _Nstdc_Nexit;
+typedef int _Nstdc_Nseek;
 typedef int32_t _Nglc_Nat;
 typedef uint8_t _Nglc_Nname_type;
 typedef int32_t _Nglc_Nid;
@@ -859,9 +859,9 @@ void _Nglc_Nmap_Pinit_1(struct _Nglc_Nmap* _Lm_0);
 void _Nglc_Nat_map_Pinit_1(struct _Nglc_Nat_map* _Lm_0);
 void _Nglc_Pquick_alloc_init_0();
 bool _Nstdc_Nfd_Popen_3(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2);
-int32_t _Nstdc_Nfd_Pstat_2(_Nstdc_Nfd _Lfile_0, struct stat* _Lstat_1);
+int _Nstdc_Nfd_Pstat_2(_Nstdc_Nfd _Lfile_0, struct stat* _Lstat_1);
 void _Nglc_Pparser_at_exit_0();
-int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0);
+int _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0);
 void _Nglc_Pget_row_col_4(int32_t* _Lout_row_0, int32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3);
 void _Nglc_Pparse_comment_4(union _Nglc_Nrdr* _Lr_0, union _Nglc_Nwtr* _Lw_1, char _Lending_2, void* _Lin_data_3);
 void _Nglc_Pparse_string_4(union _Nglc_Nrdr* _Lr_0, union _Nglc_Nwtr* _Lw_1, char _Lending_2, void* _Lin_data_3);
@@ -891,7 +891,7 @@ void _Nglc_Pwrite_gvar_2(union _Nglc_Nwtr* _Lw_0, bool _Lheader_1);
 void _Nglc_Pwrite_enum_2(union _Nglc_Nwtr* _Lw_0, bool _Lheader_1);
 void _Nglc_Pwrite_struct_2(union _Nglc_Nwtr* _Lw_0, bool _Lheader_1);
 void _Nglc_Pwrite_func_2(union _Nglc_Nwtr* _Lw_0, bool _Lheader_1);
-bool _Nstdc_Nfd_Popen_4(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2, int32_t _Lmode_3);
+bool _Nstdc_Nfd_Popen_4(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2, int _Lmode_3);
 void _Nglc_Nat_Pwr_header_2(_Nglc_Nat _Lid_0, union _Nglc_Nwtr* _Lw_1);
 void _Nglc_Nid_Pwr_header_2(_Nglc_Nid _Lid_0, union _Nglc_Nwtr* _Lw_1);
 void qalloc_undo(int32_t _Lsize_0);
@@ -2036,10 +2036,10 @@ return true;
 return false;
 }
 }
-inline int32_t _Nstdc_Nfd_Pstat_2(_Nstdc_Nfd _Lfile_0, struct stat* _Lstat_1) {
+inline int _Nstdc_Nfd_Pstat_2(_Nstdc_Nfd _Lfile_0, struct stat* _Lstat_1) {
 return fstat(_Lfile_0, _Lstat_1);
 }
-inline int32_t _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0) {
+inline int _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0) {
 return close(_Lfile_0);
 }
 void _Nglc_Pget_row_col_4(int32_t* _Lout_row_0, int32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3) {
@@ -2126,170 +2126,199 @@ continue_0:;
 break_0:;
 }
 void _Nglc_Ppreprocess_2(void** _Lin_out_data_0, size_t* _Lin_out_size_1) {
-char* _Lin_data_2;
-size_t _Lin_size_3;
-union _Nglc_Nrdr _Lr_end_4;
-union _Nglc_Nrdr _Lr_5;
-void* _Lnew_data_6;
-union _Nglc_Nwtr _Lw_7;
-int32_t _Lline_8;
-union _Nglc_Nwtr _Lw_begin_23;
-_Lin_data_2 = (*_Lin_out_data_0);
-_Lin_size_3 = (*_Lin_out_size_1);
-_Lr_end_4._Fref = _Lin_data_2;
-_Lr_end_4._Fpos += _Lin_size_3;
-_Lr_5._Fref = _Lin_data_2;
-_Lnew_data_6 = malloc(_Lin_size_3 + 1);
-_Lw_7._Fref = _Lnew_data_6;
-_Lline_8 = 0;
-while(_Lr_5._Fpos < _Lr_end_4._Fpos) {
-int32_t _Lline_len_9;
-_Lline_8++;
-_Lline_len_9 = 0;
+bool _Lpreprocess_2;
+char* _Lin_data_3;
+size_t _Lin_size_4;
+union _Nglc_Nrdr _Lr_end_5;
+union _Nglc_Nrdr _Lr_6;
+void* _Lnew_data_7;
+union _Nglc_Nwtr _Lw_8;
+int32_t _Lline_9;
+union _Nglc_Nwtr _Lw_begin_25;
+_Lpreprocess_2 = false;
+_Lin_data_3 = (*_Lin_out_data_0);
+_Lin_size_4 = (*_Lin_out_size_1);
+_Lr_end_5._Fref = _Lin_data_3;
+_Lr_end_5._Fpos += _Lin_size_4;
+_Lr_6._Fref = _Lin_data_3;
+_Lnew_data_7 = malloc(_Lin_size_4 + 1);
+_Lw_8._Fref = _Lnew_data_7;
+_Lline_9 = 0;
+while(_Lr_6._Fpos < _Lr_end_5._Fpos) {
+int32_t _Lline_len_10;
+_Lline_9++;
+_Lline_len_10 = 0;
 while(1) {
-if(_Lr_5._Fp1[_Lline_len_9] == '\n') {
+if(_Lr_6._Fp1[_Lline_len_10] == '\n') {
 goto break_1;
 }
-_Lline_len_9++;
+_Lline_len_10++;
 continue_1:;
 }
 break_1:;
-if(((_Lr_5._Fp1[0] == '#') && (_Lr_5._Fp1[1] == 'i') && (_Lr_5._Fp1[2] == 'f') && ((_Lr_5._Fp1[3] == '(') || ((_Lr_5._Fp1[3] == '!') && (_Lr_5._Fp1[4] == '('))))) {
-int32_t _Lstart_10;
-bool _Linvert_11;
-int32_t _Lrparen_12;
-char* _Ldef_str_14;
-int32_t _Ldef_len_15;
-bool _Lok_16;
-char* _Lindention_17;
-int32_t _Lindention_len_18;
-_Lw_7._Fp1[0] = '\n';
-_Lw_7._Fpos++;
-_Lstart_10 = 4;
-_Linvert_11 = false;
-if(_Lr_5._Fp1[3] == '!') {
-_Lstart_10 = 5;
-_Linvert_11 = true;
+if(((_Lr_6._Fp1[0] == '#') && (_Lr_6._Fp1[1] == 'i') && (_Lr_6._Fp1[2] == 'f') && ((_Lr_6._Fp1[3] == '(') || ((_Lr_6._Fp1[3] == '!') && (_Lr_6._Fp1[4] == '('))))) {
+int32_t _Lif_line_11;
+int32_t _Lstart_12;
+bool _Linvert_13;
+int32_t _Lrparen_14;
+char* _Ldef_str_16;
+int32_t _Ldef_len_17;
+bool _Lok_18;
+char* _Lindention_19;
+int32_t _Lindention_len_20;
+_Lif_line_11 = _Lline_9;
+_Lw_8._Fp1[0] = '\n';
+_Lw_8._Fpos++;
+_Lstart_12 = 4;
+_Linvert_13 = false;
+if(_Lr_6._Fp1[3] == '!') {
+_Lstart_12 = 5;
+_Linvert_13 = true;
 }
-_Lrparen_12 = -1;
-int32_t _Li_13;
-_Li_13 = _Lstart_10;
-for(int i = _Lline_len_9 - _Lstart_10; i > 0; ) {
+_Lrparen_14 = -1;
+int32_t _Li_15;
+_Li_15 = _Lstart_12;
+for(int i = _Lline_len_10 - _Lstart_12; i > 0; ) {
 i --;
-if(_Lr_5._Fp1[_Li_13] == ')') {
-_Lrparen_12 = _Li_13;
+if(_Lr_6._Fp1[_Li_15] == ')') {
+_Lrparen_14 = _Li_15;
 goto break_2;
 }
 continue_2:;
-_Li_13++;
+_Li_15++;
 }
 break_2:;
-if(_Lrparen_12 == -1) {
-printf("%s:%u: Error in preprocessing the code, #if(...) must have a closing parenthesis ')'\n", input_path, _Lline_8);
+if(_Lrparen_14 == -1) {
+printf("%s:%u: Error in preprocessing the code, #if(...) must have a closing parenthesis ')'\n", input_path, _Lline_9);
 exit(_Nstdc_Nexit_Cfailure);
 }
-_Ldef_str_14 = &_Lr_5._Fchar[_Lstart_10];
-_Ldef_len_15 = (_Lrparen_12 - _Lstart_10);
-_Lok_16 = _Nglc_Ppreprocess_def_get_2(_Ldef_str_14, _Ldef_len_15);
-if(_Linvert_11) {
-_Lok_16 = !_Lok_16;
+_Ldef_str_16 = &_Lr_6._Fchar[_Lstart_12];
+_Ldef_len_17 = (_Lrparen_14 - _Lstart_12);
+_Lok_18 = _Nglc_Ppreprocess_def_get_2(_Ldef_str_16, _Ldef_len_17);
+if(_Linvert_13) {
+_Lok_18 = !_Lok_18;
 }
-_Lr_5._Fpos += (_Lline_len_9 + 1);
-_Lindention_17 = NULL;
-_Lindention_len_18 = -1;
-if(_Lr_5._Fpos < _Lr_end_4._Fpos) {
-int32_t _Lline_len_19;
-int32_t _Lfirst_char_20;
-_Lline_len_19 = 0;
-while(1) {
-if(_Lr_5._Fp1[_Lline_len_19] == '\n') {
-goto break_3;
-}
-_Lline_len_19++;
-continue_3:;
-}
-break_3:;
-_Lfirst_char_20 = 0;
-while(1) {
-if(((_Lr_5._Fp1[_Lfirst_char_20] == ' ') || (_Lr_5._Fp1[_Lfirst_char_20] == '\t'))) {
-} else {
-goto break_4;
-}
-_Lfirst_char_20++;
-continue_4:;
-}
-break_4:;
-if(_Lok_16) {
-memcpy(_Lw_7._Fp1, _Lr_5._Fp1, _Lline_len_19 + 1);
-_Lw_7._Fpos += (_Lline_len_19 + 1);
-} else {
-_Lw_7._Fp1[0] = '\n';
-_Lw_7._Fpos++;
-}
-_Lindention_17 = _Lr_5._Fchar;
-_Lindention_len_18 = _Lfirst_char_20;
-_Lline_len_19++;
-_Lr_5._Fpos += _Lline_len_19;
-}
-if(_Lindention_len_18 <= 0) {
-printf("%s:%u: Error in preprocessing the code, #if(...). Its next line must be indented by at least one space or tab\n", input_path, _Lline_8);
-exit(_Nstdc_Nexit_Cfailure);
-}
-_Lline_8++;
-while(_Lr_5._Fpos < _Lr_end_4._Fpos) {
+_Lr_6._Fpos += (_Lline_len_10 + 1);
+_Lindention_19 = NULL;
+_Lindention_len_20 = -1;
+if(_Lr_6._Fpos < _Lr_end_5._Fpos) {
 int32_t _Lline_len_21;
 int32_t _Lfirst_char_22;
 _Lline_len_21 = 0;
 while(1) {
-if(_Lr_5._Fp1[_Lline_len_21] == '\n') {
-goto break_6;
+if(_Lr_6._Fp1[_Lline_len_21] == '\n') {
+goto break_3;
 }
 _Lline_len_21++;
+continue_3:;
+}
+break_3:;
+_Lfirst_char_22 = 0;
+while(1) {
+if(((_Lr_6._Fp1[_Lfirst_char_22] == ' ') || (_Lr_6._Fp1[_Lfirst_char_22] == '\t'))) {
+} else {
+goto break_4;
+}
+_Lfirst_char_22++;
+continue_4:;
+}
+break_4:;
+if(_Lok_18) {
+memcpy(_Lw_8._Fp1, &_Lr_6._Fp1[_Lfirst_char_22], (_Lline_len_21 + 1) - _Lfirst_char_22);
+_Lw_8._Fpos += ((_Lline_len_21 + 1) - _Lfirst_char_22);
+if(((_Lr_6._Fp1[_Lfirst_char_22] == '#') && (_Lr_6._Fp1[(_Lfirst_char_22 + 1)] == 'i') && (_Lr_6._Fp1[(_Lfirst_char_22 + 2)] == 'f') && ((_Lr_6._Fp1[(_Lfirst_char_22 + 3)] == '(') || ((_Lr_6._Fp1[(_Lfirst_char_22 + 3)] == '!') && (_Lr_6._Fp1[(_Lfirst_char_22 + 4)] == '('))))) {
+_Lpreprocess_2 = true;
+}
+} else {
+_Lw_8._Fp1[0] = '\n';
+_Lw_8._Fpos++;
+}
+_Lindention_19 = _Lr_6._Fchar;
+_Lindention_len_20 = _Lfirst_char_22;
+_Lline_len_21++;
+_Lr_6._Fpos += _Lline_len_21;
+}
+if(_Lindention_len_20 <= 0) {
+printf("%s:%u: Error in preprocessing the code, #if(...). Its next line must be indented by at least one space or tab\n", input_path, _Lline_9);
+exit(_Nstdc_Nexit_Cfailure);
+}
+_Lline_9++;
+while(_Lr_6._Fpos < _Lr_end_5._Fpos) {
+int32_t _Lline_len_23;
+int32_t _Lfirst_char_24;
+_Lline_9++;
+_Lline_len_23 = 0;
+while(1) {
+if(_Lr_6._Fp1[_Lline_len_23] == '\n') {
+goto break_6;
+}
+_Lline_len_23++;
 continue_6:;
 }
 break_6:;
-_Lfirst_char_22 = 0;
+_Lfirst_char_24 = 0;
 while(1) {
-if(((_Lr_5._Fp1[_Lfirst_char_22] == ' ') || (_Lr_5._Fp1[_Lfirst_char_22] == '\t'))) {
+if(((_Lr_6._Fp1[_Lfirst_char_24] == ' ') || (_Lr_6._Fp1[_Lfirst_char_24] == '\t'))) {
 } else {
 goto break_7;
 }
-_Lfirst_char_22++;
+_Lfirst_char_24++;
 continue_7:;
 }
 break_7:;
-if(((_Lline_len_21 >= _Lindention_len_18) && (memcmp(_Lr_5._Fp1, _Lindention_17, _Lindention_len_18) == 0))) {
-if(_Lok_16) {
-memcpy(_Lw_7._Fp1, _Lr_5._Fp1, _Lline_len_21 + 1);
-_Lw_7._Fpos += (_Lline_len_21 + 1);
-} else {
-_Lw_7._Fp1[0] = '\n';
-_Lw_7._Fpos++;
+if(((_Lline_len_23 >= _Lindention_len_20) && (memcmp(_Lr_6._Fp1, _Lindention_19, _Lindention_len_20) == 0))) {
+if(_Lok_18) {
+memcpy(_Lw_8._Fp1, &_Lr_6._Fp1[_Lindention_len_20], (_Lline_len_23 + 1) - _Lindention_len_20);
+_Lw_8._Fpos += ((_Lline_len_23 + 1) - _Lindention_len_20);
+if(((_Lr_6._Fp1[_Lindention_len_20] == '#') && (_Lr_6._Fp1[(_Lindention_len_20 + 1)] == 'i') && (_Lr_6._Fp1[(_Lindention_len_20 + 2)] == 'f') && ((_Lr_6._Fp1[(_Lindention_len_20 + 3)] == '(') || ((_Lr_6._Fp1[(_Lindention_len_20 + 3)] == '!') && (_Lr_6._Fp1[(_Lindention_len_20 + 4)] == '('))))) {
+_Lpreprocess_2 = true;
 }
 } else {
+_Lw_8._Fp1[0] = '\n';
+_Lw_8._Fpos++;
+}
+} else {
+if(((_Lr_6._Fp1[0] == '#') && (_Lr_6._Fp1[1] == 'e') && (_Lr_6._Fp1[2] == 'n') && (_Lr_6._Fp1[3] == 'd') && (_Lr_6._Fp1[4] == 'i') && (_Lr_6._Fp1[5] == 'f') && ((_Lr_6._Fp1[6] == ' ') || (_Lr_6._Fp1[6] == '\t') || (_Lr_6._Fp1[6] == '\n')))) {
+_Lw_8._Fp1[0] = '\n';
+_Lw_8._Fpos++;
+_Lr_6._Fpos += (_Lline_len_23 + 1);
+} else {
+printf("%s:%u: Error, expecting '#endif' with the same indention as '#if' on line %u, because line %u's indention is different from indention at line %u\n", input_path, _Lline_9, _Lif_line_11, _Lline_9, _Lif_line_11 + 1);
+exit(_Nstdc_Nexit_Cfailure);
+}
 goto break_5;
 }
-_Lline_8++;
-_Lline_len_21++;
-_Lr_5._Fpos += _Lline_len_21;
+_Lline_len_23++;
+_Lr_6._Fpos += _Lline_len_23;
 continue_5:;
 }
 break_5:;
 goto continue_0;
 } else {
-_Lline_len_9++;
-memcpy(_Lw_7._Fp1, _Lr_5._Fp1, _Lline_len_9);
-_Lw_7._Fpos += _Lline_len_9;
+_Lline_len_10++;
+memcpy(_Lw_8._Fp1, _Lr_6._Fp1, _Lline_len_10);
+_Lw_8._Fpos += _Lline_len_10;
 }
-_Lr_5._Fpos += _Lline_len_9;
+_Lr_6._Fpos += _Lline_len_10;
 continue_0:;
 }
 break_0:;
-_Lw_7._Fp1[0] = '\0';
-free(_Lin_data_2);
-(*_Lin_out_data_0) = _Lnew_data_6;
-_Lw_begin_23._Fref = _Lnew_data_6;
-(*_Lin_out_size_1) = (_Lw_7._Fpos - _Lw_begin_23._Fpos);
+_Lw_8._Fp1[0] = '\0';
+free(_Lin_data_3);
+(*_Lin_out_data_0) = _Lnew_data_7;
+_Lw_begin_25._Fref = _Lnew_data_7;
+(*_Lin_out_size_1) = (_Lw_8._Fpos - _Lw_begin_25._Fpos);
+if(_Lpreprocess_2) {
+_Nglc_Ppreprocess_2(_Lin_out_data_0, _Lin_out_size_1);
+} else {
+char _Lpath_26[256];
+_Nstdc_Nfd _Lfd_27;
+sprintf(_Lpath_26, "%s-p", input_path);
+printf("writing the preprocessed file to %s\n", _Lpath_26);
+_Nstdc_Nfd_Popen_4(&_Lfd_27, _Lpath_26, O_WRONLY | O_TRUNC | O_CREAT, 32676);
+write(_Lfd_27, _Lnew_data_7, (_Lw_8._Fpos + 1) - _Lw_begin_25._Fpos);
+_Nstdc_Nfd_Pclose_1(_Lfd_27);
+}
 }
 void _Nglc_Nlexer_Pinit_3(struct _Nglc_Nlexer* _Llex_0, uint8_t* _Ldata_1, size_t _Lsize_2) {
 (*_Llex_0)._Fstart = _Ldata_1;
@@ -2665,7 +2694,7 @@ continue_3:;
 }
 break_3:;
 }
-inline bool _Nstdc_Nfd_Popen_4(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2, int32_t _Lmode_3) {
+inline bool _Nstdc_Nfd_Popen_4(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2, int _Lmode_3) {
 _Nstdc_Nfd _Lfd_4;
 _Lfd_4 = open(_Lpath_1, _Lflags_2, _Lmode_3);
 if(_Lfd_4 != -1) {

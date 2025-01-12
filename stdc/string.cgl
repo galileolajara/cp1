@@ -1,12 +1,12 @@
 {include(<string.h>)
    {at(:stdc)
       {strlen(str:char[]):usz @real-name @no-decl}
-      {strcmp(s1:char[], s2:char[]):i32 @real-name @no-decl}
+      {strcmp(s1:char[], s2:char[]):intc @real-name @no-decl}
       {strcpy(s1:char[], s2:char[]):char[] @real-name @no-decl}
       {strtok(s:char[], sep:char[]):char[] @real-name @no-decl}
       {strdup(s:char[]):char[] @real-name @no-decl}
       {memcpy(dst:char[], src:char[], n:usz):ref @real-name @no-decl}
-      {memcmp(s1:char[], s2:char[], n:usz):i32 @real-name @no-decl}
-      {memset(dst:char[], c:i32, n:usz):ref @real-name @no-decl}
+      {memcmp(s1:char[], s2:char[], n:usz):intc @real-name @no-decl}
+      {memset(dst:char[], c:intc, n:usz):ref @real-name @no-decl}
    }
 }

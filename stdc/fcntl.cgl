@@ -2,7 +2,7 @@
    {using 'sys = :sys}
    {using 'c = :stdc}
    {at(:stdc)
-      {:fd[#nil = -1]:i32
+      {:fd[#nil = -1]:intc
          {open(file:this&, path:char[], flags:open-flags):bool @inline
             +fd = 'c.open(path, flags);
             {if(fd != -1)
@@ -12,7 +12,7 @@
                return false;
             }
          }
-         {open(file:this&, path:char[], flags:open-flags, mode:i32):bool @inline
+         {open(file:this&, path:char[], flags:open-flags, mode:intc):bool @inline
             +fd = 'c.open(path, flags, mode);
             {if(fd != -1)
                file = fd;
@@ -24,10 +24,10 @@
          {fopen(file:this, mode:char[]):file @inline
             return fdopen(file, mode);
          }
-         {close(file:this):i32 @inline
+         {close(file:this):intc @inline
             return 'c.close(file);
          }
-         {stat(file:this, stat'sys:stat):i32 @inline
+         {stat(file:this, stat'sys:stat):intc @inline
             return 'sys.fstat(file, stat);
          }
       }
@@ -38,10 +38,10 @@
          #rdwr @no-decl @real-name(O_RDWR),
          #truncate @no-decl @real-name(O_TRUNC),
          #excl @no-decl @real-name(O_EXCL),
-         ]:i32
+         ]:intc
       }
       {open(path:char[], flags:open-flags):fd @real-name @no-decl}
-      {open(path:char[], flags:open-flags, mode:i32):fd @real-name @no-decl}
-      {close(fd:fd):i32 @real-name @no-decl}
+      {open(path:char[], flags:open-flags, mode:intc):fd @real-name @no-decl}
+      {close(fd:fd):intc @real-name @no-decl}
    }
 }

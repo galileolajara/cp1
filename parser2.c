@@ -31,7 +31,7 @@ void _Nglc_Ppreprocess_init_0() {
 #endif
 #ifdef __APPLE__
    _Nglc_Ppreprocess_def_2("apple", 5);
-	#if defined(TARGET_OS_MAC) && !defined(TARGET_OS_IPHONE)
+	#ifdef TARGET_OS_MAC
    _Nglc_Ppreprocess_def_2("macos", 5);
 	#endif
 #endif

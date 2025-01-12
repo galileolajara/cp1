@@ -4,16 +4,16 @@
       {at(:fd)
          {seek(fd:this, offset:usz, seek:seek):usz @no-decl @real-name(lseek)}
          {read(fd:this, buf:ref, size:usz):usz @no-decl @real-name}
-         {close(fd:this):i32 @no-decl @real-name}
+         {close(fd:this):intc @no-decl @real-name}
          {write(fd:this, buf:ref, size:usz):usz @no-decl @real-name}
       }
       {:seek[
          #set @real-name(SEEK_SET) @no-decl,
          #end @real-name(SEEK_END) @no-decl,
-         ]:i32}
-      {seek(fd:i32, offset:usz, seek:seek):usz @no-decl @real-name(lseek)}
+         ]:intc}
+      {seek(fd:intc, offset:usz, seek:seek):usz @no-decl @real-name(lseek)}
       {mkstemp(template:char[]):fd @no-decl @real-name}
-      {unlink(path:char[]):i32 @no-decl @real-name}
+      {unlink(path:char[]):intc @no-decl @real-name}
 		{sleep(seconds:u32):u32 @no-decl @real-name}
    }
 }
