@@ -40,11 +40,6 @@
    {write-if(stmt:stmt) @case.write() @inline
       {+s:stmt-if = stmt}
       +e = s.expr.ptr();
-      {if(e.type == #str)
-         {+s:expr-str = e}
-         .out.printf("#ifdef %s\n", s.first.buf);
-         return;
-      }
       {if(s.not)
          .out.printf("if(!(");
          s.expr.write-value(s.val);

@@ -861,33 +861,33 @@
                   }
                }
                continue;
-            }{elif(r.p1[1] == ''\")
-               parse-comment(r, w, ''\", in-data);
-               continue;
-            }{elif(r.p1[1] == ''|)
-               parse-comment(r, w, ''|, in-data);
-               continue;
-            }{elif(r.p1[1] == '';)
-               parse-comment(r, w, '';, in-data);
-               continue;
-            }{elif(r.p1[1] == ''_)
-               parse-comment(r, w, ''_, in-data);
-               continue;
-            }{elif(r.p1[1] == ''+)
-               parse-comment(r, w, ''+, in-data);
-               continue;
-            }{elif(r.p1[1] == ''<)
-               parse-comment(r, w, ''>, in-data);
-               continue;
-            }{elif(r.p1[1] == ''[)
-               parse-comment(r, w, ''], in-data);
-               continue;
-            }{elif(r.p1[1] == ''{)
-               parse-comment(r, w, ''}, in-data);
-               continue;
-            }{elif(r.p1[1] == ''()
-               parse-comment(r, w, ''), in-data);
-               continue;
+            // }{elif(r.p1[1] == ''\")
+            //    parse-comment(r, w, ''\", in-data);
+            //    continue;
+            // }{elif(r.p1[1] == ''|)
+            //    parse-comment(r, w, ''|, in-data);
+            //    continue;
+            // }{elif(r.p1[1] == '';)
+            //    parse-comment(r, w, '';, in-data);
+            //    continue;
+            // }{elif(r.p1[1] == ''_)
+            //    parse-comment(r, w, ''_, in-data);
+            //    continue;
+            // }{elif(r.p1[1] == ''+)
+            //    parse-comment(r, w, ''+, in-data);
+            //    continue;
+            // }{elif(r.p1[1] == ''<)
+            //    parse-comment(r, w, ''>, in-data);
+            //    continue;
+            // }{elif(r.p1[1] == ''[)
+            //    parse-comment(r, w, ''], in-data);
+            //    continue;
+            // }{elif(r.p1[1] == ''{)
+            //    parse-comment(r, w, ''}, in-data);
+            //    continue;
+            // }{elif(r.p1[1] == ''()
+            //    parse-comment(r, w, ''), in-data);
+            //    continue;
             }
          }{elif(r.p1[0] == ''\')
             {if(r.p1[1] == ''\')
@@ -930,6 +930,18 @@
                   }
                }
                continue;
+               // Codes to check if syntax highlighting for strings are working
+               "#if 0";
+                  '"hello";
+                  '|hello|;
+                  ';hello;;
+                  '_hello_;
+                  '+hello+;
+                  '<hello>;
+                  '[hello];
+                  '{hello};
+                  '(hello);
+               "#endif";
             }{elif(r.p1[1] == ''\")
                parse-string(r, w, ''\", in-data);
                continue;

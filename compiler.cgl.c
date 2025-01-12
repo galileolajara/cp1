@@ -5359,12 +5359,6 @@ struct _Nglc_Nstmt_if* _Ls_1;
 struct _Nglc_Nexpr* _Le_2;
 _Ls_1 = _Lstmt_0;
 _Le_2 = _Nglc_Nexpr_i_Pptr_1((*_Ls_1)._Fexpr);
-if((*_Le_2)._Ftype == _Nglc_Nexpr_type_Cstr) {
-struct _Nglc_Nexpr_str* _Ls_3;
-_Ls_3 = _Le_2;
-fprintf(_Gout, "#ifdef %s\n", (*(*_Ls_3)._Ffirst)._Fbuf);
-return;
-}
 if((*_Ls_1)._Fnot) {
 fprintf(_Gout, "if(!(");
 _Nglc_Nexpr_i_Pwrite_value_2((*_Ls_1)._Fexpr, &(*_Ls_1)._Fval);
