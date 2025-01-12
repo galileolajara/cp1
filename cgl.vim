@@ -13,6 +13,7 @@ syntax match String /'<[^>]*>/
 syntax match String /''[^\\]/
 syntax match String /''\\[abfnrtv\\'"0]/
 syntax match Comment /\/\/[ \t].*$/
-syntax match Comment /^#if(.*$/
-syntax match Comment /^#if!(.*$/
+syntax match Comment /^[ \t]*#if(.*$/
+syntax match Comment /^[ \t]*#if!(.*$/
+syntax match Comment /^[ \t]*#endif\([ \t].*\|\)$/
 "syntax match Operator /\(;\|(\|)\|+\|,\|{\|}\|\[\|\]\)/

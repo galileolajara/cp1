@@ -32,6 +32,9 @@ void _Nglc_Ppreprocess_init_0() {
 #ifdef _WIN32
    _Nglc_Ppreprocess_def_2("windows", 7);
 #endif
+#ifdef _LP64
+   _Nglc_Ppreprocess_def_2("cpu64", 5);
+#endif
 }
 
 extern char* _Glock_path;
