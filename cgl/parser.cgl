@@ -746,6 +746,8 @@
    return w-begin.ref;
 }
 {char-escape-value(c:char):i32}
+{gvar lock-path:char[512]}
+{parser-at-exit()}
 {main(arg-c:i32, arg-v:char[][]):i32 @main
    {if(false) export()}
    .id-map.init();
@@ -765,23 +767,20 @@
       'c.exit(#failure);
    }
    {if(true)
-      {+out-path:char[512]}
-      'c.sprintf(out-path, "cgl-tmp/%s-b", .input-path);
-      {if!('c:fd.open(++fd, out-path, #create | #excl))
+      'c.sprintf(.lock-path, "cgl-tmp/%s-b", .input-path);
+      {if!('c:fd.open(++fd, .lock-path, #create | #excl))
+         'c.printf("a\n");
          // Can't create output file
-         {if('c:fd.open(fd, out-path, #read))
-            // Output file already exists
-            {if(fd.seek(0, #end) > 0)
-               // If the output file is not blank, compare the time stamps
-               fd.stat(+out-stat);
-               in-fd.stat(+in-stat);
-               {if(||, out-stat.mtimespec.sec > in-stat.mtimespec.sec, (&&, out-stat.mtimespec.sec == in-stat.mtimespec.sec, out-stat.mtimespec.nsec > in-stat.mtimespec.nsec))
-                  // Skip parsing
-                  'c.out.printf("Skipping parsing of %s because the output file is newer\n", .input-path);
-                  return 0;
-               }
-            }
+         'sys.stat(.lock-path, +out-stat);
+         in-fd.stat(+in-stat);
+         {if(||, out-stat.mtimespec.sec > in-stat.mtimespec.sec, (&&, out-stat.mtimespec.sec == in-stat.mtimespec.sec, out-stat.mtimespec.nsec > in-stat.mtimespec.nsec))
+            // Skip parsing
+            'c.out.printf("Skipping parsing of %s because the output file is newer\n", .input-path);
+            return 0;
          }
+      }{else
+         'c.printf("b\n");
+         parser-at-exit();
       }
       fd.close();
    }
@@ -1248,6 +1247,7 @@
    'c.memcpy(final-path, out-path, out-path-len - 4);
    final-path[out-path-len - 4] = 0;
    'c.rename(out-path, final-path);
+   .lock-path[0] = ''\0; // Do not unlink lock-path at exit
    out-path[out-path-len - 5] = ''h;
    'c.memcpy(final-path, out-path, out-path-len - 4);
    final-path[out-path-len - 4] = 0;

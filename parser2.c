@@ -20,6 +20,17 @@ union glc_token {
    void* pointer;
 };
 
+extern char _Glock_path[0];
+void cleanup() {
+   if (_Glock_path[0] != 0) {
+      // printf("deleting %s\n", _Glock_path);
+      unlink(_Glock_path);
+   }
+}
+void _Nglc_Pparser_at_exit_0() {
+   atexit(cleanup);
+}
+
 typedef int _Nglc_Nexpr_i;
 typedef int _Nglc_Nid;
 typedef int _Nglc_Ninclude;
