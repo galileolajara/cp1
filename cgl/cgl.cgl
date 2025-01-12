@@ -190,14 +190,11 @@
                                  {+file-path-dup:char[] = 'c.malloc(file-path-len + 1)}
                                  'c.memcpy(file-path-dup, file-path, file-path-len);
                                  file-path-dup[file-path-len] = ''\0;
-                                 {+real-path:char[128]}
+                                 {+real-path:char[] = 'c.malloc(include-dir-len + 1 + file-path-len + 1)}
                                  'c.sprintf(real-path, "%s/%.*s", include-dir, file-path-len, file-path);
                                  // 'c.printf("[%.*s] -> %s\n", file-path-len, file-path, real-path);
                                  +real-path-len = 'c.strlen(real-path);
-                                 {+real-path-dup:char[] = 'c.malloc(real-path-len + 1)}
-                                 'c.memcpy(real-path-dup, real-path, real-path-len);
-                                 real-path-dup[real-path-len] = ''\0;
-                                 cgl-path-add(real-path-dup, real-path-len, file-path-dup, file-path-len);
+                                 cgl-path-add(real-path, real-path-len, file-path-dup, file-path-len);
                               }
                            }
                            spec-pos++;

@@ -766,11 +766,12 @@
       'c.out.printf("Cannot open file for reading: %s\n", .input-path);
       'c.exit(#failure);
    }
-   .lock-path = arg-v[2];
+   +lock-path = arg-v[2];
+   .lock-path = lock-path;
    {if(true)
-      {if!('c:fd.open(++fd, .lock-path, #create | #excl))
+      {if!('c:fd.open(++fd, lock-path, #create | #excl))
          // Can't create output file
-         'sys.stat(.lock-path, +out-stat);
+         'sys.stat(lock-path, +out-stat);
          in-fd.stat(+in-stat);
          {if(||, out-stat.mtimespec.sec > in-stat.mtimespec.sec, (&&, out-stat.mtimespec.sec == in-stat.mtimespec.sec, out-stat.mtimespec.nsec > in-stat.mtimespec.nsec))
             // Skip parsing
@@ -1193,8 +1194,8 @@
    write-struct(w, false);
    write-func(w, false);
    
-   {+out-path:char[512]}
-   'c.sprintf(out-path, "%s.tmp", .lock-path);
+   {+out-path:char[] = 'c.malloc('c.strlen(lock-path) + 4 + 1)}
+   'c.sprintf(out-path, "%s.tmp", lock-path);
    +out-path-len = 'c.strlen(out-path);
    {if!('c:fd.open(++out-fd, out-path, #create | #truncate | #write, 0o644))
       'c.out.printf("Cannot open file for writing: %s\n", out-path);
