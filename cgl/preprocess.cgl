@@ -164,7 +164,10 @@
    w-begin.ref = new-data;
    in-out-size = w.pos - w-begin.pos;
 
-   'c:fd.open(+fd, "parsed.cgl", #write | #truncate | #create, 0o644);
+   {+path:char[256]}
+   'c.sprintf(path, "%s-p", .input-path);
+   'c.printf("writing the preprocessed file to %s\n", path);
+   'c:fd.open(+fd, path, #write | #truncate | #create, 0o644);
    fd.write(new-data, w.pos - w-begin.pos);
    fd.close();
 }
