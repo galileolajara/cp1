@@ -84,17 +84,16 @@
    .cgl-path-real-v[i] = cgl-path-real;
    .cgl-path-real-len-v[i] = cgl-path-real-len;
 }
-{cgl-path-input(cgl-path:char[], cgl-path-len:i32, bin:char[], cmd:cmd)
+{cgl-path-input(cgl-path:char[], cgl-path-len:i32, bin:char[], cmd:cmd):bool
 	{do{+i = 0}{(.cgl-path-c) i++}
 		{if('c.memcmp(.cgl-path-v[i], cgl-path, cgl-path-len) == 0)
-			return;
+			return true;
 		}
 	}
    cgl-path-add(cgl-path, cgl-path-len, cgl-path, cgl-path-len);
    {if!('c:fd.open(++fd, cgl-path, #read))
-      print-usage(bin, cmd);
       'c.printf("Error, [cgl file] (which is '%s') cannot be opened for reading\n", cgl-path);
-      'c.exit(#failure);
+		return false;
    }
    +len = fd.seek(0, #end);
    fd.seek(0, #set);
@@ -103,14 +102,12 @@
    fd.close();
    data[len] = ''\0;
    {if!(&&, len > 0, data[len - 1] == ''\n)
-      print-usage(bin, cmd);
       'c.printf("Error, [cgl file] (which is '%s') must end a new line\n", cgl-path);
-      'c.exit(#failure);
+		return false;
    }
    {if(data[len - 2] == ''\r)
-      print-usage(bin, cmd);
       'c.printf("Error, [cgl file] (which is '%s') must have Unix line endings '\\n' instead of Windows line endings '\\r\\n'\n", cgl-path);
-      'c.exit(#failure);
+		return false;
    }
    +pos = 0;
    // Process consecutive lines that begins with '#'
@@ -132,14 +129,30 @@
                }
                {if(end == -1)
                   'c.printf("%s:%u: #import \"...\" must end with '\"'\n", cgl-path, line);
-                  'c.exit(#failure);
+						return false;
                }
 					{+import:char[] = & data[start]}
                +import-path-len = end - start;
 					{if(&&, import-path-len >= 4, import[import-path-len - 4] == ''., import[import-path-len - 3] == ''c, import[import-path-len - 2] == ''g, import[import-path-len - 1] == ''l)
                   'c.printf("%s:%u: #import \"%.*s\" doesn't need a '.cgl' suffix\n", cgl-path, line, import-path-len, import);
-						'c.exit(#failure);
+						return false;
 					}
+					{if(import[0] == ''/)
+						'c.printf("%s:%u: #import \"%.*s\" must be a relative path, '/' was detected at the beginning of file path\n", cgl-path, line, import-path-len, import);
+						return false;
+					}
+				   {do{+j = 0}{(import-path-len) j++}
+				   	{if(import[j] == ''\\)
+							'c.printf("%s:%u: #import \"%.*s\" must not contain backslashes '\\', please use forward slashes '/' instead\n", cgl-path, line, import-path-len, import);
+							return false;
+				   	}
+				   }
+				   {do{+j = 0}{(import-path-len - 1) j++}
+				   	{if(&&, import[j] == ''., import[j + 1] == ''/)
+							'c.printf("%s:%u: #import \"%.*s\" must not contain './'\n", cgl-path, line, import-path-len, import);
+							return false;
+				   	}
+				   }
 					{+import-path:char[] = 'c.malloc(import-path-len + 5)}
 					'c.memcpy(import-path, import, import-path-len);
 					import-path[import-path-len++] = ''.;
@@ -147,7 +160,10 @@
 					import-path[import-path-len++] = ''g;
 					import-path[import-path-len++] = ''l;
 					import-path[import-path-len] = ''\0;
-					cgl-path-input(import-path, import-path-len, bin, cmd);
+					{if!(cgl-path-input(import-path, import-path-len, bin, cmd))
+						'c.printf("Error from #import \"%.*s\" at file '%s' line %u\n", import-path-len - 4, import, cgl-path, line);
+						return false;
+					}
 				}{elif('c.memcmp("#include <", & data[start], 10) == 0)
 					start += 10;
                +end = -1;
@@ -159,7 +175,7 @@
                }
                {if(end == -1)
                   'c.printf("%s:%u: #include <...> must end with '>'\n", cgl-path, line);
-                  'c.exit(#failure);
+						return false;
                }
                {+include-path:char[] = & data[start]}
                +include-path-len = end - start;
@@ -194,7 +210,7 @@
                   }
                   {if!('c:fd.open(++spec-fd, spec-path, #read))
                      'c.printf("%s:%u: #include <%s> failed because '%s' does not exists\n", cgl-path, line, path, spec-path);
-                     'c.exit(#failure);
+							return false;
                   }
                   +spec-len = spec-fd.seek(0, #end);
                   spec-fd.seek(0, #set);
@@ -245,6 +261,7 @@
       }
    }
    'c.free(data);
+	return true;
 }
 {validate-cgl-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:cmd)
    {do{+i = start}{(arg-c - start) i++}
@@ -255,6 +272,10 @@
          'c.exit(#failure);
       }
       +cgl-path-len = 'c.strlen(cgl-path);
+		{if(&&, cgl-path[0] == ''., cgl-path[1] == ''/)
+			cgl-path = & cgl-path[2];
+			cgl-path-len -= 2;
+		}
       {do{+j = 0}{(cgl-path-len) j++}
          {if(cgl-path[j] == ''\\)
             print-usage(bin, cmd);
@@ -262,10 +283,10 @@
             'c.exit(#failure);
          }
       }
-      {do{+j = 0}{(cgl-path-len - 2) j++}
-         {if(&&, cgl-path[j] == ''., cgl-path[j + 1] == ''., cgl-path[j + 1] == ''/)
+      {do{+j = 0}{(cgl-path-len - 1) j++}
+         {if(&&, cgl-path[j] == ''., cgl-path[j + 1] == ''/)
             print-usage(bin, cmd);
-            'c.printf("Error, [cgl file] (which is '%s') must not contain '../'\n", cgl-path);
+            'c.printf("Error, [cgl file] (which is '%s') must not contain './'\n", cgl-path);
             'c.exit(#failure);
          }
       }
@@ -281,7 +302,10 @@
          'c.printf("Error, [cgl file] (which is '%s') must be a filename that ends with '.cgl', for example: main.cgl\n", cgl-path);
          'c.exit(#failure);
       }
-      cgl-path-input(cgl-path, cgl-path-len, bin, cmd);
+      {if!(cgl-path-input(cgl-path, cgl-path-len, bin, cmd))
+         print-usage(bin, cmd);
+         'c.exit(#failure);
+		}
    }
 }
 {main(arg-c:i32, arg-v:char[][]):i32
