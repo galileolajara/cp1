@@ -85,6 +85,11 @@
    .cgl-path-real-len-v[i] = cgl-path-real-len;
 }
 {cgl-path-input(cgl-path:char[], cgl-path-len:i32, bin:char[], cmd:cmd)
+	{do{+i = 0}{(.cgl-path-c) i++}
+		{if('c.memcmp(.cgl-path-v[i], cgl-path, cgl-path-len) == 0)
+			return;
+		}
+	}
    cgl-path-add(cgl-path, cgl-path-len, cgl-path, cgl-path-len);
    {if!('c:fd.open(++fd, cgl-path, #read))
       print-usage(bin, cmd);
@@ -116,7 +121,35 @@
       {do()
          pos++;
          {if(data[pos] == ''\n)
-            {if('c.memcmp("#include <", & data[start], 10) == 0)
+            {if('c.memcmp("#import \"", & data[start], 9) == 0)
+					start += 9;
+               +end = -1;
+               {do{+j = start}{(pos - start) j++}
+                  {if(data[j] == ''")
+                     end = j;
+                     break;
+                  }
+               }
+               {if(end == -1)
+                  'c.printf("%s:%u: #import \"...\" must end with '\"'\n", cgl-path, line);
+                  'c.exit(#failure);
+               }
+					{+import:char[] = & data[start]}
+               +import-path-len = end - start;
+					{if(&&, import-path-len >= 4, import[import-path-len - 4] == ''., import[import-path-len - 3] == ''c, import[import-path-len - 2] == ''g, import[import-path-len - 1] == ''l)
+                  'c.printf("%s:%u: #import \"%.*s\" doesn't need a '.cgl' suffix\n", cgl-path, line, import-path-len, import);
+						'c.exit(#failure);
+					}
+					{+import-path:char[] = 'c.malloc(import-path-len + 5)}
+					'c.memcpy(import-path, import, import-path-len);
+					import-path[import-path-len++] = ''.;
+					import-path[import-path-len++] = ''c;
+					import-path[import-path-len++] = ''g;
+					import-path[import-path-len++] = ''l;
+					import-path[import-path-len] = ''\0;
+					cgl-path-input(import-path, import-path-len, bin, cmd);
+				}{elif('c.memcmp("#include <", & data[start], 10) == 0)
+					start += 10;
                +end = -1;
                {do{+j = start}{(pos - start) j++}
                   {if(data[j] == ''>)
@@ -128,8 +161,8 @@
                   'c.printf("%s:%u: #include <...> must end with '>'\n", cgl-path, line);
                   'c.exit(#failure);
                }
-               {+include-path:char[] = & data[start + 10]}
-               +include-path-len = end - (start + 10);
+               {+include-path:char[] = & data[start]}
+               +include-path-len = end - start;
                +found = false;
                {do{+j = 0}{(.included-c) j++}
                   {if(&&, include-path-len == .included-len-v[j], 'c.memcmp(.included-v[j], include-path, include-path-len) == 0)
