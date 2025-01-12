@@ -746,7 +746,7 @@
    return w-begin.ref;
 }
 {char-escape-value(c:char):i32}
-{gvar lock-path:char[512]}
+{gvar lock-path:char[]}
 {parser-at-exit()}
 {main(arg-c:i32, arg-v:char[][]):i32 @main
    {if(false) export()}
@@ -756,8 +756,8 @@
    quick-alloc-init();
    .func-main = #nil;
    .decl-include = #nil;
-   {if(arg-c != 2)
-      'c.out.printf("Usage: %s [file.cgl]\n", arg-v[0]);
+   {if(arg-c != 3)
+      'c.out.printf("Usage: %s [file.cgl] [output.cgl-b]\n", arg-v[0]);
       return 0;
    }
    .input-path = arg-v[1];
@@ -766,10 +766,9 @@
       'c.out.printf("Cannot open file for reading: %s\n", .input-path);
       'c.exit(#failure);
    }
+   .lock-path = arg-v[2];
    {if(true)
-      'c.sprintf(.lock-path, "cgl-tmp/%s-b", .input-path);
       {if!('c:fd.open(++fd, .lock-path, #create | #excl))
-         'c.printf("a\n");
          // Can't create output file
          'sys.stat(.lock-path, +out-stat);
          in-fd.stat(+in-stat);
@@ -779,7 +778,8 @@
             return 0;
          }
       }{else
-         'c.printf("b\n");
+         // We created the output file, make sure to unlink it when
+         // the parser gets parsing error
          parser-at-exit();
       }
       fd.close();
@@ -1194,7 +1194,7 @@
    write-func(w, false);
    
    {+out-path:char[512]}
-   'c.sprintf(out-path, "cgl-tmp/%s-b.tmp", .input-path);
+   'c.sprintf(out-path, "%s.tmp", .lock-path);
    +out-path-len = 'c.strlen(out-path);
    {if!('c:fd.open(++out-fd, out-path, #create | #truncate | #write, 0o644))
       'c.out.printf("Cannot open file for writing: %s\n", out-path);
@@ -1247,7 +1247,7 @@
    'c.memcpy(final-path, out-path, out-path-len - 4);
    final-path[out-path-len - 4] = 0;
    'c.rename(out-path, final-path);
-   .lock-path[0] = ''\0; // Do not unlink lock-path at exit
+   .lock-path = null; // Do not unlink lock-path at exit
    out-path[out-path-len - 5] = ''h;
    'c.memcpy(final-path, out-path, out-path-len - 4);
    final-path[out-path-len - 4] = 0;

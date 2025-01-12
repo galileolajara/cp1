@@ -1,16 +1,16 @@
 {using 'c = :stdc}
 {using 'sys = :sys}
 {print-commands(bin:char[])
-   'c.out.printf("Usage: %s [command] [options]\n", bin);
-   'c.out.printf("Commands:\n");
-   'c.out.printf("  to-c     Build a C file.\n");
-   'c.out.printf("  run      Compile and run the cgl codes.\n");
+   'c.printf("Usage: %s [command] [options]\n", bin);
+   'c.printf("Commands:\n");
+   'c.printf("  to-c     Build a C file.\n");
+   'c.printf("  run      Compile and run the cgl codes.\n");
 }
 {print-to-c-usage(bin:char[])
-   'c.out.printf("Usage: %s to-c [output.c] [cgl file/s...]\n", bin);
+   'c.printf("Usage: %s to-c [output.c] [cgl file/s...]\n", bin);
 }
 {print-run-usage(bin:char[])
-   'c.out.printf("Usage: %s run [cgl file/s...]\n", bin);
+   'c.printf("Usage: %s run [cgl file/s...]\n", bin);
 }
 {get-compiler(bin:char[], ninja-f'c:file)
    +PATH = 'c.strdup('c.getenv("PATH"));
@@ -48,6 +48,212 @@
    'c.printf("Cannot execute '%s run' because the required compiler was not found: tcc clang or gcc\n", bin);
    'c.exit(#failure);
 }
+{:cmd[#to-c, #run]:u8}
+{print-usage(bin:char[], cmd:cmd)
+   {switch(cmd)
+      {case(#to-c)
+         print-to-c-usage(bin);
+      }
+      {case(#run)
+         print-run-usage(bin);
+      }
+   }
+}
+{gvar included-v:char[][]}
+{gvar included-len-v:u32[]}
+{gvar included-cap:i32}
+{gvar included-c:i32}
+{gvar cgl-path-v:char[][]}
+{gvar cgl-path-len-v:u32[]}
+{gvar cgl-path-real-v:char[][]}
+{gvar cgl-path-real-len-v:u32[]}
+{gvar cgl-path-cap:i32}
+{gvar cgl-path-c:i32}
+{cgl-path-add(cgl-path-real:char[], cgl-path-real-len:i32, cgl-path:char[], cgl-path-len:i32)
+   // 'c.printf("adding %s as %s\n", cgl-path-real, cgl-path);
+   +i = .cgl-path-c++;
+   {if(.cgl-path-cap < .cgl-path-c)
+      .cgl-path-cap = (.cgl-path-cap << 1) + 8;
+      .cgl-path-v = 'c.realloc(.cgl-path-v, .cgl-path-cap * :usz[:usz]);
+      .cgl-path-len-v = 'c.realloc(.cgl-path-len-v, .cgl-path-cap * :u32[:usz]);
+      .cgl-path-real-v = 'c.realloc(.cgl-path-real-v, .cgl-path-cap * :usz[:usz]);
+      .cgl-path-real-len-v = 'c.realloc(.cgl-path-real-len-v, .cgl-path-cap * :u32[:usz]);
+   }
+   .cgl-path-v[i] = cgl-path;
+   .cgl-path-len-v[i] = cgl-path-len;
+   .cgl-path-real-v[i] = cgl-path-real;
+   .cgl-path-real-len-v[i] = cgl-path-real-len;
+}
+{cgl-path-input(cgl-path:char[], cgl-path-len:i32, bin:char[], cmd:cmd)
+   cgl-path-add(cgl-path, cgl-path-len, cgl-path, cgl-path-len);
+   {if!('c:fd.open(++fd, cgl-path, #read))
+      print-usage(bin, cmd);
+      'c.printf("Error, [cgl file] (which is '%s') cannot be opened for reading\n", cgl-path);
+      'c.exit(#failure);
+   }
+   +len = fd.seek(0, #end);
+   fd.seek(0, #set);
+   {+data:char[] = 'c.malloc(len + 1)}
+   fd.read(data, len);
+   fd.close();
+   data[len] = ''\0;
+   {if!(&&, len > 0, data[len - 1] == ''\n)
+      print-usage(bin, cmd);
+      'c.printf("Error, [cgl file] (which is '%s') must end a new line\n", cgl-path);
+      'c.exit(#failure);
+   }
+   {if(data[len - 2] == ''\r)
+      print-usage(bin, cmd);
+      'c.printf("Error, [cgl file] (which is '%s') must have Unix line endings '\\n' instead of Windows line endings '\\r\\n'\n", cgl-path);
+      'c.exit(#failure);
+   }
+   +pos = 0;
+   // Process consecutive lines that begins with '#'
+   +line = 0;
+   {while(data[pos] == ''#)
+      line++;
+      +start = pos;
+      {do()
+         pos++;
+         {if(data[pos] == ''\n)
+            {if('c.memcmp("#include <", & data[start], 10) == 0)
+               +end = -1;
+               {do{+j = start}{(pos - start) j++}
+                  {if(data[j] == ''>)
+                     end = j;
+                     break;
+                  }
+               }
+               {if(end == -1)
+                  'c.printf("%s:%u: #include <...> must end with '>'\n", cgl-path, line);
+                  'c.exit(#failure);
+               }
+               {+include-path:char[] = & data[start + 10]}
+               +include-path-len = end - (start + 10);
+               +found = false;
+               {do{+j = 0}{(.included-c) j++}
+                  {if(&&, include-path-len == .included-len-v[j], 'c.memcmp(.included-v[j], include-path, include-path-len) == 0)
+                     found = true;
+                     break;
+                  }
+               }
+               {if!(found)
+                  +i = .included-c++;
+                  {if(.included-cap < .included-c)
+                     .included-cap = (.included-c << 1) + 8;
+                     .included-v = 'c.realloc(.included-v, .included-cap * :usz[:usz]);
+                     .included-len-v = 'c.realloc(.included-len-v, .included-cap * :u32[:usz]);
+                  }
+                  {+path:char[] = 'c.malloc(include-path-len + 1)}
+                  'c.memcpy(path, include-path, include-path-len);
+                  path[include-path-len] = ''\0;
+                  .included-v[i] = path;
+                  .included-len-v[i] = include-path-len;
+                  // 'c.printf("including %.*s\n", include-path-len, include-path);
+                  {+spec-path:char[128]}
+                  +include-dir = "/opt/cgl/include";
+                  +include-dir-len = 'c.strlen(include-dir);
+                  'c.sprintf(spec-path, "%s/%s", include-dir, path);
+                  {do{+i = include-dir-len + 1}{('c.strlen(spec-path) - (include-dir-len + 1)) i++}
+                     {if(spec-path[i] == ''/)
+                        spec-path[i] = ''-;
+                     }
+                  }
+                  {if!('c:fd.open(++spec-fd, spec-path, #read))
+                     'c.printf("%s:%u: #include <%s> failed because '%s' does not exists\n", cgl-path, line, path, spec-path);
+                     'c.exit(#failure);
+                  }
+                  +spec-len = spec-fd.seek(0, #end);
+                  spec-fd.seek(0, #set);
+                  {+spec-data:char[] = 'c.malloc(spec-len + 1)}
+                  spec-fd.read(spec-data, spec-len);
+                  // 'c.printf("reading %s\n", spec-path);
+                  +spec-pos = 0;
+                  +spec-line = 0;
+                  {while(spec-pos < spec-len)
+                     spec-line++;
+                     +start = spec-pos;
+                     {do()
+                        {if(spec-data[spec-pos] == ''\n)
+                           {if(spec-data[start] == ''<)
+                              start++;
+                              +rangle = -1;
+                              {do{+j = start}{(spec-pos - start) j++}
+                                 {if(spec-data[j] == ''>)
+                                    rangle = j;
+                                    break;
+                                 }
+                              }
+                              {if(rangle != -1)
+                                 {+file-path:char[] = & spec-data[start]}
+                                 +file-path-len = rangle - start;
+                                 {+file-path-dup:char[] = 'c.malloc(file-path-len + 1)}
+                                 'c.memcpy(file-path-dup, file-path, file-path-len);
+                                 file-path-dup[file-path-len] = ''\0;
+                                 {+real-path:char[128]}
+                                 'c.sprintf(real-path, "%s/%.*s", include-dir, file-path-len, file-path);
+                                 // 'c.printf("[%.*s] -> %s\n", file-path-len, file-path, real-path);
+                                 +real-path-len = 'c.strlen(real-path);
+                                 {+real-path-dup:char[] = 'c.malloc(real-path-len + 1)}
+                                 'c.memcpy(real-path-dup, real-path, real-path-len);
+                                 real-path-dup[real-path-len] = ''\0;
+                                 cgl-path-add(real-path-dup, real-path-len, file-path-dup, file-path-len);
+                              }
+                           }
+                           spec-pos++;
+                           break;
+                        }
+                        spec-pos++;
+                     }
+                  }
+                  'c.free(spec-data);
+               }
+            }
+            pos++;
+            break;
+         }
+      }
+   }
+   'c.free(data);
+}
+{validate-cgl-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:cmd)
+   {do{+i = start}{(arg-c - start) i++}
+      +cgl-path = arg-v[i];
+      {if(cgl-path[0] == ''/)
+         print-usage(bin, cmd);
+         'c.printf("Error, [cgl file] (which is '%s') must be a relative filepath (e.g. file.cgl), not an absolute path (/home/user/file.cgl)\n", cgl-path);
+         'c.exit(#failure);
+      }
+      +cgl-path-len = 'c.strlen(cgl-path);
+      {do{+j = 0}{(cgl-path-len) j++}
+         {if(cgl-path[j] == ''\\)
+            print-usage(bin, cmd);
+            'c.printf("Error, [cgl file] (which is '%s') must not contain backslashes '\\', please use forward slashes '/' instead\n", cgl-path);
+            'c.exit(#failure);
+         }
+      }
+      {do{+j = 0}{(cgl-path-len - 2) j++}
+         {if(&&, cgl-path[j] == ''., cgl-path[j + 1] == ''., cgl-path[j + 1] == ''/)
+            print-usage(bin, cmd);
+            'c.printf("Error, [cgl file] (which is '%s') must not contain '../'\n", cgl-path);
+            'c.exit(#failure);
+         }
+      }
+      // {do{+j = 0}{(cgl-path-len - 1) j++}
+      //    {if(&&, cgl-path[j] == ''., cgl-path[j + 1] == ''/)
+      //       print-usage(bin, cmd);
+      //       'c.printf("Error, [cgl file] (which is '%s') must not contain './'\n", cgl-path);
+      //       'c.exit(#failure);
+      //    }
+      // }
+      {if!(&&, cgl-path-len > 4, cgl-path[cgl-path-len - 4] == ''., cgl-path[cgl-path-len - 3] == ''c, cgl-path[cgl-path-len - 2] == ''g, cgl-path[cgl-path-len - 1] == ''l)
+         print-usage(bin, cmd);
+         'c.printf("Error, [cgl file] (which is '%s') must be a filename that ends with '.cgl', for example: main.cgl\n", cgl-path);
+         'c.exit(#failure);
+      }
+      cgl-path-input(cgl-path, cgl-path-len, bin, cmd);
+   }
+}
 {main(arg-c:i32, arg-v:char[][]):i32
    +bin = arg-v[0];
    {if(arg-c < 2)
@@ -64,25 +270,17 @@
       +c-path-len = 'c.strlen(c-path);
       {if!(&&, c-path-len > 2, c-path[c-path-len - 2] == ''., c-path[c-path-len - 1] == ''c)
          print-to-c-usage(bin);
-         'c.out.printf("Error, [output.c] (which is '%s') must be a filename that ends with '.c', for example: main.c\n", c-path);
+         'c.printf("Error, [output.c] (which is '%s') must be a filename that ends with '.c', for example: main.c\n", c-path);
          'c.exit(#failure);
       }
-      {do{+i = 3}{(arg-c - 3) i++}
-         +cgl-path = arg-v[i];
-         +cgl-path-len = 'c.strlen(cgl-path);
-         {if!(&&, cgl-path-len > 4, cgl-path[cgl-path-len - 4] == ''., cgl-path[cgl-path-len - 3] == ''c, cgl-path[cgl-path-len - 2] == ''g, cgl-path[cgl-path-len - 1] == ''l)
-            print-to-c-usage(bin);
-            'c.out.printf("Error, [cgl file] (which is '%s') must be a filename that ends with '.cgl', for example: main.cgl\n", cgl-path);
-            'c.exit(#failure);
-         }
-      }
+      validate-cgl-paths(3, arg-c, arg-v, bin, #to-c);
       'sys.mkdir("cgl-tmp", 0o755);
       {+ninja-path:char[24]}
       'c.strcpy(ninja-path, "cgl-tmp/ninja-XXXXXXXXX");
       +ninja-fd = 'c.mkstemp(ninja-path);
       {if(ninja-fd == #nil)
          print-to-c-usage(bin);
-         'c.out.printf("Error, cannot open file for reading: %s\n", ninja-path);
+         'c.printf("Error, cannot open file for reading: %s\n", ninja-path);
          'c.exit(#failure);
       }
       +ninja-f = ninja-fd.fopen("w");
@@ -113,22 +311,14 @@
          print-run-usage(bin);
          'c.exit(#failure);
       }
-      {do{+i = 2}{(arg-c - 2) i++}
-         +cgl-path = arg-v[i];
-         +cgl-path-len = 'c.strlen(cgl-path);
-         {if!(&&, cgl-path-len > 4, cgl-path[cgl-path-len - 4] == ''., cgl-path[cgl-path-len - 3] == ''c, cgl-path[cgl-path-len - 2] == ''g, cgl-path[cgl-path-len - 1] == ''l)
-            print-run-usage(bin);
-            'c.out.printf("Error, [cgl file] (which is '%s') must be a filename that ends with '.cgl', for example: main.cgl\n", cgl-path);
-            'c.exit(#failure);
-         }
-      }
+      validate-cgl-paths(2, arg-c, arg-v, bin, #run);
       'sys.mkdir("cgl-tmp", 0o755);
       {+c-path:char[22]}
       'c.strcpy(c-path, "cgl-tmp/c-XXXXXXXXX");
       +c-fd = 'c.mkstemp(c-path);
       {if(c-fd == #nil)
          print-run-usage(bin);
-         'c.out.printf("Error, cannot open file for reading: %s\n", c-path);
+         'c.printf("Error, cannot open file for reading: %s\n", c-path);
          'c.exit(#failure);
       }
       c-fd.close();
@@ -138,7 +328,7 @@
       +exe-fd = 'c.mkstemp(exe-path);
       {if(exe-fd == #nil)
          print-run-usage(bin);
-         'c.out.printf("Error, cannot open file for reading: %s\n", exe-path);
+         'c.printf("Error, cannot open file for reading: %s\n", exe-path);
          'c.exit(#failure);
       }
       exe-fd.close();
@@ -151,23 +341,21 @@
       +ninja-fd = 'c.mkstemp(ninja-path);
       {if(ninja-fd == #nil)
          print-run-usage(bin);
-         'c.out.printf("Error, cannot open file for reading: %s\n", ninja-path);
+         'c.printf("Error, cannot open file for reading: %s\n", ninja-path);
          'c.exit(#failure);
       }
       +ninja-f = ninja-fd.fopen("w");
       ninja-f.printf("rule parser\n");
-      ninja-f.printf(" command = %s-parser $in\n", bin);
+      ninja-f.printf(" command = %s-parser $in $out\n", bin);
       ninja-f.printf("rule compiler\n");
       ninja-f.printf(" command = %s-compiler $in $out\n", bin);
       get-compiler(bin, ninja-f);
-      {do{+i = 2}{(arg-c - 2) i++}
-         +cgl-path = arg-v[i];
-         ninja-f.printf("build cgl-tmp/%s-b: parser %s\n", cgl-path, cgl-path);
+      {do{+i = 0}{(.cgl-path-c) i++}
+         ninja-f.printf("build cgl-tmp/%s-b: parser %s\n", .cgl-path-v[i], .cgl-path-real-v[i]);
       }
       ninja-f.printf("build %s: compiler", c-path);
-      {do{+i = 2}{(arg-c - 2) i++}
-         +cgl-path = arg-v[i];
-         ninja-f.printf(" cgl-tmp/%s-b", cgl-path);
+      {do{+i = 0}{(.cgl-path-c) i++}
+         ninja-f.printf(" cgl-tmp/%s-b", .cgl-path-v[i]);
       }
       ninja-f.printf("\n");
       ninja-f.printf("build %s: c %s\n", exe-path, c-path);

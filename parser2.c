@@ -20,9 +20,9 @@ union glc_token {
    void* pointer;
 };
 
-extern char _Glock_path[0];
+extern char* _Glock_path;
 void cleanup() {
-   if (_Glock_path[0] != 0) {
+   if (_Glock_path != 0) {
       // printf("deleting %s\n", _Glock_path);
       unlink(_Glock_path);
    }
