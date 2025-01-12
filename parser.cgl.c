@@ -2267,6 +2267,7 @@ _Lr_5._Fpos += _Lline_len_9;
 continue_0:;
 }
 break_0:;
+_Lw_7._Fp1[0] = '\0';
 free(_Lin_data_2);
 (*_Lin_out_data_0) = _Lnew_data_6;
 _Lw_begin_23._Fref = _Lnew_data_6;
