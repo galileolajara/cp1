@@ -3,11 +3,9 @@
    {at(:sys)
       {:timespec(sec:u32 @real-name(tv_sec), nsec:u32 @real-name(tv_nsec))
       }
-      {:stat(mtime:timespec+
-#if(apple)
-         @real-name(st_mtimespec)
-#if(linux)
-         @real-name(st_mtim)
+      {:stat(
+         mtimespec:timespec+ @real-name(st_mtimespec),
+         mtim:timespec+ @real-name(st_mtim),
       ) @real-name @no-decl }
       {mkdir(path:char[], mode:i32):i32 @real-name @no-decl}
       {fstat(file:i32, stat:stat):i32 @real-name @no-decl}

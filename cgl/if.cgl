@@ -1,6 +1,8 @@
 {using 'glc = :glc}
 {at(:glc)
 {at(:stmt-space)
+   {gvar if-v:stmt-if[32]}
+   {gvar if-c:u8}
    {wr-if(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
       {+s:stmt-if = stmt}
       w.b(s.not);
@@ -11,6 +13,8 @@
       s.not = r.b();
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #if);
+      +i = .if-c++;
+      .if-v[i] = s;
    }
    {wr-if-elif(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
       {+s:stmt-if-elif = stmt}
@@ -22,23 +26,33 @@
       s.not = r.b();
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #if-elif);
+      s.if = .if-v[.if-c - 1];
    }
    {wr-if-else(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
    }
    {rd-if-else(space:stmt-space, r:rdr) @case.rd() @inline
       quick-alloc-one(+(s:stmt-if-else));
       space.stmt-push(s.base, 0, 0, 0, 0, #if-else);
+      s.if = .if-v[.if-c - 1];
    }
    {wr-if-end(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
    }
    {rd-if-end(space:stmt-space, r:rdr) @case.rd() @inline
       quick-alloc-one(+(s:stmt-if-end));
       space.stmt-push(s.base, 0, 0, 0, 0, #if-end);
+      .if-c--;
+      s.if = .if-v[.if-c];
    }
 }
 {at(:stmt)
    {write-if(stmt:stmt) @case.write() @inline
       {+s:stmt-if = stmt}
+      +e = s.expr.ptr();
+      {if(e.type == #str)
+         {+s:expr-str = e}
+         .out.printf("#ifdef %s\n", s.first.buf);
+         return;
+      }
       {if(s.not)
          .out.printf("if(!(");
          s.expr.write-value(s.val);
@@ -58,6 +72,10 @@
    }
    {write-if-elif(stmt:stmt) @case.write() @inline
       {+s:stmt-if-elif = stmt}
+      {if(s.if.expr.ptr().type == #str)
+         // TODO
+         return;
+      }
       {if(s.not)
          .out.printf("} else if(!(");
          s.expr.write-value(s.val);
@@ -77,6 +95,10 @@
    }
    {write-if-else(stmt:stmt) @case.write() @inline
       {+s:stmt-if-else = stmt}
+      {if(s.if.expr.ptr().type == #str)
+         .out.printf("#else\n");
+         return;
+      }
       .out.printf("} else {\n");
    }
    {process-if-else(stmt:stmt, ok:bool&) @case.process() @inline
@@ -85,6 +107,10 @@
    }
    {write-if-end(stmt:stmt) @case.write() @inline
       {+s:stmt-if-end = stmt}
+      {if(s.if.expr.ptr().type == #str)
+         .out.printf("#endif\n");
+         return;
+      }
       .out.printf("}\n");
    }
    {process-if-end(stmt:stmt, ok:bool&) @case.process() @inline
@@ -97,14 +123,6 @@
    .decl-func-ctx-space.flags |= #skip-lvar-decl;
 }
 {stmt-elif-begin()
-}
-{:stmt-if-else(
-   base:stmt+,
-   )
-}
-{:stmt-if-end(
-   base:stmt+,
-   )
 }
 {stmt-if-set(not:bool, expr:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32)
    quick-alloc-one(+(s:stmt-if));

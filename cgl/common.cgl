@@ -47,7 +47,22 @@ end-if
    not:bool,
    expr:expr-i,
 if-compiler
-   val:value+
+   if:stmt-if,
+   val:value+,
+end-if
+   )
+}
+{:stmt-if-else(
+   base:stmt+,
+if-compiler
+   if:stmt-if,
+end-if
+   )
+}
+{:stmt-if-end(
+   base:stmt+,
+if-compiler
+   if:stmt-if,
 end-if
    )
 }

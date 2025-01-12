@@ -14,7 +14,7 @@ int glc_lexer_scan(struct glc_lexer* l) {
 
    #define YYCTYPE  uint8_t
    #define YYCURSOR l->cursor
-   #define YYLIMIT  l->limit
+   // #define YYLIMIT  l->limit
    #define YYMARKER l->marker
    #define YYCTXMARKER l->ctx_marker
    #define YYFILL(n)   
