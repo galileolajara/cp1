@@ -263,7 +263,7 @@
    'c.free(data);
 	return true;
 }
-{validate-cgl-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:cmd)
+{validate-cgl-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:cmd):bool
    {do{+i = start}{(arg-c - start) i++}
       +cgl-path = arg-v[i];
       {if(cgl-path[0] == ''/)
@@ -304,9 +304,17 @@
       }
       {if!(cgl-path-input(cgl-path, cgl-path-len, bin, cmd))
          print-usage(bin, cmd);
-         'c.exit(#failure);
+			return false;
 		}
    }
+	return true;
+}
+{print-command(arg-c:i32, arg-v:char[][])
+	'c.printf("Command was:");
+	{do{+i = 0}{(arg-c) i++}
+		'c.printf(" %s", arg-v[i]);
+	}
+	'c.printf("\n");
 }
 {main(arg-c:i32, arg-v:char[][]):i32
    +bin = arg-v[0];
@@ -327,7 +335,10 @@
          'c.printf("Error, [output.c] (which is '%s') must be a filename that ends with '.c', for example: main.c\n", c-path);
          'c.exit(#failure);
       }
-      validate-cgl-paths(3, arg-c, arg-v, bin, #c);
+      {if!(validate-cgl-paths(3, arg-c, arg-v, bin, #c))
+			print-command(arg-c, arg-v);
+         'c.exit(#failure);
+		}
       'sys.mkdir("cgl-tmp", 0o755);
       {+ninja-path:char[24]}
       'c.strcpy(ninja-path, "cgl-tmp/ninja-XXXXXXXXX");
@@ -363,7 +374,10 @@
          print-run-usage(bin);
          'c.exit(#failure);
       }
-      validate-cgl-paths(2, arg-c, arg-v, bin, #run);
+      {if!(validate-cgl-paths(2, arg-c, arg-v, bin, #run))
+			print-command(arg-c, arg-v);
+         'c.exit(#failure);
+		}
       'sys.mkdir("cgl-tmp", 0o755);
       {+c-path:char[22]}
       'c.strcpy(c-path, "cgl-tmp/c-XXXXXXXXX");
