@@ -376,6 +376,8 @@ value(l) ::= value4fix(r).
    { l.basic.id = r.basic.id; }
 value(l) ::= negVal(r).
    { l.basic.id = r.basic.id; }
+value(l) ::= notExpr(r).
+   { l.basic.id = r.basic.id; }
 value4fix(l) ::= fastCastExpr(r).
    { l.basic.id = r.basic.id; }
 value4fix(l) ::= value4cast(r).
@@ -589,6 +591,8 @@ expr(l) ::= fastCastExpr(r).
    { l.basic.id = r.basic.id; }
 expr(l) ::= negVal(r).
    { l.basic.id = r.basic.id; }
+expr(l) ::= notExpr(r).
+   { l.basic.id = r.basic.id; }
 expr(l) ::= valueonly(r).
    { l.basic.id = r.basic.id; }
 expr(l) ::= opExpr(r).
@@ -614,6 +618,9 @@ incExpr(l) ::= value(e) PLUS PLUS.
 
 decExpr(l) ::= value(e) MINUS MINUS.
    { l.basic.id = _Nglc_Pexpr_unary_2(e.basic.id, 2); }
+
+notExpr(l) ::= EXPOINT value(e).
+   { l.basic.id = _Nglc_Pexpr_unary_2(e.basic.id, 3); }
 
 refExpr(l) ::= AMPERSAND SPACE value(e).
    { l.basic.id = _Nglc_Pexpr_ref_1(e.basic.id); }

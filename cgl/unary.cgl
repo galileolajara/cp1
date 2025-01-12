@@ -1,6 +1,6 @@
 {using 'glc = :glc}
 {at(:glc)
-{:unary[#neg, #inc, #dec]:u8
+{:unary[#neg, #inc, #dec, #not]:u8
    {rd(u:this&, r:rdr) @inline
       u = r.n1():unary;
    }
@@ -41,6 +41,10 @@
          {case(#dec)
             e.expr.write-value(e.val);
             .out.printf("--");
+         }
+         {case(#not)
+            .out.printf("!");
+            e.expr.write-value(e.val);
          }
       }
    }

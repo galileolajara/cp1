@@ -143,6 +143,7 @@
 #define _Nglc_Nunary_Cneg 0
 #define _Nglc_Nunary_Cinc (_Nglc_Nunary_Cneg + 1)
 #define _Nglc_Nunary_Cdec (_Nglc_Nunary_Cinc + 1)
+#define _Nglc_Nunary_Cnot (_Nglc_Nunary_Cdec + 1)
 #define _Nglc_Nbools_Cand 0
 #define _Nglc_Nbools_Cor (_Nglc_Nbools_Cand + 1)
 #define _Nglc_Nfunc_flags_Cvar_args (8)
@@ -3478,6 +3479,10 @@ break;
 case _Nglc_Nunary_Cdec:;
 _Nglc_Nexpr_i_Pwrite_value_2((*_Le_1)._Fexpr, &(*_Le_1)._Fval);
 fprintf(_Gout, "--");
+break;
+case _Nglc_Nunary_Cnot:;
+fprintf(_Gout, "!");
+_Nglc_Nexpr_i_Pwrite_value_2((*_Le_1)._Fexpr, &(*_Le_1)._Fval);
 break;
 }
 }

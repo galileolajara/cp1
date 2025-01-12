@@ -1,0 +1,171 @@
+{using 'c = :stdc}
+{using 'glc = :glc}
+{at(:glc)
+{gvar preprocess-def-str-v:char[][]}
+{gvar preprocess-def-len-v:u8[]}
+{gvar preprocess-def-cap:u32}
+{gvar preprocess-def-c:u32}
+{preprocess-def-get(name:char[], len:u8):bool
+   {do{+i = 0}{(.preprocess-def-c) i++}
+      {if(&&, .preprocess-def-len-v[i] == len, 'c.memcmp(.preprocess-def-str-v[i], name, len) == 0)
+         return true;
+      }
+   }
+   return false;
+}
+{preprocess-def(name:char[], len:u8)
+   // 'c.printf("defining preprocessor %s\n", name);
+   +i = .preprocess-def-c++;
+   {if(.preprocess-def-cap < .preprocess-def-c)
+      .preprocess-def-cap = (.preprocess-def-c << 1) + 8;
+      .preprocess-def-str-v = 'c.realloc(.preprocess-def-str-v, .preprocess-def-cap * :usz[:usz]);
+      .preprocess-def-len-v = 'c.realloc(.preprocess-def-len-v, .preprocess-def-cap * :usz[:usz]);
+   }
+   .preprocess-def-str-v[i] = name;
+   .preprocess-def-len-v[i] = len;
+}
+{preprocess-init()}
+{preprocess(in-out-data:ref&, in-out-size:usz&)
+   // 'c.printf("#if detected, preprocessing...\n");
+   {+in-data:char[] = in-out-data}
+   +in-size = in-out-size;
+   {+r-end:rdr+}
+   r-end.ref = in-data;
+   r-end.pos += in-size;
+   {+r:rdr+}
+   r.ref = in-data;
+   {+new-data = 'c.malloc(in-size + 1)}
+   {+w:wtr+}
+   w.ref = new-data;
+
+   +line = 0;
+   {while(r.pos < r-end.pos)
+      line++;
+      +line-len = 0;
+      {do()
+         {if(r.p1[line-len] == ''\n)
+            break;
+         }
+         line-len++;
+      }
+      // 'c.printf("[%.*s]\n", line-len, r.p1);
+      {if(&&, r.p1[0] == ''#, r.p1[1] == ''i, r.p1[2] == ''f, (||, r.p1[3] == ''(, (&&, r.p1[3] == ''!, r.p1[4] == ''()))
+         w.p1[0] = ''\n;
+         w.pos++;
+
+         +start = 4;
+         +invert = false;
+         {if(r.p1[3] == ''!)
+            start = 5;
+            invert = true;
+         }
+         +rparen = -1;
+         {do{+i = start}{(line-len - start) i++}
+            {if(r.p1[i] == ''))
+               rparen = i;
+               break;
+            }
+         }
+         {if(rparen == -1)
+            'c.printf("%s:%u: Error in preprocessing the code, #if(...) must have a closing parenthesis ')'\n", .input-path, line);
+            'c.exit(#failure);
+         }
+         {+def-str:char[] = & r.char[start]}
+         +def-len = rparen - start;
+         +ok = preprocess-def-get(def-str, def-len);
+         {if(invert)
+            ok = !ok;
+         }
+         // 'c.printf("evaluated %.*s as %u\n", def-len, def-str, ok);
+         r.pos += line-len + 1;
+         // Get the indention of the next line
+         {+indention:char[] = null}
+         +indention-len = -1;
+         {if(r.pos < r-end.pos)
+            +line-len = 0;
+            {do()
+               {if(r.p1[line-len] == ''\n)
+                  break;
+               }
+               line-len++;
+            }
+            +first-char = 0;
+            {do()
+               {if(||, r.p1[first-char] == '' , r.p1[first-char] == ''\t)
+                  // Skip
+               }{else
+                  break;
+               }
+               first-char++;
+            }
+            // 'c.printf("1. indention is [%.*s]\n", first-char, r.p1);
+            {if(ok)
+               'c.memcpy(w.p1, r.p1, line-len + 1);
+               w.pos += line-len + 1;
+            }{else
+               w.p1[0] = ''\n;
+               w.pos++;
+            }
+            indention = r.char;
+            indention-len = first-char;
+            line-len++;
+            r.pos += line-len;
+         }
+         {if(indention-len <= 0)
+            'c.printf("%s:%u: Error in preprocessing the code, #if(...). Its next line must be indented by at least one space or tab\n", .input-path, line);
+            'c.exit(#failure);
+         }
+         line++;
+         {while(r.pos < r-end.pos)
+            +line-len = 0;
+            {do()
+               {if(r.p1[line-len] == ''\n)
+                  break;
+               }
+               line-len++;
+            }
+            +first-char = 0;
+            {do()
+               {if(||, r.p1[first-char] == '' , r.p1[first-char] == ''\t)
+                  // Skip
+               }{else
+                  break;
+               }
+               first-char++;
+            }
+            // 'c.printf("2. indention is [%.*s]\n", first-char, r.p1);
+            {if(&&, line-len >= indention-len, 'c.memcmp(r.p1, indention, indention-len) == 0)
+               {if(ok)
+                  'c.memcpy(w.p1, r.p1, line-len + 1);
+                  w.pos += line-len + 1;
+               }{else
+                  w.p1[0] = ''\n;
+                  w.pos++;
+               }
+            }{else
+               break;
+            }
+            line++;
+            line-len++;
+            r.pos += line-len;
+         }
+         continue;
+      }{else
+         line-len++;
+         'c.memcpy(w.p1, r.p1, line-len);
+         w.pos += line-len;
+      }
+      r.pos += line-len;
+   }
+
+   'c.free(in-data);
+   in-out-data = new-data;
+   {+w-begin:wtr+}
+   w-begin.ref = new-data;
+   in-out-size = w.pos - w-begin.pos;
+
+   'c:fd.open(+fd, "parsed.cgl", #write | #truncate | #create, 0o644);
+   fd.write(new-data, w.pos - w-begin.pos);
+   fd.close();
+}
+}

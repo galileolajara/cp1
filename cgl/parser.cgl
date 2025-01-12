@@ -749,7 +749,7 @@
 {gvar lock-path:char[]}
 {parser-at-exit()}
 {main(arg-c:i32, arg-v:char[][]):i32 @main
-   {if(false) export()}
+   {if(false) preprocess-def("", 0); export()}
    .id-map.init();
    .include-map.init();
    .at-map.init();
@@ -773,7 +773,7 @@
          // Can't create output file
          'sys.stat(lock-path, +out-stat);
          in-fd.stat(+in-stat);
-         {if(||, out-stat.mtimespec.sec > in-stat.mtimespec.sec, (&&, out-stat.mtimespec.sec == in-stat.mtimespec.sec, out-stat.mtimespec.nsec > in-stat.mtimespec.nsec))
+         {if(||, out-stat.mtime.sec > in-stat.mtime.sec, (&&, out-stat.mtime.sec == in-stat.mtime.sec, out-stat.mtime.nsec > in-stat.mtime.nsec))
             // Skip parsing
             'c.out.printf("Skipping parsing of %s because the output file is newer\n", .input-path);
             return 0;
@@ -803,6 +803,7 @@
       'c.exit(#failure);
    }
    {if(true) // Process comments
+      +preprocess = false;
       // in-data = convert-old-to-new(in-data, in-size);
       {+r-end:rdr+}
       r-end.ref = in-data;
@@ -817,6 +818,9 @@
          {do()
             r.pos++;
             {if(r.p1[0] == ''\n)
+               {if(&&, r.p1[0] == ''#, r.p1[1] == ''i, r.p1[2] == ''f, (||, r.p1[3] == ''(, (&&, r.p1[3] == ''!, r.p1[4] == ''()))
+                  preprocess = true;
+               }
                w.p1[0] = ''\n;
                w.pos++;
                r.pos++;
@@ -996,6 +1000,14 @@
                }
             }
             continue;
+         }{elif(&&, r.p1[0] == ''#, r.p1[1] == ''i, r.p1[2] == ''f, (||, r.p1[3] == ''(, (&&, r.p1[3] == ''!, r.p1[4] == ''()))
+            {if(r.ref == in-data)
+               // ok
+               preprocess = true;
+            }{elif(r.p1[-1] == ''\n)
+               // ok
+               preprocess = true;
+            }
          }
          w.p1[0] = r.p1[0];
          w.pos++;
@@ -1007,10 +1019,14 @@
       {+w-begin:wtr+}
       w-begin.ref = new-data;
       in-size = w.pos - w-begin.pos;
-      // 'c:file.open(+fd, "out:parsed.glc", #write | #truncate | #create, 0644);
+      // 'c:fd.open(+fd, "out:parsed.glc", #write | #truncate | #create, 0o644);
       // fd.write(in-data, in-size);
       // fd.close();
       // 'c.out.write(in-data, in-size);
+      {if(preprocess)
+         preprocess-init();
+         preprocess(in-data, in-size);
+      }
    }
    {+r-end:rdr+}
    r-end.ref = in-data;

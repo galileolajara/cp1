@@ -20,6 +20,20 @@ union glc_token {
    void* pointer;
 };
 
+void _Nglc_Ppreprocess_def_2(const char*, uint8_t);
+
+void _Nglc_Ppreprocess_init_0() {
+#ifdef __APPLE__
+   _Nglc_Ppreprocess_def_2("apple", 5);
+#endif
+#ifdef __linux__
+   _Nglc_Ppreprocess_def_2("linux", 5);
+#endif
+#ifdef _WIN32
+   _Nglc_Ppreprocess_def_2("windows", 7);
+#endif
+}
+
 extern char* _Glock_path;
 void cleanup() {
    if (_Glock_path != 0) {
