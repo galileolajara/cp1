@@ -748,7 +748,7 @@
 {char-escape-value(c:char):i32}
 {gvar lock-path:char[]}
 {parser-at-exit()}
-{main(arg-c:i32, arg-v:char[][]):i32 @main
+{main(arg-c:intc, arg-v:char[][]):intc @main
    {if(false) preprocess-def("", 0); export()}
    .id-map.init();
    .include-map.init();
@@ -776,8 +776,7 @@
          {+skip}
          "#ifdef __APPLE__";
             skip = (||, out-stat.mtimespec.sec > in-stat.mtimespec.sec, (&&, out-stat.mtimespec.sec == in-stat.mtimespec.sec, out-stat.mtimespec.nsec > in-stat.mtimespec.nsec));
-         "#endif";
-         "#ifdef __linux__";
+         "#elif defined(__unix__)";
             skip = (||, out-stat.mtim.sec > in-stat.mtim.sec, (&&, out-stat.mtim.sec == in-stat.mtim.sec, out-stat.mtim.nsec > in-stat.mtim.nsec));
          "#endif";
          {if(skip)

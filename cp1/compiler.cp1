@@ -491,7 +491,7 @@
 {gvar struct-is-outputted:u8[]}
 {gvar struct-outputted-c:i32}
 {gvar struct-outputted-v:struct[]}
-{main(arg-c:i32, arg-v:char[][]):i32 @main
+{main(arg-c:intc, arg-v:char[][]):intc @main
    {if(arg-c < 3)
       'c.out.printf("usage: %s file.cp1-b file.c\n", arg-v[0]);
       return 0;

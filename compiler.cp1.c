@@ -779,7 +779,7 @@ struct _Ncp1_Nstmt_switch* _Gswitch_stack_v[64];
 uint8_t _Gswitch_stack_c;
 union _Ncp1_Ncase_stack _Gcase_stack_v[64];
 uint8_t _Gcase_stack_c;
-int32_t main(int32_t _Larg_c_0, char** _Larg_v_1);
+int main(int _Larg_c_0, char** _Larg_v_1);
 void qalloc_undo(int32_t _Lsize_0);
 void _Ncp1_Nmap_Pinit_1(struct _Ncp1_Nmap* _Lm_0);
 void _Ncp1_Nat_map_Pinit_1(struct _Ncp1_Nat_map* _Lm_0);
@@ -1099,7 +1099,7 @@ void _Ncp1_Nexpr_i_Ptype_size_of_type_2(struct _Ncp1_Nexpr* _Lexpr_0, _Ncp1_Nat*
 void _Ncp1_Nexpr_i_Ptype_null_2(struct _Ncp1_Nexpr* _Lexpr_0, _Ncp1_Nat* _Lat_1);
 void _Ncp1_Nexpr_i_Ptype_index_2(struct _Ncp1_Nexpr* _Lexpr_0, _Ncp1_Nat* _Lat_1);
 void _Ncp1_Nvalue_Pset_5(struct _Ncp1_Nvalue* _Lv_0, int8_t _Lref_1, bool _Lparen_2, _Ncp1_Nat _Ltype_3, struct _Ncp1_Ntype_info* _Linfo_4);
-int32_t main(int32_t _Larg_c_0, char** _Larg_v_1) {
+int main(int _Larg_c_0, char** _Larg_v_1) {
 if(_Larg_c_0 < 3) {
 fprintf(stdout, "usage: %s file.cp1-b file.c\n", _Larg_v_1[0]);
 return 0;

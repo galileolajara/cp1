@@ -852,7 +852,7 @@ union _Ncp1_Nnest _Gnest_stack_ptr_v[64];
 int32_t _Gexpr_c;
 int32_t _Gexpr_cap;
 struct _Ncp1_Nexpr** _Gexpr_v;
-int32_t main(int32_t _Larg_c_0, char** _Larg_v_1);
+int main(int _Larg_c_0, char** _Larg_v_1);
 void _Ncp1_Ppreprocess_def_2(char* _Lname_0, uint8_t _Llen_1);
 void _Ncp1_Pexport_0();
 void _Ncp1_Nmap_Pinit_1(struct _Ncp1_Nmap* _Lm_0);
@@ -1284,7 +1284,7 @@ void _Ncp1_Nbools_Pwr_2(_Ncp1_Nbools _Le_0, union _Ncp1_Nwtr* _Lw_1);
 void _Ncp1_Nunary_Pwr_2(_Ncp1_Nunary _Lu_0, union _Ncp1_Nwtr* _Lw_1);
 void _Ncp1_Ncompare_Pwr_2(_Ncp1_Ncompare _Le_0, union _Ncp1_Nwtr* _Lw_1);
 void _Ncp1_Nassign_Pwr_2(_Ncp1_Nassign _Ls_0, union _Ncp1_Nwtr* _Lw_1);
-int32_t main(int32_t _Larg_c_0, char** _Larg_v_1) {
+int main(int _Larg_c_0, char** _Larg_v_1) {
 _Nstdc_Nfd _Lin_fd_2;
 char* _Llock_path_3;
 size_t _Lin_size_8;
@@ -1334,8 +1334,7 @@ stat(_Llock_path_3, &_Lout_stat_5);
 _Nstdc_Nfd_Pstat_2(_Lin_fd_2, &_Lin_stat_6);
 #ifdef __APPLE__
 _Lskip_7 = ((_Lout_stat_5.st_mtimespec.tv_sec > _Lin_stat_6.st_mtimespec.tv_sec) || ((_Lout_stat_5.st_mtimespec.tv_sec == _Lin_stat_6.st_mtimespec.tv_sec) && (_Lout_stat_5.st_mtimespec.tv_nsec > _Lin_stat_6.st_mtimespec.tv_nsec)));
-#endif
-#ifdef __linux__
+#elif defined(__unix__)
 _Lskip_7 = ((_Lout_stat_5.st_mtim.tv_sec > _Lin_stat_6.st_mtim.tv_sec) || ((_Lout_stat_5.st_mtim.tv_sec == _Lin_stat_6.st_mtim.tv_sec) && (_Lout_stat_5.st_mtim.tv_nsec > _Lin_stat_6.st_mtim.tv_nsec)));
 #endif
 if(_Lskip_7) {

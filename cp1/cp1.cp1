@@ -316,7 +316,7 @@
 	}
 	'c.printf("\n");
 }
-{main(arg-c:i32, arg-v:char[][]):i32
+{main(arg-c:intc, arg-v:char[][]):intc
    +bin = arg-v[0];
    {if(arg-c < 2)
       print-commands(bin);

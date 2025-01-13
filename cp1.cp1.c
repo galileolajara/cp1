@@ -27,7 +27,7 @@ int32_t _Gincluded_cap;
 int32_t _Gcp1_path_cap;
 uint32_t* _Gcp1_path_len_v;
 uint32_t* _Gcp1_path_real_len_v;
-int32_t main(int32_t _Larg_c_0, char** _Larg_v_1);
+int main(int _Larg_c_0, char** _Larg_v_1);
 void _Pprint_commands_1(char* _Lbin_0);
 void _Pprint_c_usage_1(char* _Lbin_0);
 bool _Pvalidate_cp1_paths_5(int32_t _Lstart_0, int32_t _Larg_c_1, char** _Larg_v_2, char* _Lbin_3, _Ncmd _Lcmd_4);
@@ -40,7 +40,7 @@ void _Pprint_usage_2(char* _Lbin_0, _Ncmd _Lcmd_1);
 bool _Pcp1_path_input_4(char* _Lcp1_path_0, int32_t _Lcp1_path_len_1, char* _Lbin_2, _Ncmd _Lcmd_3);
 void _Pcp1_path_add_4(char* _Lcp1_path_real_0, int32_t _Lcp1_path_real_len_1, char* _Lcp1_path_2, int32_t _Lcp1_path_len_3);
 bool _Nstdc_Nfd_Popen_3(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2);
-int32_t main(int32_t _Larg_c_0, char** _Larg_v_1) {
+int main(int _Larg_c_0, char** _Larg_v_1) {
 char* _Lbin_2;
 char* _Lcmd_3;
 _Lbin_2 = _Larg_v_1[0];
