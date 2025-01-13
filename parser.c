@@ -108,9 +108,9 @@ int _Gcol;
 extern char* input_path;
 
 #ifdef GLC_NEW
-#include "out/cgl_parser.c"
+#include "out/cp1_parser.c"
 #else
-#include "cgl_parser.c"
+#include "cp1_parser.c"
 #endif
 
 struct glc_lexer {

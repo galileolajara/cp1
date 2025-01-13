@@ -10,13 +10,13 @@ rule ld-c
 rule ld-cpp
  command = clang++ $flags -O3 -flto -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out
 
-build out/parser.cgl.c.o: c parser.cgl.c
-build out/parser.c.o: c parser.c | export.h lexer.c cgl_parser.c
-build bin/cgl-parser: ld-cpp out/parser.cgl.c.o out/parser.c.o out/hashtable.cpp.o
-build out/compiler.cgl.c.o: c compiler.cgl.c
+build out/parser.cp1.c.o: c parser.cp1.c
+build out/parser.c.o: c parser.c | export.h lexer.c cp1_parser.c
+build bin/cp1-parser: ld-cpp out/parser.cp1.c.o out/parser.c.o out/hashtable.cpp.o
+build out/compiler.cp1.c.o: c compiler.cp1.c
 build out/str.c.o: c str.c
-build bin/cgl-compiler: ld-cpp out/compiler.cgl.c.o out/str.c.o out/hashtable.cpp.o
-build bin/cgl: ld-c cgl.cgl.c
+build bin/cp1-compiler: ld-cpp out/compiler.cp1.c.o out/str.c.o out/hashtable.cpp.o
+build bin/cp1: ld-c cp1.cp1.c
 
 rule c2
  command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DGLC_NEW -I. -c $in -o $out
@@ -40,37 +40,37 @@ rule lemon
  restat = true
  command = out/lemon -dout $in
 
-rule cgl-c
+rule cp1-c
  restat = true
- command = bin/cgl c $out $in
+ command = bin/cp1 c $out $in
 
 rule run
  command = $in $out
 
 build out/hash-table-size: ld-cpp2 hashtable.cpp
  flags = -DGLC_GET_SIZE
-build out/hash-table-size.cgl: run out/hash-table-size
+build out/hash-table-size.cp1: run out/hash-table-size
 
-build out/token.cgl.c: cgl-c token.cgl stdc/stdio.cgl stdc/stdlib.cgl stdc/fcntl.cgl stdc/unistd.cgl stdc/string.cgl | bin/cgl bin/cgl-parser bin/cgl-compiler
-build out/token: ld-c2 out/token.cgl.c
-build out/token.cgl: run out/token out/cgl_parser.h
-build out/split.cgl.c: cgl-c split.cgl stdc/stdio.cgl stdc/stdlib.cgl stdc/fcntl.cgl stdc/unistd.cgl stdc/string.cgl | bin/cgl bin/cgl-parser bin/cgl-compiler
-build out/split: ld-c2 out/split.cgl.c
-build out/parser-common.cgl out/compiler-common.cgl: run out/split cgl/common.cgl
-build out/cgl.cgl.c: cgl-c cgl/cgl.cgl stdc/stdio.cgl stdc/fcntl.cgl stdc/stdlib.cgl stdc/unistd.cgl stdc/string.cgl sys/stat.cgl | bin/cgl bin/cgl-parser bin/cgl-compiler
-build out/parser2.cgl.c: cgl-c cgl/parser.cgl cgl/preprocess.cgl out/token.cgl cgl/break.cgl cgl/math.cgl cgl/bools.cgl cgl/str.cgl cgl/cvar.cgl cgl/unary.cgl cgl/ref.cgl cgl/cast.cgl cgl/index.cgl cgl/switch.cgl cgl/if.cgl cgl/do.cgl cgl/while.cgl cgl/compare.cgl cgl/bool.cgl cgl/char.cgl cgl/call.cgl cgl/null.cgl cgl/int.cgl cgl/size.cgl cgl/assign.cgl cgl/fvar.cgl cgl/gvar.cgl cgl/continue.cgl cgl/return.cgl cgl/space.cgl cgl/export.cgl cgl/rdr.cgl cgl/wtr.cgl cgl/var.cgl cgl/func.cgl cgl/lvar.cgl cgl/enum.cgl cgl/expr.cgl cgl/stmt.cgl out/parser-common.cgl cgl/struct.cgl stdc/stdio.cgl stdc/fcntl.cgl stdc/stdlib.cgl stdc/unistd.cgl stdc/string.cgl sys/stat.cgl out/hash-table-size.cgl | bin/cgl bin/cgl-parser bin/cgl-compiler
-build out/compiler2.cgl.c: cgl-c cgl/compiler.cgl out/compiler-common.cgl cgl/rdr.cgl cgl/wtr.cgl cgl/func.cgl cgl/struct.cgl cgl/enum.cgl cgl/expr.cgl cgl/stmt.cgl cgl/var.cgl cgl/assign.cgl cgl/compare.cgl cgl/bool.cgl cgl/char.cgl cgl/math.cgl cgl/unary.cgl cgl/ref.cgl cgl/cast.cgl cgl/lvar.cgl cgl/fvar.cgl cgl/gvar.cgl cgl/cvar.cgl cgl/bools.cgl cgl/call.cgl cgl/str.cgl cgl/int.cgl cgl/size.cgl cgl/null.cgl cgl/index.cgl cgl/if.cgl cgl/switch.cgl cgl/do.cgl cgl/while.cgl cgl/continue.cgl cgl/break.cgl cgl/return.cgl cgl/space.cgl cgl/export.cgl stdc/stdio.cgl stdc/fcntl.cgl stdc/stdlib.cgl stdc/unistd.cgl stdc/string.cgl out/hash-table-size.cgl | bin/cgl bin/cgl-parser bin/cgl-compiler
-build out/export.cgl.c: cgl-c export.cgl stdc/stdio.cgl stdc/stdlib.cgl stdc/fcntl.cgl stdc/unistd.cgl stdc/string.cgl | bin/cgl bin/cgl-parser bin/cgl-compiler
-build out/export: ld-c2 out/export.cgl.c
-build out/export.h: run out/export out/parser2.cgl.c
+build out/token.cp1.c: cp1-c token.cp1 stdc/stdio.cp1 stdc/stdlib.cp1 stdc/fcntl.cp1 stdc/unistd.cp1 stdc/string.cp1 | bin/cp1 bin/cp1-parser bin/cp1-compiler
+build out/token: ld-c2 out/token.cp1.c
+build out/token.cp1: run out/token out/cp1_parser.h
+build out/split.cp1.c: cp1-c split.cp1 stdc/stdio.cp1 stdc/stdlib.cp1 stdc/fcntl.cp1 stdc/unistd.cp1 stdc/string.cp1 | bin/cp1 bin/cp1-parser bin/cp1-compiler
+build out/split: ld-c2 out/split.cp1.c
+build out/parser-common.cp1 out/compiler-common.cp1: run out/split cp1/common.cp1
+build out/cp1.cp1.c: cp1-c cp1/cp1.cp1 stdc/stdio.cp1 stdc/fcntl.cp1 stdc/stdlib.cp1 stdc/unistd.cp1 stdc/string.cp1 sys/stat.cp1 | bin/cp1 bin/cp1-parser bin/cp1-compiler
+build out/parser2.cp1.c: cp1-c cp1/parser.cp1 cp1/preprocess.cp1 out/token.cp1 cp1/break.cp1 cp1/math.cp1 cp1/bools.cp1 cp1/str.cp1 cp1/cvar.cp1 cp1/unary.cp1 cp1/ref.cp1 cp1/cast.cp1 cp1/index.cp1 cp1/switch.cp1 cp1/if.cp1 cp1/do.cp1 cp1/while.cp1 cp1/compare.cp1 cp1/bool.cp1 cp1/char.cp1 cp1/call.cp1 cp1/null.cp1 cp1/int.cp1 cp1/size.cp1 cp1/assign.cp1 cp1/fvar.cp1 cp1/gvar.cp1 cp1/continue.cp1 cp1/return.cp1 cp1/space.cp1 cp1/export.cp1 cp1/rdr.cp1 cp1/wtr.cp1 cp1/var.cp1 cp1/func.cp1 cp1/lvar.cp1 cp1/enum.cp1 cp1/expr.cp1 cp1/stmt.cp1 out/parser-common.cp1 cp1/struct.cp1 stdc/stdio.cp1 stdc/fcntl.cp1 stdc/stdlib.cp1 stdc/unistd.cp1 stdc/string.cp1 sys/stat.cp1 out/hash-table-size.cp1 | bin/cp1 bin/cp1-parser bin/cp1-compiler
+build out/compiler2.cp1.c: cp1-c cp1/compiler.cp1 out/compiler-common.cp1 cp1/rdr.cp1 cp1/wtr.cp1 cp1/func.cp1 cp1/struct.cp1 cp1/enum.cp1 cp1/expr.cp1 cp1/stmt.cp1 cp1/var.cp1 cp1/assign.cp1 cp1/compare.cp1 cp1/bool.cp1 cp1/char.cp1 cp1/math.cp1 cp1/unary.cp1 cp1/ref.cp1 cp1/cast.cp1 cp1/lvar.cp1 cp1/fvar.cp1 cp1/gvar.cp1 cp1/cvar.cp1 cp1/bools.cp1 cp1/call.cp1 cp1/str.cp1 cp1/int.cp1 cp1/size.cp1 cp1/null.cp1 cp1/index.cp1 cp1/if.cp1 cp1/switch.cp1 cp1/do.cp1 cp1/while.cp1 cp1/continue.cp1 cp1/break.cp1 cp1/return.cp1 cp1/space.cp1 cp1/export.cp1 stdc/stdio.cp1 stdc/fcntl.cp1 stdc/stdlib.cp1 stdc/unistd.cp1 stdc/string.cp1 out/hash-table-size.cp1 | bin/cp1 bin/cp1-parser bin/cp1-compiler
+build out/export.cp1.c: cp1-c export.cp1 stdc/stdio.cp1 stdc/stdlib.cp1 stdc/fcntl.cp1 stdc/unistd.cp1 stdc/string.cp1 | bin/cp1 bin/cp1-parser bin/cp1-compiler
+build out/export: ld-c2 out/export.cp1.c
+build out/export.h: run out/export out/parser2.cp1.c
 build out/lexer.c: re2c lexer-re2c.c
 build out/lemon: ld-unsanitized lemon.c
-build out/cgl_parser.c out/cgl_parser.h: lemon cgl_parser.y | out/lemon
-build out/cgl: ld-c2 out/cgl.cgl.c
-build out/parser2.cgl.c.o: c2 out/parser2.cgl.c
-build out/parser2.c.o: c2 parser2.c | out/export.h out/lexer.c out/cgl_parser.c
+build out/cp1_parser.c out/cp1_parser.h: lemon cp1_parser.y | out/lemon
+build out/cp1: ld-c2 out/cp1.cp1.c
+build out/parser2.cp1.c.o: c2 out/parser2.cp1.c
+build out/parser2.c.o: c2 parser2.c | out/export.h out/lexer.c out/cp1_parser.c
 build out/hashtable.cpp.o: cpp2 hashtable.cpp
-build out/cgl-parser: ld-cpp2 out/parser2.cgl.c.o out/parser2.c.o out/hashtable.cpp.o
-build out/compiler2.cgl.c.o: c2 out/compiler2.cgl.c
+build out/cp1-parser: ld-cpp2 out/parser2.cp1.c.o out/parser2.c.o out/hashtable.cpp.o
+build out/compiler2.cp1.c.o: c2 out/compiler2.cp1.c
 build out/str2.c.o: c2 str2.c
-build out/cgl-compiler: ld-cpp2 out/compiler2.cgl.c.o out/str2.c.o out/hashtable.cpp.o
+build out/cp1-compiler: ld-cpp2 out/compiler2.cp1.c.o out/str2.c.o out/hashtable.cpp.o
