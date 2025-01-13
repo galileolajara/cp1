@@ -1,5 +1,9 @@
 {using 'c = :stdc}
 {using 'sys = :sys}
+{gvar include-dir:char[512]}
+{gvar include-dir-len:u16}
+// +include-dir = "/opt/cp1/include";
+// +include-dir-len = 'c.strlen(include-dir);
 {print-commands(bin:char[])
    'c.printf("Usage: %s [command] [options]\n", bin);
    'c.printf("Commands:\n");
@@ -200,10 +204,8 @@
                   .included-len-v[i] = include-path-len;
                   // 'c.printf("including %.*s\n", include-path-len, include-path);
                   {+spec-path:char[128]}
-                  +include-dir = "/opt/cp1/include";
-                  +include-dir-len = 'c.strlen(include-dir);
-                  'c.sprintf(spec-path, "%s/%s", include-dir, path);
-                  {do{+i = include-dir-len + 1}{('c.strlen(spec-path) - (include-dir-len + 1)) i++}
+                  'c.sprintf(spec-path, "%s/%s", .include-dir, path);
+                  {do{+i = .include-dir-len + 1}{('c.strlen(spec-path) - (.include-dir-len + 1)) i++}
                      {if(spec-path[i] == ''/)
                         spec-path[i] = ''-;
                      }
@@ -239,8 +241,8 @@
                                  {+file-path-dup:char[] = 'c.malloc(file-path-len + 1)}
                                  'c.memcpy(file-path-dup, file-path, file-path-len);
                                  file-path-dup[file-path-len] = ''\0;
-                                 {+real-path:char[] = 'c.malloc(include-dir-len + 1 + file-path-len + 1)}
-                                 'c.sprintf(real-path, "%s/%.*s", include-dir, file-path-len, file-path);
+                                 {+real-path:char[] = 'c.malloc(.include-dir-len + 1 + file-path-len + 1)}
+                                 'c.sprintf(real-path, "%s/%.*s", .include-dir, file-path-len, file-path);
                                  // 'c.printf("[%.*s] -> %s\n", file-path-len, file-path, real-path);
                                  +real-path-len = 'c.strlen(real-path);
                                  cp1-path-add(real-path, real-path-len, file-path-dup, file-path-len);
@@ -318,6 +320,48 @@
 }
 {main(arg-c:intc, arg-v:char[][]):intc
    +bin = arg-v[0];
+   {+abs-path:char[512]}
+   {+abs-path-len:u16 = 0}
+   {if(bin[0] == ''/)
+      abs-path-len = 'c.strlen(bin);
+      'c.memcpy(abs-path, bin, abs-path-len);
+      abs-path[abs-path-len] = ''\0;
+   }{else
+      +has-slash = false;
+      {do{+i = 0}{() i++}
+         {if(bin[i] == ''\0) break}
+         {if(bin[i] == ''/)
+            has-slash = true;
+            break;
+         }
+      }
+      {if(has-slash)
+         'c.realpath(bin, abs-path);
+      }{else
+         +PATH = 'c.strdup('c.getenv("PATH"));
+         +found = 'c.strtok(PATH, ":");
+         +fd = 'c:fd#nil;
+         {while(found != null)
+            'c.sprintf(abs-path, "%s/%s", found, bin);
+            fd = 'c.open(abs-path, #read);
+            {if(fd != #nil)
+               break;
+            }
+            found = 'c.strtok(null, ":");
+         }
+         {if(fd == #nil)
+            'c.printf("Cannot run %s because we can't detect its absolute path\n", bin);
+            'c.exit(#failure);
+         }
+      }
+   }
+   +slash = 'c.strrchr(abs-path, ''/);
+   slash[0] = ''\0;
+   slash = 'c.strrchr(abs-path, ''/);
+   slash[0] = ''\0;
+   // 'c.printf("absolute path of the %s binary is %s\n", bin, abs-path);
+   'c.sprintf(.include-dir, "%s/include", abs-path);
+   .include-dir-len = 'c.strlen(.include-dir);
    {if(arg-c < 2)
       print-commands(bin);
       'c.exit(#failure);

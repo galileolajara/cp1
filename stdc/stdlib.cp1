@@ -11,6 +11,7 @@
       {system(command:char[]):intc @no-decl @real-name}
       {exit(code:exit) @real-name @no-decl}
       {getenv(name:char[]):char[] @real-name @no-decl}
+      {realpath(pathname:char[], resolved:char[]):char[] @real-name @no-decl}
       {:exit[#success, #failure]:intc}
    }
 }
