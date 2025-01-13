@@ -1,48 +1,33 @@
 What does Hello World look like?
 -
-![hello](/images/helloworld.png)
+![hello](/images/helloworld-2025-01-13.png)
 
 How to use?
 -
 Begin by cloning the repo. Make sure to have ninja, clang and re2c installed on your computer.
 ```
-git clone https://github.com/galileolajara/glc.git
-cd glc
+git clone https://github.com/galileolajara/cp1
+cd cp1
 ninja
 ```
 Then checkout the examples:
 ```
-cd examples/02-methods
-ninja
-out/methods
+bin/cp1 run examples/01-helloworld/hello.cp1 # to run hello world
+bin/cp1 c hello.c examples/01-helloworld/hello.cp1 # to see the C code
 ```
 
-GLC is a programming language for people who love the simplicity of C language and looking for few modern features absent in C.
+Cp1 means C+1 or C plus 1, named just like C++ or C plus plus
 -
-Why use GLC instead of C?:
-- You want shorter codes through use of methods on structs, unions, enums and typedefs.
-- You want to organize and shorten (further) your codes using namespaces.
-- You build tools and scripts that parses your code, because GLC's syntax is tools-friendly.
-- Faster development through very fast compilation speed and very fast incremental compilation.
-- Still be able to use C's features and tools because GLC outputs C source files.
+- Cp1 is a very thin abstraction on top of C. Think of it as a TypeScript for C. The +1 in the name suggests that the thin abstraction is just the bare essentials to equip C some of the modern features today such as support for methods on enums, structs and even the primitive types, support for C++'s auto keyword for variables, namespaces, modules and more.
+- Cp1 is vastly different from Zig, Odin, C3, Rust, Vlang because Cp1 aims to maintain only few features but these few features are carefully selected to allow you to do a lot of things when these features are combined.
+- Also, Cp1's top priority is compilation speed, similar to Vlang. Cloning the repo and building it for the first time takes less than 3 seconds on Macbook Pro M2. Editing a source file of Cp1 then recompiling (incremental compilation) takes less than 1 second.
 
-GLC compared to Zig, Odin, V, C3, Rust, Cppfront
+Features
 -
-- Strings are just array of chars, just like C.
-- No templates, no compile-time execution, just like C. But hey, you can do metaprogramming with scripts, aren't ya?
-- No safety features, just like C. But you can use AddressSanitizer and the likes of it, just like in C.
-- No built-in memory management, just like C. But feel free to use Boehm GC, just like in C.
-- No defer, no inheritance, no run-time polymorphism, just like C. But we have a different kind of polymorphism! Just read more.
-- If you think GLC have very few features unlike the other languages, it is because GLC is trying to be fast and simple, just like C!
-
-Primary Objective of GLC
--
-The development of GLC started in 2012 when I'm involved in programming games and game servers and needed a language that have fast incremental compilation speed.
-During that time, I was a fan of mobile CPUs such as Intel Atom hence GLC was born out of a necessity to really have fast compilation speeds.
-If you are searching for a language that compilation speed is #1 problem that's being solved, you might want to try GLC.
-
-How old is GLC?
--
-GLC have been around more than a decade but I didn't share it to public because its codebase was written in a very quick and dirty way.
-GLC is self-hosted, meaning GLC is written in GLC since 2012. I rewrote GLC with (hopefully) a cleaner codebase around September - October 2024,
-and started uploading it here on Github once I got it to self-host for the second time.
+- Outputs C code in just a few seconds. Parsing is parallelized.
+- Self-hosted, Cp1 is written in Cp1.
+- Organize your codes easily using namespaces and modules.
+- Methods on enums, structs and even the primitive types. Method on enums can make data-oriented programming easier.
+- Auto deduct variable types similar to C++'s auto keyword.
+- Ability to emulate virtual functions using switch and case statements that can be distributted across different source files.
+- Ability to write lines of codes in C using the "..."; syntax. This means that even if Cp1 doesn't support goto, #ifdef and more, you can cheat it using the "..."; syntax.
