@@ -1,0 +1,47 @@
+#include <stdio.h>
+
+{using 'c = :stdc}
+{:coord(x:i32, y:i32) // a struct
+   {init(s:this) // a method
+      s.x = 0;
+      s.y = 0;
+   }
+   {walk(s:this, dir:dir) // a method
+      dir.print();
+      {switch(dir)
+         {case(#left) s.x++}
+         {case(#up) s.y++}
+         {case(#right) s.x--}
+         {case(#down) s.y--}
+      }
+   }
+}
+{:dir[#left, #up, #right, #down]:u8 // an 8-bit enum
+   {print(d:this) // a method
+      {switch(d)
+         {case(#left) 'c.printf("Going left...\n")}
+         {case(#up) 'c.printf("Going up...\n")}
+         {case(#right) 'c.printf("Going right...\n")}
+         {case(#down) 'c.printf("Going down...\n")}
+      }
+   }
+}
+{at(:i32) // access the namespace of 32-bit int, then add a "print" and "increment" method
+   {print(i:this)
+      'c.printf("Int's value is %d\n", i);
+   }
+   {inc(i:this&)
+      i++;
+   }
+}
+{main():intc
+   :coord.init(+s); // s is automatically declared as a coord allocated in the stack
+   s.walk(#left);
+   s.walk(#down);
+   'c.printf("The location is at (%d, %d)\n", s.x, s.y);
+   +i = 7:i32;
+   i.print();
+   i.inc();
+   i.print();
+   return 0;
+}

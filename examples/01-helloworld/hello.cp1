@@ -1,0 +1,37 @@
+This is a sample hello world program
+#include <stdio.h>
+#include <math.h>
+
+{using 'c = :stdc} Texts that are outside the top-level curly braces are ignored
+{:this-is-enum[#no, #yes]:u8
+   {string(e:this):char[] // An example method for enums
+      {switch(e)
+         {case(#no)
+            return "no";
+         }
+         {case(#yes)
+            return "yes";
+         }
+      }
+      return "error";
+   }
+}
+{:this-is-struct(x:i32, y:i32)
+   {distance(s:this):f32 // An example method for structs
+      return (s.x:f32.sqr() + s.y:f32.sqr()).sqrt();
+   }
+}
+{main():intc
+   'c.printf("Hello world!\n");
+   +one = 1;
+   +seven = 7;
+   +sum = one + seven;
+   'c.printf("%d + %d = %d\n", one, seven, sum);
+   {+typed-var:i32 = 9}
+   'c.printf("typed-var is %d\n", typed-var);
+   {+struct:this-is-struct+}
+   struct.x = 9;
+   struct.y = 11;
+   'c.printf("distance is %f\n", struct.distance());
+   return 0;
+}
