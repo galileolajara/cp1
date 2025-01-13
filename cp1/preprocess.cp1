@@ -3,13 +3,74 @@
 {at(:cp1)
 {gvar input-path:char[]}
 {main(arg-c:intc, arg-v:char[][]):intc @main
-   {if(arg-c != 3)
-      'c.printf("Usage: %s [.cp1 input file] [.cp1 output file]\n", arg-v[0]);
+   {if(arg-c < 3)
+      "usage:";
+      'c.printf("Usage: %s [options] [.cp1 input file] [.cp1 output file]\n", arg-v[0]);
+      'c.printf("Options:\n");
+      'c.printf(" -Ddefinename     Define a name that will yield true on #if(...) preprocessor\n");
       'c.exit(#failure);
    }
-   .input-path = arg-v[1];
-   {if!('c:fd.open(++in-fd, arg-v[1], #read))
-      'c.printf("Cannot open file for reading: %s\n", arg-v[1]);
+   +i = 1;
+   {do(arg-c)
+      {if(arg-v[i][0] == ''-)
+         {if(arg-v[i][1] == ''D)
+            {+name:char[] = & arg-v[i][2]}
+            +len = 0;
+            {do()
+               {if(name[len] == ''\0)
+                  break;
+               }
+               {if(&&, name[len] >= ''a, name[len] <= ''z)
+                  // Ok
+               }{elif(&&, name[len] >= ''A, name[len] <= ''Z)
+                  // Ok
+               }{elif(&&, name[len] >= ''0, name[len] <= ''9)
+                  // Ok
+                  {if(len == 0)
+                     'c.printf("Error, in option -Ddefinename, 'definename' cannot begin with a number\n");
+                     "goto usage;";
+                  }
+               }{elif(name[len] == ''_)
+                  // Ok
+               }{elif(name[len] == ''-)
+                  // Ok
+                  {if(len == 0)
+                     'c.printf("Error, in option -Ddefinename (which is %s), 'definename' cannot begin with a dash\n", arg-v[i]);
+                     "goto usage;";
+                  }{elif(name[len - 1] == ''-)
+                     'c.printf("Error, in option -Ddefinename (which is %s), 'definename' cannot contain consecutive a dashes\n", arg-v[i]);
+                     "goto usage;";
+                  }
+               }{else
+                  'c.printf("Error, in option -Ddefinename (which is %s), invalid character '%c' was detected in 'definename'\n", arg-v[i], name[len]);
+                  "goto usage;";
+               }
+               len++;
+            }
+            {if(len == 0)
+               'c.printf("Error, in option -Ddefinename (which is %s), 'definename' cannot be blank\n", arg-v[i]);
+               "goto usage;";
+            }
+            {if(name[len - 1] == ''-)
+               'c.printf("Error, in option -Ddefinename (which is %s), 'definename' cannot end with a dash\n", arg-v[i]);
+               "goto usage;";
+            }
+            preprocess-def(name, len);
+         }{else
+            'c.printf("Error, invalid option '-%c'\n", arg-v[i][1]);
+            "goto usage;";
+         }
+      }{else
+         break;
+      }
+      i++;
+   }
+   {if((arg-c - i) != 2)
+      "goto usage;";
+   }
+   .input-path = arg-v[i];
+   {if!('c:fd.open(++in-fd, arg-v[i], #read))
+      'c.printf("Cannot open file for reading: %s\n", arg-v[i]);
       'c.exit(#failure);
    }
    +in-size = in-fd.seek(0, #end);
@@ -19,8 +80,8 @@
    in-fd.close();
    preprocess-init();
    preprocess(in-data, in-size);
-   {if!('c:fd.open(++out-fd, arg-v[2], #create | #truncate | #write, 0o644))
-      'c.printf("Cannot open file for writing: %s\n", arg-v[2]);
+   {if!('c:fd.open(++out-fd, arg-v[i + 1], #create | #truncate | #write, 0o644))
+      'c.printf("Cannot open file for writing: %s\n", arg-v[i + 1]);
       'c.exit(#failure);
    }
    out-fd.write(in-data, in-size);
