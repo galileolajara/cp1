@@ -119,7 +119,7 @@
       }
    }
    {wr(e:this, w:wtr, header:bool)
-      {if(`#debug-rd-wr)
+      {if(#debug-rd-wr)
          w.n1(255);
       }
       {if(e == #nil)
@@ -134,12 +134,12 @@
             }
          }
       }
-      {if(`#debug-rd-wr)
+      {if(#debug-rd-wr)
          w.n1(255);
       }
    }
    {rd(e:this&, r:rdr)
-      {if(`#debug-rd-wr)
+      {if(#debug-rd-wr)
          {if(r.n1() != 255)
             'c.out.printf("Error reading expr\n");
             'c.out.flush();
@@ -165,7 +165,7 @@
             }
          }
       }
-      {if(`#debug-rd-wr)
+      {if(#debug-rd-wr)
          {if(r.n1() != 255)
             'c.out.printf("Error reading expr\n");
             'c.out.flush();

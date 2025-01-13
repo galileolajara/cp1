@@ -92,7 +92,7 @@
       +stmt = space.stmt-first;
       {while(stmt != null)
          stmt.type.wr(w);
-         {if(`#debug-rd-wr)
+         {if(#debug-rd-wr)
             w.n1(255);
          }
          w.n(stmt.begin-row);
@@ -105,7 +105,7 @@
                'c.exit(#failure);
             }
          }
-         {if(`#debug-rd-wr)
+         {if(#debug-rd-wr)
             w.n1(255);
          }
          stmt = stmt.stmt-next;
@@ -142,7 +142,7 @@
       {do()
          :stmt-type.rd(+type, r);
          {if(type == #nil) break}
-         {if(`#debug-rd-wr)
+         {if(#debug-rd-wr)
             {if(r.n1() != 255)
                'c.out.printf("Error reading stmt\n");
                'c.out.flush();
@@ -163,7 +163,7 @@
                'c.exit(#failure);
             }
          }
-         {if(`#debug-rd-wr)
+         {if(#debug-rd-wr)
             {if(r.n1() != 255)
                'c.out.printf("Error reading stmt\n");
                'c.out.flush();

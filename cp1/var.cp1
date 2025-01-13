@@ -237,7 +237,7 @@
    }
    {wr(ti:this, w:wtr)
       +c = 0;
-      {do(`#type-info-star-limit)
+      {do(#type-info-star-limit)
          {if(ti.ref-v[c] == 0)
             break;
          }
@@ -253,14 +253,14 @@
       w.b(ti.const);
    }
 	{copy-from(ti:this, ti2:type-info)
-		'c.memcpy(ti.ref-v, ti2.ref-v, `#type-info-star-limit);
+		'c.memcpy(ti.ref-v, ti2.ref-v, #type-info-star-limit);
 		ti.array-c = ti2.array-c;
 		ti.star-c = ti2.star-c;
 		ti.const = ti2.const;
       // intentionally did not copy .built-in
 	}
 	{finalize(ti:this)
-		{+ref-v:i8[`#type-info-star-limit]}
+		{+ref-v:i8[#type-info-star-limit]}
 		+c = ti.array-c;
 		+star-c = ti.array-c;
 		{do{+i = 0}(c + 1)

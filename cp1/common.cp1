@@ -1,11 +1,11 @@
 {using 'cp1 = :cp1}
 {using 'c = :stdc}
 {at(:cp1)
-{:at-map(data:u64[(`#hash-table-size + 7) >> 3])
+{:at-map(data:u64[(#hash-table-size + 7) >> 3])
    {init(m:this)}
    {get-or-insert(m:this, parent:at, type:name-type, name:id, val:i32):i32}
 }
-{:map(data:u64[(`#hash-table-size + 7) >> 3])
+{:map(data:u64[(#hash-table-size + 7) >> 3])
    {init(m:this)}
    {get-or-insert(m:this, str:char[], len:u8, val:i32):i32}
 }
@@ -308,7 +308,7 @@
    func-idx:func,
 #endif
    group-c:u8,
-   group-v:u8[`#expr-carg-group-limit],
+   group-v:u8[#expr-carg-group-limit],
    carg-c:u8,
    carg-v:carg+[0],
    )
@@ -322,7 +322,7 @@
    this-value:value+,
 #endif
    group-c:u8,
-   group-v:u8[`#expr-carg-group-limit],
+   group-v:u8[#expr-carg-group-limit],
    carg-c:u8,
    carg-v:carg+[0],
    )
@@ -372,7 +372,7 @@
    this-idx:i8,
    this-group:i8,
    group-c:i8,
-   group-v:i8[`#expr-carg-group-limit],
+   group-v:i8[#expr-carg-group-limit],
    farg-c:u8,
    farg-v:farg+[0],
    )
