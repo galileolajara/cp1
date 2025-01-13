@@ -726,6 +726,7 @@ _Ncp1_Nfunc _Gprocess_first;
 _Ncp1_Nfunc _Gprocess_last;
 struct FILE* _Gout;
 int32_t _Gfunc_head_outputted_c;
+bool _Ginclude_stdint;
 bool _Ginclude_stdbool;
 bool _Ginclude_stddef;
 int32_t _Ginclude_outputted_c;
@@ -1326,7 +1327,9 @@ continue_5:;
 _Li_29++;
 }
 break_5:;
+if(_Ginclude_stdint) {
 fprintf(_Gout, "#include <stdint.h>\n");
+}
 if(_Ginclude_stdbool) {
 fprintf(_Gout, "#include <stdbool.h>\n");
 }
@@ -2219,6 +2222,30 @@ _Ginclude_stdbool = true;
 break;
 case _Ncp1_Nbasic_type_id_Cusz:;
 _Ginclude_stddef = true;
+break;
+case _Ncp1_Nbasic_type_id_Ci8:;
+_Ginclude_stdint = true;
+break;
+case _Ncp1_Nbasic_type_id_Cu8:;
+_Ginclude_stdint = true;
+break;
+case _Ncp1_Nbasic_type_id_Ci16:;
+_Ginclude_stdint = true;
+break;
+case _Ncp1_Nbasic_type_id_Cu16:;
+_Ginclude_stdint = true;
+break;
+case _Ncp1_Nbasic_type_id_Ci32:;
+_Ginclude_stdint = true;
+break;
+case _Ncp1_Nbasic_type_id_Cu32:;
+_Ginclude_stdint = true;
+break;
+case _Ncp1_Nbasic_type_id_Ci64:;
+_Ginclude_stdint = true;
+break;
+case _Ncp1_Nbasic_type_id_Cu64:;
+_Ginclude_stdint = true;
 break;
 }
 break;

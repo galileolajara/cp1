@@ -29,6 +29,7 @@
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = tcc $in -o $out\n");
          fd.close();
+         'c.free(PATH);
          return;
       }
       'c.sprintf(compiler, "%s/clang", found);
@@ -37,6 +38,7 @@
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = clang $in -o $out\n");
          fd.close();
+         'c.free(PATH);
          return;
       }
       'c.sprintf(compiler, "%s/gcc", found);
@@ -45,6 +47,7 @@
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = gcc $in -o $out\n");
          fd.close();
+         'c.free(PATH);
          return;
       }
       found = 'c.strtok(null, ":");
@@ -137,7 +140,7 @@
                }
 					{+import:char[] = & data[start]}
                +import-path-len = end - start;
-					{if(&&, import-path-len >= 4, import[import-path-len - 4] == ''., import[import-path-len - 3] == ''c, import[import-path-len - 2] == ''g, import[import-path-len - 1] == ''l)
+					{if(&&, import-path-len >= 4, import[import-path-len - 4] == ''., import[import-path-len - 3] == ''c, import[import-path-len - 2] == ''p, import[import-path-len - 1] == ''1)
                   'c.printf("%s:%u: #import \"%.*s\" doesn't need a '.cp1' suffix\n", cp1-path, line, import-path-len, import);
 						return false;
 					}
@@ -161,8 +164,8 @@
 					'c.memcpy(import-path, import, import-path-len);
 					import-path[import-path-len++] = ''.;
 					import-path[import-path-len++] = ''c;
-					import-path[import-path-len++] = ''g;
-					import-path[import-path-len++] = ''l;
+					import-path[import-path-len++] = ''p;
+					import-path[import-path-len++] = ''1;
 					import-path[import-path-len] = ''\0;
 					{if!(cp1-path-input(import-path, import-path-len, bin, cmd))
 						'c.printf("Error from #import \"%.*s\" at file '%s' line %u\n", import-path-len - 4, import, cp1-path, line);
@@ -353,6 +356,7 @@
             'c.printf("Cannot run %s because we can't detect its absolute path\n", bin);
             'c.exit(#failure);
          }
+         'c.free(PATH);
       }
    }
    +slash = 'c.strrchr(abs-path, ''/);

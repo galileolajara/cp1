@@ -1,6 +1,7 @@
 {using 'cp1 = :cp1}
 {using 'c = :stdc}
 {at(:cp1)
+{gvar include-stdint:bool}
 {gvar include-stdbool:bool}
 {gvar include-stddef:bool}
 {gvar expr-is-processed:u8[]}
@@ -659,7 +660,9 @@
          }
       }
    }
-   .out.printf("#include <stdint.h>\n");
+   {if(.include-stdint)
+      .out.printf("#include <stdint.h>\n");
+   }
    {if(.include-stdbool)
       .out.printf("#include <stdbool.h>\n");
    }

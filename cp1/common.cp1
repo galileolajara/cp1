@@ -560,6 +560,30 @@ end-if
                {case(#usz)
                   .include-stddef = true;
                }
+               {case(#i8)
+                  .include-stdint = true;
+               }
+               {case(#u8)
+                  .include-stdint = true;
+               }
+               {case(#i16)
+                  .include-stdint = true;
+               }
+               {case(#u16)
+                  .include-stdint = true;
+               }
+               {case(#i32)
+                  .include-stdint = true;
+               }
+               {case(#u32)
+                  .include-stdint = true;
+               }
+               {case(#i64)
+                  .include-stdint = true;
+               }
+               {case(#u64)
+                  .include-stdint = true;
+               }
             }
          }
       }
