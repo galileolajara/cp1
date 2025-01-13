@@ -770,30 +770,30 @@
       'c.exit(#failure);
    }
    +lock-path = arg-v[2];
-   .lock-path = lock-path;
-   {if(true)
-      {if!('c:fd.open(++fd, lock-path, #create | #excl))
-         // Can't create output file
-         'sys.stat(lock-path, +out-stat);
-         in-fd.stat(+in-stat);
-         {+skip}
-         "#ifdef __APPLE__";
-            skip = (||, out-stat.mtimespec.sec > in-stat.mtimespec.sec, (&&, out-stat.mtimespec.sec == in-stat.mtimespec.sec, out-stat.mtimespec.nsec > in-stat.mtimespec.nsec));
-         "#elif defined(__unix__)";
-            skip = (||, out-stat.mtim.sec > in-stat.mtim.sec, (&&, out-stat.mtim.sec == in-stat.mtim.sec, out-stat.mtim.nsec > in-stat.mtim.nsec));
-         "#endif";
-         {if(skip)
-            // Skip parsing
-            'c.out.printf("Skipping parsing of %s because the output file is newer than the input file\n", .input-path);
-            return 0;
-         }
-      }{else
-         // We created the output file, make sure to unlink it when
-         // the parser gets parsing error
-         parser-at-exit();
-      }
-      fd.close();
-   }
+   // .lock-path = lock-path;
+   // {if(true)
+   //    {if!('c:fd.open(++fd, lock-path, #create | #excl))
+   //       // Can't create output file
+   //       'sys.stat(lock-path, +out-stat);
+   //       in-fd.stat(+in-stat);
+   //       {+skip}
+   //       "#ifdef __APPLE__";
+   //          skip = (||, out-stat.mtimespec.sec > in-stat.mtimespec.sec, (&&, out-stat.mtimespec.sec == in-stat.mtimespec.sec, out-stat.mtimespec.nsec > in-stat.mtimespec.nsec));
+   //       "#elif defined(__unix__)";
+   //          skip = (||, out-stat.mtim.sec > in-stat.mtim.sec, (&&, out-stat.mtim.sec == in-stat.mtim.sec, out-stat.mtim.nsec > in-stat.mtim.nsec));
+   //       "#endif";
+   //       {if(skip)
+   //          // Skip parsing
+   //          'c.out.printf("Skipping parsing of %s because the output file is newer than the input file\n", .input-path);
+   //          return 0;
+   //       }
+   //    }{else
+   //       // We created the output file, make sure to unlink it when
+   //       // the parser gets parsing error
+   //       parser-at-exit();
+   //    }
+   //    fd.close();
+   // }
    +in-size = in-fd.seek(0, #end);
    {+in-data:u8[] = 'c.malloc(in-size + 2)}
    in-fd.seek(0, #set);

@@ -5202,7 +5202,7 @@ static void yy_syntax_error(
       if (a != YY_ERROR_ACTION) {
          if (first) {
             first = false;
-            printf("%s:%u:%u: syntax error, expected token: #%s", input_path, _Grow, _Gcol, _Ncp1_Ptoken_name_1(i));
+            printf("%s:%u:%u: syntax error, expected tokens are: #%s", input_path, _Grow, _Gcol, _Ncp1_Ptoken_name_1(i));
          } else {
             printf(", #%s", _Ncp1_Ptoken_name_1(i));
          }
