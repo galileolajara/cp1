@@ -54,21 +54,21 @@ build out/hash-table-size: ld-cpp2 hashtable.cpp
 build out/hash-table-size.cp1: run out/hash-table-size
 
 build out/tmp/token.cp1-b: parser token.cp1 | bin/cp1-parser
-build out/token.cp1.c: compiler out/tmp/token.cp1-b out/tmp/stdc/stdio.cp1-b out/tmp/stdc/stdlib.cp1-b out/tmp/stdc/fcntl.cp1-b out/tmp/stdc/unistd.cp1-b out/tmp/stdc/string.cp1-b | bin/cp1-compiler
+build out/token.cp1.c: compiler out/tmp/token.cp1-b out/tmp/include/stdc/stdio.cp1-b out/tmp/include/stdc/stdlib.cp1-b out/tmp/include/stdc/fcntl.cp1-b out/tmp/include/stdc/unistd.cp1-b out/tmp/include/stdc/string.cp1-b | bin/cp1-compiler
 build out/token: ld-c2 out/token.cp1.c
 build out/token.cp1: run out/token out/cp1_parser.h
 build out/tmp/split.cp1-b: parser split.cp1 | bin/cp1-parser
-build out/split.cp1.c: compiler out/tmp/split.cp1-b out/tmp/stdc/stdio.cp1-b out/tmp/stdc/stdlib.cp1-b out/tmp/stdc/fcntl.cp1-b out/tmp/stdc/unistd.cp1-b out/tmp/stdc/string.cp1-b | bin/cp1-compiler
+build out/split.cp1.c: compiler out/tmp/split.cp1-b out/tmp/include/stdc/stdio.cp1-b out/tmp/include/stdc/stdlib.cp1-b out/tmp/include/stdc/fcntl.cp1-b out/tmp/include/stdc/unistd.cp1-b out/tmp/include/stdc/string.cp1-b | bin/cp1-compiler
 build out/split: ld-c2 out/split.cp1.c
 build out/parser-common.cp1 out/compiler-common.cp1: run out/split cp1/common.cp1
 build out/tmp/cp1/cp1.cp1-b: parser cp1/cp1.cp1 | bin/cp1-parser
-build out/tmp/stdc/stdio.cp1-b: parser stdc/stdio.cp1 | bin/cp1-parser
-build out/tmp/stdc/fcntl.cp1-b: parser stdc/fcntl.cp1 | bin/cp1-parser
-build out/tmp/stdc/stdlib.cp1-b: parser stdc/stdlib.cp1 | bin/cp1-parser
-build out/tmp/stdc/unistd.cp1-b: parser stdc/unistd.cp1 | bin/cp1-parser
-build out/tmp/stdc/string.cp1-b: parser stdc/string.cp1 | bin/cp1-parser
-build out/tmp/sys/stat.cp1-b: parser sys/stat.cp1 | bin/cp1-parser
-build out/cp1.cp1.c: compiler out/tmp/cp1/cp1.cp1-b out/tmp/stdc/stdio.cp1-b out/tmp/stdc/fcntl.cp1-b out/tmp/stdc/stdlib.cp1-b out/tmp/stdc/unistd.cp1-b out/tmp/stdc/string.cp1-b out/tmp/sys/stat.cp1-b | bin/cp1-compiler
+build out/tmp/include/stdc/stdio.cp1-b: parser include/stdc/stdio.cp1 | bin/cp1-parser
+build out/tmp/include/stdc/fcntl.cp1-b: parser include/stdc/fcntl.cp1 | bin/cp1-parser
+build out/tmp/include/stdc/stdlib.cp1-b: parser include/stdc/stdlib.cp1 | bin/cp1-parser
+build out/tmp/include/stdc/unistd.cp1-b: parser include/stdc/unistd.cp1 | bin/cp1-parser
+build out/tmp/include/stdc/string.cp1-b: parser include/stdc/string.cp1 | bin/cp1-parser
+build out/tmp/include/sys/stat.cp1-b: parser include/sys/stat.cp1 | bin/cp1-parser
+build out/cp1.cp1.c: compiler out/tmp/cp1/cp1.cp1-b out/tmp/include/stdc/stdio.cp1-b out/tmp/include/stdc/fcntl.cp1-b out/tmp/include/stdc/stdlib.cp1-b out/tmp/include/stdc/unistd.cp1-b out/tmp/include/stdc/string.cp1-b out/tmp/include/sys/stat.cp1-b | bin/cp1-compiler
 build out/tmp/cp1/parser.cp1-b: parser cp1/parser.cp1 | bin/cp1-parser
 build out/tmp/cp1/preprocess.cp1-b: parser cp1/preprocess.cp1 | bin/cp1-parser
 build out/tmp/out/token.cp1-b: parser out/token.cp1 | bin/cp1-parser
@@ -110,12 +110,12 @@ build out/tmp/cp1/stmt.cp1-b: parser cp1/stmt.cp1 | bin/cp1-parser
 build out/tmp/out/parser-common.cp1-b: parser out/parser-common.cp1 | bin/cp1-parser
 build out/tmp/cp1/struct.cp1-b: parser cp1/struct.cp1 | bin/cp1-parser
 build out/tmp/out/hash-table-size.cp1-b: parser out/hash-table-size.cp1 | bin/cp1-parser
-build out/parser2.cp1.c: compiler out/tmp/cp1/parser.cp1-b out/tmp/cp1/preprocess.cp1-b out/tmp/out/token.cp1-b out/tmp/cp1/break.cp1-b out/tmp/cp1/math.cp1-b out/tmp/cp1/bools.cp1-b out/tmp/cp1/str.cp1-b out/tmp/cp1/cvar.cp1-b out/tmp/cp1/unary.cp1-b out/tmp/cp1/ref.cp1-b out/tmp/cp1/cast.cp1-b out/tmp/cp1/index.cp1-b out/tmp/cp1/switch.cp1-b out/tmp/cp1/if.cp1-b out/tmp/cp1/do.cp1-b out/tmp/cp1/while.cp1-b out/tmp/cp1/compare.cp1-b out/tmp/cp1/bool.cp1-b out/tmp/cp1/char.cp1-b out/tmp/cp1/call.cp1-b out/tmp/cp1/null.cp1-b out/tmp/cp1/int.cp1-b out/tmp/cp1/size.cp1-b out/tmp/cp1/assign.cp1-b out/tmp/cp1/fvar.cp1-b out/tmp/cp1/gvar.cp1-b out/tmp/cp1/continue.cp1-b out/tmp/cp1/return.cp1-b out/tmp/cp1/space.cp1-b out/tmp/cp1/export.cp1-b out/tmp/cp1/rdr.cp1-b out/tmp/cp1/wtr.cp1-b out/tmp/cp1/var.cp1-b out/tmp/cp1/func.cp1-b out/tmp/cp1/lvar.cp1-b out/tmp/cp1/enum.cp1-b out/tmp/cp1/expr.cp1-b out/tmp/cp1/stmt.cp1-b out/tmp/out/parser-common.cp1-b out/tmp/cp1/struct.cp1-b out/tmp/stdc/stdio.cp1-b out/tmp/stdc/fcntl.cp1-b out/tmp/stdc/stdlib.cp1-b out/tmp/stdc/unistd.cp1-b out/tmp/stdc/string.cp1-b out/tmp/sys/stat.cp1-b out/tmp/out/hash-table-size.cp1-b | bin/cp1-compiler
+build out/parser2.cp1.c: compiler out/tmp/cp1/parser.cp1-b out/tmp/cp1/preprocess.cp1-b out/tmp/out/token.cp1-b out/tmp/cp1/break.cp1-b out/tmp/cp1/math.cp1-b out/tmp/cp1/bools.cp1-b out/tmp/cp1/str.cp1-b out/tmp/cp1/cvar.cp1-b out/tmp/cp1/unary.cp1-b out/tmp/cp1/ref.cp1-b out/tmp/cp1/cast.cp1-b out/tmp/cp1/index.cp1-b out/tmp/cp1/switch.cp1-b out/tmp/cp1/if.cp1-b out/tmp/cp1/do.cp1-b out/tmp/cp1/while.cp1-b out/tmp/cp1/compare.cp1-b out/tmp/cp1/bool.cp1-b out/tmp/cp1/char.cp1-b out/tmp/cp1/call.cp1-b out/tmp/cp1/null.cp1-b out/tmp/cp1/int.cp1-b out/tmp/cp1/size.cp1-b out/tmp/cp1/assign.cp1-b out/tmp/cp1/fvar.cp1-b out/tmp/cp1/gvar.cp1-b out/tmp/cp1/continue.cp1-b out/tmp/cp1/return.cp1-b out/tmp/cp1/space.cp1-b out/tmp/cp1/export.cp1-b out/tmp/cp1/rdr.cp1-b out/tmp/cp1/wtr.cp1-b out/tmp/cp1/var.cp1-b out/tmp/cp1/func.cp1-b out/tmp/cp1/lvar.cp1-b out/tmp/cp1/enum.cp1-b out/tmp/cp1/expr.cp1-b out/tmp/cp1/stmt.cp1-b out/tmp/out/parser-common.cp1-b out/tmp/cp1/struct.cp1-b out/tmp/include/stdc/stdio.cp1-b out/tmp/include/stdc/fcntl.cp1-b out/tmp/include/stdc/stdlib.cp1-b out/tmp/include/stdc/unistd.cp1-b out/tmp/include/stdc/string.cp1-b out/tmp/include/sys/stat.cp1-b out/tmp/out/hash-table-size.cp1-b | bin/cp1-compiler
 build out/tmp/cp1/compiler.cp1-b: parser cp1/compiler.cp1 | bin/cp1-parser
 build out/tmp/out/compiler-common.cp1-b: parser out/compiler-common.cp1 | bin/cp1-parser
-build out/compiler2.cp1.c: compiler out/tmp/cp1/compiler.cp1-b out/tmp/out/compiler-common.cp1-b out/tmp/cp1/rdr.cp1-b out/tmp/cp1/wtr.cp1-b out/tmp/cp1/func.cp1-b out/tmp/cp1/struct.cp1-b out/tmp/cp1/enum.cp1-b out/tmp/cp1/expr.cp1-b out/tmp/cp1/stmt.cp1-b out/tmp/cp1/var.cp1-b out/tmp/cp1/assign.cp1-b out/tmp/cp1/compare.cp1-b out/tmp/cp1/bool.cp1-b out/tmp/cp1/char.cp1-b out/tmp/cp1/math.cp1-b out/tmp/cp1/unary.cp1-b out/tmp/cp1/ref.cp1-b out/tmp/cp1/cast.cp1-b out/tmp/cp1/lvar.cp1-b out/tmp/cp1/fvar.cp1-b out/tmp/cp1/gvar.cp1-b out/tmp/cp1/cvar.cp1-b out/tmp/cp1/bools.cp1-b out/tmp/cp1/call.cp1-b out/tmp/cp1/str.cp1-b out/tmp/cp1/int.cp1-b out/tmp/cp1/size.cp1-b out/tmp/cp1/null.cp1-b out/tmp/cp1/index.cp1-b out/tmp/cp1/if.cp1-b out/tmp/cp1/switch.cp1-b out/tmp/cp1/do.cp1-b out/tmp/cp1/while.cp1-b out/tmp/cp1/continue.cp1-b out/tmp/cp1/break.cp1-b out/tmp/cp1/return.cp1-b out/tmp/cp1/space.cp1-b out/tmp/cp1/export.cp1-b out/tmp/stdc/stdio.cp1-b out/tmp/stdc/fcntl.cp1-b out/tmp/stdc/stdlib.cp1-b out/tmp/stdc/unistd.cp1-b out/tmp/stdc/string.cp1-b out/tmp/out/hash-table-size.cp1-b | bin/cp1-compiler
+build out/compiler2.cp1.c: compiler out/tmp/cp1/compiler.cp1-b out/tmp/out/compiler-common.cp1-b out/tmp/cp1/rdr.cp1-b out/tmp/cp1/wtr.cp1-b out/tmp/cp1/func.cp1-b out/tmp/cp1/struct.cp1-b out/tmp/cp1/enum.cp1-b out/tmp/cp1/expr.cp1-b out/tmp/cp1/stmt.cp1-b out/tmp/cp1/var.cp1-b out/tmp/cp1/assign.cp1-b out/tmp/cp1/compare.cp1-b out/tmp/cp1/bool.cp1-b out/tmp/cp1/char.cp1-b out/tmp/cp1/math.cp1-b out/tmp/cp1/unary.cp1-b out/tmp/cp1/ref.cp1-b out/tmp/cp1/cast.cp1-b out/tmp/cp1/lvar.cp1-b out/tmp/cp1/fvar.cp1-b out/tmp/cp1/gvar.cp1-b out/tmp/cp1/cvar.cp1-b out/tmp/cp1/bools.cp1-b out/tmp/cp1/call.cp1-b out/tmp/cp1/str.cp1-b out/tmp/cp1/int.cp1-b out/tmp/cp1/size.cp1-b out/tmp/cp1/null.cp1-b out/tmp/cp1/index.cp1-b out/tmp/cp1/if.cp1-b out/tmp/cp1/switch.cp1-b out/tmp/cp1/do.cp1-b out/tmp/cp1/while.cp1-b out/tmp/cp1/continue.cp1-b out/tmp/cp1/break.cp1-b out/tmp/cp1/return.cp1-b out/tmp/cp1/space.cp1-b out/tmp/cp1/export.cp1-b out/tmp/include/stdc/stdio.cp1-b out/tmp/include/stdc/fcntl.cp1-b out/tmp/include/stdc/stdlib.cp1-b out/tmp/include/stdc/unistd.cp1-b out/tmp/include/stdc/string.cp1-b out/tmp/out/hash-table-size.cp1-b | bin/cp1-compiler
 build out/tmp/export.cp1-b: parser export.cp1 | bin/cp1-parser
-build out/export.cp1.c: compiler out/tmp/export.cp1-b out/tmp/stdc/stdio.cp1-b out/tmp/stdc/stdlib.cp1-b out/tmp/stdc/fcntl.cp1-b out/tmp/stdc/unistd.cp1-b out/tmp/stdc/string.cp1-b | bin/cp1-compiler
+build out/export.cp1.c: compiler out/tmp/export.cp1-b out/tmp/include/stdc/stdio.cp1-b out/tmp/include/stdc/stdlib.cp1-b out/tmp/include/stdc/fcntl.cp1-b out/tmp/include/stdc/unistd.cp1-b out/tmp/include/stdc/string.cp1-b | bin/cp1-compiler
 build out/export: ld-c2 out/export.cp1.c
 build out/export.h: run out/export out/parser2.cp1.c
 build out/lexer.c: re2c lexer-re2c.c
