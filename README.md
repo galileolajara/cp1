@@ -29,5 +29,9 @@ Features
 - Organize your codes easily using namespaces and modules.
 - Methods on enums, structs and even the primitive types. Method on enums can make data-oriented programming easier.
 - Auto deduct variable types similar to C++'s auto keyword.
-- Ability to emulate virtual functions using switch and case statements that can be distributted across different source files.
+- Ability to emulate virtual functions using switch and case statements that can be distributed across different source files.
 - Ability to write lines of codes in C using the "..."; syntax. This means that even if Cp1 doesn't support goto, #ifdef and more, you can cheat it using the "..."; syntax.
+
+Discord
+-
+Join us on Discord https://discord.gg/UstvVqS4
