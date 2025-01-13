@@ -4879,6 +4879,9 @@ struct _Ncp1_Nexpr_cvar* _Le_2;
 _Ncp1_Nid _Lname_3;
 int32_t _Lcvar_c_4;
 _Ncp1_Ncvar* _Lcvar_v_5;
+_Ncp1_Nat _Lat_idx_9;
+struct _Ncp1_Nat_data* _Lat_10;
+bool _Ltry_parent_11;
 _Le_2 = _Lexpr_0;
 _Lname_3 = (*_Le_2)._Fname;
 if((*_Le_2)._Ftry != _Ncp1_Nat_Cnil) {
@@ -4905,34 +4908,50 @@ _Li_7++;
 }
 break_0:;
 }
+_Ltry_parent_11 = false;
 if((*_Le_2)._Fat != _Ncp1_Nat_Cnil) {
-struct _Ncp1_Nat_data* _Lat_9;
 (*_Le_2)._Fat = _Ncp1_Pat_validate_5((*_Le_2)._Fat, (*_Gctx_func)._Fat, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gctx_begin_col);
-_Lat_9 = _Ncp1_Nat_Pptr_1((*_Le_2)._Fat);
-_Lcvar_c_4 = (*_Lat_9)._Fcvar_c;
-_Lcvar_v_5 = (*_Lat_9)._Fcvar_v;
-} else {
-struct _Ncp1_Nat_data* _Lat_10;
-_Lat_10 = _Ncp1_Nat_Pptr_1((*_Gctx_func)._Fat);
+_Lat_idx_9 = (*_Le_2)._Fat;
+_Lat_10 = _Ncp1_Nat_Pptr_1(_Lat_idx_9);
 _Lcvar_c_4 = (*_Lat_10)._Fcvar_c;
 _Lcvar_v_5 = (*_Lat_10)._Fcvar_v;
+} else {
+_Lat_idx_9 = (*_Gctx_func)._Fat;
+_Lat_10 = _Ncp1_Nat_Pptr_1(_Lat_idx_9);
+_Lcvar_c_4 = (*_Lat_10)._Fcvar_c;
+_Lcvar_v_5 = (*_Lat_10)._Fcvar_v;
+_Ltry_parent_11 = true;
 }
-int32_t _Li_11;
-_Li_11 = 0;
+while(1) {
+int32_t _Li_12;
+_Li_12 = 0;
 for(int i = _Lcvar_c_4; i > 0; ) {
 i --;
-_Ncp1_Ncvar _Lcvar_12;
-_Lcvar_12 = _Lcvar_v_5[_Li_11];
-if((*_Ncp1_Ncvar_Pptr_1(_Lcvar_12))._Fdecl._Fname == _Lname_3) {
-if(!(_Ncp1_Ncvar_Pprocess_1(_Lcvar_12))) {
+_Ncp1_Ncvar _Lcvar_13;
+_Lcvar_13 = _Lcvar_v_5[_Li_12];
+if((*_Ncp1_Ncvar_Pptr_1(_Lcvar_13))._Fdecl._Fname == _Lname_3) {
+if(!(_Ncp1_Ncvar_Pprocess_1(_Lcvar_13))) {
 return;
 }
-(*_Le_2)._Fcvar = _Lcvar_12;
+(*_Le_2)._Fcvar = _Lcvar_13;
 (*_Lok_1) = true;
 return;
 }
+continue_2:;
+_Li_12++;
+}
+break_2:;
+if(!(_Ltry_parent_11)) {
+goto break_1;
+}
+if(_Lat_idx_9 == _Ncp1_Nat_Croot) {
+goto break_1;
+}
+_Lat_idx_9 = (*_Lat_10)._Fparent;
+_Lat_10 = _Ncp1_Nat_Pptr_1(_Lat_idx_9);
+_Lcvar_c_4 = (*_Lat_10)._Fcvar_c;
+_Lcvar_v_5 = (*_Lat_10)._Fcvar_v;
 continue_1:;
-_Li_11++;
 }
 break_1:;
 fprintf(stdout, "%s:%u:%u - %u:%u: Cannot find #%s\n", _Ncp1_Nfile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _Ncp1_Nid_Pstr_1(_Lname_3));

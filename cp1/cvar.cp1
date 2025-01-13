@@ -131,24 +131,37 @@
             }
          }
       }
+      {+at-idx, at}
+      +try-parent = false;
       {if(e.at != #nil)
          e.at = at-validate(e.at, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
-         +at = e.at.ptr();
+         at-idx = e.at;
+         at = at-idx.ptr();
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
       }{else
-         +at = .ctx-func.at.ptr();
+         at-idx = .ctx-func.at;
+         at = at-idx.ptr();
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
+         try-parent = true;
       }
-      {do{+i = 0}{(cvar-c) i++}
-         +cvar = cvar-v[i];
-         {if(cvar.ptr().decl.name == name)
-            {if!(cvar.process()) return}
-            e.cvar = cvar;
-            ok = true;
-            return;
+      {do()
+         {do{+i = 0}{(cvar-c) i++}
+            +cvar = cvar-v[i];
+            {if(cvar.ptr().decl.name == name)
+               {if!(cvar.process()) return}
+               e.cvar = cvar;
+               ok = true;
+               return;
+            }
          }
+         {if!(try-parent) break}
+         {if(at-idx == #root) break}
+         at-idx = at.parent;
+         at = at-idx.ptr();
+         cvar-c = at.cvar-c;
+         cvar-v = at.cvar-v;
       }
       'c.out.printf("%s:%u:%u - %u:%u: Cannot find #%s\n",
          .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, name.str());
