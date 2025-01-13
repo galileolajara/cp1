@@ -634,6 +634,21 @@
       }
    }
 
+   {do{+i = 0}{(.func-head-outputted-c) i++}
+      +f-idx = .func-head-outputted-v[i];
+      +f = f-idx.ptr();
+      {if((f.flags & #no-decl) != #0) continue}
+      {if((f.flags & #decl) != #0)
+         continue;
+      }
+      .ctx-func = f;
+      {do{+l = 0:lvar}{(f.lvar-c) l++}
+         {if!(l.process())
+            'c.exit(#failure);
+         }
+      }
+   }
+
    // 'c.out.printf("finished processing, writing...\n");
    .out = 'c.fopen(arg-v[arg-c - 1], "w");
    {do{+i = 0}{(.func-head-outputted-c) i++}
