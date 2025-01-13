@@ -1,5 +1,5 @@
-{using 'glc = :glc}
-{at(:glc)
+{using 'cp1 = :cp1}
+{at(:cp1)
 {at(:stmt-space)
    {wr-while(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
       {+s:stmt-while = stmt}

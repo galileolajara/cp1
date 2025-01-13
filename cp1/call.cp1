@@ -1,6 +1,6 @@
-{using 'glc = :glc}
+{using 'cp1 = :cp1}
 {using 'c = :stdc}
-{at(:glc)
+{at(:cp1)
 {farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:at):bool
    +ce = e.ptr();
    {+r:i32}

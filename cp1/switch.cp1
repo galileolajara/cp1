@@ -1,6 +1,6 @@
-{using 'glc = :glc}
+{using 'cp1 = :cp1}
 {using 'c = :stdc}
-{at(:glc)
+{at(:cp1)
 {gvar switch-stack-v:stmt-switch[64]}
 {gvar switch-stack-c:u8}
 {at(:stmt-space)

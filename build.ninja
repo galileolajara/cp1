@@ -19,16 +19,16 @@ build bin/cp1-compiler: ld-cpp out/compiler.cp1.c.o out/str.c.o out/hashtable.cp
 build bin/cp1: ld-c cp1.cp1.c
 
 rule c2
- command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DGLC_NEW -I. -c $in -o $out
+ command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
 
 rule cpp2
- command = clang++ $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DGLC_NEW -I. -c $in -o $out
+ command = clang++ $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
 
 rule ld-c2
- command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DGLC_NEW -I. $in -o $out
+ command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
 
 rule ld-cpp2
- command = clang++ $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DGLC_NEW -I. $in -o $out
+ command = clang++ $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
 
 rule re2c
  command = re2c --input-encoding utf8 --utf8 $in -o $out
@@ -48,7 +48,7 @@ rule run
  command = $in $out
 
 build out/hash-table-size: ld-cpp2 hashtable.cpp
- flags = -DGLC_GET_SIZE
+ flags = -DCP1_GET_SIZE
 build out/hash-table-size.cp1: run out/hash-table-size
 
 build out/token.cp1.c: cp1-c token.cp1 stdc/stdio.cp1 stdc/stdlib.cp1 stdc/fcntl.cp1 stdc/unistd.cp1 stdc/string.cp1 | bin/cp1 bin/cp1-parser bin/cp1-compiler

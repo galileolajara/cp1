@@ -1,6 +1,6 @@
-{using 'glc = :glc}
+{using 'cp1 = :cp1}
 {using 'c = :stdc}
-{at(:glc)
+{at(:cp1)
 {:at-map(data:u64[(`#hash-table-size + 7) >> 3])
    {init(m:this)}
    {get-or-insert(m:this, parent:at, type:name-type, name:id, val:i32):i32}
@@ -505,7 +505,7 @@ end-if
    {wr(i:this, w:wtr) @inline
       w.n1(i);
    }
-   {cgl-name(e:this):char[] @cgl-name}
+   {cp1-name(e:this):char[] @cp1-name}
 }
 {gvar at-c:at}
 {gvar at-cap:at}

@@ -1,5 +1,5 @@
-{using 'glc = :glc}
-{at(:glc)
+{using 'cp1 = :cp1}
+{at(:cp1)
 {expr-char(value:i32):expr-i
    quick-alloc-one(+(e:expr-char));
    +e-idx = expr-push(e.base, #char);

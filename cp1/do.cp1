@@ -1,5 +1,5 @@
-{using 'glc = :glc}
-{at(:glc)
+{using 'cp1 = :cp1}
+{at(:cp1)
 {:nest(do:stmt-do, while:stmt-while, ref:ref) @union}
 {gvar nest-stack-ptr-v:nest+[64]}
 {gvar nest-stack-id-v:i32[64]}

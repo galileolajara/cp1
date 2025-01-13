@@ -1,5 +1,5 @@
-{using 'glc = :glc}
-{at(:glc)
+{using 'cp1 = :cp1}
+{at(:cp1)
 {export()
    quick-alloc-undo(0);
    decl-func-begin(#0, 0, 0);
@@ -28,7 +28,7 @@
    stmt-break(#nil, 0, 0, 0, 0);
    func-attr-main();
    func-attr-decl();
-   func-attr-cgl-name();
+   func-attr-cp1-name();
    func-attr-process();
    func-attr-inline();
    func-attr-var-args();

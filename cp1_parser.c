@@ -31,125 +31,125 @@
 /**************** End of %include directives **********************************/
 /* These constants specify the various numeric values for terminal symbols.
 ***************** Begin token definitions *************************************/
-#ifndef GLC_TOKEN_PLUS
-#define GLC_TOKEN_PLUS                            1
-#define GLC_TOKEN_MINUS                           2
-#define GLC_TOKEN_SPACE                           3
-#define GLC_TOKEN_ID_LPAREN                       4
-#define GLC_TOKEN_ID_COLON                        5
-#define GLC_TOKEN_ID_QUOTE                        6
-#define GLC_TOKEN_ID_HASH                         7
-#define GLC_TOKEN_LCBRACE                         8
-#define GLC_TOKEN_ID                              9
-#define GLC_TOKEN_SPACE_AT_REAL_NAME_STR         10
-#define GLC_TOKEN_SPACE_AT_REAL_NAME             11
-#define GLC_TOKEN_SPACE_AT_NO_DECL               12
-#define GLC_TOKEN_SPACE_EQUAL_SPACE              13
-#define GLC_TOKEN_INCLUDE                        14
-#define GLC_TOKEN_SPACE_RCBRACE                  15
-#define GLC_TOKEN_QUOTE                          16
-#define GLC_TOKEN_GRAVE                          17
-#define GLC_TOKEN_ID_BSLASH                      18
-#define GLC_TOKEN_LCBRACE_AT_LPAREN              19
-#define GLC_TOKEN_RPAREN                         20
-#define GLC_TOKEN_LCBRACE_CVAR_SPACE             21
-#define GLC_TOKEN_RCBRACE                        22
-#define GLC_TOKEN_END                            23
-#define GLC_TOKEN_LCBRACE_USING_SPACE            24
-#define GLC_TOKEN_LPAREN                         25
-#define GLC_TOKEN_LPAREN_SPACE                   26
-#define GLC_TOKEN_SPACE_RPAREN                   27
-#define GLC_TOKEN_COMMA_SPACE_RPAREN             28
-#define GLC_TOKEN_COMMA_SPACE_RCBRACE            29
-#define GLC_TOKEN_SCOLON_SPACE_RCBRACE           30
-#define GLC_TOKEN_LBRACKET                       31
-#define GLC_TOKEN_LBRACKET_SPACE                 32
-#define GLC_TOKEN_RBRACKET                       33
-#define GLC_TOKEN_SPACE_RBRACKET                 34
-#define GLC_TOKEN_COMMA_SPACE_RBRACKET           35
-#define GLC_TOKEN_COLON_THIS                     36
-#define GLC_TOKEN_COMMA_SPACE                    37
-#define GLC_TOKEN_SPACE_AT_MAIN                  38
-#define GLC_TOKEN_SPACE_AT_CASE                  39
-#define GLC_TOKEN_DOT                            40
-#define GLC_TOKEN_SPACE_AT_PROCESS               41
-#define GLC_TOKEN_SPACE_AT_INLINE                42
-#define GLC_TOKEN_SPACE_AT_CGL_NAME              43
-#define GLC_TOKEN_SPACE_AT_DECL                  44
-#define GLC_TOKEN_STRING                         45
-#define GLC_TOKEN_SPACE_AT_VAR_ARGS              46
-#define GLC_TOKEN_SPACE_AT_NO_BODY               47
-#define GLC_TOKEN_COLON_REF                      48
-#define GLC_TOKEN_COLON_BOOL                     49
-#define GLC_TOKEN_COLON_CHAR                     50
-#define GLC_TOKEN_COLON_INTC                     51
-#define GLC_TOKEN_COLON_I8                       52
-#define GLC_TOKEN_COLON_U8                       53
-#define GLC_TOKEN_COLON_I16                      54
-#define GLC_TOKEN_COLON_U16                      55
-#define GLC_TOKEN_COLON_I32                      56
-#define GLC_TOKEN_COLON_U32                      57
-#define GLC_TOKEN_COLON_I64                      58
-#define GLC_TOKEN_COLON_U64                      59
-#define GLC_TOKEN_COLON_ISZ                      60
-#define GLC_TOKEN_COLON_USZ                      61
-#define GLC_TOKEN_COLON_F32                      62
-#define GLC_TOKEN_COLON_F64                      63
-#define GLC_TOKEN_AMPERSAND                      64
-#define GLC_TOKEN_NUM_DEC                        65
-#define GLC_TOKEN_NUM_HEX                        66
-#define GLC_TOKEN_NUM_OCT                        67
-#define GLC_TOKEN_CHAR1                          68
-#define GLC_TOKEN_CHAR2                          69
-#define GLC_TOKEN_TRUE                           70
-#define GLC_TOKEN_FALSE                          71
-#define GLC_TOKEN_NULL                           72
-#define GLC_TOKEN_LPAREN_AMP_AMP_COMMA_SPACE     73
-#define GLC_TOKEN_LPAREN_PIPE_PIPE_COMMA_SPACE   74
-#define GLC_TOKEN_SPACE_PLUS_SPACE               75
-#define GLC_TOKEN_SPACE_MINUS_SPACE              76
-#define GLC_TOKEN_SPACE_MUL_SPACE                77
-#define GLC_TOKEN_SPACE_DIV_SPACE                78
-#define GLC_TOKEN_SPACE_LANGLE_LANGLE_SPACE      79
-#define GLC_TOKEN_SPACE_RANGLE_RANGLE_SPACE      80
-#define GLC_TOKEN_SPACE_AMP_SPACE                81
-#define GLC_TOKEN_SPACE_PIPE_SPACE               82
-#define GLC_TOKEN_SPACE_XOR_SPACE                83
-#define GLC_TOKEN_SPACE_EQUAL_EQUAL_SPACE        84
-#define GLC_TOKEN_SPACE_EXPOINT_EQUAL_SPACE      85
-#define GLC_TOKEN_SPACE_LANGLE_SPACE             86
-#define GLC_TOKEN_SPACE_LANGLE_EQUAL_SPACE       87
-#define GLC_TOKEN_SPACE_RANGLE_SPACE             88
-#define GLC_TOKEN_SPACE_RANGLE_EQUAL_SPACE       89
-#define GLC_TOKEN_HASH                           90
-#define GLC_TOKEN_SPACE_PLUS_EQUAL_SPACE         91
-#define GLC_TOKEN_SPACE_MINUS_EQUAL_SPACE        92
-#define GLC_TOKEN_SPACE_MUL_EQUAL_SPACE          93
-#define GLC_TOKEN_SPACE_DIV_EQUAL_SPACE          94
-#define GLC_TOKEN_SPACE_LSHIFT_EQUAL_SPACE       95
-#define GLC_TOKEN_SPACE_RSHIFT_EQUAL_SPACE       96
-#define GLC_TOKEN_SPACE_AND_EQUAL_SPACE          97
-#define GLC_TOKEN_SPACE_OR_EQUAL_SPACE           98
-#define GLC_TOKEN_SPACE_XOR_EQUAL_SPACE          99
-#define GLC_TOKEN_SPACE_COLON_EQUAL_SPACE        100
-#define GLC_TOKEN_EXPOINT                        101
-#define GLC_TOKEN_LCBRACE_DO                     102
-#define GLC_TOKEN_LCBRACE_WHILE                  103
-#define GLC_TOKEN_LCBRACE_IF                     104
-#define GLC_TOKEN_LCBRACE_ELIF                   105
-#define GLC_TOKEN_LCBRACE_ELSE                   106
-#define GLC_TOKEN_LCBRACE_SWITCH                 107
-#define GLC_TOKEN_SPACE_AT_FALL_THROUGH          108
-#define GLC_TOKEN_LCBRACE_CASE                   109
-#define GLC_TOKEN_LCBRACE_DEFAULT                110
-#define GLC_TOKEN_CONTINUE                       111
-#define GLC_TOKEN_BREAK                          112
-#define GLC_TOKEN_RETURN                         113
-#define GLC_TOKEN_LCBRACE_PLUS_OR_SPACE          114
-#define GLC_TOKEN_SPACE_AT_EXTERN                115
-#define GLC_TOKEN_SCOLON_SPACE                   116
-#define GLC_TOKEN_SPACE_AT_UNION                 117
-#define GLC_TOKEN_LCBRACE_GVAR_SPACE             118
+#ifndef CP1_TOKEN_PLUS
+#define CP1_TOKEN_PLUS                            1
+#define CP1_TOKEN_MINUS                           2
+#define CP1_TOKEN_SPACE                           3
+#define CP1_TOKEN_ID_LPAREN                       4
+#define CP1_TOKEN_ID_COLON                        5
+#define CP1_TOKEN_ID_QUOTE                        6
+#define CP1_TOKEN_ID_HASH                         7
+#define CP1_TOKEN_LCBRACE                         8
+#define CP1_TOKEN_ID                              9
+#define CP1_TOKEN_SPACE_AT_REAL_NAME_STR         10
+#define CP1_TOKEN_SPACE_AT_REAL_NAME             11
+#define CP1_TOKEN_SPACE_AT_NO_DECL               12
+#define CP1_TOKEN_SPACE_EQUAL_SPACE              13
+#define CP1_TOKEN_INCLUDE                        14
+#define CP1_TOKEN_SPACE_RCBRACE                  15
+#define CP1_TOKEN_QUOTE                          16
+#define CP1_TOKEN_GRAVE                          17
+#define CP1_TOKEN_ID_BSLASH                      18
+#define CP1_TOKEN_LCBRACE_AT_LPAREN              19
+#define CP1_TOKEN_RPAREN                         20
+#define CP1_TOKEN_LCBRACE_CVAR_SPACE             21
+#define CP1_TOKEN_RCBRACE                        22
+#define CP1_TOKEN_END                            23
+#define CP1_TOKEN_LCBRACE_USING_SPACE            24
+#define CP1_TOKEN_LPAREN                         25
+#define CP1_TOKEN_LPAREN_SPACE                   26
+#define CP1_TOKEN_SPACE_RPAREN                   27
+#define CP1_TOKEN_COMMA_SPACE_RPAREN             28
+#define CP1_TOKEN_COMMA_SPACE_RCBRACE            29
+#define CP1_TOKEN_SCOLON_SPACE_RCBRACE           30
+#define CP1_TOKEN_LBRACKET                       31
+#define CP1_TOKEN_LBRACKET_SPACE                 32
+#define CP1_TOKEN_RBRACKET                       33
+#define CP1_TOKEN_SPACE_RBRACKET                 34
+#define CP1_TOKEN_COMMA_SPACE_RBRACKET           35
+#define CP1_TOKEN_COLON_THIS                     36
+#define CP1_TOKEN_COMMA_SPACE                    37
+#define CP1_TOKEN_SPACE_AT_MAIN                  38
+#define CP1_TOKEN_SPACE_AT_CASE                  39
+#define CP1_TOKEN_DOT                            40
+#define CP1_TOKEN_SPACE_AT_PROCESS               41
+#define CP1_TOKEN_SPACE_AT_INLINE                42
+#define CP1_TOKEN_SPACE_AT_CP1_NAME              43
+#define CP1_TOKEN_SPACE_AT_DECL                  44
+#define CP1_TOKEN_STRING                         45
+#define CP1_TOKEN_SPACE_AT_VAR_ARGS              46
+#define CP1_TOKEN_SPACE_AT_NO_BODY               47
+#define CP1_TOKEN_COLON_REF                      48
+#define CP1_TOKEN_COLON_BOOL                     49
+#define CP1_TOKEN_COLON_CHAR                     50
+#define CP1_TOKEN_COLON_INTC                     51
+#define CP1_TOKEN_COLON_I8                       52
+#define CP1_TOKEN_COLON_U8                       53
+#define CP1_TOKEN_COLON_I16                      54
+#define CP1_TOKEN_COLON_U16                      55
+#define CP1_TOKEN_COLON_I32                      56
+#define CP1_TOKEN_COLON_U32                      57
+#define CP1_TOKEN_COLON_I64                      58
+#define CP1_TOKEN_COLON_U64                      59
+#define CP1_TOKEN_COLON_ISZ                      60
+#define CP1_TOKEN_COLON_USZ                      61
+#define CP1_TOKEN_COLON_F32                      62
+#define CP1_TOKEN_COLON_F64                      63
+#define CP1_TOKEN_AMPERSAND                      64
+#define CP1_TOKEN_NUM_DEC                        65
+#define CP1_TOKEN_NUM_HEX                        66
+#define CP1_TOKEN_NUM_OCT                        67
+#define CP1_TOKEN_CHAR1                          68
+#define CP1_TOKEN_CHAR2                          69
+#define CP1_TOKEN_TRUE                           70
+#define CP1_TOKEN_FALSE                          71
+#define CP1_TOKEN_NULL                           72
+#define CP1_TOKEN_LPAREN_AMP_AMP_COMMA_SPACE     73
+#define CP1_TOKEN_LPAREN_PIPE_PIPE_COMMA_SPACE   74
+#define CP1_TOKEN_SPACE_PLUS_SPACE               75
+#define CP1_TOKEN_SPACE_MINUS_SPACE              76
+#define CP1_TOKEN_SPACE_MUL_SPACE                77
+#define CP1_TOKEN_SPACE_DIV_SPACE                78
+#define CP1_TOKEN_SPACE_LANGLE_LANGLE_SPACE      79
+#define CP1_TOKEN_SPACE_RANGLE_RANGLE_SPACE      80
+#define CP1_TOKEN_SPACE_AMP_SPACE                81
+#define CP1_TOKEN_SPACE_PIPE_SPACE               82
+#define CP1_TOKEN_SPACE_XOR_SPACE                83
+#define CP1_TOKEN_SPACE_EQUAL_EQUAL_SPACE        84
+#define CP1_TOKEN_SPACE_EXPOINT_EQUAL_SPACE      85
+#define CP1_TOKEN_SPACE_LANGLE_SPACE             86
+#define CP1_TOKEN_SPACE_LANGLE_EQUAL_SPACE       87
+#define CP1_TOKEN_SPACE_RANGLE_SPACE             88
+#define CP1_TOKEN_SPACE_RANGLE_EQUAL_SPACE       89
+#define CP1_TOKEN_HASH                           90
+#define CP1_TOKEN_SPACE_PLUS_EQUAL_SPACE         91
+#define CP1_TOKEN_SPACE_MINUS_EQUAL_SPACE        92
+#define CP1_TOKEN_SPACE_MUL_EQUAL_SPACE          93
+#define CP1_TOKEN_SPACE_DIV_EQUAL_SPACE          94
+#define CP1_TOKEN_SPACE_LSHIFT_EQUAL_SPACE       95
+#define CP1_TOKEN_SPACE_RSHIFT_EQUAL_SPACE       96
+#define CP1_TOKEN_SPACE_AND_EQUAL_SPACE          97
+#define CP1_TOKEN_SPACE_OR_EQUAL_SPACE           98
+#define CP1_TOKEN_SPACE_XOR_EQUAL_SPACE          99
+#define CP1_TOKEN_SPACE_COLON_EQUAL_SPACE        100
+#define CP1_TOKEN_EXPOINT                        101
+#define CP1_TOKEN_LCBRACE_DO                     102
+#define CP1_TOKEN_LCBRACE_WHILE                  103
+#define CP1_TOKEN_LCBRACE_IF                     104
+#define CP1_TOKEN_LCBRACE_ELIF                   105
+#define CP1_TOKEN_LCBRACE_ELSE                   106
+#define CP1_TOKEN_LCBRACE_SWITCH                 107
+#define CP1_TOKEN_SPACE_AT_FALL_THROUGH          108
+#define CP1_TOKEN_LCBRACE_CASE                   109
+#define CP1_TOKEN_LCBRACE_DEFAULT                110
+#define CP1_TOKEN_CONTINUE                       111
+#define CP1_TOKEN_BREAK                          112
+#define CP1_TOKEN_RETURN                         113
+#define CP1_TOKEN_LCBRACE_PLUS_OR_SPACE          114
+#define CP1_TOKEN_SPACE_AT_EXTERN                115
+#define CP1_TOKEN_SCOLON_SPACE                   116
+#define CP1_TOKEN_SPACE_AT_UNION                 117
+#define CP1_TOKEN_LCBRACE_GVAR_SPACE             118
 #endif
 /**************** End token definitions ***************************************/
 
@@ -169,7 +169,7 @@
 **    YYACTIONTYPE       is the data type used for "action codes" - numbers
 **                       that indicate what to do in response to the next
 **                       token.
-**    glcParseTOKENTYPE     is the data type used for minor type for terminal
+**    cp1ParseTOKENTYPE     is the data type used for minor type for terminal
 **                       symbols.  Background: A "minor type" is a semantic
 **                       value associated with a terminal or non-terminal
 **                       symbols.  For example, for an "ID" terminal symbol,
@@ -180,16 +180,16 @@
 **                       symbols.
 **    YYMINORTYPE        is the data type used for all minor types.
 **                       This is typically a union of many types, one of
-**                       which is glcParseTOKENTYPE.  The entry in the union
+**                       which is cp1ParseTOKENTYPE.  The entry in the union
 **                       for terminal symbols is called "yy0".
 **    YYSTACKDEPTH       is the maximum depth of the parser's stack.  If
 **                       zero the stack is dynamically sized using realloc()
-**    glcParseARG_SDECL     A static variable declaration for the %extra_argument
-**    glcParseARG_PDECL     A parameter declaration for the %extra_argument
-**    glcParseARG_PARAM     Code to pass %extra_argument as a subroutine parameter
-**    glcParseARG_STORE     Code to store %extra_argument into yypParser
-**    glcParseARG_FETCH     Code to extract %extra_argument from yypParser
-**    glcParseCTX_*         As glcParseARG_ except for %extra_context
+**    cp1ParseARG_SDECL     A static variable declaration for the %extra_argument
+**    cp1ParseARG_PDECL     A parameter declaration for the %extra_argument
+**    cp1ParseARG_PARAM     Code to pass %extra_argument as a subroutine parameter
+**    cp1ParseARG_STORE     Code to store %extra_argument into yypParser
+**    cp1ParseARG_FETCH     Code to extract %extra_argument from yypParser
+**    cp1ParseCTX_*         As cp1ParseARG_ except for %extra_context
 **    YYREALLOC          Name of the realloc() function to use
 **    YYFREE             Name of the free() function to use
 **    YYDYNSTACK         True if stack space should be extended on heap
@@ -216,27 +216,27 @@
 #define YYCODETYPE unsigned short int
 #define YYNOCODE 322
 #define YYACTIONTYPE unsigned short int
-#define glcParseTOKENTYPE union glc_token
+#define cp1ParseTOKENTYPE union cp1_token
 typedef union {
   int yyinit;
-  glcParseTOKENTYPE yy0;
+  cp1ParseTOKENTYPE yy0;
 } YYMINORTYPE;
 #ifndef YYSTACKDEPTH
 #define YYSTACKDEPTH 100
 #endif
-#define glcParseARG_SDECL
-#define glcParseARG_PDECL
-#define glcParseARG_PARAM
-#define glcParseARG_FETCH
-#define glcParseARG_STORE
+#define cp1ParseARG_SDECL
+#define cp1ParseARG_PDECL
+#define cp1ParseARG_PARAM
+#define cp1ParseARG_FETCH
+#define cp1ParseARG_STORE
 #define YYREALLOC realloc
 #define YYFREE free
 #define YYDYNSTACK 0
-#define glcParseCTX_SDECL
-#define glcParseCTX_PDECL
-#define glcParseCTX_PARAM
-#define glcParseCTX_FETCH
-#define glcParseCTX_STORE
+#define cp1ParseCTX_SDECL
+#define cp1ParseCTX_PDECL
+#define cp1ParseCTX_PARAM
+#define cp1ParseCTX_FETCH
+#define cp1ParseCTX_STORE
 #define YYNSTATE             272
 #define YYNRULE              431
 #define YYNRULE_WITH_ACTION  322
@@ -1787,8 +1787,8 @@ struct yyParser {
 #ifndef YYNOERRORRECOVERY
   int yyerrcnt;                 /* Shifts left before out of the error */
 #endif
-  glcParseARG_SDECL                /* A place to hold %extra_argument */
-  glcParseCTX_SDECL                /* A place to hold %extra_context */
+  cp1ParseARG_SDECL                /* A place to hold %extra_argument */
+  cp1ParseCTX_SDECL                /* A place to hold %extra_context */
   yyStackEntry *yystackEnd;           /* Last entry in the stack */
   yyStackEntry *yystack;              /* The parser stack */
   yyStackEntry yystk0[YYSTACKDEPTH];  /* Initial stack space */
@@ -1820,7 +1820,7 @@ static char *yyTracePrompt = 0;
 ** Outputs:
 ** None.
 */
-void glcParseTrace(FILE *TraceFILE, char *zTracePrompt){
+void cp1ParseTrace(FILE *TraceFILE, char *zTracePrompt){
   yyTraceFILE = TraceFILE;
   yyTracePrompt = zTracePrompt;
   if( yyTraceFILE==0 ) yyTracePrompt = 0;
@@ -1875,7 +1875,7 @@ static const char *const yyTokenName[] = {
   /*   40 */ "DOT",
   /*   41 */ "SPACE_AT_PROCESS",
   /*   42 */ "SPACE_AT_INLINE",
-  /*   43 */ "SPACE_AT_CGL_NAME",
+  /*   43 */ "SPACE_AT_CP1_NAME",
   /*   44 */ "SPACE_AT_DECL",
   /*   45 */ "STRING",
   /*   46 */ "SPACE_AT_VAR_ARGS",
@@ -1951,7 +1951,7 @@ static const char *const yyTokenName[] = {
   /*  116 */ "SCOLON_SPACE",
   /*  117 */ "SPACE_AT_UNION",
   /*  118 */ "LCBRACE_GVAR_SPACE",
-  /*  119 */ "glc",
+  /*  119 */ "cp1",
   /*  120 */ "decls",
   /*  121 */ "space_or_end",
   /*  122 */ "begin_pos",
@@ -2231,7 +2231,7 @@ static const char *const yyRuleName[] = {
  /*  67 */ "func_attr ::= SPACE_AT_CASE DOT ID_LPAREN LPAREN RPAREN",
  /*  68 */ "func_attr ::= SPACE_AT_PROCESS",
  /*  69 */ "func_attr ::= SPACE_AT_INLINE",
- /*  70 */ "func_attr ::= SPACE_AT_CGL_NAME",
+ /*  70 */ "func_attr ::= SPACE_AT_CP1_NAME",
  /*  71 */ "func_attr ::= SPACE_AT_DECL LPAREN STRING RPAREN",
  /*  72 */ "func_attr ::= SPACE_AT_VAR_ARGS",
  /*  73 */ "func_attr ::= SPACE_AT_NO_DECL",
@@ -2483,9 +2483,9 @@ static const char *const yyRuleName[] = {
  /* 319 */ "enum_base_begin ::=",
  /* 320 */ "enum_base_end ::= at end_pos",
  /* 321 */ "decl_gvar ::= fvar_decl expr_type_apply typeInfo_optional decl_var_attrs_optional",
- /* 322 */ "glc ::= decls space_or_end",
- /* 323 */ "glc ::= SPACE decls space_or_end",
- /* 324 */ "glc ::= space_or_end",
+ /* 322 */ "cp1 ::= decls space_or_end",
+ /* 323 */ "cp1 ::= SPACE decls space_or_end",
+ /* 324 */ "cp1 ::= space_or_end",
  /* 325 */ "cvar_attrs ::= cvar_attr",
  /* 326 */ "cvar_attrs ::= cvar_attrs cvar_attr",
  /* 327 */ "cvar_attrs_optional ::=",
@@ -2638,7 +2638,7 @@ static int yyGrowStack(yyParser *p){
 #endif
 
 /* Datatype of the argument to the memory allocated passed as the
-** second argument to glcParseAlloc() below.  This can be changed by
+** second argument to cp1ParseAlloc() below.  This can be changed by
 ** putting an appropriate #define in the %include section of the input
 ** grammar.
 */
@@ -2648,9 +2648,9 @@ static int yyGrowStack(yyParser *p){
 
 /* Initialize a new parser that has already been allocated.
 */
-void glcParseInit(void *yypRawParser glcParseCTX_PDECL){
+void cp1ParseInit(void *yypRawParser cp1ParseCTX_PDECL){
   yyParser *yypParser = (yyParser*)yypRawParser;
-  glcParseCTX_STORE
+  cp1ParseCTX_STORE
 #ifdef YYTRACKMAXSTACKDEPTH
   yypParser->yyhwm = 0;
 #endif
@@ -2664,7 +2664,7 @@ void glcParseInit(void *yypRawParser glcParseCTX_PDECL){
   yypParser->yystack[0].major = 0;
 }
 
-#ifndef glcParse_ENGINEALWAYSONSTACK
+#ifndef cp1Parse_ENGINEALWAYSONSTACK
 /* 
 ** This function allocates a new parser.
 ** The only argument is a pointer to a function which works like
@@ -2675,18 +2675,18 @@ void glcParseInit(void *yypRawParser glcParseCTX_PDECL){
 **
 ** Outputs:
 ** A pointer to a parser.  This pointer is used in subsequent calls
-** to glcParse and glcParseFree.
+** to cp1Parse and cp1ParseFree.
 */
-void *glcParseAlloc(void *(*mallocProc)(YYMALLOCARGTYPE) glcParseCTX_PDECL){
+void *cp1ParseAlloc(void *(*mallocProc)(YYMALLOCARGTYPE) cp1ParseCTX_PDECL){
   yyParser *yypParser;
   yypParser = (yyParser*)(*mallocProc)( (YYMALLOCARGTYPE)sizeof(yyParser) );
   if( yypParser ){
-    glcParseCTX_STORE
-    glcParseInit(yypParser glcParseCTX_PARAM);
+    cp1ParseCTX_STORE
+    cp1ParseInit(yypParser cp1ParseCTX_PARAM);
   }
   return (void*)yypParser;
 }
-#endif /* glcParse_ENGINEALWAYSONSTACK */
+#endif /* cp1Parse_ENGINEALWAYSONSTACK */
 
 
 /* The following function deletes the "minor type" or semantic value
@@ -2701,8 +2701,8 @@ static void yy_destructor(
   YYCODETYPE yymajor,     /* Type code for object to destroy */
   YYMINORTYPE *yypminor   /* The object to be destroyed */
 ){
-  glcParseARG_FETCH
-  glcParseCTX_FETCH
+  cp1ParseARG_FETCH
+  cp1ParseCTX_FETCH
   switch( yymajor ){
     /* Here is inserted the actions which take place when a
     ** terminal or non-terminal is destroyed.  This can happen
@@ -2744,7 +2744,7 @@ static void yy_pop_parser_stack(yyParser *pParser){
 /*
 ** Clear all secondary memory allocations from the parser
 */
-void glcParseFinalize(void *p){
+void cp1ParseFinalize(void *p){
   yyParser *pParser = (yyParser*)p;
 
   /* In-lined version of calling yy_pop_parser_stack() for each
@@ -2769,7 +2769,7 @@ void glcParseFinalize(void *p){
 #endif
 }
 
-#ifndef glcParse_ENGINEALWAYSONSTACK
+#ifndef cp1Parse_ENGINEALWAYSONSTACK
 /* 
 ** Deallocate and destroy a parser.  Destructors are called for
 ** all stack elements before shutting the parser down.
@@ -2778,23 +2778,23 @@ void glcParseFinalize(void *p){
 ** is defined in a %include section of the input grammar) then it is
 ** assumed that the input pointer is never NULL.
 */
-void glcParseFree(
+void cp1ParseFree(
   void *p,                    /* The parser to be deleted */
   void (*freeProc)(void*)     /* Function used to reclaim memory */
 ){
 #ifndef YYPARSEFREENEVERNULL
   if( p==0 ) return;
 #endif
-  glcParseFinalize(p);
+  cp1ParseFinalize(p);
   (*freeProc)(p);
 }
-#endif /* glcParse_ENGINEALWAYSONSTACK */
+#endif /* cp1Parse_ENGINEALWAYSONSTACK */
 
 /*
 ** Return the peak depth of the stack for a parser.
 */
 #ifdef YYTRACKMAXSTACKDEPTH
-int glcParseStackPeak(void *p){
+int cp1ParseStackPeak(void *p){
   yyParser *pParser = (yyParser*)p;
   return pParser->yyhwm;
 }
@@ -2818,7 +2818,7 @@ static unsigned char yycoverage[YYNSTATE][YYNTOKEN];
 ** Return the number of missed state/lookahead combinations.
 */
 #if defined(YYCOVERAGE)
-int glcParseCoverage(FILE *out){
+int cp1ParseCoverage(FILE *out){
   int stateno, iLookAhead, i;
   int nMissed = 0;
   for(stateno=0; stateno<YYNSTATE; stateno++){
@@ -2936,8 +2936,8 @@ static YYACTIONTYPE yy_find_reduce_action(
 ** The following routine is called if the stack overflows.
 */
 static void yyStackOverflow(yyParser *yypParser){
-   glcParseARG_FETCH
-   glcParseCTX_FETCH
+   cp1ParseARG_FETCH
+   cp1ParseCTX_FETCH
 #ifndef NDEBUG
    if( yyTraceFILE ){
      fprintf(yyTraceFILE,"%sStack Overflow!\n",yyTracePrompt);
@@ -2948,8 +2948,8 @@ static void yyStackOverflow(yyParser *yypParser){
    ** stack every overflows */
 /******** Begin %stack_overflow code ******************************************/
 /******** End %stack_overflow code ********************************************/
-   glcParseARG_STORE /* Suppress warning about unused %extra_argument var */
-   glcParseCTX_STORE
+   cp1ParseARG_STORE /* Suppress warning about unused %extra_argument var */
+   cp1ParseCTX_STORE
 }
 
 /*
@@ -2980,7 +2980,7 @@ static void yy_shift(
   yyParser *yypParser,          /* The parser to be shifted */
   YYACTIONTYPE yyNewState,      /* The new state to shift in */
   YYCODETYPE yyMajor,           /* The major token to shift in */
-  glcParseTOKENTYPE yyMinor        /* The minor token to shift in */
+  cp1ParseTOKENTYPE yyMinor        /* The minor token to shift in */
 ){
   yyStackEntry *yytos;
   yypParser->yytos++;
@@ -3082,7 +3082,7 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    182,  /* (67) func_attr ::= SPACE_AT_CASE DOT ID_LPAREN LPAREN RPAREN */
    182,  /* (68) func_attr ::= SPACE_AT_PROCESS */
    182,  /* (69) func_attr ::= SPACE_AT_INLINE */
-   182,  /* (70) func_attr ::= SPACE_AT_CGL_NAME */
+   182,  /* (70) func_attr ::= SPACE_AT_CP1_NAME */
    182,  /* (71) func_attr ::= SPACE_AT_DECL LPAREN STRING RPAREN */
    182,  /* (72) func_attr ::= SPACE_AT_VAR_ARGS */
    182,  /* (73) func_attr ::= SPACE_AT_NO_DECL */
@@ -3334,9 +3334,9 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    318,  /* (319) enum_base_begin ::= */
    319,  /* (320) enum_base_end ::= at end_pos */
    320,  /* (321) decl_gvar ::= fvar_decl expr_type_apply typeInfo_optional decl_var_attrs_optional */
-   119,  /* (322) glc ::= decls space_or_end */
-   119,  /* (323) glc ::= SPACE decls space_or_end */
-   119,  /* (324) glc ::= space_or_end */
+   119,  /* (322) cp1 ::= decls space_or_end */
+   119,  /* (323) cp1 ::= SPACE decls space_or_end */
+   119,  /* (324) cp1 ::= space_or_end */
    134,  /* (325) cvar_attrs ::= cvar_attr */
    134,  /* (326) cvar_attrs ::= cvar_attrs cvar_attr */
    135,  /* (327) cvar_attrs_optional ::= */
@@ -3518,7 +3518,7 @@ static const signed char yyRuleInfoNRhs[] = {
    -5,  /* (67) func_attr ::= SPACE_AT_CASE DOT ID_LPAREN LPAREN RPAREN */
    -1,  /* (68) func_attr ::= SPACE_AT_PROCESS */
    -1,  /* (69) func_attr ::= SPACE_AT_INLINE */
-   -1,  /* (70) func_attr ::= SPACE_AT_CGL_NAME */
+   -1,  /* (70) func_attr ::= SPACE_AT_CP1_NAME */
    -4,  /* (71) func_attr ::= SPACE_AT_DECL LPAREN STRING RPAREN */
    -1,  /* (72) func_attr ::= SPACE_AT_VAR_ARGS */
    -1,  /* (73) func_attr ::= SPACE_AT_NO_DECL */
@@ -3770,9 +3770,9 @@ static const signed char yyRuleInfoNRhs[] = {
     0,  /* (319) enum_base_begin ::= */
    -2,  /* (320) enum_base_end ::= at end_pos */
    -4,  /* (321) decl_gvar ::= fvar_decl expr_type_apply typeInfo_optional decl_var_attrs_optional */
-   -2,  /* (322) glc ::= decls space_or_end */
-   -3,  /* (323) glc ::= SPACE decls space_or_end */
-   -1,  /* (324) glc ::= space_or_end */
+   -2,  /* (322) cp1 ::= decls space_or_end */
+   -3,  /* (323) cp1 ::= SPACE decls space_or_end */
+   -1,  /* (324) cp1 ::= space_or_end */
    -1,  /* (325) cvar_attrs ::= cvar_attr */
    -2,  /* (326) cvar_attrs ::= cvar_attrs cvar_attr */
     0,  /* (327) cvar_attrs_optional ::= */
@@ -3897,14 +3897,14 @@ static YYACTIONTYPE yy_reduce(
   yyParser *yypParser,         /* The parser */
   unsigned int yyruleno,       /* Number of the rule by which to reduce */
   int yyLookahead,             /* Lookahead token, or YYNOCODE if none */
-  glcParseTOKENTYPE yyLookaheadToken  /* Value of the lookahead token */
-  glcParseCTX_PDECL                   /* %extra_context */
+  cp1ParseTOKENTYPE yyLookaheadToken  /* Value of the lookahead token */
+  cp1ParseCTX_PDECL                   /* %extra_context */
 ){
   int yygoto;                     /* The next state */
   YYACTIONTYPE yyact;             /* The next action */
   yyStackEntry *yymsp;            /* The top of the parser's stack */
   int yysize;                     /* Amount to pop the stack */
-  glcParseARG_FETCH
+  cp1ParseARG_FETCH
   (void)yyLookahead;
   (void)yyLookaheadToken;
   yymsp = yypParser->yytos;
@@ -3932,80 +3932,80 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 2: /* func_decl_begin ::= ID_LPAREN */
 #line 40 "cp1_parser.y"
-{ _Nglc_Pdecl_func_begin_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pdecl_func_begin_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 3936 "out/cp1_parser.c"
         break;
       case 3: /* at_name ::= ID_COLON */
 #line 44 "cp1_parser.y"
-{ _Nglc_Pat_push_4(yymsp[0].minor.yy0.basic.id, 1, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pat_push_4(yymsp[0].minor.yy0.basic.id, 1, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 3941 "out/cp1_parser.c"
         break;
       case 4: /* at_alias ::= ID_QUOTE */
 #line 48 "cp1_parser.y"
-{ _Nglc_Pat_alias_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pat_alias_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 3946 "out/cp1_parser.c"
         break;
       case 5: /* enum_cvar_begin ::= ID_HASH */
 #line 50 "cp1_parser.y"
-{ _Nglc_Penum_add_cvar_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Penum_add_cvar_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 3951 "out/cp1_parser.c"
         break;
       case 6: /* enum_cvar_begin_decl ::= ID_HASH typeAndInfo_optional */
 #line 52 "cp1_parser.y"
-{ _Nglc_Pdecl_add_cvar_3(yymsp[-1].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
+{ _Ncp1_Pdecl_add_cvar_3(yymsp[-1].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
 #line 3956 "out/cp1_parser.c"
         break;
       case 7: /* struct_decl_begin ::= LCBRACE ID_COLON */
 #line 54 "cp1_parser.y"
-{ _Nglc_Pdecl_at_begin_struct_3(yymsp[0].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
+{ _Ncp1_Pdecl_at_begin_struct_3(yymsp[0].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
 #line 3961 "out/cp1_parser.c"
         break;
       case 8: /* fvar_decl_name ::= ID */
       case 9: /* lvar_decl_name ::= ID */ yytestcase(yyruleno==9);
 #line 56 "cp1_parser.y"
-{ _Nglc_Pdecl_var_begin_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pdecl_var_begin_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 3967 "out/cp1_parser.c"
         break;
       case 10: /* cvar_attr ::= SPACE_AT_REAL_NAME_STR */
 #line 62 "cp1_parser.y"
-{ _Nglc_Pcvar_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
+{ _Ncp1_Pcvar_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
 #line 3972 "out/cp1_parser.c"
         break;
       case 11: /* cvar_attr ::= SPACE_AT_REAL_NAME */
 #line 64 "cp1_parser.y"
-{ _Nglc_Pcvar_attr_real_name_1(-1); }
+{ _Ncp1_Pcvar_attr_real_name_1(-1); }
 #line 3977 "out/cp1_parser.c"
         break;
       case 12: /* cvar_attr ::= SPACE_AT_NO_DECL */
 #line 66 "cp1_parser.y"
-{ _Nglc_Pcvar_attr_no_decl_0(); }
+{ _Ncp1_Pcvar_attr_no_decl_0(); }
 #line 3982 "out/cp1_parser.c"
         break;
       case 13: /* enum_cvar ::= enum_cvar_begin cvar_attrs_optional SPACE_EQUAL_SPACE expr */
       case 14: /* enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional SPACE_EQUAL_SPACE expr */ yytestcase(yyruleno==14);
 #line 73 "cp1_parser.y"
-{ _Nglc_Penum_set_cvar_expr_1(yymsp[0].minor.yy0.basic.id); }
+{ _Ncp1_Penum_set_cvar_expr_1(yymsp[0].minor.yy0.basic.id); }
 #line 3988 "out/cp1_parser.c"
         break;
       case 15: /* enum_decl_begin ::= LCBRACE ID_COLON */
 #line 78 "cp1_parser.y"
-{ _Nglc_Pdecl_at_begin_enum_3(yymsp[0].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
+{ _Ncp1_Pdecl_at_begin_enum_3(yymsp[0].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
 #line 3993 "out/cp1_parser.c"
         break;
       case 16: /* decl_include ::= INCLUDE */
 #line 81 "cp1_parser.y"
-{ _Nglc_Pdecl_include_begin_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pdecl_include_begin_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 3998 "out/cp1_parser.c"
         break;
       case 17: /* decl ::= decl_include SPACE decls SPACE_RCBRACE */
       case 18: /* decl ::= decl_include SPACE_RCBRACE */ yytestcase(yyruleno==18);
 #line 83 "cp1_parser.y"
-{ _Nglc_Pdecl_include_end_0(); }
+{ _Ncp1_Pdecl_include_end_0(); }
 #line 4004 "out/cp1_parser.c"
         break;
       case 19: /* at_root ::= QUOTE */
 #line 88 "cp1_parser.y"
-{ _Nglc_Pat_root_0(); }
+{ _Ncp1_Pat_root_0(); }
 #line 4009 "out/cp1_parser.c"
         break;
       case 20: /* at_graves_count ::= GRAVE */
@@ -4022,17 +4022,17 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 22: /* at_graves ::= at_graves_count */
 #line 94 "cp1_parser.y"
-{ _Nglc_Pat_graves_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pat_graves_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4026 "out/cp1_parser.c"
         break;
       case 23: /* at_begin ::= */
 #line 99 "cp1_parser.y"
-{ _Nglc_Pat_begin_relative_0(); }
+{ _Ncp1_Pat_begin_relative_0(); }
 #line 4031 "out/cp1_parser.c"
         break;
       case 24: /* at ::= type_basic_id */
 #line 103 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pat_basic_type_1(yymsp[0].minor.yy0.basic.id); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pat_basic_type_1(yymsp[0].minor.yy0.basic.id); }
 #line 4036 "out/cp1_parser.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
@@ -4040,44 +4040,44 @@ static YYACTIONTYPE yy_reduce(
       case 26: /* at ::= at_root */ yytestcase(yyruleno==26);
       case 27: /* at ::= at_graves */ yytestcase(yyruleno==27);
 #line 105 "cp1_parser.y"
-{ yymsp[0].minor.yy0.basic.id = _Nglc_Pat_done_0(); }
+{ yymsp[0].minor.yy0.basic.id = _Ncp1_Pat_done_0(); }
 #line 4044 "out/cp1_parser.c"
         break;
       case 28: /* decl_at_name ::= ID_COLON */
 #line 113 "cp1_parser.y"
-{ _Nglc_Pdecl_at_add_2(yymsp[0].minor.yy0.basic.id, 1); }
+{ _Ncp1_Pdecl_at_add_2(yymsp[0].minor.yy0.basic.id, 1); }
 #line 4049 "out/cp1_parser.c"
         break;
       case 29: /* decl_at_name ::= ID_BSLASH */
 #line 115 "cp1_parser.y"
-{ _Nglc_Pdecl_at_add_2(yymsp[0].minor.yy0.basic.id, 2); }
+{ _Ncp1_Pdecl_at_add_2(yymsp[0].minor.yy0.basic.id, 2); }
 #line 4054 "out/cp1_parser.c"
         break;
       case 30: /* decl_at_begin_at ::= */
 #line 117 "cp1_parser.y"
-{ _Nglc_Pat_begin_0(); }
+{ _Ncp1_Pat_begin_0(); }
 #line 4059 "out/cp1_parser.c"
         break;
       case 31: /* decl_at_namespace ::= type_basic_id */
 #line 122 "cp1_parser.y"
-{ _Nglc_Pdecl_at_basic_1(yymsp[0].minor.yy0.basic.id); }
+{ _Ncp1_Pdecl_at_basic_1(yymsp[0].minor.yy0.basic.id); }
 #line 4064 "out/cp1_parser.c"
         break;
       case 32: /* decl_at_begin_begin ::= LCBRACE_AT_LPAREN */
 #line 124 "cp1_parser.y"
-{ _Nglc_Pat_begin_relative_pause_0(); yylhsminor.yy0.basic.row = yymsp[0].minor.yy0.basic.row; yylhsminor.yy0.basic.col = yymsp[0].minor.yy0.basic.col; }
+{ _Ncp1_Pat_begin_relative_pause_0(); yylhsminor.yy0.basic.row = yymsp[0].minor.yy0.basic.row; yylhsminor.yy0.basic.col = yymsp[0].minor.yy0.basic.col; }
 #line 4069 "out/cp1_parser.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 33: /* decl_at_begin_end ::= RPAREN */
       case 38: /* decl_alias_end ::= RCBRACE */ yytestcase(yyruleno==38);
 #line 126 "cp1_parser.y"
-{ _Nglc_Pat_begin_relative_resume_0(); }
+{ _Ncp1_Pat_begin_relative_resume_0(); }
 #line 4076 "out/cp1_parser.c"
         break;
       case 34: /* decl_at_begin ::= decl_at_begin_begin decl_at_namespace decl_at_begin_end */
 #line 128 "cp1_parser.y"
-{ _Nglc_Pdecl_at_begin_2(yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col); }
+{ _Ncp1_Pdecl_at_begin_2(yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col); }
 #line 4081 "out/cp1_parser.c"
         break;
       case 35: /* decl_at ::= decl_at_begin SPACE decls SPACE_RCBRACE */
@@ -4087,17 +4087,17 @@ static YYACTIONTYPE yy_reduce(
       case 317: /* decl_enum_close_or_at ::= rcbrace_or_space */ yytestcase(yyruleno==317);
       case 318: /* decl_enum_close_or_at ::= SPACE decls rcbrace_or_space */ yytestcase(yyruleno==318);
 #line 130 "cp1_parser.y"
-{ _Nglc_Pdecl_at_end_0(); }
+{ _Ncp1_Pdecl_at_end_0(); }
 #line 4091 "out/cp1_parser.c"
         break;
       case 37: /* decl_alias_begin ::= LCBRACE_USING_SPACE */
 #line 147 "cp1_parser.y"
-{ _Nglc_Pat_begin_relative_pause_0(); }
+{ _Ncp1_Pat_begin_relative_pause_0(); }
 #line 4096 "out/cp1_parser.c"
         break;
       case 39: /* decl ::= decl_alias_begin ID_QUOTE SPACE_EQUAL_SPACE at decl_alias_end */
 #line 151 "cp1_parser.y"
-{ _Nglc_Pdecl_alias_4(yymsp[-3].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col); }
+{ _Ncp1_Pdecl_alias_4(yymsp[-3].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col); }
 #line 4101 "out/cp1_parser.c"
         break;
       case 40: /* lparen_or_space ::= LPAREN */
@@ -4127,93 +4127,93 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 59: /* lvar_decl ::= lvar_decl_name */
 #line 201 "cp1_parser.y"
-{ _Nglc_Pdecl_var_end_0(); yylhsminor.yy0.basic.row = yymsp[0].minor.yy0.basic.row; yylhsminor.yy0.basic.col = yymsp[0].minor.yy0.basic.col; }
+{ _Ncp1_Pdecl_var_end_0(); yylhsminor.yy0.basic.row = yymsp[0].minor.yy0.basic.row; yylhsminor.yy0.basic.col = yymsp[0].minor.yy0.basic.col; }
 #line 4131 "out/cp1_parser.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 60: /* farg ::= lvar_decl typeAndInfo_optional */
 #line 203 "cp1_parser.y"
-{ _Nglc_Pdecl_var_as_farg_2(yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
+{ _Ncp1_Pdecl_var_as_farg_2(yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
 #line 4137 "out/cp1_parser.c"
         break;
       case 61: /* expr_type_this_apply ::= COLON_THIS */
 #line 205 "cp1_parser.y"
-{ _Nglc_Pdecl_var_this_0(); }
+{ _Ncp1_Pdecl_var_this_0(); }
 #line 4142 "out/cp1_parser.c"
         break;
       case 62: /* farg ::= lvar_decl expr_type_this_apply typeInfo_optional */
 #line 207 "cp1_parser.y"
-{ _Nglc_Pdecl_var_as_this_0(); }
+{ _Ncp1_Pdecl_var_as_this_0(); }
 #line 4147 "out/cp1_parser.c"
         break;
       case 63: /* expr_type_none ::= */
 #line 209 "cp1_parser.y"
-{ _Nglc_Pdecl_var_type_1(-1); }
+{ _Ncp1_Pdecl_var_type_1(-1); }
 #line 4152 "out/cp1_parser.c"
         break;
       case 64: /* expr_type_apply ::= at */
 #line 211 "cp1_parser.y"
-{ _Nglc_Pdecl_var_type_1(yymsp[0].minor.yy0.basic.id); }
+{ _Ncp1_Pdecl_var_type_1(yymsp[0].minor.yy0.basic.id); }
 #line 4157 "out/cp1_parser.c"
         break;
       case 65: /* farg_next_group ::= lparen_or_space */
 #line 217 "cp1_parser.y"
-{ _Nglc_Pfarg_next_group_0(); }
+{ _Ncp1_Pfarg_next_group_0(); }
 #line 4162 "out/cp1_parser.c"
         break;
       case 66: /* func_attr ::= SPACE_AT_MAIN */
 #line 221 "cp1_parser.y"
-{ _Nglc_Pfunc_attr_main_0(); }
+{ _Ncp1_Pfunc_attr_main_0(); }
 #line 4167 "out/cp1_parser.c"
         break;
       case 67: /* func_attr ::= SPACE_AT_CASE DOT ID_LPAREN LPAREN RPAREN */
 #line 223 "cp1_parser.y"
-{ _Nglc_Pfunc_attr_case_1(yymsp[-2].minor.yy0.basic.id); }
+{ _Ncp1_Pfunc_attr_case_1(yymsp[-2].minor.yy0.basic.id); }
 #line 4172 "out/cp1_parser.c"
         break;
       case 68: /* func_attr ::= SPACE_AT_PROCESS */
 #line 225 "cp1_parser.y"
-{ _Nglc_Pfunc_attr_process_0(); }
+{ _Ncp1_Pfunc_attr_process_0(); }
 #line 4177 "out/cp1_parser.c"
         break;
       case 69: /* func_attr ::= SPACE_AT_INLINE */
 #line 227 "cp1_parser.y"
-{ _Nglc_Pfunc_attr_inline_0(); }
+{ _Ncp1_Pfunc_attr_inline_0(); }
 #line 4182 "out/cp1_parser.c"
         break;
-      case 70: /* func_attr ::= SPACE_AT_CGL_NAME */
+      case 70: /* func_attr ::= SPACE_AT_CP1_NAME */
 #line 229 "cp1_parser.y"
-{ _Nglc_Pfunc_attr_cgl_name_0(); }
+{ _Ncp1_Pfunc_attr_cp1_name_0(); }
 #line 4187 "out/cp1_parser.c"
         break;
       case 71: /* func_attr ::= SPACE_AT_DECL LPAREN STRING RPAREN */
 #line 231 "cp1_parser.y"
-{ _Nglc_Pfunc_attr_decl_0(); }
+{ _Ncp1_Pfunc_attr_decl_0(); }
 #line 4192 "out/cp1_parser.c"
         break;
       case 72: /* func_attr ::= SPACE_AT_VAR_ARGS */
 #line 233 "cp1_parser.y"
-{ _Nglc_Pfunc_attr_var_args_0(); }
+{ _Ncp1_Pfunc_attr_var_args_0(); }
 #line 4197 "out/cp1_parser.c"
         break;
       case 73: /* func_attr ::= SPACE_AT_NO_DECL */
 #line 235 "cp1_parser.y"
-{ _Nglc_Pfunc_attr_no_decl_0(); }
+{ _Ncp1_Pfunc_attr_no_decl_0(); }
 #line 4202 "out/cp1_parser.c"
         break;
       case 74: /* func_attr ::= SPACE_AT_NO_BODY */
 #line 237 "cp1_parser.y"
-{ _Nglc_Pfunc_attr_no_body_0(); }
+{ _Ncp1_Pfunc_attr_no_body_0(); }
 #line 4207 "out/cp1_parser.c"
         break;
       case 75: /* func_attr ::= SPACE_AT_REAL_NAME_STR */
 #line 239 "cp1_parser.y"
-{ _Nglc_Pfunc_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
+{ _Ncp1_Pfunc_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
 #line 4212 "out/cp1_parser.c"
         break;
       case 76: /* func_attr ::= SPACE_AT_REAL_NAME */
 #line 241 "cp1_parser.y"
-{ _Nglc_Pfunc_attr_real_name_1(-1); }
+{ _Ncp1_Pfunc_attr_real_name_1(-1); }
 #line 4217 "out/cp1_parser.c"
         break;
       case 77: /* type_basic_id ::= COLON_REF */
@@ -4311,34 +4311,34 @@ static YYACTIONTYPE yy_reduce(
       case 93: /* func_decl ::= LCBRACE func_decl_begin fargs func_type func_attrs */
       case 94: /* func_decl ::= LCBRACE func_decl_begin fargs func_type */ yytestcase(yyruleno==94);
 #line 291 "cp1_parser.y"
-{ _Nglc_Pdecl_func_end_2(_Grow, _Gcol); }
+{ _Ncp1_Pdecl_func_end_2(_Grow, _Gcol); }
 #line 4315 "out/cp1_parser.c"
         break;
       case 95: /* fvar_decl ::= fvar_decl_name */
 #line 303 "cp1_parser.y"
-{ _Nglc_Pdecl_var_end_0(); }
+{ _Ncp1_Pdecl_var_end_0(); }
 #line 4320 "out/cp1_parser.c"
         break;
       case 96: /* fvar_attr ::= SPACE_AT_REAL_NAME_STR */
       case 304: /* decl_var_attr ::= SPACE_AT_REAL_NAME_STR */ yytestcase(yyruleno==304);
 #line 305 "cp1_parser.y"
-{ _Nglc_Pdecl_var_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
+{ _Ncp1_Pdecl_var_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
 #line 4326 "out/cp1_parser.c"
         break;
       case 97: /* fvar_attr ::= SPACE_AT_REAL_NAME */
       case 305: /* decl_var_attr ::= SPACE_AT_REAL_NAME */ yytestcase(yyruleno==305);
 #line 307 "cp1_parser.y"
-{ _Nglc_Pdecl_var_attr_real_name_1(-1); }
+{ _Ncp1_Pdecl_var_attr_real_name_1(-1); }
 #line 4332 "out/cp1_parser.c"
         break;
       case 98: /* fvar ::= fvar_decl typeAndInfo_optional fvar_attrs_optional */
 #line 313 "cp1_parser.y"
-{ _Nglc_Pdecl_var_as_fvar_0(); }
+{ _Ncp1_Pdecl_var_as_fvar_0(); }
 #line 4337 "out/cp1_parser.c"
         break;
       case 99: /* typeInfo_bi ::= PLUS */
 #line 325 "cp1_parser.y"
-{ _Nglc_Ptype_info_static_0(); }
+{ _Ncp1_Ptype_info_static_0(); }
 #line 4342 "out/cp1_parser.c"
         break;
       case 100: /* ref_count ::= AMPERSAND */
@@ -4362,7 +4362,7 @@ static YYACTIONTYPE yy_reduce(
       case 103: /* typeInfo_ref ::= typeInfo_arr ref_count */ yytestcase(yyruleno==103);
       case 104: /* typeInfo_ref ::= typeInfo_bi ref_count */ yytestcase(yyruleno==104);
 #line 331 "cp1_parser.y"
-{ _Nglc_Ptype_info_ref_1(yymsp[0].minor.yy0.basic.id); }
+{ _Ncp1_Ptype_info_ref_1(yymsp[0].minor.yy0.basic.id); }
 #line 4366 "out/cp1_parser.c"
         break;
       case 105: /* typeInfo_arr ::= lbracket_or_space RBRACKET */
@@ -4370,12 +4370,12 @@ static YYACTIONTYPE yy_reduce(
       case 107: /* typeInfo_arr ::= typeInfo_ref lbracket_or_space RBRACKET */ yytestcase(yyruleno==107);
       case 108: /* typeInfo_arr ::= typeInfo_arr lbracket_or_space RBRACKET */ yytestcase(yyruleno==108);
 #line 337 "cp1_parser.y"
-{ _Nglc_Ptype_info_arr_2(0, 0); }
+{ _Ncp1_Ptype_info_arr_2(0, 0); }
 #line 4374 "out/cp1_parser.c"
         break;
       case 109: /* typeInfo_arr_exprs ::= lbracket_or_space typeInfo_arr_exprs1 rbracket_or_comma */
 #line 348 "cp1_parser.y"
-{ _Nglc_Ptype_info_arr_2(yymsp[-1].minor.yy0.index.v, yymsp[-1].minor.yy0.index.c); }
+{ _Ncp1_Ptype_info_arr_2(yymsp[-1].minor.yy0.index.v, yymsp[-1].minor.yy0.index.c); }
 #line 4379 "out/cp1_parser.c"
         break;
       case 110: /* typeInfo_arr_exprs1 ::= expr */
@@ -4392,71 +4392,71 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 112: /* typeInfo_begin ::= */
 #line 354 "cp1_parser.y"
-{ _Nglc_Ptype_info_begin_0(); }
+{ _Ncp1_Ptype_info_begin_0(); }
 #line 4396 "out/cp1_parser.c"
         break;
       case 113: /* typeInfo_none ::= typeInfo_begin */
       case 114: /* typeInfo_optional ::= typeInfo_begin typeInfo */ yytestcase(yyruleno==114);
 #line 356 "cp1_parser.y"
-{ _Nglc_Ptype_info_finalize_0(); }
+{ _Ncp1_Ptype_info_finalize_0(); }
 #line 4402 "out/cp1_parser.c"
         break;
       case 115: /* expr_int ::= NUM_DEC */
 #line 362 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_int_2(yymsp[0].minor.yy0.basic.id, 0); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_int_2(yymsp[0].minor.yy0.basic.id, 0); }
 #line 4407 "out/cp1_parser.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 116: /* expr_int ::= NUM_HEX */
 #line 364 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_int_2(yymsp[0].minor.yy0.basic.id, 1); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_int_2(yymsp[0].minor.yy0.basic.id, 1); }
 #line 4413 "out/cp1_parser.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 117: /* expr_int ::= NUM_OCT */
 #line 366 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_int_2(yymsp[0].minor.yy0.basic.id, 2); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_int_2(yymsp[0].minor.yy0.basic.id, 2); }
 #line 4419 "out/cp1_parser.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 118: /* expr_str ::= STRING */
 #line 369 "cp1_parser.y"
-{ yymsp[0].minor.yy0.basic.id = _Nglc_Pexpr_str_1(-1); }
+{ yymsp[0].minor.yy0.basic.id = _Ncp1_Pexpr_str_1(-1); }
 #line 4425 "out/cp1_parser.c"
         break;
       case 119: /* expr_str ::= expr_str SPACE STRING */
 #line 371 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_str_1(yymsp[-2].minor.yy0.basic.id); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_str_1(yymsp[-2].minor.yy0.basic.id); }
 #line 4430 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 122: /* expr_lvar ::= ID */
 #line 378 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_lvar_4(yymsp[0].minor.yy0.basic.id, 0, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_lvar_4(yymsp[0].minor.yy0.basic.id, 0, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4436 "out/cp1_parser.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 123: /* expr_lvar ::= expr_lvar_plus ID expr_type_none */
 #line 380 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_lvar_4(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_lvar_4(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
 #line 4442 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 124: /* expr_lvar ::= expr_lvar_plus lparen_or_space ID typeAndInfo rparen_or_space */
 #line 382 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_lvar_4(yymsp[-2].minor.yy0.basic.id, yymsp[-4].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_lvar_4(yymsp[-2].minor.yy0.basic.id, yymsp[-4].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col); }
 #line 4448 "out/cp1_parser.c"
   yymsp[-4].minor.yy0 = yylhsminor.yy0;
         break;
       case 125: /* expr_cvar ::= ID_HASH */
 #line 384 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_cvar_2(-1, yymsp[0].minor.yy0.basic.id); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_cvar_2(-1, yymsp[0].minor.yy0.basic.id); }
 #line 4454 "out/cp1_parser.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 126: /* expr_cvar ::= at ID_HASH */
 #line 386 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_cvar_2(yymsp[-1].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_cvar_2(yymsp[-1].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
 #line 4460 "out/cp1_parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
@@ -4525,52 +4525,52 @@ static YYACTIONTYPE yy_reduce(
       case 138: /* charExpr ::= CHAR1 */
       case 139: /* charExpr ::= CHAR2 */ yytestcase(yyruleno==139);
 #line 410 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_char_1(yymsp[0].minor.yy0.basic.id); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_char_1(yymsp[0].minor.yy0.basic.id); }
 #line 4529 "out/cp1_parser.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 140: /* boolExpr ::= TRUE */
 #line 414 "cp1_parser.y"
-{ yymsp[0].minor.yy0.basic.id = _Nglc_Pexpr_bool_1(1); }
+{ yymsp[0].minor.yy0.basic.id = _Ncp1_Pexpr_bool_1(1); }
 #line 4535 "out/cp1_parser.c"
         break;
       case 141: /* boolExpr ::= FALSE */
 #line 416 "cp1_parser.y"
-{ yymsp[0].minor.yy0.basic.id = _Nglc_Pexpr_bool_1(0); }
+{ yymsp[0].minor.yy0.basic.id = _Ncp1_Pexpr_bool_1(0); }
 #line 4540 "out/cp1_parser.c"
         break;
       case 142: /* nullExpr ::= NULL */
 #line 418 "cp1_parser.y"
-{ yymsp[0].minor.yy0.basic.id = _Nglc_Pexpr_null_0(); }
+{ yymsp[0].minor.yy0.basic.id = _Ncp1_Pexpr_null_0(); }
 #line 4545 "out/cp1_parser.c"
         break;
       case 152: /* gvarExpr ::= DOT ID */
 #line 438 "cp1_parser.y"
-{ yymsp[-1].minor.yy0.basic.id = _Nglc_Pexpr_gvar_2(-1, yymsp[0].minor.yy0.basic.id); }
+{ yymsp[-1].minor.yy0.basic.id = _Ncp1_Pexpr_gvar_2(-1, yymsp[0].minor.yy0.basic.id); }
 #line 4550 "out/cp1_parser.c"
         break;
       case 153: /* gvarExpr ::= at DOT ID */
 #line 440 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_gvar_2(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_gvar_2(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
 #line 4555 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 154: /* fvarExpr ::= value4fix DOT ID */
 #line 442 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_fvar_2(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_fvar_2(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
 #line 4561 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 155: /* expr_and1 ::= expr COMMA_SPACE expr */
 #line 444 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_bools_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 0); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_bools_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 0); }
 #line 4567 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 156: /* expr_and1 ::= expr_and1 COMMA_SPACE expr */
       case 159: /* expr_or1 ::= expr_or1 COMMA_SPACE expr */ yytestcase(yyruleno==159);
 #line 446 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_bools_add_2(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_bools_add_2(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
 #line 4574 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
@@ -4586,13 +4586,13 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 158: /* expr_or1 ::= expr COMMA_SPACE expr */
 #line 450 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_bools_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 1); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_bools_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 1); }
 #line 4590 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 161: /* expr_add ::= value SPACE_PLUS_SPACE value */
 #line 456 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 0); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 0); }
 #line 4596 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
@@ -4604,55 +4604,55 @@ static YYACTIONTYPE yy_reduce(
       case 174: /* expr_bit_or ::= expr_bit_or SPACE_PIPE_SPACE value */ yytestcase(yyruleno==174);
       case 176: /* expr_bit_xor ::= expr_bit_xor SPACE_XOR_SPACE value */ yytestcase(yyruleno==176);
 #line 458 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_math_add_2(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_math_add_2(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
 #line 4608 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 163: /* expr_sub ::= value SPACE_MINUS_SPACE value */
 #line 460 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 1); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 1); }
 #line 4614 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 165: /* expr_mul ::= value SPACE_MUL_SPACE value */
 #line 464 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 2); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 2); }
 #line 4620 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 167: /* expr_div ::= value SPACE_DIV_SPACE value */
 #line 468 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 3); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 3); }
 #line 4626 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 169: /* expr_lshift ::= value SPACE_LANGLE_LANGLE_SPACE value */
 #line 472 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 4); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 4); }
 #line 4632 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 170: /* expr_rshift ::= value SPACE_RANGLE_RANGLE_SPACE value */
 #line 474 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 5); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 5); }
 #line 4638 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 171: /* expr_bit_and ::= value SPACE_AMP_SPACE value */
 #line 476 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 6); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 6); }
 #line 4644 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 173: /* expr_bit_or ::= value SPACE_PIPE_SPACE value */
 #line 480 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 7); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 7); }
 #line 4650 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 175: /* expr_bit_xor ::= value SPACE_XOR_SPACE value */
 #line 484 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 8); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 8); }
 #line 4656 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
@@ -4665,99 +4665,99 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 197: /* compareExpr ::= value compare_type value */
 #line 528 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_compare_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_compare_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id); }
 #line 4669 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 200: /* funcExpr ::= ID_LPAREN */
 #line 534 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = -1; yylhsminor.yy0.basic.id2 = yymsp[0].minor.yy0.basic.id; _Nglc_Pexpr_push_call_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ yylhsminor.yy0.basic.id = -1; yylhsminor.yy0.basic.id2 = yymsp[0].minor.yy0.basic.id; _Ncp1_Pexpr_push_call_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4675 "out/cp1_parser.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 201: /* funcExpr ::= at DOT ID_LPAREN */
       case 202: /* methodExpr ::= value4fix DOT ID_LPAREN */ yytestcase(yyruleno==202);
 #line 536 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = yymsp[-2].minor.yy0.basic.id; yylhsminor.yy0.basic.id2 = yymsp[0].minor.yy0.basic.id; _Nglc_Pexpr_push_call_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ yylhsminor.yy0.basic.id = yymsp[-2].minor.yy0.basic.id; yylhsminor.yy0.basic.id2 = yymsp[0].minor.yy0.basic.id; _Ncp1_Pexpr_push_call_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4682 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 203: /* call_arg ::= expr */
 #line 542 "cp1_parser.y"
-{ _Nglc_Pcarg_push_1(yymsp[0].minor.yy0.basic.id); }
+{ _Ncp1_Pcarg_push_1(yymsp[0].minor.yy0.basic.id); }
 #line 4688 "out/cp1_parser.c"
         break;
       case 204: /* call_arg ::= expr_str HASH */
 #line 544 "cp1_parser.y"
-{ _Nglc_Pcarg_push_str_1(yymsp[-1].minor.yy0.basic.id); }
+{ _Ncp1_Pcarg_push_str_1(yymsp[-1].minor.yy0.basic.id); }
 #line 4693 "out/cp1_parser.c"
         break;
       case 205: /* call_args_next_group ::= lparen_or_space */
 #line 549 "cp1_parser.y"
-{ _Nglc_Pcarg_next_group_0(); }
+{ _Ncp1_Pcarg_next_group_0(); }
 #line 4698 "out/cp1_parser.c"
         break;
       case 208: /* callExpr_func ::= funcExpr call_args_optional */
 #line 557 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_pop_func_2(yymsp[-1].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id2); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_pop_func_2(yymsp[-1].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id2); }
 #line 4703 "out/cp1_parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 209: /* callExpr_method ::= methodExpr call_args_optional */
 #line 559 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_pop_method_2(yymsp[-1].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id2); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_pop_method_2(yymsp[-1].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id2); }
 #line 4709 "out/cp1_parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 224: /* assignExpr1 ::= value assign_type1 expr */
       case 225: /* assignExpr2 ::= value assign_type2 expr */ yytestcase(yyruleno==225);
 #line 589 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_assign_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_assign_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id); }
 #line 4716 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 231: /* expr2stmt ::= begin_pos expr2stmt_base end_pos */
 #line 603 "cp1_parser.y"
-{ _Nglc_Pexpr2stmt_5(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pexpr2stmt_5(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4722 "out/cp1_parser.c"
         break;
       case 240: /* sizeOfTypeExpr ::= at LBRACKET COLON_USZ RBRACKET */
 #line 622 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_size_of_type_1(yymsp[-3].minor.yy0.basic.id); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_size_of_type_1(yymsp[-3].minor.yy0.basic.id); }
 #line 4727 "out/cp1_parser.c"
   yymsp[-3].minor.yy0 = yylhsminor.yy0;
         break;
       case 241: /* fastCastExpr ::= value4cast at */
 #line 625 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_cast_fast_2(yymsp[-1].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_cast_fast_2(yymsp[-1].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
 #line 4733 "out/cp1_parser.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 242: /* negVal ::= MINUS value4fix */
 #line 628 "cp1_parser.y"
-{ yymsp[-1].minor.yy0.basic.id = _Nglc_Pexpr_unary_2(yymsp[0].minor.yy0.basic.id, 0); }
+{ yymsp[-1].minor.yy0.basic.id = _Ncp1_Pexpr_unary_2(yymsp[0].minor.yy0.basic.id, 0); }
 #line 4739 "out/cp1_parser.c"
         break;
       case 243: /* incExpr ::= value PLUS PLUS */
 #line 631 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_unary_2(yymsp[-2].minor.yy0.basic.id, 1); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_unary_2(yymsp[-2].minor.yy0.basic.id, 1); }
 #line 4744 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 244: /* decExpr ::= value MINUS MINUS */
 #line 634 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_unary_2(yymsp[-2].minor.yy0.basic.id, 2); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_unary_2(yymsp[-2].minor.yy0.basic.id, 2); }
 #line 4750 "out/cp1_parser.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 245: /* notExpr ::= EXPOINT value */
 #line 637 "cp1_parser.y"
-{ yymsp[-1].minor.yy0.basic.id = _Nglc_Pexpr_unary_2(yymsp[0].minor.yy0.basic.id, 3); }
+{ yymsp[-1].minor.yy0.basic.id = _Ncp1_Pexpr_unary_2(yymsp[0].minor.yy0.basic.id, 3); }
 #line 4756 "out/cp1_parser.c"
         break;
       case 246: /* refExpr ::= AMPERSAND SPACE value */
 #line 640 "cp1_parser.y"
-{ yymsp[-2].minor.yy0.basic.id = _Nglc_Pexpr_ref_1(yymsp[0].minor.yy0.basic.id); }
+{ yymsp[-2].minor.yy0.basic.id = _Ncp1_Pexpr_ref_1(yymsp[0].minor.yy0.basic.id); }
 #line 4761 "out/cp1_parser.c"
         break;
       case 247: /* indexExpr_exprs ::= expr */
@@ -4768,13 +4768,13 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 249: /* indexExpr ::= valueonly lbracket_or_space indexExpr_exprs rbracket_or_comma */
 #line 653 "cp1_parser.y"
-{ yylhsminor.yy0.basic.id = _Nglc_Pexpr_index_3(yymsp[-3].minor.yy0.basic.id, yymsp[-1].minor.yy0.index.v, yymsp[-1].minor.yy0.index.c); }
+{ yylhsminor.yy0.basic.id = _Ncp1_Pexpr_index_3(yymsp[-3].minor.yy0.basic.id, yymsp[-1].minor.yy0.index.v, yymsp[-1].minor.yy0.index.c); }
 #line 4772 "out/cp1_parser.c"
   yymsp[-3].minor.yy0 = yylhsminor.yy0;
         break;
       case 250: /* stmt_do_begin ::= LCBRACE_DO */
 #line 657 "cp1_parser.y"
-{ _Nglc_Pstmt_do_begin_0(); }
+{ _Ncp1_Pstmt_do_begin_0(); }
 #line 4778 "out/cp1_parser.c"
         break;
       case 251: /* do_expr_val ::= lparen_or_space RPAREN */
@@ -4785,70 +4785,70 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 253: /* do_expr ::= begin_pos do_expr_val end_pos */
 #line 663 "cp1_parser.y"
-{ _Nglc_Pstmt_do_set_6(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, 0); }
+{ _Ncp1_Pstmt_do_set_6(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, 0); }
 #line 4789 "out/cp1_parser.c"
         break;
       case 254: /* do_continue_begin ::= */
       case 264: /* while_continue_begin ::= */ yytestcase(yyruleno==264);
 #line 665 "cp1_parser.y"
-{ yymsp[1].minor.yy0.pointer = _Nglc_Pstmt_space_begin_detach_0(); }
+{ yymsp[1].minor.yy0.pointer = _Ncp1_Pstmt_space_begin_detach_0(); }
 #line 4795 "out/cp1_parser.c"
         break;
       case 255: /* do_continue_end ::= */
       case 265: /* while_continue_end ::= */ yytestcase(yyruleno==265);
 #line 667 "cp1_parser.y"
-{ _Nglc_Pstmt_space_end_0(); }
+{ _Ncp1_Pstmt_space_end_0(); }
 #line 4801 "out/cp1_parser.c"
         break;
       case 256: /* do_expr ::= LCBRACE begin_pos do_expr_val end_pos do_continue_begin stmts_optional do_continue_end */
 #line 669 "cp1_parser.y"
-{ _Nglc_Pstmt_do_set_6(yymsp[-4].minor.yy0.basic.id, yymsp[-5].minor.yy0.basic.row, yymsp[-5].minor.yy0.basic.col, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col, yymsp[-2].minor.yy0.pointer); }
+{ _Ncp1_Pstmt_do_set_6(yymsp[-4].minor.yy0.basic.id, yymsp[-5].minor.yy0.basic.row, yymsp[-5].minor.yy0.basic.col, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col, yymsp[-2].minor.yy0.pointer); }
 #line 4806 "out/cp1_parser.c"
         break;
       case 257: /* stmt_do ::= stmt_do_begin space_begin do_expr stmts_optional */
 #line 671 "cp1_parser.y"
-{ _Nglc_Pstmt_do_end_0(); }
+{ _Ncp1_Pstmt_do_end_0(); }
 #line 4811 "out/cp1_parser.c"
         break;
       case 258: /* stmt_while_begin ::= LCBRACE_WHILE */
 #line 675 "cp1_parser.y"
-{ _Nglc_Pstmt_while_begin_0(); }
+{ _Ncp1_Pstmt_while_begin_0(); }
 #line 4816 "out/cp1_parser.c"
         break;
       case 263: /* while_expr ::= begin_pos while_expr_val end_pos */
 #line 685 "cp1_parser.y"
-{ _Nglc_Pstmt_while_set_6(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, 0); }
+{ _Ncp1_Pstmt_while_set_6(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, 0); }
 #line 4821 "out/cp1_parser.c"
         break;
       case 266: /* while_expr ::= LCBRACE begin_pos while_expr_val end_pos while_continue_begin stmts_optional while_continue_end */
 #line 691 "cp1_parser.y"
-{ _Nglc_Pstmt_while_set_6(yymsp[-4].minor.yy0.basic.id, yymsp[-5].minor.yy0.basic.row, yymsp[-5].minor.yy0.basic.col, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col, yymsp[-2].minor.yy0.pointer); }
+{ _Ncp1_Pstmt_while_set_6(yymsp[-4].minor.yy0.basic.id, yymsp[-5].minor.yy0.basic.row, yymsp[-5].minor.yy0.basic.col, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col, yymsp[-2].minor.yy0.pointer); }
 #line 4826 "out/cp1_parser.c"
         break;
       case 267: /* stmt_while ::= stmt_while_begin space_begin while_expr stmts_optional */
 #line 693 "cp1_parser.y"
-{ _Nglc_Pstmt_while_end_0(); }
+{ _Ncp1_Pstmt_while_end_0(); }
 #line 4831 "out/cp1_parser.c"
         break;
       case 268: /* stmt ::= stmt_if_chain */
       case 269: /* stmt ::= stmt_if_chain stmt_else */ yytestcase(yyruleno==269);
 #line 696 "cp1_parser.y"
-{ _Nglc_Pstmt_if_end_ifs_0(); }
+{ _Ncp1_Pstmt_if_end_ifs_0(); }
 #line 4837 "out/cp1_parser.c"
         break;
       case 270: /* stmt_if_begin ::= LCBRACE_IF */
 #line 702 "cp1_parser.y"
-{ _Nglc_Pstmt_if_begin_0(); }
+{ _Ncp1_Pstmt_if_begin_0(); }
 #line 4842 "out/cp1_parser.c"
         break;
       case 271: /* stmt_elif_begin ::= LCBRACE_ELIF */
 #line 704 "cp1_parser.y"
-{ _Nglc_Pstmt_elif_begin_0(); }
+{ _Ncp1_Pstmt_elif_begin_0(); }
 #line 4847 "out/cp1_parser.c"
         break;
       case 272: /* stmt_else_set ::= LCBRACE_ELSE */
 #line 706 "cp1_parser.y"
-{ _Nglc_Pstmt_else_set_0(); }
+{ _Ncp1_Pstmt_else_set_0(); }
 #line 4852 "out/cp1_parser.c"
         break;
       case 273: /* stmt_if_not ::= */
@@ -4859,108 +4859,108 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 278: /* if_expr ::= begin_pos stmt_if_not if_expr_val end_pos */
 #line 718 "cp1_parser.y"
-{ _Nglc_Pstmt_if_set_6(yymsp[-2].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pstmt_if_set_6(yymsp[-2].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4863 "out/cp1_parser.c"
         break;
       case 279: /* stmt_if ::= stmt_if_begin space_begin if_expr stmts_optional */
 #line 720 "cp1_parser.y"
-{ _Nglc_Pstmt_if_end_0(); }
+{ _Ncp1_Pstmt_if_end_0(); }
 #line 4868 "out/cp1_parser.c"
         break;
       case 280: /* elif_expr ::= begin_pos stmt_if_not if_expr_val end_pos */
 #line 722 "cp1_parser.y"
-{ _Nglc_Pstmt_elif_set_6(yymsp[-2].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pstmt_elif_set_6(yymsp[-2].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4873 "out/cp1_parser.c"
         break;
       case 281: /* stmt_elif ::= stmt_elif_begin elif_expr stmts_optional */
 #line 724 "cp1_parser.y"
-{ _Nglc_Pstmt_elif_end_0(); }
+{ _Ncp1_Pstmt_elif_end_0(); }
 #line 4878 "out/cp1_parser.c"
         break;
       case 282: /* stmt_else ::= stmt_else_set stmts_optional */
 #line 726 "cp1_parser.y"
-{ _Nglc_Pstmt_else_end_0(); }
+{ _Ncp1_Pstmt_else_end_0(); }
 #line 4883 "out/cp1_parser.c"
         break;
       case 283: /* stmt_switch_begin ::= LCBRACE_SWITCH */
 #line 732 "cp1_parser.y"
-{ _Nglc_Pstmt_switch_begin_0(); }
+{ _Ncp1_Pstmt_switch_begin_0(); }
 #line 4888 "out/cp1_parser.c"
         break;
       case 284: /* switch_expr ::= begin_pos if_expr_val end_pos */
 #line 734 "cp1_parser.y"
-{ _Nglc_Pstmt_switch_set_6(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, -1); }
+{ _Ncp1_Pstmt_switch_set_6(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, -1); }
 #line 4893 "out/cp1_parser.c"
         break;
       case 285: /* switch_expr ::= begin_pos if_expr_val DOT callExpr_func end_pos */
 #line 736 "cp1_parser.y"
-{ _Nglc_Pstmt_switch_set_6(yymsp[-3].minor.yy0.basic.id, yymsp[-4].minor.yy0.basic.row, yymsp[-4].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, yymsp[-1].minor.yy0.basic.id); }
+{ _Ncp1_Pstmt_switch_set_6(yymsp[-3].minor.yy0.basic.id, yymsp[-4].minor.yy0.basic.row, yymsp[-4].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, yymsp[-1].minor.yy0.basic.id); }
 #line 4898 "out/cp1_parser.c"
         break;
       case 286: /* switch_case_expr ::= expr */
 #line 738 "cp1_parser.y"
-{ _Nglc_Pstmt_switch_expr_add_1(yymsp[0].minor.yy0.basic.id); }
+{ _Ncp1_Pstmt_switch_expr_add_1(yymsp[0].minor.yy0.basic.id); }
 #line 4903 "out/cp1_parser.c"
         break;
       case 289: /* switch_case_expr_end ::= LCBRACE_CASE lparen_or_space switch_case_exprs rparen_or_comma switch_case_fall end_pos */
 #line 746 "cp1_parser.y"
-{ _Nglc_Pstmt_switch_case_begin_5(yymsp[-5].minor.yy0.basic.row, yymsp[-5].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, yymsp[-1].minor.yy0.basic.id); }
+{ _Ncp1_Pstmt_switch_case_begin_5(yymsp[-5].minor.yy0.basic.row, yymsp[-5].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, yymsp[-1].minor.yy0.basic.id); }
 #line 4908 "out/cp1_parser.c"
         break;
       case 290: /* switch_case ::= switch_case_expr_end stmts_optional */
 #line 748 "cp1_parser.y"
-{ _Nglc_Pstmt_switch_case_end_0(); }
+{ _Ncp1_Pstmt_switch_case_end_0(); }
 #line 4913 "out/cp1_parser.c"
         break;
       case 291: /* switch_default_begin ::= LCBRACE_DEFAULT switch_case_fall end_pos */
 #line 750 "cp1_parser.y"
-{ _Nglc_Pstmt_switch_default_begin_5(yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, yymsp[-1].minor.yy0.basic.id); }
+{ _Ncp1_Pstmt_switch_default_begin_5(yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, yymsp[-1].minor.yy0.basic.id); }
 #line 4918 "out/cp1_parser.c"
         break;
       case 292: /* switch_case ::= switch_default_begin stmts_optional */
 #line 752 "cp1_parser.y"
-{ _Nglc_Pstmt_switch_default_end_0(); }
+{ _Ncp1_Pstmt_switch_default_end_0(); }
 #line 4923 "out/cp1_parser.c"
         break;
       case 293: /* stmt_switch ::= stmt_switch_begin space_begin switch_expr SPACE switch_cases rcbrace_or_space */
       case 294: /* stmt_switch ::= stmt_switch_begin space_begin switch_expr rcbrace_or_space */ yytestcase(yyruleno==294);
 #line 756 "cp1_parser.y"
-{ _Nglc_Pstmt_switch_end_0(); }
+{ _Ncp1_Pstmt_switch_end_0(); }
 #line 4929 "out/cp1_parser.c"
         break;
       case 295: /* stmt_continue ::= begin_pos CONTINUE end_pos */
 #line 762 "cp1_parser.y"
-{ _Nglc_Pstmt_continue_5(-1, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pstmt_continue_5(-1, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4934 "out/cp1_parser.c"
         break;
       case 296: /* stmt_break ::= begin_pos BREAK end_pos */
 #line 766 "cp1_parser.y"
-{ _Nglc_Pstmt_break_5(-1, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pstmt_break_5(-1, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4939 "out/cp1_parser.c"
         break;
       case 297: /* stmt_return ::= begin_pos RETURN end_pos */
 #line 770 "cp1_parser.y"
-{ _Nglc_Pstmt_return_5(-1, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pstmt_return_5(-1, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4944 "out/cp1_parser.c"
         break;
       case 298: /* stmt_return ::= begin_pos RETURN SPACE expr end_pos */
 #line 772 "cp1_parser.y"
-{ _Nglc_Pstmt_return_5(yymsp[-1].minor.yy0.basic.id, yymsp[-4].minor.yy0.basic.row, yymsp[-4].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pstmt_return_5(yymsp[-1].minor.yy0.basic.id, yymsp[-4].minor.yy0.basic.row, yymsp[-4].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4949 "out/cp1_parser.c"
         break;
       case 299: /* stmt_lvars ::= decl_lvar_begin lvar_list */
 #line 780 "cp1_parser.y"
-{ _Nglc_Pstmt_lvar_end_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pstmt_lvar_end_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4954 "out/cp1_parser.c"
         break;
       case 300: /* decl_lvar ::= ID typeAndInfo_optional SPACE_EQUAL_SPACE expr */
 #line 782 "cp1_parser.y"
-{ _Nglc_Pstmt_lvar_add_4(yymsp[-3].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col); }
+{ _Ncp1_Pstmt_lvar_add_4(yymsp[-3].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col); }
 #line 4959 "out/cp1_parser.c"
         break;
       case 301: /* decl_lvar ::= ID typeAndInfo_optional */
 #line 784 "cp1_parser.y"
-{ _Nglc_Pstmt_lvar_add_4(yymsp[-1].minor.yy0.basic.id, -1, yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
+{ _Ncp1_Pstmt_lvar_add_4(yymsp[-1].minor.yy0.basic.id, -1, yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
 #line 4964 "out/cp1_parser.c"
         break;
       case 303: /* lvar_list ::= decl_lvars rcbrace_or_comma */
@@ -4970,64 +4970,64 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 306: /* decl_var_attr ::= SPACE_AT_EXTERN */
 #line 798 "cp1_parser.y"
-{ _Nglc_Pdecl_var_attr_extern_0(); }
+{ _Ncp1_Pdecl_var_attr_extern_0(); }
 #line 4974 "out/cp1_parser.c"
         break;
       case 307: /* decl_var_attr ::= SPACE_AT_NO_DECL */
 #line 800 "cp1_parser.y"
-{ _Nglc_Pdecl_var_attr_no_decl_0(); }
+{ _Ncp1_Pdecl_var_attr_no_decl_0(); }
 #line 4979 "out/cp1_parser.c"
         break;
       case 308: /* decl_struct_attr ::= SPACE_AT_NO_DECL */
 #line 819 "cp1_parser.y"
-{ _Nglc_Pstruct_attr_no_decl_0(); }
+{ _Ncp1_Pstruct_attr_no_decl_0(); }
 #line 4984 "out/cp1_parser.c"
         break;
       case 309: /* decl_struct_attr ::= SPACE_AT_REAL_NAME_STR */
 #line 821 "cp1_parser.y"
-{ _Nglc_Pstruct_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
+{ _Ncp1_Pstruct_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
 #line 4989 "out/cp1_parser.c"
         break;
       case 310: /* decl_struct_attr ::= SPACE_AT_REAL_NAME */
 #line 823 "cp1_parser.y"
-{ _Nglc_Pstruct_attr_real_name_1(-1); }
+{ _Ncp1_Pstruct_attr_real_name_1(-1); }
 #line 4994 "out/cp1_parser.c"
         break;
       case 311: /* decl_struct_attr ::= SPACE_AT_UNION */
 #line 825 "cp1_parser.y"
-{ _Nglc_Pstruct_attr_union_0(); }
+{ _Ncp1_Pstruct_attr_union_0(); }
 #line 4999 "out/cp1_parser.c"
         break;
       case 312: /* decl_struct_attrs_optional ::= end_pos */
       case 313: /* decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos */ yytestcase(yyruleno==313);
 #line 829 "cp1_parser.y"
-{ _Nglc_Pdecl_struct_end_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pdecl_struct_end_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 5005 "out/cp1_parser.c"
         break;
       case 314: /* decl_func ::= func_decl stmts_optional */
 #line 833 "cp1_parser.y"
-{ _Nglc_Pfunc_body_end_0(); }
+{ _Ncp1_Pfunc_body_end_0(); }
 #line 5010 "out/cp1_parser.c"
         break;
       case 319: /* enum_base_begin ::= */
 #line 849 "cp1_parser.y"
-{ _Nglc_Penum_base_begin_0(); }
+{ _Ncp1_Penum_base_begin_0(); }
 #line 5015 "out/cp1_parser.c"
         break;
       case 320: /* enum_base_end ::= at end_pos */
 #line 851 "cp1_parser.y"
-{ _Nglc_Pdecl_enum_end_3(yymsp[-1].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+{ _Ncp1_Pdecl_enum_end_3(yymsp[-1].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 5020 "out/cp1_parser.c"
         break;
       case 321: /* decl_gvar ::= fvar_decl expr_type_apply typeInfo_optional decl_var_attrs_optional */
 #line 857 "cp1_parser.y"
-{ _Nglc_Pdecl_var_as_gvar_0(); }
+{ _Ncp1_Pdecl_var_as_gvar_0(); }
 #line 5025 "out/cp1_parser.c"
         break;
       default:
-      /* (322) glc ::= decls space_or_end */ yytestcase(yyruleno==322);
-      /* (323) glc ::= SPACE decls space_or_end */ yytestcase(yyruleno==323);
-      /* (324) glc ::= space_or_end */ yytestcase(yyruleno==324);
+      /* (322) cp1 ::= decls space_or_end */ yytestcase(yyruleno==322);
+      /* (323) cp1 ::= SPACE decls space_or_end */ yytestcase(yyruleno==323);
+      /* (324) cp1 ::= space_or_end */ yytestcase(yyruleno==324);
       /* (325) cvar_attrs ::= cvar_attr (OPTIMIZED OUT) */ assert(yyruleno!=325);
       /* (326) cvar_attrs ::= cvar_attrs cvar_attr */ yytestcase(yyruleno==326);
       /* (327) cvar_attrs_optional ::= */ yytestcase(yyruleno==327);
@@ -5164,8 +5164,8 @@ static YYACTIONTYPE yy_reduce(
 static void yy_parse_failed(
   yyParser *yypParser           /* The parser */
 ){
-  glcParseARG_FETCH
-  glcParseCTX_FETCH
+  cp1ParseARG_FETCH
+  cp1ParseCTX_FETCH
 #ifndef NDEBUG
   if( yyTraceFILE ){
     fprintf(yyTraceFILE,"%sFail!\n",yyTracePrompt);
@@ -5176,8 +5176,8 @@ static void yy_parse_failed(
   ** parser fails */
 /************ Begin %parse_failure code ***************************************/
 /************ End %parse_failure code *****************************************/
-  glcParseARG_STORE /* Suppress warning about unused %extra_argument variable */
-  glcParseCTX_STORE
+  cp1ParseARG_STORE /* Suppress warning about unused %extra_argument variable */
+  cp1ParseCTX_STORE
 }
 #endif /* YYNOERRORRECOVERY */
 
@@ -5187,10 +5187,10 @@ static void yy_parse_failed(
 static void yy_syntax_error(
   yyParser *yypParser,           /* The parser */
   int yymajor,                   /* The major type of the error token */
-  glcParseTOKENTYPE yyminor         /* The minor type of the error token */
+  cp1ParseTOKENTYPE yyminor         /* The minor type of the error token */
 ){
-  glcParseARG_FETCH
-  glcParseCTX_FETCH
+  cp1ParseARG_FETCH
+  cp1ParseCTX_FETCH
 #define TOKEN yyminor
 /************ Begin %syntax_error code ****************************************/
 #line 8 "cp1_parser.y"
@@ -5202,9 +5202,9 @@ static void yy_syntax_error(
       if (a != YY_ERROR_ACTION) {
          if (first) {
             first = false;
-            printf("%s:%u:%u: syntax error, expected token: #%s", input_path, _Grow, _Gcol, _Nglc_Ptoken_name_1(i));
+            printf("%s:%u:%u: syntax error, expected token: #%s", input_path, _Grow, _Gcol, _Ncp1_Ptoken_name_1(i));
          } else {
-            printf(", #%s", _Nglc_Ptoken_name_1(i));
+            printf(", #%s", _Ncp1_Ptoken_name_1(i));
          }
       }
    }
@@ -5215,8 +5215,8 @@ static void yy_syntax_error(
    return;
 #line 5216 "out/cp1_parser.c"
 /************ End %syntax_error code ******************************************/
-  glcParseARG_STORE /* Suppress warning about unused %extra_argument variable */
-  glcParseCTX_STORE
+  cp1ParseARG_STORE /* Suppress warning about unused %extra_argument variable */
+  cp1ParseCTX_STORE
 }
 
 /*
@@ -5225,8 +5225,8 @@ static void yy_syntax_error(
 static void yy_accept(
   yyParser *yypParser           /* The parser */
 ){
-  glcParseARG_FETCH
-  glcParseCTX_FETCH
+  cp1ParseARG_FETCH
+  cp1ParseCTX_FETCH
 #ifndef NDEBUG
   if( yyTraceFILE ){
     fprintf(yyTraceFILE,"%sAccept!\n",yyTracePrompt);
@@ -5240,13 +5240,13 @@ static void yy_accept(
   ** parser accepts */
 /*********** Begin %parse_accept code *****************************************/
 /*********** End %parse_accept code *******************************************/
-  glcParseARG_STORE /* Suppress warning about unused %extra_argument variable */
-  glcParseCTX_STORE
+  cp1ParseARG_STORE /* Suppress warning about unused %extra_argument variable */
+  cp1ParseCTX_STORE
 }
 
 /* The main parser program.
 ** The first argument is a pointer to a structure obtained from
-** "glcParseAlloc" which describes the current state of the parser.
+** "cp1ParseAlloc" which describes the current state of the parser.
 ** The second argument is the major token number.  The third is
 ** the minor token.  The fourth optional argument is whatever the
 ** user wants (and specified in the grammar) and is available for
@@ -5263,11 +5263,11 @@ static void yy_accept(
 ** Outputs:
 ** None.
 */
-void glcParse(
+void cp1Parse(
   void *yyp,                   /* The parser */
   int yymajor,                 /* The major token code number */
-  glcParseTOKENTYPE yyminor       /* The value for the token */
-  glcParseARG_PDECL               /* Optional %extra_argument parameter */
+  cp1ParseTOKENTYPE yyminor       /* The value for the token */
+  cp1ParseARG_PDECL               /* Optional %extra_argument parameter */
 ){
   YYMINORTYPE yyminorunion;
   YYACTIONTYPE yyact;   /* The parser action. */
@@ -5278,8 +5278,8 @@ void glcParse(
   int yyerrorhit = 0;   /* True if yymajor has invoked an error */
 #endif
   yyParser *yypParser = (yyParser*)yyp;  /* The parser */
-  glcParseCTX_FETCH
-  glcParseARG_STORE
+  cp1ParseCTX_FETCH
+  cp1ParseARG_STORE
 
   assert( yypParser->yytos!=0 );
 #if !defined(YYERRORSYMBOL) && !defined(YYNOERRORRECOVERY)
@@ -5341,7 +5341,7 @@ void glcParse(
           }
         }
       }
-      yyact = yy_reduce(yypParser,yyruleno,yymajor,yyminor glcParseCTX_PARAM);
+      yyact = yy_reduce(yypParser,yyruleno,yymajor,yyminor cp1ParseCTX_PARAM);
     }else if( yyact <= YY_MAX_SHIFTREDUCE ){
       yy_shift(yypParser,yyact,(YYCODETYPE)yymajor,yyminor);
 #ifndef YYNOERRORRECOVERY
@@ -5473,7 +5473,7 @@ void glcParse(
 ** Return the fallback token corresponding to canonical token iToken, or
 ** 0 if iToken has no fallback.
 */
-int glcParseFallback(int iToken){
+int cp1ParseFallback(int iToken){
 #ifdef YYFALLBACK
   assert( iToken<(int)(sizeof(yyFallback)/sizeof(yyFallback[0])) );
   return yyFallback[iToken];

@@ -1,6 +1,6 @@
-{using 'glc = :glc}
+{using 'cp1 = :cp1}
 {using 'c = :stdc}
-{at(:glc)
+{at(:cp1)
 {:str[#nil = -1, #0]:i32}
 {gvar str-c:i32}
 {gvar str-cap:i32}

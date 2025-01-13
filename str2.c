@@ -1,6 +1,6 @@
 #include <stdio.h>
 extern FILE* _Gout;
-void _Nglc_Pwrite_str_node_2(int len, char* buf) {
+void _Ncp1_Pwrite_str_node_2(int len, char* buf) {
    fputc('"', _Gout);
    for (int i = 0; i < len; i ++) {
       switch(buf[i]) {
@@ -22,7 +22,7 @@ void _Nglc_Pwrite_str_node_2(int len, char* buf) {
    fputc('"', _Gout);
 }
 
-void _Nglc_Pwrite_char_1(char c) {
+void _Ncp1_Pwrite_char_1(char c) {
    switch(c) {
       case '\a': fprintf(_Gout, "'\\a'"); break;
       case '\b': fprintf(_Gout, "'\\b'"); break;

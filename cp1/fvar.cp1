@@ -1,6 +1,6 @@
-{using 'glc = :glc}
+{using 'cp1 = :cp1}
 {using 'c = :stdc}
-{at(:glc)
+{at(:cp1)
 {:fvar[#nil = -1, #0]:i32}
 {expr-fvar(expr:expr-i, member:id):expr-i
    quick-alloc-one(+(e:expr-fvar));

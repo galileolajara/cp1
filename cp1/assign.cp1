@@ -1,5 +1,5 @@
-{using 'glc = :glc}
-{at(:glc)
+{using 'cp1 = :cp1}
+{at(:cp1)
 {:assign[#eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
              #lshift-eq, #rshift-eq, #and-eq, #or-eq, #xor-eq,
              ]:u8

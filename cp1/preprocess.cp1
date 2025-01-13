@@ -1,6 +1,6 @@
 {using 'c = :stdc}
-{using 'glc = :glc}
-{at(:glc)
+{using 'cp1 = :cp1}
+{at(:cp1)
 {gvar preprocess-def-str-v:char[][]}
 {gvar preprocess-def-len-v:u8[]}
 {gvar preprocess-def-cap:u32}

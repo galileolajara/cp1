@@ -1,5 +1,5 @@
-{using 'glc = :glc}
-{at(:glc)
+{using 'cp1 = :cp1}
+{at(:cp1)
 {:math[#add, #sub, #mul, #div, #lshift, #rshift, #and, #or, #xor]:u8
    {wr(e:this, w:wtr) @inline
       w.n1(e);

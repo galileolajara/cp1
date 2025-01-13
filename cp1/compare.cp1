@@ -1,5 +1,5 @@
-{using 'glc = :glc}
-{at(:glc)
+{using 'cp1 = :cp1}
+{at(:cp1)
 {:compare[#eq, #not-eq, #lt, #le, #gt, #ge]:u8
    {wr(e:this, w:wtr) @inline
       w.n1(e);

@@ -1,6 +1,6 @@
-{using 'glc = :glc}
+{using 'cp1 = :cp1}
 {using 'c = :stdc}
-{at(:glc)
+{at(:cp1)
 {:func[#nil = -1, #0, #1]:i32
    {wr(f:this, w:wtr) @inline
       w.n(f + #1);
@@ -22,7 +22,7 @@
    #no-body = 32,
    #real-name = 64,
    #case = 128,
-   #cgl-name = 256,
+   #cp1-name = 256,
    #decl = 512,
    ]:u32
    {wr(e:this, w:wtr) @inline
@@ -62,7 +62,7 @@
          {if((l.flags & #set-expr) != #0)
             l.set-expr.rd(r);
          }
-         // 'c.out.printf("lvar %s has type of %s\n", l.decl.name.str(), l.decl.type.ptr().name.basic.cgl-name());
+         // 'c.out.printf("lvar %s has type of %s\n", l.decl.name.str(), l.decl.type.ptr().name.basic.cp1-name());
       }
    }
    {lvars-wr(f:this, w:wtr, header:bool)
@@ -109,7 +109,7 @@
 {gvar decl-func-decl-str:char[]}
 {gvar decl-func-decl-len:i32}
 {gvar decl-func-case:id}
-// {cvar #glc-farg-limit = 1024}
+// {cvar #cp1-farg-limit = 1024}
 {gvar decl-farg-v:farg+[]}
 {gvar decl-farg-group-c:i8}
 {gvar decl-farg-group-v:i8[#expr-carg-group-limit]}
@@ -266,12 +266,12 @@
    }
    .decl-func-flags |= #inline
 }
-{func-attr-cgl-name()
-   {if((.decl-func-flags & #cgl-name) != #0)
-      'c.out.printf("%s:%u:%u: Error @cgl-name specified more than once\n", .input-path, .last-row, .last-col);
+{func-attr-cp1-name()
+   {if((.decl-func-flags & #cp1-name) != #0)
+      'c.out.printf("%s:%u:%u: Error @cp1-name specified more than once\n", .input-path, .last-row, .last-col);
       'c.exit(#failure);
    }
-   .decl-func-flags |= #cgl-name;
+   .decl-func-flags |= #cp1-name;
 }
 {func-attr-var-args()
    {if((.decl-func-flags & #var-args) != #0)
@@ -342,9 +342,9 @@
 {cvar #expr-call-nest-limit:i32 = 8}
 {cvar #expr-carg-group-limit:i32 = 4}
 {gvar expr-call-c:i8}
-{cvar #glc-carg-limit:i32 = 64}
+{cvar #cp1-carg-limit:i32 = 64}
 {gvar expr-call-carg-c:u8[#expr-call-nest-limit]}
-{gvar expr-call-carg-v:expr-i[#expr-call-nest-limit][#glc-carg-limit]}
+{gvar expr-call-carg-v:expr-i[#expr-call-nest-limit][#cp1-carg-limit]}
 {gvar expr-call-cgrp-c:u8[#expr-call-nest-limit]}
 {gvar expr-call-cgrp-v:u8[#expr-call-nest-limit][#expr-carg-group-limit]}
 {expr-push-call(row:i32, col:i32)

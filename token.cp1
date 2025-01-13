@@ -1,7 +1,7 @@
 {using 'c = :stdc}
 {main(arg-c:intc, arg-v:char[][]):intc
    {if(arg-c != 3)
-      'c.printf("Usage: %s [.h input file] [.cgl output file]\n", arg-v[0]);
+      'c.printf("Usage: %s [.h input file] [.cp1 output file]\n", arg-v[0]);
       'c.exit(#failure);
    }
    {if!('c:fd.open(++in-fd, arg-v[1], #read))
@@ -20,7 +20,7 @@
    +pos = 0;
    +out-f = 'c.fopen(arg-v[2], "w");
    out-f.printf(
-      "{at(:glc)\n"
+      "{at(:cp1)\n"
       "{:token[\n"
       "#nil,\n");
    {while(pos < in-size)
@@ -54,7 +54,7 @@
    }
    out-f.printf(
       "]:u32\n"
-      "{cgl-name(e:this):char[] @cgl-name}\n"
+      "{cp1-name(e:this):char[] @cp1-name}\n"
       "}\n"
       "}\n");
    out-f.close();

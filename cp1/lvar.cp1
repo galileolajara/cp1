@@ -1,6 +1,6 @@
-{using 'glc = :glc}
+{using 'cp1 = :cp1}
 {using 'c = :stdc}
-{at(:glc)
+{at(:cp1)
 {:lvar[#nil = -1, #0]:i32
    {rd(l:this&, r:rdr) @inline
       l = (r.n() - 1):lvar;

@@ -1,6 +1,6 @@
-{using 'glc = :glc}
+{using 'cp1 = :cp1}
 {using 'c = :stdc}
-{at(:glc)
+{at(:cp1)
 {expr-index(left:expr-i, right-v:expr-i[], right-c:i32):expr-i
    {do{+i = right-c}(right-c)
       quick-alloc-one(+(e:expr-index));

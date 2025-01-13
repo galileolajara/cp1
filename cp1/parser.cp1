@@ -1,7 +1,7 @@
-{using 'glc = :glc}
+{using 'cp1 = :cp1}
 {using 'c = :stdc}
 {using 'sys = :sys}
-{at(:glc)
+{at(:cp1)
 {gvar ctx-func:decl-func}
 {gvar id-in-header-v:u8[]}
 {gvar id-in-header-idx-v:u32[]}
@@ -261,7 +261,7 @@
       lex.content = data;
       // lex.limit = & data[size];
    }
-   {scan(lex:this):token @real-name(glc_lexer_scan)}
+   {scan(lex:this):token @real-name(cp1_lexer_scan)}
    {get-u32-oct(lex:this):u32
       {+r-start:rdr+}
       r-start.ref = lex.start;
@@ -414,7 +414,7 @@
 {:parser()
    {alloc():parser}
    {free(psr:this)}
-   {parse(psr:this, t:token, tok:token-data+) @real-name(glcParse)}
+   {parse(psr:this, t:token, tok:token-data+) @real-name(cp1Parse)}
 }
 {gvar last-row:i32 @extern}
 {gvar last-col:i32 @extern}
@@ -550,7 +550,7 @@
    }
 }
 {token-name(tok:token):char[]
-   return tok.cgl-name();
+   return tok.cp1-name();
 }
 {parse-str-init(max-size:i32)}
 {get-row-col(out-row:i32&, out-col:i32&, end:ref, begin:ref)

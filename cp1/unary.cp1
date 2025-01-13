@@ -1,5 +1,5 @@
-{using 'glc = :glc}
-{at(:glc)
+{using 'cp1 = :cp1}
+{at(:cp1)
 {:unary[#neg, #inc, #dec, #not]:u8
    {rd(u:this&, r:rdr) @inline
       u = r.n1():unary;

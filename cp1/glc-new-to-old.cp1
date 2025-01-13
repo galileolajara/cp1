@@ -1,5 +1,5 @@
-{using 'glc = :glc}
-{at(:glc)
+{using 'cp1 = :cp1}
+{at(:cp1)
 {main(arg-c:i32, arg-v:char[][]):i32 @main
    +in-path = arg-v[1];
    +out-new-path = arg-v[2];
