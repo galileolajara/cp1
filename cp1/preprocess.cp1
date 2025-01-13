@@ -1,6 +1,32 @@
 {using 'c = :stdc}
 {using 'cp1 = :cp1}
 {at(:cp1)
+{gvar input-path:char[]}
+{main(arg-c:intc, arg-v:char[][]):intc @main
+   {if(arg-c != 3)
+      'c.printf("Usage: %s [.cp1 input file] [.cp1 output file]\n", arg-v[0]);
+      'c.exit(#failure);
+   }
+   .input-path = arg-v[1];
+   {if!('c:fd.open(++in-fd, arg-v[1], #read))
+      'c.printf("Cannot open file for reading: %s\n", arg-v[1]);
+      'c.exit(#failure);
+   }
+   +in-size = in-fd.seek(0, #end);
+   in-fd.seek(0, #set);
+   {+in-data:char[] = 'c.malloc(in-size)}
+   in-fd.read(in-data, in-size);
+   in-fd.close();
+   preprocess-init();
+   preprocess(in-data, in-size);
+   {if!('c:fd.open(++out-fd, arg-v[2], #create | #truncate | #write, 0o644))
+      'c.printf("Cannot open file for writing: %s\n", arg-v[2]);
+      'c.exit(#failure);
+   }
+   out-fd.write(in-data, in-size);
+   out-fd.close();
+   return 0;
+}
 {gvar preprocess-def-str-v:char[][]}
 {gvar preprocess-def-len-v:u8[]}
 {gvar preprocess-def-cap:u32}
@@ -24,7 +50,38 @@
    .preprocess-def-str-v[i] = name;
    .preprocess-def-len-v[i] = len;
 }
-{preprocess-init()}
+{preprocess-init()
+"#ifdef _WIN32";
+   preprocess-def("windows", 7);
+"#endif";
+"#ifdef __APPLE__";
+   preprocess-def("apple", 5);
+"#endif";
+"#ifdef __linux__";
+   preprocess-def("linux", 5);
+"#endif";
+"#ifdef __unix__";
+   preprocess-def("unix", 4);
+"#endif";
+"#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFly__)";
+   preprocess-def("bsd", 3);
+"#endif";
+"#ifdef __FreeBSD__";
+   preprocess-def("freebsd", 7);
+"#endif";
+"#ifdef __OpenBSD__";
+   preprocess-def("openbsd", 7);
+"#endif";
+"#ifdef __NetBSD__";
+   preprocess-def("netbsd", 6);
+"#endif";
+"#ifdef __DragonFly__";
+   preprocess-def("dragonfly", 9);
+"#endif";
+"#if defined(_LP64) || defined(__LP64__)";
+   preprocess-def("cpu64", 5);
+"#endif";
+}
 {preprocess(in-out-data:ref&, in-out-size:usz&)
    // 'c.printf("#if detected, preprocessing...\n");
    +preprocess = false;
@@ -117,7 +174,7 @@
             r.pos += line-len;
          }
          {if(indention-len <= 0)
-            'c.printf("%s:%u: Error in preprocessing the code, #if(...). Its next line must be indented by at least one space or tab\n", .input-path, line);
+            'c.printf("%s:%u: Error in preprocessing the code, #if(...). Its next line (line %u) must be indented more than line %u\n", .input-path, line, line + 1, line);
             'c.exit(#failure);
          }
          line++;
@@ -189,7 +246,7 @@
       // 'c.sprintf(path, "%s-p", .input-path);
       // 'c.printf("writing the preprocessed file to %s\n", path);
       // 'c:fd.open(+fd, path, #write | #truncate | #create, 0o644);
-      // fd.write(new-data, (w.pos + 1) - w-begin.pos);
+      // fd.write(new-data, w.pos - w-begin.pos);
       // fd.close();
    }
 }

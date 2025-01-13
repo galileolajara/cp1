@@ -124,7 +124,7 @@
          return;
       }
    }
-   'c.out.printf("%s:%u:%u: Cannot recognize the alias '%s\n", .input-path, row, col, name.str());
+   'c.out.printf("%s:%u:%u: Cannot recognize the '%s, did you forgot to put {using '%s = ...}?\n", .input-path, row, col, name.str(), name.str());
    'c.exit(#failure);
 }
 {decl-alias(name:id, at:at, row:i32, col:i32)
@@ -749,7 +749,10 @@
 {gvar lock-path:char[]}
 {parser-at-exit()}
 {main(arg-c:intc, arg-v:char[][]):intc @main
-   {if(false) preprocess-def("", 0); export()}
+   {if(false)
+      // preprocess-def("", 0);
+      export();
+   }
    .id-map.init();
    .include-map.init();
    .at-map.init();
@@ -819,24 +822,11 @@
       {+new-data = 'c.malloc(in-size + 1)}
       {+w:wtr+}
       w.ref = new-data;
-      // Ignore consecutive lines that begins with '#'
-      {while(r.p1[0] == ''#)
-         {do()
-            r.pos++;
-            {if(r.p1[0] == ''\n)
-               {if(&&, r.p1[0] == ''#, r.p1[1] == ''i, r.p1[2] == ''f, (||, r.p1[3] == ''(, (&&, r.p1[3] == ''!, r.p1[4] == ''()))
-                  preprocess = true;
-               }
-               w.p1[0] = ''\n;
-               w.pos++;
-               r.pos++;
-               break;
-            }
-         }
-      }
+      // Ignore texts outside the top-level curly braces
+      +indent = 0:i32;
       {while(r.pos < r-end.pos)
          {if(r.p1[0] == ''/)
-            {if(&&, r.p1[1] == ''/, (||, r.p1[2] == '' , r.p1[2] == ''\t))
+            {if(r.p1[1] == ''/) // , (||, r.p1[2] == '' , r.p1[2] == ''\t))
                {if(r.ref == in-data)
                   // ok
                }{elif(||, r.p1[-1] == '' , r.p1[-1] == ''\t, r.p1[-1] == ''\n)
@@ -860,34 +850,23 @@
                   }
                }
                continue;
-            // }{elif(r.p1[1] == ''\")
-            //    parse-comment(r, w, ''\", in-data);
-            //    continue;
-            // }{elif(r.p1[1] == ''|)
-            //    parse-comment(r, w, ''|, in-data);
-            //    continue;
-            // }{elif(r.p1[1] == '';)
-            //    parse-comment(r, w, '';, in-data);
-            //    continue;
-            // }{elif(r.p1[1] == ''_)
-            //    parse-comment(r, w, ''_, in-data);
-            //    continue;
-            // }{elif(r.p1[1] == ''+)
-            //    parse-comment(r, w, ''+, in-data);
-            //    continue;
-            // }{elif(r.p1[1] == ''<)
-            //    parse-comment(r, w, ''>, in-data);
-            //    continue;
-            // }{elif(r.p1[1] == ''[)
-            //    parse-comment(r, w, ''], in-data);
-            //    continue;
-            // }{elif(r.p1[1] == ''{)
-            //    parse-comment(r, w, ''}, in-data);
-            //    continue;
-            // }{elif(r.p1[1] == ''()
-            //    parse-comment(r, w, ''), in-data);
-            //    continue;
             }
+         }{elif(r.p1[0] == ''{)
+            indent++;
+         }{elif(r.p1[0] == ''})
+            {if(indent == 0)
+               get-row-col(+row, +col, r.ref, in-data);
+               'c.out.printf("%s:%u:%u: Too much '}' detected\n", .input-path, row, col);
+               'c.exit(#failure);
+            }
+            indent--;
+         }{elif(indent == 0)
+            {if(r.p1[0] == ''\n)
+               w.p1[0] = ''\n;
+               w.pos++;
+            }
+            r.pos++;
+            continue;
          }{elif(r.p1[0] == ''\')
             {if(r.p1[1] == ''\')
                // char
@@ -1018,14 +997,6 @@
                }
             }
             continue;
-         }{elif(&&, r.p1[0] == ''#, r.p1[1] == ''i, r.p1[2] == ''f, (||, r.p1[3] == ''(, (&&, r.p1[3] == ''!, r.p1[4] == ''()))
-            {if(r.ref == in-data)
-               // ok
-               preprocess = true;
-            }{elif(r.p1[-1] == ''\n)
-               // ok
-               preprocess = true;
-            }
          }
          w.p1[0] = r.p1[0];
          w.pos++;
@@ -1037,14 +1008,16 @@
       {+w-begin:wtr+}
       w-begin.ref = new-data;
       in-size = w.pos - w-begin.pos;
+
       // 'c:fd.open(+fd, "out:parsed.glc", #write | #truncate | #create, 0o644);
       // fd.write(in-data, in-size);
       // fd.close();
       // 'c.out.write(in-data, in-size);
-      {if(preprocess)
-         preprocess-init();
-         preprocess(in-data, in-size);
-      }
+
+      // {if(preprocess)
+      //    preprocess-init();
+      //    preprocess(in-data, in-size);
+      // }
    }
    {+r-end:rdr+}
    r-end.ref = in-data;

@@ -1,5 +1,8 @@
 {using 'c = :stdc}
 {using 'sys = :sys}
+{gvar atexit-rm-v:char[][]}
+{gvar atexit-rm-cap:u32}
+{gvar atexit-rm-c:u32}
 {gvar include-dir:char[512]}
 {gvar include-dir-len:u16}
 // +include-dir = "/opt/cp1/include";
@@ -91,23 +94,22 @@
    .cp1-path-real-v[i] = cp1-path-real;
    .cp1-path-real-len-v[i] = cp1-path-real-len;
 }
+{gvar cmd-preprocess:char[512]}
 {cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool
 	{do{+i = 0}{(.cp1-path-c) i++}
 		{if('c.memcmp(.cp1-path-v[i], cp1-path, cp1-path-len) == 0)
 			return true;
 		}
 	}
-   cp1-path-add(cp1-path, cp1-path-len, cp1-path, cp1-path-len);
    {if!('c:fd.open(++fd, cp1-path, #read))
       'c.printf("Error, [cp1 file] (which is '%s') cannot be opened for reading\n", cp1-path);
 		return false;
    }
    +len = fd.seek(0, #end);
    fd.seek(0, #set);
-   {+data:char[] = 'c.malloc(len + 1)}
+   {+data:char[] = 'c.malloc(len)}
    fd.read(data, len);
    fd.close();
-   data[len] = ''\0;
    {if!(&&, len > 0, data[len - 1] == ''\n)
       'c.printf("Error, [cp1 file] (which is '%s') must end a new line\n", cp1-path);
 		return false;
@@ -116,155 +118,300 @@
       'c.printf("Error, [cp1 file] (which is '%s') must have Unix line endings '\\n' instead of Windows line endings '\\r\\n'\n", cp1-path);
 		return false;
    }
+   // Detect if we need to preprocess the file
    +pos = 0;
-   // Process consecutive lines that begins with '#'
    +line = 0;
-   {while(data[pos] == ''#)
+   +preprocess = false;
+   {while(pos < len)
       line++;
       +start = pos;
       {do()
-         pos++;
          {if(data[pos] == ''\n)
-            {if('c.memcmp("#import \"", & data[start], 9) == 0)
-					start += 9;
-               +end = -1;
-               {do{+j = start}{(pos - start) j++}
-                  {if(data[j] == ''")
-                     end = j;
-                     break;
-                  }
-               }
-               {if(end == -1)
-                  'c.printf("%s:%u: #import \"...\" must end with '\"'\n", cp1-path, line);
-						return false;
-               }
-					{+import:char[] = & data[start]}
-               +import-path-len = end - start;
-					{if(&&, import-path-len >= 4, import[import-path-len - 4] == ''., import[import-path-len - 3] == ''c, import[import-path-len - 2] == ''p, import[import-path-len - 1] == ''1)
-                  'c.printf("%s:%u: #import \"%.*s\" doesn't need a '.cp1' suffix\n", cp1-path, line, import-path-len, import);
-						return false;
-					}
-					{if(import[0] == ''/)
-						'c.printf("%s:%u: #import \"%.*s\" must be a relative path, '/' was detected at the beginning of file path\n", cp1-path, line, import-path-len, import);
-						return false;
-					}
-				   {do{+j = 0}{(import-path-len) j++}
-				   	{if(import[j] == ''\\)
-							'c.printf("%s:%u: #import \"%.*s\" must not contain backslashes '\\', please use forward slashes '/' instead\n", cp1-path, line, import-path-len, import);
-							return false;
-				   	}
-				   }
-				   {do{+j = 0}{(import-path-len - 1) j++}
-				   	{if(&&, import[j] == ''., import[j + 1] == ''/)
-							'c.printf("%s:%u: #import \"%.*s\" must not contain './'\n", cp1-path, line, import-path-len, import);
-							return false;
-				   	}
-				   }
-					{+import-path:char[] = 'c.malloc(import-path-len + 5)}
-					'c.memcpy(import-path, import, import-path-len);
-					import-path[import-path-len++] = ''.;
-					import-path[import-path-len++] = ''c;
-					import-path[import-path-len++] = ''p;
-					import-path[import-path-len++] = ''1;
-					import-path[import-path-len] = ''\0;
-					{if!(cp1-path-input(import-path, import-path-len, bin, cmd))
-						'c.printf("Error from #import \"%.*s\" at file '%s' line %u\n", import-path-len - 4, import, cp1-path, line);
-						return false;
-					}
-				}{elif('c.memcmp("#include <", & data[start], 10) == 0)
-					start += 10;
-               +end = -1;
-               {do{+j = start}{(pos - start) j++}
-                  {if(data[j] == ''>)
-                     end = j;
-                     break;
-                  }
-               }
-               {if(end == -1)
-                  'c.printf("%s:%u: #include <...> must end with '>'\n", cp1-path, line);
-						return false;
-               }
-               {+include-path:char[] = & data[start]}
-               +include-path-len = end - start;
-               +found = false;
-               {do{+j = 0}{(.included-c) j++}
-                  {if(&&, include-path-len == .included-len-v[j], 'c.memcmp(.included-v[j], include-path, include-path-len) == 0)
-                     found = true;
-                     break;
-                  }
-               }
-               {if!(found)
-                  +i = .included-c++;
-                  {if(.included-cap < .included-c)
-                     .included-cap = (.included-c << 1) + 8;
-                     .included-v = 'c.realloc(.included-v, .included-cap * :usz[:usz]);
-                     .included-len-v = 'c.realloc(.included-len-v, .included-cap * :u32[:usz]);
-                  }
-                  {+path:char[] = 'c.malloc(include-path-len + 1)}
-                  'c.memcpy(path, include-path, include-path-len);
-                  path[include-path-len] = ''\0;
-                  .included-v[i] = path;
-                  .included-len-v[i] = include-path-len;
-                  // 'c.printf("including %.*s\n", include-path-len, include-path);
-                  {+spec-path:char[128]}
-                  'c.sprintf(spec-path, "%s/%s", .include-dir, path);
-                  {do{+i = .include-dir-len + 1}{('c.strlen(spec-path) - (.include-dir-len + 1)) i++}
-                     {if(spec-path[i] == ''/)
-                        spec-path[i] = ''-;
-                     }
-                  }
-                  {if!('c:fd.open(++spec-fd, spec-path, #read))
-                     'c.printf("%s:%u: #include <%s> failed because '%s' does not exists\n", cp1-path, line, path, spec-path);
-							return false;
-                  }
-                  +spec-len = spec-fd.seek(0, #end);
-                  spec-fd.seek(0, #set);
-                  {+spec-data:char[] = 'c.malloc(spec-len + 1)}
-                  spec-fd.read(spec-data, spec-len);
-                  // 'c.printf("reading %s\n", spec-path);
-                  +spec-pos = 0;
-                  +spec-line = 0;
-                  {while(spec-pos < spec-len)
-                     spec-line++;
-                     +start = spec-pos;
-                     {do()
-                        {if(spec-data[spec-pos] == ''\n)
-                           {if(spec-data[start] == ''<)
-                              start++;
-                              +rangle = -1;
-                              {do{+j = start}{(spec-pos - start) j++}
-                                 {if(spec-data[j] == ''>)
-                                    rangle = j;
-                                    break;
-                                 }
-                              }
-                              {if(rangle != -1)
-                                 {+file-path:char[] = & spec-data[start]}
-                                 +file-path-len = rangle - start;
-                                 {+file-path-dup:char[] = 'c.malloc(file-path-len + 1)}
-                                 'c.memcpy(file-path-dup, file-path, file-path-len);
-                                 file-path-dup[file-path-len] = ''\0;
-                                 {+real-path:char[] = 'c.malloc(.include-dir-len + 1 + file-path-len + 1)}
-                                 'c.sprintf(real-path, "%s/%.*s", .include-dir, file-path-len, file-path);
-                                 // 'c.printf("[%.*s] -> %s\n", file-path-len, file-path, real-path);
-                                 +real-path-len = 'c.strlen(real-path);
-                                 cp1-path-add(real-path, real-path-len, file-path-dup, file-path-len);
-                              }
-                           }
-                           spec-pos++;
-                           break;
-                        }
-                        spec-pos++;
-                     }
-                  }
-                  'c.free(spec-data);
-               }
-            }
-            pos++;
+            break;
+         }
+         pos++;
+      }
+      +first-char = start;
+      {do()
+         {if(||, data[first-char] == '' , data[first-char] == ''\t)
+            first-char++;
+            continue;
+         }{else
             break;
          }
       }
+      // 'c.printf("[%.*s]\n", pos - first-char, & data[first-char]);
+      {if(&&, data[first-char] == ''#, data[first-char + 1] == ''i, data[first-char + 2] == ''f, (||, data[first-char + 3] == ''(, (&&, data[first-char + 3] == ''!, data[first-char + 4] == ''()))
+         preprocess = true;
+         break;
+      }
+      pos++;
    }
+   // Process consecutive lines that begins with '#'
+   {if(preprocess)
+      'c.free(data);
+
+      {+tmp-path:char[17]}
+      'c.memcpy(tmp-path, "cp1-tmp-XXXXXXXX", 17);
+      +tmp-fd = 'c.mkstemp(tmp-path);
+      {if(tmp-fd == #nil)
+         'c.printf("Error, cannot create a temporary file at the current folder\n");
+         return false;
+      }
+      tmp-fd.close();
+
+      'c.sprintf(.cmd-preprocess, "%s-preprocess %.*s %s\n", bin, cp1-path-len, cp1-path, tmp-path);
+      // 'c.printf("Running preprocessor: %s\n", .cmd-preprocess);
+      'c.out.flush();
+      {if('c.system(.cmd-preprocess) != 0)
+         return false;
+      }
+      +tmp-path-dup = 'c.malloc(17);
+      'c.memcpy(tmp-path-dup, tmp-path, 17);
+      atexit-rm(tmp-path-dup);
+      cp1-path-add(tmp-path-dup, 16, cp1-path, cp1-path-len);
+      {if!('c:fd.open(fd, tmp-path-dup, #read))
+         'c.printf("Error, cannot open file for reading: %s\n", tmp-path);
+         return false;
+      }
+
+      // Re-read the data
+      len = fd.seek(0, #end);
+      fd.seek(0, #set);
+      data = 'c.malloc(len);
+      fd.read(data, len);
+      fd.close();
+   }{else
+      cp1-path-add(cp1-path, cp1-path-len, cp1-path, cp1-path-len);
+   }
+   pos = 0;
+   line = 0;
+   {while(pos < len)
+      line++;
+      +start = pos;
+      {do()
+         {if(data[pos] == ''\n)
+            break;
+         }
+         pos++;
+      }
+      +first-char = start;
+      {do()
+         {if(||, data[first-char] == '' , data[first-char] == ''\t)
+            first-char++;
+            continue;
+         }{else
+            break;
+         }
+      }
+      // 'c.printf("[%.*s]\n", pos - first-char, & data[first-char]);
+      {if(&&,
+         data[first-char] == ''#,
+         data[first-char + 1] == ''i,
+         data[first-char + 2] == ''m,
+         data[first-char + 3] == ''p,
+         data[first-char + 4] == ''o,
+         data[first-char + 5] == ''r,
+         data[first-char + 6] == ''t,
+         (||, data[first-char + 7] == '' , data[first-char + 7] == ''\t),
+         )
+         start += 8;
+         +begin = -1;
+         {do{+j = start}{(pos - start) j++}
+            {if(data[j] == ''")
+               begin = j;
+               break;
+            }{elif(data[j] == '' )
+               // Ok
+            }{elif(data[j] == ''\t)
+               // Ok
+            }{else
+               'c.out.printf("%s:%u: Invalid character '%c' found in #include <...>\n", cp1-path, line, data[j]);
+               return false;
+            }
+         }
+         {if(begin != -1)
+            start = begin + 1;
+            +end = -1;
+            {do{+j = start}{(pos - start) j++}
+               {if(data[j] == ''")
+                  end = j;
+                  break;
+               }
+            }
+            {if(end == -1)
+               'c.printf("%s:%u: #import \"...\" must end with '\"'\n", cp1-path, line);
+               return false;
+            }
+            {+import:char[] = & data[start]}
+            +import-path-len = end - start;
+            {if(&&, import-path-len >= 4, import[import-path-len - 4] == ''., import[import-path-len - 3] == ''c, import[import-path-len - 2] == ''p, import[import-path-len - 1] == ''1)
+               'c.printf("%s:%u: #import \"%.*s\" doesn't need a '.cp1' suffix\n", cp1-path, line, import-path-len, import);
+               return false;
+            }
+            {if(import[0] == ''/)
+               'c.printf("%s:%u: #import \"%.*s\" must be a relative path, '/' was detected at the beginning of file path\n", cp1-path, line, import-path-len, import);
+               return false;
+            }
+            {do{+j = 0}{(import-path-len) j++}
+               {if(import[j] == ''\\)
+                  'c.printf("%s:%u: #import \"%.*s\" must not contain backslashes '\\', please use forward slashes '/' instead\n", cp1-path, line, import-path-len, import);
+                  return false;
+               }
+            }
+            {do{+j = 0}{(import-path-len - 1) j++}
+               {if(&&, import[j] == ''., import[j + 1] == ''/)
+                  'c.printf("%s:%u: #import \"%.*s\" must not contain './'\n", cp1-path, line, import-path-len, import);
+                  return false;
+               }
+            }
+            {+import-path:char[] = 'c.malloc(import-path-len + 5)}
+            'c.memcpy(import-path, import, import-path-len);
+            import-path[import-path-len++] = ''.;
+            import-path[import-path-len++] = ''c;
+            import-path[import-path-len++] = ''p;
+            import-path[import-path-len++] = ''1;
+            import-path[import-path-len] = ''\0;
+            // 'c.printf("importing %s\n", import-path);
+            {if!(cp1-path-input(import-path, import-path-len, bin, cmd))
+               'c.printf("Error from #import \"%.*s\" at file '%s' line %u\n", import-path-len - 4, import, cp1-path, line);
+               return false;
+            }
+         }
+      }{elif(&&,
+         data[first-char] == ''#,
+         data[first-char + 1] == ''i,
+         data[first-char + 2] == ''n,
+         data[first-char + 3] == ''c,
+         data[first-char + 4] == ''l,
+         data[first-char + 5] == ''u,
+         data[first-char + 6] == ''d,
+         data[first-char + 7] == ''e,
+         (||, data[first-char + 8] == '' , data[first-char + 8] == ''\t),
+         )
+         start += 9;
+         +begin = -1;
+         {do{+j = start}{(pos - start) j++}
+            {if(data[j] == ''<)
+               begin = j;
+               break;
+            }{elif(data[j] == '' )
+               // Ok
+            }{elif(data[j] == ''\t)
+               // Ok
+            }{else
+               'c.out.printf("%s:%u: Invalid character '%c' found in #include <...>\n", cp1-path, line, data[j]);
+               return false;
+            }
+         }
+         {if(begin != -1)
+            start = begin + 1;
+            +end = -1;
+            {do{+j = start}{(pos - start) j++}
+               {if(data[j] == ''>)
+                  end = j;
+                  break;
+               }
+            }
+            {if(end == -1)
+               'c.printf("%s:%u: #include <...> must end with '>'\n", cp1-path, line);
+               return false;
+            }
+            {+include-path:char[] = & data[start]}
+            +include-path-len = end - start;
+            +found = false;
+            {do{+j = 0}{(.included-c) j++}
+               {if(&&, include-path-len == .included-len-v[j], 'c.memcmp(.included-v[j], include-path, include-path-len) == 0)
+                  found = true;
+                  break;
+               }
+            }
+            {if!(found)
+               +i = .included-c++;
+               {if(.included-cap < .included-c)
+                  .included-cap = (.included-c << 1) + 8;
+                  .included-v = 'c.realloc(.included-v, .included-cap * :usz[:usz]);
+                  .included-len-v = 'c.realloc(.included-len-v, .included-cap * :u32[:usz]);
+               }
+               {+path:char[] = 'c.malloc(include-path-len + 1)}
+               'c.memcpy(path, include-path, include-path-len);
+               path[include-path-len] = ''\0;
+               .included-v[i] = path;
+               .included-len-v[i] = include-path-len;
+               // 'c.printf("including %.*s\n", include-path-len, include-path);
+               {+spec-path:char[128]}
+               'c.sprintf(spec-path, "%s/%s", .include-dir, path);
+               {do{+i = .include-dir-len + 1}{('c.strlen(spec-path) - (.include-dir-len + 1)) i++}
+                  {if(spec-path[i] == ''/)
+                     spec-path[i] = ''-;
+                  }
+               }
+               {if!('c:fd.open(++spec-fd, spec-path, #read))
+                  'c.printf("%s:%u: #include <%s> failed because '%s' does not exists\n", cp1-path, line, path, spec-path);
+                  return false;
+               }
+               +spec-len = spec-fd.seek(0, #end);
+               spec-fd.seek(0, #set);
+               {+spec-data:char[] = 'c.malloc(spec-len + 1)}
+               spec-fd.read(spec-data, spec-len);
+               // 'c.printf("reading %s\n", spec-path);
+               +spec-pos = 0;
+               +spec-line = 0;
+               {while(spec-pos < spec-len)
+                  spec-line++;
+                  +start = spec-pos;
+                  {do()
+                     {if(spec-data[spec-pos] == ''\n)
+                        {if(spec-data[start] == ''<)
+                           start++;
+                           +rangle = -1;
+                           {do{+j = start}{(spec-pos - start) j++}
+                              {if(spec-data[j] == ''>)
+                                 rangle = j;
+                                 break;
+                              }
+                           }
+                           {if(rangle != -1)
+                              {+file-path:char[] = & spec-data[start]}
+                              +file-path-len = rangle - start;
+                              {+file-path-dup:char[] = 'c.malloc(file-path-len + 1)}
+                              'c.memcpy(file-path-dup, file-path, file-path-len);
+                              file-path-dup[file-path-len] = ''\0;
+                              {+real-path:char[] = 'c.malloc(.include-dir-len + 1 + file-path-len + 1)}
+                              'c.sprintf(real-path, "%s/%.*s", .include-dir, file-path-len, file-path);
+                              // 'c.printf("[%.*s] -> %s\n", file-path-len, file-path, real-path);
+                              +real-path-len = 'c.strlen(real-path);
+                              cp1-path-add(real-path, real-path-len, file-path-dup, file-path-len);
+                           }
+                        }
+                        spec-pos++;
+                        break;
+                     }
+                     spec-pos++;
+                  }
+               }
+               'c.free(spec-data);
+            }
+         }
+      }
+      +i = first-char;
+      {do()
+         {if(data[i] == ''\n)
+            break;
+         }
+         {if(&&, data[i] == ''/, data[i + 1] == ''/)
+            // 'c.printf("comment detected\n");
+            break;
+         }
+         {if(data[i] == ''{)
+            // 'c.printf("curly brace detected\n");
+            "goto stop;";
+         }
+         i++;
+      }
+      pos++;
+   }
+   "stop:";
    'c.free(data);
 	return true;
 }
@@ -321,7 +468,25 @@
 	}
 	'c.printf("\n");
 }
+{atexit-rm(path:char[])
+   +i = .atexit-rm-c++;
+   {if(.atexit-rm-cap < .atexit-rm-c)
+      .atexit-rm-cap = (.atexit-rm-c << 1) + 8;
+      .atexit-rm-v = 'c.realloc(.atexit-rm-v, .atexit-rm-cap * :usz[:usz]);
+   }
+   .atexit-rm-v[i] = path;
+}
+{on-exit()
+   {do{+i = 0}{(.atexit-rm-c) i++}
+      // 'c.printf("Removing %s\n", .atexit-rm-v[i]);
+      'c.unlink(.atexit-rm-v[i]);
+   }
+}
 {main(arg-c:intc, arg-v:char[][]):intc
+   {if(false)
+      on-exit();
+   }
+   "atexit(_Pon_exit_0);";
    +bin = arg-v[0];
    {+abs-path:char[512]}
    {+abs-path-len:u16 = 0}
@@ -391,6 +556,7 @@
       {+ninja-path:char[24]}
       'c.strcpy(ninja-path, "cp1-tmp/ninja-XXXXXXXXX");
       +ninja-fd = 'c.mkstemp(ninja-path);
+      atexit-rm('c.strdup(ninja-path));
       {if(ninja-fd == #nil)
          print-c-usage(bin);
          'c.printf("Error, cannot open file for reading: %s\n", ninja-path);
@@ -413,7 +579,6 @@
       {+command:char[24 + 9]}
       'c.sprintf(command, "ninja -f %s", ninja-path);
       +ret = 'c.system(command);
-      'c.unlink(ninja-path);
       {if(ret != 0)
          'c.exit(#failure);
       }
@@ -450,9 +615,11 @@
       c-path[19] = ''.;
       c-path[20] = ''c;
       c-path[21] = ''\0;
+      atexit-rm('c.strdup(c-path));
       {+ninja-path:char[24]}
       'c.strcpy(ninja-path, "cp1-tmp/ninja-XXXXXXXXX");
       +ninja-fd = 'c.mkstemp(ninja-path);
+      atexit-rm('c.strdup(ninja-path));
       {if(ninja-fd == #nil)
          print-run-usage(bin);
          'c.printf("Error, cannot open file for reading: %s\n", ninja-path);
@@ -477,8 +644,6 @@
       {+command:char[24 + 9]}
       'c.sprintf(command, "ninja -f %s", ninja-path);
       +ninja-ret = 'c.system(command);
-      'c.unlink(ninja-path);
-      'c.unlink(c-path);
       {if(ninja-ret != 0)
          'c.exit(#failure);
       }

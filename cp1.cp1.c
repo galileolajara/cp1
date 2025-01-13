@@ -22,6 +22,7 @@ uint16_t _Ginclude_dir_len;
 int32_t _Gcp1_path_c;
 char** _Gcp1_path_v;
 char** _Gcp1_path_real_v;
+char _Gcmd_preprocess[512];
 int32_t _Gincluded_c;
 uint32_t* _Gincluded_len_v;
 char** _Gincluded_v;
@@ -40,8 +41,8 @@ int _Nstdc_Nfd_Pclose_1(_Nstdc_Nfd _Lfile_0);
 void _Pget_compiler_2(char* _Lbin_0, struct FILE* _Lninja_f_1);
 void _Pprint_usage_2(char* _Lbin_0, _Ncmd _Lcmd_1);
 bool _Pcp1_path_input_4(char* _Lcp1_path_0, int32_t _Lcp1_path_len_1, char* _Lbin_2, _Ncmd _Lcmd_3);
-void _Pcp1_path_add_4(char* _Lcp1_path_real_0, int32_t _Lcp1_path_real_len_1, char* _Lcp1_path_2, int32_t _Lcp1_path_len_3);
 bool _Nstdc_Nfd_Popen_3(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2);
+void _Pcp1_path_add_4(char* _Lcp1_path_real_0, int32_t _Lcp1_path_real_len_1, char* _Lcp1_path_2, int32_t _Lcp1_path_len_3);
 int main(int _Larg_c_0, char** _Larg_v_1) {
 char* _Lbin_2;
 char _Labs_path_3[512];
@@ -167,7 +168,6 @@ fprintf(_Lninja_f_16, "\n");
 fclose(_Lninja_f_16);
 sprintf(_Lcommand_19, "ninja -f %s", _Lninja_path_14);
 _Lret_20 = system(_Lcommand_19);
-unlink(_Lninja_path_14);
 if(_Lret_20 != 0) {
 exit(_Nstdc_Nexit_Cfailure);
 }
@@ -409,10 +409,11 @@ break;
 }
 bool _Pcp1_path_input_4(char* _Lcp1_path_0, int32_t _Lcp1_path_len_1, char* _Lbin_2, _Ncmd _Lcmd_3) {
 _Nstdc_Nfd _Lfd_5;
-size_t _Llen_6;
-char* _Ldata_7;
-int32_t _Lpos_8;
-int32_t _Lline_9;
+char _Lbyte_6[1];
+size_t _Llen_9;
+char* _Ldata_10;
+int32_t _Lpos_11;
+int32_t _Lline_12;
 int32_t _Li_4;
 _Li_4 = 0;
 for(int i = _Gcp1_path_c; i > 0; ) {
@@ -424,235 +425,260 @@ continue_0:;
 _Li_4++;
 }
 break_0:;
-_Pcp1_path_add_4(_Lcp1_path_0, _Lcp1_path_len_1, _Lcp1_path_0, _Lcp1_path_len_1);
 if(!(_Nstdc_Nfd_Popen_3(&_Lfd_5, _Lcp1_path_0, O_RDONLY))) {
 printf("Error, [cp1 file] (which is '%s') cannot be opened for reading\n", _Lcp1_path_0);
 return false;
 }
-_Llen_6 = lseek(_Lfd_5, 0, SEEK_END);
-lseek(_Lfd_5, 0, SEEK_SET);
-_Ldata_7 = malloc(_Llen_6 + 1);
-read(_Lfd_5, _Ldata_7, _Llen_6);
+if(((read(_Lfd_5, _Lbyte_6, 1) == 1) && (_Lbyte_6[0] == '#'))) {
+char _Ltmp_path_7[17];
+_Nstdc_Nfd _Ltmp_fd_8;
 _Nstdc_Nfd_Pclose_1(_Lfd_5);
-_Ldata_7[_Llen_6] = '\0';
-if(!(((_Llen_6 > 0) && (_Ldata_7[(_Llen_6 - 1)] == '\n')))) {
+memcpy(_Ltmp_path_7, "cp1-tmp-XXXXXXXX", 17);
+_Ltmp_fd_8 = mkstemp(_Ltmp_path_7);
+if(_Ltmp_fd_8 == _Nstdc_Nfd_Cnil) {
+printf("Error, cannot create a temporary file at the current folder\n");
+return false;
+}
+_Nstdc_Nfd_Pclose_1(_Ltmp_fd_8);
+sprintf(_Gcmd_preprocess, "%s-preprocess %.*s %s\n", _Lbin_2, _Lcp1_path_len_1, _Lcp1_path_0, _Ltmp_path_7);
+printf("running preprocessor: %s\n", _Gcmd_preprocess);
+fflush(stdout);
+if(system(_Gcmd_preprocess) != 0) {
+return false;
+}
+_Pcp1_path_add_4(strdup(_Ltmp_path_7), 16, _Lcp1_path_0, _Lcp1_path_len_1);
+if(!(_Nstdc_Nfd_Popen_3(&_Lfd_5, _Lcp1_path_0, O_RDONLY))) {
+printf("Error, cannot open file for reading: %s\n", _Ltmp_path_7);
+return false;
+}
+} else {
+_Pcp1_path_add_4(_Lcp1_path_0, _Lcp1_path_len_1, _Lcp1_path_0, _Lcp1_path_len_1);
+return true;
+}
+_Llen_9 = lseek(_Lfd_5, 0, SEEK_END);
+lseek(_Lfd_5, 0, SEEK_SET);
+_Ldata_10 = malloc(_Llen_9 + 1);
+read(_Lfd_5, _Ldata_10, _Llen_9);
+_Nstdc_Nfd_Pclose_1(_Lfd_5);
+_Ldata_10[_Llen_9] = '\0';
+if(!(((_Llen_9 > 0) && (_Ldata_10[(_Llen_9 - 1)] == '\n')))) {
 printf("Error, [cp1 file] (which is '%s') must end a new line\n", _Lcp1_path_0);
 return false;
 }
-if(_Ldata_7[(_Llen_6 - 2)] == '\r') {
+if(_Ldata_10[(_Llen_9 - 2)] == '\r') {
 printf("Error, [cp1 file] (which is '%s') must have Unix line endings '\\n' instead of Windows line endings '\\r\\n'\n", _Lcp1_path_0);
 return false;
 }
-_Lpos_8 = 0;
-_Lline_9 = 0;
-while(_Ldata_7[_Lpos_8] == '#') {
-int32_t _Lstart_10;
-_Lline_9++;
-_Lstart_10 = _Lpos_8;
+_Lpos_11 = 0;
+_Lline_12 = 0;
+while(_Ldata_10[_Lpos_11] == '#') {
+int32_t _Lstart_13;
+_Lline_12++;
+_Lstart_13 = _Lpos_11;
 while(1) {
-_Lpos_8++;
-if(_Ldata_7[_Lpos_8] == '\n') {
-if(memcmp("#import \"", &_Ldata_7[_Lstart_10], 9) == 0) {
-int32_t _Lend_11;
-char* _Limport_13;
-int32_t _Limport_path_len_14;
-char* _Limport_path_17;
-_Lstart_10 += 9;
-_Lend_11 = -1;
-int32_t _Lj_12;
-_Lj_12 = _Lstart_10;
-for(int i = _Lpos_8 - _Lstart_10; i > 0; ) {
+_Lpos_11++;
+if(_Ldata_10[_Lpos_11] == '\n') {
+if(memcmp("#import \"", &_Ldata_10[_Lstart_13], 9) == 0) {
+int32_t _Lend_14;
+char* _Limport_16;
+int32_t _Limport_path_len_17;
+char* _Limport_path_20;
+_Lstart_13 += 9;
+_Lend_14 = -1;
+int32_t _Lj_15;
+_Lj_15 = _Lstart_13;
+for(int i = _Lpos_11 - _Lstart_13; i > 0; ) {
 i --;
-if(_Ldata_7[_Lj_12] == '\"') {
-_Lend_11 = _Lj_12;
+if(_Ldata_10[_Lj_15] == '\"') {
+_Lend_14 = _Lj_15;
 goto break_3;
 }
 continue_3:;
-_Lj_12++;
+_Lj_15++;
 }
 break_3:;
-if(_Lend_11 == -1) {
-printf("%s:%u: #import \"...\" must end with '\"'\n", _Lcp1_path_0, _Lline_9);
+if(_Lend_14 == -1) {
+printf("%s:%u: #import \"...\" must end with '\"'\n", _Lcp1_path_0, _Lline_12);
 return false;
 }
-_Limport_13 = &_Ldata_7[_Lstart_10];
-_Limport_path_len_14 = (_Lend_11 - _Lstart_10);
-if(((_Limport_path_len_14 >= 4) && (_Limport_13[(_Limport_path_len_14 - 4)] == '.') && (_Limport_13[(_Limport_path_len_14 - 3)] == 'c') && (_Limport_13[(_Limport_path_len_14 - 2)] == 'g') && (_Limport_13[(_Limport_path_len_14 - 1)] == 'l'))) {
-printf("%s:%u: #import \"%.*s\" doesn't need a '.cp1' suffix\n", _Lcp1_path_0, _Lline_9, _Limport_path_len_14, _Limport_13);
+_Limport_16 = &_Ldata_10[_Lstart_13];
+_Limport_path_len_17 = (_Lend_14 - _Lstart_13);
+if(((_Limport_path_len_17 >= 4) && (_Limport_16[(_Limport_path_len_17 - 4)] == '.') && (_Limport_16[(_Limport_path_len_17 - 3)] == 'c') && (_Limport_16[(_Limport_path_len_17 - 2)] == 'p') && (_Limport_16[(_Limport_path_len_17 - 1)] == '1'))) {
+printf("%s:%u: #import \"%.*s\" doesn't need a '.cp1' suffix\n", _Lcp1_path_0, _Lline_12, _Limport_path_len_17, _Limport_16);
 return false;
 }
-if(_Limport_13[0] == '/') {
-printf("%s:%u: #import \"%.*s\" must be a relative path, '/' was detected at the beginning of file path\n", _Lcp1_path_0, _Lline_9, _Limport_path_len_14, _Limport_13);
+if(_Limport_16[0] == '/') {
+printf("%s:%u: #import \"%.*s\" must be a relative path, '/' was detected at the beginning of file path\n", _Lcp1_path_0, _Lline_12, _Limport_path_len_17, _Limport_16);
 return false;
 }
-int32_t _Lj_15;
-_Lj_15 = 0;
-for(int i = _Limport_path_len_14; i > 0; ) {
+int32_t _Lj_18;
+_Lj_18 = 0;
+for(int i = _Limport_path_len_17; i > 0; ) {
 i --;
-if(_Limport_13[_Lj_15] == '\\') {
-printf("%s:%u: #import \"%.*s\" must not contain backslashes '\\', please use forward slashes '/' instead\n", _Lcp1_path_0, _Lline_9, _Limport_path_len_14, _Limport_13);
+if(_Limport_16[_Lj_18] == '\\') {
+printf("%s:%u: #import \"%.*s\" must not contain backslashes '\\', please use forward slashes '/' instead\n", _Lcp1_path_0, _Lline_12, _Limport_path_len_17, _Limport_16);
 return false;
 }
 continue_4:;
-_Lj_15++;
+_Lj_18++;
 }
 break_4:;
-int32_t _Lj_16;
-_Lj_16 = 0;
-for(int i = _Limport_path_len_14 - 1; i > 0; ) {
+int32_t _Lj_19;
+_Lj_19 = 0;
+for(int i = _Limport_path_len_17 - 1; i > 0; ) {
 i --;
-if(((_Limport_13[_Lj_16] == '.') && (_Limport_13[(_Lj_16 + 1)] == '/'))) {
-printf("%s:%u: #import \"%.*s\" must not contain './'\n", _Lcp1_path_0, _Lline_9, _Limport_path_len_14, _Limport_13);
+if(((_Limport_16[_Lj_19] == '.') && (_Limport_16[(_Lj_19 + 1)] == '/'))) {
+printf("%s:%u: #import \"%.*s\" must not contain './'\n", _Lcp1_path_0, _Lline_12, _Limport_path_len_17, _Limport_16);
 return false;
 }
 continue_5:;
-_Lj_16++;
+_Lj_19++;
 }
 break_5:;
-_Limport_path_17 = malloc(_Limport_path_len_14 + 5);
-memcpy(_Limport_path_17, _Limport_13, _Limport_path_len_14);
-_Limport_path_17[_Limport_path_len_14++] = '.';
-_Limport_path_17[_Limport_path_len_14++] = 'c';
-_Limport_path_17[_Limport_path_len_14++] = 'g';
-_Limport_path_17[_Limport_path_len_14++] = 'l';
-_Limport_path_17[_Limport_path_len_14] = '\0';
-if(!(_Pcp1_path_input_4(_Limport_path_17, _Limport_path_len_14, _Lbin_2, _Lcmd_3))) {
-printf("Error from #import \"%.*s\" at file '%s' line %u\n", _Limport_path_len_14 - 4, _Limport_13, _Lcp1_path_0, _Lline_9);
+_Limport_path_20 = malloc(_Limport_path_len_17 + 5);
+memcpy(_Limport_path_20, _Limport_16, _Limport_path_len_17);
+_Limport_path_20[_Limport_path_len_17++] = '.';
+_Limport_path_20[_Limport_path_len_17++] = 'c';
+_Limport_path_20[_Limport_path_len_17++] = 'p';
+_Limport_path_20[_Limport_path_len_17++] = '1';
+_Limport_path_20[_Limport_path_len_17] = '\0';
+if(!(_Pcp1_path_input_4(_Limport_path_20, _Limport_path_len_17, _Lbin_2, _Lcmd_3))) {
+printf("Error from #import \"%.*s\" at file '%s' line %u\n", _Limport_path_len_17 - 4, _Limport_16, _Lcp1_path_0, _Lline_12);
 return false;
 }
-} else if(memcmp("#include <", &_Ldata_7[_Lstart_10], 10) == 0) {
-int32_t _Lend_18;
-char* _Linclude_path_20;
-int32_t _Linclude_path_len_21;
-bool _Lfound_22;
-_Lstart_10 += 10;
-_Lend_18 = -1;
-int32_t _Lj_19;
-_Lj_19 = _Lstart_10;
-for(int i = _Lpos_8 - _Lstart_10; i > 0; ) {
+} else if(memcmp("#include <", &_Ldata_10[_Lstart_13], 10) == 0) {
+int32_t _Lend_21;
+char* _Linclude_path_23;
+int32_t _Linclude_path_len_24;
+bool _Lfound_25;
+_Lstart_13 += 10;
+_Lend_21 = -1;
+int32_t _Lj_22;
+_Lj_22 = _Lstart_13;
+for(int i = _Lpos_11 - _Lstart_13; i > 0; ) {
 i --;
-if(_Ldata_7[_Lj_19] == '>') {
-_Lend_18 = _Lj_19;
+if(_Ldata_10[_Lj_22] == '>') {
+_Lend_21 = _Lj_22;
 goto break_6;
 }
 continue_6:;
-_Lj_19++;
+_Lj_22++;
 }
 break_6:;
-if(_Lend_18 == -1) {
-printf("%s:%u: #include <...> must end with '>'\n", _Lcp1_path_0, _Lline_9);
+if(_Lend_21 == -1) {
+printf("%s:%u: #include <...> must end with '>'\n", _Lcp1_path_0, _Lline_12);
 return false;
 }
-_Linclude_path_20 = &_Ldata_7[_Lstart_10];
-_Linclude_path_len_21 = (_Lend_18 - _Lstart_10);
-_Lfound_22 = false;
-int32_t _Lj_23;
-_Lj_23 = 0;
+_Linclude_path_23 = &_Ldata_10[_Lstart_13];
+_Linclude_path_len_24 = (_Lend_21 - _Lstart_13);
+_Lfound_25 = false;
+int32_t _Lj_26;
+_Lj_26 = 0;
 for(int i = _Gincluded_c; i > 0; ) {
 i --;
-if(((_Linclude_path_len_21 == _Gincluded_len_v[_Lj_23]) && (memcmp(_Gincluded_v[_Lj_23], _Linclude_path_20, _Linclude_path_len_21) == 0))) {
-_Lfound_22 = true;
+if(((_Linclude_path_len_24 == _Gincluded_len_v[_Lj_26]) && (memcmp(_Gincluded_v[_Lj_26], _Linclude_path_23, _Linclude_path_len_24) == 0))) {
+_Lfound_25 = true;
 goto break_7;
 }
 continue_7:;
-_Lj_23++;
+_Lj_26++;
 }
 break_7:;
-if(!(_Lfound_22)) {
-int32_t _Li_24;
-char* _Lpath_25;
-char _Lspec_path_26[128];
-_Nstdc_Nfd _Lspec_fd_28;
-size_t _Lspec_len_29;
-char* _Lspec_data_30;
-int32_t _Lspec_pos_31;
-int32_t _Lspec_line_32;
-_Li_24 = _Gincluded_c++;
+if(!(_Lfound_25)) {
+int32_t _Li_27;
+char* _Lpath_28;
+char _Lspec_path_29[128];
+_Nstdc_Nfd _Lspec_fd_31;
+size_t _Lspec_len_32;
+char* _Lspec_data_33;
+int32_t _Lspec_pos_34;
+int32_t _Lspec_line_35;
+_Li_27 = _Gincluded_c++;
 if(_Gincluded_cap < _Gincluded_c) {
 _Gincluded_cap = ((_Gincluded_c << 1) + 8);
 _Gincluded_v = realloc(_Gincluded_v, _Gincluded_cap * sizeof(size_t));
 _Gincluded_len_v = realloc(_Gincluded_len_v, _Gincluded_cap * sizeof(uint32_t));
 }
-_Lpath_25 = malloc(_Linclude_path_len_21 + 1);
-memcpy(_Lpath_25, _Linclude_path_20, _Linclude_path_len_21);
-_Lpath_25[_Linclude_path_len_21] = '\0';
-_Gincluded_v[_Li_24] = _Lpath_25;
-_Gincluded_len_v[_Li_24] = _Linclude_path_len_21;
-sprintf(_Lspec_path_26, "%s/%s", _Ginclude_dir, _Lpath_25);
-uint16_t _Li_27;
-_Li_27 = (_Ginclude_dir_len + 1);
-for(int i = strlen(_Lspec_path_26) - (_Ginclude_dir_len + 1); i > 0; ) {
+_Lpath_28 = malloc(_Linclude_path_len_24 + 1);
+memcpy(_Lpath_28, _Linclude_path_23, _Linclude_path_len_24);
+_Lpath_28[_Linclude_path_len_24] = '\0';
+_Gincluded_v[_Li_27] = _Lpath_28;
+_Gincluded_len_v[_Li_27] = _Linclude_path_len_24;
+sprintf(_Lspec_path_29, "%s/%s", _Ginclude_dir, _Lpath_28);
+uint16_t _Li_30;
+_Li_30 = (_Ginclude_dir_len + 1);
+for(int i = strlen(_Lspec_path_29) - (_Ginclude_dir_len + 1); i > 0; ) {
 i --;
-if(_Lspec_path_26[_Li_27] == '/') {
-_Lspec_path_26[_Li_27] = '-';
+if(_Lspec_path_29[_Li_30] == '/') {
+_Lspec_path_29[_Li_30] = '-';
 }
 continue_8:;
-_Li_27++;
+_Li_30++;
 }
 break_8:;
-if(!(_Nstdc_Nfd_Popen_3(&_Lspec_fd_28, _Lspec_path_26, O_RDONLY))) {
-printf("%s:%u: #include <%s> failed because '%s' does not exists\n", _Lcp1_path_0, _Lline_9, _Lpath_25, _Lspec_path_26);
+if(!(_Nstdc_Nfd_Popen_3(&_Lspec_fd_31, _Lspec_path_29, O_RDONLY))) {
+printf("%s:%u: #include <%s> failed because '%s' does not exists\n", _Lcp1_path_0, _Lline_12, _Lpath_28, _Lspec_path_29);
 return false;
 }
-_Lspec_len_29 = lseek(_Lspec_fd_28, 0, SEEK_END);
-lseek(_Lspec_fd_28, 0, SEEK_SET);
-_Lspec_data_30 = malloc(_Lspec_len_29 + 1);
-read(_Lspec_fd_28, _Lspec_data_30, _Lspec_len_29);
-_Lspec_pos_31 = 0;
-_Lspec_line_32 = 0;
-while(_Lspec_pos_31 < _Lspec_len_29) {
-int32_t _Lstart_33;
-_Lspec_line_32++;
-_Lstart_33 = _Lspec_pos_31;
+_Lspec_len_32 = lseek(_Lspec_fd_31, 0, SEEK_END);
+lseek(_Lspec_fd_31, 0, SEEK_SET);
+_Lspec_data_33 = malloc(_Lspec_len_32 + 1);
+read(_Lspec_fd_31, _Lspec_data_33, _Lspec_len_32);
+_Lspec_pos_34 = 0;
+_Lspec_line_35 = 0;
+while(_Lspec_pos_34 < _Lspec_len_32) {
+int32_t _Lstart_36;
+_Lspec_line_35++;
+_Lstart_36 = _Lspec_pos_34;
 while(1) {
-if(_Lspec_data_30[_Lspec_pos_31] == '\n') {
-if(_Lspec_data_30[_Lstart_33] == '<') {
-int32_t _Lrangle_34;
-_Lstart_33++;
-_Lrangle_34 = -1;
-int32_t _Lj_35;
-_Lj_35 = _Lstart_33;
-for(int i = _Lspec_pos_31 - _Lstart_33; i > 0; ) {
+if(_Lspec_data_33[_Lspec_pos_34] == '\n') {
+if(_Lspec_data_33[_Lstart_36] == '<') {
+int32_t _Lrangle_37;
+_Lstart_36++;
+_Lrangle_37 = -1;
+int32_t _Lj_38;
+_Lj_38 = _Lstart_36;
+for(int i = _Lspec_pos_34 - _Lstart_36; i > 0; ) {
 i --;
-if(_Lspec_data_30[_Lj_35] == '>') {
-_Lrangle_34 = _Lj_35;
+if(_Lspec_data_33[_Lj_38] == '>') {
+_Lrangle_37 = _Lj_38;
 goto break_11;
 }
 continue_11:;
-_Lj_35++;
+_Lj_38++;
 }
 break_11:;
-if(_Lrangle_34 != -1) {
-char* _Lfile_path_36;
-int32_t _Lfile_path_len_37;
-char* _Lfile_path_dup_38;
-char* _Lreal_path_39;
-size_t _Lreal_path_len_40;
-_Lfile_path_36 = &_Lspec_data_30[_Lstart_33];
-_Lfile_path_len_37 = (_Lrangle_34 - _Lstart_33);
-_Lfile_path_dup_38 = malloc(_Lfile_path_len_37 + 1);
-memcpy(_Lfile_path_dup_38, _Lfile_path_36, _Lfile_path_len_37);
-_Lfile_path_dup_38[_Lfile_path_len_37] = '\0';
-_Lreal_path_39 = malloc(_Ginclude_dir_len + 1 + _Lfile_path_len_37 + 1);
-sprintf(_Lreal_path_39, "%s/%.*s", _Ginclude_dir, _Lfile_path_len_37, _Lfile_path_36);
-_Lreal_path_len_40 = strlen(_Lreal_path_39);
-_Pcp1_path_add_4(_Lreal_path_39, _Lreal_path_len_40, _Lfile_path_dup_38, _Lfile_path_len_37);
+if(_Lrangle_37 != -1) {
+char* _Lfile_path_39;
+int32_t _Lfile_path_len_40;
+char* _Lfile_path_dup_41;
+char* _Lreal_path_42;
+size_t _Lreal_path_len_43;
+_Lfile_path_39 = &_Lspec_data_33[_Lstart_36];
+_Lfile_path_len_40 = (_Lrangle_37 - _Lstart_36);
+_Lfile_path_dup_41 = malloc(_Lfile_path_len_40 + 1);
+memcpy(_Lfile_path_dup_41, _Lfile_path_39, _Lfile_path_len_40);
+_Lfile_path_dup_41[_Lfile_path_len_40] = '\0';
+_Lreal_path_42 = malloc(_Ginclude_dir_len + 1 + _Lfile_path_len_40 + 1);
+sprintf(_Lreal_path_42, "%s/%.*s", _Ginclude_dir, _Lfile_path_len_40, _Lfile_path_39);
+_Lreal_path_len_43 = strlen(_Lreal_path_42);
+_Pcp1_path_add_4(_Lreal_path_42, _Lreal_path_len_43, _Lfile_path_dup_41, _Lfile_path_len_40);
 }
 }
-_Lspec_pos_31++;
+_Lspec_pos_34++;
 goto break_10;
 }
-_Lspec_pos_31++;
+_Lspec_pos_34++;
 continue_10:;
 }
 break_10:;
 continue_9:;
 }
 break_9:;
-free(_Lspec_data_30);
+free(_Lspec_data_33);
 }
 }
-_Lpos_8++;
+_Lpos_11++;
 goto break_2;
 }
 continue_2:;
@@ -661,8 +687,18 @@ break_2:;
 continue_1:;
 }
 break_1:;
-free(_Ldata_7);
+free(_Ldata_10);
 return true;
+}
+inline bool _Nstdc_Nfd_Popen_3(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2) {
+_Nstdc_Nfd _Lfd_3;
+_Lfd_3 = open(_Lpath_1, _Lflags_2);
+if(_Lfd_3 != -1) {
+(*_Lfile_0) = _Lfd_3;
+return true;
+} else {
+return false;
+}
 }
 void _Pcp1_path_add_4(char* _Lcp1_path_real_0, int32_t _Lcp1_path_real_len_1, char* _Lcp1_path_2, int32_t _Lcp1_path_len_3) {
 int32_t _Li_4;
@@ -678,14 +714,4 @@ _Gcp1_path_v[_Li_4] = _Lcp1_path_2;
 _Gcp1_path_len_v[_Li_4] = _Lcp1_path_len_3;
 _Gcp1_path_real_v[_Li_4] = _Lcp1_path_real_0;
 _Gcp1_path_real_len_v[_Li_4] = _Lcp1_path_real_len_1;
-}
-inline bool _Nstdc_Nfd_Popen_3(_Nstdc_Nfd* _Lfile_0, char* _Lpath_1, _Nstdc_Nopen_flags _Lflags_2) {
-_Nstdc_Nfd _Lfd_3;
-_Lfd_3 = open(_Lpath_1, _Lflags_2);
-if(_Lfd_3 != -1) {
-(*_Lfile_0) = _Lfd_3;
-return true;
-} else {
-return false;
-}
 }

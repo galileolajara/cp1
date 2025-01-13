@@ -23,6 +23,7 @@ union cp1_token {
    void* pointer;
 };
 
+/*
 void _Ncp1_Ppreprocess_def_2(const char*, uint8_t);
 
 void _Ncp1_Ppreprocess_init_0() {
@@ -60,6 +61,7 @@ void _Ncp1_Ppreprocess_init_0() {
    _Ncp1_Ppreprocess_def_2("cpu64", 5);
 #endif
 }
+*/
 
 extern char* _Glock_path;
 void cleanup() {
