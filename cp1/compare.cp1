@@ -33,23 +33,23 @@ expr-compare(left:expr-i, right:expr-i, type:compare):expr-i {
    write-compare(expr:expr) @case.write() @inline {
       {+e:expr-compare = expr}
       e.left.write-value(e.left-val);
-      {switch(e.type)
-         {case(#eq)
+      switch (e.type) {
+         case (#eq) {
             .out.printf(" == ");
          }
-         {case(#not-eq)
+         case (#not-eq) {
             .out.printf(" != ");
          }
-         {case(#lt)
+         case (#lt) {
             .out.printf(" < ");
          }
-         {case(#le)
+         case (#le) {
             .out.printf(" <= ");
          }
-         {case(#gt)
+         case (#gt) {
             .out.printf(" > ");
          }
-         {case(#ge)
+         case (#ge) {
             .out.printf(" >= ");
          }
       }

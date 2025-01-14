@@ -25,8 +25,8 @@ using 'c = :stdc;
    stmt-next:stmt,
    ) {
    write(s:this) {
-      {switch(s.type).write(s)
-         {default
+      switch (s.type).write(s) {
+         default {
             'c.out.printf("write() not yet implemented in stmt #%s\n", s.type.cp1-name());
             'c.exit(#failure);
          }
@@ -38,8 +38,8 @@ using 'c = :stdc;
       .ctx-begin-col = s.begin-col;
       .ctx-end-row = s.end-row;
       .ctx-end-col = s.end-col;
-      {switch(s.type).process(s, ok)
-         {default
+      switch (s.type).process(s, ok) {
+         default {
             'c.out.printf("%s:%u:%u - %u:%u: process() is not implemented in statement #%s\n",
             .ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.cp1-name());
          }

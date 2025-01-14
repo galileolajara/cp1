@@ -99,8 +99,8 @@ using 'c = :stdc;
          w.n(stmt.begin-col);
          w.n(stmt.end-row);
          w.n(stmt.end-col);
-         {switch(stmt.type).wr(stmt, w, header)
-            {default
+         switch (stmt.type).wr(stmt, w, header) {
+            default {
                'c.out.printf("wr() not yet implemented in stmt #%s\n", stmt.type.cp1-name());
                'c.exit(#failure);
             }
@@ -157,8 +157,8 @@ using 'c = :stdc;
          .ctx-begin-col = begin-col;
          .ctx-end-row = end-row;
          .ctx-end-col = end-col;
-         {switch(type).rd(space, r)
-            {default
+         switch (type).rd(space, r) {
+            default {
                'c.out.printf("rd() not yet implemented in stmt #%s\n", type.cp1-name());
                'c.exit(#failure);
             }

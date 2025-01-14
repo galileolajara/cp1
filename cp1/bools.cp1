@@ -53,8 +53,8 @@ expr-bools-add(bools:expr-i, right:expr-i):expr-i {
    }
    write-bools(expr:expr) @case.write() @inline {
       {+e:expr-bools = expr}
-      {switch(e.type)
-         {case(#and)
+      switch (e.type) {
+         case (#and) {
             .out.printf("(");
             e.left.write-value(e.left-val);
             .out.printf(" && ");
@@ -66,7 +66,7 @@ expr-bools-add(bools:expr-i, right:expr-i):expr-i {
             }
             .out.printf(")");
          }
-         {case(#or)
+         case (#or) {
             .out.printf("(");
             e.left.write-value(e.left-val);
             .out.printf(" || ");

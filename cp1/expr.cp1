@@ -93,8 +93,8 @@ using 'c = :stdc;
       if !(e.process()) { return false}
       +expr = e.ptr();
       +ok = false;
-      {switch(expr.type).value(e, ref, paren, v, ok)
-         {default
+      switch (expr.type).value(e, ref, paren, v, ok) {
+         default {
             'c.out.printf("%u:%u - %u:%u: value() not implemented for #%s\n",
                .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
          }
@@ -105,8 +105,8 @@ using 'c = :stdc;
       if !(e.process()) { return #nil}
       +expr = e.ptr();
       +at = :at#nil;
-      {switch(expr.type).type(expr, at)
-         {default
+      switch (expr.type).type(expr, at) {
+         default {
             'c.out.printf("%u:%u - %u:%u: type() not implemented for #%s\n",
                .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
          }
@@ -115,7 +115,7 @@ using 'c = :stdc;
    }
    try-deduce(e-idx:this, at:at) {
       +expr = e-idx.ptr();
-      {switch(expr.type).try-deduce(expr, at)
+      switch (expr.type).try-deduce(expr, at) {
       }
    }
    wr(e:this, w:wtr, header:bool) {
@@ -127,8 +127,8 @@ using 'c = :stdc;
       } else {
          +expr = e.ptr();
          expr.type.wr(w);
-         {switch(expr.type).wr(expr, w, header)
-            {default
+         switch (expr.type).wr(expr, w, header) {
+            default {
                'c.out.printf("wr() was not implemented in expression #%s\n", expr.type.cp1-name());
                'c.exit(#failure);
             }
@@ -158,8 +158,8 @@ using 'c = :stdc;
             realloc(.expr-is-processed, (.expr-cap + 7) >> 3, (old-cap + 7) >> 3);
          }
          e = e-idx;
-         {switch(type).rd(e-idx, r)
-            {default
+         switch (type).rd(e-idx, r) {
+            default {
                'c.out.printf("rd() was not implemented in expression #%s\n", type.cp1-name());
                'c.exit(#failure);
             }
@@ -188,8 +188,8 @@ using 'c = :stdc;
       // if (expr.flags & #processed) { return true}
       // expr.flags |= #processed;
       +ok = false;
-      {switch(expr.type).process(expr, ok)
-         {default
+      switch (expr.type).process(expr, ok) {
+         default {
             'c.out.printf("%s:%u:%u - %u:%u: process() not implemented for expression #%s\n",
                .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
             return false;
@@ -202,8 +202,8 @@ using 'c = :stdc;
    }
    write(e:this) {
       +expr = e.ptr();
-      {switch(expr.type).write(expr)
-         {default
+      switch (expr.type).write(expr) {
+         default {
             'c.out.printf("%s:%u:%u - %u:%u: write() not implemented in expression #%s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
          }
       }
@@ -215,8 +215,8 @@ using 'c = :stdc;
    flags:expr-flags,
    ) {
    write(e:this, out'c:file) {
-      {switch(e.type)
-         {case(#call)
+      switch (e.type) {
+         case (#call) {
             {+e2:expr-call = e}
             e2.write(out);
          }
@@ -240,20 +240,20 @@ using 'c = :stdc;
       e = r.n1():basic-type-id;
    }
 // write(e:this, out'c:file) {
-//    {switch(e)
-//       {case(#ref)
+//    switch (e) {
+//       case (#ref) {
 //          out.printf("void*");
 //       }
-//       {case(#i32)
+//       case (#i32) {
 //          out.printf("int");
 //       }
-//       {case(#u32)
+//       case (#u32) {
 //          out.printf("unsigned int");
 //       }
-//       {case(#float)
+//       case (#float) {
 //          out.printf("float");
 //       }
-//       {case(#bool)
+//       case (#bool) {
 //          out.printf("bool");
 //       }
 //    }
