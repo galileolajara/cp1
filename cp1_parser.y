@@ -143,9 +143,9 @@ decl ::= decl_func.
 decl ::= decl_struct.
 decl ::= decl_enum.
 decl ::= decl_gvars.
-decl_alias_begin ::= LCBRACE_USING_SPACE.
+decl_alias_begin ::= USING SPACE.
    { _Ncp1_Pat_begin_relative_pause_0(); }
-decl_alias_end ::= RCBRACE.
+decl_alias_end ::= SCOLON.
    { _Ncp1_Pat_begin_relative_resume_0(); }
 decl ::= decl_alias_begin ID_QUOTE(short) SPACE_EQUAL_SPACE at(long) decl_alias_end.
    { _Ncp1_Pdecl_alias_4(short.basic.id, long.basic.id, short.basic.row, short.basic.col); }
@@ -165,6 +165,10 @@ rparen_or_comma(l) ::= rparen_or_space(r).
 rparen_or_comma(l) ::= COMMA_SPACE_RPAREN(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 
+lcbrace_or_space(l) ::= LCBRACE(r).
+   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
+lcbrace_or_space(l) ::= LCBRACE_SPACE(r).
+   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 rcbrace_or_space(l) ::= RCBRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 rcbrace_or_space(l) ::= SPACE_RCBRACE(r).
@@ -179,7 +183,7 @@ rcbrace_or_scolon(l) ::= RCBRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 rcbrace_or_scolon(l) ::= SPACE_RCBRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-rcbrace_or_scolon(l) ::= SCOLON_SPACE_RCBRACE(r).
+rcbrace_or_scolon(l) ::= SCOLON SPACE_RCBRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 
 lbracket_or_space(l) ::= LBRACKET(r).
@@ -196,6 +200,8 @@ rbracket_or_comma(l) ::= SPACE_RBRACKET(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 rbracket_or_comma(l) ::= COMMA_SPACE_RBRACKET(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
+
+scolon_space ::= SCOLON SPACE.
 
 lvar_decl(l) ::= lvar_decl_name(r).
    { _Ncp1_Pdecl_var_end_0(); l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
@@ -248,6 +254,8 @@ func_attrs_base ::= func_attrs_base func_attr.
 func_attrs(l) ::= func_attrs_base func_attr LCBRACE_SPACE(r). */
 func_attrs ::= func_attr.
 func_attrs ::= func_attrs func_attr.
+func_attrs_optional ::= .
+func_attrs_optional ::= func_attrs.
 /*   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; } */
 type_basic_id(l) ::= COLON_REF.
    { l.basic.id = 2; }
@@ -287,10 +295,10 @@ type_basic_id(l) ::= COLON_F64.
 // expr_type(l) ::= expr_type_custom(r). { l.basic.id = r.basic.id; }
 // expr_type(l) ::= at(r). { l.basic.id = _Ncp1_Pexpr_type_1(r.basic.id); }
 func_type ::= typeAndInfo_optional.
-func_decl ::= LCBRACE func_decl_begin fargs func_type func_attrs.
+func_decl ::= func_decl_begin fargs func_type func_attrs_optional. // SPACE lcbrace_or_space.
    { _Ncp1_Pdecl_func_end_2(_Grow, _Gcol); }
-func_decl ::= LCBRACE func_decl_begin fargs func_type.
-   { _Ncp1_Pdecl_func_end_2(_Grow, _Gcol); }
+/* func_decl ::= LCBRACE func_decl_begin fargs func_type.
+   { _Ncp1_Pdecl_func_end_2(_Grow, _Gcol); } */
 /* func_attrs_inline(l) ::= SPACE_AT_INLINE_SCOLON(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 func_attrs_inline(l) ::= func_attr SPACE_AT_INLINE_SCOLON(r).
@@ -803,18 +811,21 @@ decl_var_attrs_list ::= decl_var_attrs_list decl_var_attr.
 decl_var_attrs_optional ::= .
 decl_var_attrs_optional ::= decl_var_attrs_list.
 
-decl_func ::= func_decl RCBRACE.
+decl_func ::= func_decl SCOLON. // RCBRACE.
 stmt_brace ::= stmt.
 stmt_expr ::= expr2stmt.
 stmts_brace ::= stmt_brace.
-stmts_brace ::= stmts_expr SCOLON_SPACE stmt_brace.
+stmts_brace ::= stmts_expr scolon_space stmt_brace.
 stmts_brace ::= stmts_brace SPACE stmt_brace.
 stmts_expr ::= stmt_expr.
-stmts_expr ::= stmts_expr SCOLON_SPACE stmt_expr.
+stmts_expr ::= stmts_expr scolon_space stmt_expr.
 stmts_expr ::= stmts_brace SPACE stmt_expr.
 stmts_optional ::= SPACE_RCBRACE.
 stmts_optional ::= SPACE stmts_brace rcbrace_or_space.
 stmts_optional ::= SPACE stmts_expr rcbrace_or_scolon.
+stmts_optional2 ::= lcbrace_or_space RCBRACE.
+stmts_optional2 ::= lcbrace_or_space stmts_brace rcbrace_or_space.
+stmts_optional2 ::= lcbrace_or_space stmts_expr rcbrace_or_scolon.
 decl_struct_attr ::= SPACE_AT_NO_DECL.
    { _Ncp1_Pstruct_attr_no_decl_0(); }
 decl_struct_attr ::= SPACE_AT_REAL_NAME_STR(e).
@@ -829,7 +840,7 @@ decl_struct_attrs_optional ::= end_pos(end).
    { _Ncp1_Pdecl_struct_end_2(end.basic.row, end.basic.col); }
 decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos(end).
    { _Ncp1_Pdecl_struct_end_2(end.basic.row, end.basic.col); }
-decl_func ::= func_decl stmts_optional.
+decl_func ::= func_decl SPACE stmts_optional2.
    { _Ncp1_Pfunc_body_end_0(); }
 /* decl_func ::= func_decl_inline stmts_optional.
    { _Ncp1_Pfunc_body_end_1(true); } */

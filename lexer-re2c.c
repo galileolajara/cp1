@@ -31,6 +31,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    *                                { return CP1_TOKEN_END; }
    
    "{"                              { return CP1_TOKEN_LCBRACE; }
+   "{" spaces                       { return CP1_TOKEN_LCBRACE_SPACE; }
    "}"                              { return CP1_TOKEN_RCBRACE; }
    spaces "}"                       { return CP1_TOKEN_SPACE_RCBRACE; }
    "("                              { return CP1_TOKEN_LPAREN; }
@@ -41,14 +42,15 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces? "," spaces               { return CP1_TOKEN_COMMA_SPACE; }
    spaces? "," spaces "}"           { return CP1_TOKEN_COMMA_SPACE_RCBRACE; }
    spaces? "," spaces "]"           { return CP1_TOKEN_COMMA_SPACE_RBRACKET; }
-   spaces? ";" spaces "}"           { return CP1_TOKEN_SCOLON_SPACE_RCBRACE; }
-   spaces? ";" spaces               { return CP1_TOKEN_SCOLON_SPACE; }
+   // spaces? ";" spaces "}"           { return CP1_TOKEN_SCOLON_SPACE_RCBRACE; }
+   // spaces? ";" spaces               { return CP1_TOKEN_SCOLON_SPACE; }
    spaces                           { return CP1_TOKEN_SPACE; }
+   spaces? ";"                      { return CP1_TOKEN_SCOLON; }
    "{+" spaces?                     { return CP1_TOKEN_LCBRACE_PLUS_OR_SPACE; }
    "{gvar" spaces                   { return CP1_TOKEN_LCBRACE_GVAR_SPACE; }
    "{cvar" spaces                   { return CP1_TOKEN_LCBRACE_CVAR_SPACE; }
    "{at("                           { return CP1_TOKEN_LCBRACE_AT_LPAREN; }
-   "{using" spaces                  { return CP1_TOKEN_LCBRACE_USING_SPACE; }
+   // "{using" spaces                  { return CP1_TOKEN_LCBRACE_USING_SPACE; }
    "+"                              { return CP1_TOKEN_PLUS; }
    "-"                              { return CP1_TOKEN_MINUS; }
    "!"                              { return CP1_TOKEN_EXPOINT; }
@@ -191,9 +193,10 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces ">" spaces                { return CP1_TOKEN_SPACE_RANGLE_SPACE; }
    spaces ">=" spaces               { return CP1_TOKEN_SPACE_RANGLE_EQUAL_SPACE; }
 
-   "return"                        { return CP1_TOKEN_RETURN; }
-   "continue"                      { return CP1_TOKEN_CONTINUE; }
-   "break"                         { return CP1_TOKEN_BREAK; }
+   "using"                          { return CP1_TOKEN_USING; }
+   "return"                         { return CP1_TOKEN_RETURN; }
+   "continue"                       { return CP1_TOKEN_CONTINUE; }
+   "break"                          { return CP1_TOKEN_BREAK; }
    "{if"                            { return CP1_TOKEN_LCBRACE_IF; }
    "{switch"                        { return CP1_TOKEN_LCBRACE_SWITCH; }
    "{case"                          { return CP1_TOKEN_LCBRACE_CASE; }
