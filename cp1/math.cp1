@@ -1,5 +1,5 @@
 using 'cp1 = :cp1;
-{at(:cp1)
+using (:cp1) {
 :math[#add, #sub, #mul, #div, #lshift, #rshift, #and, #or, #xor]:u8 {
    wr(e:this, w:wtr) @inline {
       w.n1(e);
@@ -28,7 +28,7 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
    item.expr = right;
    return expr;
 }
-{at(:expr-i)
+using (:expr-i) {
    try-deduce-math(expr:expr, at:at) @case.try-deduce() @inline {
       var e:expr-math = expr;
       e.left.try-deduce(at);

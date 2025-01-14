@@ -1,5 +1,5 @@
 using 'cp1 = :cp1;
-{at(:cp1)
+using (:cp1) {
 expr-cast-fast(expr:expr-i, type:at):expr-i {
    quick-alloc-one(+(e:expr-cast-fast));
    +e-idx = expr-push(e.base, #cast-fast);
@@ -7,7 +7,7 @@ expr-cast-fast(expr:expr-i, type:at):expr-i {
    e.type = type;
    return e-idx;
 }
-{at(:expr-cast-fast)
+using (:expr-cast-fast) {
    write-value(e:this, v:value) @inline {
       .out.printf("(");
       e.type.write-type-info(v.info, 0);
@@ -16,7 +16,7 @@ expr-cast-fast(expr:expr-i, type:at):expr-i {
       .out.printf(")");
    }
 }
-{at(:expr-i)
+using (:expr-i) {
    wr-cast-fast(expr:expr, w:wtr, header:bool) @case.wr() @inline {
       var e:expr-cast-fast = expr;
       e.expr.wr(w, header);

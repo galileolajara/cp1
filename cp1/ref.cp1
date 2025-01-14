@@ -1,12 +1,12 @@
 using 'cp1 = :cp1;
-{at(:cp1)
+using (:cp1) {
 expr-ref(expr:expr-i):expr-i {
    quick-alloc-one(+(e:expr-ref));
    +e-idx = expr-push(e.base, #ref);
    e.expr = expr;
    return e-idx;
 }
-{at(:expr-i)
+using (:expr-i) {
    wr-ref(expr:expr, w:wtr, header:bool) @case.wr() @inline {
       var e:expr-ref = expr;
       e.expr.wr(w, header);

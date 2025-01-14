@@ -1,7 +1,7 @@
 {include(<fcntl.h>)
    using 'sys = :sys;
    using 'c = :stdc;
-   {at(:stdc)
+   using (:stdc) {
       :fd[#nil = -1]:intc {
          open(file:this&, path:char[], flags:open-flags):bool @inline {
             +fd = 'c.open(path, flags);

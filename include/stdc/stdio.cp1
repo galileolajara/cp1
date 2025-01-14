@@ -1,6 +1,6 @@
 {include(<stdio.h>)
    using 'c = :stdc;
-   {at(:stdc)
+   using (:stdc) {
       printf(fmt:char[]):intc @var-args @no-decl @real-name(printf);
       sprintf(str:char[], fmt:char[]):intc @var-args @no-decl @real-name(sprintf);
 

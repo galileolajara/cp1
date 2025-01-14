@@ -1,7 +1,7 @@
 {include(<unistd.h>)
    using 'c = :stdc;
-   {at(:stdc)
-      {at(:fd)
+   using (:stdc) {
+      using (:fd) {
          seek(fd:this, offset:usz, seek:seek):usz @no-decl @real-name(lseek);
          read(fd:this, buf:ref, size:usz):usz @no-decl @real-name;
          close(fd:this):intc @no-decl @real-name;

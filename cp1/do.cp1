@@ -1,11 +1,11 @@
 using 'cp1 = :cp1;
-{at(:cp1)
+using (:cp1) {
 :nest(do:stmt-do, whil:stmt-while, ref:ref) @union;
 var nest-stack-ptr-v:nest+[64];
 var nest-stack-id-v:i32[64];
 var nest-stack-c:u8;
 var nest-id:i32;
-{at(:stmt-space)
+using (:stmt-space) {
    wr-do(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
       var s:stmt-do = stmt;
       s.expr.wr(w, header);
@@ -39,7 +39,7 @@ var nest-id:i32;
       space.stmt-push(s.base, 0, 0, 0, 0, #do-end);
    }
 }
-{at(:stmt)
+using (:stmt) {
    write-do(stmt:stmt) @case.write() @inline {
       var s:stmt-do = stmt;
       .nest-stack-id-v[.nest-stack-c] = .nest-id++;

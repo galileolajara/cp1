@@ -1,6 +1,6 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
-{at(:cp1)
+using (:cp1) {
 :fvar[#nil = -1, #0]:i32;
 expr-fvar(expr:expr-i, member:id):expr-i {
    quick-alloc-one(+(e:expr-fvar));
@@ -9,7 +9,7 @@ expr-fvar(expr:expr-i, member:id):expr-i {
    e.member = member;
    return e-idx;
 }
-{at(:expr-i)
+using (:expr-i) {
    wr-fvar(expr:expr, w:wtr, header:bool) @case.wr() @inline {
       var e:expr-fvar = expr;
       e.expr.wr(w, header);

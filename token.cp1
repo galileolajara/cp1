@@ -20,7 +20,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
    +pos = 0;
    +out-f = 'c.fopen(arg-v[2], "w");
    out-f.printf(
-      "{at(:cp1)\n"
+      "using (:cp1) {\n"
       ":token[\n"
       "#nil,\n");
    while (pos < in-size) {

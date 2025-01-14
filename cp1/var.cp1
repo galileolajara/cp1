@@ -1,6 +1,6 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
-{at(:cp1)
+using (:cp1) {
 :decl-var[]:u32 {
    ptr(v:this):decl-var-data @inline {
       return .var-v[v];
@@ -40,7 +40,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
    }
    return vd-type;
 }
-{at(:decl-var-data)
+using (:decl-var-data) {
    validate(vd:this, base-at:at) {
       // 'c.out.printf("validating the type of %s\n", vd.name.str());
       vd.type = at-validate(vd.type, base-at);

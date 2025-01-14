@@ -1,5 +1,5 @@
 using 'cp1 = :cp1;
-{at(:cp1)
+using (:cp1) {
 :assign[#eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
              #lshift-eq, #rshift-eq, #and-eq, #or-eq, #xor-eq,
              ]:u8 {
@@ -18,7 +18,7 @@ expr-assign(left:expr-i, right:expr-i, type:assign):expr-i {
    e.type = type;
    return e-idx;
 }
-{at(:expr-i)
+using (:expr-i) {
    wr-assign(expr:expr, w:wtr, header:bool) @case.wr() @inline {
       var e:expr-assign = expr;
       e.left.wr(w, header);
