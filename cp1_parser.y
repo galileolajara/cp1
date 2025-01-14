@@ -120,15 +120,15 @@ decl_at_names ::= decl_at_names decl_at_name.
 decl_at_namespace ::= decl_at_names.
 decl_at_namespace ::= type_basic_id(e).
    { _Ncp1_Pdecl_at_basic_1(e.basic.id); }
-decl_at_begin_begin(l) ::= LCBRACE_AT_LPAREN(r).
+decl_at_begin_begin(l) ::= USING SPACE(r).
    { _Ncp1_Pat_begin_relative_pause_0(); l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 decl_at_begin_end ::= RPAREN.
    { _Ncp1_Pat_begin_relative_resume_0(); }
-decl_at_begin ::= decl_at_begin_begin(pos) decl_at_namespace decl_at_begin_end.
+decl_at_begin ::= decl_at_begin_begin(pos) LPAREN decl_at_namespace decl_at_begin_end.
    { _Ncp1_Pdecl_at_begin_2(pos.basic.row, pos.basic.col); }
-decl_at ::= decl_at_begin SPACE decls SPACE_RCBRACE.
+decl_at ::= decl_at_begin SPACE LCBRACE_SPACE decls SPACE_RCBRACE.
    { _Ncp1_Pdecl_at_end_0(); }
-decl_at ::= decl_at_begin SPACE_RCBRACE.
+decl_at ::= decl_at_begin SPACE LCBRACE_SPACE RCBRACE.
    { _Ncp1_Pdecl_at_end_0(); }
 decl ::= decl_at.
 

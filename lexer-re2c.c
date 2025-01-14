@@ -49,7 +49,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    // "{+" spaces?                     { return CP1_TOKEN_LCBRACE_PLUS_OR_SPACE; }
    // "{gvar" spaces                   { return CP1_TOKEN_LCBRACE_GVAR_SPACE; }
    // "{cvar" spaces                   { return CP1_TOKEN_LCBRACE_CVAR_SPACE; }
-   "{at("                           { return CP1_TOKEN_LCBRACE_AT_LPAREN; }
+   // "{at("                           { return CP1_TOKEN_LCBRACE_AT_LPAREN; }
    // "{using" spaces                  { return CP1_TOKEN_LCBRACE_USING_SPACE; }
    "+"                              { return CP1_TOKEN_PLUS; }
    "-"                              { return CP1_TOKEN_MINUS; }
@@ -195,6 +195,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
 
    "using"                          { return CP1_TOKEN_USING; }
    "return"                         { return CP1_TOKEN_RETURN; }
+   // "at"                             { return CP1_TOKEN_AT; }
    "loop"                           { return CP1_TOKEN_LOOP; }
    "var"                            { return CP1_TOKEN_VAR; }
    "continue"                       { return CP1_TOKEN_CONTINUE; }
