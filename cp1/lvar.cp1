@@ -53,7 +53,7 @@ expr-lvar(name:id, decl:u8, row:i32, col:i32):expr-i {
       {do()
          +v = space.lvar-v;
          +found = :lvar#nil;
-         {do{+i = 0}{(space.lvar-c) i++}
+         {do var i = 0; {(space.lvar-c) i++}
             +lvar = v[i];
             if (lvar.name() == name) {
                found = lvar;
@@ -95,16 +95,16 @@ expr-lvar(name:id, decl:u8, row:i32, col:i32):expr-i {
 }
 {at(:expr-i)
    write-lvar(expr:expr) @case.write() @inline {
-      {+e:expr-lvar = expr}
+      var e:expr-lvar = expr;
       e.lvar.ptr().decl.write-lvar(e.lvar);
    }
    type-lvar(expr:expr, at:at&) @case.type() @inline {
-      {+e:expr-lvar = expr}
+      var e:expr-lvar = expr;
       +lvar = e.lvar.ptr();
       at = lvar.decl.type;
    }
    value-lvar(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      {+expr:expr-lvar = e.ptr()}
+      var expr:expr-lvar = e.ptr();
       +lvar = expr.lvar.ptr();
       v.set(ref, paren, lvar.decl.type, lvar.decl.type-info);
       if (v.ref == 1) {
@@ -113,7 +113,7 @@ expr-lvar(name:id, decl:u8, row:i32, col:i32):expr-i {
       ok = true;
    }
    wr-lvar(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      {+e:expr-lvar = expr}
+      var e:expr-lvar = expr;
       e.lvar.wr(w);
    }
    rd-lvar(e-idx:expr-i, r:rdr) @case.rd() @inline {
@@ -122,7 +122,7 @@ expr-lvar(name:id, decl:u8, row:i32, col:i32):expr-i {
       e.lvar.rd(r);
    }
    process-lvar(expr:expr, ok:bool&) @case.process() @inline {
-      {+e:expr-lvar = expr}
+      var e:expr-lvar = expr;
       if !(e.lvar.process()) { return}
       ok = true;
    }

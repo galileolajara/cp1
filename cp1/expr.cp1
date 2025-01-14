@@ -3,7 +3,7 @@ using 'c = :stdc;
 {at(:cp1)
 {at(:stmt-space)
    wr-expr(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
-      {+s:stmt-expr = stmt}
+      var s:stmt-expr = stmt;
       s.expr.wr(w, header);
    }
    rd-expr(space:stmt-space, r:rdr) @case.rd() @inline {
@@ -14,10 +14,10 @@ using 'c = :stdc;
 }
 {at(:stmt)
    write-expr(stmt:stmt) @case.write() @inline {
-      {+s:stmt-expr = stmt}
+      var s:stmt-expr = stmt;
 		+expr = s.expr.ptr();
 		if (expr.type == #str) {
-			{+e:expr-str = expr}
+			var e:expr-str = expr;
 			+n = e.first;
 			{do()
 				.out.printf("%.*s\n", n.len, n.buf);
@@ -30,7 +30,7 @@ using 'c = :stdc;
       .out.printf(";\n");
    }
    process-expr(stmt:stmt, ok:bool&) @case.process() @inline {
-      {+s:stmt-expr = stmt}
+      var s:stmt-expr = stmt;
       if !(s.expr.process()) {
          return;
       }
@@ -78,7 +78,7 @@ using 'c = :stdc;
       }
 
       if (expr.type == #cast-fast) {
-         {+e:expr-cast-fast = expr}
+         var e:expr-cast-fast = expr;
          e.write-value(v);
       } else {
          e.write();
@@ -217,7 +217,7 @@ using 'c = :stdc;
    write(e:this, out'c:file) {
       switch (e.type) {
          case (#call) {
-            {+e2:expr-call = e}
+            var e2:expr-call = e;
             e2.write(out);
          }
       }

@@ -14,7 +14,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    {do(arg-c)
       if (arg-v[i][0] == ''-) {
          if (arg-v[i][1] == ''D) {
-            {+name:char[] = & arg-v[i][2]}
+            var name:char[] = & arg-v[i][2];
             +len = 0;
             {do()
                if (name[len] == ''\0) {
@@ -75,7 +75,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    }
    +in-size = in-fd.seek(0, #end);
    in-fd.seek(0, #set);
-   {+in-data:char[] = 'c.malloc(in-size)}
+   var in-data:char[] = 'c.malloc(in-size);
    in-fd.read(in-data, in-size);
    in-fd.close();
    preprocess-init();
@@ -93,7 +93,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
 {gvar preprocess-def-cap:u32}
 {gvar preprocess-def-c:u32}
 preprocess-def-get(name:char[], len:u8):bool {
-   {do{+i = 0}{(.preprocess-def-c) i++}
+   {do var i = 0; {(.preprocess-def-c) i++}
       if (&&, .preprocess-def-len-v[i] == len, 'c.memcmp(.preprocess-def-str-v[i], name, len) == 0) {
          return true;
       }
@@ -146,15 +146,15 @@ preprocess-init() {
 preprocess(in-out-data:ref&, in-out-size:usz&) {
    // 'c.printf("#if detected, preprocessing...\n");
    +preprocess = false;
-   {+in-data:char[] = in-out-data}
+   var in-data:char[] = in-out-data;
    +in-size = in-out-size;
-   {+r-end:rdr+}
+   var r-end:rdr+;
    r-end.ref = in-data;
    r-end.pos += in-size;
-   {+r:rdr+}
+   var r:rdr+;
    r.ref = in-data;
-   {+new-data = 'c.malloc(in-size + 1)}
-   {+w:wtr+}
+   var new-data = 'c.malloc(in-size + 1);
+   var w:wtr+;
    w.ref = new-data;
 
    +line = 0;
@@ -180,7 +180,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
             invert = true;
          }
          +rparen = -1;
-         {do{+i = start}{(line-len - start) i++}
+         {do var i = start; {(line-len - start) i++}
             if (r.p1[i] == '')) {
                rparen = i;
                break;
@@ -190,7 +190,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
             'c.printf("%s:%u: Error in preprocessing the code, #if(...) must have a closing parenthesis ')'\n", .input-path, line);
             'c.exit(#failure);
          }
-         {+def-str:char[] = & r.char[start]}
+         var def-str:char[] = & r.char[start];
          +def-len = rparen - start;
          +ok = preprocess-def-get(def-str, def-len);
          if (invert) {
@@ -199,7 +199,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
          // 'c.printf("evaluated %.*s as %u\n", def-len, def-str, ok);
          r.pos += line-len + 1;
          // Get the indention of the next line
-         {+indention:char[] = null}
+         var indention:char[] = null;
          +indention-len = -1;
          if (r.pos < r-end.pos) {
             +line-len = 0;
@@ -296,14 +296,14 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
    w.p1[0] = ''\0;
    'c.free(in-data);
    in-out-data = new-data;
-   {+w-begin:wtr+}
+   var w-begin:wtr+;
    w-begin.ref = new-data;
    in-out-size = w.pos - w-begin.pos;
 
    if (preprocess) {
       preprocess(in-out-data, in-out-size);
    } else {
-      // {+path:char[256]}
+      // var path:char[256];
       // 'c.sprintf(path, "%s-p", .input-path);
       // 'c.printf("writing the preprocessed file to %s\n", path);
       // 'c:fd.open(+fd, path, #write | #truncate | #create, 0o644);

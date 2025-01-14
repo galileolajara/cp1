@@ -43,7 +43,7 @@ using 'c = :stdc;
       } else {
          f.at.write-space();
          .out.printf("_P%s", f.decl.name.c-name());
-         {do{+i = 0}{(f.group-c) i++}
+         {do var i = 0; {(f.group-c) i++}
             .out.printf("_%u", f.group-v[i]);
          }
       }
@@ -52,7 +52,7 @@ using 'c = :stdc;
       +lvar-c = r.n():lvar;
       f.lvar-c = lvar-c;
       quick-alloc-arr(f.lvar-v, lvar-c);
-      {do{+i = 0}{(f.lvar-c) i++}
+      {do var i = 0; {(f.lvar-c) i++}
          +l = f.lvar-v[i];
          l.row = r.n();
          l.col = r.n();
@@ -66,7 +66,7 @@ using 'c = :stdc;
    }
    lvars-wr(f:this, w:wtr, header:bool) {
       w.n(f.lvar-c);
-      {do{+i = 0}{(f.lvar-c) i++}
+      {do var i = 0; {(f.lvar-c) i++}
          +l = f.lvar-v[i];
          w.n(l.row);
          w.n(l.col);
@@ -181,7 +181,7 @@ decl-func-end(row:i32, col:i32) {
       grow(.func-cap, .func-c);
       realloc(.func-v, .func-cap, old-cap);
    }
-   {+f:decl-func}
+   var f:decl-func;
    quick-alloc-plus(f, :farg[:usz] * .decl-farg-c);
    .ctx-func = f;
    .nest-id = 0;
@@ -206,14 +206,14 @@ decl-func-end(row:i32, col:i32) {
    .decl-var.name = .decl-func-name;
    f.decl.copy-from(.decl-var);
    f.farg-c = .decl-farg-c;
-   {do{+i = 0}{(.decl-farg-c) i++}
+   {do var i = 0; {(.decl-farg-c) i++}
       +fa = f.farg-v[i];
       fa.copy-from(.decl-farg-v[i]);
    }
    f.this-idx = .decl-func-this-idx;
    f.this-group = .decl-func-this-group;
    f.group-c = .decl-farg-group-c;
-   {do{+i = 0}{(.decl-farg-group-c) i++}
+   {do var i = 0; {(.decl-farg-group-c) i++}
       f.group-v[i] = .decl-farg-group-v[i];
    }
    f.flags = .decl-func-flags;
@@ -232,7 +232,7 @@ decl-func-end(row:i32, col:i32) {
    f.decl-len = .decl-func-decl-len;
    +space = .decl-func-space;
    f.stmt-space = space;
-   {do{+i = 0}{(.decl-farg-c) i++}
+   {do var i = 0; {(.decl-farg-c) i++}
       +fa = f.farg-v[i];
       +lvar-i = space.lvar-new(fa.decl.name, fa.row, fa.col);
       +lvar = lvar-i.ptr();
@@ -375,7 +375,7 @@ carg-push-str(expr:expr-i) {
    }
    if (true) {
       // calculate the string length
-      {+e:expr-str = expr.ptr()}
+      var e:expr-str = expr.ptr();
       +len = 0;
       +s = e.first;
       {do()
@@ -392,18 +392,18 @@ carg-push-str(expr:expr-i) {
 expr-pop-func(at:at, func-name:id):expr-i {
    +call-idx = .expr-call-c -= 1;
    +carg-c = .expr-call-carg-c[call-idx];
-   {+e:expr-func}
+   var e:expr-func;
    quick-alloc-plus(e, :carg[:usz] * carg-c);
    +e-idx = expr-push(e.base, #func);
    e.at = at;
    e.func-name = func-name;
    e.carg-c = carg-c;
-   {do{+i = 0}{(carg-c) i++}
+   {do var i = 0; {(carg-c) i++}
       e.carg-v[i].ref = 0;
       e.carg-v[i].expr = .expr-call-carg-v[call-idx][i];
    }
    e.group-c = .expr-call-cgrp-c[call-idx];
-   {do{+i = 0}{(e.group-c) i++}
+   {do var i = 0; {(e.group-c) i++}
       e.group-v[i] = .expr-call-cgrp-v[call-idx][i];
    }
    return e-idx;
@@ -411,17 +411,17 @@ expr-pop-func(at:at, func-name:id):expr-i {
 expr-pop-method(this:expr-i, func-name:id):expr-i {
    +call-idx = .expr-call-c -= 1;
    +carg-c = .expr-call-carg-c[call-idx];
-   {+e:expr-method}
+   var e:expr-method;
    quick-alloc-plus(e, :carg[:usz] * carg-c);
    +e-idx = expr-push(e.base, #method);
    e.this = this;
    e.func-name = func-name;
    e.carg-c = carg-c;
-   {do{+i = 0}{(carg-c) i++}
+   {do var i = 0; {(carg-c) i++}
       e.carg-v[i].expr = .expr-call-carg-v[call-idx][i];
    }
    e.group-c = .expr-call-cgrp-c[call-idx];
-   {do{+i = 0}{(e.group-c) i++}
+   {do var i = 0; {(e.group-c) i++}
       e.group-v[i] = .expr-call-cgrp-v[call-idx][i];
    }
    return e-idx;

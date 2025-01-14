@@ -17,7 +17,7 @@ expr-math(left:expr-i, right:expr-i, type:math):expr-i {
    return e-idx;
 }
 expr-math-add(expr:expr-i, right:expr-i):expr-i {
-   {+e:expr-math = expr.ptr()}
+   var e:expr-math = expr.ptr();
    +i = e.item-c++;
    if (e.item-cap <= e.item-c) {
       +old-cap = e.item-cap;
@@ -30,20 +30,20 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
 }
 {at(:expr-i)
    try-deduce-math(expr:expr, at:at) @case.try-deduce() @inline {
-      {+e:expr-math = expr}
+      var e:expr-math = expr;
       e.left.try-deduce(at);
       e.right.try-deduce(at);
-      {do{+i = 0}{(e.item-c) i++}
+      {do var i = 0; {(e.item-c) i++}
          e.item-v[i].expr.try-deduce(at);
       }
    }
    wr-math(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      {+e:expr-math = expr}
+      var e:expr-math = expr;
       e.left.wr(w, header);
       e.right.wr(w, header);
       e.type.wr(w);
       w.n1(e.item-c);
-      {do{+i = 0}{(e.item-c) i++}
+      {do var i = 0; {(e.item-c) i++}
          e.item-v[i].expr.wr(w, header);
       }
    }
@@ -57,19 +57,19 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
       if (item-c > 0) {
          e.item-c = item-c;
          quick-alloc-arr(e.item-v, item-c);
-         {do{+i = 0}{(e.item-c) i++}
+         {do var i = 0; {(e.item-c) i++}
             e.item-v[i].expr.rd(r);
          }
       }
    }
    write-math(expr:expr) @case.write() @inline {
-      {+e:expr-math = expr}
+      var e:expr-math = expr;
       switch (e.type) {
          case (#add) {
             e.left.write-value(e.left-val);
             .out.printf(" + ");
             e.right.write-value(e.right-val);
-            {do{+i = 0}{(e.item-c) i++}
+            {do var i = 0; {(e.item-c) i++}
                .out.printf(" + ");
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
@@ -78,7 +78,7 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
             e.left.write-value(e.left-val);
             .out.printf(" - ");
             e.right.write-value(e.right-val);
-            {do{+i = 0}{(e.item-c) i++}
+            {do var i = 0; {(e.item-c) i++}
                .out.printf(" - ");
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
@@ -87,7 +87,7 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
             e.left.write-value(e.left-val);
             .out.printf(" * ");
             e.right.write-value(e.right-val);
-            {do{+i = 0}{(e.item-c) i++}
+            {do var i = 0; {(e.item-c) i++}
                .out.printf(" * ");
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
@@ -96,7 +96,7 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
             e.left.write-value(e.left-val);
             .out.printf(" / ");
             e.right.write-value(e.right-val);
-            {do{+i = 0}{(e.item-c) i++}
+            {do var i = 0; {(e.item-c) i++}
                .out.printf(" / ");
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
@@ -115,7 +115,7 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
             e.left.write-value(e.left-val);
             .out.printf(" & ");
             e.right.write-value(e.right-val);
-            {do{+i = 0}{(e.item-c) i++}
+            {do var i = 0; {(e.item-c) i++}
                .out.printf(" & ");
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
@@ -124,7 +124,7 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
             e.left.write-value(e.left-val);
             .out.printf(" | ");
             e.right.write-value(e.right-val);
-            {do{+i = 0}{(e.item-c) i++}
+            {do var i = 0; {(e.item-c) i++}
                .out.printf(" | ");
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
@@ -133,7 +133,7 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
             e.left.write-value(e.left-val);
             .out.printf(" ^ ");
             e.right.write-value(e.right-val);
-            {do{+i = 0}{(e.item-c) i++}
+            {do var i = 0; {(e.item-c) i++}
                .out.printf(" ^ ");
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
@@ -141,7 +141,7 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
       }
    }
    value-math(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      {+expr:expr-math = e.ptr()}
+      var expr:expr-math = e.ptr();
 		// if (expr.left.value(1, paren, v) == false) {
       //    return;
       // }
@@ -159,11 +159,11 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
       ok = true;
 	}
    type-math(expr:expr, at:at&) @case.type() @inline {
-      {+e:expr-math = expr}
+      var e:expr-math = expr;
       at = e.left.type();
    }
    process-math(expr:expr, ok:bool&) @case.process() @inline {
-      {+e:expr-math = expr}
+      var e:expr-math = expr;
 		if !(e.left.value(1, true, e.left-val)) {
 			return;
       }
@@ -171,7 +171,7 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
 		if !(e.right.value(1, true, e.right-val)) {
 			return;
       }
-      {do{+i = 0}{(e.item-c) i++}
+      {do var i = 0; {(e.item-c) i++}
          +item = e.item-v[i];
          if !(item.expr.value(1, true, item.val)) { return}
       }

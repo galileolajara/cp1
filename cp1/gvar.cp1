@@ -47,7 +47,7 @@ expr-gvar(at:at, name:id):expr-i {
 }
 {at(:expr-i)
    value-gvar(g:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      {+e:expr-gvar = g.ptr()}
+      var e:expr-gvar = g.ptr();
       +gvar = e.gvar.ptr();
       v.set(ref, paren, gvar.decl.type, gvar.decl.type-info);
       if (v.ref == 1) {
@@ -56,12 +56,12 @@ expr-gvar(at:at, name:id):expr-i {
       ok = true;
    }
    type-gvar(expr:expr, at:at&) @case.type() @inline {
-      {+e:expr-gvar = expr}
+      var e:expr-gvar = expr;
       +gvar = e.gvar.ptr();
       at = gvar.decl.type;
    }
    wr-gvar(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      {+e:expr-gvar = expr}
+      var e:expr-gvar = expr;
       e.at.wr(w, header);
       e.name.wr(w, header);
    }
@@ -77,7 +77,7 @@ expr-gvar(at:at, name:id):expr-i {
       }
       {do()
          +at = at-idx.ptr();
-         {do{+i = 0}{(at.gvar-c) i++}
+         {do var i = 0; {(at.gvar-c) i++}
             +gvar = at.gvar-v[i];
             if (gvar.ptr().decl.name == name) {
                e.gvar = gvar;
@@ -92,11 +92,11 @@ expr-gvar(at:at, name:id):expr-i {
       'c.exit(#failure);
    }
    write-gvar(expr:expr) @case.write() @inline {
-      {+e:expr-gvar = expr}
+      var e:expr-gvar = expr;
       e.gvar.write();
    }
    process-gvar(expr:expr, ok:bool&) @case.process() @inline {
-      {+e:expr-gvar = expr}
+      var e:expr-gvar = expr;
       if !(e.gvar.process()) { return}
       ok = true;
    }

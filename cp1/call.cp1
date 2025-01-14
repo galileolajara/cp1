@@ -3,7 +3,7 @@ using 'c = :stdc;
 {at(:cp1)
 farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:at):bool {
    +ce = e.ptr();
-   {+r:i32}
+   var r:i32;
    if (ca-ref != 0) {
       r = 1 + ca-ref;
    } else {
@@ -12,7 +12,7 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
    }
    // 'c.out.printf("r %d, %d %d %d\n", r, j, fd-arg.type-info.array-c, fd-arg.type-info.ref-v[fd-arg.type-info.array-c]);
    if (ce.type == #lvar) {
-      {+ve:expr-lvar = ce}
+      var ve:expr-lvar = ce;
       +lvar = ve.lvar.ptr();
       +vd = lvar.decl;
       if (vd.type == #nil) {
@@ -41,7 +41,7 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
 }
 {at(:expr-i)
    value-func(e:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      {+expr:expr-func = e.ptr()}
+      var expr:expr-func = e.ptr();
       +f = expr.func-idx.ptr();
       v.set(ref, paren, f.decl.type, f.decl.type-info);
       if (v.ref == 1) {
@@ -50,11 +50,11 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
       ok = true;
    }
    type-func(expr:expr, at:at&) @case.type() @inline {
-      {+e:expr-func = expr}
+      var e:expr-func = expr;
       at = e.func-idx.ptr().decl.type;
    }
    value-method(e:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      {+expr:expr-method = e.ptr()}
+      var expr:expr-method = e.ptr();
       +f = expr.func-idx.ptr();
       v.set(ref, paren, f.decl.type, f.decl.type-info);
       if (v.ref == 1) {
@@ -63,11 +63,11 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
       ok = true;
    }
    type-method(expr:expr, at:at&) @case.type() @inline {
-      {+e:expr-method = expr}
+      var e:expr-method = expr;
       at = e.func-idx.ptr().decl.type;
    }
    write-method(expr:expr) @case.write() @inline {
-      {+e:expr-method = expr}
+      var e:expr-method = expr;
       +f = e.func-idx.ptr();
       f.write();
       .out.printf("(");
@@ -96,15 +96,15 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
       .out.printf(")");
    }
    wr-method(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      {+e:expr-method = expr}
+      var e:expr-method = expr;
       e.this.wr(w, header);
       e.func-name.wr(w, header);
       w.n1(e.group-c);
-      {do{+i = 0}{(e.group-c) i++}
+      {do var i = 0; {(e.group-c) i++}
          w.n1(e.group-v[i]);
       }
       w.n1(e.carg-c);
-      {do{+i = 0}{(e.carg-c) i++}
+      {do var i = 0; {(e.carg-c) i++}
          e.carg-v[i].expr.wr(w, header);
       }
    }
@@ -112,8 +112,8 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
       :expr-i.rd(+this-expr, r);
       :id.rd(+func-name, r);
       +group-c = r.n1();
-      {+group-v:i8[#expr-carg-group-limit]}
-      {do{+i = 0}{(group-c) i++}
+      var group-v:i8[#expr-carg-group-limit];
+      {do var i = 0; {(group-c) i++}
          group-v[i] = r.n1();
       }
       +carg-c = r.n1();
@@ -122,16 +122,16 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
       e.this = this-expr;
       e.func-name = func-name;
       e.group-c = group-c;
-      {do{+i = 0}{(group-c) i++}
+      {do var i = 0; {(group-c) i++}
          e.group-v[i] = group-v[i];
       }
       e.carg-c = carg-c;
-      {do{+i = 0}{(carg-c) i++}
+      {do var i = 0; {(carg-c) i++}
          e.carg-v[i].expr.rd(r);
       }
    }
    process-method(expr:expr, ok:bool&) @case.process() @inline {
-      {+e:expr-method = expr}
+      var e:expr-method = expr;
       +func-name = e.func-name;
       +group-c = e.group-c;
       +group-v = e.group-v;
@@ -143,7 +143,7 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
          return;
       }
       +at = at-idx.ptr();
-      {+method-c, method-v}
+      var method-c, method-v;
       if (at.type == #basic) {
          +t = .basic-type[at.name.basic];
          method-c = t.method-c;
@@ -165,7 +165,7 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
       }
       +found = -1;
       +similar-c = 0;
-      {do{+i = 0}{(method-c) i++}
+      {do var i = 0; {(method-c) i++}
          +f-idx = method-v[i];
          +f = f-idx.ptr();
          if (f.decl.name != func-name) { continue}
@@ -175,7 +175,7 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
          +match = true;
          if ((f.flags & #var-args) != #0) {
             if (f.farg-c > carg-c1) { continue}
-            {do{+j = 0}{(group-c - 1) j++}
+            {do var j = 0; {(group-c - 1) j++}
                if (f.this-group == j) {
                   if (f.group-v[j] != (group-v[j] + 1)) {
                      match = false;
@@ -202,7 +202,7 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
             }
          } else {
             if (f.farg-c != carg-c1) { continue}
-            {do{+j = 0}{(group-c) j++}
+            {do var j = 0; {(group-c) j++}
                if (f.this-group == j) {
                   if (f.group-v[j] != (group-v[j] + 1)) {
                      match = false;
@@ -234,7 +234,7 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
          if ((f.flags & #var-args) != #0) {
             {do{(e.carg-c - k) k++}
                +ca = e.carg-v[k];
-               {+r:i32}
+               var r:i32;
                if (ca.ref) {
                   r = 1 + ca.ref;
                } else {
@@ -249,7 +249,7 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
       'c.out.printf("%s:%u:%u - %u:%u: Cannot find method %s with %u argument:s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
       if (found != -1) {
          'c.out.printf("But found %u functions with different no. of argument:s:\n", similar-c);
-         {do{+i = 0}{(at.func-c) i++}
+         {do var i = 0; {(at.func-c) i++}
             +f-idx = at.func-v[i];
             +f = .func-v[f-idx];
             if (f.decl.name == func-name) {
@@ -259,11 +259,11 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
       }
    }
    write-func(expr:expr) @case.write() @inline {
-      {+e:expr-func = expr}
+      var e:expr-func = expr;
       +f = e.func-idx.ptr();
       f.write();
       .out.printf("(");
-      {do{+i = 0}{(e.carg-c) i++}
+      {do var i = 0; {(e.carg-c) i++}
          if (i != 0) {
             .out.printf(", ");
          }
@@ -272,15 +272,15 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
       .out.printf(")");
    }
    wr-func(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      {+e:expr-func = expr}
+      var e:expr-func = expr;
       e.at.wr(w, header);
       e.func-name.wr(w, header);
       w.n1(e.group-c);
-      {do{+i = 0}{(e.group-c) i++}
+      {do var i = 0; {(e.group-c) i++}
          w.n1(e.group-v[i]);
       }
       w.n1(e.carg-c);
-      {do{+i = 0}{(e.carg-c) i++}
+      {do var i = 0; {(e.carg-c) i++}
          e.carg-v[i].expr.wr(w, header);
       }
    }
@@ -288,8 +288,8 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
       :at.rd(+at-idx, r);
       :id.rd(+func-name, r);
       +group-c = r.n1();
-      {+group-v:i8[#expr-carg-group-limit]}
-      {do{+i = 0}{(group-c) i++}
+      var group-v:i8[#expr-carg-group-limit];
+      {do var i = 0; {(group-c) i++}
          group-v[i] = r.n1();
       }
       +carg-c = r.n1();
@@ -299,16 +299,16 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
       e.at = at-idx;
       e.func-name = func-name;
       e.group-c = group-c;
-      {do{+i = 0}{(group-c) i++}
+      {do var i = 0; {(group-c) i++}
          e.group-v[i] = group-v[i];
       }
       e.carg-c = carg-c;
-      {do{+i = 0}{(carg-c) i++}
+      {do var i = 0; {(carg-c) i++}
          e.carg-v[i].expr.rd(r);
       }
    }
    process-func(expr:expr, ok:bool&) @case.process() @inline {
-      {+e:expr-func = expr}
+      var e:expr-func = expr;
       +func-name = e.func-name;
       +carg-c = e.carg-c;
       +group-c = e.group-c;
@@ -331,7 +331,7 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
          // +found = -1;
          // +similar-c = 0;
          // 'c.out.printf("searching from %u functions\n", at.func-c);
-         {do{+i = 0}{(at.func-c) i++}
+         {do var i = 0; {(at.func-c) i++}
             +f-idx = at.func-v[i];
             +f = f-idx.ptr();
             if (f.decl.name != func-name) { continue}
@@ -341,7 +341,7 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
             +match = true;
             if ((f.flags & #var-args) != #0) {
                if (f.farg-c > carg-c) { continue}
-               {do{+j = 0}{(group-c - 1) j++}
+               {do var j = 0; {(group-c - 1) j++}
                   if (f.group-v[j] != group-v[j]) {
                      match = false;
                      break;
@@ -355,7 +355,7 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
                }
             } else {
                if (f.farg-c != carg-c) { continue}
-               {do{+j = 0}{(group-c) j++}
+               {do var j = 0; {(group-c) j++}
                   if (f.group-v[j] != group-v[j]) {
                      match = false;
                      break;
@@ -374,7 +374,7 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
             if ((f.flags & #var-args) != #0) {
                {do{(e.carg-c - j) j++}
                   +ca = e.carg-v[j];
-                  {+r:i32}
+                  var r:i32;
                   if (ca.ref) {
                      r = 1 + ca.ref;
                   } else {
@@ -394,7 +394,7 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
       'c.out.printf("%s:%u:%u - %u:%u: Cannot find function %s with %u argument:s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
       // if (found != -1) {
       //    'c.out.printf("But found %u functions with different no. of argument:s:\n", similar-c);
-      //    {do{+i = 0}{(at.func-c) i++}
+      //    {do var i = 0; {(at.func-c) i++}
       //       +f-idx = at.func-v[i];
       //       +f = .func-v[f-idx];
       //       if (f.decl.name == func-name) {
@@ -404,7 +404,7 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
       // }
    }
    process-case-func(expr:expr, f-idx:func):bool @inline {
-      {+e:expr-func = expr}
+      var e:expr-func = expr;
       +func-name = e.func-name;
       +carg-c = e.carg-c;
       +group-c = e.group-c;
@@ -422,7 +422,7 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
       if ((f.flags & #var-args) != #0) {
          {do{(e.carg-c - j) j++}
             +ca = e.carg-v[j];
-            {+r:i32}
+            var r:i32;
             if (ca.ref) {
                r = 1 + ca.ref;
             } else {

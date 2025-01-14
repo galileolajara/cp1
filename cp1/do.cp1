@@ -7,7 +7,7 @@ using 'cp1 = :cp1;
 {gvar nest-id:i32}
 {at(:stmt-space)
    wr-do(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
-      {+s:stmt-do = stmt}
+      var s:stmt-do = stmt;
       s.expr.wr(w, header);
       if (s.continu != null) {
          w.b(true);
@@ -41,7 +41,7 @@ using 'cp1 = :cp1;
 }
 {at(:stmt)
    write-do(stmt:stmt) @case.write() @inline {
-      {+s:stmt-do = stmt}
+      var s:stmt-do = stmt;
       .nest-stack-id-v[.nest-stack-c] = .nest-id++;
       .nest-stack-ptr-v[.nest-stack-c].do = s;
       .nest-stack-c++;
@@ -54,7 +54,7 @@ using 'cp1 = :cp1;
       }
    }
    process-do(stmt:stmt, ok:bool&) @case.process() @inline {
-      {+s:stmt-do = stmt}
+      var s:stmt-do = stmt;
       if (s.expr != #nil) {
          if !(s.expr.process()) {
             return;
@@ -64,7 +64,7 @@ using 'cp1 = :cp1;
    }
    write-do-end(stmt:stmt) @case.write() @inline {
       +id = .nest-stack-id-v[.nest-stack-c -= 1];
-      {+s:stmt-do-end = stmt}
+      var s:stmt-do-end = stmt;
       .out.printf("continue_%u:;\n", id);
       +continu = s.do.continu;
       if (continu != null) {
@@ -73,7 +73,7 @@ using 'cp1 = :cp1;
       .out.printf("}\nbreak_%u:;\n", id);
    }
    process-do-end(stmt:stmt, ok:bool&) @case.process() @inline {
-      {+s:stmt-do-end = stmt}
+      var s:stmt-do-end = stmt;
       +continu = s.do.continu;
       if (continu != null) {
          continu.process();

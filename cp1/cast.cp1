@@ -18,7 +18,7 @@ expr-cast-fast(expr:expr-i, type:at):expr-i {
 }
 {at(:expr-i)
    wr-cast-fast(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      {+e:expr-cast-fast = expr}
+      var e:expr-cast-fast = expr;
       e.expr.wr(w, header);
       e.type.wr(w, header);
    }
@@ -29,17 +29,17 @@ expr-cast-fast(expr:expr-i, type:at):expr-i {
       e.type.rd(r);
    }
    value-cast-fast(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      {+expr:expr-cast-fast = e.ptr()}
+      var expr:expr-cast-fast = e.ptr();
       expr.expr.value(ref, paren, v);
       v.type = expr.type;
       ok = true;
 	}
    type-cast-fast(expr:expr, at:at&) @case.type() @inline {
-      {+e:expr-cast-fast = expr}
+      var e:expr-cast-fast = expr;
       at = e.type;
    }
    process-cast-fast(expr:expr, ok:bool&) @case.process() @inline {
-      {+e:expr-cast-fast = expr}
+      var e:expr-cast-fast = expr;
 		if !(e.expr.value(1, false, e.val)) {
 			return;
       }

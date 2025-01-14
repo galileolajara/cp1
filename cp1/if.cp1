@@ -2,7 +2,7 @@ using 'cp1 = :cp1;
 {at(:cp1)
 {at(:stmt-space)
    wr-if(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
-      {+s:stmt-if = stmt}
+      var s:stmt-if = stmt;
       w.b(s.not);
       s.expr.wr(w, header);
    }
@@ -13,7 +13,7 @@ using 'cp1 = :cp1;
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #if);
    }
    wr-if-elif(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
-      {+s:stmt-if-elif = stmt}
+      var s:stmt-if-elif = stmt;
       w.b(s.not);
       s.expr.wr(w, header);
    }
@@ -38,7 +38,7 @@ using 'cp1 = :cp1;
 }
 {at(:stmt)
    write-if(stmt:stmt) @case.write() @inline {
-      {+s:stmt-if = stmt}
+      var s:stmt-if = stmt;
       +e = s.expr.ptr();
       if (s.not) {
          .out.printf("if(!(");
@@ -51,14 +51,14 @@ using 'cp1 = :cp1;
       }
    }
    process-if(stmt:stmt, ok:bool&) @case.process() @inline {
-      {+s:stmt-if = stmt}
+      var s:stmt-if = stmt;
       if !(s.expr.value(1, false, s.val)) {
          return;
       }
       ok = true;
    }
    write-if-elif(stmt:stmt) @case.write() @inline {
-      {+s:stmt-if-elif = stmt}
+      var s:stmt-if-elif = stmt;
       if (s.not) {
          .out.printf("} else if(!(");
          s.expr.write-value(s.val);
@@ -70,26 +70,26 @@ using 'cp1 = :cp1;
       }
    }
    process-if-elif(stmt:stmt, ok:bool&) @case.process() @inline {
-      {+s:stmt-if-elif = stmt}
+      var s:stmt-if-elif = stmt;
       if !(s.expr.value(1, false, s.val)) {
          return;
       }
       ok = true;
    }
    write-if-else(stmt:stmt) @case.write() @inline {
-      {+s:stmt-if-else = stmt}
+      var s:stmt-if-else = stmt;
       .out.printf("} else {\n");
    }
    process-if-else(stmt:stmt, ok:bool&) @case.process() @inline {
-      {+s:stmt-if-else = stmt}
+      var s:stmt-if-else = stmt;
       ok = true;
    }
    write-if-end(stmt:stmt) @case.write() @inline {
-      {+s:stmt-if-end = stmt}
+      var s:stmt-if-end = stmt;
       .out.printf("}\n");
    }
    process-if-end(stmt:stmt, ok:bool&) @case.process() @inline {
-      {+s:stmt-if-end = stmt}
+      var s:stmt-if-end = stmt;
       ok = true;
    }
 }

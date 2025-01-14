@@ -7,14 +7,14 @@ expr-null():expr-i {
 }
 {at(:expr-i)
    wr-null(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      {+e:expr-null = expr}
+      var e:expr-null = expr;
    }
    rd-null(e-idx:expr-i, r:rdr) @case.rd() @inline {
       quick-alloc-one(+(e:expr-null));
       e-idx.set(e.base, #null);
    }
    write-null(expr:expr) @case.write() @inline {
-      {+e:expr-null = expr}
+      var e:expr-null = expr;
       .out.printf("NULL");
    }
    process-null(expr:expr, ok:bool&) @case.process() @inline {
