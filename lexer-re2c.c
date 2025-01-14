@@ -40,7 +40,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces ")"                       { return CP1_TOKEN_SPACE_RPAREN; }
    spaces? "," spaces ")"           { return CP1_TOKEN_COMMA_SPACE_RPAREN; }
    spaces? "," spaces               { return CP1_TOKEN_COMMA_SPACE; }
-   spaces? "," spaces "}"           { return CP1_TOKEN_COMMA_SPACE_RCBRACE; }
+   // spaces? "," spaces "}"           { return CP1_TOKEN_COMMA_SPACE_RCBRACE; }
    spaces? "," spaces "]"           { return CP1_TOKEN_COMMA_SPACE_RBRACKET; }
    // spaces? ";" spaces "}"           { return CP1_TOKEN_SCOLON_SPACE_RCBRACE; }
    // spaces? ";" spaces               { return CP1_TOKEN_SCOLON_SPACE; }
@@ -48,7 +48,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces? ";"                      { return CP1_TOKEN_SCOLON; }
    // "{+" spaces?                     { return CP1_TOKEN_LCBRACE_PLUS_OR_SPACE; }
    // "{gvar" spaces                   { return CP1_TOKEN_LCBRACE_GVAR_SPACE; }
-   "{cvar" spaces                   { return CP1_TOKEN_LCBRACE_CVAR_SPACE; }
+   // "{cvar" spaces                   { return CP1_TOKEN_LCBRACE_CVAR_SPACE; }
    "{at("                           { return CP1_TOKEN_LCBRACE_AT_LPAREN; }
    // "{using" spaces                  { return CP1_TOKEN_LCBRACE_USING_SPACE; }
    "+"                              { return CP1_TOKEN_PLUS; }

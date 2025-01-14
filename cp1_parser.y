@@ -132,8 +132,8 @@ decl_at ::= decl_at_begin SPACE_RCBRACE.
    { _Ncp1_Pdecl_at_end_0(); }
 decl ::= decl_at.
 
-decl_cvar ::= LCBRACE_CVAR_SPACE enum_cvars_decl rcbrace_or_comma.
-decl_cvar ::= LCBRACE_CVAR_SPACE RCBRACE.
+decl_cvar ::= enum_cvars_decl SCOLON.
+// decl_cvar ::= LCBRACE_CVAR_SPACE RCBRACE.
 decl ::= decl_cvar.
 
 space_or_end ::= SPACE END.
@@ -173,12 +173,12 @@ rcbrace_or_space(l) ::= RCBRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 rcbrace_or_space(l) ::= SPACE_RCBRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-rcbrace_or_comma(l) ::= RCBRACE(r).
+/* rcbrace_or_comma(l) ::= RCBRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 rcbrace_or_comma(l) ::= SPACE_RCBRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 rcbrace_or_comma(l) ::= COMMA_SPACE_RCBRACE(r).
-   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
+   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; } */
 rcbrace_or_scolon(l) ::= RCBRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 rcbrace_or_scolon(l) ::= SPACE_RCBRACE(r).
