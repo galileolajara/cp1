@@ -1,0 +1,35 @@
+// This is to emulate the C++'s virtual functions
+#include <stdio.h>
+
+using 'c = :stdc;
+
+:animal-type[#cat, #dog]:u8; // 8-bit enum
+
+:animal(type:animal-type) { // a struct with a method
+   make-sound(a:this) {
+      // a switch statement that collects methods that
+      // begins with "emit-sound-" then automatically
+      // puts a case below for each match
+      switch (a.type).emit-sound(a) {
+      }
+   }
+}
+
+// For example, in another file, you can:
+using (:animal) {
+   emit-sound-cat(a:this) @case.emit-sound() {
+      'c.printf("meow!\n");
+   }
+   emit-sound-dog(a:this) @case.emit-sound() {
+      'c.printf("arf!\n");
+   }
+}
+
+main(arg-c:intc, arg-v:char[][]):intc {
+   var animal:animal+; // create an animal object, '+' symbol allocates on stack
+   animal.type = #cat;
+   animal.make-sound();
+   animal.type = #dog;
+   animal.make-sound();
+   return 0;
+}
