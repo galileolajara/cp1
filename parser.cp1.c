@@ -227,8 +227,8 @@
 #define _Ncp1_Ntoken_Cspace_colon_equal_space (_Ncp1_Ntoken_Cspace_xor_equal_space + 1)
 #define _Ncp1_Ntoken_Cexpoint (_Ncp1_Ntoken_Cspace_colon_equal_space + 1)
 #define _Ncp1_Ntoken_Clcbrace_do (_Ncp1_Ntoken_Cexpoint + 1)
-#define _Ncp1_Ntoken_Clcbrace_while (_Ncp1_Ntoken_Clcbrace_do + 1)
-#define _Ncp1_Ntoken_Cif (_Ncp1_Ntoken_Clcbrace_while + 1)
+#define _Ncp1_Ntoken_Cwhile (_Ncp1_Ntoken_Clcbrace_do + 1)
+#define _Ncp1_Ntoken_Cif (_Ncp1_Ntoken_Cwhile + 1)
 #define _Ncp1_Ntoken_Cspace_elif (_Ncp1_Ntoken_Cif + 1)
 #define _Ncp1_Ntoken_Cspace_else (_Ncp1_Ntoken_Cspace_elif + 1)
 #define _Ncp1_Ntoken_Clcbrace_switch (_Ncp1_Ntoken_Cspace_else + 1)
@@ -1136,7 +1136,7 @@ case _Ncp1_Ntoken_Cspace_xor_equal_space: return "space-xor-equal-space";
 case _Ncp1_Ntoken_Cspace_colon_equal_space: return "space-colon-equal-space";
 case _Ncp1_Ntoken_Cexpoint: return "expoint";
 case _Ncp1_Ntoken_Clcbrace_do: return "lcbrace-do";
-case _Ncp1_Ntoken_Clcbrace_while: return "lcbrace-while";
+case _Ncp1_Ntoken_Cwhile: return "while";
 case _Ncp1_Ntoken_Cif: return "if";
 case _Ncp1_Ntoken_Cspace_elif: return "space-elif";
 case _Ncp1_Ntoken_Cspace_else: return "space-else";

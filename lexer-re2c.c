@@ -197,15 +197,19 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "return"                         { return CP1_TOKEN_RETURN; }
    "continue"                       { return CP1_TOKEN_CONTINUE; }
    "break"                          { return CP1_TOKEN_BREAK; }
+   "default"                        { return CP1_TOKEN_DEFAULT; }
+   "case"                           { return CP1_TOKEN_CASE; }
+   "switch"                         { return CP1_TOKEN_SWITCH; }
+   "while"                          { return CP1_TOKEN_WHILE; }
    "if"                             { return CP1_TOKEN_IF; }
    spaces "elif"                    { return CP1_TOKEN_SPACE_ELIF; }
    spaces "else"                    { return CP1_TOKEN_SPACE_ELSE; }
    // "{if"                            { return CP1_TOKEN_LCBRACE_IF; }
-   "{switch"                        { return CP1_TOKEN_LCBRACE_SWITCH; }
-   "{case"                          { return CP1_TOKEN_LCBRACE_CASE; }
-   "{default"                       { return CP1_TOKEN_LCBRACE_DEFAULT; }
+   // "{switch"                        { return CP1_TOKEN_LCBRACE_SWITCH; }
+   // "{case"                          { return CP1_TOKEN_LCBRACE_CASE; }
+   // "{default"                       { return CP1_TOKEN_LCBRACE_DEFAULT; }
    "{do"                            { return CP1_TOKEN_LCBRACE_DO; }
-   "{while"                         { return CP1_TOKEN_LCBRACE_WHILE; }
+   // "{while"                         { return CP1_TOKEN_LCBRACE_WHILE; }
    // spaces? "{elif"                  { return CP1_TOKEN_LCBRACE_ELIF; }
    // spaces? "{else"                  { return CP1_TOKEN_LCBRACE_ELSE; }
 

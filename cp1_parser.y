@@ -679,7 +679,7 @@ stmt_do ::= stmt_do_begin space_begin do_expr stmts_optional.
    { _Ncp1_Pstmt_do_end_0(); }
 
 stmt ::= stmt_while.
-stmt_while_begin ::= LCBRACE_WHILE.
+stmt_while_begin ::= WHILE SPACE.
    { _Ncp1_Pstmt_while_begin_0(); }
 while_expr_val(l) ::= lparen_or_space RPAREN.
    { l.basic.id = -1; }
@@ -697,7 +697,7 @@ while_continue_end ::= .
    { _Ncp1_Pstmt_space_end_0(); } 
 while_expr ::= LCBRACE begin_pos(begin) while_expr_val(e) end_pos(end) while_continue_begin(c) stmts_optional while_continue_end.
    { _Ncp1_Pstmt_while_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, c.pointer); }
-stmt_while ::= stmt_while_begin space_begin while_expr stmts_optional.
+stmt_while ::= stmt_while_begin space_begin while_expr SPACE stmts_optional2.
    { _Ncp1_Pstmt_while_end_0(); }
 
 stmt ::= stmt_if_chain.
@@ -736,7 +736,7 @@ stmt_if_chain ::= stmt_if.
 stmt_if_chain ::= stmt_if_chain stmt_elif.
 
 stmt ::= stmt_switch.
-stmt_switch_begin ::= LCBRACE_SWITCH.
+stmt_switch_begin ::= SWITCH SPACE.
    { _Ncp1_Pstmt_switch_begin_0(); }
 switch_expr ::= begin_pos(begin) if_expr_val(e) end_pos(end).
    { _Ncp1_Pstmt_switch_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, -1); }
@@ -744,25 +744,31 @@ switch_expr ::= begin_pos(begin) if_expr_val(e) DOT callExpr_func(cases) end_pos
    { _Ncp1_Pstmt_switch_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, cases.basic.id); }
 switch_case_expr ::= expr(e).
    { _Ncp1_Pstmt_switch_expr_add_1(e.basic.id); }
+/* switch_case_expr2 ::= valueonly(e).
+   { _Ncp1_Pstmt_switch_expr_add_1(e.basic.id); } */
 switch_case_exprs ::= switch_case_expr.
 switch_case_exprs ::= switch_case_exprs COMMA_SPACE switch_case_expr.
 switch_case_fall(l) ::= .
    { l.basic.id = 0; }
 switch_case_fall(l) ::= SPACE_AT_FALL_THROUGH.
    { l.basic.id = 1; }
-switch_case_expr_end ::= LCBRACE_CASE(begin) lparen_or_space switch_case_exprs rparen_or_comma switch_case_fall(fall) end_pos(end).
+switch_case_paren_or_expr ::= lparen_or_space switch_case_exprs rparen_or_comma.
+// switch_case_paren_or_expr ::= switch_case_expr.
+switch_case_expr_end ::= CASE(begin) SPACE switch_case_paren_or_expr switch_case_fall(fall) end_pos(end).
    { _Ncp1_Pstmt_switch_case_begin_5(begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, fall.basic.id); }
-switch_case ::= switch_case_expr_end stmts_optional.
+/* switch_case_expr_end ::= CASE(begin) SPACE switch_case_expr switch_case_fall(fall) end_pos(end).
+   { _Ncp1_Pstmt_switch_case_begin_5(begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, fall.basic.id); } */
+switch_case ::= switch_case_expr_end SPACE stmts_optional2.
    { _Ncp1_Pstmt_switch_case_end_0(); }
-switch_default_begin ::= LCBRACE_DEFAULT(begin) switch_case_fall(fall) end_pos(end).
+switch_default_begin ::= DEFAULT(begin) switch_case_fall(fall) end_pos(end).
    { _Ncp1_Pstmt_switch_default_begin_5(begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, fall.basic.id); }
-switch_case ::= switch_default_begin stmts_optional.
+switch_case ::= switch_default_begin SPACE stmts_optional2.
    { _Ncp1_Pstmt_switch_default_end_0(); }
 switch_cases ::= switch_case.
 switch_cases ::= switch_cases SPACE switch_case.
-stmt_switch ::= stmt_switch_begin space_begin switch_expr SPACE switch_cases rcbrace_or_space.
+stmt_switch ::= stmt_switch_begin space_begin switch_expr SPACE lcbrace_or_space switch_cases rcbrace_or_space.
    { _Ncp1_Pstmt_switch_end_0(); }
-stmt_switch ::= stmt_switch_begin space_begin switch_expr rcbrace_or_space.
+stmt_switch ::= stmt_switch_begin space_begin switch_expr SPACE lcbrace_or_space RCBRACE.
    { _Ncp1_Pstmt_switch_end_0(); }
 
 stmt_expr ::= stmt_continue.
