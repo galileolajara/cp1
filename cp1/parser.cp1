@@ -2,20 +2,20 @@ using 'cp1 = :cp1;
 using 'c = :stdc;
 using 'sys = :sys;
 {at(:cp1)
-{gvar ctx-func:decl-func}
-{gvar id-in-header-v:u8[]}
-{gvar id-in-header-idx-v:u32[]}
-{gvar id-in-header-id-v:u32[]}
-{gvar id-in-header-c:i32}
+var ctx-func:decl-func;
+var id-in-header-v:u8[];
+var id-in-header-idx-v:u32[];
+var id-in-header-id-v:u32[];
+var id-in-header-c:i32;
 
-{gvar at-in-header-v:u8[]}
-{gvar at-in-header-idx-v:u32[]}
-{gvar at-in-header-at-v:u32[]}
-{gvar at-in-header-c:i32}
+var at-in-header-v:u8[];
+var at-in-header-idx-v:u32[];
+var at-in-header-at-v:u32[];
+var at-in-header-c:i32;
 
-{gvar decl-include:include}
-{gvar decl-include-row:i32}
-{gvar decl-include-col:i32}
+var decl-include:include;
+var decl-include-row:i32;
+var decl-include-col:i32;
 type-info-begin() {
    .decl-var.size-c = 0;
    .decl-var.type-info.init();
@@ -70,7 +70,7 @@ decl-include-begin(inc:include, row:i32, col:i32) {
 decl-include-end() {
    .decl-include = #nil;
 }
-{gvar build-at:at}
+var build-at:at;
 at-push(name:id, type:name-type, row:i32, col:i32) {
    .build-at = at-create(.build-at, type, name);
 }
@@ -96,7 +96,7 @@ at-basic-type(type:basic-type-id):at {
 at-begin() {
    .build-at = .decl-at;
 }
-{gvar at-begin-relative-pause:bool}
+var at-begin-relative-pause:bool;
 at-begin-relative-pause() {
    .at-begin-relative-pause = true;
 }
@@ -111,11 +111,11 @@ at-begin-relative() {
    }
 }
 :alias[#nil = -1, #0]:i32;
-{gvar at-alias-c:alias}
-{gvar at-alias-cap:alias}
-{gvar at-alias-name-v:id[]}
-{gvar at-alias-at-v:at[]}
-{gvar at-alias-pos-v:row-col+[]}
+var at-alias-c:alias;
+var at-alias-cap:alias;
+var at-alias-name-v:id[];
+var at-alias-at-v:at[];
+var at-alias-pos-v:row-col+[];
 :row-col(row:i32, col:i32);
 at-alias(name:id, row:i32, col:i32) {
    loop var i = 0; {(.at-alias-c) i++} {
@@ -217,10 +217,10 @@ at-create-basic(basic:basic-type-id):at {
    return build-idx;
 }
 
-{gvar decl-at:at}
+var decl-at:at;
 {cvar #decl-at-nest-limit:i32 = 8}
-{gvar decl-at-v:at[#decl-at-nest-limit]}
-{gvar decl-at-c:u8}
+var decl-at-v:at[#decl-at-nest-limit];
+var decl-at-c:u8;
 err-msg-namespace-limit(row:i32, col:i32) {
    'c.out.printf("%s:%u:%u: Max number of ids in namespace reached\n", .input-path, row, col);
    'c.exit(#failure);
@@ -415,10 +415,10 @@ decl-at-end() {
    free(psr:this);
    parse(psr:this, t:token, tok:token-data+) @real-name(cp1Parse);
 }
-{gvar last-row:i32 @extern}
-{gvar last-col:i32 @extern}
-{gvar row:i32 @extern}
-{gvar col:i32 @extern}
+var last-row:i32 @extern;
+var last-col:i32 @extern;
+var row:i32 @extern;
+var col:i32 @extern;
 write-func(w:wtr, header:bool) @inline {
    w.n(.func-c);
    loop var i = 0; (.func-c) {
@@ -617,7 +617,7 @@ parse-comment(r:rdr, w:wtr, ending:char, in-data:ref) {
       }
    }
 }
-{gvar input-path:char[] @real-name(input_path)}
+var input-path:char[] @real-name(input_path);
 convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
    +in-size = in-out-size;
    var r:rdr+;
@@ -745,7 +745,7 @@ convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
    return w-begin.ref;
 }
 char-escape-value(c:char):i32;
-{gvar lock-path:char[]}
+var lock-path:char[];
 parser-at-exit();
 main(arg-c:intc, arg-v:char[][]):intc @main {
    if (false) {

@@ -4,7 +4,7 @@
       printf(fmt:char[]):intc @var-args @no-decl @real-name(printf);
       sprintf(str:char[], fmt:char[]):intc @var-args @no-decl @real-name(sprintf);
 
-      {gvar out:file @real-name(stdout) @no-decl}
+      var out:file @real-name(stdout) @no-decl;
       :file() @real-name(FILE) @no-decl {
          printf(f:this, str:char[]):intc @var-args @no-decl @real-name(fprintf);
          flush(f:this):intc @no-decl @real-name(fflush);

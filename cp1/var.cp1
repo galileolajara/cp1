@@ -284,19 +284,19 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
 		ti.star-c = star-c;
 	}
 }
-{gvar gvar-c:gvar}
-{gvar gvar-cap:gvar}
-{gvar gvar-v:decl-gvar+[]}
+var gvar-c:gvar;
+var gvar-cap:gvar;
+var gvar-v:decl-gvar+[];
 
-{gvar decl-var-row:i32}
-{gvar decl-var-col:i32}
-// {gvar decl-var-name:id}
-// {gvar decl-var-type:at}
-// {gvar decl-var-type-info:type-info+}
+var decl-var-row:i32;
+var decl-var-col:i32;
+// var decl-var-name:id;
+// var decl-var-type:at;
+// var decl-var-type-info:type-info+;
 {cvar #type-info-stack-limit:i32 = 8}
-// {gvar stack-type-info:type-info+} // [#type-info-stack-limit]}
-// {gvar stack-type-info-c:i8}
-{gvar decl-var:decl-var-data+}
+// var stack-type-info:type-info+; // [#type-info-stack-limit]}
+// var stack-type-info-c:i8;
+var decl-var:decl-var-data+;
 :var-flags[
    #0,
    #real-name = 1,

@@ -52,13 +52,13 @@ using 'c = :stdc;
       f.decl.wr(w, header);
    }
 }
-{gvar struct-c:struct}
-{gvar struct-cap:struct}
-{gvar struct-v:struct-data[]}
-{gvar decl-struct-row:i32}
-{gvar decl-struct-col:i32}
-{gvar decl-struct-at:at}
-{gvar decl-struct-real-name:id}
+var struct-c:struct;
+var struct-cap:struct;
+var struct-v:struct-data[];
+var decl-struct-row:i32;
+var decl-struct-col:i32;
+var decl-struct-at:at;
+var decl-struct-real-name:id;
 :struct-flags[
    #0,
    #real-name = 1,
@@ -72,10 +72,10 @@ using 'c = :stdc;
       f = r.n1():struct-flags;
    }
 }
-{gvar decl-struct-flags:struct-flags}
-{gvar decl-fvar-c:u32}
-{gvar decl-fvar-cap:u32}
-{gvar decl-fvar-v:decl-var-data+[]}
+var decl-struct-flags:struct-flags;
+var decl-fvar-c:u32;
+var decl-fvar-cap:u32;
+var decl-fvar-v:decl-var-data+[];
 decl-var-as-fvar() {
    +fvar = .decl-fvar-c++;
    if (.decl-fvar-cap <= .decl-fvar-c) {

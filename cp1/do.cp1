@@ -1,10 +1,10 @@
 using 'cp1 = :cp1;
 {at(:cp1)
 :nest(do:stmt-do, whil:stmt-while, ref:ref) @union;
-{gvar nest-stack-ptr-v:nest+[64]}
-{gvar nest-stack-id-v:i32[64]}
-{gvar nest-stack-c:u8}
-{gvar nest-id:i32}
+var nest-stack-ptr-v:nest+[64];
+var nest-stack-id-v:i32[64];
+var nest-stack-c:u8;
+var nest-id:i32;
 {at(:stmt-space)
    wr-do(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
       var s:stmt-do = stmt;

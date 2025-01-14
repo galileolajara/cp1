@@ -1,8 +1,8 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
-{gvar switch-stack-v:stmt-switch[64]}
-{gvar switch-stack-c:u8}
+var switch-stack-v:stmt-switch[64];
+var switch-stack-c:u8;
 {at(:stmt-space)
    wr-switch(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
       var s:stmt-switch = stmt;
@@ -62,8 +62,8 @@ using 'c = :stdc;
    }
 }
 :case-stack(cas:stmt-case, defaul:stmt-default) @union;
-{gvar case-stack-v:case-stack+[64]}
-{gvar case-stack-c:u8}
+var case-stack-v:case-stack+[64];
+var case-stack-c:u8;
 {at(:stmt)
    write-switch(stmt:stmt) @case.write() @inline {
       var s:stmt-switch = stmt;
@@ -253,9 +253,9 @@ using 'c = :stdc;
 :stmt-switch-end(
    base:stmt+,
 );
-{gvar switch-expr-c:u32}
-{gvar switch-expr-cap:u32}
-{gvar switch-expr-v:expr-i[]}
+var switch-expr-c:u32;
+var switch-expr-cap:u32;
+var switch-expr-v:expr-i[];
 stmt-switch-expr-add(expr:expr-i) {
    +expr-i = .switch-expr-c++;
    if (.switch-expr-cap <= .switch-expr-c) {

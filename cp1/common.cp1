@@ -9,9 +9,9 @@ using 'c = :stdc;
    init(m:this);
    get-or-insert(m:this, str:char[], len:u8, val:i32):i32;
 }
-{gvar id-map:map+}
-{gvar include-map:map+}
-{gvar at-map:at-map+}
+var id-map:map+;
+var include-map:map+;
+var at-map:at-map+;
 :struct-data(
 #if(compiler)
    file:file,
@@ -349,9 +349,9 @@ using 'c = :stdc;
    farg-c:u8,
    farg-v:farg+[0],
 );
-{gvar quick-alloc-c:i32}
-{gvar quick-alloc-cap:i32}
-{gvar quick-alloc-v:ref}
+var quick-alloc-c:i32;
+var quick-alloc-cap:i32;
+var quick-alloc-v:ref;
 quick-alloc-init() {
    .quick-alloc-cap = 16 * 1024;
    .quick-alloc-v = 'c.malloc(.quick-alloc-cap);
@@ -477,9 +477,9 @@ realloc(r:ref, c:i32, oldc:i32)
    }
    cp1-name(e:this):char[] @cp1-name;
 }
-{gvar at-c:at}
-{gvar at-cap:at}
-{gvar at-v:at-data+[]}
+var at-c:at;
+var at-cap:at;
+var at-v:at-data+[];
 :at[#nil = -1, #root, #relative]:i32 {
    finalize(at-i:this, ti:type-info, row:i32, col:i32):bool {
       +at = at-i.ptr();
@@ -851,16 +851,16 @@ realloc(r:ref, c:i32, oldc:i32)
    }
 }
 
-{gvar id-c:i32}
-{gvar id-cap:i32}
-{gvar id-str-v:char[][]}
-{gvar id-len-v:u8[]}
-{gvar id-c-name-v:char[][]}
-{gvar include-c:i32}
-{gvar include-cap:i32}
-{gvar include-str-v:char[][]}
-{gvar include-len-v:u8[]}
-{gvar func-main:func}
+var id-c:i32;
+var id-cap:i32;
+var id-str-v:char[][];
+var id-len-v:u8[];
+var id-c-name-v:char[][];
+var include-c:i32;
+var include-cap:i32;
+var include-str-v:char[][];
+var include-len-v:u8[];
+var func-main:func;
 :id[#nil = -1, #0]:i32 {
    c-name(id:this):char[] {
       var c-name:char[] = .id-c-name-v[id];
