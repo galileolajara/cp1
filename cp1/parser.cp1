@@ -837,20 +837,56 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   'c.exit(#failure);
                }
                // comment
-               r.pos += 3;
+               r.pos += 2;
                loop {
                   if (r.p1[0] == ''\n) {
                      break;
                   }
                   r.pos++;
-                  if (r.pos >= r-end.pos) {
-                     get-row-col(+row, +col, r.ref, in-data);
-                     'c.out.printf("%s:%u:%u: Comment did not end with a new line\n", .input-path, row, col);
-                     'c.exit(#failure);
-                  }
                }
                continue;
             }
+         } elif (&&,
+            r.p1[0] == ''#,
+            r.p1[1] == ''i,
+            r.p1[2] == ''n,
+            r.p1[3] == ''c,
+            r.p1[4] == ''l,
+            r.p1[5] == ''u,
+            r.p1[6] == ''d,
+            r.p1[7] == ''e,
+            r.p1[8] == '' ,
+            r.p1[9] == ''<,
+            ) {
+            // comment
+            r.pos += 10;
+            loop {
+               if (r.p1[0] == ''\n) {
+                  break;
+               }
+               r.pos++;
+            }
+            continue;
+         } elif (&&,
+            r.p1[0] == ''#,
+            r.p1[1] == ''i,
+            r.p1[2] == ''m,
+            r.p1[3] == ''p,
+            r.p1[4] == ''o,
+            r.p1[5] == ''r,
+            r.p1[6] == ''t,
+            r.p1[7] == '' ,
+            r.p1[8] == ''",
+            ) {
+            // comment
+            r.pos += 9;
+            loop {
+               if (r.p1[0] == ''\n) {
+                  break;
+               }
+               r.pos++;
+            }
+            continue;
          // } elif (r.p1[0] == ''{) {
          //    indent++;
          // } elif (r.p1[0] == ''}) {
@@ -1084,6 +1120,10 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          psr.parse(t, tok);
       } else {
          switch (t) {
+            // case (#id-lparen) {
+            //    tok.id = lex.get-id(0, 1);
+            //    psr.parse(t, tok);
+            // }
             case (#char1) {
                var r:rdr+;
                r.ref = lex.start;
