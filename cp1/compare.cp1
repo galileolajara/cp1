@@ -1,5 +1,5 @@
 using 'cp1 = :cp1;
-{at(:cp1)
+using (:cp1) {
 :compare[#eq, #not-eq, #lt, #le, #gt, #ge]:u8 {
    wr(e:this, w:wtr) @inline {
       w.n1(e);
@@ -16,7 +16,7 @@ expr-compare(left:expr-i, right:expr-i, type:compare):expr-i {
    e.type = type;
    return e-idx;
 }
-{at(:expr-i)
+using (:expr-i) {
    wr-compare(expr:expr, w:wtr, header:bool) @case.wr() @inline {
       var e:expr-compare = expr;
       e.left.wr(w, header);

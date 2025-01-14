@@ -1,5 +1,5 @@
 using 'cp1 = :cp1;
-{at(:cp1)
+using (:cp1) {
 :unary[#neg, #inc, #dec, #not]:u8 {
    rd(u:this&, r:rdr) @inline {
       u = r.n1():unary;
@@ -15,7 +15,7 @@ expr-unary(expr:expr-i, type:unary):expr-i {
    e.type = type;
    return e-idx;
 }
-{at(:expr-i)
+using (:expr-i) {
    wr-unary(expr:expr, w:wtr, header:bool) @case.wr() @inline {
       var e:expr-unary = expr;
       e.expr.wr(w, header);

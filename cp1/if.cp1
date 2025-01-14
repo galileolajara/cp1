@@ -1,6 +1,6 @@
 using 'cp1 = :cp1;
-{at(:cp1)
-{at(:stmt-space)
+using (:cp1) {
+using (:stmt-space) {
    wr-if(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
       var s:stmt-if = stmt;
       w.b(s.not);
@@ -36,7 +36,7 @@ using 'cp1 = :cp1;
       space.stmt-push(s.base, 0, 0, 0, 0, #if-end);
    }
 }
-{at(:stmt)
+using (:stmt) {
    write-if(stmt:stmt) @case.write() @inline {
       var s:stmt-if = stmt;
       +e = s.expr.ptr();

@@ -1,6 +1,6 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
-{at(:cp1)
+using (:cp1) {
 :stmt-type[
    #space, #if, #if-elif, #if-else, #if-end,
    #do, #do-end, #while, #while-end,

@@ -1,7 +1,7 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
-{at(:cp1)
-{at(:stmt-space)
+using (:cp1) {
+using (:stmt-space) {
    wr-expr(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
       var s:stmt-expr = stmt;
       s.expr.wr(w, header);
@@ -12,7 +12,7 @@ using 'c = :stdc;
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #expr);
    }
 }
-{at(:stmt)
+using (:stmt) {
    write-expr(stmt:stmt) @case.write() @inline {
       var s:stmt-expr = stmt;
 		+expr = s.expr.ptr();

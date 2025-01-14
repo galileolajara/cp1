@@ -1,6 +1,6 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
-{at(:cp1)
+using (:cp1) {
 :func[#nil = -1, #0, #1]:i32 {
    wr(f:this, w:wtr) @inline {
       w.n(f + #1);
@@ -36,7 +36,7 @@ using 'c = :stdc;
    #0,
    #main = 1,
 ]:u32;
-{at(:decl-func)
+using (:decl-func) {
    write(f:this) {
       if ((f.flags & #real-name) != #0) {
          .out.printf("%s", f.real-name.str());

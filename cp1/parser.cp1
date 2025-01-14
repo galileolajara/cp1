@@ -1,7 +1,7 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
 using 'sys = :sys;
-{at(:cp1)
+using (:cp1) {
 var ctx-func:decl-func;
 var id-in-header-v:u8[];
 var id-in-header-idx-v:u32[];

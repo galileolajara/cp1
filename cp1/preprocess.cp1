@@ -1,6 +1,6 @@
 using 'c = :stdc;
 using 'cp1 = :cp1;
-{at(:cp1)
+using (:cp1) {
 var input-path:char[];
 main(arg-c:intc, arg-v:char[][]):intc @main {
    if (arg-c < 3) {

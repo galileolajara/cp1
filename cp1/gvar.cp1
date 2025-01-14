@@ -1,6 +1,6 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
-{at(:cp1)
+using (:cp1) {
 :gvar-flags[#0, #no-decl = 1]:u8;
 :gvar[#nil = -1, #0]:i32 {
    process(g:this):bool {
@@ -45,7 +45,7 @@ expr-gvar(at:at, name:id):expr-i {
    e.name = name;
    return e-idx;
 }
-{at(:expr-i)
+using (:expr-i) {
    value-gvar(g:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline {
       var e:expr-gvar = g.ptr();
       +gvar = e.gvar.ptr();

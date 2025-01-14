@@ -1,6 +1,6 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
-{at(:cp1)
+using (:cp1) {
 :at-map(data:u64[(#hash-table-size + 7) >> 3]) {
    init(m:this);
    get-or-insert(m:this, parent:at, type:name-type, name:id, val:i32):i32;
@@ -72,7 +72,7 @@ var at-map:at-map+;
    val:value+,
 #endif
 );
-{at(:lvar)
+using (:lvar) {
 #if(compiler)
    ptr(l:this):lvar-data @inline {
       return .ctx-func.lvar-v[l];

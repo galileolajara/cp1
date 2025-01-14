@@ -1,6 +1,6 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
-{at(:cp1)
+using (:cp1) {
 :str[#nil = -1, #0]:i32;
 var str-c:i32;
 var str-cap:i32;
@@ -31,7 +31,7 @@ expr-str(prev:expr-i):expr-i {
    }
 }
 write-str-node(len:i32, ptr:ref);
-{at(:expr-i)
+using (:expr-i) {
    wr-str(expr:expr, w:wtr, header:bool) @case.wr() @inline {
       var e:expr-str = expr;
       w.n(e.node-c);

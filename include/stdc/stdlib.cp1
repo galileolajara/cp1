@@ -1,6 +1,6 @@
 {include(<stdlib.h>)
    using 'c = :stdc;
-   {at(:stdc)
+   using (:stdc) {
       malloc(size:usz):ref @real-name(malloc) @no-decl;
       malloc-one(val:ref) @decl('<#define _Nstdc_Pmalloc_one_1(var) var = malloc(sizeof(var[0]))>);
       malloc-arr(val:ref, count:usz) @decl('<#define _Nstdc_Pmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))>);

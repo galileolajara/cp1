@@ -1,6 +1,6 @@
 using 'cp1 = :cp1;
-{at(:cp1)
-{at(:stmt-space)
+using (:cp1) {
+using (:stmt-space) {
    wr-while(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
       var s:stmt-while = stmt;
       s.expr.wr(w, header);
@@ -34,7 +34,7 @@ using 'cp1 = :cp1;
       space.stmt-push(s.base, 0, 0, 0, 0, #while-end);
    }
 }
-{at(:stmt)
+using (:stmt) {
    write-while(stmt:stmt) @case.write() @inline {
       var s:stmt-while = stmt;
       .nest-stack-id-v[.nest-stack-c] = .nest-id++;

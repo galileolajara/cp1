@@ -1,9 +1,9 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
-{at(:cp1)
+using (:cp1) {
 var switch-stack-v:stmt-switch[64];
 var switch-stack-c:u8;
-{at(:stmt-space)
+using (:stmt-space) {
    wr-switch(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
       var s:stmt-switch = stmt;
       s.expr.wr(w, header);
@@ -64,7 +64,7 @@ var switch-stack-c:u8;
 :case-stack(cas:stmt-case, defaul:stmt-default) @union;
 var case-stack-v:case-stack+[64];
 var case-stack-c:u8;
-{at(:stmt)
+using (:stmt) {
    write-switch(stmt:stmt) @case.write() @inline {
       var s:stmt-switch = stmt;
       .out.printf("switch(");

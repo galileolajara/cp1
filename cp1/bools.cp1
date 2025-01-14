@@ -1,5 +1,5 @@
 using 'cp1 = :cp1;
-{at(:cp1)
+using (:cp1) {
 expr-bools(left:expr-i, right:expr-i, type:bools):expr-i {
    quick-alloc-one(+(e:expr-bools));
    +e-idx = expr-push(e.base, #bools);
@@ -27,7 +27,7 @@ expr-bools-add(bools:expr-i, right:expr-i):expr-i {
       e = r.n1():bools;
    }
 }
-{at(:expr-i)
+using (:expr-i) {
    type-bools(expr:expr, at:at&) @case.type() @inline {
       at = basic-type(#bool);
    }

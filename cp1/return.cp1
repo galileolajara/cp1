@@ -1,11 +1,11 @@
 using 'cp1 = :cp1;
-{at(:cp1)
+using (:cp1) {
 stmt-return(e:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
    quick-alloc-one(+(s:stmt-return));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #return);
    s.expr = e;
 }
-{at(:stmt-space)
+using (:stmt-space) {
    wr-return(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
       var s:stmt-return = stmt;
       s.expr.wr(w, header);
@@ -16,7 +16,7 @@ stmt-return(e:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #return);
    }
 }
-{at(:stmt)
+using (:stmt) {
    write-return(stmt:stmt) @case.write() @inline {
       var s:stmt-return = stmt;
       if (s.expr == #nil) {

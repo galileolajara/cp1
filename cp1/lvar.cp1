@@ -1,6 +1,6 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
-{at(:cp1)
+using (:cp1) {
 :lvar[#nil = -1, #0]:i32 {
    rd(l:this&, r:rdr) @inline {
       l = (r.n() - 1):lvar;
@@ -93,7 +93,7 @@ expr-lvar(name:id, decl:u8, row:i32, col:i32):expr-i {
       return e-idx;
    }
 }
-{at(:expr-i)
+using (:expr-i) {
    write-lvar(expr:expr) @case.write() @inline {
       var e:expr-lvar = expr;
       e.lvar.ptr().decl.write-lvar(e.lvar);
