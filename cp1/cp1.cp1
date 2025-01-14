@@ -60,11 +60,11 @@ get-compiler(bin:char[], ninja-f'c:file) {
 }
 :cmd[#c, #run]:u8;
 print-usage(bin:char[], cmd:cmd) {
-   {switch(cmd)
-      {case(#c)
+   switch (cmd) {
+      case (#c) {
          print-c-usage(bin);
       }
-      {case(#run)
+      case (#run) {
          print-run-usage(bin);
       }
    }

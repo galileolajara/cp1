@@ -200,7 +200,7 @@ decl-func-end(row:i32, col:i32) {
       }
    }
    if ((.decl-func-flags & #case) != #0) {
-      f.case = .decl-func-case;
+      f.cas = .decl-func-case;
    }
    // f.at.ptr().func-c ++;
    .decl-var.name = .decl-func-name;

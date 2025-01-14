@@ -28,35 +28,35 @@ expr-assign(left:expr-i, right:expr-i, type:assign):expr-i {
    write-assign(expr:expr) @case.write() @inline {
       {+e:expr-assign = expr}
       e.left.write-value(e.left-val);
-      {switch(e.type)
-         {case(#eq)
+      switch (e.type) {
+         case (#eq) {
             .out.printf(" = ");
          }
-         {case(#plus-eq)
+         case (#plus-eq) {
             .out.printf(" += ");
          }
-         {case(#minus-eq)
+         case (#minus-eq) {
             .out.printf(" -= ");
          }
-         {case(#mul-eq)
+         case (#mul-eq) {
             .out.printf(" *= ");
          }
-         {case(#div-eq)
+         case (#div-eq) {
             .out.printf(" /= ");
          }
-         {case(#lshift-eq)
+         case (#lshift-eq) {
             .out.printf(" <<= ");
          }
-         {case(#rshift-eq)
+         case (#rshift-eq) {
             .out.printf(" >>= ");
          }
-         {case(#and-eq)
+         case (#and-eq) {
             .out.printf(" &= ");
          }
-         {case(#or-eq)
+         case (#or-eq) {
             .out.printf(" |= ");
          }
-         {case(#xor-eq)
+         case (#xor-eq) {
             .out.printf(" ^= ");
          }
       }

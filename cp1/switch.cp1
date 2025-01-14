@@ -61,7 +61,7 @@ using 'c = :stdc;
       space.stmt-push(s.base, 0, 0, 0, 0, #switch-end);
    }
 }
-:case-stack(case:stmt-case, default:stmt-default) @union;
+:case-stack(cas:stmt-case, defaul:stmt-default) @union;
 {gvar case-stack-v:case-stack+[64]}
 {gvar case-stack-c:u8}
 {at(:stmt)
@@ -111,7 +111,7 @@ using 'c = :stdc;
             +func-i = f.func-v[i];
             +func = func-i.ptr();
             if ((func.flags & #case) != #0) {
-               if (func.case == func-name) {
+               if (func.cas == func-name) {
                   // 'c.out.printf("found function ':%s' to be used as case in switch\n", func.decl.name.str());
                   +ci = case-c++;
                   if (case-cap <= case-c) {
@@ -177,13 +177,13 @@ using 'c = :stdc;
          s.expr-v[i].expr.write-value(s.expr-v[i].val);
          .out.printf(":;\n");
       }
-      .case-stack-v[.case-stack-c++].case = s;
+      .case-stack-v[.case-stack-c++].cas = s;
    }
    process-case(stmt:stmt, ok:bool&) @case.process() @inline {
       {+s:stmt-case = stmt}
-      +switch = .switch-stack-v[.switch-stack-c - 1];
-      if (switch.val.type != #nil) {
-         +type-i = switch.val.type;
+      +switc = .switch-stack-v[.switch-stack-c - 1];
+      if (switc.val.type != #nil) {
+         +type-i = switc.val.type;
          +type = type-i.ptr();
          if (type.def == #enum) {
             {do{+i = 0}{(s.expr-c) i++}
@@ -208,8 +208,8 @@ using 'c = :stdc;
    }
    write-case-end(stmt:stmt) @case.write() @inline {
       {+s:stmt-case-end = stmt}
-      +case = .case-stack-v[.case-stack-c -= 1].case;
-      if !(case.fall-through) {
+      +cas = .case-stack-v[.case-stack-c -= 1].cas;
+      if !(cas.fall-through) {
          .out.printf("break;\n");
       }
    }
@@ -220,15 +220,15 @@ using 'c = :stdc;
    write-default(stmt:stmt) @case.write() @inline {
       {+s:stmt-default = stmt}
       .out.printf("default:;\n");
-      .case-stack-v[.case-stack-c++].default = s;
+      .case-stack-v[.case-stack-c++].defaul = s;
    }
    process-default(stmt:stmt, ok:bool&) @case.process() @inline {
       ok = true;
    }
    write-default-end(stmt:stmt) @case.write() @inline {
       {+s:stmt-default-end = stmt}
-      +default = .case-stack-v[.case-stack-c -= 1].default;
-      if !(default.fall-through) {
+      +defaul = .case-stack-v[.case-stack-c -= 1].defaul;
+      if !(defaul.fall-through) {
          .out.printf("break;\n");
       }
    }

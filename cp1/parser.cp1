@@ -457,7 +457,7 @@ write-func(w:wtr, header:bool) @inline {
          f.real-name.wr(w, header);
       }
       if ((f.flags & #case) != #0) {
-         f.case.wr(w, header);
+         f.cas.wr(w, header);
       }
       if ((f.flags & #decl) != #0) {
          w.n(f.decl-len);
@@ -962,19 +962,19 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   r.pos++;
                   break;
                } elif (r.p1[0] == ''\\) {
-                  {switch(r.p1[1])
-                     {case(''0) }
-                     {case(''\\) }
-                     {case(''\") }
-                     {case(''\') }
-                     {case(''a) }
-                     {case(''b) }
-                     {case(''f) }
-                     {case(''n) }
-                     {case(''r) }
-                     {case(''t) }
-                     {case(''v) }
-                     {default
+                  switch (r.p1[1]) {
+                     case (''0) { }
+                     case (''\\) { }
+                     case (''\") { }
+                     case (''\') { }
+                     case (''a) { }
+                     case (''b) { }
+                     case (''f) { }
+                     case (''n) { }
+                     case (''r) { }
+                     case (''t) { }
+                     case (''v) { }
+                     default {
                         get-row-col(+row, +col, r.ref, in-data);
                         'c.out.printf("%s:%u:%u: Encountered invalid escape sequence in the string: '\\%c'\n", .input-path, row, col, r.p1[1]);
                         'c.exit(#failure);
@@ -1081,24 +1081,24 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          tok.id = lex.get-id(1, 0);
          psr.parse(t, tok);
       } else {
-         {switch(t)
-            // {case(#id-lparen)
+         switch (t) {
+            // case (#id-lparen) {
             //    tok.id = lex.get-id(0, 1);
             //    psr.parse(t, tok);
             // }
-            {case(#char1)
+            case (#char1) {
                {+r:rdr+}
                r.ref = lex.start;
                tok.id = r.p1[2];
                psr.parse(t, tok);
             }
-            {case(#char2)
+            case (#char2) {
                {+r:rdr+}
                r.ref = lex.start;
                tok.id = char-escape-value(r.p1[3]);
                psr.parse(t, tok);
             }
-            {case(#space-at-real-name-str)
+            case (#space-at-real-name-str) {
                // find the '@' character and start counting from there
                {+r-start:rdr+}
                r-start.ref = lex.start;
@@ -1113,26 +1113,26 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                tok.id = lex.get-id(start, 1);
                psr.parse(t, tok);
             }
-            {case(#num-dec)
+            case (#num-dec) {
                tok.id = lex.get-u32-dec();
                psr.parse(t, tok);
             }
-            {case(#num-oct)
+            case (#num-oct) {
                tok.id = lex.get-u32-oct();
                psr.parse(t, tok);
             }
-            {case(#include)
+            case (#include) {
                tok.id = lex.get-include();
                psr.parse(t, tok);
             }
-            {case(#id)
+            case (#id) {
                tok.id = lex.get-id(0, 0);
                if (lex.cursor[0] == ''() {
                   t = #id-lparen;
                }
                psr.parse(t, tok);
             }
-            {default
+            default {
                psr.parse(t, tok);
             }
          }

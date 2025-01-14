@@ -29,20 +29,20 @@ expr-unary(expr:expr-i, type:unary):expr-i {
    }
    write-unary(expr:expr) @case.write() @inline {
       {+e:expr-unary = expr}
-      {switch(e.type)
-         {case(#neg)
+      switch (e.type) {
+         case (#neg) {
             .out.printf("-");
             e.expr.write-value(e.val);
          }
-         {case(#inc)
+         case (#inc) {
             e.expr.write-value(e.val);
             .out.printf("++");
          }
-         {case(#dec)
+         case (#dec) {
             e.expr.write-value(e.val);
             .out.printf("--");
          }
-         {case(#not)
+         case (#not) {
             .out.printf("!");
             e.expr.write-value(e.val);
          }

@@ -434,7 +434,7 @@ read(in-path:char[]) {
          f.real-name.rd(r);
       }
       if ((f.flags & #case) != #0) {
-         f.case.rd(r);
+         f.cas.rd(r);
       }
       if ((f.flags & #decl) != #0) {
          +len = r.n();

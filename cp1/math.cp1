@@ -64,8 +64,8 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
    }
    write-math(expr:expr) @case.write() @inline {
       {+e:expr-math = expr}
-      {switch(e.type)
-         {case(#add)
+      switch (e.type) {
+         case (#add) {
             e.left.write-value(e.left-val);
             .out.printf(" + ");
             e.right.write-value(e.right-val);
@@ -74,7 +74,7 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
          }
-         {case(#sub)
+         case (#sub) {
             e.left.write-value(e.left-val);
             .out.printf(" - ");
             e.right.write-value(e.right-val);
@@ -83,7 +83,7 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
          }
-         {case(#mul)
+         case (#mul) {
             e.left.write-value(e.left-val);
             .out.printf(" * ");
             e.right.write-value(e.right-val);
@@ -92,7 +92,7 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
          }
-         {case(#div)
+         case (#div) {
             e.left.write-value(e.left-val);
             .out.printf(" / ");
             e.right.write-value(e.right-val);
@@ -101,17 +101,17 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
          }
-         {case(#lshift)
+         case (#lshift) {
             e.left.write-value(e.left-val);
             .out.printf(" << ");
             e.right.write-value(e.right-val);
          }
-         {case(#rshift)
+         case (#rshift) {
             e.left.write-value(e.left-val);
             .out.printf(" >> ");
             e.right.write-value(e.right-val);
          }
-         {case(#and)
+         case (#and) {
             e.left.write-value(e.left-val);
             .out.printf(" & ");
             e.right.write-value(e.right-val);
@@ -120,7 +120,7 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
          }
-         {case(#or)
+         case (#or) {
             e.left.write-value(e.left-val);
             .out.printf(" | ");
             e.right.write-value(e.right-val);
@@ -129,7 +129,7 @@ expr-math-add(expr:expr-i, right:expr-i):expr-i {
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
          }
-         {case(#xor)
+         case (#xor) {
             e.left.write-value(e.left-val);
             .out.printf(" ^ ");
             e.right.write-value(e.right-val);

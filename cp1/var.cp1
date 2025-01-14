@@ -69,11 +69,11 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
          }
          return;
       }
-      {switch(var-type)
-         {case(#gvar)
+      switch (var-type) {
+         case (#gvar) {
             .out.printf("_G%s", vd.name.c-name());
          }
-         {case(#fvar)
+         case (#fvar) {
             .out.printf("_F%s", vd.name.c-name());
          }
       }
