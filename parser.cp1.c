@@ -226,20 +226,21 @@
 #define _Ncp1_Ntoken_Cspace_xor_equal_space (_Ncp1_Ntoken_Cspace_or_equal_space + 1)
 #define _Ncp1_Ntoken_Cspace_colon_equal_space (_Ncp1_Ntoken_Cspace_xor_equal_space + 1)
 #define _Ncp1_Ntoken_Cexpoint (_Ncp1_Ntoken_Cspace_colon_equal_space + 1)
-#define _Ncp1_Ntoken_Clcbrace_do (_Ncp1_Ntoken_Cexpoint + 1)
-#define _Ncp1_Ntoken_Cwhile (_Ncp1_Ntoken_Clcbrace_do + 1)
+#define _Ncp1_Ntoken_Cloop (_Ncp1_Ntoken_Cexpoint + 1)
+#define _Ncp1_Ntoken_Clcbrace_lparen (_Ncp1_Ntoken_Cloop + 1)
+#define _Ncp1_Ntoken_Cwhile (_Ncp1_Ntoken_Clcbrace_lparen + 1)
 #define _Ncp1_Ntoken_Cif (_Ncp1_Ntoken_Cwhile + 1)
 #define _Ncp1_Ntoken_Cspace_elif (_Ncp1_Ntoken_Cif + 1)
 #define _Ncp1_Ntoken_Cspace_else (_Ncp1_Ntoken_Cspace_elif + 1)
-#define _Ncp1_Ntoken_Clcbrace_switch (_Ncp1_Ntoken_Cspace_else + 1)
-#define _Ncp1_Ntoken_Cspace_at_fall_through (_Ncp1_Ntoken_Clcbrace_switch + 1)
-#define _Ncp1_Ntoken_Clcbrace_case (_Ncp1_Ntoken_Cspace_at_fall_through + 1)
-#define _Ncp1_Ntoken_Clcbrace_default (_Ncp1_Ntoken_Clcbrace_case + 1)
-#define _Ncp1_Ntoken_Ccontinue (_Ncp1_Ntoken_Clcbrace_default + 1)
+#define _Ncp1_Ntoken_Cswitch (_Ncp1_Ntoken_Cspace_else + 1)
+#define _Ncp1_Ntoken_Cspace_at_fall_through (_Ncp1_Ntoken_Cswitch + 1)
+#define _Ncp1_Ntoken_Ccase (_Ncp1_Ntoken_Cspace_at_fall_through + 1)
+#define _Ncp1_Ntoken_Cdefault (_Ncp1_Ntoken_Ccase + 1)
+#define _Ncp1_Ntoken_Ccontinue (_Ncp1_Ntoken_Cdefault + 1)
 #define _Ncp1_Ntoken_Cbreak (_Ncp1_Ntoken_Ccontinue + 1)
 #define _Ncp1_Ntoken_Creturn (_Ncp1_Ntoken_Cbreak + 1)
-#define _Ncp1_Ntoken_Clcbrace_plus_or_space (_Ncp1_Ntoken_Creturn + 1)
-#define _Ncp1_Ntoken_Cspace_at_extern (_Ncp1_Ntoken_Clcbrace_plus_or_space + 1)
+#define _Ncp1_Ntoken_Cvar (_Ncp1_Ntoken_Creturn + 1)
+#define _Ncp1_Ntoken_Cspace_at_extern (_Ncp1_Ntoken_Cvar + 1)
 #define _Ncp1_Ntoken_Cspace_at_union (_Ncp1_Ntoken_Cspace_at_extern + 1)
 #define _Ncp1_Ntoken_Clcbrace_gvar_space (_Ncp1_Ntoken_Cspace_at_union + 1)
 typedef int32_t _Ncp1_Nfunc;
@@ -376,7 +377,7 @@ _Ncp1_Nfunc_flags _Fflags;
 _Ncp1_Nid _Freal_name;
 char* _Fdecl_str;
 int32_t _Fdecl_len;
-_Ncp1_Nid _Fcase;
+_Ncp1_Nid _Fcas;
 struct _Ncp1_Ndecl_var_data _Fdecl;
 struct _Ncp1_Nstmt_space* _Fstmt_space;
 _Ncp1_Nlvar _Flvar_c;
@@ -683,7 +684,7 @@ struct _Ncp1_Nstmt_do_end* _Fend;
 struct _Ncp1_Nstmt_while_end;
 struct _Ncp1_Nstmt_while_end {
 struct _Ncp1_Nstmt _Fbase;
-struct _Ncp1_Nstmt_while* _Fwhile;
+struct _Ncp1_Nstmt_while* _Fwhil;
 };
 struct _Ncp1_Nstmt_while;
 struct _Ncp1_Nstmt_while {
@@ -695,7 +696,7 @@ struct _Ncp1_Nstmt_while_end* _Fend;
 union _Ncp1_Nnest;
 union _Ncp1_Nnest {
 struct _Ncp1_Nstmt_do* _Fdo;
-struct _Ncp1_Nstmt_while* _Fwhile;
+struct _Ncp1_Nstmt_while* _Fwhil;
 void* _Fref;
 };
 struct _Ncp1_Nstmt_if_else;
@@ -754,6 +755,7 @@ extern int32_t _Grow;
 extern int32_t _Gcol;
 extern int32_t _Glast_row;
 extern int32_t _Glast_col;
+_Ncp1_Ntoken _Glast_token;
 int32_t _Gid_c;
 uint8_t* _Gid_in_header_v;
 uint32_t* _Gid_in_header_idx_v;
@@ -1135,19 +1137,20 @@ case _Ncp1_Ntoken_Cspace_or_equal_space: return "space-or-equal-space";
 case _Ncp1_Ntoken_Cspace_xor_equal_space: return "space-xor-equal-space";
 case _Ncp1_Ntoken_Cspace_colon_equal_space: return "space-colon-equal-space";
 case _Ncp1_Ntoken_Cexpoint: return "expoint";
-case _Ncp1_Ntoken_Clcbrace_do: return "lcbrace-do";
+case _Ncp1_Ntoken_Cloop: return "loop";
+case _Ncp1_Ntoken_Clcbrace_lparen: return "lcbrace-lparen";
 case _Ncp1_Ntoken_Cwhile: return "while";
 case _Ncp1_Ntoken_Cif: return "if";
 case _Ncp1_Ntoken_Cspace_elif: return "space-elif";
 case _Ncp1_Ntoken_Cspace_else: return "space-else";
-case _Ncp1_Ntoken_Clcbrace_switch: return "lcbrace-switch";
+case _Ncp1_Ntoken_Cswitch: return "switch";
 case _Ncp1_Ntoken_Cspace_at_fall_through: return "space-at-fall-through";
-case _Ncp1_Ntoken_Clcbrace_case: return "lcbrace-case";
-case _Ncp1_Ntoken_Clcbrace_default: return "lcbrace-default";
+case _Ncp1_Ntoken_Ccase: return "case";
+case _Ncp1_Ntoken_Cdefault: return "default";
 case _Ncp1_Ntoken_Ccontinue: return "continue";
 case _Ncp1_Ntoken_Cbreak: return "break";
 case _Ncp1_Ntoken_Creturn: return "return";
-case _Ncp1_Ntoken_Clcbrace_plus_or_space: return "lcbrace-plus-or-space";
+case _Ncp1_Ntoken_Cvar: return "var";
 case _Ncp1_Ntoken_Cspace_at_extern: return "space-at-extern";
 case _Ncp1_Ntoken_Cspace_at_union: return "space-at-union";
 case _Ncp1_Ntoken_Clcbrace_gvar_space: return "lcbrace-gvar-space";
@@ -1588,6 +1591,7 @@ _Grow = _Ltok_30._Frow;
 _Gcol = _Ltok_30._Fcol;
 if(((_Lt_31 >= _Ncp1_Ntoken_Cid_colon) && (_Lt_31 < _Ncp1_Ntoken_Cid))) {
 _Ltok_30._Fid = _Ncp1_Nlexer_Pget_id_3(&_Llex_27, 1, 0);
+_Glast_token = _Lt_31;
 cp1Parse(_Lpsr_26, _Lt_31, &_Ltok_30);
 } else {
 switch(_Lt_31) {
@@ -1595,12 +1599,14 @@ case _Ncp1_Ntoken_Cchar1:;
 union _Ncp1_Nrdr _Lr_33;
 _Lr_33._Fref = _Llex_27._Fstart;
 _Ltok_30._Fid = _Lr_33._Fp1[2];
+_Glast_token = _Lt_31;
 cp1Parse(_Lpsr_26, _Lt_31, &_Ltok_30);
 break;
 case _Ncp1_Ntoken_Cchar2:;
 union _Ncp1_Nrdr _Lr_34;
 _Lr_34._Fref = _Llex_27._Fstart;
 _Ltok_30._Fid = _Ncp1_Pchar_escape_value_1(_Lr_34._Fp1[3]);
+_Glast_token = _Lt_31;
 cp1Parse(_Lpsr_26, _Lt_31, &_Ltok_30);
 break;
 case _Ncp1_Ntoken_Cspace_at_real_name_str:;
@@ -1618,18 +1624,22 @@ continue_6:;
 }
 break_6:;
 _Ltok_30._Fid = _Ncp1_Nlexer_Pget_id_3(&_Llex_27, _Lstart_36, 1);
+_Glast_token = _Lt_31;
 cp1Parse(_Lpsr_26, _Lt_31, &_Ltok_30);
 break;
 case _Ncp1_Ntoken_Cnum_dec:;
 _Ltok_30._Fid = _Ncp1_Nlexer_Pget_u32_dec_1(&_Llex_27);
+_Glast_token = _Lt_31;
 cp1Parse(_Lpsr_26, _Lt_31, &_Ltok_30);
 break;
 case _Ncp1_Ntoken_Cnum_oct:;
 _Ltok_30._Fid = _Ncp1_Nlexer_Pget_u32_oct_1(&_Llex_27);
+_Glast_token = _Lt_31;
 cp1Parse(_Lpsr_26, _Lt_31, &_Ltok_30);
 break;
 case _Ncp1_Ntoken_Cinclude:;
 _Ltok_30._Fid = _Ncp1_Nlexer_Pget_include_1(&_Llex_27);
+_Glast_token = _Lt_31;
 cp1Parse(_Lpsr_26, _Lt_31, &_Ltok_30);
 break;
 case _Ncp1_Ntoken_Cid:;
@@ -1637,9 +1647,11 @@ _Ltok_30._Fid = _Ncp1_Nlexer_Pget_id_3(&_Llex_27, 0, 0);
 if(_Llex_27._Fcursor[0] == '(') {
 _Lt_31 = _Ncp1_Ntoken_Cid_lparen;
 }
+_Glast_token = _Lt_31;
 cp1Parse(_Lpsr_26, _Lt_31, &_Ltok_30);
 break;
 default:;
+_Glast_token = _Lt_31;
 cp1Parse(_Lpsr_26, _Lt_31, &_Ltok_30);
 break;
 }
@@ -1664,6 +1676,7 @@ break_7:;
 continue_4:;
 }
 break_4:;
+_Glast_token = _Ncp1_Ntoken_Cnil;
 cp1Parse(_Lpsr_26, _Ncp1_Ntoken_Cnil, &_Ltok_30);
 _Ncp1_Nparser_Pfree_1(_Lpsr_26);
 _Lw_begin_38._Fref = qalloc((_Lin_size_4 << 2) + 1024);
@@ -2331,7 +2344,7 @@ if(((*_Lf_3)._Fflags & _Ncp1_Nfunc_flags_Creal_name) != _Ncp1_Nfunc_flags_C0) {
 _Ncp1_Nid_Pwr_3((*_Lf_3)._Freal_name, _Lw_0, _Lheader_1);
 }
 if(((*_Lf_3)._Fflags & _Ncp1_Nfunc_flags_Ccase) != _Ncp1_Nfunc_flags_C0) {
-_Ncp1_Nid_Pwr_3((*_Lf_3)._Fcase, _Lw_0, _Lheader_1);
+_Ncp1_Nid_Pwr_3((*_Lf_3)._Fcas, _Lw_0, _Lheader_1);
 }
 if(((*_Lf_3)._Fflags & _Ncp1_Nfunc_flags_Cdecl) != _Ncp1_Nfunc_flags_C0) {
 Fputnum(_Lw_0, (*_Lf_3)._Fdecl_len);
@@ -2447,7 +2460,7 @@ if(_Gdecl_func_real_name == _Ncp1_Nid_Cnil) {
 }
 }
 if((_Gdecl_func_flags & _Ncp1_Nfunc_flags_Ccase) != _Ncp1_Nfunc_flags_C0) {
-(*_Lf_4)._Fcase = _Gdecl_func_case;
+(*_Lf_4)._Fcas = _Gdecl_func_case;
 }
 _Gdecl_var._Fname = _Gdecl_func_name;
 _Ncp1_Ndecl_var_data_Pcopy_from_2(&(*_Lf_4)._Fdecl, &_Gdecl_var);
@@ -3596,7 +3609,7 @@ void _Ncp1_Pstmt_while_set_6(_Ncp1_Nexpr_i _Lexpr_0, int32_t _Lbegin_row_1, int3
 struct _Ncp1_Nstmt_while* _Ls_6;
 _Ncp1_Pquick_alloc_one_1(_Ls_6);
 _Gnest_stack_id_v[_Gnest_stack_c] = _Gnest_id++;
-_Gnest_stack_ptr_v[_Gnest_stack_c]._Fwhile = _Ls_6;
+_Gnest_stack_ptr_v[_Gnest_stack_c]._Fwhil = _Ls_6;
 _Gnest_stack_c++;
 (*_Ls_6)._Fexpr = _Lexpr_0;
 (*_Ls_6)._Fcontinu = _Lcontinu_5;

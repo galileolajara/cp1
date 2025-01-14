@@ -410,6 +410,7 @@ decl-at-end() {
       // return include;
    }
 }
+{gvar last-token:token}
 :parser() {
    alloc():parser;
    free(psr:this);
@@ -1079,23 +1080,22 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       // 'c.out.flush();
       if (&&, t >= #id-colon, t < #id) {
          tok.id = lex.get-id(1, 0);
+         .last-token = t;
          psr.parse(t, tok);
       } else {
          switch (t) {
-            // case (#id-lparen) {
-            //    tok.id = lex.get-id(0, 1);
-            //    psr.parse(t, tok);
-            // }
             case (#char1) {
                var r:rdr+;
                r.ref = lex.start;
                tok.id = r.p1[2];
+               .last-token = t;
                psr.parse(t, tok);
             }
             case (#char2) {
                var r:rdr+;
                r.ref = lex.start;
                tok.id = char-escape-value(r.p1[3]);
+               .last-token = t;
                psr.parse(t, tok);
             }
             case (#space-at-real-name-str) {
@@ -1111,18 +1111,22 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   }
                }
                tok.id = lex.get-id(start, 1);
+               .last-token = t;
                psr.parse(t, tok);
             }
             case (#num-dec) {
                tok.id = lex.get-u32-dec();
+               .last-token = t;
                psr.parse(t, tok);
             }
             case (#num-oct) {
                tok.id = lex.get-u32-oct();
+               .last-token = t;
                psr.parse(t, tok);
             }
             case (#include) {
                tok.id = lex.get-include();
+               .last-token = t;
                psr.parse(t, tok);
             }
             case (#id) {
@@ -1130,9 +1134,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                if (lex.cursor[0] == ''() {
                   t = #id-lparen;
                }
+               .last-token = t;
                psr.parse(t, tok);
             }
             default {
+               .last-token = t;
                psr.parse(t, tok);
             }
          }
@@ -1151,6 +1157,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          pos++;
       }
    }
+   .last-token = #nil;
    psr.parse(#nil, tok);
    psr.free();
    // 'c.out.printf("parsing finished\n");

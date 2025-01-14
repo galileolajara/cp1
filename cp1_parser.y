@@ -13,7 +13,7 @@
       if (a != YY_ERROR_ACTION) {
          if (first) {
             first = false;
-            printf("%s:%u:%u: syntax error, expected tokens are: #%s", input_path, _Grow, _Gcol, _Ncp1_Ptoken_name_1(i));
+            printf("%s:%u:%u: syntax error, got token #%s but expected tokens are: #%s", input_path, _Grow, _Gcol, _Ncp1_Ptoken_name_1(_Glast_token), _Ncp1_Ptoken_name_1(i));
          } else {
             printf(", #%s", _Ncp1_Ptoken_name_1(i));
          }
@@ -663,9 +663,9 @@ indexExpr(l) ::= valueonly(r) lbracket_or_space indexExpr_exprs(e) rbracket_or_c
 stmt ::= stmt_do.
 stmt_do_begin ::= LOOP.
    { _Ncp1_Pstmt_do_begin_0(); }
-/* do_expr_val(l) ::= lparen_or_space RPAREN.
-   { l.basic.id = -1; } */
-/* do_expr_val(l) ::= lparen_or_space expr(e) rparen_or_space.
+do_expr_val(l) ::= lparen_or_space RPAREN.
+   { l.basic.id = -1; }
+do_expr_val(l) ::= lparen_or_space expr(e) rparen_or_space.
    { l.basic.id = e.basic.id; }
 do_expr ::= begin_pos(begin) do_expr_val(e) end_pos(end).
    { _Ncp1_Pstmt_do_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, 0); }
@@ -673,16 +673,22 @@ do_continue_begin(l) ::= .
    { l.pointer = _Ncp1_Pstmt_space_begin_detach_0(); } 
 do_continue_end ::= .
    { _Ncp1_Pstmt_space_end_0(); } 
-do_expr ::= LCBRACE begin_pos(begin) do_expr_val(e) end_pos(end) do_continue_begin(c) stmts_optional do_continue_end.
-   { _Ncp1_Pstmt_do_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, c.pointer); } */
+do_expr ::= LCBRACE_LPAREN begin_pos(begin) do_expr_val(e) end_pos(end) do_continue_begin(c) stmts_optional do_continue_end.
+   { _Ncp1_Pstmt_do_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, c.pointer); }
 loop_forever ::= .
    { _Ncp1_Pstmt_do_set_6(-1, 0, 0, 0, 0, 0); }
-/* stmt_do ::= stmt_do_begin SPACE do_expr stmts_optional.
-   { _Ncp1_Pstmt_do_end_0(); } */
+/* loop_part2 ::= do_expr SPACE stmts_optional2.
+loop_part2 ::= loop_forever stmts_optional3. */
+stmt_do ::= stmt_do_begin SPACE do_expr SPACE stmts_optional2.
+   { _Ncp1_Pstmt_do_end_0(); }
+stmt_do ::= stmt_do_begin SPACE stmt_lvars SCOLON SPACE do_expr SPACE stmts_optional2.
+   { _Ncp1_Pstmt_do_end_0(); }
 stmt_do ::= stmt_do_begin SPACE stmt_lvars SCOLON SPACE loop_forever stmts_optional2.
    { _Ncp1_Pstmt_do_end_0(); }
 stmt_do ::= stmt_do_begin SPACE loop_forever stmts_optional2.
    { _Ncp1_Pstmt_do_end_0(); }
+/* stmt_do ::= stmt_do_begin loop_part2.
+   { _Ncp1_Pstmt_do_end_0(); } */
 
 stmt ::= stmt_while.
 stmt_while_begin ::= WHILE SPACE.
@@ -701,7 +707,7 @@ while_continue_begin(l) ::= .
    { l.pointer = _Ncp1_Pstmt_space_begin_detach_0(); } 
 while_continue_end ::= .
    { _Ncp1_Pstmt_space_end_0(); } 
-while_expr ::= LCBRACE begin_pos(begin) while_expr_val(e) end_pos(end) while_continue_begin(c) stmts_optional while_continue_end.
+while_expr ::= LCBRACE_LPAREN begin_pos(begin) while_expr_val(e) end_pos(end) while_continue_begin(c) stmts_optional while_continue_end.
    { _Ncp1_Pstmt_while_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, c.pointer); }
 stmt_while ::= stmt_while_begin space_begin while_expr SPACE stmts_optional2.
    { _Ncp1_Pstmt_while_end_0(); }
@@ -838,6 +844,9 @@ stmts_optional ::= SPACE stmts_expr rcbrace_or_scolon.
 stmts_optional2 ::= lcbrace_or_space RCBRACE.
 stmts_optional2 ::= lcbrace_or_space stmts_brace rcbrace_or_space.
 stmts_optional2 ::= lcbrace_or_space stmts_expr rcbrace_or_scolon.
+/* stmts_optional3 ::= RCBRACE.
+stmts_optional3 ::= stmts_brace rcbrace_or_space.
+stmts_optional3 ::= stmts_expr rcbrace_or_scolon. */
 decl_struct_attr ::= SPACE_AT_NO_DECL.
    { _Ncp1_Pstruct_attr_no_decl_0(); }
 decl_struct_attr ::= SPACE_AT_REAL_NAME_STR(e).

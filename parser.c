@@ -63,6 +63,7 @@ void _Ncp1_Ppreprocess_init_0() {
 }
 */
 
+extern uint8_t _Glast_token;
 extern char* _Glock_path;
 void cleanup() {
    if (_Glock_path != 0) {

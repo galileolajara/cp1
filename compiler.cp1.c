@@ -302,7 +302,7 @@ _Ncp1_Nfunc_flags _Fflags;
 _Ncp1_Nid _Freal_name;
 char* _Fdecl_str;
 int32_t _Fdecl_len;
-_Ncp1_Nid _Fcase;
+_Ncp1_Nid _Fcas;
 struct _Ncp1_Ndecl_var_data _Fdecl;
 struct _Ncp1_Nstmt_space _Fstmt_space;
 _Ncp1_Nlvar _Flvar_c;
@@ -657,7 +657,7 @@ struct _Ncp1_Nstmt_do_end* _Fend;
 struct _Ncp1_Nstmt_while_end;
 struct _Ncp1_Nstmt_while_end {
 struct _Ncp1_Nstmt _Fbase;
-struct _Ncp1_Nstmt_while* _Fwhile;
+struct _Ncp1_Nstmt_while* _Fwhil;
 };
 struct _Ncp1_Nstmt_while;
 struct _Ncp1_Nstmt_while {
@@ -669,7 +669,7 @@ struct _Ncp1_Nstmt_while_end* _Fend;
 union _Ncp1_Nnest;
 union _Ncp1_Nnest {
 struct _Ncp1_Nstmt_do* _Fdo;
-struct _Ncp1_Nstmt_while* _Fwhile;
+struct _Ncp1_Nstmt_while* _Fwhil;
 void* _Fref;
 };
 struct _Ncp1_Nstmt_continue;
@@ -690,8 +690,8 @@ struct _Ncp1_Nvalue _Fval;
 };
 union _Ncp1_Ncase_stack;
 union _Ncp1_Ncase_stack {
-struct _Ncp1_Nstmt_case* _Fcase;
-struct _Ncp1_Nstmt_default* _Fdefault;
+struct _Ncp1_Nstmt_case* _Fcas;
+struct _Ncp1_Nstmt_default* _Fdefaul;
 };
 struct _Ncp1_Nmap _Gid_map;
 struct _Ncp1_Nmap _Ginclude_map;
@@ -2054,7 +2054,7 @@ if(((*_Lf_70)._Fflags & _Ncp1_Nfunc_flags_Creal_name) != _Ncp1_Nfunc_flags_C0) {
 _Ncp1_Nid_Prd_2(&(*_Lf_70)._Freal_name, &_Lr_7);
 }
 if(((*_Lf_70)._Fflags & _Ncp1_Nfunc_flags_Ccase) != _Ncp1_Nfunc_flags_C0) {
-_Ncp1_Nid_Prd_2(&(*_Lf_70)._Fcase, &_Lr_7);
+_Ncp1_Nid_Prd_2(&(*_Lf_70)._Fcas, &_Lr_7);
 }
 if(((*_Lf_70)._Fflags & _Ncp1_Nfunc_flags_Cdecl) != _Ncp1_Nfunc_flags_C0) {
 uint32_t _Llen_78;
@@ -4510,16 +4510,16 @@ _Ncp1_Pquick_alloc_one_1(_Lspace2_3);
 _Ncp1_Nstmt_space_Prd_3(_Lspace2_3, _Lr_1, _Lspace_0);
 }
 _Gnest_stack_id_v[_Gnest_stack_c] = _Gnest_id++;
-_Gnest_stack_ptr_v[_Gnest_stack_c]._Fwhile = _Ls_2;
+_Gnest_stack_ptr_v[_Gnest_stack_c]._Fwhil = _Ls_2;
 _Gnest_stack_c++;
 }
 inline void _Ncp1_Nstmt_space_Prd_while_end_2(struct _Ncp1_Nstmt_space* _Lspace_0, union _Ncp1_Nrdr* _Lr_1) {
-struct _Ncp1_Nstmt_while* _Lwhile_2;
+struct _Ncp1_Nstmt_while* _Lwhil_2;
 struct _Ncp1_Nstmt_while_end* _Ls_3;
-_Lwhile_2 = _Gnest_stack_ptr_v[(_Gnest_stack_c -= 1)]._Fwhile;
+_Lwhil_2 = _Gnest_stack_ptr_v[(_Gnest_stack_c -= 1)]._Fwhil;
 _Ncp1_Pquick_alloc_one_1(_Ls_3);
-(*_Ls_3)._Fwhile = _Lwhile_2;
-(*_Lwhile_2)._Fend = _Ls_3;
+(*_Ls_3)._Fwhil = _Lwhil_2;
+(*_Lwhil_2)._Fend = _Ls_3;
 _Ncp1_Nstmt_space_Pstmt_push_7(_Lspace_0, &(*_Ls_3)._Fbase, 0, 0, 0, 0, _Ncp1_Nstmt_type_Cwhile_end);
 }
 inline void _Ncp1_Nstmt_space_Prd_continue_2(struct _Ncp1_Nstmt_space* _Lspace_0, union _Ncp1_Nrdr* _Lr_1) {
@@ -4619,7 +4619,7 @@ struct _Ncp1_Ndecl_func* _Lfunc_12;
 _Lfunc_i_11 = (*_Lf_6)._Ffunc_v[_Li_10];
 _Lfunc_12 = _Ncp1_Nfunc_Pptr_1(_Lfunc_i_11);
 if(((*_Lfunc_12)._Fflags & _Ncp1_Nfunc_flags_Ccase) != _Ncp1_Nfunc_flags_C0) {
-if((*_Lfunc_12)._Fcase == _Lfunc_name_5) {
+if((*_Lfunc_12)._Fcas == _Lfunc_name_5) {
 int32_t _Lci_13;
 _Lci_13 = _Lcase_c_7++;
 if(_Lcase_cap_8 <= _Lcase_c_7) {
@@ -4718,13 +4718,13 @@ free(_Lcase_v_9);
 }
 inline void _Ncp1_Nstmt_Pprocess_case_2(struct _Ncp1_Nstmt* _Lstmt_0, bool* _Lok_1) {
 struct _Ncp1_Nstmt_case* _Ls_2;
-struct _Ncp1_Nstmt_switch* _Lswitch_3;
+struct _Ncp1_Nstmt_switch* _Lswitc_3;
 _Ls_2 = _Lstmt_0;
-_Lswitch_3 = _Gswitch_stack_v[(_Gswitch_stack_c - 1)];
-if((*_Lswitch_3)._Fval._Ftype != _Ncp1_Nat_Cnil) {
+_Lswitc_3 = _Gswitch_stack_v[(_Gswitch_stack_c - 1)];
+if((*_Lswitc_3)._Fval._Ftype != _Ncp1_Nat_Cnil) {
 _Ncp1_Nat _Ltype_i_4;
 struct _Ncp1_Nat_data* _Ltype_5;
-_Ltype_i_4 = (*_Lswitch_3)._Fval._Ftype;
+_Ltype_i_4 = (*_Lswitc_3)._Fval._Ftype;
 _Ltype_5 = _Ncp1_Nat_Pptr_1(_Ltype_i_4);
 if((*_Ltype_5)._Fdef == _Ncp1_Nat_def_Cenum) {
 int32_t _Li_6;
@@ -4816,7 +4816,7 @@ inline void _Ncp1_Nstmt_Pprocess_while_end_2(struct _Ncp1_Nstmt* _Lstmt_0, bool*
 struct _Ncp1_Nstmt_while_end* _Ls_2;
 struct _Ncp1_Nstmt_space* _Lcontinu_3;
 _Ls_2 = _Lstmt_0;
-_Lcontinu_3 = (*(*_Ls_2)._Fwhile)._Fcontinu;
+_Lcontinu_3 = (*(*_Ls_2)._Fwhil)._Fcontinu;
 if(_Lcontinu_3 != NULL) {
 _Ncp1_Nstmt_space_Pprocess_1(_Lcontinu_3);
 }
@@ -5841,14 +5841,14 @@ continue_0:;
 _Li_2++;
 }
 break_0:;
-_Gcase_stack_v[_Gcase_stack_c++]._Fcase = _Ls_1;
+_Gcase_stack_v[_Gcase_stack_c++]._Fcas = _Ls_1;
 }
 inline void _Ncp1_Nstmt_Pwrite_case_end_1(struct _Ncp1_Nstmt* _Lstmt_0) {
 struct _Ncp1_Nstmt_case_end* _Ls_1;
-struct _Ncp1_Nstmt_case* _Lcase_2;
+struct _Ncp1_Nstmt_case* _Lcas_2;
 _Ls_1 = _Lstmt_0;
-_Lcase_2 = _Gcase_stack_v[(_Gcase_stack_c -= 1)]._Fcase;
-if(!((*_Lcase_2)._Ffall_through)) {
+_Lcas_2 = _Gcase_stack_v[(_Gcase_stack_c -= 1)]._Fcas;
+if(!((*_Lcas_2)._Ffall_through)) {
 fprintf(_Gout, "break;\n");
 }
 }
@@ -5856,14 +5856,14 @@ inline void _Ncp1_Nstmt_Pwrite_default_1(struct _Ncp1_Nstmt* _Lstmt_0) {
 struct _Ncp1_Nstmt_default* _Ls_1;
 _Ls_1 = _Lstmt_0;
 fprintf(_Gout, "default:;\n");
-_Gcase_stack_v[_Gcase_stack_c++]._Fdefault = _Ls_1;
+_Gcase_stack_v[_Gcase_stack_c++]._Fdefaul = _Ls_1;
 }
 inline void _Ncp1_Nstmt_Pwrite_default_end_1(struct _Ncp1_Nstmt* _Lstmt_0) {
 struct _Ncp1_Nstmt_default_end* _Ls_1;
-struct _Ncp1_Nstmt_default* _Ldefault_2;
+struct _Ncp1_Nstmt_default* _Ldefaul_2;
 _Ls_1 = _Lstmt_0;
-_Ldefault_2 = _Gcase_stack_v[(_Gcase_stack_c -= 1)]._Fdefault;
-if(!((*_Ldefault_2)._Ffall_through)) {
+_Ldefaul_2 = _Gcase_stack_v[(_Gcase_stack_c -= 1)]._Fdefaul;
+if(!((*_Ldefaul_2)._Ffall_through)) {
 fprintf(_Gout, "break;\n");
 }
 }
@@ -5903,7 +5903,7 @@ inline void _Ncp1_Nstmt_Pwrite_while_1(struct _Ncp1_Nstmt* _Lstmt_0) {
 struct _Ncp1_Nstmt_while* _Ls_1;
 _Ls_1 = _Lstmt_0;
 _Gnest_stack_id_v[_Gnest_stack_c] = _Gnest_id++;
-_Gnest_stack_ptr_v[_Gnest_stack_c]._Fwhile = _Ls_1;
+_Gnest_stack_ptr_v[_Gnest_stack_c]._Fwhil = _Ls_1;
 _Gnest_stack_c++;
 fprintf(_Gout, "while(");
 _Ncp1_Nexpr_i_Pwrite_1((*_Ls_1)._Fexpr);
@@ -5916,7 +5916,7 @@ struct _Ncp1_Nstmt_space* _Lcontinu_3;
 _Lid_1 = _Gnest_stack_id_v[(_Gnest_stack_c -= 1)];
 _Ls_2 = _Lstmt_0;
 fprintf(_Gout, "continue_%u:;\n", _Lid_1);
-_Lcontinu_3 = (*(*_Ls_2)._Fwhile)._Fcontinu;
+_Lcontinu_3 = (*(*_Ls_2)._Fwhil)._Fcontinu;
 if(_Lcontinu_3 != NULL) {
 _Ncp1_Nstmt_space_Pwrite_1(_Lcontinu_3);
 }
