@@ -7,7 +7,7 @@ using 'c = :stdc;
    }
 }
 :decl-var-type[#gvar, #fvar]:u8;
-{cvar #decl-var-size-limit:i32 = 8}
+#decl-var-size-limit:i32 = 8;
 at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
    +type = vd-type.ptr();
    +parent = type.parent.ptr();
@@ -192,7 +192,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
       }
    }
 }
-{cvar #type-info-star-limit:i32 = 8}
+#type-info-star-limit:i32 = 8;
 :value(ref:i8, paren:bool, type:at, info:type-info+) {
 	set(v:this, ref:i8, paren:bool, type:at, info:type-info) {
 		+c = info.ref-v[info.array-c];
@@ -293,7 +293,7 @@ var decl-var-col:i32;
 // var decl-var-name:id;
 // var decl-var-type:at;
 // var decl-var-type-info:type-info+;
-{cvar #type-info-stack-limit:i32 = 8}
+#type-info-stack-limit:i32 = 8;
 // var stack-type-info:type-info+; // [#type-info-stack-limit]}
 // var stack-type-info-c:i8;
 var decl-var:decl-var-data+;

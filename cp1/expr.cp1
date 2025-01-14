@@ -50,7 +50,7 @@ using 'c = :stdc;
    }
    cp1-name(e:this):char[] @cp1-name;
 }
-{cvar #debug-rd-wr:bool = true}
+#debug-rd-wr:bool = true;
 :expr-i[#nil = -1, #0, #1]:i32 {
    set(e:this, expr:expr, type:expr-type) @inline {
       .expr-v[e] = expr;

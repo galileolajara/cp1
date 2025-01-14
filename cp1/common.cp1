@@ -432,7 +432,7 @@ realloc(r:ref, c:i32, oldc:i32)
       @decl('<# cap = Fpow2gteq((c) + 8)>)
       @inline;
 }
-{cvar #decl-at-name-limit:i32 = 3}
+#decl-at-name-limit:i32 = 3;
 :at-name(id:id, basic:basic-type-id) @union;
 :at-type(struct:struct, enum:enum) @union;
 :at-def[#undefined, #module, #struct, #enum, #basic]:u8;
