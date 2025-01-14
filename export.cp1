@@ -22,7 +22,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
    {+func-name-v:char[256][]}
    {+func-len-v:u8[256]}
    +func-c = 0;
-   {while(pos < in-size)
+   while (pos < in-size) {
       +start = pos;
       {do()
          if (in-data[pos] == ''\n) {
@@ -55,7 +55,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
    +out-f = 'c.fopen(arg-v[2], "w");
    pos = 0;
    +indent = 0;
-   {while(pos < in-size)
+   while (pos < in-size) {
       +start = pos;
       {do()
          if (in-data[pos] == ''\n) {
@@ -80,7 +80,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
                   }
                }
                +name = lparen;
-               {while(line[name - 1] != '' )
+               while (line[name - 1] != '' ) {
                   name--;
                }
                +func-len = lparen - name;

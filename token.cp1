@@ -23,7 +23,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       "{at(:cp1)\n"
       ":token[\n"
       "#nil,\n");
-   {while(pos < in-size)
+   while (pos < in-size) {
       +start = pos;
       {do()
          if (in-data[pos] == ''\n) {

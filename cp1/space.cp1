@@ -44,7 +44,7 @@ using 'c = :stdc;
          .out.printf(";\n");
       }
       +s = space.stmt-first;
-      {while(s != null)
+      while (s != null) {
          s.write();
          s = s.stmt-next;
       }
@@ -90,7 +90,7 @@ using 'c = :stdc;
          space.lvar-v[i].wr(w);
       }
       +stmt = space.stmt-first;
-      {while(stmt != null)
+      while (stmt != null) {
          stmt.type.wr(w);
          if (#debug-rd-wr) {
             w.n1(255);
@@ -174,7 +174,7 @@ using 'c = :stdc;
    }
    process(space:this):bool {
       +s = space.stmt-first;
-      {while(s != null)
+      while (s != null) {
          if !(s.process()) { return false}
          s = s.stmt-next;
       }

@@ -158,7 +158,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
    w.ref = new-data;
 
    +line = 0;
-   {while(r.pos < r-end.pos)
+   while (r.pos < r-end.pos) {
       line++;
       +line-len = 0;
       {do()
@@ -239,7 +239,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
             'c.exit(#failure);
          }
          line++;
-         {while(r.pos < r-end.pos)
+         while (r.pos < r-end.pos) {
             line++;
             +line-len = 0;
             {do()

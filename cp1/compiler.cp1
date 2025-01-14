@@ -620,7 +620,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       .func-main.process-later();
    }
 
-   {while(.process-first != #nil)
+   while (.process-first != #nil) {
       +f-i = .process-first;
       .process-first = #nil;
       .process-last = #nil;
@@ -913,7 +913,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       f.lvars-rd(r);
       f.stmt-space.rd(r, null);
       +s = f.stmt-space.stmt-first;
-      {while(s != null)
+      while (s != null) {
          .ctx-begin-row = s.begin-row;
          .ctx-begin-col = s.begin-col;
          .ctx-end-row = s.end-row;
