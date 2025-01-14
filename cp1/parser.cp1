@@ -410,7 +410,7 @@ decl-at-end() {
       // return include;
    }
 }
-{gvar last-token:token}
+var last-token:token;
 :parser() {
    alloc():parser;
    free(psr:this);
