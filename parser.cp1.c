@@ -33,8 +33,7 @@
 #define _Ncp1_Ntoken_Cspace_at_real_name (_Ncp1_Ntoken_Cspace_at_real_name_str + 1)
 #define _Ncp1_Ntoken_Cspace_at_no_decl (_Ncp1_Ntoken_Cspace_at_real_name + 1)
 #define _Ncp1_Ntoken_Cspace_equal_space (_Ncp1_Ntoken_Cspace_at_no_decl + 1)
-#define _Ncp1_Ntoken_Clcbrace (_Ncp1_Ntoken_Cspace_equal_space + 1)
-#define _Ncp1_Ntoken_Cinclude (_Ncp1_Ntoken_Clcbrace + 1)
+#define _Ncp1_Ntoken_Cinclude (_Ncp1_Ntoken_Cspace_equal_space + 1)
 #define _Ncp1_Ntoken_Cspace_rcbrace (_Ncp1_Ntoken_Cinclude + 1)
 #define _Ncp1_Ntoken_Cquote (_Ncp1_Ntoken_Cspace_rcbrace + 1)
 #define _Ncp1_Ntoken_Cgrave (_Ncp1_Ntoken_Cquote + 1)
@@ -50,7 +49,8 @@
 #define _Ncp1_Ntoken_Clparen_space (_Ncp1_Ntoken_Clparen + 1)
 #define _Ncp1_Ntoken_Cspace_rparen (_Ncp1_Ntoken_Clparen_space + 1)
 #define _Ncp1_Ntoken_Ccomma_space_rparen (_Ncp1_Ntoken_Cspace_rparen + 1)
-#define _Ncp1_Ntoken_Clcbrace_space (_Ncp1_Ntoken_Ccomma_space_rparen + 1)
+#define _Ncp1_Ntoken_Clcbrace (_Ncp1_Ntoken_Ccomma_space_rparen + 1)
+#define _Ncp1_Ntoken_Clcbrace_space (_Ncp1_Ntoken_Clcbrace + 1)
 #define _Ncp1_Ntoken_Ccomma_space_rcbrace (_Ncp1_Ntoken_Clcbrace_space + 1)
 #define _Ncp1_Ntoken_Clbracket (_Ncp1_Ntoken_Ccomma_space_rcbrace + 1)
 #define _Ncp1_Ntoken_Clbracket_space (_Ncp1_Ntoken_Clbracket + 1)
@@ -1045,7 +1045,6 @@ case _Ncp1_Ntoken_Cspace_at_real_name_str: return "space-at-real-name-str";
 case _Ncp1_Ntoken_Cspace_at_real_name: return "space-at-real-name";
 case _Ncp1_Ntoken_Cspace_at_no_decl: return "space-at-no-decl";
 case _Ncp1_Ntoken_Cspace_equal_space: return "space-equal-space";
-case _Ncp1_Ntoken_Clcbrace: return "lcbrace";
 case _Ncp1_Ntoken_Cinclude: return "include";
 case _Ncp1_Ntoken_Cspace_rcbrace: return "space-rcbrace";
 case _Ncp1_Ntoken_Cquote: return "quote";
@@ -1062,6 +1061,7 @@ case _Ncp1_Ntoken_Clparen: return "lparen";
 case _Ncp1_Ntoken_Clparen_space: return "lparen-space";
 case _Ncp1_Ntoken_Cspace_rparen: return "space-rparen";
 case _Ncp1_Ntoken_Ccomma_space_rparen: return "comma-space-rparen";
+case _Ncp1_Ntoken_Clcbrace: return "lcbrace";
 case _Ncp1_Ntoken_Clcbrace_space: return "lcbrace-space";
 case _Ncp1_Ntoken_Ccomma_space_rcbrace: return "comma-space-rcbrace";
 case _Ncp1_Ntoken_Clbracket: return "lbracket";

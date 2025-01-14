@@ -74,8 +74,8 @@ enum_cvar ::= enum_cvar_begin cvar_attrs_optional SPACE_EQUAL_SPACE expr(set).
 enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional.
 enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional SPACE_EQUAL_SPACE expr(set).
    { _Ncp1_Penum_set_cvar_expr_1(set.basic.id); }
-enum_decl_begin ::= LCBRACE(pos) ID_COLON(name).
-   { _Ncp1_Pdecl_at_begin_enum_3(name.basic.id, pos.basic.row, pos.basic.col); }
+enum_decl_begin ::= ID_COLON(name).
+   { _Ncp1_Pdecl_at_begin_enum_3(name.basic.id, name.basic.row, name.basic.col); }
 
 decl_include ::= INCLUDE(e).
    { _Ncp1_Pdecl_include_begin_3(e.basic.id, e.basic.row, e.basic.col); }
@@ -854,9 +854,11 @@ decl_struct ::= struct_decl_begin lparen_or_space RPAREN
    decl_struct_attrs_optional decl_struct_close_or_at.
 decl_struct ::= struct_decl_begin lparen_or_space struct_fvars rparen_or_comma
    decl_struct_attrs_optional decl_struct_close_or_at.
-decl_enum_close_or_at ::= rcbrace_or_space.
+decl_enum_close_or_at ::= SCOLON.
    { _Ncp1_Pdecl_at_end_0(); }
-decl_enum_close_or_at ::= SPACE decls rcbrace_or_space.
+decl_enum_close_or_at ::= SPACE lcbrace_or_space decls rcbrace_or_space.
+   { _Ncp1_Pdecl_at_end_0(); }
+decl_enum_close_or_at ::= SPACE lcbrace_or_space RCBRACE.
    { _Ncp1_Pdecl_at_end_0(); }
 enum_base_begin ::= .
    { _Ncp1_Penum_base_begin_0(); }
