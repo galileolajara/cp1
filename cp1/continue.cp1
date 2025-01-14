@@ -1,11 +1,10 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
-{:stmt-continue(
+:stmt-continue(
    base:stmt+,
    nest:u8,
-   )
-}
+);
 stmt-continue(id:id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
    quick-alloc-one(+(s:stmt-continue));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #continue);

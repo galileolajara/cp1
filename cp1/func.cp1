@@ -79,11 +79,11 @@ using 'c = :stdc;
       }
    }
 }
-{:farg(
+:farg(
    row:i32,
    col:i32,
    decl:decl-var-data+,
-   )
+   ) {
    rd(f:this, r:rdr) {
       f.decl.rd(r);
    }

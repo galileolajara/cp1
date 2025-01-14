@@ -9,12 +9,11 @@ using 'c = :stdc;
 {gvar func-head-outputted-v:func[]}
 {gvar func-body-outputted-c:i32}
 {gvar func-body-outputted-v:func[]}
-{:basic-type(
+:basic-type(
    method-c:i32,
    method-cap:i32,
    method-v:func[],
-   )
-}
+);
 {gvar basic-type:basic-type+[:basic-type-id#COUNT]}
 basic-type(t:basic-type-id):at @inline {
    return t;
@@ -36,14 +35,13 @@ basic-type(t:basic-type-id):at @inline {
       return f.ptr().path;
    }
 }
-{:file-data(
+:file-data(
    path:char[],
    data:ref,
    id-table:id[],
    at-table:at[],
    cvar-table:cvar[],
-   )
-}
+);
 {gvar id-table:id[]}
 {gvar include-table-cap:i32}
 {gvar include-table:include[]}

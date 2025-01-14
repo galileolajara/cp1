@@ -1,13 +1,13 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
-{:rdr(
+:rdr(
    ref:ref,
    pos:usz,
    p1:u8[],
    char:char[],
    p4:u32[],
-   ) @union
+   ) @union {
    n1(r:this):u8 @inline {
       +val = r.p1[0];
       r.pos++;

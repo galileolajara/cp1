@@ -210,10 +210,10 @@ using 'c = :stdc;
    }
 }
 {:expr-flags[#0, #processed = 1]:u8}
-{:expr(
+:expr(
    type:expr-type,
    flags:expr-flags,
-   )
+   ) {
    write(e:this, out'c:file) {
       {switch(e.type)
          {case(#call)
@@ -260,38 +260,32 @@ using 'c = :stdc;
 // }
    cp1-name(e:this):char[] @cp1-name;
 }
-{:expr-lvar(
+:expr-lvar(
    base:expr+,
    lvar:lvar,
-   )
-}
-{:expr-char(
+);
+:expr-char(
    base:expr+,
    value:char,
-   )
-}
-{:expr-bool(
+);
+:expr-bool(
    base:expr+,
    value:bool,
-   )
-}
-{:expr-null(
+);
+:expr-null(
    base:expr+,
-   )
-}
-{:expr-str-node(
+);
+:expr-str-node(
    next:expr-str-node,
    len:i32,
    buf:char[0],
-   )
-}
-{:expr-str(
+);
+:expr-str(
    base:expr+,
    node-c:i32,
    first:expr-str-node,
    last:expr-str-node,
-   )
-}
+);
 {gvar expr-c:i32}
 {gvar expr-cap:i32}
 {gvar expr-v:expr[]}
@@ -306,17 +300,15 @@ expr-push(e:expr, type:expr-type):expr-i {
    .expr-v[e-idx] = e;
    return e-idx;
 }
-{:expr-int-data(
+:expr-int-data(
    base:expr+,
    value:i32,
    type:expr-int,
-   )
-}
-{:expr-size-of-type(
+);
+:expr-size-of-type(
    base:expr+,
    type:at,
-   )
-}
+);
  
 
 }

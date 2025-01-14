@@ -6,7 +6,7 @@ using 'c = :stdc;
    #skip-lvar-decl = 1,
    ]:u8
 }
-{:stmt-space(
+:stmt-space(
    base:stmt+,
    parent:stmt-space,
    flags:stmt-space-flags,
@@ -15,7 +15,7 @@ using 'c = :stdc;
    lvar-c:i32,
    lvar-cap:i32,
    lvar-v:lvar[],
-   )
+   ) {
    rd-space(space:stmt-space, r:rdr) @case.rd() @inline {
       quick-alloc-one(+(s:stmt-space));
       s.rd(r, space);

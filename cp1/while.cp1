@@ -76,18 +76,16 @@ stmt-while-begin() {
    stmt-space-begin();
    .decl-func-ctx-space.flags |= #skip-lvar-decl;
 }
-{:stmt-while(
+:stmt-while(
    base:stmt+,
    expr:expr-i,
    continu:stmt-space,
    end:stmt-while-end,
-   )
-}
-{:stmt-while-end(
+);
+:stmt-while-end(
    base:stmt+,
    while:stmt-while,
-   )
-}
+);
 stmt-while-set(expr:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, continu:stmt-space) {
    quick-alloc-one(+(s:stmt-while));
    .nest-stack-id-v[.nest-stack-c] = .nest-id++;

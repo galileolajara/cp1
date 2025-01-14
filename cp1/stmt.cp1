@@ -16,14 +16,14 @@ using 'c = :stdc;
    }
    cp1-name(e:this):char[] @cp1-name;
 }
-{:stmt(
+:stmt(
    begin-row:i32,
    begin-col:i32,
    end-row:i32,
    end-col:i32,
    type:stmt-type,
    stmt-next:stmt,
-   )
+   ) {
    write(s:this) {
       {switch(s.type).write(s)
          {default
@@ -51,17 +51,15 @@ using 'c = :stdc;
       return ok;
    }
 }
-{:stmt-expr(
+:stmt-expr(
    base:stmt+,
    expr:expr-i,
-   )
-}
-{:stmt-return(
+);
+:stmt-return(
    base:stmt+,
    expr:expr-i,
    val:value+,
-   )
-}
+);
 stmt-push(s:stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:stmt-type) {
    // 'c.out.printf("%s:%u:%u - %u:%u stmt-push()\n", .input-path, begin-row, begin-col, end-row, end-col);
    // 'c.out.flush();

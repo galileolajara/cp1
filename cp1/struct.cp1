@@ -42,9 +42,9 @@ using 'c = :stdc;
       }
    }
 }
-{:fvar-data(
+:fvar-data(
    decl:decl-var-data+,
-   )
+   ) {
    rd(f:this, r:rdr) {
       f.decl.rd(r);
    }

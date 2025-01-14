@@ -61,7 +61,7 @@ using 'c = :stdc;
       space.stmt-push(s.base, 0, 0, 0, 0, #switch-end);
    }
 }
-{:case-stack(case:stmt-case, default:stmt-default) @union}
+:case-stack(case:stmt-case, default:stmt-default) @union;
 {gvar case-stack-v:case-stack+[64]}
 {gvar case-stack-c:u8}
 {at(:stmt)
@@ -246,15 +246,13 @@ using 'c = :stdc;
       ok = true;
    }
 }
-{:stmt-switch-case-func(
+:stmt-switch-case-func(
    cvar:cvar,
    func:func,
-   )
-}
-{:stmt-switch-end(
+);
+:stmt-switch-end(
    base:stmt+,
-   )
-}
+);
 {gvar switch-expr-c:u32}
 {gvar switch-expr-cap:u32}
 {gvar switch-expr-v:expr-i[]}
@@ -267,26 +265,22 @@ stmt-switch-expr-add(expr:expr-i) {
    }
    .switch-expr-v[expr-i] = expr;
 }
-{:stmt-case(
+:stmt-case(
    base:stmt+,
    fall-through:bool,
    expr-c:u32,
    expr-v:stmt-case-item+[0],
-   )
-}
-{:stmt-case-end(
+);
+:stmt-case-end(
    base:stmt+,
-   )
-}
-{:stmt-default(
+);
+:stmt-default(
    base:stmt+,
    fall-through:bool,
-   )
-}
-{:stmt-default-end(
+);
+:stmt-default-end(
    base:stmt+,
-   )
-}
+);
 stmt-switch-case-begin(begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, fall-through:bool) {
    +expr-c = .switch-expr-c;
    .switch-expr-c = 0;

@@ -116,7 +116,7 @@ at-begin-relative() {
 {gvar at-alias-name-v:id[]}
 {gvar at-alias-at-v:at[]}
 {gvar at-alias-pos-v:row-col+[]}
-{:row-col(row:i32, col:i32)}
+:row-col(row:i32, col:i32);
 at-alias(name:id, row:i32, col:i32) {
    {do{+i = 0}{(.at-alias-c) i++}
       {if(.at-alias-name-v[i] == name)
@@ -239,22 +239,21 @@ decl-at-end() {
    .decl-at-c--;
    .decl-at = .decl-at-v[.decl-at-c];
 }
-{:token-data(
+:token-data(
    row:i32,
    col:i32,
    id:i32,
    id2:i32,
    val:i32[12],
-   )
-}
-{:lexer(
+);
+:lexer(
    content:u8[],
    start:u8[],
    cursor:u8[],
    // limit:u8[],
    marker:u8[],
    // ctx-marker:u8[],
-   )
+) {
    init(lex:this, data:u8[], size:usz) {
       lex.start = data;
       lex.cursor = data;
@@ -411,7 +410,7 @@ decl-at-end() {
       // return include;
    }
 }
-{:parser()
+:parser() {
    alloc():parser;
    free(psr:this);
    parse(psr:this, t:token, tok:token-data+) @real-name(cp1Parse);

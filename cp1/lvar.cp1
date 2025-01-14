@@ -40,14 +40,13 @@ using 'c = :stdc;
       w.n1(f);
    }
 }
-{:lvar-data(
+:lvar-data(
    row:i32,
    col:i32,
    decl:decl-var-data+,
    flags:lvar-flags,
    set-expr:expr-i,
-   )
-}
+);
 expr-lvar(name:id, decl:u8, row:i32, col:i32):expr-i {
    {if(decl == 0)
       +space = .decl-func-ctx-space;

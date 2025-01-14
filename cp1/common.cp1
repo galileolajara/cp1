@@ -1,18 +1,18 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
-{:at-map(data:u64[(#hash-table-size + 7) >> 3])
+:at-map(data:u64[(#hash-table-size + 7) >> 3]) {
    init(m:this);
    get-or-insert(m:this, parent:at, type:name-type, name:id, val:i32):i32;
 }
-{:map(data:u64[(#hash-table-size + 7) >> 3])
+:map(data:u64[(#hash-table-size + 7) >> 3]) {
    init(m:this);
    get-or-insert(m:this, str:char[], len:u8, val:i32):i32;
 }
 {gvar id-map:map+}
 {gvar include-map:map+}
 {gvar at-map:at-map+}
-{:struct-data(
+:struct-data(
 #if(compiler)
    file:file,
 #endif
@@ -31,35 +31,30 @@ using 'c = :stdc;
 #endif
    fvar-c:u32,
    fvar-v:fvar-data+[0],
-   )
-}
-{:stmt-if(
+);
+:stmt-if(
    base:stmt+,
    not:bool,
    expr:expr-i,
 #if(compiler)
    val:value+
 #endif
-   )
-}
-{:stmt-if-elif(
+);
+:stmt-if-elif(
    base:stmt+,
    not:bool,
    expr:expr-i,
 #if(compiler)
    val:value+,
 #endif
-   )
-}
-{:stmt-if-else(
+);
+:stmt-if-else(
    base:stmt+,
-   )
-}
-{:stmt-if-end(
+);
+:stmt-if-end(
    base:stmt+,
-   )
-}
-{:stmt-switch(
+);
+:stmt-switch(
    base:stmt+,
    expr:expr-i,
 #if(compiler)
@@ -70,15 +65,13 @@ using 'c = :stdc;
    case-func-c:u32,
    case-func-v:stmt-switch-case-func+[],
 #endif
-   )
-}
-{:stmt-case-item(
+);
+:stmt-case-item(
    expr:expr-i,
 #if(compiler)
    val:value+,
 #endif
-   )
-}
+);
 {at(:lvar)
 #if(compiler)
    ptr(l:this):lvar-data @inline {
@@ -97,7 +90,7 @@ using 'c = :stdc;
    }
 #endif
 }
-{:enum-data(
+:enum-data(
 #if(compiler)
    file:file,
 #endif
@@ -115,9 +108,8 @@ using 'c = :stdc;
    method-cap:i32,
    method-v:func[],
 #endif
-   )
-}
-{:expr-compare(
+);
+:expr-compare(
    base:expr+,
    left:expr-i,
    right:expr-i,
@@ -126,9 +118,8 @@ using 'c = :stdc;
    left-val:value+,
    right-val:value+,
 #endif
-   )
-}
-{:expr-assign(
+);
+:expr-assign(
    base:expr+,
    left:expr-i,
    right:expr-i,
@@ -137,9 +128,8 @@ using 'c = :stdc;
    left-val:value+,
    right-val:value+,
 #endif
-   )
-}
-{:expr-index(
+);
+:expr-index(
    base:expr+,
    left:expr-i,
    right:expr-i,
@@ -147,16 +137,14 @@ using 'c = :stdc;
    left-val:value+,
    right-val:value+,
 #endif
-   )
-}
-{:expr-math-item(
+);
+:expr-math-item(
    expr:expr-i,
 #if(compiler)
    val:value+,
 #endif
-   )
-}
-{:expr-math(
+);
+:expr-math(
    base:expr+,
    left:expr-i,
    right:expr-i,
@@ -170,16 +158,14 @@ using 'c = :stdc;
    item-cap:u8,
 #endif
    item-v:expr-math-item+[],
-   )
-}
-{:expr-bools-item(
+);
+:expr-bools-item(
    expr:expr-i,
 #if(compiler)
    val:value+,
 #endif
-   )
-}
-{:expr-bools(
+);
+:expr-bools(
    base:expr+,
    left:expr-i,
    right:expr-i,
@@ -193,9 +179,8 @@ using 'c = :stdc;
    item-cap:u8,
 #endif
    item-v:expr-bools-item+[],
-   )
-}
-{:expr-fvar(
+);
+:expr-fvar(
    base:expr+,
    expr:expr-i,
    member:id,
@@ -203,9 +188,8 @@ using 'c = :stdc;
    fvar:fvar,
    val:value+,
 #endif
-   )
-}
-{:expr-cvar(
+);
+:expr-cvar(
    base:expr+,
    at:at,
    name:id,
@@ -213,35 +197,31 @@ using 'c = :stdc;
    cvar:cvar,
    try:at,
 #endif
-   )
-}
-{:expr-ref(
+);
+:expr-ref(
    base:expr+,
    expr:expr-i,
 #if(compiler)
    val:value+,
 #endif
-   )
-}
-{:expr-unary(
+);
+:expr-unary(
    base:expr+,
    expr:expr-i,
    type:unary,
 #if(compiler)
    val:value+,
 #endif
-   )
-}
-{:expr-cast-fast(
+);
+:expr-cast-fast(
    base:expr+,
    expr:expr-i,
    type:at,
 #if(compiler)
    val:value+,
 #endif
-   )
-}
-{:expr-gvar(
+);
+:expr-gvar(
    base:expr+,
 #if(parser)
    at:at,
@@ -250,9 +230,8 @@ using 'c = :stdc;
 #if(compiler)
    gvar:gvar,
 #endif
-   )
-}
-{:decl-gvar(
+);
+:decl-gvar(
 #if(compiler)
    file:file,
 #endif
@@ -262,9 +241,8 @@ using 'c = :stdc;
    at:at,
    flags:gvar-flags,
    decl:decl-var-data+,
-   )
-}
-{:cvar-data(
+);
+:cvar-data(
 #if(compiler)
    file:file,
 #endif
@@ -277,9 +255,8 @@ using 'c = :stdc;
    decl:decl-var-data+,
    expr-set:expr-i,
    last-cvar:cvar,
-   )
-}
-{:decl-var-data(
+);
+:decl-var-data(
    name:id,
    type:at,
    flags:var-flags,
@@ -290,17 +267,15 @@ using 'c = :stdc;
 #if(compiler)
    size-value-v:value+[],
 #endif
-   )
-}
-{:carg(
+);
+:carg(
    ref:i8,
    expr:expr-i,
 #if(compiler)
    value:value+,
 #endif
-   )
-}
-{:expr-func(
+);
+:expr-func(
    base:expr+,
    at:at,
    func-name:id,
@@ -311,9 +286,8 @@ using 'c = :stdc;
    group-v:u8[#expr-carg-group-limit],
    carg-c:u8,
    carg-v:carg+[0],
-   )
-}
-{:expr-method(
+);
+:expr-method(
    base:expr+,
    this:expr-i,
    func-name:id,
@@ -325,9 +299,8 @@ using 'c = :stdc;
    group-v:u8[#expr-carg-group-limit],
    carg-c:u8,
    carg-v:carg+[0],
-   )
-}
-{:decl-func(
+);
+:decl-func(
 #if(compiler)
    process-next:func,
    file:file,
@@ -375,8 +348,7 @@ using 'c = :stdc;
    group-v:i8[#expr-carg-group-limit],
    farg-c:u8,
    farg-v:farg+[0],
-   )
-}
+);
 {gvar quick-alloc-c:i32}
 {gvar quick-alloc-cap:i32}
 {gvar quick-alloc-v:ref}
@@ -461,11 +433,10 @@ realloc(r:ref, c:i32, oldc:i32)
       @inline;
 }
 {cvar #decl-at-name-limit:i32 = 3}
-{:at-name(id:id, basic:basic-type-id) @union
-}
-{:at-type(struct:struct, enum:enum) @union}
+:at-name(id:id, basic:basic-type-id) @union;
+:at-type(struct:struct, enum:enum) @union;
 {:at-def[#undefined, #module, #struct, #enum, #basic]:u8}
-{:at-data(
+:at-data(
    type:name-type,
    parent:at,
    name:at-name+,
@@ -482,7 +453,7 @@ realloc(r:ref, c:i32, oldc:i32)
    decl:at-type+,
    def:at-def,
 #endif
-   )
+   ) {
    init(at:this, type:name-type, parent:at, name:id) {
       at.type = type;
       at.parent = parent;

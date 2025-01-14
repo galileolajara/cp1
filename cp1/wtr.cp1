@@ -1,12 +1,12 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
-{:wtr(
+:wtr(
    ref:ref,
    pos:usz,
    p1:u8[],
    p4:u32[],
-   ) @union
+   ) @union {
    n1(w:this, n:u8) @inline {
       w.p1[0] = n;
       w.pos++;

@@ -193,7 +193,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
    }
 }
 {cvar #type-info-star-limit:i32 = 8}
-{:value(ref:i8, paren:bool, type:at, info:type-info+)
+:value(ref:i8, paren:bool, type:at, info:type-info+) {
 	set(v:this, ref:i8, paren:bool, type:at, info:type-info) {
 		+c = info.ref-v[info.array-c];
 		v.type = type;
@@ -217,7 +217,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
       v.info.wr(w);
    }
 }
-{:type-info(ref-v:i8[#type-info-star-limit], array-c:i8, star-c:i8, built-in:bool, const:bool)
+:type-info(ref-v:i8[#type-info-star-limit], array-c:i8, star-c:i8, built-in:bool, const:bool) {
 	init(ti:this) {
 		ti.ref-v[0] = 0;
 		ti.array-c = 0;
