@@ -32,7 +32,7 @@ using 'c = :stdc;
          i = 0;
          lvar-c = space.lvar-c;
       }
-      {do{(lvar-c) i++}
+      loop {(lvar-c) i++} {
          +lvar-i = space.lvar-v[i];
          +lvar = lvar-i.ptr();
          // 'c.out.printf("%s %s\n", lvar.decl.type.ptr().type.cp1-name(), lvar.decl.type.ptr().name.basic.cp1-name());
@@ -52,7 +52,7 @@ using 'c = :stdc;
    }
    lvar-new(space:this, name:id, row:i32, col:i32):lvar {
       +v = space.lvar-v;
-      {do var i = 0; {(space.lvar-c) i++}
+      loop var i = 0; {(space.lvar-c) i++} {
          +lvar = v[i].ptr();
          if (lvar.decl.name == name) {
             'c.out.printf("%u:%u: lvar '%s' was already declared at %u:%u\n", row, col, name.str(), lvar.row, lvar.col);
@@ -86,7 +86,7 @@ using 'c = :stdc;
    }
    wr(space:this, w:wtr, header:bool) {
       w.n(space.lvar-c);
-      {do var i = 0; {(space.lvar-c) i++}
+      loop var i = 0; {(space.lvar-c) i++} {
          space.lvar-v[i].wr(w);
       }
       +stmt = space.stmt-first;
@@ -135,11 +135,11 @@ using 'c = :stdc;
       +lvar-c = r.n();
       space.lvar-c = lvar-c;
       quick-alloc-arr(space.lvar-v, lvar-c);
-      {do var i = 0; {(lvar-c) i++}
+      loop var i = 0; {(lvar-c) i++} {
          space.lvar-v[i].rd(r);
       }
 
-      {do()
+      loop {
          :stmt-type.rd(+type, r);
          if (type == #nil) { break}
          if (#debug-rd-wr) {
@@ -187,7 +187,7 @@ using 'c = :stdc;
          i = 0;
          lvar-c = space.lvar-c;
       }
-      {do{(lvar-c) i++}
+      loop {(lvar-c) i++} {
          space.lvar-v[i].process();
       }
       return true;

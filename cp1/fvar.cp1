@@ -65,7 +65,7 @@ expr-fvar(expr:expr-i, member:id):expr-i {
       struct-i.output();
       +struct = struct-i.ptr();
       +member = e.member;
-      {do var i = 0:fvar; {(struct.fvar-c) i++}
+      loop var i = 0:fvar; {(struct.fvar-c) i++} {
          if (struct.fvar-v[i].decl.name == member) {
             e.fvar = i;
             ok = true;

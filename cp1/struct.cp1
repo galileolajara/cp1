@@ -22,7 +22,7 @@ using 'c = :stdc;
       +s-file = s.file;
       +s-row = s.begin-row;
       +s-col = s.begin-col;
-      {do var i = 0; {(s.fvar-c) i++}
+      loop var i = 0; {(s.fvar-c) i++} {
          // s.fvar-v[i].decl.type.output(s.file, row, col);
          // if !(s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col)) { return}
          s.fvar-v[i].decl.type = at-validate(s.fvar-v[i].decl.type, s-at, s-file, s-row, s-col);
@@ -98,7 +98,7 @@ decl-at-begin-struct(name:id, row:i32, col:i32) {
    .decl-struct-flags = #0;
    // 'c.out.printf("began struct at:\n");
    // +at-i = .build-at;
-   // {do()
+   // loop {
    //    +at = at-i.ptr();
    //    'c.out.printf("- %s\n", at.name.id.str());
    //    at-i = at.parent;
@@ -125,7 +125,7 @@ decl-struct-end(row:i32, col:i32) {
    // s.name = .decl-struct-name;
    s.fvar-c = .decl-fvar-c;
    // 'c.out.printf("There are %u fvars\n", s.fvar-c);
-   {do var i = 0; {(.decl-fvar-c) i++}
+   loop var i = 0; {(.decl-fvar-c) i++} {
       +a = s.fvar-v[i];
       a.decl.copy-from(.decl-fvar-v[i]);
       // 'c.out.printf("- %s\n", a.name.str());

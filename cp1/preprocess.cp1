@@ -11,12 +11,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       'c.exit(#failure);
    }
    +i = 1;
-   {do(arg-c)
+   loop (arg-c) {
       if (arg-v[i][0] == ''-) {
          if (arg-v[i][1] == ''D) {
             var name:char[] = & arg-v[i][2];
             +len = 0;
-            {do()
+            loop {
                if (name[len] == ''\0) {
                   break;
                }
@@ -93,7 +93,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
 {gvar preprocess-def-cap:u32}
 {gvar preprocess-def-c:u32}
 preprocess-def-get(name:char[], len:u8):bool {
-   {do var i = 0; {(.preprocess-def-c) i++}
+   loop var i = 0; {(.preprocess-def-c) i++} {
       if (&&, .preprocess-def-len-v[i] == len, 'c.memcmp(.preprocess-def-str-v[i], name, len) == 0) {
          return true;
       }
@@ -161,7 +161,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
    while (r.pos < r-end.pos) {
       line++;
       +line-len = 0;
-      {do()
+      loop {
          if (r.p1[line-len] == ''\n) {
             break;
          }
@@ -180,7 +180,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
             invert = true;
          }
          +rparen = -1;
-         {do var i = start; {(line-len - start) i++}
+         loop var i = start; {(line-len - start) i++} {
             if (r.p1[i] == '')) {
                rparen = i;
                break;
@@ -203,14 +203,14 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
          +indention-len = -1;
          if (r.pos < r-end.pos) {
             +line-len = 0;
-            {do()
+            loop {
                if (r.p1[line-len] == ''\n) {
                   break;
                }
                line-len++;
             }
             +first-char = 0;
-            {do()
+            loop {
                if (||, r.p1[first-char] == '' , r.p1[first-char] == ''\t) {
                   // Skip
                } else {
@@ -242,14 +242,14 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
          while (r.pos < r-end.pos) {
             line++;
             +line-len = 0;
-            {do()
+            loop {
                if (r.p1[line-len] == ''\n) {
                   break;
                }
                line-len++;
             }
             +first-char = 0;
-            {do()
+            loop {
                if (||, r.p1[first-char] == '' , r.p1[first-char] == ''\t) {
                   // Skip
                } else {

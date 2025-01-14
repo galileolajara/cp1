@@ -24,7 +24,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
    +func-c = 0;
    while (pos < in-size) {
       +start = pos;
-      {do()
+      loop {
          if (in-data[pos] == ''\n) {
             break;
          }
@@ -37,7 +37,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
             break;
          }
          +lparen = -1;
-         {do var i = 0; {(len) i++}
+         loop var i = 0; {(len) i++} {
             if (line[i] == ''() {
                lparen = i;
                break;
@@ -57,7 +57,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
    +indent = 0;
    while (pos < in-size) {
       +start = pos;
-      {do()
+      loop {
          if (in-data[pos] == ''\n) {
             break;
          }
@@ -73,7 +73,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
          } elif (indent == 0) {
             if (&&, line[len - 2] == ''), line[len - 1] == '';) {
                +lparen = -1;
-               {do var i = 0; {(len) i++}
+               loop var i = 0; {(len) i++} {
                   if (line[i] == ''() {
                      lparen = i;
                      break;
@@ -85,7 +85,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
                }
                +func-len = lparen - name;
                var func:char[] = & line[name];
-               {do var i = 0; {(func-c) i++}
+               loop var i = 0; {(func-c) i++} {
                   if (&&, func-len == func-len-v[i], 'c.memcmp(func, func-name-v[i], func-len) == 0) {
                      out-f.printf("%.*s\n", len, line);
                      break;

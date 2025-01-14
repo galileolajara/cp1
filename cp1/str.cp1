@@ -36,7 +36,7 @@ write-str-node(len:i32, ptr:ref);
       var e:expr-str = expr;
       w.n(e.node-c);
       +n = e.first;
-      {do()
+      loop {
          w.n(n.len);
          w.copy(n.buf, n.len);
          n = n.next;
@@ -48,7 +48,7 @@ write-str-node(len:i32, ptr:ref);
       quick-alloc-one(+(e:expr-str));
       e-idx.set(e.base, #str);
       +first = true;
-      {do(node-c)
+      loop (node-c) {
          +len = r.n();
          quick-alloc-plus(+(n:expr-str-node), len + 1);
          n.len = len;
@@ -68,7 +68,7 @@ write-str-node(len:i32, ptr:ref);
    write-str(expr:expr) @case.write() @inline {
       var e:expr-str = expr;
       +n = e.first;
-      {do()
+      loop {
          write-str-node(n.len, n.buf);
          n = n.next;
          if (n == null) { break}

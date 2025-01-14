@@ -96,7 +96,7 @@ cp1-path-add(cp1-path-real:char[], cp1-path-real-len:i32, cp1-path:char[], cp1-p
 }
 {gvar cmd-preprocess:char[512]}
 cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool {
-	{do var i = 0; {(.cp1-path-c) i++}
+	loop var i = 0; {(.cp1-path-c) i++} {
 		if ('c.memcmp(.cp1-path-v[i], cp1-path, cp1-path-len) == 0) {
 			return true;
 		}
@@ -125,14 +125,14 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool {
    while (pos < len) {
       line++;
       +start = pos;
-      {do()
+      loop {
          if (data[pos] == ''\n) {
             break;
          }
          pos++;
       }
       +first-char = start;
-      {do()
+      loop {
          if (||, data[first-char] == '' , data[first-char] == ''\t) {
             first-char++;
             continue;
@@ -189,14 +189,14 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool {
    while (pos < len) {
       line++;
       +start = pos;
-      {do()
+      loop {
          if (data[pos] == ''\n) {
             break;
          }
          pos++;
       }
       +first-char = start;
-      {do()
+      loop {
          if (||, data[first-char] == '' , data[first-char] == ''\t) {
             first-char++;
             continue;
@@ -217,7 +217,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool {
          ) {
          start += 8;
          +begin = -1;
-         {do var j = start; {(pos - start) j++}
+         loop var j = start; {(pos - start) j++} {
             if (data[j] == ''") {
                begin = j;
                break;
@@ -233,7 +233,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool {
          if (begin != -1) {
             start = begin + 1;
             +end = -1;
-            {do var j = start; {(pos - start) j++}
+            loop var j = start; {(pos - start) j++} {
                if (data[j] == ''") {
                   end = j;
                   break;
@@ -253,13 +253,13 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool {
                'c.printf("%s:%u: #import \"%.*s\" must be a relative path, '/' was detected at the beginning of file path\n", cp1-path, line, import-path-len, import);
                return false;
             }
-            {do var j = 0; {(import-path-len) j++}
+            loop var j = 0; {(import-path-len) j++} {
                if (import[j] == ''\\) {
                   'c.printf("%s:%u: #import \"%.*s\" must not contain backslashes '\\', please use forward slashes '/' instead\n", cp1-path, line, import-path-len, import);
                   return false;
                }
             }
-            {do var j = 0; {(import-path-len - 1) j++}
+            loop var j = 0; {(import-path-len - 1) j++} {
                if (&&, import[j] == ''., import[j + 1] == ''/) {
                   'c.printf("%s:%u: #import \"%.*s\" must not contain './'\n", cp1-path, line, import-path-len, import);
                   return false;
@@ -291,7 +291,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool {
          ) {
          start += 9;
          +begin = -1;
-         {do var j = start; {(pos - start) j++}
+         loop var j = start; {(pos - start) j++} {
             if (data[j] == ''<) {
                begin = j;
                break;
@@ -307,7 +307,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool {
          if (begin != -1) {
             start = begin + 1;
             +end = -1;
-            {do var j = start; {(pos - start) j++}
+            loop var j = start; {(pos - start) j++} {
                if (data[j] == ''>) {
                   end = j;
                   break;
@@ -320,7 +320,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool {
             var include-path:char[] = & data[start];
             +include-path-len = end - start;
             +found = false;
-            {do var j = 0; {(.included-c) j++}
+            loop var j = 0; {(.included-c) j++} {
                if (&&, include-path-len == .included-len-v[j], 'c.memcmp(.included-v[j], include-path, include-path-len) == 0) {
                   found = true;
                   break;
@@ -341,7 +341,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool {
                // 'c.printf("including %.*s\n", include-path-len, include-path);
                var spec-path:char[128];
                'c.sprintf(spec-path, "%s/%s", .include-dir, path);
-               {do var i = .include-dir-len + 1; {('c.strlen(spec-path) - (.include-dir-len + 1)) i++}
+               loop var i = .include-dir-len + 1; {('c.strlen(spec-path) - (.include-dir-len + 1)) i++} {
                   if (spec-path[i] == ''/) {
                      spec-path[i] = ''-;
                   }
@@ -360,12 +360,12 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool {
                while (spec-pos < spec-len) {
                   spec-line++;
                   +start = spec-pos;
-                  {do()
+                  loop {
                      if (spec-data[spec-pos] == ''\n) {
                         if (spec-data[start] == ''<) {
                            start++;
                            +rangle = -1;
-                           {do var j = start; {(spec-pos - start) j++}
+                           loop var j = start; {(spec-pos - start) j++} {
                               if (spec-data[j] == ''>) {
                                  rangle = j;
                                  break;
@@ -395,7 +395,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool {
          }
       }
       +i = first-char;
-      {do()
+      loop {
          if (data[i] == ''\n) {
             break;
          }
@@ -416,7 +416,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool {
 	return true;
 }
 validate-cp1-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:cmd):bool {
-   {do var i = start; {(arg-c - start) i++}
+   loop var i = start; {(arg-c - start) i++} {
       +cp1-path = arg-v[i];
       if (cp1-path[0] == ''/) {
          print-usage(bin, cmd);
@@ -428,21 +428,21 @@ validate-cp1-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:cmd):bo
 			cp1-path = & cp1-path[2];
 			cp1-path-len -= 2;
 		}
-      {do var j = 0; {(cp1-path-len) j++}
+      loop var j = 0; {(cp1-path-len) j++} {
          if (cp1-path[j] == ''\\) {
             print-usage(bin, cmd);
             'c.printf("Error, [cp1 file] (which is '%s') must not contain backslashes '\\', please use forward slashes '/' instead\n", cp1-path);
             'c.exit(#failure);
          }
       }
-      {do var j = 0; {(cp1-path-len - 1) j++}
+      loop var j = 0; {(cp1-path-len - 1) j++} {
          if (&&, cp1-path[j] == ''., cp1-path[j + 1] == ''/) {
             print-usage(bin, cmd);
             'c.printf("Error, [cp1 file] (which is '%s') must not contain './'\n", cp1-path);
             'c.exit(#failure);
          }
       }
-      // {do var j = 0; {(cp1-path-len - 1) j++}
+      // loop var j = 0; {(cp1-path-len - 1) j++} {
       //    if (&&, cp1-path[j] == ''., cp1-path[j + 1] == ''/) {
       //       print-usage(bin, cmd);
       //       'c.printf("Error, [cp1 file] (which is '%s') must not contain './'\n", cp1-path);
@@ -463,7 +463,7 @@ validate-cp1-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:cmd):bo
 }
 print-command(arg-c:i32, arg-v:char[][]) {
 	'c.printf("Command was:");
-	{do var i = 0; {(arg-c) i++}
+	loop var i = 0; {(arg-c) i++} {
 		'c.printf(" %s", arg-v[i]);
 	}
 	'c.printf("\n");
@@ -477,7 +477,7 @@ atexit-rm(path:char[]) {
    .atexit-rm-v[i] = path;
 }
 on-exit() {
-   {do var i = 0; {(.atexit-rm-c) i++}
+   loop var i = 0; {(.atexit-rm-c) i++} {
       // 'c.printf("Removing %s\n", .atexit-rm-v[i]);
       'c.unlink(.atexit-rm-v[i]);
    }
@@ -496,7 +496,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       abs-path[abs-path-len] = ''\0;
    } else {
       +has-slash = false;
-      {do var i = 0; {() i++}
+      loop var i = 0; {() i++} {
          if (bin[i] == ''\0) { break}
          if (bin[i] == ''/) {
             has-slash = true;
@@ -567,11 +567,11 @@ main(arg-c:intc, arg-v:char[][]):intc {
       ninja-f.printf(" command = %s-parser $in $out\n", bin);
       ninja-f.printf("rule compiler\n");
       ninja-f.printf(" command = %s-compiler $in $out\n", bin);
-      {do var i = 0; {(.cp1-path-c) i++}
+      loop var i = 0; {(.cp1-path-c) i++} {
          ninja-f.printf("build cp1-tmp/%s-b: parser %s\n", .cp1-path-v[i], .cp1-path-real-v[i]);
       }
       ninja-f.printf("build %s: compiler", c-path);
-      {do var i = 0; {(.cp1-path-c) i++}
+      loop var i = 0; {(.cp1-path-c) i++} {
          ninja-f.printf(" cp1-tmp/%s-b", .cp1-path-v[i]);
       }
       ninja-f.printf("\n");
@@ -631,11 +631,11 @@ main(arg-c:intc, arg-v:char[][]):intc {
       ninja-f.printf("rule compiler\n");
       ninja-f.printf(" command = %s-compiler $in $out\n", bin);
       get-compiler(bin, ninja-f);
-      {do var i = 0; {(.cp1-path-c) i++}
+      loop var i = 0; {(.cp1-path-c) i++} {
          ninja-f.printf("build cp1-tmp/%s-b: parser %s\n", .cp1-path-v[i], .cp1-path-real-v[i]);
       }
       ninja-f.printf("build %s: compiler", c-path);
-      {do var i = 0; {(.cp1-path-c) i++}
+      loop var i = 0; {(.cp1-path-c) i++} {
          ninja-f.printf(" cp1-tmp/%s-b", .cp1-path-v[i]);
       }
       ninja-f.printf("\n");

@@ -75,9 +75,9 @@ expr-gvar(at:at, name:id):expr-i {
          at-idx = .ctx-func.at;
          try-parent = true;
       }
-      {do()
+      loop {
          +at = at-idx.ptr();
-         {do var i = 0; {(at.gvar-c) i++}
+         loop var i = 0; {(at.gvar-c) i++} {
             +gvar = at.gvar-v[i];
             if (gvar.ptr().decl.name == name) {
                e.gvar = gvar;

@@ -50,10 +50,10 @@ using 'c = :stdc;
 expr-lvar(name:id, decl:u8, row:i32, col:i32):expr-i {
    if (decl == 0) {
       +space = .decl-func-ctx-space;
-      {do()
+      loop {
          +v = space.lvar-v;
          +found = :lvar#nil;
-         {do var i = 0; {(space.lvar-c) i++}
+         loop var i = 0; {(space.lvar-c) i++} {
             +lvar = v[i];
             if (lvar.name() == name) {
                found = lvar;
