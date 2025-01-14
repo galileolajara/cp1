@@ -24,11 +24,11 @@ using 'c = :stdc;
    write(space:this) {
       // .out.printf("{ // space begin \n");
       {+i, lvar-c}
-      {if(space.parent == null)
+      if (space.parent == null) {
          // dont write arguments
          i = .ctx-func.farg-c;
          lvar-c = space.lvar-c - .ctx-func.farg-c;
-      }{else
+      } else {
          i = 0;
          lvar-c = space.lvar-c;
       }
@@ -37,7 +37,7 @@ using 'c = :stdc;
          +lvar = lvar-i.ptr();
          // 'c.out.printf("%s %s\n", lvar.decl.type.ptr().type.cp1-name(), lvar.decl.type.ptr().name.basic.cp1-name());
          lvar.decl.write-lvar-type(lvar-i);
-         {if((lvar.flags & #set-expr) != #0)
+         if ((lvar.flags & #set-expr) != #0) {
             .out.printf(" = ");
             lvar.set-expr.write();
          }
@@ -54,13 +54,13 @@ using 'c = :stdc;
       +v = space.lvar-v;
       {do{+i = 0}{(space.lvar-c) i++}
          +lvar = v[i].ptr();
-         {if(lvar.decl.name == name)
+         if (lvar.decl.name == name) {
             'c.out.printf("%u:%u: lvar '%s' was already declared at %u:%u\n", row, col, name.str(), lvar.row, lvar.col);
             'c.exit(#failure);
          }
       }
       +i = space.lvar-c++;
-      {if(space.lvar-cap <= space.lvar-c)
+      if (space.lvar-cap <= space.lvar-c) {
          +old-cap = space.lvar-cap;
          grow(space.lvar-cap, space.lvar-c);
          realloc(space.lvar-v, space.lvar-cap, old-cap);
@@ -68,7 +68,7 @@ using 'c = :stdc;
       +f = .ctx-func;
       +lvar = f.lvar-c++;
       space.lvar-v[i] = lvar;
-      {if(f.lvar-cap <= f.lvar-c)
+      if (f.lvar-cap <= f.lvar-c) {
          +old-cap = f.lvar-cap;
          grow(f.lvar-cap, f.lvar-c);
          realloc(f.lvar-v, f.lvar-cap, old-cap);
@@ -92,7 +92,7 @@ using 'c = :stdc;
       +stmt = space.stmt-first;
       {while(stmt != null)
          stmt.type.wr(w);
-         {if(#debug-rd-wr)
+         if (#debug-rd-wr) {
             w.n1(255);
          }
          w.n(stmt.begin-row);
@@ -105,7 +105,7 @@ using 'c = :stdc;
                'c.exit(#failure);
             }
          }
-         {if(#debug-rd-wr)
+         if (#debug-rd-wr) {
             w.n1(255);
          }
          stmt = stmt.stmt-next;
@@ -119,10 +119,10 @@ using 'c = :stdc;
       s2.end-col = end-col;
       s2.type = type;
       s2.stmt-next = null;
-      {if(s.stmt-last == null)
+      if (s.stmt-last == null) {
          s.stmt-first = s2;
          s.stmt-last = s2;
-      }{else
+      } else {
          s.stmt-last.stmt-next = s2;
          s.stmt-last = s2;
       }
@@ -141,9 +141,9 @@ using 'c = :stdc;
 
       {do()
          :stmt-type.rd(+type, r);
-         {if(type == #nil) break}
-         {if(#debug-rd-wr)
-            {if(r.n1() != 255)
+         if (type == #nil) { break}
+         if (#debug-rd-wr) {
+            if (r.n1() != 255) {
                'c.out.printf("Error reading stmt\n");
                'c.out.flush();
                'c.exit(#failure);
@@ -163,8 +163,8 @@ using 'c = :stdc;
                'c.exit(#failure);
             }
          }
-         {if(#debug-rd-wr)
-            {if(r.n1() != 255)
+         if (#debug-rd-wr) {
+            if (r.n1() != 255) {
                'c.out.printf("Error reading stmt\n");
                'c.out.flush();
                'c.exit(#failure);
@@ -175,15 +175,15 @@ using 'c = :stdc;
    process(space:this):bool {
       +s = space.stmt-first;
       {while(s != null)
-         {if!(s.process()) return false}
+         if !(s.process()) { return false}
          s = s.stmt-next;
       }
       {+i, lvar-c}
-      {if(space.parent == null)
+      if (space.parent == null) {
          // don't process arguments
          i = .ctx-func.farg-c;
          lvar-c = space.lvar-c - .ctx-func.farg-c;
-      }{else
+      } else {
          i = 0;
          lvar-c = space.lvar-c;
       }
@@ -196,7 +196,7 @@ using 'c = :stdc;
 {at(:stmt)
    process-space(stmt:stmt, ok:bool&) @case.process() @inline {
       {+space:stmt-space = stmt}
-      {if!(space.process()) return}
+      if !(space.process()) { return}
       ok = true;
    }
    write-space(stmt:stmt) @case.write() @inline {
@@ -212,11 +212,11 @@ stmt-space-begin(attach:bool):stmt-space {
    quick-alloc-one(.decl-func-ctx-space);
    +space = .decl-func-ctx-space;
    space.parent = parent;
-   {if(attach)
-      {if(parent.stmt-last == null)
+   if (attach) {
+      if (parent.stmt-last == null) {
          parent.stmt-first = space.base;
          parent.stmt-last = space.base;
-      }{else
+      } else {
          parent.stmt-last.stmt-next = space.base;
          parent.stmt-last = space.base;
       }

@@ -16,13 +16,13 @@ using 'c = :stdc;
    write-expr(stmt:stmt) @case.write() @inline {
       {+s:stmt-expr = stmt}
 		+expr = s.expr.ptr();
-		{if(expr.type == #str)
+		if (expr.type == #str) {
 			{+e:expr-str = expr}
 			+n = e.first;
 			{do()
 				.out.printf("%.*s\n", n.len, n.buf);
 				n = n.next;
-				{if(n == null) break}
+				if (n == null) { break}
 			}
 			return;
 		}
@@ -31,7 +31,7 @@ using 'c = :stdc;
    }
    process-expr(stmt:stmt, ok:bool&) @case.process() @inline {
       {+s:stmt-expr = stmt}
-      {if!(s.expr.process())
+      if !(s.expr.process()) {
          return;
       }
       ok = true;
@@ -63,34 +63,34 @@ using 'c = :stdc;
       +expr = e.ptr();
       +ref = v.ref;
       // 'c.out.printf("write-value v.ref = %d\n", ref);
-      {if(v.paren)
-         {if(ref <= 0)
+      if (v.paren) {
+         if (ref <= 0) {
             .out.write("(&", 2);
-         }{else
+         } else {
             .out.write("(*******************************", ref);
          }
-      }{else
-         {if(ref <= 0)
+      } else {
+         if (ref <= 0) {
             .out.write("&", 1);
-         }{elif(ref > 1)
+         } elif (ref > 1) {
             .out.write("*******************************", ref - 1);
          }
       }
 
-      {if(expr.type == #cast-fast)
+      if (expr.type == #cast-fast) {
          {+e:expr-cast-fast = expr}
          e.write-value(v);
-      }{else
+      } else {
          e.write();
       }
 
-      {if(v.paren)
+      if (v.paren) {
          .out.write(")", 1);
       }
       return true;
    }
 	value(e:this, ref:i32, paren:bool, v:value):bool {
-      {if!(e.process()) return false}
+      if !(e.process()) { return false}
       +expr = e.ptr();
       +ok = false;
       {switch(expr.type).value(e, ref, paren, v, ok)
@@ -102,7 +102,7 @@ using 'c = :stdc;
       return ok;
    }
    type(e:this):at {
-      {if!(e.process()) return #nil}
+      if !(e.process()) { return #nil}
       +expr = e.ptr();
       +at = :at#nil;
       {switch(expr.type).type(expr, at)
@@ -119,12 +119,12 @@ using 'c = :stdc;
       }
    }
    wr(e:this, w:wtr, header:bool) {
-      {if(#debug-rd-wr)
+      if (#debug-rd-wr) {
          w.n1(255);
       }
-      {if(e == #nil)
+      if (e == #nil) {
          :expr-type#nil.wr(w);
-      }{else
+      } else {
          +expr = e.ptr();
          expr.type.wr(w);
          {switch(expr.type).wr(expr, w, header)
@@ -134,24 +134,24 @@ using 'c = :stdc;
             }
          }
       }
-      {if(#debug-rd-wr)
+      if (#debug-rd-wr) {
          w.n1(255);
       }
    }
    rd(e:this&, r:rdr) {
-      {if(#debug-rd-wr)
-         {if(r.n1() != 255)
+      if (#debug-rd-wr) {
+         if (r.n1() != 255) {
             'c.out.printf("Error reading expr\n");
             'c.out.flush();
             'c.exit(#failure);
          }
       }
       :expr-type.rd(+type, r);
-      {if(type == #nil)
+      if (type == #nil) {
          e = #nil;
-      }{else
+      } else {
          +e-idx = (.expr-c++):expr-i;
-         {if(.expr-cap <= .expr-c)
+         if (.expr-cap <= .expr-c) {
             +old-cap = .expr-cap;
             grow(.expr-cap, .expr-c);
             realloc(.expr-v, .expr-cap, old-cap);
@@ -165,8 +165,8 @@ using 'c = :stdc;
             }
          }
       }
-      {if(#debug-rd-wr)
-         {if(r.n1() != 255)
+      if (#debug-rd-wr) {
+         if (r.n1() != 255) {
             'c.out.printf("Error reading expr\n");
             'c.out.flush();
             'c.exit(#failure);
@@ -174,7 +174,7 @@ using 'c = :stdc;
       }
    }
    process(e:this):bool {
-      {if(e == #nil)
+      if (e == #nil) {
          'c.out.printf("%s:%u:%u - %u:%u: Processed a nil expression\n",
             .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col);
          return false;
@@ -182,10 +182,10 @@ using 'c = :stdc;
       +num = e:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((.expr-is-processed[n3] & n17) != #0) return true}
+      if ((.expr-is-processed[n3] & n17) != #0) { return true}
       .expr-is-processed[n3] |= n17;
       +expr = e.ptr();
-      // {if(expr.flags & #processed) return true}
+      // if (expr.flags & #processed) { return true}
       // expr.flags |= #processed;
       +ok = false;
       {switch(expr.type).process(expr, ok)
@@ -195,7 +195,7 @@ using 'c = :stdc;
             return false;
          }
       }
-      {if!(ok)
+      if !(ok) {
          'c.out.printf("%s:%u:%u - %u:%u: Processing of expression #%s failed\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
       }
       return ok;
@@ -292,7 +292,7 @@ using 'c = :stdc;
 expr-push(e:expr, type:expr-type):expr-i {
    e.type = type;
    +e-idx = .expr-c++;
-   {if(.expr-cap <= .expr-c)
+   if (.expr-cap <= .expr-c) {
       +old-cap = .expr-cap;
       grow(.expr-cap, .expr-c);
       realloc(.expr-v, .expr-cap, old-cap);

@@ -72,11 +72,11 @@ expr-compare(left:expr-i, right:expr-i, type:compare):expr-i {
    }
    process-compare(expr:expr, ok:bool&) @case.process() @inline {
       {+e:expr-compare = expr}
-		{if!(e.left.value(1, true, e.left-val))
+		if !(e.left.value(1, true, e.left-val)) {
 			return;
       }
 		e.right.try-deduce(e.left-val.type);
-		{if!(e.right.value(1, true, e.right-val))
+		if !(e.right.value(1, true, e.right-val)) {
 			return;
       }
       ok = true;

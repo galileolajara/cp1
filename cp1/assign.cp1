@@ -75,7 +75,7 @@ expr-assign(left:expr-i, right:expr-i, type:assign):expr-i {
    }
    value-assign(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
       {+expr:expr-assign = e.ptr()}
-		{if(expr.left.value(1, paren, v) == false)
+		if (expr.left.value(1, paren, v) == false) {
          return;
       }
 		v.paren = paren;
@@ -85,11 +85,11 @@ expr-assign(left:expr-i, right:expr-i, type:assign):expr-i {
    process-assign(expr:expr, ok:bool&) @case.process() @inline {
       {+e:expr-assign = expr}
       +left-e = e.left.ptr();
-      {if(left-e.type == #lvar)
+      if (left-e.type == #lvar) {
          {+left:expr-lvar = left-e}
          +lvar = left.lvar.ptr();
-         {if(lvar.decl.type == #nil)
-            {if!(e.right.value(1, true, e.right-val))
+         if (lvar.decl.type == #nil) {
+            if !(e.right.value(1, true, e.right-val)) {
                return;
             }
             lvar.decl.type = e.right-val.type;
@@ -101,11 +101,11 @@ expr-assign(left:expr-i, right:expr-i, type:assign):expr-i {
             return;
          }
       }
-		{if!(e.left.value(1, true, e.left-val))
+		if !(e.left.value(1, true, e.left-val)) {
 			return;
       }
 		e.right.try-deduce(e.left.type());
-		{if!(e.right.value(1, true, e.right-val))
+		if !(e.right.value(1, true, e.right-val)) {
 			return;
       }
       ok = true;

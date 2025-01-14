@@ -64,7 +64,7 @@ expr-unary(expr:expr-i, type:unary):expr-i {
    }
    process-unary(expr:expr, ok:bool&) @case.process() @inline {
       {+e:expr-unary = expr}
-		{if!(e.expr.value(1, true, e.val))
+		if !(e.expr.value(1, true, e.val)) {
 			return;
       }
       ok = true;

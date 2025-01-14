@@ -5,19 +5,19 @@
       :fd[#nil = -1]:intc {
          open(file:this&, path:char[], flags:open-flags):bool @inline {
             +fd = 'c.open(path, flags);
-            {if(fd != -1)
+            if (fd != -1) {
                file = fd;
                return true;
-            }{else
+            } else {
                return false;
             }
          }
          open(file:this&, path:char[], flags:open-flags, mode:intc):bool @inline {
             +fd = 'c.open(path, flags, mode);
-            {if(fd != -1)
+            if (fd != -1) {
                file = fd;
                return true;
-            }{else
+            } else {
                return false;
             }
          }
