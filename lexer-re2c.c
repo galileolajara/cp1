@@ -46,7 +46,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    // spaces? ";" spaces               { return CP1_TOKEN_SCOLON_SPACE; }
    spaces                           { return CP1_TOKEN_SPACE; }
    spaces? ";"                      { return CP1_TOKEN_SCOLON; }
-   "{+" spaces?                     { return CP1_TOKEN_LCBRACE_PLUS_OR_SPACE; }
+   // "{+" spaces?                     { return CP1_TOKEN_LCBRACE_PLUS_OR_SPACE; }
    "{gvar" spaces                   { return CP1_TOKEN_LCBRACE_GVAR_SPACE; }
    "{cvar" spaces                   { return CP1_TOKEN_LCBRACE_CVAR_SPACE; }
    "{at("                           { return CP1_TOKEN_LCBRACE_AT_LPAREN; }
@@ -195,6 +195,8 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
 
    "using"                          { return CP1_TOKEN_USING; }
    "return"                         { return CP1_TOKEN_RETURN; }
+   "loop"                           { return CP1_TOKEN_LOOP; }
+   "var"                            { return CP1_TOKEN_VAR; }
    "continue"                       { return CP1_TOKEN_CONTINUE; }
    "break"                          { return CP1_TOKEN_BREAK; }
    "default"                        { return CP1_TOKEN_DEFAULT; }
@@ -208,7 +210,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    // "{switch"                        { return CP1_TOKEN_LCBRACE_SWITCH; }
    // "{case"                          { return CP1_TOKEN_LCBRACE_CASE; }
    // "{default"                       { return CP1_TOKEN_LCBRACE_DEFAULT; }
-   "{do"                            { return CP1_TOKEN_LCBRACE_DO; }
+   // "{do"                            { return CP1_TOKEN_LCBRACE_DO; }
    // "{while"                         { return CP1_TOKEN_LCBRACE_WHILE; }
    // spaces? "{elif"                  { return CP1_TOKEN_LCBRACE_ELIF; }
    // spaces? "{else"                  { return CP1_TOKEN_LCBRACE_ELSE; }
