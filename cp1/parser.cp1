@@ -158,7 +158,7 @@ at-root() {
 }
 at-graves(graves:i8, row:i32, col:i32) {
    .build-at = .decl-at;
-   {while(graves > 0)
+   while (graves > 0) {
       graves--;
       if (.build-at == #root) {
          'c.out.printf("%s:%u:%u: Too many graves in the namespace, going beyond the root namespace\n", .input-path, row, col);
@@ -559,7 +559,7 @@ get-row-col(out-row:i32&, out-col:i32&, end:ref, begin:ref) {
    r.ref = begin;
    {+r-end:rdr+}
    r-end.ref = end;
-   {while(r.pos < r-end.pos)
+   while (r.pos < r-end.pos) {
       if (r.p1[0] == ''\n) {
          row++;
          col = 1;
@@ -637,7 +637,7 @@ convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
    w-begin.ref = 'c.malloc(in-size << 1);
    {+w:wtr+}
    w.ref = w-begin.ref;
-   {while(r.pos < r-end.pos)
+   while (r.pos < r-end.pos) {
       if (&&, r.p1[0] == ''@, r.p1[1] == ''r, r.p1[2] == ''e, r.p1[3] == ''a, r.p1[4] == ''l, r.p1[5] == ''N, r.p1[6] == ''a, r.p1[7] == ''m, r.p1[8] == ''e) {
          // realName -> real-name
          w.p1[0] = ''@;
@@ -684,7 +684,7 @@ convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
          {do()
             +c = r.p1[0];
             if (c == '']) {
-               {while(r-type.pos < r.pos)
+               while (r-type.pos < r.pos) {
                   w.p1[0] = r-type.p1[0];
                   w.pos++;
                   r-type.pos++;
@@ -823,7 +823,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       w.ref = new-data;
       // Ignore texts outside the top-level curly braces
       // +indent = 0:i32;
-      {while(r.pos < r-end.pos)
+      while (r.pos < r-end.pos) {
          if (r.p1[0] == ''/) {
             if (r.p1[1] == ''/) { // , (||, r.p1[2] == '' , r.p1[2] == ''\t))
                if (r.ref == in-data) {
@@ -1059,7 +1059,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       if (true) { // t != #space)
          // when reporting the row and column of tokens, skip the spaces
          +pos = lex.start;
-         {while(pos < r-end.p1)
+         while (pos < r-end.p1) {
             if (||, pos[0] == '' , pos[0] == ''\t) {
                tok.col++;
             } elif (pos[0] == ''\n) {
@@ -1139,7 +1139,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       }
       if (t == #end) { break}
       +pos = lex.start;
-      {while(pos < lex.cursor)
+      while (pos < lex.cursor) {
          if ((pos[0] & 128) == 0) {
             if (pos[0] == ''\n) {
                next-row++;
