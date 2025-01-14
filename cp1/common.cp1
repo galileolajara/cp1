@@ -435,7 +435,7 @@ realloc(r:ref, c:i32, oldc:i32)
 {cvar #decl-at-name-limit:i32 = 3}
 :at-name(id:id, basic:basic-type-id) @union;
 :at-type(struct:struct, enum:enum) @union;
-{:at-def[#undefined, #module, #struct, #enum, #basic]:u8}
+:at-def[#undefined, #module, #struct, #enum, #basic]:u8;
 :at-data(
    type:name-type,
    parent:at,
@@ -468,7 +468,7 @@ realloc(r:ref, c:i32, oldc:i32)
       at.def = #undefined;
    }
 }
-{:name-type[#module, #struct-enum, #basic]:u8
+:name-type[#module, #struct-enum, #basic]:u8 {
    rd(i:this&, r:rdr) @inline {
       i = r.n1():name-type;
    }
@@ -480,7 +480,7 @@ realloc(r:ref, c:i32, oldc:i32)
 {gvar at-c:at}
 {gvar at-cap:at}
 {gvar at-v:at-data+[]}
-{:at[#nil = -1, #root, #relative]:i32
+:at[#nil = -1, #root, #relative]:i32 {
    finalize(at-i:this, ti:type-info, row:i32, col:i32):bool {
       +at = at-i.ptr();
       {if(at.def == #struct)
@@ -826,7 +826,7 @@ realloc(r:ref, c:i32, oldc:i32)
    }
 }
 
-{:include[#nil = -1, #0]:i32
+:include[#nil = -1, #0]:i32 {
    str(i:this):char[] @inline {
       return .include-str-v[i];
    }
@@ -861,7 +861,7 @@ realloc(r:ref, c:i32, oldc:i32)
 {gvar include-str-v:char[][]}
 {gvar include-len-v:u8[]}
 {gvar func-main:func}
-{:id[#nil = -1, #0]:i32
+:id[#nil = -1, #0]:i32 {
    c-name(id:this):char[] {
       {+c-name:char[] = .id-c-name-v[id]}
       {if(c-name != null) return c-name}

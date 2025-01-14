@@ -2,7 +2,7 @@
    using 'sys = :sys;
    using 'c = :stdc;
    {at(:stdc)
-      {:fd[#nil = -1]:intc
+      :fd[#nil = -1]:intc {
          open(file:this&, path:char[], flags:open-flags):bool @inline {
             +fd = 'c.open(path, flags);
             {if(fd != -1)
@@ -31,15 +31,14 @@
             return 'sys.fstat(file, stat);
          }
       }
-      {:open-flags[
+      :open-flags[
          #read @no-decl @real-name(O_RDONLY),
          #create @no-decl @real-name(O_CREAT),
          #write @no-decl @real-name(O_WRONLY),
          #rdwr @no-decl @real-name(O_RDWR),
          #truncate @no-decl @real-name(O_TRUNC),
          #excl @no-decl @real-name(O_EXCL),
-         ]:intc
-      }
+      ]:intc;
       open(path:char[], flags:open-flags):fd @real-name @no-decl;
       open(path:char[], flags:open-flags, mode:intc):fd @real-name @no-decl;
       close(fd:fd):intc @real-name @no-decl;

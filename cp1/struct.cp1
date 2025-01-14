@@ -1,7 +1,7 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
-{:struct[#nil = -1, #0, #1]:i32
+:struct[#nil = -1, #0, #1]:i32 {
    wr(s:this, w:wtr) @inline {
       w.n(s + #1);
    }
@@ -59,12 +59,12 @@ using 'c = :stdc;
 {gvar decl-struct-col:i32}
 {gvar decl-struct-at:at}
 {gvar decl-struct-real-name:id}
-{:struct-flags[
+:struct-flags[
    #0,
    #real-name = 1,
    #no-decl = 2,
    #union = 4,
-   ]:u8
+   ]:u8 {
    wr(f:this, w:wtr) @inline {
       w.n1(f);
    }

@@ -1,7 +1,7 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
-{:fvar[#nil = -1, #0]:i32}
+:fvar[#nil = -1, #0]:i32;
 expr-fvar(expr:expr-i, member:id):expr-i {
    quick-alloc-one(+(e:expr-fvar));
    +e-idx = expr-push(e.base, #fvar);

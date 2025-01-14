@@ -58,7 +58,7 @@ get-compiler(bin:char[], ninja-f'c:file) {
    'c.printf("Cannot execute '%s run' because the required compiler was not found: tcc clang or gcc\n", bin);
    'c.exit(#failure);
 }
-{:cmd[#c, #run]:u8}
+:cmd[#c, #run]:u8;
 print-usage(bin:char[], cmd:cmd) {
    {switch(cmd)
       {case(#c)
