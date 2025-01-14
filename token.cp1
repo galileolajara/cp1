@@ -1,5 +1,5 @@
-{using 'c = :stdc}
-{main(arg-c:intc, arg-v:char[][]):intc
+using 'c = :stdc;
+main(arg-c:intc, arg-v:char[][]):intc {
    {if(arg-c != 3)
       'c.printf("Usage: %s [.h input file] [.cp1 output file]\n", arg-v[0]);
       'c.exit(#failure);
@@ -54,7 +54,7 @@
    }
    out-f.printf(
       "]:u32\n"
-      "{cp1-name(e:this):char[] @cp1-name}\n"
+      "cp1-name(e:this):char[] @cp1-name;\n"
       "}\n"
       "}\n");
    out-f.close();

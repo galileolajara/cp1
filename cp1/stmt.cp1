@@ -1,5 +1,5 @@
-{using 'cp1 = :cp1}
-{using 'c = :stdc}
+using 'cp1 = :cp1;
+using 'c = :stdc;
 {at(:cp1)
 {:stmt-type[
    #space, #if, #if-elif, #if-else, #if-end,
@@ -8,13 +8,13 @@
    #switch, #case, #default, #case-end, #default-end, #switch-end,
    #nil = 255,
    ]:u8
-   {wr(s:this, w:wtr) @inline
+   wr(s:this, w:wtr) @inline {
       w.n1(s);
    }
-   {rd(s:this&, r:rdr) @inline
+   rd(s:this&, r:rdr) @inline {
       s = r.n1():stmt-type;
    }
-   {cp1-name(e:this):char[] @cp1-name}
+   cp1-name(e:this):char[] @cp1-name;
 }
 {:stmt(
    begin-row:i32,
@@ -24,7 +24,7 @@
    type:stmt-type,
    stmt-next:stmt,
    )
-   {write(s:this)
+   write(s:this) {
       {switch(s.type).write(s)
          {default
             'c.out.printf("write() not yet implemented in stmt #%s\n", s.type.cp1-name());
@@ -32,7 +32,7 @@
          }
       }
    }
-   {process(s:this):bool
+   process(s:this):bool {
       +ok = false;
       .ctx-begin-row = s.begin-row;
       .ctx-begin-col = s.begin-col;
@@ -62,7 +62,7 @@
    val:value+,
    )
 }
-{stmt-push(s:stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:stmt-type)
+stmt-push(s:stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:stmt-type) {
    // 'c.out.printf("%s:%u:%u - %u:%u stmt-push()\n", .input-path, begin-row, begin-col, end-row, end-col);
    // 'c.out.flush();
    s.begin-row = begin-row;
@@ -72,7 +72,7 @@
    s.type = type;
    func-stmt-add(s);
 }
-{func-stmt-add(s:stmt)
+func-stmt-add(s:stmt) {
    s.stmt-next = null;
    {if(.decl-func-ctx-space.stmt-last == null)
       .decl-func-ctx-space.stmt-first = s;
@@ -82,12 +82,12 @@
       .decl-func-ctx-space.stmt-last = s;
    }
 }
-{expr2stmt(e:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32)
+expr2stmt(e:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
    quick-alloc-one(+(s:stmt-expr));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #expr);
    s.expr = e;
 }
-{stmt-lvar-add(name:id, set:expr-i, row:i32, col:i32)
+stmt-lvar-add(name:id, set:expr-i, row:i32, col:i32) {
    +lvar-i = .decl-func-ctx-space.lvar-new(name, row, col);
    +lvar = lvar-i.ptr();
    .decl-var.name = name;
@@ -98,7 +98,7 @@
       expr2stmt(e, row, col, row, col);
    }
 }
-{stmt-lvar-end(end-row:i32, end-col:i32)
+stmt-lvar-end(end-row:i32, end-col:i32) {
 }
  
 

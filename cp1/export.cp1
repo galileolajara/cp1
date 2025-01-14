@@ -1,6 +1,6 @@
-{using 'cp1 = :cp1}
+using 'cp1 = :cp1;
 {at(:cp1)
-{export()
+export() {
    quick-alloc-undo(0);
    decl-func-begin(#0, 0, 0);
    decl-func-end(0, 0);

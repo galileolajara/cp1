@@ -1,6 +1,6 @@
-{using 'cp1 = :cp1}
-{using 'c = :stdc}
-{using 'sys = :sys}
+using 'cp1 = :cp1;
+using 'c = :stdc;
+using 'sys = :sys;
 {at(:cp1)
 {gvar ctx-func:decl-func}
 {gvar id-in-header-v:u8[]}
@@ -16,15 +16,15 @@
 {gvar decl-include:include}
 {gvar decl-include-row:i32}
 {gvar decl-include-col:i32}
-{type-info-begin()
+type-info-begin() {
    .decl-var.size-c = 0;
    .decl-var.type-info.init();
    .decl-var.flags = #0;
 }
-{type-info-finalize()
+type-info-finalize() {
    .decl-var.type-info.finalize();
 }
-{type-info-arr(expr-v:expr-i[], expr-c:u8)
+type-info-arr(expr-v:expr-i[], expr-c:u8) {
    {+r:rdr+}
    r.ref = expr-v;
    {if(expr-v == null)
@@ -37,7 +37,7 @@
       type-info-arr(expr-v[i -= 1]);
    }
 }
-{type-info-arr(expr:expr-i)
+type-info-arr(expr:expr-i) {
    +ti = .decl-var.type-info;
 	ti.array-c += 1;
 	ti.ref-v[ti.array-c] = 0;
@@ -50,15 +50,15 @@
       // 'c.out.printf("%s, vd.size-c = %d\n", vd.name.str(), vd.size-c);
 	}
 }
-{type-info-ref(c:i8)
+type-info-ref(c:i8) {
    +ti = .decl-var.type-info;
 	ti.ref-v[ti.array-c] += c;
 }
-{type-info-static()
+type-info-static() {
    // 'c.out.printf("built-in\n");
    .decl-var.type-info.built-in = true;
 }
-{decl-include-begin(inc:include, row:i32, col:i32)
+decl-include-begin(inc:include, row:i32, col:i32) {
    {if(.decl-include != #nil)
       'c.out.printf("%s:%u:%u: Cannot {include inside another {include of %u:%u\n", .input-path, row, col, .decl-include-row, .decl-include-col);
       'c.exit(#failure);
@@ -67,14 +67,14 @@
    .decl-include-row = row;
    .decl-include-col = col;
 }
-{decl-include-end()
+decl-include-end() {
    .decl-include = #nil;
 }
 {gvar build-at:at}
-{at-push(name:id, type:name-type, row:i32, col:i32)
+at-push(name:id, type:name-type, row:i32, col:i32) {
    .build-at = at-create(.build-at, type, name);
 }
-{at-basic-type(type:basic-type-id):at
+at-basic-type(type:basic-type-id):at {
    {do{+i = 0:at}{(.at-c) i++}
       +at = .at-v[i];
       {if(&&, at.type == #basic, at.name.basic == type)
@@ -93,17 +93,17 @@
    at.name.basic = type;
    return build-idx;
 }
-{at-begin()
+at-begin() {
    .build-at = .decl-at;
 }
 {gvar at-begin-relative-pause:bool}
-{at-begin-relative-pause()
+at-begin-relative-pause() {
    .at-begin-relative-pause = true;
 }
-{at-begin-relative-resume()
+at-begin-relative-resume() {
    .at-begin-relative-pause = false;
 }
-{at-begin-relative()
+at-begin-relative() {
    {if(.at-begin-relative-pause)
       .build-at = .decl-at;
    }{else
@@ -117,17 +117,17 @@
 {gvar at-alias-at-v:at[]}
 {gvar at-alias-pos-v:row-col+[]}
 {:row-col(row:i32, col:i32)}
-{at-alias(name:id, row:i32, col:i32)
+at-alias(name:id, row:i32, col:i32) {
    {do{+i = 0}{(.at-alias-c) i++}
       {if(.at-alias-name-v[i] == name)
          .build-at = .at-alias-at-v[i];
          return;
       }
    }
-   'c.out.printf("%s:%u:%u: Cannot recognize the '%s, did you forgot to put {using '%s = ...}?\n", .input-path, row, col, name.str(), name.str());
+   'c.out.printf("%s:%u:%u: Cannot recognize the '%s, did you forgot to put using '%s = ...;?\n", .input-path, row, col, name.str(), name.str());
    'c.exit(#failure);
 }
-{decl-alias(name:id, at:at, row:i32, col:i32)
+decl-alias(name:id, at:at, row:i32, col:i32) {
    // {if(at.ptr().type != #module)
    //    'c.out.printf("%s:%u:%u: Alias can only work on namespaces that ends with '%%'\n", .input-path, row, col);
    //    'c.exit(#failure);
@@ -153,10 +153,10 @@
    .at-alias-pos-v[alias-idx].row = row;
    .at-alias-pos-v[alias-idx].col = col;
 }
-{at-root()
+at-root() {
    .build-at = #root;
 }
-{at-graves(graves:i8, row:i32, col:i32)
+at-graves(graves:i8, row:i32, col:i32) {
    .build-at = .decl-at;
    {while(graves > 0)
       graves--;
@@ -168,10 +168,10 @@
       .build-at = at.parent;
    }
 }
-{at-done():at
+at-done():at {
    return .build-at;
 }
-{at-create(parent:at, type:name-type, name:id):at
+at-create(parent:at, type:name-type, name:id):at {
    +found = .at-map.get-or-insert(parent, type, name, .at-c);
    {if(found != -1) return found}
    // {do{+i = 0:at}{(.at-c) i++}
@@ -195,7 +195,7 @@
    at.name.id = name;
    return build-idx;
 }
-{at-create-basic(basic:basic-type-id):at
+at-create-basic(basic:basic-type-id):at {
    {do{+i = 0:at}{(.at-c) i++}
       +at = .at-v[i];
       {if(&&,
@@ -221,21 +221,21 @@
 {cvar #decl-at-nest-limit:i32 = 8}
 {gvar decl-at-v:at[#decl-at-nest-limit]}
 {gvar decl-at-c:u8}
-{err-msg-namespace-limit(row:i32, col:i32)
+err-msg-namespace-limit(row:i32, col:i32) {
    'c.out.printf("%s:%u:%u: Max number of ids in namespace reached\n", .input-path, row, col);
    'c.exit(#failure);
 }
-{decl-at-add(name:id, type:name-type)
+decl-at-add(name:id, type:name-type) {
    .build-at = at-create(.build-at, type, name);
 }
-{decl-at-basic(type:basic-type-id)
+decl-at-basic(type:basic-type-id) {
    .build-at = at-create-basic(type);
 }
-{decl-at-begin(row:i32, col:i32)
+decl-at-begin(row:i32, col:i32) {
    .decl-at-v[.decl-at-c++] = .decl-at;
    .decl-at = .build-at;
 }
-{decl-at-end()
+decl-at-end() {
    .decl-at-c--;
    .decl-at = .decl-at-v[.decl-at-c];
 }
@@ -255,14 +255,14 @@
    marker:u8[],
    // ctx-marker:u8[],
    )
-   {init(lex:this, data:u8[], size:usz)
+   init(lex:this, data:u8[], size:usz) {
       lex.start = data;
       lex.cursor = data;
       lex.content = data;
       // lex.limit = & data[size];
    }
-   {scan(lex:this):token @real-name(cp1_lexer_scan)}
-   {get-u32-oct(lex:this):u32
+   scan(lex:this):token @real-name(cp1_lexer_scan);
+   get-u32-oct(lex:this):u32 {
       {+r-start:rdr+}
       r-start.ref = lex.start;
       {+r-cursor:rdr+}
@@ -283,7 +283,7 @@
       }
       return val:u32;
    }
-   {get-u32-dec(lex:this):u32
+   get-u32-dec(lex:this):u32 {
       {+r-start:rdr+}
       r-start.ref = lex.start;
       {+r-cursor:rdr+}
@@ -304,7 +304,7 @@
       }
       return val:u32;
    }
-   {get-id(lex:this, begin:u8, end:u8):i32
+   get-id(lex:this, begin:u8, end:u8):i32 {
       {+r-start:rdr+}
       r-start.ref = lex.start;
       r-start.pos += begin;
@@ -357,7 +357,7 @@
       // .id-len-v[id] = len;
       // return id;
    }
-   {get-include(lex:this):i32
+   get-include(lex:this):i32 {
       {+r-start:rdr+}
       r-start.ref = lex.start;
       r-start.pos += 9;
@@ -412,15 +412,15 @@
    }
 }
 {:parser()
-   {alloc():parser}
-   {free(psr:this)}
-   {parse(psr:this, t:token, tok:token-data+) @real-name(cp1Parse)}
+   alloc():parser;
+   free(psr:this);
+   parse(psr:this, t:token, tok:token-data+) @real-name(cp1Parse);
 }
 {gvar last-row:i32 @extern}
 {gvar last-col:i32 @extern}
 {gvar row:i32 @extern}
 {gvar col:i32 @extern}
-{write-func(w:wtr, header:bool) @inline
+write-func(w:wtr, header:bool) @inline {
    w.n(.func-c);
    {do{+i = 0}(.func-c)
       +f = .func-v[i++];
@@ -486,7 +486,7 @@
       pos-4.n4(w.pos - pos-4-next);
    }
 }
-{write-cvar(w:wtr, header:bool)
+write-cvar(w:wtr, header:bool) {
    w.n(.cvar-c);
    {do{+i = 0}{(.cvar-c) i++}
       +cvar = .cvar-v[i];
@@ -501,7 +501,7 @@
       }
    }
 }
-{write-gvar(w:wtr, header:bool)
+write-gvar(w:wtr, header:bool) {
    w.n(.gvar-c);
    {do{+i = 0}{(.gvar-c) i++}
       +gvar = .gvar-v[i];
@@ -510,7 +510,7 @@
       gvar.decl.wr(w, header);
    }
 }
-{write-enum(w:wtr, header:bool)
+write-enum(w:wtr, header:bool) {
    w.n(.enum-c);
    {do{+i = 0}(.enum-c)
       +e = .enum-v[i++];
@@ -527,7 +527,7 @@
       }
    }
 }
-{write-struct(w:wtr, header:bool)
+write-struct(w:wtr, header:bool) {
    w.n(.struct-c);
    {do{+i = 0}(.struct-c)
       +s = .struct-v[i++];
@@ -549,11 +549,11 @@
       }
    }
 }
-{token-name(tok:token):char[]
+token-name(tok:token):char[] {
    return tok.cp1-name();
 }
-{parse-str-init(max-size:i32)}
-{get-row-col(out-row:i32&, out-col:i32&, end:ref, begin:ref)
+parse-str-init(max-size:i32);
+get-row-col(out-row:i32&, out-col:i32&, end:ref, begin:ref) {
    +row = 1;
    +col = 1;
    {+r:rdr+}
@@ -576,7 +576,7 @@
       out-col = col;
    }
 }
-{parse-string(r:rdr, w:wtr, ending:char, in-data:ref)
+parse-string(r:rdr, w:wtr, ending:char, in-data:ref) {
    w.p1[0] = ''\';
    w.p1[1] = r.p1[1];
    w.pos += 2;
@@ -596,7 +596,7 @@
       }
    }
 }
-{parse-comment(r:rdr, w:wtr, ending:char, in-data:ref)
+parse-comment(r:rdr, w:wtr, ending:char, in-data:ref) {
    {+r-begin:rdr+}
    r-begin.pos = r.pos;
    r.pos += 2;
@@ -619,7 +619,7 @@
    }
 }
 {gvar input-path:char[] @real-name(input_path)}
-{convert-old-to-new(in-data:ref, in-out-size:i32&):ref
+convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
    +in-size = in-out-size;
    {+r:rdr+}
    r.ref = in-data;
@@ -745,10 +745,10 @@
    in-out-size = w.pos - w-begin.pos;
    return w-begin.ref;
 }
-{char-escape-value(c:char):i32}
+char-escape-value(c:char):i32;
 {gvar lock-path:char[]}
-{parser-at-exit()}
-{main(arg-c:intc, arg-v:char[][]):intc @main
+parser-at-exit();
+main(arg-c:intc, arg-v:char[][]):intc @main {
    {if(false)
       // preprocess-def("", 0);
       export();
@@ -823,7 +823,7 @@
       {+w:wtr+}
       w.ref = new-data;
       // Ignore texts outside the top-level curly braces
-      +indent = 0:i32;
+      // +indent = 0:i32;
       {while(r.pos < r-end.pos)
          {if(r.p1[0] == ''/)
             {if(r.p1[1] == ''/) // , (||, r.p1[2] == '' , r.p1[2] == ''\t))
@@ -851,22 +851,22 @@
                }
                continue;
             }
-         }{elif(r.p1[0] == ''{)
-            indent++;
-         }{elif(r.p1[0] == ''})
-            {if(indent == 0)
-               get-row-col(+row, +col, r.ref, in-data);
-               'c.out.printf("%s:%u:%u: Too much '}' detected\n", .input-path, row, col);
-               'c.exit(#failure);
-            }
-            indent--;
-         }{elif(indent == 0)
-            {if(r.p1[0] == ''\n)
-               w.p1[0] = ''\n;
-               w.pos++;
-            }
-            r.pos++;
-            continue;
+         // }{elif(r.p1[0] == ''{)
+         //    indent++;
+         // }{elif(r.p1[0] == ''})
+         //    {if(indent == 0)
+         //       get-row-col(+row, +col, r.ref, in-data);
+         //       'c.out.printf("%s:%u:%u: Too much '}' detected\n", .input-path, row, col);
+         //       'c.exit(#failure);
+         //    }
+         //    indent--;
+         // }{elif(indent == 0)
+         //    {if(r.p1[0] == ''\n)
+         //       w.p1[0] = ''\n;
+         //       w.pos++;
+         //    }
+         //    r.pos++;
+         //    continue;
          }{elif(r.p1[0] == ''\')
             {if(r.p1[1] == ''\')
                // char

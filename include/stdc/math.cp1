@@ -1,13 +1,13 @@
 {include(<math.h>)
-   {using 'c = :stdc}
+   using 'c = :stdc;
    {at(:stdc)
-      {sqrtf(val:f32):f32 @no-decl @real-name}
+      sqrtf(val:f32):f32 { @no-decl @real-name}
    }
    {at(:f32)
-      {sqr(val:this):f32
+      sqr(val:this):f32 {
          return val * val;
       }
-      {sqrt(val:this):f32
+      sqrt(val:this):f32 {
          return 'c.sqrtf(val);
       }
    }

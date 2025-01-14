@@ -1,5 +1,5 @@
-{using 'cp1 = :cp1}
-{using 'c = :stdc}
+using 'cp1 = :cp1;
+using 'c = :stdc;
 {at(:cp1)
 {:str[#nil = -1, #0]:i32}
 {gvar str-c:i32}
@@ -8,7 +8,7 @@
 {gvar str-len:i32[]}
 {gvar string-buf:char[] @extern}
 {gvar string-len:i32 @extern}
-{expr-str(prev:expr-i):expr-i
+expr-str(prev:expr-i):expr-i {
    +len = .string-len;
    quick-alloc-plus(+(n:expr-str-node), len + 1);
    n.len = len;
@@ -30,9 +30,9 @@
       return prev;
    }
 }
-{write-str-node(len:i32, ptr:ref)}
+write-str-node(len:i32, ptr:ref);
 {at(:expr-i)
-   {wr-str(expr:expr, w:wtr, header:bool) @case.wr() @inline
+   wr-str(expr:expr, w:wtr, header:bool) @case.wr() @inline {
       {+e:expr-str = expr}
       w.n(e.node-c);
       +n = e.first;
@@ -43,7 +43,7 @@
          {if(n == null) break}
       }
    }
-   {rd-str(e-idx:expr-i, r:rdr) @case.rd() @inline
+   rd-str(e-idx:expr-i, r:rdr) @case.rd() @inline {
       +node-c = r.n();
       quick-alloc-one(+(e:expr-str));
       e-idx.set(e.base, #str);
@@ -65,7 +65,7 @@
          }
       }
    }
-   {write-str(expr:expr) @case.write() @inline
+   write-str(expr:expr) @case.write() @inline {
       {+e:expr-str = expr}
       +n = e.first;
       {do()
@@ -75,7 +75,7 @@
          .out.putc(''\n);
       }
    }
-   {value-str(s:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline
+   value-str(s:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline {
       v.type = basic-type(#char);
       v.info.init();
       v.info.array-c = 1;
@@ -85,7 +85,7 @@
       v.ref = 1;
       ok = true;
    }
-   {process-str(expr:expr, ok:bool&) @case.process() @inline
+   process-str(expr:expr, ok:bool&) @case.process() @inline {
       ok = true;
    }
 }

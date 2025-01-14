@@ -1,24 +1,24 @@
 {include(<stdio.h>)
-   {using 'c = :stdc}
+   using 'c = :stdc;
    {at(:stdc)
-      {printf(fmt:char[]):intc @var-args @no-decl @real-name(printf)}
-      {sprintf(str:char[], fmt:char[]):intc @var-args @no-decl @real-name(sprintf)}
+      printf(fmt:char[]):intc @var-args @no-decl @real-name(printf);
+      sprintf(str:char[], fmt:char[]):intc @var-args @no-decl @real-name(sprintf);
 
       {gvar out:file @real-name(stdout) @no-decl}
       {:file() @real-name(FILE) @no-decl
-         {printf(f:this, str:char[]):intc @var-args @no-decl @real-name(fprintf)}
-         {flush(f:this):intc @no-decl @real-name(fflush)}
-         {write(f:this, buf:ref, size:usz):usz @inline
+         printf(f:this, str:char[]):intc @var-args @no-decl @real-name(fprintf);
+         flush(f:this):intc @no-decl @real-name(fflush);
+         write(f:this, buf:ref, size:usz):usz @inline {
             return fwrite(buf, 1, size, f);
          }
-         {putc(c:intc, f:this):intc @no-decl @real-name(fputc)}
-         {close(f:this):intc @no-decl @real-name(fclose)}
+         putc(c:intc, f:this):intc @no-decl @real-name(fputc);
+         close(f:this):intc @no-decl @real-name(fclose);
       }
-      {rename(old:char[], new:char[]):intc @no-decl @real-name}
-      {fopen(path:char[], mode:char[]):file @no-decl @real-name}
-      {fdopen(fd:fd, mode:char[]):file @no-decl @real-name}
-      {fclose(f:file):intc @no-decl @real-name}
-      {fwrite(buf:ref, size1:usz, size2:usz, f:file):usz @no-decl @real-name}
-      {tempnam(dir:char[], pfx:char[]):char[] @no-decl @real-name}
+      rename(old:char[], new:char[]):intc @no-decl @real-name;
+      fopen(path:char[], mode:char[]):file @no-decl @real-name;
+      fdopen(fd:fd, mode:char[]):file @no-decl @real-name;
+      fclose(f:file):intc @no-decl @real-name;
+      fwrite(buf:ref, size1:usz, size2:usz, f:file):usz @no-decl @real-name;
+      tempnam(dir:char[], pfx:char[]):char[] @no-decl @real-name;
    }
 }

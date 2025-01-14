@@ -1,5 +1,5 @@
-{using 'cp1 = :cp1}
-{using 'c = :stdc}
+using 'cp1 = :cp1;
+using 'c = :stdc;
 {at(:cp1)
 {:stmt-space-flags[
    #0,
@@ -16,12 +16,12 @@
    lvar-cap:i32,
    lvar-v:lvar[],
    )
-   {rd-space(space:stmt-space, r:rdr) @case.rd() @inline
+   rd-space(space:stmt-space, r:rdr) @case.rd() @inline {
       quick-alloc-one(+(s:stmt-space));
       s.rd(r, space);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #space);
    }
-   {write(space:this)
+   write(space:this) {
       // .out.printf("{ // space begin \n");
       {+i, lvar-c}
       {if(space.parent == null)
@@ -50,7 +50,7 @@
       }
       // .out.printf("} // space end\n");
    }
-   {lvar-new(space:this, name:id, row:i32, col:i32):lvar
+   lvar-new(space:this, name:id, row:i32, col:i32):lvar {
       +v = space.lvar-v;
       {do{+i = 0}{(space.lvar-c) i++}
          +lvar = v[i].ptr();
@@ -80,11 +80,11 @@
       item.decl.name = name;
       return lvar;
    }
-   {wr-space(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
+   wr-space(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
       {+s:stmt-space = stmt}
       s.wr(w, header);
    }
-   {wr(space:this, w:wtr, header:bool)
+   wr(space:this, w:wtr, header:bool) {
       w.n(space.lvar-c);
       {do{+i = 0}{(space.lvar-c) i++}
          space.lvar-v[i].wr(w);
@@ -112,7 +112,7 @@
       }
       :stmt-type#nil.wr(w);
    }
-   {stmt-push(s:this, s2:stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:stmt-type) @inline
+   stmt-push(s:this, s2:stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:stmt-type) @inline {
       s2.begin-row = begin-row;
       s2.begin-col = begin-col;
       s2.end-row = end-row;
@@ -127,7 +127,7 @@
          s.stmt-last = s2;
       }
    }
-   {rd(space:this, r:rdr, parent:stmt-space)
+   rd(space:this, r:rdr, parent:stmt-space) {
       space.parent = parent;
       space.stmt-first = null;
       space.stmt-last = null;
@@ -172,7 +172,7 @@
          }
       }
    }
-   {process(space:this):bool
+   process(space:this):bool {
       +s = space.stmt-first;
       {while(s != null)
          {if!(s.process()) return false}
@@ -194,20 +194,20 @@
    }
 }
 {at(:stmt)
-   {process-space(stmt:stmt, ok:bool&) @case.process() @inline
+   process-space(stmt:stmt, ok:bool&) @case.process() @inline {
       {+space:stmt-space = stmt}
       {if!(space.process()) return}
       ok = true;
    }
-   {write-space(stmt:stmt) @case.write() @inline
+   write-space(stmt:stmt) @case.write() @inline {
       {+space:stmt-space = stmt}
       space.write();
    }
 }
-{stmt-space-begin():stmt-space
+stmt-space-begin():stmt-space {
    return stmt-space-begin(true);
 }
-{stmt-space-begin(attach:bool):stmt-space
+stmt-space-begin(attach:bool):stmt-space {
    +parent = .decl-func-ctx-space;
    quick-alloc-one(.decl-func-ctx-space);
    +space = .decl-func-ctx-space;
@@ -223,10 +223,10 @@
    }
    return space;
 }
-{stmt-space-begin-detach():stmt-space
+stmt-space-begin-detach():stmt-space {
    return stmt-space-begin(false);
 }
-{stmt-space-end():stmt-space
+stmt-space-end():stmt-space {
    +ret = .decl-func-ctx-space;
    .decl-func-ctx-space = .decl-func-ctx-space.parent;
    return ret;

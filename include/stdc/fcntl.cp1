@@ -1,9 +1,9 @@
 {include(<fcntl.h>)
-   {using 'sys = :sys}
-   {using 'c = :stdc}
+   using 'sys = :sys;
+   using 'c = :stdc;
    {at(:stdc)
       {:fd[#nil = -1]:intc
-         {open(file:this&, path:char[], flags:open-flags):bool @inline
+         open(file:this&, path:char[], flags:open-flags):bool @inline {
             +fd = 'c.open(path, flags);
             {if(fd != -1)
                file = fd;
@@ -12,7 +12,7 @@
                return false;
             }
          }
-         {open(file:this&, path:char[], flags:open-flags, mode:intc):bool @inline
+         open(file:this&, path:char[], flags:open-flags, mode:intc):bool @inline {
             +fd = 'c.open(path, flags, mode);
             {if(fd != -1)
                file = fd;
@@ -21,13 +21,13 @@
                return false;
             }
          }
-         {fopen(file:this, mode:char[]):file @inline
+         fopen(file:this, mode:char[]):file @inline {
             return fdopen(file, mode);
          }
-         {close(file:this):intc @inline
+         close(file:this):intc @inline {
             return 'c.close(file);
          }
-         {stat(file:this, stat'sys:stat):intc @inline
+         stat(file:this, stat'sys:stat):intc @inline {
             return 'sys.fstat(file, stat);
          }
       }
@@ -40,8 +40,8 @@
          #excl @no-decl @real-name(O_EXCL),
          ]:intc
       }
-      {open(path:char[], flags:open-flags):fd @real-name @no-decl}
-      {open(path:char[], flags:open-flags, mode:intc):fd @real-name @no-decl}
-      {close(fd:fd):intc @real-name @no-decl}
+      open(path:char[], flags:open-flags):fd @real-name @no-decl;
+      open(path:char[], flags:open-flags, mode:intc):fd @real-name @no-decl;
+      close(fd:fd):intc @real-name @no-decl;
    }
 }

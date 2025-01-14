@@ -1,5 +1,5 @@
-{using 'c = :stdc}
-{main(arg-c:intc, arg-v:char[][]):intc
+using 'c = :stdc;
+main(arg-c:intc, arg-v:char[][]):intc {
    {if(arg-c != 3)
       'c.printf("Usage: %s [.c input file] [.h output file]\n", arg-v[0]);
       'c.exit(#failure);

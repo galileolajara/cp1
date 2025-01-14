@@ -1,8 +1,8 @@
-{using 'c = :stdc}
-{using 'cp1 = :cp1}
+using 'c = :stdc;
+using 'cp1 = :cp1;
 {at(:cp1)
 {gvar input-path:char[]}
-{main(arg-c:intc, arg-v:char[][]):intc @main
+main(arg-c:intc, arg-v:char[][]):intc @main {
    {if(arg-c < 3)
       "usage:";
       'c.printf("Usage: %s [options] [.cp1 input file] [.cp1 output file]\n", arg-v[0]);
@@ -92,7 +92,7 @@
 {gvar preprocess-def-len-v:u8[]}
 {gvar preprocess-def-cap:u32}
 {gvar preprocess-def-c:u32}
-{preprocess-def-get(name:char[], len:u8):bool
+preprocess-def-get(name:char[], len:u8):bool {
    {do{+i = 0}{(.preprocess-def-c) i++}
       {if(&&, .preprocess-def-len-v[i] == len, 'c.memcmp(.preprocess-def-str-v[i], name, len) == 0)
          return true;
@@ -100,7 +100,7 @@
    }
    return false;
 }
-{preprocess-def(name:char[], len:u8)
+preprocess-def(name:char[], len:u8) {
    // 'c.printf("defining preprocessor %s\n", name);
    +i = .preprocess-def-c++;
    {if(.preprocess-def-cap < .preprocess-def-c)
@@ -111,7 +111,7 @@
    .preprocess-def-str-v[i] = name;
    .preprocess-def-len-v[i] = len;
 }
-{preprocess-init()
+preprocess-init() {
 "#ifdef _WIN32";
    preprocess-def("windows", 7);
 "#endif";
@@ -143,7 +143,7 @@
    preprocess-def("cpu64", 5);
 "#endif";
 }
-{preprocess(in-out-data:ref&, in-out-size:usz&)
+preprocess(in-out-data:ref&, in-out-size:usz&) {
    // 'c.printf("#if detected, preprocessing...\n");
    +preprocess = false;
    {+in-data:char[] = in-out-data}

@@ -1,13 +1,13 @@
-{using 'cp1 = :cp1}
-{using 'c = :stdc}
+using 'cp1 = :cp1;
+using 'c = :stdc;
 {at(:cp1)
 {:at-map(data:u64[(#hash-table-size + 7) >> 3])
-   {init(m:this)}
-   {get-or-insert(m:this, parent:at, type:name-type, name:id, val:i32):i32}
+   init(m:this);
+   get-or-insert(m:this, parent:at, type:name-type, name:id, val:i32):i32;
 }
 {:map(data:u64[(#hash-table-size + 7) >> 3])
-   {init(m:this)}
-   {get-or-insert(m:this, str:char[], len:u8, val:i32):i32}
+   init(m:this);
+   get-or-insert(m:this, str:char[], len:u8, val:i32):i32;
 }
 {gvar id-map:map+}
 {gvar include-map:map+}
@@ -81,18 +81,18 @@
 }
 {at(:lvar)
 #if(compiler)
-   {ptr(l:this):lvar-data @inline
+   ptr(l:this):lvar-data @inline {
       return .ctx-func.lvar-v[l];
    }
-   {name(l:this):id @inline
+   name(l:this):id @inline {
       return l.ptr().decl.name;
    }
 #endif
 #if(parser)
-   {ptr(l:this):lvar-data @inline
+   ptr(l:this):lvar-data @inline {
       return .ctx-func.lvar-v[l];
    }
-   {name(l:this):id @inline
+   name(l:this):id @inline {
       return l.ptr().decl.name;
    }
 #endif
@@ -380,12 +380,12 @@
 {gvar quick-alloc-c:i32}
 {gvar quick-alloc-cap:i32}
 {gvar quick-alloc-v:ref}
-{quick-alloc-init()
+quick-alloc-init() {
    .quick-alloc-cap = 16 * 1024;
    .quick-alloc-v = 'c.malloc(.quick-alloc-cap);
    'c.memset(.quick-alloc-v, 0, .quick-alloc-cap);
 }
-{quick-alloc(size:i32):ref @real-name(qalloc)
+quick-alloc(size:i32):ref @real-name(qalloc) {
    // +mem = 'c.malloc(size);
    // 'c.memset(mem, 0, size);
    // return mem;
@@ -410,7 +410,7 @@
    .quick-alloc-c = size;
    return .quick-alloc-v;
 }
-{quick-alloc-undo(size:i32) @real-name(qalloc_undo)
+quick-alloc-undo(size:i32) @real-name(qalloc_undo) {
    {if(:ref[:usz] == 8)
       size = (size + 7) & (-1 ^ 7);
    }{else
@@ -418,48 +418,47 @@
    }
    .quick-alloc-c -= size;
 }
-{quick-alloc-one(r:ref)
+quick-alloc-one(r:ref)
    @no-body
    @decl('<# r = qalloc(sizeof(r[0]))>)
-   @inline
+   @inline {
    quick-alloc(0);
 }
-{quick-alloc-arr(r:ref, c:i32)
+quick-alloc-arr(r:ref, c:i32)
    @no-body
    @decl('<# r = qalloc(sizeof(r[0]) * (c))>)
-   @inline
+   @inline {
    quick-alloc(0);
 }
-{quick-alloc-plus(r:ref, plus:i32)
+quick-alloc-plus(r:ref, plus:i32)
    @no-body
    @decl('<# r = qalloc(sizeof(r[0]) + plus)>)
-   @inline
+   @inline {
    quick-alloc(0);
 }
-{malloc(r:ref)
+malloc(r:ref)
    @no-body
    @decl('<# r = malloc(sizeof(r[0])); memset(r, 0, sizeof(r[0]))>)
-   @inline
+   @inline {
    'c.malloc(0);
 }
-{malloc-arr(r:ref, c:i32)
+malloc-arr(r:ref, c:i32)
    @no-body
    @decl('<# r = malloc(sizeof(r[0]) * (c)); memset(r, 0, sizeof(r[0]) * (c))>)
-   @inline
+   @inline {
    'c.malloc(0);
 }
-{realloc(r:ref, c:i32, oldc:i32)
+realloc(r:ref, c:i32, oldc:i32)
    @no-body
    @decl('<# r = realloc(r, sizeof(r[0]) * (c)); memset(r + (oldc), 0, sizeof(r[0]) * ((c) - (oldc)))>)
-   @inline
+   @inline {
    'c.realloc(null, 0);
 }
 {include("num.c")
-   {grow(cap:i32, c:i32)
+   grow(cap:i32, c:i32)
       @no-body
       @decl('<# cap = Fpow2gteq((c) + 8)>)
-      @inline
-   }
+      @inline;
 }
 {cvar #decl-at-name-limit:i32 = 3}
 {:at-name(id:id, basic:basic-type-id) @union
@@ -484,7 +483,7 @@
    def:at-def,
 #endif
    )
-   {init(at:this, type:name-type, parent:at, name:id)
+   init(at:this, type:name-type, parent:at, name:id) {
       at.type = type;
       at.parent = parent;
       at.name.id = name;
@@ -499,19 +498,19 @@
    }
 }
 {:name-type[#module, #struct-enum, #basic]:u8
-   {rd(i:this&, r:rdr) @inline
+   rd(i:this&, r:rdr) @inline {
       i = r.n1():name-type;
    }
-   {wr(i:this, w:wtr) @inline
+   wr(i:this, w:wtr) @inline {
       w.n1(i);
    }
-   {cp1-name(e:this):char[] @cp1-name}
+   cp1-name(e:this):char[] @cp1-name;
 }
 {gvar at-c:at}
 {gvar at-cap:at}
 {gvar at-v:at-data+[]}
 {:at[#nil = -1, #root, #relative]:i32
-   {finalize(at-i:this, ti:type-info, row:i32, col:i32):bool
+   finalize(at-i:this, ti:type-info, row:i32, col:i32):bool {
       +at = at-i.ptr();
       {if(at.def == #struct)
          {if(ti.built-in)
@@ -534,7 +533,7 @@
       }
       return true;
    }
-   {output(at-i:this, file:file, row:i32, col:i32)
+   output(at-i:this, file:file, row:i32, col:i32) {
       +at = at-i.ptr();
       {switch(at.type)
          {case(#struct-enum)
@@ -588,7 +587,7 @@
          }
       }
    }
-	{write-type-info(td:this, ti:type-info, add:i32):bool
+	write-type-info(td:this, ti:type-info, add:i32):bool {
 		ti.count();
       td.write-type();
       +s = td.count-stars0(ti) + add;
@@ -597,24 +596,24 @@
       }
 		return true;
 	}
-	{count-stars(td:this, ti:type-info):i32
+	count-stars(td:this, ti:type-info):i32 {
 		{if(td == #root)
 			return td.count-stars0(ti) + 1;
 		}{else
 			return td.count-stars0(ti);
 		}
 	}
-   {pointer(td:this):i32 @inline
+   pointer(td:this):i32 @inline {
       {if(td.ptr().def == #struct)
          return 1;
       }{else
          return 0;
       }
    }
-	{count-stars0(td:this, ti:type-info):i32
+	count-stars0(td:this, ti:type-info):i32 {
       return ti.star-c + td.pointer();
 	}
-   {write-type(td:this):bool
+   write-type(td:this):bool {
       td.write();
 // 	{if(td.typeType == #value)
 // 		{if(td.real.baseDecl == null)
@@ -641,10 +640,10 @@
 // 	}
    	return true;
    }
-   {ptr(i:this):at-data @inline
+   ptr(i:this):at-data @inline {
       return .at-v[i];
    }
-   {rd(i:this&, r:rdr) @inline
+   rd(i:this&, r:rdr) @inline {
       +idx = (r.n() - 1):at;
       {if(idx == #nil)
          i = #nil;
@@ -652,7 +651,7 @@
          i = .at-table[idx];
       }
    }
-   {put-to-header(at:this)
+   put-to-header(at:this) {
       {if((.at-in-header-v[at >> 3] & (1 << (at & 7))) == 0)
          .at-in-header-v[at >> 3] |= 1 << (at & 7);
          .at-in-header-idx-v[at] = .at-in-header-c;
@@ -662,14 +661,14 @@
          }
       }
    }
-   {wr-header(id:this, w:wtr) @inline
+   wr-header(id:this, w:wtr) @inline {
       {if(id == #nil)
          w.n(0);
       }{else
          w.n(1 + .at-in-header-idx-v[id]);
       }
    }
-   {wr(at:this, w:wtr, header:bool) @inline
+   wr(at:this, w:wtr, header:bool) @inline {
       {if(at == #nil)
          w.n(0);
       }{else
@@ -681,7 +680,7 @@
          }
       }
    }
-   {write(at-idx:this)
+   write(at-idx:this) {
       +at = at-idx.ptr();
       {switch(at.type)
          {case(#module)
@@ -784,7 +783,7 @@
          }
       }
    }
-   {write-space(at-idx:this)
+   write-space(at-idx:this) {
       +at = at-idx.ptr();
       {switch(at.type)
          {case(#module)
@@ -857,13 +856,13 @@
 }
 
 {:include[#nil = -1, #0]:i32
-   {str(i:this):char[] @inline
+   str(i:this):char[] @inline {
       return .include-str-v[i];
    }
-   {wr(i:this, w:wtr) @inline
+   wr(i:this, w:wtr) @inline {
       w.n(i + 1);
    }
-   {rd(i:this&, r:rdr) @inline
+   rd(i:this&, r:rdr) @inline {
       +idx = (r.n() - 1):include;
       {if(idx == #nil)
          i = #nil;
@@ -871,7 +870,7 @@
          i = .include-table[idx];
       }
    }
-   {output(this:this) @inline
+   output(this:this) @inline {
       +num = this:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
@@ -892,7 +891,7 @@
 {gvar include-len-v:u8[]}
 {gvar func-main:func}
 {:id[#nil = -1, #0]:i32
-   {c-name(id:this):char[]
+   c-name(id:this):char[] {
       {+c-name:char[] = .id-c-name-v[id]}
       {if(c-name != null) return c-name}
       +len = .id-len-v[id];
@@ -909,20 +908,20 @@
       c-name[len] = ''\0;
       return c-name;
    }
-   {str(id:this):char[] @inline
+   str(id:this):char[] @inline {
       return .id-str-v[id];
    }
-   {len(id:this):u8 @inline
+   len(id:this):u8 @inline {
       return .id-len-v[id];
    }
-   {wr-header(id:this, w:wtr) @inline
+   wr-header(id:this, w:wtr) @inline {
       {if(id == #nil)
          w.n(0);
       }{else
          w.n(1 + .id-in-header-idx-v[id]);
       }
    }
-   {wr(id:this, w:wtr, header:bool) @inline
+   wr(id:this, w:wtr, header:bool) @inline {
       {if(id == #nil)
          w.n(0);
       }{else
@@ -938,7 +937,7 @@
          }
       }
    }
-   {rd(id:this&, r:rdr) @inline
+   rd(id:this&, r:rdr) @inline {
       +idx = (r.n() - 1):id;
       {if(idx == #nil)
          id = #nil;

@@ -1,12 +1,12 @@
-{using 'cp1 = :cp1}
-{using 'c = :stdc}
+using 'cp1 = :cp1;
+using 'c = :stdc;
 {at(:cp1)
 {:stmt-continue(
    base:stmt+,
    nest:u8,
    )
 }
-{stmt-continue(id:id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32)
+stmt-continue(id:id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
    quick-alloc-one(+(s:stmt-continue));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #continue);
    // s.id = id;
@@ -17,22 +17,22 @@
    s.nest = .nest-stack-c - 1;
 }
 {at(:stmt-space)
-   {wr-continue(stmt:stmt, w:wtr, header:bool) @case.wr() @inline
+   wr-continue(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
       {+s:stmt-continue = stmt}
       w.n1(s.nest);
    }
-   {rd-continue(space:stmt-space, r:rdr) @case.rd() @inline
+   rd-continue(space:stmt-space, r:rdr) @case.rd() @inline {
       quick-alloc-one(+(s:stmt-continue));
       s.nest = r.n1();
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #continue);
    }
 }
 {at(:stmt)
-   {write-continue(stmt:stmt) @case.write() @inline
+   write-continue(stmt:stmt) @case.write() @inline {
       {+s:stmt-continue = stmt}
       .out.printf("goto continue_%u;\n", .nest-stack-id-v[s.nest]);
    }
-   {process-continue(stmt:stmt, ok:bool&) @case.process() @inline
+   process-continue(stmt:stmt, ok:bool&) @case.process() @inline {
       {+s:stmt-continue = stmt}
       ok = true;
    }

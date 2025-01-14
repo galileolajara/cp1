@@ -1,5 +1,5 @@
-{using 'c = :stdc}
-{using 'sys = :sys}
+using 'c = :stdc;
+using 'sys = :sys;
 {gvar atexit-rm-v:char[][]}
 {gvar atexit-rm-cap:u32}
 {gvar atexit-rm-c:u32}
@@ -7,19 +7,19 @@
 {gvar include-dir-len:u16}
 // +include-dir = "/opt/cp1/include";
 // +include-dir-len = 'c.strlen(include-dir);
-{print-commands(bin:char[])
+print-commands(bin:char[]) {
    'c.printf("Usage: %s [command] [options]\n", bin);
    'c.printf("Commands:\n");
    'c.printf("  c     Build a C file.\n");
    'c.printf("  run      Compile and run the cp1 codes.\n");
 }
-{print-c-usage(bin:char[])
+print-c-usage(bin:char[]) {
    'c.printf("Usage: %s c [output.c] [cp1 file/s...]\n", bin);
 }
-{print-run-usage(bin:char[])
+print-run-usage(bin:char[]) {
    'c.printf("Usage: %s run [cp1 file/s...]\n", bin);
 }
-{get-compiler(bin:char[], ninja-f'c:file)
+get-compiler(bin:char[], ninja-f'c:file) {
    +PATH = 'c.strdup('c.getenv("PATH"));
    // 'c.printf("PATH = %s\n", PATH);
    +found = 'c.strtok(PATH, ":");
@@ -59,7 +59,7 @@
    'c.exit(#failure);
 }
 {:cmd[#c, #run]:u8}
-{print-usage(bin:char[], cmd:cmd)
+print-usage(bin:char[], cmd:cmd) {
    {switch(cmd)
       {case(#c)
          print-c-usage(bin);
@@ -79,7 +79,7 @@
 {gvar cp1-path-real-len-v:u32[]}
 {gvar cp1-path-cap:i32}
 {gvar cp1-path-c:i32}
-{cp1-path-add(cp1-path-real:char[], cp1-path-real-len:i32, cp1-path:char[], cp1-path-len:i32)
+cp1-path-add(cp1-path-real:char[], cp1-path-real-len:i32, cp1-path:char[], cp1-path-len:i32) {
    // 'c.printf("adding %s as %s\n", cp1-path-real, cp1-path);
    +i = .cp1-path-c++;
    {if(.cp1-path-cap < .cp1-path-c)
@@ -95,7 +95,7 @@
    .cp1-path-real-len-v[i] = cp1-path-real-len;
 }
 {gvar cmd-preprocess:char[512]}
-{cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool
+cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool {
 	{do{+i = 0}{(.cp1-path-c) i++}
 		{if('c.memcmp(.cp1-path-v[i], cp1-path, cp1-path-len) == 0)
 			return true;
@@ -415,7 +415,7 @@
    'c.free(data);
 	return true;
 }
-{validate-cp1-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:cmd):bool
+validate-cp1-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:cmd):bool {
    {do{+i = start}{(arg-c - start) i++}
       +cp1-path = arg-v[i];
       {if(cp1-path[0] == ''/)
@@ -461,14 +461,14 @@
    }
 	return true;
 }
-{print-command(arg-c:i32, arg-v:char[][])
+print-command(arg-c:i32, arg-v:char[][]) {
 	'c.printf("Command was:");
 	{do{+i = 0}{(arg-c) i++}
 		'c.printf(" %s", arg-v[i]);
 	}
 	'c.printf("\n");
 }
-{atexit-rm(path:char[])
+atexit-rm(path:char[]) {
    +i = .atexit-rm-c++;
    {if(.atexit-rm-cap < .atexit-rm-c)
       .atexit-rm-cap = (.atexit-rm-c << 1) + 8;
@@ -476,13 +476,13 @@
    }
    .atexit-rm-v[i] = path;
 }
-{on-exit()
+on-exit() {
    {do{+i = 0}{(.atexit-rm-c) i++}
       // 'c.printf("Removing %s\n", .atexit-rm-v[i]);
       'c.unlink(.atexit-rm-v[i]);
    }
 }
-{main(arg-c:intc, arg-v:char[][]):intc
+main(arg-c:intc, arg-v:char[][]):intc {
    {if(false)
       on-exit();
    }

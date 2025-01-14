@@ -1,6 +1,6 @@
-{using 'cp1 = :cp1}
+using 'cp1 = :cp1;
 {at(:cp1)
-{expr-cast-fast(expr:expr-i, type:at):expr-i
+expr-cast-fast(expr:expr-i, type:at):expr-i {
    quick-alloc-one(+(e:expr-cast-fast));
    +e-idx = expr-push(e.base, #cast-fast);
    e.expr = expr;
@@ -8,7 +8,7 @@
    return e-idx;
 }
 {at(:expr-cast-fast)
-   {write-value(e:this, v:value) @inline
+   write-value(e:this, v:value) @inline {
       .out.printf("(");
       e.type.write-type-info(v.info, 0);
       .out.printf(")(");
@@ -17,28 +17,28 @@
    }
 }
 {at(:expr-i)
-   {wr-cast-fast(expr:expr, w:wtr, header:bool) @case.wr() @inline
+   wr-cast-fast(expr:expr, w:wtr, header:bool) @case.wr() @inline {
       {+e:expr-cast-fast = expr}
       e.expr.wr(w, header);
       e.type.wr(w, header);
    }
-   {rd-cast-fast(e-idx:expr-i, r:rdr) @case.rd() @inline
+   rd-cast-fast(e-idx:expr-i, r:rdr) @case.rd() @inline {
       quick-alloc-one(+(e:expr-cast-fast));
       e-idx.set(e.base, #cast-fast);
       e.expr.rd(r);
       e.type.rd(r);
    }
-   {value-cast-fast(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline
+   value-cast-fast(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
       {+expr:expr-cast-fast = e.ptr()}
       expr.expr.value(ref, paren, v);
       v.type = expr.type;
       ok = true;
 	}
-   {type-cast-fast(expr:expr, at:at&) @case.type() @inline
+   type-cast-fast(expr:expr, at:at&) @case.type() @inline {
       {+e:expr-cast-fast = expr}
       at = e.type;
    }
-   {process-cast-fast(expr:expr, ok:bool&) @case.process() @inline
+   process-cast-fast(expr:expr, ok:bool&) @case.process() @inline {
       {+e:expr-cast-fast = expr}
 		{if!(e.expr.value(1, false, e.val))
 			return;

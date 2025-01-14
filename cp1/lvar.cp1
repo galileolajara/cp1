@@ -1,14 +1,14 @@
-{using 'cp1 = :cp1}
-{using 'c = :stdc}
+using 'cp1 = :cp1;
+using 'c = :stdc;
 {at(:cp1)
 {:lvar[#nil = -1, #0]:i32
-   {rd(l:this&, r:rdr) @inline
+   rd(l:this&, r:rdr) @inline {
       l = (r.n() - 1):lvar;
    }
-   {wr(l:this, w:wtr) @inline
+   wr(l:this, w:wtr) @inline {
       w.n(l + 1);
    }
-   {process(l:this):bool @inline
+   process(l:this):bool @inline {
       +lvar = l.ptr();
       {if((lvar.flags & #processed) != #0) return true}
       lvar.flags |= #processed;
@@ -33,10 +33,10 @@
    #set-expr = 1,
    #processed = 2,
    ]:u8
-   {rd(f:this&, r:rdr) @inline
+   rd(f:this&, r:rdr) @inline {
       f = r.n1():lvar-flags;
    }
-   {wr(f:this, w:wtr) @inline
+   wr(f:this, w:wtr) @inline {
       w.n1(f);
    }
 }
@@ -48,7 +48,7 @@
    set-expr:expr-i,
    )
 }
-{expr-lvar(name:id, decl:u8, row:i32, col:i32):expr-i
+expr-lvar(name:id, decl:u8, row:i32, col:i32):expr-i {
    {if(decl == 0)
       +space = .decl-func-ctx-space;
       {do()
@@ -95,16 +95,16 @@
    }
 }
 {at(:expr-i)
-   {write-lvar(expr:expr) @case.write() @inline
+   write-lvar(expr:expr) @case.write() @inline {
       {+e:expr-lvar = expr}
       e.lvar.ptr().decl.write-lvar(e.lvar);
    }
-   {type-lvar(expr:expr, at:at&) @case.type() @inline
+   type-lvar(expr:expr, at:at&) @case.type() @inline {
       {+e:expr-lvar = expr}
       +lvar = e.lvar.ptr();
       at = lvar.decl.type;
    }
-   {value-lvar(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline
+   value-lvar(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
       {+expr:expr-lvar = e.ptr()}
       +lvar = expr.lvar.ptr();
       v.set(ref, paren, lvar.decl.type, lvar.decl.type-info);
@@ -113,16 +113,16 @@
       }
       ok = true;
    }
-   {wr-lvar(expr:expr, w:wtr, header:bool) @case.wr() @inline
+   wr-lvar(expr:expr, w:wtr, header:bool) @case.wr() @inline {
       {+e:expr-lvar = expr}
       e.lvar.wr(w);
    }
-   {rd-lvar(e-idx:expr-i, r:rdr) @case.rd() @inline
+   rd-lvar(e-idx:expr-i, r:rdr) @case.rd() @inline {
       quick-alloc-one(+(e:expr-lvar));
       e-idx.set(e.base, #lvar);
       e.lvar.rd(r);
    }
-   {process-lvar(expr:expr, ok:bool&) @case.process() @inline
+   process-lvar(expr:expr, ok:bool&) @case.process() @inline {
       {+e:expr-lvar = expr}
       {if!(e.lvar.process()) return}
       ok = true;

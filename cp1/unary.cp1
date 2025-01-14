@@ -1,14 +1,14 @@
-{using 'cp1 = :cp1}
+using 'cp1 = :cp1;
 {at(:cp1)
 {:unary[#neg, #inc, #dec, #not]:u8
-   {rd(u:this&, r:rdr) @inline
+   rd(u:this&, r:rdr) @inline {
       u = r.n1():unary;
    }
-   {wr(u:this, w:wtr) @inline
+   wr(u:this, w:wtr) @inline {
       w.n1(u);
    }
 }
-{expr-unary(expr:expr-i, type:unary):expr-i
+expr-unary(expr:expr-i, type:unary):expr-i {
    quick-alloc-one(+(e:expr-unary));
    +e-idx = expr-push(e.base, #unary);
    e.expr = expr;
@@ -16,18 +16,18 @@
    return e-idx;
 }
 {at(:expr-i)
-   {wr-unary(expr:expr, w:wtr, header:bool) @case.wr() @inline
+   wr-unary(expr:expr, w:wtr, header:bool) @case.wr() @inline {
       {+e:expr-unary = expr}
       e.expr.wr(w, header);
       e.type.wr(w);
    }
-   {rd-unary(e-idx:expr-i, r:rdr) @case.rd() @inline
+   rd-unary(e-idx:expr-i, r:rdr) @case.rd() @inline {
       quick-alloc-one(+(e:expr-unary));
       e-idx.set(e.base, #unary);
       e.expr.rd(r);
       e.type.rd(r);
    }
-   {write-unary(expr:expr) @case.write() @inline
+   write-unary(expr:expr) @case.write() @inline {
       {+e:expr-unary = expr}
       {switch(e.type)
          {case(#neg)
@@ -48,7 +48,7 @@
          }
       }
    }
-   {value-unary(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline
+   value-unary(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
       {+expr:expr-unary = e.ptr()}
 		v.type = expr.expr.type();
 		v.info.init();
@@ -58,11 +58,11 @@
 		v.ref = 1;
       ok = true;
 	}
-   {type-unary(expr:expr, at:at&) @case.type() @inline
+   type-unary(expr:expr, at:at&) @case.type() @inline {
       {+e:expr-unary = expr}
       at = e.expr.type();
    }
-   {process-unary(expr:expr, ok:bool&) @case.process() @inline
+   process-unary(expr:expr, ok:bool&) @case.process() @inline {
       {+e:expr-unary = expr}
 		{if!(e.expr.value(1, true, e.val))
 			return;

@@ -1,30 +1,30 @@
-{using 'cp1 = :cp1}
+using 'cp1 = :cp1;
 {at(:cp1)
-{expr-null():expr-i
+expr-null():expr-i {
    quick-alloc-one(+(e:expr-null));
    +e-idx = expr-push(e.base, #null);
    return e-idx;
 }
 {at(:expr-i)
-   {wr-null(expr:expr, w:wtr, header:bool) @case.wr() @inline
+   wr-null(expr:expr, w:wtr, header:bool) @case.wr() @inline {
       {+e:expr-null = expr}
    }
-   {rd-null(e-idx:expr-i, r:rdr) @case.rd() @inline
+   rd-null(e-idx:expr-i, r:rdr) @case.rd() @inline {
       quick-alloc-one(+(e:expr-null));
       e-idx.set(e.base, #null);
    }
-   {write-null(expr:expr) @case.write() @inline
+   write-null(expr:expr) @case.write() @inline {
       {+e:expr-null = expr}
       .out.printf("NULL");
    }
-   {process-null(expr:expr, ok:bool&) @case.process() @inline
+   process-null(expr:expr, ok:bool&) @case.process() @inline {
       .include-stddef = true;
       ok = true;
    }
-   {type-null(expr:expr, at:at&) @case.type() @inline
+   type-null(expr:expr, at:at&) @case.type() @inline {
       at = basic-type(#ref);
    }
-   {value-null(le:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline
+   value-null(le:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline {
       v.type = basic-type(#ref);
       v.info.init();
       v.info.array-c = 0;
