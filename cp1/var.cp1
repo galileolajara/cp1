@@ -22,8 +22,8 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
       //    }
       // }
       // 'c.out.printf("relative type detected, finding :%s\n", name.id.str());
-      {do()
-         {do var i = 0:at; {(.at-c) i++}
+      loop {
+         loop var i = 0:at; {(.at-c) i++} {
             if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
                // 'c.out.printf("%u) :%s, %d\n", i, .at-v[i].name.id.str(), .at-v[i].decl.struct);
                if (.at-v[i].name.id == name.id) {
@@ -55,7 +55,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
       }
       at-i.output(.ctx-func.file, row, col);
       if !(at-i.finalize(vd.type-info, row, col)) { return false}
-      {do var i = 0; {(vd.size-c) i++}
+      loop var i = 0; {(vd.size-c) i++} {
          if !(vd.size-expr-v[i].value(1, false, vd.size-value-v[i])) { return false}
       }
       return true;
@@ -88,7 +88,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
       .out.printf(" ");
       vd.write(var-type);
-      {do var i = 0; {(vd.size-c) i++}
+      loop var i = 0; {(vd.size-c) i++} {
          .out.printf("[");
          vd.size-expr-v[i].write-value(vd.size-value-v[i]);
          .out.printf("]");
@@ -101,7 +101,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
       .out.printf(" ");
       vd.write-lvar(lvar);
-      {do var i = 0; {(vd.size-c) i++}
+      loop var i = 0; {(vd.size-c) i++} {
          .out.printf("[");
          vd.size-expr-v[i].write-value(vd.size-value-v[i]);
          .out.printf("]");
@@ -117,7 +117,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
       vd.type-info.wr(w);
       // 'c.out.printf("%s, vd.size-c %d\n", vd.name.str(), vd.size-c);
       w.n1(vd.size-c);
-      {do var i = 0; {(vd.size-c) i++}
+      loop var i = 0; {(vd.size-c) i++} {
          vd.size-expr-v[i].wr(w, header);
       }
    }
@@ -140,8 +140,8 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
    //       // .out = 'c.out;
    //       // at-i.write-space();
    //       // .out = old-out;
-   //       {do()
-   //          {do var i = 0:at; {(.at-c) i++}
+   //       loop {
+   //          loop var i = 0:at; {(.at-c) i++} {
    //             if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
    //                'c.out.printf("%u) :%s\n", i, .at-v[i].name.id.str());
    //                if (.at-v[i].name.id == name.id) {
@@ -171,7 +171,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
       if (vd.size-c > 0) {
          quick-alloc-arr(vd.size-expr-v, vd.size-c);
          quick-alloc-arr(vd.size-value-v, vd.size-c);
-         {do var i = 0; {(vd.size-c) i++}
+         loop var i = 0; {(vd.size-c) i++} {
             vd.size-expr-v[i].rd(r);
          }
       }
@@ -186,7 +186,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
       vd.size-c = src.size-c;
       if (vd.size-c > 0) {
          quick-alloc-arr(vd.size-expr-v, vd.size-c);
-         {do var i = 0; {(vd.size-c) i++}
+         loop var i = 0; {(vd.size-c) i++} {
             vd.size-expr-v[i] = src.size-expr-v[i];
          }
       }
@@ -227,7 +227,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
 	}
    rd(ti:this, r:rdr) {
       +c = r.n1();
-      {do var i = 0; {(c) i++}
+      loop var i = 0; {(c) i++} {
          ti.ref-v[i] = r.n1();
       }
       ti.array-c = r.n1();
@@ -237,14 +237,14 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
    }
    wr(ti:this, w:wtr) {
       +c = 0;
-      {do(#type-info-star-limit)
+      loop (#type-info-star-limit) {
          if (ti.ref-v[c] == 0) {
             break;
          }
          c++;
       }
       w.n1(c);
-      {do var i = 0; {(c) i++}
+      loop var i = 0; {(c) i++} {
          w.n1(ti.ref-v[i]);
       }
       w.n1(ti.array-c);
@@ -263,12 +263,12 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
 		var ref-v:i8[#type-info-star-limit];
 		+c = ti.array-c;
 		+star-c = ti.array-c;
-		{do var i = 0; (c + 1)
+		loop var i = 0; (c + 1) {
 			ref-v[i] = ti.ref-v[i];
 			star-c += ref-v[i];
 			i += 1;
 		}
-		{do var i = 0, j = c; (c + 1)
+		loop var i = 0, j = c; (c + 1) {
 			ti.ref-v[i] = ref-v[j];
 			i += 1;
 			j -= 1;
@@ -277,7 +277,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
 	}
 	count(ti:this) {
 		+star-c = ti.array-c;
-		{do var i = ti.array-c; (i + 1)
+		loop var i = ti.array-c; (i + 1) {
 			star-c += ti.ref-v[i];
 			i -= 1;
 		}

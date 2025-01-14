@@ -69,7 +69,7 @@ decl-at-begin-enum(name:id, row:i32, col:i32) {
    .decl-enum-last-cvar = #nil;
    // 'c.out.printf("began enum at:\n");
    // +at-i = .build-at;
-   // {do()
+   // loop {
    //    +at = at-i.ptr();
    //    'c.out.printf("- %s\n", at.name.id.str());
    //    at-i = at.parent;
@@ -105,7 +105,7 @@ decl-enum-end(base-type:at, row:i32, col:i32) {
    // s.name = .decl-enum-name;
    // s.evar-c = .decl-evar-c;
    // 'c.out.printf("There are %u evars\n", s.evar-c);
-   // {do var i = 0; {(.decl-evar-c) i ++}
+   // loop var i = 0; {(.decl-evar-c) i ++} {
    //    +a = s.evar-v[i];
    //    a.decl.copy-from(.decl-evar-v[i]);
    //    // 'c.out.printf("- %s\n", a.name.str());

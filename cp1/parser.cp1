@@ -33,7 +33,7 @@ type-info-arr(expr-v:expr-i[], expr-c:u8) {
       ti.ref-v[ti.array-c] = 0;
       return;
    }
-   {do var i = expr-c; (expr-c)
+   loop var i = expr-c; (expr-c) {
       type-info-arr(expr-v[i -= 1]);
    }
 }
@@ -75,7 +75,7 @@ at-push(name:id, type:name-type, row:i32, col:i32) {
    .build-at = at-create(.build-at, type, name);
 }
 at-basic-type(type:basic-type-id):at {
-   {do var i = 0:at; {(.at-c) i++}
+   loop var i = 0:at; {(.at-c) i++} {
       +at = .at-v[i];
       if (&&, at.type == #basic, at.name.basic == type) {
          return i;
@@ -118,7 +118,7 @@ at-begin-relative() {
 {gvar at-alias-pos-v:row-col+[]}
 :row-col(row:i32, col:i32);
 at-alias(name:id, row:i32, col:i32) {
-   {do var i = 0; {(.at-alias-c) i++}
+   loop var i = 0; {(.at-alias-c) i++} {
       if (.at-alias-name-v[i] == name) {
          .build-at = .at-alias-at-v[i];
          return;
@@ -133,7 +133,7 @@ decl-alias(name:id, at:at, row:i32, col:i32) {
    //    'c.exit(#failure);
    //    return;
    // }
-   {do var i = 0; {(.at-alias-c) i++}
+   loop var i = 0; {(.at-alias-c) i++} {
       if (.at-alias-name-v[i] == name) {
          'c.out.printf("%s:%u:%u: Alias '%s was already declared at %u:%u\n", .input-path, row, col, name.str(), .at-alias-pos-v[i].row, .at-alias-pos-v[i].col);
          'c.exit(#failure);
@@ -174,7 +174,7 @@ at-done():at {
 at-create(parent:at, type:name-type, name:id):at {
    +found = .at-map.get-or-insert(parent, type, name, .at-c);
    if (found != -1) { return found}
-   // {do var i = 0:at; {(.at-c) i++}
+   // loop var i = 0:at; {(.at-c) i++} {
    //    +at = .at-v[i];
    //    if (&&,
    //       at.parent == parent,
@@ -196,7 +196,7 @@ at-create(parent:at, type:name-type, name:id):at {
    return build-idx;
 }
 at-create-basic(basic:basic-type-id):at {
-   {do var i = 0:at; {(.at-c) i++}
+   loop var i = 0:at; {(.at-c) i++} {
       +at = .at-v[i];
       if (&&,
          at.type == #basic,
@@ -272,7 +272,7 @@ decl-at-end() {
          'c.exit(#failure);
       }
       +val = 0:u64;
-      {do(length)
+      loop (length) {
          val = (val * 8:u64) + (r-start.p1[0] - ''0);
          r-start.pos++;
       }
@@ -293,7 +293,7 @@ decl-at-end() {
          'c.exit(#failure);
       }
       +val = 0:u64;
-      {do(length)
+      loop (length) {
          val = (val * 10:u64) + (r-start.p1[0] - ''0);
          r-start.pos++;
       }
@@ -335,7 +335,7 @@ decl-at-end() {
          // found
          return found;
       }
-      // {do var i = 0; {(.id-c) i++}
+      // loop var i = 0; {(.id-c) i++} {
       //    if (.id-len-v[i] == len) {
       //       if ('c.memcmp(.id-str-v[i], r-start.ref, len) == 0) {
       //          return i;
@@ -388,7 +388,7 @@ decl-at-end() {
          // found
          return found;
       }
-      // {do var i = 0; {(.include-c) i++}
+      // loop var i = 0; {(.include-c) i++} {
       //    if (.include-len-v[i] == len) {
       //       if ('c.memcmp(.include-str-v[i], r-start.ref, len) == 0) {
       //          return i;
@@ -421,7 +421,7 @@ decl-at-end() {
 {gvar col:i32 @extern}
 write-func(w:wtr, header:bool) @inline {
    w.n(.func-c);
-   {do var i = 0; (.func-c)
+   loop var i = 0; (.func-c) {
       +f = .func-v[i++];
       w.n1(f.farg-c);
       w.n(f.begin-row);
@@ -431,7 +431,7 @@ write-func(w:wtr, header:bool) @inline {
       f.include.wr(w);
       f.at.wr(w, header);
       f.decl.wr(w, header);
-      {do var j = 0; {(f.farg-c) j++}
+      loop var j = 0; {(f.farg-c) j++} {
          f.farg-v[j].wr(w, header);
       }
       w.n1(f.this-idx);
@@ -439,7 +439,7 @@ write-func(w:wtr, header:bool) @inline {
          w.n1(f.this-group);
       }
       w.n1(f.group-c);
-      {do var j = 0; {(f.group-c) j++}
+      loop var j = 0; {(f.group-c) j++} {
          w.n1(f.group-v[j]);
       }
       if (header) {
@@ -465,7 +465,7 @@ write-func(w:wtr, header:bool) @inline {
       }
    }
    .func-main.wr(w);
-   {do var i = 0; (.func-c)
+   loop var i = 0; (.func-c) {
       +f = .func-v[i++];
       if ((f.flags & #has-body) == #0) { continue}
       if (header) {
@@ -487,7 +487,7 @@ write-func(w:wtr, header:bool) @inline {
 }
 write-cvar(w:wtr, header:bool) {
    w.n(.cvar-c);
-   {do var i = 0; {(.cvar-c) i++}
+   loop var i = 0; {(.cvar-c) i++} {
       +cvar = .cvar-v[i];
       cvar.include.wr(w);
       cvar.at.wr(w, header);
@@ -502,7 +502,7 @@ write-cvar(w:wtr, header:bool) {
 }
 write-gvar(w:wtr, header:bool) {
    w.n(.gvar-c);
-   {do var i = 0; {(.gvar-c) i++}
+   loop var i = 0; {(.gvar-c) i++} {
       +gvar = .gvar-v[i];
       gvar.include.wr(w);
       gvar.at.wr(w, header);
@@ -511,7 +511,7 @@ write-gvar(w:wtr, header:bool) {
 }
 write-enum(w:wtr, header:bool) {
    w.n(.enum-c);
-   {do var i = 0; (.enum-c)
+   loop var i = 0; (.enum-c) {
       +e = .enum-v[i++];
       w.n(e.begin-row);
       w.n(e.begin-col);
@@ -528,7 +528,7 @@ write-enum(w:wtr, header:bool) {
 }
 write-struct(w:wtr, header:bool) {
    w.n(.struct-c);
-   {do var i = 0; (.struct-c)
+   loop var i = 0; (.struct-c) {
       +s = .struct-v[i++];
       w.n1(s.fvar-c);
       w.n(s.begin-row);
@@ -540,7 +540,7 @@ write-struct(w:wtr, header:bool) {
       s.flags.wr(w);
       // 'c.out.printf("write-struct %s\n", s.at.ptr().name.id.str());
       // s.name.wr(w, header);
-      {do var j = 0; {(s.fvar-c) j++}
+      loop var j = 0; {(s.fvar-c) j++} {
          s.fvar-v[j].wr(w, header);
       }
       if ((s.flags & #real-name) != #0) {
@@ -580,7 +580,7 @@ parse-string(r:rdr, w:wtr, ending:char, in-data:ref) {
    w.p1[1] = r.p1[1];
    w.pos += 2;
    r.pos += 2;
-   {do()
+   loop {
       +c = r.p1[0];
       if (c == ''\n) {
          get-row-col(+row, +col, r.ref, in-data);
@@ -599,7 +599,7 @@ parse-comment(r:rdr, w:wtr, ending:char, in-data:ref) {
    var r-begin:rdr+;
    r-begin.pos = r.pos;
    r.pos += 2;
-   {do()
+   loop {
       +c = r.p1[0];
       if (c == ''\n) {
          get-row-col(+row, +col, r.ref, in-data);
@@ -609,7 +609,7 @@ parse-comment(r:rdr, w:wtr, ending:char, in-data:ref) {
       r.pos++;
       if (c == ending) {
          +len = r.pos - r-begin.pos;
-         {do(len)
+         loop (len) {
             w.p1[0] = '' ;
             w.pos++;
          }
@@ -681,7 +681,7 @@ convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
          r.pos += 8;
          var r-type:rdr+;
          r-type.ref = r.ref;
-         {do()
+         loop {
             +c = r.p1[0];
             if (c == '']) {
                while (r-type.pos < r.pos) {
@@ -837,7 +837,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                }
                // comment
                r.pos += 3;
-               {do()
+               loop {
                   if (r.p1[0] == ''\n) {
                      break;
                   }
@@ -892,7 +892,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                w.p1[2] = r.p1[2];
                w.pos += 3;
                r.pos += 3;
-               {do()
+               loop {
                   +c = r.p1[0];
                   w.p1[0] = c;
                   w.pos++;
@@ -951,7 +951,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             w.p1[0] = ''\";
             w.pos++;
             r.pos++;
-            {do()
+            loop {
                if (r.p1[0] == ''\n) {
                   get-row-col(+row, +col, r.ref, in-data);
                   'c.out.printf("%s:%u:%u: Unterminated string\n", .input-path, row, col);
@@ -1052,7 +1052,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .row = 1;
    .col = 1;
    var tok:token-data+;
-   {do()
+   loop {
       tok.row = next-row;
       tok.col = next-col;
       +t = lex.scan();
@@ -1103,7 +1103,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                var r-start:rdr+;
                r-start.ref = lex.start;
                +start = 11;
-               {do()
+               loop {
                   start++;
                   r-start.pos++;
                   if (r-start.p1[0] == ''@) {
@@ -1159,7 +1159,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    var w:wtr+;
    w.ref = w-begin.ref;
    w.n(.id-c);
-   {do var i = 0; {(.id-c) i++}
+   loop var i = 0; {(.id-c) i++} {
       w.n1(.id-len-v[i]);
       w.copy(.id-str-v[i], .id-len-v[i]);
       w.n1(0);
@@ -1171,7 +1171,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
 
    w.n(.include-c);
    // 'c.out.printf("There are %u includes\n", .include-c);
-   {do var i = 0; {(.include-c) i++}
+   loop var i = 0; {(.include-c) i++} {
       w.n1(.include-len-v[i]);
       w.copy(.include-str-v[i], .include-len-v[i]);
       w.n1(0);
@@ -1183,7 +1183,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    malloc-arr(.at-in-header-at-v, .at-c);
 
    w.n(.at-c);
-   {do var i = 0; {(.at-c) i++}
+   loop var i = 0; {(.at-c) i++} {
       +at = .at-v[i];
       at.type.wr(w);
       if (at.type == #basic) {
@@ -1212,20 +1212,20 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
 
    w.ref = w-begin.ref;
    w.n(.id-in-header-c);
-   {do var j = 0; {(.id-in-header-c) j++}
+   loop var j = 0; {(.id-in-header-c) j++} {
       +i = .id-in-header-id-v[j];
       w.n1(.id-len-v[i]);
       w.copy(.id-str-v[i], .id-len-v[i]);
       w.n1(0);
    }
    w.n(.include-c);
-   {do var i = 0; {(.include-c) i++}
+   loop var i = 0; {(.include-c) i++} {
       w.n1(.include-len-v[i]);
       w.copy(.include-str-v[i], .include-len-v[i]);
       w.n1(0);
    }
    w.n(.at-in-header-c);
-   {do var j = 0; {(.at-in-header-c) j++}
+   loop var j = 0; {(.at-in-header-c) j++} {
       +i = .at-in-header-at-v[j];
       +at = .at-v[i];
       at.type.wr(w);

@@ -2,7 +2,7 @@ using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
 expr-index(left:expr-i, right-v:expr-i[], right-c:i32):expr-i {
-   {do var i = right-c; (right-c)
+   loop var i = right-c; (right-c) {
       quick-alloc-one(+(e:expr-index));
       ++e-idx = expr-push(e.base, #index);
       e.left = left;

@@ -869,7 +869,7 @@ realloc(r:ref, c:i32, oldc:i32)
       +str = .id-str-v[id];
       c-name = quick-alloc(len + 1);
       .id-c-name-v[id] = c-name;
-      {do var i = 0; {(len) i++}
+      loop var i = 0; {(len) i++} {
          if (str[i] == ''-) {
             c-name[i] = ''_;
          } else {

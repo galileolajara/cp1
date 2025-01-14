@@ -19,7 +19,7 @@ using 'c = :stdc;
 		if (expr.type == #str) {
 			var e:expr-str = expr;
 			+n = e.first;
-			{do()
+			loop {
 				.out.printf("%.*s\n", n.len, n.buf);
 				n = n.next;
 				if (n == null) { break}
