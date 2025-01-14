@@ -893,5 +893,5 @@ decl_gvar ::= fvar_decl expr_type_apply typeInfo_optional decl_var_attrs_optiona
    { _Ncp1_Pdecl_var_as_gvar_0(); }
 decl_gvar_list ::= decl_gvar.
 decl_gvar_list ::= decl_gvar_list decl_gvar.
-decl_gvars ::= LCBRACE_GVAR_SPACE RCBRACE.
-decl_gvars ::= LCBRACE_GVAR_SPACE decl_gvar_list rcbrace_or_comma.
+//decl_gvars ::= LCBRACE_GVAR_SPACE RCBRACE.
+decl_gvars ::= VAR SPACE decl_gvar_list SCOLON.

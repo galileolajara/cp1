@@ -47,7 +47,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces                           { return CP1_TOKEN_SPACE; }
    spaces? ";"                      { return CP1_TOKEN_SCOLON; }
    // "{+" spaces?                     { return CP1_TOKEN_LCBRACE_PLUS_OR_SPACE; }
-   "{gvar" spaces                   { return CP1_TOKEN_LCBRACE_GVAR_SPACE; }
+   // "{gvar" spaces                   { return CP1_TOKEN_LCBRACE_GVAR_SPACE; }
    "{cvar" spaces                   { return CP1_TOKEN_LCBRACE_CVAR_SPACE; }
    "{at("                           { return CP1_TOKEN_LCBRACE_AT_LPAREN; }
    // "{using" spaces                  { return CP1_TOKEN_LCBRACE_USING_SPACE; }
