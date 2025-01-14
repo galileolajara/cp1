@@ -706,11 +706,11 @@ stmt ::= stmt_if_chain stmt_else.
    { _Ncp1_Pstmt_if_end_ifs_0(); }
 space_begin ::= .
 space_begin ::= stmt_lvars.
-stmt_if_begin ::= LCBRACE_IF.
+stmt_if_begin ::= IF SPACE.
    { _Ncp1_Pstmt_if_begin_0(); }
-stmt_elif_begin ::= LCBRACE_ELIF.
+stmt_elif_begin ::= SPACE_ELIF SPACE.
    { _Ncp1_Pstmt_elif_begin_0(); }
-stmt_else_set ::= LCBRACE_ELSE.
+stmt_else_set ::= SPACE_ELSE SPACE.
    { _Ncp1_Pstmt_else_set_0(); }
 stmt_if_not(l) ::= .
    { l.basic.id = 0; }
@@ -724,13 +724,13 @@ if_expr_val(l) ::= expr_or(e).
    { l.basic.id = e.basic.id; }
 if_expr ::= begin_pos(begin) stmt_if_not(not) if_expr_val(e) end_pos(end).
    { _Ncp1_Pstmt_if_set_6(not.basic.id, e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
-stmt_if ::= stmt_if_begin space_begin if_expr stmts_optional.
+stmt_if ::= stmt_if_begin space_begin if_expr SPACE stmts_optional2.
    { _Ncp1_Pstmt_if_end_0(); }
 elif_expr ::= begin_pos(begin) stmt_if_not(not) if_expr_val(e) end_pos(end).
    { _Ncp1_Pstmt_elif_set_6(not.basic.id, e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
-stmt_elif ::= stmt_elif_begin elif_expr stmts_optional.
+stmt_elif ::= stmt_elif_begin elif_expr SPACE stmts_optional2.
    { _Ncp1_Pstmt_elif_end_0(); }
-stmt_else ::= stmt_else_set stmts_optional.
+stmt_else ::= stmt_else_set stmts_optional2.
    { _Ncp1_Pstmt_else_end_0(); }
 stmt_if_chain ::= stmt_if.
 stmt_if_chain ::= stmt_if_chain stmt_elif.
