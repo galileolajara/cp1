@@ -41,7 +41,7 @@ typedef ankerl::unordered_dense::map<ParentTypeName, int, ParentTypeName_hash, P
 #include <stdio.h>
 int main(int argc, char** argv) {
    FILE* fp = fopen(argv[1], "w");
-   fprintf(fp, "{at(:cp1)\n{cvar #hash-table-size = %zu}\n}\n", sizeof(map_t));
+   fprintf(fp, "{at(:cp1)\n#hash-table-size = %zu;\n}\n", sizeof(map_t));
    fclose(fp);
    return 0;
 }

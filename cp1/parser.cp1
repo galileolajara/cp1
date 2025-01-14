@@ -218,7 +218,7 @@ at-create-basic(basic:basic-type-id):at {
 }
 
 var decl-at:at;
-{cvar #decl-at-nest-limit:i32 = 8}
+#decl-at-nest-limit:i32 = 8;
 var decl-at-v:at[#decl-at-nest-limit];
 var decl-at-c:u8;
 err-msg-namespace-limit(row:i32, col:i32) {

@@ -108,7 +108,7 @@ var decl-func-real-name:id;
 var decl-func-decl-str:char[];
 var decl-func-decl-len:i32;
 var decl-func-case:id;
-// {cvar #cp1-farg-limit = 1024}
+// #cp1-farg-limit = 1024;
 var decl-farg-v:farg+[];
 var decl-farg-group-c:i8;
 var decl-farg-group-v:i8[#expr-carg-group-limit];
@@ -338,10 +338,10 @@ func-body-end() {
       s = s.stmt-next;
    }
 }
-{cvar #expr-call-nest-limit:i32 = 8}
-{cvar #expr-carg-group-limit:i32 = 4}
+#expr-call-nest-limit:i32 = 8;
+#expr-carg-group-limit:i32 = 4;
 var expr-call-c:i8;
-{cvar #cp1-carg-limit:i32 = 64}
+#cp1-carg-limit:i32 = 64;
 var expr-call-carg-c:u8[#expr-call-nest-limit];
 var expr-call-carg-v:expr-i[#expr-call-nest-limit][#cp1-carg-limit];
 var expr-call-cgrp-c:u8[#expr-call-nest-limit];
