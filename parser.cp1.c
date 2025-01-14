@@ -28,13 +28,13 @@
 #define _Ncp1_Ntoken_Cid_colon (_Ncp1_Ntoken_Cid_lparen + 1)
 #define _Ncp1_Ntoken_Cid_quote (_Ncp1_Ntoken_Cid_colon + 1)
 #define _Ncp1_Ntoken_Cid_hash (_Ncp1_Ntoken_Cid_quote + 1)
-#define _Ncp1_Ntoken_Clcbrace (_Ncp1_Ntoken_Cid_hash + 1)
-#define _Ncp1_Ntoken_Cid (_Ncp1_Ntoken_Clcbrace + 1)
+#define _Ncp1_Ntoken_Cid (_Ncp1_Ntoken_Cid_hash + 1)
 #define _Ncp1_Ntoken_Cspace_at_real_name_str (_Ncp1_Ntoken_Cid + 1)
 #define _Ncp1_Ntoken_Cspace_at_real_name (_Ncp1_Ntoken_Cspace_at_real_name_str + 1)
 #define _Ncp1_Ntoken_Cspace_at_no_decl (_Ncp1_Ntoken_Cspace_at_real_name + 1)
 #define _Ncp1_Ntoken_Cspace_equal_space (_Ncp1_Ntoken_Cspace_at_no_decl + 1)
-#define _Ncp1_Ntoken_Cinclude (_Ncp1_Ntoken_Cspace_equal_space + 1)
+#define _Ncp1_Ntoken_Clcbrace (_Ncp1_Ntoken_Cspace_equal_space + 1)
+#define _Ncp1_Ntoken_Cinclude (_Ncp1_Ntoken_Clcbrace + 1)
 #define _Ncp1_Ntoken_Cspace_rcbrace (_Ncp1_Ntoken_Cinclude + 1)
 #define _Ncp1_Ntoken_Cquote (_Ncp1_Ntoken_Cspace_rcbrace + 1)
 #define _Ncp1_Ntoken_Cgrave (_Ncp1_Ntoken_Cquote + 1)
@@ -1040,12 +1040,12 @@ case _Ncp1_Ntoken_Cid_lparen: return "id-lparen";
 case _Ncp1_Ntoken_Cid_colon: return "id-colon";
 case _Ncp1_Ntoken_Cid_quote: return "id-quote";
 case _Ncp1_Ntoken_Cid_hash: return "id-hash";
-case _Ncp1_Ntoken_Clcbrace: return "lcbrace";
 case _Ncp1_Ntoken_Cid: return "id";
 case _Ncp1_Ntoken_Cspace_at_real_name_str: return "space-at-real-name-str";
 case _Ncp1_Ntoken_Cspace_at_real_name: return "space-at-real-name";
 case _Ncp1_Ntoken_Cspace_at_no_decl: return "space-at-no-decl";
 case _Ncp1_Ntoken_Cspace_equal_space: return "space-equal-space";
+case _Ncp1_Ntoken_Clcbrace: return "lcbrace";
 case _Ncp1_Ntoken_Cinclude: return "include";
 case _Ncp1_Ntoken_Cspace_rcbrace: return "space-rcbrace";
 case _Ncp1_Ntoken_Cquote: return "quote";
