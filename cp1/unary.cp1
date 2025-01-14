@@ -17,7 +17,7 @@ expr-unary(expr:expr-i, type:unary):expr-i {
 }
 {at(:expr-i)
    wr-unary(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      {+e:expr-unary = expr}
+      var e:expr-unary = expr;
       e.expr.wr(w, header);
       e.type.wr(w);
    }
@@ -28,7 +28,7 @@ expr-unary(expr:expr-i, type:unary):expr-i {
       e.type.rd(r);
    }
    write-unary(expr:expr) @case.write() @inline {
-      {+e:expr-unary = expr}
+      var e:expr-unary = expr;
       switch (e.type) {
          case (#neg) {
             .out.printf("-");
@@ -49,7 +49,7 @@ expr-unary(expr:expr-i, type:unary):expr-i {
       }
    }
    value-unary(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      {+expr:expr-unary = e.ptr()}
+      var expr:expr-unary = e.ptr();
 		v.type = expr.expr.type();
 		v.info.init();
 		v.info.array-c = 0;
@@ -59,11 +59,11 @@ expr-unary(expr:expr-i, type:unary):expr-i {
       ok = true;
 	}
    type-unary(expr:expr, at:at&) @case.type() @inline {
-      {+e:expr-unary = expr}
+      var e:expr-unary = expr;
       at = e.expr.type();
    }
    process-unary(expr:expr, ok:bool&) @case.process() @inline {
-      {+e:expr-unary = expr}
+      var e:expr-unary = expr;
 		if !(e.expr.value(1, true, e.val)) {
 			return;
       }

@@ -20,13 +20,13 @@ expr-assign(left:expr-i, right:expr-i, type:assign):expr-i {
 }
 {at(:expr-i)
    wr-assign(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      {+e:expr-assign = expr}
+      var e:expr-assign = expr;
       e.left.wr(w, header);
       e.right.wr(w, header);
       e.type.wr(w);
    }
    write-assign(expr:expr) @case.write() @inline {
-      {+e:expr-assign = expr}
+      var e:expr-assign = expr;
       e.left.write-value(e.left-val);
       switch (e.type) {
          case (#eq) {
@@ -70,11 +70,11 @@ expr-assign(left:expr-i, right:expr-i, type:assign):expr-i {
       e.type.rd(r);
    }
    type-assign(expr:expr, at:at&) @case.type() @inline {
-      {+e:expr-assign = expr}
+      var e:expr-assign = expr;
       at = e.left.type();
    }
    value-assign(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      {+expr:expr-assign = e.ptr()}
+      var expr:expr-assign = e.ptr();
 		if (expr.left.value(1, paren, v) == false) {
          return;
       }
@@ -83,10 +83,10 @@ expr-assign(left:expr-i, right:expr-i, type:assign):expr-i {
       ok = true;
 	}
    process-assign(expr:expr, ok:bool&) @case.process() @inline {
-      {+e:expr-assign = expr}
+      var e:expr-assign = expr;
       +left-e = e.left.ptr();
       if (left-e.type == #lvar) {
-         {+left:expr-lvar = left-e}
+         var left:expr-lvar = left-e;
          +lvar = left.lvar.ptr();
          if (lvar.decl.type == #nil) {
             if !(e.right.value(1, true, e.right-val)) {

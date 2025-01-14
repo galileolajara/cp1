@@ -10,7 +10,7 @@ expr-int(value:i32, type:expr-int):expr-i {
 }
 {at(:expr-i)
    wr-i32(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      {+e:expr-int-data = expr}
+      var e:expr-int-data = expr;
       w.n1(e.type);
       w.n(e.value);
    }
@@ -21,7 +21,7 @@ expr-int(value:i32, type:expr-int):expr-i {
       e.value = r.n();
    }
    write-i32(expr:expr) @case.write() @inline {
-      {+e:expr-int-data = expr}
+      var e:expr-int-data = expr;
       .out.printf("%d", e.value);
    }
    process-i32(expr:expr, ok:bool&) @case.process() @inline {

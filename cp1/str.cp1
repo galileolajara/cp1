@@ -23,7 +23,7 @@ expr-str(prev:expr-i):expr-i {
       e.last = n;
       return e-idx;
    } else {
-      {+e:expr-str = prev.ptr()}
+      var e:expr-str = prev.ptr();
       e.node-c++;
       e.last.next = n;
       e.last = n;
@@ -33,7 +33,7 @@ expr-str(prev:expr-i):expr-i {
 write-str-node(len:i32, ptr:ref);
 {at(:expr-i)
    wr-str(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      {+e:expr-str = expr}
+      var e:expr-str = expr;
       w.n(e.node-c);
       +n = e.first;
       {do()
@@ -66,7 +66,7 @@ write-str-node(len:i32, ptr:ref);
       }
    }
    write-str(expr:expr) @case.write() @inline {
-      {+e:expr-str = expr}
+      var e:expr-str = expr;
       +n = e.first;
       {do()
          write-str-node(n.len, n.buf);

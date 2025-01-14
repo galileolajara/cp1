@@ -10,7 +10,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
    }
    +in-size = in-fd.seek(0, #end);
    in-fd.seek(0, #set);
-   {+in-data:char[] = 'c.malloc(in-size)}
+   var in-data:char[] = 'c.malloc(in-size);
    in-fd.read(in-data, in-size);
    in-fd.close();
    if !(&&, in-size > 0, in-data[in-size - 1] == ''\n) {
@@ -19,8 +19,8 @@ main(arg-c:intc, arg-v:char[][]):intc {
    }
    +pos = 0;
    +get = false;
-   {+func-name-v:char[256][]}
-   {+func-len-v:u8[256]}
+   var func-name-v:char[256][];
+   var func-len-v:u8[256];
    +func-c = 0;
    while (pos < in-size) {
       +start = pos;
@@ -31,13 +31,13 @@ main(arg-c:intc, arg-v:char[][]):intc {
          pos++;
       }
       +len = pos - start;
-      {+line:char[] = & in-data[start]}
+      var line:char[] = & in-data[start];
       if (get) {
          if (line[0] == ''}) {
             break;
          }
          +lparen = -1;
-         {do{+i = 0}{(len) i++}
+         {do var i = 0; {(len) i++}
             if (line[i] == ''() {
                lparen = i;
                break;
@@ -64,7 +64,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
          pos++;
       }
       +len = pos - start;
-      {+line:char[] = & in-data[start]}
+      var line:char[] = & in-data[start];
       if (len > 0) {
          if (line[len - 1] == ''{) {
             indent++;
@@ -73,7 +73,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
          } elif (indent == 0) {
             if (&&, line[len - 2] == ''), line[len - 1] == '';) {
                +lparen = -1;
-               {do{+i = 0}{(len) i++}
+               {do var i = 0; {(len) i++}
                   if (line[i] == ''() {
                      lparen = i;
                      break;
@@ -84,8 +84,8 @@ main(arg-c:intc, arg-v:char[][]):intc {
                   name--;
                }
                +func-len = lparen - name;
-               {+func:char[] = & line[name]}
-               {do{+i = 0}{(func-c) i++}
+               var func:char[] = & line[name];
+               {do var i = 0; {(func-c) i++}
                   if (&&, func-len == func-len-v[i], 'c.memcmp(func, func-name-v[i], func-len) == 0) {
                      out-f.printf("%.*s\n", len, line);
                      break;

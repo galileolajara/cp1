@@ -17,7 +17,7 @@ stmt-break(id:id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
 }
 {at(:stmt-space)
    wr-break(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
-      {+s:stmt-break = stmt}
+      var s:stmt-break = stmt;
       w.n1(s.nest);
    }
    rd-break(space:stmt-space, r:rdr) @case.rd() @inline {
@@ -28,11 +28,11 @@ stmt-break(id:id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
 }
 {at(:stmt)
    write-break(stmt:stmt) @case.write() @inline {
-      {+s:stmt-break = stmt}
+      var s:stmt-break = stmt;
       .out.printf("goto break_%u;\n", .nest-stack-id-v[s.nest]);
    }
    process-break(stmt:stmt, ok:bool&) @case.process() @inline {
-      {+s:stmt-break = stmt}
+      var s:stmt-break = stmt;
       ok = true;
    }
 }

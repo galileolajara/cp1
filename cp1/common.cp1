@@ -368,7 +368,7 @@ quick-alloc(size:i32):ref @real-name(qalloc) {
       size = (size + 3) & (-1 ^ 3);
    }
    if (size <= (.quick-alloc-cap - .quick-alloc-c)) {
-      {+r:rdr+}
+      var r:rdr+;
       r.ref = .quick-alloc-v;
       r.pos += .quick-alloc-c;
       .quick-alloc-c += size;
@@ -863,13 +863,13 @@ realloc(r:ref, c:i32, oldc:i32)
 {gvar func-main:func}
 :id[#nil = -1, #0]:i32 {
    c-name(id:this):char[] {
-      {+c-name:char[] = .id-c-name-v[id]}
+      var c-name:char[] = .id-c-name-v[id];
       if (c-name != null) { return c-name}
       +len = .id-len-v[id];
       +str = .id-str-v[id];
       c-name = quick-alloc(len + 1);
       .id-c-name-v[id] = c-name;
-      {do{+i = 0}{(len) i++}
+      {do var i = 0; {(len) i++}
          if (str[i] == ''-) {
             c-name[i] = ''_;
          } else {

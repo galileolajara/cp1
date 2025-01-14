@@ -23,7 +23,7 @@ using 'c = :stdc;
    }
    write(space:this) {
       // .out.printf("{ // space begin \n");
-      {+i, lvar-c}
+      var i, lvar-c;
       if (space.parent == null) {
          // dont write arguments
          i = .ctx-func.farg-c;
@@ -52,7 +52,7 @@ using 'c = :stdc;
    }
    lvar-new(space:this, name:id, row:i32, col:i32):lvar {
       +v = space.lvar-v;
-      {do{+i = 0}{(space.lvar-c) i++}
+      {do var i = 0; {(space.lvar-c) i++}
          +lvar = v[i].ptr();
          if (lvar.decl.name == name) {
             'c.out.printf("%u:%u: lvar '%s' was already declared at %u:%u\n", row, col, name.str(), lvar.row, lvar.col);
@@ -81,12 +81,12 @@ using 'c = :stdc;
       return lvar;
    }
    wr-space(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
-      {+s:stmt-space = stmt}
+      var s:stmt-space = stmt;
       s.wr(w, header);
    }
    wr(space:this, w:wtr, header:bool) {
       w.n(space.lvar-c);
-      {do{+i = 0}{(space.lvar-c) i++}
+      {do var i = 0; {(space.lvar-c) i++}
          space.lvar-v[i].wr(w);
       }
       +stmt = space.stmt-first;
@@ -135,7 +135,7 @@ using 'c = :stdc;
       +lvar-c = r.n();
       space.lvar-c = lvar-c;
       quick-alloc-arr(space.lvar-v, lvar-c);
-      {do{+i = 0}{(lvar-c) i++}
+      {do var i = 0; {(lvar-c) i++}
          space.lvar-v[i].rd(r);
       }
 
@@ -178,7 +178,7 @@ using 'c = :stdc;
          if !(s.process()) { return false}
          s = s.stmt-next;
       }
-      {+i, lvar-c}
+      var i, lvar-c;
       if (space.parent == null) {
          // don't process arguments
          i = .ctx-func.farg-c;
@@ -195,12 +195,12 @@ using 'c = :stdc;
 }
 {at(:stmt)
    process-space(stmt:stmt, ok:bool&) @case.process() @inline {
-      {+space:stmt-space = stmt}
+      var space:stmt-space = stmt;
       if !(space.process()) { return}
       ok = true;
    }
    write-space(stmt:stmt) @case.write() @inline {
-      {+space:stmt-space = stmt}
+      var space:stmt-space = stmt;
       space.write();
    }
 }

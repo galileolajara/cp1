@@ -89,7 +89,7 @@ decl-enum-end(base-type:at, row:i32, col:i32) {
       grow(.enum-cap, .enum-c);
       realloc(.enum-v, .enum-cap, old-cap);
    }
-   {+s:enum-data}
+   var s:enum-data;
    quick-alloc-one(s);
    .enum-v[s-idx] = s;
    s.begin-row = .decl-enum-row;
@@ -105,7 +105,7 @@ decl-enum-end(base-type:at, row:i32, col:i32) {
    // s.name = .decl-enum-name;
    // s.evar-c = .decl-evar-c;
    // 'c.out.printf("There are %u evars\n", s.evar-c);
-   // {do{+i = 0}{(.decl-evar-c) i ++}
+   // {do var i = 0; {(.decl-evar-c) i ++}
    //    +a = s.evar-v[i];
    //    a.decl.copy-from(.decl-evar-v[i]);
    //    // 'c.out.printf("- %s\n", a.name.str());

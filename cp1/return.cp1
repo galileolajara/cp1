@@ -7,7 +7,7 @@ stmt-return(e:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
 }
 {at(:stmt-space)
    wr-return(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
-      {+s:stmt-return = stmt}
+      var s:stmt-return = stmt;
       s.expr.wr(w, header);
    }
    rd-return(space:stmt-space, r:rdr) @case.rd() @inline {
@@ -18,7 +18,7 @@ stmt-return(e:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
 }
 {at(:stmt)
    write-return(stmt:stmt) @case.write() @inline {
-      {+s:stmt-return = stmt}
+      var s:stmt-return = stmt;
       if (s.expr == #nil) {
          .out.printf("return;\n");
       } else {
@@ -28,7 +28,7 @@ stmt-return(e:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
       }
    }
    process-return(stmt:stmt, ok:bool&) @case.process() @inline {
-      {+s:stmt-return = stmt}
+      var s:stmt-return = stmt;
       if (s.expr != #nil) {
          s.expr.try-deduce(.ctx-func.decl.type);
          if !(s.expr.value(1 + .ctx-func.decl.type-info.ref-v[.ctx-func.decl.type-info.array-c], false, s.val)) {

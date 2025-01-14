@@ -2,7 +2,7 @@ using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
 expr-index(left:expr-i, right-v:expr-i[], right-c:i32):expr-i {
-   {do{+i = right-c}(right-c)
+   {do var i = right-c; (right-c)
       quick-alloc-one(+(e:expr-index));
       ++e-idx = expr-push(e.base, #index);
       e.left = left;
@@ -12,12 +12,12 @@ expr-index(left:expr-i, right-v:expr-i[], right-c:i32):expr-i {
 }
 {at(:expr-i)
    wr-index(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      {+e:expr-index = expr}
+      var e:expr-index = expr;
       e.left.wr(w, header);
       e.right.wr(w, header);
    }
    write-index(expr:expr) @case.write() @inline {
-      {+e:expr-index = expr}
+      var e:expr-index = expr;
       e.left.write-value(e.left-val);
       .out.printf("[");
       e.right.write-value(e.right-val);
@@ -30,11 +30,11 @@ expr-index(left:expr-i, right-v:expr-i[], right-c:i32):expr-i {
       e.right.rd(r);
    }
    type-index(expr:expr, at:at&) @case.type() @inline {
-      {+e:expr-index = expr}
+      var e:expr-index = expr;
       at = e.left.type();
    }
    value-index(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      {+expr:expr-index = e.ptr()}
+      var expr:expr-index = e.ptr();
 		v.type = expr.left-val.type;
 		v.info.init();
 		v.info.copy-from(expr.left-val.info);
@@ -51,7 +51,7 @@ expr-index(left:expr-i, right-v:expr-i[], right-c:i32):expr-i {
       ok = true;
    }
    process-index(expr:expr, ok:bool&) @case.process() @inline {
-      {+e:expr-index = expr}
+      var e:expr-index = expr;
    	if !(e.left.value(1, true, e.left-val)) {
    		return;
       }

@@ -8,7 +8,7 @@ expr-bool(value:bool):expr-i {
 }
 {at(:expr-i)
    wr-bool(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      {+e:expr-bool = expr}
+      var e:expr-bool = expr;
       w.b(e.value);
    }
    rd-bool(e-idx:expr-i, r:rdr) @case.rd() @inline {
@@ -17,7 +17,7 @@ expr-bool(value:bool):expr-i {
       e.value = r.b();
    }
    write-bool(expr:expr) @case.write() @inline {
-      {+e:expr-bool = expr}
+      var e:expr-bool = expr;
       if (e.value) {
          .out.printf("true");
       } else {

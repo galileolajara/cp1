@@ -8,7 +8,7 @@ expr-ref(expr:expr-i):expr-i {
 }
 {at(:expr-i)
    wr-ref(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      {+e:expr-ref = expr}
+      var e:expr-ref = expr;
       e.expr.wr(w, header);
    }
    rd-ref(e-idx:expr-i, r:rdr) @case.rd() @inline {
@@ -17,11 +17,11 @@ expr-ref(expr:expr-i):expr-i {
       e.expr.rd(r);
    }
    write-ref(expr:expr) @case.write() @inline {
-      {+e:expr-ref = expr}
+      var e:expr-ref = expr;
       e.expr.write-value(e.val);
    }
    value-ref(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      {+expr:expr-ref = e.ptr()}
+      var expr:expr-ref = e.ptr();
 		v.type = basic-type(#ref);
 		v.info.init();
 		v.info.array-c = 0;
@@ -34,7 +34,7 @@ expr-ref(expr:expr-i):expr-i {
       at = basic-type(#ref);
    }
    process-ref(expr:expr, ok:bool&) @case.process() @inline {
-      {+e:expr-ref = expr}
+      var e:expr-ref = expr;
 		if !(e.expr.value(2, false, e.val)) {
 			return;
       }

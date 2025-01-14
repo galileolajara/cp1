@@ -17,7 +17,7 @@ stmt-continue(id:id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
 }
 {at(:stmt-space)
    wr-continue(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
-      {+s:stmt-continue = stmt}
+      var s:stmt-continue = stmt;
       w.n1(s.nest);
    }
    rd-continue(space:stmt-space, r:rdr) @case.rd() @inline {
@@ -28,11 +28,11 @@ stmt-continue(id:id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
 }
 {at(:stmt)
    write-continue(stmt:stmt) @case.write() @inline {
-      {+s:stmt-continue = stmt}
+      var s:stmt-continue = stmt;
       .out.printf("goto continue_%u;\n", .nest-stack-id-v[s.nest]);
    }
    process-continue(stmt:stmt, ok:bool&) @case.process() @inline {
-      {+s:stmt-continue = stmt}
+      var s:stmt-continue = stmt;
       ok = true;
    }
 }

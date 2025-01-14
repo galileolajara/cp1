@@ -9,7 +9,7 @@ expr-bools(left:expr-i, right:expr-i, type:bools):expr-i {
    return e-idx;
 }
 expr-bools-add(bools:expr-i, right:expr-i):expr-i {
-   {+e:expr-bools = bools.ptr()}
+   var e:expr-bools = bools.ptr();
    +i = e.item-c++;
    if (e.item-cap <= e.item-c) {
       +old-cap = e.item-cap;
@@ -42,24 +42,24 @@ expr-bools-add(bools:expr-i, right:expr-i):expr-i {
       ok = true;
    }
    process-bools(expr:expr, ok:bool&) @case.process() @inline {
-      {+e:expr-bools = expr}
+      var e:expr-bools = expr;
 		if !(e.left.value(1, true, e.left-val)) { return}
 		if !(e.right.value(1, true, e.right-val)) { return}
-      {do{+i = 0}{(e.item-c) i++}
+      {do var i = 0; {(e.item-c) i++}
          +item = e.item-v[i];
          if !(item.expr.value(1, true, item.val)) { return}
       }
       ok = true;
    }
    write-bools(expr:expr) @case.write() @inline {
-      {+e:expr-bools = expr}
+      var e:expr-bools = expr;
       switch (e.type) {
          case (#and) {
             .out.printf("(");
             e.left.write-value(e.left-val);
             .out.printf(" && ");
             e.right.write-value(e.right-val);
-            {do{+i = 0}{(e.item-c) i++}
+            {do var i = 0; {(e.item-c) i++}
                .out.printf(" && ");
                +item = e.item-v[i];
                item.expr.write-value(item.val);
@@ -71,7 +71,7 @@ expr-bools-add(bools:expr-i, right:expr-i):expr-i {
             e.left.write-value(e.left-val);
             .out.printf(" || ");
             e.right.write-value(e.right-val);
-            {do{+i = 0}{(e.item-c) i++}
+            {do var i = 0; {(e.item-c) i++}
                .out.printf(" || ");
                +item = e.item-v[i];
                item.expr.write-value(item.val);
@@ -81,11 +81,11 @@ expr-bools-add(bools:expr-i, right:expr-i):expr-i {
       }
    }
    wr-bools(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      {+e:expr-bools = expr}
+      var e:expr-bools = expr;
       e.left.wr(w, header);
       e.right.wr(w, header);
       w.n1(e.item-c);
-      {do{+i = 0}{(e.item-c) i++}
+      {do var i = 0; {(e.item-c) i++}
          e.item-v[i].expr.wr(w, header);
       }
       e.type.wr(w);
@@ -99,7 +99,7 @@ expr-bools-add(bools:expr-i, right:expr-i):expr-i {
       if (item-c > 0) {
          e.item-c = item-c;
          quick-alloc-arr(e.item-v, item-c);
-         {do{+i = 0}{(item-c) i++}
+         {do var i = 0; {(item-c) i++}
             e.item-v[i].expr.rd(r);
          }
       }
