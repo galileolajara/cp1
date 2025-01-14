@@ -1,32 +1,32 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
-{gvar include-stdint:bool}
-{gvar include-stdbool:bool}
-{gvar include-stddef:bool}
-{gvar expr-is-processed:u8[]}
-{gvar func-head-outputted-c:i32}
-{gvar func-head-outputted-v:func[]}
-{gvar func-body-outputted-c:i32}
-{gvar func-body-outputted-v:func[]}
+var include-stdint:bool;
+var include-stdbool:bool;
+var include-stddef:bool;
+var expr-is-processed:u8[];
+var func-head-outputted-c:i32;
+var func-head-outputted-v:func[];
+var func-body-outputted-c:i32;
+var func-body-outputted-v:func[];
 :basic-type(
    method-c:i32,
    method-cap:i32,
    method-v:func[],
 );
-{gvar basic-type:basic-type+[:basic-type-id#COUNT]}
+var basic-type:basic-type+[:basic-type-id#COUNT];
 basic-type(t:basic-type-id):at @inline {
    return t;
 }
-{gvar ctx-begin-row:i32}
-{gvar ctx-begin-col:i32}
-{gvar ctx-end-row:i32}
-{gvar ctx-end-col:i32}
-{gvar ctx-func:decl-func}
-{gvar ctx-func-id:func}
-{gvar file-c:file}
-{gvar file-cap:file}
-{gvar file-v:file-data+[]}
+var ctx-begin-row:i32;
+var ctx-begin-col:i32;
+var ctx-end-row:i32;
+var ctx-end-col:i32;
+var ctx-func:decl-func;
+var ctx-func-id:func;
+var file-c:file;
+var file-cap:file;
+var file-v:file-data+[];
 :file[#nil = -1, #0]:i32 {
    ptr(f:this):file-data @inline {
       return .file-v[f];
@@ -42,11 +42,11 @@ basic-type(t:basic-type-id):at @inline {
    at-table:at[],
    cvar-table:cvar[],
 );
-{gvar id-table:id[]}
-{gvar include-table-cap:i32}
-{gvar include-table:include[]}
-{gvar at-table:at[]}
-{gvar cvar-table:cvar[]}
+var id-table:id[];
+var include-table-cap:i32;
+var include-table:include[];
+var at-table:at[];
+var cvar-table:cvar[];
 id-add(id-len:u8, id-str:char[]):id {
    +found = .id-map.get-or-insert(id-str, id-len, .id-c);
    if (found != -1) { return found}
@@ -471,25 +471,25 @@ read(in-path:char[]) {
       r.pos += size;
    }
 }
-{gvar out'c:file}
-{gvar process-first:func}
-{gvar process-last:func}
-{gvar func-in-process:u8[]}
-{gvar include-is-outputted:u8[]}
-{gvar include-outputted-c:i32}
-{gvar include-outputted-v:include[]}
-{gvar cvar-is-outputted:u8[]}
-{gvar cvar-outputted-c:i32}
-{gvar cvar-outputted-v:cvar[]}
-{gvar gvar-is-outputted:u8[]}
-{gvar gvar-outputted-c:i32}
-{gvar gvar-outputted-v:gvar[]}
-{gvar enum-is-outputted:u8[]}
-{gvar enum-outputted-c:i32}
-{gvar enum-outputted-v:enum[]}
-{gvar struct-is-outputted:u8[]}
-{gvar struct-outputted-c:i32}
-{gvar struct-outputted-v:struct[]}
+var out'c:file;
+var process-first:func;
+var process-last:func;
+var func-in-process:u8[];
+var include-is-outputted:u8[];
+var include-outputted-c:i32;
+var include-outputted-v:include[];
+var cvar-is-outputted:u8[];
+var cvar-outputted-c:i32;
+var cvar-outputted-v:cvar[];
+var gvar-is-outputted:u8[];
+var gvar-outputted-c:i32;
+var gvar-outputted-v:gvar[];
+var enum-is-outputted:u8[];
+var enum-outputted-c:i32;
+var enum-outputted-v:enum[];
+var struct-is-outputted:u8[];
+var struct-outputted-c:i32;
+var struct-outputted-v:struct[];
 main(arg-c:intc, arg-v:char[][]):intc @main {
    if (arg-c < 3) {
       'c.out.printf("usage: %s file.cp1-b file.c\n", arg-v[0]);

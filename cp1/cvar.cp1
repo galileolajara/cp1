@@ -70,9 +70,9 @@ using 'c = :stdc;
       f = r.n1():cvar-flags;
    }
 }
-{gvar cvar-c:cvar}
-{gvar cvar-cap:cvar}
-{gvar cvar-v:cvar-data+[]}
+var cvar-c:cvar;
+var cvar-cap:cvar;
+var cvar-v:cvar-data+[];
 expr-cvar(at:at, name:id):expr-i {
    quick-alloc-one(+(e:expr-cvar));
    +e-idx = expr-push(e.base, #cvar);

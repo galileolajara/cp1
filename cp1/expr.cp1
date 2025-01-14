@@ -286,9 +286,9 @@ using 'c = :stdc;
    first:expr-str-node,
    last:expr-str-node,
 );
-{gvar expr-c:i32}
-{gvar expr-cap:i32}
-{gvar expr-v:expr[]}
+var expr-c:i32;
+var expr-cap:i32;
+var expr-v:expr[];
 expr-push(e:expr, type:expr-type):expr-i {
    e.type = type;
    +e-idx = .expr-c++;

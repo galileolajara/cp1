@@ -1,10 +1,10 @@
 using 'c = :stdc;
 using 'sys = :sys;
-{gvar atexit-rm-v:char[][]}
-{gvar atexit-rm-cap:u32}
-{gvar atexit-rm-c:u32}
-{gvar include-dir:char[512]}
-{gvar include-dir-len:u16}
+var atexit-rm-v:char[][];
+var atexit-rm-cap:u32;
+var atexit-rm-c:u32;
+var include-dir:char[512];
+var include-dir-len:u16;
 // +include-dir = "/opt/cp1/include";
 // +include-dir-len = 'c.strlen(include-dir);
 print-commands(bin:char[]) {
@@ -69,16 +69,16 @@ print-usage(bin:char[], cmd:cmd) {
       }
    }
 }
-{gvar included-v:char[][]}
-{gvar included-len-v:u32[]}
-{gvar included-cap:i32}
-{gvar included-c:i32}
-{gvar cp1-path-v:char[][]}
-{gvar cp1-path-len-v:u32[]}
-{gvar cp1-path-real-v:char[][]}
-{gvar cp1-path-real-len-v:u32[]}
-{gvar cp1-path-cap:i32}
-{gvar cp1-path-c:i32}
+var included-v:char[][];
+var included-len-v:u32[];
+var included-cap:i32;
+var included-c:i32;
+var cp1-path-v:char[][];
+var cp1-path-len-v:u32[];
+var cp1-path-real-v:char[][];
+var cp1-path-real-len-v:u32[];
+var cp1-path-cap:i32;
+var cp1-path-c:i32;
 cp1-path-add(cp1-path-real:char[], cp1-path-real-len:i32, cp1-path:char[], cp1-path-len:i32) {
    // 'c.printf("adding %s as %s\n", cp1-path-real, cp1-path);
    +i = .cp1-path-c++;
@@ -94,7 +94,7 @@ cp1-path-add(cp1-path-real:char[], cp1-path-real-len:i32, cp1-path:char[], cp1-p
    .cp1-path-real-v[i] = cp1-path-real;
    .cp1-path-real-len-v[i] = cp1-path-real-len;
 }
-{gvar cmd-preprocess:char[512]}
+var cmd-preprocess:char[512];
 cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:cmd):bool {
 	loop var i = 0; {(.cp1-path-c) i++} {
 		if ('c.memcmp(.cp1-path-v[i], cp1-path, cp1-path-len) == 0) {

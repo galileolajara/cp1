@@ -1,7 +1,7 @@
 using 'c = :stdc;
 using 'cp1 = :cp1;
 {at(:cp1)
-{gvar input-path:char[]}
+var input-path:char[];
 main(arg-c:intc, arg-v:char[][]):intc @main {
    if (arg-c < 3) {
       "usage:";
@@ -88,10 +88,10 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    out-fd.close();
    return 0;
 }
-{gvar preprocess-def-str-v:char[][]}
-{gvar preprocess-def-len-v:u8[]}
-{gvar preprocess-def-cap:u32}
-{gvar preprocess-def-c:u32}
+var preprocess-def-str-v:char[][];
+var preprocess-def-len-v:u8[];
+var preprocess-def-cap:u32;
+var preprocess-def-c:u32;
 preprocess-def-get(name:char[], len:u8):bool {
    loop var i = 0; {(.preprocess-def-c) i++} {
       if (&&, .preprocess-def-len-v[i] == len, 'c.memcmp(.preprocess-def-str-v[i], name, len) == 0) {

@@ -2,12 +2,12 @@ using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
 :str[#nil = -1, #0]:i32;
-{gvar str-c:i32}
-{gvar str-cap:i32}
-{gvar str-ptr:ref[]}
-{gvar str-len:i32[]}
-{gvar string-buf:char[] @extern}
-{gvar string-len:i32 @extern}
+var str-c:i32;
+var str-cap:i32;
+var str-ptr:ref[];
+var str-len:i32[];
+var string-buf:char[] @extern;
+var string-len:i32 @extern;
 expr-str(prev:expr-i):expr-i {
    +len = .string-len;
    quick-alloc-plus(+(n:expr-str-node), len + 1);

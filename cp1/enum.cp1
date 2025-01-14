@@ -41,14 +41,14 @@ using 'cp1 = :cp1;
       e = r.n1():enum-flags;
    }
 }
-{gvar enum-c:enum}
-{gvar enum-cap:enum}
-{gvar enum-v:enum-data[]}
-{gvar decl-enum-row:i32}
-{gvar decl-enum-col:i32}
-{gvar decl-enum-at:at}
-{gvar decl-enum-flags:enum-flags}
-{gvar decl-enum-last-cvar:cvar}
+var enum-c:enum;
+var enum-cap:enum;
+var enum-v:enum-data[];
+var decl-enum-row:i32;
+var decl-enum-col:i32;
+var decl-enum-at:at;
+var decl-enum-flags:enum-flags;
+var decl-enum-last-cvar:cvar;
 decl-var-as-evar() {
    +evar = .decl-evar-c++;
    if (.decl-evar-cap <= .decl-evar-c) {
@@ -111,7 +111,7 @@ decl-enum-end(base-type:at, row:i32, col:i32) {
    //    // 'c.out.printf("- %s\n", a.name.str());
    // }
 }
-{gvar last-cvar:cvar}
+var last-cvar:cvar;
 enum-add-cvar(name:id, row:i32, col:i32) {
    +c-idx = .cvar-c++;
    .last-cvar = c-idx;
