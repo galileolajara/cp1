@@ -11,7 +11,7 @@ expr-bools(left:expr-i, right:expr-i, type:bools):expr-i {
 expr-bools-add(bools:expr-i, right:expr-i):expr-i {
    {+e:expr-bools = bools.ptr()}
    +i = e.item-c++;
-   {if(e.item-cap <= e.item-c)
+   if (e.item-cap <= e.item-c) {
       +old-cap = e.item-cap;
       grow(e.item-cap, e.item-c);
       realloc(e.item-v, e.item-cap, old-cap);
@@ -43,11 +43,11 @@ expr-bools-add(bools:expr-i, right:expr-i):expr-i {
    }
    process-bools(expr:expr, ok:bool&) @case.process() @inline {
       {+e:expr-bools = expr}
-		{if!(e.left.value(1, true, e.left-val)) return}
-		{if!(e.right.value(1, true, e.right-val)) return}
+		if !(e.left.value(1, true, e.left-val)) { return}
+		if !(e.right.value(1, true, e.right-val)) { return}
       {do{+i = 0}{(e.item-c) i++}
          +item = e.item-v[i];
-         {if!(item.expr.value(1, true, item.val)) return}
+         if !(item.expr.value(1, true, item.val)) { return}
       }
       ok = true;
    }
@@ -96,7 +96,7 @@ expr-bools-add(bools:expr-i, right:expr-i):expr-i {
       e.left.rd(r);
       e.right.rd(r);
       +item-c = r.n1();
-      {if(item-c > 0)
+      if (item-c > 0) {
          e.item-c = item-c;
          quick-alloc-arr(e.item-v, item-c);
          {do{+i = 0}{(item-c) i++}

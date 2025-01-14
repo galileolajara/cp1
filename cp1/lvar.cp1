@@ -10,16 +10,16 @@ using 'c = :stdc;
    }
    process(l:this):bool @inline {
       +lvar = l.ptr();
-      {if((lvar.flags & #processed) != #0) return true}
+      if ((lvar.flags & #processed) != #0) { return true}
       lvar.flags |= #processed;
       +at-i = lvar.decl.type;
-      {if(at-i == #nil)
-         {if((lvar.flags & #set-expr) != #0)
-            {if!(lvar.set-expr.value(1, false, ++v)) return false}
+      if (at-i == #nil) {
+         if ((lvar.flags & #set-expr) != #0) {
+            if !(lvar.set-expr.value(1, false, ++v)) { return false}
             lvar.decl.type = v.type;
             lvar.decl.type-info.init();
             lvar.decl.type-info.copy-from(v.info);
-         }{else
+         } else {
             'c.out.printf("%s:%u:%u: local variable '%s' doesn't have a type or a value\n", .ctx-func.file.path(), lvar.row, lvar.col, lvar.decl.name.str());
             return false;
          }
@@ -48,39 +48,39 @@ using 'c = :stdc;
    set-expr:expr-i,
 );
 expr-lvar(name:id, decl:u8, row:i32, col:i32):expr-i {
-   {if(decl == 0)
+   if (decl == 0) {
       +space = .decl-func-ctx-space;
       {do()
          +v = space.lvar-v;
          +found = :lvar#nil;
          {do{+i = 0}{(space.lvar-c) i++}
             +lvar = v[i];
-            {if(lvar.name() == name)
+            if (lvar.name() == name) {
                found = lvar;
                break;
             }
          }
-         {if(found != #nil)
+         if (found != #nil) {
             quick-alloc-one(+(e:expr-lvar));
             +e-idx = expr-push(e.base, #lvar);
             e.lvar = found;
             return e-idx;
          }
          space = space.parent;
-         {if(space == null) break}
+         if (space == null) { break}
       }
       'c.out.printf("%s:%u:%u: local variable '%s' was not found\n", .input-path, row, col, name.str());
       'c.exit(#failure);
       return #nil;
-   }{else
+   } else {
       +space = .decl-func-ctx-space;
       {while(decl > 1)
          space = space.parent;
-         {if(space == null)
+         if (space == null) {
             'c.out.printf("%s:%u:%u: Cannot declare local variable '%s' with too much '+'\n", .input-path, row, col, name.str());
             'c.exit(#failure);
          }
-         {if((space.flags & #skip-lvar-decl) == #0)
+         if ((space.flags & #skip-lvar-decl) == #0) {
             decl--;
          }
       }
@@ -107,7 +107,7 @@ expr-lvar(name:id, decl:u8, row:i32, col:i32):expr-i {
       {+expr:expr-lvar = e.ptr()}
       +lvar = expr.lvar.ptr();
       v.set(ref, paren, lvar.decl.type, lvar.decl.type-info);
-      {if(v.ref == 1)
+      if (v.ref == 1) {
          v.paren = false;
       }
       ok = true;
@@ -123,7 +123,7 @@ expr-lvar(name:id, decl:u8, row:i32, col:i32):expr-i {
    }
    process-lvar(expr:expr, ok:bool&) @case.process() @inline {
       {+e:expr-lvar = expr}
-      {if!(e.lvar.process()) return}
+      if !(e.lvar.process()) { return}
       ok = true;
    }
 }

@@ -18,9 +18,9 @@ expr-bool(value:bool):expr-i {
    }
    write-bool(expr:expr) @case.write() @inline {
       {+e:expr-bool = expr}
-      {if(e.value)
+      if (e.value) {
          .out.printf("true");
-      }{else
+      } else {
          .out.printf("false");
       }
    }

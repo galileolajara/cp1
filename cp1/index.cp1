@@ -43,19 +43,19 @@ expr-index(left:expr-i, right-v:expr-i[], right-c:i32):expr-i {
 		v.ref = (c + 2) - ref;
 		v.info.ref-v[v.info.array-c] = ref - 1;
 		v.info.count();
-		{if(v.ref == 1)
+		if (v.ref == 1) {
 			v.paren = false;
-		}{else
+		} else {
 			v.paren = paren;
 		}
       ok = true;
    }
    process-index(expr:expr, ok:bool&) @case.process() @inline {
       {+e:expr-index = expr}
-   	{if!(e.left.value(1, true, e.left-val))
+   	if !(e.left.value(1, true, e.left-val)) {
    		return;
       }
-   	{if!(e.right.value(1, true, e.right-val))
+   	if !(e.right.value(1, true, e.right-val)) {
    		return;
       }
       ok = true;

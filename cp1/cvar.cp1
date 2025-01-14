@@ -4,9 +4,9 @@ using 'c = :stdc;
 :cvar[#nil = -1, #0]:i32 {
    rd(c:this&, r:rdr) @inline {
       +idx = (r.n() - 1):cvar;
-      {if(idx == #nil)
+      if (idx == #nil) {
          c = #nil;
-      }{else
+      } else {
          c = .cvar-table[idx];
       }
    }
@@ -17,28 +17,28 @@ using 'c = :stdc;
       +num = c:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      {if((.cvar-is-outputted[n3] & n17) != 0) return true}
+      if ((.cvar-is-outputted[n3] & n17) != 0) { return true}
       .cvar-is-outputted[n3] |= n17;
 
       +cvar = c.ptr();
 
-      {if((cvar.flags & #set-expr) != #0)
-         {if!(cvar.expr-set.process()) return false}
-      }{elif(cvar.last-cvar != #nil)
-         {if!(cvar.last-cvar.process()) return false}
+      if ((cvar.flags & #set-expr) != #0) {
+         if !(cvar.expr-set.process()) { return false}
+      } elif (cvar.last-cvar != #nil) {
+         if !(cvar.last-cvar.process()) { return false}
       }
 
       +at-i = cvar.decl.type;
-      {if(at-i != #nil)
+      if (at-i != #nil) {
          +at = at-i.ptr();
-         {if(&&, at.type != #basic, at.decl.struct == #nil)
+         if (&&, at.type != #basic, at.decl.struct == #nil) {
             'c.out.printf("Error, the type '%s' used in cvar '.%s' was not defined\n", at.name.id.str(), cvar.decl.name.str());
             return false;
          }
          at-i.output(cvar.file, cvar.row, cvar.col);
       }
 
-      // {if((gvar.flags & #no-decl) == #0)
+      // if ((gvar.flags & #no-decl) == #0) {
          .cvar-outputted-v[.cvar-outputted-c++] = c;
       // }
       
@@ -49,9 +49,9 @@ using 'c = :stdc;
    }
    write(c:this) @inline {
       +cvar = c.ptr();
-      {if((cvar.decl.flags & #real-name) != #0)
+      if ((cvar.decl.flags & #real-name) != #0) {
          .out.printf("%s", cvar.decl.real-name.str());
-      }{else
+      } else {
          cvar.at.write-space();
          .out.printf("_C%s", cvar.decl.name.c-name());
       }
@@ -101,7 +101,7 @@ expr-cvar(at:at, name:id):expr-i {
       {+expr:expr-cvar = e.ptr()}
       +cvar = expr.cvar.ptr();
       v.set(ref, paren, cvar.decl.type, cvar.decl.type-info);
-      {if(v.ref == 1)
+      if (v.ref == 1) {
          v.paren = false;
       }
       ok = true;
@@ -115,7 +115,7 @@ expr-cvar(at:at, name:id):expr-i {
       {+e:expr-cvar = expr}
       +name = e.name;
       {+cvar-c, cvar-v}
-      {if(e.try != #nil)
+      if (e.try != #nil) {
          +at = e.try.ptr();
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
@@ -123,8 +123,8 @@ expr-cvar(at:at, name:id):expr-i {
          {do{+i = 0}{(cvar-c) i++}
             +cvar = cvar-v[i];
             // 'c.out.printf("- %s\n", cvar.ptr().decl.name.str());
-            {if(cvar.ptr().decl.name == name)
-               {if!(cvar.process()) return}
+            if (cvar.ptr().decl.name == name) {
+               if !(cvar.process()) { return}
                e.cvar = cvar;
                ok = true;
                return;
@@ -133,13 +133,13 @@ expr-cvar(at:at, name:id):expr-i {
       }
       {+at-idx, at}
       +try-parent = false;
-      {if(e.at != #nil)
+      if (e.at != #nil) {
          e.at = at-validate(e.at, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
          at-idx = e.at;
          at = at-idx.ptr();
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
-      }{else
+      } else {
          at-idx = .ctx-func.at;
          at = at-idx.ptr();
          cvar-c = at.cvar-c;
@@ -149,15 +149,15 @@ expr-cvar(at:at, name:id):expr-i {
       {do()
          {do{+i = 0}{(cvar-c) i++}
             +cvar = cvar-v[i];
-            {if(cvar.ptr().decl.name == name)
-               {if!(cvar.process()) return}
+            if (cvar.ptr().decl.name == name) {
+               if !(cvar.process()) { return}
                e.cvar = cvar;
                ok = true;
                return;
             }
          }
-         {if!(try-parent) break}
-         {if(at-idx == #root) break}
+         if !(try-parent) { break}
+         if (at-idx == #root) { break}
          at-idx = at.parent;
          at = at-idx.ptr();
          cvar-c = at.cvar-c;
@@ -168,7 +168,7 @@ expr-cvar(at:at, name:id):expr-i {
    }
    try-deduce-cvar(expr:expr, at:at) @case.try-deduce() @inline {
       {+e:expr-cvar = expr}
-      {if(e.at == #nil)
+      if (e.at == #nil) {
          e.try = at;
       }
    }

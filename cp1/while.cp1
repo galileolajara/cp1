@@ -4,10 +4,10 @@ using 'cp1 = :cp1;
    wr-while(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
       {+s:stmt-while = stmt}
       s.expr.wr(w, header);
-      {if(s.continu != null)
+      if (s.continu != null) {
          w.b(true);
          s.continu.wr(w, header);
-      }{else
+      } else {
          w.b(false);
       }
    }
@@ -15,7 +15,7 @@ using 'cp1 = :cp1;
       quick-alloc-one(+(s:stmt-while));
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #while);
-      {if(r.b())
+      if (r.b()) {
          quick-alloc-one(+(space2:stmt-space));
          s.continu = space2;
          space2.rd(r, space);
@@ -46,8 +46,8 @@ using 'cp1 = :cp1;
    }
    process-while(stmt:stmt, ok:bool&) @case.process() @inline {
       {+s:stmt-while = stmt}
-      {if(s.expr != #nil)
-         {if!(s.expr.process())
+      if (s.expr != #nil) {
+         if !(s.expr.process()) {
             return;
          }
       }
@@ -58,7 +58,7 @@ using 'cp1 = :cp1;
       {+s:stmt-while-end = stmt}
       .out.printf("continue_%u:;\n", id);
       +continu = s.while.continu;
-      {if(continu != null)
+      if (continu != null) {
          continu.write();
       }
       .out.printf("}\nbreak_%u:;\n", id);
@@ -66,7 +66,7 @@ using 'cp1 = :cp1;
    process-while-end(stmt:stmt, ok:bool&) @case.process() @inline {
       {+s:stmt-while-end = stmt}
       +continu = s.while.continu;
-      {if(continu != null)
+      if (continu != null) {
          continu.process();
       }
       ok = true;

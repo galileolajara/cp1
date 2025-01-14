@@ -27,7 +27,7 @@ type-info-finalize() {
 type-info-arr(expr-v:expr-i[], expr-c:u8) {
    {+r:rdr+}
    r.ref = expr-v;
-   {if(expr-v == null)
+   if (expr-v == null) {
       +ti = .decl-var.type-info;
       ti.array-c += 1;
       ti.ref-v[ti.array-c] = 0;
@@ -41,9 +41,9 @@ type-info-arr(expr:expr-i) {
    +ti = .decl-var.type-info;
 	ti.array-c += 1;
 	ti.ref-v[ti.array-c] = 0;
-	{if(expr != #nil)
+	if (expr != #nil) {
       +vd = .decl-var;
-      {if(vd.size-c == 0)
+      if (vd.size-c == 0) {
          quick-alloc-arr(vd.size-expr-v, #decl-var-size-limit);
       }
       vd.size-expr-v[vd.size-c++] = expr;
@@ -59,7 +59,7 @@ type-info-static() {
    .decl-var.type-info.built-in = true;
 }
 decl-include-begin(inc:include, row:i32, col:i32) {
-   {if(.decl-include != #nil)
+   if (.decl-include != #nil) {
       'c.out.printf("%s:%u:%u: Cannot {include inside another {include of %u:%u\n", .input-path, row, col, .decl-include-row, .decl-include-col);
       'c.exit(#failure);
       return}
@@ -77,12 +77,12 @@ at-push(name:id, type:name-type, row:i32, col:i32) {
 at-basic-type(type:basic-type-id):at {
    {do{+i = 0:at}{(.at-c) i++}
       +at = .at-v[i];
-      {if(&&, at.type == #basic, at.name.basic == type)
+      if (&&, at.type == #basic, at.name.basic == type) {
          return i;
       }
    }
    +build-idx = .at-c++;
-   {if(.at-cap <= .at-c)
+   if (.at-cap <= .at-c) {
       +old-cap = .at-cap;
       grow(.at-cap, .at-c);
       realloc(.at-v, .at-cap, old-cap);
@@ -104,9 +104,9 @@ at-begin-relative-resume() {
    .at-begin-relative-pause = false;
 }
 at-begin-relative() {
-   {if(.at-begin-relative-pause)
+   if (.at-begin-relative-pause) {
       .build-at = .decl-at;
-   }{else
+   } else {
       .build-at = #relative;
    }
 }
@@ -119,7 +119,7 @@ at-begin-relative() {
 :row-col(row:i32, col:i32);
 at-alias(name:id, row:i32, col:i32) {
    {do{+i = 0}{(.at-alias-c) i++}
-      {if(.at-alias-name-v[i] == name)
+      if (.at-alias-name-v[i] == name) {
          .build-at = .at-alias-at-v[i];
          return;
       }
@@ -128,20 +128,20 @@ at-alias(name:id, row:i32, col:i32) {
    'c.exit(#failure);
 }
 decl-alias(name:id, at:at, row:i32, col:i32) {
-   // {if(at.ptr().type != #module)
+   // if (at.ptr().type != #module) {
    //    'c.out.printf("%s:%u:%u: Alias can only work on namespaces that ends with '%%'\n", .input-path, row, col);
    //    'c.exit(#failure);
    //    return;
    // }
    {do{+i = 0}{(.at-alias-c) i++}
-      {if(.at-alias-name-v[i] == name)
+      if (.at-alias-name-v[i] == name) {
          'c.out.printf("%s:%u:%u: Alias '%s was already declared at %u:%u\n", .input-path, row, col, name.str(), .at-alias-pos-v[i].row, .at-alias-pos-v[i].col);
          'c.exit(#failure);
          return;
       }
    }
    +alias-idx = .at-alias-c++;
-   {if(.at-alias-cap <= .at-alias-c)
+   if (.at-alias-cap <= .at-alias-c) {
       +old-cap = .at-alias-cap;
       grow(.at-alias-cap, .at-alias-c);
       realloc(.at-alias-name-v, .at-alias-cap, old-cap);
@@ -160,7 +160,7 @@ at-graves(graves:i8, row:i32, col:i32) {
    .build-at = .decl-at;
    {while(graves > 0)
       graves--;
-      {if(.build-at == #root)
+      if (.build-at == #root) {
          'c.out.printf("%s:%u:%u: Too many graves in the namespace, going beyond the root namespace\n", .input-path, row, col);
          'c.exit(#failure);
       }
@@ -173,18 +173,18 @@ at-done():at {
 }
 at-create(parent:at, type:name-type, name:id):at {
    +found = .at-map.get-or-insert(parent, type, name, .at-c);
-   {if(found != -1) return found}
+   if (found != -1) { return found}
    // {do{+i = 0:at}{(.at-c) i++}
    //    +at = .at-v[i];
-   //    {if(&&,
+   //    if (&&,
    //       at.parent == parent,
    //       at.type == type,
-   //       at.name.id == name)
+   //       at.name.id == name) {
    //       return i;
    //    }
    // }
    +build-idx = .at-c++;
-   {if(.at-cap <= .at-c)
+   if (.at-cap <= .at-c) {
       +old-cap = .at-cap;
       grow(.at-cap, .at-c);
       realloc(.at-v, .at-cap, old-cap);
@@ -198,14 +198,14 @@ at-create(parent:at, type:name-type, name:id):at {
 at-create-basic(basic:basic-type-id):at {
    {do{+i = 0:at}{(.at-c) i++}
       +at = .at-v[i];
-      {if(&&,
+      if (&&,
          at.type == #basic,
-         at.name.basic == basic)
+         at.name.basic == basic) {
          return i;
       }
    }
    +build-idx = .at-c++;
-   {if(.at-cap <= .at-c)
+   if (.at-cap <= .at-c) {
       +old-cap = .at-cap;
       grow(.at-cap, .at-c);
       realloc(.at-v, .at-cap, old-cap);
@@ -267,7 +267,7 @@ decl-at-end() {
       {+r-cursor:rdr+}
       r-cursor.ref = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
-      {if(length > 12)
+      if (length > 12) {
          'c.out.printf("%s:%u:%u: Integer literal was too long\n", .input-path, .row, .col);
          'c.exit(#failure);
       }
@@ -276,7 +276,7 @@ decl-at-end() {
          val = (val * 8:u64) + (r-start.p1[0] - ''0);
          r-start.pos++;
       }
-      {if(val > 4294967295)
+      if (val > 4294967295) {
          'c.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
          'c.exit(#failure);
       }
@@ -288,7 +288,7 @@ decl-at-end() {
       {+r-cursor:rdr+}
       r-cursor.ref = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
-      {if(length > 10)
+      if (length > 10) {
          'c.out.printf("%s:%u:%u: Integer literal was too long\n", .input-path, .row, .col);
          'c.exit(#failure);
       }
@@ -297,7 +297,7 @@ decl-at-end() {
          val = (val * 10:u64) + (r-start.p1[0] - ''0);
          r-start.pos++;
       }
-      {if(val > 4294967295)
+      if (val > 4294967295) {
          'c.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
          'c.exit(#failure);
       }
@@ -310,16 +310,16 @@ decl-at-end() {
       {+r-cursor:rdr+}
       r-cursor.ref = lex.cursor;
       +length = r-cursor.pos - r-start.pos - end;
-      {if(length > 255)
+      if (length > 255) {
          'c.out.printf("too long id was detected\n");
          'c.exit(#failure);
       }
       +len = length:u8;
       +found = .id-map.get-or-insert(r-start.ref, len, .id-c);
-      {if(found == -1)
+      if (found == -1) {
          // inserted
          +id = .id-c++;
-         {if(.id-cap <= .id-c)
+         if (.id-cap <= .id-c) {
             +old-cap = .id-cap;
             grow(.id-cap, .id-c);
             realloc(.id-str-v, .id-cap, old-cap);
@@ -331,19 +331,19 @@ decl-at-end() {
          .id-str-v[id] = text;
          .id-len-v[id] = len;
          return id;
-      }{else
+      } else {
          // found
          return found;
       }
       // {do{+i = 0}{(.id-c) i++}
-      //    {if(.id-len-v[i] == len)
-      //       {if('c.memcmp(.id-str-v[i], r-start.ref, len) == 0)
+      //    if (.id-len-v[i] == len) {
+      //       if ('c.memcmp(.id-str-v[i], r-start.ref, len) == 0) {
       //          return i;
       //       }
       //    }
       // }
       // +id = .id-c++;
-      // {if(.id-cap <= .id-c)
+      // if (.id-cap <= .id-c) {
       //    +old-cap = .id-cap;
       //    grow(.id-cap, .id-c);
       //    realloc(.id-str-v, .id-cap, old-cap);
@@ -363,16 +363,16 @@ decl-at-end() {
       {+r-cursor:rdr+}
       r-cursor.ref = lex.cursor;
       +length = r-cursor.pos - r-start.pos - 1;
-      {if(length > 255)
+      if (length > 255) {
          'c.out.printf("too long include was detected\n");
          'c.exit(#failure);
       }
       +len = length:u8;
       +found = .include-map.get-or-insert(r-start.ref, len, .include-c);
-      {if(found == -1)
+      if (found == -1) {
          // inserted
          +include = .include-c++;
-         {if(.include-cap <= .include-c)
+         if (.include-cap <= .include-c) {
             +old-cap = .include-cap;
             grow(.include-cap, .include-c);
             realloc(.include-str-v, .include-cap, old-cap);
@@ -384,19 +384,19 @@ decl-at-end() {
          .include-str-v[include] = text;
          .include-len-v[include] = len;
          return include;
-      }{else
+      } else {
          // found
          return found;
       }
       // {do{+i = 0}{(.include-c) i++}
-      //    {if(.include-len-v[i] == len)
-      //       {if('c.memcmp(.include-str-v[i], r-start.ref, len) == 0)
+      //    if (.include-len-v[i] == len) {
+      //       if ('c.memcmp(.include-str-v[i], r-start.ref, len) == 0) {
       //          return i;
       //       }
       //    }
       // }
       // +include = .include-c++;
-      // {if(.include-cap <= .include-c)
+      // if (.include-cap <= .include-c) {
       //    +old-cap = .include-cap;
       //    grow(.include-cap, .include-c);
       //    realloc(.include-str-v, .include-cap, old-cap);
@@ -435,31 +435,31 @@ write-func(w:wtr, header:bool) @inline {
          f.farg-v[j].wr(w, header);
       }
       w.n1(f.this-idx);
-      {if(f.this-idx != -1)
+      if (f.this-idx != -1) {
          w.n1(f.this-group);
       }
       w.n1(f.group-c);
       {do{+j = 0}{(f.group-c) j++}
          w.n1(f.group-v[j]);
       }
-      {if(header)
-         {if(f.flags & #inline)
+      if (header) {
+         if (f.flags & #inline) {
             // proceed
             f.flags.wr(w);
-         }{else
+         } else {
             // remove #has-body flag
             (f.flags & (-1 ^ :func-flags#has-body)):func-flags.wr(w);
          }
-      }{else
+      } else {
          f.flags.wr(w);
       }
-      {if((f.flags & #real-name) != #0)
+      if ((f.flags & #real-name) != #0) {
          f.real-name.wr(w, header);
       }
-      {if((f.flags & #case) != #0)
+      if ((f.flags & #case) != #0) {
          f.case.wr(w, header);
       }
-      {if((f.flags & #decl) != #0)
+      if ((f.flags & #decl) != #0) {
          w.n(f.decl-len);
          w.copy(f.decl-str, f.decl-len);
       }
@@ -467,11 +467,11 @@ write-func(w:wtr, header:bool) @inline {
    .func-main.wr(w);
    {do{+i = 0}(.func-c)
       +f = .func-v[i++];
-      {if((f.flags & #has-body) == #0) continue}
-      {if(header)
-         {if(f.flags & #inline)
+      if ((f.flags & #has-body) == #0) { continue}
+      if (header) {
+         if (f.flags & #inline) {
             // proceed
-         }{else
+         } else {
             // remove #has-body flag
             continue;
          }
@@ -493,9 +493,9 @@ write-cvar(w:wtr, header:bool) {
       cvar.at.wr(w, header);
       cvar.decl.wr(w, header);
       cvar.flags.wr(w);
-      {if((cvar.flags & #set-expr) != #0)
+      if ((cvar.flags & #set-expr) != #0) {
          cvar.expr-set.wr(w, header);
-      }{else
+      } else {
          cvar.last-cvar.wr(w);
       }
    }
@@ -521,7 +521,7 @@ write-enum(w:wtr, header:bool) {
       e.at.wr(w, header);
       e.base-type.wr(w, header);
       e.flags.wr(w);
-      {if((e.flags & #real-name) != #0)
+      if ((e.flags & #real-name) != #0) {
          e.real-name.wr(w, header);
       }
    }
@@ -543,7 +543,7 @@ write-struct(w:wtr, header:bool) {
       {do{+j = 0}{(s.fvar-c) j++}
          s.fvar-v[j].wr(w, header);
       }
-      {if((s.flags & #real-name) != #0)
+      if ((s.flags & #real-name) != #0) {
          s.real-name.wr(w, header);
       }
    }
@@ -560,18 +560,18 @@ get-row-col(out-row:i32&, out-col:i32&, end:ref, begin:ref) {
    {+r-end:rdr+}
    r-end.ref = end;
    {while(r.pos < r-end.pos)
-      {if(r.p1[0] == ''\n)
+      if (r.p1[0] == ''\n) {
          row++;
          col = 1;
-      }{else
+      } else {
          col++;
       }
       r.pos++;
    }
    out-row = row;
-   {if(r.p1[0] == ''\n)
+   if (r.p1[0] == ''\n) {
       out-col = col - 1;
-   }{else
+   } else {
       out-col = col;
    }
 }
@@ -582,7 +582,7 @@ parse-string(r:rdr, w:wtr, ending:char, in-data:ref) {
    r.pos += 2;
    {do()
       +c = r.p1[0];
-      {if(c == ''\n)
+      if (c == ''\n) {
          get-row-col(+row, +col, r.ref, in-data);
          'c.out.printf("%s:%u:%u: Unterminated string\n", .input-path, row, col);
          'c.exit(#failure);
@@ -590,7 +590,7 @@ parse-string(r:rdr, w:wtr, ending:char, in-data:ref) {
       w.p1[0] = c;
       w.pos++;
       r.pos++;
-      {if(c == ending)
+      if (c == ending) {
          return;
       }
    }
@@ -601,13 +601,13 @@ parse-comment(r:rdr, w:wtr, ending:char, in-data:ref) {
    r.pos += 2;
    {do()
       +c = r.p1[0];
-      {if(c == ''\n)
+      if (c == ''\n) {
          get-row-col(+row, +col, r.ref, in-data);
          'c.out.printf("%s:%u:%u: Unterminated comment\n", .input-path, row, col);
          'c.exit(#failure);
       }
       r.pos++;
-      {if(c == ending)
+      if (c == ending) {
          +len = r.pos - r-begin.pos;
          {do(len)
             w.p1[0] = '' ;
@@ -622,7 +622,7 @@ convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
    +in-size = in-out-size;
    {+r:rdr+}
    r.ref = in-data;
-   {if(&&, r.p1[0] == ''{, r.p1[1] == ''g, r.p1[2] == ''l, r.p1[3] == ''c, r.p1[4] == ''\n, r.p1[in-size - 2] == ''}, r.p1[in-size - 1] == ''\n)
+   if (&&, r.p1[0] == ''{, r.p1[1] == ''g, r.p1[2] == ''l, r.p1[3] == ''c, r.p1[4] == ''\n, r.p1[in-size - 2] == ''}, r.p1[in-size - 1] == ''\n) {
       // remove the {glc and } from head and tail of the file
       r.p1[0] = '' ;
       r.p1[1] = '' ;
@@ -638,7 +638,7 @@ convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
    {+w:wtr+}
    w.ref = w-begin.ref;
    {while(r.pos < r-end.pos)
-      {if(&&, r.p1[0] == ''@, r.p1[1] == ''r, r.p1[2] == ''e, r.p1[3] == ''a, r.p1[4] == ''l, r.p1[5] == ''N, r.p1[6] == ''a, r.p1[7] == ''m, r.p1[8] == ''e)
+      if (&&, r.p1[0] == ''@, r.p1[1] == ''r, r.p1[2] == ''e, r.p1[3] == ''a, r.p1[4] == ''l, r.p1[5] == ''N, r.p1[6] == ''a, r.p1[7] == ''m, r.p1[8] == ''e) {
          // realName -> real-name
          w.p1[0] = ''@;
          w.p1[1] = ''r;
@@ -652,7 +652,7 @@ convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
          w.p1[9] = ''e;
          w.pos += 10;
          r.pos += 9;
-      }{elif(&&, r.p1[0] == ''@, r.p1[1] == ''n, r.p1[2] == ''o, r.p1[3] == ''D, r.p1[4] == ''e, r.p1[5] == ''c, r.p1[6] == ''l)
+      } elif (&&, r.p1[0] == ''@, r.p1[1] == ''n, r.p1[2] == ''o, r.p1[3] == ''D, r.p1[4] == ''e, r.p1[5] == ''c, r.p1[6] == ''l) {
          // noDecl -> no-decl
          w.p1[0] = ''@;
          w.p1[1] = ''n;
@@ -664,7 +664,7 @@ convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
          w.p1[7] = ''l;
          w.pos += 8;
          r.pos += 7;
-      }{elif(&&, r.p1[0] == ''@, r.p1[1] == ''n, r.p1[2] == ''o, r.p1[3] == ''B, r.p1[4] == ''o, r.p1[5] == ''d, r.p1[6] == ''y)
+      } elif (&&, r.p1[0] == ''@, r.p1[1] == ''n, r.p1[2] == ''o, r.p1[3] == ''B, r.p1[4] == ''o, r.p1[5] == ''d, r.p1[6] == ''y) {
          // noBody -> no-body
          w.p1[0] = ''@;
          w.p1[1] = ''n;
@@ -676,14 +676,14 @@ convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
          w.p1[7] = ''y;
          w.pos += 8;
          r.pos += 7;
-      }{elif(&&, r.p1[0] == ''`, r.p1[1] == ''s, r.p1[2] == ''i, r.p1[3] == ''z, r.p1[4] == ''e, r.p1[5] == ''O, r.p1[6] == ''f, r.p1[7] == ''[)
+      } elif (&&, r.p1[0] == ''`, r.p1[1] == ''s, r.p1[2] == ''i, r.p1[3] == ''z, r.p1[4] == ''e, r.p1[5] == ''O, r.p1[6] == ''f, r.p1[7] == ''[) {
          // :uszOf[:type] -> :type[:usz]
          r.pos += 8;
          {+r-type:rdr+}
          r-type.ref = r.ref;
          {do()
             +c = r.p1[0];
-            {if(c == ''])
+            if (c == '']) {
                {while(r-type.pos < r.pos)
                   w.p1[0] = r-type.p1[0];
                   w.pos++;
@@ -700,7 +700,7 @@ convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
             }
             r.pos++;
          }
-      }{elif(&&, r.p1[0] == ''`, r.p1[1] == ''-, r.p1[2] == '' )
+      } elif (&&, r.p1[0] == ''`, r.p1[1] == ''-, r.p1[2] == '' ) {
          // comment that's only for the older glc
          // but a code for the newer glc
          w.p1[0] = '' ;
@@ -708,25 +708,25 @@ convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
          w.p1[2] = '' ;
          w.pos += 3;
          r.pos += 3;
-      }{elif(&&, r.p1[0] == ''\', r.p1[1] == ''\', r.p1[2] == ''`, r.p1[3] == ''~)
+      } elif (&&, r.p1[0] == ''\', r.p1[1] == ''\', r.p1[2] == ''`, r.p1[3] == ''~) {
          w.p1[0] = ''\';
          w.p1[1] = ''\';
          w.p1[2] = ''`;
          w.pos += 3;
          r.pos += 4;
-      }{elif(&&, r.p1[0] == '' , r.p1[1] == ''+, r.p1[2] == ''+)
+      } elif (&&, r.p1[0] == '' , r.p1[1] == ''+, r.p1[2] == ''+) {
          // remove space from increment operator
          w.p1[0] = ''+;
          w.p1[1] = ''+;
          w.pos += 2;
          r.pos += 3;
-      }{elif(&&, r.p1[0] == '' , r.p1[1] == ''-, r.p1[2] == ''-)
+      } elif (&&, r.p1[0] == '' , r.p1[1] == ''-, r.p1[2] == ''-) {
          // remove space from decrement operator
          w.p1[0] = ''-;
          w.p1[1] = ''-;
          w.pos += 2;
          r.pos += 3;
-      }{else
+      } else {
          w.p1[0] = r.p1[0];
          w.pos++;
          r.pos++;
@@ -735,7 +735,7 @@ convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
    w.p1[0] = 0;
    {+path:char[256]}
    'c.sprintf(path, "glc-edit/%s", .input-path);
-   {if!('c:file.create(++out-fd, path, #write | #truncate, 0o644))
+   if !('c:file.create(++out-fd, path, #write | #truncate, 0o644)) {
       'c.out.printf("Cannot open file for writing: %s\n", path);
       'c.exit(#failure);
    }
@@ -748,7 +748,7 @@ char-escape-value(c:char):i32;
 {gvar lock-path:char[]}
 parser-at-exit();
 main(arg-c:intc, arg-v:char[][]):intc @main {
-   {if(false)
+   if (false) {
       // preprocess-def("", 0);
       export();
    }
@@ -758,20 +758,20 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    quick-alloc-init();
    .func-main = #nil;
    .decl-include = #nil;
-   {if(arg-c != 3)
+   if (arg-c != 3) {
       'c.out.printf("Usage: %s [file.cgl] [output.cgl-b]\n", arg-v[0]);
       return 0;
    }
    .input-path = arg-v[1];
    // 'c.out.printf("reading %s\n", .input-path);
-   {if!('c:fd.open(++in-fd, .input-path, #read))
+   if !('c:fd.open(++in-fd, .input-path, #read)) {
       'c.out.printf("Cannot open file for reading: %s\n", .input-path);
       'c.exit(#failure);
    }
    +lock-path = arg-v[2];
    // .lock-path = lock-path;
-   // {if(true)
-   //    {if!('c:fd.open(++fd, lock-path, #create | #excl))
+   // if (true) {
+   //    if !('c:fd.open(++fd, lock-path, #create | #excl)) {
    //       // Can't create output file
    //       'sys.stat(lock-path, +out-stat);
    //       in-fd.stat(+in-stat);
@@ -781,12 +781,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    //       "#elif defined(__unix__)";
    //          skip = (||, out-stat.mtim.sec > in-stat.mtim.sec, (&&, out-stat.mtim.sec == in-stat.mtim.sec, out-stat.mtim.nsec > in-stat.mtim.nsec));
    //       "#endif";
-   //       {if(skip)
+   //       if (skip) {
    //          // Skip parsing
    //          'c.out.printf("Skipping parsing of %s because the output file is newer than the input file\n", .input-path);
    //          return 0;
    //       }
-   //    }{else
+   //    } else {
    //       // We created the output file, make sure to unlink it when
    //       // the parser gets parsing error
    //       parser-at-exit();
@@ -801,16 +801,16 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    in-data[in-size + 1] = 0;
    in-fd.close();
 
-   {if(&&, in-data[in-size - 2] == ''\r, in-data[in-size - 1] == ''\n)
+   if (&&, in-data[in-size - 2] == ''\r, in-data[in-size - 1] == ''\n) {
       'c.out.printf("Error reading file '%s' because it uses Windows-style line endings\n", .input-path);
       'c.out.printf("Please convert the line endings to Unix-style line endings\n");
       'c.exit(#failure);
    }
-   {if(in-data[in-size - 1] != ''\n)
+   if (in-data[in-size - 1] != ''\n) {
       'c.out.printf("Error reading file '%s' because it doesn't end with a new line\n", .input-path);
       'c.exit(#failure);
    }
-   {if(true) // Process comments
+   if (true) { // Process comments
       +preprocess = false;
       // in-data = convert-old-to-new(in-data, in-size);
       {+r-end:rdr+}
@@ -824,13 +824,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       // Ignore texts outside the top-level curly braces
       // +indent = 0:i32;
       {while(r.pos < r-end.pos)
-         {if(r.p1[0] == ''/)
-            {if(r.p1[1] == ''/) // , (||, r.p1[2] == '' , r.p1[2] == ''\t))
-               {if(r.ref == in-data)
+         if (r.p1[0] == ''/) {
+            if (r.p1[1] == ''/) { // , (||, r.p1[2] == '' , r.p1[2] == ''\t))
+               if (r.ref == in-data) {
                   // ok
-               }{elif(||, r.p1[-1] == '' , r.p1[-1] == ''\t, r.p1[-1] == ''\n)
+               } elif (||, r.p1[-1] == '' , r.p1[-1] == ''\t, r.p1[-1] == ''\n) {
                   // ok
-               }{else
+               } else {
                   get-row-col(+row, +col, r.ref, in-data);
                   'c.out.printf("%s:%u:%u: There must be a space or tab before the // comment\n", .input-path, row, col);
                   'c.exit(#failure);
@@ -838,11 +838,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                // comment
                r.pos += 3;
                {do()
-                  {if(r.p1[0] == ''\n)
+                  if (r.p1[0] == ''\n) {
                      break;
                   }
                   r.pos++;
-                  {if(r.pos >= r-end.pos)
+                  if (r.pos >= r-end.pos) {
                      get-row-col(+row, +col, r.ref, in-data);
                      'c.out.printf("%s:%u:%u: Comment did not end with a new line\n", .input-path, row, col);
                      'c.exit(#failure);
@@ -850,26 +850,26 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                }
                continue;
             }
-         // }{elif(r.p1[0] == ''{)
+         // } elif (r.p1[0] == ''{) {
          //    indent++;
-         // }{elif(r.p1[0] == ''})
-         //    {if(indent == 0)
+         // } elif (r.p1[0] == ''}) {
+         //    if (indent == 0) {
          //       get-row-col(+row, +col, r.ref, in-data);
          //       'c.out.printf("%s:%u:%u: Too much '}' detected\n", .input-path, row, col);
          //       'c.exit(#failure);
          //    }
          //    indent--;
-         // }{elif(indent == 0)
-         //    {if(r.p1[0] == ''\n)
+         // } elif (indent == 0) {
+         //    if (r.p1[0] == ''\n) {
          //       w.p1[0] = ''\n;
          //       w.pos++;
          //    }
          //    r.pos++;
          //    continue;
-         }{elif(r.p1[0] == ''\')
-            {if(r.p1[1] == ''\')
+         } elif (r.p1[0] == ''\') {
+            if (r.p1[1] == ''\') {
                // char
-               {if(r.p1[2] == ''\\)
+               if (r.p1[2] == ''\\) {
                   w.p1[0] = ''\';
                   w.p1[1] = ''\';
                   w.p1[2] = ''\\;
@@ -877,7 +877,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   w.pos += 4;
                   r.pos += 4;
                   continue;
-               }{else
+               } else {
                   w.p1[0] = ''\';
                   w.p1[1] = ''\';
                   w.p1[2] = r.p1[2];
@@ -885,7 +885,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   r.pos += 3;
                   continue;
                }
-            }{elif(&&, (||, r.p1[2] == '' , r.p1[2] == ''\t), (||, r.p1[1] == ''-, r.p1[1] == ''=))
+            } elif (&&, (||, r.p1[2] == '' , r.p1[2] == ''\t), (||, r.p1[1] == ''-, r.p1[1] == ''=)) {
                // string
                w.p1[0] = ''\';
                w.p1[1] = r.p1[1];
@@ -897,10 +897,10 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   w.p1[0] = c;
                   w.pos++;
                   r.pos++;
-                  {if(c == ''\n)
+                  if (c == ''\n) {
                      break;
                   }
-                  {if(r.pos >= r-end.pos)
+                  if (r.pos >= r-end.pos) {
                      get-row-col(+row, +col, r.ref, in-data);
                      'c.out.printf("%s:%u:%u: String did not end with a new line\n", .input-path, row, col);
                      'c.exit(#failure);
@@ -919,49 +919,49 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   '{hello};
                   '(hello);
                "#endif";
-            }{elif(r.p1[1] == ''\")
+            } elif (r.p1[1] == ''\") {
                parse-string(r, w, ''\", in-data);
                continue;
-            }{elif(r.p1[1] == ''|)
+            } elif (r.p1[1] == ''|) {
                parse-string(r, w, ''|, in-data);
                continue;
-            }{elif(r.p1[1] == '';)
+            } elif (r.p1[1] == '';) {
                parse-string(r, w, '';, in-data);
                continue;
-            }{elif(r.p1[1] == ''_)
+            } elif (r.p1[1] == ''_) {
                parse-string(r, w, ''_, in-data);
                continue;
-            }{elif(r.p1[1] == ''+)
+            } elif (r.p1[1] == ''+) {
                parse-string(r, w, ''+, in-data);
                continue;
-            }{elif(r.p1[1] == ''<)
+            } elif (r.p1[1] == ''<) {
                parse-string(r, w, ''>, in-data);
                continue;
-            }{elif(r.p1[1] == ''[)
+            } elif (r.p1[1] == ''[) {
                parse-string(r, w, ''], in-data);
                continue;
-            }{elif(r.p1[1] == ''{)
+            } elif (r.p1[1] == ''{) {
                parse-string(r, w, ''}, in-data);
                continue;
-            }{elif(r.p1[1] == ''()
+            } elif (r.p1[1] == ''() {
                parse-string(r, w, ''), in-data);
                continue;
             }
-         }{elif(r.p1[0] == ''\") // C-string
+         } elif (r.p1[0] == ''\") { // C-string
             w.p1[0] = ''\";
             w.pos++;
             r.pos++;
             {do()
-               {if(r.p1[0] == ''\n)
+               if (r.p1[0] == ''\n) {
                   get-row-col(+row, +col, r.ref, in-data);
                   'c.out.printf("%s:%u:%u: Unterminated string\n", .input-path, row, col);
                   'c.exit(#failure);
-               }{elif(r.p1[0] == ''\")
+               } elif (r.p1[0] == ''\") {
                   w.p1[0] = ''\";
                   w.pos++;
                   r.pos++;
                   break;
-               }{elif(r.p1[0] == ''\\)
+               } elif (r.p1[0] == ''\\) {
                   {switch(r.p1[1])
                      {case(''0) }
                      {case(''\\) }
@@ -984,12 +984,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   w.p1[1] = r.p1[1];
                   w.pos += 2;
                   r.pos += 2;
-               }{else
+               } else {
                   w.p1[0] = r.p1[0];
                   w.pos++;
                   r.pos++;
                }
-               {if(r.pos >= r-end.pos)
+               if (r.pos >= r-end.pos) {
                   get-row-col(+row, +col, r.ref, in-data);
                   'c.out.printf("%s:%u:%u: Unterminated string\n", .input-path, row, col);
                   'c.exit(#failure);
@@ -1013,7 +1013,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       // fd.close();
       // 'c.out.write(in-data, in-size);
 
-      // {if(preprocess)
+      // if (preprocess) {
       //    preprocess-init();
       //    preprocess(in-data, in-size);
       // }
@@ -1056,16 +1056,16 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       tok.row = next-row;
       tok.col = next-col;
       +t = lex.scan();
-      {if(true) // t != #space)
+      if (true) { // t != #space)
          // when reporting the row and column of tokens, skip the spaces
          +pos = lex.start;
          {while(pos < r-end.p1)
-            {if(||, pos[0] == '' , pos[0] == ''\t)
+            if (||, pos[0] == '' , pos[0] == ''\t) {
                tok.col++;
-            }{elif(pos[0] == ''\n)
+            } elif (pos[0] == ''\n) {
                tok.row++;
                tok.col = 1;
-            }{else
+            } else {
                break;
             }
             pos++;
@@ -1077,10 +1077,10 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       .col = tok.col;
       // 'c.out.printf("%s:%u:%u: token %s\n", .input-path, tok.row, tok.col, t.cgl-name());
       // 'c.out.flush();
-      {if(&&, t >= #id-colon, t < #id)
+      if (&&, t >= #id-colon, t < #id) {
          tok.id = lex.get-id(1, 0);
          psr.parse(t, tok);
-      }{else
+      } else {
          {switch(t)
             // {case(#id-lparen)
             //    tok.id = lex.get-id(0, 1);
@@ -1106,7 +1106,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                {do()
                   start++;
                   r-start.pos++;
-                  {if(r-start.p1[0] == ''@)
+                  if (r-start.p1[0] == ''@) {
                      break;
                   }
                }
@@ -1127,7 +1127,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             }
             {case(#id)
                tok.id = lex.get-id(0, 0);
-               {if(lex.cursor[0] == ''()
+               if (lex.cursor[0] == ''() {
                   t = #id-lparen;
                }
                psr.parse(t, tok);
@@ -1137,14 +1137,14 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             }
          }
       }
-      {if(t == #end) break}
+      if (t == #end) { break}
       +pos = lex.start;
       {while(pos < lex.cursor)
-         {if((pos[0] & 128) == 0)
-            {if(pos[0] == ''\n)
+         if ((pos[0] & 128) == 0) {
+            if (pos[0] == ''\n) {
                next-row++;
                next-col = 1;
-            }{else
+            } else {
                next-col++;
             }
          }
@@ -1186,9 +1186,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    {do{+i = 0}{(.at-c) i++}
       +at = .at-v[i];
       at.type.wr(w);
-      {if(at.type == #basic)
+      if (at.type == #basic) {
          at.name.basic.wr(w);
-      }{else
+      } else {
          at.parent.wr(w, false);
          at.name.id.wr(w, false);
       }
@@ -1203,7 +1203,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    {+out-path:char[] = 'c.malloc('c.strlen(lock-path) + 4 + 1)}
    'c.sprintf(out-path, "%s.tmp", lock-path);
    +out-path-len = 'c.strlen(out-path);
-   {if!('c:fd.open(++out-fd, out-path, #create | #truncate | #write, 0o644))
+   if !('c:fd.open(++out-fd, out-path, #create | #truncate | #write, 0o644)) {
       'c.out.printf("Cannot open file for writing: %s\n", out-path);
       'c.exit(#failure);
    }
@@ -1229,9 +1229,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       +i = .at-in-header-at-v[j];
       +at = .at-v[i];
       at.type.wr(w);
-      {if(at.type == #basic)
+      if (at.type == #basic) {
          at.name.basic.wr(w);
-      }{else
+      } else {
          at.parent.wr-header(w);
          at.name.id.wr-header(w);
       }
@@ -1243,7 +1243,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    write-func(w, true);
 
    out-path[out-path-len - 5] = ''h;
-   {if!('c:fd.open(out-fd, out-path, #create | #truncate | #write, 0o644))
+   if !('c:fd.open(out-fd, out-path, #create | #truncate | #write, 0o644)) {
       'c.out.printf("Cannot open file for writing: %s\n", out-path);
       'c.exit(#failure);
    }

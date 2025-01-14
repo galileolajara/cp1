@@ -11,28 +11,28 @@ using 'c = :stdc;
 at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
    +type = vd-type.ptr();
    +parent = type.parent.ptr();
-   {if(&&, parent.type == #basic, parent.name.basic == #relative)
+   if (&&, parent.type == #basic, parent.name.basic == #relative) {
       +name = type.name;
       // 'c.out.printf("type is %s\n", at-i.ptr().type.cgl-name());
-      // {if(at-i.ptr().type == #module)
+      // if (at-i.ptr().type == #module) {
       //    'c.out.printf("name is %s\n", at-i.ptr().name.id.str());
       //    'c.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cgl-name());
-      //    {if(at-i.ptr().parent.ptr().type == #basic)
+      //    if (at-i.ptr().parent.ptr().type == #basic) {
       //       'c.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cgl-name());
       //    }
       // }
       // 'c.out.printf("relative type detected, finding :%s\n", name.id.str());
       {do()
          {do{+i = 0:at}{(.at-c) i++}
-            {if(&&, .at-v[i].parent == at-i, .at-v[i].type != #basic)
+            if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
                // 'c.out.printf("%u) :%s, %d\n", i, .at-v[i].name.id.str(), .at-v[i].decl.struct);
-               {if(.at-v[i].name.id == name.id)
+               if (.at-v[i].name.id == name.id) {
                   // 'c.out.printf("found\n");
                   return i;
                }
             }
          }
-         {if(at-i == #root) break}
+         if (at-i == #root) { break}
          at-i = at-i.ptr().parent;
       }
       'c.out.printf("%s:%u:%u: Type :%s was not found\n", file.path(), row, col, name.id.str());
@@ -49,22 +49,22 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
       +at-i = at-validate(vd.type, base-at, file, row, col);
       vd.type = at-i;
       +at = at-i.ptr();
-      {if(&&, at.type != #basic, at.decl.struct == #nil)
+      if (&&, at.type != #basic, at.decl.struct == #nil) {
          'c.out.printf("%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", .ctx-func.file.path(), row, col, at.name.id.str(), vd.name.str());
          return false;
       }
       at-i.output(.ctx-func.file, row, col);
-      {if!(at-i.finalize(vd.type-info, row, col)) return false}
+      if !(at-i.finalize(vd.type-info, row, col)) { return false}
       {do{+i = 0}{(vd.size-c) i++}
-         {if!(vd.size-expr-v[i].value(1, false, vd.size-value-v[i])) return false}
+         if !(vd.size-expr-v[i].value(1, false, vd.size-value-v[i])) { return false}
       }
       return true;
    }
    write(vd:this, var-type:decl-var-type) {
-      {if((vd.flags & #real-name) != #0)
-         {if(vd.real-name == #nil)
+      if ((vd.flags & #real-name) != #0) {
+         if (vd.real-name == #nil) {
             .out.printf("%s", vd.name.c-name());
-         }{else
+         } else {
             .out.printf("%s", vd.real-name.str());
          }
          return;
@@ -82,7 +82,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
       .out.printf("_L%s_%u", vd.name.c-name(), lvar);
    }
    write-type(vd:this, var-type:decl-var-type) {
-      {if(vd.type-info.const)
+      if (vd.type-info.const) {
          .out.printf("const ");
       }
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
@@ -95,7 +95,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
       }
    }
    write-lvar-type(vd:this, lvar:lvar) {
-      {if(vd.type-info.const)
+      if (vd.type-info.const) {
          .out.printf("const ");
       }
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
@@ -111,7 +111,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
       vd.name.wr(w, header);
       vd.type.wr(w, header);
       vd.flags.wr(w);
-      {if((vd.flags & #real-name) != #0)
+      if ((vd.flags & #real-name) != #0) {
          vd.real-name.wr(w, header);
       }
       vd.type-info.wr(w);
@@ -123,15 +123,15 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
    }
    // validate(vd-type:at, at-i:at, vd-name:id):at {
    //    +type = vd-type.ptr();
-   //    {if(type.type == #basic) return vd-type}
+   //    if (type.type == #basic) { return vd-type}
    //    +parent = type.parent.ptr();
-   //    {if(&&, parent.type == #basic, parent.name.basic == #relative)
+   //    if (&&, parent.type == #basic, parent.name.basic == #relative) {
    //       +name = type.name;
    //       'c.out.printf("type is %s\n", at-i.ptr().type.cgl-name());
-   //       {if(at-i.ptr().type == #module)
+   //       if (at-i.ptr().type == #module) {
    //          'c.out.printf("name is %s\n", at-i.ptr().name.id.str());
    //          'c.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cgl-name());
-   //          {if(at-i.ptr().parent.ptr().type == #basic)
+   //          if (at-i.ptr().parent.ptr().type == #basic) {
    //             'c.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cgl-name());
    //          }
    //       }
@@ -142,14 +142,14 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
    //       // .out = old-out;
    //       {do()
    //          {do{+i = 0:at}{(.at-c) i++}
-   //             {if(&&, .at-v[i].parent == at-i, .at-v[i].type != #basic)
+   //             if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
    //                'c.out.printf("%u) :%s\n", i, .at-v[i].name.id.str());
-   //                {if(.at-v[i].name.id == name.id)
+   //                if (.at-v[i].name.id == name.id) {
    //                   return i;
    //                }
    //             }
    //          }
-   //          {if(at-i == #root) break}
+   //          if (at-i == #root) { break}
    //          at-i = at-i.ptr().parent;
    //       }
    //       'c.out.printf("not found\n");
@@ -163,12 +163,12 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
       // :at.rd(+vd-type, r);
       // vd.type = validate(vd-type, default-at, vd.name);
       vd.flags.rd(r);
-      {if((vd.flags & #real-name) != #0)
+      if ((vd.flags & #real-name) != #0) {
          vd.real-name.rd(r);
       }
       vd.type-info.rd(r);
       vd.size-c = r.n1();
-      {if(vd.size-c > 0)
+      if (vd.size-c > 0) {
          quick-alloc-arr(vd.size-expr-v, vd.size-c);
          quick-alloc-arr(vd.size-value-v, vd.size-c);
          {do{+i = 0}{(vd.size-c) i++}
@@ -184,7 +184,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
       vd.type-info.copy-from(src.type-info);
       vd.type-info.built-in = src.type-info.built-in;
       vd.size-c = src.size-c;
-      {if(vd.size-c > 0)
+      if (vd.size-c > 0) {
          quick-alloc-arr(vd.size-expr-v, vd.size-c);
          {do{+i = 0}{(vd.size-c) i++}
             vd.size-expr-v[i] = src.size-expr-v[i];
@@ -238,7 +238,7 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
    wr(ti:this, w:wtr) {
       +c = 0;
       {do(#type-info-star-limit)
-         {if(ti.ref-v[c] == 0)
+         if (ti.ref-v[c] == 0) {
             break;
          }
          c++;
@@ -323,7 +323,7 @@ decl-var-begin(name:id, row:i32, col:i32) {
 decl-var-end() {
 }
 decl-var-attr-real-name(name:id) {
-   {if((.decl-var.flags & #real-name) != #0)
+   if ((.decl-var.flags & #real-name) != #0) {
       'c.out.printf("%u:%u: error @real-name specified more than once\n", .last-row, .last-col);
       'c.exit(#failure);
    }
@@ -331,23 +331,23 @@ decl-var-attr-real-name(name:id) {
    .decl-var.real-name = name;
 }
 decl-var-attr-extern() {
-   {if((.decl-var.flags & #extern) != #0)
+   if ((.decl-var.flags & #extern) != #0) {
       'c.out.printf("%u:%u: error @extern specified more than once\n", .last-row, .last-col);
       'c.exit(#failure);
    }
    .decl-var.flags |= #extern;
 }
 decl-var-attr-no-decl() {
-   {if((.decl-var.flags & #no-decl) != #0)
+   if ((.decl-var.flags & #no-decl) != #0) {
       'c.out.printf("%u:%u: error @no-decl specified more than once\n", .last-row, .last-col);
       'c.exit(#failure);
    }
    .decl-var.flags |= #no-decl;
 }
 decl-var-type(type:at) {
-   {if(type != #nil)
+   if (type != #nil) {
       +at = type.ptr();
-      {if(at.type == #module)
+      if (at.type == #module) {
          'c.out.printf("%u:%u: module '%%%s' cannot be used as a type\n", .last-row, .last-col, at.name.id.str());
          'c.exit(#failure);
       }
@@ -361,7 +361,7 @@ decl-var-type(type:at) {
 decl-var-this() {
    +type = .decl-at;
    +at = type.ptr();
-   {if(at.type == #module)
+   if (at.type == #module) {
       'c.out.printf("%u:%u: module '%%%s' cannot be used as a type\n", .last-row, .last-col, at.name.id.str());
       'c.exit(#failure);
    }
@@ -370,7 +370,7 @@ decl-var-this() {
 }
 decl-var-as-gvar() {
    +gvar-idx = .gvar-c++;
-   {if(.gvar-cap <= .gvar-c)
+   if (.gvar-cap <= .gvar-c) {
       +old-cap = .gvar-cap;
       grow(.gvar-cap, .gvar-c);
       realloc(.gvar-v, .gvar-cap, old-cap);

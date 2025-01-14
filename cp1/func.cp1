@@ -38,9 +38,9 @@ using 'c = :stdc;
 ]:u32;
 {at(:decl-func)
    write(f:this) {
-      {if((f.flags & #real-name) != #0)
+      if ((f.flags & #real-name) != #0) {
          .out.printf("%s", f.real-name.str());
-      }{else
+      } else {
          f.at.write-space();
          .out.printf("_P%s", f.decl.name.c-name());
          {do{+i = 0}{(f.group-c) i++}
@@ -58,7 +58,7 @@ using 'c = :stdc;
          l.col = r.n();
          l.decl.rd(r);
          l.flags.rd(r);
-         {if((l.flags & #set-expr) != #0)
+         if ((l.flags & #set-expr) != #0) {
             l.set-expr.rd(r);
          }
          // 'c.out.printf("lvar %s has type of %s\n", l.decl.name.str(), l.decl.type.ptr().name.basic.cp1-name());
@@ -72,7 +72,7 @@ using 'c = :stdc;
          w.n(l.col);
          l.decl.wr(w, header);
          l.flags.wr(w);
-         {if((l.flags & #set-expr) != #0)
+         if ((l.flags & #set-expr) != #0) {
             l.set-expr.wr(w, header);
          }
       }
@@ -146,7 +146,7 @@ farg-next-group() {
 }
 decl-var-as-farg(row:i32, col:i32) {
    +farg-idx = .decl-farg-c++;
-   {if(.decl-farg-cap <= .decl-farg-c)
+   if (.decl-farg-cap <= .decl-farg-c) {
       +old-cap = .decl-farg-cap;
       grow(.decl-farg-cap, .decl-farg-c);
       realloc(.decl-farg-v, .decl-farg-cap, old-cap);
@@ -161,7 +161,7 @@ decl-var-as-this() {
    .decl-func-this-idx = .decl-farg-c;
    .decl-func-this-group = .decl-farg-group-c - 1;
    +farg-idx = .decl-farg-c++;
-   {if(.decl-farg-cap <= .decl-farg-c)
+   if (.decl-farg-cap <= .decl-farg-c) {
       +old-cap = .decl-farg-cap;
       grow(.decl-farg-cap, .decl-farg-c);
       realloc(.decl-farg-v, .decl-farg-cap, old-cap);
@@ -176,7 +176,7 @@ decl-var-as-this() {
 // {gvar lvar-name-v:id[]}
 decl-func-end(row:i32, col:i32) {
    +f-idx = (.func-c++):func;
-   {if(.func-cap <= .func-c)
+   if (.func-cap <= .func-c) {
       +old-cap = .func-cap;
       grow(.func-cap, .func-c);
       realloc(.func-v, .func-cap, old-cap);
@@ -192,14 +192,14 @@ decl-func-end(row:i32, col:i32) {
    f.end-col = col;
    f.include = .decl-include;
    f.at = .decl-at;
-   {if((.decl-func-flags & #real-name) != #0)
-      {if(.decl-func-real-name == #nil)
+   if ((.decl-func-flags & #real-name) != #0) {
+      if (.decl-func-real-name == #nil) {
          f.real-name = .decl-func-name;
-      }{else
+      } else {
          f.real-name = .decl-func-real-name;
       }
    }
-   {if((.decl-func-flags & #case) != #0)
+   if ((.decl-func-flags & #case) != #0) {
       f.case = .decl-func-case;
    }
    // f.at.ptr().func-c ++;
@@ -217,14 +217,14 @@ decl-func-end(row:i32, col:i32) {
       f.group-v[i] = .decl-farg-group-v[i];
    }
    f.flags = .decl-func-flags;
-   {if((.decl-func-flags2 & #main) != #0)
+   if ((.decl-func-flags2 & #main) != #0) {
       .func-main = f-idx;
-   }{elif(&&, .decl-at == #root, f.decl.name.len() == 4, 'c.memcmp("main", f.decl.name.str(), 4) == 0)
-      {if(.func-main != #nil)
+   } elif (&&, .decl-at == #root, f.decl.name.len() == 4, 'c.memcmp("main", f.decl.name.str(), 4) == 0) {
+      if (.func-main != #nil) {
          +main = .func-main.ptr();
          'c.out.printf("%u:%u: There's already a function with @main attribute at %u:%u\n", f.begin-row, f.begin-col, main.begin-row, main.begin-col);
          'c.exit(#failure);
-      }{else
+      } else {
          .func-main = f-idx;
       }
    }
@@ -240,11 +240,11 @@ decl-func-end(row:i32, col:i32) {
    }
 }
 func-attr-main() {
-   {if((.decl-func-flags2 & #main) != #0)
+   if ((.decl-func-flags2 & #main) != #0) {
       'c.out.printf("%s:%u:%u: Error @main specified more than once\n", .input-path, .last-row, .last-col);
       'c.exit(#failure);
    }
-   {if(.func-main != #nil)
+   if (.func-main != #nil) {
       +first = .func-main.ptr();
       'c.out.printf("There cannot be more than one function with @main attribute, first was %s:%u:%u and then %u:%u\n", .input-path, first.begin-row, first.begin-col, .decl-func-row, .decl-func-col);
       'c.exit(#failure);
@@ -252,49 +252,49 @@ func-attr-main() {
    .decl-func-flags2 |= #main;
 }
 func-attr-process() {
-   {if((.decl-func-flags & #process) != #0)
+   if ((.decl-func-flags & #process) != #0) {
       'c.out.printf("%s:%u:%u: Error @process specified more than once\n", .input-path, .last-row, .last-col);
       'c.exit(#failure);
    }
    .decl-func-flags |= #process;
 }
 func-attr-inline() {
-   {if((.decl-func-flags & #inline) != #0)
+   if ((.decl-func-flags & #inline) != #0) {
       'c.out.printf("%s:%u:%u: Error @inline specified more than once\n", .input-path, .last-row, .last-col);
       'c.exit(#failure);
    }
    .decl-func-flags |= #inline
 }
 func-attr-cp1-name() {
-   {if((.decl-func-flags & #cp1-name) != #0)
+   if ((.decl-func-flags & #cp1-name) != #0) {
       'c.out.printf("%s:%u:%u: Error @cp1-name specified more than once\n", .input-path, .last-row, .last-col);
       'c.exit(#failure);
    }
    .decl-func-flags |= #cp1-name;
 }
 func-attr-var-args() {
-   {if((.decl-func-flags & #var-args) != #0)
+   if ((.decl-func-flags & #var-args) != #0) {
       'c.out.printf("%s:%u:%u: Error @var-args specified more than once\n", .input-path, .last-row, .last-col);
       'c.exit(#failure);
    }
    .decl-func-flags |= #var-args;
 }
 func-attr-no-decl() {
-   {if((.decl-func-flags & #no-decl) != #0)
+   if ((.decl-func-flags & #no-decl) != #0) {
       'c.out.printf("%s:%u:%u: Error @no-decl specified more than once\n", .input-path, .last-row, .last-col);
       'c.exit(#failure);
    }
    .decl-func-flags |= #no-decl;
 }
 func-attr-no-body() {
-   {if((.decl-func-flags & #no-body) != #0)
+   if ((.decl-func-flags & #no-body) != #0) {
       'c.out.printf("%s:%u:%u: Error @no-body specified more than once\n", .input-path, .last-row, .last-col);
       'c.exit(#failure);
    }
    .decl-func-flags |= #no-body;
 }
 func-attr-real-name(name:id) {
-   {if((.decl-func-flags & #real-name) != #0)
+   if ((.decl-func-flags & #real-name) != #0) {
       'c.out.printf("%s:%u:%u: Error @real-name specified more than once\n", .input-path, .last-row, .last-col);
       'c.exit(#failure);
    }
@@ -302,7 +302,7 @@ func-attr-real-name(name:id) {
    .decl-func-real-name = name;
 }
 func-attr-decl() {
-   {if((.decl-func-flags & #decl) != #0)
+   if ((.decl-func-flags & #decl) != #0) {
       'c.out.printf("%s:%u:%u: Error @decl specified more than once\n", .input-path, .last-row, .last-col);
       'c.exit(#failure);
    }
@@ -313,7 +313,7 @@ func-attr-decl() {
    .decl-func-decl-len = .string-len;
 }
 func-attr-case(name:id) {
-   {if((.decl-func-flags & #case) != #0)
+   if ((.decl-func-flags & #case) != #0) {
       'c.out.printf("%s:%u:%u: Error @case specified more than once\n", .input-path, .last-row, .last-col);
       'c.exit(#failure);
    }
@@ -321,7 +321,7 @@ func-attr-case(name:id) {
    +name-len = name.len();
    +func-name-str = .decl-func-name.str();
    +func-name-len = .decl-func-name.len();
-   {if(||, name-len > func-name-len, func-name-str[name-len] != ''-, 'c.memcmp(name-str, func-name-str, name-len) != 0)
+   if (||, name-len > func-name-len, func-name-str[name-len] != ''-, 'c.memcmp(name-str, func-name-str, name-len) != 0) {
       'c.out.printf("%s:%u:%u: Error, function name must begin with words used in @case followed by '-' (dash) then followed by the name of the cvar of case\n", .input-path, .last-row, .last-col);
       'c.exit(#failure);
    }
@@ -348,7 +348,7 @@ func-body-end() {
 {gvar expr-call-cgrp-v:u8[#expr-call-nest-limit][#expr-carg-group-limit]}
 expr-push-call(row:i32, col:i32) {
    +call-idx = .expr-call-c++;
-   {if(call-idx >= #expr-call-nest-limit)
+   if (call-idx >= #expr-call-nest-limit) {
       'c.out.printf("%u:%u: Too much nested calls\n", row, col);
       'c.exit(#failure);
    }
@@ -367,13 +367,13 @@ carg-push(expr:expr-i) {
    .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
 }
 carg-push-str(expr:expr-i) {
-   {if(true)
+   if (true) {
       // push the string
       +call-idx = .expr-call-c - 1;
       .expr-call-carg-v[call-idx][.expr-call-carg-c[call-idx]++] = expr;
       .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
    }
-   {if(true)
+   if (true) {
       // calculate the string length
       {+e:expr-str = expr.ptr()}
       +len = 0;
@@ -381,7 +381,7 @@ carg-push-str(expr:expr-i) {
       {do()
          len += s.len;
          s = s.next;
-         {if(s == null) break}
+         if (s == null) { break}
       }
       // push the string length
       +call-idx = .expr-call-c - 1;

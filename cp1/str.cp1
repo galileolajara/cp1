@@ -15,14 +15,14 @@ expr-str(prev:expr-i):expr-i {
    'c.memcpy(n.buf, .string-buf, len);
    n.buf[len] = ''\0;
    n.next = null;
-   {if(prev == #nil)
+   if (prev == #nil) {
       quick-alloc-one(+(e:expr-str));
       +e-idx = expr-push(e.base, #str);
       e.node-c = 1;
       e.first = n;
       e.last = n;
       return e-idx;
-   }{else
+   } else {
       {+e:expr-str = prev.ptr()}
       e.node-c++;
       e.last.next = n;
@@ -40,7 +40,7 @@ write-str-node(len:i32, ptr:ref);
          w.n(n.len);
          w.copy(n.buf, n.len);
          n = n.next;
-         {if(n == null) break}
+         if (n == null) { break}
       }
    }
    rd-str(e-idx:expr-i, r:rdr) @case.rd() @inline {
@@ -55,11 +55,11 @@ write-str-node(len:i32, ptr:ref);
          r.copy(n.buf, len);
          n.buf[len] = 0;
          n.next = null;
-         {if(first)
+         if (first) {
             first = false;
             e.first = n;
             e.last = n;
-         }{else
+         } else {
             e.last.next = n;
             e.last = n;
          }
@@ -71,7 +71,7 @@ write-str-node(len:i32, ptr:ref);
       {do()
          write-str-node(n.len, n.buf);
          n = n.next;
-         {if(n == null) break}
+         if (n == null) { break}
          .out.putc(''\n);
       }
    }
