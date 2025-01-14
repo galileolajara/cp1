@@ -19,7 +19,7 @@ expr-bools-add(bools:expr-i, right:expr-i):expr-i {
    e.item-v[i].expr = right;
    return bools;
 }
-{:bools[#and, #or]:u8
+:bools[#and, #or]:u8 {
    wr(e:this, w:wtr) @inline {
       w.n1(e);
    }

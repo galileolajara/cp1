@@ -1,6 +1,6 @@
 using 'cp1 = :cp1;
 {at(:cp1)
-{:enum[#nil = -1, #0, #1]:i32
+:enum[#nil = -1, #0, #1]:i32 {
    wr(f:this, w:wtr) @inline {
       w.n(f + #1);
    }
@@ -29,11 +29,11 @@ using 'cp1 = :cp1;
       // }
    }
 }
-{:enum-flags[
+:enum-flags[
    #0,
    #real-name = 1,
    #no-decl = 2,
-   ]:u8
+   ]:u8 {
    wr(e:this, w:wtr) @inline {
       w.n1(e);
    }

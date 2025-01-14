@@ -37,11 +37,11 @@ using 'c = :stdc;
       ok = true;
    }
 }
-{:expr-type[
+:expr-type[
    #nil, #call-method, #lvar, #gvar, #math, #assign, #bools,
    #func, #method, #fvar, #i32, #cvar, #str, #index, #unary,
    #compare, #bool, #null, #cast-fast, #ref, #char, #size-of-type,
-   ]:u8
+   ]:u8 {
    wr(e:this, w:wtr) @inline {
       w.n1(e);
    }
@@ -51,7 +51,7 @@ using 'c = :stdc;
    cp1-name(e:this):char[] @cp1-name;
 }
 {cvar #debug-rd-wr:bool = true}
-{:expr-i[#nil = -1, #0, #1]:i32
+:expr-i[#nil = -1, #0, #1]:i32 {
    set(e:this, expr:expr, type:expr-type) @inline {
       .expr-v[e] = expr;
       expr.type = type;
@@ -209,7 +209,7 @@ using 'c = :stdc;
       }
    }
 }
-{:expr-flags[#0, #processed = 1]:u8}
+:expr-flags[#0, #processed = 1]:u8;
 :expr(
    type:expr-type,
    flags:expr-flags,
@@ -223,7 +223,7 @@ using 'c = :stdc;
       }
    }
 }
-{:basic-type-id[
+:basic-type-id[
 	#root, #relative,
 	#ref, #bool, #char, #intc,
 	#i8, #u8,
@@ -232,7 +232,7 @@ using 'c = :stdc;
 	#i64, #u64,
 	#isz, #usz,
 	#f32, #f64,
-	#COUNT]:u8
+	#COUNT]:u8 {
    wr(e:this, w:wtr) @inline {
       w.n1(e);
    }

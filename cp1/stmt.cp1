@@ -1,13 +1,13 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
-{:stmt-type[
+:stmt-type[
    #space, #if, #if-elif, #if-else, #if-end,
    #do, #do-end, #while, #while-end,
    #expr, #return, #continue, #break,
    #switch, #case, #default, #case-end, #default-end, #switch-end,
    #nil = 255,
-   ]:u8
+   ]:u8 {
    wr(s:this, w:wtr) @inline {
       w.n1(s);
    }

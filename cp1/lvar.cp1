@@ -1,7 +1,7 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
-{:lvar[#nil = -1, #0]:i32
+:lvar[#nil = -1, #0]:i32 {
    rd(l:this&, r:rdr) @inline {
       l = (r.n() - 1):lvar;
    }
@@ -28,11 +28,11 @@ using 'c = :stdc;
       return lvar.decl.process(.ctx-func.file, lvar.row, lvar.col, .ctx-func.at);
    }
 }
-{:lvar-flags[
+:lvar-flags[
    #0,
    #set-expr = 1,
    #processed = 2,
-   ]:u8
+]:u8 {
    rd(f:this&, r:rdr) @inline {
       f = r.n1():lvar-flags;
    }

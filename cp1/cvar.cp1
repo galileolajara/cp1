@@ -1,7 +1,7 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
-{:cvar[#nil = -1, #0]:i32
+:cvar[#nil = -1, #0]:i32 {
    rd(c:this&, r:rdr) @inline {
       +idx = (r.n() - 1):cvar;
       {if(idx == #nil)
@@ -57,12 +57,12 @@ using 'c = :stdc;
       }
    }
 }
-{:cvar-flags[
+:cvar-flags[
    #0,
    #set-expr = 1,
    #as-enum = 2,
    // #real-name = 2,
-   ]:u8
+   ]:u8 {
    wr(f:this, w:wtr) @inline {
       w.n1(f);
    }

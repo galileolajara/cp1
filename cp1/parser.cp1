@@ -110,7 +110,7 @@ at-begin-relative() {
       .build-at = #relative;
    }
 }
-{:alias[#nil = -1, #0]:i32}
+:alias[#nil = -1, #0]:i32;
 {gvar at-alias-c:alias}
 {gvar at-alias-cap:alias}
 {gvar at-alias-name-v:id[]}

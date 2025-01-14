@@ -1,8 +1,8 @@
 using 'cp1 = :cp1;
 {at(:cp1)
-{:assign[#eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
+:assign[#eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
              #lshift-eq, #rshift-eq, #and-eq, #or-eq, #xor-eq,
-             ]:u8
+             ]:u8 {
    wr(s:this, w:wtr) @inline {
       w.n1(s);
    }

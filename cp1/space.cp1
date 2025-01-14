@@ -1,10 +1,10 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
-{:stmt-space-flags[
+:stmt-space-flags[
    #0,
    #skip-lvar-decl = 1,
-   ]:u8
+   ]:u8 {
 }
 :stmt-space(
    base:stmt+,

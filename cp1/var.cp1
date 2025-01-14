@@ -1,12 +1,12 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
-{:decl-var[]:u32
+:decl-var[]:u32 {
    ptr(v:this):decl-var-data @inline {
       return .var-v[v];
    }
 }
-{:decl-var-type[#gvar, #fvar]:u8}
+:decl-var-type[#gvar, #fvar]:u8;
 {cvar #decl-var-size-limit:i32 = 8}
 at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
    +type = vd-type.ptr();
@@ -297,12 +297,12 @@ at-validate(vd-type:at, at-i:at, file:file, row:u32, col:u32):at {
 // {gvar stack-type-info:type-info+} // [#type-info-stack-limit]}
 // {gvar stack-type-info-c:i8}
 {gvar decl-var:decl-var-data+}
-{:var-flags[
+:var-flags[
    #0,
    #real-name = 1,
    #extern = 2,
    #no-decl = 4,
-   ]:u32
+   ]:u32 {
    rd(f:this&, r:rdr) @inline {
       f = r.n():var-flags;
    }

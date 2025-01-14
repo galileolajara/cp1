@@ -1,7 +1,7 @@
 using 'cp1 = :cp1;
 using 'c = :stdc;
 {at(:cp1)
-{:func[#nil = -1, #0, #1]:i32
+:func[#nil = -1, #0, #1]:i32 {
    wr(f:this, w:wtr) @inline {
       w.n(f + #1);
    }
@@ -12,7 +12,7 @@ using 'c = :stdc;
       return .func-v[f];
    }
 }
-{:func-flags[
+:func-flags[
    #0,
    #has-body = 1,
    #inline = 2,
@@ -24,7 +24,7 @@ using 'c = :stdc;
    #case = 128,
    #cp1-name = 256,
    #decl = 512,
-   ]:u32
+   ]:u32 {
    wr(e:this, w:wtr) @inline {
       w.n(e);
    }
@@ -32,11 +32,10 @@ using 'c = :stdc;
       e = r.n():func-flags;
    }
 }
-{:func-flags2[
+:func-flags2[
    #0,
    #main = 1,
-   ]:u32
-}
+]:u32;
 {at(:decl-func)
    write(f:this) {
       {if((f.flags & #real-name) != #0)
