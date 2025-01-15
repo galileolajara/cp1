@@ -12,12 +12,12 @@ rule ld-cpp
 
 build out/parser.cp1.c.o: c parser.cp1.c
 build out/parser.c.o: c parser.c | export.h lexer.c cp1_parser.c
-build bin/cp1-preprocess: ld-c preprocess.cp1.c
-build bin/cp1-parser: ld-cpp out/parser.cp1.c.o out/parser.c.o out/hashtable.cpp.o
+#build bin/cp1-preprocess: ld-c preprocess.cp1.c
+#build bin/cp1-parser: ld-cpp out/parser.cp1.c.o out/parser.c.o out/hashtable.cpp.o
 build out/compiler.cp1.c.o: c compiler.cp1.c
 build out/str.c.o: c str.c
-build bin/cp1-compiler: ld-cpp out/compiler.cp1.c.o out/str.c.o out/hashtable.cpp.o
-build bin/cp1: ld-c cp1.cp1.c
+#build bin/cp1-compiler: ld-cpp out/compiler.cp1.c.o out/str.c.o out/hashtable.cpp.o
+#build bin/cp1: ld-c cp1.cp1.c
 
 rule c2
  command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out

@@ -71,7 +71,7 @@ decl-include-end() {
    .decl-include = #nil;
 }
 at-basic-type(type:BasicTypeId):At {
-   loop var i = 0:at; {(.at-c) i++} {
+   loop var i = 0:At; {(.at-c) i++} {
       +at = .at-v[i];
       if (&&, at.type == #basic, at.name.basic == type) {
          return i;
