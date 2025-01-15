@@ -1,15 +1,15 @@
 {include(<stdlib.h>)
-   using 'c = :stdc;
-   using (:stdc) {
+   using C = Stdc;
+   using (Stdc) {
       malloc(size:usz):ref @real-name(malloc) @no-decl;
       malloc-one(val:ref) @decl('<#define _Nstdc_Pmalloc_one_1(var) var = malloc(sizeof(var[0]))>);
       malloc-arr(val:ref, count:usz) @decl('<#define _Nstdc_Pmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))>);
       realloc(size:usz, new-usz:usz):ref @real-name @no-decl;
-      free(ref:ref) @real-name(free) @no-decl;
+      free(ptr:ref) @real-name(free) @no-decl;
       system(command:char[]):intc @no-decl @real-name;
-      exit(code:exit) @real-name @no-decl;
+      exit(code:Exit) @real-name @no-decl;
       getenv(name:char[]):char[] @real-name @no-decl;
       realpath(pathname:char[], resolved:char[]):char[] @real-name @no-decl;
-      :exit[#success, #failure]:intc;
+      Exit[#success, #failure]:intc;
    }
 }

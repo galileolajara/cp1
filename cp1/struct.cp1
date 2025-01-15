@@ -1,14 +1,14 @@
-using 'cp1 = :cp1;
-using 'c = :stdc;
-using (:cp1) {
-:struct[#nil = -1, #0, #1]:i32 {
-   wr(s:this, w:wtr) @inline {
+using Cp1 = Cp1;
+using C = Stdc;
+using (Cp1) {
+Struct[#nil = -1, #0, #1]:i32 {
+   wr(s:this, w:Wtr) @inline {
       w.n(s + #1);
    }
-   rd(s:this&, r:rdr) @inline {
-      s = (r.n() - #1):func;
+   rd(s:this&, r:Rdr) @inline {
+      s = (r.n() - #1):Func;
    }
-   ptr(s:this):struct-data @inline {
+   ptr(s:this):StructData @inline {
       return .struct-v[s];
    }
    output(s-i:this) {
@@ -27,8 +27,8 @@ using (:cp1) {
          // if !(s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col)) { return}
          s.fvar-v[i].decl.type = at-validate(s.fvar-v[i].decl.type, s-at, s-file, s-row, s-col);
          if !(s.fvar-v[i].decl.process(s-file, s-row, s-col, s-at)) {
-            'c.out.printf("err\n");
-            'c.exit(#failure);
+            C.out.printf("err\n");
+            C.exit(#failure);
             return;
          }
       }
@@ -42,40 +42,40 @@ using (:cp1) {
       }
    }
 }
-:fvar-data(
-   decl:decl-var-data+,
+FvarData(
+   decl:DeclVarData+,
    ) {
-   rd(f:this, r:rdr) {
+   rd(f:this, r:Rdr) {
       f.decl.rd(r);
    }
-   wr(f:this, w:wtr, header:bool) {
+   wr(f:this, w:Wtr, header:bool) {
       f.decl.wr(w, header);
    }
 }
-var struct-c:struct;
-var struct-cap:struct;
-var struct-v:struct-data[];
+var struct-c:Struct;
+var struct-cap:Struct;
+var struct-v:StructData[];
 var decl-struct-row:i32;
 var decl-struct-col:i32;
-var decl-struct-at:at;
-var decl-struct-real-name:id;
-:struct-flags[
+var decl-struct-at:At;
+var decl-struct-real-name:Id;
+StructFlags[
    #0,
    #real-name = 1,
    #no-decl = 2,
    #union = 4,
    ]:u8 {
-   wr(f:this, w:wtr) @inline {
+   wr(f:this, w:Wtr) @inline {
       w.n1(f);
    }
-   rd(f:this&, r:rdr) @inline {
-      f = r.n1():struct-flags;
+   rd(f:this&, r:Rdr) @inline {
+      f = r.n1():StructFlags;
    }
 }
-var decl-struct-flags:struct-flags;
+var decl-struct-flags:StructFlags;
 var decl-fvar-c:u32;
 var decl-fvar-cap:u32;
-var decl-fvar-v:decl-var-data+[];
+var decl-fvar-v:DeclVarData+[];
 decl-var-as-fvar() {
    +fvar = .decl-fvar-c++;
    if (.decl-fvar-cap <= .decl-fvar-c) {
@@ -85,7 +85,7 @@ decl-var-as-fvar() {
    }
    .decl-fvar-v[fvar].copy-from(.decl-var);
 }
-decl-at-begin-struct(name:id, row:i32, col:i32) {
+decl-at-begin-struct(name:Id, row:i32, col:i32) {
    .decl-struct-row = row;
    .decl-struct-col = col;
    .build-at = .decl-at;
@@ -96,11 +96,11 @@ decl-at-begin-struct(name:id, row:i32, col:i32) {
    .decl-fvar-c = 0;
    .decl-struct-real-name = #nil;
    .decl-struct-flags = #0;
-   // 'c.out.printf("began struct at:\n");
+   // C.out.printf("began struct at:\n");
    // +at-i = .build-at;
    // loop {
    //    +at = at-i.ptr();
-   //    'c.out.printf("- %s\n", at.name.id.str());
+   //    C.out.printf("- %s\n", at.name.id.str());
    //    at-i = at.parent;
    //    if (at-i == #root) { break}
    // }
@@ -112,8 +112,8 @@ decl-struct-end(row:i32, col:i32) {
       grow(.struct-cap, .struct-c);
       realloc(.struct-v, .struct-cap, old-cap);
    }
-   var s:struct-data;
-   quick-alloc-plus(s, :fvar-data[:usz] * .decl-fvar-c);
+   var s:StructData;
+   quick-alloc-plus(s, FvarData[usz] * .decl-fvar-c);
    .struct-v[s-idx] = s;
    s.begin-row = .decl-struct-row;
    s.begin-col = .decl-struct-col;
@@ -124,33 +124,33 @@ decl-struct-end(row:i32, col:i32) {
    s.flags = .decl-struct-flags;
    // s.name = .decl-struct-name;
    s.fvar-c = .decl-fvar-c;
-   // 'c.out.printf("There are %u fvars\n", s.fvar-c);
+   // C.out.printf("There are %u fvars\n", s.fvar-c);
    loop var i = 0; {(.decl-fvar-c) i++} {
       +a = s.fvar-v[i];
       a.decl.copy-from(.decl-fvar-v[i]);
-      // 'c.out.printf("- %s\n", a.name.str());
+      // C.out.printf("- %s\n", a.name.str());
    }
    s.real-name = .decl-struct-real-name;
 }
-struct-attr-real-name(name:id) {
+struct-attr-real-name(name:Id) {
    if ((.decl-struct-flags & #real-name) != #0) {
-      'c.out.printf("%u:%u: error @real-name specified more than once\n", .last-row, .last-col);
-      'c.exit(#failure);
+      C.out.printf("%u:%u: error @real-name specified more than once\n", .last-row, .last-col);
+      C.exit(#failure);
    }
    .decl-struct-flags |= #real-name;
    .decl-struct-real-name = name;
 }
 struct-attr-no-decl() {
    if ((.decl-struct-flags & #no-decl) != #0) {
-      'c.out.printf("%u:%u: error @no-decl specified more than once\n", .last-row, .last-col);
-      'c.exit(#failure);
+      C.out.printf("%u:%u: error @no-decl specified more than once\n", .last-row, .last-col);
+      C.exit(#failure);
    }
    .decl-struct-flags |= #no-decl;
 }
 struct-attr-union() {
    if ((.decl-struct-flags & #union) != #0) {
-      'c.out.printf("%u:%u: error @union specified more than once\n", .last-row, .last-col);
-      'c.exit(#failure);
+      C.out.printf("%u:%u: error @union specified more than once\n", .last-row, .last-col);
+      C.exit(#failure);
    }
    .decl-struct-flags |= #union;
 }

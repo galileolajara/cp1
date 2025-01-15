@@ -1,16 +1,16 @@
-using 'cp1 = :cp1;
-using 'c = :stdc;
-using (:cp1) {
-:cvar[#nil = -1, #0]:i32 {
-   rd(c:this&, r:rdr) @inline {
-      +idx = (r.n() - 1):cvar;
+using Cp1 = Cp1;
+using C = Stdc;
+using (Cp1) {
+Cvar[#nil = -1, #0]:i32 {
+   rd(c:this&, r:Rdr) @inline {
+      +idx = (r.n() - 1):Cvar;
       if (idx == #nil) {
          c = #nil;
       } else {
          c = .cvar-table[idx];
       }
    }
-   wr(g:this, w:wtr) @inline {
+   wr(g:this, w:Wtr) @inline {
       w.n(g + 1);
    }
    process(c:this):bool {
@@ -32,7 +32,7 @@ using (:cp1) {
       if (at-i != #nil) {
          +at = at-i.ptr();
          if (&&, at.type != #basic, at.decl.struct == #nil) {
-            'c.out.printf("Error, the type '%s' used in cvar '.%s' was not defined\n", at.name.id.str(), cvar.decl.name.str());
+            C.out.printf("Error, the type '%s' used in cvar '.%s' was not defined\n", at.name.id.str(), cvar.decl.name.str());
             return false;
          }
          at-i.output(cvar.file, cvar.row, cvar.col);
@@ -44,7 +44,7 @@ using (:cp1) {
       
       return true;
    }
-   ptr(c:this):cvar-data @inline {
+   ptr(c:this):CvarData @inline {
       return .cvar-v[c];
    }
    write(c:this) @inline {
@@ -57,72 +57,72 @@ using (:cp1) {
       }
    }
 }
-:cvar-flags[
+CvarFlags[
    #0,
    #set-expr = 1,
    #as-enum = 2,
    // #real-name = 2,
    ]:u8 {
-   wr(f:this, w:wtr) @inline {
+   wr(f:this, w:Wtr) @inline {
       w.n1(f);
    }
-   rd(f:this&, r:rdr) @inline {
-      f = r.n1():cvar-flags;
+   rd(f:this&, r:Rdr) @inline {
+      f = r.n1():CvarFlags;
    }
 }
-var cvar-c:cvar;
-var cvar-cap:cvar;
-var cvar-v:cvar-data+[];
-expr-cvar(at:at, name:id):expr-i {
-   quick-alloc-one(+(e:expr-cvar));
+var cvar-c:Cvar;
+var cvar-cap:Cvar;
+var cvar-v:CvarData+[];
+expr-cvar(at:At, name:Id):ExprI {
+   quick-alloc-one(+(e:ExprCvar));
    +e-idx = expr-push(e.base, #cvar);
    e.at = at;
    e.name = name;
    return e-idx;
 }
-using (:expr-i) {
-   write-cvar(expr:expr) @case.write() @inline {
-      var e:expr-cvar = expr;
+using (ExprI) {
+   write-cvar(expr:Expr) @case.write() @inline {
+      var e:ExprCvar = expr;
       e.cvar.write();
    }
-   wr-cvar(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      var e:expr-cvar = expr;
+   wr-cvar(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
+      var e:ExprCvar = expr;
       e.at.wr(w, header);
       e.name.wr(w, header);
    }
-   rd-cvar(e-idx:expr-i, r:rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:expr-cvar));
+   rd-cvar(e-idx:ExprI, r:Rdr) @case.rd() @inline {
+      quick-alloc-one(+(e:ExprCvar));
       e-idx.set(e.base, #cvar);
       e.at.rd(r);
       e.name.rd(r);
       e.try = #nil;
    }
-   value-cvar(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      var expr:expr-cvar = e.ptr();
+   value-cvar(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
+      var expr:ExprCvar = e.ptr();
       +cvar = expr.cvar.ptr();
-      v.set(ref, paren, cvar.decl.type, cvar.decl.type-info);
-      if (v.ref == 1) {
+      v.set(reff, paren, cvar.decl.type, cvar.decl.type-info);
+      if (v.reff == 1) {
          v.paren = false;
       }
       ok = true;
    }
-   type-cvar(expr:expr, at:at&) @case.type() @inline {
-      var e:expr-cvar = expr;
+   type-cvar(expr:Expr, at:At&) @case.type() @inline {
+      var e:ExprCvar = expr;
       +cvar = e.cvar.ptr();
       at = cvar.decl.type;
    }
-   process-cvar(expr:expr, ok:bool&) @case.process() @inline {
-      var e:expr-cvar = expr;
+   process-cvar(expr:Expr, ok:bool&) @case.process() @inline {
+      var e:ExprCvar = expr;
       +name = e.name;
       var cvar-c, cvar-v;
       if (e.try != #nil) {
          +at = e.try.ptr();
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
-         // 'c.out.printf("e.try = %d, %s, %s, cvar-c %d\n", e.try, at.name.id.str(), name.str(), cvar-c);
+         // C.out.printf("e.try = %d, %s, %s, cvar-c %d\n", e.try, at.name.id.str(), name.str(), cvar-c);
          loop var i = 0; {(cvar-c) i++} {
             +cvar = cvar-v[i];
-            // 'c.out.printf("- %s\n", cvar.ptr().decl.name.str());
+            // C.out.printf("- %s\n", cvar.ptr().decl.name.str());
             if (cvar.ptr().decl.name == name) {
                if !(cvar.process()) { return}
                e.cvar = cvar;
@@ -163,11 +163,11 @@ using (:expr-i) {
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
       }
-      'c.out.printf("%s:%u:%u - %u:%u: Cannot find #%s\n",
+      C.out.printf("%s:%u:%u - %u:%u: Cannot find #%s\n",
          .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, name.str());
    }
-   try-deduce-cvar(expr:expr, at:at) @case.try-deduce() @inline {
-      var e:expr-cvar = expr;
+   try-deduce-cvar(expr:Expr, at:At) @case.try-deduce() @inline {
+      var e:ExprCvar = expr;
       if (e.at == #nil) {
          e.try = at;
       }

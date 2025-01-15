@@ -1,8 +1,8 @@
-using 'cp1 = :cp1;
-using 'c = :stdc;
-using (:cp1) {
-:wtr(
-   ref:ref,
+using Cp1 = Cp1;
+using C = Stdc;
+using (Cp1) {
+Wtr(
+   reff:ref,
    pos:usz,
    p1:u8[],
    p4:u32[],
@@ -27,7 +27,7 @@ using (:cp1) {
       n(w:this, n:u32) @real-name(Fputnum) @no-decl;
    }
    copy(w:this, data:ref, size:i32) @inline {
-      'c.memcpy(w.ref, data, size);
+      C.memcpy(w.reff, data, size);
       w.pos += size;
    }
    b(w:this, val:bool) @inline {

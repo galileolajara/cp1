@@ -1,37 +1,37 @@
-using 'cp1 = :cp1;
-using (:cp1) {
-:compare[#eq, #not-eq, #lt, #le, #gt, #ge]:u8 {
-   wr(e:this, w:wtr) @inline {
+using Cp1 = Cp1;
+using (Cp1) {
+Compare[#eq, #not-eq, #lt, #le, #gt, #ge]:u8 {
+   wr(e:this, w:Wtr) @inline {
       w.n1(e);
    }
-   rd(e:this&, r:rdr) @inline {
-      e = r.n1():compare;
+   rd(e:this&, r:Rdr) @inline {
+      e = r.n1():Compare;
    }
 }
-expr-compare(left:expr-i, right:expr-i, type:compare):expr-i {
-   quick-alloc-one(+(e:expr-compare));
+expr-compare(left:ExprI, right:ExprI, type:Compare):ExprI {
+   quick-alloc-one(+(e:ExprCompare));
    +e-idx = expr-push(e.base, #compare);
    e.left = left;
    e.right = right;
    e.type = type;
    return e-idx;
 }
-using (:expr-i) {
-   wr-compare(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      var e:expr-compare = expr;
+using (ExprI) {
+   wr-compare(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
+      var e:ExprCompare = expr;
       e.left.wr(w, header);
       e.right.wr(w, header);
       e.type.wr(w);
    }
-   rd-compare(e-idx:expr-i, r:rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:expr-compare));
+   rd-compare(e-idx:ExprI, r:Rdr) @case.rd() @inline {
+      quick-alloc-one(+(e:ExprCompare));
       e-idx.set(e.base, #compare);
       e.left.rd(r);
       e.right.rd(r);
       e.type.rd(r);
    }
-   write-compare(expr:expr) @case.write() @inline {
-      var e:expr-compare = expr;
+   write-compare(expr:Expr) @case.write() @inline {
+      var e:ExprCompare = expr;
       e.left.write-value(e.left-val);
       switch (e.type) {
          case (#eq) {
@@ -55,23 +55,23 @@ using (:expr-i) {
       }
       e.right.write-value(e.right-val);
    }
-   value-compare(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      var expr:expr-compare = e.ptr();
+   value-compare(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
+      var expr:ExprCompare = e.ptr();
 		v.type = basic-type(#bool);
 		v.info.init();
 		v.info.array-c = 0;
 		v.info.ref-v[0] = ''\0;
 		v.info.star-c = 0;
-		v.ref = 1;
+		v.reff = 1;
 		v.paren = paren;
       ok = true;
 	}
-   type-compare(expr:expr, at:at&) @case.type() @inline {
-      var e:expr-compare = expr;
+   type-compare(expr:Expr, at:At&) @case.type() @inline {
+      var e:ExprCompare = expr;
       at = basic-type(#bool);
    }
-   process-compare(expr:expr, ok:bool&) @case.process() @inline {
-      var e:expr-compare = expr;
+   process-compare(expr:Expr, ok:bool&) @case.process() @inline {
+      var e:ExprCompare = expr;
 		if !(e.left.value(1, true, e.left-val)) {
 			return;
       }

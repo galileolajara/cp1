@@ -1,34 +1,34 @@
-using 'cp1 = :cp1;
-using 'c = :stdc;
-using (:cp1) {
-:stmt-type[
+using Cp1 = Cp1;
+using C = Stdc;
+using (Cp1) {
+StmtType[
    #space, #if, #if-elif, #if-else, #if-end,
    #do, #do-end, #while, #while-end,
    #expr, #return, #continue, #break,
    #switch, #case, #default, #case-end, #default-end, #switch-end,
    #nil = 255,
    ]:u8 {
-   wr(s:this, w:wtr) @inline {
+   wr(s:this, w:Wtr) @inline {
       w.n1(s);
    }
-   rd(s:this&, r:rdr) @inline {
-      s = r.n1():stmt-type;
+   rd(s:this&, r:Rdr) @inline {
+      s = r.n1():StmtType;
    }
    cp1-name(e:this):char[] @cp1-name;
 }
-:stmt(
+Stmt(
    begin-row:i32,
    begin-col:i32,
    end-row:i32,
    end-col:i32,
-   type:stmt-type,
-   stmt-next:stmt,
+   type:StmtType,
+   stmt-next:Stmt,
    ) {
    write(s:this) {
       switch (s.type).write(s) {
          default {
-            'c.out.printf("write() not yet implemented in stmt #%s\n", s.type.cp1-name());
-            'c.exit(#failure);
+            C.out.printf("write() not yet implemented in stmt #%s\n", s.type.cp1-name());
+            C.exit(#failure);
          }
       }
    }
@@ -40,29 +40,29 @@ using (:cp1) {
       .ctx-end-col = s.end-col;
       switch (s.type).process(s, ok) {
          default {
-            'c.out.printf("%s:%u:%u - %u:%u: process() is not implemented in statement #%s\n",
+            C.out.printf("%s:%u:%u - %u:%u: process() is not implemented in statement #%s\n",
             .ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.cp1-name());
          }
       }
       if !(ok) {
-         'c.out.printf("%s:%u:%u - %u:%u: Processing of statement #%s failed\n",
+         C.out.printf("%s:%u:%u - %u:%u: Processing of statement #%s failed\n",
             .ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.cp1-name());
       }
       return ok;
    }
 }
-:stmt-expr(
-   base:stmt+,
-   expr:expr-i,
+StmtExpr(
+   base:Stmt+,
+   expr:ExprI,
 );
-:stmt-return(
-   base:stmt+,
-   expr:expr-i,
-   val:value+,
+StmtReturn(
+   base:Stmt+,
+   expr:ExprI,
+   val:Value+,
 );
-stmt-push(s:stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:stmt-type) {
-   // 'c.out.printf("%s:%u:%u - %u:%u stmt-push()\n", .input-path, begin-row, begin-col, end-row, end-col);
-   // 'c.out.flush();
+stmt-push(s:Stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:StmtType) {
+   // C.out.printf("%s:%u:%u - %u:%u stmt-push()\n", .input-path, begin-row, begin-col, end-row, end-col);
+   // C.out.flush();
    s.begin-row = begin-row;
    s.begin-col = begin-col;
    s.end-row = end-row;
@@ -70,7 +70,7 @@ stmt-push(s:stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:s
    s.type = type;
    func-stmt-add(s);
 }
-func-stmt-add(s:stmt) {
+func-stmt-add(s:Stmt) {
    s.stmt-next = null;
    if (.decl-func-ctx-space.stmt-last == null) {
       .decl-func-ctx-space.stmt-first = s;
@@ -80,17 +80,17 @@ func-stmt-add(s:stmt) {
       .decl-func-ctx-space.stmt-last = s;
    }
 }
-expr2stmt(e:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
-   quick-alloc-one(+(s:stmt-expr));
+expr2stmt(e:ExprI, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
+   quick-alloc-one(+(s:StmtExpr));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #expr);
    s.expr = e;
 }
-stmt-lvar-add(name:id, set:expr-i, row:i32, col:i32) {
+stmt-lvar-add(name:Id, set:ExprI, row:i32, col:i32) {
    +lvar-i = .decl-func-ctx-space.lvar-new(name, row, col);
    +lvar = lvar-i.ptr();
    .decl-var.name = name;
    lvar.decl.copy-from(.decl-var);
-   // 'c.out.printf("%s %d\n", .decl-var.name.str(), .decl-var.type-info.built-in);
+   // C.out.printf("%s %d\n", .decl-var.name.str(), .decl-var.type-info.built-in);
    if (set != #nil) {
       +e = expr-assign(expr-lvar(name, 0, row, col), set, #eq);
       expr2stmt(e, row, col, row, col);

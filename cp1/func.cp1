@@ -1,18 +1,18 @@
-using 'cp1 = :cp1;
-using 'c = :stdc;
-using (:cp1) {
-:func[#nil = -1, #0, #1]:i32 {
-   wr(f:this, w:wtr) @inline {
+using Cp1 = Cp1;
+using C = Stdc;
+using (Cp1) {
+Func[#nil = -1, #0, #1]:i32 {
+   wr(f:this, w:Wtr) @inline {
       w.n(f + #1);
    }
-   rd(f:this&, r:rdr) @inline {
-      f = (r.n() - #1):func;
+   rd(f:this&, r:Rdr) @inline {
+      f = (r.n() - #1):Func;
    }
-   ptr(f:this):decl-func @inline {
+   ptr(f:this):DeclFunc @inline {
       return .func-v[f];
    }
 }
-:func-flags[
+FuncFlags[
    #0,
    #has-body = 1,
    #inline = 2,
@@ -25,18 +25,18 @@ using (:cp1) {
    #cp1-name = 256,
    #decl = 512,
    ]:u32 {
-   wr(e:this, w:wtr) @inline {
+   wr(e:this, w:Wtr) @inline {
       w.n(e);
    }
-   rd(e:this&, r:rdr) @inline {
-      e = r.n():func-flags;
+   rd(e:this&, r:Rdr) @inline {
+      e = r.n():FuncFlags;
    }
 }
-:func-flags2[
+FuncFlags2[
    #0,
    #main = 1,
 ]:u32;
-using (:decl-func) {
+using (DeclFunc) {
    write(f:this) {
       if ((f.flags & #real-name) != #0) {
          .out.printf("%s", f.real-name.str());
@@ -48,8 +48,8 @@ using (:decl-func) {
          }
       }
    }
-   lvars-rd(f:this, r:rdr) {
-      +lvar-c = r.n():lvar;
+   lvars-rd(f:this, r:Rdr) {
+      +lvar-c = r.n():Lvar;
       f.lvar-c = lvar-c;
       quick-alloc-arr(f.lvar-v, lvar-c);
       loop var i = 0; {(f.lvar-c) i++} {
@@ -61,10 +61,10 @@ using (:decl-func) {
          if ((l.flags & #set-expr) != #0) {
             l.set-expr.rd(r);
          }
-         // 'c.out.printf("lvar %s has type of %s\n", l.decl.name.str(), l.decl.type.ptr().name.basic.cp1-name());
+         // C.out.printf("lvar %s has type of %s\n", l.decl.name.str(), l.decl.type.ptr().name.basic.cp1-name());
       }
    }
-   lvars-wr(f:this, w:wtr, header:bool) {
+   lvars-wr(f:this, w:Wtr, header:bool) {
       w.n(f.lvar-c);
       loop var i = 0; {(f.lvar-c) i++} {
          +l = f.lvar-v[i];
@@ -78,50 +78,50 @@ using (:decl-func) {
       }
    }
 }
-:farg(
+Farg(
    row:i32,
    col:i32,
-   decl:decl-var-data+,
+   decl:DeclVarData+,
    ) {
-   rd(f:this, r:rdr) {
+   rd(f:this, r:Rdr) {
       f.decl.rd(r);
    }
-   wr(f:this, w:wtr, header:bool) {
+   wr(f:this, w:Wtr, header:bool) {
       f.decl.wr(w, header);
    }
-   copy-from(f:this, src:farg) {
+   copy-from(f:this, src:Farg) {
       f.row = src.row;
       f.col = src.col;
       f.decl.copy-from(src.decl);
    }
 }
-var func-c:func;
-var func-cap:func;
-var func-v:decl-func[];
-var decl-func-name:id;
-// var decl-func:decl-var-data+;
+var func-c:Func;
+var func-cap:Func;
+var func-v:DeclFunc[];
+var decl-func-name:Id;
+// var decl-func:DeclVarData+;
 var decl-func-row:i32;
 var decl-func-col:i32;
-var decl-func-flags:func-flags;
-var decl-func-flags2:func-flags2;
-var decl-func-real-name:id;
+var decl-func-flags:FuncFlags;
+var decl-func-flags2:FuncFlags2;
+var decl-func-real-name:Id;
 var decl-func-decl-str:char[];
 var decl-func-decl-len:i32;
-var decl-func-case:id;
+var decl-func-case:Id;
 // #cp1-farg-limit = 1024;
-var decl-farg-v:farg+[];
+var decl-farg-v:Farg+[];
 var decl-farg-group-c:i8;
 var decl-farg-group-v:i8[#expr-carg-group-limit];
 var decl-farg-c:i32;
 var decl-farg-cap:i32;
 var decl-func-this-idx:i8;
 var decl-func-this-group:i8;
-var decl-func-space:stmt-space;
-var decl-func-ctx-space:stmt-space;
+var decl-func-space:StmtSpace;
+var decl-func-ctx-space:StmtSpace;
 // var decl-stmt-c:u32;
 // var decl-stmt-cap:u32;
-// var decl-stmt-v:stmt[];
-decl-func-begin(name:id, row:i32, col:i32) {
+// var decl-stmt-v:Stmt[];
+decl-func-begin(name:Id, row:i32, col:i32) {
    .decl-func-name = name;
    .decl-func-row = row;
    .decl-func-col = col;
@@ -170,19 +170,19 @@ decl-var-as-this() {
    .decl-farg-v[farg-idx].decl.type = .decl-at;
    .decl-farg-group-v[.decl-farg-group-c - 1]++;
 }
-// var lvar-c:lvar;
-// var lvar-cap:lvar;
-// var lvar-v:lvar-data[];
-// var lvar-name-v:id[];
+// var lvar-c:Lvar;
+// var lvar-cap:Lvar;
+// var lvar-v:LvarData[];
+// var lvar-name-v:Id[];
 decl-func-end(row:i32, col:i32) {
-   +f-idx = (.func-c++):func;
+   +f-idx = (.func-c++):Func;
    if (.func-cap <= .func-c) {
       +old-cap = .func-cap;
       grow(.func-cap, .func-c);
       realloc(.func-v, .func-cap, old-cap);
    }
-   var f:decl-func;
-   quick-alloc-plus(f, :farg[:usz] * .decl-farg-c);
+   var f:DeclFunc;
+   quick-alloc-plus(f, Farg[usz] * .decl-farg-c);
    .ctx-func = f;
    .nest-id = 0;
    .func-v[f-idx] = f;
@@ -219,11 +219,11 @@ decl-func-end(row:i32, col:i32) {
    f.flags = .decl-func-flags;
    if ((.decl-func-flags2 & #main) != #0) {
       .func-main = f-idx;
-   } elif (&&, .decl-at == #root, f.decl.name.len() == 4, 'c.memcmp("main", f.decl.name.str(), 4) == 0) {
+   } elif (&&, .decl-at == #root, f.decl.name.len() == 4, C.memcmp("main", f.decl.name.str(), 4) == 0) {
       if (.func-main != #nil) {
          +main = .func-main.ptr();
-         'c.out.printf("%u:%u: There's already a function with @main attribute at %u:%u\n", f.begin-row, f.begin-col, main.begin-row, main.begin-col);
-         'c.exit(#failure);
+         C.out.printf("%u:%u: There:S already a function with @main attribute at %u:%u\n", f.begin-row, f.begin-col, main.begin-row, main.begin-col);
+         C.exit(#failure);
       } else {
          .func-main = f-idx;
       }
@@ -241,89 +241,89 @@ decl-func-end(row:i32, col:i32) {
 }
 func-attr-main() {
    if ((.decl-func-flags2 & #main) != #0) {
-      'c.out.printf("%s:%u:%u: Error @main specified more than once\n", .input-path, .last-row, .last-col);
-      'c.exit(#failure);
+      C.out.printf("%s:%u:%u: Error @main specified more than once\n", .input-path, .last-row, .last-col);
+      C.exit(#failure);
    }
    if (.func-main != #nil) {
       +first = .func-main.ptr();
-      'c.out.printf("There cannot be more than one function with @main attribute, first was %s:%u:%u and then %u:%u\n", .input-path, first.begin-row, first.begin-col, .decl-func-row, .decl-func-col);
-      'c.exit(#failure);
+      C.out.printf("There cannot be more than one function with @main attribute, first was %s:%u:%u and then %u:%u\n", .input-path, first.begin-row, first.begin-col, .decl-func-row, .decl-func-col);
+      C.exit(#failure);
    }
    .decl-func-flags2 |= #main;
 }
 func-attr-process() {
    if ((.decl-func-flags & #process) != #0) {
-      'c.out.printf("%s:%u:%u: Error @process specified more than once\n", .input-path, .last-row, .last-col);
-      'c.exit(#failure);
+      C.out.printf("%s:%u:%u: Error @process specified more than once\n", .input-path, .last-row, .last-col);
+      C.exit(#failure);
    }
    .decl-func-flags |= #process;
 }
 func-attr-inline() {
    if ((.decl-func-flags & #inline) != #0) {
-      'c.out.printf("%s:%u:%u: Error @inline specified more than once\n", .input-path, .last-row, .last-col);
-      'c.exit(#failure);
+      C.out.printf("%s:%u:%u: Error @inline specified more than once\n", .input-path, .last-row, .last-col);
+      C.exit(#failure);
    }
    .decl-func-flags |= #inline
 }
 func-attr-cp1-name() {
    if ((.decl-func-flags & #cp1-name) != #0) {
-      'c.out.printf("%s:%u:%u: Error @cp1-name specified more than once\n", .input-path, .last-row, .last-col);
-      'c.exit(#failure);
+      C.out.printf("%s:%u:%u: Error @cp1-name specified more than once\n", .input-path, .last-row, .last-col);
+      C.exit(#failure);
    }
    .decl-func-flags |= #cp1-name;
 }
 func-attr-var-args() {
    if ((.decl-func-flags & #var-args) != #0) {
-      'c.out.printf("%s:%u:%u: Error @var-args specified more than once\n", .input-path, .last-row, .last-col);
-      'c.exit(#failure);
+      C.out.printf("%s:%u:%u: Error @var-args specified more than once\n", .input-path, .last-row, .last-col);
+      C.exit(#failure);
    }
    .decl-func-flags |= #var-args;
 }
 func-attr-no-decl() {
    if ((.decl-func-flags & #no-decl) != #0) {
-      'c.out.printf("%s:%u:%u: Error @no-decl specified more than once\n", .input-path, .last-row, .last-col);
-      'c.exit(#failure);
+      C.out.printf("%s:%u:%u: Error @no-decl specified more than once\n", .input-path, .last-row, .last-col);
+      C.exit(#failure);
    }
    .decl-func-flags |= #no-decl;
 }
 func-attr-no-body() {
    if ((.decl-func-flags & #no-body) != #0) {
-      'c.out.printf("%s:%u:%u: Error @no-body specified more than once\n", .input-path, .last-row, .last-col);
-      'c.exit(#failure);
+      C.out.printf("%s:%u:%u: Error @no-body specified more than once\n", .input-path, .last-row, .last-col);
+      C.exit(#failure);
    }
    .decl-func-flags |= #no-body;
 }
-func-attr-real-name(name:id) {
+func-attr-real-name(name:Id) {
    if ((.decl-func-flags & #real-name) != #0) {
-      'c.out.printf("%s:%u:%u: Error @real-name specified more than once\n", .input-path, .last-row, .last-col);
-      'c.exit(#failure);
+      C.out.printf("%s:%u:%u: Error @real-name specified more than once\n", .input-path, .last-row, .last-col);
+      C.exit(#failure);
    }
    .decl-func-flags |= #real-name;
    .decl-func-real-name = name;
 }
 func-attr-decl() {
    if ((.decl-func-flags & #decl) != #0) {
-      'c.out.printf("%s:%u:%u: Error @decl specified more than once\n", .input-path, .last-row, .last-col);
-      'c.exit(#failure);
+      C.out.printf("%s:%u:%u: Error @decl specified more than once\n", .input-path, .last-row, .last-col);
+      C.exit(#failure);
    }
    .decl-func-flags |= #decl;
    .decl-func-decl-str = quick-alloc(.string-len + 1);
-   'c.memcpy(.decl-func-decl-str, .string-buf, .string-len);
+   C.memcpy(.decl-func-decl-str, .string-buf, .string-len);
    .decl-func-decl-str[.string-len] = 0;
    .decl-func-decl-len = .string-len;
 }
-func-attr-case(name:id) {
+func-attr-case(name:Id) {
    if ((.decl-func-flags & #case) != #0) {
-      'c.out.printf("%s:%u:%u: Error @case specified more than once\n", .input-path, .last-row, .last-col);
-      'c.exit(#failure);
+      C.out.printf("%s:%u:%u: Error @case specified more than once\n", .input-path, .last-row, .last-col);
+      C.exit(#failure);
    }
    +name-str = name.str();
    +name-len = name.len();
    +func-name-str = .decl-func-name.str();
    +func-name-len = .decl-func-name.len();
-   if (||, name-len > func-name-len, func-name-str[name-len] != ''-, 'c.memcmp(name-str, func-name-str, name-len) != 0) {
-      'c.out.printf("%s:%u:%u: Error, function name must begin with words used in @case followed by '-' (dash) then followed by the name of the cvar of case\n", .input-path, .last-row, .last-col);
-      'c.exit(#failure);
+   if (||, name-len > func-name-len, func-name-str[name-len] != ''-, C.memcmp(name-str, func-name-str, name-len) != 0) {
+      C.out.printf("%s:%u:%u: Error, function name must begin with words used in @case followed by '-' (dash) then followed by the name of the cvar of case\n", .input-path, .last-row, .last-col);
+      C.exit(#failure);
    }
    .decl-func-flags |= #case;
    .decl-func-case = name;
@@ -343,14 +343,14 @@ func-body-end() {
 var expr-call-c:i8;
 #cp1-carg-limit:i32 = 64;
 var expr-call-carg-c:u8[#expr-call-nest-limit];
-var expr-call-carg-v:expr-i[#expr-call-nest-limit][#cp1-carg-limit];
+var expr-call-carg-v:ExprI[#expr-call-nest-limit][#cp1-carg-limit];
 var expr-call-cgrp-c:u8[#expr-call-nest-limit];
 var expr-call-cgrp-v:u8[#expr-call-nest-limit][#expr-carg-group-limit];
 expr-push-call(row:i32, col:i32) {
    +call-idx = .expr-call-c++;
    if (call-idx >= #expr-call-nest-limit) {
-      'c.out.printf("%u:%u: Too much nested calls\n", row, col);
-      'c.exit(#failure);
+      C.out.printf("%u:%u: Too much nested calls\n", row, col);
+      C.exit(#failure);
    }
    .expr-call-carg-c[call-idx] = 0;
    .expr-call-cgrp-c[call-idx] = 1;
@@ -361,12 +361,12 @@ carg-next-group() {
    .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx]] = 0;
    .expr-call-cgrp-c[call-idx]++;
 }
-carg-push(expr:expr-i) {
+carg-push(expr:ExprI) {
    +call-idx = .expr-call-c - 1;
    .expr-call-carg-v[call-idx][.expr-call-carg-c[call-idx]++] = expr;
    .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
 }
-carg-push-str(expr:expr-i) {
+carg-push-str(expr:ExprI) {
    if (true) {
       // push the string
       +call-idx = .expr-call-c - 1;
@@ -375,7 +375,7 @@ carg-push-str(expr:expr-i) {
    }
    if (true) {
       // calculate the string length
-      var e:expr-str = expr.ptr();
+      var e:ExprStr = expr.ptr();
       +len = 0;
       +s = e.first;
       loop {
@@ -389,17 +389,17 @@ carg-push-str(expr:expr-i) {
       .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
    }
 }
-expr-pop-func(at:at, func-name:id):expr-i {
+expr-pop-func(at:At, func-name:Id):ExprI {
    +call-idx = .expr-call-c -= 1;
    +carg-c = .expr-call-carg-c[call-idx];
-   var e:expr-func;
-   quick-alloc-plus(e, :carg[:usz] * carg-c);
+   var e:ExprFunc;
+   quick-alloc-plus(e, Carg[usz] * carg-c);
    +e-idx = expr-push(e.base, #func);
    e.at = at;
    e.func-name = func-name;
    e.carg-c = carg-c;
    loop var i = 0; {(carg-c) i++} {
-      e.carg-v[i].ref = 0;
+      e.carg-v[i].reff = 0;
       e.carg-v[i].expr = .expr-call-carg-v[call-idx][i];
    }
    e.group-c = .expr-call-cgrp-c[call-idx];
@@ -408,13 +408,13 @@ expr-pop-func(at:at, func-name:id):expr-i {
    }
    return e-idx;
 }
-expr-pop-method(this:expr-i, func-name:id):expr-i {
+expr-pop-method(thiss:ExprI, func-name:Id):ExprI {
    +call-idx = .expr-call-c -= 1;
    +carg-c = .expr-call-carg-c[call-idx];
-   var e:expr-method;
-   quick-alloc-plus(e, :carg[:usz] * carg-c);
+   var e:ExprMethod;
+   quick-alloc-plus(e, Carg[usz] * carg-c);
    +e-idx = expr-push(e.base, #method);
-   e.this = this;
+   e.thiss = thiss;
    e.func-name = func-name;
    e.carg-c = carg-c;
    loop var i = 0; {(carg-c) i++} {

@@ -1,15 +1,15 @@
-using 'cp1 = :cp1;
-using (:cp1) {
-expr-bools(left:expr-i, right:expr-i, type:bools):expr-i {
-   quick-alloc-one(+(e:expr-bools));
+using Cp1 = Cp1;
+using (Cp1) {
+expr-bools(left:ExprI, right:ExprI, type:Bools):ExprI {
+   quick-alloc-one(+(e:ExprBools));
    +e-idx = expr-push(e.base, #bools);
    e.left = left;
    e.right = right;
    e.type = type;
    return e-idx;
 }
-expr-bools-add(bools:expr-i, right:expr-i):expr-i {
-   var e:expr-bools = bools.ptr();
+expr-bools-add(bools:ExprI, right:ExprI):ExprI {
+   var e:ExprBools = bools.ptr();
    +i = e.item-c++;
    if (e.item-cap <= e.item-c) {
       +old-cap = e.item-cap;
@@ -19,30 +19,30 @@ expr-bools-add(bools:expr-i, right:expr-i):expr-i {
    e.item-v[i].expr = right;
    return bools;
 }
-:bools[#and, #or]:u8 {
-   wr(e:this, w:wtr) @inline {
+Bools[#and, #or]:u8 {
+   wr(e:this, w:Wtr) @inline {
       w.n1(e);
    }
-   rd(e:this&, r:rdr) @inline {
-      e = r.n1():bools;
+   rd(e:this&, r:Rdr) @inline {
+      e = r.n1():Bools;
    }
 }
-using (:expr-i) {
-   type-bools(expr:expr, at:at&) @case.type() @inline {
+using (ExprI) {
+   type-bools(expr:Expr, at:At&) @case.type() @inline {
       at = basic-type(#bool);
    }
-   value-bools(e:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline {
+   value-bools(e:this, reff:i32, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       v.type = basic-type(#bool);
       v.info.init();
       v.info.array-c = 0;
       v.info.ref-v[0] = ''\0;
       v.info.star-c = 0;
-      v.ref = 1;
+      v.reff = 1;
       v.paren = false;
       ok = true;
    }
-   process-bools(expr:expr, ok:bool&) @case.process() @inline {
-      var e:expr-bools = expr;
+   process-bools(expr:Expr, ok:bool&) @case.process() @inline {
+      var e:ExprBools = expr;
 		if !(e.left.value(1, true, e.left-val)) { return}
 		if !(e.right.value(1, true, e.right-val)) { return}
       loop var i = 0; {(e.item-c) i++} {
@@ -51,8 +51,8 @@ using (:expr-i) {
       }
       ok = true;
    }
-   write-bools(expr:expr) @case.write() @inline {
-      var e:expr-bools = expr;
+   write-bools(expr:Expr) @case.write() @inline {
+      var e:ExprBools = expr;
       switch (e.type) {
          case (#and) {
             .out.printf("(");
@@ -80,8 +80,8 @@ using (:expr-i) {
          }
       }
    }
-   wr-bools(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      var e:expr-bools = expr;
+   wr-bools(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
+      var e:ExprBools = expr;
       e.left.wr(w, header);
       e.right.wr(w, header);
       w.n1(e.item-c);
@@ -90,8 +90,8 @@ using (:expr-i) {
       }
       e.type.wr(w);
    }
-   rd-bools(e-idx:expr-i, r:rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:expr-bools));
+   rd-bools(e-idx:ExprI, r:Rdr) @case.rd() @inline {
+      quick-alloc-one(+(e:ExprBools));
       e-idx.set(e.base, #bools);
       e.left.rd(r);
       e.right.rd(r);

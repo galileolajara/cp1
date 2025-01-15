@@ -1,38 +1,38 @@
-using 'cp1 = :cp1;
-using 'c = :stdc;
-using (:cp1) {
-:stmt-continue(
-   base:stmt+,
+using Cp1 = Cp1;
+using C = Stdc;
+using (Cp1) {
+StmtContinue(
+   base:Stmt+,
    nest:u8,
 );
-stmt-continue(id:id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
-   quick-alloc-one(+(s:stmt-continue));
+stmt-continue(id:Id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
+   quick-alloc-one(+(s:StmtContinue));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #continue);
    // s.id = id;
    if (.nest-stack-c <= 0) {
-      'c.out.printf("%s:%u:%u: Cannot have a continue because it's not inside a loop\n", .input-path, begin-row, begin-col);
-      'c.exit(#failure);
+      C.out.printf("%s:%u:%u: Cannot have a continue because it:S not inside a loop\n", .input-path, begin-row, begin-col);
+      C.exit(#failure);
    }
    s.nest = .nest-stack-c - 1;
 }
-using (:stmt-space) {
-   wr-continue(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
-      var s:stmt-continue = stmt;
+using (StmtSpace) {
+   wr-continue(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
+      var s:StmtContinue = stmt;
       w.n1(s.nest);
    }
-   rd-continue(space:stmt-space, r:rdr) @case.rd() @inline {
-      quick-alloc-one(+(s:stmt-continue));
+   rd-continue(space:StmtSpace, r:Rdr) @case.rd() @inline {
+      quick-alloc-one(+(s:StmtContinue));
       s.nest = r.n1();
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #continue);
    }
 }
-using (:stmt) {
-   write-continue(stmt:stmt) @case.write() @inline {
-      var s:stmt-continue = stmt;
+using (Stmt) {
+   write-continue(stmt:Stmt) @case.write() @inline {
+      var s:StmtContinue = stmt;
       .out.printf("goto continue_%u;\n", .nest-stack-id-v[s.nest]);
    }
-   process-continue(stmt:stmt, ok:bool&) @case.process() @inline {
-      var s:stmt-continue = stmt;
+   process-continue(stmt:Stmt, ok:bool&) @case.process() @inline {
+      var s:StmtContinue = stmt;
       ok = true;
    }
 }

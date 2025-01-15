@@ -41,15 +41,15 @@ typedef ankerl::unordered_dense::map<ParentTypeName, int, ParentTypeName_hash, P
 #include <stdio.h>
 int main(int argc, char** argv) {
    FILE* fp = fopen(argv[1], "w");
-   fprintf(fp, "using (:cp1) {\n#hash-table-size = %zu;\n}\n", sizeof(map_t));
+   fprintf(fp, "using (Cp1) {\n#hash-table-size = %zu;\n}\n", sizeof(map_t));
    fclose(fp);
    return 0;
 }
 #else
-extern "C" void _Ncp1_Nmap_Pinit_1(map_t &map) {
+extern "C" void _NCp1_NMap_Pinit_1(map_t &map) {
    new (&map) map_t();
 }
-extern "C" int _Ncp1_Nmap_Pget_or_insert_4(map_t &map, char* str, uint8_t len, int val) {
+extern "C" int _NCp1_NMap_Pget_or_insert_4(map_t &map, char* str, uint8_t len, int val) {
    ShortString s;
    s.str = str;
    s.len = len;
@@ -60,10 +60,10 @@ extern "C" int _Ncp1_Nmap_Pget_or_insert_4(map_t &map, char* str, uint8_t len, i
       return result.first->second;
    }
 }
-extern "C" void _Ncp1_Nat_map_Pinit_1(at_map_t &map) {
+extern "C" void _NCp1_NAtMap_Pinit_1(at_map_t &map) {
    new (&map) at_map_t();
 }
-extern "C" int _Ncp1_Nat_map_Pget_or_insert_5(at_map_t &map, int parent, uint8_t type, int name, int val) {
+extern "C" int _NCp1_NAtMap_Pget_or_insert_5(at_map_t &map, int parent, uint8_t type, int name, int val) {
    ParentTypeName s;
    s.parent_and_type = parent | (type << 30);
    s.name = name;

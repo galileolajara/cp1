@@ -1,57 +1,57 @@
-using 'cp1 = :cp1;
-using 'c = :stdc;
-using (:cp1) {
-expr-index(left:expr-i, right-v:expr-i[], right-c:i32):expr-i {
+using Cp1 = Cp1;
+using C = Stdc;
+using (Cp1) {
+expr-index(left:ExprI, right-v:ExprI[], right-c:i32):ExprI {
    loop var i = right-c; (right-c) {
-      quick-alloc-one(+(e:expr-index));
+      quick-alloc-one(+(e:ExprIndex));
       ++e-idx = expr-push(e.base, #index);
       e.left = left;
       e.right = right-v[i -= 1];
    }
    return e-idx;
 }
-using (:expr-i) {
-   wr-index(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      var e:expr-index = expr;
+using (ExprI) {
+   wr-index(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
+      var e:ExprIndex = expr;
       e.left.wr(w, header);
       e.right.wr(w, header);
    }
-   write-index(expr:expr) @case.write() @inline {
-      var e:expr-index = expr;
+   write-index(expr:Expr) @case.write() @inline {
+      var e:ExprIndex = expr;
       e.left.write-value(e.left-val);
       .out.printf("[");
       e.right.write-value(e.right-val);
       .out.printf("]");
    }
-   rd-index(e-idx:expr-i, r:rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:expr-index));
+   rd-index(e-idx:ExprI, r:Rdr) @case.rd() @inline {
+      quick-alloc-one(+(e:ExprIndex));
       e-idx.set(e.base, #index);
       e.left.rd(r);
       e.right.rd(r);
    }
-   type-index(expr:expr, at:at&) @case.type() @inline {
-      var e:expr-index = expr;
+   type-index(expr:Expr, at:At&) @case.type() @inline {
+      var e:ExprIndex = expr;
       at = e.left.type();
    }
-   value-index(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      var expr:expr-index = e.ptr();
+   value-index(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
+      var expr:ExprIndex = e.ptr();
 		v.type = expr.left-val.type;
 		v.info.init();
 		v.info.copy-from(expr.left-val.info);
 		v.info.array-c -= 1;
 		+c = v.info.ref-v[v.info.array-c];
-		v.ref = (c + 2) - ref;
-		v.info.ref-v[v.info.array-c] = ref - 1;
+		v.reff = (c + 2) - reff;
+		v.info.ref-v[v.info.array-c] = reff - 1;
 		v.info.count();
-		if (v.ref == 1) {
+		if (v.reff == 1) {
 			v.paren = false;
 		} else {
 			v.paren = paren;
 		}
       ok = true;
    }
-   process-index(expr:expr, ok:bool&) @case.process() @inline {
-      var e:expr-index = expr;
+   process-index(expr:Expr, ok:bool&) @case.process() @inline {
+      var e:ExprIndex = expr;
    	if !(e.left.value(1, true, e.left-val)) {
    		return;
       }

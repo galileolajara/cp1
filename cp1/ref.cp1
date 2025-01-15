@@ -1,40 +1,40 @@
-using 'cp1 = :cp1;
-using (:cp1) {
-expr-ref(expr:expr-i):expr-i {
-   quick-alloc-one(+(e:expr-ref));
+using Cp1 = Cp1;
+using (Cp1) {
+expr-ref(expr:ExprI):ExprI {
+   quick-alloc-one(+(e:ExprRef));
    +e-idx = expr-push(e.base, #ref);
    e.expr = expr;
    return e-idx;
 }
-using (:expr-i) {
-   wr-ref(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      var e:expr-ref = expr;
+using (ExprI) {
+   wr-ref(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
+      var e:ExprRef = expr;
       e.expr.wr(w, header);
    }
-   rd-ref(e-idx:expr-i, r:rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:expr-ref));
+   rd-ref(e-idx:ExprI, r:Rdr) @case.rd() @inline {
+      quick-alloc-one(+(e:ExprRef));
       e-idx.set(e.base, #ref);
       e.expr.rd(r);
    }
-   write-ref(expr:expr) @case.write() @inline {
-      var e:expr-ref = expr;
+   write-ref(expr:Expr) @case.write() @inline {
+      var e:ExprRef = expr;
       e.expr.write-value(e.val);
    }
-   value-ref(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      var expr:expr-ref = e.ptr();
+   value-ref(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
+      var expr:ExprRef = e.ptr();
 		v.type = basic-type(#ref);
 		v.info.init();
 		v.info.array-c = 0;
 		v.info.ref-v[0] = 1;
 		v.info.star-c = 1;
-		v.ref = 1;
+		v.reff = 1;
       ok = true;
 	}
-   type-ref(expr:expr, at:at&) @case.type() @inline {
+   type-ref(expr:Expr, at:At&) @case.type() @inline {
       at = basic-type(#ref);
    }
-   process-ref(expr:expr, ok:bool&) @case.process() @inline {
-      var e:expr-ref = expr;
+   process-ref(expr:Expr, ok:bool&) @case.process() @inline {
+      var e:ExprRef = expr;
 		if !(e.expr.value(2, false, e.val)) {
 			return;
       }

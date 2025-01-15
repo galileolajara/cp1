@@ -1,23 +1,23 @@
-using 'cp1 = :cp1;
-using 'c = :stdc;
-using (:cp1) {
-using (:stmt-space) {
-   wr-expr(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
-      var s:stmt-expr = stmt;
+using Cp1 = Cp1;
+using C = Stdc;
+using (Cp1) {
+using (StmtSpace) {
+   wr-expr(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
+      var s:StmtExpr = stmt;
       s.expr.wr(w, header);
    }
-   rd-expr(space:stmt-space, r:rdr) @case.rd() @inline {
-      quick-alloc-one(+(s:stmt-expr));
+   rd-expr(space:StmtSpace, r:Rdr) @case.rd() @inline {
+      quick-alloc-one(+(s:StmtExpr));
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #expr);
    }
 }
-using (:stmt) {
-   write-expr(stmt:stmt) @case.write() @inline {
-      var s:stmt-expr = stmt;
+using (Stmt) {
+   write-expr(stmt:Stmt) @case.write() @inline {
+      var s:StmtExpr = stmt;
 		+expr = s.expr.ptr();
 		if (expr.type == #str) {
-			var e:expr-str = expr;
+			var e:ExprStr = expr;
 			+n = e.first;
 			loop {
 				.out.printf("%.*s\n", n.len, n.buf);
@@ -29,56 +29,56 @@ using (:stmt) {
       s.expr.write();
       .out.printf(";\n");
    }
-   process-expr(stmt:stmt, ok:bool&) @case.process() @inline {
-      var s:stmt-expr = stmt;
+   process-expr(stmt:Stmt, ok:bool&) @case.process() @inline {
+      var s:StmtExpr = stmt;
       if !(s.expr.process()) {
          return;
       }
       ok = true;
    }
 }
-:expr-type[
+ExprType[
    #nil, #call-method, #lvar, #gvar, #math, #assign, #bools,
    #func, #method, #fvar, #i32, #cvar, #str, #index, #unary,
    #compare, #bool, #null, #cast-fast, #ref, #char, #size-of-type,
    ]:u8 {
-   wr(e:this, w:wtr) @inline {
+   wr(e:this, w:Wtr) @inline {
       w.n1(e);
    }
-   rd(e:this&, r:rdr) @inline {
-      e = r.n1():expr-type;
+   rd(e:this&, r:Rdr) @inline {
+      e = r.n1():ExprType;
    }
    cp1-name(e:this):char[] @cp1-name;
 }
 #debug-rd-wr:bool = true;
-:expr-i[#nil = -1, #0, #1]:i32 {
-   set(e:this, expr:expr, type:expr-type) @inline {
+ExprI[#nil = -1, #0, #1]:i32 {
+   set(e:this, expr:Expr, type:ExprType) @inline {
       .expr-v[e] = expr;
       expr.type = type;
    }
-   ptr(e:this):expr @inline {
+   ptr(e:this):Expr @inline {
       return .expr-v[e];
    }
-   write-value(e:this, v:value):bool {
+   write-value(e:this, v:Value):bool {
       +expr = e.ptr();
-      +ref = v.ref;
-      // 'c.out.printf("write-value v.ref = %d\n", ref);
+      +reff = v.reff;
+      // C.out.printf("write-value v.ref = %d\n", ref);
       if (v.paren) {
-         if (ref <= 0) {
+         if (reff <= 0) {
             .out.write("(&", 2);
          } else {
-            .out.write("(*******************************", ref);
+            .out.write("(*******************************", reff);
          }
       } else {
-         if (ref <= 0) {
+         if (reff <= 0) {
             .out.write("&", 1);
-         } elif (ref > 1) {
-            .out.write("*******************************", ref - 1);
+         } elif (reff > 1) {
+            .out.write("*******************************", reff - 1);
          }
       }
 
       if (expr.type == #cast-fast) {
-         var e:expr-cast-fast = expr;
+         var e:ExprCastFast = expr;
          e.write-value(v);
       } else {
          e.write();
@@ -89,48 +89,48 @@ using (:stmt) {
       }
       return true;
    }
-	value(e:this, ref:i32, paren:bool, v:value):bool {
+	value(e:this, reff:i32, paren:bool, v:Value):bool {
       if !(e.process()) { return false}
       +expr = e.ptr();
       +ok = false;
-      switch (expr.type).value(e, ref, paren, v, ok) {
+      switch (expr.type).value(e, reff, paren, v, ok) {
          default {
-            'c.out.printf("%u:%u - %u:%u: value() not implemented for #%s\n",
+            C.out.printf("%u:%u - %u:%u: value() not implemented for #%s\n",
                .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
          }
       }
       return ok;
    }
-   type(e:this):at {
+   type(e:this):At {
       if !(e.process()) { return #nil}
       +expr = e.ptr();
-      +at = :at#nil;
+      +at = At#nil;
       switch (expr.type).type(expr, at) {
          default {
-            'c.out.printf("%u:%u - %u:%u: type() not implemented for #%s\n",
+            C.out.printf("%u:%u - %u:%u: type() not implemented for #%s\n",
                .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
          }
       }
       return at;
    }
-   try-deduce(e-idx:this, at:at) {
+   try-deduce(e-idx:this, at:At) {
       +expr = e-idx.ptr();
       switch (expr.type).try-deduce(expr, at) {
       }
    }
-   wr(e:this, w:wtr, header:bool) {
+   wr(e:this, w:Wtr, header:bool) {
       if (#debug-rd-wr) {
          w.n1(255);
       }
       if (e == #nil) {
-         :expr-type#nil.wr(w);
+         ExprType#nil.wr(w);
       } else {
          +expr = e.ptr();
          expr.type.wr(w);
          switch (expr.type).wr(expr, w, header) {
             default {
-               'c.out.printf("wr() was not implemented in expression #%s\n", expr.type.cp1-name());
-               'c.exit(#failure);
+               C.out.printf("wr() was not implemented in expression #%s\n", expr.type.cp1-name());
+               C.exit(#failure);
             }
          }
       }
@@ -138,19 +138,19 @@ using (:stmt) {
          w.n1(255);
       }
    }
-   rd(e:this&, r:rdr) {
+   rd(e:this&, r:Rdr) {
       if (#debug-rd-wr) {
          if (r.n1() != 255) {
-            'c.out.printf("Error reading expr\n");
-            'c.out.flush();
-            'c.exit(#failure);
+            C.out.printf("Error reading expr\n");
+            C.out.flush();
+            C.exit(#failure);
          }
       }
-      :expr-type.rd(+type, r);
+      ExprType.rd(+type, r);
       if (type == #nil) {
          e = #nil;
       } else {
-         +e-idx = (.expr-c++):expr-i;
+         +e-idx = (.expr-c++):ExprI;
          if (.expr-cap <= .expr-c) {
             +old-cap = .expr-cap;
             grow(.expr-cap, .expr-c);
@@ -160,22 +160,22 @@ using (:stmt) {
          e = e-idx;
          switch (type).rd(e-idx, r) {
             default {
-               'c.out.printf("rd() was not implemented in expression #%s\n", type.cp1-name());
-               'c.exit(#failure);
+               C.out.printf("rd() was not implemented in expression #%s\n", type.cp1-name());
+               C.exit(#failure);
             }
          }
       }
       if (#debug-rd-wr) {
          if (r.n1() != 255) {
-            'c.out.printf("Error reading expr\n");
-            'c.out.flush();
-            'c.exit(#failure);
+            C.out.printf("Error reading expr\n");
+            C.out.flush();
+            C.exit(#failure);
          }
       }
    }
    process(e:this):bool {
       if (e == #nil) {
-         'c.out.printf("%s:%u:%u - %u:%u: Processed a nil expression\n",
+         C.out.printf("%s:%u:%u - %u:%u: Processed a nil expression\n",
             .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col);
          return false;
       }
@@ -190,13 +190,13 @@ using (:stmt) {
       +ok = false;
       switch (expr.type).process(expr, ok) {
          default {
-            'c.out.printf("%s:%u:%u - %u:%u: process() not implemented for expression #%s\n",
+            C.out.printf("%s:%u:%u - %u:%u: process() not implemented for expression #%s\n",
                .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
             return false;
          }
       }
       if !(ok) {
-         'c.out.printf("%s:%u:%u - %u:%u: Processing of expression #%s failed\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
+         C.out.printf("%s:%u:%u - %u:%u: Processing of expression #%s failed\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
       }
       return ok;
    }
@@ -204,26 +204,26 @@ using (:stmt) {
       +expr = e.ptr();
       switch (expr.type).write(expr) {
          default {
-            'c.out.printf("%s:%u:%u - %u:%u: write() not implemented in expression #%s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
+            C.out.printf("%s:%u:%u - %u:%u: write() not implemented in expression #%s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
          }
       }
    }
 }
-:expr-flags[#0, #processed = 1]:u8;
-:expr(
-   type:expr-type,
-   flags:expr-flags,
+ExprFlags[#0, #processed = 1]:u8;
+Expr(
+   type:ExprType,
+   flags:ExprFlags,
    ) {
-   write(e:this, out'c:file) {
+   write(e:this, out:C.File) {
       switch (e.type) {
          case (#call) {
-            var e2:expr-call = e;
+            var e2:ExprCall = e;
             e2.write(out);
          }
       }
    }
 }
-:basic-type-id[
+BasicTypeId[
 	#root, #relative,
 	#ref, #bool, #char, #intc,
 	#i8, #u8,
@@ -233,13 +233,13 @@ using (:stmt) {
 	#isz, #usz,
 	#f32, #f64,
 	#COUNT]:u8 {
-   wr(e:this, w:wtr) @inline {
+   wr(e:this, w:Wtr) @inline {
       w.n1(e);
    }
-   rd(e:this&, r:rdr) @inline {
-      e = r.n1():basic-type-id;
+   rd(e:this&, r:Rdr) @inline {
+      e = r.n1():BasicTypeId;
    }
-// write(e:this, out'c:file) {
+// write(e:this, out:C.File) {
 //    switch (e) {
 //       case (#ref) {
 //          out.printf("void*");
@@ -260,36 +260,36 @@ using (:stmt) {
 // }
    cp1-name(e:this):char[] @cp1-name;
 }
-:expr-lvar(
-   base:expr+,
-   lvar:lvar,
+ExprLvar(
+   base:Expr+,
+   lvar:Lvar,
 );
-:expr-char(
-   base:expr+,
+ExprChar(
+   base:Expr+,
    value:char,
 );
-:expr-bool(
-   base:expr+,
+ExprBool(
+   base:Expr+,
    value:bool,
 );
-:expr-null(
-   base:expr+,
+ExprNull(
+   base:Expr+,
 );
-:expr-str-node(
-   next:expr-str-node,
+ExprStrNode(
+   next:ExprStrNode,
    len:i32,
    buf:char[0],
 );
-:expr-str(
-   base:expr+,
+ExprStr(
+   base:Expr+,
    node-c:i32,
-   first:expr-str-node,
-   last:expr-str-node,
+   first:ExprStrNode,
+   last:ExprStrNode,
 );
 var expr-c:i32;
 var expr-cap:i32;
-var expr-v:expr[];
-expr-push(e:expr, type:expr-type):expr-i {
+var expr-v:Expr[];
+expr-push(e:Expr, type:ExprType):ExprI {
    e.type = type;
    +e-idx = .expr-c++;
    if (.expr-cap <= .expr-c) {
@@ -300,14 +300,14 @@ expr-push(e:expr, type:expr-type):expr-i {
    .expr-v[e-idx] = e;
    return e-idx;
 }
-:expr-int-data(
-   base:expr+,
+ExprIntData(
+   base:Expr+,
    value:i32,
-   type:expr-int,
+   type:ExprInt,
 );
-:expr-size-of-type(
-   base:expr+,
-   type:at,
+ExprSizeOfType(
+   base:Expr+,
+   type:At,
 );
  
 
