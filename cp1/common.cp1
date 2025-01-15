@@ -13,7 +13,7 @@ var id-map:Map+;
 var include-map:Map+;
 var at-map:AtMap+;
 StructData(
-#if(compiler)
+#if(compile)
    file:File,
 #endif
    begin-row:i32,
@@ -24,7 +24,7 @@ StructData(
    at:At,
    flags:StructFlags,
    real-name:Id,
-#if(compiler)
+#if(compile)
    method-c:i32,
    method-cap:i32,
    method-v:Func[],
@@ -36,7 +36,7 @@ StmtIf(
    base:Stmt+,
    not:bool,
    expr:ExprI,
-#if(compiler)
+#if(compile)
    val:Value+
 #endif
 );
@@ -44,7 +44,7 @@ StmtIfElif(
    base:Stmt+,
    not:bool,
    expr:ExprI,
-#if(compiler)
+#if(compile)
    val:Value+,
 #endif
 );
@@ -57,23 +57,23 @@ StmtIfEnd(
 StmtSwitch(
    base:Stmt+,
    expr:ExprI,
-#if(compiler)
+#if(compile)
    val:Value+,
 #endif
    cases:ExprI,
-#if(compiler)
+#if(compile)
    case-func-c:u32,
    case-func-v:StmtSwitchCaseFunc+[],
 #endif
 );
 StmtCaseItem(
    expr:ExprI,
-#if(compiler)
+#if(compile)
    val:Value+,
 #endif
 );
 using (Lvar) {
-#if(compiler)
+#if(compile)
    ptr(l:this):LvarData @inline {
       return .ctx-func.lvar-v[l];
    }
@@ -81,7 +81,7 @@ using (Lvar) {
       return l.ptr().decl.name;
    }
 #endif
-#if(parser)
+#if(parse)
    ptr(l:this):LvarData @inline {
       return .ctx-func.lvar-v[l];
    }
@@ -91,7 +91,7 @@ using (Lvar) {
 #endif
 }
 EnumData(
-#if(compiler)
+#if(compile)
    file:File,
 #endif
    begin-row:i32,
@@ -103,7 +103,7 @@ EnumData(
    base-type:At,
    flags:EnumFlags,
    real-name:Id,
-#if(compiler)
+#if(compile)
    method-c:i32,
    method-cap:i32,
    method-v:Func[],
@@ -114,7 +114,7 @@ ExprCompare(
    left:ExprI,
    right:ExprI,
    type:Compare,
-#if(compiler)
+#if(compile)
    left-val:Value+,
    right-val:Value+,
 #endif
@@ -124,7 +124,7 @@ ExprAssign(
    left:ExprI,
    right:ExprI,
    type:Assign,
-#if(compiler)
+#if(compile)
    left-val:Value+,
    right-val:Value+,
 #endif
@@ -133,14 +133,14 @@ ExprIndex(
    base:Expr+,
    left:ExprI,
    right:ExprI,
-#if(compiler)
+#if(compile)
    left-val:Value+,
    right-val:Value+,
 #endif
 );
 ExprMathItem(
    expr:ExprI,
-#if(compiler)
+#if(compile)
    val:Value+,
 #endif
 );
@@ -149,19 +149,19 @@ ExprMath(
    left:ExprI,
    right:ExprI,
    type:Math,
-#if(compiler)
+#if(compile)
    left-val:Value+,
    right-val:Value+,
 #endif
    item-c:u8,
-#if(parser)
+#if(parse)
    item-cap:u8,
 #endif
    item-v:ExprMathItem+[],
 );
 ExprBoolsItem(
    expr:ExprI,
-#if(compiler)
+#if(compile)
    val:Value+,
 #endif
 );
@@ -170,12 +170,12 @@ ExprBools(
    left:ExprI,
    right:ExprI,
    type:Bools,
-#if(compiler)
+#if(compile)
    left-val:Value+,
    right-val:Value+,
 #endif
    item-c:u8,
-#if(parser)
+#if(parse)
    item-cap:u8,
 #endif
    item-v:ExprBoolsItem+[],
@@ -184,7 +184,7 @@ ExprFvar(
    base:Expr+,
    expr:ExprI,
    member:Id,
-#if(compiler)
+#if(compile)
    fvar:Fvar,
    val:Value+,
 #endif
@@ -193,7 +193,7 @@ ExprCvar(
    base:Expr+,
    at:At,
    name:Id,
-#if(compiler)
+#if(compile)
    cvar:Cvar,
    try:At,
 #endif
@@ -201,7 +201,7 @@ ExprCvar(
 ExprRef(
    base:Expr+,
    expr:ExprI,
-#if(compiler)
+#if(compile)
    val:Value+,
 #endif
 );
@@ -209,7 +209,7 @@ ExprUnary(
    base:Expr+,
    expr:ExprI,
    type:Unary,
-#if(compiler)
+#if(compile)
    val:Value+,
 #endif
 );
@@ -217,22 +217,22 @@ ExprCastFast(
    base:Expr+,
    expr:ExprI,
    type:At,
-#if(compiler)
+#if(compile)
    val:Value+,
 #endif
 );
 ExprGvar(
    base:Expr+,
-#if(parser)
+#if(parse)
    at:At,
    name:Id,
 #endif
-#if(compiler)
+#if(compile)
    gvar:Gvar,
 #endif
 );
 DeclGvar(
-#if(compiler)
+#if(compile)
    file:File,
 #endif
    row:i32,
@@ -243,7 +243,7 @@ DeclGvar(
    decl:DeclVarData+,
 );
 CvarData(
-#if(compiler)
+#if(compile)
    file:File,
 #endif
    row:i32,
@@ -264,14 +264,14 @@ DeclVarData(
    type-info:TypeInfo+,
    size-c:u8,
    size-expr-v:ExprI[],
-#if(compiler)
+#if(compile)
    size-value-v:Value+[],
 #endif
 );
 Carg(
    reff:i8,
    expr:ExprI,
-#if(compiler)
+#if(compile)
    value:Value+,
 #endif
 );
@@ -279,7 +279,7 @@ ExprFunc(
    base:Expr+,
    at:At,
    func-name:Id,
-#if(compiler)
+#if(compile)
    func-idx:Func,
 #endif
    group-c:u8,
@@ -291,7 +291,7 @@ ExprMethod(
    base:Expr+,
    thiss:ExprI,
    func-name:Id,
-#if(compiler)
+#if(compile)
    func-idx:Func,
    this-value:Value+,
 #endif
@@ -301,7 +301,7 @@ ExprMethod(
    carg-v:Carg+[0],
 );
 DeclFunc(
-#if(compiler)
+#if(compile)
    process-next:Func,
    file:File,
 #endif
@@ -319,25 +319,25 @@ DeclFunc(
    cas:Id,
    // type:At,
    decl:DeclVarData+,
-#if(parser)
+#if(parse)
    stmt-space:StmtSpace,
 #endif
-#if(compiler)
+#if(compile)
    stmt-space:StmtSpace+,
 #endif
 //    stmt-c:u32,
-// #if(compiler)
+// #if(compile)
 //    stmt-cap:u32,
 // #endif
 //    stmt-v:Stmt[],
-#if(compiler)
+#if(compile)
    lvar-c:Lvar,
    // lvar-cap:Lvar,
    lvar-v:LvarData+[],
    // lvar-name-v:Id[],
    body-file-pos:u32,
 #endif
-#if(parser)
+#if(parse)
    lvar-c:Lvar,
    lvar-cap:Lvar,
    lvar-v:LvarData[],
@@ -440,7 +440,7 @@ AtData(
    type:NameType,
    parent:At,
    name:AtName+,
-#if(compiler)
+#if(compile)
    func-c:i32,
    func-cap:i32,
    func-v:Func[],

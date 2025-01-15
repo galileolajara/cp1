@@ -111,9 +111,9 @@ int _Gcol;
 extern char* input_path;
 
 #ifdef CP1_NEW
-#include "out/cp1_parser.c"
+#include "out/cp1_parse.c"
 #else
-#include "cp1_parser.c"
+#include "cp1_parse.c"
 #endif
 
 struct cp1_lexer {
