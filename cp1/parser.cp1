@@ -70,10 +70,6 @@ decl-include-begin(inc:include, row:i32, col:i32) {
 decl-include-end() {
    .decl-include = #nil;
 }
-var build-at:at;
-at-push(name:id, type:name-type, row:i32, col:i32) {
-   .build-at = at-create(.build-at, type, name);
-}
 at-basic-type(type:basic-type-id):at {
    loop var i = 0:at; {(.at-c) i++} {
       +at = .at-v[i];
@@ -126,6 +122,25 @@ at-alias(name:id, row:i32, col:i32) {
    }
    'c.out.printf("%s:%u:%u: Cannot recognize the '%s, did you forgot to put using '%s = ...;?\n", .input-path, row, col, name.str(), name.str());
    'c.exit(#failure);
+}
+var build-at:at;
+at-push(name:id, type:name-type, row:i32, col:i32) {
+   // if (.build-at == #root) {
+   //    'c.printf(".build-at is #root for %s\n", name.str());
+   // } elif (.build-at == #relative) {
+   //    'c.printf(".build-at is #relative for %s\n", name.str());
+   // } else {
+   //    'c.printf(".build-at is %u for %s\n", .build-at, name.str());
+   // }
+   if (.build-at == #relative) {
+      loop var i = 0; {(.at-alias-c) i++} {
+         if (.at-alias-name-v[i] == name) {
+            .build-at = .at-alias-at-v[i];
+            return;
+         }
+      }
+   }
+   .build-at = at-create(.build-at, type, name);
 }
 decl-alias(name:id, at:at, row:i32, col:i32) {
    // if (at.ptr().type != #module) {
@@ -1114,11 +1129,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       .col = tok.col;
       // 'c.out.printf("%s:%u:%u: token %s\n", .input-path, tok.row, tok.col, t.cgl-name());
       // 'c.out.flush();
-      if (&&, t >= #id-colon, t < #id) {
-         tok.id = lex.get-id(1, 0);
-         .last-token = t;
-         psr.parse(t, tok);
-      } else {
+      // if (&&, t >= #id-quote, t < #id) {
+      //    tok.id = lex.get-id(1, 0);
+      //    .last-token = t;
+      //    psr.parse(t, tok);
+      // } else {
          switch (t) {
             // case (#id-lparen) {
             //    tok.id = lex.get-id(0, 1);
@@ -1177,6 +1192,21 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                .last-token = t;
                psr.parse(t, tok);
             }
+            case (#id-hash) {
+               tok.id = lex.get-id(1, 0);
+               .last-token = t;
+               psr.parse(t, tok);
+            }
+            case (#id-dot-upper) {
+               tok.id = lex.get-id(1, 0);
+               .last-token = t;
+               psr.parse(t, tok);
+            }
+            case (#id-upper) {
+               tok.id = lex.get-id(0, 0);
+               .last-token = t;
+               psr.parse(t, tok);
+            }
             case (#lcbrace) {
                if (lex.cursor[0] == ''() {
                   t = #lcbrace-lparen;
@@ -1189,7 +1219,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                psr.parse(t, tok);
             }
          }
-      }
+      // }
       if (t == #end) { break}
       +pos = lex.start;
       while (pos < lex.cursor) {

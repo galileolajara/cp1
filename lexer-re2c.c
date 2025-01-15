@@ -55,7 +55,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "-"                              { return CP1_TOKEN_MINUS; }
    "!"                              { return CP1_TOKEN_EXPOINT; }
    "`"                              { return CP1_TOKEN_GRAVE; }
-   "'"                              { return CP1_TOKEN_QUOTE; }
+   // "'"                              { return CP1_TOKEN_QUOTE; }
    "&"                              { return CP1_TOKEN_AMPERSAND; }
    "#"                              { return CP1_TOKEN_HASH; }
    "["                              { return CP1_TOKEN_LBRACKET; }
@@ -164,24 +164,24 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "(&&," spaces                    { return CP1_TOKEN_LPAREN_AMP_AMP_COMMA_SPACE; }
    "(||," spaces                    { return CP1_TOKEN_LPAREN_PIPE_PIPE_COMMA_SPACE; }
 
-   ":ref"                           { return CP1_TOKEN_COLON_REF; }
-   ":bool"                          { return CP1_TOKEN_COLON_BOOL; }
-   ":char"                          { return CP1_TOKEN_COLON_CHAR; }
-   ":intc"                          { return CP1_TOKEN_COLON_INTC; }
-   ":i8"                            { return CP1_TOKEN_COLON_I8; }
-   ":u8"                            { return CP1_TOKEN_COLON_U8; }
-   ":i16"                           { return CP1_TOKEN_COLON_I16; }
-   ":u16"                           { return CP1_TOKEN_COLON_U16; }
-   ":i32"                           { return CP1_TOKEN_COLON_I32; }
-   ":u32"                           { return CP1_TOKEN_COLON_U32; }
-   ":i64"                           { return CP1_TOKEN_COLON_I64; }
-   ":u64"                           { return CP1_TOKEN_COLON_U64; }
-   ":isz"                           { return CP1_TOKEN_COLON_ISZ; }
-   ":usz"                           { return CP1_TOKEN_COLON_USZ; }
-   ":f32"                           { return CP1_TOKEN_COLON_F32; }
-   ":f64"                           { return CP1_TOKEN_COLON_F64; }
+   "ref"                           { return CP1_TOKEN_REF; }
+   "bool"                          { return CP1_TOKEN_BOOL; }
+   "char"                          { return CP1_TOKEN_CHAR; }
+   "intc"                          { return CP1_TOKEN_INTC; }
+   "i8"                            { return CP1_TOKEN_I8; }
+   "u8"                            { return CP1_TOKEN_U8; }
+   "i16"                           { return CP1_TOKEN_I16; }
+   "u16"                           { return CP1_TOKEN_U16; }
+   "i32"                           { return CP1_TOKEN_I32; }
+   "u32"                           { return CP1_TOKEN_U32; }
+   "i64"                           { return CP1_TOKEN_I64; }
+   "u64"                           { return CP1_TOKEN_U64; }
+   "isz"                           { return CP1_TOKEN_ISZ; }
+   "usz"                           { return CP1_TOKEN_USZ; }
+   "f32"                           { return CP1_TOKEN_F32; }
+   "f64"                           { return CP1_TOKEN_F64; }
 
-   ":this"                          { return CP1_TOKEN_COLON_THIS; }
+   "this"                          { return CP1_TOKEN_THIS; }
    "true"                           { return CP1_TOKEN_TRUE; }
    "false"                          { return CP1_TOKEN_FALSE; }
    "null"                           { return CP1_TOKEN_NULL; }
@@ -206,6 +206,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "while"                          { return CP1_TOKEN_WHILE; }
    "if"                             { return CP1_TOKEN_IF; }
    spaces "elif"                    { return CP1_TOKEN_SPACE_ELIF; }
+   spaces "else" spaces "if"                    { return CP1_TOKEN_SPACE_ELIF; }
    spaces "else"                    { return CP1_TOKEN_SPACE_ELSE; }
    // "{if"                            { return CP1_TOKEN_LCBRACE_IF; }
    // "{switch"                        { return CP1_TOKEN_LCBRACE_SWITCH; }
@@ -220,15 +221,18 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "''\\" [^\n]                     { return CP1_TOKEN_CHAR2; }
 
    "."                              { return CP1_TOKEN_DOT; }
+   ":"                              { return CP1_TOKEN_COLON; }
 
-   ":" id                           { return CP1_TOKEN_ID_COLON; }
+   // ":" id                           { return CP1_TOKEN_ID_COLON; }
    // "/" id                           { return CP1_TOKEN_ID_FSLASH; }
    "\\" id                          { return CP1_TOKEN_ID_BSLASH; }
    // "%" id                           { return CP1_TOKEN_ID_MODULO; }
-   "'" id                           { return CP1_TOKEN_ID_QUOTE; }
+   // "'" id                           { return CP1_TOKEN_ID_QUOTE; }
    "#" id                           { return CP1_TOKEN_ID_HASH; }
    // "." id                           { return CP1_TOKEN_ID_DOT; }
-   [a-zA-Z\u00c0-\U0010ffff][0-9a-zA-Z\u00c0-\U0010ffff]*("-" id)*    { return CP1_TOKEN_ID; }
+   [a-z][0-9a-zA-Z\u00c0-\U0010ffff]*("-" id)*    { return CP1_TOKEN_ID; }
+   [A-Z][0-9a-zA-Z\u00c0-\U0010ffff]*("-" id)*    { return CP1_TOKEN_ID_UPPER; }
+   "." [A-Z][0-9a-zA-Z\u00c0-\U0010ffff]*("-" id)*    { return CP1_TOKEN_ID_DOT_UPPER; }
  
    */
 lex_string: {
