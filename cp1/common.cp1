@@ -269,7 +269,7 @@ using (:lvar) {
 #endif
 );
 :carg(
-   ref:i8,
+   reff:i8,
    expr:expr-i,
 #if(compiler)
    value:value+,
@@ -289,7 +289,7 @@ using (:lvar) {
 );
 :expr-method(
    base:expr+,
-   this:expr-i,
+   thiss:expr-i,
    func-name:id,
 #if(compiler)
    func-idx:func,
@@ -369,10 +369,10 @@ quick-alloc(size:i32):ref @real-name(qalloc) {
    }
    if (size <= (.quick-alloc-cap - .quick-alloc-c)) {
       var r:rdr+;
-      r.ref = .quick-alloc-v;
+      r.reff = .quick-alloc-v;
       r.pos += .quick-alloc-c;
       .quick-alloc-c += size;
-      return r.ref;
+      return r.reff;
    }
    // expand
    grow(.quick-alloc-cap, .quick-alloc-c + size);
@@ -841,13 +841,13 @@ var at-v:at-data+[];
          i = .include-table[idx];
       }
    }
-   output(this:this) @inline {
-      +num = this:u32;
+   output(thiss:this) @inline {
+      +num = thiss:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
       if ((.include-is-outputted[n3] & n17) != 0) { return}
       .include-is-outputted[n3] |= n17;
-      .include-outputted-v[.include-outputted-c++] = this;
+      .include-outputted-v[.include-outputted-c++] = thiss;
    }
 }
 

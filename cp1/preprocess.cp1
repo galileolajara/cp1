@@ -149,13 +149,13 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
    var in-data:char[] = in-out-data;
    +in-size = in-out-size;
    var r-end:rdr+;
-   r-end.ref = in-data;
+   r-end.reff = in-data;
    r-end.pos += in-size;
    var r:rdr+;
-   r.ref = in-data;
+   r.reff = in-data;
    var new-data = 'c.malloc(in-size + 1);
    var w:wtr+;
-   w.ref = new-data;
+   w.reff = new-data;
 
    +line = 0;
    while (r.pos < r-end.pos) {
@@ -190,7 +190,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
             'c.printf("%s:%u: Error in preprocessing the code, #if(...) must have a closing parenthesis ')'\n", .input-path, line);
             'c.exit(#failure);
          }
-         var def-str:char[] = & r.char[start];
+         var def-str:char[] = & r.charr[start];
          +def-len = rparen - start;
          +ok = preprocess-def-get(def-str, def-len);
          if (invert) {
@@ -229,7 +229,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
                w.p1[0] = ''\n;
                w.pos++;
             }
-            indention = r.char;
+            indention = r.charr;
             indention-len = first-char;
             line-len++;
             r.pos += line-len;
@@ -297,7 +297,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
    'c.free(in-data);
    in-out-data = new-data;
    var w-begin:wtr+;
-   w-begin.ref = new-data;
+   w-begin.reff = new-data;
    in-out-size = w.pos - w-begin.pos;
 
    if (preprocess) {

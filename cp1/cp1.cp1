@@ -20,9 +20,9 @@ print-run-usage(bin:char[]) {
    'c.printf("Usage: %s run [cp1 file/s...]\n", bin);
 }
 get-compiler(bin:char[], ninja-f'c:file) {
-   +PATH = 'c.strdup('c.getenv("PATH"));
+   +path = 'c.strdup('c.getenv("PATH"));
    // 'c.printf("PATH = %s\n", PATH);
-   +found = 'c.strtok(PATH, ":");
+   +found = 'c.strtok(path, ":");
    while (found != null) {
       // 'c.printf("- %s\n", found);
       var fd, compiler:char[512];
@@ -32,7 +32,7 @@ get-compiler(bin:char[], ninja-f'c:file) {
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = tcc $in -o $out\n");
          fd.close();
-         'c.free(PATH);
+         'c.free(path);
          return;
       }
       'c.sprintf(compiler, "%s/clang", found);
@@ -41,7 +41,7 @@ get-compiler(bin:char[], ninja-f'c:file) {
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = clang $in -o $out\n");
          fd.close();
-         'c.free(PATH);
+         'c.free(path);
          return;
       }
       'c.sprintf(compiler, "%s/gcc", found);
@@ -50,7 +50,7 @@ get-compiler(bin:char[], ninja-f'c:file) {
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = gcc $in -o $out\n");
          fd.close();
-         'c.free(PATH);
+         'c.free(path);
          return;
       }
       found = 'c.strtok(null, ":");
@@ -506,8 +506,8 @@ main(arg-c:intc, arg-v:char[][]):intc {
       if (has-slash) {
          'c.realpath(bin, abs-path);
       } else {
-         +PATH = 'c.strdup('c.getenv("PATH"));
-         +found = 'c.strtok(PATH, ":");
+         +path = 'c.strdup('c.getenv("PATH"));
+         +found = 'c.strtok(path, ":");
          +fd = 'c:fd#nil;
          while (found != null) {
             'c.sprintf(abs-path, "%s/%s", found, bin);
@@ -521,7 +521,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
             'c.printf("Cannot run %s because we can't detect its absolute path\n", bin);
             'c.exit(#failure);
          }
-         'c.free(PATH);
+         'c.free(path);
       }
    }
    +slash = 'c.strrchr(abs-path, ''/);

@@ -86,9 +86,9 @@ read(in-path:char[]) {
    // if (true) {
    //    r-begin.ref = in-fd.map(null, in-size, #read, #shared, 0);
    // } else {
-      r-begin.ref = 'c.malloc(in-size);
+      r-begin.reff = 'c.malloc(in-size);
       in-fd.seek(0, #set);
-      in-fd.read(r-begin.ref, in-size);
+      in-fd.read(r-begin.reff, in-size);
    // }
    in-fd.close();
 
@@ -100,10 +100,10 @@ read(in-path:char[]) {
    }
    +file = .file-v[file-idx];
    file.path = in-path;
-   file.data = r-begin.ref;
+   file.data = r-begin.reff;
 
    var r:rdr+;
-   r.ref = r-begin.ref;
+   r.reff = r-begin.reff;
    if (true) {
       +id-c = r.n();
       // 'c.out.printf("There are %u ids\n", id-c);
@@ -111,7 +111,7 @@ read(in-path:char[]) {
       file.id-table = .id-table;
       loop var i = 0; {(id-c) i++} {
          +id-len = r.n1();
-         +id-str = r.char;
+         +id-str = r.charr;
          r.pos += id-len + 1;
          .id-table[i] = id-add(id-len, id-str);
       }
@@ -126,7 +126,7 @@ read(in-path:char[]) {
       }
       loop var i = 0; {(include-c) i++} {
          +include-len = r.n1();
-         +include-str = r.ref;
+         +include-str = r.reff;
          r.pos += include-len + 1;
          +found = .include-map.get-or-insert(include-str, include-len, .include-c);
          // +found = -1;
@@ -392,7 +392,7 @@ read(in-path:char[]) {
       +at-i = f.at;
       f.decl.rd(r);
       var r0:rdr+;
-      r0.ref = f;
+      r0.reff = f;
       // 'c.out.printf("func :%s was declared on an at:\n", f.decl.name.str());
       // if (true) {
       //    +at-i = f.at;
@@ -440,7 +440,7 @@ read(in-path:char[]) {
          +len = r.n();
          f.decl-len = len;
          f.decl-str = quick-alloc(len + 1);
-         'c.memcpy(f.decl-str, r.ref, len);
+         'c.memcpy(f.decl-str, r.reff, len);
          f.decl-str[len] = 0;
          r.pos += len;
       }
@@ -892,7 +892,7 @@ using (:func) {
       // f.lvar-c = f.farg-c:lvar;
       var r:rdr+;
       +file = f.file.ptr();
-      r.ref = file.data;
+      r.reff = file.data;
       .id-table = file.id-table;
       .at-table = file.at-table;
       .cvar-table = file.cvar-table;

@@ -87,7 +87,7 @@ using (:expr-i) {
       } else {
          .out.printf(", ");
       }
-      e.this.write-value(e.this-value);
+      e.thiss.write-value(e.this-value);
       loop {(e.carg-c - f.this-idx) i++} {
          .out.printf(", ");
          +ca = e.carg-v[i];
@@ -97,7 +97,7 @@ using (:expr-i) {
    }
    wr-method(expr:expr, w:wtr, header:bool) @case.wr() @inline {
       var e:expr-method = expr;
-      e.this.wr(w, header);
+      e.thiss.wr(w, header);
       e.func-name.wr(w, header);
       w.n1(e.group-c);
       loop var i = 0; {(e.group-c) i++} {
@@ -119,7 +119,7 @@ using (:expr-i) {
       +carg-c = r.n1();
       quick-alloc-plus(+(e:expr-method), :carg[:usz] * carg-c);
       e-idx.set(e.base, #method);
-      e.this = this-expr;
+      e.thiss = this-expr;
       e.func-name = func-name;
       e.group-c = group-c;
       loop var i = 0; {(group-c) i++} {
@@ -137,7 +137,7 @@ using (:expr-i) {
       +group-v = e.group-v;
       +carg-c = e.carg-c;
       +carg-c1 = carg-c + 1;
-      +at-idx = e.this.type();
+      +at-idx = e.thiss.type();
       if (at-idx == #nil) {
          'c.out.printf("%s:%u:%u - %u:%u: Cannot call method %s on a value without a type\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str());
          return;
@@ -223,20 +223,20 @@ using (:expr-i) {
          +k = 0;
          loop {(f.this-idx) j++; k++} {
             +ca = e.carg-v[k];
-            if !(farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl, f-at)) { return}
+            if !(farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at)) { return}
          }
-         if !(farg-process(e.this, 0, e.this-value, f.farg-v[j++].decl, f-at)) { return}
+         if !(farg-process(e.thiss, 0, e.this-value, f.farg-v[j++].decl, f-at)) { return}
          loop {((f.farg-c - 1) - f.this-idx) j++; k++} {
             +ca = e.carg-v[k];
-            if !(farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl, f-at)) { return}
+            if !(farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at)) { return}
          }
          e.func-idx = f-idx;
          if ((f.flags & #var-args) != #0) {
             loop {(e.carg-c - k) k++} {
                +ca = e.carg-v[k];
                var r:i32;
-               if (ca.ref) {
-                  r = 1 + ca.ref;
+               if (ca.reff) {
+                  r = 1 + ca.reff;
                } else {
                   r = 1;
                }
@@ -368,15 +368,15 @@ using (:expr-i) {
             +j = 0;
             loop {(f.farg-c) j++} {
                +ca = e.carg-v[j];
-               if !(farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl, f-at)) { return}
+               if !(farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at)) { return}
             }
             e.func-idx = f-idx;
             if ((f.flags & #var-args) != #0) {
                loop {(e.carg-c - j) j++} {
                   +ca = e.carg-v[j];
                   var r:i32;
-                  if (ca.ref) {
-                     r = 1 + ca.ref;
+                  if (ca.reff) {
+                     r = 1 + ca.reff;
                   } else {
                      r = 1;
                   }
@@ -416,15 +416,15 @@ using (:expr-i) {
       +j = 0;
       loop {(f.farg-c) j++} {
          +ca = e.carg-v[j];
-         if !(farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl, f-at)) { return false}
+         if !(farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at)) { return false}
       }
       e.func-idx = f-idx;
       if ((f.flags & #var-args) != #0) {
          loop {(e.carg-c - j) j++} {
             +ca = e.carg-v[j];
             var r:i32;
-            if (ca.ref) {
-               r = 1 + ca.ref;
+            if (ca.reff) {
+               r = 1 + ca.reff;
             } else {
                r = 1;
             }

@@ -2,10 +2,10 @@ using 'cp1 = :cp1;
 using 'c = :stdc;
 using (:cp1) {
 :rdr(
-   ref:ref,
+   reff:ref,
    pos:usz,
    p1:u8[],
-   char:char[],
+   charr:char[],
    p4:u32[],
    ) @union {
    n1(r:this):u8 @inline {
@@ -37,14 +37,14 @@ using (:cp1) {
       return r.n1();
    }
    copy(r:this, data:ref, size:i32) @inline {
-      'c.memcpy(data, r.ref, size);
+      'c.memcpy(data, r.reff, size);
       r.pos += size;
    }
    b(r:this):bool @inline {
       return r.n1() != 0;
    }
-   set(r:this, ref:ref) @inline {
-      r.ref = ref;
+   set(r:this, reff:ref) @inline {
+      r.reff = reff;
    }
 }
  
