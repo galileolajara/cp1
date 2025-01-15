@@ -40,11 +40,11 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
    return true;
 }
 using (:expr-i) {
-   value-func(e:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline {
+   value-func(e:this, reff:i32, paren:bool, v:value, ok:bool&) @case.value() @inline {
       var expr:expr-func = e.ptr();
       +f = expr.func-idx.ptr();
-      v.set(ref, paren, f.decl.type, f.decl.type-info);
-      if (v.ref == 1) {
+      v.set(reff, paren, f.decl.type, f.decl.type-info);
+      if (v.reff == 1) {
          v.paren = false;
       }
       ok = true;
@@ -53,11 +53,11 @@ using (:expr-i) {
       var e:expr-func = expr;
       at = e.func-idx.ptr().decl.type;
    }
-   value-method(e:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline {
+   value-method(e:this, reff:i32, paren:bool, v:value, ok:bool&) @case.value() @inline {
       var expr:expr-method = e.ptr();
       +f = expr.func-idx.ptr();
-      v.set(ref, paren, f.decl.type, f.decl.type-info);
-      if (v.ref == 1) {
+      v.set(reff, paren, f.decl.type, f.decl.type-info);
+      if (v.reff == 1) {
          v.paren = false;
       }
       ok = true;

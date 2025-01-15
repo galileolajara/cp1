@@ -61,19 +61,19 @@ using (:stmt) {
    }
    write-value(e:this, v:value):bool {
       +expr = e.ptr();
-      +ref = v.ref;
+      +reff = v.reff;
       // 'c.out.printf("write-value v.ref = %d\n", ref);
       if (v.paren) {
-         if (ref <= 0) {
+         if (reff <= 0) {
             .out.write("(&", 2);
          } else {
-            .out.write("(*******************************", ref);
+            .out.write("(*******************************", reff);
          }
       } else {
-         if (ref <= 0) {
+         if (reff <= 0) {
             .out.write("&", 1);
-         } elif (ref > 1) {
-            .out.write("*******************************", ref - 1);
+         } elif (reff > 1) {
+            .out.write("*******************************", reff - 1);
          }
       }
 
@@ -89,11 +89,11 @@ using (:stmt) {
       }
       return true;
    }
-	value(e:this, ref:i32, paren:bool, v:value):bool {
+	value(e:this, reff:i32, paren:bool, v:value):bool {
       if !(e.process()) { return false}
       +expr = e.ptr();
       +ok = false;
-      switch (expr.type).value(e, ref, paren, v, ok) {
+      switch (expr.type).value(e, reff, paren, v, ok) {
          default {
             'c.out.printf("%u:%u - %u:%u: value() not implemented for #%s\n",
                .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());

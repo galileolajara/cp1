@@ -1,6 +1,6 @@
 using 'cp1 = :cp1;
 using (:cp1) {
-:nest(do:stmt-do, whil:stmt-while, ref:ref) @union;
+:nest(do:stmt-do, whil:stmt-while, reff:ref) @union;
 var nest-stack-ptr-v:nest+[64];
 var nest-stack-id-v:i32[64];
 var nest-stack-c:u8;

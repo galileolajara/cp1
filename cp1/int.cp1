@@ -36,7 +36,7 @@ using (:expr-i) {
       v.info.array-c = 0;
       v.info.ref-v[0] = ''\0;
       v.info.star-c = 0;
-      v.ref = 1;
+      v.reff = 1;
       v.paren = false;
       ok = true;
    }

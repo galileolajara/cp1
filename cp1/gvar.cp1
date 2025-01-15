@@ -46,11 +46,11 @@ expr-gvar(at:at, name:id):expr-i {
    return e-idx;
 }
 using (:expr-i) {
-   value-gvar(g:this, ref:i32, paren:bool, v:value, ok:bool&) @case.value() @inline {
+   value-gvar(g:this, reff:i32, paren:bool, v:value, ok:bool&) @case.value() @inline {
       var e:expr-gvar = g.ptr();
       +gvar = e.gvar.ptr();
-      v.set(ref, paren, gvar.decl.type, gvar.decl.type-info);
-      if (v.ref == 1) {
+      v.set(reff, paren, gvar.decl.type, gvar.decl.type-info);
+      if (v.reff == 1) {
          v.paren = false;
       }
       ok = true;

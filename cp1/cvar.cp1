@@ -97,11 +97,11 @@ using (:expr-i) {
       e.name.rd(r);
       e.try = #nil;
    }
-   value-cvar(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
+   value-cvar(e:this, reff:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
       var expr:expr-cvar = e.ptr();
       +cvar = expr.cvar.ptr();
-      v.set(ref, paren, cvar.decl.type, cvar.decl.type-info);
-      if (v.ref == 1) {
+      v.set(reff, paren, cvar.decl.type, cvar.decl.type-info);
+      if (v.reff == 1) {
          v.paren = false;
       }
       ok = true;

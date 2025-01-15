@@ -193,25 +193,25 @@ using (:decl-var-data) {
    }
 }
 #type-info-star-limit:i32 = 8;
-:value(ref:i8, paren:bool, type:at, info:type-info+) {
-	set(v:this, ref:i8, paren:bool, type:at, info:type-info) {
+:value(reff:i8, paren:bool, type:at, info:type-info+) {
+	set(v:this, reff:i8, paren:bool, type:at, info:type-info) {
 		+c = info.ref-v[info.array-c];
 		v.type = type;
-		v.ref = (c + 2) - ref;
+		v.reff = (c + 2) - reff;
 		v.info.init();
 		v.info.copy-from(info);
-		v.info.ref-v[v.info.array-c] = ref - 1;
+		v.info.ref-v[v.info.array-c] = reff - 1;
 		v.info.count();
 		v.paren = paren;
 	}
    rd(v:this, r:rdr) {
-      v.ref = r.n1();
+      v.reff = r.n1();
       v.paren = r.n1() != 0;
       v.type.rd(r);
       v.info.rd(r);
    }
    wr(v:this, w:wtr, header:bool) {
-      w.n1(v.ref);
+      w.n1(v.reff);
       w.b(v.paren);
       v.type.wr(w, header);
       v.info.wr(w);

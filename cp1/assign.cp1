@@ -73,13 +73,13 @@ using (:expr-i) {
       var e:expr-assign = expr;
       at = e.left.type();
    }
-   value-assign(e:this, ref:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
+   value-assign(e:this, reff:i8, paren:bool, v:value, ok:bool&) @case.value() @inline {
       var expr:expr-assign = e.ptr();
 		if (expr.left.value(1, paren, v) == false) {
          return;
       }
 		v.paren = paren;
-		v.ref = ref;
+		v.reff = reff;
       ok = true;
 	}
    process-assign(expr:expr, ok:bool&) @case.process() @inline {
