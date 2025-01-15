@@ -19,15 +19,15 @@ print-c-usage(bin:char[]) {
 print-run-usage(bin:char[]) {
    C.printf("Usage: %s run [cp1 file/s...]\n", bin);
 }
-get-compiler(bin:char[], ninja-f:C.File) {
+get-compile(bin:char[], ninja-f:C.File) {
    +path = C.strdup(C.getenv("PATH"));
    // C.printf("PATH = %s\n", PATH);
    +found = C.strtok(path, ":");
    while (found != null) {
       // C.printf("- %s\n", found);
-      var fd, compiler:char[512];
-      C.sprintf(compiler, "%s/tcc", found);
-      fd = C.open(compiler, #read);
+      var fd, compile:char[512];
+      C.sprintf(compile, "%s/tcc", found);
+      fd = C.open(compile, #read);
       if (fd != #nil) {
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = tcc $in -o $out\n");
@@ -35,8 +35,8 @@ get-compiler(bin:char[], ninja-f:C.File) {
          C.free(path);
          return;
       }
-      C.sprintf(compiler, "%s/clang", found);
-      fd = C.open(compiler, #read);
+      C.sprintf(compile, "%s/clang", found);
+      fd = C.open(compile, #read);
       if (fd != #nil) {
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = clang $in -o $out\n");
@@ -44,8 +44,8 @@ get-compiler(bin:char[], ninja-f:C.File) {
          C.free(path);
          return;
       }
-      C.sprintf(compiler, "%s/gcc", found);
-      fd = C.open(compiler, #read);
+      C.sprintf(compile, "%s/gcc", found);
+      fd = C.open(compile, #read);
       if (fd != #nil) {
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = gcc $in -o $out\n");
@@ -55,7 +55,7 @@ get-compiler(bin:char[], ninja-f:C.File) {
       }
       found = C.strtok(null, ":");
    }
-   C.printf("Cannot execute '%s run' because the required compiler was not found: tcc clang or gcc\n", bin);
+   C.printf("Cannot execute '%s run' because the required compile was not found: tcc clang or gcc\n", bin);
    C.exit(#failure);
 }
 Cmd[#c, #run]:u8;
@@ -563,14 +563,14 @@ main(arg-c:intc, arg-v:char[][]):intc {
          C.exit(#failure);
       }
       +ninja-f = ninja-fd.fopen("w");
-      ninja-f.printf("rule parser\n");
-      ninja-f.printf(" command = %s-parser $in $out\n", bin);
-      ninja-f.printf("rule compiler\n");
-      ninja-f.printf(" command = %s-compiler $in $out\n", bin);
+      ninja-f.printf("rule parse\n");
+      ninja-f.printf(" command = %s-parse $in $out\n", bin);
+      ninja-f.printf("rule compile\n");
+      ninja-f.printf(" command = %s-compile $in $out\n", bin);
       loop var i = 0; {(.cp1-path-c) i++} {
-         ninja-f.printf("build cp1-tmp/%s-b: parser %s\n", .cp1-path-v[i], .cp1-path-real-v[i]);
+         ninja-f.printf("build cp1-tmp/%s-b: parse %s\n", .cp1-path-v[i], .cp1-path-real-v[i]);
       }
-      ninja-f.printf("build %s: compiler", c-path);
+      ninja-f.printf("build %s: compile", c-path);
       loop var i = 0; {(.cp1-path-c) i++} {
          ninja-f.printf(" cp1-tmp/%s-b", .cp1-path-v[i]);
       }
@@ -626,23 +626,23 @@ main(arg-c:intc, arg-v:char[][]):intc {
          C.exit(#failure);
       }
       +ninja-f = ninja-fd.fopen("w");
-      ninja-f.printf("rule parser\n");
-      ninja-f.printf(" command = %s-parser $in $out\n", bin);
-      ninja-f.printf("rule compiler\n");
-      ninja-f.printf(" command = %s-compiler $in $out\n", bin);
-      get-compiler(bin, ninja-f);
+      ninja-f.printf("rule parse\n");
+      ninja-f.printf(" command = %s-parse $in $out\n", bin);
+      ninja-f.printf("rule compile\n");
+      ninja-f.printf(" command = %s-compile $in $out\n", bin);
+      get-compile(bin, ninja-f);
       loop var i = 0; {(.cp1-path-c) i++} {
-         ninja-f.printf("build cp1-tmp/%s-b: parser %s\n", .cp1-path-v[i], .cp1-path-real-v[i]);
+         ninja-f.printf("build cp1-tmp/%s-b: parse %s\n", .cp1-path-v[i], .cp1-path-real-v[i]);
       }
-      ninja-f.printf("build %s: compiler", c-path);
+      ninja-f.printf("build %s: compile", c-path);
       loop var i = 0; {(.cp1-path-c) i++} {
          ninja-f.printf(" cp1-tmp/%s-b", .cp1-path-v[i]);
       }
       ninja-f.printf("\n");
       ninja-f.printf("build %s: c %s\n", exe-path, c-path);
       ninja-f.close();
-      var command:char[24 + 9];
-      C.sprintf(command, "ninja -f %s", ninja-path);
+      var command:char[32 + 9];
+      C.sprintf(command, "ninja --quiet -f %s", ninja-path);
       +ninja-ret = C.system(command);
       if (ninja-ret != 0) {
          C.exit(#failure);

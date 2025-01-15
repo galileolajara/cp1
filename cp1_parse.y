@@ -689,9 +689,9 @@ loop_forever ::= .
 loop_part2 ::= loop_forever stmts_optional3. */
 stmt_do ::= stmt_do_begin SPACE do_expr SPACE stmts_optional2.
    { _NCp1_Pstmt_do_end_0(); }
-stmt_do ::= stmt_do_begin SPACE stmt_lvars SCOLON SPACE do_expr SPACE stmts_optional2.
+stmt_do ::= stmt_do_begin SPACE stmt_lvars_no_begin SCOLON SPACE do_expr SPACE stmts_optional2.
    { _NCp1_Pstmt_do_end_0(); }
-stmt_do ::= stmt_do_begin SPACE stmt_lvars SCOLON SPACE loop_forever stmts_optional2.
+stmt_do ::= stmt_do_begin SPACE stmt_lvars_no_begin SCOLON SPACE loop_forever stmts_optional2.
    { _NCp1_Pstmt_do_end_0(); }
 stmt_do ::= stmt_do_begin SPACE loop_forever stmts_optional2.
    { _NCp1_Pstmt_do_end_0(); }
@@ -725,7 +725,7 @@ stmt ::= stmt_if_chain.
 stmt ::= stmt_if_chain stmt_else.
    { _NCp1_Pstmt_if_end_ifs_0(); }
 space_begin ::= .
-space_begin ::= stmt_lvars scolon_space.
+space_begin ::= stmt_lvars_no_begin scolon_space.
 stmt_if_begin ::= IF SPACE.
    { _NCp1_Pstmt_if_begin_0(); }
 stmt_elif_begin ::= SPACE_ELIF SPACE.
@@ -811,6 +811,8 @@ typeAndInfo_optional ::= expr_type_none typeInfo_none.
 
 stmt_expr ::= stmt_lvars.
 stmt_lvars ::= decl_lvar_begin lvar_list(end).
+   { _NCp1_Pstmt_lvar_end_2(end.basic.row, end.basic.col); }
+stmt_lvars_no_begin ::= lvar_list(end).
    { _NCp1_Pstmt_lvar_end_2(end.basic.row, end.basic.col); }
 decl_lvar ::= ID(var) typeAndInfo_optional SPACE_EQUAL_SPACE expr(e).
    { _NCp1_Pstmt_lvar_add_4(var.basic.id, e.basic.id, var.basic.row, var.basic.col); }
