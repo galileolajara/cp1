@@ -24,41 +24,41 @@ union cp1_token {
 };
 
 /*
-void _Ncp1_Ppreprocess_def_2(const char*, uint8_t);
+void _NCp1_Ppreprocess_def_2(const char*, uint8_t);
 
-void _Ncp1_Ppreprocess_init_0() {
+void _NCp1_Ppreprocess_init_0() {
 #ifdef _WIN32
-   _Ncp1_Ppreprocess_def_2("windows", 7);
+   _NCp1_Ppreprocess_def_2("windows", 7);
 #endif
 #ifdef __APPLE__
-   _Ncp1_Ppreprocess_def_2("apple", 5);
+   _NCp1_Ppreprocess_def_2("apple", 5);
 	#ifdef TARGET_OS_MAC
-   _Ncp1_Ppreprocess_def_2("macos", 5);
+   _NCp1_Ppreprocess_def_2("macos", 5);
 	#endif
 #endif
 #ifdef __linux__
-   _Ncp1_Ppreprocess_def_2("linux", 5);
+   _NCp1_Ppreprocess_def_2("linux", 5);
 #endif
 #ifdef __unix__
-   _Ncp1_Ppreprocess_def_2("unix", 4);
+   _NCp1_Ppreprocess_def_2("unix", 4);
 #endif
 #ifdef BSD
-   _Ncp1_Ppreprocess_def_2("bsd", 3);
+   _NCp1_Ppreprocess_def_2("bsd", 3);
 #endif
 #ifdef __FreeBSD__
-   _Ncp1_Ppreprocess_def_2("freebsd", 7);
+   _NCp1_Ppreprocess_def_2("freebsd", 7);
 #endif
 #ifdef __OpenBSD__
-   _Ncp1_Ppreprocess_def_2("openbsd", 7);
+   _NCp1_Ppreprocess_def_2("openbsd", 7);
 #endif
 #ifdef __NetBSD__
-   _Ncp1_Ppreprocess_def_2("netbsd", 6);
+   _NCp1_Ppreprocess_def_2("netbsd", 6);
 #endif
 #ifdef __DragonFly__
-   _Ncp1_Ppreprocess_def_2("dragonfly", 9);
+   _NCp1_Ppreprocess_def_2("dragonfly", 9);
 #endif
 #if defined(_LP64) || defined(__LP64__)
-   _Ncp1_Ppreprocess_def_2("cpu64", 5);
+   _NCp1_Ppreprocess_def_2("cpu64", 5);
 #endif
 }
 */
@@ -71,28 +71,28 @@ void cleanup() {
       unlink(_Glock_path);
    }
 }
-void _Ncp1_Pparser_at_exit_0() {
+void _NCp1_PParser_at_exit_0() {
    atexit(cleanup);
 }
 
-typedef int _Ncp1_Nexpr_i;
-typedef int _Ncp1_Nid;
-typedef int _Ncp1_Ninclude;
-typedef int _Ncp1_Nat;
-typedef int8_t _Ncp1_Nbasic_type_id;
-typedef int8_t _Ncp1_Nunary;
-typedef int8_t _Ncp1_Nmath;
-typedef int8_t _Ncp1_Nexpr_type;
-typedef int8_t _Ncp1_Nexpr_int;
-typedef int8_t _Ncp1_Nname_type;
-typedef int8_t _Ncp1_Nstmt_type;
-typedef int8_t _Ncp1_Ncompare;
-typedef int8_t _Ncp1_Nassign;
-typedef int8_t _Ncp1_Nbools;
-typedef int8_t _Ncp1_Ntoken;
-struct _Ncp1_Nstmt_space;
-struct _Ncp1_Nstmt;
-struct _Ncp1_Nexpr_data;
+typedef int _NCp1_NExprI;
+typedef int _NCp1_NId;
+typedef int _NCp1_NInclude;
+typedef int _NCp1_NAt;
+typedef int8_t _NCp1_NBasicTypeId;
+typedef int8_t _NCp1_NUnary;
+typedef int8_t _NCp1_NMath;
+typedef int8_t _NCp1_NExprType;
+typedef int8_t _NCp1_NExprInt;
+typedef int8_t _NCp1_NNameType;
+typedef int8_t _NCp1_NStmtType;
+typedef int8_t _NCp1_NCompare;
+typedef int8_t _NCp1_NAssign;
+typedef int8_t _NCp1_NBools;
+typedef int8_t _NCp1_NToken;
+struct _NCp1_NStmtSpace;
+struct _NCp1_NStmt;
+struct _NCp1_NExprData;
 #ifdef CP1_NEW
 #include "out/export.h"
 #else
@@ -125,15 +125,15 @@ struct cp1_lexer {
    // const char *ctx_marker;
 };
 
-void* _Ncp1_Nparser_Palloc_0() {
+void* _NCp1_NParser_Palloc_0() {
    return cp1ParseAlloc(malloc);
 }
 
-void _Ncp1_Nparser_Pfree_1(void* parser) {
+void _NCp1_NParser_Pfree_1(void* parser) {
    cp1ParseFree(parser, free);
 }
 
-int _Ncp1_Pchar_escape_value_1(char c) {
+int _NCp1_Pchar_escape_value_1(char c) {
    switch(c) {
       case 'a': return '\a';
       case 'b': return '\b';
