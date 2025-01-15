@@ -1,13 +1,13 @@
 {include(<sys/stat.h>)
-   using 'sys = :sys;
-   using (:sys) {
-      :timespec(sec:u32 @real-name(tv_sec), nsec:u32 @real-name(tv_nsec));
-      :stat(
-         mtimespec:timespec+ @real-name(st_mtimespec),
-         mtim:timespec+ @real-name(st_mtim),
+   using Sys = Sys;
+   using (Sys) {
+      Timespec(sec:u32 @real-name(tv_sec), nsec:u32 @real-name(tv_nsec));
+      Stat(
+         mtimespec:Timespec+ @real-name(st_mtimespec),
+         mtim:Timespec+ @real-name(st_mtim),
       ) @real-name @no-decl;
       mkdir(path:char[], mode:intc):intc @real-name @no-decl;
-      fstat(file:intc, stat:stat):intc @real-name @no-decl;
-      stat(file:char[], stat:stat):intc @real-name @no-decl;
+      fstat(file:intc, stat:Stat):intc @real-name @no-decl;
+      stat(file:char[], stat:Stat):intc @real-name @no-decl;
    }
 }

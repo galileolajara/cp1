@@ -1,7 +1,7 @@
-using 'cp1 = :cp1;
-using 'c = :stdc;
-using (:cp1) {
-farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:at):bool {
+using Cp1 = Cp1;
+using C = Stdc;
+using (Cp1) {
+farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At):bool {
    +ce = e.ptr();
    var r:i32;
    if (ca-ref != 0) {
@@ -10,15 +10,15 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
       r = 1;
       r += fd-arg.type-info.ref-v[fd-arg.type-info.array-c]:i32;
    }
-   // 'c.out.printf("r %d, %d %d %d\n", r, j, fd-arg.type-info.array-c, fd-arg.type-info.ref-v[fd-arg.type-info.array-c]);
+   // C.out.printf("r %d, %d %d %d\n", r, j, fd-arg.type-info.array-c, fd-arg.type-info.ref-v[fd-arg.type-info.array-c]);
    if (ce.type == #lvar) {
-      var ve:expr-lvar = ce;
+      var ve:ExprLvar = ce;
       +lvar = ve.lvar.ptr();
       +vd = lvar.decl;
       if (vd.type == #nil) {
          if ((lvar.flags & #set-expr) == #0) {
             // if (vd.type-info.array-c != fd-arg.type-info.array-c) {
-            //    'c.err.printf("%s:%u:%u: Type deduction failed for lvar '%s', array dimension mismatch\n", .ctx-func.file.path(), lvar.row, lvar.col, vd.name.str());
+            //    C.err.printf("%s:%u:%u: Type deduction failed for lvar '%s', array dimension mismatch\n", .ctx-func.file.path(), lvar.row, lvar.col, vd.name.str());
             //    return false;
             // }
             vd.type = fd-arg.type;
@@ -39,9 +39,9 @@ farg-process(e:expr-i, ca-ref:i8, ca-value:value, fd-arg:decl-var-data, base-at:
    if !(e.value(r, false, ca-value)) { return false}
    return true;
 }
-using (:expr-i) {
-   value-func(e:this, reff:i32, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      var expr:expr-func = e.ptr();
+using (ExprI) {
+   value-func(e:this, reff:i32, paren:bool, v:Value, ok:bool&) @case.value() @inline {
+      var expr:ExprFunc = e.ptr();
       +f = expr.func-idx.ptr();
       v.set(reff, paren, f.decl.type, f.decl.type-info);
       if (v.reff == 1) {
@@ -49,12 +49,12 @@ using (:expr-i) {
       }
       ok = true;
    }
-   type-func(expr:expr, at:at&) @case.type() @inline {
-      var e:expr-func = expr;
+   type-func(expr:Expr, at:At&) @case.type() @inline {
+      var e:ExprFunc = expr;
       at = e.func-idx.ptr().decl.type;
    }
-   value-method(e:this, reff:i32, paren:bool, v:value, ok:bool&) @case.value() @inline {
-      var expr:expr-method = e.ptr();
+   value-method(e:this, reff:i32, paren:bool, v:Value, ok:bool&) @case.value() @inline {
+      var expr:ExprMethod = e.ptr();
       +f = expr.func-idx.ptr();
       v.set(reff, paren, f.decl.type, f.decl.type-info);
       if (v.reff == 1) {
@@ -62,12 +62,12 @@ using (:expr-i) {
       }
       ok = true;
    }
-   type-method(expr:expr, at:at&) @case.type() @inline {
-      var e:expr-method = expr;
+   type-method(expr:Expr, at:At&) @case.type() @inline {
+      var e:ExprMethod = expr;
       at = e.func-idx.ptr().decl.type;
    }
-   write-method(expr:expr) @case.write() @inline {
-      var e:expr-method = expr;
+   write-method(expr:Expr) @case.write() @inline {
+      var e:ExprMethod = expr;
       +f = e.func-idx.ptr();
       f.write();
       .out.printf("(");
@@ -95,8 +95,8 @@ using (:expr-i) {
       }
       .out.printf(")");
    }
-   wr-method(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      var e:expr-method = expr;
+   wr-method(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
+      var e:ExprMethod = expr;
       e.thiss.wr(w, header);
       e.func-name.wr(w, header);
       w.n1(e.group-c);
@@ -108,16 +108,16 @@ using (:expr-i) {
          e.carg-v[i].expr.wr(w, header);
       }
    }
-   rd-method(e-idx:expr-i, r:rdr) @case.rd() @inline {
-      :expr-i.rd(+this-expr, r);
-      :id.rd(+func-name, r);
+   rd-method(e-idx:ExprI, r:Rdr) @case.rd() @inline {
+      ExprI.rd(+this-expr, r);
+      Id.rd(+func-name, r);
       +group-c = r.n1();
       var group-v:i8[#expr-carg-group-limit];
       loop var i = 0; {(group-c) i++} {
          group-v[i] = r.n1();
       }
       +carg-c = r.n1();
-      quick-alloc-plus(+(e:expr-method), :carg[:usz] * carg-c);
+      quick-alloc-plus(+(e:ExprMethod), Carg[usz] * carg-c);
       e-idx.set(e.base, #method);
       e.thiss = this-expr;
       e.func-name = func-name;
@@ -130,8 +130,8 @@ using (:expr-i) {
          e.carg-v[i].expr.rd(r);
       }
    }
-   process-method(expr:expr, ok:bool&) @case.process() @inline {
-      var e:expr-method = expr;
+   process-method(expr:Expr, ok:bool&) @case.process() @inline {
+      var e:ExprMethod = expr;
       +func-name = e.func-name;
       +group-c = e.group-c;
       +group-v = e.group-v;
@@ -139,7 +139,7 @@ using (:expr-i) {
       +carg-c1 = carg-c + 1;
       +at-idx = e.thiss.type();
       if (at-idx == #nil) {
-         'c.out.printf("%s:%u:%u - %u:%u: Cannot call method %s on a value without a type\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str());
+         C.out.printf("%s:%u:%u - %u:%u: Cannot call method %s on a value without a type\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str());
          return;
       }
       +at = at-idx.ptr();
@@ -150,7 +150,7 @@ using (:expr-i) {
          method-v = t.method-v;
       } else {
          if (&&, at.decl.struct == #nil, at.type != #basic, at.type != #module) {
-            'c.out.printf("%s:%u:%u - %u:%u: Cannot call method %s because the type :%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), at.name.id.str());
+            C.out.printf("%s:%u:%u - %u:%u: Cannot call method %s because the type :%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), at.name.id.str());
             return;
          }
          if (at.def == #struct) {
@@ -246,20 +246,20 @@ using (:expr-i) {
          ok = true;
          return;
       }
-      'c.out.printf("%s:%u:%u - %u:%u: Cannot find method %s with %u argument:s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
+      C.out.printf("%s:%u:%u - %u:%u: Cannot find method %s with %u argument:S\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
       if (found != -1) {
-         'c.out.printf("But found %u functions with different no. of argument:s:\n", similar-c);
+         C.out.printf("But found %u functions with different no. of argument:S:\n", similar-c);
          loop var i = 0; {(at.func-c) i++} {
             +f-idx = at.func-v[i];
             +f = .func-v[f-idx];
             if (f.decl.name == func-name) {
-               'c.out.printf("- :%s with %u args\n", func-name.str(), f.farg-c);
+               C.out.printf("- :%s with %u args\n", func-name.str(), f.farg-c);
             }
          }
       }
    }
-   write-func(expr:expr) @case.write() @inline {
-      var e:expr-func = expr;
+   write-func(expr:Expr) @case.write() @inline {
+      var e:ExprFunc = expr;
       +f = e.func-idx.ptr();
       f.write();
       .out.printf("(");
@@ -271,8 +271,8 @@ using (:expr-i) {
       }
       .out.printf(")");
    }
-   wr-func(expr:expr, w:wtr, header:bool) @case.wr() @inline {
-      var e:expr-func = expr;
+   wr-func(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
+      var e:ExprFunc = expr;
       e.at.wr(w, header);
       e.func-name.wr(w, header);
       w.n1(e.group-c);
@@ -284,9 +284,9 @@ using (:expr-i) {
          e.carg-v[i].expr.wr(w, header);
       }
    }
-   rd-func(e-idx:expr-i, r:rdr) @case.rd() @inline {
-      :at.rd(+at-idx, r);
-      :id.rd(+func-name, r);
+   rd-func(e-idx:ExprI, r:Rdr) @case.rd() @inline {
+      At.rd(+at-idx, r);
+      Id.rd(+func-name, r);
       +group-c = r.n1();
       var group-v:i8[#expr-carg-group-limit];
       loop var i = 0; {(group-c) i++} {
@@ -294,7 +294,7 @@ using (:expr-i) {
       }
       +carg-c = r.n1();
 
-      quick-alloc-plus(+(e:expr-func), :carg[:usz] * carg-c);
+      quick-alloc-plus(+(e:ExprFunc), Carg[usz] * carg-c);
       e-idx.set(e.base, #func);
       e.at = at-idx;
       e.func-name = func-name;
@@ -307,8 +307,8 @@ using (:expr-i) {
          e.carg-v[i].expr.rd(r);
       }
    }
-   process-func(expr:expr, ok:bool&) @case.process() @inline {
-      var e:expr-func = expr;
+   process-func(expr:Expr, ok:bool&) @case.process() @inline {
+      var e:ExprFunc = expr;
       +func-name = e.func-name;
       +carg-c = e.carg-c;
       +group-c = e.group-c;
@@ -325,12 +325,12 @@ using (:expr-i) {
       loop {
          +at = at-idx.ptr();
          // if (&&, at.decl.struct == #nil, at.type != #basic, at.type != #module) {
-         //    'c.out.printf("%s:%u:%u - %u:%u: Cannot call function %s because the type :%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), at.name.id.str());
+         //    C.out.printf("%s:%u:%u - %u:%u: Cannot call function %s because the type :%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), at.name.id.str());
          //    return;
          // }
          // +found = -1;
          // +similar-c = 0;
-         // 'c.out.printf("searching from %u functions\n", at.func-c);
+         // C.out.printf("searching from %u functions\n", at.func-c);
          loop var i = 0; {(at.func-c) i++} {
             +f-idx = at.func-v[i];
             +f = f-idx.ptr();
@@ -391,20 +391,20 @@ using (:expr-i) {
          if (at-idx == #root) { break}
          at-idx = at.parent;
       }
-      'c.out.printf("%s:%u:%u - %u:%u: Cannot find function %s with %u argument:s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
+      C.out.printf("%s:%u:%u - %u:%u: Cannot find function %s with %u argument:S\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
       // if (found != -1) {
-      //    'c.out.printf("But found %u functions with different no. of argument:s:\n", similar-c);
+      //    C.out.printf("But found %u functions with different no. of argument:S:\n", similar-c);
       //    loop var i = 0; {(at.func-c) i++} {
       //       +f-idx = at.func-v[i];
       //       +f = .func-v[f-idx];
       //       if (f.decl.name == func-name) {
-      //          'c.out.printf("- :%s with %u args\n", func-name.str(), f.farg-c);
+      //          C.out.printf("- :%s with %u args\n", func-name.str(), f.farg-c);
       //       }
       //    }
       // }
    }
-   process-case-func(expr:expr, f-idx:func):bool @inline {
-      var e:expr-func = expr;
+   process-case-func(expr:Expr, f-idx:Func):bool @inline {
+      var e:ExprFunc = expr;
       +func-name = e.func-name;
       +carg-c = e.carg-c;
       +group-c = e.group-c;

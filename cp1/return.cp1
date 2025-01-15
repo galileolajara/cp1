@@ -1,24 +1,24 @@
-using 'cp1 = :cp1;
-using (:cp1) {
-stmt-return(e:expr-i, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
-   quick-alloc-one(+(s:stmt-return));
+using Cp1 = Cp1;
+using (Cp1) {
+stmt-return(e:ExprI, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
+   quick-alloc-one(+(s:StmtReturn));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #return);
    s.expr = e;
 }
-using (:stmt-space) {
-   wr-return(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
-      var s:stmt-return = stmt;
+using (StmtSpace) {
+   wr-return(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
+      var s:StmtReturn = stmt;
       s.expr.wr(w, header);
    }
-   rd-return(space:stmt-space, r:rdr) @case.rd() @inline {
-      quick-alloc-one(+(s:stmt-return));
+   rd-return(space:StmtSpace, r:Rdr) @case.rd() @inline {
+      quick-alloc-one(+(s:StmtReturn));
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #return);
    }
 }
-using (:stmt) {
-   write-return(stmt:stmt) @case.write() @inline {
-      var s:stmt-return = stmt;
+using (Stmt) {
+   write-return(stmt:Stmt) @case.write() @inline {
+      var s:StmtReturn = stmt;
       if (s.expr == #nil) {
          .out.printf("return;\n");
       } else {
@@ -27,8 +27,8 @@ using (:stmt) {
          .out.printf(";\n");
       }
    }
-   process-return(stmt:stmt, ok:bool&) @case.process() @inline {
-      var s:stmt-return = stmt;
+   process-return(stmt:Stmt, ok:bool&) @case.process() @inline {
+      var s:StmtReturn = stmt;
       if (s.expr != #nil) {
          s.expr.try-deduce(.ctx-func.decl.type);
          if !(s.expr.value(1 + .ctx-func.decl.type-info.ref-v[.ctx-func.decl.type-info.array-c], false, s.val)) {

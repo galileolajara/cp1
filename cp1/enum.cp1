@@ -1,13 +1,13 @@
-using 'cp1 = :cp1;
-using (:cp1) {
-:enum[#nil = -1, #0, #1]:i32 {
-   wr(f:this, w:wtr) @inline {
+using Cp1 = Cp1;
+using (Cp1) {
+Enum[#nil = -1, #0, #1]:i32 {
+   wr(f:this, w:Wtr) @inline {
       w.n(f + #1);
    }
-   rd(f:this&, r:rdr) @inline {
-      f = (r.n() - #1):func;
+   rd(f:this&, r:Rdr) @inline {
+      f = (r.n() - #1):Func;
    }
-   ptr(f:this):enum-data @inline {
+   ptr(f:this):EnumData @inline {
       return .enum-v[f];
    }
    output(e-i:this) {
@@ -29,26 +29,26 @@ using (:cp1) {
       // }
    }
 }
-:enum-flags[
+EnumFlags[
    #0,
    #real-name = 1,
    #no-decl = 2,
    ]:u8 {
-   wr(e:this, w:wtr) @inline {
+   wr(e:this, w:Wtr) @inline {
       w.n1(e);
    }
-   rd(e:this&, r:rdr) @inline {
-      e = r.n1():enum-flags;
+   rd(e:this&, r:Rdr) @inline {
+      e = r.n1():EnumFlags;
    }
 }
-var enum-c:enum;
-var enum-cap:enum;
-var enum-v:enum-data[];
+var enum-c:Enum;
+var enum-cap:Enum;
+var enum-v:EnumData[];
 var decl-enum-row:i32;
 var decl-enum-col:i32;
-var decl-enum-at:at;
-var decl-enum-flags:enum-flags;
-var decl-enum-last-cvar:cvar;
+var decl-enum-at:At;
+var decl-enum-flags:EnumFlags;
+var decl-enum-last-cvar:Cvar;
 decl-var-as-evar() {
    +evar = .decl-evar-c++;
    if (.decl-evar-cap <= .decl-evar-c) {
@@ -57,7 +57,7 @@ decl-var-as-evar() {
    }
    .decl-evar-v[evar].copy-from(.decl-var);
 }
-decl-at-begin-enum(name:id, row:i32, col:i32) {
+decl-at-begin-enum(name:Id, row:i32, col:i32) {
    .decl-enum-row = row;
    .decl-enum-col = col;
    .build-at = .decl-at;
@@ -67,11 +67,11 @@ decl-at-begin-enum(name:id, row:i32, col:i32) {
    .decl-enum-at = .build-at;
    .decl-enum-flags = #0;
    .decl-enum-last-cvar = #nil;
-   // 'c.out.printf("began enum at:\n");
+   // C.out.printf("began enum at:\n");
    // +at-i = .build-at;
    // loop {
    //    +at = at-i.ptr();
-   //    'c.out.printf("- %s\n", at.name.id.str());
+   //    C.out.printf("- %s\n", at.name.id.str());
    //    at-i = at.parent;
    //    if (at-i == #root) { break}
    // }
@@ -82,14 +82,14 @@ enum-base-begin() {
 // enum-base-end() {
 //    .decl-at = .decl-enum-at;
 // }
-decl-enum-end(base-type:at, row:i32, col:i32) {
+decl-enum-end(base-type:At, row:i32, col:i32) {
    +s-idx = .enum-c++;
    if (.enum-cap <= .enum-c) {
       +old-cap = .enum-cap;
       grow(.enum-cap, .enum-c);
       realloc(.enum-v, .enum-cap, old-cap);
    }
-   var s:enum-data;
+   var s:EnumData;
    quick-alloc-one(s);
    .enum-v[s-idx] = s;
    s.begin-row = .decl-enum-row;
@@ -104,15 +104,15 @@ decl-enum-end(base-type:at, row:i32, col:i32) {
    .decl-enum-last-cvar = #nil;
    // s.name = .decl-enum-name;
    // s.evar-c = .decl-evar-c;
-   // 'c.out.printf("There are %u evars\n", s.evar-c);
+   // C.out.printf("There are %u evars\n", s.evar-c);
    // loop var i = 0; {(.decl-evar-c) i ++} {
    //    +a = s.evar-v[i];
    //    a.decl.copy-from(.decl-evar-v[i]);
-   //    // 'c.out.printf("- %s\n", a.name.str());
+   //    // C.out.printf("- %s\n", a.name.str());
    // }
 }
-var last-cvar:cvar;
-enum-add-cvar(name:id, row:i32, col:i32) {
+var last-cvar:Cvar;
+enum-add-cvar(name:Id, row:i32, col:i32) {
    +c-idx = .cvar-c++;
    .last-cvar = c-idx;
    if (.cvar-cap <= .cvar-c) {
@@ -132,7 +132,7 @@ enum-add-cvar(name:id, row:i32, col:i32) {
    c.last-cvar = .decl-enum-last-cvar;
    .decl-enum-last-cvar = c-idx;
 }
-decl-add-cvar(name:id, row:i32, col:i32) {
+decl-add-cvar(name:Id, row:i32, col:i32) {
    +c-idx = .cvar-c++;
    .last-cvar = c-idx;
    if (.cvar-cap <= .cvar-c) {
@@ -149,12 +149,12 @@ decl-add-cvar(name:id, row:i32, col:i32) {
    c.decl.copy-from(.decl-var);
    c.flags = #0;
 }
-enum-set-cvar-expr(set:expr-i) {
+enum-set-cvar-expr(set:ExprI) {
    +c = .last-cvar.ptr();
    c.flags |= #set-expr;
    c.expr-set = set;
 }
-cvar-attr-real-name(name:id) {
+cvar-attr-real-name(name:Id) {
    +c = .last-cvar.ptr();
    c.decl.flags |= #real-name;
    c.decl.real-name = name;

@@ -1,23 +1,23 @@
-using 'cp1 = :cp1;
-using 'c = :stdc;
-using (:cp1) {
-:stmt-space-flags[
+using Cp1 = Cp1;
+using C = Stdc;
+using (Cp1) {
+StmtSpaceFlags[
    #0,
    #skip-lvar-decl = 1,
    ]:u8 {
 }
-:stmt-space(
-   base:stmt+,
-   parent:stmt-space,
-   flags:stmt-space-flags,
-   stmt-first:stmt,
-   stmt-last:stmt,
+StmtSpace(
+   base:Stmt+,
+   parent:StmtSpace,
+   flags:StmtSpaceFlags,
+   stmt-first:Stmt,
+   stmt-last:Stmt,
    lvar-c:i32,
    lvar-cap:i32,
-   lvar-v:lvar[],
+   lvar-v:Lvar[],
    ) {
-   rd-space(space:stmt-space, r:rdr) @case.rd() @inline {
-      quick-alloc-one(+(s:stmt-space));
+   rd-space(space:StmtSpace, r:Rdr) @case.rd() @inline {
+      quick-alloc-one(+(s:StmtSpace));
       s.rd(r, space);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #space);
    }
@@ -35,7 +35,7 @@ using (:cp1) {
       loop {(lvar-c) i++} {
          +lvar-i = space.lvar-v[i];
          +lvar = lvar-i.ptr();
-         // 'c.out.printf("%s %s\n", lvar.decl.type.ptr().type.cp1-name(), lvar.decl.type.ptr().name.basic.cp1-name());
+         // C.out.printf("%s %s\n", lvar.decl.type.ptr().type.cp1-name(), lvar.decl.type.ptr().name.basic.cp1-name());
          lvar.decl.write-lvar-type(lvar-i);
          if ((lvar.flags & #set-expr) != #0) {
             .out.printf(" = ");
@@ -50,13 +50,13 @@ using (:cp1) {
       }
       // .out.printf("} // space end\n");
    }
-   lvar-new(space:this, name:id, row:i32, col:i32):lvar {
+   lvar-new(space:this, name:Id, row:i32, col:i32):Lvar {
       +v = space.lvar-v;
       loop var i = 0; {(space.lvar-c) i++} {
          +lvar = v[i].ptr();
          if (lvar.decl.name == name) {
-            'c.out.printf("%u:%u: lvar '%s' was already declared at %u:%u\n", row, col, name.str(), lvar.row, lvar.col);
-            'c.exit(#failure);
+            C.out.printf("%u:%u: lvar '%s' was already declared at %u:%u\n", row, col, name.str(), lvar.row, lvar.col);
+            C.exit(#failure);
          }
       }
       +i = space.lvar-c++;
@@ -73,18 +73,18 @@ using (:cp1) {
          grow(f.lvar-cap, f.lvar-c);
          realloc(f.lvar-v, f.lvar-cap, old-cap);
       }
-      quick-alloc-one(+(item:lvar-data));
+      quick-alloc-one(+(item:LvarData));
       f.lvar-v[lvar] = item;
       item.row = row;
       item.col = col;
       item.decl.name = name;
       return lvar;
    }
-   wr-space(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
-      var s:stmt-space = stmt;
+   wr-space(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
+      var s:StmtSpace = stmt;
       s.wr(w, header);
    }
-   wr(space:this, w:wtr, header:bool) {
+   wr(space:this, w:Wtr, header:bool) {
       w.n(space.lvar-c);
       loop var i = 0; {(space.lvar-c) i++} {
          space.lvar-v[i].wr(w);
@@ -101,8 +101,8 @@ using (:cp1) {
          w.n(stmt.end-col);
          switch (stmt.type).wr(stmt, w, header) {
             default {
-               'c.out.printf("wr() not yet implemented in stmt #%s\n", stmt.type.cp1-name());
-               'c.exit(#failure);
+               C.out.printf("wr() not yet implemented in stmt #%s\n", stmt.type.cp1-name());
+               C.exit(#failure);
             }
          }
          if (#debug-rd-wr) {
@@ -110,9 +110,9 @@ using (:cp1) {
          }
          stmt = stmt.stmt-next;
       }
-      :stmt-type#nil.wr(w);
+      StmtType#nil.wr(w);
    }
-   stmt-push(s:this, s2:stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:stmt-type) @inline {
+   stmt-push(s:this, s2:Stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:StmtType) @inline {
       s2.begin-row = begin-row;
       s2.begin-col = begin-col;
       s2.end-row = end-row;
@@ -127,7 +127,7 @@ using (:cp1) {
          s.stmt-last = s2;
       }
    }
-   rd(space:this, r:rdr, parent:stmt-space) {
+   rd(space:this, r:Rdr, parent:StmtSpace) {
       space.parent = parent;
       space.stmt-first = null;
       space.stmt-last = null;
@@ -140,13 +140,13 @@ using (:cp1) {
       }
 
       loop {
-         :stmt-type.rd(+type, r);
+         StmtType.rd(+type, r);
          if (type == #nil) { break}
          if (#debug-rd-wr) {
             if (r.n1() != 255) {
-               'c.out.printf("Error reading stmt\n");
-               'c.out.flush();
-               'c.exit(#failure);
+               C.out.printf("Error reading stmt\n");
+               C.out.flush();
+               C.exit(#failure);
             }
          }
          +begin-row = r.n();
@@ -159,15 +159,15 @@ using (:cp1) {
          .ctx-end-col = end-col;
          switch (type).rd(space, r) {
             default {
-               'c.out.printf("rd() not yet implemented in stmt #%s\n", type.cp1-name());
-               'c.exit(#failure);
+               C.out.printf("rd() not yet implemented in stmt #%s\n", type.cp1-name());
+               C.exit(#failure);
             }
          }
          if (#debug-rd-wr) {
             if (r.n1() != 255) {
-               'c.out.printf("Error reading stmt\n");
-               'c.out.flush();
-               'c.exit(#failure);
+               C.out.printf("Error reading stmt\n");
+               C.out.flush();
+               C.exit(#failure);
             }
          }
       }
@@ -180,7 +180,7 @@ using (:cp1) {
       }
       var i, lvar-c;
       if (space.parent == null) {
-         // don't process arguments
+         // don:T process arguments
          i = .ctx-func.farg-c;
          lvar-c = space.lvar-c - .ctx-func.farg-c;
       } else {
@@ -193,21 +193,21 @@ using (:cp1) {
       return true;
    }
 }
-using (:stmt) {
-   process-space(stmt:stmt, ok:bool&) @case.process() @inline {
-      var space:stmt-space = stmt;
+using (Stmt) {
+   process-space(stmt:Stmt, ok:bool&) @case.process() @inline {
+      var space:StmtSpace = stmt;
       if !(space.process()) { return}
       ok = true;
    }
-   write-space(stmt:stmt) @case.write() @inline {
-      var space:stmt-space = stmt;
+   write-space(stmt:Stmt) @case.write() @inline {
+      var space:StmtSpace = stmt;
       space.write();
    }
 }
-stmt-space-begin():stmt-space {
+stmt-space-begin():StmtSpace {
    return stmt-space-begin(true);
 }
-stmt-space-begin(attach:bool):stmt-space {
+stmt-space-begin(attach:bool):StmtSpace {
    +parent = .decl-func-ctx-space;
    quick-alloc-one(.decl-func-ctx-space);
    +space = .decl-func-ctx-space;
@@ -223,10 +223,10 @@ stmt-space-begin(attach:bool):stmt-space {
    }
    return space;
 }
-stmt-space-begin-detach():stmt-space {
+stmt-space-begin-detach():StmtSpace {
    return stmt-space-begin(false);
 }
-stmt-space-end():stmt-space {
+stmt-space-end():StmtSpace {
    +ret = .decl-func-ctx-space;
    .decl-func-ctx-space = .decl-func-ctx-space.parent;
    return ret;

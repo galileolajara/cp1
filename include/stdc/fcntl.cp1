@@ -1,10 +1,10 @@
 {include(<fcntl.h>)
-   using 'sys = :sys;
-   using 'c = :stdc;
-   using (:stdc) {
-      :fd[#nil = -1]:intc {
-         open(file:this&, path:char[], flags:open-flags):bool @inline {
-            +fd = 'c.open(path, flags);
+   using Sys = Sys;
+   using C = Stdc;
+   using (Stdc) {
+      Fd[#nil = -1]:intc {
+         open(file:this&, path:char[], flags:OpenFlags):bool @inline {
+            +fd = C.open(path, flags);
             if (fd != -1) {
                file = fd;
                return true;
@@ -12,8 +12,8 @@
                return false;
             }
          }
-         open(file:this&, path:char[], flags:open-flags, mode:intc):bool @inline {
-            +fd = 'c.open(path, flags, mode);
+         open(file:this&, path:char[], flags:OpenFlags, mode:intc):bool @inline {
+            +fd = C.open(path, flags, mode);
             if (fd != -1) {
                file = fd;
                return true;
@@ -21,17 +21,17 @@
                return false;
             }
          }
-         fopen(file:this, mode:char[]):file @inline {
+         fopen(file:this, mode:char[]):File @inline {
             return fdopen(file, mode);
          }
          close(file:this):intc @inline {
-            return 'c.close(file);
+            return C.close(file);
          }
-         stat(file:this, stat'sys:stat):intc @inline {
-            return 'sys.fstat(file, stat);
+         stat(file:this, stat:Sys.Stat):intc @inline {
+            return Sys.fstat(file, stat);
          }
       }
-      :open-flags[
+      OpenFlags[
          #read @no-decl @real-name(O_RDONLY),
          #create @no-decl @real-name(O_CREAT),
          #write @no-decl @real-name(O_WRONLY),
@@ -39,8 +39,8 @@
          #truncate @no-decl @real-name(O_TRUNC),
          #excl @no-decl @real-name(O_EXCL),
       ]:intc;
-      open(path:char[], flags:open-flags):fd @real-name @no-decl;
-      open(path:char[], flags:open-flags, mode:intc):fd @real-name @no-decl;
-      close(fd:fd):intc @real-name @no-decl;
+      open(path:char[], flags:OpenFlags):Fd @real-name @no-decl;
+      open(path:char[], flags:OpenFlags, mode:intc):Fd @real-name @no-decl;
+      close(fd:Fd):intc @real-name @no-decl;
    }
 }

@@ -1,21 +1,21 @@
-using 'c = :stdc;
+using C = Stdc;
 main(arg-c:intc, arg-v:char[][]):intc {
    if (arg-c != 3) {
-      'c.printf("Usage: %s [.c input file] [.h output file]\n", arg-v[0]);
-      'c.exit(#failure);
+      C.printf("Usage: %s [.c input file] [.h output file]\n", arg-v[0]);
+      C.exit(#failure);
    }
-   if !('c:fd.open(++in-fd, arg-v[1], #read)) {
-      'c.printf("Cannot open file for reading: %s\n", arg-v[1]);
-      'c.exit(#failure);
+   if !(C.Fd.open(++in-fd, arg-v[1], #read)) {
+      C.printf("Cannot open file for reading: %s\n", arg-v[1]);
+      C.exit(#failure);
    }
    +in-size = in-fd.seek(0, #end);
    in-fd.seek(0, #set);
-   var in-data:char[] = 'c.malloc(in-size);
+   var in-data:char[] = C.malloc(in-size);
    in-fd.read(in-data, in-size);
    in-fd.close();
    if !(&&, in-size > 0, in-data[in-size - 1] == ''\n) {
-      'c.printf("Error, file '%s' does not end with a new line\n", arg-v[1]);
-      'c.exit(#failure);
+      C.printf("Error, file '%s' does not end with a new line\n", arg-v[1]);
+      C.exit(#failure);
    }
    +pos = 0;
    +get = false;
@@ -43,16 +43,16 @@ main(arg-c:intc, arg-v:char[][]):intc {
                break;
             }
          }
-         // 'c.printf("[%.*s]\n", lparen, line);
+         // C.printf("[%.*s]\n", lparen, line);
          func-name-v[func-c] = line;
          func-len-v[func-c] = lparen;
          func-c++;
-      } elif (&&, len == 24, 'c.memcmp("void _Ncp1_Pexport_0() {", line, 24) == 0) {
+      } elif (&&, len == 24, C.memcmp("void _NCp1_Pexport_0() {", line, 24) == 0) {
          get = true;
       }
       pos++;
    }
-   +out-f = 'c.fopen(arg-v[2], "w");
+   +out-f = C.fopen(arg-v[2], "w");
    pos = 0;
    +indent = 0;
    while (pos < in-size) {
@@ -86,7 +86,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
                +func-len = lparen - name;
                var func:char[] = & line[name];
                loop var i = 0; {(func-c) i++} {
-                  if (&&, func-len == func-len-v[i], 'c.memcmp(func, func-name-v[i], func-len) == 0) {
+                  if (&&, func-len == func-len-v[i], C.memcmp(func, func-name-v[i], func-len) == 0) {
                      out-f.printf("%.*s\n", len, line);
                      break;
                   }

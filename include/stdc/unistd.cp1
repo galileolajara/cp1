@@ -1,18 +1,18 @@
 {include(<unistd.h>)
-   using 'c = :stdc;
-   using (:stdc) {
-      using (:fd) {
-         seek(fd:this, offset:usz, seek:seek):usz @no-decl @real-name(lseek);
+   using C = Stdc;
+   using (Stdc) {
+      using (Fd) {
+         seek(fd:this, offset:usz, seek:Seek):usz @no-decl @real-name(lseek);
          read(fd:this, buf:ref, size:usz):usz @no-decl @real-name;
          close(fd:this):intc @no-decl @real-name;
          write(fd:this, buf:ref, size:usz):usz @no-decl @real-name;
       }
-      :seek[
+      Seek[
          #set @real-name(SEEK_SET) @no-decl,
          #end @real-name(SEEK_END) @no-decl,
       ]:intc;
-      seek(fd:intc, offset:usz, seek:seek):usz @no-decl @real-name(lseek);
-      mkstemp(template:char[]):fd @no-decl @real-name;
+      seek(fd:intc, offset:usz, seek:Seek):usz @no-decl @real-name(lseek);
+      mkstemp(template:char[]):Fd @no-decl @real-name;
       unlink(path:char[]):intc @no-decl @real-name;
 		sleep(seconds:u32):u32 @no-decl @real-name;
    }

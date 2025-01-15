@@ -1,38 +1,38 @@
-using 'cp1 = :cp1;
-using 'c = :stdc;
-using (:cp1) {
-:stmt-break(
-   base:stmt+,
+using Cp1 = Cp1;
+using C = Stdc;
+using (Cp1) {
+StmtBreak(
+   base:Stmt+,
    nest:u8,
 );
-stmt-break(id:id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
-   quick-alloc-one(+(s:stmt-break));
+stmt-break(id:Id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
+   quick-alloc-one(+(s:StmtBreak));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #break);
    // s.id = id;
    if (.nest-stack-c <= 0) {
-      'c.out.printf("%s:%u:%u: Cannot have a break because it's not inside a loop\n", .input-path, begin-row, begin-col);
-      'c.exit(#failure);
+      C.out.printf("%s:%u:%u: Cannot have a break because it:S not inside a loop\n", .input-path, begin-row, begin-col);
+      C.exit(#failure);
    }
    s.nest = .nest-stack-c - 1;
 }
-using (:stmt-space) {
-   wr-break(stmt:stmt, w:wtr, header:bool) @case.wr() @inline {
-      var s:stmt-break = stmt;
+using (StmtSpace) {
+   wr-break(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
+      var s:StmtBreak = stmt;
       w.n1(s.nest);
    }
-   rd-break(space:stmt-space, r:rdr) @case.rd() @inline {
-      quick-alloc-one(+(s:stmt-break));
+   rd-break(space:StmtSpace, r:Rdr) @case.rd() @inline {
+      quick-alloc-one(+(s:StmtBreak));
       s.nest = r.n1();
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #break);
    }
 }
-using (:stmt) {
-   write-break(stmt:stmt) @case.write() @inline {
-      var s:stmt-break = stmt;
+using (Stmt) {
+   write-break(stmt:Stmt) @case.write() @inline {
+      var s:StmtBreak = stmt;
       .out.printf("goto break_%u;\n", .nest-stack-id-v[s.nest]);
    }
-   process-break(stmt:stmt, ok:bool&) @case.process() @inline {
-      var s:stmt-break = stmt;
+   process-break(stmt:Stmt, ok:bool&) @case.process() @inline {
+      var s:StmtBreak = stmt;
       ok = true;
    }
 }
