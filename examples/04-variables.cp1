@@ -1,34 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-using 'c = :stdc;
-:struct(x:i32, y:i32) {
+using C = StdC;
+
+Struct(x:i32, y:i32) {
    init(s:this) {
       s.x = 0;
       s.y = 0;
    }
 }
+
 main():intc {
    +an-integer = 1;
    var also-an-integer:i32 = 8;
 
-   var pointer-to-struct:struct;
-   pointer-to-struct = 'c.malloc(:struct[:usz]); // allocate the struct on heap
+   var pointer-to-struct:Struct;
+   pointer-to-struct = C.malloc(Struct[usz]); // allocate the struct on heap
 
-   var pointer-to-another-struct:struct;
-   'c.malloc-one(pointer-to-another-struct); // malloc-one automatically computes the size needed
+   var pointer-to-another-struct:Struct;
+   C.malloc-one(pointer-to-another-struct); // malloc-one automatically computes the size needed
 
-   var struct-in-the-stack:struct+; // notice the plus '+' symbol after /struct
+   var struct-in-the-stack:Struct+; // notice the plus '+' symbol, means allocated on the stack
    struct-in-the-stack.x = 7;
 
-   var structs:struct+[];
-   'c.malloc-arr(structs, 7); // allocates 7 structs, notice the plus '+' symbol after /struct
+   // Array of structs, and NOT an array of pointer to structs
+   var structs:Struct+[];
+   C.malloc-arr(structs, 7); // allocates 7 structs
 
-   var pointer-to-structs:struct[]; // no '+' symbol after :struct, pointers to structs
-   'c.malloc-arr(pointer-to-structs, 7); // which means allocate 7 pointers to struct
-   'c.malloc-one(pointer-to-structs[0]); // allocate the first struct
+   // No '+' symbol after "Struct" means Array of POINTERs to structs
+   var pointer-to-structs:Struct[];
+   C.malloc-arr(pointer-to-structs, 7); // which means allocate 7 pointers to struct
+   C.malloc-one(pointer-to-structs[0]); // allocate the first struct
 
-   :struct.init(+another-struct-in-the-stack);
-   'c.printf("This must be zero and zero: %d, %d\n", another-struct-in-the-stack.x, another-struct-in-the-stack.y);
+   Struct.init(+another-struct-in-the-stack);
+   C.printf("This must be zero and zero: %d, %d\n", another-struct-in-the-stack.x, another-struct-in-the-stack.y);
    return 0;
 }

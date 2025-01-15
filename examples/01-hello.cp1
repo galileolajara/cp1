@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <math.h>
 
-using 'c = :stdc;
+using C = StdC;
 
-#example-constant = 7;
-
-:this-is-enum[#no, #yes]:u8 {
+ThisIsEnum[#no, #yes]:u8 { // An 8-bit unsigned enum
    string(e:this):char[] { // An example method for enums
       switch (e) {
          case (#no) {
@@ -21,24 +19,27 @@ using 'c = :stdc;
    }
 }
 
-:this-is-struct(x:i32, y:i32) {
+ThisIsStruct(x:i32, y:i32) { // A struct
    distance(s:this):f32 { // An example method for structs
-      // :f32 is for casting to float
-      return (s.x:f32.sqr() + s.y:f32.sqr()).sqrt();
+      // f32 is for casting to float
+      return (s.x:f32.sqr() + s.y:f32.sqr()).sqrt(); // even f32 have methods (sqr, sqrt)
    }
 }
 
-main():intc { // :intc is for compatibility with C's int, prefer to use :i32 instead
-   'c.printf("Hello world!\n");
-   +one = 1;
+main():intc { // intc is for compatibility with C's int, prefer to use i32 elsewhere
+   C.printf("Hello world!\n");
+
+   +one = 1; // '+' is the quickest way to declare a variable
    +seven = 7;
    +sum = one + seven;
-   'c.printf("%d + %d = %d\n", one, seven, sum);
+   C.printf("%d + %d = %d\n", one, seven, sum);
+
    var typed-var:i32 = 9;
-   'c.printf("typed-var is %d\n", typed-var);
-   var struct:this-is-struct+;
+   C.printf("typed-var is %d\n", typed-var);
+
+   var struct:ThisIsStruct+; // '+' means this is allocated on the stack
    struct.x = 9;
    struct.y = 11;
-   'c.printf("distance is %f\n", struct.distance());
+   C.printf("distance is %f\n", struct.distance());
    return 0;
 }

@@ -1,6 +1,6 @@
 {include(<unistd.h>)
-   using C = Stdc;
-   using (Stdc) {
+   using C = StdC;
+   using (StdC) {
       using (Fd) {
          seek(fd:this, offset:usz, seek:Seek):usz @no-decl @real-name(lseek);
          read(fd:this, buf:ref, size:usz):usz @no-decl @real-name;

@@ -1,28 +1,35 @@
 #include <stdio.h>
 
-using 'c = :stdc;
+using C = StdC;
+
 main():intc {
    loop var i = 0; {
-      'c.printf("This is a forever loop unless you break;\n");
+      C.printf("This is a forever loop unless you break;\n");
       i++;
-      if (i == 5) {break}
+      if (i == 5) { break; }
    }
    loop var count = 1; {(3) count++} {
-      'c.printf("This is a loop that will run 3 times. %d...\n", count);
+      C.printf("This is a loop that will run 3 times. %d...\n", count);
    }
    while var i = 0; {(i < 4) i++} {
-      'c.printf("This is a loop that will run 4 times\n");
+      C.printf("This is a loop that will run 4 times\n");
    }
    loop (2) {
-      'c.printf("Declaring variables are optional. This will loop two times.\n");
+      C.printf("Declaring variables are optional. This will loop two times.\n");
    }
    loop var i = 0; {(3)
          i++;
-         'c.printf("Codes here will run later just like the i++ in for loops.\n");
+         C.printf("Codes here will run later just like the i++ in for loops.\n");
       } {
-      'c.printf("Hello\n");
-      if (i == 1) {continue}
-      'c.printf("World\n");
+      C.printf("Hello\n");
+      if (i == 1) { continue; }
+      C.printf("World\n");
+   }
+   var limit = 7;
+   loop {
+      C.printf("parenthesis on loop statement is optional if you want to loop forever\n");
+      limit--;
+      if (limit == 0) { break; }
    }
    return 0;
 }

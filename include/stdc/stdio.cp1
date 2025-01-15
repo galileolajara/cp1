@@ -1,6 +1,6 @@
 {include(<stdio.h>)
-   using C = Stdc;
-   using (Stdc) {
+   using C = StdC;
+   using (StdC) {
       printf(fmt:char[]):intc @var-args @no-decl @real-name(printf);
       sprintf(str:char[], fmt:char[]):intc @var-args @no-decl @real-name(sprintf);
 

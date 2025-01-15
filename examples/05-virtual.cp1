@@ -1,11 +1,11 @@
 // This is to emulate the C++'s virtual functions
 #include <stdio.h>
 
-using 'c = :stdc;
+using C = StdC;
 
-:animal-type[#cat, #dog]:u8; // 8-bit enum
+AnimalType[#cat, #dog]:u8; // 8-bit enum
 
-:animal(type:animal-type) { // a struct with a method
+Animal(type:AnimalType) { // a struct with a method
    make-sound(a:this) {
       // a switch statement that collects methods that
       // begins with "emit-sound-" then automatically
@@ -16,17 +16,17 @@ using 'c = :stdc;
 }
 
 // For example, in another file, you can:
-using (:animal) {
+using (Animal) {
    emit-sound-cat(a:this) @case.emit-sound() {
-      'c.printf("meow!\n");
+      C.printf("meow!\n");
    }
    emit-sound-dog(a:this) @case.emit-sound() {
-      'c.printf("arf!\n");
+      C.printf("arf!\n");
    }
 }
 
 main(arg-c:intc, arg-v:char[][]):intc {
-   var animal:animal+; // create an animal object, '+' symbol allocates on stack
+   var animal:Animal+; // create an animal object, '+' symbol allocates on stack
    animal.type = #cat;
    animal.make-sound();
    animal.type = #dog;

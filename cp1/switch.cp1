@@ -1,5 +1,5 @@
 using Cp1 = Cp1;
-using C = Stdc;
+using C = StdC;
 using (Cp1) {
 var switch-stack-v:StmtSwitch[64];
 var switch-stack-c:u8;

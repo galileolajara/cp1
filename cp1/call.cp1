@@ -1,5 +1,5 @@
 using Cp1 = Cp1;
-using C = Stdc;
+using C = StdC;
 using (Cp1) {
 farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At):bool {
    +ce = e.ptr();
@@ -246,9 +246,9 @@ using (ExprI) {
          ok = true;
          return;
       }
-      C.out.printf("%s:%u:%u - %u:%u: Cannot find method %s with %u argument:S\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
+      C.out.printf("%s:%u:%u - %u:%u: Cannot find method %s with %u argument/s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
       if (found != -1) {
-         C.out.printf("But found %u functions with different no. of argument:S:\n", similar-c);
+         C.out.printf("But found %u functions with different no. of argument/s:\n", similar-c);
          loop var i = 0; {(at.func-c) i++} {
             +f-idx = at.func-v[i];
             +f = .func-v[f-idx];
@@ -391,9 +391,9 @@ using (ExprI) {
          if (at-idx == #root) { break}
          at-idx = at.parent;
       }
-      C.out.printf("%s:%u:%u - %u:%u: Cannot find function %s with %u argument:S\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
+      C.out.printf("%s:%u:%u - %u:%u: Cannot find function %s with %u argument/s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
       // if (found != -1) {
-      //    C.out.printf("But found %u functions with different no. of argument:S:\n", similar-c);
+      //    C.out.printf("But found %u functions with different no. of argument/s:\n", similar-c);
       //    loop var i = 0; {(at.func-c) i++} {
       //       +f-idx = at.func-v[i];
       //       +f = .func-v[f-idx];
