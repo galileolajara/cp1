@@ -21,7 +21,7 @@ main():intc {
    loop (2) {
       C.printf("Declaring variables are optional. This will loop two times.\n");
    }
-   loop i = 0; 3; i++; do-after-continue(); {
+   loop i = 0; 3; i++; do-after-continue() {
       C.printf("Hello\n");
       if (i == 1) { continue; }
       C.printf("World\n");
