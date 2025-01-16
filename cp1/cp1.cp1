@@ -524,12 +524,14 @@ main(arg-c:intc, arg-v:char[][]):intc {
          C.free(path);
       }
    }
-   +slash = C.strrchr(abs-path, ''/);
-   slash[0] = ''\0;
-   slash = C.strrchr(abs-path, ''/);
-   slash[0] = ''\0;
+   +slash1 = C.strrchr(abs-path, ''/);
+   slash1[0] = ''\0;
+   +slash2 = C.strrchr(abs-path, ''/);
+   slash2[0] = ''\0;
    // C.printf("absolute path of the %s binary is %s\n", bin, abs-path);
    C.sprintf(.include-dir, "%s/include", abs-path);
+   slash1[0] = ''/;
+   slash2[0] = ''/;
    .include-dir-len = C.strlen(.include-dir);
    if (arg-c < 2) {
       print-commands(bin);
@@ -568,13 +570,13 @@ main(arg-c:intc, arg-v:char[][]):intc {
       ninja-f.printf("rule compile\n");
       ninja-f.printf(" command = %s-compile $in $out\n", bin);
       loop i = 0; (.cp1-path-c) i++ {
-         ninja-f.printf("build cp1-tmp/%s-b: parse %s\n", .cp1-path-v[i], .cp1-path-real-v[i]);
+         ninja-f.printf("build cp1-tmp/%s-b: parse %s | %s-parse\n", .cp1-path-v[i], .cp1-path-real-v[i], abs-path);
       }
       ninja-f.printf("build %s: compile", c-path);
       loop i = 0; (.cp1-path-c) i++ {
          ninja-f.printf(" cp1-tmp/%s-b", .cp1-path-v[i]);
       }
-      ninja-f.printf("\n");
+      ninja-f.printf(" | %s-compile\n", abs-path);
       ninja-f.close();
       var command:char[24 + 9];
       C.sprintf(command, "ninja -f %s", ninja-path);
@@ -632,13 +634,13 @@ main(arg-c:intc, arg-v:char[][]):intc {
       ninja-f.printf(" command = %s-compile $in $out\n", bin);
       get-compile(bin, ninja-f);
       loop i = 0; (.cp1-path-c) i++ {
-         ninja-f.printf("build cp1-tmp/%s-b: parse %s\n", .cp1-path-v[i], .cp1-path-real-v[i]);
+         ninja-f.printf("build cp1-tmp/%s-b: parse %s | %s-parse\n", .cp1-path-v[i], .cp1-path-real-v[i], abs-path);
       }
       ninja-f.printf("build %s: compile", c-path);
       loop i = 0; (.cp1-path-c) i++ {
          ninja-f.printf(" cp1-tmp/%s-b", .cp1-path-v[i]);
       }
-      ninja-f.printf("\n");
+      ninja-f.printf(" | %s-compile\n", abs-path);
       ninja-f.printf("build %s: c %s\n", exe-path, c-path);
       ninja-f.close();
       var command:char[32 + 9];

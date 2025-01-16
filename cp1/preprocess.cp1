@@ -11,7 +11,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       C.exit(#failure);
    }
    +i = 1;
-   loop (arg-c) {
+   loop (arg-c - 1) {
       if (arg-v[i][0] == ''-) {
          if (arg-v[i][1] == ''D) {
             var name:char[] = & arg-v[i][2];

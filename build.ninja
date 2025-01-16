@@ -48,7 +48,7 @@ rule parse
  command = bin/cp1-parse $in $out
 
 rule compile
- command = bin/cp1-compile $in $out
+ command = bin/cp1-compile -w $in $out
 
 rule run
  command = $in $out
