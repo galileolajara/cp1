@@ -378,7 +378,7 @@ Lexer(
       var r-cursor:Rdr+;
       r-cursor.reff = lex.cursor;
       +length = 0;
-      while (r-start.charr[length] != '')) {
+      loop (r-start.charr[length] != '')) {
          length++;
       }
       // C.printf("include [%.*s]\n", length, r-start.charr);

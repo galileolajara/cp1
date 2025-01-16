@@ -153,7 +153,7 @@ int _NCp1_Pchar_escape_value_1(char c) {
 }
 
 #ifdef CP1_NEW
-#include "out/lexer.c"
+#include "out/lex.c"
 #else
-#include "lexer.c"
+#include "lex.c"
 #endif

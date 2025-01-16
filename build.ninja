@@ -11,7 +11,7 @@ rule ld-cpp
  command = clang++ $flags -O3 -flto -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out
 
 build out/parse.cp1.c.o: c parse.cp1.c
-build out/parse.c.o: c parse.c | export.h lexer.c cp1_parse.c
+build out/parse.c.o: c parse.c | export.h lex.c cp1_parse.c
 #build bin/cp1-preprocess: ld-c preprocess.cp1.c
 #build bin/cp1-parse: ld-cpp out/parse.cp1.c.o out/parse.c.o out/hashtable.cpp.o
 build out/compile.cp1.c.o: c compile.cp1.c
@@ -124,12 +124,12 @@ build out/export.cp1.c: compile out/tmp/export.cp1-b out/tmp/include/stdc/stdio.
 build out/cp1-preprocess: ld-c2 out/preprocess.cp1.c
 build out/export: ld-c2 out/export.cp1.c
 build out/export.h: run out/export out/parse2.cp1.c
-build out/lexer.c: re2c lexer-re2c.c
+build out/lex.c: re2c lex-re2c.c
 build out/lemon: ld-unsanitized lemon.c
 build out/cp1_parse.c out/cp1_parse.h: lemon cp1_parse.y | out/lemon
 build out/cp1: ld-c2 out/cp1.cp1.c
 build out/parse2.cp1.c.o: c2 out/parse2.cp1.c
-build out/parse2.c.o: c2 parse2.c | out/export.h out/lexer.c out/cp1_parse.c
+build out/parse2.c.o: c2 parse2.c | out/export.h out/lex.c out/cp1_parse.c
 build out/hashtable.cpp.o: cpp2 hashtable.cpp
 build out/cp1-parse: ld-cpp2 out/parse2.cp1.c.o out/parse2.c.o out/hashtable.cpp.o
 build out/compile2.cp1.c.o: c2 out/compile2.cp1.c
