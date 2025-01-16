@@ -14,7 +14,6 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
 
    #define YYCTYPE  uint8_t
    #define YYCURSOR l->cursor
-   // #define YYLIMIT  l->limit
    #define YYMARKER l->marker
    #define YYCTXMARKER l->ctx_marker
    #define YYFILL(n)   
@@ -26,7 +25,6 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces = [ \n]+;
    id_one = [0-9a-zA-Z\u00c0-\U0010ffff];
    id = id_one+("-" id_one+)*;
-   // id = [0-9a-zA-Z]+("-" [0-9a-zA-Z]+)*;
 
    *                                { return CP1_TOKEN_END; }
    
@@ -40,22 +38,13 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces ")"                       { return CP1_TOKEN_SPACE_RPAREN; }
    spaces? "," spaces ")"           { return CP1_TOKEN_COMMA_SPACE_RPAREN; }
    spaces? "," spaces               { return CP1_TOKEN_COMMA_SPACE; }
-   // spaces? "," spaces "}"           { return CP1_TOKEN_COMMA_SPACE_RCBRACE; }
    spaces? "," spaces "]"           { return CP1_TOKEN_COMMA_SPACE_RBRACKET; }
-   // spaces? ";" spaces "}"           { return CP1_TOKEN_SCOLON_SPACE_RCBRACE; }
-   // spaces? ";" spaces               { return CP1_TOKEN_SCOLON_SPACE; }
    spaces                           { return CP1_TOKEN_SPACE; }
    spaces? ";"                      { return CP1_TOKEN_SCOLON; }
-   // "{+" spaces?                     { return CP1_TOKEN_LCBRACE_PLUS_OR_SPACE; }
-   // "{gvar" spaces                   { return CP1_TOKEN_LCBRACE_GVAR_SPACE; }
-   // "{cvar" spaces                   { return CP1_TOKEN_LCBRACE_CVAR_SPACE; }
-   // "{at("                           { return CP1_TOKEN_LCBRACE_AT_LPAREN; }
-   // "{using" spaces                  { return CP1_TOKEN_LCBRACE_USING_SPACE; }
    "+"                              { return CP1_TOKEN_PLUS; }
    "-"                              { return CP1_TOKEN_MINUS; }
    "!"                              { return CP1_TOKEN_EXPOINT; }
    "`"                              { return CP1_TOKEN_GRAVE; }
-   // "'"                              { return CP1_TOKEN_QUOTE; }
    "&"                              { return CP1_TOKEN_AMPERSAND; }
    "#"                              { return CP1_TOKEN_HASH; }
    "["                              { return CP1_TOKEN_LBRACKET; }
@@ -64,7 +53,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "]"                       { return CP1_TOKEN_SPACE_RBRACKET; }
 	"0"                              { return CP1_TOKEN_NUM_DEC; }
 	[1-9] [0-9]*                     { return CP1_TOKEN_NUM_DEC; }
-   "0o" [0-7]+                       { return CP1_TOKEN_NUM_OCT; }
+   "0o" [0-7]+                      { return CP1_TOKEN_NUM_OCT; }
 	"0x" [0-9a-fA-F]+                { return CP1_TOKEN_NUM_HEX; }
    "\"" {
       goto lex_string;
@@ -139,24 +128,24 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "(&&," spaces                    { return CP1_TOKEN_LPAREN_AMP_AMP_COMMA_SPACE; }
    "(||," spaces                    { return CP1_TOKEN_LPAREN_PIPE_PIPE_COMMA_SPACE; }
 
-   "ref"                           { return CP1_TOKEN_REF; }
-   "bool"                          { return CP1_TOKEN_BOOL; }
-   "char"                          { return CP1_TOKEN_CHAR; }
-   "intc"                          { return CP1_TOKEN_INTC; }
-   "i8"                            { return CP1_TOKEN_I8; }
-   "u8"                            { return CP1_TOKEN_U8; }
-   "i16"                           { return CP1_TOKEN_I16; }
-   "u16"                           { return CP1_TOKEN_U16; }
-   "i32"                           { return CP1_TOKEN_I32; }
-   "u32"                           { return CP1_TOKEN_U32; }
-   "i64"                           { return CP1_TOKEN_I64; }
-   "u64"                           { return CP1_TOKEN_U64; }
-   "isz"                           { return CP1_TOKEN_ISZ; }
-   "usz"                           { return CP1_TOKEN_USZ; }
-   "f32"                           { return CP1_TOKEN_F32; }
-   "f64"                           { return CP1_TOKEN_F64; }
+   "ref"                            { return CP1_TOKEN_REF; }
+   "bool"                           { return CP1_TOKEN_BOOL; }
+   "char"                           { return CP1_TOKEN_CHAR; }
+   "intc"                           { return CP1_TOKEN_INTC; }
+   "i8"                             { return CP1_TOKEN_I8; }
+   "u8"                             { return CP1_TOKEN_U8; }
+   "i16"                            { return CP1_TOKEN_I16; }
+   "u16"                            { return CP1_TOKEN_U16; }
+   "i32"                            { return CP1_TOKEN_I32; }
+   "u32"                            { return CP1_TOKEN_U32; }
+   "i64"                            { return CP1_TOKEN_I64; }
+   "u64"                            { return CP1_TOKEN_U64; }
+   "isz"                            { return CP1_TOKEN_ISZ; }
+   "usz"                            { return CP1_TOKEN_USZ; }
+   "f32"                            { return CP1_TOKEN_F32; }
+   "f64"                            { return CP1_TOKEN_F64; }
 
-   "this"                          { return CP1_TOKEN_THIS; }
+   "this"                           { return CP1_TOKEN_THIS; }
    "true"                           { return CP1_TOKEN_TRUE; }
    "false"                          { return CP1_TOKEN_FALSE; }
    "null"                           { return CP1_TOKEN_NULL; }
@@ -170,7 +159,6 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
 
    "using"                          { return CP1_TOKEN_USING; }
    "return"                         { return CP1_TOKEN_RETURN; }
-   // "at"                             { return CP1_TOKEN_AT; }
    "loop"                           { return CP1_TOKEN_LOOP; }
    "var"                            { return CP1_TOKEN_VAR; }
    "continue"                       { return CP1_TOKEN_CONTINUE; }
@@ -178,19 +166,9 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "default"                        { return CP1_TOKEN_DEFAULT; }
    "case"                           { return CP1_TOKEN_CASE; }
    "switch"                         { return CP1_TOKEN_SWITCH; }
-   // "while"                          { return CP1_TOKEN_WHILE; }
    "if"                             { return CP1_TOKEN_IF; }
    spaces "elif"                    { return CP1_TOKEN_SPACE_ELIF; }
-   // spaces "else" spaces "if"                    { return CP1_TOKEN_SPACE_ELIF; }
    spaces "else"                    { return CP1_TOKEN_SPACE_ELSE; }
-   // "{if"                            { return CP1_TOKEN_LCBRACE_IF; }
-   // "{switch"                        { return CP1_TOKEN_LCBRACE_SWITCH; }
-   // "{case"                          { return CP1_TOKEN_LCBRACE_CASE; }
-   // "{default"                       { return CP1_TOKEN_LCBRACE_DEFAULT; }
-   // "{do"                            { return CP1_TOKEN_LCBRACE_DO; }
-   // "{while"                         { return CP1_TOKEN_LCBRACE_WHILE; }
-   // spaces? "{elif"                  { return CP1_TOKEN_LCBRACE_ELIF; }
-   // spaces? "{else"                  { return CP1_TOKEN_LCBRACE_ELSE; }
 
    "''" [^\\\n]                     { return CP1_TOKEN_CHAR1; }
    "''\\" [^\n]                     { return CP1_TOKEN_CHAR2; }
@@ -198,13 +176,8 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "."                              { return CP1_TOKEN_DOT; }
    ":"                              { return CP1_TOKEN_COLON; }
 
-   // ":" id                           { return CP1_TOKEN_ID_COLON; }
-   // "/" id                           { return CP1_TOKEN_ID_FSLASH; }
    "\\" id                          { return CP1_TOKEN_ID_BSLASH; }
-   // "%" id                           { return CP1_TOKEN_ID_MODULO; }
-   // "'" id                           { return CP1_TOKEN_ID_QUOTE; }
    "#" id                           { return CP1_TOKEN_ID_HASH; }
-   // "." id                           { return CP1_TOKEN_ID_DOT; }
    [a-z][0-9a-zA-Z\u00c0-\U0010ffff]*("-" id)*    { return CP1_TOKEN_ID; }
    [A-Z][0-9a-zA-Z\u00c0-\U0010ffff]*("-" id)*    { return CP1_TOKEN_ID_UPPER; }
    "." [A-Z][0-9a-zA-Z\u00c0-\U0010ffff]*("-" id)*    { return CP1_TOKEN_ID_DOT_UPPER; }
