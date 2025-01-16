@@ -14,7 +14,7 @@ Enum[#nil = -1, #0, #1]:i32 {
       +num = e-i:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      if ((.enum-is-outputted[n3] & n17) != 0) { return}
+      if ((.enum-is-outputted[n3] & n17) != 0) { return }
       .enum-is-outputted[n3] |= n17;
       +e = e-i.ptr();
 
@@ -73,7 +73,7 @@ decl-at-begin-enum(name:Id, row:i32, col:i32) {
    //    +at = at-i.ptr();
    //    C.out.printf("- %s\n", at.name.id.str());
    //    at-i = at.parent;
-   //    if (at-i == #root) { break}
+   //    if (at-i == #root) { break }
    // }
 }
 enum-base-begin() {

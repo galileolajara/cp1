@@ -124,7 +124,7 @@ using (Stmt) {
             }
          }
          if (case-c > 0) {
-            if !(ExprI.process-case-func(s.cases.ptr(), case-v[0])) { return}
+            if !(ExprI.process-case-func(s.cases.ptr(), case-v[0])) { return }
             +func-name-str = func-name.str();
             +func-name-len = func-name.len();
             s.case-func-c = case-c;
@@ -160,7 +160,7 @@ using (Stmt) {
                   C.out.printf("%s:%u:%u: Cannot find a case for cvar named '#%s'\n", func.file.path(), func.begin-row, func.begin-col, cvar-name-str);
                   return;
                }
-               if !(found-cvar.process()) { return}
+               if !(found-cvar.process()) { return }
                func-i.process-later();
                func-v[i].cvar = found-cvar;
                func-v[i].func = func-i;

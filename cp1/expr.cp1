@@ -22,7 +22,7 @@ using (Stmt) {
          loop {
             .out.printf("%.*s\n", n.len, n.buf);
             n = n.next;
-            if (n == null) { break}
+            if (n == null) { break }
          }
          return;
       }
@@ -90,7 +90,7 @@ ExprI[#nil = -1, #0, #1]:i32 {
       return true;
    }
    value(e:this, reff:i32, paren:bool, v:Value):bool {
-      if !(e.process()) { return false}
+      if !(e.process()) { return false }
       +expr = e.ptr();
       +ok = false;
       switch (expr.type).value(e, reff, paren, v, ok) {
@@ -102,7 +102,7 @@ ExprI[#nil = -1, #0, #1]:i32 {
       return ok;
    }
    type(e:this):At {
-      if !(e.process()) { return #nil}
+      if !(e.process()) { return #nil }
       +expr = e.ptr();
       +at = At#nil;
       switch (expr.type).type(expr, at) {
@@ -182,10 +182,10 @@ ExprI[#nil = -1, #0, #1]:i32 {
       +num = e:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      if ((.expr-is-processed[n3] & n17) != #0) { return true}
+      if ((.expr-is-processed[n3] & n17) != #0) { return true }
       .expr-is-processed[n3] |= n17;
       +expr = e.ptr();
-      // if (expr.flags & #processed) { return true}
+      // if (expr.flags & #processed) { return true }
       // expr.flags |= #processed;
       +ok = false;
       switch (expr.type).process(expr, ok) {

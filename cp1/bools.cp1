@@ -43,11 +43,11 @@ using (ExprI) {
    }
    process-bools(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprBools = expr;
-      if !(e.left.value(1, true, e.left-val)) { return}
-      if !(e.right.value(1, true, e.right-val)) { return}
+      if !(e.left.value(1, true, e.left-val)) { return }
+      if !(e.right.value(1, true, e.right-val)) { return }
       loop i = 0; e.item-c; i++ {
          +item = e.item-v[i];
-         if !(item.expr.value(1, true, item.val)) { return}
+         if !(item.expr.value(1, true, item.val)) { return }
       }
       ok = true;
    }

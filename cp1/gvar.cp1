@@ -7,13 +7,13 @@ Gvar[#nil = -1, #0]:i32 {
       +num = g:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      if ((.gvar-is-outputted[n3] & n17) != 0) { return true}
+      if ((.gvar-is-outputted[n3] & n17) != 0) { return true }
       .gvar-is-outputted[n3] |= n17;
 
       +gvar = g.ptr();
       +at-i = gvar.decl.type;
       +at = at-i.ptr();
-      if !(gvar.decl.process(gvar.file, gvar.row, gvar.col, gvar.at)) { return false}
+      if !(gvar.decl.process(gvar.file, gvar.row, gvar.col, gvar.at)) { return false }
 
       if ((gvar.flags & #no-decl) == #0) {
          .gvar-outputted-v[.gvar-outputted-c++] = g;
@@ -84,8 +84,8 @@ using (ExprI) {
                return;
             }
          }
-         if !(try-parent) { break}
-         if (at-idx == #root) { break}
+         if !(try-parent) { break }
+         if (at-idx == #root) { break }
          at-idx = at.parent;
       }
       C.out.printf("%s:%u:%u - %u:%u: Cannot find gvar '.%s'\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, name.str());
@@ -97,7 +97,7 @@ using (ExprI) {
    }
    process-gvar(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprGvar = expr;
-      if !(e.gvar.process()) { return}
+      if !(e.gvar.process()) { return }
       ok = true;
    }
 }

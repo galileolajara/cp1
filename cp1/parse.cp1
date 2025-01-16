@@ -188,7 +188,7 @@ at-done():At {
 }
 at-create(parent:At, type:NameType, name:Id):At {
    +found = .at-map.get-or-insert(parent, type, name, .at-c);
-   if (found != -1) { return found}
+   if (found != -1) { return found }
    // loop i = 0:At; .at-c; i++ {
    //    +at = .at-v[i];
    //    if (&&,
@@ -487,7 +487,7 @@ write-func(w:Wtr, header:bool) @inline {
    .func-main.wr(w);
    loop i = 0; .func-c; {
       +f = .func-v[i++];
-      if ((f.flags & #has-body) == #0) { continue}
+      if ((f.flags & #has-body) == #0) { continue }
       if (header) {
          if (f.flags & #inline) {
             // proceed
@@ -1235,7 +1235,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             }
          }
       // }
-      if (t == #end) { break}
+      if (t == #end) { break }
       +pos = lex.start;
       loop (pos < lex.cursor) {
          if ((pos[0] & 128) == 0) {

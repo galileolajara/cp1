@@ -17,15 +17,15 @@ Cvar[#nil = -1, #0]:i32 {
       +num = c:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      if ((.cvar-is-outputted[n3] & n17) != 0) { return true}
+      if ((.cvar-is-outputted[n3] & n17) != 0) { return true }
       .cvar-is-outputted[n3] |= n17;
 
       +cvar = c.ptr();
 
       if ((cvar.flags & #set-expr) != #0) {
-         if !(cvar.expr-set.process()) { return false}
+         if !(cvar.expr-set.process()) { return false }
       } elif (cvar.last-cvar != #nil) {
-         if !(cvar.last-cvar.process()) { return false}
+         if !(cvar.last-cvar.process()) { return false }
       }
 
       +at-i = cvar.decl.type;
@@ -124,7 +124,7 @@ using (ExprI) {
             +cvar = cvar-v[i];
             // C.out.printf("- %s\n", cvar.ptr().decl.name.str());
             if (cvar.ptr().decl.name == name) {
-               if !(cvar.process()) { return}
+               if !(cvar.process()) { return }
                e.cvar = cvar;
                ok = true;
                return;
@@ -150,14 +150,14 @@ using (ExprI) {
          loop i = 0; cvar-c; i++ {
             +cvar = cvar-v[i];
             if (cvar.ptr().decl.name == name) {
-               if !(cvar.process()) { return}
+               if !(cvar.process()) { return }
                e.cvar = cvar;
                ok = true;
                return;
             }
          }
-         if !(try-parent) { break}
-         if (at-idx == #root) { break}
+         if !(try-parent) { break }
+         if (at-idx == #root) { break }
          at-idx = at.parent;
          at = at-idx.ptr();
          cvar-c = at.cvar-c;

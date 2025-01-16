@@ -10,12 +10,12 @@ Lvar[#nil = -1, #0]:i32 {
    }
    process(l:this):bool @inline {
       +lvar = l.ptr();
-      if ((lvar.flags & #processed) != #0) { return true}
+      if ((lvar.flags & #processed) != #0) { return true }
       lvar.flags |= #processed;
       +at-i = lvar.decl.type;
       if (at-i == #nil) {
          if ((lvar.flags & #set-expr) != #0) {
-            if !(lvar.set-expr.value(1, false, ++v)) { return false}
+            if !(lvar.set-expr.value(1, false, ++v)) { return false }
             lvar.decl.type = v.type;
             lvar.decl.type-info.init();
             lvar.decl.type-info.copy-from(v.info);
@@ -67,7 +67,7 @@ expr-lvar(name:Id, decl:u8, row:i32, col:i32):ExprI {
             return e-idx;
          }
          space = space.parent;
-         if (space == null) { break}
+         if (space == null) { break }
       }
       C.out.printf("%s:%u:%u: local variable '%s' was not found\n", .input-path, row, col, name.str());
       C.exit(#failure);
@@ -123,7 +123,7 @@ using (ExprI) {
    }
    process-lvar(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprLvar = expr;
-      if !(e.lvar.process()) { return}
+      if !(e.lvar.process()) { return }
       ok = true;
    }
 }

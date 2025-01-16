@@ -15,7 +15,7 @@ Struct[#nil = -1, #0, #1]:i32 {
       +num = s-i:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      if ((.struct-is-outputted[n3] & n17) != 0) { return}
+      if ((.struct-is-outputted[n3] & n17) != 0) { return }
       .struct-is-outputted[n3] |= n17;
       +s = s-i.ptr();
       +s-at = s.at;
@@ -24,7 +24,7 @@ Struct[#nil = -1, #0, #1]:i32 {
       +s-col = s.begin-col;
       loop i = 0; s.fvar-c; i++ {
          // s.fvar-v[i].decl.type.output(s.file, row, col);
-         // if !(s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col)) { return}
+         // if !(s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col)) { return }
          s.fvar-v[i].decl.type = at-validate(s.fvar-v[i].decl.type, s-at, s-file, s-row, s-col);
          if !(s.fvar-v[i].decl.process(s-file, s-row, s-col, s-at)) {
             C.out.printf("err\n");
@@ -102,7 +102,7 @@ decl-at-begin-struct(name:Id, row:i32, col:i32) {
    //    +at = at-i.ptr();
    //    C.out.printf("- %s\n", at.name.id.str());
    //    at-i = at.parent;
-   //    if (at-i == #root) { break}
+   //    if (at-i == #root) { break }
    // }
 }
 decl-struct-end(row:i32, col:i32) {

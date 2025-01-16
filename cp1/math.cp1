@@ -145,7 +145,7 @@ using (ExprI) {
       // if (expr.left.value(1, paren, v) == false) {
       //    return;
       // }
-      if !(expr.left.value(1, paren, v)) { return}
+      if !(expr.left.value(1, paren, v)) { return }
       // +left = e.left.type();
       // +right = e.right.type();
       // +left-size = left.real.basicType.to()Size;
@@ -173,7 +173,7 @@ using (ExprI) {
       }
       loop i = 0; e.item-c; i++ {
          +item = e.item-v[i];
-         if !(item.expr.value(1, true, item.val)) { return}
+         if !(item.expr.value(1, true, item.val)) { return }
       }
       ok = true;
    }

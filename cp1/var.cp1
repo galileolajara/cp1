@@ -32,7 +32,7 @@ at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
                }
             }
          }
-         if (at-i == #root) { break}
+         if (at-i == #root) { break }
          at-i = at-i.ptr().parent;
       }
       C.out.printf("%s:%u:%u: Type :%s was not found\n", file.path(), row, col, name.id.str());
@@ -54,9 +54,9 @@ using (DeclVarData) {
          return false;
       }
       at-i.output(.ctx-func.file, row, col);
-      if !(at-i.finalize(vd.type-info, row, col)) { return false}
+      if !(at-i.finalize(vd.type-info, row, col)) { return false }
       loop i = 0; vd.size-c; i++ {
-         if !(vd.size-expr-v[i].value(1, false, vd.size-value-v[i])) { return false}
+         if !(vd.size-expr-v[i].value(1, false, vd.size-value-v[i])) { return false }
       }
       return true;
    }
@@ -123,7 +123,7 @@ using (DeclVarData) {
    }
    // validate(vd-type:At, at-i:At, vd-name:Id):At {
    //    +type = vd-type.ptr();
-   //    if (type.type == #basic) { return vd-type}
+   //    if (type.type == #basic) { return vd-type }
    //    +parent = type.parent.ptr();
    //    if (&&, parent.type == #basic, parent.name.basic == #relative) {
    //       +name = type.name;
@@ -149,7 +149,7 @@ using (DeclVarData) {
    //                }
    //             }
    //          }
-   //          if (at-i == #root) { break}
+   //          if (at-i == #root) { break }
    //          at-i = at-i.ptr().parent;
    //       }
    //       C.out.printf("not found\n");

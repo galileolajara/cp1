@@ -52,7 +52,7 @@ using (ExprI) {
          C.out.printf("%s:%u:%u - %u:%u Cannot get member '.%s' because the type is not a struct or union\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, e.member.str());
          return;
       }
-      if !(e.expr.value(1 - type-i.pointer(), true, e.val)) { return}
+      if !(e.expr.value(1 - type-i.pointer(), true, e.val)) { return }
       if (e.val.info.array-c > 0) {
          C.out.printf("%s:%u:%u - %u:%u Cannot get member '.%s' because the expression is an array(%d)\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, e.member.str(), e.val.info.array-c);
          return;

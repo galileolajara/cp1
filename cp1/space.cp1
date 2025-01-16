@@ -141,7 +141,7 @@ StmtSpace(
 
       loop {
          StmtType.rd(+type, r);
-         if (type == #nil) { break}
+         if (type == #nil) { break }
          if (#debug-rd-wr) {
             if (r.n1() != 255) {
                C.out.printf("Error reading stmt\n");
@@ -175,7 +175,7 @@ StmtSpace(
    process(space:this):bool {
       +s = space.stmt-first;
       loop (s != null) {
-         if !(s.process()) { return false}
+         if !(s.process()) { return false }
          s = s.stmt-next;
       }
       var i, lvar-c;
@@ -196,7 +196,7 @@ StmtSpace(
 using (Stmt) {
    process-space(stmt:Stmt, ok:bool&) @case.process() @inline {
       var space:StmtSpace = stmt;
-      if !(space.process()) { return}
+      if !(space.process()) { return }
       ok = true;
    }
    write-space(stmt:Stmt) @case.write() @inline {
