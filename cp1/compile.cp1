@@ -50,7 +50,7 @@ var cvar-table:Cvar[];
 id-add(id-len:u8, id-str:char[]):Id {
    +found = .id-map.get-or-insert(id-str, id-len, .id-c);
    if (found != -1) { return found}
-   // loop j = 0; (.id-c) j++ {
+   // loop j = 0; .id-c; j++ {
    //    if (&&, .id-len-v[j] == id-len, C.memcmp(.id-str-v[j], id-str, id-len) == 0) {
    //       return j;
    //    }
@@ -109,7 +109,7 @@ read(in-path:char[]) {
       // C.out.printf("There are %u ids\n", id-c);
       quick-alloc-arr(.id-table, id-c);
       file.id-table = .id-table;
-      loop i = 0; (id-c) i++ {
+      loop i = 0; id-c; i++ {
          +id-len = r.n1();
          +id-str = r.charr;
          r.pos += id-len + 1;
@@ -124,13 +124,13 @@ read(in-path:char[]) {
          grow(.include-table-cap, include-c);
          realloc(.include-table, .include-table-cap, old-cap);
       }
-      loop i = 0; (include-c) i++ {
+      loop i = 0; include-c; i++ {
          +include-len = r.n1();
          +include-str = r.reff;
          r.pos += include-len + 1;
          +found = .include-map.get-or-insert(include-str, include-len, .include-c);
          // +found = -1;
-         // loop j = 0; (.include-c) j++ {
+         // loop j = 0; .include-c; j++ {
          //    if (&&, .include-len-v[j] == include-len, C.memcmp(.include-str-v[j], include-str, include-len) == 0) {
          //       found = j;
          //       break;
@@ -158,7 +158,7 @@ read(in-path:char[]) {
       quick-alloc-arr(.at-table, at-c);
       file.at-table = .at-table;
       var at-type:NameType;
-      loop i = 0; (at-c) i++ {
+      loop i = 0; at-c; i++ {
          at-type.rd(r);
          if (at-type == #basic) {
             BasicTypeId.rd(+basic, r);
@@ -170,7 +170,7 @@ read(in-path:char[]) {
             // C.out.printf("- parent %u\n", at-parent);
             // C.out.printf("- name %s\n", at-name.str());
             +found = .at-map.get-or-insert(at-parent, at-type, at-name, .at-c);
-            // loop j = 0; (.at-c) j++ {
+            // loop j = 0; .at-c; j++ {
             //    +at = .at-v[j];
             //    if (&&, at.parent == at-parent, at.type == at-type, at.name.id == at-name) {
             //       found = j;
@@ -210,7 +210,7 @@ read(in-path:char[]) {
       }
       // malloc(.cvar-table, .cvar-c);
       // file.cvar-table = .cvar-table;
-      loop cvar-idx = cvar-begin, i = 0; (cvar-c) cvar-idx++; i++ {
+      loop cvar-idx = cvar-begin, i = 0; cvar-c; cvar-idx++; i++ {
          +cvar = .cvar-v[cvar-idx];
          cvar.file = file-idx;
          cvar.include.rd(r);
@@ -248,7 +248,7 @@ read(in-path:char[]) {
       }
       // malloc(.gvar-table, .gvar-c);
       // file.gvar-table = .gvar-table;
-      loop gvar-idx = gvar-begin, i = 0; (gvar-c) gvar-idx++; i++ {
+      loop gvar-idx = gvar-begin, i = 0; gvar-c; gvar-idx++; i++ {
          +gvar = .gvar-v[gvar-idx];
          gvar.include.rd(r);
          gvar.at.rd(r);
@@ -275,7 +275,7 @@ read(in-path:char[]) {
       grow(.enum-cap, .enum-c);
       realloc(.enum-v, .enum-cap, old-cap);
    }
-   loop e-idx = e-idx-begin; (enum-c) e-idx++ {
+   loop e-idx = e-idx-begin; enum-c; e-idx++ {
       var e:EnumData;
       quick-alloc-one(e);
       .enum-v[e-idx] = e;
@@ -323,7 +323,7 @@ read(in-path:char[]) {
       grow(.struct-cap, .struct-c);
       realloc(.struct-v, .struct-cap, old-cap);
    }
-   loop s-idx = s-idx-begin; (struct-c) s-idx++ {
+   loop s-idx = s-idx-begin; struct-c; s-idx++ {
       +fvar-c = r.n1();
       var s:StructData;
       quick-alloc-plus(s, FvarData[usz] * fvar-c);
@@ -350,7 +350,7 @@ read(in-path:char[]) {
       at.def = #struct;
       // s.name.rd(r);
       // C.out.printf("%u:%u - %u:%u: /%s(", s.begin-row, s.begin-col, s.end-row, s.end-col, s.name.str());
-      loop j = 0; (fvar-c) j++ {
+      loop j = 0; fvar-c; j++ {
          +fvar = s.fvar-v[j];
          fvar.decl.rd(r);
          // if (j != 0) {
@@ -376,7 +376,7 @@ read(in-path:char[]) {
       grow(.func-cap, .func-c);
       realloc(.func-v, .func-cap, old-cap);
    }
-   loop f-idx = f-idx-begin; (func-c) f-idx++ {
+   loop f-idx = f-idx-begin; func-c; f-idx++ {
       +farg-c = r.n1();
       var f:DeclFunc;
       quick-alloc-plus(f, Farg[usz] * farg-c);
@@ -409,7 +409,7 @@ read(in-path:char[]) {
       .ctx-func-id = f-idx;
       // grow(f.lvar-cap, farg-c);
       // malloc(f.lvar-v, f.lvar-cap);
-      loop j = 0; (farg-c) j++ {
+      loop j = 0; farg-c; j++ {
          +farg = f.farg-v[j];
          farg.rd(r);
          // if (j != 0) {
@@ -425,7 +425,7 @@ read(in-path:char[]) {
       }
       +group-c = r.n1();
       f.group-c = group-c;
-      loop i = 0; (group-c) i++ {
+      loop i = 0; group-c; i++ {
          f.group-v[i] = r.n1();
       }
       // C.out.printf(")\n");
@@ -463,7 +463,7 @@ read(in-path:char[]) {
       }
       .func-main = func-main;
    }
-   loop f-idx = f-idx-begin; (func-c) f-idx++ {
+   loop f-idx = f-idx-begin; func-c; f-idx++ {
       +f = .func-v[f-idx];
       if ((f.flags & #has-body) == #0) { continue}
       +size = r.n4();
@@ -524,7 +524,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    quick-alloc-init();
    .func-main = #nil;
 
-   loop type = 0:BasicTypeId; (BasicTypeId#COUNT) type++ {
+   loop type = 0:BasicTypeId; BasicTypeId#COUNT; type++ {
       +at-idx = .at-c++;
       if (.at-cap <= .at-c) {
          +old-cap = .at-cap;
@@ -539,12 +539,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    //    +at-i = basic-type(#bool);
    // }
 
-   loop i = arg-i; (arg-c - arg-i - 1) i++ {
+   loop i = arg-i; arg-c - arg-i - 1; i++ {
       +in-path = arg-v[i];
       read(in-path);
    }
 
-   loop f-idx = 0:Func; (.func-c) f-idx++ {
+   loop f-idx = 0:Func; .func-c; f-idx++ {
       +f = f-idx.ptr();
       if (f.this-idx != -1) {
          +at = f.at.ptr();
@@ -651,7 +651,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       }
    }
 
-   loop i = 0; (.func-head-outputted-c) i++ {
+   loop i = 0; .func-head-outputted-c; i++ {
       +f-idx = .func-head-outputted-v[i];
       +f = f-idx.ptr();
       if ((f.flags & #no-decl) != #0) { continue}
@@ -659,7 +659,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          continue;
       }
       .ctx-func = f;
-      loop l = 0:Lvar; (f.lvar-c) l++ {
+      loop l = 0:Lvar; f.lvar-c; l++ {
          if !(l.process()) {
             C.exit(#failure);
          }
@@ -671,7 +671,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    if (watermark) {
       .out.printf("// Generated by Cp1\n");
    }
-   loop i = 0; (.func-head-outputted-c) i++ {
+   loop i = 0; .func-head-outputted-c; i++ {
       +f-idx = .func-head-outputted-v[i];
       +f = f-idx.ptr();
       +row = f.begin-row;
@@ -679,7 +679,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       if (f.decl.type != #nil) {
          f.decl.type.output(f.file, row, col);
       }
-      loop i = 0; (f.farg-c) i++ {
+      loop i = 0; f.farg-c; i++ {
          f.farg-v[i].decl.type.output(f.file, row, col);
       }
       if (f.include != #nil) {
@@ -687,7 +687,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       }
       if ((f.flags & #cp1-name) != #0) {
          +at = f.at.ptr();
-         loop i = 0, v = at.cvar-v; (at.cvar-c) i++ {
+         loop i = 0, v = at.cvar-v; at.cvar-c; i++ {
             +cvar = v[i];
             if ((cvar.ptr().flags & #as-enum) != #0) {
                cvar.process();
@@ -704,11 +704,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    if (.include-stddef) {
       .out.printf("#include <stddef.h>\n");
    }
-   loop i = 0; (.include-outputted-c) i++ {
+   loop i = 0; .include-outputted-c; i++ {
       +inc = .include-outputted-v[i];
       .out.printf("#include %s\n", inc.str());
    }
-   loop i = 0; (.cvar-outputted-c) i++ {
+   loop i = 0; .cvar-outputted-c; i++ {
       +c-i = .cvar-outputted-v[i];
       +c = c-i.ptr();
       if ((c.decl.flags & #no-decl) != #0) {
@@ -730,7 +730,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       }
       .out.printf("\n");
    }
-   loop i = 0; (.enum-outputted-c) i++ {
+   loop i = 0; .enum-outputted-c; i++ {
       +e-i = .enum-outputted-v[i];
       +e = e-i.ptr();
       .out.printf("typedef ");
@@ -739,7 +739,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       e.at.write();
       .out.printf(";\n");
    }
-   loop i = 0; (.struct-outputted-c) i++ {
+   loop i = 0; .struct-outputted-c; i++ {
       +s-i = .struct-outputted-v[i];
       +s = s-i.ptr();
       if ((s.flags & #union) != #0) {
@@ -755,14 +755,14 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       }
       s.at.write-space();
       .out.printf(" {\n");
-      loop j = 0; (s.fvar-c) j++ {
+      loop j = 0; s.fvar-c; j++ {
          +fvar = s.fvar-v[j];
          fvar.decl.write-type(#fvar);
          .out.printf(";\n");
       }
       .out.printf("};\n");
    }
-   loop i = 0; (.gvar-outputted-c) i++ {
+   loop i = 0; .gvar-outputted-c; i++ {
       +g-i = .gvar-outputted-v[i];
       +g = g-i.ptr();
       if ((g.decl.flags & #no-decl) != #0) { continue}
@@ -772,7 +772,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       g.decl.write-type(#gvar);
       .out.printf(";\n");
    }
-   loop i = 0; (.func-head-outputted-c) i++ {
+   loop i = 0; .func-head-outputted-c; i++ {
       +f-idx = .func-head-outputted-v[i];
       +f = f-idx.ptr();
       if ((f.flags & #no-decl) != #0) { continue}
@@ -781,7 +781,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             .out.printf("#define ");
             f.write();
             .out.printf("(");
-            loop j = 0; (f.farg-c) j++ {
+            loop j = 0; f.farg-c; j++ {
                if (j != 0) {
                   .out.printf(", ");
                }
@@ -808,7 +808,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       // } else {
       //    .out.printf(" %s(", f.decl.name.c-name());
       // }
-      loop j = 0; (f.farg-c) j++ {
+      loop j = 0; f.farg-c; j++ {
          if (j != 0) {
             .out.printf(", ");
          }
@@ -817,7 +817,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       if ((f.flags & #cp1-name) != #0) {
          .out.printf(") {\nswitch(_Le_0) {\n");
          +at = f.at.ptr();
-         loop i = 0, v = at.cvar-v; (at.cvar-c) i++ {
+         loop i = 0, v = at.cvar-v; at.cvar-c; i++ {
             +cvar-i = v[i];
             +cvar = cvar-i.ptr();
             if ((cvar.flags & #as-enum) == #0) { continue}
@@ -830,7 +830,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          .out.printf(");\n");
       }
    }
-   loop i = 0; (.func-body-outputted-c) i++ {
+   loop i = 0; .func-body-outputted-c; i++ {
       +f-idx = .func-body-outputted-v[i];
       +f = f-idx.ptr();
       .ctx-func = f;
@@ -851,7 +851,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       // } else {
       //    .out.printf(" %s(", f.decl.name.c-name());
       // }
-      loop j = 0; (f.farg-c) j++ {
+      loop j = 0; f.farg-c; j++ {
          if (j != 0) {
             .out.printf(", ");
          }
@@ -875,7 +875,7 @@ using (Func) {
       +f-file = f.file;
       +f-row = f.begin-row;
       +f-col = f.begin-col;
-      loop j = 0; (f.farg-c) j++ {
+      loop j = 0; f.farg-c; j++ {
          f.farg-v[j].decl.type = at-validate(f.farg-v[j].decl.type, f-at, f-file, f.farg-v[j].row, f.farg-v[j].col);
       }
       if (f.decl.type != #nil) {
@@ -903,7 +903,7 @@ using (Func) {
       // f.lvar-c = #0;
       // grow(f.lvar-cap, f.farg-c);
       // malloc(f.lvar-v, f.farg-c);
-      // loop i = 0; (f.farg-c) i ++ {
+      // loop i = 0; f.farg-c; i ++ {
       //    +farg = f.farg-v[i];
       //    f.lvar-v[i].row = f.begin-row;
       //    f.lvar-v[i].col = f.begin-col;
@@ -946,7 +946,7 @@ using (Func) {
          }
          s = s.stmt-next;
       }
-      // loop i = 0; (f.stmt-c) i ++ {
+      // loop i = 0; f.stmt-c; i ++ {
       //    +s = f.stmt-v[i];
       //    .ctx-begin-row = s.begin-row;
       //    .ctx-begin-col = s.begin-col;

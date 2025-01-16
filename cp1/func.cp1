@@ -43,7 +43,7 @@ using (DeclFunc) {
       } else {
          f.at.write-space();
          .out.printf("_P%s", f.decl.name.c-name());
-         loop i = 0; (f.group-c) i++ {
+         loop i = 0; f.group-c; i++ {
             .out.printf("_%u", f.group-v[i]);
          }
       }
@@ -52,7 +52,7 @@ using (DeclFunc) {
       +lvar-c = r.n():Lvar;
       f.lvar-c = lvar-c;
       quick-alloc-arr(f.lvar-v, lvar-c);
-      loop i = 0; (f.lvar-c) i++ {
+      loop i = 0; f.lvar-c; i++ {
          +l = f.lvar-v[i];
          l.row = r.n();
          l.col = r.n();
@@ -66,7 +66,7 @@ using (DeclFunc) {
    }
    lvars-wr(f:this, w:Wtr, header:bool) {
       w.n(f.lvar-c);
-      loop i = 0; (f.lvar-c) i++ {
+      loop i = 0; f.lvar-c; i++ {
          +l = f.lvar-v[i];
          w.n(l.row);
          w.n(l.col);
@@ -206,14 +206,14 @@ decl-func-end(row:i32, col:i32) {
    .decl-var.name = .decl-func-name;
    f.decl.copy-from(.decl-var);
    f.farg-c = .decl-farg-c;
-   loop i = 0; (.decl-farg-c) i++ {
+   loop i = 0; .decl-farg-c; i++ {
       +fa = f.farg-v[i];
       fa.copy-from(.decl-farg-v[i]);
    }
    f.this-idx = .decl-func-this-idx;
    f.this-group = .decl-func-this-group;
    f.group-c = .decl-farg-group-c;
-   loop i = 0; (.decl-farg-group-c) i++ {
+   loop i = 0; .decl-farg-group-c; i++ {
       f.group-v[i] = .decl-farg-group-v[i];
    }
    f.flags = .decl-func-flags;
@@ -232,7 +232,7 @@ decl-func-end(row:i32, col:i32) {
    f.decl-len = .decl-func-decl-len;
    +space = .decl-func-space;
    f.stmt-space = space;
-   loop i = 0; (.decl-farg-c) i++ {
+   loop i = 0; .decl-farg-c; i++ {
       +fa = f.farg-v[i];
       +lvar-i = space.lvar-new(fa.decl.name, fa.row, fa.col);
       +lvar = lvar-i.ptr();
@@ -398,12 +398,12 @@ expr-pop-func(at:At, func-name:Id):ExprI {
    e.at = at;
    e.func-name = func-name;
    e.carg-c = carg-c;
-   loop i = 0; (carg-c) i++ {
+   loop i = 0; carg-c; i++ {
       e.carg-v[i].reff = 0;
       e.carg-v[i].expr = .expr-call-carg-v[call-idx][i];
    }
    e.group-c = .expr-call-cgrp-c[call-idx];
-   loop i = 0; (e.group-c) i++ {
+   loop i = 0; e.group-c; i++ {
       e.group-v[i] = .expr-call-cgrp-v[call-idx][i];
    }
    return e-idx;
@@ -417,11 +417,11 @@ expr-pop-method(thiss:ExprI, func-name:Id):ExprI {
    e.thiss = thiss;
    e.func-name = func-name;
    e.carg-c = carg-c;
-   loop i = 0; (carg-c) i++ {
+   loop i = 0; carg-c; i++ {
       e.carg-v[i].expr = .expr-call-carg-v[call-idx][i];
    }
    e.group-c = .expr-call-cgrp-c[call-idx];
-   loop i = 0; (e.group-c) i++ {
+   loop i = 0; e.group-c; i++ {
       e.group-v[i] = .expr-call-cgrp-v[call-idx][i];
    }
    return e-idx;

@@ -35,7 +35,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       var line:char[] = & in-data[start];
       var push:char[32];
       +push-c = 0;
-      loop i = 18; (len - 18) i++ {
+      loop i = 18; len - 18; i++ {
          if (&&, line[i] >= ''0, line[i] <= ''9) {
             push[push-c++] = line[i];
          } elif (&&, line[i] >= ''a, line[i] <= ''z) {

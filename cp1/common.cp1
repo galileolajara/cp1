@@ -869,7 +869,7 @@ Id[#nil = -1, #0]:i32 {
       +str = .id-str-v[id];
       c-name = quick-alloc(len + 1);
       .id-c-name-v[id] = c-name;
-      loop i = 0; (len) i++ {
+      loop i = 0; len; i++ {
          if (str[i] == ''-) {
             c-name[i] = ''_;
          } else {

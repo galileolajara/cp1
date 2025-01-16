@@ -33,7 +33,7 @@ type-info-arr(expr-v:ExprI[], expr-c:u8) {
       ti.ref-v[ti.array-c] = 0;
       return;
    }
-   loop i = expr-c; (expr-c) {
+   loop i = expr-c; expr-c; {
       type-info-arr(expr-v[i -= 1]);
    }
 }
@@ -71,7 +71,7 @@ decl-include-end() {
    .decl-include = #nil;
 }
 at-basic-type(type:BasicTypeId):At {
-   loop i = 0:At; (.at-c) i++ {
+   loop i = 0:At; .at-c; i++ {
       +at = .at-v[i];
       if (&&, at.type == #basic, at.name.basic == type) {
          return i;
@@ -114,7 +114,7 @@ var at-alias-at-v:At[];
 var at-alias-pos-v:RowCol+[];
 RowCol(row:i32, col:i32);
 at-alias(name:Id, row:i32, col:i32) {
-   loop i = 0; (.at-alias-c) i++ {
+   loop i = 0; .at-alias-c; i++ {
       if (.at-alias-name-v[i] == name) {
          .build-at = .at-alias-at-v[i];
          return;
@@ -133,7 +133,7 @@ at-push(name:Id, type:NameType, row:i32, col:i32) {
    //    'c.printf(".build-at is %u for %s\n", .build-at, name.str());
    // }
    if (.build-at == #relative) {
-      loop i = 0; (.at-alias-c) i++ {
+      loop i = 0; .at-alias-c; i++ {
          if (.at-alias-name-v[i] == name) {
             .build-at = .at-alias-at-v[i];
             return;
@@ -148,7 +148,7 @@ decl-alias(name:Id, at:At, row:i32, col:i32) {
    //    C.exit(#failure);
    //    return;
    // }
-   loop i = 0; (.at-alias-c) i++ {
+   loop i = 0; .at-alias-c; i++ {
       if (.at-alias-name-v[i] == name) {
          C.out.printf("%s:%u:%u: Alias '%s was already declared at %u:%u\n", .input-path, row, col, name.str(), .at-alias-pos-v[i].row, .at-alias-pos-v[i].col);
          C.exit(#failure);
@@ -189,7 +189,7 @@ at-done():At {
 at-create(parent:At, type:NameType, name:Id):At {
    +found = .at-map.get-or-insert(parent, type, name, .at-c);
    if (found != -1) { return found}
-   // loop i = 0:At; (.at-c) i++ {
+   // loop i = 0:At; .at-c; i++ {
    //    +at = .at-v[i];
    //    if (&&,
    //       at.parent == parent,
@@ -211,7 +211,7 @@ at-create(parent:At, type:NameType, name:Id):At {
    return build-idx;
 }
 at-create-basic(basic:BasicTypeId):At {
-   loop i = 0:At; (.at-c) i++ {
+   loop i = 0:At; .at-c; i++ {
       +at = .at-v[i];
       if (&&,
          at.type == #basic,
@@ -350,7 +350,7 @@ Lexer(
          // found
          return found;
       }
-      // loop i = 0; (.id-c) i++ {
+      // loop i = 0; .id-c; i++ {
       //    if (.id-len-v[i] == len) {
       //       if (C.memcmp(.id-str-v[i], r-start.ref, len) == 0) {
       //          return i;
@@ -407,7 +407,7 @@ Lexer(
          // found
          return found;
       }
-      // loop i = 0; (.include-c) i++ {
+      // loop i = 0; .include-c; i++ {
       //    if (.include-len-v[i] == len) {
       //       if (C.memcmp(.include-str-v[i], r-start.ref, len) == 0) {
       //          return i;
@@ -441,7 +441,7 @@ var row:i32 @extern;
 var col:i32 @extern;
 write-func(w:Wtr, header:bool) @inline {
    w.n(.func-c);
-   loop i = 0; (.func-c) {
+   loop i = 0; .func-c; {
       +f = .func-v[i++];
       w.n1(f.farg-c);
       w.n(f.begin-row);
@@ -451,7 +451,7 @@ write-func(w:Wtr, header:bool) @inline {
       f.include.wr(w);
       f.at.wr(w, header);
       f.decl.wr(w, header);
-      loop j = 0; (f.farg-c) j++ {
+      loop j = 0; f.farg-c; j++ {
          f.farg-v[j].wr(w, header);
       }
       w.n1(f.this-idx);
@@ -459,7 +459,7 @@ write-func(w:Wtr, header:bool) @inline {
          w.n1(f.this-group);
       }
       w.n1(f.group-c);
-      loop j = 0; (f.group-c) j++ {
+      loop j = 0; f.group-c; j++ {
          w.n1(f.group-v[j]);
       }
       if (header) {
@@ -485,7 +485,7 @@ write-func(w:Wtr, header:bool) @inline {
       }
    }
    .func-main.wr(w);
-   loop i = 0; (.func-c) {
+   loop i = 0; .func-c; {
       +f = .func-v[i++];
       if ((f.flags & #has-body) == #0) { continue}
       if (header) {
@@ -507,7 +507,7 @@ write-func(w:Wtr, header:bool) @inline {
 }
 write-cvar(w:Wtr, header:bool) {
    w.n(.cvar-c);
-   loop i = 0; (.cvar-c) i++ {
+   loop i = 0; .cvar-c; i++ {
       +cvar = .cvar-v[i];
       cvar.include.wr(w);
       cvar.at.wr(w, header);
@@ -522,7 +522,7 @@ write-cvar(w:Wtr, header:bool) {
 }
 write-gvar(w:Wtr, header:bool) {
    w.n(.gvar-c);
-   loop i = 0; (.gvar-c) i++ {
+   loop i = 0; .gvar-c; i++ {
       +gvar = .gvar-v[i];
       gvar.include.wr(w);
       gvar.at.wr(w, header);
@@ -531,7 +531,7 @@ write-gvar(w:Wtr, header:bool) {
 }
 write-enum(w:Wtr, header:bool) {
    w.n(.enum-c);
-   loop i = 0; (.enum-c) {
+   loop i = 0; .enum-c; {
       +e = .enum-v[i++];
       w.n(e.begin-row);
       w.n(e.begin-col);
@@ -548,7 +548,7 @@ write-enum(w:Wtr, header:bool) {
 }
 write-struct(w:Wtr, header:bool) {
    w.n(.struct-c);
-   loop i = 0; (.struct-c) {
+   loop i = 0; .struct-c; {
       +s = .struct-v[i++];
       w.n1(s.fvar-c);
       w.n(s.begin-row);
@@ -560,7 +560,7 @@ write-struct(w:Wtr, header:bool) {
       s.flags.wr(w);
       // C.out.printf("write-struct %s\n", s.at.ptr().name.id.str());
       // s.name.wr(w, header);
-      loop j = 0; (s.fvar-c) j++ {
+      loop j = 0; s.fvar-c; j++ {
          s.fvar-v[j].wr(w, header);
       }
       if ((s.flags & #real-name) != #0) {
@@ -1258,7 +1258,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    var w:Wtr+;
    w.reff = w-begin.reff;
    w.n(.id-c);
-   loop i = 0; (.id-c) i++ {
+   loop i = 0; .id-c; i++ {
       w.n1(.id-len-v[i]);
       w.copy(.id-str-v[i], .id-len-v[i]);
       w.n1(0);
@@ -1270,7 +1270,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
 
    w.n(.include-c);
    // C.out.printf("There are %u includes\n", .include-c);
-   loop i = 0; (.include-c) i++ {
+   loop i = 0; .include-c; i++ {
       w.n1(.include-len-v[i]);
       w.copy(.include-str-v[i], .include-len-v[i]);
       w.n1(0);
@@ -1282,7 +1282,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    malloc-arr(.at-in-header-at-v, .at-c);
 
    w.n(.at-c);
-   loop i = 0; (.at-c) i++ {
+   loop i = 0; .at-c; i++ {
       +at = .at-v[i];
       at.type.wr(w);
       if (at.type == #basic) {
@@ -1311,20 +1311,20 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
 
    w.reff = w-begin.reff;
    w.n(.id-in-header-c);
-   loop j = 0; (.id-in-header-c) j++ {
+   loop j = 0; .id-in-header-c; j++ {
       +i = .id-in-header-id-v[j];
       w.n1(.id-len-v[i]);
       w.copy(.id-str-v[i], .id-len-v[i]);
       w.n1(0);
    }
    w.n(.include-c);
-   loop i = 0; (.include-c) i++ {
+   loop i = 0; .include-c; i++ {
       w.n1(.include-len-v[i]);
       w.copy(.include-str-v[i], .include-len-v[i]);
       w.n1(0);
    }
    w.n(.at-in-header-c);
-   loop j = 0; (.at-in-header-c) j++ {
+   loop j = 0; .at-in-header-c; j++ {
       +i = .at-in-header-at-v[j];
       +at = .at-v[i];
       at.type.wr(w);

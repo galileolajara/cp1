@@ -2,7 +2,7 @@ using Cp1 = Cp1;
 using C = StdC;
 using (Cp1) {
 expr-index(left:ExprI, right-v:ExprI[], right-c:i32):ExprI {
-   loop i = right-c; (right-c) {
+   loop i = right-c; right-c; {
       quick-alloc-one(+(e:ExprIndex));
       ++e-idx = expr-push(e.base, #index);
       e.left = left;
