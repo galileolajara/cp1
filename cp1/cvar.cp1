@@ -120,7 +120,7 @@ using (ExprI) {
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
          // C.out.printf("e.try = %d, %s, %s, cvar-c %d\n", e.try, at.name.id.str(), name.str(), cvar-c);
-         loop var i = 0; {(cvar-c) i++} {
+         loop i = 0; (cvar-c) i++ {
             +cvar = cvar-v[i];
             // C.out.printf("- %s\n", cvar.ptr().decl.name.str());
             if (cvar.ptr().decl.name == name) {
@@ -147,7 +147,7 @@ using (ExprI) {
          try-parent = true;
       }
       loop {
-         loop var i = 0; {(cvar-c) i++} {
+         loop i = 0; (cvar-c) i++ {
             +cvar = cvar-v[i];
             if (cvar.ptr().decl.name == name) {
                if !(cvar.process()) { return}

@@ -18,7 +18,7 @@ using (StmtSpace) {
    wr-case(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
       var s:StmtCase = stmt;
       w.n(s.expr-c);
-      loop var i = 0; {(s.expr-c) i++} {
+      loop i = 0; (s.expr-c) i++ {
          s.expr-v[i].expr.wr(w, header);
       }
       w.b(s.fall-through);
@@ -27,7 +27,7 @@ using (StmtSpace) {
       +expr-c = r.n();
       quick-alloc-plus(+(s:StmtCase), StmtCaseItem[usz] * expr-c);
       s.expr-c = expr-c;
-      loop var i = 0; {(expr-c) i++} {
+      loop i = 0; (expr-c) i++ {
          s.expr-v[i].expr.rd(r);
       }
       s.fall-through = r.b();
@@ -74,7 +74,7 @@ using (Stmt) {
          var e:Expr = s.cases.ptr();
          var func:ExprFunc = e;
          +v = s.case-func-v;
-         loop var i = 0; {(s.case-func-c) i++} {
+         loop i = 0; (s.case-func-c) i++ {
             .out.printf("case ");
             v[i].cvar.write();
             .out.printf(":;\n");
@@ -107,7 +107,7 @@ using (Stmt) {
          +case-c = 0;
          +case-cap = 0;
          var case-v:Func[] = null;
-         loop var i = 0; {(f.func-c) i++} {
+         loop i = 0; (f.func-c) i++ {
             +func-i = f.func-v[i];
             +func = func-i.ptr();
             if ((func.flags & #case) != #0) {
@@ -130,14 +130,14 @@ using (Stmt) {
             s.case-func-c = case-c;
             quick-alloc-arr(s.case-func-v, case-c);
             +func-v = s.case-func-v;
-            loop var i = 0; {(case-c) i++} {
+            loop i = 0; (case-c) i++ {
                +func-i = case-v[i];
                +func = func-i.ptr();
                +func-name2 = func.decl.name;
                var cvar-name-str:char[] = & func-name2.str()[func-name-len + 1];
                +cvar-name-len = func-name2.len() - (func-name-len + 1);
                +found-id = Id#nil;
-               loop var j = 0:Id; {(.id-c) j++} {
+               loop j = 0:Id; (.id-c) j++ {
                   if (&&, j.len() == cvar-name-len, C.memcmp(j.str(), cvar-name-str, cvar-name-len) == 0) {
                      found-id = j;
                      break;
@@ -148,7 +148,7 @@ using (Stmt) {
                   return;
                }
                +found-cvar = Cvar#nil;
-               loop var j = 0; {(type.cvar-c) j++} {
+               loop j = 0; (type.cvar-c) j++ {
                   +cvar-i = type.cvar-v[j];
                   +cvar = cvar-i.ptr();
                   if (cvar.decl.name == found-id) {
@@ -172,7 +172,7 @@ using (Stmt) {
    }
    write-case(stmt:Stmt) @case.write() @inline {
       var s:StmtCase = stmt;
-      loop var i = 0; {(s.expr-c) i++} {
+      loop i = 0; (s.expr-c) i++ {
          .out.printf("case ");
          s.expr-v[i].expr.write-value(s.expr-v[i].val);
          .out.printf(":;\n");
@@ -186,7 +186,7 @@ using (Stmt) {
          +type-i = switc.val.type;
          +type = type-i.ptr();
          if (type.def == #enum) {
-            loop var i = 0; {(s.expr-c) i++} {
+            loop i = 0; (s.expr-c) i++ {
                +e-i = s.expr-v[i].expr;
                +e = e-i.ptr();
                if (e.type == #cvar) {
@@ -198,7 +198,7 @@ using (Stmt) {
             }
          }
       }
-      loop var i = 0; {(s.expr-c) i++} {
+      loop i = 0; (s.expr-c) i++ {
          +e-i = s.expr-v[i].expr;
          if !(e-i.value(1, true, s.expr-v[i].val)) {
             return;
@@ -287,7 +287,7 @@ stmt-switch-case-begin(begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, f
    quick-alloc-plus(+(s:StmtCase), StmtCaseItem[usz] * expr-c);
    s.fall-through = fall-through;
    s.expr-c = expr-c;
-   loop var i = 0; {(expr-c) i++} {
+   loop i = 0; (expr-c) i++ {
       s.expr-v[i].expr = .switch-expr-v[i];
    }
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #case);

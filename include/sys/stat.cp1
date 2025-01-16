@@ -1,4 +1,4 @@
-{include(<sys/stat.h>)
+include(<sys/stat.h>) {
    using Sys = Sys;
    using (Sys) {
       Timespec(sec:u32 @real-name(tv_sec), nsec:u32 @real-name(tv_nsec));

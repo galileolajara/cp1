@@ -426,7 +426,7 @@ realloc(r:ref, c:i32, oldc:i32)
    @inline {
    C.realloc(null, 0);
 }
-{include("num.c")
+include("num.c") {
    grow(cap:i32, c:i32)
       @no-body
       @decl('<# cap = Fpow2gteq((c) + 8)>)
@@ -869,7 +869,7 @@ Id[#nil = -1, #0]:i32 {
       +str = .id-str-v[id];
       c-name = quick-alloc(len + 1);
       .id-c-name-v[id] = c-name;
-      loop var i = 0; {(len) i++} {
+      loop i = 0; (len) i++ {
          if (str[i] == ''-) {
             c-name[i] = ''_;
          } else {
