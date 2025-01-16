@@ -844,7 +844,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       // Ignore texts outside the top-level curly braces
       // +indent = 0:i32;
       loop (r.pos < r-end.pos) {
-         if (r.p1[0] == ''/) {
+         if (r.p1[0] == ''\t) {
+            get-row-col(+row, +col, r.reff, in-data);
+            C.printf("%s:%u:%u: Error, use of tabs is discouraged, please use spaces instead\n", .input-path, row, col);
+            C.exit(#failure);
+         } elif (r.p1[0] == ''/) {
             if (r.p1[1] == ''/) { // , (||, r.p1[2] == '' , r.p1[2] == ''\t))
                if (r.reff == in-data) {
                   // ok
