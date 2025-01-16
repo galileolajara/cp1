@@ -12,7 +12,11 @@ main():intc {
       i++;
       if (i == 5) { break; }
    }
+<<<<<<< HEAD
    loop count = 1; ; count++ {
+=======
+   loop count = 1; 3; count++ {
+>>>>>>> c6f164038d17a4959e93aad3362b6c170c730134
       C.printf("This is a loop that will run 3 times. %d...\n", count);
    }
    loop i = 0; i < 4; i++ {

@@ -52,7 +52,7 @@ StmtSpace(
    }
    lvar-new(space:this, name:Id, row:i32, col:i32):Lvar {
       +v = space.lvar-v;
-      loop i = 0; (space.lvar-c) i++ {
+      loop i = 0; space.lvar-c; i++ {
          +lvar = v[i].ptr();
          if (lvar.decl.name == name) {
             C.out.printf("%u:%u: lvar '%s' was already declared at %u:%u\n", row, col, name.str(), lvar.row, lvar.col);
@@ -86,7 +86,7 @@ StmtSpace(
    }
    wr(space:this, w:Wtr, header:bool) {
       w.n(space.lvar-c);
-      loop i = 0; (space.lvar-c) i++ {
+      loop i = 0; space.lvar-c; i++ {
          space.lvar-v[i].wr(w);
       }
       +stmt = space.stmt-first;
@@ -135,7 +135,7 @@ StmtSpace(
       +lvar-c = r.n();
       space.lvar-c = lvar-c;
       quick-alloc-arr(space.lvar-v, lvar-c);
-      loop i = 0; (lvar-c) i++ {
+      loop i = 0; lvar-c; i++ {
          space.lvar-v[i].rd(r);
       }
 

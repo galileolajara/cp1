@@ -93,7 +93,7 @@ var preprocess-def-len-v:u8[];
 var preprocess-def-cap:u32;
 var preprocess-def-c:u32;
 preprocess-def-get(name:char[], len:u8):bool {
-   loop i = 0; (.preprocess-def-c) i++ {
+   loop i = 0; .preprocess-def-c; i++ {
       if (&&, .preprocess-def-len-v[i] == len, C.memcmp(.preprocess-def-str-v[i], name, len) == 0) {
          return true;
       }
@@ -180,7 +180,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
             invert = true;
          }
          +rparen = -1;
-         loop i = start; (line-len - start) i++ {
+         loop i = start; line-len - start; i++ {
             if (r.p1[i] == '')) {
                rparen = i;
                break;

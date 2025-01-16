@@ -37,7 +37,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
             break;
          }
          +lparen = -1;
-         loop i = 0; (len) i++ {
+         loop i = 0; len; i++ {
             if (line[i] == ''() {
                lparen = i;
                break;
@@ -73,7 +73,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
          } elif (indent == 0) {
             if (&&, line[len - 2] == ''), line[len - 1] == '';) {
                +lparen = -1;
-               loop i = 0; (len) i++ {
+               loop i = 0; len; i++ {
                   if (line[i] == ''() {
                      lparen = i;
                      break;
@@ -85,7 +85,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
                }
                +func-len = lparen - name;
                var func:char[] = & line[name];
-               loop i = 0; (func-c) i++ {
+               loop i = 0; func-c; i++ {
                   if (&&, func-len == func-len-v[i], C.memcmp(func, func-name-v[i], func-len) == 0) {
                      out-f.printf("%.*s\n", len, line);
                      break;

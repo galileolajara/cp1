@@ -100,11 +100,11 @@ using (ExprI) {
       e.thiss.wr(w, header);
       e.func-name.wr(w, header);
       w.n1(e.group-c);
-      loop i = 0; (e.group-c) i++ {
+      loop i = 0; e.group-c; i++ {
          w.n1(e.group-v[i]);
       }
       w.n1(e.carg-c);
-      loop i = 0; (e.carg-c) i++ {
+      loop i = 0; e.carg-c; i++ {
          e.carg-v[i].expr.wr(w, header);
       }
    }
@@ -113,7 +113,7 @@ using (ExprI) {
       Id.rd(+func-name, r);
       +group-c = r.n1();
       var group-v:i8[#expr-carg-group-limit];
-      loop i = 0; (group-c) i++ {
+      loop i = 0; group-c; i++ {
          group-v[i] = r.n1();
       }
       +carg-c = r.n1();
@@ -122,11 +122,11 @@ using (ExprI) {
       e.thiss = this-expr;
       e.func-name = func-name;
       e.group-c = group-c;
-      loop i = 0; (group-c) i++ {
+      loop i = 0; group-c; i++ {
          e.group-v[i] = group-v[i];
       }
       e.carg-c = carg-c;
-      loop i = 0; (carg-c) i++ {
+      loop i = 0; carg-c; i++ {
          e.carg-v[i].expr.rd(r);
       }
    }
@@ -165,7 +165,7 @@ using (ExprI) {
       }
       +found = -1;
       +similar-c = 0;
-      loop i = 0; (method-c) i++ {
+      loop i = 0; method-c; i++ {
          +f-idx = method-v[i];
          +f = f-idx.ptr();
          if (f.decl.name != func-name) { continue}
@@ -175,7 +175,7 @@ using (ExprI) {
          +match = true;
          if ((f.flags & #var-args) != #0) {
             if (f.farg-c > carg-c1) { continue}
-            loop j = 0; (group-c - 1) j++ {
+            loop j = 0; group-c - 1; j++ {
                if (f.this-group == j) {
                   if (f.group-v[j] != (group-v[j] + 1)) {
                      match = false;
@@ -202,7 +202,7 @@ using (ExprI) {
             }
          } else {
             if (f.farg-c != carg-c1) { continue}
-            loop j = 0; (group-c) j++ {
+            loop j = 0; group-c; j++ {
                if (f.this-group == j) {
                   if (f.group-v[j] != (group-v[j] + 1)) {
                      match = false;
@@ -249,7 +249,7 @@ using (ExprI) {
       C.out.printf("%s:%u:%u - %u:%u: Cannot find method %s with %u argument/s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
       if (found != -1) {
          C.out.printf("But found %u functions with different no. of argument/s:\n", similar-c);
-         loop i = 0; (at.func-c) i++ {
+         loop i = 0; at.func-c; i++ {
             +f-idx = at.func-v[i];
             +f = .func-v[f-idx];
             if (f.decl.name == func-name) {
@@ -263,7 +263,7 @@ using (ExprI) {
       +f = e.func-idx.ptr();
       f.write();
       .out.printf("(");
-      loop i = 0; (e.carg-c) i++ {
+      loop i = 0; e.carg-c; i++ {
          if (i != 0) {
             .out.printf(", ");
          }
@@ -276,11 +276,11 @@ using (ExprI) {
       e.at.wr(w, header);
       e.func-name.wr(w, header);
       w.n1(e.group-c);
-      loop i = 0; (e.group-c) i++ {
+      loop i = 0; e.group-c; i++ {
          w.n1(e.group-v[i]);
       }
       w.n1(e.carg-c);
-      loop i = 0; (e.carg-c) i++ {
+      loop i = 0; e.carg-c; i++ {
          e.carg-v[i].expr.wr(w, header);
       }
    }
@@ -289,7 +289,7 @@ using (ExprI) {
       Id.rd(+func-name, r);
       +group-c = r.n1();
       var group-v:i8[#expr-carg-group-limit];
-      loop i = 0; (group-c) i++ {
+      loop i = 0; group-c; i++ {
          group-v[i] = r.n1();
       }
       +carg-c = r.n1();
@@ -299,11 +299,11 @@ using (ExprI) {
       e.at = at-idx;
       e.func-name = func-name;
       e.group-c = group-c;
-      loop i = 0; (group-c) i++ {
+      loop i = 0; group-c; i++ {
          e.group-v[i] = group-v[i];
       }
       e.carg-c = carg-c;
-      loop i = 0; (carg-c) i++ {
+      loop i = 0; carg-c; i++ {
          e.carg-v[i].expr.rd(r);
       }
    }
@@ -331,7 +331,7 @@ using (ExprI) {
          // +found = -1;
          // +similar-c = 0;
          // C.out.printf("searching from %u functions\n", at.func-c);
-         loop i = 0; (at.func-c) i++ {
+         loop i = 0; at.func-c; i++ {
             +f-idx = at.func-v[i];
             +f = f-idx.ptr();
             if (f.decl.name != func-name) { continue}
@@ -341,7 +341,7 @@ using (ExprI) {
             +match = true;
             if ((f.flags & #var-args) != #0) {
                if (f.farg-c > carg-c) { continue}
-               loop j = 0; (group-c - 1) j++ {
+               loop j = 0; group-c - 1; j++ {
                   if (f.group-v[j] != group-v[j]) {
                      match = false;
                      break;
@@ -355,7 +355,7 @@ using (ExprI) {
                }
             } else {
                if (f.farg-c != carg-c) { continue}
-               loop j = 0; (group-c) j++ {
+               loop j = 0; group-c; j++ {
                   if (f.group-v[j] != group-v[j]) {
                      match = false;
                      break;
@@ -394,7 +394,7 @@ using (ExprI) {
       C.out.printf("%s:%u:%u - %u:%u: Cannot find function %s with %u argument/s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
       // if (found != -1) {
       //    C.out.printf("But found %u functions with different no. of argument/s:\n", similar-c);
-      //    loop i = 0; (at.func-c) i++ {
+      //    loop i = 0; at.func-c; i++ {
       //       +f-idx = at.func-v[i];
       //       +f = .func-v[f-idx];
       //       if (f.decl.name == func-name) {

@@ -23,7 +23,7 @@ at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
       // }
       // C.out.printf("relative type detected, finding :%s\n", name.id.str());
       loop {
-         loop i = 0:At; (.at-c) i++ {
+         loop i = 0:At; .at-c; i++ {
             if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
                // C.out.printf("%u) :%s, %d\n", i, .at-v[i].name.id.str(), .at-v[i].decl.struct);
                if (.at-v[i].name.id == name.id) {
@@ -55,7 +55,7 @@ using (DeclVarData) {
       }
       at-i.output(.ctx-func.file, row, col);
       if !(at-i.finalize(vd.type-info, row, col)) { return false}
-      loop i = 0; (vd.size-c) i++ {
+      loop i = 0; vd.size-c; i++ {
          if !(vd.size-expr-v[i].value(1, false, vd.size-value-v[i])) { return false}
       }
       return true;
@@ -88,7 +88,7 @@ using (DeclVarData) {
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
       .out.printf(" ");
       vd.write(var-type);
-      loop i = 0; (vd.size-c) i++ {
+      loop i = 0; vd.size-c; i++ {
          .out.printf("[");
          vd.size-expr-v[i].write-value(vd.size-value-v[i]);
          .out.printf("]");
@@ -101,7 +101,7 @@ using (DeclVarData) {
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
       .out.printf(" ");
       vd.write-lvar(lvar);
-      loop i = 0; (vd.size-c) i++ {
+      loop i = 0; vd.size-c; i++ {
          .out.printf("[");
          vd.size-expr-v[i].write-value(vd.size-value-v[i]);
          .out.printf("]");
@@ -117,7 +117,7 @@ using (DeclVarData) {
       vd.type-info.wr(w);
       // C.out.printf("%s, vd.size-c %d\n", vd.name.str(), vd.size-c);
       w.n1(vd.size-c);
-      loop i = 0; (vd.size-c) i++ {
+      loop i = 0; vd.size-c; i++ {
          vd.size-expr-v[i].wr(w, header);
       }
    }
@@ -141,7 +141,7 @@ using (DeclVarData) {
    //       // at-i.write-space();
    //       // .out = old-out;
    //       loop {
-   //          loop i = 0:At; (.at-c) i++ {
+   //          loop i = 0:At; .at-c; i++ {
    //             if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
    //                C.out.printf("%u) :%s\n", i, .at-v[i].name.id.str());
    //                if (.at-v[i].name.id == name.id) {
@@ -171,7 +171,7 @@ using (DeclVarData) {
       if (vd.size-c > 0) {
          quick-alloc-arr(vd.size-expr-v, vd.size-c);
          quick-alloc-arr(vd.size-value-v, vd.size-c);
-         loop i = 0; (vd.size-c) i++ {
+         loop i = 0; vd.size-c; i++ {
             vd.size-expr-v[i].rd(r);
          }
       }
@@ -186,7 +186,7 @@ using (DeclVarData) {
       vd.size-c = src.size-c;
       if (vd.size-c > 0) {
          quick-alloc-arr(vd.size-expr-v, vd.size-c);
-         loop i = 0; (vd.size-c) i++ {
+         loop i = 0; vd.size-c; i++ {
             vd.size-expr-v[i] = src.size-expr-v[i];
          }
       }
@@ -227,7 +227,7 @@ TypeInfo(ref-v:i8[#type-info-star-limit], array-c:i8, star-c:i8, built-in:bool, 
    }
    rd(ti:this, r:Rdr) {
       +c = r.n1();
-      loop i = 0; (c) i++ {
+      loop i = 0; c; i++ {
          ti.ref-v[i] = r.n1();
       }
       ti.array-c = r.n1();
@@ -244,7 +244,7 @@ TypeInfo(ref-v:i8[#type-info-star-limit], array-c:i8, star-c:i8, built-in:bool, 
          c++;
       }
       w.n1(c);
-      loop i = 0; (c) i++ {
+      loop i = 0; c; i++ {
          w.n1(ti.ref-v[i]);
       }
       w.n1(ti.array-c);
@@ -263,12 +263,12 @@ TypeInfo(ref-v:i8[#type-info-star-limit], array-c:i8, star-c:i8, built-in:bool, 
       var ref-v:i8[#type-info-star-limit];
       +c = ti.array-c;
       +star-c = ti.array-c;
-      loop i = 0; (c + 1) {
+      loop i = 0; c + 1; {
          ref-v[i] = ti.ref-v[i];
          star-c += ref-v[i];
          i += 1;
       }
-      loop i = 0, j = c; (c + 1) {
+      loop i = 0, j = c; c + 1; {
          ti.ref-v[i] = ref-v[j];
          i += 1;
          j -= 1;
@@ -277,7 +277,7 @@ TypeInfo(ref-v:i8[#type-info-star-limit], array-c:i8, star-c:i8, built-in:bool, 
    }
    count(ti:this) {
       +star-c = ti.array-c;
-      loop i = ti.array-c; (i + 1) {
+      loop i = ti.array-c; i + 1; {
          star-c += ti.ref-v[i];
          i -= 1;
       }

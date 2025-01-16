@@ -53,7 +53,7 @@ expr-lvar(name:Id, decl:u8, row:i32, col:i32):ExprI {
       loop {
          +v = space.lvar-v;
          +found = Lvar#nil;
-         loop i = 0; (space.lvar-c) i++ {
+         loop i = 0; space.lvar-c; i++ {
             +lvar = v[i];
             if (lvar.name() == name) {
                found = lvar;

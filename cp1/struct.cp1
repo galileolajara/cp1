@@ -22,7 +22,7 @@ Struct[#nil = -1, #0, #1]:i32 {
       +s-file = s.file;
       +s-row = s.begin-row;
       +s-col = s.begin-col;
-      loop i = 0; (s.fvar-c) i++ {
+      loop i = 0; s.fvar-c; i++ {
          // s.fvar-v[i].decl.type.output(s.file, row, col);
          // if !(s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col)) { return}
          s.fvar-v[i].decl.type = at-validate(s.fvar-v[i].decl.type, s-at, s-file, s-row, s-col);
@@ -125,7 +125,7 @@ decl-struct-end(row:i32, col:i32) {
    // s.name = .decl-struct-name;
    s.fvar-c = .decl-fvar-c;
    // C.out.printf("There are %u fvars\n", s.fvar-c);
-   loop i = 0; (.decl-fvar-c) i++ {
+   loop i = 0; .decl-fvar-c; i++ {
       +a = s.fvar-v[i];
       a.decl.copy-from(.decl-fvar-v[i]);
       // C.out.printf("- %s\n", a.name.str());
