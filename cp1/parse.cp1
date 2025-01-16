@@ -970,10 +970,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                // Codes to check if syntax highlighting for strings are working
                "#if 0";
                   '"hello";
-                  '|hello|;
-                  ';hello;;
-                  '_hello_;
-                  '+hello+;
                   '<hello>;
                   '[hello];
                   '{hello};

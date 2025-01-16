@@ -23,7 +23,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    re2c:indent:top      = 1;
    re2c:yyfill:enable   = 0;
 
-   spaces = [ \t\n]+;
+   spaces = [ \n]+;
    id_one = [0-9a-zA-Z\u00c0-\U0010ffff];
    id = id_one+("-" id_one+)*;
    // id = [0-9a-zA-Z]+("-" [0-9a-zA-Z]+)*;
@@ -69,37 +69,12 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "\"" {
       goto lex_string;
    }
-   "'=" [ \t] [^\n]*                     {
-      _Gstring_len = (l->cursor + 1) - (l->start + 3);
-      _Gstring_buf = l->start + 3;
-      return CP1_TOKEN_STRING;
-   }
-   "'-" [ \t] [^\n]*                     {
+   "'" [ ] [^\n]*                     {
       _Gstring_len = l->cursor - (l->start + 3);
       _Gstring_buf = l->start + 3;
       return CP1_TOKEN_STRING;
    }
    "'\"" [^\n"]* "\""                   {
-      _Gstring_len = (l->cursor - 1) - (l->start + 2);
-      _Gstring_buf = l->start + 2;
-      return CP1_TOKEN_STRING;
-   }
-   "'|" [^\n|]* "|"                   {
-      _Gstring_len = (l->cursor - 1) - (l->start + 2);
-      _Gstring_buf = l->start + 2;
-      return CP1_TOKEN_STRING;
-   }
-   "';" [^\n;]* ";"                   {
-      _Gstring_len = (l->cursor - 1) - (l->start + 2);
-      _Gstring_buf = l->start + 2;
-      return CP1_TOKEN_STRING;
-   }
-   "'_" [^\n_]* "_"                   {
-      _Gstring_len = (l->cursor - 1) - (l->start + 2);
-      _Gstring_buf = l->start + 2;
-      return CP1_TOKEN_STRING;
-   }
-   "'+" [^\n+]* "+"                   {
       _Gstring_len = (l->cursor - 1) - (l->start + 2);
       _Gstring_buf = l->start + 2;
       return CP1_TOKEN_STRING;

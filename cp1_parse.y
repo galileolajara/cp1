@@ -708,8 +708,6 @@ stmt ::= stmt_if_chain.
    { _NCp1_Pstmt_if_end_ifs_0(); }
 stmt ::= stmt_if_chain stmt_else.
    { _NCp1_Pstmt_if_end_ifs_0(); }
-space_begin ::= .
-space_begin ::= stmt_lvars scolon_space.
 stmt_if_begin ::= IF SPACE.
    { _NCp1_Pstmt_if_begin_0(); }
 stmt_elif_begin ::= SPACE_ELIF SPACE.
@@ -728,7 +726,7 @@ if_expr_val(l) ::= expr_or(e).
    { l.basic.id = e.basic.id; }
 if_expr ::= begin_pos(begin) stmt_if_not(not) if_expr_val(e) end_pos(end).
    { _NCp1_Pstmt_if_set_6(not.basic.id, e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
-stmt_if ::= stmt_if_begin space_begin if_expr SPACE_LCBRACE stmts_optional2.
+stmt_if ::= stmt_if_begin if_expr SPACE_LCBRACE stmts_optional2.
    { _NCp1_Pstmt_if_end_0(); }
 elif_expr ::= begin_pos(begin) stmt_if_not(not) if_expr_val(e) end_pos(end).
    { _NCp1_Pstmt_elif_set_6(not.basic.id, e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
@@ -770,9 +768,9 @@ switch_case ::= switch_default_begin SPACE_LCBRACE stmts_optional2.
    { _NCp1_Pstmt_switch_default_end_0(); }
 switch_cases ::= switch_case.
 switch_cases ::= switch_cases SPACE switch_case.
-stmt_switch ::= stmt_switch_begin space_begin switch_expr SPACE_LCBRACE lcbrace_or_space switch_cases rcbrace_or_space.
+stmt_switch ::= stmt_switch_begin switch_expr SPACE_LCBRACE lcbrace_or_space switch_cases rcbrace_or_space.
    { _NCp1_Pstmt_switch_end_0(); }
-stmt_switch ::= stmt_switch_begin space_begin switch_expr SPACE_LCBRACE lcbrace_or_space RCBRACE.
+stmt_switch ::= stmt_switch_begin switch_expr SPACE_LCBRACE lcbrace_or_space RCBRACE.
    { _NCp1_Pstmt_switch_end_0(); }
 
 stmt_expr ::= stmt_continue.
