@@ -677,22 +677,9 @@ struct _NCp1_NValue _Fval;
 struct _NCp1_NStmtSpace* _Fcontinu;
 struct _NCp1_NStmtDoEnd* _Fend;
 };
-struct _NCp1_NStmtWhileEnd;
-struct _NCp1_NStmtWhileEnd {
-struct _NCp1_NStmt _Fbase;
-struct _NCp1_NStmtWhile* _Fwhil;
-};
-struct _NCp1_NStmtWhile;
-struct _NCp1_NStmtWhile {
-struct _NCp1_NStmt _Fbase;
-_NCp1_NExprI _Fexpr;
-struct _NCp1_NStmtSpace* _Fcontinu;
-struct _NCp1_NStmtWhileEnd* _Fend;
-};
 union _NCp1_NNest;
 union _NCp1_NNest {
 struct _NCp1_NStmtDo* _Fdo;
-struct _NCp1_NStmtWhile* _Fwhil;
 void* _Freff;
 };
 struct _NCp1_NStmtIfElse;
@@ -979,9 +966,6 @@ void _NCp1_Pstmt_if_end_0();
 void _NCp1_Pstmt_do_begin_0();
 void _NCp1_Pstmt_do_set_6(_NCp1_NExprI _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4, struct _NCp1_NStmtSpace* _Lcontinu_5);
 void _NCp1_Pstmt_do_end_0();
-void _NCp1_Pstmt_while_begin_0();
-void _NCp1_Pstmt_while_set_6(_NCp1_NExprI _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4, struct _NCp1_NStmtSpace* _Lcontinu_5);
-void _NCp1_Pstmt_while_end_0();
 void _NCp1_Pstmt_elif_begin_0();
 void _NCp1_Pstmt_elif_set_6(bool _Lnot_0, _NCp1_NExprI _Lexpr_1, int32_t _Lbegin_row_2, int32_t _Lbegin_col_3, int32_t _Lend_row_4, int32_t _Lend_col_5);
 void _NCp1_Pstmt_elif_end_0();
@@ -1220,8 +1204,6 @@ void _NCp1_NStmtSpace_Pwr_if_else_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NW
 void _NCp1_NStmtSpace_Pwr_if_end_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NStmtSpace_Pwr_do_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NStmtSpace_Pwr_do_end_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
-void _NCp1_NStmtSpace_Pwr_while_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
-void _NCp1_NStmtSpace_Pwr_while_end_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NStmtSpace_Pwr_continue_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NStmtSpace_Pwr_return_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NStmtSpace_Pwr_space_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
@@ -1940,9 +1922,6 @@ _NCp1_Pstmt_if_end_0();
 _NCp1_Pstmt_do_begin_0();
 _NCp1_Pstmt_do_set_6(_NCp1_NExprI_Cnil, 0, 0, 0, 0, NULL);
 _NCp1_Pstmt_do_end_0();
-_NCp1_Pstmt_while_begin_0();
-_NCp1_Pstmt_while_set_6(_NCp1_NExprI_Cnil, 0, 0, 0, 0, NULL);
-_NCp1_Pstmt_while_end_0();
 _NCp1_Pstmt_elif_begin_0();
 _NCp1_Pstmt_elif_set_6(false, _NCp1_NExprI_Cnil, 0, 0, 0, 0);
 _NCp1_Pstmt_elif_end_0();
@@ -3641,29 +3620,6 @@ _NCp1_Pquick_alloc_one_1(_Ls_0);
 _NCp1_Pstmt_push_6(&(*_Ls_0)._Fbase, 0, 0, 0, 0, _NCp1_NStmtType_Cdo_end);
 _NCp1_Pstmt_space_end_0();
 }
-void _NCp1_Pstmt_while_begin_0() {
-_NCp1_Pstmt_space_begin_0();
-(*_Gdecl_func_ctx_space)._Fflags |= _NCp1_NStmtSpaceFlags_Cskip_lvar_decl;
-}
-void _NCp1_Pstmt_while_set_6(_NCp1_NExprI _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4, struct _NCp1_NStmtSpace* _Lcontinu_5) {
-struct _NCp1_NStmtWhile* _Ls_6;
-_NCp1_Pquick_alloc_one_1(_Ls_6);
-_Gnest_stack_id_v[_Gnest_stack_c] = _Gnest_id++;
-_Gnest_stack_ptr_v[_Gnest_stack_c]._Fwhil = _Ls_6;
-_Gnest_stack_c++;
-(*_Ls_6)._Fexpr = _Lexpr_0;
-(*_Ls_6)._Fcontinu = _Lcontinu_5;
-_NCp1_Pstmt_push_6(&(*_Ls_6)._Fbase, _Lbegin_row_1, _Lbegin_col_2, _Lend_row_3, _Lend_col_4, _NCp1_NStmtType_Cwhile);
-_NCp1_Pstmt_space_begin_0();
-}
-void _NCp1_Pstmt_while_end_0() {
-struct _NCp1_NStmtWhileEnd* _Ls_0;
-_Gnest_stack_c -= 1;
-_NCp1_Pstmt_space_end_0();
-_NCp1_Pquick_alloc_one_1(_Ls_0);
-_NCp1_Pstmt_push_6(&(*_Ls_0)._Fbase, 0, 0, 0, 0, _NCp1_NStmtType_Cwhile_end);
-_NCp1_Pstmt_space_end_0();
-}
 void _NCp1_Pstmt_elif_begin_0() {
 }
 void _NCp1_Pstmt_elif_set_6(bool _Lnot_0, _NCp1_NExprI _Lexpr_1, int32_t _Lbegin_row_2, int32_t _Lbegin_col_3, int32_t _Lend_row_4, int32_t _Lend_col_5) {
@@ -3959,12 +3915,6 @@ _NCp1_NStmtSpace_Pwr_do_3(_Lstmt_4, _Lw_1, _Lheader_2);
 break;
 case _NCp1_NStmtType_Cdo_end:;
 _NCp1_NStmtSpace_Pwr_do_end_3(_Lstmt_4, _Lw_1, _Lheader_2);
-break;
-case _NCp1_NStmtType_Cwhile:;
-_NCp1_NStmtSpace_Pwr_while_3(_Lstmt_4, _Lw_1, _Lheader_2);
-break;
-case _NCp1_NStmtType_Cwhile_end:;
-_NCp1_NStmtSpace_Pwr_while_end_3(_Lstmt_4, _Lw_1, _Lheader_2);
 break;
 case _NCp1_NStmtType_Ccontinue:;
 _NCp1_NStmtSpace_Pwr_continue_3(_Lstmt_4, _Lw_1, _Lheader_2);
@@ -4528,19 +4478,6 @@ _NCp1_NWtr_Pb_2(_Lw_1, false);
 }
 }
 inline void _NCp1_NStmtSpace_Pwr_do_end_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2) {
-}
-inline void _NCp1_NStmtSpace_Pwr_while_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2) {
-struct _NCp1_NStmtWhile* _Ls_3;
-_Ls_3 = _Lstmt_0;
-_NCp1_NExprI_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
-if((*_Ls_3)._Fcontinu != NULL) {
-_NCp1_NWtr_Pb_2(_Lw_1, true);
-_NCp1_NStmtSpace_Pwr_3((*_Ls_3)._Fcontinu, _Lw_1, _Lheader_2);
-} else {
-_NCp1_NWtr_Pb_2(_Lw_1, false);
-}
-}
-inline void _NCp1_NStmtSpace_Pwr_while_end_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2) {
 }
 inline void _NCp1_NStmtSpace_Pwr_continue_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2) {
 struct _NCp1_NStmtContinue* _Ls_3;

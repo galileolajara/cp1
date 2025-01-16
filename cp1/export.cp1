@@ -4,7 +4,6 @@ export() {
    quick-alloc-undo(0);
    decl-func-begin(#0, 0, 0);
    decl-func-end(0, 0);
-   // decl-struct-begin(#0, 0, 0);
    decl-struct-end(0, 0);
    decl-var-begin(#0, 0, 0);
    decl-var-attr-real-name(#nil);
@@ -94,7 +93,6 @@ export() {
    expr-cast-fast(#nil, #nil);
    expr-index(#nil, null, 0);
    enum-base-begin();
-   // enum-base-end();
    stmt-switch-begin();
    stmt-switch-set(#nil, 0, 0, 0, 0, #nil);
    stmt-switch-expr-add(#nil);
@@ -109,9 +107,6 @@ export() {
    stmt-do-begin();
    stmt-do-set(#nil, 0, 0, 0, 0, null);
    stmt-do-end();
-   stmt-while-begin();
-   stmt-while-set(#nil, 0, 0, 0, 0, null);
-   stmt-while-end();
    stmt-elif-begin();
    stmt-elif-set(false, #nil, 0, 0, 0, 0);
    stmt-elif-end();
