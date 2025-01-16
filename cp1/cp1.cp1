@@ -96,14 +96,14 @@ cp1-path-add(cp1-path-real:char[], cp1-path-real-len:i32, cp1-path:char[], cp1-p
 }
 var cmd-preprocess:char[512];
 cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
-	loop i = 0; (.cp1-path-c) i++ {
-		if (C.memcmp(.cp1-path-v[i], cp1-path, cp1-path-len) == 0) {
-			return true;
-		}
-	}
+   loop i = 0; (.cp1-path-c) i++ {
+      if (C.memcmp(.cp1-path-v[i], cp1-path, cp1-path-len) == 0) {
+         return true;
+      }
+   }
    if !(C.Fd.open(++fd, cp1-path, #read)) {
       C.printf("Error, [cp1 file] (which is '%s') cannot be opened for reading\n", cp1-path);
-		return false;
+      return false;
    }
    +len = fd.seek(0, #end);
    fd.seek(0, #set);
@@ -112,11 +112,11 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
    fd.close();
    if !(&&, len > 0, data[len - 1] == ''\n) {
       C.printf("Error, [cp1 file] (which is '%s') must end a new line\n", cp1-path);
-		return false;
+      return false;
    }
    if (data[len - 2] == ''\r) {
       C.printf("Error, [cp1 file] (which is '%s') must have Unix line endings '\\n' instead of Windows line endings '\\r\\n'\n", cp1-path);
-		return false;
+      return false;
    }
    // Detect if we need to preprocess the file
    +pos = 0;
@@ -413,7 +413,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
    }
    "stop:";
    C.free(data);
-	return true;
+   return true;
 }
 validate-cp1-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:Cmd):bool {
    loop i = start; (arg-c - start) i++ {
@@ -424,10 +424,10 @@ validate-cp1-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:Cmd):bo
          C.exit(#failure);
       }
       +cp1-path-len = C.strlen(cp1-path);
-		if (&&, cp1-path[0] == ''., cp1-path[1] == ''/) {
-			cp1-path = & cp1-path[2];
-			cp1-path-len -= 2;
-		}
+      if (&&, cp1-path[0] == ''., cp1-path[1] == ''/) {
+         cp1-path = & cp1-path[2];
+         cp1-path-len -= 2;
+      }
       loop j = 0; (cp1-path-len) j++ {
          if (cp1-path[j] == ''\\) {
             print-usage(bin, cmd);
@@ -456,17 +456,17 @@ validate-cp1-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:Cmd):bo
       }
       if !(cp1-path-input(cp1-path, cp1-path-len, bin, cmd)) {
          print-usage(bin, cmd);
-			return false;
-		}
+         return false;
+      }
    }
-	return true;
+   return true;
 }
 print-command(arg-c:i32, arg-v:char[][]) {
-	C.printf("Command was:");
-	loop i = 0; (arg-c) i++ {
-		C.printf(" %s", arg-v[i]);
-	}
-	C.printf("\n");
+   C.printf("Command was:");
+   loop i = 0; (arg-c) i++ {
+      C.printf(" %s", arg-v[i]);
+   }
+   C.printf("\n");
 }
 atexit-rm(path:char[]) {
    +i = .atexit-rm-c++;
@@ -551,9 +551,9 @@ main(arg-c:intc, arg-v:char[][]):intc {
          C.exit(#failure);
       }
       if !(validate-cp1-paths(3, arg-c, arg-v, bin, #c)) {
-			print-command(arg-c, arg-v);
+         print-command(arg-c, arg-v);
          C.exit(#failure);
-		}
+      }
       Sys.mkdir("cp1-tmp", 0o755);
       var ninja-path:char[24];
       C.strcpy(ninja-path, "cp1-tmp/ninja-XXXXXXXXX");
@@ -590,9 +590,9 @@ main(arg-c:intc, arg-v:char[][]):intc {
          C.exit(#failure);
       }
       if !(validate-cp1-paths(2, arg-c, arg-v, bin, #run)) {
-			print-command(arg-c, arg-v);
+         print-command(arg-c, arg-v);
          C.exit(#failure);
-		}
+      }
       Sys.mkdir("cp1-tmp", 0o755);
       var c-path:char[22];
       C.strcpy(c-path, "cp1-tmp/c-XXXXXXXXX");

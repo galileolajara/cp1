@@ -39,20 +39,20 @@ type-info-arr(expr-v:ExprI[], expr-c:u8) {
 }
 type-info-arr(expr:ExprI) {
    +ti = .decl-var.type-info;
-	ti.array-c += 1;
-	ti.ref-v[ti.array-c] = 0;
-	if (expr != #nil) {
+   ti.array-c += 1;
+   ti.ref-v[ti.array-c] = 0;
+   if (expr != #nil) {
       +vd = .decl-var;
       if (vd.size-c == 0) {
          quick-alloc-arr(vd.size-expr-v, #decl-var-size-limit);
       }
       vd.size-expr-v[vd.size-c++] = expr;
       // C.out.printf("%s, vd.size-c = %d\n", vd.name.str(), vd.size-c);
-	}
+   }
 }
 type-info-ref(c:i8) {
    +ti = .decl-var.type-info;
-	ti.ref-v[ti.array-c] += c;
+   ti.ref-v[ti.array-c] += c;
 }
 type-info-static() {
    // C.out.printf("built-in\n");

@@ -57,27 +57,27 @@ using (ExprI) {
    }
    value-compare(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       var expr:ExprCompare = e.ptr();
-		v.type = basic-type(#bool);
-		v.info.init();
-		v.info.array-c = 0;
-		v.info.ref-v[0] = ''\0;
-		v.info.star-c = 0;
-		v.reff = 1;
-		v.paren = paren;
+      v.type = basic-type(#bool);
+      v.info.init();
+      v.info.array-c = 0;
+      v.info.ref-v[0] = ''\0;
+      v.info.star-c = 0;
+      v.reff = 1;
+      v.paren = paren;
       ok = true;
-	}
+   }
    type-compare(expr:Expr, at:At&) @case.type() @inline {
       var e:ExprCompare = expr;
       at = basic-type(#bool);
    }
    process-compare(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprCompare = expr;
-		if !(e.left.value(1, true, e.left-val)) {
-			return;
+      if !(e.left.value(1, true, e.left-val)) {
+         return;
       }
-		e.right.try-deduce(e.left-val.type);
-		if !(e.right.value(1, true, e.right-val)) {
-			return;
+      e.right.try-deduce(e.left-val.type);
+      if !(e.right.value(1, true, e.right-val)) {
+         return;
       }
       ok = true;
    }

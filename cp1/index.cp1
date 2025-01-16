@@ -35,28 +35,28 @@ using (ExprI) {
    }
    value-index(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       var expr:ExprIndex = e.ptr();
-		v.type = expr.left-val.type;
-		v.info.init();
-		v.info.copy-from(expr.left-val.info);
-		v.info.array-c -= 1;
-		+c = v.info.ref-v[v.info.array-c];
-		v.reff = (c + 2) - reff;
-		v.info.ref-v[v.info.array-c] = reff - 1;
-		v.info.count();
-		if (v.reff == 1) {
-			v.paren = false;
-		} else {
-			v.paren = paren;
-		}
+      v.type = expr.left-val.type;
+      v.info.init();
+      v.info.copy-from(expr.left-val.info);
+      v.info.array-c -= 1;
+      +c = v.info.ref-v[v.info.array-c];
+      v.reff = (c + 2) - reff;
+      v.info.ref-v[v.info.array-c] = reff - 1;
+      v.info.count();
+      if (v.reff == 1) {
+         v.paren = false;
+      } else {
+         v.paren = paren;
+      }
       ok = true;
    }
    process-index(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprIndex = expr;
-   	if !(e.left.value(1, true, e.left-val)) {
-   		return;
+      if !(e.left.value(1, true, e.left-val)) {
+         return;
       }
-   	if !(e.right.value(1, true, e.right-val)) {
-   		return;
+      if !(e.right.value(1, true, e.right-val)) {
+         return;
       }
       ok = true;
    }

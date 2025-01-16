@@ -194,16 +194,16 @@ using (DeclVarData) {
 }
 #type-info-star-limit:i32 = 8;
 Value(reff:i8, paren:bool, type:At, info:TypeInfo+) {
-	set(v:this, reff:i8, paren:bool, type:At, info:TypeInfo) {
-		+c = info.ref-v[info.array-c];
-		v.type = type;
-		v.reff = (c + 2) - reff;
-		v.info.init();
-		v.info.copy-from(info);
-		v.info.ref-v[v.info.array-c] = reff - 1;
-		v.info.count();
-		v.paren = paren;
-	}
+   set(v:this, reff:i8, paren:bool, type:At, info:TypeInfo) {
+      +c = info.ref-v[info.array-c];
+      v.type = type;
+      v.reff = (c + 2) - reff;
+      v.info.init();
+      v.info.copy-from(info);
+      v.info.ref-v[v.info.array-c] = reff - 1;
+      v.info.count();
+      v.paren = paren;
+   }
    rd(v:this, r:Rdr) {
       v.reff = r.n1();
       v.paren = r.n1() != 0;
@@ -218,13 +218,13 @@ Value(reff:i8, paren:bool, type:At, info:TypeInfo+) {
    }
 }
 TypeInfo(ref-v:i8[#type-info-star-limit], array-c:i8, star-c:i8, built-in:bool, const:bool) {
-	init(ti:this) {
-		ti.ref-v[0] = 0;
-		ti.array-c = 0;
-		ti.star-c = 0;
-		ti.built-in = false;
-		ti.const = false;
-	}
+   init(ti:this) {
+      ti.ref-v[0] = 0;
+      ti.array-c = 0;
+      ti.star-c = 0;
+      ti.built-in = false;
+      ti.const = false;
+   }
    rd(ti:this, r:Rdr) {
       +c = r.n1();
       loop i = 0; (c) i++ {
@@ -252,37 +252,37 @@ TypeInfo(ref-v:i8[#type-info-star-limit], array-c:i8, star-c:i8, built-in:bool, 
       w.b(ti.built-in);
       w.b(ti.const);
    }
-	copy-from(ti:this, ti2:TypeInfo) {
-		C.memcpy(ti.ref-v, ti2.ref-v, #type-info-star-limit);
-		ti.array-c = ti2.array-c;
-		ti.star-c = ti2.star-c;
-		ti.const = ti2.const;
+   copy-from(ti:this, ti2:TypeInfo) {
+      C.memcpy(ti.ref-v, ti2.ref-v, #type-info-star-limit);
+      ti.array-c = ti2.array-c;
+      ti.star-c = ti2.star-c;
+      ti.const = ti2.const;
       // intentionally did not copy .built-in
-	}
-	finalize(ti:this) {
-		var ref-v:i8[#type-info-star-limit];
-		+c = ti.array-c;
-		+star-c = ti.array-c;
-		loop i = 0; (c + 1) {
-			ref-v[i] = ti.ref-v[i];
-			star-c += ref-v[i];
-			i += 1;
-		}
-		loop i = 0, j = c; (c + 1) {
-			ti.ref-v[i] = ref-v[j];
-			i += 1;
-			j -= 1;
-		}
-		ti.star-c = star-c;
-	}
-	count(ti:this) {
-		+star-c = ti.array-c;
-		loop i = ti.array-c; (i + 1) {
-			star-c += ti.ref-v[i];
-			i -= 1;
-		}
-		ti.star-c = star-c;
-	}
+   }
+   finalize(ti:this) {
+      var ref-v:i8[#type-info-star-limit];
+      +c = ti.array-c;
+      +star-c = ti.array-c;
+      loop i = 0; (c + 1) {
+         ref-v[i] = ti.ref-v[i];
+         star-c += ref-v[i];
+         i += 1;
+      }
+      loop i = 0, j = c; (c + 1) {
+         ti.ref-v[i] = ref-v[j];
+         i += 1;
+         j -= 1;
+      }
+      ti.star-c = star-c;
+   }
+   count(ti:this) {
+      +star-c = ti.array-c;
+      loop i = ti.array-c; (i + 1) {
+         star-c += ti.ref-v[i];
+         i -= 1;
+      }
+      ti.star-c = star-c;
+   }
 }
 var gvar-c:Gvar;
 var gvar-cap:Gvar;

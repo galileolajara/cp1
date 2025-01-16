@@ -73,15 +73,15 @@ read(in-path:char[]) {
       C.exit(#failure);
    }
    +in-size = in-fd.seek(0, #end);
-	if (in-size == 0) {
-		// Retry after 1 second
-		C.sleep(1);
-		in-size = in-fd.seek(0, #end);
-		if (in-size == 0) {
-			C.out.printf("Error, file is blank (zero bytes): %s\n", in-path);
-			C.exit(#failure);
-		}
-	}
+   if (in-size == 0) {
+      // Retry after 1 second
+      C.sleep(1);
+      in-size = in-fd.seek(0, #end);
+      if (in-size == 0) {
+         C.out.printf("Error, file is blank (zero bytes): %s\n", in-path);
+         C.exit(#failure);
+      }
+   }
    var r-begin:Rdr+;
    // if (true) {
    //    r-begin.ref = in-fd.map(null, in-size, #read, #shared, 0);

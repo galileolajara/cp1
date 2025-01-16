@@ -142,34 +142,34 @@ using (ExprI) {
    }
    value-math(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       var expr:ExprMath = e.ptr();
-		// if (expr.left.value(1, paren, v) == false) {
+      // if (expr.left.value(1, paren, v) == false) {
       //    return;
       // }
-		if !(expr.left.value(1, paren, v)) { return}
-		// +left = e.left.type();
-		// +right = e.right.type();
+      if !(expr.left.value(1, paren, v)) { return}
+      // +left = e.left.type();
+      // +right = e.right.type();
       // +left-size = left.real.basicType.to()Size;
       // if (left-size > 0) {
-      // 	if (left-size > right.real.basicType.to()Size) { 
-      // 		v.decl = left;
-      // 	}
+      //    if (left-size > right.real.basicType.to()Size) { 
+      //       v.decl = left;
+      //    }
       // }
-		v.paren = paren;
-		v.reff = reff;
+      v.paren = paren;
+      v.reff = reff;
       ok = true;
-	}
+   }
    type-math(expr:Expr, at:At&) @case.type() @inline {
       var e:ExprMath = expr;
       at = e.left.type();
    }
    process-math(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprMath = expr;
-		if !(e.left.value(1, true, e.left-val)) {
-			return;
+      if !(e.left.value(1, true, e.left-val)) {
+         return;
       }
-		e.right.try-deduce(e.left-val.type);
-		if !(e.right.value(1, true, e.right-val)) {
-			return;
+      e.right.try-deduce(e.left-val.type);
+      if !(e.right.value(1, true, e.right-val)) {
+         return;
       }
       loop i = 0; (e.item-c) i++ {
          +item = e.item-v[i];

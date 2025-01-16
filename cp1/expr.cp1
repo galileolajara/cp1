@@ -15,17 +15,17 @@ using (StmtSpace) {
 using (Stmt) {
    write-expr(stmt:Stmt) @case.write() @inline {
       var s:StmtExpr = stmt;
-		+expr = s.expr.ptr();
-		if (expr.type == #str) {
-			var e:ExprStr = expr;
-			+n = e.first;
-			loop {
-				.out.printf("%.*s\n", n.len, n.buf);
-				n = n.next;
-				if (n == null) { break}
-			}
-			return;
-		}
+      +expr = s.expr.ptr();
+      if (expr.type == #str) {
+         var e:ExprStr = expr;
+         +n = e.first;
+         loop {
+            .out.printf("%.*s\n", n.len, n.buf);
+            n = n.next;
+            if (n == null) { break}
+         }
+         return;
+      }
       s.expr.write();
       .out.printf(";\n");
    }
@@ -89,7 +89,7 @@ ExprI[#nil = -1, #0, #1]:i32 {
       }
       return true;
    }
-	value(e:this, reff:i32, paren:bool, v:Value):bool {
+   value(e:this, reff:i32, paren:bool, v:Value):bool {
       if !(e.process()) { return false}
       +expr = e.ptr();
       +ok = false;
@@ -224,15 +224,15 @@ Expr(
    }
 }
 BasicTypeId[
-	#root, #relative,
-	#ref, #bool, #char, #intc,
-	#i8, #u8,
-	#i16, #u16,
-	#i32, #u32,
-	#i64, #u64,
-	#isz, #usz,
-	#f32, #f64,
-	#COUNT]:u8 {
+   #root, #relative,
+   #ref, #bool, #char, #intc,
+   #i8, #u8,
+   #i16, #u16,
+   #i32, #u32,
+   #i64, #u64,
+   #isz, #usz,
+   #f32, #f64,
+   #COUNT]:u8 {
    wr(e:this, w:Wtr) @inline {
       w.n1(e);
    }

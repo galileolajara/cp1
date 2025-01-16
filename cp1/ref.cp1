@@ -22,21 +22,21 @@ using (ExprI) {
    }
    value-ref(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       var expr:ExprRef = e.ptr();
-		v.type = basic-type(#ref);
-		v.info.init();
-		v.info.array-c = 0;
-		v.info.ref-v[0] = 1;
-		v.info.star-c = 1;
-		v.reff = 1;
+      v.type = basic-type(#ref);
+      v.info.init();
+      v.info.array-c = 0;
+      v.info.ref-v[0] = 1;
+      v.info.star-c = 1;
+      v.reff = 1;
       ok = true;
-	}
+   }
    type-ref(expr:Expr, at:At&) @case.type() @inline {
       at = basic-type(#ref);
    }
    process-ref(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprRef = expr;
-		if !(e.expr.value(2, false, e.val)) {
-			return;
+      if !(e.expr.value(2, false, e.val)) {
+         return;
       }
       ok = true;
    }

@@ -75,13 +75,13 @@ using (ExprI) {
    }
    value-assign(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       var expr:ExprAssign = e.ptr();
-		if (expr.left.value(1, paren, v) == false) {
+      if (expr.left.value(1, paren, v) == false) {
          return;
       }
-		v.paren = paren;
-		v.reff = reff;
+      v.paren = paren;
+      v.reff = reff;
       ok = true;
-	}
+   }
    process-assign(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprAssign = expr;
       +left-e = e.left.ptr();
@@ -101,12 +101,12 @@ using (ExprI) {
             return;
          }
       }
-		if !(e.left.value(1, true, e.left-val)) {
-			return;
+      if !(e.left.value(1, true, e.left-val)) {
+         return;
       }
-		e.right.try-deduce(e.left.type());
-		if !(e.right.value(1, true, e.right-val)) {
-			return;
+      e.right.try-deduce(e.left.type());
+      if !(e.right.value(1, true, e.right-val)) {
+         return;
       }
       ok = true;
    }
