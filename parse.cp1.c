@@ -10,8 +10,8 @@
 #define _NCp1_Chash_table_size (64)
 #define _NCp1_NFunc_Cnil (-1)
 #define _NCp1_NInclude_Cnil (-1)
-#define _NStdc_NExit_Csuccess 0
-#define _NStdc_NExit_Cfailure (_NStdc_NExit_Csuccess + 1)
+#define _NStdC_NExit_Csuccess 0
+#define _NStdC_NExit_Cfailure (_NStdC_NExit_Csuccess + 1)
 #define _NCp1_NNameType_Cmodule 0
 #define _NCp1_NNameType_Cstruct_enum (_NCp1_NNameType_Cmodule + 1)
 #define _NCp1_NNameType_Cbasic (_NCp1_NNameType_Cstruct_enum + 1)
@@ -40,7 +40,8 @@
 #define _NCp1_NToken_Cusing (_NCp1_NToken_Cid_bslash + 1)
 #define _NCp1_NToken_Crparen (_NCp1_NToken_Cusing + 1)
 #define _NCp1_NToken_Clparen (_NCp1_NToken_Crparen + 1)
-#define _NCp1_NToken_Clcbrace_space (_NCp1_NToken_Clparen + 1)
+#define _NCp1_NToken_Cspace_lcbrace (_NCp1_NToken_Clparen + 1)
+#define _NCp1_NToken_Clcbrace_space (_NCp1_NToken_Cspace_lcbrace + 1)
 #define _NCp1_NToken_Crcbrace (_NCp1_NToken_Clcbrace_space + 1)
 #define _NCp1_NToken_Cscolon (_NCp1_NToken_Crcbrace + 1)
 #define _NCp1_NToken_Cend (_NCp1_NToken_Cscolon + 1)
@@ -88,39 +89,6 @@
 #define _NCp1_NToken_Cnum_oct (_NCp1_NToken_Cnum_hex + 1)
 #define _NCp1_NToken_Cchar1 (_NCp1_NToken_Cnum_oct + 1)
 #define _NCp1_NToken_Cchar2 (_NCp1_NToken_Cchar1 + 1)
-#define _NCp1_NToken_Ctrue (_NCp1_NToken_Cchar2 + 1)
-#define _NCp1_NToken_Cfalse (_NCp1_NToken_Ctrue + 1)
-#define _NCp1_NToken_Cnull (_NCp1_NToken_Cfalse + 1)
-#define _NCp1_NToken_Clparen_amp_amp_comma_space (_NCp1_NToken_Cnull + 1)
-#define _NCp1_NToken_Clparen_pipe_pipe_comma_space (_NCp1_NToken_Clparen_amp_amp_comma_space + 1)
-#define _NCp1_NToken_Cspace_plus_space (_NCp1_NToken_Clparen_pipe_pipe_comma_space + 1)
-#define _NCp1_NToken_Cspace_minus_space (_NCp1_NToken_Cspace_plus_space + 1)
-#define _NCp1_NToken_Cspace_mul_space (_NCp1_NToken_Cspace_minus_space + 1)
-#define _NCp1_NToken_Cspace_div_space (_NCp1_NToken_Cspace_mul_space + 1)
-#define _NCp1_NToken_Cspace_langle_langle_space (_NCp1_NToken_Cspace_div_space + 1)
-#define _NCp1_NToken_Cspace_rangle_rangle_space (_NCp1_NToken_Cspace_langle_langle_space + 1)
-#define _NCp1_NToken_Cspace_amp_space (_NCp1_NToken_Cspace_rangle_rangle_space + 1)
-#define _NCp1_NToken_Cspace_pipe_space (_NCp1_NToken_Cspace_amp_space + 1)
-#define _NCp1_NToken_Cspace_xor_space (_NCp1_NToken_Cspace_pipe_space + 1)
-#define _NCp1_NToken_Cspace_equal_equal_space (_NCp1_NToken_Cspace_xor_space + 1)
-#define _NCp1_NToken_Cspace_expoint_equal_space (_NCp1_NToken_Cspace_equal_equal_space + 1)
-#define _NCp1_NToken_Cspace_langle_space (_NCp1_NToken_Cspace_expoint_equal_space + 1)
-#define _NCp1_NToken_Cspace_langle_equal_space (_NCp1_NToken_Cspace_langle_space + 1)
-#define _NCp1_NToken_Cspace_rangle_space (_NCp1_NToken_Cspace_langle_equal_space + 1)
-#define _NCp1_NToken_Cspace_rangle_equal_space (_NCp1_NToken_Cspace_rangle_space + 1)
-#define _NCp1_NToken_Chash (_NCp1_NToken_Cspace_rangle_equal_space + 1)
-#define _NCp1_NToken_Cspace_plus_equal_space (_NCp1_NToken_Chash + 1)
-#define _NCp1_NToken_Cspace_minus_equal_space (_NCp1_NToken_Cspace_plus_equal_space + 1)
-#define _NCp1_NToken_Cspace_mul_equal_space (_NCp1_NToken_Cspace_minus_equal_space + 1)
-#define _NCp1_NToken_Cspace_div_equal_space (_NCp1_NToken_Cspace_mul_equal_space + 1)
-#define _NCp1_NToken_Cspace_lshift_equal_space (_NCp1_NToken_Cspace_div_equal_space + 1)
-#define _NCp1_NToken_Cspace_rshift_equal_space (_NCp1_NToken_Cspace_lshift_equal_space + 1)
-#define _NCp1_NToken_Cspace_and_equal_space (_NCp1_NToken_Cspace_rshift_equal_space + 1)
-#define _NCp1_NToken_Cspace_or_equal_space (_NCp1_NToken_Cspace_and_equal_space + 1)
-#define _NCp1_NToken_Cspace_xor_equal_space (_NCp1_NToken_Cspace_or_equal_space + 1)
-#define _NCp1_NToken_Cexpoint (_NCp1_NToken_Cspace_xor_equal_space + 1)
-#define _NCp1_NToken_Cloop (_NCp1_NToken_Cexpoint + 1)
-#define _NCp1_NToken_Clcbrace_lparen (_NCp1_NToken_Cloop + 1)
 #define _NCp1_NId_Cnil (-1)
 #define _NCp1_NId_C0 (_NCp1_NId_Cnil + 1)
 #define _NCp1_NExprI_Cnil (-1)
@@ -224,8 +192,39 @@
 #define _NCp1_NLvarFlags_C0 0
 #define _NCp1_NStmtType_Cnil (255)
 #define _NCp1_Cdecl_var_size_limit (8)
-#define _NCp1_NToken_Cwhile (_NCp1_NToken_Clcbrace_lparen + 1)
-#define _NCp1_NToken_Cif (_NCp1_NToken_Cwhile + 1)
+#define _NCp1_NToken_Ctrue (_NCp1_NToken_Cchar2 + 1)
+#define _NCp1_NToken_Cfalse (_NCp1_NToken_Ctrue + 1)
+#define _NCp1_NToken_Cnull (_NCp1_NToken_Cfalse + 1)
+#define _NCp1_NToken_Clparen_amp_amp_comma_space (_NCp1_NToken_Cnull + 1)
+#define _NCp1_NToken_Clparen_pipe_pipe_comma_space (_NCp1_NToken_Clparen_amp_amp_comma_space + 1)
+#define _NCp1_NToken_Cspace_plus_space (_NCp1_NToken_Clparen_pipe_pipe_comma_space + 1)
+#define _NCp1_NToken_Cspace_minus_space (_NCp1_NToken_Cspace_plus_space + 1)
+#define _NCp1_NToken_Cspace_mul_space (_NCp1_NToken_Cspace_minus_space + 1)
+#define _NCp1_NToken_Cspace_div_space (_NCp1_NToken_Cspace_mul_space + 1)
+#define _NCp1_NToken_Cspace_langle_langle_space (_NCp1_NToken_Cspace_div_space + 1)
+#define _NCp1_NToken_Cspace_rangle_rangle_space (_NCp1_NToken_Cspace_langle_langle_space + 1)
+#define _NCp1_NToken_Cspace_amp_space (_NCp1_NToken_Cspace_rangle_rangle_space + 1)
+#define _NCp1_NToken_Cspace_pipe_space (_NCp1_NToken_Cspace_amp_space + 1)
+#define _NCp1_NToken_Cspace_xor_space (_NCp1_NToken_Cspace_pipe_space + 1)
+#define _NCp1_NToken_Cspace_equal_equal_space (_NCp1_NToken_Cspace_xor_space + 1)
+#define _NCp1_NToken_Cspace_expoint_equal_space (_NCp1_NToken_Cspace_equal_equal_space + 1)
+#define _NCp1_NToken_Cspace_langle_space (_NCp1_NToken_Cspace_expoint_equal_space + 1)
+#define _NCp1_NToken_Cspace_langle_equal_space (_NCp1_NToken_Cspace_langle_space + 1)
+#define _NCp1_NToken_Cspace_rangle_space (_NCp1_NToken_Cspace_langle_equal_space + 1)
+#define _NCp1_NToken_Cspace_rangle_equal_space (_NCp1_NToken_Cspace_rangle_space + 1)
+#define _NCp1_NToken_Chash (_NCp1_NToken_Cspace_rangle_equal_space + 1)
+#define _NCp1_NToken_Cspace_plus_equal_space (_NCp1_NToken_Chash + 1)
+#define _NCp1_NToken_Cspace_minus_equal_space (_NCp1_NToken_Cspace_plus_equal_space + 1)
+#define _NCp1_NToken_Cspace_mul_equal_space (_NCp1_NToken_Cspace_minus_equal_space + 1)
+#define _NCp1_NToken_Cspace_div_equal_space (_NCp1_NToken_Cspace_mul_equal_space + 1)
+#define _NCp1_NToken_Cspace_lshift_equal_space (_NCp1_NToken_Cspace_div_equal_space + 1)
+#define _NCp1_NToken_Cspace_rshift_equal_space (_NCp1_NToken_Cspace_lshift_equal_space + 1)
+#define _NCp1_NToken_Cspace_and_equal_space (_NCp1_NToken_Cspace_rshift_equal_space + 1)
+#define _NCp1_NToken_Cspace_or_equal_space (_NCp1_NToken_Cspace_and_equal_space + 1)
+#define _NCp1_NToken_Cspace_xor_equal_space (_NCp1_NToken_Cspace_or_equal_space + 1)
+#define _NCp1_NToken_Cexpoint (_NCp1_NToken_Cspace_xor_equal_space + 1)
+#define _NCp1_NToken_Cloop (_NCp1_NToken_Cexpoint + 1)
+#define _NCp1_NToken_Cif (_NCp1_NToken_Cloop + 1)
 #define _NCp1_NToken_Cspace_elif (_NCp1_NToken_Cif + 1)
 #define _NCp1_NToken_Cspace_else (_NCp1_NToken_Cspace_elif + 1)
 #define _NCp1_NToken_Cswitch (_NCp1_NToken_Cspace_else + 1)
@@ -240,10 +239,10 @@
 #define _NCp1_NToken_Cspace_at_union (_NCp1_NToken_Cspace_at_extern + 1)
 typedef int32_t _NCp1_NFunc;
 typedef int32_t _NCp1_NInclude;
-typedef int _NStdc_NFd;
-typedef int _NStdc_NOpenFlags;
-typedef int _NStdc_NExit;
-typedef int _NStdc_NSeek;
+typedef int _NStdC_NFd;
+typedef int _NStdC_NOpenFlags;
+typedef int _NStdC_NExit;
+typedef int _NStdC_NSeek;
 typedef int32_t _NCp1_NAt;
 typedef uint8_t _NCp1_NNameType;
 typedef int32_t _NCp1_NId;
@@ -673,6 +672,7 @@ struct _NCp1_NStmtDo;
 struct _NCp1_NStmtDo {
 struct _NCp1_NStmt _Fbase;
 _NCp1_NExprI _Fexpr;
+struct _NCp1_NValue _Fval;
 struct _NCp1_NStmtSpace* _Fcontinu;
 struct _NCp1_NStmtDoEnd* _Fend;
 };
@@ -844,8 +844,8 @@ void _NCp1_Pexport_0();
 void _NCp1_NMap_Pinit_1(struct _NCp1_NMap* _Lm_0);
 void _NCp1_NAtMap_Pinit_1(struct _NCp1_NAtMap* _Lm_0);
 void _NCp1_Pquick_alloc_init_0();
-bool _NStdc_NFd_Popen_3(_NStdc_NFd* _Lfile_0, char* _Lpath_1, _NStdc_NOpenFlags _Lflags_2);
-int _NStdc_NFd_Pclose_1(_NStdc_NFd _Lfile_0);
+bool _NStdC_NFd_Popen_3(_NStdC_NFd* _Lfile_0, char* _Lpath_1, _NStdC_NOpenFlags _Lflags_2);
+int _NStdC_NFd_Pclose_1(_NStdC_NFd _Lfile_0);
 void _NCp1_Pget_row_col_4(int32_t* _Lout_row_0, int32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3);
 void _NCp1_Pparse_string_4(union _NCp1_NRdr* _Lr_0, union _NCp1_NWtr* _Lw_1, char _Lending_2, void* _Lin_data_3);
 void _NCp1_Pparse_str_init_1(int32_t _Lmax_size_0);
@@ -872,7 +872,7 @@ void _NCp1_Pwrite_gvar_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
 void _NCp1_Pwrite_enum_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
 void _NCp1_Pwrite_struct_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
 void _NCp1_Pwrite_func_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
-bool _NStdc_NFd_Popen_4(_NStdc_NFd* _Lfile_0, char* _Lpath_1, _NStdc_NOpenFlags _Lflags_2, int _Lmode_3);
+bool _NStdC_NFd_Popen_4(_NStdC_NFd* _Lfile_0, char* _Lpath_1, _NStdC_NOpenFlags _Lflags_2, int _Lmode_3);
 void _NCp1_NAt_Pwr_header_2(_NCp1_NAt _Lid_0, union _NCp1_NWtr* _Lw_1);
 void _NCp1_NId_Pwr_header_2(_NCp1_NId _Lid_0, union _NCp1_NWtr* _Lw_1);
 void qalloc_undo(int32_t _Lsize_0);
@@ -1049,6 +1049,7 @@ case _NCp1_NToken_Cid_bslash: return "id-bslash";
 case _NCp1_NToken_Cusing: return "using";
 case _NCp1_NToken_Crparen: return "rparen";
 case _NCp1_NToken_Clparen: return "lparen";
+case _NCp1_NToken_Cspace_lcbrace: return "space-lcbrace";
 case _NCp1_NToken_Clcbrace_space: return "lcbrace-space";
 case _NCp1_NToken_Crcbrace: return "rcbrace";
 case _NCp1_NToken_Cscolon: return "scolon";
@@ -1129,8 +1130,6 @@ case _NCp1_NToken_Cspace_or_equal_space: return "space-or-equal-space";
 case _NCp1_NToken_Cspace_xor_equal_space: return "space-xor-equal-space";
 case _NCp1_NToken_Cexpoint: return "expoint";
 case _NCp1_NToken_Cloop: return "loop";
-case _NCp1_NToken_Clcbrace_lparen: return "lcbrace-lparen";
-case _NCp1_NToken_Cwhile: return "while";
 case _NCp1_NToken_Cif: return "if";
 case _NCp1_NToken_Cspace_elif: return "space-elif";
 case _NCp1_NToken_Cspace_else: return "space-else";
@@ -1262,7 +1261,7 @@ void _NCp1_NUnary_Pwr_2(_NCp1_NUnary _Lu_0, union _NCp1_NWtr* _Lw_1);
 void _NCp1_NCompare_Pwr_2(_NCp1_NCompare _Le_0, union _NCp1_NWtr* _Lw_1);
 void _NCp1_NAssign_Pwr_2(_NCp1_NAssign _Ls_0, union _NCp1_NWtr* _Lw_1);
 int main(int _Larg_c_0, char** _Larg_v_1) {
-_NStdc_NFd _Lin_fd_2;
+_NStdC_NFd _Lin_fd_2;
 char* _Llock_path_3;
 size_t _Lin_size_4;
 uint8_t* _Lin_data_5;
@@ -1278,7 +1277,7 @@ int32_t _Lid_bit8_c_39;
 _NCp1_NAt _Lat_bit8_c_41;
 char* _Lout_path_44;
 size_t _Lout_path_len_45;
-_NStdc_NFd _Lout_fd_46;
+_NStdC_NFd _Lout_fd_46;
 char _Lfinal_path_53[512];
 if(false) {
 _NCp1_Pexport_0();
@@ -1294,9 +1293,9 @@ fprintf(stdout, "Usage: %s [file.cgl] [output.cgl-b]\n", _Larg_v_1[0]);
 return 0;
 }
 input_path = _Larg_v_1[1];
-if(!(_NStdc_NFd_Popen_3(&_Lin_fd_2, input_path, O_RDONLY))) {
+if(!(_NStdC_NFd_Popen_3(&_Lin_fd_2, input_path, O_RDONLY))) {
 fprintf(stdout, "Cannot open file for reading: %s\n", input_path);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Llock_path_3 = _Larg_v_1[2];
 _Lin_size_4 = lseek(_Lin_fd_2, 0, SEEK_END);
@@ -1305,15 +1304,15 @@ lseek(_Lin_fd_2, 0, SEEK_SET);
 read(_Lin_fd_2, _Lin_data_5, _Lin_size_4);
 _Lin_data_5[_Lin_size_4] = 0;
 _Lin_data_5[(_Lin_size_4 + 1)] = 0;
-_NStdc_NFd_Pclose_1(_Lin_fd_2);
+_NStdC_NFd_Pclose_1(_Lin_fd_2);
 if(((_Lin_data_5[(_Lin_size_4 - 2)] == '\r') && (_Lin_data_5[(_Lin_size_4 - 1)] == '\n'))) {
 fprintf(stdout, "Error reading file '%s' because it uses Windows-style line endings\n", input_path);
 fprintf(stdout, "Please convert the line endings to Unix-style line endings\n");
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 if(_Lin_data_5[(_Lin_size_4 - 1)] != '\n') {
 fprintf(stdout, "Error reading file '%s' because it doesn:T end with a new line\n", input_path);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 if(true) {
 bool _Lpreprocess_6;
@@ -1338,7 +1337,7 @@ int32_t _Lrow_11;
 int32_t _Lcol_12;
 _NCp1_Pget_row_col_4(&_Lrow_11, &_Lcol_12, _Lr_8._Freff, _Lin_data_5);
 fprintf(stdout, "%s:%u:%u: There must be a space or tab before the // comment\n", input_path, _Lrow_11, _Lcol_12);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Lr_8._Fpos += 2;
 while(1) {
@@ -1411,7 +1410,7 @@ int32_t _Lrow_14;
 int32_t _Lcol_15;
 _NCp1_Pget_row_col_4(&_Lrow_14, &_Lcol_15, _Lr_8._Freff, _Lin_data_5);
 fprintf(stdout, "%s:%u:%u: String did not end with a new line\n", input_path, _Lrow_14, _Lcol_15);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 continue_4:;
 }
@@ -1466,7 +1465,7 @@ int32_t _Lrow_16;
 int32_t _Lcol_17;
 _NCp1_Pget_row_col_4(&_Lrow_16, &_Lcol_17, _Lr_8._Freff, _Lin_data_5);
 fprintf(stdout, "%s:%u:%u: Unterminated string\n", input_path, _Lrow_16, _Lcol_17);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 } else if(_Lr_8._Fp1[0] == '\"') {
 _Lw_10._Fp1[0] = '\"';
 _Lw_10._Fpos++;
@@ -1501,7 +1500,7 @@ int32_t _Lrow_18;
 int32_t _Lcol_19;
 _NCp1_Pget_row_col_4(&_Lrow_18, &_Lcol_19, _Lr_8._Freff, _Lin_data_5);
 fprintf(stdout, "%s:%u:%u: Encountered invalid escape sequence in the string: '\\%c'\n", input_path, _Lrow_18, _Lcol_19, _Lr_8._Fp1[1]);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 break;
 }
 _Lw_10._Fp1[0] = '\\';
@@ -1518,7 +1517,7 @@ int32_t _Lrow_20;
 int32_t _Lcol_21;
 _NCp1_Pget_row_col_4(&_Lrow_20, &_Lcol_21, _Lr_8._Freff, _Lin_data_5);
 fprintf(stdout, "%s:%u:%u: Unterminated string\n", input_path, _Lrow_20, _Lcol_21);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 continue_5:;
 }
@@ -1665,9 +1664,9 @@ _Ltok_28._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_25, 0, 0);
 _Glast_token = _Lt_29;
 cp1Parse(_Lpsr_24, _Lt_29, &_Ltok_28);
 break;
-case _NCp1_NToken_Clcbrace:;
-if(_Llex_25._Fcursor[0] == '(') {
-_Lt_29 = _NCp1_NToken_Clcbrace_lparen;
+case _NCp1_NToken_Cspace:;
+if(_Llex_25._Fcursor[0] == '{') {
+_Lt_29 = _NCp1_NToken_Cspace_lcbrace;
 }
 _Glast_token = _Lt_29;
 cp1Parse(_Lpsr_24, _Lt_29, &_Ltok_28);
@@ -1760,12 +1759,12 @@ _NCp1_Pwrite_func_2(&_Lw_37, false);
 _Lout_path_44 = malloc(strlen(_Llock_path_3) + 4 + 1);
 sprintf(_Lout_path_44, "%s.tmp", _Llock_path_3);
 _Lout_path_len_45 = strlen(_Lout_path_44);
-if(!(_NStdc_NFd_Popen_4(&_Lout_fd_46, _Lout_path_44, O_CREAT | O_TRUNC | O_WRONLY, 32676))) {
+if(!(_NStdC_NFd_Popen_4(&_Lout_fd_46, _Lout_path_44, O_CREAT | O_TRUNC | O_WRONLY, 32676))) {
 fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_44);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 write(_Lout_fd_46, _Lw_begin_36._Freff, _Lw_37._Fpos - _Lw_begin_36._Fpos);
-_NStdc_NFd_Pclose_1(_Lout_fd_46);
+_NStdC_NFd_Pclose_1(_Lout_fd_46);
 _Lw_37._Freff = _Lw_begin_36._Freff;
 Fputnum(&_Lw_37, _Gid_in_header_c);
 int32_t _Lj_47;
@@ -1819,12 +1818,12 @@ _NCp1_Pwrite_enum_2(&_Lw_37, true);
 _NCp1_Pwrite_struct_2(&_Lw_37, true);
 _NCp1_Pwrite_func_2(&_Lw_37, true);
 _Lout_path_44[(_Lout_path_len_45 - 5)] = 'h';
-if(!(_NStdc_NFd_Popen_4(&_Lout_fd_46, _Lout_path_44, O_CREAT | O_TRUNC | O_WRONLY, 32676))) {
+if(!(_NStdC_NFd_Popen_4(&_Lout_fd_46, _Lout_path_44, O_CREAT | O_TRUNC | O_WRONLY, 32676))) {
 fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_44);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 write(_Lout_fd_46, _Lw_begin_36._Freff, _Lw_37._Fpos - _Lw_begin_36._Fpos);
-_NStdc_NFd_Pclose_1(_Lout_fd_46);
+_NStdC_NFd_Pclose_1(_Lout_fd_46);
 _Lout_path_44[(_Lout_path_len_45 - 5)] = 'b';
 memcpy(_Lfinal_path_53, _Lout_path_44, _Lout_path_len_45 - 4);
 _Lfinal_path_53[(_Lout_path_len_45 - 4)] = 0;
@@ -1963,8 +1962,8 @@ _Gquick_alloc_cap = (16 * 1024);
 _Gquick_alloc_v = malloc(_Gquick_alloc_cap);
 memset(_Gquick_alloc_v, 0, _Gquick_alloc_cap);
 }
-inline bool _NStdc_NFd_Popen_3(_NStdc_NFd* _Lfile_0, char* _Lpath_1, _NStdc_NOpenFlags _Lflags_2) {
-_NStdc_NFd _Lfd_3;
+inline bool _NStdC_NFd_Popen_3(_NStdC_NFd* _Lfile_0, char* _Lpath_1, _NStdC_NOpenFlags _Lflags_2) {
+_NStdC_NFd _Lfd_3;
 _Lfd_3 = open(_Lpath_1, _Lflags_2);
 if(_Lfd_3 != -1) {
 (*_Lfile_0) = _Lfd_3;
@@ -1973,7 +1972,7 @@ return true;
 return false;
 }
 }
-inline int _NStdc_NFd_Pclose_1(_NStdc_NFd _Lfile_0) {
+inline int _NStdC_NFd_Pclose_1(_NStdC_NFd _Lfile_0) {
 return close(_Lfile_0);
 }
 void _NCp1_Pget_row_col_4(int32_t* _Lout_row_0, int32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3) {
@@ -2016,7 +2015,7 @@ int32_t _Lrow_5;
 int32_t _Lcol_6;
 _NCp1_Pget_row_col_4(&_Lrow_5, &_Lcol_6, (*_Lr_0)._Freff, _Lin_data_3);
 fprintf(stdout, "%s:%u:%u: Unterminated string\n", input_path, _Lrow_5, _Lcol_6);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 (*_Lw_1)._Fp1[0] = _Lc_4;
 (*_Lw_1)._Fpos++;
@@ -2045,7 +2044,7 @@ _Lr_cursor_4._Freff = (*_Llex_0)._Fcursor;
 _Llength_5 = (_Lr_cursor_4._Fpos - _Lr_start_3._Fpos - _Lend_2);
 if(_Llength_5 > 255) {
 fprintf(stdout, "too long id was detected\n");
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Llen_6 = (uint8_t)(_Llength_5);
 _Lfound_7 = _NCp1_NMap_Pget_or_insert_4(&_Gid_map, _Lr_start_3._Freff, _Llen_6, _Gid_c);
@@ -2080,7 +2079,7 @@ _Lr_cursor_2._Freff = (*_Llex_0)._Fcursor;
 _Llength_3 = (_Lr_cursor_2._Fpos - _Lr_start_1._Fpos);
 if(_Llength_3 > 10) {
 fprintf(stdout, "%s:%u:%u: Integer literal was too long\n", input_path, _Grow, _Gcol);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Lval_4 = (uint64_t)(0);
 for(int i = _Llength_3; i > 0; ) {
@@ -2092,7 +2091,7 @@ continue_0:;
 break_0:;
 if(_Lval_4 > -1) {
 fprintf(stdout, "%s:%u:%u: Integer literal was out of bounds\n", input_path, _Grow, _Gcol);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 return (uint32_t)(_Lval_4);
 }
@@ -2106,7 +2105,7 @@ _Lr_cursor_2._Freff = (*_Llex_0)._Fcursor;
 _Llength_3 = (_Lr_cursor_2._Fpos - _Lr_start_1._Fpos);
 if(_Llength_3 > 12) {
 fprintf(stdout, "%s:%u:%u: Integer literal was too long\n", input_path, _Grow, _Gcol);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Lval_4 = (uint64_t)(0);
 for(int i = _Llength_3; i > 0; ) {
@@ -2118,23 +2117,28 @@ continue_0:;
 break_0:;
 if(_Lval_4 > -1) {
 fprintf(stdout, "%s:%u:%u: Integer literal was out of bounds\n", input_path, _Grow, _Gcol);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 return (uint32_t)(_Lval_4);
 }
 int32_t _NCp1_NLexer_Pget_include_1(struct _NCp1_NLexer* _Llex_0) {
 union _NCp1_NRdr _Lr_start_1;
 union _NCp1_NRdr _Lr_cursor_2;
-size_t _Llength_3;
+int32_t _Llength_3;
 uint8_t _Llen_4;
 int32_t _Lfound_5;
 _Lr_start_1._Freff = (*_Llex_0)._Fstart;
-_Lr_start_1._Fpos += 9;
+_Lr_start_1._Fpos += 8;
 _Lr_cursor_2._Freff = (*_Llex_0)._Fcursor;
-_Llength_3 = (_Lr_cursor_2._Fpos - _Lr_start_1._Fpos - 1);
+_Llength_3 = 0;
+while(_Lr_start_1._Fcharr[_Llength_3] != ')') {
+_Llength_3++;
+continue_0:;
+}
+break_0:;
 if(_Llength_3 > 255) {
 fprintf(stdout, "too long include was detected\n");
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Llen_4 = (uint8_t)(_Llength_3);
 _Lfound_5 = _NCp1_NMap_Pget_or_insert_4(&_Ginclude_map, _Lr_start_1._Freff, _Llen_4, _Ginclude_c);
@@ -2402,8 +2406,8 @@ continue_3:;
 }
 break_3:;
 }
-inline bool _NStdc_NFd_Popen_4(_NStdc_NFd* _Lfile_0, char* _Lpath_1, _NStdc_NOpenFlags _Lflags_2, int _Lmode_3) {
-_NStdc_NFd _Lfd_4;
+inline bool _NStdC_NFd_Popen_4(_NStdC_NFd* _Lfile_0, char* _Lpath_1, _NStdC_NOpenFlags _Lflags_2, int _Lmode_3) {
+_NStdC_NFd _Lfd_4;
 _Lfd_4 = open(_Lpath_1, _Lflags_2, _Lmode_3);
 if(_Lfd_4 != -1) {
 (*_Lfile_0) = _Lfd_4;
@@ -2517,7 +2521,7 @@ if(_Gfunc_main != _NCp1_NFunc_Cnil) {
 struct _NCp1_NDeclFunc* _Lmain_8;
 _Lmain_8 = _NCp1_NFunc_Pptr_1(_Gfunc_main);
 fprintf(stdout, "%u:%u: There:S already a function with @main attribute at %u:%u\n", (*_Lf_4)._Fbegin_row, (*_Lf_4)._Fbegin_col, (*_Lmain_8)._Fbegin_row, (*_Lmain_8)._Fbegin_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 } else {
 _Gfunc_main = _Lf_idx_2;
 }
@@ -2587,7 +2591,7 @@ _Gdecl_var._Fsize_c = 0;
 void _NCp1_Pdecl_var_attr_real_name_1(_NCp1_NId _Lname_0) {
 if((_Gdecl_var._Fflags & _NCp1_NVarFlags_Creal_name) != _NCp1_NVarFlags_C0) {
 fprintf(stdout, "%u:%u: error @real-name specified more than once\n", _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_var._Fflags |= _NCp1_NVarFlags_Creal_name;
 _Gdecl_var._Freal_name = _Lname_0;
@@ -2595,14 +2599,14 @@ _Gdecl_var._Freal_name = _Lname_0;
 void _NCp1_Pdecl_var_attr_extern_0() {
 if((_Gdecl_var._Fflags & _NCp1_NVarFlags_Cextern) != _NCp1_NVarFlags_C0) {
 fprintf(stdout, "%u:%u: error @extern specified more than once\n", _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_var._Fflags |= _NCp1_NVarFlags_Cextern;
 }
 void _NCp1_Pdecl_var_attr_no_decl_0() {
 if((_Gdecl_var._Fflags & _NCp1_NVarFlags_Cno_decl) != _NCp1_NVarFlags_C0) {
 fprintf(stdout, "%u:%u: error @no-decl specified more than once\n", _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_var._Fflags |= _NCp1_NVarFlags_Cno_decl;
 }
@@ -2674,7 +2678,7 @@ int8_t _Lcall_idx_2;
 _Lcall_idx_2 = _Gexpr_call_c++;
 if(_Lcall_idx_2 >= _NCp1_Cexpr_call_nest_limit) {
 fprintf(stdout, "%u:%u: Too much nested calls\n", _Lrow_0, _Lcol_1);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gexpr_call_carg_c[_Lcall_idx_2] = 0;
 _Gexpr_call_cgrp_c[_Lcall_idx_2] = 1;
@@ -2806,7 +2810,7 @@ _NCp1_Pquick_alloc_one_1(_Ls_5);
 _NCp1_Pstmt_push_6(&(*_Ls_5)._Fbase, _Lbegin_row_1, _Lbegin_col_2, _Lend_row_3, _Lend_col_4, _NCp1_NStmtType_Ccontinue);
 if(_Gnest_stack_c <= 0) {
 fprintf(stdout, "%s:%u:%u: Cannot have a continue because it:S not inside a loop\n", input_path, _Lbegin_row_1, _Lbegin_col_2);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 (*_Ls_5)._Fnest = (_Gnest_stack_c - 1);
 }
@@ -2816,27 +2820,27 @@ _NCp1_Pquick_alloc_one_1(_Ls_5);
 _NCp1_Pstmt_push_6(&(*_Ls_5)._Fbase, _Lbegin_row_1, _Lbegin_col_2, _Lend_row_3, _Lend_col_4, _NCp1_NStmtType_Cbreak);
 if(_Gnest_stack_c <= 0) {
 fprintf(stdout, "%s:%u:%u: Cannot have a break because it:S not inside a loop\n", input_path, _Lbegin_row_1, _Lbegin_col_2);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 (*_Ls_5)._Fnest = (_Gnest_stack_c - 1);
 }
 void _NCp1_Pfunc_attr_main_0() {
 if((_Gdecl_func_flags2 & _NCp1_NFuncFlags2_Cmain) != _NCp1_NFuncFlags2_C0) {
 fprintf(stdout, "%s:%u:%u: Error @main specified more than once\n", input_path, _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 if(_Gfunc_main != _NCp1_NFunc_Cnil) {
 struct _NCp1_NDeclFunc* _Lfirst_0;
 _Lfirst_0 = _NCp1_NFunc_Pptr_1(_Gfunc_main);
 fprintf(stdout, "There cannot be more than one function with @main attribute, first was %s:%u:%u and then %u:%u\n", input_path, (*_Lfirst_0)._Fbegin_row, (*_Lfirst_0)._Fbegin_col, _Gdecl_func_row, _Gdecl_func_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_func_flags2 |= _NCp1_NFuncFlags2_Cmain;
 }
 void _NCp1_Pfunc_attr_decl_0() {
 if((_Gdecl_func_flags & _NCp1_NFuncFlags_Cdecl) != _NCp1_NFuncFlags_C0) {
 fprintf(stdout, "%s:%u:%u: Error @decl specified more than once\n", input_path, _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_func_flags |= _NCp1_NFuncFlags_Cdecl;
 _Gdecl_func_decl_str = qalloc(_Gstring_len + 1);
@@ -2847,49 +2851,49 @@ _Gdecl_func_decl_len = _Gstring_len;
 void _NCp1_Pfunc_attr_cp1_name_0() {
 if((_Gdecl_func_flags & _NCp1_NFuncFlags_Ccp1_name) != _NCp1_NFuncFlags_C0) {
 fprintf(stdout, "%s:%u:%u: Error @cp1-name specified more than once\n", input_path, _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_func_flags |= _NCp1_NFuncFlags_Ccp1_name;
 }
 void _NCp1_Pfunc_attr_process_0() {
 if((_Gdecl_func_flags & _NCp1_NFuncFlags_Cprocess) != _NCp1_NFuncFlags_C0) {
 fprintf(stdout, "%s:%u:%u: Error @process specified more than once\n", input_path, _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_func_flags |= _NCp1_NFuncFlags_Cprocess;
 }
 void _NCp1_Pfunc_attr_inline_0() {
 if((_Gdecl_func_flags & _NCp1_NFuncFlags_Cinline) != _NCp1_NFuncFlags_C0) {
 fprintf(stdout, "%s:%u:%u: Error @inline specified more than once\n", input_path, _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_func_flags |= _NCp1_NFuncFlags_Cinline;
 }
 void _NCp1_Pfunc_attr_var_args_0() {
 if((_Gdecl_func_flags & _NCp1_NFuncFlags_Cvar_args) != _NCp1_NFuncFlags_C0) {
 fprintf(stdout, "%s:%u:%u: Error @var-args specified more than once\n", input_path, _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_func_flags |= _NCp1_NFuncFlags_Cvar_args;
 }
 void _NCp1_Pfunc_attr_no_decl_0() {
 if((_Gdecl_func_flags & _NCp1_NFuncFlags_Cno_decl) != _NCp1_NFuncFlags_C0) {
 fprintf(stdout, "%s:%u:%u: Error @no-decl specified more than once\n", input_path, _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_func_flags |= _NCp1_NFuncFlags_Cno_decl;
 }
 void _NCp1_Pfunc_attr_no_body_0() {
 if((_Gdecl_func_flags & _NCp1_NFuncFlags_Cno_body) != _NCp1_NFuncFlags_C0) {
 fprintf(stdout, "%s:%u:%u: Error @no-body specified more than once\n", input_path, _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_func_flags |= _NCp1_NFuncFlags_Cno_body;
 }
 void _NCp1_Pfunc_attr_real_name_1(_NCp1_NId _Lname_0) {
 if((_Gdecl_func_flags & _NCp1_NFuncFlags_Creal_name) != _NCp1_NFuncFlags_C0) {
 fprintf(stdout, "%s:%u:%u: Error @real-name specified more than once\n", input_path, _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_func_flags |= _NCp1_NFuncFlags_Creal_name;
 _Gdecl_func_real_name = _Lname_0;
@@ -2901,7 +2905,7 @@ char* _Lfunc_name_str_3;
 uint8_t _Lfunc_name_len_4;
 if((_Gdecl_func_flags & _NCp1_NFuncFlags_Ccase) != _NCp1_NFuncFlags_C0) {
 fprintf(stdout, "%s:%u:%u: Error @case specified more than once\n", input_path, _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Lname_str_1 = _NCp1_NId_Pstr_1(_Lname_0);
 _Lname_len_2 = _NCp1_NId_Plen_1(_Lname_0);
@@ -2909,7 +2913,7 @@ _Lfunc_name_str_3 = _NCp1_NId_Pstr_1(_Gdecl_func_name);
 _Lfunc_name_len_4 = _NCp1_NId_Plen_1(_Gdecl_func_name);
 if(((_Lname_len_2 > _Lfunc_name_len_4) || (_Lfunc_name_str_3[_Lname_len_2] != '-') || (memcmp(_Lname_str_1, _Lfunc_name_str_3, _Lname_len_2) != 0))) {
 fprintf(stdout, "%s:%u:%u: Error, function name must begin with words used in @case followed by '-' (dash) then followed by the name of the cvar of case\n", input_path, _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_func_flags |= _NCp1_NFuncFlags_Ccase;
 _Gdecl_func_case = _Lname_0;
@@ -2953,7 +2957,7 @@ continue_0:;
 }
 break_0:;
 fprintf(stdout, "%s:%u:%u: local variable '%s' was not found\n", input_path, _Lrow_2, _Lcol_3, _NCp1_NId_Pstr_1(_Lname_0));
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 return _NCp1_NExprI_Cnil;
 } else {
 struct _NCp1_NStmtSpace* _Lspace_11;
@@ -2965,7 +2969,7 @@ while(_Ldecl_1 > 1) {
 _Lspace_11 = (*_Lspace_11)._Fparent;
 if(_Lspace_11 == NULL) {
 fprintf(stdout, "%s:%u:%u: Cannot declare local variable '%s' with too much '+'\n", input_path, _Lrow_2, _Lcol_3, _NCp1_NId_Pstr_1(_Lname_0));
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 if(((*_Lspace_11)._Fflags & _NCp1_NStmtSpaceFlags_Cskip_lvar_decl) == _NCp1_NStmtSpaceFlags_C0) {
 _Ldecl_1--;
@@ -3069,7 +3073,7 @@ struct _NCp1_NAtData* _Lat_1;
 _Lat_1 = _NCp1_NAt_Pptr_1(_Ltype_0);
 if((*_Lat_1)._Ftype == _NCp1_NNameType_Cmodule) {
 fprintf(stdout, "%u:%u: module '%%%s' cannot be used as a type\n", _Glast_row, _Glast_col, _NCp1_NId_Pstr_1((*_Lat_1)._Fname._Fid));
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 }
 _Gdecl_var._Ftype = _Ltype_0;
@@ -3084,7 +3088,7 @@ _Ltype_0 = _Gdecl_at;
 _Lat_1 = _NCp1_NAt_Pptr_1(_Ltype_0);
 if((*_Lat_1)._Ftype == _NCp1_NNameType_Cmodule) {
 fprintf(stdout, "%u:%u: module '%%%s' cannot be used as a type\n", _Glast_row, _Glast_col, _NCp1_NId_Pstr_1((*_Lat_1)._Fname._Fid));
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_var._Ftype = _Ltype_0;
 }
@@ -3106,7 +3110,7 @@ void _NCp1_Pstmt_lvar_end_2(int32_t _Lend_row_0, int32_t _Lend_col_1) {
 void _NCp1_Pdecl_include_begin_3(_NCp1_NInclude _Linc_0, int32_t _Lrow_1, int32_t _Lcol_2) {
 if(_Gdecl_include != _NCp1_NInclude_Cnil) {
 fprintf(stdout, "%s:%u:%u: Cannot {include inside another {include of %u:%u\n", input_path, _Lrow_1, _Lcol_2, _Gdecl_include_row, _Gdecl_include_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 return;
 }
 _Gdecl_include = _Linc_0;
@@ -3150,7 +3154,7 @@ for(int i = _Gat_alias_c; i > 0; ) {
 i --;
 if(_Gat_alias_name_v[_Li_4] == _Lname_0) {
 fprintf(stdout, "%s:%u:%u: Alias '%s was already declared at %u:%u\n", input_path, _Lrow_2, _Lcol_3, _NCp1_NId_Pstr_1(_Lname_0), _Gat_alias_pos_v[_Li_4]._Frow, _Gat_alias_pos_v[_Li_4]._Fcol);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 return;
 }
 continue_0:;
@@ -3224,7 +3228,7 @@ _Li_3++;
 }
 break_0:;
 fprintf(stdout, "%s:%u:%u: Cannot recognize the '%s, did you forgot to put using '%s = ...;?\n", input_path, _Lrow_1, _Lcol_2, _NCp1_NId_Pstr_1(_Lname_0), _NCp1_NId_Pstr_1(_Lname_0));
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 void _NCp1_Pat_graves_3(int8_t _Lgraves_0, int32_t _Lrow_1, int32_t _Lcol_2) {
 _Gbuild_at = _Gdecl_at;
@@ -3233,7 +3237,7 @@ struct _NCp1_NAtData* _Lat_3;
 _Lgraves_0--;
 if(_Gbuild_at == _NCp1_NAt_Croot) {
 fprintf(stdout, "%s:%u:%u: Too many graves in the namespace, going beyond the root namespace\n", input_path, _Lrow_1, _Lcol_2);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Lat_3 = _NCp1_NAt_Pptr_1(_Gbuild_at);
 _Gbuild_at = (*_Lat_3)._Fparent;
@@ -3439,7 +3443,7 @@ _Lc_1 = _NCp1_NCvar_Pptr_1(_Glast_cvar);
 void _NCp1_Pstruct_attr_real_name_1(_NCp1_NId _Lname_0) {
 if((_Gdecl_struct_flags & _NCp1_NStructFlags_Creal_name) != _NCp1_NStructFlags_C0) {
 fprintf(stdout, "%u:%u: error @real-name specified more than once\n", _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_struct_flags |= _NCp1_NStructFlags_Creal_name;
 _Gdecl_struct_real_name = _Lname_0;
@@ -3447,14 +3451,14 @@ _Gdecl_struct_real_name = _Lname_0;
 void _NCp1_Pstruct_attr_union_0() {
 if((_Gdecl_struct_flags & _NCp1_NStructFlags_Cunion) != _NCp1_NStructFlags_C0) {
 fprintf(stdout, "%u:%u: error @union specified more than once\n", _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_struct_flags |= _NCp1_NStructFlags_Cunion;
 }
 void _NCp1_Pstruct_attr_no_decl_0() {
 if((_Gdecl_struct_flags & _NCp1_NStructFlags_Cno_decl) != _NCp1_NStructFlags_C0) {
 fprintf(stdout, "%u:%u: error @no-decl specified more than once\n", _Glast_row, _Glast_col);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 _Gdecl_struct_flags |= _NCp1_NStructFlags_Cno_decl;
 }
@@ -3844,7 +3848,7 @@ _NCp1_NExprI_Pwr_lvar_3(_Lexpr_3, _Lw_1, _Lheader_2);
 break;
 default:;
 fprintf(stdout, "wr() was not implemented in expression #%s\n", _NCp1_NExprType_Pcp1_name_1((*_Lexpr_3)._Ftype));
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 break;
 }
 }
@@ -3975,7 +3979,7 @@ _NCp1_NStmtSpace_Pwr_expr_3(_Lstmt_4, _Lw_1, _Lheader_2);
 break;
 default:;
 fprintf(stdout, "wr() not yet implemented in stmt #%s\n", _NCp1_NStmtType_Pcp1_name_1((*_Lstmt_4)._Ftype));
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 break;
 }
 if(_NCp1_Cdebug_rd_wr) {
@@ -4044,7 +4048,7 @@ struct _NCp1_NLvarData* _Llvar_6;
 _Llvar_6 = _NCp1_NLvar_Pptr_1(_Lv_4[_Li_5]);
 if((*_Llvar_6)._Fdecl._Fname == _Lname_1) {
 fprintf(stdout, "%u:%u: lvar '%s' was already declared at %u:%u\n", _Lrow_2, _Lcol_3, _NCp1_NId_Pstr_1(_Lname_1), (*_Llvar_6)._Frow, (*_Llvar_6)._Fcol);
-exit(_NStdc_NExit_Cfailure);
+exit(_NStdC_NExit_Cfailure);
 }
 continue_0:;
 _Li_5++;

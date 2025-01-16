@@ -374,10 +374,14 @@ Lexer(
    get-include(lex:this):i32 {
       var r-start:Rdr+;
       r-start.reff = lex.start;
-      r-start.pos += 9;
+      r-start.pos += 8;
       var r-cursor:Rdr+;
       r-cursor.reff = lex.cursor;
-      +length = r-cursor.pos - r-start.pos - 1;
+      +length = 0;
+      while (r-start.charr[length] != '')) {
+         length++;
+      }
+      // C.printf("include [%.*s]\n", length, r-start.charr);
       if (length > 255) {
          C.out.printf("too long include was detected\n");
          C.exit(#failure);
@@ -1207,9 +1211,16 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                .last-token = t;
                psr.parse(t, tok);
             }
-            case (#lcbrace) {
-               if (lex.cursor[0] == ''() {
-                  t = #lcbrace-lparen;
+            // case (#lcbrace) {
+            //    if (lex.cursor[0] == ''() {
+            //       t = #lcbrace-lparen;
+            //    }
+            //    .last-token = t;
+            //    psr.parse(t, tok);
+            // }
+            case (#space) {
+               if (lex.cursor[0] == ''{) {
+                  t = #space-lcbrace;
                }
                .last-token = t;
                psr.parse(t, tok);

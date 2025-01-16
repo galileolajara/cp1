@@ -8,7 +8,7 @@ main():intc {
       i++;
       if (i == 5) { break; }
    }
-   loop var count = 1; {(3) count++} {
+   loop var count = 1; (3) count++ {
       C.printf("This is a loop that will run 3 times. %d...\n", count);
    }
    while var i = 0; {(i < 4) i++} {

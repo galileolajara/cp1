@@ -1,4 +1,5 @@
 using Cp1 = Cp1;
+using C = StdC;
 using (Cp1) {
 Nest(do:StmtDo, whil:StmtWhile, reff:ref) @union;
 var nest-stack-ptr-v:Nest+[64];
@@ -48,15 +49,21 @@ using (Stmt) {
       if (s.expr == #nil) {
          .out.printf("while(1) {\n");
       } else {
-         .out.printf("for(int i = ");
-         s.expr.write();
-         .out.printf("; i > 0; ) {\ni --;\n");
+         if (&&, s.val.type == basic-type(#bool), s.val.info.star-c == 0) {
+            .out.printf("while(");
+            s.expr.write-value(s.val);
+            .out.printf(") {\n");
+         } else {
+            .out.printf("for(int i = ");
+            s.expr.write-value(s.val);
+            .out.printf("; i > 0; ) {\ni --;\n");
+         }
       }
    }
    process-do(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtDo = stmt;
       if (s.expr != #nil) {
-         if !(s.expr.process()) {
+         if !(s.expr.value(1, false, s.val)) {
             return;
          }
       }
@@ -88,6 +95,7 @@ stmt-do-begin() {
 StmtDo(
    base:Stmt+,
    expr:ExprI,
+   val:Value+,
    continu:StmtSpace,
    end:StmtDoEnd,
 );

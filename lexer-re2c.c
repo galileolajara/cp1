@@ -125,8 +125,8 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
       return CP1_TOKEN_STRING;
    }
 
-   "{include(" '"' [^"\n]* '")'     { return CP1_TOKEN_INCLUDE; }
-   "{include(" '<' [^>\n]* '>)'     { return CP1_TOKEN_INCLUDE; }
+   "include(" '"' [^"\n]* '")' spaces "{"     { return CP1_TOKEN_INCLUDE; }
+   "include(" '<' [^>\n]* '>)' spaces "{"    { return CP1_TOKEN_INCLUDE; }
 
    spaces "@inline"                 { return CP1_TOKEN_SPACE_AT_INLINE; }
    spaces "@main"                   { return CP1_TOKEN_SPACE_AT_MAIN; }
@@ -203,10 +203,10 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "default"                        { return CP1_TOKEN_DEFAULT; }
    "case"                           { return CP1_TOKEN_CASE; }
    "switch"                         { return CP1_TOKEN_SWITCH; }
-   "while"                          { return CP1_TOKEN_WHILE; }
+   // "while"                          { return CP1_TOKEN_WHILE; }
    "if"                             { return CP1_TOKEN_IF; }
    spaces "elif"                    { return CP1_TOKEN_SPACE_ELIF; }
-   spaces "else" spaces "if"                    { return CP1_TOKEN_SPACE_ELIF; }
+   // spaces "else" spaces "if"                    { return CP1_TOKEN_SPACE_ELIF; }
    spaces "else"                    { return CP1_TOKEN_SPACE_ELSE; }
    // "{if"                            { return CP1_TOKEN_LCBRACE_IF; }
    // "{switch"                        { return CP1_TOKEN_LCBRACE_SWITCH; }
