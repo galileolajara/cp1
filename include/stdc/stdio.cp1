@@ -1,4 +1,4 @@
-{include(<stdio.h>)
+include(<stdio.h>) {
    using C = StdC;
    using (StdC) {
       printf(fmt:char[]):intc @var-args @no-decl @real-name(printf);

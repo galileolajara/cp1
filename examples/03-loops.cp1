@@ -3,24 +3,24 @@
 using C = StdC;
 
 main():intc {
-   loop var i = 0; {
+   loop i = 0 {
       C.printf("This is a forever loop unless you break;\n");
       i++;
       if (i == 5) { break; }
    }
-   loop var count = 1; (3) count++ {
+   loop count = 1; (3) count++ {
       C.printf("This is a loop that will run 3 times. %d...\n", count);
    }
-   while var i = 0; {(i < 4) i++} {
+   loop i = 0; (i < 4) i++ {
       C.printf("This is a loop that will run 4 times\n");
    }
    loop (2) {
       C.printf("Declaring variables are optional. This will loop two times.\n");
    }
-   loop var i = 0; {(3)
-         i++;
-         C.printf("Codes here will run later just like the i++ in for loops.\n");
-      } {
+   loop i = 0; (3)
+      i++;
+      C.printf("Codes here will run later just like the i++ in for loops.\n");
+   {
       C.printf("Hello\n");
       if (i == 1) { continue; }
       C.printf("World\n");

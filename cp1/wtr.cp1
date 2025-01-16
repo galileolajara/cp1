@@ -23,7 +23,7 @@ Wtr(
       w.p1[3] = n >> 24;
       w.pos += 4;
    }
-   {include("num.c")
+   include("num.c") {
       n(w:this, n:u32) @real-name(Fputnum) @no-decl;
    }
    copy(w:this, data:ref, size:i32) @inline {

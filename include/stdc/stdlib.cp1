@@ -1,4 +1,4 @@
-{include(<stdlib.h>)
+include(<stdlib.h>) {
    using C = StdC;
    using (StdC) {
       malloc(size:usz):ref @real-name(malloc) @no-decl;
