@@ -677,24 +677,31 @@ do_expr_val(l) ::= lparen_or_space expr(e) rparen_or_space.
    { l.basic.id = e.basic.id; }
 do_expr ::= begin_pos(begin) do_expr_val(e) end_pos(end).
    { _NCp1_Pstmt_do_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, 0); }
+do_expr ::= begin_pos(begin) do_expr_val(e) end_pos(end) do_continue_begin(c) SPACE do_continue_stmts do_continue_end.
+   { _NCp1_Pstmt_do_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, c.pointer); }
 do_continue_begin(l) ::= .
    { l.pointer = _NCp1_Pstmt_space_begin_detach_0(); } 
 do_continue_end ::= .
-   { _NCp1_Pstmt_space_end_0(); } 
+   { _NCp1_Pstmt_space_end_0(); }
 do_continue_stmts ::= stmts_brace.
 do_continue_stmts ::= stmts_expr SCOLON.
 do_continue_stmts ::= stmts_expr.
-do_expr ::= begin_pos(begin) do_expr_val(e) end_pos(end) do_continue_begin(c) SPACE do_continue_stmts do_continue_end.
-   { _NCp1_Pstmt_do_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, c.pointer); }
 loop_forever ::= .
    { _NCp1_Pstmt_do_set_6(-1, 0, 0, 0, 0, 0); }
+
+do_expr2 ::= SPACE begin_pos(begin) expr(e) end_pos(end) SCOLON do_continue_begin(c) SPACE do_continue_stmts do_continue_end.
+   { _NCp1_Pstmt_do_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, c.pointer); }
+do_expr2 ::= SCOLON do_continue_begin(c) SPACE do_continue_stmts do_continue_end.
+   { _NCp1_Pstmt_do_set_6(-1, 0, 0, 0, 0, c.pointer); }
+do_expr2 ::= SPACE begin_pos(begin) expr(e) end_pos(end) SCOLON.
+   { _NCp1_Pstmt_do_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, 0); }
+do_expr2 ::= loop_forever.
 stmt_do ::= stmt_do_begin SPACE do_expr SPACE_LCBRACE stmts_optional2.
-   { _NCp1_Pstmt_do_end_0(); }
-stmt_do ::= stmt_do_begin SPACE stmt_lvars_no_begin SCOLON SPACE do_expr SPACE_LCBRACE stmts_optional2.
    { _NCp1_Pstmt_do_end_0(); }
 stmt_do ::= stmt_do_begin SPACE_LCBRACE loop_forever stmts_optional2.
    { _NCp1_Pstmt_do_end_0(); }
-stmt_do ::= stmt_do_begin SPACE stmt_lvars_no_begin SPACE_LCBRACE loop_forever stmts_optional2.
+
+stmt_do ::= stmt_do_begin SPACE stmt_lvars_no_begin SCOLON do_expr2 SPACE_LCBRACE stmts_optional2.
    { _NCp1_Pstmt_do_end_0(); }
 
 stmt ::= stmt_if_chain.
