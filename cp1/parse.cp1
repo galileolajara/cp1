@@ -1193,6 +1193,30 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                .last-token = t;
                psr.parse(t, tok);
             }
+            case #loop {
+               +found-semicolon = false;
+               if (&&, lex.cursor[0] != '' , lex.cursor[0] != ''\n)  {
+                  C.out.printf("%s:%u:%u: There must be a space or new line after the keyword 'loop'\n", .input-path, .row, .col);
+                  C.exit(#failure);
+               }
+               loop i = 0; {
+                  if lex.cursor[i] == ''\0 {
+                     C.out.printf("%s:%u:%u: Keyword 'loop' was found but was not followed by '{'\n", .input-path, .row, .col);
+                     C.exit(#failure);
+                  } elif lex.cursor[i] == ''{ {
+                     break;
+                  } elif lex.cursor[i] == ''; {
+                     found-semicolon = true;
+                     break;
+                  }
+                  i++;
+               }
+               if found-semicolon {
+                  t = #loop-with-semicolon;
+               }
+               .last-token = t;
+               psr.parse(t, tok);
+            }
             case #id {
                tok.id = lex.get-id(0, 0);
                if lex.cursor[0] == ''( {
@@ -1216,13 +1240,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                .last-token = t;
                psr.parse(t, tok);
             }
-            // case #lcbrace {
-            //    if lex.cursor[0] == ''( {
-            //       t = #lcbrace-lparen;
-            //    }
-            //    .last-token = t;
-            //    psr.parse(t, tok);
-            // }
             case #space {
                if lex.cursor[0] == ''{ {
                   t = #space-open-curly-brace;

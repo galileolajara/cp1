@@ -656,17 +656,19 @@ indexExpr_exprs(l) ::= indexExpr_exprs COMMA_SPACE expr(e).
 indexExpr(l) ::= valueonly(r) open_bracket_or_space indexExpr_exprs(e) close_bracket_or_comma.
    { l.basic.id = _NCp1_Pexpr_index_3(r.basic.id, e.index.v, e.index.c); }
 
-stmt ::= stmt_do.
+stmt ::= stmt_loop.
 stmt_loop_begin ::= LOOP.
    { _NCp1_Pstmt_loop_begin_0(); }
-loop_expr_val(l) ::= lparen_or_space CLOSE_PARENTHESIS.
+stmt_loop_begin2 ::= LOOP_WITH_SEMICOLON.
+   { _NCp1_Pstmt_loop_begin_0(); }
+/* loop_expr_val(l) ::= lparen_or_space CLOSE_PARENTHESIS.
    { l.basic.id = -1; }
 loop_expr_val(l) ::= lparen_or_space expr(e) rparen_or_space.
-   { l.basic.id = e.basic.id; }
-loop_expr ::= begin_pos(begin) loop_expr_val(e) end_pos(end).
+   { l.basic.id = e.basic.id; } */
+loop_expr0 ::= begin_pos(begin) expr(e) end_pos(end).
    { _NCp1_Pstmt_loop_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, 0); }
-loop_expr ::= begin_pos(begin) loop_expr_val(e) end_pos(end) loop_continue_begin(c) SPACE loop_continue_stmts loop_continue_end.
-   { _NCp1_Pstmt_loop_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, c.pointer); }
+/* loop_expr1 ::= begin_pos(begin) loop_expr_val(e) end_pos(end) loop_continue_begin(c) SPACE loop_continue_stmts loop_continue_end.
+   { _NCp1_Pstmt_loop_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, c.pointer); } */
 loop_continue_begin(l) ::= .
    { l.pointer = _NCp1_Pstmt_space_begin_detach_0(); } 
 loop_continue_end ::= .
@@ -681,15 +683,20 @@ loop_expr2 ::= SPACE begin_pos(begin) expr(e) end_pos(end) SEMICOLON loop_contin
    { _NCp1_Pstmt_loop_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, c.pointer); }
 loop_expr2 ::= SEMICOLON loop_continue_begin(c) SPACE loop_continue_stmts loop_continue_end.
    { _NCp1_Pstmt_loop_set_6(-1, 0, 0, 0, 0, c.pointer); }
+loop_expr2 ::= SPACE begin_pos(begin) expr(e) end_pos(end).
+   { _NCp1_Pstmt_loop_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, 0); }
 loop_expr2 ::= SPACE begin_pos(begin) expr(e) end_pos(end) SEMICOLON.
    { _NCp1_Pstmt_loop_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, 0); }
 loop_expr2 ::= loop_forever.
-stmt_do ::= stmt_loop_begin SPACE loop_expr SPACE_OPEN_CURLY_BRACE stmts_optional2.
+stmt_loop ::= stmt_loop_begin SPACE_OPEN_CURLY_BRACE loop_forever stmts_optional2.
    { _NCp1_Pstmt_loop_end_0(); }
-stmt_do ::= stmt_loop_begin SPACE_OPEN_CURLY_BRACE loop_forever stmts_optional2.
+stmt_loop ::= stmt_loop_begin SPACE loop_expr0 SPACE_OPEN_CURLY_BRACE stmts_optional2.
    { _NCp1_Pstmt_loop_end_0(); }
-
-stmt_do ::= stmt_loop_begin SPACE stmt_lvars_no_begin SEMICOLON loop_expr2 SPACE_OPEN_CURLY_BRACE stmts_optional2.
+/* stmt_loop ::= stmt_loop_begin2 SPACE loop_expr1 SPACE_OPEN_CURLY_BRACE stmts_optional2.
+   { _NCp1_Pstmt_loop_end_0(); } */
+stmt_loop ::= stmt_loop_begin2 SEMICOLON loop_expr2 SPACE_OPEN_CURLY_BRACE stmts_optional2.
+   { _NCp1_Pstmt_loop_end_0(); }
+stmt_loop ::= stmt_loop_begin2 SPACE stmt_lvars_no_begin SEMICOLON loop_expr2 SPACE_OPEN_CURLY_BRACE stmts_optional2.
    { _NCp1_Pstmt_loop_end_0(); }
 
 stmt ::= stmt_if_chain.
