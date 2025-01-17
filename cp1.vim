@@ -14,7 +14,7 @@ syntax match String /'\[[^\]]*\]/
 syntax match String /'{[^}]*}/
 syntax match String /'([^)]*)/
 syntax match String /''[^\\]/
-syntax match String /''\\[abfnrtv\\'"0]/
+syntax match String /''\\[abfnrtv\\'0]/
 syntax match Comment /\/\/[ \t].*$/
 syntax match Comment /^[ \t]*#if(.*$/
 syntax match Comment /^[ \t]*#if!(.*$/

@@ -3,23 +3,19 @@ using (Cp1) {
 using (StmtSpace) {
    wr-if(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
       var s:StmtIf = stmt;
-      w.b(s.not);
       s.expr.wr(w, header);
    }
    rd-if(space:StmtSpace, r:Rdr) @case.rd() @inline {
       quick-alloc-one(+(s:StmtIf));
-      s.not = r.b();
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #if);
    }
    wr-if-elif(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
       var s:StmtIfElif = stmt;
-      w.b(s.not);
       s.expr.wr(w, header);
    }
    rd-if-elif(space:StmtSpace, r:Rdr) @case.rd() @inline {
       quick-alloc-one(+(s:StmtIfElif));
-      s.not = r.b();
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #if-elif);
    }
@@ -39,16 +35,9 @@ using (StmtSpace) {
 using (Stmt) {
    write-if(stmt:Stmt) @case.write() @inline {
       var s:StmtIf = stmt;
-      +e = s.expr.ptr();
-      if (s.not) {
-         .out.printf("if(!(");
-         s.expr.write-value(s.val);
-         .out.printf(")) {\n");
-      } else {
-         .out.printf("if(");
-         s.expr.write-value(s.val);
-         .out.printf(") {\n");
-      }
+      .out.printf("if(");
+      s.expr.write-value(s.val);
+      .out.printf(") {\n");
    }
    process-if(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtIf = stmt;
@@ -59,15 +48,9 @@ using (Stmt) {
    }
    write-if-elif(stmt:Stmt) @case.write() @inline {
       var s:StmtIfElif = stmt;
-      if (s.not) {
-         .out.printf("} else if(!(");
-         s.expr.write-value(s.val);
-         .out.printf(")) {\n");
-      } else {
-         .out.printf("} else if(");
-         s.expr.write-value(s.val);
-         .out.printf(") {\n");
-      }
+      .out.printf("} else if(");
+      s.expr.write-value(s.val);
+      .out.printf(") {\n");
    }
    process-if-elif(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtIfElif = stmt;
@@ -99,16 +82,14 @@ stmt-if-begin() {
 }
 stmt-elif-begin() {
 }
-stmt-if-set(not:bool, expr:ExprI, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
+stmt-if-set(expr:ExprI, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
    quick-alloc-one(+(s:StmtIf));
-   s.not = not;
    s.expr = expr;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #if);
    stmt-space-begin();
 }
-stmt-elif-set(not:bool, expr:ExprI, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
+stmt-elif-set(expr:ExprI, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
    quick-alloc-one(+(s:StmtIf));
-   s.not = not;
    s.expr = expr;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #if-elif);
    stmt-space-begin();

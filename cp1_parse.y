@@ -714,22 +714,12 @@ stmt_elif_begin ::= SPACE_ELIF SPACE.
    { _NCp1_Pstmt_elif_begin_0(); }
 stmt_else_set ::= SPACE_ELSE SPACE_LCBRACE.
    { _NCp1_Pstmt_else_set_0(); }
-stmt_if_not(l) ::= .
-   { l.basic.id = 0; }
-stmt_if_not(l) ::= EXPOINT.
-   { l.basic.id = 1; }
-if_expr_val(l) ::= lparen_or_space expr(e) rparen_or_space.
-   { l.basic.id = e.basic.id; }
-if_expr_val(l) ::= expr_and(e).
-   { l.basic.id = e.basic.id; }
-if_expr_val(l) ::= expr_or(e).
-   { l.basic.id = e.basic.id; }
-if_expr ::= begin_pos(begin) stmt_if_not(not) if_expr_val(e) end_pos(end).
-   { _NCp1_Pstmt_if_set_6(not.basic.id, e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
+if_expr ::= begin_pos(begin) expr(e) end_pos(end).
+   { _NCp1_Pstmt_if_set_5(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
 stmt_if ::= stmt_if_begin if_expr SPACE_LCBRACE stmts_optional2.
    { _NCp1_Pstmt_if_end_0(); }
-elif_expr ::= begin_pos(begin) stmt_if_not(not) if_expr_val(e) end_pos(end).
-   { _NCp1_Pstmt_elif_set_6(not.basic.id, e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
+elif_expr ::= begin_pos(begin) expr(e) end_pos(end).
+   { _NCp1_Pstmt_elif_set_5(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
 stmt_elif ::= stmt_elif_begin elif_expr SPACE_LCBRACE stmts_optional2.
    { _NCp1_Pstmt_elif_end_0(); }
 stmt_else ::= stmt_else_set stmts_optional2.
@@ -738,28 +728,23 @@ stmt_if_chain ::= stmt_if.
 stmt_if_chain ::= stmt_if_chain stmt_elif.
 
 stmt ::= stmt_switch.
-stmt_switch_begin ::= SWITCH SPACE.
+stmt_switch_begin ::= SWITCH.
    { _NCp1_Pstmt_switch_begin_0(); }
-switch_expr ::= begin_pos(begin) if_expr_val(e) end_pos(end).
+switch_expr ::= begin_pos(begin) SPACE expr(e) end_pos(end).
    { _NCp1_Pstmt_switch_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, -1); }
-switch_expr ::= begin_pos(begin) if_expr_val(e) DOT callExpr_func(cases) end_pos(end).
+switch_expr ::= begin_pos(begin) DOT callExpr_func(cases) SPACE expr(e) end_pos(end).
    { _NCp1_Pstmt_switch_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, cases.basic.id); }
 switch_case_expr ::= expr(e).
    { _NCp1_Pstmt_switch_expr_add_1(e.basic.id); }
-/* switch_case_expr2 ::= valueonly(e).
-   { _NCp1_Pstmt_switch_expr_add_1(e.basic.id); } */
 switch_case_exprs ::= switch_case_expr.
 switch_case_exprs ::= switch_case_exprs COMMA_SPACE switch_case_expr.
 switch_case_fall(l) ::= .
    { l.basic.id = 0; }
 switch_case_fall(l) ::= SPACE_AT_FALL_THROUGH.
    { l.basic.id = 1; }
-switch_case_paren_or_expr ::= lparen_or_space switch_case_exprs rparen_or_comma.
-// switch_case_paren_or_expr ::= switch_case_expr.
+switch_case_paren_or_expr ::= switch_case_exprs.
 switch_case_expr_end ::= CASE(begin) SPACE switch_case_paren_or_expr switch_case_fall(fall) end_pos(end).
    { _NCp1_Pstmt_switch_case_begin_5(begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, fall.basic.id); }
-/* switch_case_expr_end ::= CASE(begin) SPACE switch_case_expr switch_case_fall(fall) end_pos(end).
-   { _NCp1_Pstmt_switch_case_begin_5(begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, fall.basic.id); } */
 switch_case ::= switch_case_expr_end SPACE_LCBRACE stmts_optional2.
    { _NCp1_Pstmt_switch_case_end_0(); }
 switch_default_begin ::= DEFAULT(begin) switch_case_fall(fall) end_pos(end).

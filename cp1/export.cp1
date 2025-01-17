@@ -102,13 +102,13 @@ export() {
    stmt-switch-default-end();
    stmt-switch-end();
    stmt-if-begin();
-   stmt-if-set(false, #nil, 0, 0, 0, 0);
+   stmt-if-set(#nil, 0, 0, 0, 0);
    stmt-if-end();
    stmt-do-begin();
    stmt-do-set(#nil, 0, 0, 0, 0, null);
    stmt-do-end();
    stmt-elif-begin();
-   stmt-elif-set(false, #nil, 0, 0, 0, 0);
+   stmt-elif-set(#nil, 0, 0, 0, 0);
    stmt-elif-end();
    stmt-else-set();
    stmt-else-end();

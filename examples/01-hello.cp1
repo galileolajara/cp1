@@ -5,11 +5,11 @@ using C = LibC;
 
 ThisIsEnum[#no, #yes]:u8 { // An 8-bit unsigned enum
    string(e:this):char[] { // An example method for enums
-      switch (e) {
-         case (#no) {
+      switch e {
+         case #no {
             return "no";
          }
-         case (#yes) {
+         case #yes {
             return "yes";
          }
          default {
@@ -41,5 +41,8 @@ main():intc { // intc is for compatibility with C's int, prefer to use i32 elsew
    struct.x = 9;
    struct.y = 11;
    C.printf("distance is %f\n", struct.distance());
+
+   +e = ThisIsEnum#no;
+   C.printf("enum is %s\n", e.string());
    return 0;
 }

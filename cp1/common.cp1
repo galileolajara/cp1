@@ -34,7 +34,6 @@ StructData(
 );
 StmtIf(
    base:Stmt+,
-   not:bool,
    expr:ExprI,
 #if(compile)
    val:Value+
@@ -42,7 +41,6 @@ StmtIf(
 );
 StmtIfElif(
    base:Stmt+,
-   not:bool,
    expr:ExprI,
 #if(compile)
    val:Value+,
