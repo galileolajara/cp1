@@ -1,5 +1,5 @@
 using Cp1 = Cp1;
-using C = StdC;
+using C = LibC;
 using (Cp1) {
 farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At):bool {
    +ce = e.ptr();

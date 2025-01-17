@@ -1,6 +1,6 @@
 include(<math.h>) {
-   using C = StdC;
-   using (StdC) {
+   using C = LibC;
+   using (LibC) {
       sqrtf(val:f32):f32 @no-decl @real-name;
    }
    using (f32) {

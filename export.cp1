@@ -1,4 +1,4 @@
-using C = StdC;
+using C = LibC;
 main(arg-c:intc, arg-v:char[][]):intc {
    if (arg-c != 3) {
       C.printf("Usage: %s [.c input file] [.h output file]\n", arg-v[0]);

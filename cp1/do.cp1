@@ -1,5 +1,5 @@
 using Cp1 = Cp1;
-using C = StdC;
+using C = LibC;
 using (Cp1) {
 Nest(do:StmtDo, reff:ref) @union;
 var nest-stack-ptr-v:Nest+[64];

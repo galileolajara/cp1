@@ -1,4 +1,4 @@
-using C = StdC;
+using C = LibC;
 using Cp1 = Cp1;
 using (Cp1) {
 var input-path:char[];

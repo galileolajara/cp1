@@ -1,5 +1,5 @@
 using Cp1 = Cp1;
-using C = StdC;
+using C = LibC;
 using (Cp1) {
 expr-index(left:ExprI, right-v:ExprI[], right-c:i32):ExprI {
    loop i = right-c; right-c; {

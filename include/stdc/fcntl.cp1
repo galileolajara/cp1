@@ -1,7 +1,7 @@
 include(<fcntl.h>) {
    using Sys = Sys;
-   using C = StdC;
-   using (StdC) {
+   using C = LibC;
+   using (LibC) {
       Fd[#nil = -1]:intc {
          open(file:this&, path:char[], flags:OpenFlags):bool @inline {
             +fd = C.open(path, flags);

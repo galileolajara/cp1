@@ -1,7 +1,7 @@
 // This is to emulate the C++'s virtual functions
 #include <stdio.h>
 
-using C = StdC;
+using C = LibC;
 
 AnimalType[#cat, #dog]:u8; // 8-bit enum
 

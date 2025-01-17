@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-using C = StdC;
+using C = LibC;
 
 do-after-continue() {
    C.printf("This will run after the loop 'continue's or iteratates again\n");

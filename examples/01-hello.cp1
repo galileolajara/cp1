@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-using C = StdC;
+using C = LibC;
 
 ThisIsEnum[#no, #yes]:u8 { // An 8-bit unsigned enum
    string(e:this):char[] { // An example method for enums

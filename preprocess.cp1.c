@@ -7,12 +7,12 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-#define _NStdC_NExit_Csuccess 0
-#define _NStdC_NExit_Cfailure (_NStdC_NExit_Csuccess + 1)
-typedef int _NStdC_NExit;
-typedef int _NStdC_NFd;
-typedef int _NStdC_NOpenFlags;
-typedef int _NStdC_NSeek;
+#define _NLibC_NExit_Csuccess 0
+#define _NLibC_NExit_Cfailure (_NLibC_NExit_Csuccess + 1)
+typedef int _NLibC_NExit;
+typedef int _NLibC_NFd;
+typedef int _NLibC_NOpenFlags;
+typedef int _NLibC_NSeek;
 union _NCp1_NRdr;
 union _NCp1_NRdr {
 void* _Freff;
@@ -35,24 +35,24 @@ char** _Gpreprocess_def_str_v;
 uint8_t* _Gpreprocess_def_len_v;
 int main(int _Larg_c_0, char** _Larg_v_1);
 void _NCp1_Ppreprocess_def_2(char* _Lname_0, uint8_t _Llen_1);
-bool _NStdC_NFd_Popen_3(_NStdC_NFd* _Lfile_0, char* _Lpath_1, _NStdC_NOpenFlags _Lflags_2);
-int _NStdC_NFd_Pclose_1(_NStdC_NFd _Lfile_0);
+bool _NLibC_NFd_Popen_3(_NLibC_NFd* _Lfile_0, char* _Lpath_1, _NLibC_NOpenFlags _Lflags_2);
+int _NLibC_NFd_Pclose_1(_NLibC_NFd _Lfile_0);
 void _NCp1_Ppreprocess_init_0();
 void _NCp1_Ppreprocess_2(void** _Lin_out_data_0, size_t* _Lin_out_size_1);
-bool _NStdC_NFd_Popen_4(_NStdC_NFd* _Lfile_0, char* _Lpath_1, _NStdC_NOpenFlags _Lflags_2, int _Lmode_3);
+bool _NLibC_NFd_Popen_4(_NLibC_NFd* _Lfile_0, char* _Lpath_1, _NLibC_NOpenFlags _Lflags_2, int _Lmode_3);
 bool _NCp1_Ppreprocess_def_get_2(char* _Lname_0, uint8_t _Llen_1);
 int main(int _Larg_c_0, char** _Larg_v_1) {
 int32_t _Li_2;
-_NStdC_NFd _Lin_fd_5;
+_NLibC_NFd _Lin_fd_5;
 size_t _Lin_size_6;
 char* _Lin_data_7;
-_NStdC_NFd _Lout_fd_8;
+_NLibC_NFd _Lout_fd_8;
 if(_Larg_c_0 < 3) {
 usage:
 printf("Usage: %s [options] [.cp1 input file] [.cp1 output file]\n", _Larg_v_1[0]);
 printf("Options:\n");
 printf(" -Ddefinename     Define a name that will yield true on #if(...) preprocessor\n");
-exit(_NStdC_NExit_Cfailure);
+exit(_NLibC_NExit_Cfailure);
 }
 _Li_2 = 1;
 for(int i = _Larg_c_0 - 1; i > 0; ) {
@@ -115,23 +115,23 @@ if((_Larg_c_0 - _Li_2) != 2) {
 goto usage;
 }
 _Ginput_path = _Larg_v_1[_Li_2];
-if(!(_NStdC_NFd_Popen_3(&_Lin_fd_5, _Larg_v_1[_Li_2], O_RDONLY))) {
+if(!(_NLibC_NFd_Popen_3(&_Lin_fd_5, _Larg_v_1[_Li_2], O_RDONLY))) {
 printf("Cannot open file for reading: %s\n", _Larg_v_1[_Li_2]);
-exit(_NStdC_NExit_Cfailure);
+exit(_NLibC_NExit_Cfailure);
 }
 _Lin_size_6 = lseek(_Lin_fd_5, 0, SEEK_END);
 lseek(_Lin_fd_5, 0, SEEK_SET);
 _Lin_data_7 = malloc(_Lin_size_6);
 read(_Lin_fd_5, _Lin_data_7, _Lin_size_6);
-_NStdC_NFd_Pclose_1(_Lin_fd_5);
+_NLibC_NFd_Pclose_1(_Lin_fd_5);
 _NCp1_Ppreprocess_init_0();
 _NCp1_Ppreprocess_2(&_Lin_data_7, &_Lin_size_6);
-if(!(_NStdC_NFd_Popen_4(&_Lout_fd_8, _Larg_v_1[(_Li_2 + 1)], O_CREAT | O_TRUNC | O_WRONLY, 32676))) {
+if(!(_NLibC_NFd_Popen_4(&_Lout_fd_8, _Larg_v_1[(_Li_2 + 1)], O_CREAT | O_TRUNC | O_WRONLY, 32676))) {
 printf("Cannot open file for writing: %s\n", _Larg_v_1[(_Li_2 + 1)]);
-exit(_NStdC_NExit_Cfailure);
+exit(_NLibC_NExit_Cfailure);
 }
 write(_Lout_fd_8, _Lin_data_7, _Lin_size_6);
-_NStdC_NFd_Pclose_1(_Lout_fd_8);
+_NLibC_NFd_Pclose_1(_Lout_fd_8);
 return 0;
 }
 void _NCp1_Ppreprocess_def_2(char* _Lname_0, uint8_t _Llen_1) {
@@ -145,8 +145,8 @@ _Gpreprocess_def_len_v = realloc(_Gpreprocess_def_len_v, _Gpreprocess_def_cap * 
 _Gpreprocess_def_str_v[_Li_2] = _Lname_0;
 _Gpreprocess_def_len_v[_Li_2] = _Llen_1;
 }
-inline bool _NStdC_NFd_Popen_3(_NStdC_NFd* _Lfile_0, char* _Lpath_1, _NStdC_NOpenFlags _Lflags_2) {
-_NStdC_NFd _Lfd_3;
+inline bool _NLibC_NFd_Popen_3(_NLibC_NFd* _Lfile_0, char* _Lpath_1, _NLibC_NOpenFlags _Lflags_2) {
+_NLibC_NFd _Lfd_3;
 _Lfd_3 = open(_Lpath_1, _Lflags_2);
 if(_Lfd_3 != -1) {
 (*_Lfile_0) = _Lfd_3;
@@ -155,7 +155,7 @@ return true;
 return false;
 }
 }
-inline int _NStdC_NFd_Pclose_1(_NStdC_NFd _Lfile_0) {
+inline int _NLibC_NFd_Pclose_1(_NLibC_NFd _Lfile_0) {
 return close(_Lfile_0);
 }
 void _NCp1_Ppreprocess_init_0() {
@@ -255,7 +255,7 @@ _Li_15++;
 break_2:;
 if(_Lrparen_14 == -1) {
 printf("%s:%u: Error in preprocessing the code, #if(...) must have a closing parenthesis ')'\n", _Ginput_path, _Lline_9);
-exit(_NStdC_NExit_Cfailure);
+exit(_NLibC_NExit_Cfailure);
 }
 _Ldef_str_16 = &_Lr_6._Fcharr[_Lstart_12];
 _Ldef_len_17 = (_Lrparen_14 - _Lstart_12);
@@ -305,7 +305,7 @@ _Lr_6._Fpos += _Lline_len_21;
 }
 if(_Lindention_len_20 <= 0) {
 printf("%s:%u: Error in preprocessing the code, #if(...). Its next line (line %u) must be indented more than line %u\n", _Ginput_path, _Lline_9, _Lline_9 + 1, _Lline_9);
-exit(_NStdC_NExit_Cfailure);
+exit(_NLibC_NExit_Cfailure);
 }
 _Lline_9++;
 while(_Lr_6._Fpos < _Lr_end_5._Fpos) {
@@ -349,7 +349,7 @@ _Lw_8._Fpos++;
 _Lr_6._Fpos += (_Lline_len_23 + 1);
 } else {
 printf("%s:%u: Error, expecting '#endif' with the same indention as '#if' on line %u, because line %u:S indention is different from indention at line %u\n", _Ginput_path, _Lline_9, _Lif_line_11, _Lline_9, _Lif_line_11 + 1);
-exit(_NStdC_NExit_Cfailure);
+exit(_NLibC_NExit_Cfailure);
 }
 goto break_5;
 }
@@ -378,8 +378,8 @@ _NCp1_Ppreprocess_2(_Lin_out_data_0, _Lin_out_size_1);
 } else {
 }
 }
-inline bool _NStdC_NFd_Popen_4(_NStdC_NFd* _Lfile_0, char* _Lpath_1, _NStdC_NOpenFlags _Lflags_2, int _Lmode_3) {
-_NStdC_NFd _Lfd_4;
+inline bool _NLibC_NFd_Popen_4(_NLibC_NFd* _Lfile_0, char* _Lpath_1, _NLibC_NOpenFlags _Lflags_2, int _Lmode_3) {
+_NLibC_NFd _Lfd_4;
 _Lfd_4 = open(_Lpath_1, _Lflags_2, _Lmode_3);
 if(_Lfd_4 != -1) {
 (*_Lfile_0) = _Lfd_4;

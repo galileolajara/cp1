@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-using C = StdC;
+using C = LibC;
 
 Struct(x:i32, y:i32) {
    init(s:this) {

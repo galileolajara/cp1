@@ -1,4 +1,4 @@
-using C = StdC;
+using C = LibC;
 using Sys = Sys;
 var atexit-rm-v:char[][];
 var atexit-rm-cap:u32;

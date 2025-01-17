@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-using C = StdC;
+using C = LibC;
 
 Coord(x:i32, y:i32) { // a struct
    init(s:this) { // a method
