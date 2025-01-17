@@ -1196,17 +1196,17 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             case #id {
                tok.id = lex.get-id(0, 0);
                if lex.cursor[0] == ''( {
-                  t = #id-lparen;
+                  t = #id-open-parenthesis;
                }
                .last-token = t;
                psr.parse(t, tok);
             }
-            case #id-hash {
+            case #hash-id {
                tok.id = lex.get-id(1, 0);
                .last-token = t;
                psr.parse(t, tok);
             }
-            case #id-dot-upper {
+            case #dot-id-upper {
                tok.id = lex.get-id(1, 0);
                .last-token = t;
                psr.parse(t, tok);
@@ -1225,7 +1225,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             // }
             case #space {
                if lex.cursor[0] == ''{ {
-                  t = #space-lcbrace;
+                  t = #space-open-curly-brace;
                }
                .last-token = t;
                psr.parse(t, tok);

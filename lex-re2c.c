@@ -28,29 +28,29 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
 
    *                                { return CP1_TOKEN_END; }
    
-   "{"                              { return CP1_TOKEN_LCBRACE; }
-   "{" spaces                       { return CP1_TOKEN_LCBRACE_SPACE; }
-   "}"                              { return CP1_TOKEN_RCBRACE; }
-   spaces "}"                       { return CP1_TOKEN_SPACE_RCBRACE; }
-   "("                              { return CP1_TOKEN_LPAREN; }
-   "(" spaces                       { return CP1_TOKEN_LPAREN_SPACE; }
-   ")"                              { return CP1_TOKEN_RPAREN; }
-   spaces ")"                       { return CP1_TOKEN_SPACE_RPAREN; }
-   spaces? "," spaces ")"           { return CP1_TOKEN_COMMA_SPACE_RPAREN; }
+   "{"                              { return CP1_TOKEN_OPEN_CURLY_BRACE; }
+   "{" spaces                       { return CP1_TOKEN_OPEN_CURLY_BRACE_SPACE; }
+   "}"                              { return CP1_TOKEN_CLOSE_CURLY_BRACE; }
+   spaces "}"                       { return CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE; }
+   "("                              { return CP1_TOKEN_OPEN_PARENTHESIS; }
+   "(" spaces                       { return CP1_TOKEN_OPEN_PARENTHESIS_SPACE; }
+   ")"                              { return CP1_TOKEN_CLOSE_PARENTHESIS; }
+   spaces ")"                       { return CP1_TOKEN_SPACE_CLOSE_PARENTHESIS; }
+   spaces? "," spaces ")"           { return CP1_TOKEN_COMMA_SPACE_CLOSE_PARENTHESIS; }
    spaces? "," spaces               { return CP1_TOKEN_COMMA_SPACE; }
-   spaces? "," spaces "]"           { return CP1_TOKEN_COMMA_SPACE_RBRACKET; }
+   spaces? "," spaces "]"           { return CP1_TOKEN_COMMA_SPACE_CLOSE_BRACKET; }
    spaces                           { return CP1_TOKEN_SPACE; }
-   spaces? ";"                      { return CP1_TOKEN_SCOLON; }
+   spaces? ";"                      { return CP1_TOKEN_SEMICOLON; }
    "+"                              { return CP1_TOKEN_PLUS; }
    "-"                              { return CP1_TOKEN_MINUS; }
-   "!"                              { return CP1_TOKEN_EXPOINT; }
+   "!"                              { return CP1_TOKEN_EXCLAMATION; }
    "`"                              { return CP1_TOKEN_GRAVE; }
    "&"                              { return CP1_TOKEN_AMPERSAND; }
    "#"                              { return CP1_TOKEN_HASH; }
-   "["                              { return CP1_TOKEN_LBRACKET; }
-   "[" spaces                       { return CP1_TOKEN_LBRACKET_SPACE; }
-   "]"                              { return CP1_TOKEN_RBRACKET; }
-   spaces "]"                       { return CP1_TOKEN_SPACE_RBRACKET; }
+   "["                              { return CP1_TOKEN_OPEN_BRACKET; }
+   "[" spaces                       { return CP1_TOKEN_OPEN_BRACKET_SPACE; }
+   "]"                              { return CP1_TOKEN_CLOSE_BRACKET; }
+   spaces "]"                       { return CP1_TOKEN_SPACE_CLOSE_BRACKET; }
 	"0"                              { return CP1_TOKEN_NUM_DEC; }
 	[1-9] [0-9]*                     { return CP1_TOKEN_NUM_DEC; }
    "0o" [0-7]+                      { return CP1_TOKEN_NUM_OCT; }
@@ -125,8 +125,8 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "&" spaces                { return CP1_TOKEN_SPACE_AMP_SPACE; }
    spaces "|" spaces                { return CP1_TOKEN_SPACE_PIPE_SPACE; }
    spaces "^" spaces                { return CP1_TOKEN_SPACE_XOR_SPACE; }
-   "(&&," spaces                    { return CP1_TOKEN_LPAREN_AMP_AMP_COMMA_SPACE; }
-   "(||," spaces                    { return CP1_TOKEN_LPAREN_PIPE_PIPE_COMMA_SPACE; }
+   "(&&," spaces                    { return CP1_TOKEN_OPEN_PARENTHESIS_AMP_AMP_COMMA_SPACE; }
+   "(||," spaces                    { return CP1_TOKEN_OPEN_PARENTHESIS_PIPE_PIPE_COMMA_SPACE; }
 
    "ref"                            { return CP1_TOKEN_REF; }
    "bool"                           { return CP1_TOKEN_BOOL; }
@@ -151,7 +151,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "null"                           { return CP1_TOKEN_NULL; }
 
    spaces "==" spaces               { return CP1_TOKEN_SPACE_EQUAL_EQUAL_SPACE; }
-   spaces "!=" spaces               { return CP1_TOKEN_SPACE_EXPOINT_EQUAL_SPACE; }
+   spaces "!=" spaces               { return CP1_TOKEN_SPACE_EXCLAMATION_EQUAL_SPACE; }
    spaces "<" spaces                { return CP1_TOKEN_SPACE_LANGLE_SPACE; }
    spaces "<=" spaces               { return CP1_TOKEN_SPACE_LANGLE_EQUAL_SPACE; }
    spaces ">" spaces                { return CP1_TOKEN_SPACE_RANGLE_SPACE; }
@@ -176,11 +176,10 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "."                              { return CP1_TOKEN_DOT; }
    ":"                              { return CP1_TOKEN_COLON; }
 
-   "\\" id                          { return CP1_TOKEN_ID_BSLASH; }
-   "#" id                           { return CP1_TOKEN_ID_HASH; }
+   "#" id                           { return CP1_TOKEN_HASH_ID; }
    [a-z][0-9a-zA-Z\u00c0-\U0010ffff]*("-" id)*    { return CP1_TOKEN_ID; }
    [A-Z][0-9a-zA-Z\u00c0-\U0010ffff]*("-" id)*    { return CP1_TOKEN_ID_UPPER; }
-   "." [A-Z][0-9a-zA-Z\u00c0-\U0010ffff]*("-" id)*    { return CP1_TOKEN_ID_DOT_UPPER; }
+   "." [A-Z][0-9a-zA-Z\u00c0-\U0010ffff]*("-" id)*    { return CP1_TOKEN_DOT_ID_UPPER; }
  
    */
 lex_string: {

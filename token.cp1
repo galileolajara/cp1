@@ -33,7 +33,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       }
       +len = pos - start;
       var line:char[] = & in-data[start];
-      var push:char[32];
+      var push:char[64];
       +push-c = 0;
       loop i = 18; len - 18; i++ {
          if (&&, line[i] >= ''0, line[i] <= ''9) {
