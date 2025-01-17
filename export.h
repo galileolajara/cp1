@@ -96,13 +96,13 @@ void _NCp1_Pstmt_switch_default_begin_5(int32_t _Lbegin_row_0, int32_t _Lbegin_c
 void _NCp1_Pstmt_switch_default_end_0();
 void _NCp1_Pstmt_switch_end_0();
 void _NCp1_Pstmt_if_begin_0();
-void _NCp1_Pstmt_if_set_6(bool _Lnot_0, _NCp1_NExprI _Lexpr_1, int32_t _Lbegin_row_2, int32_t _Lbegin_col_3, int32_t _Lend_row_4, int32_t _Lend_col_5);
+void _NCp1_Pstmt_if_set_5(_NCp1_NExprI _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4);
 void _NCp1_Pstmt_if_end_0();
 void _NCp1_Pstmt_do_begin_0();
 void _NCp1_Pstmt_do_set_6(_NCp1_NExprI _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4, struct _NCp1_NStmtSpace* _Lcontinu_5);
 void _NCp1_Pstmt_do_end_0();
 void _NCp1_Pstmt_elif_begin_0();
-void _NCp1_Pstmt_elif_set_6(bool _Lnot_0, _NCp1_NExprI _Lexpr_1, int32_t _Lbegin_row_2, int32_t _Lbegin_col_3, int32_t _Lend_row_4, int32_t _Lend_col_5);
+void _NCp1_Pstmt_elif_set_5(_NCp1_NExprI _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4);
 void _NCp1_Pstmt_elif_end_0();
 void _NCp1_Pstmt_else_set_0();
 void _NCp1_Pstmt_else_end_0();

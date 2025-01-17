@@ -1,10 +1,10 @@
 using C = LibC;
 main(arg-c:intc, arg-v:char[][]):intc {
-   if (arg-c != 3) {
+   if arg-c != 3 {
       C.printf("Usage: %s [.c input file] [.h output file]\n", arg-v[0]);
       C.exit(#failure);
    }
-   if !(C.Fd.open(++in-fd, arg-v[1], #read)) {
+   if !C.Fd.open(++in-fd, arg-v[1], #read) {
       C.printf("Cannot open file for reading: %s\n", arg-v[1]);
       C.exit(#failure);
    }
@@ -25,20 +25,20 @@ main(arg-c:intc, arg-v:char[][]):intc {
    loop (pos < in-size) {
       +start = pos;
       loop {
-         if (in-data[pos] == ''\n) {
+         if in-data[pos] == ''\n {
             break;
          }
          pos++;
       }
       +len = pos - start;
       var line:char[] = & in-data[start];
-      if (get) {
-         if (line[0] == ''}) {
+      if get {
+         if line[0] == ''} {
             break;
          }
          +lparen = -1;
          loop i = 0; len; i++ {
-            if (line[i] == ''() {
+            if line[i] == ''( {
                lparen = i;
                break;
             }
@@ -58,23 +58,23 @@ main(arg-c:intc, arg-v:char[][]):intc {
    loop (pos < in-size) {
       +start = pos;
       loop {
-         if (in-data[pos] == ''\n) {
+         if in-data[pos] == ''\n {
             break;
          }
          pos++;
       }
       +len = pos - start;
       var line:char[] = & in-data[start];
-      if (len > 0) {
-         if (line[len - 1] == ''{) {
+      if len > 0 {
+         if line[len - 1] == ''{ {
             indent++;
          } elif (||, line[len - 1] == ''}, (&&, line[len - 2] == ''}, line[len - 1] == '';)) {
             indent--;
-         } elif (indent == 0) {
+         } elif indent == 0 {
             if (&&, line[len - 2] == ''), line[len - 1] == '';) {
                +lparen = -1;
                loop i = 0; len; i++ {
-                  if (line[i] == ''() {
+                  if line[i] == ''( {
                      lparen = i;
                      break;
                   }

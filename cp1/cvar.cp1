@@ -4,7 +4,7 @@ using (Cp1) {
 Cvar[#nil = -1, #0]:i32 {
    rd(c:this&, r:Rdr) @inline {
       +idx = (r.n() - 1):Cvar;
-      if (idx == #nil) {
+      if idx == #nil {
          c = #nil;
       } else {
          c = .cvar-table[idx];
@@ -17,19 +17,19 @@ Cvar[#nil = -1, #0]:i32 {
       +num = c:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      if ((.cvar-is-outputted[n3] & n17) != 0) { return true }
+      if (.cvar-is-outputted[n3] & n17) != 0 { return true }
       .cvar-is-outputted[n3] |= n17;
 
       +cvar = c.ptr();
 
-      if ((cvar.flags & #set-expr) != #0) {
-         if !(cvar.expr-set.process()) { return false }
-      } elif (cvar.last-cvar != #nil) {
-         if !(cvar.last-cvar.process()) { return false }
+      if (cvar.flags & #set-expr) != #0 {
+         if !cvar.expr-set.process() { return false }
+      } elif cvar.last-cvar != #nil {
+         if !cvar.last-cvar.process() { return false }
       }
 
       +at-i = cvar.decl.type;
-      if (at-i != #nil) {
+      if at-i != #nil {
          +at = at-i.ptr();
          if (&&, at.type != #basic, at.decl.struct == #nil) {
             C.out.printf("Error, the type '%s' used in cvar '.%s' was not defined\n", at.name.id.str(), cvar.decl.name.str());
@@ -38,7 +38,7 @@ Cvar[#nil = -1, #0]:i32 {
          at-i.output(cvar.file, cvar.row, cvar.col);
       }
 
-      // if ((gvar.flags & #no-decl) == #0) {
+      // if (gvar.flags & #no-decl) == #0 {
          .cvar-outputted-v[.cvar-outputted-c++] = c;
       // }
       
@@ -49,7 +49,7 @@ Cvar[#nil = -1, #0]:i32 {
    }
    write(c:this) @inline {
       +cvar = c.ptr();
-      if ((cvar.decl.flags & #real-name) != #0) {
+      if (cvar.decl.flags & #real-name) != #0 {
          .out.printf("%s", cvar.decl.real-name.str());
       } else {
          cvar.at.write-space();
@@ -101,7 +101,7 @@ using (ExprI) {
       var expr:ExprCvar = e.ptr();
       +cvar = expr.cvar.ptr();
       v.set(reff, paren, cvar.decl.type, cvar.decl.type-info);
-      if (v.reff == 1) {
+      if v.reff == 1 {
          v.paren = false;
       }
       ok = true;
@@ -115,7 +115,7 @@ using (ExprI) {
       var e:ExprCvar = expr;
       +name = e.name;
       var cvar-c, cvar-v;
-      if (e.try != #nil) {
+      if e.try != #nil {
          +at = e.try.ptr();
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
@@ -123,8 +123,8 @@ using (ExprI) {
          loop i = 0; cvar-c; i++ {
             +cvar = cvar-v[i];
             // C.out.printf("- %s\n", cvar.ptr().decl.name.str());
-            if (cvar.ptr().decl.name == name) {
-               if !(cvar.process()) { return }
+            if cvar.ptr().decl.name == name {
+               if !cvar.process() { return }
                e.cvar = cvar;
                ok = true;
                return;
@@ -133,7 +133,7 @@ using (ExprI) {
       }
       var at-idx, at;
       +try-parent = false;
-      if (e.at != #nil) {
+      if e.at != #nil {
          e.at = at-validate(e.at, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
          at-idx = e.at;
          at = at-idx.ptr();
@@ -149,15 +149,15 @@ using (ExprI) {
       loop {
          loop i = 0; cvar-c; i++ {
             +cvar = cvar-v[i];
-            if (cvar.ptr().decl.name == name) {
-               if !(cvar.process()) { return }
+            if cvar.ptr().decl.name == name {
+               if !cvar.process() { return }
                e.cvar = cvar;
                ok = true;
                return;
             }
          }
-         if !(try-parent) { break }
-         if (at-idx == #root) { break }
+         if !try-parent { break }
+         if at-idx == #root { break }
          at-idx = at.parent;
          at = at-idx.ptr();
          cvar-c = at.cvar-c;
@@ -168,7 +168,7 @@ using (ExprI) {
    }
    try-deduce-cvar(expr:Expr, at:At) @case.try-deduce() @inline {
       var e:ExprCvar = expr;
-      if (e.at == #nil) {
+      if e.at == #nil {
          e.try = at;
       }
    }

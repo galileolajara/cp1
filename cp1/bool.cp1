@@ -18,7 +18,7 @@ using (ExprI) {
    }
    write-bool(expr:Expr) @case.write() @inline {
       var e:ExprBool = expr;
-      if (e.value) {
+      if e.value {
          .out.printf("true");
       } else {
          .out.printf("false");

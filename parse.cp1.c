@@ -661,7 +661,6 @@ struct _NCp1_NStmt _Fbase;
 struct _NCp1_NStmtIf;
 struct _NCp1_NStmtIf {
 struct _NCp1_NStmt _Fbase;
-bool _Fnot;
 _NCp1_NExprI _Fexpr;
 };
 struct _NCp1_NStmtDoEnd;
@@ -710,7 +709,6 @@ char _Fvalue;
 struct _NCp1_NStmtIfElif;
 struct _NCp1_NStmtIfElif {
 struct _NCp1_NStmt _Fbase;
-bool _Fnot;
 _NCp1_NExprI _Fexpr;
 };
 struct _NCp1_NMap _Gid_map;
@@ -961,13 +959,13 @@ void _NCp1_Pstmt_switch_default_begin_5(int32_t _Lbegin_row_0, int32_t _Lbegin_c
 void _NCp1_Pstmt_switch_default_end_0();
 void _NCp1_Pstmt_switch_end_0();
 void _NCp1_Pstmt_if_begin_0();
-void _NCp1_Pstmt_if_set_6(bool _Lnot_0, _NCp1_NExprI _Lexpr_1, int32_t _Lbegin_row_2, int32_t _Lbegin_col_3, int32_t _Lend_row_4, int32_t _Lend_col_5);
+void _NCp1_Pstmt_if_set_5(_NCp1_NExprI _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4);
 void _NCp1_Pstmt_if_end_0();
 void _NCp1_Pstmt_do_begin_0();
 void _NCp1_Pstmt_do_set_6(_NCp1_NExprI _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4, struct _NCp1_NStmtSpace* _Lcontinu_5);
 void _NCp1_Pstmt_do_end_0();
 void _NCp1_Pstmt_elif_begin_0();
-void _NCp1_Pstmt_elif_set_6(bool _Lnot_0, _NCp1_NExprI _Lexpr_1, int32_t _Lbegin_row_2, int32_t _Lbegin_col_3, int32_t _Lend_row_4, int32_t _Lend_col_5);
+void _NCp1_Pstmt_elif_set_5(_NCp1_NExprI _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4);
 void _NCp1_Pstmt_elif_end_0();
 void _NCp1_Pstmt_else_set_0();
 void _NCp1_Pstmt_else_end_0();
@@ -1919,13 +1917,13 @@ _NCp1_Pstmt_switch_default_begin_5(0, 0, 0, 0, false);
 _NCp1_Pstmt_switch_default_end_0();
 _NCp1_Pstmt_switch_end_0();
 _NCp1_Pstmt_if_begin_0();
-_NCp1_Pstmt_if_set_6(false, _NCp1_NExprI_Cnil, 0, 0, 0, 0);
+_NCp1_Pstmt_if_set_5(_NCp1_NExprI_Cnil, 0, 0, 0, 0);
 _NCp1_Pstmt_if_end_0();
 _NCp1_Pstmt_do_begin_0();
 _NCp1_Pstmt_do_set_6(_NCp1_NExprI_Cnil, 0, 0, 0, 0, NULL);
 _NCp1_Pstmt_do_end_0();
 _NCp1_Pstmt_elif_begin_0();
-_NCp1_Pstmt_elif_set_6(false, _NCp1_NExprI_Cnil, 0, 0, 0, 0);
+_NCp1_Pstmt_elif_set_5(_NCp1_NExprI_Cnil, 0, 0, 0, 0);
 _NCp1_Pstmt_elif_end_0();
 _NCp1_Pstmt_else_set_0();
 _NCp1_Pstmt_else_end_0();
@@ -3588,12 +3586,11 @@ void _NCp1_Pstmt_if_begin_0() {
 _NCp1_Pstmt_space_begin_0();
 (*_Gdecl_func_ctx_space)._Fflags |= _NCp1_NStmtSpaceFlags_Cskip_lvar_decl;
 }
-void _NCp1_Pstmt_if_set_6(bool _Lnot_0, _NCp1_NExprI _Lexpr_1, int32_t _Lbegin_row_2, int32_t _Lbegin_col_3, int32_t _Lend_row_4, int32_t _Lend_col_5) {
-struct _NCp1_NStmtIf* _Ls_6;
-_NCp1_Pquick_alloc_one_1(_Ls_6);
-(*_Ls_6)._Fnot = _Lnot_0;
-(*_Ls_6)._Fexpr = _Lexpr_1;
-_NCp1_Pstmt_push_6(&(*_Ls_6)._Fbase, _Lbegin_row_2, _Lbegin_col_3, _Lend_row_4, _Lend_col_5, _NCp1_NStmtType_Cif);
+void _NCp1_Pstmt_if_set_5(_NCp1_NExprI _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4) {
+struct _NCp1_NStmtIf* _Ls_5;
+_NCp1_Pquick_alloc_one_1(_Ls_5);
+(*_Ls_5)._Fexpr = _Lexpr_0;
+_NCp1_Pstmt_push_6(&(*_Ls_5)._Fbase, _Lbegin_row_1, _Lbegin_col_2, _Lend_row_3, _Lend_col_4, _NCp1_NStmtType_Cif);
 _NCp1_Pstmt_space_begin_0();
 }
 void _NCp1_Pstmt_if_end_0() {
@@ -3624,12 +3621,11 @@ _NCp1_Pstmt_space_end_0();
 }
 void _NCp1_Pstmt_elif_begin_0() {
 }
-void _NCp1_Pstmt_elif_set_6(bool _Lnot_0, _NCp1_NExprI _Lexpr_1, int32_t _Lbegin_row_2, int32_t _Lbegin_col_3, int32_t _Lend_row_4, int32_t _Lend_col_5) {
-struct _NCp1_NStmtIf* _Ls_6;
-_NCp1_Pquick_alloc_one_1(_Ls_6);
-(*_Ls_6)._Fnot = _Lnot_0;
-(*_Ls_6)._Fexpr = _Lexpr_1;
-_NCp1_Pstmt_push_6(&(*_Ls_6)._Fbase, _Lbegin_row_2, _Lbegin_col_3, _Lend_row_4, _Lend_col_5, _NCp1_NStmtType_Cif_elif);
+void _NCp1_Pstmt_elif_set_5(_NCp1_NExprI _Lexpr_0, int32_t _Lbegin_row_1, int32_t _Lbegin_col_2, int32_t _Lend_row_3, int32_t _Lend_col_4) {
+struct _NCp1_NStmtIf* _Ls_5;
+_NCp1_Pquick_alloc_one_1(_Ls_5);
+(*_Ls_5)._Fexpr = _Lexpr_0;
+_NCp1_Pstmt_push_6(&(*_Ls_5)._Fbase, _Lbegin_row_1, _Lbegin_col_2, _Lend_row_3, _Lend_col_4, _NCp1_NStmtType_Cif_elif);
 _NCp1_Pstmt_space_begin_0();
 }
 void _NCp1_Pstmt_elif_end_0() {
@@ -4455,13 +4451,11 @@ inline void _NCp1_NStmtSpace_Pwr_switch_end_3(struct _NCp1_NStmt* _Lstmt_0, unio
 inline void _NCp1_NStmtSpace_Pwr_if_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2) {
 struct _NCp1_NStmtIf* _Ls_3;
 _Ls_3 = _Lstmt_0;
-_NCp1_NWtr_Pb_2(_Lw_1, (*_Ls_3)._Fnot);
 _NCp1_NExprI_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
 }
 inline void _NCp1_NStmtSpace_Pwr_if_elif_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2) {
 struct _NCp1_NStmtIfElif* _Ls_3;
 _Ls_3 = _Lstmt_0;
-_NCp1_NWtr_Pb_2(_Lw_1, (*_Ls_3)._Fnot);
 _NCp1_NExprI_Pwr_3((*_Ls_3)._Fexpr, _Lw_1, _Lheader_2);
 }
 inline void _NCp1_NStmtSpace_Pwr_if_else_3(struct _NCp1_NStmt* _Lstmt_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2) {

@@ -10,12 +10,12 @@ Lvar[#nil = -1, #0]:i32 {
    }
    process(l:this):bool @inline {
       +lvar = l.ptr();
-      if ((lvar.flags & #processed) != #0) { return true }
+      if (lvar.flags & #processed) != #0 { return true }
       lvar.flags |= #processed;
       +at-i = lvar.decl.type;
-      if (at-i == #nil) {
-         if ((lvar.flags & #set-expr) != #0) {
-            if !(lvar.set-expr.value(1, false, ++v)) { return false }
+      if at-i == #nil {
+         if (lvar.flags & #set-expr) != #0 {
+            if !lvar.set-expr.value(1, false, ++v) { return false }
             lvar.decl.type = v.type;
             lvar.decl.type-info.init();
             lvar.decl.type-info.copy-from(v.info);
@@ -48,26 +48,26 @@ LvarData(
    set-expr:ExprI,
 );
 expr-lvar(name:Id, decl:u8, row:i32, col:i32):ExprI {
-   if (decl == 0) {
+   if decl == 0 {
       +space = .decl-func-ctx-space;
       loop {
          +v = space.lvar-v;
          +found = Lvar#nil;
          loop i = 0; space.lvar-c; i++ {
             +lvar = v[i];
-            if (lvar.name() == name) {
+            if lvar.name() == name {
                found = lvar;
                break;
             }
          }
-         if (found != #nil) {
+         if found != #nil {
             quick-alloc-one(+(e:ExprLvar));
             +e-idx = expr-push(e.base, #lvar);
             e.lvar = found;
             return e-idx;
          }
          space = space.parent;
-         if (space == null) { break }
+         if space == null { break }
       }
       C.out.printf("%s:%u:%u: local variable '%s' was not found\n", .input-path, row, col, name.str());
       C.exit(#failure);
@@ -76,11 +76,11 @@ expr-lvar(name:Id, decl:u8, row:i32, col:i32):ExprI {
       +space = .decl-func-ctx-space;
       loop (decl > 1) {
          space = space.parent;
-         if (space == null) {
+         if space == null {
             C.out.printf("%s:%u:%u: Cannot declare local variable '%s' with too much '+'\n", .input-path, row, col, name.str());
             C.exit(#failure);
          }
-         if ((space.flags & #skip-lvar-decl) == #0) {
+         if (space.flags & #skip-lvar-decl) == #0 {
             decl--;
          }
       }
@@ -107,7 +107,7 @@ using (ExprI) {
       var expr:ExprLvar = e.ptr();
       +lvar = expr.lvar.ptr();
       v.set(reff, paren, lvar.decl.type, lvar.decl.type-info);
-      if (v.reff == 1) {
+      if v.reff == 1 {
          v.paren = false;
       }
       ok = true;
@@ -123,7 +123,7 @@ using (ExprI) {
    }
    process-lvar(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprLvar = expr;
-      if !(e.lvar.process()) { return }
+      if !e.lvar.process() { return }
       ok = true;
    }
 }

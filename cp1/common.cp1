@@ -360,12 +360,12 @@ quick-alloc(size:i32):ref @real-name(qalloc) {
    // C.memset(mem, 0, size);
    // return mem;
    // snap to usz
-   if (ref[usz] == 8) {
+   if ref[usz] == 8 {
       size = (size + 7) & (-1 ^ 7);
    } else {
       size = (size + 3) & (-1 ^ 3);
    }
-   if (size <= (.quick-alloc-cap - .quick-alloc-c)) {
+   if size <= (.quick-alloc-cap - .quick-alloc-c) {
       var r:Rdr+;
       r.reff = .quick-alloc-v;
       r.pos += .quick-alloc-c;
@@ -381,7 +381,7 @@ quick-alloc(size:i32):ref @real-name(qalloc) {
    return .quick-alloc-v;
 }
 quick-alloc-undo(size:i32) @real-name(qalloc_undo) {
-   if (ref[usz] == 8) {
+   if ref[usz] == 8 {
       size = (size + 7) & (-1 ^ 7);
    } else {
       size = (size + 3) & (-1 ^ 3);
@@ -481,21 +481,21 @@ var at-v:AtData+[];
 At[#nil = -1, #root, #relative]:i32 {
    finalize(at-i:this, ti:TypeInfo, row:i32, col:i32):bool {
       +at = at-i.ptr();
-      if (at.def == #struct) {
-         if (ti.built-in) {
-            if (ti.ref-v[0] != 0) {
+      if at.def == #struct {
+         if ti.built-in {
+            if ti.ref-v[0] != 0 {
                C.out.printf("%s:%d:%d: Can:T use plus symbol (+) because type '/%s' has reference\n", .ctx-func.file.path(), row, col, at.name.id.str());
                return false;
             }
             ti.ref-v[0] = -1;
          // } else {
-         //    if !(ti.built-in) {
+         //    if !ti.built-in {
          //       C.err.printf("%s:%d:%d: Missing plus symbol (+) because type '/%s' is a value\n", .ctx-func.file.path(), row, col, at.name.id.str());
          //       return false;
          //    }
          }
       } else {
-         if (ti.built-in) {
+         if ti.built-in {
             C.out.printf("%s:%d:%d: Can:T use plus symbol (+) because type is not a struct\n", .ctx-func.file.path(), row, col);
             return false;
          }
@@ -504,52 +504,52 @@ At[#nil = -1, #root, #relative]:i32 {
    }
    output(at-i:this, file:File, row:i32, col:i32) {
       +at = at-i.ptr();
-      switch (at.type) {
-         case (#struct-enum) {
-            if (at.def == #struct) {
-               if (at.decl.struct == #nil) {
+      switch at.type {
+         case #struct-enum {
+            if at.def == #struct {
+               if at.decl.struct == #nil {
                   C.out.printf("%s:%u:%u: Error, struct '/%s' was not defined\n", file.path(), row, col, at.name.id.str());
                   C.exit(#failure);
                }
                at.decl.struct.output();
-            } elif (at.def == #enum) {
-               if (at.decl.enum == #nil) {
+            } elif at.def == #enum {
+               if at.decl.enum == #nil {
                   C.out.printf("%s:%u:%u: Error, enum '\\%s' was not defined\n", file.path(), row, col, at.name.id.str());
                   C.exit(#failure);
                }
                at.decl.enum.output();
             }
          }
-         case (#basic) {
-            switch (at.name.basic) {
-               case (#bool) {
+         case #basic {
+            switch at.name.basic {
+               case #bool {
                   .include-stdbool = true;
                }
-               case (#usz) {
+               case #usz {
                   .include-stddef = true;
                }
-               case (#i8) {
+               case #i8 {
                   .include-stdint = true;
                }
-               case (#u8) {
+               case #u8 {
                   .include-stdint = true;
                }
-               case (#i16) {
+               case #i16 {
                   .include-stdint = true;
                }
-               case (#u16) {
+               case #u16 {
                   .include-stdint = true;
                }
-               case (#i32) {
+               case #i32 {
                   .include-stdint = true;
                }
-               case (#u32) {
+               case #u32 {
                   .include-stdint = true;
                }
-               case (#i64) {
+               case #i64 {
                   .include-stdint = true;
                }
-               case (#u64) {
+               case #u64 {
                   .include-stdint = true;
                }
             }
@@ -560,20 +560,20 @@ At[#nil = -1, #root, #relative]:i32 {
       ti.count();
       td.write-type();
       +s = td.count-stars0(ti) + add;
-      if (s > 0) {
+      if s > 0 {
          .out.write("********************************", s);
       }
       return true;
    }
    count-stars(td:this, ti:TypeInfo):i32 {
-      if (td == #root) {
+      if td == #root {
          return td.count-stars0(ti) + 1;
       } else {
          return td.count-stars0(ti);
       }
    }
    pointer(td:this):i32 @inline {
-      if (td.ptr().def == #struct) {
+      if td.ptr().def == #struct {
          return 1;
       } else {
          return 0;
@@ -584,19 +584,19 @@ At[#nil = -1, #root, #relative]:i32 {
    }
    write-type(td:this):bool {
       td.write();
-//    if (td.typeType == #value) {
-//       if (td.real.baseDecl == null) {
+//    if td.typeType == #value {
+//       if td.real.baseDecl == null {
 //          +loc = td.location;
 //          C.err.printf("%s:%d:%d: base type was null\n", loc.path, loc.row, loc.col);
 //          return false;
 //       }
 //       return td.real.baseDecl.write()Type(t);
 //    }
-//    if (td.real.basicType == #none) {
-//       if (td.real.typeDef) {
+//    if td.real.basicType == #none {
+//       if td.real.typeDef {
 //       } else {
-//          if (:Config.target == #c) {
-//             if (td.real.is-union()) {
+//          if :Config.target == #c {
+//             if td.real.is-union() {
 //                t.write("union "#);
 //             } else {
 //                t.write("struct "#);
@@ -614,14 +614,14 @@ At[#nil = -1, #root, #relative]:i32 {
    }
    rd(i:this&, r:Rdr) @inline {
       +idx = (r.n() - 1):At;
-      if (idx == #nil) {
+      if idx == #nil {
          i = #nil;
       } else {
          i = .at-table[idx];
       }
    }
    put-to-header(at:this) {
-      if ((.at-in-header-v[at >> 3] & (1 << (at & 7))) == 0) {
+      if (.at-in-header-v[at >> 3] & (1 << (at & 7))) == 0 {
          .at-in-header-v[at >> 3] |= 1 << (at & 7);
          .at-in-header-idx-v[at] = .at-in-header-c;
          .at-in-header-at-v[.at-in-header-c++] = at;
@@ -631,17 +631,17 @@ At[#nil = -1, #root, #relative]:i32 {
       }
    }
    wr-header(id:this, w:Wtr) @inline {
-      if (id == #nil) {
+      if id == #nil {
          w.n(0);
       } else {
          w.n(1 + .at-in-header-idx-v[id]);
       }
    }
    wr(at:this, w:Wtr, header:bool) @inline {
-      if (at == #nil) {
+      if at == #nil {
          w.n(0);
       } else {
-         if (header) {
+         if header {
             w.n(1 + .at-in-header-idx-v[at]);
          } else {
             w.n(1 + at);
@@ -651,25 +651,25 @@ At[#nil = -1, #root, #relative]:i32 {
    }
    write(at-idx:this) {
       +at = at-idx.ptr();
-      switch (at.type) {
-         case (#module) {
-            if (at.parent != #root) { at.parent.write-space() }
+      switch at.type {
+         case #module {
+            if at.parent != #root { at.parent.write-space() }
             .out.printf("_M%s", at.name.id.c-name());
          }
-         case (#struct-enum) {
-            if (at.def == #struct) {
+         case #struct-enum {
+            if at.def == #struct {
                +t-idx = at.decl.struct;
                +t = t-idx.ptr();
-               if (t-idx != #nil) {
-                  if ((t.flags & #real-name) != #0) {
-                     if (t.real-name == #nil) {
-                        if ((t.flags & #union) != #0) {
+               if t-idx != #nil {
+                  if (t.flags & #real-name) != #0 {
+                     if t.real-name == #nil {
+                        if (t.flags & #union) != #0 {
                            .out.printf("union %s", at.name.id.c-name());
                         } else {
                            .out.printf("struct %s", at.name.id.c-name());
                         }
                      } else {
-                        if ((t.flags & #union) != #0) {
+                        if (t.flags & #union) != #0 {
                            .out.printf("union %s", t.real-name.str());
                         } else {
                            .out.printf("struct %s", t.real-name.str());
@@ -678,74 +678,74 @@ At[#nil = -1, #root, #relative]:i32 {
                      return;
                   }
                }
-               if ((t.flags & #union) != #0) {
+               if (t.flags & #union) != #0 {
                   .out.printf("union ");
                } else {
                   .out.printf("struct ");
                }
-               if (at.parent != #root) { at.parent.write-space() }
+               if at.parent != #root { at.parent.write-space() }
                .out.printf("_N%s", at.name.id.c-name());
-            } elif (at.def == #enum) {
+            } elif at.def == #enum {
                +t-idx = at.decl.enum;
-               if (t-idx != #nil) {
+               if t-idx != #nil {
                   +t = t-idx.ptr();
-                  if ((t.flags & #real-name) != #0) {
+                  if (t.flags & #real-name) != #0 {
                      .out.printf("%s", t.real-name.str());
                      return;
                   }
                }
-               if (at.parent != #root) { at.parent.write-space() }
+               if at.parent != #root { at.parent.write-space() }
                .out.printf("_N%s", at.name.id.c-name());
             }
          }
-         case (#basic) {
-            switch (at.name.basic) {
-               case (#ref) {
+         case #basic {
+            switch at.name.basic {
+               case #ref {
                   .out.printf("void*");
                }
-               case (#bool) {
+               case #bool {
                   .out.printf("bool");
                }
-               case (#char) {
+               case #char {
                   .out.printf("char");
                }
-               case (#intc) {
+               case #intc {
                   .out.printf("int");
                }
-               case (#i8) {
+               case #i8 {
                   .out.printf("int8_t");
                }
-               case (#u8) {
+               case #u8 {
                   .out.printf("uint8_t");
                }
-               case (#i16) {
+               case #i16 {
                   .out.printf("int16_t");
                }
-               case (#u16) {
+               case #u16 {
                   .out.printf("uint16_t");
                }
-               case (#i32) {
+               case #i32 {
                   .out.printf("int32_t");
                }
-               case (#u32) {
+               case #u32 {
                   .out.printf("uint32_t");
                }
-               case (#i64) {
+               case #i64 {
                   .out.printf("int64_t");
                }
-               case (#u64) {
+               case #u64 {
                   .out.printf("uint64_t");
                }
-               case (#isz) {
+               case #isz {
                   .out.printf("ssize_t");
                }
-               case (#usz) {
+               case #usz {
                   .out.printf("size_t");
                }
-               case (#f32) {
+               case #f32 {
                   .out.printf("float");
                }
-               case (#f64) {
+               case #f64 {
                   .out.printf("double");
                }
             }
@@ -754,68 +754,68 @@ At[#nil = -1, #root, #relative]:i32 {
    }
    write-space(at-idx:this) {
       +at = at-idx.ptr();
-      switch (at.type) {
-         case (#module) {
-            if (at.parent != #root) { at.parent.write-space() }
+      switch at.type {
+         case #module {
+            if at.parent != #root { at.parent.write-space() }
             .out.printf("_M%s", at.name.id.c-name());
          }
-         case (#struct-enum) {
-            // if (at.def == #struct) {
-               if (at.parent != #root) { at.parent.write-space() }
+         case #struct-enum {
+            // if at.def == #struct {
+               if at.parent != #root { at.parent.write-space() }
                .out.printf("_N%s", at.name.id.c-name());
-            // } elif (at.def == #enum) {
-            //    if (at.parent != #root) { at.parent.write-space() }
+            // } elif at.def == #enum {
+            //    if at.parent != #root { at.parent.write-space() }
             //    .out.printf("_E%s", at.name.id.c-name());
             // }
          }
-         case (#basic) {
-            switch (at.name.basic) {
-               case (#ref) {
+         case #basic {
+            switch at.name.basic {
+               case #ref {
                   .out.printf("_Tref");
                }
-               case (#bool) {
+               case #bool {
                   .out.printf("_Tbool");
                }
-               case (#char) {
+               case #char {
                   .out.printf("_Tchar");
                }
-               case (#intc) {
+               case #intc {
                   .out.printf("_Tintc");
                }
-               case (#i8) {
+               case #i8 {
                   .out.printf("_Ti8");
                }
-               case (#u8) {
+               case #u8 {
                   .out.printf("_Tu8");
                }
-               case (#i16) {
+               case #i16 {
                   .out.printf("_Ti16");
                }
-               case (#u16) {
+               case #u16 {
                   .out.printf("_Tu16");
                }
-               case (#i32) {
+               case #i32 {
                   .out.printf("_Ti32");
                }
-               case (#u32) {
+               case #u32 {
                   .out.printf("_Tu32");
                }
-               case (#i64) {
+               case #i64 {
                   .out.printf("_Ti64");
                }
-               case (#u64) {
+               case #u64 {
                   .out.printf("_Tu64");
                }
-               case (#isz) {
+               case #isz {
                   .out.printf("_Tisz");
                }
-               case (#usz) {
+               case #usz {
                   .out.printf("_Tusz");
                }
-               case (#f32) {
+               case #f32 {
                   .out.printf("_Tf32");
                }
-               case (#f64) {
+               case #f64 {
                   .out.printf("_Tf64");
                }
             }
@@ -833,7 +833,7 @@ Include[#nil = -1, #0]:i32 {
    }
    rd(i:this&, r:Rdr) @inline {
       +idx = (r.n() - 1):Include;
-      if (idx == #nil) {
+      if idx == #nil {
          i = #nil;
       } else {
          i = .include-table[idx];
@@ -843,7 +843,7 @@ Include[#nil = -1, #0]:i32 {
       +num = thiss:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      if ((.include-is-outputted[n3] & n17) != 0) { return }
+      if (.include-is-outputted[n3] & n17) != 0 { return }
       .include-is-outputted[n3] |= n17;
       .include-outputted-v[.include-outputted-c++] = thiss;
    }
@@ -862,13 +862,13 @@ var func-main:Func;
 Id[#nil = -1, #0]:i32 {
    c-name(id:this):char[] {
       var c-name:char[] = .id-c-name-v[id];
-      if (c-name != null) { return c-name }
+      if c-name != null { return c-name }
       +len = .id-len-v[id];
       +str = .id-str-v[id];
       c-name = quick-alloc(len + 1);
       .id-c-name-v[id] = c-name;
       loop i = 0; len; i++ {
-         if (str[i] == ''-) {
+         if str[i] == ''- {
             c-name[i] = ''_;
          } else {
             c-name[i] = str[i];
@@ -884,21 +884,21 @@ Id[#nil = -1, #0]:i32 {
       return .id-len-v[id];
    }
    wr-header(id:this, w:Wtr) @inline {
-      if (id == #nil) {
+      if id == #nil {
          w.n(0);
       } else {
          w.n(1 + .id-in-header-idx-v[id]);
       }
    }
    wr(id:this, w:Wtr, header:bool) @inline {
-      if (id == #nil) {
+      if id == #nil {
          w.n(0);
       } else {
-         if (header) {
+         if header {
             w.n(1 + .id-in-header-idx-v[id]);
          } else {
             w.n(1 + id);
-            if ((.id-in-header-v[id >> 3] & (1 << (id & 7))) == 0) {
+            if (.id-in-header-v[id >> 3] & (1 << (id & 7))) == 0 {
                .id-in-header-v[id >> 3] |= 1 << (id & 7);
                .id-in-header-idx-v[id] = .id-in-header-c;
                .id-in-header-id-v[.id-in-header-c++] = id;
@@ -908,7 +908,7 @@ Id[#nil = -1, #0]:i32 {
    }
    rd(id:this&, r:Rdr) @inline {
       +idx = (r.n() - 1):Id;
-      if (idx == #nil) {
+      if idx == #nil {
          id = #nil;
       } else {
          id = .id-table[idx];

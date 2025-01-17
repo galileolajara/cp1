@@ -24,7 +24,7 @@ StmtSpace(
    write(space:this) {
       // .out.printf("{ // space begin \n");
       var i, lvar-c;
-      if (space.parent == null) {
+      if space.parent == null {
          // dont write arguments
          i = .ctx-func.farg-c;
          lvar-c = space.lvar-c - .ctx-func.farg-c;
@@ -37,7 +37,7 @@ StmtSpace(
          +lvar = lvar-i.ptr();
          // C.out.printf("%s %s\n", lvar.decl.type.ptr().type.cp1-name(), lvar.decl.type.ptr().name.basic.cp1-name());
          lvar.decl.write-lvar-type(lvar-i);
-         if ((lvar.flags & #set-expr) != #0) {
+         if (lvar.flags & #set-expr) != #0 {
             .out.printf(" = ");
             lvar.set-expr.write();
          }
@@ -54,13 +54,13 @@ StmtSpace(
       +v = space.lvar-v;
       loop i = 0; space.lvar-c; i++ {
          +lvar = v[i].ptr();
-         if (lvar.decl.name == name) {
+         if lvar.decl.name == name {
             C.out.printf("%u:%u: lvar '%s' was already declared at %u:%u\n", row, col, name.str(), lvar.row, lvar.col);
             C.exit(#failure);
          }
       }
       +i = space.lvar-c++;
-      if (space.lvar-cap <= space.lvar-c) {
+      if space.lvar-cap <= space.lvar-c {
          +old-cap = space.lvar-cap;
          grow(space.lvar-cap, space.lvar-c);
          realloc(space.lvar-v, space.lvar-cap, old-cap);
@@ -68,7 +68,7 @@ StmtSpace(
       +f = .ctx-func;
       +lvar = f.lvar-c++;
       space.lvar-v[i] = lvar;
-      if (f.lvar-cap <= f.lvar-c) {
+      if f.lvar-cap <= f.lvar-c {
          +old-cap = f.lvar-cap;
          grow(f.lvar-cap, f.lvar-c);
          realloc(f.lvar-v, f.lvar-cap, old-cap);
@@ -92,20 +92,20 @@ StmtSpace(
       +stmt = space.stmt-first;
       loop (stmt != null) {
          stmt.type.wr(w);
-         if (#debug-rd-wr) {
+         if #debug-rd-wr {
             w.n1(255);
          }
          w.n(stmt.begin-row);
          w.n(stmt.begin-col);
          w.n(stmt.end-row);
          w.n(stmt.end-col);
-         switch (stmt.type).wr(stmt, w, header) {
+         switch.wr(stmt, w, header) stmt.type {
             default {
                C.out.printf("wr() not yet implemented in stmt #%s\n", stmt.type.cp1-name());
                C.exit(#failure);
             }
          }
-         if (#debug-rd-wr) {
+         if #debug-rd-wr {
             w.n1(255);
          }
          stmt = stmt.stmt-next;
@@ -119,7 +119,7 @@ StmtSpace(
       s2.end-col = end-col;
       s2.type = type;
       s2.stmt-next = null;
-      if (s.stmt-last == null) {
+      if s.stmt-last == null {
          s.stmt-first = s2;
          s.stmt-last = s2;
       } else {
@@ -141,9 +141,9 @@ StmtSpace(
 
       loop {
          StmtType.rd(+type, r);
-         if (type == #nil) { break }
-         if (#debug-rd-wr) {
-            if (r.n1() != 255) {
+         if type == #nil { break }
+         if #debug-rd-wr {
+            if r.n1() != 255 {
                C.out.printf("Error reading stmt\n");
                C.out.flush();
                C.exit(#failure);
@@ -157,14 +157,14 @@ StmtSpace(
          .ctx-begin-col = begin-col;
          .ctx-end-row = end-row;
          .ctx-end-col = end-col;
-         switch (type).rd(space, r) {
+         switch.rd(space, r) type {
             default {
                C.out.printf("rd() not yet implemented in stmt #%s\n", type.cp1-name());
                C.exit(#failure);
             }
          }
-         if (#debug-rd-wr) {
-            if (r.n1() != 255) {
+         if #debug-rd-wr {
+            if r.n1() != 255 {
                C.out.printf("Error reading stmt\n");
                C.out.flush();
                C.exit(#failure);
@@ -175,11 +175,11 @@ StmtSpace(
    process(space:this):bool {
       +s = space.stmt-first;
       loop (s != null) {
-         if !(s.process()) { return false }
+         if !s.process() { return false }
          s = s.stmt-next;
       }
       var i, lvar-c;
-      if (space.parent == null) {
+      if space.parent == null {
          // don:T process arguments
          i = .ctx-func.farg-c;
          lvar-c = space.lvar-c - .ctx-func.farg-c;
@@ -196,7 +196,7 @@ StmtSpace(
 using (Stmt) {
    process-space(stmt:Stmt, ok:bool&) @case.process() @inline {
       var space:StmtSpace = stmt;
-      if !(space.process()) { return }
+      if !space.process() { return }
       ok = true;
    }
    write-space(stmt:Stmt) @case.write() @inline {
@@ -212,8 +212,8 @@ stmt-space-begin(attach:bool):StmtSpace {
    quick-alloc-one(.decl-func-ctx-space);
    +space = .decl-func-ctx-space;
    space.parent = parent;
-   if (attach) {
-      if (parent.stmt-last == null) {
+   if attach {
+      if parent.stmt-last == null {
          parent.stmt-first = space.base;
          parent.stmt-last = space.base;
       } else {

@@ -28,7 +28,7 @@ get-compile(bin:char[], ninja-f:C.File) {
       var fd, compile:char[512];
       C.sprintf(compile, "%s/tcc", found);
       fd = C.open(compile, #read);
-      if (fd != #nil) {
+      if fd != #nil {
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = tcc $in -o $out\n");
          fd.close();
@@ -37,7 +37,7 @@ get-compile(bin:char[], ninja-f:C.File) {
       }
       C.sprintf(compile, "%s/clang", found);
       fd = C.open(compile, #read);
-      if (fd != #nil) {
+      if fd != #nil {
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = clang $in -o $out\n");
          fd.close();
@@ -46,7 +46,7 @@ get-compile(bin:char[], ninja-f:C.File) {
       }
       C.sprintf(compile, "%s/gcc", found);
       fd = C.open(compile, #read);
-      if (fd != #nil) {
+      if fd != #nil {
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = gcc $in -o $out\n");
          fd.close();
@@ -60,11 +60,11 @@ get-compile(bin:char[], ninja-f:C.File) {
 }
 Cmd[#c, #run]:u8;
 print-usage(bin:char[], cmd:Cmd) {
-   switch (cmd) {
-      case (#c) {
+   switch cmd {
+      case #c {
          print-c-usage(bin);
       }
-      case (#run) {
+      case #run {
          print-run-usage(bin);
       }
    }
@@ -82,7 +82,7 @@ var cp1-path-c:i32;
 cp1-path-add(cp1-path-real:char[], cp1-path-real-len:i32, cp1-path:char[], cp1-path-len:i32) {
    // C.printf("adding %s as %s\n", cp1-path-real, cp1-path);
    +i = .cp1-path-c++;
-   if (.cp1-path-cap < .cp1-path-c) {
+   if .cp1-path-cap < .cp1-path-c {
       .cp1-path-cap = (.cp1-path-cap << 1) + 8;
       .cp1-path-v = C.realloc(.cp1-path-v, .cp1-path-cap * usz[usz]);
       .cp1-path-len-v = C.realloc(.cp1-path-len-v, .cp1-path-cap * u32[usz]);
@@ -97,11 +97,11 @@ cp1-path-add(cp1-path-real:char[], cp1-path-real-len:i32, cp1-path:char[], cp1-p
 var cmd-preprocess:char[512];
 cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
    loop i = 0; .cp1-path-c; i++ {
-      if (C.memcmp(.cp1-path-v[i], cp1-path, cp1-path-len) == 0) {
+      if C.memcmp(.cp1-path-v[i], cp1-path, cp1-path-len) == 0 {
          return true;
       }
    }
-   if !(C.Fd.open(++fd, cp1-path, #read)) {
+   if !C.Fd.open(++fd, cp1-path, #read) {
       C.printf("Error, [cp1 file] (which is '%s') cannot be opened for reading\n", cp1-path);
       return false;
    }
@@ -114,7 +114,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
       C.printf("Error, [cp1 file] (which is '%s') must end a new line\n", cp1-path);
       return false;
    }
-   if (data[len - 2] == ''\r) {
+   if data[len - 2] == ''\r {
       C.printf("Error, [cp1 file] (which is '%s') must have Unix line endings '\\n' instead of Windows line endings '\\r\\n'\n", cp1-path);
       return false;
    }
@@ -126,7 +126,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
       line++;
       +start = pos;
       loop {
-         if (data[pos] == ''\n) {
+         if data[pos] == ''\n {
             break;
          }
          pos++;
@@ -148,13 +148,13 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
       pos++;
    }
    // Process consecutive lines that begins with '#'
-   if (preprocess) {
+   if preprocess {
       C.free(data);
 
       var tmp-path:char[17];
       C.memcpy(tmp-path, "cp1-tmp-XXXXXXXX", 17);
       +tmp-fd = C.mkstemp(tmp-path);
-      if (tmp-fd == #nil) {
+      if tmp-fd == #nil {
          C.printf("Error, cannot create a temporary file at the current folder\n");
          return false;
       }
@@ -163,14 +163,14 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
       C.sprintf(.cmd-preprocess, "%s-preprocess %.*s %s\n", bin, cp1-path-len, cp1-path, tmp-path);
       // C.printf("Running preprocessor: %s\n", .cmd-preprocess);
       C.out.flush();
-      if (C.system(.cmd-preprocess) != 0) {
+      if C.system(.cmd-preprocess) != 0 {
          return false;
       }
       +tmp-path-dup = C.malloc(17);
       C.memcpy(tmp-path-dup, tmp-path, 17);
       atexit-rm(tmp-path-dup);
       cp1-path-add(tmp-path-dup, 16, cp1-path, cp1-path-len);
-      if !(C.Fd.open(fd, tmp-path-dup, #read)) {
+      if !C.Fd.open(fd, tmp-path-dup, #read) {
          C.printf("Error, cannot open file for reading: %s\n", tmp-path);
          return false;
       }
@@ -190,7 +190,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
       line++;
       +start = pos;
       loop {
-         if (data[pos] == ''\n) {
+         if data[pos] == ''\n {
             break;
          }
          pos++;
@@ -218,28 +218,28 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
          start += 8;
          +begin = -1;
          loop j = start; pos - start; j++ {
-            if (data[j] == ''") {
+            if data[j] == ''" {
                begin = j;
                break;
-            } elif (data[j] == '' ) {
+            } elif data[j] == ''  {
                // Ok
-            } elif (data[j] == ''\t) {
+            } elif data[j] == ''\t {
                // Ok
             } else {
                C.out.printf("%s:%u: Invalid character '%c' found in #include <...>\n", cp1-path, line, data[j]);
                return false;
             }
          }
-         if (begin != -1) {
+         if begin != -1 {
             start = begin + 1;
             +end = -1;
             loop j = start; pos - start; j++ {
-               if (data[j] == ''") {
+               if data[j] == ''" {
                   end = j;
                   break;
                }
             }
-            if (end == -1) {
+            if end == -1 {
                C.printf("%s:%u: #import \"...\" must end with '\"'\n", cp1-path, line);
                return false;
             }
@@ -249,12 +249,12 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                C.printf("%s:%u: #import \"%.*s\" doesn:T need a '.cp1' suffix\n", cp1-path, line, import-path-len, import);
                return false;
             }
-            if (import[0] == ''/) {
+            if import[0] == ''/ {
                C.printf("%s:%u: #import \"%.*s\" must be a relative path, '/' was detected at the beginning of file path\n", cp1-path, line, import-path-len, import);
                return false;
             }
             loop j = 0; import-path-len; j++ {
-               if (import[j] == ''\\) {
+               if import[j] == ''\\ {
                   C.printf("%s:%u: #import \"%.*s\" must not contain backslashes '\\', please use forward slashes '/' instead\n", cp1-path, line, import-path-len, import);
                   return false;
                }
@@ -273,7 +273,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
             import-path[import-path-len++] = ''1;
             import-path[import-path-len] = ''\0;
             // C.printf("importing %s\n", import-path);
-            if !(cp1-path-input(import-path, import-path-len, bin, cmd)) {
+            if !cp1-path-input(import-path, import-path-len, bin, cmd) {
                C.printf("Error from #import \"%.*s\" at file '%s' line %u\n", import-path-len - 4, import, cp1-path, line);
                return false;
             }
@@ -292,28 +292,28 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
          start += 9;
          +begin = -1;
          loop j = start; pos - start; j++ {
-            if (data[j] == ''<) {
+            if data[j] == ''< {
                begin = j;
                break;
-            } elif (data[j] == '' ) {
+            } elif data[j] == ''  {
                // Ok
-            } elif (data[j] == ''\t) {
+            } elif data[j] == ''\t {
                // Ok
             } else {
                C.out.printf("%s:%u: Invalid character '%c' found in #include <...>\n", cp1-path, line, data[j]);
                return false;
             }
          }
-         if (begin != -1) {
+         if begin != -1 {
             start = begin + 1;
             +end = -1;
             loop j = start; pos - start; j++ {
-               if (data[j] == ''>) {
+               if data[j] == ''> {
                   end = j;
                   break;
                }
             }
-            if (end == -1) {
+            if end == -1 {
                C.printf("%s:%u: #include <...> must end with '>'\n", cp1-path, line);
                return false;
             }
@@ -326,9 +326,9 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                   break;
                }
             }
-            if !(found) {
+            if !found {
                +i = .included-c++;
-               if (.included-cap < .included-c) {
+               if .included-cap < .included-c {
                   .included-cap = (.included-c << 1) + 8;
                   .included-v = C.realloc(.included-v, .included-cap * usz[usz]);
                   .included-len-v = C.realloc(.included-len-v, .included-cap * u32[usz]);
@@ -342,11 +342,11 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                var spec-path:char[128];
                C.sprintf(spec-path, "%s/%s", .include-dir, path);
                loop i = .include-dir-len + 1; C.strlen(spec-path) - (.include-dir-len + 1); i++ {
-                  if (spec-path[i] == ''/) {
+                  if spec-path[i] == ''/ {
                      spec-path[i] = ''-;
                   }
                }
-               if !(C.Fd.open(++spec-fd, spec-path, #read)) {
+               if !C.Fd.open(++spec-fd, spec-path, #read) {
                   C.printf("%s:%u: #include <%s> failed because '%s' does not exists\n", cp1-path, line, path, spec-path);
                   return false;
                }
@@ -361,17 +361,17 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                   spec-line++;
                   +start = spec-pos;
                   loop {
-                     if (spec-data[spec-pos] == ''\n) {
-                        if (spec-data[start] == ''<) {
+                     if spec-data[spec-pos] == ''\n {
+                        if spec-data[start] == ''< {
                            start++;
                            +rangle = -1;
                            loop j = start; spec-pos - start; j++ {
-                              if (spec-data[j] == ''>) {
+                              if spec-data[j] == ''> {
                                  rangle = j;
                                  break;
                               }
                            }
-                           if (rangle != -1) {
+                           if rangle != -1 {
                               var file-path:char[] = & spec-data[start];
                               +file-path-len = rangle - start;
                               var file-path-dup:char[] = C.malloc(file-path-len + 1);
@@ -396,14 +396,14 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
       }
       +i = first-char;
       loop {
-         if (data[i] == ''\n) {
+         if data[i] == ''\n {
             break;
          }
          if (&&, data[i] == ''/, data[i + 1] == ''/) {
             // C.printf("comment detected\n");
             break;
          }
-         if (data[i] == ''{) {
+         if data[i] == ''{ {
             // C.printf("curly brace detected\n");
             "goto stop;";
          }
@@ -418,7 +418,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
 validate-cp1-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:Cmd):bool {
    loop i = start; arg-c - start; i++ {
       +cp1-path = arg-v[i];
-      if (cp1-path[0] == ''/) {
+      if cp1-path[0] == ''/ {
          print-usage(bin, cmd);
          C.printf("Error, [cp1 file] (which is '%s') must be a relative filepath (e.g. file.cp1), not an absolute path (/home/user/file.cp1)\n", cp1-path);
          C.exit(#failure);
@@ -429,7 +429,7 @@ validate-cp1-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:Cmd):bo
          cp1-path-len -= 2;
       }
       loop j = 0; cp1-path-len; j++ {
-         if (cp1-path[j] == ''\\) {
+         if cp1-path[j] == ''\\ {
             print-usage(bin, cmd);
             C.printf("Error, [cp1 file] (which is '%s') must not contain backslashes '\\', please use forward slashes '/' instead\n", cp1-path);
             C.exit(#failure);
@@ -454,7 +454,7 @@ validate-cp1-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:Cmd):bo
          C.printf("Error, [cp1 file] (which is '%s') must be a filename that ends with '.cp1', for example: main.cp1\n", cp1-path);
          C.exit(#failure);
       }
-      if !(cp1-path-input(cp1-path, cp1-path-len, bin, cmd)) {
+      if !cp1-path-input(cp1-path, cp1-path-len, bin, cmd) {
          print-usage(bin, cmd);
          return false;
       }
@@ -470,7 +470,7 @@ print-command(arg-c:i32, arg-v:char[][]) {
 }
 atexit-rm(path:char[]) {
    +i = .atexit-rm-c++;
-   if (.atexit-rm-cap < .atexit-rm-c) {
+   if .atexit-rm-cap < .atexit-rm-c {
       .atexit-rm-cap = (.atexit-rm-c << 1) + 8;
       .atexit-rm-v = C.realloc(.atexit-rm-v, .atexit-rm-cap * usz[usz]);
    }
@@ -483,27 +483,27 @@ on-exit() {
    }
 }
 main(arg-c:intc, arg-v:char[][]):intc {
-   if (false) {
+   if false {
       on-exit();
    }
    "atexit(_Pon_exit_0);";
    +bin = arg-v[0];
    var abs-path:char[512];
    var abs-path-len:u16 = 0;
-   if (bin[0] == ''/) {
+   if bin[0] == ''/ {
       abs-path-len = C.strlen(bin);
       C.memcpy(abs-path, bin, abs-path-len);
       abs-path[abs-path-len] = ''\0;
    } else {
       +has-slash = false;
       loop i = 0; ; i++ {
-         if (bin[i] == ''\0) { break; }
-         if (bin[i] == ''/) {
+         if bin[i] == ''\0 { break; }
+         if bin[i] == ''/ {
             has-slash = true;
             break;
          }
       }
-      if (has-slash) {
+      if has-slash {
          C.realpath(bin, abs-path);
       } else {
          +path = C.strdup(C.getenv("PATH"));
@@ -512,12 +512,12 @@ main(arg-c:intc, arg-v:char[][]):intc {
          loop (found != null) {
             C.sprintf(abs-path, "%s/%s", found, bin);
             fd = C.open(abs-path, #read);
-            if (fd != #nil) {
+            if fd != #nil {
                break;
             }
             found = C.strtok(null, ":");
          }
-         if (fd == #nil) {
+         if fd == #nil {
             C.printf("Cannot run %s because we can:T detect its absolute path\n", bin);
             C.exit(#failure);
          }
@@ -533,13 +533,13 @@ main(arg-c:intc, arg-v:char[][]):intc {
    slash1[0] = ''/;
    slash2[0] = ''/;
    .include-dir-len = C.strlen(.include-dir);
-   if (arg-c < 2) {
+   if arg-c < 2 {
       print-commands(bin);
       C.exit(#failure);
    }
    +cmd = arg-v[1];
-   if (C.strcmp(cmd, "c") == 0) {
-      if (arg-c < 4) {
+   if C.strcmp(cmd, "c") == 0 {
+      if arg-c < 4 {
          print-c-usage(bin);
          C.exit(#failure);
       }
@@ -550,7 +550,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
          C.printf("Error, [output.c] (which is '%s') must be a filename that ends with '.c', for example: main.c\n", c-path);
          C.exit(#failure);
       }
-      if !(validate-cp1-paths(3, arg-c, arg-v, bin, #c)) {
+      if !validate-cp1-paths(3, arg-c, arg-v, bin, #c) {
          print-command(arg-c, arg-v);
          C.exit(#failure);
       }
@@ -559,7 +559,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       C.strcpy(ninja-path, "cp1-tmp/ninja-XXXXXXXXX");
       +ninja-fd = C.mkstemp(ninja-path);
       atexit-rm(C.strdup(ninja-path));
-      if (ninja-fd == #nil) {
+      if ninja-fd == #nil {
          print-c-usage(bin);
          C.printf("Error, cannot open file for reading: %s\n", ninja-path);
          C.exit(#failure);
@@ -581,15 +581,15 @@ main(arg-c:intc, arg-v:char[][]):intc {
       var command:char[24 + 9];
       C.sprintf(command, "ninja -f %s", ninja-path);
       +ret = C.system(command);
-      if (ret != 0) {
+      if ret != 0 {
          C.exit(#failure);
       }
-   } elif (C.strcmp(cmd, "run") == 0) {
-      if (arg-c < 3) {
+   } elif C.strcmp(cmd, "run") == 0 {
+      if arg-c < 3 {
          print-run-usage(bin);
          C.exit(#failure);
       }
-      if !(validate-cp1-paths(2, arg-c, arg-v, bin, #run)) {
+      if !validate-cp1-paths(2, arg-c, arg-v, bin, #run) {
          print-command(arg-c, arg-v);
          C.exit(#failure);
       }
@@ -597,7 +597,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       var c-path:char[22];
       C.strcpy(c-path, "cp1-tmp/c-XXXXXXXXX");
       +c-fd = C.mkstemp(c-path);
-      if (c-fd == #nil) {
+      if c-fd == #nil {
          print-run-usage(bin);
          C.printf("Error, cannot open file for reading: %s\n", c-path);
          C.exit(#failure);
@@ -607,7 +607,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       var exe-path:char[24];
       C.strcpy(exe-path, "cp1-tmp/exe-XXXXXXXXX");
       +exe-fd = C.mkstemp(exe-path);
-      if (exe-fd == #nil) {
+      if exe-fd == #nil {
          print-run-usage(bin);
          C.printf("Error, cannot open file for reading: %s\n", exe-path);
          C.exit(#failure);
@@ -622,7 +622,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       C.strcpy(ninja-path, "cp1-tmp/ninja-XXXXXXXXX");
       +ninja-fd = C.mkstemp(ninja-path);
       atexit-rm(C.strdup(ninja-path));
-      if (ninja-fd == #nil) {
+      if ninja-fd == #nil {
          print-run-usage(bin);
          C.printf("Error, cannot open file for reading: %s\n", ninja-path);
          C.exit(#failure);
@@ -646,12 +646,12 @@ main(arg-c:intc, arg-v:char[][]):intc {
       var command:char[32 + 9];
       C.sprintf(command, "ninja --quiet -f %s", ninja-path);
       +ninja-ret = C.system(command);
-      if (ninja-ret != 0) {
+      if ninja-ret != 0 {
          C.exit(#failure);
       }
       +exe-ret = C.system(exe-path);
       C.unlink(exe-path);
-      if (exe-ret != 0) {
+      if exe-ret != 0 {
          C.exit(#failure);
       }
    } else {

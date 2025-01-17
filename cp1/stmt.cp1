@@ -25,7 +25,7 @@ Stmt(
    stmt-next:Stmt,
    ) {
    write(s:this) {
-      switch (s.type).write(s) {
+      switch.write(s) s.type {
          default {
             C.out.printf("write() not yet implemented in stmt #%s\n", s.type.cp1-name());
             C.exit(#failure);
@@ -38,13 +38,13 @@ Stmt(
       .ctx-begin-col = s.begin-col;
       .ctx-end-row = s.end-row;
       .ctx-end-col = s.end-col;
-      switch (s.type).process(s, ok) {
+      switch.process(s, ok) s.type {
          default {
             C.out.printf("%s:%u:%u - %u:%u: process() is not implemented in statement #%s\n",
             .ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.cp1-name());
          }
       }
-      if !(ok) {
+      if !ok {
          C.out.printf("%s:%u:%u - %u:%u: Processing of statement #%s failed\n",
             .ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.cp1-name());
       }
@@ -72,7 +72,7 @@ stmt-push(s:Stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:S
 }
 func-stmt-add(s:Stmt) {
    s.stmt-next = null;
-   if (.decl-func-ctx-space.stmt-last == null) {
+   if .decl-func-ctx-space.stmt-last == null {
       .decl-func-ctx-space.stmt-first = s;
       .decl-func-ctx-space.stmt-last = s;
    } else {
@@ -91,7 +91,7 @@ stmt-lvar-add(name:Id, set:ExprI, row:i32, col:i32) {
    .decl-var.name = name;
    lvar.decl.copy-from(.decl-var);
    // C.out.printf("%s %d\n", .decl-var.name.str(), .decl-var.type-info.built-in);
-   if (set != #nil) {
+   if set != #nil {
       +e = expr-assign(expr-lvar(name, 0, row, col), set, #eq);
       expr2stmt(e, row, col, row, col);
    }

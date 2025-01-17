@@ -581,14 +581,12 @@ _NCp1_NExprI _Fexpr;
 struct _NCp1_NStmtIf;
 struct _NCp1_NStmtIf {
 struct _NCp1_NStmt _Fbase;
-bool _Fnot;
 _NCp1_NExprI _Fexpr;
 struct _NCp1_NValue _Fval;
 };
 struct _NCp1_NStmtIfElif;
 struct _NCp1_NStmtIfElif {
 struct _NCp1_NStmt _Fbase;
-bool _Fnot;
 _NCp1_NExprI _Fexpr;
 struct _NCp1_NValue _Fval;
 };
@@ -4398,14 +4396,12 @@ _NCp1_NStmtSpace_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gct
 inline void _NCp1_NStmtSpace_Prd_if_2(struct _NCp1_NStmtSpace* _Lspace_0, union _NCp1_NRdr* _Lr_1) {
 struct _NCp1_NStmtIf* _Ls_2;
 _NCp1_Pquick_alloc_one_1(_Ls_2);
-(*_Ls_2)._Fnot = _NCp1_NRdr_Pb_1(_Lr_1);
 _NCp1_NExprI_Prd_2(&(*_Ls_2)._Fexpr, _Lr_1);
 _NCp1_NStmtSpace_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _NCp1_NStmtType_Cif);
 }
 inline void _NCp1_NStmtSpace_Prd_if_elif_2(struct _NCp1_NStmtSpace* _Lspace_0, union _NCp1_NRdr* _Lr_1) {
 struct _NCp1_NStmtIfElif* _Ls_2;
 _NCp1_Pquick_alloc_one_1(_Ls_2);
-(*_Ls_2)._Fnot = _NCp1_NRdr_Pb_1(_Lr_1);
 _NCp1_NExprI_Prd_2(&(*_Ls_2)._Fexpr, _Lr_1);
 _NCp1_NStmtSpace_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _NCp1_NStmtType_Cif_elif);
 }
@@ -5709,31 +5705,17 @@ fprintf(_Gout, ";\n");
 }
 inline void _NCp1_NStmt_Pwrite_if_1(struct _NCp1_NStmt* _Lstmt_0) {
 struct _NCp1_NStmtIf* _Ls_1;
-struct _NCp1_NExpr* _Le_2;
 _Ls_1 = _Lstmt_0;
-_Le_2 = _NCp1_NExprI_Pptr_1((*_Ls_1)._Fexpr);
-if((*_Ls_1)._Fnot) {
-fprintf(_Gout, "if(!(");
-_NCp1_NExprI_Pwrite_value_2((*_Ls_1)._Fexpr, &(*_Ls_1)._Fval);
-fprintf(_Gout, ")) {\n");
-} else {
 fprintf(_Gout, "if(");
 _NCp1_NExprI_Pwrite_value_2((*_Ls_1)._Fexpr, &(*_Ls_1)._Fval);
 fprintf(_Gout, ") {\n");
 }
-}
 inline void _NCp1_NStmt_Pwrite_if_elif_1(struct _NCp1_NStmt* _Lstmt_0) {
 struct _NCp1_NStmtIfElif* _Ls_1;
 _Ls_1 = _Lstmt_0;
-if((*_Ls_1)._Fnot) {
-fprintf(_Gout, "} else if(!(");
-_NCp1_NExprI_Pwrite_value_2((*_Ls_1)._Fexpr, &(*_Ls_1)._Fval);
-fprintf(_Gout, ")) {\n");
-} else {
 fprintf(_Gout, "} else if(");
 _NCp1_NExprI_Pwrite_value_2((*_Ls_1)._Fexpr, &(*_Ls_1)._Fval);
 fprintf(_Gout, ") {\n");
-}
 }
 inline void _NCp1_NStmt_Pwrite_if_else_1(struct _NCp1_NStmt* _Lstmt_0) {
 struct _NCp1_NStmtIfElse* _Ls_1;

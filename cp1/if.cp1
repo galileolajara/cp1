@@ -41,7 +41,7 @@ using (Stmt) {
    }
    process-if(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtIf = stmt;
-      if !(s.expr.value(1, false, s.val)) {
+      if !s.expr.value(1, false, s.val) {
          return;
       }
       ok = true;
@@ -54,7 +54,7 @@ using (Stmt) {
    }
    process-if-elif(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtIfElif = stmt;
-      if !(s.expr.value(1, false, s.val)) {
+      if !s.expr.value(1, false, s.val) {
          return;
       }
       ok = true;

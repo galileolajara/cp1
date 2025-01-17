@@ -40,7 +40,7 @@ using (ExprI) {
    }
    process-cast-fast(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprCastFast = expr;
-      if !(e.expr.value(1, false, e.val)) {
+      if !e.expr.value(1, false, e.val) {
          return;
       }
       e.type = at-validate(e.type, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);

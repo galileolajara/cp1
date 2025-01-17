@@ -1,10 +1,10 @@
 using C = LibC;
 main(arg-c:intc, arg-v:char[][]):intc {
-   if (arg-c != 3) {
+   if arg-c != 3 {
       C.printf("Usage: %s [.h input file] [.cp1 output file]\n", arg-v[0]);
       C.exit(#failure);
    }
-   if !(C.Fd.open(++in-fd, arg-v[1], #read)) {
+   if !C.Fd.open(++in-fd, arg-v[1], #read) {
       C.printf("Cannot open file for reading: %s\n", arg-v[1]);
       C.exit(#failure);
    }
@@ -26,7 +26,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
    loop (pos < in-size) {
       +start = pos;
       loop {
-         if (in-data[pos] == ''\n) {
+         if in-data[pos] == ''\n {
             break;
          }
          pos++;
@@ -42,7 +42,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
             push[push-c++] = line[i];
          } elif (&&, line[i] >= ''A, line[i] <= ''Z) {
             push[push-c++] = line[i] + (''a - ''A);
-         } elif (line[i] == ''_) {
+         } elif line[i] == ''_ {
             push[push-c++] = ''-;
          } else {
             break;

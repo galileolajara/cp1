@@ -33,23 +33,23 @@ using (ExprI) {
    write-compare(expr:Expr) @case.write() @inline {
       var e:ExprCompare = expr;
       e.left.write-value(e.left-val);
-      switch (e.type) {
-         case (#eq) {
+      switch e.type {
+         case #eq {
             .out.printf(" == ");
          }
-         case (#not-eq) {
+         case #not-eq {
             .out.printf(" != ");
          }
-         case (#lt) {
+         case #lt {
             .out.printf(" < ");
          }
-         case (#le) {
+         case #le {
             .out.printf(" <= ");
          }
-         case (#gt) {
+         case #gt {
             .out.printf(" > ");
          }
-         case (#ge) {
+         case #ge {
             .out.printf(" >= ");
          }
       }
@@ -72,11 +72,11 @@ using (ExprI) {
    }
    process-compare(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprCompare = expr;
-      if !(e.left.value(1, true, e.left-val)) {
+      if !e.left.value(1, true, e.left-val) {
          return;
       }
       e.right.try-deduce(e.left-val.type);
-      if !(e.right.value(1, true, e.right-val)) {
+      if !e.right.value(1, true, e.right-val) {
          return;
       }
       ok = true;

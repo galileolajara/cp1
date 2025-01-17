@@ -35,7 +35,7 @@ using (ExprI) {
    }
    process-ref(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprRef = expr;
-      if !(e.expr.value(2, false, e.val)) {
+      if !e.expr.value(2, false, e.val) {
          return;
       }
       ok = true;

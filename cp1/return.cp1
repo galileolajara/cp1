@@ -19,7 +19,7 @@ using (StmtSpace) {
 using (Stmt) {
    write-return(stmt:Stmt) @case.write() @inline {
       var s:StmtReturn = stmt;
-      if (s.expr == #nil) {
+      if s.expr == #nil {
          .out.printf("return;\n");
       } else {
          .out.printf("return ");
@@ -29,9 +29,9 @@ using (Stmt) {
    }
    process-return(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtReturn = stmt;
-      if (s.expr != #nil) {
+      if s.expr != #nil {
          s.expr.try-deduce(.ctx-func.decl.type);
-         if !(s.expr.value(1 + .ctx-func.decl.type-info.ref-v[.ctx-func.decl.type-info.array-c], false, s.val)) {
+         if !s.expr.value(1 + .ctx-func.decl.type-info.ref-v[.ctx-func.decl.type-info.array-c], false, s.val) {
             return;
          }
       }

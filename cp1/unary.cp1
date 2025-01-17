@@ -29,20 +29,20 @@ using (ExprI) {
    }
    write-unary(expr:Expr) @case.write() @inline {
       var e:ExprUnary = expr;
-      switch (e.type) {
-         case (#neg) {
+      switch e.type {
+         case #neg {
             .out.printf("-");
             e.expr.write-value(e.val);
          }
-         case (#inc) {
+         case #inc {
             e.expr.write-value(e.val);
             .out.printf("++");
          }
-         case (#dec) {
+         case #dec {
             e.expr.write-value(e.val);
             .out.printf("--");
          }
-         case (#not) {
+         case #not {
             .out.printf("!");
             e.expr.write-value(e.val);
          }
@@ -64,7 +64,7 @@ using (ExprI) {
    }
    process-unary(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprUnary = expr;
-      if !(e.expr.value(1, true, e.val)) {
+      if !e.expr.value(1, true, e.val) {
          return;
       }
       ok = true;

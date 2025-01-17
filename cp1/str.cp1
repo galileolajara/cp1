@@ -15,7 +15,7 @@ expr-str(prev:ExprI):ExprI {
    C.memcpy(n.buf, .string-buf, len);
    n.buf[len] = ''\0;
    n.next = null;
-   if (prev == #nil) {
+   if prev == #nil {
       quick-alloc-one(+(e:ExprStr));
       +e-idx = expr-push(e.base, #str);
       e.node-c = 1;
@@ -40,7 +40,7 @@ using (ExprI) {
          w.n(n.len);
          w.copy(n.buf, n.len);
          n = n.next;
-         if (n == null) { break }
+         if n == null { break }
       }
    }
    rd-str(e-idx:ExprI, r:Rdr) @case.rd() @inline {
@@ -55,7 +55,7 @@ using (ExprI) {
          r.copy(n.buf, len);
          n.buf[len] = 0;
          n.next = null;
-         if (first) {
+         if first {
             first = false;
             e.first = n;
             e.last = n;
@@ -71,7 +71,7 @@ using (ExprI) {
       loop {
          write-str-node(n.len, n.buf);
          n = n.next;
-         if (n == null) { break }
+         if n == null { break }
          .out.putc(''\n);
       }
    }

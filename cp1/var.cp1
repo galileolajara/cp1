@@ -14,10 +14,10 @@ at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
    if (&&, parent.type == #basic, parent.name.basic == #relative) {
       +name = type.name;
       // C.out.printf("type is %s\n", at-i.ptr().type.cgl-name());
-      // if (at-i.ptr().type == #module) {
+      // if at-i.ptr().type == #module {
       //    C.out.printf("name is %s\n", at-i.ptr().name.id.str());
       //    C.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cgl-name());
-      //    if (at-i.ptr().parent.ptr().type == #basic) {
+      //    if at-i.ptr().parent.ptr().type == #basic {
       //       C.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cgl-name());
       //    }
       // }
@@ -26,13 +26,13 @@ at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
          loop i = 0:At; .at-c; i++ {
             if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
                // C.out.printf("%u) :%s, %d\n", i, .at-v[i].name.id.str(), .at-v[i].decl.struct);
-               if (.at-v[i].name.id == name.id) {
+               if .at-v[i].name.id == name.id {
                   // C.out.printf("found\n");
                   return i;
                }
             }
          }
-         if (at-i == #root) { break }
+         if at-i == #root { break }
          at-i = at-i.ptr().parent;
       }
       C.out.printf("%s:%u:%u: Type :%s was not found\n", file.path(), row, col, name.id.str());
@@ -54,26 +54,26 @@ using (DeclVarData) {
          return false;
       }
       at-i.output(.ctx-func.file, row, col);
-      if !(at-i.finalize(vd.type-info, row, col)) { return false }
+      if !at-i.finalize(vd.type-info, row, col) { return false }
       loop i = 0; vd.size-c; i++ {
-         if !(vd.size-expr-v[i].value(1, false, vd.size-value-v[i])) { return false }
+         if !vd.size-expr-v[i].value(1, false, vd.size-value-v[i]) { return false }
       }
       return true;
    }
    write(vd:this, var-type:DeclVarType) {
-      if ((vd.flags & #real-name) != #0) {
-         if (vd.real-name == #nil) {
+      if (vd.flags & #real-name) != #0 {
+         if vd.real-name == #nil {
             .out.printf("%s", vd.name.c-name());
          } else {
             .out.printf("%s", vd.real-name.str());
          }
          return;
       }
-      switch (var-type) {
-         case (#gvar) {
+      switch var-type {
+         case #gvar {
             .out.printf("_G%s", vd.name.c-name());
          }
-         case (#fvar) {
+         case #fvar {
             .out.printf("_F%s", vd.name.c-name());
          }
       }
@@ -82,7 +82,7 @@ using (DeclVarData) {
       .out.printf("_L%s_%u", vd.name.c-name(), lvar);
    }
    write-type(vd:this, var-type:DeclVarType) {
-      if (vd.type-info.const) {
+      if vd.type-info.const {
          .out.printf("const ");
       }
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
@@ -95,7 +95,7 @@ using (DeclVarData) {
       }
    }
    write-lvar-type(vd:this, lvar:Lvar) {
-      if (vd.type-info.const) {
+      if vd.type-info.const {
          .out.printf("const ");
       }
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
@@ -111,7 +111,7 @@ using (DeclVarData) {
       vd.name.wr(w, header);
       vd.type.wr(w, header);
       vd.flags.wr(w);
-      if ((vd.flags & #real-name) != #0) {
+      if (vd.flags & #real-name) != #0 {
          vd.real-name.wr(w, header);
       }
       vd.type-info.wr(w);
@@ -123,15 +123,15 @@ using (DeclVarData) {
    }
    // validate(vd-type:At, at-i:At, vd-name:Id):At {
    //    +type = vd-type.ptr();
-   //    if (type.type == #basic) { return vd-type }
+   //    if type.type == #basic { return vd-type }
    //    +parent = type.parent.ptr();
    //    if (&&, parent.type == #basic, parent.name.basic == #relative) {
    //       +name = type.name;
    //       C.out.printf("type is %s\n", at-i.ptr().type.cgl-name());
-   //       if (at-i.ptr().type == #module) {
+   //       if at-i.ptr().type == #module {
    //          C.out.printf("name is %s\n", at-i.ptr().name.id.str());
    //          C.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cgl-name());
-   //          if (at-i.ptr().parent.ptr().type == #basic) {
+   //          if at-i.ptr().parent.ptr().type == #basic {
    //             C.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cgl-name());
    //          }
    //       }
@@ -144,12 +144,12 @@ using (DeclVarData) {
    //          loop i = 0:At; .at-c; i++ {
    //             if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
    //                C.out.printf("%u) :%s\n", i, .at-v[i].name.id.str());
-   //                if (.at-v[i].name.id == name.id) {
+   //                if .at-v[i].name.id == name.id {
    //                   return i;
    //                }
    //             }
    //          }
-   //          if (at-i == #root) { break }
+   //          if at-i == #root { break }
    //          at-i = at-i.ptr().parent;
    //       }
    //       C.out.printf("not found\n");
@@ -163,12 +163,12 @@ using (DeclVarData) {
       // At.rd(+vd-type, r);
       // vd.type = validate(vd-type, default-at, vd.name);
       vd.flags.rd(r);
-      if ((vd.flags & #real-name) != #0) {
+      if (vd.flags & #real-name) != #0 {
          vd.real-name.rd(r);
       }
       vd.type-info.rd(r);
       vd.size-c = r.n1();
-      if (vd.size-c > 0) {
+      if vd.size-c > 0 {
          quick-alloc-arr(vd.size-expr-v, vd.size-c);
          quick-alloc-arr(vd.size-value-v, vd.size-c);
          loop i = 0; vd.size-c; i++ {
@@ -184,7 +184,7 @@ using (DeclVarData) {
       vd.type-info.copy-from(src.type-info);
       vd.type-info.built-in = src.type-info.built-in;
       vd.size-c = src.size-c;
-      if (vd.size-c > 0) {
+      if vd.size-c > 0 {
          quick-alloc-arr(vd.size-expr-v, vd.size-c);
          loop i = 0; vd.size-c; i++ {
             vd.size-expr-v[i] = src.size-expr-v[i];
@@ -238,7 +238,7 @@ TypeInfo(ref-v:i8[#type-info-star-limit], array-c:i8, star-c:i8, built-in:bool, 
    wr(ti:this, w:Wtr) {
       +c = 0;
       loop (#type-info-star-limit) {
-         if (ti.ref-v[c] == 0) {
+         if ti.ref-v[c] == 0 {
             break;
          }
          c++;
@@ -323,7 +323,7 @@ decl-var-begin(name:Id, row:i32, col:i32) {
 decl-var-end() {
 }
 decl-var-attr-real-name(name:Id) {
-   if ((.decl-var.flags & #real-name) != #0) {
+   if (.decl-var.flags & #real-name) != #0 {
       C.out.printf("%u:%u: error @real-name specified more than once\n", .last-row, .last-col);
       C.exit(#failure);
    }
@@ -331,23 +331,23 @@ decl-var-attr-real-name(name:Id) {
    .decl-var.real-name = name;
 }
 decl-var-attr-extern() {
-   if ((.decl-var.flags & #extern) != #0) {
+   if (.decl-var.flags & #extern) != #0 {
       C.out.printf("%u:%u: error @extern specified more than once\n", .last-row, .last-col);
       C.exit(#failure);
    }
    .decl-var.flags |= #extern;
 }
 decl-var-attr-no-decl() {
-   if ((.decl-var.flags & #no-decl) != #0) {
+   if (.decl-var.flags & #no-decl) != #0 {
       C.out.printf("%u:%u: error @no-decl specified more than once\n", .last-row, .last-col);
       C.exit(#failure);
    }
    .decl-var.flags |= #no-decl;
 }
 decl-var-type(type:At) {
-   if (type != #nil) {
+   if type != #nil {
       +at = type.ptr();
-      if (at.type == #module) {
+      if at.type == #module {
          C.out.printf("%u:%u: module '%%%s' cannot be used as a type\n", .last-row, .last-col, at.name.id.str());
          C.exit(#failure);
       }
@@ -361,7 +361,7 @@ decl-var-type(type:At) {
 decl-var-this() {
    +type = .decl-at;
    +at = type.ptr();
-   if (at.type == #module) {
+   if at.type == #module {
       C.out.printf("%u:%u: module '%%%s' cannot be used as a type\n", .last-row, .last-col, at.name.id.str());
       C.exit(#failure);
    }
@@ -370,7 +370,7 @@ decl-var-this() {
 }
 decl-var-as-gvar() {
    +gvar-idx = .gvar-c++;
-   if (.gvar-cap <= .gvar-c) {
+   if .gvar-cap <= .gvar-c {
       +old-cap = .gvar-cap;
       grow(.gvar-cap, .gvar-c);
       realloc(.gvar-v, .gvar-cap, old-cap);
