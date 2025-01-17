@@ -32,7 +32,7 @@ StmtSpace(
          i = 0;
          lvar-c = space.lvar-c;
       }
-      loop (lvar-c) i++ {
+      loop ; lvar-c; i++ {
          +lvar-i = space.lvar-v[i];
          +lvar = lvar-i.ptr();
          // C.out.printf("%s %s\n", lvar.decl.type.ptr().type.cp1-name(), lvar.decl.type.ptr().name.basic.cp1-name());
@@ -44,7 +44,7 @@ StmtSpace(
          .out.printf(";\n");
       }
       +s = space.stmt-first;
-      loop (s != null) {
+      loop s != null {
          s.write();
          s = s.stmt-next;
       }
@@ -90,7 +90,7 @@ StmtSpace(
          space.lvar-v[i].wr(w);
       }
       +stmt = space.stmt-first;
-      loop (stmt != null) {
+      loop stmt != null {
          stmt.type.wr(w);
          if #debug-rd-wr {
             w.n1(255);
@@ -174,7 +174,7 @@ StmtSpace(
    }
    process(space:this):bool {
       +s = space.stmt-first;
-      loop (s != null) {
+      loop s != null {
          if !s.process() { return false }
          s = s.stmt-next;
       }
@@ -187,7 +187,7 @@ StmtSpace(
          i = 0;
          lvar-c = space.lvar-c;
       }
-      loop (lvar-c) i++ {
+      loop ; lvar-c; i++ {
          space.lvar-v[i].process();
       }
       return true;

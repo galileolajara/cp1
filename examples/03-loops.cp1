@@ -18,7 +18,7 @@ main():intc {
    loop i = 0; i < 4; i++ {
       C.printf("This is a loop that will run 4 times\n");
    }
-   loop (2) {
+   loop 2 {
       C.printf("Declaring variables are optional. This will loop two times.\n");
    }
    loop i = 0; 3; i++; do-after-continue() {

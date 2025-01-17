@@ -11,7 +11,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       C.exit(#failure);
    }
    +i = 1;
-   loop (arg-c - 1) {
+   loop arg-c - 1 {
       if arg-v[i][0] == ''- {
          if arg-v[i][1] == ''D {
             var name:char[] = & arg-v[i][2];
@@ -158,7 +158,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
    w.reff = new-data;
 
    +line = 0;
-   loop (r.pos < r-end.pos) {
+   loop r.pos < r-end.pos {
       line++;
       +line-len = 0;
       loop {
@@ -239,7 +239,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
             C.exit(#failure);
          }
          line++;
-         loop (r.pos < r-end.pos) {
+         loop r.pos < r-end.pos {
             line++;
             +line-len = 0;
             loop {

@@ -173,7 +173,7 @@ at-root() {
 }
 at-graves(graves:i8, row:i32, col:i32) {
    .build-at = .decl-at;
-   loop (graves > 0) {
+   loop graves > 0 {
       graves--;
       if .build-at == #root {
          C.out.printf("%s:%u:%u: Too many graves in the namespace, going beyond the root namespace\n", .input-path, row, col);
@@ -287,7 +287,7 @@ Lexer(
          C.exit(#failure);
       }
       +val = 0:u64;
-      loop (length) {
+      loop length {
          val = (val * 8:u64) + (r-start.p1[0] - ''0);
          r-start.pos++;
       }
@@ -308,7 +308,7 @@ Lexer(
          C.exit(#failure);
       }
       +val = 0:u64;
-      loop (length) {
+      loop length {
          val = (val * 10:u64) + (r-start.p1[0] - ''0);
          r-start.pos++;
       }
@@ -378,7 +378,7 @@ Lexer(
       var r-cursor:Rdr+;
       r-cursor.reff = lex.cursor;
       +length = 0;
-      loop (r-start.charr[length] != '')) {
+      loop r-start.charr[length] != '') {
          length++;
       }
       // C.printf("include [%.*s]\n", length, r-start.charr);
@@ -579,7 +579,7 @@ get-row-col(out-row:i32&, out-col:i32&, end:ref, begin:ref) {
    r.reff = begin;
    var r-end:Rdr+;
    r-end.reff = end;
-   loop (r.pos < r-end.pos) {
+   loop r.pos < r-end.pos {
       if r.p1[0] == ''\n {
          row++;
          col = 1;
@@ -629,7 +629,7 @@ parse-comment(r:Rdr, w:Wtr, ending:char, in-data:ref) {
       r.pos++;
       if c == ending {
          +len = r.pos - r-begin.pos;
-         loop (len) {
+         loop len {
             w.p1[0] = '' ;
             w.pos++;
          }
@@ -657,7 +657,7 @@ convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
    w-begin.reff = C.malloc(in-size << 1);
    var w:Wtr+;
    w.reff = w-begin.reff;
-   loop (r.pos < r-end.pos) {
+   loop r.pos < r-end.pos {
       if (&&, r.p1[0] == ''@, r.p1[1] == ''r, r.p1[2] == ''e, r.p1[3] == ''a, r.p1[4] == ''l, r.p1[5] == ''N, r.p1[6] == ''a, r.p1[7] == ''m, r.p1[8] == ''e) {
          // realName -> real-name
          w.p1[0] = ''@;
@@ -704,7 +704,7 @@ convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
          loop {
             +c = r.p1[0];
             if c == ''] {
-               loop (r-type.pos < r.pos) {
+               loop r-type.pos < r.pos {
                   w.p1[0] = r-type.p1[0];
                   w.pos++;
                   r-type.pos++;
@@ -843,7 +843,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       w.reff = new-data;
       // Ignore texts outside the top-level curly braces
       // +indent = 0:i32;
-      loop (r.pos < r-end.pos) {
+      loop r.pos < r-end.pos {
          if r.p1[0] == ''\t {
             get-row-col(+row, +col, r.reff, in-data);
             C.printf("%s:%u:%u: Error, use of tabs is discouraged, please use spaces instead\n", .input-path, row, col);
@@ -1120,7 +1120,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       if true { // t != #space)
          // when reporting the row and column of tokens, skip the spaces
          +pos = lex.start;
-         loop (pos < r-end.p1) {
+         loop pos < r-end.p1 {
             if (||, pos[0] == '' , pos[0] == ''\t) {
                tok.col++;
             } elif pos[0] == ''\n {
@@ -1238,7 +1238,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       // }
       if t == #end { break }
       +pos = lex.start;
-      loop (pos < lex.cursor) {
+      loop pos < lex.cursor {
          if (pos[0] & 128) == 0 {
             if pos[0] == ''\n {
                next-row++;

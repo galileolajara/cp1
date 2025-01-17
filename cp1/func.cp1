@@ -333,7 +333,7 @@ func-body-end() {
    f.flags |= #has-body;
    +c = 0;
    +s = f.stmt-space.stmt-first;
-   loop (s != null) {
+   loop s != null {
       c++;
       s = s.stmt-next;
    }

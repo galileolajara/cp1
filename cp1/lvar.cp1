@@ -74,7 +74,7 @@ expr-lvar(name:Id, decl:u8, row:i32, col:i32):ExprI {
       return #nil;
    } else {
       +space = .decl-func-ctx-space;
-      loop (decl > 1) {
+      loop decl > 1 {
          space = space.parent;
          if space == null {
             C.out.printf("%s:%u:%u: Cannot declare local variable '%s' with too much '+'\n", .input-path, row, col, name.str());

@@ -237,7 +237,7 @@ TypeInfo(ref-v:i8[#type-info-star-limit], array-c:i8, star-c:i8, built-in:bool, 
    }
    wr(ti:this, w:Wtr) {
       +c = 0;
-      loop (#type-info-star-limit) {
+      loop #type-info-star-limit {
          if ti.ref-v[c] == 0 {
             break;
          }
