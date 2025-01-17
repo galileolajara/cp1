@@ -43,7 +43,7 @@ using (ExprI) {
       v.reff = (c + 2) - reff;
       v.info.ref-v[v.info.array-c] = reff - 1;
       v.info.count();
-      if (v.reff == 1) {
+      if v.reff == 1 {
          v.paren = false;
       } else {
          v.paren = paren;
@@ -52,10 +52,10 @@ using (ExprI) {
    }
    process-index(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprIndex = expr;
-      if !(e.left.value(1, true, e.left-val)) {
+      if !e.left.value(1, true, e.left-val) {
          return;
       }
-      if !(e.right.value(1, true, e.right-val)) {
+      if !e.right.value(1, true, e.right-val) {
          return;
       }
       ok = true;

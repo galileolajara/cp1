@@ -5,11 +5,11 @@ using C = LibC;
 
 ThisIsEnum[#no, #yes]:u8 { // An 8-bit unsigned enum
    string(e:this):char[] { // An example method for enums
-      switch (e) {
-         case (#no) {
+      switch e {
+         case #no {
             return "no";
          }
-         case (#yes) {
+         case #yes {
             return "yes";
          }
          default {

@@ -9,17 +9,17 @@ Coord(x:i32, y:i32) { // a struct
    }
    walk(s:this, dir:Dir) { // a method
       dir.print();
-      switch (dir) {
-         case (#left) {
+      switch dir {
+         case #left {
             s.x++;
          }
-         case (#up) {
+         case #up {
             s.y++;
          }
-         case (#right) {
+         case #right {
             s.x--;
          }
-         case (#down) {
+         case #down {
             s.y--;
          }
       }
@@ -28,17 +28,17 @@ Coord(x:i32, y:i32) { // a struct
 
 Dir[#left, #up, #right, #down]:u8 { // an 8-bit enum
    print(d:this) { // a method
-      switch (d) {
-         case (#left) {
+      switch d {
+         case #left {
             C.printf("Going left...\n");
          }
-         case (#up) {
+         case #up {
             C.printf("Going up...\n");
          }
-         case (#right) {
+         case #right {
             C.printf("Going right...\n");
          }
-         case (#down) {
+         case #down {
             C.printf("Going down...\n");
          }
       }

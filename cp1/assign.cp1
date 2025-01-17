@@ -28,35 +28,35 @@ using (ExprI) {
    write-assign(expr:Expr) @case.write() @inline {
       var e:ExprAssign = expr;
       e.left.write-value(e.left-val);
-      switch (e.type) {
-         case (#eq) {
+      switch e.type {
+         case #eq {
             .out.printf(" = ");
          }
-         case (#plus-eq) {
+         case #plus-eq {
             .out.printf(" += ");
          }
-         case (#minus-eq) {
+         case #minus-eq {
             .out.printf(" -= ");
          }
-         case (#mul-eq) {
+         case #mul-eq {
             .out.printf(" *= ");
          }
-         case (#div-eq) {
+         case #div-eq {
             .out.printf(" /= ");
          }
-         case (#lshift-eq) {
+         case #lshift-eq {
             .out.printf(" <<= ");
          }
-         case (#rshift-eq) {
+         case #rshift-eq {
             .out.printf(" >>= ");
          }
-         case (#and-eq) {
+         case #and-eq {
             .out.printf(" &= ");
          }
-         case (#or-eq) {
+         case #or-eq {
             .out.printf(" |= ");
          }
-         case (#xor-eq) {
+         case #xor-eq {
             .out.printf(" ^= ");
          }
       }
@@ -75,7 +75,7 @@ using (ExprI) {
    }
    value-assign(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       var expr:ExprAssign = e.ptr();
-      if (expr.left.value(1, paren, v) == false) {
+      if expr.left.value(1, paren, v) == false {
          return;
       }
       v.paren = paren;
@@ -85,11 +85,11 @@ using (ExprI) {
    process-assign(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprAssign = expr;
       +left-e = e.left.ptr();
-      if (left-e.type == #lvar) {
+      if left-e.type == #lvar {
          var left:ExprLvar = left-e;
          +lvar = left.lvar.ptr();
-         if (lvar.decl.type == #nil) {
-            if !(e.right.value(1, true, e.right-val)) {
+         if lvar.decl.type == #nil {
+            if !e.right.value(1, true, e.right-val) {
                return;
             }
             lvar.decl.type = e.right-val.type;
@@ -101,11 +101,11 @@ using (ExprI) {
             return;
          }
       }
-      if !(e.left.value(1, true, e.left-val)) {
+      if !e.left.value(1, true, e.left-val) {
          return;
       }
       e.right.try-deduce(e.left.type());
-      if !(e.right.value(1, true, e.right-val)) {
+      if !e.right.value(1, true, e.right-val) {
          return;
       }
       ok = true;

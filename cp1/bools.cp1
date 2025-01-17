@@ -11,7 +11,7 @@ expr-bools(left:ExprI, right:ExprI, type:Bools):ExprI {
 expr-bools-add(bools:ExprI, right:ExprI):ExprI {
    var e:ExprBools = bools.ptr();
    +i = e.item-c++;
-   if (e.item-cap <= e.item-c) {
+   if e.item-cap <= e.item-c {
       +old-cap = e.item-cap;
       grow(e.item-cap, e.item-c);
       realloc(e.item-v, e.item-cap, old-cap);
@@ -43,18 +43,18 @@ using (ExprI) {
    }
    process-bools(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprBools = expr;
-      if !(e.left.value(1, true, e.left-val)) { return }
-      if !(e.right.value(1, true, e.right-val)) { return }
+      if !e.left.value(1, true, e.left-val) { return }
+      if !e.right.value(1, true, e.right-val) { return }
       loop i = 0; e.item-c; i++ {
          +item = e.item-v[i];
-         if !(item.expr.value(1, true, item.val)) { return }
+         if !item.expr.value(1, true, item.val) { return }
       }
       ok = true;
    }
    write-bools(expr:Expr) @case.write() @inline {
       var e:ExprBools = expr;
-      switch (e.type) {
-         case (#and) {
+      switch e.type {
+         case #and {
             .out.printf("(");
             e.left.write-value(e.left-val);
             .out.printf(" && ");
@@ -66,7 +66,7 @@ using (ExprI) {
             }
             .out.printf(")");
          }
-         case (#or) {
+         case #or {
             .out.printf("(");
             e.left.write-value(e.left-val);
             .out.printf(" || ");
@@ -96,7 +96,7 @@ using (ExprI) {
       e.left.rd(r);
       e.right.rd(r);
       +item-c = r.n1();
-      if (item-c > 0) {
+      if item-c > 0 {
          e.item-c = item-c;
          quick-alloc-arr(e.item-v, item-c);
          loop i = 0; item-c; i++ {

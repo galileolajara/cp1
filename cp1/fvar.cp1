@@ -29,7 +29,7 @@ using (ExprI) {
       var e:ExprFvar = expr.ptr();
       +fvar = e.val.type.ptr().decl.struct.ptr().fvar-v[e.fvar];
       v.set(reff, paren, fvar.decl.type, fvar.decl.type-info);
-      if (v.reff == 1) {
+      if v.reff == 1 {
          v.paren = false;
       }
       ok = true;
@@ -43,21 +43,21 @@ using (ExprI) {
    process-fvar(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprFvar = expr;
       +type-i = e.expr.type();
-      if (type-i == #nil) {
+      if type-i == #nil {
          C.out.printf("%s:%u:%u - %u:%u Cannot get member '.%s' from an expression of unknown type\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, e.member.str());
          return;
       }
       +type = type-i.ptr();
-      if (type.def != #struct) {
+      if type.def != #struct {
          C.out.printf("%s:%u:%u - %u:%u Cannot get member '.%s' because the type is not a struct or union\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, e.member.str());
          return;
       }
-      if !(e.expr.value(1 - type-i.pointer(), true, e.val)) { return }
-      if (e.val.info.array-c > 0) {
+      if !e.expr.value(1 - type-i.pointer(), true, e.val) { return }
+      if e.val.info.array-c > 0 {
          C.out.printf("%s:%u:%u - %u:%u Cannot get member '.%s' because the expression is an array(%d)\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, e.member.str(), e.val.info.array-c);
          return;
       }
-      if (type.decl.struct == #nil) {
+      if type.decl.struct == #nil {
          C.out.printf("%s:%u:%u - %u:%u Cannot get member '.%s' because the type '/%s' was not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, e.member.str(), type.name.id.str());
          return;
       }
@@ -66,7 +66,7 @@ using (ExprI) {
       +struct = struct-i.ptr();
       +member = e.member;
       loop i = 0:Fvar; struct.fvar-c; i++ {
-         if (struct.fvar-v[i].decl.name == member) {
+         if struct.fvar-v[i].decl.name == member {
             e.fvar = i;
             ok = true;
             return;

@@ -14,17 +14,17 @@ Enum[#nil = -1, #0, #1]:i32 {
       +num = e-i:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      if ((.enum-is-outputted[n3] & n17) != 0) { return }
+      if (.enum-is-outputted[n3] & n17) != 0 { return }
       .enum-is-outputted[n3] |= n17;
       +e = e-i.ptr();
 
       e.base-type.output(e.file, e.begin-row, e.begin-col);
 
-      if (e.include != #nil) {
+      if e.include != #nil {
          e.include.output();
       }
 
-      // if ((e.flags & #no-decl) == #0) {
+      // if (e.flags & #no-decl) == #0 {
          .enum-outputted-v[.enum-outputted-c++] = e-i;
       // }
    }
@@ -51,7 +51,7 @@ var decl-enum-flags:EnumFlags;
 var decl-enum-last-cvar:Cvar;
 decl-var-as-evar() {
    +evar = .decl-evar-c++;
-   if (.decl-evar-cap <= .decl-evar-c) {
+   if .decl-evar-cap <= .decl-evar-c {
       grow(.decl-evar-cap, .decl-evar-c);
       realloc(.decl-evar-v, .decl-evar-cap);
    }
@@ -73,7 +73,7 @@ decl-at-begin-enum(name:Id, row:i32, col:i32) {
    //    +at = at-i.ptr();
    //    C.out.printf("- %s\n", at.name.id.str());
    //    at-i = at.parent;
-   //    if (at-i == #root) { break }
+   //    if at-i == #root { break }
    // }
 }
 enum-base-begin() {
@@ -84,7 +84,7 @@ enum-base-begin() {
 // }
 decl-enum-end(base-type:At, row:i32, col:i32) {
    +s-idx = .enum-c++;
-   if (.enum-cap <= .enum-c) {
+   if .enum-cap <= .enum-c {
       +old-cap = .enum-cap;
       grow(.enum-cap, .enum-c);
       realloc(.enum-v, .enum-cap, old-cap);
@@ -115,7 +115,7 @@ var last-cvar:Cvar;
 enum-add-cvar(name:Id, row:i32, col:i32) {
    +c-idx = .cvar-c++;
    .last-cvar = c-idx;
-   if (.cvar-cap <= .cvar-c) {
+   if .cvar-cap <= .cvar-c {
       +old-cap = .cvar-cap;
       grow(.cvar-cap, .cvar-c);
       realloc(.cvar-v, .cvar-cap, old-cap);
@@ -135,7 +135,7 @@ enum-add-cvar(name:Id, row:i32, col:i32) {
 decl-add-cvar(name:Id, row:i32, col:i32) {
    +c-idx = .cvar-c++;
    .last-cvar = c-idx;
-   if (.cvar-cap <= .cvar-c) {
+   if .cvar-cap <= .cvar-c {
       +old-cap = .cvar-cap;
       grow(.cvar-cap, .cvar-c);
       realloc(.cvar-v, .cvar-cap, old-cap);

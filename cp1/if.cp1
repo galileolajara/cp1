@@ -40,7 +40,7 @@ using (Stmt) {
    write-if(stmt:Stmt) @case.write() @inline {
       var s:StmtIf = stmt;
       +e = s.expr.ptr();
-      if (s.not) {
+      if s.not {
          .out.printf("if(!(");
          s.expr.write-value(s.val);
          .out.printf(")) {\n");
@@ -52,14 +52,14 @@ using (Stmt) {
    }
    process-if(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtIf = stmt;
-      if !(s.expr.value(1, false, s.val)) {
+      if !s.expr.value(1, false, s.val) {
          return;
       }
       ok = true;
    }
    write-if-elif(stmt:Stmt) @case.write() @inline {
       var s:StmtIfElif = stmt;
-      if (s.not) {
+      if s.not {
          .out.printf("} else if(!(");
          s.expr.write-value(s.val);
          .out.printf(")) {\n");
@@ -71,7 +71,7 @@ using (Stmt) {
    }
    process-if-elif(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtIfElif = stmt;
-      if !(s.expr.value(1, false, s.val)) {
+      if !s.expr.value(1, false, s.val) {
          return;
       }
       ok = true;

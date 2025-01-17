@@ -31,7 +31,7 @@ Wtr(
       w.pos += size;
    }
    b(w:this, val:bool) @inline {
-      if (val) { w.n1(1) }
+      if val { w.n1(1) }
        else { w.n1(0) }
    }
 }

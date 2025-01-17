@@ -10,7 +10,7 @@ Animal(type:AnimalType) { // a struct with a method
       // a switch statement that collects methods that
       // begins with "emit-sound-" then automatically
       // puts a case below for each match
-      switch (a.type).emit-sound(a) {
+      switch.emit-sound(a) a.type {
       }
    }
 }
