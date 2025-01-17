@@ -104,9 +104,9 @@ export() {
    stmt-if-begin();
    stmt-if-set(#nil, 0, 0, 0, 0);
    stmt-if-end();
-   stmt-do-begin();
-   stmt-do-set(#nil, 0, 0, 0, 0, null);
-   stmt-do-end();
+   stmt-loop-begin();
+   stmt-loop-set(#nil, 0, 0, 0, 0, null);
+   stmt-loop-end();
    stmt-elif-begin();
    stmt-elif-set(#nil, 0, 0, 0, 0);
    stmt-elif-end();

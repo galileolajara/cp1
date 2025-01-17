@@ -3,7 +3,7 @@ using C = LibC;
 using (Cp1) {
 StmtType[
    #space, #if, #if-elif, #if-else, #if-end,
-   #do, #do-end, #while, #while-end,
+   #loop, #loop-end, #while, #while-end,
    #expr, #return, #continue, #break,
    #switch, #case, #default, #case-end, #default-end, #switch-end,
    #nil = 255,
