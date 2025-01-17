@@ -136,12 +136,12 @@ exit(_NLibC_NExit_Cfailure);
 }
 _Lc_path_13 = _Larg_v_1[2];
 _Lc_path_len_14 = strlen(_Lc_path_13);
-if(!(((_Lc_path_len_14 > 2) && (_Lc_path_13[(_Lc_path_len_14 - 2)] == '.') && (_Lc_path_13[(_Lc_path_len_14 - 1)] == 'c')))) {
+if(!((_Lc_path_len_14 > 2) && (_Lc_path_13[(_Lc_path_len_14 - 2)] == '.') && (_Lc_path_13[(_Lc_path_len_14 - 1)] == 'c'))) {
 _Pprint_c_usage_1(_Lbin_2);
 printf("Error, [output.c] (which is '%s') must be a filename that ends with '.c', for example: main.c\n", _Lc_path_13);
 exit(_NLibC_NExit_Cfailure);
 }
-if(!(_Pvalidate_cp1_paths_5(3, _Larg_c_0, _Larg_v_1, _Lbin_2, _NCmd_Cc))) {
+if(!_Pvalidate_cp1_paths_5(3, _Larg_c_0, _Larg_v_1, _Lbin_2, _NCmd_Cc)) {
 _Pprint_command_2(_Larg_c_0, _Larg_v_1);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -200,7 +200,7 @@ if(_Larg_c_0 < 3) {
 _Pprint_run_usage_1(_Lbin_2);
 exit(_NLibC_NExit_Cfailure);
 }
-if(!(_Pvalidate_cp1_paths_5(2, _Larg_c_0, _Larg_v_1, _Lbin_2, _NCmd_Crun))) {
+if(!_Pvalidate_cp1_paths_5(2, _Larg_c_0, _Larg_v_1, _Lbin_2, _NCmd_Crun)) {
 _Pprint_command_2(_Larg_c_0, _Larg_v_1);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -343,12 +343,12 @@ continue_2:;
 _Lj_9++;
 }
 break_2:;
-if(!(((_Lcp1_path_len_7 > 4) && (_Lcp1_path_6[(_Lcp1_path_len_7 - 4)] == '.') && (_Lcp1_path_6[(_Lcp1_path_len_7 - 3)] == 'c') && (_Lcp1_path_6[(_Lcp1_path_len_7 - 2)] == 'p') && (_Lcp1_path_6[(_Lcp1_path_len_7 - 1)] == '1')))) {
+if(!((_Lcp1_path_len_7 > 4) && (_Lcp1_path_6[(_Lcp1_path_len_7 - 4)] == '.') && (_Lcp1_path_6[(_Lcp1_path_len_7 - 3)] == 'c') && (_Lcp1_path_6[(_Lcp1_path_len_7 - 2)] == 'p') && (_Lcp1_path_6[(_Lcp1_path_len_7 - 1)] == '1'))) {
 _Pprint_usage_2(_Lbin_3, _Lcmd_4);
 printf("Error, [cp1 file] (which is '%s') must be a filename that ends with '.cp1', for example: main.cp1\n", _Lcp1_path_6);
 exit(_NLibC_NExit_Cfailure);
 }
-if(!(_Pcp1_path_input_4(_Lcp1_path_6, _Lcp1_path_len_7, _Lbin_3, _Lcmd_4))) {
+if(!_Pcp1_path_input_4(_Lcp1_path_6, _Lcp1_path_len_7, _Lbin_3, _Lcmd_4)) {
 _Pprint_usage_2(_Lbin_3, _Lcmd_4);
 return false;
 }
@@ -459,7 +459,7 @@ continue_0:;
 _Li_4++;
 }
 break_0:;
-if(!(_NLibC_NFd_Popen_3(&_Lfd_5, _Lcp1_path_0, O_RDONLY))) {
+if(!_NLibC_NFd_Popen_3(&_Lfd_5, _Lcp1_path_0, O_RDONLY)) {
 printf("Error, [cp1 file] (which is '%s') cannot be opened for reading\n", _Lcp1_path_0);
 return false;
 }
@@ -468,7 +468,7 @@ lseek(_Lfd_5, 0, SEEK_SET);
 _Ldata_7 = malloc(_Llen_6);
 read(_Lfd_5, _Ldata_7, _Llen_6);
 _NLibC_NFd_Pclose_1(_Lfd_5);
-if(!(((_Llen_6 > 0) && (_Ldata_7[(_Llen_6 - 1)] == '\n')))) {
+if(!((_Llen_6 > 0) && (_Ldata_7[(_Llen_6 - 1)] == '\n'))) {
 printf("Error, [cp1 file] (which is '%s') must end a new line\n", _Lcp1_path_0);
 return false;
 }
@@ -532,7 +532,7 @@ _Ltmp_path_dup_15 = malloc(17);
 memcpy(_Ltmp_path_dup_15, _Ltmp_path_13, 17);
 _Patexit_rm_1(_Ltmp_path_dup_15);
 _Pcp1_path_add_4(_Ltmp_path_dup_15, 16, _Lcp1_path_0, _Lcp1_path_len_1);
-if(!(_NLibC_NFd_Popen_3(&_Lfd_5, _Ltmp_path_dup_15, O_RDONLY))) {
+if(!_NLibC_NFd_Popen_3(&_Lfd_5, _Ltmp_path_dup_15, O_RDONLY)) {
 printf("Error, cannot open file for reading: %s\n", _Ltmp_path_13);
 return false;
 }
@@ -656,7 +656,7 @@ _Limport_path_26[_Limport_path_len_23++] = 'c';
 _Limport_path_26[_Limport_path_len_23++] = 'p';
 _Limport_path_26[_Limport_path_len_23++] = '1';
 _Limport_path_26[_Limport_path_len_23] = '\0';
-if(!(_Pcp1_path_input_4(_Limport_path_26, _Limport_path_len_23, _Lbin_2, _Lcmd_3))) {
+if(!_Pcp1_path_input_4(_Limport_path_26, _Limport_path_len_23, _Lbin_2, _Lcmd_3)) {
 printf("Error from #import \"%.*s\" at file '%s' line %u\n", _Limport_path_len_23 - 4, _Limport_22, _Lcp1_path_0, _Lline_9);
 return false;
 }
@@ -720,7 +720,7 @@ continue_13:;
 _Lj_34++;
 }
 break_13:;
-if(!(_Lfound_33)) {
+if(!_Lfound_33) {
 int32_t _Li_35;
 char* _Lpath_36;
 char _Lspec_path_37[128];
@@ -752,7 +752,7 @@ continue_14:;
 _Li_38++;
 }
 break_14:;
-if(!(_NLibC_NFd_Popen_3(&_Lspec_fd_39, _Lspec_path_37, O_RDONLY))) {
+if(!_NLibC_NFd_Popen_3(&_Lspec_fd_39, _Lspec_path_37, O_RDONLY)) {
 printf("%s:%u: #include <%s> failed because '%s' does not exists\n", _Lcp1_path_0, _Lline_9, _Lpath_36, _Lspec_path_37);
 return false;
 }

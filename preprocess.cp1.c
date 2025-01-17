@@ -115,7 +115,7 @@ if((_Larg_c_0 - _Li_2) != 2) {
 goto usage;
 }
 _Ginput_path = _Larg_v_1[_Li_2];
-if(!(_NLibC_NFd_Popen_3(&_Lin_fd_5, _Larg_v_1[_Li_2], O_RDONLY))) {
+if(!_NLibC_NFd_Popen_3(&_Lin_fd_5, _Larg_v_1[_Li_2], O_RDONLY)) {
 printf("Cannot open file for reading: %s\n", _Larg_v_1[_Li_2]);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -126,7 +126,7 @@ read(_Lin_fd_5, _Lin_data_7, _Lin_size_6);
 _NLibC_NFd_Pclose_1(_Lin_fd_5);
 _NCp1_Ppreprocess_init_0();
 _NCp1_Ppreprocess_2(&_Lin_data_7, &_Lin_size_6);
-if(!(_NLibC_NFd_Popen_4(&_Lout_fd_8, _Larg_v_1[(_Li_2 + 1)], O_CREAT | O_TRUNC | O_WRONLY, 32676))) {
+if(!_NLibC_NFd_Popen_4(&_Lout_fd_8, _Larg_v_1[(_Li_2 + 1)], O_CREAT | O_TRUNC | O_WRONLY, 32676)) {
 printf("Cannot open file for writing: %s\n", _Larg_v_1[(_Li_2 + 1)]);
 exit(_NLibC_NExit_Cfailure);
 }

@@ -1266,7 +1266,7 @@ _Gprocess_first = _NCp1_NFunc_Cnil;
 _Gprocess_last = _NCp1_NFunc_Cnil;
 while(1) {
 struct _NCp1_NDeclFunc* _Lf_30;
-if(!(_NCp1_NFunc_Pprocess_now_1(_Lf_i_29))) {
+if(!_NCp1_NFunc_Pprocess_now_1(_Lf_i_29)) {
 return -1;
 }
 _Lf_30 = _NCp1_NFunc_Pptr_1(_Lf_i_29);
@@ -1299,7 +1299,7 @@ _NCp1_NLvar _Ll_34;
 _Ll_34 = (_NCp1_NLvar)(0);
 for(int i = (*_Lf_33)._Flvar_c; i > 0; ) {
 i --;
-if(!(_NCp1_NLvar_Pprocess_1(_Ll_34))) {
+if(!_NCp1_NLvar_Pprocess_1(_Ll_34)) {
 exit(_NLibC_NExit_Cfailure);
 }
 continue_7:;
@@ -1659,7 +1659,7 @@ _NCp1_NStruct _Ls_idx_begin_56;
 _NCp1_NFunc _Lfunc_c_65;
 _NCp1_NFunc _Lf_idx_begin_66;
 _NCp1_NFunc _Lfunc_main_82;
-if(!(_NLibC_NFd_Popen_3(&_Lin_fd_1, _Lin_path_0, O_RDONLY))) {
+if(!_NLibC_NFd_Popen_3(&_Lin_fd_1, _Lin_path_0, O_RDONLY)) {
 fprintf(stdout, "Cannot open file for reading: %s\n", _Lin_path_0);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -2221,7 +2221,7 @@ _Gctx_begin_row = (*_Ls_4)._Fbegin_row;
 _Gctx_begin_col = (*_Ls_4)._Fbegin_col;
 _Gctx_end_row = (*_Ls_4)._Fend_row;
 _Gctx_end_col = (*_Ls_4)._Fend_col;
-if(!(_NCp1_NStmt_Pprocess_1(_Ls_4))) {
+if(!_NCp1_NStmt_Pprocess_1(_Ls_4)) {
 return false;
 }
 _Ls_4 = (*_Ls_4)._Fstmt_next;
@@ -2245,7 +2245,7 @@ _Lat_i_2 = (*_Llvar_1)._Fdecl._Ftype;
 if(_Lat_i_2 == _NCp1_NAt_Cnil) {
 if(((*_Llvar_1)._Fflags & _NCp1_NLvarFlags_Cset_expr) != _NCp1_NLvarFlags_C0) {
 struct _NCp1_NValue _Lv_3;
-if(!(_NCp1_NExprI_Pvalue_4((*_Llvar_1)._Fset_expr, 1, false, &_Lv_3))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Llvar_1)._Fset_expr, 1, false, &_Lv_3)) {
 return false;
 }
 (*_Llvar_1)._Fdecl._Ftype = _Lv_3._Ftype;
@@ -2345,11 +2345,11 @@ return true;
 _Gcvar_is_outputted[_Ln3_2] |= _Ln17_3;
 _Lcvar_4 = _NCp1_NCvar_Pptr_1(_Lc_0);
 if(((*_Lcvar_4)._Fflags & _NCp1_NCvarFlags_Cset_expr) != _NCp1_NCvarFlags_C0) {
-if(!(_NCp1_NExprI_Pprocess_1((*_Lcvar_4)._Fexpr_set))) {
+if(!_NCp1_NExprI_Pprocess_1((*_Lcvar_4)._Fexpr_set)) {
 return false;
 }
 } else if((*_Lcvar_4)._Flast_cvar != _NCp1_NCvar_Cnil) {
-if(!(_NCp1_NCvar_Pprocess_1((*_Lcvar_4)._Flast_cvar))) {
+if(!_NCp1_NCvar_Pprocess_1((*_Lcvar_4)._Flast_cvar)) {
 return false;
 }
 }
@@ -3215,7 +3215,7 @@ default:;
 fprintf(stdout, "%s:%u:%u - %u:%u: process() is not implemented in statement #%s\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), (*_Ls_0)._Fbegin_row, (*_Ls_0)._Fbegin_col, (*_Ls_0)._Fend_row, (*_Ls_0)._Fend_col, _NCp1_NStmtType_Pcp1_name_1((*_Ls_0)._Ftype));
 break;
 }
-if(!(_Lok_1)) {
+if(!_Lok_1) {
 fprintf(stdout, "%s:%u:%u - %u:%u: Processing of statement #%s failed\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), (*_Ls_0)._Fbegin_row, (*_Ls_0)._Fbegin_col, (*_Ls_0)._Fend_row, (*_Ls_0)._Fend_col, _NCp1_NStmtType_Pcp1_name_1((*_Ls_0)._Ftype));
 }
 return _Lok_1;
@@ -3226,7 +3226,7 @@ return &(*_Gctx_func)._Flvar_v[_Ll_0];
 bool _NCp1_NExprI_Pvalue_4(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3) {
 struct _NCp1_NExpr* _Lexpr_4;
 bool _Lok_5;
-if(!(_NCp1_NExprI_Pprocess_1(_Le_0))) {
+if(!_NCp1_NExprI_Pprocess_1(_Le_0)) {
 return false;
 }
 _Lexpr_4 = _NCp1_NExprI_Pptr_1(_Le_0);
@@ -3322,14 +3322,14 @@ fprintf(stdout, "%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n",
 return false;
 }
 _NCp1_NAt_Poutput_4(_Lat_i_5, (*_Gctx_func)._Ffile, _Lrow_2, _Lcol_3);
-if(!(_NCp1_NAt_Pfinalize_4(_Lat_i_5, &(*_Lvd_0)._Ftype_info, _Lrow_2, _Lcol_3))) {
+if(!_NCp1_NAt_Pfinalize_4(_Lat_i_5, &(*_Lvd_0)._Ftype_info, _Lrow_2, _Lcol_3)) {
 return false;
 }
 int32_t _Li_7;
 _Li_7 = 0;
 for(int i = (*_Lvd_0)._Fsize_c; i > 0; ) {
 i --;
-if(!(_NCp1_NExprI_Pvalue_4((*_Lvd_0)._Fsize_expr_v[_Li_7], 1, false, &(*_Lvd_0)._Fsize_value_v[_Li_7]))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Lvd_0)._Fsize_expr_v[_Li_7], 1, false, &(*_Lvd_0)._Fsize_value_v[_Li_7])) {
 return false;
 }
 continue_0:;
@@ -3364,7 +3364,7 @@ _Li_9 = 0;
 for(int i = (*_Ls_4)._Ffvar_c; i > 0; ) {
 i --;
 (*_Ls_4)._Ffvar_v[_Li_9]._Fdecl._Ftype = _NCp1_Pat_validate_5((*_Ls_4)._Ffvar_v[_Li_9]._Fdecl._Ftype, _Ls_at_5, _Ls_file_6, _Ls_row_7, _Ls_col_8);
-if(!(_NCp1_NDeclVarData_Pprocess_5(&(*_Ls_4)._Ffvar_v[_Li_9]._Fdecl, _Ls_file_6, _Ls_row_7, _Ls_col_8, _Ls_at_5))) {
+if(!_NCp1_NDeclVarData_Pprocess_5(&(*_Ls_4)._Ffvar_v[_Li_9]._Fdecl, _Ls_file_6, _Ls_row_7, _Ls_col_8, _Ls_at_5)) {
 fprintf(stdout, "err\n");
 exit(_NLibC_NExit_Cfailure);
 return;
@@ -3484,7 +3484,7 @@ fprintf(stdout, "%s:%u:%u - %u:%u: process() not implemented for expression #%s\
 return false;
 break;
 }
-if(!(_Lok_5)) {
+if(!_Lok_5) {
 fprintf(stdout, "%s:%u:%u - %u:%u: Processing of expression #%s failed\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _NCp1_NExprType_Pcp1_name_1((*_Lexpr_4)._Ftype));
 }
 return _Lok_5;
@@ -4189,7 +4189,7 @@ continue_1:;
 _Li_7++;
 }
 break_1:;
-if(!(_Ltry_parent_5)) {
+if(!_Ltry_parent_5) {
 goto break_0;
 }
 if(_Lat_idx_3 == _NCp1_NAt_Croot) {
@@ -4512,7 +4512,7 @@ _NCp1_NStmtSpace_Pstmt_push_7(_Lspace_0, &(*_Ls_2)._Fbase, _Gctx_begin_row, _Gct
 inline void _NCp1_NStmt_Pprocess_expr_2(struct _NCp1_NStmt* _Lstmt_0, bool* _Lok_1) {
 struct _NCp1_NStmtExpr* _Ls_2;
 _Ls_2 = _Lstmt_0;
-if(!(_NCp1_NExprI_Pprocess_1((*_Ls_2)._Fexpr))) {
+if(!_NCp1_NExprI_Pprocess_1((*_Ls_2)._Fexpr)) {
 return;
 }
 (*_Lok_1) = true;
@@ -4520,7 +4520,7 @@ return;
 inline void _NCp1_NStmt_Pprocess_if_2(struct _NCp1_NStmt* _Lstmt_0, bool* _Lok_1) {
 struct _NCp1_NStmtIf* _Ls_2;
 _Ls_2 = _Lstmt_0;
-if(!(_NCp1_NExprI_Pvalue_4((*_Ls_2)._Fexpr, 1, false, &(*_Ls_2)._Fval))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Ls_2)._Fexpr, 1, false, &(*_Ls_2)._Fval)) {
 return;
 }
 (*_Lok_1) = true;
@@ -4528,7 +4528,7 @@ return;
 inline void _NCp1_NStmt_Pprocess_if_elif_2(struct _NCp1_NStmt* _Lstmt_0, bool* _Lok_1) {
 struct _NCp1_NStmtIfElif* _Ls_2;
 _Ls_2 = _Lstmt_0;
-if(!(_NCp1_NExprI_Pvalue_4((*_Ls_2)._Fexpr, 1, false, &(*_Ls_2)._Fval))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Ls_2)._Fexpr, 1, false, &(*_Ls_2)._Fval)) {
 return;
 }
 (*_Lok_1) = true;
@@ -4547,7 +4547,7 @@ inline void _NCp1_NStmt_Pprocess_switch_2(struct _NCp1_NStmt* _Lstmt_0, bool* _L
 struct _NCp1_NStmtSwitch* _Ls_2;
 _Ls_2 = _Lstmt_0;
 _Gswitch_stack_v[_Gswitch_stack_c++] = _Ls_2;
-if(!(_NCp1_NExprI_Pvalue_4((*_Ls_2)._Fexpr, 1, false, &(*_Ls_2)._Fval))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Ls_2)._Fexpr, 1, false, &(*_Ls_2)._Fval)) {
 return;
 }
 if((*_Ls_2)._Fval._Ftype == _NCp1_NAt_Cnil) {
@@ -4602,7 +4602,7 @@ if(_Lcase_c_7 > 0) {
 char* _Lfunc_name_str_15;
 uint8_t _Lfunc_name_len_16;
 struct _NCp1_NStmtSwitchCaseFunc* _Lfunc_v_17;
-if(!(_NCp1_NExprI_Pprocess_case_func_2(_NCp1_NExprI_Pptr_1((*_Ls_2)._Fcases), _Lcase_v_9[0]))) {
+if(!_NCp1_NExprI_Pprocess_case_func_2(_NCp1_NExprI_Pptr_1((*_Ls_2)._Fcases), _Lcase_v_9[0])) {
 return;
 }
 _Lfunc_name_str_15 = _NCp1_NId_Pstr_1(_Lfunc_name_5);
@@ -4664,7 +4664,7 @@ if(_Lfound_cvar_26 == _NCp1_NCvar_Cnil) {
 fprintf(stdout, "%s:%u:%u: Cannot find a case for cvar named '#%s'\n", _NCp1_NFile_Ppath_1((*_Lfunc_20)._Ffile), (*_Lfunc_20)._Fbegin_row, (*_Lfunc_20)._Fbegin_col, _Lcvar_name_str_22);
 return;
 }
-if(!(_NCp1_NCvar_Pprocess_1(_Lfound_cvar_26))) {
+if(!_NCp1_NCvar_Pprocess_1(_Lfound_cvar_26)) {
 return;
 }
 _NCp1_NFunc_Pprocess_later_1(_Lfunc_i_19);
@@ -4717,7 +4717,7 @@ for(int i = (*_Ls_2)._Fexpr_c; i > 0; ) {
 i --;
 _NCp1_NExprI _Le_i_11;
 _Le_i_11 = (*_Ls_2)._Fexpr_v[_Li_10]._Fexpr;
-if(!(_NCp1_NExprI_Pvalue_4(_Le_i_11, 1, true, &(*_Ls_2)._Fexpr_v[_Li_10]._Fval))) {
+if(!_NCp1_NExprI_Pvalue_4(_Le_i_11, 1, true, &(*_Ls_2)._Fexpr_v[_Li_10]._Fval)) {
 return;
 }
 continue_1:;
@@ -4749,7 +4749,7 @@ inline void _NCp1_NStmt_Pprocess_do_2(struct _NCp1_NStmt* _Lstmt_0, bool* _Lok_1
 struct _NCp1_NStmtDo* _Ls_2;
 _Ls_2 = _Lstmt_0;
 if((*_Ls_2)._Fexpr != _NCp1_NExprI_Cnil) {
-if(!(_NCp1_NExprI_Pvalue_4((*_Ls_2)._Fexpr, 1, false, &(*_Ls_2)._Fval))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Ls_2)._Fexpr, 1, false, &(*_Ls_2)._Fval)) {
 return;
 }
 }
@@ -4780,7 +4780,7 @@ struct _NCp1_NStmtReturn* _Ls_2;
 _Ls_2 = _Lstmt_0;
 if((*_Ls_2)._Fexpr != _NCp1_NExprI_Cnil) {
 _NCp1_NExprI_Ptry_deduce_2((*_Ls_2)._Fexpr, (*_Gctx_func)._Fdecl._Ftype);
-if(!(_NCp1_NExprI_Pvalue_4((*_Ls_2)._Fexpr, 1 + (*_Gctx_func)._Fdecl._Ftype_info._Fref_v[(*_Gctx_func)._Fdecl._Ftype_info._Farray_c], false, &(*_Ls_2)._Fval))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Ls_2)._Fexpr, 1 + (*_Gctx_func)._Fdecl._Ftype_info._Fref_v[(*_Gctx_func)._Fdecl._Ftype_info._Farray_c], false, &(*_Ls_2)._Fval)) {
 return;
 }
 }
@@ -4789,7 +4789,7 @@ return;
 inline void _NCp1_NStmt_Pprocess_space_2(struct _NCp1_NStmt* _Lstmt_0, bool* _Lok_1) {
 struct _NCp1_NStmtSpace* _Lspace_2;
 _Lspace_2 = _Lstmt_0;
-if(!(_NCp1_NStmtSpace_Pprocess_1(_Lspace_2))) {
+if(!_NCp1_NStmtSpace_Pprocess_1(_Lspace_2)) {
 return;
 }
 (*_Lok_1) = true;
@@ -4839,7 +4839,7 @@ _NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
 inline void _NCp1_NExprI_Pvalue_math_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
 struct _NCp1_NExprMath* _Lexpr_5;
 _Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
-if(!(_NCp1_NExprI_Pvalue_4((*_Lexpr_5)._Fleft, 1, _Lparen_2, _Lv_3))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Lexpr_5)._Fleft, 1, _Lparen_2, _Lv_3)) {
 return;
 }
 (*_Lv_3)._Fparen = _Lparen_2;
@@ -5022,7 +5022,7 @@ _Lleft_4 = _Lleft_e_3;
 _Llvar_5 = _NCp1_NLvar_Pptr_1((*_Lleft_4)._Flvar);
 if((*_Llvar_5)._Fdecl._Ftype == _NCp1_NAt_Cnil) {
 struct _NCp1_NAtData* _Lat_6;
-if(!(_NCp1_NExprI_Pvalue_4((*_Le_2)._Fright, 1, true, &(*_Le_2)._Fright_val))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fright, 1, true, &(*_Le_2)._Fright_val)) {
 return;
 }
 (*_Llvar_5)._Fdecl._Ftype = (*_Le_2)._Fright_val._Ftype;
@@ -5034,11 +5034,11 @@ _NCp1_NExprI_Pvalue_4((*_Le_2)._Fleft, 1, true, &(*_Le_2)._Fleft_val);
 return;
 }
 }
-if(!(_NCp1_NExprI_Pvalue_4((*_Le_2)._Fleft, 1, true, &(*_Le_2)._Fleft_val))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fleft, 1, true, &(*_Le_2)._Fleft_val)) {
 return;
 }
 _NCp1_NExprI_Ptry_deduce_2((*_Le_2)._Fright, _NCp1_NExprI_Ptype_1((*_Le_2)._Fleft));
-if(!(_NCp1_NExprI_Pvalue_4((*_Le_2)._Fright, 1, true, &(*_Le_2)._Fright_val))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fright, 1, true, &(*_Le_2)._Fright_val)) {
 return;
 }
 (*_Lok_1) = true;
@@ -5046,11 +5046,11 @@ return;
 inline void _NCp1_NExprI_Pprocess_compare_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
 struct _NCp1_NExprCompare* _Le_2;
 _Le_2 = _Lexpr_0;
-if(!(_NCp1_NExprI_Pvalue_4((*_Le_2)._Fleft, 1, true, &(*_Le_2)._Fleft_val))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fleft, 1, true, &(*_Le_2)._Fleft_val)) {
 return;
 }
 _NCp1_NExprI_Ptry_deduce_2((*_Le_2)._Fright, (*_Le_2)._Fleft_val._Ftype);
-if(!(_NCp1_NExprI_Pvalue_4((*_Le_2)._Fright, 1, true, &(*_Le_2)._Fright_val))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fright, 1, true, &(*_Le_2)._Fright_val)) {
 return;
 }
 (*_Lok_1) = true;
@@ -5065,11 +5065,11 @@ inline void _NCp1_NExprI_Pprocess_char_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lo
 inline void _NCp1_NExprI_Pprocess_math_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
 struct _NCp1_NExprMath* _Le_2;
 _Le_2 = _Lexpr_0;
-if(!(_NCp1_NExprI_Pvalue_4((*_Le_2)._Fleft, 1, true, &(*_Le_2)._Fleft_val))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fleft, 1, true, &(*_Le_2)._Fleft_val)) {
 return;
 }
 _NCp1_NExprI_Ptry_deduce_2((*_Le_2)._Fright, (*_Le_2)._Fleft_val._Ftype);
-if(!(_NCp1_NExprI_Pvalue_4((*_Le_2)._Fright, 1, true, &(*_Le_2)._Fright_val))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fright, 1, true, &(*_Le_2)._Fright_val)) {
 return;
 }
 int32_t _Li_3;
@@ -5078,7 +5078,7 @@ for(int i = (*_Le_2)._Fitem_c; i > 0; ) {
 i --;
 struct _NCp1_NExprMathItem* _Litem_4;
 _Litem_4 = (&(*_Le_2)._Fitem_v[_Li_3]);
-if(!(_NCp1_NExprI_Pvalue_4((*_Litem_4)._Fexpr, 1, true, &(*_Litem_4)._Fval))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Litem_4)._Fexpr, 1, true, &(*_Litem_4)._Fval)) {
 return;
 }
 continue_0:;
@@ -5090,7 +5090,7 @@ break_0:;
 inline void _NCp1_NExprI_Pprocess_unary_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
 struct _NCp1_NExprUnary* _Le_2;
 _Le_2 = _Lexpr_0;
-if(!(_NCp1_NExprI_Pvalue_4((*_Le_2)._Fexpr, 1, true, &(*_Le_2)._Fval))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fexpr, 1, true, &(*_Le_2)._Fval)) {
 return;
 }
 (*_Lok_1) = true;
@@ -5098,7 +5098,7 @@ return;
 inline void _NCp1_NExprI_Pprocess_ref_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
 struct _NCp1_NExprRef* _Le_2;
 _Le_2 = _Lexpr_0;
-if(!(_NCp1_NExprI_Pvalue_4((*_Le_2)._Fexpr, 2, false, &(*_Le_2)._Fval))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fexpr, 2, false, &(*_Le_2)._Fval)) {
 return;
 }
 (*_Lok_1) = true;
@@ -5106,7 +5106,7 @@ return;
 inline void _NCp1_NExprI_Pprocess_cast_fast_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
 struct _NCp1_NExprCastFast* _Le_2;
 _Le_2 = _Lexpr_0;
-if(!(_NCp1_NExprI_Pvalue_4((*_Le_2)._Fexpr, 1, false, &(*_Le_2)._Fval))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fexpr, 1, false, &(*_Le_2)._Fval)) {
 return;
 }
 (*_Le_2)._Ftype = _NCp1_Pat_validate_5((*_Le_2)._Ftype, (*_Gctx_func)._Fat, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gctx_begin_col);
@@ -5116,7 +5116,7 @@ _NCp1_NAt_Poutput_4((*_Le_2)._Ftype, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gct
 inline void _NCp1_NExprI_Pprocess_lvar_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
 struct _NCp1_NExprLvar* _Le_2;
 _Le_2 = _Lexpr_0;
-if(!(_NCp1_NLvar_Pprocess_1((*_Le_2)._Flvar))) {
+if(!_NCp1_NLvar_Pprocess_1((*_Le_2)._Flvar)) {
 return;
 }
 (*_Lok_1) = true;
@@ -5139,7 +5139,7 @@ if((*_Ltype_4)._Fdef != _NCp1_NAtDef_Cstruct) {
 fprintf(stdout, "%s:%u:%u - %u:%u Cannot get member '.%s' because the type is not a struct or union\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _NCp1_NId_Pstr_1((*_Le_2)._Fmember));
 return;
 }
-if(!(_NCp1_NExprI_Pvalue_4((*_Le_2)._Fexpr, 1 - _NCp1_NAt_Ppointer_1(_Ltype_i_3), true, &(*_Le_2)._Fval))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fexpr, 1 - _NCp1_NAt_Ppointer_1(_Ltype_i_3), true, &(*_Le_2)._Fval)) {
 return;
 }
 if((*_Le_2)._Fval._Finfo._Farray_c > 0) {
@@ -5172,7 +5172,7 @@ fprintf(stdout, "%s:%u:%u - %u:%u Cannot find member named '.%s' from type '/%s'
 inline void _NCp1_NExprI_Pprocess_gvar_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
 struct _NCp1_NExprGvar* _Le_2;
 _Le_2 = _Lexpr_0;
-if(!(_NCp1_NGvar_Pprocess_1((*_Le_2)._Fgvar))) {
+if(!_NCp1_NGvar_Pprocess_1((*_Le_2)._Fgvar)) {
 return;
 }
 (*_Lok_1) = true;
@@ -5199,7 +5199,7 @@ i --;
 _NCp1_NCvar _Lcvar_8;
 _Lcvar_8 = _Lcvar_v_5[_Li_7];
 if((*_NCp1_NCvar_Pptr_1(_Lcvar_8))._Fdecl._Fname == _Lname_3) {
-if(!(_NCp1_NCvar_Pprocess_1(_Lcvar_8))) {
+if(!_NCp1_NCvar_Pprocess_1(_Lcvar_8)) {
 return;
 }
 (*_Le_2)._Fcvar = _Lcvar_8;
@@ -5233,7 +5233,7 @@ i --;
 _NCp1_NCvar _Lcvar_13;
 _Lcvar_13 = _Lcvar_v_5[_Li_12];
 if((*_NCp1_NCvar_Pptr_1(_Lcvar_13))._Fdecl._Fname == _Lname_3) {
-if(!(_NCp1_NCvar_Pprocess_1(_Lcvar_13))) {
+if(!_NCp1_NCvar_Pprocess_1(_Lcvar_13)) {
 return;
 }
 (*_Le_2)._Fcvar = _Lcvar_13;
@@ -5244,7 +5244,7 @@ continue_2:;
 _Li_12++;
 }
 break_2:;
-if(!(_Ltry_parent_11)) {
+if(!_Ltry_parent_11) {
 goto break_1;
 }
 if(_Lat_idx_9 == _NCp1_NAt_Croot) {
@@ -5262,10 +5262,10 @@ fprintf(stdout, "%s:%u:%u - %u:%u: Cannot find #%s\n", _NCp1_NFile_Ppath_1((*_Gc
 inline void _NCp1_NExprI_Pprocess_bools_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
 struct _NCp1_NExprBools* _Le_2;
 _Le_2 = _Lexpr_0;
-if(!(_NCp1_NExprI_Pvalue_4((*_Le_2)._Fleft, 1, true, &(*_Le_2)._Fleft_val))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fleft, 1, true, &(*_Le_2)._Fleft_val)) {
 return;
 }
-if(!(_NCp1_NExprI_Pvalue_4((*_Le_2)._Fright, 1, true, &(*_Le_2)._Fright_val))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fright, 1, true, &(*_Le_2)._Fright_val)) {
 return;
 }
 int32_t _Li_3;
@@ -5274,7 +5274,7 @@ for(int i = (*_Le_2)._Fitem_c; i > 0; ) {
 i --;
 struct _NCp1_NExprBoolsItem* _Litem_4;
 _Litem_4 = (&(*_Le_2)._Fitem_v[_Li_3]);
-if(!(_NCp1_NExprI_Pvalue_4((*_Litem_4)._Fexpr, 1, true, &(*_Litem_4)._Fval))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Litem_4)._Fexpr, 1, true, &(*_Litem_4)._Fval)) {
 return;
 }
 continue_0:;
@@ -5413,7 +5413,7 @@ _Lj_23++;
 }
 break_2:;
 }
-if(!(_Lmatch_20)) {
+if(!_Lmatch_20) {
 goto continue_0;
 }
 _NCp1_NFunc_Pprocess_later_1(_Lf_idx_18);
@@ -5424,7 +5424,7 @@ for(int i = (*_Lf_19)._Fthis_idx; i > 0; ) {
 i --;
 struct _NCp1_NCarg* _Lca_27;
 _Lca_27 = (&(*_Le_2)._Fcarg_v[_Lk_26]);
-if(!(_NCp1_Pfarg_process_5((*_Lca_27)._Fexpr, (*_Lca_27)._Freff, &(*_Lca_27)._Fvalue, &(*_Lf_19)._Ffarg_v[_Lj_25]._Fdecl, _Lf_at_24))) {
+if(!_NCp1_Pfarg_process_5((*_Lca_27)._Fexpr, (*_Lca_27)._Freff, &(*_Lca_27)._Fvalue, &(*_Lf_19)._Ffarg_v[_Lj_25]._Fdecl, _Lf_at_24)) {
 return;
 }
 continue_3:;
@@ -5432,14 +5432,14 @@ _Lj_25++;
 _Lk_26++;
 }
 break_3:;
-if(!(_NCp1_Pfarg_process_5((*_Le_2)._Fthiss, 0, &(*_Le_2)._Fthis_value, &(*_Lf_19)._Ffarg_v[_Lj_25++]._Fdecl, _Lf_at_24))) {
+if(!_NCp1_Pfarg_process_5((*_Le_2)._Fthiss, 0, &(*_Le_2)._Fthis_value, &(*_Lf_19)._Ffarg_v[_Lj_25++]._Fdecl, _Lf_at_24)) {
 return;
 }
 for(int i = ((*_Lf_19)._Ffarg_c - 1) - (*_Lf_19)._Fthis_idx; i > 0; ) {
 i --;
 struct _NCp1_NCarg* _Lca_28;
 _Lca_28 = (&(*_Le_2)._Fcarg_v[_Lk_26]);
-if(!(_NCp1_Pfarg_process_5((*_Lca_28)._Fexpr, (*_Lca_28)._Freff, &(*_Lca_28)._Fvalue, &(*_Lf_19)._Ffarg_v[_Lj_25]._Fdecl, _Lf_at_24))) {
+if(!_NCp1_Pfarg_process_5((*_Lca_28)._Fexpr, (*_Lca_28)._Freff, &(*_Lca_28)._Fvalue, &(*_Lf_19)._Ffarg_v[_Lj_25]._Fdecl, _Lf_at_24)) {
 return;
 }
 continue_4:;
@@ -5459,7 +5459,7 @@ _Lr_30 = (1 + (*_Lca_29)._Freff);
 } else {
 _Lr_30 = 1;
 }
-if(!(_NCp1_NExprI_Pvalue_4((*_Lca_29)._Fexpr, _Lr_30, false, &(*_Lca_29)._Fvalue))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Lca_29)._Fexpr, _Lr_30, false, &(*_Lca_29)._Fvalue)) {
 return;
 }
 continue_5:;
@@ -5576,7 +5576,7 @@ _Lj_16++;
 }
 break_3:;
 }
-if(!(_Lmatch_13)) {
+if(!_Lmatch_13) {
 goto continue_1;
 }
 _NCp1_NFunc_Pprocess_later_1(_Lf_idx_11);
@@ -5586,7 +5586,7 @@ for(int i = (*_Lf_12)._Ffarg_c; i > 0; ) {
 i --;
 struct _NCp1_NCarg* _Lca_19;
 _Lca_19 = (&(*_Le_2)._Fcarg_v[_Lj_18]);
-if(!(_NCp1_Pfarg_process_5((*_Lca_19)._Fexpr, (*_Lca_19)._Freff, &(*_Lca_19)._Fvalue, &(*_Lf_12)._Ffarg_v[_Lj_18]._Fdecl, _Lf_at_17))) {
+if(!_NCp1_Pfarg_process_5((*_Lca_19)._Fexpr, (*_Lca_19)._Freff, &(*_Lca_19)._Fvalue, &(*_Lf_12)._Ffarg_v[_Lj_18]._Fdecl, _Lf_at_17)) {
 return;
 }
 continue_4:;
@@ -5605,7 +5605,7 @@ _Lr_21 = (1 + (*_Lca_20)._Freff);
 } else {
 _Lr_21 = 1;
 }
-if(!(_NCp1_NExprI_Pvalue_4((*_Lca_20)._Fexpr, _Lr_21, false, &(*_Lca_20)._Fvalue))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Lca_20)._Fexpr, _Lr_21, false, &(*_Lca_20)._Fvalue)) {
 return;
 }
 continue_5:;
@@ -5620,7 +5620,7 @@ continue_1:;
 _Li_10++;
 }
 break_1:;
-if(!(_Ltry_parent_8)) {
+if(!_Ltry_parent_8) {
 goto break_0;
 }
 if(_Lat_idx_7 == _NCp1_NAt_Croot) {
@@ -5652,10 +5652,10 @@ _Ginclude_stddef = true;
 inline void _NCp1_NExprI_Pprocess_index_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
 struct _NCp1_NExprIndex* _Le_2;
 _Le_2 = _Lexpr_0;
-if(!(_NCp1_NExprI_Pvalue_4((*_Le_2)._Fleft, 1, true, &(*_Le_2)._Fleft_val))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fleft, 1, true, &(*_Le_2)._Fleft_val)) {
 return;
 }
-if(!(_NCp1_NExprI_Pvalue_4((*_Le_2)._Fright, 1, true, &(*_Le_2)._Fright_val))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fright, 1, true, &(*_Le_2)._Fright_val)) {
 return;
 }
 (*_Lok_1) = true;
@@ -5777,7 +5777,7 @@ struct _NCp1_NStmtCaseEnd* _Ls_1;
 struct _NCp1_NStmtCase* _Lcas_2;
 _Ls_1 = _Lstmt_0;
 _Lcas_2 = _Gcase_stack_v[(_Gcase_stack_c -= 1)]._Fcas;
-if(!((*_Lcas_2)._Ffall_through)) {
+if(!(*_Lcas_2)._Ffall_through) {
 fprintf(_Gout, "break;\n");
 }
 }
@@ -5792,7 +5792,7 @@ struct _NCp1_NStmtDefaultEnd* _Ls_1;
 struct _NCp1_NStmtDefault* _Ldefaul_2;
 _Ls_1 = _Lstmt_0;
 _Ldefaul_2 = _Gcase_stack_v[(_Gcase_stack_c -= 1)]._Fdefaul;
-if(!((*_Ldefaul_2)._Ffall_through)) {
+if(!(*_Ldefaul_2)._Ffall_through) {
 fprintf(_Gout, "break;\n");
 }
 }
@@ -5925,7 +5925,7 @@ for(int i = (*_Lf_8)._Ffarg_c; i > 0; ) {
 i --;
 struct _NCp1_NCarg* _Lca_11;
 _Lca_11 = (&(*_Le_2)._Fcarg_v[_Lj_10]);
-if(!(_NCp1_Pfarg_process_5((*_Lca_11)._Fexpr, (*_Lca_11)._Freff, &(*_Lca_11)._Fvalue, &(*_Lf_8)._Ffarg_v[_Lj_10]._Fdecl, _Lf_at_9))) {
+if(!_NCp1_Pfarg_process_5((*_Lca_11)._Fexpr, (*_Lca_11)._Freff, &(*_Lca_11)._Fvalue, &(*_Lf_8)._Ffarg_v[_Lj_10]._Fdecl, _Lf_at_9)) {
 return false;
 }
 continue_0:;
@@ -5944,7 +5944,7 @@ _Lr_13 = (1 + (*_Lca_12)._Freff);
 } else {
 _Lr_13 = 1;
 }
-if(!(_NCp1_NExprI_Pvalue_4((*_Lca_12)._Fexpr, _Lr_13, false, &(*_Lca_12)._Fvalue))) {
+if(!_NCp1_NExprI_Pvalue_4((*_Lca_12)._Fexpr, _Lr_13, false, &(*_Lca_12)._Fvalue)) {
 return false;
 }
 continue_1:;
@@ -5964,7 +5964,7 @@ uint8_t _Li_2;
 int32_t _Llvar_c_3;
 _Ls_1 = (*_Lspace_0)._Fstmt_first;
 while(_Ls_1 != NULL) {
-if(!(_NCp1_NStmt_Pprocess_1(_Ls_1))) {
+if(!_NCp1_NStmt_Pprocess_1(_Ls_1)) {
 return false;
 }
 _Ls_1 = (*_Ls_1)._Fstmt_next;
@@ -6002,7 +6002,7 @@ break;
 _NCp1_NAt _NCp1_NExprI_Ptype_1(_NCp1_NExprI _Le_0) {
 struct _NCp1_NExpr* _Lexpr_1;
 _NCp1_NAt _Lat_2;
-if(!(_NCp1_NExprI_Pprocess_1(_Le_0))) {
+if(!_NCp1_NExprI_Pprocess_1(_Le_0)) {
 return _NCp1_NAt_Cnil;
 }
 _Lexpr_1 = _NCp1_NExprI_Pptr_1(_Le_0);
@@ -6099,7 +6099,7 @@ _Ggvar_is_outputted[_Ln3_2] |= _Ln17_3;
 _Lgvar_4 = _NCp1_NGvar_Pptr_1(_Lg_0);
 _Lat_i_5 = (*_Lgvar_4)._Fdecl._Ftype;
 _Lat_6 = _NCp1_NAt_Pptr_1(_Lat_i_5);
-if(!(_NCp1_NDeclVarData_Pprocess_5(&(*_Lgvar_4)._Fdecl, (*_Lgvar_4)._Ffile, (*_Lgvar_4)._Frow, (*_Lgvar_4)._Fcol, (*_Lgvar_4)._Fat))) {
+if(!_NCp1_NDeclVarData_Pprocess_5(&(*_Lgvar_4)._Fdecl, (*_Lgvar_4)._Ffile, (*_Lgvar_4)._Frow, (*_Lgvar_4)._Fcol, (*_Lgvar_4)._Fat)) {
 return false;
 }
 if(((*_Lgvar_4)._Fflags & _NCp1_NGvarFlags_Cno_decl) == _NCp1_NGvarFlags_C0) {
@@ -6140,7 +6140,7 @@ if((*_Lfd_arg_3)._Ftype_info._Fbuilt_in) {
 }
 }
 _NCp1_NExprI_Ptry_deduce_2(_Le_0, (*_Lfd_arg_3)._Ftype);
-if(!(_NCp1_NExprI_Pvalue_4(_Le_0, _Lr_6, false, _Lca_value_2))) {
+if(!_NCp1_NExprI_Pvalue_4(_Le_0, _Lr_6, false, _Lca_value_2)) {
 return false;
 }
 return true;

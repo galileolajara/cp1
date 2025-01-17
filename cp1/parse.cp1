@@ -930,7 +930,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             if r.p1[1] == ''\' {
                // char
                if r.p1[2] == ''\\ {
-                  if r.p1[3] == ''\" {
+                  if r.p1[3] == ''" {
                      get-row-col(+row, +col, r.reff, in-data);
                      C.out.printf("%s:%u:%u: char ''\\\" is invalid, please use ''\" instead\n", .input-path, row, col);
                      C.exit(#failure);
