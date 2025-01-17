@@ -975,8 +975,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   '{hello};
                   '(hello);
                "#endif";
-            } elif r.p1[1] == ''\" {
-               parse-string(r, w, ''\", in-data);
+            } elif r.p1[1] == ''" {
+               parse-string(r, w, ''", in-data);
                continue;
             } elif r.p1[1] == ''| {
                parse-string(r, w, ''|, in-data);
@@ -1003,8 +1003,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                parse-string(r, w, ''), in-data);
                continue;
             }
-         } elif r.p1[0] == ''\" { // C-string
-            w.p1[0] = ''\";
+         } elif r.p1[0] == ''" { // C-string
+            w.p1[0] = ''";
             w.pos++;
             r.pos++;
             loop {
@@ -1012,8 +1012,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   get-row-col(+row, +col, r.reff, in-data);
                   C.out.printf("%s:%u:%u: Unterminated string\n", .input-path, row, col);
                   C.exit(#failure);
-               } elif r.p1[0] == ''\" {
-                  w.p1[0] = ''\";
+               } elif r.p1[0] == ''" {
+                  w.p1[0] = ''";
                   w.pos++;
                   r.pos++;
                   break;
@@ -1021,7 +1021,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   switch r.p1[1] {
                      case ''0 { }
                      case ''\\ { }
-                     case ''\" { }
+                     case ''" { }
                      case ''\' { }
                      case ''a { }
                      case ''b { }
