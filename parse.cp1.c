@@ -89,6 +89,39 @@
 #define _NCp1_NToken_Cnum_oct (_NCp1_NToken_Cnum_hex + 1)
 #define _NCp1_NToken_Cchar1 (_NCp1_NToken_Cnum_oct + 1)
 #define _NCp1_NToken_Cchar2 (_NCp1_NToken_Cchar1 + 1)
+#define _NCp1_NToken_Ctrue (_NCp1_NToken_Cchar2 + 1)
+#define _NCp1_NToken_Cfalse (_NCp1_NToken_Ctrue + 1)
+#define _NCp1_NToken_Cnull (_NCp1_NToken_Cfalse + 1)
+#define _NCp1_NToken_Copen_parenthesis_amp_amp_comma_space (_NCp1_NToken_Cnull + 1)
+#define _NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space (_NCp1_NToken_Copen_parenthesis_amp_amp_comma_space + 1)
+#define _NCp1_NToken_Cspace_plus_space (_NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space + 1)
+#define _NCp1_NToken_Cspace_minus_space (_NCp1_NToken_Cspace_plus_space + 1)
+#define _NCp1_NToken_Cspace_mul_space (_NCp1_NToken_Cspace_minus_space + 1)
+#define _NCp1_NToken_Cspace_div_space (_NCp1_NToken_Cspace_mul_space + 1)
+#define _NCp1_NToken_Cspace_langle_langle_space (_NCp1_NToken_Cspace_div_space + 1)
+#define _NCp1_NToken_Cspace_rangle_rangle_space (_NCp1_NToken_Cspace_langle_langle_space + 1)
+#define _NCp1_NToken_Cspace_amp_space (_NCp1_NToken_Cspace_rangle_rangle_space + 1)
+#define _NCp1_NToken_Cspace_pipe_space (_NCp1_NToken_Cspace_amp_space + 1)
+#define _NCp1_NToken_Cspace_xor_space (_NCp1_NToken_Cspace_pipe_space + 1)
+#define _NCp1_NToken_Cspace_equal_equal_space (_NCp1_NToken_Cspace_xor_space + 1)
+#define _NCp1_NToken_Cspace_exclamation_equal_space (_NCp1_NToken_Cspace_equal_equal_space + 1)
+#define _NCp1_NToken_Cspace_langle_space (_NCp1_NToken_Cspace_exclamation_equal_space + 1)
+#define _NCp1_NToken_Cspace_langle_equal_space (_NCp1_NToken_Cspace_langle_space + 1)
+#define _NCp1_NToken_Cspace_rangle_space (_NCp1_NToken_Cspace_langle_equal_space + 1)
+#define _NCp1_NToken_Cspace_rangle_equal_space (_NCp1_NToken_Cspace_rangle_space + 1)
+#define _NCp1_NToken_Chash (_NCp1_NToken_Cspace_rangle_equal_space + 1)
+#define _NCp1_NToken_Cspace_plus_equal_space (_NCp1_NToken_Chash + 1)
+#define _NCp1_NToken_Cspace_minus_equal_space (_NCp1_NToken_Cspace_plus_equal_space + 1)
+#define _NCp1_NToken_Cspace_mul_equal_space (_NCp1_NToken_Cspace_minus_equal_space + 1)
+#define _NCp1_NToken_Cspace_div_equal_space (_NCp1_NToken_Cspace_mul_equal_space + 1)
+#define _NCp1_NToken_Cspace_lshift_equal_space (_NCp1_NToken_Cspace_div_equal_space + 1)
+#define _NCp1_NToken_Cspace_rshift_equal_space (_NCp1_NToken_Cspace_lshift_equal_space + 1)
+#define _NCp1_NToken_Cspace_and_equal_space (_NCp1_NToken_Cspace_rshift_equal_space + 1)
+#define _NCp1_NToken_Cspace_or_equal_space (_NCp1_NToken_Cspace_and_equal_space + 1)
+#define _NCp1_NToken_Cspace_xor_equal_space (_NCp1_NToken_Cspace_or_equal_space + 1)
+#define _NCp1_NToken_Cexclamation (_NCp1_NToken_Cspace_xor_equal_space + 1)
+#define _NCp1_NToken_Cloop (_NCp1_NToken_Cexclamation + 1)
+#define _NCp1_NToken_Cloop_with_semicolon (_NCp1_NToken_Cloop + 1)
 #define _NCp1_NId_Cnil (-1)
 #define _NCp1_NId_C0 (_NCp1_NId_Cnil + 1)
 #define _NCp1_NExprI_Cnil (-1)
@@ -192,39 +225,7 @@
 #define _NCp1_NLvarFlags_C0 0
 #define _NCp1_NStmtType_Cnil (255)
 #define _NCp1_Cdecl_var_size_limit (8)
-#define _NCp1_NToken_Ctrue (_NCp1_NToken_Cchar2 + 1)
-#define _NCp1_NToken_Cfalse (_NCp1_NToken_Ctrue + 1)
-#define _NCp1_NToken_Cnull (_NCp1_NToken_Cfalse + 1)
-#define _NCp1_NToken_Copen_parenthesis_amp_amp_comma_space (_NCp1_NToken_Cnull + 1)
-#define _NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space (_NCp1_NToken_Copen_parenthesis_amp_amp_comma_space + 1)
-#define _NCp1_NToken_Cspace_plus_space (_NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space + 1)
-#define _NCp1_NToken_Cspace_minus_space (_NCp1_NToken_Cspace_plus_space + 1)
-#define _NCp1_NToken_Cspace_mul_space (_NCp1_NToken_Cspace_minus_space + 1)
-#define _NCp1_NToken_Cspace_div_space (_NCp1_NToken_Cspace_mul_space + 1)
-#define _NCp1_NToken_Cspace_langle_langle_space (_NCp1_NToken_Cspace_div_space + 1)
-#define _NCp1_NToken_Cspace_rangle_rangle_space (_NCp1_NToken_Cspace_langle_langle_space + 1)
-#define _NCp1_NToken_Cspace_amp_space (_NCp1_NToken_Cspace_rangle_rangle_space + 1)
-#define _NCp1_NToken_Cspace_pipe_space (_NCp1_NToken_Cspace_amp_space + 1)
-#define _NCp1_NToken_Cspace_xor_space (_NCp1_NToken_Cspace_pipe_space + 1)
-#define _NCp1_NToken_Cspace_equal_equal_space (_NCp1_NToken_Cspace_xor_space + 1)
-#define _NCp1_NToken_Cspace_exclamation_equal_space (_NCp1_NToken_Cspace_equal_equal_space + 1)
-#define _NCp1_NToken_Cspace_langle_space (_NCp1_NToken_Cspace_exclamation_equal_space + 1)
-#define _NCp1_NToken_Cspace_langle_equal_space (_NCp1_NToken_Cspace_langle_space + 1)
-#define _NCp1_NToken_Cspace_rangle_space (_NCp1_NToken_Cspace_langle_equal_space + 1)
-#define _NCp1_NToken_Cspace_rangle_equal_space (_NCp1_NToken_Cspace_rangle_space + 1)
-#define _NCp1_NToken_Chash (_NCp1_NToken_Cspace_rangle_equal_space + 1)
-#define _NCp1_NToken_Cspace_plus_equal_space (_NCp1_NToken_Chash + 1)
-#define _NCp1_NToken_Cspace_minus_equal_space (_NCp1_NToken_Cspace_plus_equal_space + 1)
-#define _NCp1_NToken_Cspace_mul_equal_space (_NCp1_NToken_Cspace_minus_equal_space + 1)
-#define _NCp1_NToken_Cspace_div_equal_space (_NCp1_NToken_Cspace_mul_equal_space + 1)
-#define _NCp1_NToken_Cspace_lshift_equal_space (_NCp1_NToken_Cspace_div_equal_space + 1)
-#define _NCp1_NToken_Cspace_rshift_equal_space (_NCp1_NToken_Cspace_lshift_equal_space + 1)
-#define _NCp1_NToken_Cspace_and_equal_space (_NCp1_NToken_Cspace_rshift_equal_space + 1)
-#define _NCp1_NToken_Cspace_or_equal_space (_NCp1_NToken_Cspace_and_equal_space + 1)
-#define _NCp1_NToken_Cspace_xor_equal_space (_NCp1_NToken_Cspace_or_equal_space + 1)
-#define _NCp1_NToken_Cexclamation (_NCp1_NToken_Cspace_xor_equal_space + 1)
-#define _NCp1_NToken_Cloop (_NCp1_NToken_Cexclamation + 1)
-#define _NCp1_NToken_Cif (_NCp1_NToken_Cloop + 1)
+#define _NCp1_NToken_Cif (_NCp1_NToken_Cloop_with_semicolon + 1)
 #define _NCp1_NToken_Cspace_elif (_NCp1_NToken_Cif + 1)
 #define _NCp1_NToken_Cspace_else (_NCp1_NToken_Cspace_elif + 1)
 #define _NCp1_NToken_Cswitch (_NCp1_NToken_Cspace_else + 1)
@@ -1111,6 +1112,7 @@ case _NCp1_NToken_Cspace_or_equal_space: return "space-or-equal-space";
 case _NCp1_NToken_Cspace_xor_equal_space: return "space-xor-equal-space";
 case _NCp1_NToken_Cexclamation: return "exclamation";
 case _NCp1_NToken_Cloop: return "loop";
+case _NCp1_NToken_Cloop_with_semicolon: return "loop-with-semicolon";
 case _NCp1_NToken_Cif: return "if";
 case _NCp1_NToken_Cspace_elif: return "space-elif";
 case _NCp1_NToken_Cspace_else: return "space-else";
@@ -1250,14 +1252,14 @@ struct _NCp1_NLexer _Llex_29;
 int32_t _Lnext_row_30;
 int32_t _Lnext_col_31;
 struct _NCp1_NTokenData _Ltok_32;
-union _NCp1_NWtr _Lw_begin_40;
-union _NCp1_NWtr _Lw_41;
-int32_t _Lid_bit8_c_43;
-_NCp1_NAt _Lat_bit8_c_45;
-char* _Lout_path_48;
-size_t _Lout_path_len_49;
-_NLibC_NFd _Lout_fd_50;
-char _Lfinal_path_57[512];
+union _NCp1_NWtr _Lw_begin_42;
+union _NCp1_NWtr _Lw_43;
+int32_t _Lid_bit8_c_45;
+_NCp1_NAt _Lat_bit8_c_47;
+char* _Lout_path_50;
+size_t _Lout_path_len_51;
+_NLibC_NFd _Lout_fd_52;
+char _Lfinal_path_59[512];
 if(false) {
 _NCp1_Pexport_0();
 }
@@ -1556,7 +1558,7 @@ _Grow = 1;
 _Gcol = 1;
 while(1) {
 _NCp1_NToken _Lt_33;
-uint8_t* _Lpos_39;
+uint8_t* _Lpos_41;
 _Ltok_32._Frow = _Lnext_row_30;
 _Ltok_32._Fcol = _Lnext_col_31;
 _Lt_33 = cp1_lexer_scan(&_Llex_29);
@@ -1629,6 +1631,35 @@ _Ltok_32._Fid = _NCp1_NLexer_Pget_include_1(&_Llex_29);
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
+case _NCp1_NToken_Cloop:;
+bool _Lfound_semicolon_39;
+_Lfound_semicolon_39 = false;
+if(((_Llex_29._Fcursor[0] != ' ') && (_Llex_29._Fcursor[0] != '\n'))) {
+fprintf(stdout, "%s:%u:%u: There must be a space or new line after the keyword 'loop'\n", input_path, _Grow, _Gcol);
+exit(_NLibC_NExit_Cfailure);
+}
+int32_t _Li_40;
+_Li_40 = 0;
+while(1) {
+if(_Llex_29._Fcursor[_Li_40] == '\0') {
+fprintf(stdout, "%s:%u:%u: Keyword 'loop' was found but was not followed by '{'\n", input_path, _Grow, _Gcol);
+exit(_NLibC_NExit_Cfailure);
+} else if(_Llex_29._Fcursor[_Li_40] == '{') {
+goto break_9;
+} else if(_Llex_29._Fcursor[_Li_40] == ';') {
+_Lfound_semicolon_39 = true;
+goto break_9;
+}
+_Li_40++;
+continue_9:;
+}
+break_9:;
+if(_Lfound_semicolon_39) {
+_Lt_33 = _NCp1_NToken_Cloop_with_semicolon;
+}
+_Glast_token = _Lt_33;
+cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
+break;
 case _NCp1_NToken_Cid:;
 _Ltok_32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_29, 0, 0);
 if(_Llex_29._Fcursor[0] == '(') {
@@ -1667,160 +1698,160 @@ break;
 if(_Lt_33 == _NCp1_NToken_Cend) {
 goto break_6;
 }
-_Lpos_39 = _Llex_29._Fstart;
-while(_Lpos_39 < _Llex_29._Fcursor) {
-if((_Lpos_39[0] & 128) == 0) {
-if(_Lpos_39[0] == '\n') {
+_Lpos_41 = _Llex_29._Fstart;
+while(_Lpos_41 < _Llex_29._Fcursor) {
+if((_Lpos_41[0] & 128) == 0) {
+if(_Lpos_41[0] == '\n') {
 _Lnext_row_30++;
 _Lnext_col_31 = 1;
 } else {
 _Lnext_col_31++;
 }
 }
-_Lpos_39++;
-continue_9:;
+_Lpos_41++;
+continue_10:;
 }
-break_9:;
+break_10:;
 continue_6:;
 }
 break_6:;
 _Glast_token = _NCp1_NToken_Cnil;
 cp1Parse(_Lpsr_28, _NCp1_NToken_Cnil, &_Ltok_32);
 _NCp1_NParser_Pfree_1(_Lpsr_28);
-_Lw_begin_40._Freff = qalloc((_Lin_size_4 << 2) + 1024);
-_Lw_41._Freff = _Lw_begin_40._Freff;
-Fputnum(&_Lw_41, _Gid_c);
-int32_t _Li_42;
-_Li_42 = 0;
-for(int i = _Gid_c; i > 0; ) {
-i --;
-_NCp1_NWtr_Pn1_2(&_Lw_41, _Gid_len_v[_Li_42]);
-_NCp1_NWtr_Pcopy_3(&_Lw_41, _Gid_str_v[_Li_42], _Gid_len_v[_Li_42]);
-_NCp1_NWtr_Pn1_2(&_Lw_41, 0);
-continue_10:;
-_Li_42++;
-}
-break_10:;
-_Lid_bit8_c_43 = ((_Gid_c + 7) >> 3);
-_NCp1_Pmalloc_arr_2(_Gid_in_header_v, _Lid_bit8_c_43);
-_NCp1_Pmalloc_arr_2(_Gid_in_header_idx_v, _Gid_c);
-_NCp1_Pmalloc_arr_2(_Gid_in_header_id_v, _Gid_c);
-Fputnum(&_Lw_41, _Ginclude_c);
+_Lw_begin_42._Freff = qalloc((_Lin_size_4 << 2) + 1024);
+_Lw_43._Freff = _Lw_begin_42._Freff;
+Fputnum(&_Lw_43, _Gid_c);
 int32_t _Li_44;
 _Li_44 = 0;
-for(int i = _Ginclude_c; i > 0; ) {
+for(int i = _Gid_c; i > 0; ) {
 i --;
-_NCp1_NWtr_Pn1_2(&_Lw_41, _Ginclude_len_v[_Li_44]);
-_NCp1_NWtr_Pcopy_3(&_Lw_41, _Ginclude_str_v[_Li_44], _Ginclude_len_v[_Li_44]);
-_NCp1_NWtr_Pn1_2(&_Lw_41, 0);
+_NCp1_NWtr_Pn1_2(&_Lw_43, _Gid_len_v[_Li_44]);
+_NCp1_NWtr_Pcopy_3(&_Lw_43, _Gid_str_v[_Li_44], _Gid_len_v[_Li_44]);
+_NCp1_NWtr_Pn1_2(&_Lw_43, 0);
 continue_11:;
 _Li_44++;
 }
 break_11:;
-_Lat_bit8_c_45 = ((_Gat_c + 7) >> 3);
-_NCp1_Pmalloc_arr_2(_Gat_in_header_v, _Lat_bit8_c_45);
-_NCp1_Pmalloc_arr_2(_Gat_in_header_idx_v, _Gat_c);
-_NCp1_Pmalloc_arr_2(_Gat_in_header_at_v, _Gat_c);
-Fputnum(&_Lw_41, _Gat_c);
+_Lid_bit8_c_45 = ((_Gid_c + 7) >> 3);
+_NCp1_Pmalloc_arr_2(_Gid_in_header_v, _Lid_bit8_c_45);
+_NCp1_Pmalloc_arr_2(_Gid_in_header_idx_v, _Gid_c);
+_NCp1_Pmalloc_arr_2(_Gid_in_header_id_v, _Gid_c);
+Fputnum(&_Lw_43, _Ginclude_c);
 int32_t _Li_46;
 _Li_46 = 0;
-for(int i = _Gat_c; i > 0; ) {
+for(int i = _Ginclude_c; i > 0; ) {
 i --;
-struct _NCp1_NAtData* _Lat_47;
-_Lat_47 = (&_Gat_v[_Li_46]);
-_NCp1_NNameType_Pwr_2((*_Lat_47)._Ftype, &_Lw_41);
-if((*_Lat_47)._Ftype == _NCp1_NNameType_Cbasic) {
-_NCp1_NBasicTypeId_Pwr_2((*_Lat_47)._Fname._Fbasic, &_Lw_41);
-} else {
-_NCp1_NAt_Pwr_3((*_Lat_47)._Fparent, &_Lw_41, false);
-_NCp1_NId_Pwr_3((*_Lat_47)._Fname._Fid, &_Lw_41, false);
-}
+_NCp1_NWtr_Pn1_2(&_Lw_43, _Ginclude_len_v[_Li_46]);
+_NCp1_NWtr_Pcopy_3(&_Lw_43, _Ginclude_str_v[_Li_46], _Ginclude_len_v[_Li_46]);
+_NCp1_NWtr_Pn1_2(&_Lw_43, 0);
 continue_12:;
 _Li_46++;
 }
 break_12:;
-_NCp1_Pwrite_cvar_2(&_Lw_41, false);
-_NCp1_Pwrite_gvar_2(&_Lw_41, false);
-_NCp1_Pwrite_enum_2(&_Lw_41, false);
-_NCp1_Pwrite_struct_2(&_Lw_41, false);
-_NCp1_Pwrite_func_2(&_Lw_41, false);
-_Lout_path_48 = malloc(strlen(_Llock_path_3) + 4 + 1);
-sprintf(_Lout_path_48, "%s.tmp", _Llock_path_3);
-_Lout_path_len_49 = strlen(_Lout_path_48);
-if(!_NLibC_NFd_Popen_4(&_Lout_fd_50, _Lout_path_48, O_CREAT | O_TRUNC | O_WRONLY, 32676)) {
-fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_48);
-exit(_NLibC_NExit_Cfailure);
-}
-write(_Lout_fd_50, _Lw_begin_40._Freff, _Lw_41._Fpos - _Lw_begin_40._Fpos);
-_NLibC_NFd_Pclose_1(_Lout_fd_50);
-_Lw_41._Freff = _Lw_begin_40._Freff;
-Fputnum(&_Lw_41, _Gid_in_header_c);
-int32_t _Lj_51;
-_Lj_51 = 0;
-for(int i = _Gid_in_header_c; i > 0; ) {
+_Lat_bit8_c_47 = ((_Gat_c + 7) >> 3);
+_NCp1_Pmalloc_arr_2(_Gat_in_header_v, _Lat_bit8_c_47);
+_NCp1_Pmalloc_arr_2(_Gat_in_header_idx_v, _Gat_c);
+_NCp1_Pmalloc_arr_2(_Gat_in_header_at_v, _Gat_c);
+Fputnum(&_Lw_43, _Gat_c);
+int32_t _Li_48;
+_Li_48 = 0;
+for(int i = _Gat_c; i > 0; ) {
 i --;
-uint32_t _Li_52;
-_Li_52 = _Gid_in_header_id_v[_Lj_51];
-_NCp1_NWtr_Pn1_2(&_Lw_41, _Gid_len_v[_Li_52]);
-_NCp1_NWtr_Pcopy_3(&_Lw_41, _Gid_str_v[_Li_52], _Gid_len_v[_Li_52]);
-_NCp1_NWtr_Pn1_2(&_Lw_41, 0);
+struct _NCp1_NAtData* _Lat_49;
+_Lat_49 = (&_Gat_v[_Li_48]);
+_NCp1_NNameType_Pwr_2((*_Lat_49)._Ftype, &_Lw_43);
+if((*_Lat_49)._Ftype == _NCp1_NNameType_Cbasic) {
+_NCp1_NBasicTypeId_Pwr_2((*_Lat_49)._Fname._Fbasic, &_Lw_43);
+} else {
+_NCp1_NAt_Pwr_3((*_Lat_49)._Fparent, &_Lw_43, false);
+_NCp1_NId_Pwr_3((*_Lat_49)._Fname._Fid, &_Lw_43, false);
+}
 continue_13:;
-_Lj_51++;
+_Li_48++;
 }
 break_13:;
-Fputnum(&_Lw_41, _Ginclude_c);
-int32_t _Li_53;
-_Li_53 = 0;
-for(int i = _Ginclude_c; i > 0; ) {
-i --;
-_NCp1_NWtr_Pn1_2(&_Lw_41, _Ginclude_len_v[_Li_53]);
-_NCp1_NWtr_Pcopy_3(&_Lw_41, _Ginclude_str_v[_Li_53], _Ginclude_len_v[_Li_53]);
-_NCp1_NWtr_Pn1_2(&_Lw_41, 0);
-continue_14:;
-_Li_53++;
-}
-break_14:;
-Fputnum(&_Lw_41, _Gat_in_header_c);
-int32_t _Lj_54;
-_Lj_54 = 0;
-for(int i = _Gat_in_header_c; i > 0; ) {
-i --;
-uint32_t _Li_55;
-struct _NCp1_NAtData* _Lat_56;
-_Li_55 = _Gat_in_header_at_v[_Lj_54];
-_Lat_56 = (&_Gat_v[_Li_55]);
-_NCp1_NNameType_Pwr_2((*_Lat_56)._Ftype, &_Lw_41);
-if((*_Lat_56)._Ftype == _NCp1_NNameType_Cbasic) {
-_NCp1_NBasicTypeId_Pwr_2((*_Lat_56)._Fname._Fbasic, &_Lw_41);
-} else {
-_NCp1_NAt_Pwr_header_2((*_Lat_56)._Fparent, &_Lw_41);
-_NCp1_NId_Pwr_header_2((*_Lat_56)._Fname._Fid, &_Lw_41);
-}
-continue_15:;
-_Lj_54++;
-}
-break_15:;
-_NCp1_Pwrite_cvar_2(&_Lw_41, true);
-_NCp1_Pwrite_gvar_2(&_Lw_41, true);
-_NCp1_Pwrite_enum_2(&_Lw_41, true);
-_NCp1_Pwrite_struct_2(&_Lw_41, true);
-_NCp1_Pwrite_func_2(&_Lw_41, true);
-_Lout_path_48[(_Lout_path_len_49 - 5)] = 'h';
-if(!_NLibC_NFd_Popen_4(&_Lout_fd_50, _Lout_path_48, O_CREAT | O_TRUNC | O_WRONLY, 32676)) {
-fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_48);
+_NCp1_Pwrite_cvar_2(&_Lw_43, false);
+_NCp1_Pwrite_gvar_2(&_Lw_43, false);
+_NCp1_Pwrite_enum_2(&_Lw_43, false);
+_NCp1_Pwrite_struct_2(&_Lw_43, false);
+_NCp1_Pwrite_func_2(&_Lw_43, false);
+_Lout_path_50 = malloc(strlen(_Llock_path_3) + 4 + 1);
+sprintf(_Lout_path_50, "%s.tmp", _Llock_path_3);
+_Lout_path_len_51 = strlen(_Lout_path_50);
+if(!_NLibC_NFd_Popen_4(&_Lout_fd_52, _Lout_path_50, O_CREAT | O_TRUNC | O_WRONLY, 32676)) {
+fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_50);
 exit(_NLibC_NExit_Cfailure);
 }
-write(_Lout_fd_50, _Lw_begin_40._Freff, _Lw_41._Fpos - _Lw_begin_40._Fpos);
-_NLibC_NFd_Pclose_1(_Lout_fd_50);
-_Lout_path_48[(_Lout_path_len_49 - 5)] = 'b';
-memcpy(_Lfinal_path_57, _Lout_path_48, _Lout_path_len_49 - 4);
-_Lfinal_path_57[(_Lout_path_len_49 - 4)] = 0;
-rename(_Lout_path_48, _Lfinal_path_57);
+write(_Lout_fd_52, _Lw_begin_42._Freff, _Lw_43._Fpos - _Lw_begin_42._Fpos);
+_NLibC_NFd_Pclose_1(_Lout_fd_52);
+_Lw_43._Freff = _Lw_begin_42._Freff;
+Fputnum(&_Lw_43, _Gid_in_header_c);
+int32_t _Lj_53;
+_Lj_53 = 0;
+for(int i = _Gid_in_header_c; i > 0; ) {
+i --;
+uint32_t _Li_54;
+_Li_54 = _Gid_in_header_id_v[_Lj_53];
+_NCp1_NWtr_Pn1_2(&_Lw_43, _Gid_len_v[_Li_54]);
+_NCp1_NWtr_Pcopy_3(&_Lw_43, _Gid_str_v[_Li_54], _Gid_len_v[_Li_54]);
+_NCp1_NWtr_Pn1_2(&_Lw_43, 0);
+continue_14:;
+_Lj_53++;
+}
+break_14:;
+Fputnum(&_Lw_43, _Ginclude_c);
+int32_t _Li_55;
+_Li_55 = 0;
+for(int i = _Ginclude_c; i > 0; ) {
+i --;
+_NCp1_NWtr_Pn1_2(&_Lw_43, _Ginclude_len_v[_Li_55]);
+_NCp1_NWtr_Pcopy_3(&_Lw_43, _Ginclude_str_v[_Li_55], _Ginclude_len_v[_Li_55]);
+_NCp1_NWtr_Pn1_2(&_Lw_43, 0);
+continue_15:;
+_Li_55++;
+}
+break_15:;
+Fputnum(&_Lw_43, _Gat_in_header_c);
+int32_t _Lj_56;
+_Lj_56 = 0;
+for(int i = _Gat_in_header_c; i > 0; ) {
+i --;
+uint32_t _Li_57;
+struct _NCp1_NAtData* _Lat_58;
+_Li_57 = _Gat_in_header_at_v[_Lj_56];
+_Lat_58 = (&_Gat_v[_Li_57]);
+_NCp1_NNameType_Pwr_2((*_Lat_58)._Ftype, &_Lw_43);
+if((*_Lat_58)._Ftype == _NCp1_NNameType_Cbasic) {
+_NCp1_NBasicTypeId_Pwr_2((*_Lat_58)._Fname._Fbasic, &_Lw_43);
+} else {
+_NCp1_NAt_Pwr_header_2((*_Lat_58)._Fparent, &_Lw_43);
+_NCp1_NId_Pwr_header_2((*_Lat_58)._Fname._Fid, &_Lw_43);
+}
+continue_16:;
+_Lj_56++;
+}
+break_16:;
+_NCp1_Pwrite_cvar_2(&_Lw_43, true);
+_NCp1_Pwrite_gvar_2(&_Lw_43, true);
+_NCp1_Pwrite_enum_2(&_Lw_43, true);
+_NCp1_Pwrite_struct_2(&_Lw_43, true);
+_NCp1_Pwrite_func_2(&_Lw_43, true);
+_Lout_path_50[(_Lout_path_len_51 - 5)] = 'h';
+if(!_NLibC_NFd_Popen_4(&_Lout_fd_52, _Lout_path_50, O_CREAT | O_TRUNC | O_WRONLY, 32676)) {
+fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_50);
+exit(_NLibC_NExit_Cfailure);
+}
+write(_Lout_fd_52, _Lw_begin_42._Freff, _Lw_43._Fpos - _Lw_begin_42._Fpos);
+_NLibC_NFd_Pclose_1(_Lout_fd_52);
+_Lout_path_50[(_Lout_path_len_51 - 5)] = 'b';
+memcpy(_Lfinal_path_59, _Lout_path_50, _Lout_path_len_51 - 4);
+_Lfinal_path_59[(_Lout_path_len_51 - 4)] = 0;
+rename(_Lout_path_50, _Lfinal_path_59);
 _Glock_path = NULL;
-_Lout_path_48[(_Lout_path_len_49 - 5)] = 'h';
-memcpy(_Lfinal_path_57, _Lout_path_48, _Lout_path_len_49 - 4);
-_Lfinal_path_57[(_Lout_path_len_49 - 4)] = 0;
-rename(_Lout_path_48, _Lfinal_path_57);
+_Lout_path_50[(_Lout_path_len_51 - 5)] = 'h';
+memcpy(_Lfinal_path_59, _Lout_path_50, _Lout_path_len_51 - 4);
+_Lfinal_path_59[(_Lout_path_len_51 - 4)] = 0;
+rename(_Lout_path_50, _Lfinal_path_59);
 return 0;
 }
 void _NCp1_Pexport_0() {
