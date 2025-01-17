@@ -23,7 +23,7 @@ get-compile(bin:char[], ninja-f:C.File) {
    +path = C.strdup(C.getenv("PATH"));
    // C.printf("PATH = %s\n", PATH);
    +found = C.strtok(path, ":");
-   loop (found != null) {
+   loop found != null {
       // C.printf("- %s\n", found);
       var fd, compile:char[512];
       C.sprintf(compile, "%s/tcc", found);
@@ -122,7 +122,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
    +pos = 0;
    +line = 0;
    +preprocess = false;
-   loop (pos < len) {
+   loop pos < len {
       line++;
       +start = pos;
       loop {
@@ -186,7 +186,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
    }
    pos = 0;
    line = 0;
-   loop (pos < len) {
+   loop pos < len {
       line++;
       +start = pos;
       loop {
@@ -357,7 +357,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                // C.printf("reading %s\n", spec-path);
                +spec-pos = 0;
                +spec-line = 0;
-               loop (spec-pos < spec-len) {
+               loop spec-pos < spec-len {
                   spec-line++;
                   +start = spec-pos;
                   loop {
@@ -509,7 +509,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
          +path = C.strdup(C.getenv("PATH"));
          +found = C.strtok(path, ":");
          +fd = C.Fd#nil;
-         loop (found != null) {
+         loop found != null {
             C.sprintf(abs-path, "%s/%s", found, bin);
             fd = C.open(abs-path, #read);
             if fd != #nil {

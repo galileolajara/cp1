@@ -23,7 +23,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       "using (Cp1) {\n"
       "Token[\n"
       "#nil,\n");
-   loop (pos < in-size) {
+   loop pos < in-size {
       +start = pos;
       loop {
          if in-data[pos] == ''\n {

@@ -48,7 +48,7 @@ using (ExprI) {
       quick-alloc-one(+(e:ExprStr));
       e-idx.set(e.base, #str);
       +first = true;
-      loop (node-c) {
+      loop node-c {
          +len = r.n();
          quick-alloc-plus(+(n:ExprStrNode), len + 1);
          n.len = len;

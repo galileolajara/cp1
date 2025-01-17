@@ -493,7 +493,7 @@ var struct-outputted-v:Struct[];
 main(arg-c:intc, arg-v:char[][]):intc @main {
    +watermark = false;
    +arg-i = 1;
-   loop (arg-c - 1) {
+   loop arg-c - 1 {
       if arg-v[arg-i][0] == ''- {
          if (&&, arg-v[arg-i][1] == ''w, arg-v[arg-i][2] == 0) {
             watermark = true;
@@ -639,7 +639,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       .func-main.process-later();
    }
 
-   loop (.process-first != #nil) {
+   loop .process-first != #nil {
       +f-i = .process-first;
       .process-first = #nil;
       .process-last = #nil;
@@ -935,7 +935,7 @@ using (Func) {
       f.lvars-rd(r);
       f.stmt-space.rd(r, null);
       +s = f.stmt-space.stmt-first;
-      loop (s != null) {
+      loop s != null {
          .ctx-begin-row = s.begin-row;
          .ctx-begin-col = s.begin-col;
          .ctx-end-row = s.end-row;

@@ -22,7 +22,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
    var func-name-v:char[256][];
    var func-len-v:u8[256];
    +func-c = 0;
-   loop (pos < in-size) {
+   loop pos < in-size {
       +start = pos;
       loop {
          if in-data[pos] == ''\n {
@@ -55,7 +55,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
    +out-f = C.fopen(arg-v[2], "w");
    pos = 0;
    +indent = 0;
-   loop (pos < in-size) {
+   loop pos < in-size {
       +start = pos;
       loop {
          if in-data[pos] == ''\n {
@@ -80,7 +80,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
                   }
                }
                +name = lparen;
-               loop (line[name - 1] != '' ) {
+               loop line[name - 1] != ''  {
                   name--;
                }
                +func-len = lparen - name;
