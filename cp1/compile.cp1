@@ -788,7 +788,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                .out.printf("%s", f.farg-v[j].decl.name.str());
             }
             .out.printf(") ");
-            .out.printf("%.*s\n", f.decl-len - 2, & f.decl-str[2]);
+            .out.printf("%.*s\n", f.decl-len - 2, &f.decl-str[2]);
          } else {
             .out.printf("%.*s\n", f.decl-len, f.decl-str);
          }

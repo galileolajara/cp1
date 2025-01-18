@@ -488,8 +488,6 @@ expr_bit_xor(e) ::= value(left) SPACE_XOR_SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 8); }
 expr_bit_xor(e) ::= expr_bit_xor(left) SPACE_XOR_SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
-opExpr(l) ::= refExpr(r).
-   { l.basic.id = r.basic.id; }
 opExpr(l) ::= assignExpr1(r).
    { l.basic.id = r.basic.id; }
 opExpr(l) ::= expr_add(r).
@@ -611,6 +609,8 @@ expr(l) ::= negVal(r).
    { l.basic.id = r.basic.id; }
 expr(l) ::= notExpr(r).
    { l.basic.id = r.basic.id; }
+expr(l) ::= refExpr(r).
+   { l.basic.id = r.basic.id; }
 expr(l) ::= valueonly(r).
    { l.basic.id = r.basic.id; }
 expr(l) ::= opExpr(r).
@@ -640,7 +640,7 @@ decExpr(l) ::= value(e) MINUS MINUS.
 notExpr(l) ::= EXCLAMATION value(e).
    { l.basic.id = _NCp1_Pexpr_unary_2(e.basic.id, 3); }
 
-refExpr(l) ::= AMPERSAND SPACE value(e).
+refExpr(l) ::= AMPERSAND value(e).
    { l.basic.id = _NCp1_Pexpr_ref_1(e.basic.id); }
 /*
   expr

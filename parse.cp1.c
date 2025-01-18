@@ -747,7 +747,6 @@ uint32_t* _Gat_in_header_idx_v;
 uint32_t* _Gat_in_header_at_v;
 int32_t _Gid_in_header_c;
 int32_t _Gat_in_header_c;
-char* _Glock_path;
 int32_t _Gquick_alloc_cap;
 void* _Gquick_alloc_v;
 int32_t _Gquick_alloc_c;
@@ -1270,7 +1269,7 @@ _NCp1_Pquick_alloc_init_0();
 _Gfunc_main = _NCp1_NFunc_Cnil;
 _Gdecl_include = _NCp1_NInclude_Cnil;
 if(_Larg_c_0 != 3) {
-fprintf(stdout, "Usage: %s [file.cgl] [output.cgl-b]\n", _Larg_v_1[0]);
+fprintf(stdout, "Usage: %s [file.cp1] [output.cp1-b]\n", _Larg_v_1[0]);
 return 0;
 }
 input_path = _Larg_v_1[1];
@@ -1847,7 +1846,6 @@ _Lout_path_50[(_Lout_path_len_51 - 5)] = 'b';
 memcpy(_Lfinal_path_59, _Lout_path_50, _Lout_path_len_51 - 4);
 _Lfinal_path_59[(_Lout_path_len_51 - 4)] = 0;
 rename(_Lout_path_50, _Lfinal_path_59);
-_Glock_path = NULL;
 _Lout_path_50[(_Lout_path_len_51 - 5)] = 'h';
 memcpy(_Lfinal_path_59, _Lout_path_50, _Lout_path_len_51 - 4);
 _Lfinal_path_59[(_Lout_path_len_51 - 4)] = 0;

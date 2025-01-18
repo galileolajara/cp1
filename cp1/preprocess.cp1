@@ -14,7 +14,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    loop arg-c - 1 {
       if arg-v[i][0] == ''- {
          if arg-v[i][1] == ''D {
-            var name:char[] = & arg-v[i][2];
+            var name:char[] = &arg-v[i][2];
             +len = 0;
             loop {
                if name[len] == ''\0 {
@@ -190,7 +190,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
             C.printf("%s:%u: Error in preprocessing the code, #if(...) must have a closing parenthesis ')'\n", .input-path, line);
             C.exit(#failure);
          }
-         var def-str:char[] = & r.charr[start];
+         var def-str:char[] = &r.charr[start];
          +def-len = rparen - start;
          +ok = preprocess-def-get(def-str, def-len);
          if invert {
@@ -220,7 +220,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
             }
             // C.printf("1. indention is [%.*s]\n", first-char, r.p1);
             if ok {
-               C.memcpy(w.p1, & r.p1[first-char], (line-len + 1) - first-char);
+               C.memcpy(w.p1, &r.p1[first-char], (line-len + 1) - first-char);
                w.pos += (line-len + 1) - first-char;
                if (&&, r.p1[first-char] == ''#, r.p1[first-char + 1] == ''i, r.p1[first-char + 2] == ''f, (||, r.p1[first-char + 3] == ''(, (&&, r.p1[first-char + 3] == ''!, r.p1[first-char + 4] == ''())) {
                   preprocess = true;
@@ -260,7 +260,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
             // C.printf("2. indention is [%.*s]\n", first-char, r.p1);
             if (&&, line-len >= indention-len, C.memcmp(r.p1, indention, indention-len) == 0) {
                if ok {
-                  C.memcpy(w.p1, & r.p1[indention-len], (line-len + 1) - indention-len);
+                  C.memcpy(w.p1, &r.p1[indention-len], (line-len + 1) - indention-len);
                   w.pos += (line-len + 1) - indention-len;
                   if (&&, r.p1[indention-len] == ''#, r.p1[indention-len + 1] == ''i, r.p1[indention-len + 2] == ''f, (||, r.p1[indention-len + 3] == ''(, (&&, r.p1[indention-len + 3] == ''!, r.p1[indention-len + 4] == ''())) {
                      preprocess = true;

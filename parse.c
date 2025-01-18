@@ -64,7 +64,7 @@ void _NCp1_Ppreprocess_init_0() {
 */
 
 extern uint8_t _Glast_token;
-extern char* _Glock_path;
+/* extern char* _Glock_path;
 void cleanup() {
    if (_Glock_path != 0) {
       // printf("deleting %s\n", _Glock_path);
@@ -73,7 +73,7 @@ void cleanup() {
 }
 void _NCp1_PParser_at_exit_0() {
    atexit(cleanup);
-}
+} */
 
 typedef int _NCp1_NExprI;
 typedef int _NCp1_NId;

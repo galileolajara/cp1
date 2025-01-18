@@ -134,7 +134,7 @@ using (Stmt) {
                +func-i = case-v[i];
                +func = func-i.ptr();
                +func-name2 = func.decl.name;
-               var cvar-name-str:char[] = & func-name2.str()[func-name-len + 1];
+               var cvar-name-str:char[] = &func-name2.str()[func-name-len + 1];
                +cvar-name-len = func-name2.len() - (func-name-len + 1);
                +found-id = Id#nil;
                loop j = 0:Id; .id-c; j++ {

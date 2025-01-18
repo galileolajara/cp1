@@ -243,7 +243,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                C.printf("%s:%u: #import \"...\" must end with '\"'\n", cp1-path, line);
                return false;
             }
-            var import:char[] = & data[start];
+            var import:char[] = &data[start];
             +import-path-len = end - start;
             if (&&, import-path-len >= 4, import[import-path-len - 4] == ''., import[import-path-len - 3] == ''c, import[import-path-len - 2] == ''p, import[import-path-len - 1] == ''1) {
                C.printf("%s:%u: #import \"%.*s\" doesn:T need a '.cp1' suffix\n", cp1-path, line, import-path-len, import);
@@ -317,7 +317,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                C.printf("%s:%u: #include <...> must end with '>'\n", cp1-path, line);
                return false;
             }
-            var include-path:char[] = & data[start];
+            var include-path:char[] = &data[start];
             +include-path-len = end - start;
             +found = false;
             loop j = 0; .included-c; j++ {
@@ -372,7 +372,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                               }
                            }
                            if rangle != -1 {
-                              var file-path:char[] = & spec-data[start];
+                              var file-path:char[] = &spec-data[start];
                               +file-path-len = rangle - start;
                               var file-path-dup:char[] = C.malloc(file-path-len + 1);
                               C.memcpy(file-path-dup, file-path, file-path-len);
@@ -425,7 +425,7 @@ validate-cp1-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:Cmd):bo
       }
       +cp1-path-len = C.strlen(cp1-path);
       if (&&, cp1-path[0] == ''., cp1-path[1] == ''/) {
-         cp1-path = & cp1-path[2];
+         cp1-path = &cp1-path[2];
          cp1-path-len -= 2;
       }
       loop j = 0; cp1-path-len; j++ {
