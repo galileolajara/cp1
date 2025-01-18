@@ -13,12 +13,12 @@ at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
    +parent = type.parent.ptr();
    if (&&, parent.type == #basic, parent.name.basic == #relative) {
       +name = type.name;
-      // C.out.printf("type is %s\n", at-i.ptr().type.cgl-name());
+      // C.out.printf("type is %s\n", at-i.ptr().type.cp1-name());
       // if at-i.ptr().type == #module {
       //    C.out.printf("name is %s\n", at-i.ptr().name.id.str());
-      //    C.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cgl-name());
+      //    C.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cp1-name());
       //    if at-i.ptr().parent.ptr().type == #basic {
-      //       C.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cgl-name());
+      //       C.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cp1-name());
       //    }
       // }
       // C.out.printf("relative type detected, finding :%s\n", name.id.str());
@@ -127,12 +127,12 @@ using (DeclVarData) {
    //    +parent = type.parent.ptr();
    //    if (&&, parent.type == #basic, parent.name.basic == #relative) {
    //       +name = type.name;
-   //       C.out.printf("type is %s\n", at-i.ptr().type.cgl-name());
+   //       C.out.printf("type is %s\n", at-i.ptr().type.cp1-name());
    //       if at-i.ptr().type == #module {
    //          C.out.printf("name is %s\n", at-i.ptr().name.id.str());
-   //          C.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cgl-name());
+   //          C.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cp1-name());
    //          if at-i.ptr().parent.ptr().type == #basic {
-   //             C.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cgl-name());
+   //             C.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cp1-name());
    //          }
    //       }
    //       C.out.printf("relative detected on var %s, finding :%s\n", vd-name.str(), name.id.str());

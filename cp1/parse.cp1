@@ -638,132 +638,6 @@ parse-comment(r:Rdr, w:Wtr, ending:char, in-data:ref) {
    }
 }
 var input-path:char[] @real-name(input_path);
-convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
-   +in-size = in-out-size;
-   var r:Rdr+;
-   r.reff = in-data;
-   if (&&, r.p1[0] == ''{, r.p1[1] == ''g, r.p1[2] == ''l, r.p1[3] == ''c, r.p1[4] == ''\n, r.p1[in-size - 2] == ''}, r.p1[in-size - 1] == ''\n) {
-      // remove the {glc and } from head and tail of the file
-      r.p1[0] = '' ;
-      r.p1[1] = '' ;
-      r.p1[2] = '' ;
-      r.p1[3] = '' ;
-      r.p1[in-size - 2] = '' ;
-   }
-   var r-end:Rdr+;
-   r-end.reff = in-data;
-   r-end.pos += in-size;
-   var w-begin:Wtr+;
-   w-begin.reff = C.malloc(in-size << 1);
-   var w:Wtr+;
-   w.reff = w-begin.reff;
-   loop r.pos < r-end.pos {
-      if (&&, r.p1[0] == ''@, r.p1[1] == ''r, r.p1[2] == ''e, r.p1[3] == ''a, r.p1[4] == ''l, r.p1[5] == ''N, r.p1[6] == ''a, r.p1[7] == ''m, r.p1[8] == ''e) {
-         // realName -> real-name
-         w.p1[0] = ''@;
-         w.p1[1] = ''r;
-         w.p1[2] = ''e;
-         w.p1[3] = ''a;
-         w.p1[4] = ''l;
-         w.p1[5] = ''-;
-         w.p1[6] = ''n;
-         w.p1[7] = ''a;
-         w.p1[8] = ''m;
-         w.p1[9] = ''e;
-         w.pos += 10;
-         r.pos += 9;
-      } elif (&&, r.p1[0] == ''@, r.p1[1] == ''n, r.p1[2] == ''o, r.p1[3] == ''D, r.p1[4] == ''e, r.p1[5] == ''c, r.p1[6] == ''l) {
-         // noDecl -> no-decl
-         w.p1[0] = ''@;
-         w.p1[1] = ''n;
-         w.p1[2] = ''o;
-         w.p1[3] = ''-;
-         w.p1[4] = ''d;
-         w.p1[5] = ''e;
-         w.p1[6] = ''c;
-         w.p1[7] = ''l;
-         w.pos += 8;
-         r.pos += 7;
-      } elif (&&, r.p1[0] == ''@, r.p1[1] == ''n, r.p1[2] == ''o, r.p1[3] == ''B, r.p1[4] == ''o, r.p1[5] == ''d, r.p1[6] == ''y) {
-         // noBody -> no-body
-         w.p1[0] = ''@;
-         w.p1[1] = ''n;
-         w.p1[2] = ''o;
-         w.p1[3] = ''-;
-         w.p1[4] = ''b;
-         w.p1[5] = ''o;
-         w.p1[6] = ''d;
-         w.p1[7] = ''y;
-         w.pos += 8;
-         r.pos += 7;
-      } elif (&&, r.p1[0] == ''`, r.p1[1] == ''s, r.p1[2] == ''i, r.p1[3] == ''z, r.p1[4] == ''e, r.p1[5] == ''O, r.p1[6] == ''f, r.p1[7] == ''[) {
-         // uszOf[Type] -> Type[usz]
-         r.pos += 8;
-         var r-type:Rdr+;
-         r-type.reff = r.reff;
-         loop {
-            +c = r.p1[0];
-            if c == ''] {
-               loop r-type.pos < r.pos {
-                  w.p1[0] = r-type.p1[0];
-                  w.pos++;
-                  r-type.pos++;
-               }
-               w.p1[0] = ''[;
-               w.p1[1] = ''`;
-               w.p1[2] = ''s;
-               w.p1[3] = ''i;
-               w.p1[4] = ''z;
-               w.p1[5] = ''e;
-               w.pos += 6;
-               break;
-            }
-            r.pos++;
-         }
-      } elif (&&, r.p1[0] == ''`, r.p1[1] == ''-, r.p1[2] == '' ) {
-         // comment that:S only for the older glc
-         // but a code for the newer glc
-         w.p1[0] = '' ;
-         w.p1[1] = '' ;
-         w.p1[2] = '' ;
-         w.pos += 3;
-         r.pos += 3;
-      } elif (&&, r.p1[0] == ''\', r.p1[1] == ''\', r.p1[2] == ''`, r.p1[3] == ''~) {
-         w.p1[0] = ''\';
-         w.p1[1] = ''\';
-         w.p1[2] = ''`;
-         w.pos += 3;
-         r.pos += 4;
-      } elif (&&, r.p1[0] == '' , r.p1[1] == ''+, r.p1[2] == ''+) {
-         // remove space from increment operator
-         w.p1[0] = ''+;
-         w.p1[1] = ''+;
-         w.pos += 2;
-         r.pos += 3;
-      } elif (&&, r.p1[0] == '' , r.p1[1] == ''-, r.p1[2] == ''-) {
-         // remove space from decrement operator
-         w.p1[0] = ''-;
-         w.p1[1] = ''-;
-         w.pos += 2;
-         r.pos += 3;
-      } else {
-         w.p1[0] = r.p1[0];
-         w.pos++;
-         r.pos++;
-      }
-   }
-   w.p1[0] = 0;
-   var path:char[256];
-   C.sprintf(path, "glc-edit/%s", .input-path);
-   if !C.File.create(++out-fd, path, #write | #truncate, 0o644) {
-      C.out.printf("Cannot open file for writing: %s\n", path);
-      C.exit(#failure);
-   }
-   out-fd.write(w-begin.reff, w.pos - w-begin.pos);
-   out-fd.close();
-   in-out-size = w.pos - w-begin.pos;
-   return w-begin.reff;
-}
 char-escape-value(c:char):i32;
 // var lock-path:char[];
 // parser-at-exit();
@@ -1069,7 +943,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       w-begin.reff = new-data;
       in-size = w.pos - w-begin.pos;
 
-      // C.Fd.open(+fd, "out:Parsed.glc", #write | #truncate | #create, 0o644);
+      // C.Fd.open(+fd, "out:parsed.cp1", #write | #truncate | #create, 0o644);
       // fd.write(in-data, in-size);
       // fd.close();
       // C.out.write(in-data, in-size);
