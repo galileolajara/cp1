@@ -765,8 +765,8 @@ convert-old-to-new(in-data:ref, in-out-size:i32&):ref {
    return w-begin.reff;
 }
 char-escape-value(c:char):i32;
-var lock-path:char[];
-parser-at-exit();
+// var lock-path:char[];
+// parser-at-exit();
 main(arg-c:intc, arg-v:char[][]):intc @main {
    if false {
       // preprocess-def("", 0);
@@ -779,7 +779,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .func-main = #nil;
    .decl-include = #nil;
    if arg-c != 3 {
-      C.out.printf("Usage: %s [file.cgl] [output.cgl-b]\n", arg-v[0]);
+      C.out.printf("Usage: %s [file.cp1] [output.cp1-b]\n", arg-v[0]);
       return 0;
    }
    .input-path = arg-v[1];
@@ -1136,7 +1136,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       .last-col = .col;
       .row = tok.row;
       .col = tok.col;
-      // 'c.out.printf("%s:%u:%u: token %s\n", .input-path, tok.row, tok.col, t.cgl-name());
+      // 'c.out.printf("%s:%u:%u: token %s\n", .input-path, tok.row, tok.col, t.cp1-name());
       // 'c.out.flush();
       // if (&&, t >= #id-quote, t < #id) {
       //    tok.id = lex.get-id(1, 0);
@@ -1371,7 +1371,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    C.memcpy(final-path, out-path, out-path-len - 4);
    final-path[out-path-len - 4] = 0;
    C.rename(out-path, final-path);
-   .lock-path = null; // Do not unlink lock-path at exit
+   // .lock-path = null; // Do not unlink lock-path at exit
    out-path[out-path-len - 5] = ''h;
    C.memcpy(final-path, out-path, out-path-len - 4);
    final-path[out-path-len - 4] = 0;
