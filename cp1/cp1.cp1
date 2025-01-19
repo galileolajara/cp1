@@ -129,11 +129,15 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
          if data[pos] == ''\n {
             break;
          }
+         if data[pos] == ''\t {
+            C.printf("%s:%u:%u: Error, use of tabs is discouraged, please use spaces instead\n", cp1-path, line, (pos - start) + 1);
+            C.exit(#failure);
+         }
          pos++;
       }
       +first-char = start;
       loop {
-         if (||, data[first-char] == '' , data[first-char] == ''\t) {
+         if data[first-char] == ''  {
             first-char++;
             continue;
          } else {
@@ -197,7 +201,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
       }
       +first-char = start;
       loop {
-         if (||, data[first-char] == '' , data[first-char] == ''\t) {
+         if data[first-char] == ''  {
             first-char++;
             continue;
          } else {
@@ -213,7 +217,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
          data[first-char + 4] == ''o,
          data[first-char + 5] == ''r,
          data[first-char + 6] == ''t,
-         (||, data[first-char + 7] == '' , data[first-char + 7] == ''\t),
+         data[first-char + 7] == '' ,
          ) {
          start += 8;
          +begin = -1;
@@ -222,8 +226,6 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                begin = j;
                break;
             } elif data[j] == ''  {
-               // Ok
-            } elif data[j] == ''\t {
                // Ok
             } else {
                C.out.printf("%s:%u: Invalid character '%c' found in #include <...>\n", cp1-path, line, data[j]);
@@ -287,7 +289,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
          data[first-char + 5] == ''u,
          data[first-char + 6] == ''d,
          data[first-char + 7] == ''e,
-         (||, data[first-char + 8] == '' , data[first-char + 8] == ''\t),
+         data[first-char + 8] == '' ,
          ) {
          start += 9;
          +begin = -1;
@@ -296,8 +298,6 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                begin = j;
                break;
             } elif data[j] == ''  {
-               // Ok
-            } elif data[j] == ''\t {
                // Ok
             } else {
                C.out.printf("%s:%u: Invalid character '%c' found in #include <...>\n", cp1-path, line, data[j]);
@@ -402,9 +402,8 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
          if (&&, data[i] == ''/, data[i + 1] == ''/) {
             // C.printf("comment detected\n");
             break;
-         }
-         if data[i] == ''{ {
-            // C.printf("curly brace detected\n");
+         } else {
+            // C.printf("character detected, stop\n");
             "goto stop;";
          }
          i++;

@@ -723,10 +723,10 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             C.printf("%s:%u:%u: Error, use of tabs is discouraged, please use spaces instead\n", .input-path, row, col);
             C.exit(#failure);
          } elif r.p1[0] == ''/ {
-            if r.p1[1] == ''/ { // , (||, r.p1[2] == '' , r.p1[2] == ''\t))
+            if r.p1[1] == ''/ {
                if r.reff == in-data {
                   // ok
-               } elif (||, r.p1[-1] == '' , r.p1[-1] == ''\t, r.p1[-1] == ''\n) {
+               } elif (||, r.p1[-1] == '' , r.p1[-1] == ''\n) {
                   // ok
                } else {
                   get-row-col(+row, +col, r.reff, in-data);
@@ -824,7 +824,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   r.pos += 3;
                   continue;
                }
-            } elif (&&, (||, r.p1[2] == '' , r.p1[2] == ''\t), (||, r.p1[1] == ''-, r.p1[1] == ''=)) {
+            } elif (&&, r.p1[2] == '' , (||, r.p1[1] == ''-, r.p1[1] == ''=)) {
                // string
                w.p1[0] = ''\';
                w.p1[1] = r.p1[1];
@@ -995,7 +995,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          // when reporting the row and column of tokens, skip the spaces
          +pos = lex.start;
          loop pos < r-end.p1 {
-            if (||, pos[0] == '' , pos[0] == ''\t) {
+            if pos[0] == ''  {
                tok.col++;
             } elif pos[0] == ''\n {
                tok.row++;
