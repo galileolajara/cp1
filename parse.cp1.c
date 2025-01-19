@@ -2095,6 +2095,7 @@ union _NCp1_NRdr _Lr_start_2;
 union _NCp1_NRdr _Lr_cursor_3;
 size_t _Llength_4;
 uint64_t _Lval_5;
+uint64_t _Llimit_6;
 _Lr_start_2._Freff = (*_Llex_0)._Fstart;
 _Lr_cursor_3._Freff = (*_Llex_0)._Fcursor;
 _Llength_4 = (_Lr_cursor_3._Fpos - _Lr_start_2._Fpos - _Llen_minus_1);
@@ -2110,7 +2111,12 @@ _Lr_start_2._Fpos++;
 continue_0:;
 }
 break_0:;
-if(_Lval_5 > 4294967295u) {
+if(_Llen_minus_1 == 0) {
+_Llimit_6 = 2147483647;
+} else {
+_Llimit_6 = 4294967295u;
+}
+if(_Lval_5 > _Llimit_6) {
 fprintf(stdout, "%s:%u:%u: Integer literal was out of bounds\n", input_path, _Grow, _Gcol);
 exit(_NLibC_NExit_Cfailure);
 }

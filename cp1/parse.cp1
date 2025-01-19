@@ -312,7 +312,13 @@ Lexer(
          val = (val * 10:u64) + (r-start.p1[0] - ''0);
          r-start.pos++;
       }
-      if val > 4294967295u {
+      var limit:u64;
+      if len-minus == 0 { // no suffix, meaning its a signed integer
+         limit = 2147483647;
+      } else {
+         limit = 4294967295u; 
+      }
+      if val > limit {
          C.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
          C.exit(#failure);
       }
