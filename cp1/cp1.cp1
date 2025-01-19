@@ -208,7 +208,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
             break;
          }
       }
-      // C.printf("[%.*s]\n", pos - first-char, & data[first-char]);
+      // C.printf("[%.*s]\n", pos - first-char, &data[first-char]);
       if (&&,
          data[first-char] == ''#,
          data[first-char + 1] == ''i,
@@ -280,6 +280,8 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                return false;
             }
          }
+         pos++;
+         continue;
       } elif (&&,
          data[first-char] == ''#,
          data[first-char + 1] == ''i,
@@ -393,6 +395,8 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                C.free(spec-data);
             }
          }
+         pos++;
+         continue;
       }
       +i = first-char;
       loop {

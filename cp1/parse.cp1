@@ -278,7 +278,7 @@ Lexer(
    scan(lex:this):Token @real-name(cp1_lexer_scan);
    get-u32-oct(lex:this):u32 {
       var r-start:Rdr+;
-      r-start.reff = lex.start;
+      r-start.reff = lex.start + 2;
       var r-cursor:Rdr+;
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos;

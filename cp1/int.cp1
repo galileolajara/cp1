@@ -22,7 +22,17 @@ using (ExprI) {
    }
    write-i32(expr:Expr) @case.write() @inline {
       var e:ExprIntData = expr;
-      .out.printf("%d", e.value);
+      switch e.type {
+         case #oct {
+            .out.printf("0%o", e.value);
+         }
+         case #dec {
+            .out.printf("%d", e.value);
+         }
+         case #hex {
+            .out.printf("0x%x", e.value);
+         }
+      }
    }
    process-i32(expr:Expr, ok:bool&) @case.process() @inline {
       ok = true;
