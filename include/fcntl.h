@@ -1,1 +1,1 @@
-<stdc/fcntl.cp1>
+<posix/fcntl.cp1>

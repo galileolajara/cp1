@@ -1,4 +1,5 @@
 using C = LibC;
+using X = Posix;
 using Cp1 = Cp1;
 using (Cp1) {
 var input-path:char[];
@@ -69,7 +70,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       "goto usage;";
    }
    .input-path = arg-v[i];
-   if !C.Fd.open(++in-fd, arg-v[i], #read) {
+   if !X.Fd.open(++in-fd, arg-v[i], #read) {
       C.printf("Cannot open file for reading: %s\n", arg-v[i]);
       C.exit(#failure);
    }
@@ -80,7 +81,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    in-fd.close();
    preprocess-init();
    preprocess(in-data, in-size);
-   if !C.Fd.open(++out-fd, arg-v[i + 1], #create | #truncate | #write, 0o644) {
+   if !X.Fd.open(++out-fd, arg-v[i + 1], #create | #truncate | #write, 0o644) {
       C.printf("Cannot open file for writing: %s\n", arg-v[i + 1]);
       C.exit(#failure);
    }

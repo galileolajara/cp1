@@ -1,5 +1,5 @@
 using C = LibC;
-using Sys = Sys;
+using X = Posix;
 var atexit-rm-v:char[][];
 var atexit-rm-cap:u32;
 var atexit-rm-c:u32;
@@ -27,7 +27,7 @@ get-compile(bin:char[], ninja-f:C.File) {
       // C.printf("- %s\n", found);
       var fd, compile:char[512];
       C.sprintf(compile, "%s/tcc", found);
-      fd = C.open(compile, #read);
+      fd = X.open(compile, #read);
       if fd != #nil {
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = tcc $in -o $out\n");
@@ -36,7 +36,7 @@ get-compile(bin:char[], ninja-f:C.File) {
          return;
       }
       C.sprintf(compile, "%s/clang", found);
-      fd = C.open(compile, #read);
+      fd = X.open(compile, #read);
       if fd != #nil {
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = clang $in -o $out\n");
@@ -45,7 +45,7 @@ get-compile(bin:char[], ninja-f:C.File) {
          return;
       }
       C.sprintf(compile, "%s/gcc", found);
-      fd = C.open(compile, #read);
+      fd = X.open(compile, #read);
       if fd != #nil {
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = gcc $in -o $out\n");
@@ -101,7 +101,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
          return true;
       }
    }
-   if !C.Fd.open(++fd, cp1-path, #read) {
+   if !X.Fd.open(++fd, cp1-path, #read) {
       C.printf("Error, [cp1 file] (which is '%s') cannot be opened for reading\n", cp1-path);
       return false;
    }
@@ -153,7 +153,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
 
       var tmp-path:char[17];
       C.memcpy(tmp-path, "cp1-tmp-XXXXXXXX", 17);
-      +tmp-fd = C.mkstemp(tmp-path);
+      +tmp-fd = X.mkstemp(tmp-path);
       if tmp-fd == #nil {
          C.printf("Error, cannot create a temporary file at the current folder\n");
          return false;
@@ -170,7 +170,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
       C.memcpy(tmp-path-dup, tmp-path, 17);
       atexit-rm(tmp-path-dup);
       cp1-path-add(tmp-path-dup, 16, cp1-path, cp1-path-len);
-      if !C.Fd.open(fd, tmp-path-dup, #read) {
+      if !X.Fd.open(fd, tmp-path-dup, #read) {
          C.printf("Error, cannot open file for reading: %s\n", tmp-path);
          return false;
       }
@@ -346,7 +346,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                      spec-path[i] = ''-;
                   }
                }
-               if !C.Fd.open(++spec-fd, spec-path, #read) {
+               if !X.Fd.open(++spec-fd, spec-path, #read) {
                   C.printf("%s:%u: #include <%s> failed because '%s' does not exists\n", cp1-path, line, path, spec-path);
                   return false;
                }
@@ -479,7 +479,7 @@ atexit-rm(path:char[]) {
 on-exit() {
    loop i = 0; .atexit-rm-c; i++ {
       // C.printf("Removing %s\n", .atexit-rm-v[i]);
-      C.unlink(.atexit-rm-v[i]);
+      X.unlink(.atexit-rm-v[i]);
    }
 }
 main(arg-c:intc, arg-v:char[][]):intc {
@@ -508,10 +508,10 @@ main(arg-c:intc, arg-v:char[][]):intc {
       } else {
          +path = C.strdup(C.getenv("PATH"));
          +found = C.strtok(path, ":");
-         +fd = C.Fd#nil;
+         +fd = X.Fd#nil;
          loop found != null {
             C.sprintf(abs-path, "%s/%s", found, bin);
-            fd = C.open(abs-path, #read);
+            fd = X.open(abs-path, #read);
             if fd != #nil {
                break;
             }
@@ -554,10 +554,10 @@ main(arg-c:intc, arg-v:char[][]):intc {
          print-command(arg-c, arg-v);
          C.exit(#failure);
       }
-      Sys.mkdir("cp1-tmp", 0o755);
+      X.mkdir("cp1-tmp", 0o755);
       var ninja-path:char[24];
       C.strcpy(ninja-path, "cp1-tmp/ninja-XXXXXXXXX");
-      +ninja-fd = C.mkstemp(ninja-path);
+      +ninja-fd = X.mkstemp(ninja-path);
       atexit-rm(C.strdup(ninja-path));
       if ninja-fd == #nil {
          print-c-usage(bin);
@@ -593,34 +593,34 @@ main(arg-c:intc, arg-v:char[][]):intc {
          print-command(arg-c, arg-v);
          C.exit(#failure);
       }
-      Sys.mkdir("cp1-tmp", 0o755);
+      X.mkdir("cp1-tmp", 0o755);
       var c-path:char[22];
       C.strcpy(c-path, "cp1-tmp/c-XXXXXXXXX");
-      +c-fd = C.mkstemp(c-path);
+      +c-fd = X.mkstemp(c-path);
       if c-fd == #nil {
          print-run-usage(bin);
          C.printf("Error, cannot open file for reading: %s\n", c-path);
          C.exit(#failure);
       }
       c-fd.close();
-      C.unlink(c-path);
+      X.unlink(c-path);
       var exe-path:char[24];
       C.strcpy(exe-path, "cp1-tmp/exe-XXXXXXXXX");
-      +exe-fd = C.mkstemp(exe-path);
+      +exe-fd = X.mkstemp(exe-path);
       if exe-fd == #nil {
          print-run-usage(bin);
          C.printf("Error, cannot open file for reading: %s\n", exe-path);
          C.exit(#failure);
       }
       exe-fd.close();
-      C.unlink(exe-path);
+      X.unlink(exe-path);
       c-path[19] = ''.;
       c-path[20] = ''c;
       c-path[21] = ''\0;
       atexit-rm(C.strdup(c-path));
       var ninja-path:char[24];
       C.strcpy(ninja-path, "cp1-tmp/ninja-XXXXXXXXX");
-      +ninja-fd = C.mkstemp(ninja-path);
+      +ninja-fd = X.mkstemp(ninja-path);
       atexit-rm(C.strdup(ninja-path));
       if ninja-fd == #nil {
          print-run-usage(bin);
@@ -650,7 +650,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
          C.exit(#failure);
       }
       +exe-ret = C.system(exe-path);
-      C.unlink(exe-path);
+      X.unlink(exe-path);
       if exe-ret != 0 {
          C.exit(#failure);
       }

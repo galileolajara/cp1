@@ -1,10 +1,10 @@
 include(<fcntl.h>) {
-   using Sys = Sys;
    using C = LibC;
-   using (LibC) {
+   using X = Posix;
+   using (Posix) {
       Fd[#nil = -1]:intc {
          open(file:this&, path:char[], flags:OpenFlags):bool @inline {
-            +fd = C.open(path, flags);
+            +fd = X.open(path, flags);
             if fd != -1 {
                file = fd;
                return true;
@@ -13,7 +13,7 @@ include(<fcntl.h>) {
             }
          }
          open(file:this&, path:char[], flags:OpenFlags, mode:intc):bool @inline {
-            +fd = C.open(path, flags, mode);
+            +fd = X.open(path, flags, mode);
             if fd != -1 {
                file = fd;
                return true;
@@ -21,14 +21,14 @@ include(<fcntl.h>) {
                return false;
             }
          }
-         fopen(file:this, mode:char[]):File @inline {
-            return fdopen(file, mode);
+         fopen(file:this, mode:char[]):C.File @inline {
+            return C.fdopen(file, mode);
          }
          close(file:this):intc @inline {
-            return C.close(file);
+            return X.close(file);
          }
          stat(file:this, stat:Sys.Stat):intc @inline {
-            return Sys.fstat(file, stat);
+            return X.fstat(file, stat);
          }
       }
       OpenFlags[

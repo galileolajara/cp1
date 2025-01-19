@@ -1,5 +1,6 @@
 include(<stdio.h>) {
    using C = LibC;
+   using X = Posix;
    using (LibC) {
       printf(fmt:char[]):intc @var-args @no-decl @real-name(printf);
       sprintf(str:char[], fmt:char[]):intc @var-args @no-decl @real-name(sprintf);
@@ -16,7 +17,7 @@ include(<stdio.h>) {
       }
       rename(old:char[], new:char[]):intc @no-decl @real-name;
       fopen(path:char[], mode:char[]):File @no-decl @real-name;
-      fdopen(fd:Fd, mode:char[]):File @no-decl @real-name;
+      fdopen(fd:X.Fd, mode:char[]):File @no-decl @real-name;
       fclose(f:File):intc @no-decl @real-name;
       fwrite(buf:ref, size1:usz, size2:usz, f:File):usz @no-decl @real-name;
       tempnam(dir:char[], pfx:char[]):char[] @no-decl @real-name;

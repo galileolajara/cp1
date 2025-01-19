@@ -1,5 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
+using X = Posix;
 using (Cp1) {
 var include-stdint:bool;
 var include-stdbool:bool;
@@ -68,14 +69,14 @@ id-add(id-len:u8, id-str:char[]):Id {
 }
 read(in-path:char[]) {
    // C.out.printf("reading %s -------------------\n", in-path);
-   if !C.Fd.open(++in-fd, in-path, #read) {
+   if !X.Fd.open(++in-fd, in-path, #read) {
       C.out.printf("Cannot open file for reading: %s\n", in-path);
       C.exit(#failure);
    }
    +in-size = in-fd.seek(0, #end);
    if in-size == 0 {
       // Retry after 1 second
-      C.sleep(1);
+      X.sleep(1);
       in-size = in-fd.seek(0, #end);
       if in-size == 0 {
          C.out.printf("Error, file is blank (zero bytes): %s\n", in-path);

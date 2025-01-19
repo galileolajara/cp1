@@ -1,10 +1,11 @@
 using C = LibC;
+using X = Posix;
 main(arg-c:intc, arg-v:char[][]):intc {
    if arg-c != 3 {
       C.printf("Usage: %s [.h input file] [.cp1 output file]\n", arg-v[0]);
       C.exit(#failure);
    }
-   if !C.Fd.open(++in-fd, arg-v[1], #read) {
+   if !X.Fd.open(++in-fd, arg-v[1], #read) {
       C.printf("Cannot open file for reading: %s\n", arg-v[1]);
       C.exit(#failure);
    }

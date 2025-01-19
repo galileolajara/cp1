@@ -182,9 +182,9 @@ typedef uint8_t _NCp1_NEnumFlags;
 typedef uint8_t _NCp1_NCvarFlags;
 typedef uint8_t _NCp1_NDeclVarType;
 typedef uint8_t _NCp1_NGvarFlags;
-typedef int _NLibC_NFd;
-typedef int _NLibC_NOpenFlags;
-typedef int _NLibC_NSeek;
+typedef int _NPosix_NFd;
+typedef int _NPosix_NOpenFlags;
+typedef int _NPosix_NSeek;
 typedef uint8_t _NCp1_NExprType;
 typedef uint8_t _NCp1_NExprFlags;
 typedef uint8_t _NCp1_NAssign;
@@ -802,8 +802,8 @@ void _NCp1_NDeclFunc_Pwrite_1(struct _NCp1_NDeclFunc* _Lf_0);
 bool _NCp1_NAt_Pwrite_type_info_3(_NCp1_NAt _Ltd_0, struct _NCp1_NTypeInfo* _Lti_1, int32_t _Ladd_2);
 void _NCp1_NDeclVarData_Pwrite_lvar_type_2(struct _NCp1_NDeclVarData* _Lvd_0, _NCp1_NLvar _Llvar_1);
 void _NCp1_NStmtSpace_Pwrite_1(struct _NCp1_NStmtSpace* _Lspace_0);
-bool _NLibC_NFd_Popen_3(_NLibC_NFd* _Lfile_0, char* _Lpath_1, _NLibC_NOpenFlags _Lflags_2);
-int _NLibC_NFd_Pclose_1(_NLibC_NFd _Lfile_0);
+bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2);
+int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0);
 uint8_t _NCp1_NRdr_Pn1_1(union _NCp1_NRdr* _Lr_0);
 int32_t _NCp1_NMap_Pget_or_insert_4(struct _NCp1_NMap* _Lm_0, char* _Lstr_1, uint8_t _Llen_2, int32_t _Lval_3);
 void _NCp1_NNameType_Prd_2(_NCp1_NNameType* _Li_0, union _NCp1_NRdr* _Lr_1);
@@ -1646,7 +1646,7 @@ void _NCp1_NAtData_Pinit_4(struct _NCp1_NAtData* _Lat_0, _NCp1_NNameType _Ltype_
 (*_Lat_0)._Fdef = _NCp1_NAtDef_Cundefined;
 }
 void _NCp1_Pread_1(char* _Lin_path_0) {
-_NLibC_NFd _Lin_fd_1;
+_NPosix_NFd _Lin_fd_1;
 size_t _Lin_size_2;
 union _NCp1_NRdr _Lr_begin_3;
 _NCp1_NFile _Lfile_idx_4;
@@ -1659,7 +1659,7 @@ _NCp1_NStruct _Ls_idx_begin_56;
 _NCp1_NFunc _Lfunc_c_65;
 _NCp1_NFunc _Lf_idx_begin_66;
 _NCp1_NFunc _Lfunc_main_82;
-if(!_NLibC_NFd_Popen_3(&_Lin_fd_1, _Lin_path_0, O_RDONLY)) {
+if(!_NPosix_NFd_Popen_3(&_Lin_fd_1, _Lin_path_0, O_RDONLY)) {
 fprintf(stdout, "Cannot open file for reading: %s\n", _Lin_path_0);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -1675,7 +1675,7 @@ exit(_NLibC_NExit_Cfailure);
 _Lr_begin_3._Freff = malloc(_Lin_size_2);
 lseek(_Lin_fd_1, 0, SEEK_SET);
 read(_Lin_fd_1, _Lr_begin_3._Freff, _Lin_size_2);
-_NLibC_NFd_Pclose_1(_Lin_fd_1);
+_NPosix_NFd_Pclose_1(_Lin_fd_1);
 _Lfile_idx_4 = _Gfile_c++;
 if(_Gfile_cap <= _Gfile_c) {
 _NCp1_NFile _Lold_cap_5;
@@ -2732,8 +2732,8 @@ continue_1:;
 }
 break_1:;
 }
-inline bool _NLibC_NFd_Popen_3(_NLibC_NFd* _Lfile_0, char* _Lpath_1, _NLibC_NOpenFlags _Lflags_2) {
-_NLibC_NFd _Lfd_3;
+inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2) {
+_NPosix_NFd _Lfd_3;
 _Lfd_3 = open(_Lpath_1, _Lflags_2);
 if(_Lfd_3 != -1) {
 (*_Lfile_0) = _Lfd_3;
@@ -2742,7 +2742,7 @@ return true;
 return false;
 }
 }
-inline int _NLibC_NFd_Pclose_1(_NLibC_NFd _Lfile_0) {
+inline int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0) {
 return close(_Lfile_0);
 }
 inline uint8_t _NCp1_NRdr_Pn1_1(union _NCp1_NRdr* _Lr_0) {

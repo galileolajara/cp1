@@ -8,16 +8,16 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/stat.h>
-#define _NLibC_NFd_Cnil (-1)
+#define _NPosix_NFd_Cnil (-1)
 #define _NLibC_NExit_Csuccess 0
 #define _NLibC_NExit_Cfailure (_NLibC_NExit_Csuccess + 1)
 #define _NCmd_Cc 0
 #define _NCmd_Crun (_NCmd_Cc + 1)
-typedef int _NLibC_NFd;
-typedef int _NLibC_NOpenFlags;
+typedef int _NPosix_NFd;
+typedef int _NPosix_NOpenFlags;
 typedef int _NLibC_NExit;
 typedef uint8_t _NCmd;
-typedef int _NLibC_NSeek;
+typedef int _NPosix_NSeek;
 char _Ginclude_dir[512];
 uint16_t _Ginclude_dir_len;
 int32_t _Gcp1_path_c;
@@ -41,13 +41,13 @@ void _Pprint_c_usage_1(char* _Lbin_0);
 bool _Pvalidate_cp1_paths_5(int32_t _Lstart_0, int32_t _Larg_c_1, char** _Larg_v_2, char* _Lbin_3, _NCmd _Lcmd_4);
 void _Pprint_command_2(int32_t _Larg_c_0, char** _Larg_v_1);
 void _Patexit_rm_1(char* _Lpath_0);
-struct FILE* _NLibC_NFd_Pfopen_2(_NLibC_NFd _Lfile_0, char* _Lmode_1);
+struct FILE* _NPosix_NFd_Pfopen_2(_NPosix_NFd _Lfile_0, char* _Lmode_1);
 void _Pprint_run_usage_1(char* _Lbin_0);
-int _NLibC_NFd_Pclose_1(_NLibC_NFd _Lfile_0);
+int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0);
 void _Pget_compile_2(char* _Lbin_0, struct FILE* _Lninja_f_1);
 void _Pprint_usage_2(char* _Lbin_0, _NCmd _Lcmd_1);
 bool _Pcp1_path_input_4(char* _Lcp1_path_0, int32_t _Lcp1_path_len_1, char* _Lbin_2, _NCmd _Lcmd_3);
-bool _NLibC_NFd_Popen_3(_NLibC_NFd* _Lfile_0, char* _Lpath_1, _NLibC_NOpenFlags _Lflags_2);
+bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2);
 void _Pcp1_path_add_4(char* _Lcp1_path_real_0, int32_t _Lcp1_path_real_len_1, char* _Lcp1_path_2, int32_t _Lcp1_path_len_3);
 int main(int _Larg_c_0, char** _Larg_v_1) {
 char* _Lbin_2;
@@ -88,21 +88,21 @@ realpath(_Lbin_2, _Labs_path_3);
 } else {
 char* _Lpath_7;
 char* _Lfound_8;
-_NLibC_NFd _Lfd_9;
+_NPosix_NFd _Lfd_9;
 _Lpath_7 = strdup(getenv("PATH"));
 _Lfound_8 = strtok(_Lpath_7, ":");
-_Lfd_9 = _NLibC_NFd_Cnil;
+_Lfd_9 = _NPosix_NFd_Cnil;
 while(_Lfound_8 != NULL) {
 sprintf(_Labs_path_3, "%s/%s", _Lfound_8, _Lbin_2);
 _Lfd_9 = open(_Labs_path_3, O_RDONLY);
-if(_Lfd_9 != _NLibC_NFd_Cnil) {
+if(_Lfd_9 != _NPosix_NFd_Cnil) {
 goto break_1;
 }
 _Lfound_8 = strtok(NULL, ":");
 continue_1:;
 }
 break_1:;
-if(_Lfd_9 == _NLibC_NFd_Cnil) {
+if(_Lfd_9 == _NPosix_NFd_Cnil) {
 printf("Cannot run %s because we can:T detect its absolute path\n", _Lbin_2);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -126,7 +126,7 @@ if(strcmp(_Lcmd_12, "c") == 0) {
 char* _Lc_path_13;
 size_t _Lc_path_len_14;
 char _Lninja_path_15[24];
-_NLibC_NFd _Lninja_fd_16;
+_NPosix_NFd _Lninja_fd_16;
 struct FILE* _Lninja_f_17;
 char _Lcommand_20[24 + 9];
 int _Lret_21;
@@ -149,12 +149,12 @@ mkdir("cp1-tmp", 32749);
 strcpy(_Lninja_path_15, "cp1-tmp/ninja-XXXXXXXXX");
 _Lninja_fd_16 = mkstemp(_Lninja_path_15);
 _Patexit_rm_1(strdup(_Lninja_path_15));
-if(_Lninja_fd_16 == _NLibC_NFd_Cnil) {
+if(_Lninja_fd_16 == _NPosix_NFd_Cnil) {
 _Pprint_c_usage_1(_Lbin_2);
 printf("Error, cannot open file for reading: %s\n", _Lninja_path_15);
 exit(_NLibC_NExit_Cfailure);
 }
-_Lninja_f_17 = _NLibC_NFd_Pfopen_2(_Lninja_fd_16, "w");
+_Lninja_f_17 = _NPosix_NFd_Pfopen_2(_Lninja_fd_16, "w");
 fprintf(_Lninja_f_17, "rule parse\n");
 fprintf(_Lninja_f_17, " command = %s-parse $in $out\n", _Lbin_2);
 fprintf(_Lninja_f_17, "rule compile\n");
@@ -187,11 +187,11 @@ exit(_NLibC_NExit_Cfailure);
 }
 } else if(strcmp(_Lcmd_12, "run") == 0) {
 char _Lc_path_22[22];
-_NLibC_NFd _Lc_fd_23;
+_NPosix_NFd _Lc_fd_23;
 char _Lexe_path_24[24];
-_NLibC_NFd _Lexe_fd_25;
+_NPosix_NFd _Lexe_fd_25;
 char _Lninja_path_26[24];
-_NLibC_NFd _Lninja_fd_27;
+_NPosix_NFd _Lninja_fd_27;
 struct FILE* _Lninja_f_28;
 char _Lcommand_31[32 + 9];
 int _Lninja_ret_32;
@@ -207,21 +207,21 @@ exit(_NLibC_NExit_Cfailure);
 mkdir("cp1-tmp", 32749);
 strcpy(_Lc_path_22, "cp1-tmp/c-XXXXXXXXX");
 _Lc_fd_23 = mkstemp(_Lc_path_22);
-if(_Lc_fd_23 == _NLibC_NFd_Cnil) {
+if(_Lc_fd_23 == _NPosix_NFd_Cnil) {
 _Pprint_run_usage_1(_Lbin_2);
 printf("Error, cannot open file for reading: %s\n", _Lc_path_22);
 exit(_NLibC_NExit_Cfailure);
 }
-_NLibC_NFd_Pclose_1(_Lc_fd_23);
+_NPosix_NFd_Pclose_1(_Lc_fd_23);
 unlink(_Lc_path_22);
 strcpy(_Lexe_path_24, "cp1-tmp/exe-XXXXXXXXX");
 _Lexe_fd_25 = mkstemp(_Lexe_path_24);
-if(_Lexe_fd_25 == _NLibC_NFd_Cnil) {
+if(_Lexe_fd_25 == _NPosix_NFd_Cnil) {
 _Pprint_run_usage_1(_Lbin_2);
 printf("Error, cannot open file for reading: %s\n", _Lexe_path_24);
 exit(_NLibC_NExit_Cfailure);
 }
-_NLibC_NFd_Pclose_1(_Lexe_fd_25);
+_NPosix_NFd_Pclose_1(_Lexe_fd_25);
 unlink(_Lexe_path_24);
 _Lc_path_22[19] = '.';
 _Lc_path_22[20] = 'c';
@@ -230,12 +230,12 @@ _Patexit_rm_1(strdup(_Lc_path_22));
 strcpy(_Lninja_path_26, "cp1-tmp/ninja-XXXXXXXXX");
 _Lninja_fd_27 = mkstemp(_Lninja_path_26);
 _Patexit_rm_1(strdup(_Lninja_path_26));
-if(_Lninja_fd_27 == _NLibC_NFd_Cnil) {
+if(_Lninja_fd_27 == _NPosix_NFd_Cnil) {
 _Pprint_run_usage_1(_Lbin_2);
 printf("Error, cannot open file for reading: %s\n", _Lninja_path_26);
 exit(_NLibC_NExit_Cfailure);
 }
-_Lninja_f_28 = _NLibC_NFd_Pfopen_2(_Lninja_fd_27, "w");
+_Lninja_f_28 = _NPosix_NFd_Pfopen_2(_Lninja_fd_27, "w");
 fprintf(_Lninja_f_28, "rule parse\n");
 fprintf(_Lninja_f_28, " command = %s-parse $in $out\n", _Lbin_2);
 fprintf(_Lninja_f_28, "rule compile\n");
@@ -380,13 +380,13 @@ _Gatexit_rm_v = realloc(_Gatexit_rm_v, _Gatexit_rm_cap * sizeof(size_t));
 }
 _Gatexit_rm_v[_Li_1] = _Lpath_0;
 }
-inline struct FILE* _NLibC_NFd_Pfopen_2(_NLibC_NFd _Lfile_0, char* _Lmode_1) {
+inline struct FILE* _NPosix_NFd_Pfopen_2(_NPosix_NFd _Lfile_0, char* _Lmode_1) {
 return fdopen(_Lfile_0, _Lmode_1);
 }
 void _Pprint_run_usage_1(char* _Lbin_0) {
 printf("Usage: %s run [cp1 file/s...]\n", _Lbin_0);
 }
-inline int _NLibC_NFd_Pclose_1(_NLibC_NFd _Lfile_0) {
+inline int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0) {
 return close(_Lfile_0);
 }
 void _Pget_compile_2(char* _Lbin_0, struct FILE* _Lninja_f_1) {
@@ -395,32 +395,32 @@ char* _Lfound_3;
 _Lpath_2 = strdup(getenv("PATH"));
 _Lfound_3 = strtok(_Lpath_2, ":");
 while(_Lfound_3 != NULL) {
-_NLibC_NFd _Lfd_4;
+_NPosix_NFd _Lfd_4;
 char _Lcompile_5[512];
 sprintf(_Lcompile_5, "%s/tcc", _Lfound_3);
 _Lfd_4 = open(_Lcompile_5, O_RDONLY);
-if(_Lfd_4 != _NLibC_NFd_Cnil) {
+if(_Lfd_4 != _NPosix_NFd_Cnil) {
 fprintf(_Lninja_f_1, "rule c\n");
 fprintf(_Lninja_f_1, " command = tcc $in -o $out\n");
-_NLibC_NFd_Pclose_1(_Lfd_4);
+_NPosix_NFd_Pclose_1(_Lfd_4);
 free(_Lpath_2);
 return;
 }
 sprintf(_Lcompile_5, "%s/clang", _Lfound_3);
 _Lfd_4 = open(_Lcompile_5, O_RDONLY);
-if(_Lfd_4 != _NLibC_NFd_Cnil) {
+if(_Lfd_4 != _NPosix_NFd_Cnil) {
 fprintf(_Lninja_f_1, "rule c\n");
 fprintf(_Lninja_f_1, " command = clang $in -o $out\n");
-_NLibC_NFd_Pclose_1(_Lfd_4);
+_NPosix_NFd_Pclose_1(_Lfd_4);
 free(_Lpath_2);
 return;
 }
 sprintf(_Lcompile_5, "%s/gcc", _Lfound_3);
 _Lfd_4 = open(_Lcompile_5, O_RDONLY);
-if(_Lfd_4 != _NLibC_NFd_Cnil) {
+if(_Lfd_4 != _NPosix_NFd_Cnil) {
 fprintf(_Lninja_f_1, "rule c\n");
 fprintf(_Lninja_f_1, " command = gcc $in -o $out\n");
-_NLibC_NFd_Pclose_1(_Lfd_4);
+_NPosix_NFd_Pclose_1(_Lfd_4);
 free(_Lpath_2);
 return;
 }
@@ -442,7 +442,7 @@ break;
 }
 }
 bool _Pcp1_path_input_4(char* _Lcp1_path_0, int32_t _Lcp1_path_len_1, char* _Lbin_2, _NCmd _Lcmd_3) {
-_NLibC_NFd _Lfd_5;
+_NPosix_NFd _Lfd_5;
 size_t _Llen_6;
 char* _Ldata_7;
 int32_t _Lpos_8;
@@ -459,7 +459,7 @@ continue_0:;
 _Li_4++;
 }
 break_0:;
-if(!_NLibC_NFd_Popen_3(&_Lfd_5, _Lcp1_path_0, O_RDONLY)) {
+if(!_NPosix_NFd_Popen_3(&_Lfd_5, _Lcp1_path_0, O_RDONLY)) {
 printf("Error, [cp1 file] (which is '%s') cannot be opened for reading\n", _Lcp1_path_0);
 return false;
 }
@@ -467,7 +467,7 @@ _Llen_6 = lseek(_Lfd_5, 0, SEEK_END);
 lseek(_Lfd_5, 0, SEEK_SET);
 _Ldata_7 = malloc(_Llen_6);
 read(_Lfd_5, _Ldata_7, _Llen_6);
-_NLibC_NFd_Pclose_1(_Lfd_5);
+_NPosix_NFd_Pclose_1(_Lfd_5);
 if(!((_Llen_6 > 0) && (_Ldata_7[(_Llen_6 - 1)] == '\n'))) {
 printf("Error, [cp1 file] (which is '%s') must end a new line\n", _Lcp1_path_0);
 return false;
@@ -513,16 +513,16 @@ continue_1:;
 break_1:;
 if(_Lpreprocess_10) {
 char _Ltmp_path_13[17];
-_NLibC_NFd _Ltmp_fd_14;
+_NPosix_NFd _Ltmp_fd_14;
 void* _Ltmp_path_dup_15;
 free(_Ldata_7);
 memcpy(_Ltmp_path_13, "cp1-tmp-XXXXXXXX", 17);
 _Ltmp_fd_14 = mkstemp(_Ltmp_path_13);
-if(_Ltmp_fd_14 == _NLibC_NFd_Cnil) {
+if(_Ltmp_fd_14 == _NPosix_NFd_Cnil) {
 printf("Error, cannot create a temporary file at the current folder\n");
 return false;
 }
-_NLibC_NFd_Pclose_1(_Ltmp_fd_14);
+_NPosix_NFd_Pclose_1(_Ltmp_fd_14);
 sprintf(_Gcmd_preprocess, "%s-preprocess %.*s %s\n", _Lbin_2, _Lcp1_path_len_1, _Lcp1_path_0, _Ltmp_path_13);
 fflush(stdout);
 if(system(_Gcmd_preprocess) != 0) {
@@ -532,7 +532,7 @@ _Ltmp_path_dup_15 = malloc(17);
 memcpy(_Ltmp_path_dup_15, _Ltmp_path_13, 17);
 _Patexit_rm_1(_Ltmp_path_dup_15);
 _Pcp1_path_add_4(_Ltmp_path_dup_15, 16, _Lcp1_path_0, _Lcp1_path_len_1);
-if(!_NLibC_NFd_Popen_3(&_Lfd_5, _Ltmp_path_dup_15, O_RDONLY)) {
+if(!_NPosix_NFd_Popen_3(&_Lfd_5, _Ltmp_path_dup_15, O_RDONLY)) {
 printf("Error, cannot open file for reading: %s\n", _Ltmp_path_13);
 return false;
 }
@@ -540,7 +540,7 @@ _Llen_6 = lseek(_Lfd_5, 0, SEEK_END);
 lseek(_Lfd_5, 0, SEEK_SET);
 _Ldata_7 = malloc(_Llen_6);
 read(_Lfd_5, _Ldata_7, _Llen_6);
-_NLibC_NFd_Pclose_1(_Lfd_5);
+_NPosix_NFd_Pclose_1(_Lfd_5);
 } else {
 _Pcp1_path_add_4(_Lcp1_path_0, _Lcp1_path_len_1, _Lcp1_path_0, _Lcp1_path_len_1);
 }
@@ -724,7 +724,7 @@ if(!_Lfound_33) {
 int32_t _Li_35;
 char* _Lpath_36;
 char _Lspec_path_37[128];
-_NLibC_NFd _Lspec_fd_39;
+_NPosix_NFd _Lspec_fd_39;
 size_t _Lspec_len_40;
 char* _Lspec_data_41;
 int32_t _Lspec_pos_42;
@@ -752,7 +752,7 @@ continue_14:;
 _Li_38++;
 }
 break_14:;
-if(!_NLibC_NFd_Popen_3(&_Lspec_fd_39, _Lspec_path_37, O_RDONLY)) {
+if(!_NPosix_NFd_Popen_3(&_Lspec_fd_39, _Lspec_path_37, O_RDONLY)) {
 printf("%s:%u: #include <%s> failed because '%s' does not exists\n", _Lcp1_path_0, _Lline_9, _Lpath_36, _Lspec_path_37);
 return false;
 }
@@ -838,8 +838,8 @@ stop:
 free(_Ldata_7);
 return true;
 }
-inline bool _NLibC_NFd_Popen_3(_NLibC_NFd* _Lfile_0, char* _Lpath_1, _NLibC_NOpenFlags _Lflags_2) {
-_NLibC_NFd _Lfd_3;
+inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2) {
+_NPosix_NFd _Lfd_3;
 _Lfd_3 = open(_Lpath_1, _Lflags_2);
 if(_Lfd_3 != -1) {
 (*_Lfile_0) = _Lfd_3;

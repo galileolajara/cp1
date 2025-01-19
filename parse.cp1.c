@@ -240,10 +240,10 @@
 #define _NCp1_NToken_Cspace_at_union (_NCp1_NToken_Cspace_at_extern + 1)
 typedef int32_t _NCp1_NFunc;
 typedef int32_t _NCp1_NInclude;
-typedef int _NLibC_NFd;
-typedef int _NLibC_NOpenFlags;
+typedef int _NPosix_NFd;
+typedef int _NPosix_NOpenFlags;
 typedef int _NLibC_NExit;
-typedef int _NLibC_NSeek;
+typedef int _NPosix_NSeek;
 typedef int32_t _NCp1_NAt;
 typedef uint8_t _NCp1_NNameType;
 typedef int32_t _NCp1_NId;
@@ -829,8 +829,8 @@ void _NCp1_Pexport_0();
 void _NCp1_NMap_Pinit_1(struct _NCp1_NMap* _Lm_0);
 void _NCp1_NAtMap_Pinit_1(struct _NCp1_NAtMap* _Lm_0);
 void _NCp1_Pquick_alloc_init_0();
-bool _NLibC_NFd_Popen_3(_NLibC_NFd* _Lfile_0, char* _Lpath_1, _NLibC_NOpenFlags _Lflags_2);
-int _NLibC_NFd_Pclose_1(_NLibC_NFd _Lfile_0);
+bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2);
+int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0);
 void _NCp1_Pget_row_col_4(int32_t* _Lout_row_0, int32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3);
 void _NCp1_Pparse_string_4(union _NCp1_NRdr* _Lr_0, union _NCp1_NWtr* _Lw_1, char _Lending_2, void* _Lin_data_3);
 void _NCp1_Pparse_str_init_1(int32_t _Lmax_size_0);
@@ -857,7 +857,7 @@ void _NCp1_Pwrite_gvar_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
 void _NCp1_Pwrite_enum_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
 void _NCp1_Pwrite_struct_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
 void _NCp1_Pwrite_func_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
-bool _NLibC_NFd_Popen_4(_NLibC_NFd* _Lfile_0, char* _Lpath_1, _NLibC_NOpenFlags _Lflags_2, int _Lmode_3);
+bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3);
 void _NCp1_NAt_Pwr_header_2(_NCp1_NAt _Lid_0, union _NCp1_NWtr* _Lw_1);
 void _NCp1_NId_Pwr_header_2(_NCp1_NId _Lid_0, union _NCp1_NWtr* _Lw_1);
 void qalloc_undo(int32_t _Lsize_0);
@@ -1241,7 +1241,7 @@ void _NCp1_NUnary_Pwr_2(_NCp1_NUnary _Lu_0, union _NCp1_NWtr* _Lw_1);
 void _NCp1_NCompare_Pwr_2(_NCp1_NCompare _Le_0, union _NCp1_NWtr* _Lw_1);
 void _NCp1_NAssign_Pwr_2(_NCp1_NAssign _Ls_0, union _NCp1_NWtr* _Lw_1);
 int main(int _Larg_c_0, char** _Larg_v_1) {
-_NLibC_NFd _Lin_fd_2;
+_NPosix_NFd _Lin_fd_2;
 char* _Llock_path_3;
 size_t _Lin_size_4;
 uint8_t* _Lin_data_5;
@@ -1257,7 +1257,7 @@ int32_t _Lid_bit8_c_45;
 _NCp1_NAt _Lat_bit8_c_47;
 char* _Lout_path_50;
 size_t _Lout_path_len_51;
-_NLibC_NFd _Lout_fd_52;
+_NPosix_NFd _Lout_fd_52;
 char _Lfinal_path_59[512];
 if(false) {
 _NCp1_Pexport_0();
@@ -1273,7 +1273,7 @@ fprintf(stdout, "Usage: %s [file.cp1] [output.cp1-b]\n", _Larg_v_1[0]);
 return 0;
 }
 input_path = _Larg_v_1[1];
-if(!_NLibC_NFd_Popen_3(&_Lin_fd_2, input_path, O_RDONLY)) {
+if(!_NPosix_NFd_Popen_3(&_Lin_fd_2, input_path, O_RDONLY)) {
 fprintf(stdout, "Cannot open file for reading: %s\n", input_path);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -1284,7 +1284,7 @@ lseek(_Lin_fd_2, 0, SEEK_SET);
 read(_Lin_fd_2, _Lin_data_5, _Lin_size_4);
 _Lin_data_5[_Lin_size_4] = 0;
 _Lin_data_5[(_Lin_size_4 + 1)] = 0;
-_NLibC_NFd_Pclose_1(_Lin_fd_2);
+_NPosix_NFd_Pclose_1(_Lin_fd_2);
 if(((_Lin_data_5[(_Lin_size_4 - 2)] == '\r') && (_Lin_data_5[(_Lin_size_4 - 1)] == '\n'))) {
 fprintf(stdout, "Error reading file '%s' because it uses Windows-style line endings\n", input_path);
 fprintf(stdout, "Please convert the line endings to Unix-style line endings\n");
@@ -1777,12 +1777,12 @@ _NCp1_Pwrite_func_2(&_Lw_43, false);
 _Lout_path_50 = malloc(strlen(_Llock_path_3) + 4 + 1);
 sprintf(_Lout_path_50, "%s.tmp", _Llock_path_3);
 _Lout_path_len_51 = strlen(_Lout_path_50);
-if(!_NLibC_NFd_Popen_4(&_Lout_fd_52, _Lout_path_50, O_CREAT | O_TRUNC | O_WRONLY, 32676)) {
+if(!_NPosix_NFd_Popen_4(&_Lout_fd_52, _Lout_path_50, O_CREAT | O_TRUNC | O_WRONLY, 32676)) {
 fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_50);
 exit(_NLibC_NExit_Cfailure);
 }
 write(_Lout_fd_52, _Lw_begin_42._Freff, _Lw_43._Fpos - _Lw_begin_42._Fpos);
-_NLibC_NFd_Pclose_1(_Lout_fd_52);
+_NPosix_NFd_Pclose_1(_Lout_fd_52);
 _Lw_43._Freff = _Lw_begin_42._Freff;
 Fputnum(&_Lw_43, _Gid_in_header_c);
 int32_t _Lj_53;
@@ -1836,12 +1836,12 @@ _NCp1_Pwrite_enum_2(&_Lw_43, true);
 _NCp1_Pwrite_struct_2(&_Lw_43, true);
 _NCp1_Pwrite_func_2(&_Lw_43, true);
 _Lout_path_50[(_Lout_path_len_51 - 5)] = 'h';
-if(!_NLibC_NFd_Popen_4(&_Lout_fd_52, _Lout_path_50, O_CREAT | O_TRUNC | O_WRONLY, 32676)) {
+if(!_NPosix_NFd_Popen_4(&_Lout_fd_52, _Lout_path_50, O_CREAT | O_TRUNC | O_WRONLY, 32676)) {
 fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_50);
 exit(_NLibC_NExit_Cfailure);
 }
 write(_Lout_fd_52, _Lw_begin_42._Freff, _Lw_43._Fpos - _Lw_begin_42._Fpos);
-_NLibC_NFd_Pclose_1(_Lout_fd_52);
+_NPosix_NFd_Pclose_1(_Lout_fd_52);
 _Lout_path_50[(_Lout_path_len_51 - 5)] = 'b';
 memcpy(_Lfinal_path_59, _Lout_path_50, _Lout_path_len_51 - 4);
 _Lfinal_path_59[(_Lout_path_len_51 - 4)] = 0;
@@ -1976,8 +1976,8 @@ _Gquick_alloc_cap = (16 * 1024);
 _Gquick_alloc_v = malloc(_Gquick_alloc_cap);
 memset(_Gquick_alloc_v, 0, _Gquick_alloc_cap);
 }
-inline bool _NLibC_NFd_Popen_3(_NLibC_NFd* _Lfile_0, char* _Lpath_1, _NLibC_NOpenFlags _Lflags_2) {
-_NLibC_NFd _Lfd_3;
+inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2) {
+_NPosix_NFd _Lfd_3;
 _Lfd_3 = open(_Lpath_1, _Lflags_2);
 if(_Lfd_3 != -1) {
 (*_Lfile_0) = _Lfd_3;
@@ -1986,7 +1986,7 @@ return true;
 return false;
 }
 }
-inline int _NLibC_NFd_Pclose_1(_NLibC_NFd _Lfile_0) {
+inline int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0) {
 return close(_Lfile_0);
 }
 void _NCp1_Pget_row_col_4(int32_t* _Lout_row_0, int32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3) {
@@ -2420,8 +2420,8 @@ continue_3:;
 }
 break_3:;
 }
-inline bool _NLibC_NFd_Popen_4(_NLibC_NFd* _Lfile_0, char* _Lpath_1, _NLibC_NOpenFlags _Lflags_2, int _Lmode_3) {
-_NLibC_NFd _Lfd_4;
+inline bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3) {
+_NPosix_NFd _Lfd_4;
 _Lfd_4 = open(_Lpath_1, _Lflags_2, _Lmode_3);
 if(_Lfd_4 != -1) {
 (*_Lfile_0) = _Lfd_4;

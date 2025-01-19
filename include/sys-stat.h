@@ -1,1 +1,1 @@
-<sys/stat.cp1>
+<posix/stat.cp1>
