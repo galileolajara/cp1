@@ -488,13 +488,17 @@ while(1) {
 if(_Ldata_7[_Lpos_8] == '\n') {
 goto break_2;
 }
+if(_Ldata_7[_Lpos_8] == '\t') {
+printf("%s:%u:%u: Error, use of tabs is discouraged, please use spaces instead\n", _Lcp1_path_0, _Lline_9, (_Lpos_8 - _Lstart_11) + 1);
+exit(_NLibC_NExit_Cfailure);
+}
 _Lpos_8++;
 continue_2:;
 }
 break_2:;
 _Lfirst_char_12 = _Lstart_11;
 while(1) {
-if(((_Ldata_7[_Lfirst_char_12] == ' ') || (_Ldata_7[_Lfirst_char_12] == '\t'))) {
+if(_Ldata_7[_Lfirst_char_12] == ' ') {
 _Lfirst_char_12++;
 goto continue_3;
 } else {
@@ -562,7 +566,7 @@ continue_5:;
 break_5:;
 _Lfirst_char_17 = _Lstart_16;
 while(1) {
-if(((_Ldata_7[_Lfirst_char_17] == ' ') || (_Ldata_7[_Lfirst_char_17] == '\t'))) {
+if(_Ldata_7[_Lfirst_char_17] == ' ') {
 _Lfirst_char_17++;
 goto continue_6;
 } else {
@@ -571,7 +575,7 @@ goto break_6;
 continue_6:;
 }
 break_6:;
-if(((_Ldata_7[_Lfirst_char_17] == '#') && (_Ldata_7[(_Lfirst_char_17 + 1)] == 'i') && (_Ldata_7[(_Lfirst_char_17 + 2)] == 'm') && (_Ldata_7[(_Lfirst_char_17 + 3)] == 'p') && (_Ldata_7[(_Lfirst_char_17 + 4)] == 'o') && (_Ldata_7[(_Lfirst_char_17 + 5)] == 'r') && (_Ldata_7[(_Lfirst_char_17 + 6)] == 't') && ((_Ldata_7[(_Lfirst_char_17 + 7)] == ' ') || (_Ldata_7[(_Lfirst_char_17 + 7)] == '\t')))) {
+if(((_Ldata_7[_Lfirst_char_17] == '#') && (_Ldata_7[(_Lfirst_char_17 + 1)] == 'i') && (_Ldata_7[(_Lfirst_char_17 + 2)] == 'm') && (_Ldata_7[(_Lfirst_char_17 + 3)] == 'p') && (_Ldata_7[(_Lfirst_char_17 + 4)] == 'o') && (_Ldata_7[(_Lfirst_char_17 + 5)] == 'r') && (_Ldata_7[(_Lfirst_char_17 + 6)] == 't') && (_Ldata_7[(_Lfirst_char_17 + 7)] == ' '))) {
 int32_t _Lbegin_18;
 _Lstart_16 += 8;
 _Lbegin_18 = -1;
@@ -583,7 +587,6 @@ if(_Ldata_7[_Lj_19] == '\"') {
 _Lbegin_18 = _Lj_19;
 goto break_7;
 } else if(_Ldata_7[_Lj_19] == ' ') {
-} else if(_Ldata_7[_Lj_19] == '\t') {
 } else {
 fprintf(stdout, "%s:%u: Invalid character '%c' found in #include <...>\n", _Lcp1_path_0, _Lline_9, _Ldata_7[_Lj_19]);
 return false;
@@ -661,7 +664,7 @@ printf("Error from #import \"%.*s\" at file '%s' line %u\n", _Limport_path_len_2
 return false;
 }
 }
-} else if(((_Ldata_7[_Lfirst_char_17] == '#') && (_Ldata_7[(_Lfirst_char_17 + 1)] == 'i') && (_Ldata_7[(_Lfirst_char_17 + 2)] == 'n') && (_Ldata_7[(_Lfirst_char_17 + 3)] == 'c') && (_Ldata_7[(_Lfirst_char_17 + 4)] == 'l') && (_Ldata_7[(_Lfirst_char_17 + 5)] == 'u') && (_Ldata_7[(_Lfirst_char_17 + 6)] == 'd') && (_Ldata_7[(_Lfirst_char_17 + 7)] == 'e') && ((_Ldata_7[(_Lfirst_char_17 + 8)] == ' ') || (_Ldata_7[(_Lfirst_char_17 + 8)] == '\t')))) {
+} else if(((_Ldata_7[_Lfirst_char_17] == '#') && (_Ldata_7[(_Lfirst_char_17 + 1)] == 'i') && (_Ldata_7[(_Lfirst_char_17 + 2)] == 'n') && (_Ldata_7[(_Lfirst_char_17 + 3)] == 'c') && (_Ldata_7[(_Lfirst_char_17 + 4)] == 'l') && (_Ldata_7[(_Lfirst_char_17 + 5)] == 'u') && (_Ldata_7[(_Lfirst_char_17 + 6)] == 'd') && (_Ldata_7[(_Lfirst_char_17 + 7)] == 'e') && (_Ldata_7[(_Lfirst_char_17 + 8)] == ' '))) {
 int32_t _Lbegin_27;
 _Lstart_16 += 9;
 _Lbegin_27 = -1;
@@ -673,7 +676,6 @@ if(_Ldata_7[_Lj_28] == '<') {
 _Lbegin_27 = _Lj_28;
 goto break_11;
 } else if(_Ldata_7[_Lj_28] == ' ') {
-} else if(_Ldata_7[_Lj_28] == '\t') {
 } else {
 fprintf(stdout, "%s:%u: Invalid character '%c' found in #include <...>\n", _Lcp1_path_0, _Lline_9, _Ldata_7[_Lj_28]);
 return false;
@@ -822,8 +824,7 @@ goto break_18;
 }
 if(((_Ldata_7[_Li_52] == '/') && (_Ldata_7[(_Li_52 + 1)] == '/'))) {
 goto break_18;
-}
-if(_Ldata_7[_Li_52] == '{') {
+} else {
 goto stop;
 }
 _Li_52++;

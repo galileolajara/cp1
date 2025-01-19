@@ -1317,7 +1317,7 @@ exit(_NLibC_NExit_Cfailure);
 } else if(_Lr_8._Fp1[0] == '/') {
 if(_Lr_8._Fp1[1] == '/') {
 if(_Lr_8._Freff == _Lin_data_5) {
-} else if(((_Lr_8._Fp1[-1] == ' ') || (_Lr_8._Fp1[-1] == '\t') || (_Lr_8._Fp1[-1] == '\n'))) {
+} else if(((_Lr_8._Fp1[-1] == ' ') || (_Lr_8._Fp1[-1] == '\n'))) {
 } else {
 int32_t _Lrow_13;
 int32_t _Lcol_14;
@@ -1383,7 +1383,7 @@ _Lw_10._Fpos += 3;
 _Lr_8._Fpos += 3;
 goto continue_0;
 }
-} else if((((_Lr_8._Fp1[2] == ' ') || (_Lr_8._Fp1[2] == '\t')) && ((_Lr_8._Fp1[1] == '-') || (_Lr_8._Fp1[1] == '=')))) {
+} else if(((_Lr_8._Fp1[2] == ' ') && ((_Lr_8._Fp1[1] == '-') || (_Lr_8._Fp1[1] == '=')))) {
 _Lw_10._Fp1[0] = '\'';
 _Lw_10._Fp1[1] = _Lr_8._Fp1[1];
 _Lw_10._Fp1[2] = _Lr_8._Fp1[2];
@@ -1565,7 +1565,7 @@ if(true) {
 uint8_t* _Lpos_34;
 _Lpos_34 = _Llex_29._Fstart;
 while(_Lpos_34 < _Lr_end_27._Fp1) {
-if(((_Lpos_34[0] == ' ') || (_Lpos_34[0] == '\t'))) {
+if(_Lpos_34[0] == ' ') {
 _Ltok_32._Fcol++;
 } else if(_Lpos_34[0] == '\n') {
 _Ltok_32._Frow++;
