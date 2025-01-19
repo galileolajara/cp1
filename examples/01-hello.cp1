@@ -40,7 +40,7 @@ main():intc { // intc is for compatibility with C's int, prefer to use i32 elsew
    var struct:ThisIsStruct+; // '+' means this is allocated on the stack
    struct.x = 9;
    struct.y = 11;
-   C.printf("distance is %f\n", struct.distance());
+   C.printf("distance is %f %f\n", struct.distance(), 0.9f);
 
    +e = ThisIsEnum#no;
    C.printf("enum is %s\n", e.string());

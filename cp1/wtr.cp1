@@ -25,6 +25,7 @@ Wtr(
    }
    include("num.c") {
       n(w:this, n:u32) @real-name(Fputnum) @no-decl;
+      i(w:this, n:i32) @real-name(Fputint) @no-decl;
    }
    copy(w:this, data:ref, size:i32) @inline {
       C.memcpy(w.reff, data, size);

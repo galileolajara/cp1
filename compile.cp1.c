@@ -154,9 +154,10 @@
 #define _NCp1_NUnary_Cnot (_NCp1_NUnary_Cdec + 1)
 #define _NCp1_NBools_Cand 0
 #define _NCp1_NBools_Cor (_NCp1_NBools_Cand + 1)
-#define _NCp1_NExprInt_Cint 0
-#define _NCp1_NExprInt_Cuint (_NCp1_NExprInt_Cint + 1)
-#define _NCp1_NExprInt_Coct (_NCp1_NExprInt_Cuint + 1)
+#define _NCp1_NExprInt_Ci32 0
+#define _NCp1_NExprInt_Cu32 (_NCp1_NExprInt_Ci32 + 1)
+#define _NCp1_NExprInt_Cf32 (_NCp1_NExprInt_Cu32 + 1)
+#define _NCp1_NExprInt_Coct (_NCp1_NExprInt_Cf32 + 1)
 #define _NCp1_NExprInt_Chex (_NCp1_NExprInt_Coct + 1)
 #define _NCp1_NFuncFlags_Cvar_args (8)
 #define _NCp1_NGvarFlags_Cno_decl (1)
@@ -547,10 +548,16 @@ int32_t _Fnode_c;
 struct _NCp1_NExprStrNode* _Ffirst;
 struct _NCp1_NExprStrNode* _Flast;
 };
+union _NCp1_NExprIntValue;
+union _NCp1_NExprIntValue {
+int32_t _Fii32;
+uint32_t _Fuu32;
+float _Fff32;
+};
 struct _NCp1_NExprIntData;
 struct _NCp1_NExprIntData {
 struct _NCp1_NExpr _Fbase;
-int32_t _Fvalue;
+union _NCp1_NExprIntValue _Fvalue;
 _NCp1_NExprInt _Ftype;
 };
 struct _NCp1_NExprSizeOfType;
@@ -3900,17 +3907,20 @@ inline void _NCp1_NExprI_Pwrite_int_1(struct _NCp1_NExpr* _Lexpr_0) {
 struct _NCp1_NExprIntData* _Le_1;
 _Le_1 = _Lexpr_0;
 switch((*_Le_1)._Ftype) {
-case _NCp1_NExprInt_Cint:;
-fprintf(_Gout, "%d", (*_Le_1)._Fvalue);
+case _NCp1_NExprInt_Ci32:;
+fprintf(_Gout, "%d", (*_Le_1)._Fvalue._Fii32);
 break;
-case _NCp1_NExprInt_Cuint:;
-fprintf(_Gout, "%uu", (*_Le_1)._Fvalue);
+case _NCp1_NExprInt_Cu32:;
+fprintf(_Gout, "%uu", (*_Le_1)._Fvalue._Fuu32);
+break;
+case _NCp1_NExprInt_Cf32:;
+fprintf(_Gout, "%ff", (*_Le_1)._Fvalue._Fff32);
 break;
 case _NCp1_NExprInt_Coct:;
-fprintf(_Gout, "0%o", (*_Le_1)._Fvalue);
+fprintf(_Gout, "0%o", (*_Le_1)._Fvalue._Fuu32);
 break;
 case _NCp1_NExprInt_Chex:;
-fprintf(_Gout, "0x%x", (*_Le_1)._Fvalue);
+fprintf(_Gout, "0x%x", (*_Le_1)._Fvalue._Fuu32);
 break;
 }
 }
@@ -4375,7 +4385,19 @@ struct _NCp1_NExprIntData* _Le_2;
 _NCp1_Pquick_alloc_one_1(_Le_2);
 _NCp1_NExprI_Pset_3(_Le_idx_0, &(*_Le_2)._Fbase, _NCp1_NExprType_Cint);
 (*_Le_2)._Ftype = (_NCp1_NExprInt)(_NCp1_NRdr_Pn1_1(_Lr_1));
-(*_Le_2)._Fvalue = Fgetnum(_Lr_1);
+switch((*_Le_2)._Ftype) {
+case _NCp1_NExprInt_Ci32:;
+(*_Le_2)._Fvalue._Fii32 = Fgetint(_Lr_1);
+break;
+case _NCp1_NExprInt_Cf32:;
+uint32_t _Ln_3;
+_Ln_3 = _NCp1_NRdr_Pn4_1(_Lr_1);
+memcpy(&(*_Le_2)._Fvalue._Fff32, &_Ln_3, sizeof(uint32_t));
+break;
+default:;
+(*_Le_2)._Fvalue._Fuu32 = Fgetnum(_Lr_1);
+break;
+}
 }
 inline void _NCp1_NExprI_Prd_size_of_type_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1) {
 struct _NCp1_NExprSizeOfType* _Le_2;
@@ -4981,10 +5003,16 @@ _NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
 inline void _NCp1_NExprI_Pvalue_int_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
 struct _NCp1_NExprIntData* _Le_5;
 _Le_5 = _NCp1_NExprI_Pptr_1(_Lle_0);
-if((*_Le_5)._Ftype == _NCp1_NExprInt_Cint) {
+switch((*_Le_5)._Ftype) {
+case _NCp1_NExprInt_Ci32:;
 (*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Ci32);
-} else {
+break;
+case _NCp1_NExprInt_Cf32:;
+(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cf32);
+break;
+default:;
 (*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cu32);
+break;
 }
 _NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
 (*_Lv_3)._Finfo._Farray_c = 0;
@@ -6266,10 +6294,16 @@ _Le_2 = _Lexpr_0;
 inline void _NCp1_NExprI_Ptype_int_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1) {
 struct _NCp1_NExprIntData* _Le_2;
 _Le_2 = _Lexpr_0;
-if((*_Le_2)._Ftype == _NCp1_NExprInt_Cint) {
+switch((*_Le_2)._Ftype) {
+case _NCp1_NExprInt_Ci32:;
 (*_Lat_1) = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Ci32);
-} else {
+break;
+case _NCp1_NExprInt_Cf32:;
+(*_Lat_1) = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cf32);
+break;
+default:;
 (*_Lat_1) = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cu32);
+break;
 }
 }
 inline void _NCp1_NExprI_Ptype_size_of_type_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1) {

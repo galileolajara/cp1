@@ -32,6 +32,7 @@ Rdr(
    }
    include("num.c") {
       n(r:this):u32 @real-name(Fgetnum) @no-decl;
+      i(r:this):i32 @real-name(Fgetint) @no-decl;
    }
    tok(r:this):Token @inline {
       return r.n1();

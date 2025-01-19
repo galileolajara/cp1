@@ -368,10 +368,12 @@ expr_int(l) ::= NUM_I32(e).
    { l.basic.id = _NCp1_Pexpr_int_2(e.basic.id, 0); }
 expr_int(l) ::= NUM_U32(e).
    { l.basic.id = _NCp1_Pexpr_int_2(e.basic.id, 1); }
+expr_int(l) ::= NUM_F32(e).
+   { l.basic.id = _NCp1_Pexpr_f32_1(e.f32.f32); }
 expr_int(l) ::= NUM_OCT(e).
    { l.basic.id = _NCp1_Pexpr_int_2(e.basic.id, 3); }
 expr_int(l) ::= NUM_HEX(e).
-   { l.basic.id = _NCp1_Pexpr_int_2(e.basic.id, 2); }
+   { l.basic.id = _NCp1_Pexpr_int_2(e.basic.id, 4); }
 
 expr_str(l) ::= STRING.
    { l.basic.id = _NCp1_Pexpr_str_1(-1); }

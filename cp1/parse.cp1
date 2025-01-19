@@ -254,12 +254,24 @@ decl-at-end() {
    .decl-at-c--;
    .decl-at = .decl-at-v[.decl-at-c];
 }
+TokenDataI32(
+   id:i32,
+   id2:i32,
+);
+TokenDataF32(
+   ff32:f32,
+);
+TokenDataValue(
+   ii32:TokenDataI32+,
+   ff32:TokenDataF32+,
+) @union;
 TokenData(
    row:i32,
    col:i32,
-   id:i32,
-   id2:i32,
-   val:i32[12],
+   val:TokenDataValue+,
+   // id:i32,
+   // id2:i32,
+   // val:i32[12],
 );
 Lexer(
    content:u8[],
@@ -296,6 +308,16 @@ Lexer(
          C.exit(#failure);
       }
       return val:u32;
+   }
+   get-f32(lex:this):f32 {
+      var r-start:Rdr+;
+      r-start.reff = lex.start;
+      var r-cursor:Rdr+;
+      r-cursor.reff = lex.cursor;
+      +length = r-cursor.pos - r-start.pos - 1;
+      var val:f32;
+      C.sscanf(r-start.charr, "%f", &val);
+      return val;
    }
    get-int(lex:this, len-minus:u8):u32 {
       var r-start:Rdr+;
@@ -1031,14 +1053,14 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             case #char1 {
                var r:Rdr+;
                r.reff = lex.start;
-               tok.id = r.p1[2];
+               tok.val.ii32.id = r.p1[2];
                .last-token = t;
                psr.parse(t, tok);
             }
             case #char2 {
                var r:Rdr+;
                r.reff = lex.start;
-               tok.id = char-escape-value(r.p1[3]);
+               tok.val.ii32.id = char-escape-value(r.p1[3]);
                .last-token = t;
                psr.parse(t, tok);
             }
@@ -1054,27 +1076,32 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      break;
                   }
                }
-               tok.id = lex.get-id(start, 1);
+               tok.val.ii32.id = lex.get-id(start, 1);
+               .last-token = t;
+               psr.parse(t, tok);
+            }
+            case #num-f32 {
+               tok.val.ff32.ff32 = lex.get-f32();
                .last-token = t;
                psr.parse(t, tok);
             }
             case #num-u32 {
-               tok.id = lex.get-int(1);
+               tok.val.ii32.id = lex.get-int(1);
                .last-token = t;
                psr.parse(t, tok);
             }
             case #num-i32 {
-               tok.id = lex.get-int(0);
+               tok.val.ii32.id = lex.get-int(0);
                .last-token = t;
                psr.parse(t, tok);
             }
             case #num-oct {
-               tok.id = lex.get-oct();
+               tok.val.ii32.id = lex.get-oct();
                .last-token = t;
                psr.parse(t, tok);
             }
             case #include {
-               tok.id = lex.get-include();
+               tok.val.ii32.id = lex.get-include();
                .last-token = t;
                psr.parse(t, tok);
             }
@@ -1103,7 +1130,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                psr.parse(t, tok);
             }
             case #id {
-               tok.id = lex.get-id(0, 0);
+               tok.val.ii32.id = lex.get-id(0, 0);
                if lex.cursor[0] == ''( {
                   t = #id-then-open-parenthesis;
                }
@@ -1111,17 +1138,17 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                psr.parse(t, tok);
             }
             case #hash-id {
-               tok.id = lex.get-id(1, 0);
+               tok.val.ii32.id = lex.get-id(1, 0);
                .last-token = t;
                psr.parse(t, tok);
             }
             case #dot-id-upper {
-               tok.id = lex.get-id(1, 0);
+               tok.val.ii32.id = lex.get-id(1, 0);
                .last-token = t;
                psr.parse(t, tok);
             }
             case #id-upper {
-               tok.id = lex.get-id(0, 0);
+               tok.val.ii32.id = lex.get-id(0, 0);
                .last-token = t;
                psr.parse(t, tok);
             }

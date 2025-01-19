@@ -87,7 +87,8 @@
 #define _NCp1_NToken_Cnum_zero (_NCp1_NToken_Campersand + 1)
 #define _NCp1_NToken_Cnum_i32 (_NCp1_NToken_Cnum_zero + 1)
 #define _NCp1_NToken_Cnum_u32 (_NCp1_NToken_Cnum_i32 + 1)
-#define _NCp1_NToken_Cnum_oct (_NCp1_NToken_Cnum_u32 + 1)
+#define _NCp1_NToken_Cnum_f32 (_NCp1_NToken_Cnum_u32 + 1)
+#define _NCp1_NToken_Cnum_oct (_NCp1_NToken_Cnum_f32 + 1)
 #define _NCp1_NToken_Cnum_hex (_NCp1_NToken_Cnum_oct + 1)
 #define _NCp1_NToken_Cchar1 (_NCp1_NToken_Cnum_hex + 1)
 #define _NCp1_NToken_Cchar2 (_NCp1_NToken_Cchar1 + 1)
@@ -141,7 +142,7 @@
 #define _NCp1_NBasicTypeId_Ci16 (_NCp1_NBasicTypeId_Cu8 + 1)
 #define _NCp1_NBasicTypeId_Cu16 (_NCp1_NBasicTypeId_Ci16 + 1)
 #define _NCp1_NBasicTypeId_Ci32 (_NCp1_NBasicTypeId_Cu16 + 1)
-#define _NCp1_NExprInt_Cint 0
+#define _NCp1_NExprInt_Ci32 0
 #define _NCp1_NUnary_Cneg 0
 #define _NCp1_NCompare_Ceq 0
 #define _NCp1_NCvarFlags_Cset_expr (1)
@@ -174,6 +175,7 @@
 #define _NCp1_NExprType_Cfunc (_NCp1_NExprType_Cbools + 1)
 #define _NCp1_Ccp1_carg_limit (64)
 #define _NCp1_NExprType_Cmethod (_NCp1_NExprType_Cfunc + 1)
+#define _NCp1_NExprInt_Cu32 (_NCp1_NExprInt_Ci32 + 1)
 #define _NCp1_NStmtType_Cspace 0
 #define _NCp1_NStmtType_Cif (_NCp1_NStmtType_Cspace + 1)
 #define _NCp1_NStmtType_Cif_elif (_NCp1_NStmtType_Cif + 1)
@@ -199,6 +201,7 @@
 #define _NCp1_Cdecl_at_nest_limit (8)
 #define _NCp1_NAt_Crelative (_NCp1_NAt_Croot + 1)
 #define _NCp1_NExprType_Cint (_NCp1_NExprType_Cfvar + 1)
+#define _NCp1_NExprInt_Cf32 (_NCp1_NExprInt_Cu32 + 1)
 #define _NCp1_NExprType_Ccvar (_NCp1_NExprType_Cint + 1)
 #define _NCp1_NExprType_Cstr (_NCp1_NExprType_Ccvar + 1)
 #define _NCp1_NExprType_Cindex (_NCp1_NExprType_Cstr + 1)
@@ -582,10 +585,16 @@ struct _NCp1_NRowCol {
 int32_t _Frow;
 int32_t _Fcol;
 };
+union _NCp1_NExprIntValue;
+union _NCp1_NExprIntValue {
+int32_t _Fii32;
+uint32_t _Fuu32;
+float _Fff32;
+};
 struct _NCp1_NExprIntData;
 struct _NCp1_NExprIntData {
 struct _NCp1_NExpr _Fbase;
-int32_t _Fvalue;
+union _NCp1_NExprIntValue _Fvalue;
 _NCp1_NExprInt _Ftype;
 };
 struct _NCp1_NExprSizeOfType;
@@ -934,6 +943,7 @@ void _NCp1_Ptype_info_static_0();
 void _NCp1_Ptype_info_begin_0();
 void _NCp1_Ptype_info_finalize_0();
 _NCp1_NExprI _NCp1_Pexpr_int_2(int32_t _Lvalue_0, _NCp1_NExprInt _Ltype_1);
+_NCp1_NExprI _NCp1_Pexpr_f32_1(float _Lvalue_0);
 _NCp1_NExprI _NCp1_Pexpr_size_of_type_1(_NCp1_NAt _Lat_0);
 _NCp1_NExprI _NCp1_Pexpr_null_0();
 void _NCp1_Pdecl_at_begin_enum_3(_NCp1_NId _Lname_0, int32_t _Lrow_1, int32_t _Lcol_2);
@@ -1079,6 +1089,7 @@ case _NCp1_NToken_Campersand: return "ampersand";
 case _NCp1_NToken_Cnum_zero: return "num-zero";
 case _NCp1_NToken_Cnum_i32: return "num-i32";
 case _NCp1_NToken_Cnum_u32: return "num-u32";
+case _NCp1_NToken_Cnum_f32: return "num-f32";
 case _NCp1_NToken_Cnum_oct: return "num-oct";
 case _NCp1_NToken_Cnum_hex: return "num-hex";
 case _NCp1_NToken_Cchar1: return "char1";
@@ -1786,7 +1797,7 @@ _NCp1_Pwrite_func_2(&_Lw_43, false);
 _Lout_path_50 = malloc(strlen(_Llock_path_3) + 4 + 1);
 sprintf(_Lout_path_50, "%s.tmp", _Llock_path_3);
 _Lout_path_len_51 = strlen(_Lout_path_50);
-if(!_NPosix_NFd_Popen_4(&_Lout_fd_52, _Lout_path_50, O_CREAT | O_TRUNC | O_WRONLY, 0x1a4)) {
+if(!_NPosix_NFd_Popen_4(&_Lout_fd_52, _Lout_path_50, O_CREAT | O_TRUNC | O_WRONLY, 0644)) {
 fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_50);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -1845,7 +1856,7 @@ _NCp1_Pwrite_enum_2(&_Lw_43, true);
 _NCp1_Pwrite_struct_2(&_Lw_43, true);
 _NCp1_Pwrite_func_2(&_Lw_43, true);
 _Lout_path_50[(_Lout_path_len_51 - 5)] = 'h';
-if(!_NPosix_NFd_Popen_4(&_Lout_fd_52, _Lout_path_50, O_CREAT | O_TRUNC | O_WRONLY, 0x1a4)) {
+if(!_NPosix_NFd_Popen_4(&_Lout_fd_52, _Lout_path_50, O_CREAT | O_TRUNC | O_WRONLY, 0644)) {
 fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_50);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -1933,7 +1944,8 @@ _NCp1_Ptype_info_ref_1(0);
 _NCp1_Ptype_info_static_0();
 _NCp1_Ptype_info_begin_0();
 _NCp1_Ptype_info_finalize_0();
-_NCp1_Pexpr_int_2(0, _NCp1_NExprInt_Cint);
+_NCp1_Pexpr_int_2(0, _NCp1_NExprInt_Ci32);
+_NCp1_Pexpr_f32_1(0);
 _NCp1_Pexpr_size_of_type_1(_NCp1_NAt_Cnil);
 _NCp1_Pexpr_null_0();
 _NCp1_Pdecl_at_begin_enum_3(_NCp1_NId_Cnil, 0, 0);
@@ -2811,7 +2823,7 @@ continue_0:;
 }
 break_0:;
 _Lcall_idx_5 = (_Gexpr_call_c - 1);
-_Gexpr_call_carg_v[_Lcall_idx_5][_Gexpr_call_carg_c[_Lcall_idx_5]++] = _NCp1_Pexpr_int_2(_Llen_3, _NCp1_NExprInt_Cint);
+_Gexpr_call_carg_v[_Lcall_idx_5][_Gexpr_call_carg_c[_Lcall_idx_5]++] = _NCp1_Pexpr_int_2(_Llen_3, _NCp1_NExprInt_Cu32);
 _Gexpr_call_cgrp_v[_Lcall_idx_5][(_Gexpr_call_cgrp_c[_Lcall_idx_5] - 1)]++;
 }
 }
@@ -3358,9 +3370,18 @@ struct _NCp1_NExprIntData* _Le_2;
 _NCp1_NExprI _Le_idx_3;
 _NCp1_Pquick_alloc_one_1(_Le_2);
 _Le_idx_3 = _NCp1_Pexpr_push_2(&(*_Le_2)._Fbase, _NCp1_NExprType_Cint);
-(*_Le_2)._Fvalue = _Lvalue_0;
+(*_Le_2)._Fvalue._Fii32 = _Lvalue_0;
 (*_Le_2)._Ftype = _Ltype_1;
 return _Le_idx_3;
+}
+_NCp1_NExprI _NCp1_Pexpr_f32_1(float _Lvalue_0) {
+struct _NCp1_NExprIntData* _Le_1;
+_NCp1_NExprI _Le_idx_2;
+_NCp1_Pquick_alloc_one_1(_Le_1);
+_Le_idx_2 = _NCp1_Pexpr_push_2(&(*_Le_1)._Fbase, _NCp1_NExprType_Cint);
+(*_Le_1)._Fvalue._Fff32 = _Lvalue_0;
+(*_Le_1)._Ftype = _NCp1_NExprInt_Cf32;
+return _Le_idx_2;
 }
 _NCp1_NExprI _NCp1_Pexpr_size_of_type_1(_NCp1_NAt _Lat_0) {
 struct _NCp1_NExprSizeOfType* _Le_1;
@@ -4420,7 +4441,19 @@ inline void _NCp1_NExprI_Pwr_int_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWt
 struct _NCp1_NExprIntData* _Le_3;
 _Le_3 = _Lexpr_0;
 _NCp1_NWtr_Pn1_2(_Lw_1, (*_Le_3)._Ftype);
-Fputnum(_Lw_1, (*_Le_3)._Fvalue);
+switch((*_Le_3)._Ftype) {
+case _NCp1_NExprInt_Ci32:;
+Fputint(_Lw_1, (*_Le_3)._Fvalue._Fii32);
+break;
+case _NCp1_NExprInt_Cf32:;
+uint32_t _Ln_4;
+memcpy(&_Ln_4, &(*_Le_3)._Fvalue._Fff32, sizeof(uint32_t));
+_NCp1_NWtr_Pn4_2(_Lw_1, _Ln_4);
+break;
+default:;
+Fputnum(_Lw_1, (*_Le_3)._Fvalue._Fuu32);
+break;
+}
 }
 inline void _NCp1_NExprI_Pwr_size_of_type_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2) {
 struct _NCp1_NExprSizeOfType* _Le_3;

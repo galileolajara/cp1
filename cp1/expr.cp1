@@ -300,9 +300,14 @@ expr-push(e:Expr, type:ExprType):ExprI {
    .expr-v[e-idx] = e;
    return e-idx;
 }
+ExprIntValue(
+   ii32:i32,
+   uu32:u32,
+   ff32:f32,
+) @union;
 ExprIntData(
    base:Expr+,
-   value:i32,
+   value:ExprIntValue+,
    type:ExprInt,
 );
 ExprSizeOfType(

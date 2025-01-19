@@ -70,6 +70,7 @@ void _NCp1_Ptype_info_static_0();
 void _NCp1_Ptype_info_begin_0();
 void _NCp1_Ptype_info_finalize_0();
 _NCp1_NExprI _NCp1_Pexpr_int_2(int32_t _Lvalue_0, _NCp1_NExprInt _Ltype_1);
+_NCp1_NExprI _NCp1_Pexpr_f32_1(float _Lvalue_0);
 _NCp1_NExprI _NCp1_Pexpr_size_of_type_1(_NCp1_NAt _Lat_0);
 _NCp1_NExprI _NCp1_Pexpr_null_0();
 void _NCp1_Pdecl_at_begin_enum_3(_NCp1_NId _Lname_0, int32_t _Lrow_1, int32_t _Lcol_2);

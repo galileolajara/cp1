@@ -13,6 +13,11 @@ union cp1_token {
    struct {
       int row;
       int col;
+      float f32;
+   } f32;
+   struct {
+      int row;
+      int col;
       int id;
       int id2;
    } basic;

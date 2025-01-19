@@ -145,7 +145,7 @@ if(!_Pvalidate_cp1_paths_5(3, _Larg_c_0, _Larg_v_1, _Lbin_2, _NCmd_Cc)) {
 _Pprint_command_2(_Larg_c_0, _Larg_v_1);
 exit(_NLibC_NExit_Cfailure);
 }
-mkdir("cp1-tmp", 0x1ed);
+mkdir("cp1-tmp", 0755);
 strcpy(_Lninja_path_15, "cp1-tmp/ninja-XXXXXXXXX");
 _Lninja_fd_16 = mkstemp(_Lninja_path_15);
 _Patexit_rm_1(strdup(_Lninja_path_15));
@@ -204,7 +204,7 @@ if(!_Pvalidate_cp1_paths_5(2, _Larg_c_0, _Larg_v_1, _Lbin_2, _NCmd_Crun)) {
 _Pprint_command_2(_Larg_c_0, _Larg_v_1);
 exit(_NLibC_NExit_Cfailure);
 }
-mkdir("cp1-tmp", 0x1ed);
+mkdir("cp1-tmp", 0755);
 strcpy(_Lc_path_22, "cp1-tmp/c-XXXXXXXXX");
 _Lc_fd_23 = mkstemp(_Lc_path_22);
 if(_Lc_fd_23 == _NPosix_NFd_Cnil) {

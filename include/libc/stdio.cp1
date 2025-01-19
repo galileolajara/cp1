@@ -2,8 +2,10 @@ include(<stdio.h>) {
    using C = LibC;
    using X = Posix;
    using (LibC) {
-      printf(fmt:char[]):intc @var-args @no-decl @real-name(printf);
-      sprintf(str:char[], fmt:char[]):intc @var-args @no-decl @real-name(sprintf);
+      printf(fmt:char[]):intc @var-args @no-decl @real-name;
+      sprintf(str:char[], fmt:char[]):intc @var-args @no-decl @real-name;
+      scanf(fmt:char[]):intc @var-args @no-decl @real-name;
+      sscanf(str:char[], fmt:char[]):intc @var-args @no-decl @real-name;
 
       var out:File @real-name(stdout) @no-decl;
       File() @real-name(FILE) @no-decl {

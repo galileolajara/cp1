@@ -1,39 +1,73 @@
 using Cp1 = Cp1;
+using C = LibC;
 using (Cp1) {
-ExprInt[#int, #uint, #oct, #hex]:u8;
+ExprInt[#i32, #u32, #f32, #oct, #hex]:u8;
 expr-int(value:i32, type:ExprInt):ExprI {
    quick-alloc-one(+(e:ExprIntData));
    +e-idx = expr-push(e.base, #int);
-   e.value = value;
+   e.value.ii32 = value;
    e.type = type;
+   return e-idx;
+}
+expr-f32(value:f32):ExprI {
+   quick-alloc-one(+(e:ExprIntData));
+   +e-idx = expr-push(e.base, #int);
+   e.value.ff32 = value;
+   e.type = #f32;
    return e-idx;
 }
 using (ExprI) {
    wr-int(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprIntData = expr;
       w.n1(e.type);
-      w.n(e.value);
+      switch e.type {
+         case #i32 {
+            w.i(e.value.ii32);
+         }
+         case #f32 {
+            var n:u32;
+            C.memcpy(&n, &e.value.ff32, u32[usz]);
+            w.n4(n);
+         }
+         default {
+            w.n(e.value.uu32);
+         }
+      }
    }
    rd-int(e-idx:ExprI, r:Rdr) @case.rd() @inline {
       quick-alloc-one(+(e:ExprIntData));
       e-idx.set(e.base, #int);
       e.type = r.n1():ExprInt;
-      e.value = r.n();
+      switch e.type {
+         case #i32 {
+            e.value.ii32 = r.i();
+         }
+         case #f32 {
+            +n = r.n4();
+            C.memcpy(&e.value.ff32, &n, u32[usz]);
+         }
+         default {
+            e.value.uu32 = r.n();
+         }
+      }
    }
    write-int(expr:Expr) @case.write() @inline {
       var e:ExprIntData = expr;
       switch e.type {
-         case #int {
-            .out.printf("%d", e.value);
+         case #i32 {
+            .out.printf("%d", e.value.ii32);
          }
-         case #uint {
-            .out.printf("%uu", e.value);
+         case #u32 {
+            .out.printf("%uu", e.value.uu32);
+         }
+         case #f32 {
+            .out.printf("%ff", e.value.ff32);
          }
          case #oct {
-            .out.printf("0%o", e.value);
+            .out.printf("0%o", e.value.uu32);
          }
          case #hex {
-            .out.printf("0x%x", e.value);
+            .out.printf("0x%x", e.value.uu32);
          }
       }
    }
@@ -42,18 +76,30 @@ using (ExprI) {
    }
    type-int(expr:Expr, at:At&) @case.type() @inline {
       var e:ExprIntData = expr;
-      if e.type == #int {
-         at = basic-type(#i32);
-      } else {
-         at = basic-type(#u32);
+      switch e.type {
+         case #i32 {
+            at = basic-type(#i32);
+         }
+         case #f32 {
+            at = basic-type(#f32);
+         }
+         default {
+            at = basic-type(#u32);
+         }
       }
    }
    value-int(le:this, reff:i32, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       var e:ExprIntData = le.ptr();
-      if e.type == #int {
-         v.type = basic-type(#i32);
-      } else {
-         v.type = basic-type(#u32);
+      switch e.type {
+         case #i32 {
+            v.type = basic-type(#i32);
+         }
+         case #f32 {
+            v.type = basic-type(#f32);
+         }
+         default {
+            v.type = basic-type(#u32);
+         }
       }
       v.info.init();
       v.info.array-c = 0;
