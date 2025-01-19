@@ -417,13 +417,25 @@ uint8_t* _Fstart;
 uint8_t* _Fcursor;
 uint8_t* _Fmarker;
 };
+struct _NCp1_NTokenDataI32;
+struct _NCp1_NTokenDataI32 {
+int32_t _Fid;
+int32_t _Fid2;
+};
+struct _NCp1_NTokenDataF32;
+struct _NCp1_NTokenDataF32 {
+float _Fff32;
+};
+union _NCp1_NTokenDataValue;
+union _NCp1_NTokenDataValue {
+struct _NCp1_NTokenDataI32 _Fii32;
+struct _NCp1_NTokenDataF32 _Fff32;
+};
 struct _NCp1_NTokenData;
 struct _NCp1_NTokenData {
 int32_t _Frow;
 int32_t _Fcol;
-int32_t _Fid;
-int32_t _Fid2;
-int32_t _Fval[12];
+union _NCp1_NTokenDataValue _Fval;
 };
 struct _NCp1_NCvarData;
 struct _NCp1_NCvarData {
@@ -852,6 +864,7 @@ _NCp1_NToken cp1_lexer_scan(struct _NCp1_NLexer* _Llex_0);
 void cp1Parse(struct _NCp1_NParser* _Lpsr_0, _NCp1_NToken _Lt_1, struct _NCp1_NTokenData* _Ltok_2);
 int32_t _NCp1_Pchar_escape_value_1(char _Lc_0);
 int32_t _NCp1_NLexer_Pget_id_3(struct _NCp1_NLexer* _Llex_0, uint8_t _Lbegin_1, uint8_t _Lend_2);
+float _NCp1_NLexer_Pget_f32_1(struct _NCp1_NLexer* _Llex_0);
 uint32_t _NCp1_NLexer_Pget_int_2(struct _NCp1_NLexer* _Llex_0, uint8_t _Llen_minus_1);
 uint32_t _NCp1_NLexer_Pget_oct_1(struct _NCp1_NLexer* _Llex_0);
 int32_t _NCp1_NLexer_Pget_include_1(struct _NCp1_NLexer* _Llex_0);
@@ -1601,14 +1614,14 @@ switch(_Lt_33) {
 case _NCp1_NToken_Cchar1:;
 union _NCp1_NRdr _Lr_35;
 _Lr_35._Freff = _Llex_29._Fstart;
-_Ltok_32._Fid = _Lr_35._Fp1[2];
+_Ltok_32._Fval._Fii32._Fid = _Lr_35._Fp1[2];
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
 case _NCp1_NToken_Cchar2:;
 union _NCp1_NRdr _Lr_36;
 _Lr_36._Freff = _Llex_29._Fstart;
-_Ltok_32._Fid = _NCp1_Pchar_escape_value_1(_Lr_36._Fp1[3]);
+_Ltok_32._Fval._Fii32._Fid = _NCp1_Pchar_escape_value_1(_Lr_36._Fp1[3]);
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
@@ -1626,27 +1639,32 @@ goto break_8;
 continue_8:;
 }
 break_8:;
-_Ltok_32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_29, _Lstart_38, 1);
+_Ltok_32._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_29, _Lstart_38, 1);
+_Glast_token = _Lt_33;
+cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
+break;
+case _NCp1_NToken_Cnum_f32:;
+_Ltok_32._Fval._Fff32._Fff32 = _NCp1_NLexer_Pget_f32_1(&_Llex_29);
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
 case _NCp1_NToken_Cnum_u32:;
-_Ltok_32._Fid = _NCp1_NLexer_Pget_int_2(&_Llex_29, 1);
+_Ltok_32._Fval._Fii32._Fid = _NCp1_NLexer_Pget_int_2(&_Llex_29, 1);
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
 case _NCp1_NToken_Cnum_i32:;
-_Ltok_32._Fid = _NCp1_NLexer_Pget_int_2(&_Llex_29, 0);
+_Ltok_32._Fval._Fii32._Fid = _NCp1_NLexer_Pget_int_2(&_Llex_29, 0);
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
 case _NCp1_NToken_Cnum_oct:;
-_Ltok_32._Fid = _NCp1_NLexer_Pget_oct_1(&_Llex_29);
+_Ltok_32._Fval._Fii32._Fid = _NCp1_NLexer_Pget_oct_1(&_Llex_29);
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
 case _NCp1_NToken_Cinclude:;
-_Ltok_32._Fid = _NCp1_NLexer_Pget_include_1(&_Llex_29);
+_Ltok_32._Fval._Fii32._Fid = _NCp1_NLexer_Pget_include_1(&_Llex_29);
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
@@ -1680,7 +1698,7 @@ _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
 case _NCp1_NToken_Cid:;
-_Ltok_32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_29, 0, 0);
+_Ltok_32._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_29, 0, 0);
 if(_Llex_29._Fcursor[0] == '(') {
 _Lt_33 = _NCp1_NToken_Cid_then_open_parenthesis;
 }
@@ -1688,17 +1706,17 @@ _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
 case _NCp1_NToken_Chash_id:;
-_Ltok_32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_29, 1, 0);
+_Ltok_32._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_29, 1, 0);
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
 case _NCp1_NToken_Cdot_id_upper:;
-_Ltok_32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_29, 1, 0);
+_Ltok_32._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_29, 1, 0);
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
 case _NCp1_NToken_Cid_upper:;
-_Ltok_32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_29, 0, 0);
+_Ltok_32._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_29, 0, 0);
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
@@ -2103,6 +2121,17 @@ return _Lid_8;
 } else {
 return _Lfound_7;
 }
+}
+float _NCp1_NLexer_Pget_f32_1(struct _NCp1_NLexer* _Llex_0) {
+union _NCp1_NRdr _Lr_start_1;
+union _NCp1_NRdr _Lr_cursor_2;
+size_t _Llength_3;
+float _Lval_4;
+_Lr_start_1._Freff = (*_Llex_0)._Fstart;
+_Lr_cursor_2._Freff = (*_Llex_0)._Fcursor;
+_Llength_3 = (_Lr_cursor_2._Fpos - _Lr_start_1._Fpos - 1);
+sscanf(_Lr_start_1._Fcharr, "%f", &_Lval_4);
+return _Lval_4;
 }
 uint32_t _NCp1_NLexer_Pget_int_2(struct _NCp1_NLexer* _Llex_0, uint8_t _Llen_minus_1) {
 union _NCp1_NRdr _Lr_start_2;
