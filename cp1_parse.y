@@ -362,9 +362,11 @@ typeInfo_optional ::= typeInfo_none.
 typeInfo_optional ::= typeInfo_begin typeInfo.
    { _NCp1_Ptype_info_finalize_0(); }
 
-expr_int(l) ::= NUM_INT(e).
+expr_int(l) ::= NUM_ZERO.
+   { l.basic.id = _NCp1_Pexpr_int_2(0, 0); }
+expr_int(l) ::= NUM_I32(e).
    { l.basic.id = _NCp1_Pexpr_int_2(e.basic.id, 0); }
-expr_int(l) ::= NUM_UINT(e).
+expr_int(l) ::= NUM_U32(e).
    { l.basic.id = _NCp1_Pexpr_int_2(e.basic.id, 1); }
 expr_int(l) ::= NUM_OCT(e).
    { l.basic.id = _NCp1_Pexpr_int_2(e.basic.id, 3); }

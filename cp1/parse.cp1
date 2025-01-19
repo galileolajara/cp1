@@ -297,7 +297,7 @@ Lexer(
       }
       return val:u32;
    }
-   get-i32(lex:this, len-minus:u8):u32 {
+   get-int(lex:this, len-minus:u8):u32 {
       var r-start:Rdr+;
       r-start.reff = lex.start;
       var r-cursor:Rdr+;
@@ -1058,13 +1058,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                .last-token = t;
                psr.parse(t, tok);
             }
-            case #num-uint {
-               tok.id = lex.get-i32(1);
+            case #num-u32 {
+               tok.id = lex.get-int(1);
                .last-token = t;
                psr.parse(t, tok);
             }
-            case #num-int {
-               tok.id = lex.get-i32(0);
+            case #num-i32 {
+               tok.id = lex.get-int(0);
                .last-token = t;
                psr.parse(t, tok);
             }

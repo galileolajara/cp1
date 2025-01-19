@@ -1,6 +1,6 @@
 syntax match Number /0u\?/
 syntax match Number /[1-9][0-9]*u\?/
-syntax match Number /[0-9]\+\.[0-9]\+/
+syntax match Number /[0-9]\+\.[0-9]\+f\?/
 syntax match Number /0o[0-7]\+/
 syntax match Number /#\([a-zA-Z]\|_\+[a-zA-Z0-9]\|[0-9]\)[_a-zA-Z0-9]*\(-[_a-zA-Z0-9]\+\)*/
 syntax match Default /\([a-zA-Z]\|_\+[a-zA-Z0-9]\)[_a-zA-Z0-9]*\(-[_a-zA-Z0-9]\+\)*/
