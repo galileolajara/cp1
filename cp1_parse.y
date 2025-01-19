@@ -148,38 +148,38 @@ decl ::= decl_alias_begin ID_UPPER(short) SPACE_EQUAL_SPACE at(long) decl_alias_
 decls ::= decl.
 decls ::= decls SPACE decl.
 
-lparen_or_space(l) ::= OPEN_PARENTHESIS(r).
+open_parenthesis_or_space(l) ::= OPEN_PARENTHESIS(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-lparen_or_space(l) ::= OPEN_PARENTHESIS_SPACE(r).
+open_parenthesis_or_space(l) ::= OPEN_PARENTHESIS_SPACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-rparen_or_space(l) ::= CLOSE_PARENTHESIS(r).
+close_parenthesis_or_space(l) ::= CLOSE_PARENTHESIS(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-rparen_or_space(l) ::= SPACE_CLOSE_PARENTHESIS(r).
+close_parenthesis_or_space(l) ::= SPACE_CLOSE_PARENTHESIS(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-rparen_or_comma(l) ::= rparen_or_space(r).
+close_parenthesis_or_comma(l) ::= close_parenthesis_or_space(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-rparen_or_comma(l) ::= COMMA_SPACE_CLOSE_PARENTHESIS(r).
+close_parenthesis_or_comma(l) ::= COMMA_SPACE_CLOSE_PARENTHESIS(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 
-open_parenthesis_or_space(l) ::= OPEN_CURLY_BRACE(r).
+open_curly_brace_or_space(l) ::= OPEN_CURLY_BRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-open_parenthesis_or_space(l) ::= OPEN_CURLY_BRACE_SPACE(r).
+open_curly_brace_or_space(l) ::= OPEN_CURLY_BRACE_SPACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-close_parenthesis_or_space(l) ::= CLOSE_CURLY_BRACE(r).
+close_curly_brace_or_space(l) ::= CLOSE_CURLY_BRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-close_parenthesis_or_space(l) ::= SPACE_CLOSE_CURLY_BRACE(r).
+close_curly_brace_or_space(l) ::= SPACE_CLOSE_CURLY_BRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-/* close_parenthesis_or_comma(l) ::= CLOSE_CURLY_BRACE(r).
+/* close_curly_brace_or_comma(l) ::= CLOSE_CURLY_BRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-close_parenthesis_or_comma(l) ::= SPACE_CLOSE_CURLY_BRACE(r).
+close_curly_brace_or_comma(l) ::= SPACE_CLOSE_CURLY_BRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-close_parenthesis_or_comma(l) ::= COMMA_SPACE_CLOSE_CURLY_BRACE(r).
+close_curly_brace_or_comma(l) ::= COMMA_SPACE_CLOSE_CURLY_BRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; } */
-close_parenthesis_or_scolon(l) ::= CLOSE_CURLY_BRACE(r).
+close_curly_brace_or_scolon(l) ::= CLOSE_CURLY_BRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-close_parenthesis_or_scolon(l) ::= SPACE_CLOSE_CURLY_BRACE(r).
+close_curly_brace_or_scolon(l) ::= SPACE_CLOSE_CURLY_BRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-close_parenthesis_or_scolon(l) ::= SEMICOLON SPACE_CLOSE_CURLY_BRACE(r).
+close_curly_brace_or_scolon(l) ::= SEMICOLON SPACE_CLOSE_CURLY_BRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 
 open_bracket_or_space(l) ::= OPEN_BRACKET(r).
@@ -213,11 +213,11 @@ expr_type_apply ::= at(r).
    { _NCp1_Pdecl_var_type_1(r.basic.id); }
 farg_list ::= farg.
 farg_list ::= farg_list COMMA_SPACE farg.
-fargs ::= lparen_or_space CLOSE_PARENTHESIS.
-fargs ::= lparen_or_space farg_list rparen_or_comma.
-farg_next_group ::= lparen_or_space.
+fargs ::= open_parenthesis_or_space CLOSE_PARENTHESIS.
+fargs ::= open_parenthesis_or_space farg_list close_parenthesis_or_comma.
+farg_next_group ::= open_parenthesis_or_space.
    { _NCp1_Pfarg_next_group_0(); }
-fargs ::= fargs farg_next_group farg_list rparen_or_comma.
+fargs ::= fargs farg_next_group farg_list close_parenthesis_or_comma.
 fargs ::= fargs farg_next_group CLOSE_PARENTHESIS.
 func_attr ::= SPACE_AT_MAIN.
    { _NCp1_Pfunc_attr_main_0(); }
@@ -291,7 +291,7 @@ type_basic_id(l) ::= F64.
 // expr_type(l) ::= expr_type_custom(r). { l.basic.id = r.basic.id; }
 // expr_type(l) ::= at(r). { l.basic.id = _NCp1_Pexpr_type_1(r.basic.id); }
 func_type ::= typeAndInfo_optional.
-func_decl ::= func_decl_begin fargs func_type func_attrs_optional. // SPACE open_parenthesis_or_space.
+func_decl ::= func_decl_begin fargs func_type func_attrs_optional. // SPACE open_curly_brace_or_space.
    { _NCp1_Pdecl_func_end_2(_Grow, _Gcol); }
 /* func_decl ::= OPEN_CURLY_BRACE func_decl_begin fargs func_type.
    { _NCp1_Pdecl_func_end_2(_Grow, _Gcol); } */
@@ -382,7 +382,7 @@ expr_lvar(e) ::= ID(var).
    { e.basic.id = _NCp1_Pexpr_lvar_4(var.basic.id, 0, var.basic.row, var.basic.col); }
 expr_lvar(e) ::= expr_lvar_plus(plus) ID(var) expr_type_none.
    { e.basic.id = _NCp1_Pexpr_lvar_4(var.basic.id, plus.basic.id, var.basic.row, var.basic.col); }
-expr_lvar(e) ::= expr_lvar_plus(plus) lparen_or_space ID(var) COLON typeAndInfo rparen_or_space.
+expr_lvar(e) ::= expr_lvar_plus(plus) open_parenthesis_or_space ID(var) COLON typeAndInfo close_parenthesis_or_space.
    { e.basic.id = _NCp1_Pexpr_lvar_4(var.basic.id, plus.basic.id, var.basic.row, var.basic.col); }
 expr_cvar(l) ::= HASH_ID(e).
    { l.basic.id = _NCp1_Pexpr_cvar_2(-1, e.basic.id); }
@@ -448,13 +448,13 @@ expr_and1(l) ::= expr(left) COMMA_SPACE expr(right).
    { l.basic.id = _NCp1_Pexpr_bools_3(left.basic.id, right.basic.id, 0); }
 expr_and1(l) ::= expr_and1(left) COMMA_SPACE expr(right).
    { l.basic.id = _NCp1_Pexpr_bools_add_2(left.basic.id, right.basic.id); }
-expr_and(l) ::= OPEN_PARENTHESIS_AMP_AMP_COMMA_SPACE expr_and1(r) rparen_or_comma.
+expr_and(l) ::= OPEN_PARENTHESIS_AMP_AMP_COMMA_SPACE expr_and1(r) close_parenthesis_or_comma.
    { l.basic.id = r.basic.id; }
 expr_or1(l) ::= expr(left) COMMA_SPACE expr(right).
    { l.basic.id = _NCp1_Pexpr_bools_3(left.basic.id, right.basic.id, 1); }
 expr_or1(l) ::= expr_or1(left) COMMA_SPACE expr(right).
    { l.basic.id = _NCp1_Pexpr_bools_add_2(left.basic.id, right.basic.id); }
-expr_or(l) ::= OPEN_PARENTHESIS_PIPE_PIPE_COMMA_SPACE expr_or1(r) rparen_or_comma.
+expr_or(l) ::= OPEN_PARENTHESIS_PIPE_PIPE_COMMA_SPACE expr_or1(r) close_parenthesis_or_comma.
    { l.basic.id = r.basic.id; }
 expr_add(e) ::= value(left) SPACE_PLUS_SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 0); }
@@ -528,7 +528,7 @@ compare_type(l) ::= SPACE_RANGLE_EQUAL_SPACE.
    { l.basic.id = 5; }
 compareExpr(l) ::= value(a) compare_type(t) value(b).
    { l.basic.id = _NCp1_Pexpr_compare_3(a.basic.id, b.basic.id, t.basic.id); }
-expr_in_paren(l) ::= lparen_or_space opExpr(r) rparen_or_space.
+expr_in_paren(l) ::= open_parenthesis_or_space opExpr(r) close_parenthesis_or_space.
    { l.basic.id = r.basic.id; }
 expr_in_paren(l) ::= exprs(r).
    { l.basic.id = r.basic.id; }
@@ -538,7 +538,7 @@ funcExpr(l) ::= at(at) DOT ID_OPEN_PARENTHESIS(func).
    { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 methodExpr(l) ::= value4fix(e) DOT ID_OPEN_PARENTHESIS(func).
    { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
-call_args_optional ::= lparen_or_space CLOSE_PARENTHESIS.
+call_args_optional ::= open_parenthesis_or_space CLOSE_PARENTHESIS.
 call_args_optional ::= call_args.
 call_arg ::= expr(e).
    { _NCp1_Pcarg_push_1(e.basic.id); }
@@ -546,10 +546,10 @@ call_arg ::= expr_str(e) HASH.
    { _NCp1_Pcarg_push_str_1(e.basic.id); }
 call_arg_list ::= call_arg.
 call_arg_list ::= call_arg_list COMMA_SPACE call_arg.
-call_args ::= lparen_or_space call_arg_list rparen_or_comma.
-call_args_next_group ::= lparen_or_space.
+call_args ::= open_parenthesis_or_space call_arg_list close_parenthesis_or_comma.
+call_args_next_group ::= open_parenthesis_or_space.
    { _NCp1_Pcarg_next_group_0(); }
-call_args ::= call_args call_args_next_group call_arg_list rparen_or_comma.
+call_args ::= call_args call_args_next_group call_arg_list close_parenthesis_or_comma.
 call_args ::= call_args call_args_next_group CLOSE_PARENTHESIS.
 callExpr(l) ::= callExpr_func(r).
    { l.basic.id = r.basic.id; }
@@ -661,9 +661,9 @@ stmt_loop_begin ::= LOOP.
    { _NCp1_Pstmt_loop_begin_0(); }
 stmt_loop_begin2 ::= LOOP_WITH_SEMICOLON.
    { _NCp1_Pstmt_loop_begin_0(); }
-/* loop_expr_val(l) ::= lparen_or_space CLOSE_PARENTHESIS.
+/* loop_expr_val(l) ::= open_parenthesis_or_space CLOSE_PARENTHESIS.
    { l.basic.id = -1; }
-loop_expr_val(l) ::= lparen_or_space expr(e) rparen_or_space.
+loop_expr_val(l) ::= open_parenthesis_or_space expr(e) close_parenthesis_or_space.
    { l.basic.id = e.basic.id; } */
 loop_expr0 ::= begin_pos(begin) expr(e) end_pos(end).
    { _NCp1_Pstmt_loop_set_6(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col, 0); }
@@ -748,9 +748,9 @@ switch_case ::= switch_default_begin SPACE_OPEN_CURLY_BRACE stmts_optional2.
    { _NCp1_Pstmt_switch_default_end_0(); }
 switch_cases ::= switch_case.
 switch_cases ::= switch_cases SPACE switch_case.
-stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space switch_cases close_parenthesis_or_space.
+stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space switch_cases close_curly_brace_or_space.
    { _NCp1_Pstmt_switch_end_0(); }
-stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space CLOSE_CURLY_BRACE.
+stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE.
    { _NCp1_Pstmt_switch_end_0(); }
 
 stmt_expr ::= stmt_continue.
@@ -811,14 +811,14 @@ stmts_expr ::= stmt_expr.
 stmts_expr ::= stmts_expr scolon_space stmt_expr.
 stmts_expr ::= stmts_brace SPACE stmt_expr.
 /* stmts_optional ::= SPACE_CLOSE_CURLY_BRACE.
-stmts_optional ::= SPACE stmts_brace close_parenthesis_or_space.
-stmts_optional ::= SPACE stmts_expr close_parenthesis_or_scolon. */
-stmts_optional2 ::= open_parenthesis_or_space CLOSE_CURLY_BRACE.
-stmts_optional2 ::= open_parenthesis_or_space stmts_brace close_parenthesis_or_space.
-stmts_optional2 ::= open_parenthesis_or_space stmts_expr close_parenthesis_or_scolon.
+stmts_optional ::= SPACE stmts_brace close_curly_brace_or_space.
+stmts_optional ::= SPACE stmts_expr close_curly_brace_or_scolon. */
+stmts_optional2 ::= open_curly_brace_or_space CLOSE_CURLY_BRACE.
+stmts_optional2 ::= open_curly_brace_or_space stmts_brace close_curly_brace_or_space.
+stmts_optional2 ::= open_curly_brace_or_space stmts_expr close_curly_brace_or_scolon.
 /* stmts_optional3 ::= CLOSE_CURLY_BRACE.
-stmts_optional3 ::= stmts_brace close_parenthesis_or_space.
-stmts_optional3 ::= stmts_expr close_parenthesis_or_scolon. */
+stmts_optional3 ::= stmts_brace close_curly_brace_or_space.
+stmts_optional3 ::= stmts_expr close_curly_brace_or_scolon. */
 decl_struct_attr ::= SPACE_AT_NO_DECL.
    { _NCp1_Pstruct_attr_no_decl_0(); }
 decl_struct_attr ::= SPACE_AT_REAL_NAME_STR(e).
@@ -839,19 +839,19 @@ decl_func ::= func_decl SPACE_OPEN_CURLY_BRACE stmts_optional2.
    { _NCp1_Pfunc_body_end_1(true); } */
 decl_struct_close_or_at ::= SEMICOLON.
    { _NCp1_Pdecl_at_end_0(); }
-decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space decls close_parenthesis_or_space.
+decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space.
    { _NCp1_Pdecl_at_end_0(); }
-decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space CLOSE_CURLY_BRACE.
+decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE.
    { _NCp1_Pdecl_at_end_0(); }
-decl_struct ::= struct_decl_begin lparen_or_space CLOSE_PARENTHESIS
+decl_struct ::= struct_decl_begin open_parenthesis_or_space CLOSE_PARENTHESIS
    decl_struct_attrs_optional decl_struct_close_or_at.
-decl_struct ::= struct_decl_begin lparen_or_space struct_fvars rparen_or_comma
+decl_struct ::= struct_decl_begin open_parenthesis_or_space struct_fvars close_parenthesis_or_comma
    decl_struct_attrs_optional decl_struct_close_or_at.
 decl_enum_close_or_at ::= SEMICOLON.
    { _NCp1_Pdecl_at_end_0(); }
-decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space decls close_parenthesis_or_space.
+decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space.
    { _NCp1_Pdecl_at_end_0(); }
-decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space CLOSE_CURLY_BRACE.
+decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE.
    { _NCp1_Pdecl_at_end_0(); }
 enum_base_begin ::= .
    { _NCp1_Penum_base_begin_0(); }

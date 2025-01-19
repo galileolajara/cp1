@@ -1900,12 +1900,12 @@ static const char *const yyTokenName[] = {
   /*  156 */ "decl_gvars",
   /*  157 */ "decl_alias_begin",
   /*  158 */ "decl_alias_end",
-  /*  159 */ "lparen_or_space",
-  /*  160 */ "rparen_or_space",
-  /*  161 */ "rparen_or_comma",
-  /*  162 */ "open_parenthesis_or_space",
-  /*  163 */ "close_parenthesis_or_space",
-  /*  164 */ "close_parenthesis_or_scolon",
+  /*  159 */ "open_parenthesis_or_space",
+  /*  160 */ "close_parenthesis_or_space",
+  /*  161 */ "close_parenthesis_or_comma",
+  /*  162 */ "open_curly_brace_or_space",
+  /*  163 */ "close_curly_brace_or_space",
+  /*  164 */ "close_curly_brace_or_scolon",
   /*  165 */ "open_bracket_or_space",
   /*  166 */ "close_bracket_or_comma",
   /*  167 */ "scolon_space",
@@ -2100,19 +2100,19 @@ static const char *const yyRuleName[] = {
  /*  35 */ "decl_alias_begin ::= USING SPACE",
  /*  36 */ "decl_alias_end ::= SEMICOLON",
  /*  37 */ "decl ::= decl_alias_begin ID_UPPER SPACE_EQUAL_SPACE at decl_alias_end",
- /*  38 */ "lparen_or_space ::= OPEN_PARENTHESIS",
- /*  39 */ "lparen_or_space ::= OPEN_PARENTHESIS_SPACE",
- /*  40 */ "rparen_or_space ::= CLOSE_PARENTHESIS",
- /*  41 */ "rparen_or_space ::= SPACE_CLOSE_PARENTHESIS",
- /*  42 */ "rparen_or_comma ::= rparen_or_space",
- /*  43 */ "rparen_or_comma ::= COMMA_SPACE_CLOSE_PARENTHESIS",
- /*  44 */ "open_parenthesis_or_space ::= OPEN_CURLY_BRACE",
- /*  45 */ "open_parenthesis_or_space ::= OPEN_CURLY_BRACE_SPACE",
- /*  46 */ "close_parenthesis_or_space ::= CLOSE_CURLY_BRACE",
- /*  47 */ "close_parenthesis_or_space ::= SPACE_CLOSE_CURLY_BRACE",
- /*  48 */ "close_parenthesis_or_scolon ::= CLOSE_CURLY_BRACE",
- /*  49 */ "close_parenthesis_or_scolon ::= SPACE_CLOSE_CURLY_BRACE",
- /*  50 */ "close_parenthesis_or_scolon ::= SEMICOLON SPACE_CLOSE_CURLY_BRACE",
+ /*  38 */ "open_parenthesis_or_space ::= OPEN_PARENTHESIS",
+ /*  39 */ "open_parenthesis_or_space ::= OPEN_PARENTHESIS_SPACE",
+ /*  40 */ "close_parenthesis_or_space ::= CLOSE_PARENTHESIS",
+ /*  41 */ "close_parenthesis_or_space ::= SPACE_CLOSE_PARENTHESIS",
+ /*  42 */ "close_parenthesis_or_comma ::= close_parenthesis_or_space",
+ /*  43 */ "close_parenthesis_or_comma ::= COMMA_SPACE_CLOSE_PARENTHESIS",
+ /*  44 */ "open_curly_brace_or_space ::= OPEN_CURLY_BRACE",
+ /*  45 */ "open_curly_brace_or_space ::= OPEN_CURLY_BRACE_SPACE",
+ /*  46 */ "close_curly_brace_or_space ::= CLOSE_CURLY_BRACE",
+ /*  47 */ "close_curly_brace_or_space ::= SPACE_CLOSE_CURLY_BRACE",
+ /*  48 */ "close_curly_brace_or_scolon ::= CLOSE_CURLY_BRACE",
+ /*  49 */ "close_curly_brace_or_scolon ::= SPACE_CLOSE_CURLY_BRACE",
+ /*  50 */ "close_curly_brace_or_scolon ::= SEMICOLON SPACE_CLOSE_CURLY_BRACE",
  /*  51 */ "open_bracket_or_space ::= OPEN_BRACKET",
  /*  52 */ "open_bracket_or_space ::= OPEN_BRACKET_SPACE",
  /*  53 */ "close_bracket_or_comma ::= CLOSE_BRACKET",
@@ -2124,7 +2124,7 @@ static const char *const yyRuleName[] = {
  /*  59 */ "farg ::= lvar_decl expr_type_this_apply typeInfo_optional",
  /*  60 */ "expr_type_none ::=",
  /*  61 */ "expr_type_apply ::= at",
- /*  62 */ "farg_next_group ::= lparen_or_space",
+ /*  62 */ "farg_next_group ::= open_parenthesis_or_space",
  /*  63 */ "func_attr ::= SPACE_AT_MAIN",
  /*  64 */ "func_attr ::= SPACE_AT_CASE DOT ID_OPEN_PARENTHESIS OPEN_PARENTHESIS CLOSE_PARENTHESIS",
  /*  65 */ "func_attr ::= SPACE_AT_PROCESS",
@@ -2182,7 +2182,7 @@ static const char *const yyRuleName[] = {
  /* 117 */ "expr_lvar_plus ::= expr_lvar_plus PLUS",
  /* 118 */ "expr_lvar ::= ID",
  /* 119 */ "expr_lvar ::= expr_lvar_plus ID expr_type_none",
- /* 120 */ "expr_lvar ::= expr_lvar_plus lparen_or_space ID COLON typeAndInfo rparen_or_space",
+ /* 120 */ "expr_lvar ::= expr_lvar_plus open_parenthesis_or_space ID COLON typeAndInfo close_parenthesis_or_space",
  /* 121 */ "expr_cvar ::= HASH_ID",
  /* 122 */ "expr_cvar ::= at HASH_ID",
  /* 123 */ "value ::= value4fix",
@@ -2215,10 +2215,10 @@ static const char *const yyRuleName[] = {
  /* 150 */ "fvarExpr ::= value4fix DOT ID",
  /* 151 */ "expr_and1 ::= expr COMMA_SPACE expr",
  /* 152 */ "expr_and1 ::= expr_and1 COMMA_SPACE expr",
- /* 153 */ "expr_and ::= OPEN_PARENTHESIS_AMP_AMP_COMMA_SPACE expr_and1 rparen_or_comma",
+ /* 153 */ "expr_and ::= OPEN_PARENTHESIS_AMP_AMP_COMMA_SPACE expr_and1 close_parenthesis_or_comma",
  /* 154 */ "expr_or1 ::= expr COMMA_SPACE expr",
  /* 155 */ "expr_or1 ::= expr_or1 COMMA_SPACE expr",
- /* 156 */ "expr_or ::= OPEN_PARENTHESIS_PIPE_PIPE_COMMA_SPACE expr_or1 rparen_or_comma",
+ /* 156 */ "expr_or ::= OPEN_PARENTHESIS_PIPE_PIPE_COMMA_SPACE expr_or1 close_parenthesis_or_comma",
  /* 157 */ "expr_add ::= value SPACE_PLUS_SPACE value",
  /* 158 */ "expr_add ::= expr_add SPACE_PLUS_SPACE value",
  /* 159 */ "expr_sub ::= value SPACE_MINUS_SPACE value",
@@ -2255,14 +2255,14 @@ static const char *const yyRuleName[] = {
  /* 190 */ "compare_type ::= SPACE_RANGLE_SPACE",
  /* 191 */ "compare_type ::= SPACE_RANGLE_EQUAL_SPACE",
  /* 192 */ "compareExpr ::= value compare_type value",
- /* 193 */ "expr_in_paren ::= lparen_or_space opExpr rparen_or_space",
+ /* 193 */ "expr_in_paren ::= open_parenthesis_or_space opExpr close_parenthesis_or_space",
  /* 194 */ "expr_in_paren ::= exprs",
  /* 195 */ "funcExpr ::= ID_OPEN_PARENTHESIS",
  /* 196 */ "funcExpr ::= at DOT ID_OPEN_PARENTHESIS",
  /* 197 */ "methodExpr ::= value4fix DOT ID_OPEN_PARENTHESIS",
  /* 198 */ "call_arg ::= expr",
  /* 199 */ "call_arg ::= expr_str HASH",
- /* 200 */ "call_args_next_group ::= lparen_or_space",
+ /* 200 */ "call_args_next_group ::= open_parenthesis_or_space",
  /* 201 */ "callExpr ::= callExpr_func",
  /* 202 */ "callExpr ::= callExpr_method",
  /* 203 */ "callExpr_func ::= funcExpr call_args_optional",
@@ -2342,8 +2342,8 @@ static const char *const yyRuleName[] = {
  /* 277 */ "switch_case ::= switch_case_expr_end SPACE_OPEN_CURLY_BRACE stmts_optional2",
  /* 278 */ "switch_default_begin ::= DEFAULT switch_case_fall end_pos",
  /* 279 */ "switch_case ::= switch_default_begin SPACE_OPEN_CURLY_BRACE stmts_optional2",
- /* 280 */ "stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space switch_cases close_parenthesis_or_space",
- /* 281 */ "stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space CLOSE_CURLY_BRACE",
+ /* 280 */ "stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space switch_cases close_curly_brace_or_space",
+ /* 281 */ "stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE",
  /* 282 */ "stmt_continue ::= begin_pos CONTINUE end_pos",
  /* 283 */ "stmt_break ::= begin_pos BREAK end_pos",
  /* 284 */ "stmt_return ::= begin_pos RETURN end_pos",
@@ -2366,11 +2366,11 @@ static const char *const yyRuleName[] = {
  /* 301 */ "decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos",
  /* 302 */ "decl_func ::= func_decl SPACE_OPEN_CURLY_BRACE stmts_optional2",
  /* 303 */ "decl_struct_close_or_at ::= SEMICOLON",
- /* 304 */ "decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space decls close_parenthesis_or_space",
- /* 305 */ "decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space CLOSE_CURLY_BRACE",
+ /* 304 */ "decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space",
+ /* 305 */ "decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE",
  /* 306 */ "decl_enum_close_or_at ::= SEMICOLON",
- /* 307 */ "decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space decls close_parenthesis_or_space",
- /* 308 */ "decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space CLOSE_CURLY_BRACE",
+ /* 307 */ "decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space",
+ /* 308 */ "decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE",
  /* 309 */ "enum_base_begin ::=",
  /* 310 */ "enum_base_end ::= COLON at end_pos",
  /* 311 */ "decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional",
@@ -2403,9 +2403,9 @@ static const char *const yyRuleName[] = {
  /* 338 */ "scolon_space ::= SEMICOLON SPACE",
  /* 339 */ "farg_list ::= farg",
  /* 340 */ "farg_list ::= farg_list COMMA_SPACE farg",
- /* 341 */ "fargs ::= lparen_or_space CLOSE_PARENTHESIS",
- /* 342 */ "fargs ::= lparen_or_space farg_list rparen_or_comma",
- /* 343 */ "fargs ::= fargs farg_next_group farg_list rparen_or_comma",
+ /* 341 */ "fargs ::= open_parenthesis_or_space CLOSE_PARENTHESIS",
+ /* 342 */ "fargs ::= open_parenthesis_or_space farg_list close_parenthesis_or_comma",
+ /* 343 */ "fargs ::= fargs farg_next_group farg_list close_parenthesis_or_comma",
  /* 344 */ "fargs ::= fargs farg_next_group CLOSE_PARENTHESIS",
  /* 345 */ "func_attrs ::= func_attr",
  /* 346 */ "func_attrs ::= func_attrs func_attr",
@@ -2429,12 +2429,12 @@ static const char *const yyRuleName[] = {
  /* 364 */ "typeInfo_arr ::= typeInfo_bi typeInfo_arr_exprs",
  /* 365 */ "typeInfo_arr ::= typeInfo_arr typeInfo_arr_exprs",
  /* 366 */ "typeInfo_optional ::= typeInfo_none",
- /* 367 */ "call_args_optional ::= lparen_or_space CLOSE_PARENTHESIS",
+ /* 367 */ "call_args_optional ::= open_parenthesis_or_space CLOSE_PARENTHESIS",
  /* 368 */ "call_args_optional ::= call_args",
  /* 369 */ "call_arg_list ::= call_arg",
  /* 370 */ "call_arg_list ::= call_arg_list COMMA_SPACE call_arg",
- /* 371 */ "call_args ::= lparen_or_space call_arg_list rparen_or_comma",
- /* 372 */ "call_args ::= call_args call_args_next_group call_arg_list rparen_or_comma",
+ /* 371 */ "call_args ::= open_parenthesis_or_space call_arg_list close_parenthesis_or_comma",
+ /* 372 */ "call_args ::= call_args call_args_next_group call_arg_list close_parenthesis_or_comma",
  /* 373 */ "call_args ::= call_args call_args_next_group CLOSE_PARENTHESIS",
  /* 374 */ "stmt ::= stmt_loop",
  /* 375 */ "loop_continue_stmts ::= stmts_brace",
@@ -2472,13 +2472,13 @@ static const char *const yyRuleName[] = {
  /* 407 */ "stmts_expr ::= stmt_expr",
  /* 408 */ "stmts_expr ::= stmts_expr scolon_space stmt_expr",
  /* 409 */ "stmts_expr ::= stmts_brace SPACE stmt_expr",
- /* 410 */ "stmts_optional2 ::= open_parenthesis_or_space CLOSE_CURLY_BRACE",
- /* 411 */ "stmts_optional2 ::= open_parenthesis_or_space stmts_brace close_parenthesis_or_space",
- /* 412 */ "stmts_optional2 ::= open_parenthesis_or_space stmts_expr close_parenthesis_or_scolon",
+ /* 410 */ "stmts_optional2 ::= open_curly_brace_or_space CLOSE_CURLY_BRACE",
+ /* 411 */ "stmts_optional2 ::= open_curly_brace_or_space stmts_brace close_curly_brace_or_space",
+ /* 412 */ "stmts_optional2 ::= open_curly_brace_or_space stmts_expr close_curly_brace_or_scolon",
  /* 413 */ "decl_struct_attrs_list ::= decl_struct_attr",
  /* 414 */ "decl_struct_attrs_list ::= decl_struct_attrs_list decl_struct_attr",
- /* 415 */ "decl_struct ::= struct_decl_begin lparen_or_space CLOSE_PARENTHESIS decl_struct_attrs_optional decl_struct_close_or_at",
- /* 416 */ "decl_struct ::= struct_decl_begin lparen_or_space struct_fvars rparen_or_comma decl_struct_attrs_optional decl_struct_close_or_at",
+ /* 415 */ "decl_struct ::= struct_decl_begin open_parenthesis_or_space CLOSE_PARENTHESIS decl_struct_attrs_optional decl_struct_close_or_at",
+ /* 416 */ "decl_struct ::= struct_decl_begin open_parenthesis_or_space struct_fvars close_parenthesis_or_comma decl_struct_attrs_optional decl_struct_close_or_at",
  /* 417 */ "decl_enum ::= enum_decl_begin open_bracket_or_space CLOSE_BRACKET enum_base_begin enum_base_end decl_enum_close_or_at",
  /* 418 */ "decl_enum ::= enum_decl_begin open_bracket_or_space enum_cvars close_bracket_or_comma enum_base_begin enum_base_end decl_enum_close_or_at",
  /* 419 */ "decl_gvar_list ::= decl_gvar",
@@ -2942,19 +2942,19 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    157,  /* (35) decl_alias_begin ::= USING SPACE */
    158,  /* (36) decl_alias_end ::= SEMICOLON */
    136,  /* (37) decl ::= decl_alias_begin ID_UPPER SPACE_EQUAL_SPACE at decl_alias_end */
-   159,  /* (38) lparen_or_space ::= OPEN_PARENTHESIS */
-   159,  /* (39) lparen_or_space ::= OPEN_PARENTHESIS_SPACE */
-   160,  /* (40) rparen_or_space ::= CLOSE_PARENTHESIS */
-   160,  /* (41) rparen_or_space ::= SPACE_CLOSE_PARENTHESIS */
-   161,  /* (42) rparen_or_comma ::= rparen_or_space */
-   161,  /* (43) rparen_or_comma ::= COMMA_SPACE_CLOSE_PARENTHESIS */
-   162,  /* (44) open_parenthesis_or_space ::= OPEN_CURLY_BRACE */
-   162,  /* (45) open_parenthesis_or_space ::= OPEN_CURLY_BRACE_SPACE */
-   163,  /* (46) close_parenthesis_or_space ::= CLOSE_CURLY_BRACE */
-   163,  /* (47) close_parenthesis_or_space ::= SPACE_CLOSE_CURLY_BRACE */
-   164,  /* (48) close_parenthesis_or_scolon ::= CLOSE_CURLY_BRACE */
-   164,  /* (49) close_parenthesis_or_scolon ::= SPACE_CLOSE_CURLY_BRACE */
-   164,  /* (50) close_parenthesis_or_scolon ::= SEMICOLON SPACE_CLOSE_CURLY_BRACE */
+   159,  /* (38) open_parenthesis_or_space ::= OPEN_PARENTHESIS */
+   159,  /* (39) open_parenthesis_or_space ::= OPEN_PARENTHESIS_SPACE */
+   160,  /* (40) close_parenthesis_or_space ::= CLOSE_PARENTHESIS */
+   160,  /* (41) close_parenthesis_or_space ::= SPACE_CLOSE_PARENTHESIS */
+   161,  /* (42) close_parenthesis_or_comma ::= close_parenthesis_or_space */
+   161,  /* (43) close_parenthesis_or_comma ::= COMMA_SPACE_CLOSE_PARENTHESIS */
+   162,  /* (44) open_curly_brace_or_space ::= OPEN_CURLY_BRACE */
+   162,  /* (45) open_curly_brace_or_space ::= OPEN_CURLY_BRACE_SPACE */
+   163,  /* (46) close_curly_brace_or_space ::= CLOSE_CURLY_BRACE */
+   163,  /* (47) close_curly_brace_or_space ::= SPACE_CLOSE_CURLY_BRACE */
+   164,  /* (48) close_curly_brace_or_scolon ::= CLOSE_CURLY_BRACE */
+   164,  /* (49) close_curly_brace_or_scolon ::= SPACE_CLOSE_CURLY_BRACE */
+   164,  /* (50) close_curly_brace_or_scolon ::= SEMICOLON SPACE_CLOSE_CURLY_BRACE */
    165,  /* (51) open_bracket_or_space ::= OPEN_BRACKET */
    165,  /* (52) open_bracket_or_space ::= OPEN_BRACKET_SPACE */
    166,  /* (53) close_bracket_or_comma ::= CLOSE_BRACKET */
@@ -2966,7 +2966,7 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    169,  /* (59) farg ::= lvar_decl expr_type_this_apply typeInfo_optional */
    172,  /* (60) expr_type_none ::= */
    173,  /* (61) expr_type_apply ::= at */
-   176,  /* (62) farg_next_group ::= lparen_or_space */
+   176,  /* (62) farg_next_group ::= open_parenthesis_or_space */
    177,  /* (63) func_attr ::= SPACE_AT_MAIN */
    177,  /* (64) func_attr ::= SPACE_AT_CASE DOT ID_OPEN_PARENTHESIS OPEN_PARENTHESIS CLOSE_PARENTHESIS */
    177,  /* (65) func_attr ::= SPACE_AT_PROCESS */
@@ -3024,7 +3024,7 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    200,  /* (117) expr_lvar_plus ::= expr_lvar_plus PLUS */
    201,  /* (118) expr_lvar ::= ID */
    201,  /* (119) expr_lvar ::= expr_lvar_plus ID expr_type_none */
-   201,  /* (120) expr_lvar ::= expr_lvar_plus lparen_or_space ID COLON typeAndInfo rparen_or_space */
+   201,  /* (120) expr_lvar ::= expr_lvar_plus open_parenthesis_or_space ID COLON typeAndInfo close_parenthesis_or_space */
    203,  /* (121) expr_cvar ::= HASH_ID */
    203,  /* (122) expr_cvar ::= at HASH_ID */
    204,  /* (123) value ::= value4fix */
@@ -3057,10 +3057,10 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    219,  /* (150) fvarExpr ::= value4fix DOT ID */
    221,  /* (151) expr_and1 ::= expr COMMA_SPACE expr */
    221,  /* (152) expr_and1 ::= expr_and1 COMMA_SPACE expr */
-   222,  /* (153) expr_and ::= OPEN_PARENTHESIS_AMP_AMP_COMMA_SPACE expr_and1 rparen_or_comma */
+   222,  /* (153) expr_and ::= OPEN_PARENTHESIS_AMP_AMP_COMMA_SPACE expr_and1 close_parenthesis_or_comma */
    223,  /* (154) expr_or1 ::= expr COMMA_SPACE expr */
    223,  /* (155) expr_or1 ::= expr_or1 COMMA_SPACE expr */
-   224,  /* (156) expr_or ::= OPEN_PARENTHESIS_PIPE_PIPE_COMMA_SPACE expr_or1 rparen_or_comma */
+   224,  /* (156) expr_or ::= OPEN_PARENTHESIS_PIPE_PIPE_COMMA_SPACE expr_or1 close_parenthesis_or_comma */
    225,  /* (157) expr_add ::= value SPACE_PLUS_SPACE value */
    225,  /* (158) expr_add ::= expr_add SPACE_PLUS_SPACE value */
    226,  /* (159) expr_sub ::= value SPACE_MINUS_SPACE value */
@@ -3097,14 +3097,14 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    239,  /* (190) compare_type ::= SPACE_RANGLE_SPACE */
    239,  /* (191) compare_type ::= SPACE_RANGLE_EQUAL_SPACE */
    236,  /* (192) compareExpr ::= value compare_type value */
-   211,  /* (193) expr_in_paren ::= lparen_or_space opExpr rparen_or_space */
+   211,  /* (193) expr_in_paren ::= open_parenthesis_or_space opExpr close_parenthesis_or_space */
    211,  /* (194) expr_in_paren ::= exprs */
    241,  /* (195) funcExpr ::= ID_OPEN_PARENTHESIS */
    241,  /* (196) funcExpr ::= at DOT ID_OPEN_PARENTHESIS */
    242,  /* (197) methodExpr ::= value4fix DOT ID_OPEN_PARENTHESIS */
    245,  /* (198) call_arg ::= expr */
    245,  /* (199) call_arg ::= expr_str HASH */
-   247,  /* (200) call_args_next_group ::= lparen_or_space */
+   247,  /* (200) call_args_next_group ::= open_parenthesis_or_space */
    218,  /* (201) callExpr ::= callExpr_func */
    218,  /* (202) callExpr ::= callExpr_method */
    248,  /* (203) callExpr_func ::= funcExpr call_args_optional */
@@ -3184,8 +3184,8 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    289,  /* (277) switch_case ::= switch_case_expr_end SPACE_OPEN_CURLY_BRACE stmts_optional2 */
    290,  /* (278) switch_default_begin ::= DEFAULT switch_case_fall end_pos */
    289,  /* (279) switch_case ::= switch_default_begin SPACE_OPEN_CURLY_BRACE stmts_optional2 */
-   281,  /* (280) stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space switch_cases close_parenthesis_or_space */
-   281,  /* (281) stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space CLOSE_CURLY_BRACE */
+   281,  /* (280) stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space switch_cases close_curly_brace_or_space */
+   281,  /* (281) stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
    293,  /* (282) stmt_continue ::= begin_pos CONTINUE end_pos */
    294,  /* (283) stmt_break ::= begin_pos BREAK end_pos */
    295,  /* (284) stmt_return ::= begin_pos RETURN end_pos */
@@ -3208,11 +3208,11 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    307,  /* (301) decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos */
    153,  /* (302) decl_func ::= func_decl SPACE_OPEN_CURLY_BRACE stmts_optional2 */
    308,  /* (303) decl_struct_close_or_at ::= SEMICOLON */
-   308,  /* (304) decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space decls close_parenthesis_or_space */
-   308,  /* (305) decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space CLOSE_CURLY_BRACE */
+   308,  /* (304) decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */
+   308,  /* (305) decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
    309,  /* (306) decl_enum_close_or_at ::= SEMICOLON */
-   309,  /* (307) decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space decls close_parenthesis_or_space */
-   309,  /* (308) decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space CLOSE_CURLY_BRACE */
+   309,  /* (307) decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */
+   309,  /* (308) decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
    310,  /* (309) enum_base_begin ::= */
    311,  /* (310) enum_base_end ::= COLON at end_pos */
    312,  /* (311) decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional */
@@ -3245,9 +3245,9 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    167,  /* (338) scolon_space ::= SEMICOLON SPACE */
    174,  /* (339) farg_list ::= farg */
    174,  /* (340) farg_list ::= farg_list COMMA_SPACE farg */
-   175,  /* (341) fargs ::= lparen_or_space CLOSE_PARENTHESIS */
-   175,  /* (342) fargs ::= lparen_or_space farg_list rparen_or_comma */
-   175,  /* (343) fargs ::= fargs farg_next_group farg_list rparen_or_comma */
+   175,  /* (341) fargs ::= open_parenthesis_or_space CLOSE_PARENTHESIS */
+   175,  /* (342) fargs ::= open_parenthesis_or_space farg_list close_parenthesis_or_comma */
+   175,  /* (343) fargs ::= fargs farg_next_group farg_list close_parenthesis_or_comma */
    175,  /* (344) fargs ::= fargs farg_next_group CLOSE_PARENTHESIS */
    178,  /* (345) func_attrs ::= func_attr */
    178,  /* (346) func_attrs ::= func_attrs func_attr */
@@ -3271,12 +3271,12 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    190,  /* (364) typeInfo_arr ::= typeInfo_bi typeInfo_arr_exprs */
    190,  /* (365) typeInfo_arr ::= typeInfo_arr typeInfo_arr_exprs */
    171,  /* (366) typeInfo_optional ::= typeInfo_none */
-   243,  /* (367) call_args_optional ::= lparen_or_space CLOSE_PARENTHESIS */
+   243,  /* (367) call_args_optional ::= open_parenthesis_or_space CLOSE_PARENTHESIS */
    243,  /* (368) call_args_optional ::= call_args */
    246,  /* (369) call_arg_list ::= call_arg */
    246,  /* (370) call_arg_list ::= call_arg_list COMMA_SPACE call_arg */
-   244,  /* (371) call_args ::= lparen_or_space call_arg_list rparen_or_comma */
-   244,  /* (372) call_args ::= call_args call_args_next_group call_arg_list rparen_or_comma */
+   244,  /* (371) call_args ::= open_parenthesis_or_space call_arg_list close_parenthesis_or_comma */
+   244,  /* (372) call_args ::= call_args call_args_next_group call_arg_list close_parenthesis_or_comma */
    244,  /* (373) call_args ::= call_args call_args_next_group CLOSE_PARENTHESIS */
    258,  /* (374) stmt ::= stmt_loop */
    265,  /* (375) loop_continue_stmts ::= stmts_brace */
@@ -3314,13 +3314,13 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    267,  /* (407) stmts_expr ::= stmt_expr */
    267,  /* (408) stmts_expr ::= stmts_expr scolon_space stmt_expr */
    267,  /* (409) stmts_expr ::= stmts_brace SPACE stmt_expr */
-   270,  /* (410) stmts_optional2 ::= open_parenthesis_or_space CLOSE_CURLY_BRACE */
-   270,  /* (411) stmts_optional2 ::= open_parenthesis_or_space stmts_brace close_parenthesis_or_space */
-   270,  /* (412) stmts_optional2 ::= open_parenthesis_or_space stmts_expr close_parenthesis_or_scolon */
+   270,  /* (410) stmts_optional2 ::= open_curly_brace_or_space CLOSE_CURLY_BRACE */
+   270,  /* (411) stmts_optional2 ::= open_curly_brace_or_space stmts_brace close_curly_brace_or_space */
+   270,  /* (412) stmts_optional2 ::= open_curly_brace_or_space stmts_expr close_curly_brace_or_scolon */
    306,  /* (413) decl_struct_attrs_list ::= decl_struct_attr */
    306,  /* (414) decl_struct_attrs_list ::= decl_struct_attrs_list decl_struct_attr */
-   154,  /* (415) decl_struct ::= struct_decl_begin lparen_or_space CLOSE_PARENTHESIS decl_struct_attrs_optional decl_struct_close_or_at */
-   154,  /* (416) decl_struct ::= struct_decl_begin lparen_or_space struct_fvars rparen_or_comma decl_struct_attrs_optional decl_struct_close_or_at */
+   154,  /* (415) decl_struct ::= struct_decl_begin open_parenthesis_or_space CLOSE_PARENTHESIS decl_struct_attrs_optional decl_struct_close_or_at */
+   154,  /* (416) decl_struct ::= struct_decl_begin open_parenthesis_or_space struct_fvars close_parenthesis_or_comma decl_struct_attrs_optional decl_struct_close_or_at */
    155,  /* (417) decl_enum ::= enum_decl_begin open_bracket_or_space CLOSE_BRACKET enum_base_begin enum_base_end decl_enum_close_or_at */
    155,  /* (418) decl_enum ::= enum_decl_begin open_bracket_or_space enum_cvars close_bracket_or_comma enum_base_begin enum_base_end decl_enum_close_or_at */
    313,  /* (419) decl_gvar_list ::= decl_gvar */
@@ -3369,19 +3369,19 @@ static const signed char yyRuleInfoNRhs[] = {
    -2,  /* (35) decl_alias_begin ::= USING SPACE */
    -1,  /* (36) decl_alias_end ::= SEMICOLON */
    -5,  /* (37) decl ::= decl_alias_begin ID_UPPER SPACE_EQUAL_SPACE at decl_alias_end */
-   -1,  /* (38) lparen_or_space ::= OPEN_PARENTHESIS */
-   -1,  /* (39) lparen_or_space ::= OPEN_PARENTHESIS_SPACE */
-   -1,  /* (40) rparen_or_space ::= CLOSE_PARENTHESIS */
-   -1,  /* (41) rparen_or_space ::= SPACE_CLOSE_PARENTHESIS */
-   -1,  /* (42) rparen_or_comma ::= rparen_or_space */
-   -1,  /* (43) rparen_or_comma ::= COMMA_SPACE_CLOSE_PARENTHESIS */
-   -1,  /* (44) open_parenthesis_or_space ::= OPEN_CURLY_BRACE */
-   -1,  /* (45) open_parenthesis_or_space ::= OPEN_CURLY_BRACE_SPACE */
-   -1,  /* (46) close_parenthesis_or_space ::= CLOSE_CURLY_BRACE */
-   -1,  /* (47) close_parenthesis_or_space ::= SPACE_CLOSE_CURLY_BRACE */
-   -1,  /* (48) close_parenthesis_or_scolon ::= CLOSE_CURLY_BRACE */
-   -1,  /* (49) close_parenthesis_or_scolon ::= SPACE_CLOSE_CURLY_BRACE */
-   -2,  /* (50) close_parenthesis_or_scolon ::= SEMICOLON SPACE_CLOSE_CURLY_BRACE */
+   -1,  /* (38) open_parenthesis_or_space ::= OPEN_PARENTHESIS */
+   -1,  /* (39) open_parenthesis_or_space ::= OPEN_PARENTHESIS_SPACE */
+   -1,  /* (40) close_parenthesis_or_space ::= CLOSE_PARENTHESIS */
+   -1,  /* (41) close_parenthesis_or_space ::= SPACE_CLOSE_PARENTHESIS */
+   -1,  /* (42) close_parenthesis_or_comma ::= close_parenthesis_or_space */
+   -1,  /* (43) close_parenthesis_or_comma ::= COMMA_SPACE_CLOSE_PARENTHESIS */
+   -1,  /* (44) open_curly_brace_or_space ::= OPEN_CURLY_BRACE */
+   -1,  /* (45) open_curly_brace_or_space ::= OPEN_CURLY_BRACE_SPACE */
+   -1,  /* (46) close_curly_brace_or_space ::= CLOSE_CURLY_BRACE */
+   -1,  /* (47) close_curly_brace_or_space ::= SPACE_CLOSE_CURLY_BRACE */
+   -1,  /* (48) close_curly_brace_or_scolon ::= CLOSE_CURLY_BRACE */
+   -1,  /* (49) close_curly_brace_or_scolon ::= SPACE_CLOSE_CURLY_BRACE */
+   -2,  /* (50) close_curly_brace_or_scolon ::= SEMICOLON SPACE_CLOSE_CURLY_BRACE */
    -1,  /* (51) open_bracket_or_space ::= OPEN_BRACKET */
    -1,  /* (52) open_bracket_or_space ::= OPEN_BRACKET_SPACE */
    -1,  /* (53) close_bracket_or_comma ::= CLOSE_BRACKET */
@@ -3393,7 +3393,7 @@ static const signed char yyRuleInfoNRhs[] = {
    -3,  /* (59) farg ::= lvar_decl expr_type_this_apply typeInfo_optional */
     0,  /* (60) expr_type_none ::= */
    -1,  /* (61) expr_type_apply ::= at */
-   -1,  /* (62) farg_next_group ::= lparen_or_space */
+   -1,  /* (62) farg_next_group ::= open_parenthesis_or_space */
    -1,  /* (63) func_attr ::= SPACE_AT_MAIN */
    -5,  /* (64) func_attr ::= SPACE_AT_CASE DOT ID_OPEN_PARENTHESIS OPEN_PARENTHESIS CLOSE_PARENTHESIS */
    -1,  /* (65) func_attr ::= SPACE_AT_PROCESS */
@@ -3451,7 +3451,7 @@ static const signed char yyRuleInfoNRhs[] = {
    -2,  /* (117) expr_lvar_plus ::= expr_lvar_plus PLUS */
    -1,  /* (118) expr_lvar ::= ID */
    -3,  /* (119) expr_lvar ::= expr_lvar_plus ID expr_type_none */
-   -6,  /* (120) expr_lvar ::= expr_lvar_plus lparen_or_space ID COLON typeAndInfo rparen_or_space */
+   -6,  /* (120) expr_lvar ::= expr_lvar_plus open_parenthesis_or_space ID COLON typeAndInfo close_parenthesis_or_space */
    -1,  /* (121) expr_cvar ::= HASH_ID */
    -2,  /* (122) expr_cvar ::= at HASH_ID */
    -1,  /* (123) value ::= value4fix */
@@ -3484,10 +3484,10 @@ static const signed char yyRuleInfoNRhs[] = {
    -3,  /* (150) fvarExpr ::= value4fix DOT ID */
    -3,  /* (151) expr_and1 ::= expr COMMA_SPACE expr */
    -3,  /* (152) expr_and1 ::= expr_and1 COMMA_SPACE expr */
-   -3,  /* (153) expr_and ::= OPEN_PARENTHESIS_AMP_AMP_COMMA_SPACE expr_and1 rparen_or_comma */
+   -3,  /* (153) expr_and ::= OPEN_PARENTHESIS_AMP_AMP_COMMA_SPACE expr_and1 close_parenthesis_or_comma */
    -3,  /* (154) expr_or1 ::= expr COMMA_SPACE expr */
    -3,  /* (155) expr_or1 ::= expr_or1 COMMA_SPACE expr */
-   -3,  /* (156) expr_or ::= OPEN_PARENTHESIS_PIPE_PIPE_COMMA_SPACE expr_or1 rparen_or_comma */
+   -3,  /* (156) expr_or ::= OPEN_PARENTHESIS_PIPE_PIPE_COMMA_SPACE expr_or1 close_parenthesis_or_comma */
    -3,  /* (157) expr_add ::= value SPACE_PLUS_SPACE value */
    -3,  /* (158) expr_add ::= expr_add SPACE_PLUS_SPACE value */
    -3,  /* (159) expr_sub ::= value SPACE_MINUS_SPACE value */
@@ -3524,14 +3524,14 @@ static const signed char yyRuleInfoNRhs[] = {
    -1,  /* (190) compare_type ::= SPACE_RANGLE_SPACE */
    -1,  /* (191) compare_type ::= SPACE_RANGLE_EQUAL_SPACE */
    -3,  /* (192) compareExpr ::= value compare_type value */
-   -3,  /* (193) expr_in_paren ::= lparen_or_space opExpr rparen_or_space */
+   -3,  /* (193) expr_in_paren ::= open_parenthesis_or_space opExpr close_parenthesis_or_space */
    -1,  /* (194) expr_in_paren ::= exprs */
    -1,  /* (195) funcExpr ::= ID_OPEN_PARENTHESIS */
    -3,  /* (196) funcExpr ::= at DOT ID_OPEN_PARENTHESIS */
    -3,  /* (197) methodExpr ::= value4fix DOT ID_OPEN_PARENTHESIS */
    -1,  /* (198) call_arg ::= expr */
    -2,  /* (199) call_arg ::= expr_str HASH */
-   -1,  /* (200) call_args_next_group ::= lparen_or_space */
+   -1,  /* (200) call_args_next_group ::= open_parenthesis_or_space */
    -1,  /* (201) callExpr ::= callExpr_func */
    -1,  /* (202) callExpr ::= callExpr_method */
    -2,  /* (203) callExpr_func ::= funcExpr call_args_optional */
@@ -3611,8 +3611,8 @@ static const signed char yyRuleInfoNRhs[] = {
    -3,  /* (277) switch_case ::= switch_case_expr_end SPACE_OPEN_CURLY_BRACE stmts_optional2 */
    -3,  /* (278) switch_default_begin ::= DEFAULT switch_case_fall end_pos */
    -3,  /* (279) switch_case ::= switch_default_begin SPACE_OPEN_CURLY_BRACE stmts_optional2 */
-   -6,  /* (280) stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space switch_cases close_parenthesis_or_space */
-   -5,  /* (281) stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space CLOSE_CURLY_BRACE */
+   -6,  /* (280) stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space switch_cases close_curly_brace_or_space */
+   -5,  /* (281) stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
    -3,  /* (282) stmt_continue ::= begin_pos CONTINUE end_pos */
    -3,  /* (283) stmt_break ::= begin_pos BREAK end_pos */
    -3,  /* (284) stmt_return ::= begin_pos RETURN end_pos */
@@ -3635,11 +3635,11 @@ static const signed char yyRuleInfoNRhs[] = {
    -2,  /* (301) decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos */
    -3,  /* (302) decl_func ::= func_decl SPACE_OPEN_CURLY_BRACE stmts_optional2 */
    -1,  /* (303) decl_struct_close_or_at ::= SEMICOLON */
-   -4,  /* (304) decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space decls close_parenthesis_or_space */
-   -3,  /* (305) decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space CLOSE_CURLY_BRACE */
+   -4,  /* (304) decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */
+   -3,  /* (305) decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
    -1,  /* (306) decl_enum_close_or_at ::= SEMICOLON */
-   -4,  /* (307) decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space decls close_parenthesis_or_space */
-   -3,  /* (308) decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space CLOSE_CURLY_BRACE */
+   -4,  /* (307) decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */
+   -3,  /* (308) decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
     0,  /* (309) enum_base_begin ::= */
    -3,  /* (310) enum_base_end ::= COLON at end_pos */
    -5,  /* (311) decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional */
@@ -3672,9 +3672,9 @@ static const signed char yyRuleInfoNRhs[] = {
    -2,  /* (338) scolon_space ::= SEMICOLON SPACE */
    -1,  /* (339) farg_list ::= farg */
    -3,  /* (340) farg_list ::= farg_list COMMA_SPACE farg */
-   -2,  /* (341) fargs ::= lparen_or_space CLOSE_PARENTHESIS */
-   -3,  /* (342) fargs ::= lparen_or_space farg_list rparen_or_comma */
-   -4,  /* (343) fargs ::= fargs farg_next_group farg_list rparen_or_comma */
+   -2,  /* (341) fargs ::= open_parenthesis_or_space CLOSE_PARENTHESIS */
+   -3,  /* (342) fargs ::= open_parenthesis_or_space farg_list close_parenthesis_or_comma */
+   -4,  /* (343) fargs ::= fargs farg_next_group farg_list close_parenthesis_or_comma */
    -3,  /* (344) fargs ::= fargs farg_next_group CLOSE_PARENTHESIS */
    -1,  /* (345) func_attrs ::= func_attr */
    -2,  /* (346) func_attrs ::= func_attrs func_attr */
@@ -3698,12 +3698,12 @@ static const signed char yyRuleInfoNRhs[] = {
    -2,  /* (364) typeInfo_arr ::= typeInfo_bi typeInfo_arr_exprs */
    -2,  /* (365) typeInfo_arr ::= typeInfo_arr typeInfo_arr_exprs */
    -1,  /* (366) typeInfo_optional ::= typeInfo_none */
-   -2,  /* (367) call_args_optional ::= lparen_or_space CLOSE_PARENTHESIS */
+   -2,  /* (367) call_args_optional ::= open_parenthesis_or_space CLOSE_PARENTHESIS */
    -1,  /* (368) call_args_optional ::= call_args */
    -1,  /* (369) call_arg_list ::= call_arg */
    -3,  /* (370) call_arg_list ::= call_arg_list COMMA_SPACE call_arg */
-   -3,  /* (371) call_args ::= lparen_or_space call_arg_list rparen_or_comma */
-   -4,  /* (372) call_args ::= call_args call_args_next_group call_arg_list rparen_or_comma */
+   -3,  /* (371) call_args ::= open_parenthesis_or_space call_arg_list close_parenthesis_or_comma */
+   -4,  /* (372) call_args ::= call_args call_args_next_group call_arg_list close_parenthesis_or_comma */
    -3,  /* (373) call_args ::= call_args call_args_next_group CLOSE_PARENTHESIS */
    -1,  /* (374) stmt ::= stmt_loop */
    -1,  /* (375) loop_continue_stmts ::= stmts_brace */
@@ -3741,13 +3741,13 @@ static const signed char yyRuleInfoNRhs[] = {
    -1,  /* (407) stmts_expr ::= stmt_expr */
    -3,  /* (408) stmts_expr ::= stmts_expr scolon_space stmt_expr */
    -3,  /* (409) stmts_expr ::= stmts_brace SPACE stmt_expr */
-   -2,  /* (410) stmts_optional2 ::= open_parenthesis_or_space CLOSE_CURLY_BRACE */
-   -3,  /* (411) stmts_optional2 ::= open_parenthesis_or_space stmts_brace close_parenthesis_or_space */
-   -3,  /* (412) stmts_optional2 ::= open_parenthesis_or_space stmts_expr close_parenthesis_or_scolon */
+   -2,  /* (410) stmts_optional2 ::= open_curly_brace_or_space CLOSE_CURLY_BRACE */
+   -3,  /* (411) stmts_optional2 ::= open_curly_brace_or_space stmts_brace close_curly_brace_or_space */
+   -3,  /* (412) stmts_optional2 ::= open_curly_brace_or_space stmts_expr close_curly_brace_or_scolon */
    -1,  /* (413) decl_struct_attrs_list ::= decl_struct_attr */
    -2,  /* (414) decl_struct_attrs_list ::= decl_struct_attrs_list decl_struct_attr */
-   -5,  /* (415) decl_struct ::= struct_decl_begin lparen_or_space CLOSE_PARENTHESIS decl_struct_attrs_optional decl_struct_close_or_at */
-   -6,  /* (416) decl_struct ::= struct_decl_begin lparen_or_space struct_fvars rparen_or_comma decl_struct_attrs_optional decl_struct_close_or_at */
+   -5,  /* (415) decl_struct ::= struct_decl_begin open_parenthesis_or_space CLOSE_PARENTHESIS decl_struct_attrs_optional decl_struct_close_or_at */
+   -6,  /* (416) decl_struct ::= struct_decl_begin open_parenthesis_or_space struct_fvars close_parenthesis_or_comma decl_struct_attrs_optional decl_struct_close_or_at */
    -6,  /* (417) decl_enum ::= enum_decl_begin open_bracket_or_space CLOSE_BRACKET enum_base_begin enum_base_end decl_enum_close_or_at */
    -7,  /* (418) decl_enum ::= enum_decl_begin open_bracket_or_space enum_cvars close_bracket_or_comma enum_base_begin enum_base_end decl_enum_close_or_at */
    -1,  /* (419) decl_gvar_list ::= decl_gvar */
@@ -3948,11 +3948,11 @@ static YYACTIONTYPE yy_reduce(
       case 33: /* decl_at ::= decl_at_begin SPACE_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE decls SPACE_CLOSE_CURLY_BRACE */
       case 34: /* decl_at ::= decl_at_begin SPACE_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE CLOSE_CURLY_BRACE */ yytestcase(yyruleno==34);
       case 303: /* decl_struct_close_or_at ::= SEMICOLON */ yytestcase(yyruleno==303);
-      case 304: /* decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space decls close_parenthesis_or_space */ yytestcase(yyruleno==304);
-      case 305: /* decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==305);
+      case 304: /* decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */ yytestcase(yyruleno==304);
+      case 305: /* decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==305);
       case 306: /* decl_enum_close_or_at ::= SEMICOLON */ yytestcase(yyruleno==306);
-      case 307: /* decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space decls close_parenthesis_or_space */ yytestcase(yyruleno==307);
-      case 308: /* decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==308);
+      case 307: /* decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */ yytestcase(yyruleno==307);
+      case 308: /* decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==308);
 #line 126 "cp1_parse.y"
 { _NCp1_Pdecl_at_end_0(); }
 #line 3958 "out/cp1_parse.c"
@@ -3967,18 +3967,18 @@ static YYACTIONTYPE yy_reduce(
 { _NCp1_Pdecl_alias_4(yymsp[-3].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col); }
 #line 3968 "out/cp1_parse.c"
         break;
-      case 38: /* lparen_or_space ::= OPEN_PARENTHESIS */
-      case 39: /* lparen_or_space ::= OPEN_PARENTHESIS_SPACE */ yytestcase(yyruleno==39);
-      case 40: /* rparen_or_space ::= CLOSE_PARENTHESIS */ yytestcase(yyruleno==40);
-      case 41: /* rparen_or_space ::= SPACE_CLOSE_PARENTHESIS */ yytestcase(yyruleno==41);
-      case 42: /* rparen_or_comma ::= rparen_or_space */ yytestcase(yyruleno==42);
-      case 43: /* rparen_or_comma ::= COMMA_SPACE_CLOSE_PARENTHESIS */ yytestcase(yyruleno==43);
-      case 44: /* open_parenthesis_or_space ::= OPEN_CURLY_BRACE */ yytestcase(yyruleno==44);
-      case 45: /* open_parenthesis_or_space ::= OPEN_CURLY_BRACE_SPACE */ yytestcase(yyruleno==45);
-      case 46: /* close_parenthesis_or_space ::= CLOSE_CURLY_BRACE */ yytestcase(yyruleno==46);
-      case 47: /* close_parenthesis_or_space ::= SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==47);
-      case 48: /* close_parenthesis_or_scolon ::= CLOSE_CURLY_BRACE */ yytestcase(yyruleno==48);
-      case 49: /* close_parenthesis_or_scolon ::= SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==49);
+      case 38: /* open_parenthesis_or_space ::= OPEN_PARENTHESIS */
+      case 39: /* open_parenthesis_or_space ::= OPEN_PARENTHESIS_SPACE */ yytestcase(yyruleno==39);
+      case 40: /* close_parenthesis_or_space ::= CLOSE_PARENTHESIS */ yytestcase(yyruleno==40);
+      case 41: /* close_parenthesis_or_space ::= SPACE_CLOSE_PARENTHESIS */ yytestcase(yyruleno==41);
+      case 42: /* close_parenthesis_or_comma ::= close_parenthesis_or_space */ yytestcase(yyruleno==42);
+      case 43: /* close_parenthesis_or_comma ::= COMMA_SPACE_CLOSE_PARENTHESIS */ yytestcase(yyruleno==43);
+      case 44: /* open_curly_brace_or_space ::= OPEN_CURLY_BRACE */ yytestcase(yyruleno==44);
+      case 45: /* open_curly_brace_or_space ::= OPEN_CURLY_BRACE_SPACE */ yytestcase(yyruleno==45);
+      case 46: /* close_curly_brace_or_space ::= CLOSE_CURLY_BRACE */ yytestcase(yyruleno==46);
+      case 47: /* close_curly_brace_or_space ::= SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==47);
+      case 48: /* close_curly_brace_or_scolon ::= CLOSE_CURLY_BRACE */ yytestcase(yyruleno==48);
+      case 49: /* close_curly_brace_or_scolon ::= SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==49);
       case 51: /* open_bracket_or_space ::= OPEN_BRACKET */ yytestcase(yyruleno==51);
       case 52: /* open_bracket_or_space ::= OPEN_BRACKET_SPACE */ yytestcase(yyruleno==52);
       case 53: /* close_bracket_or_comma ::= CLOSE_BRACKET */ yytestcase(yyruleno==53);
@@ -3989,7 +3989,7 @@ static YYACTIONTYPE yy_reduce(
 #line 3989 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
-      case 50: /* close_parenthesis_or_scolon ::= SEMICOLON SPACE_CLOSE_CURLY_BRACE */
+      case 50: /* close_curly_brace_or_scolon ::= SEMICOLON SPACE_CLOSE_CURLY_BRACE */
 #line 183 "cp1_parse.y"
 { yymsp[-1].minor.yy0.basic.row = yymsp[0].minor.yy0.basic.row; yymsp[-1].minor.yy0.basic.col = yymsp[0].minor.yy0.basic.col; }
 #line 3995 "out/cp1_parse.c"
@@ -4025,7 +4025,7 @@ static YYACTIONTYPE yy_reduce(
 { _NCp1_Pdecl_var_type_1(yymsp[0].minor.yy0.basic.id); }
 #line 4026 "out/cp1_parse.c"
         break;
-      case 62: /* farg_next_group ::= lparen_or_space */
+      case 62: /* farg_next_group ::= open_parenthesis_or_space */
 #line 219 "cp1_parse.y"
 { _NCp1_Pfarg_next_group_0(); }
 #line 4031 "out/cp1_parse.c"
@@ -4309,7 +4309,7 @@ static YYACTIONTYPE yy_reduce(
 #line 4309 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
-      case 120: /* expr_lvar ::= expr_lvar_plus lparen_or_space ID COLON typeAndInfo rparen_or_space */
+      case 120: /* expr_lvar ::= expr_lvar_plus open_parenthesis_or_space ID COLON typeAndInfo close_parenthesis_or_space */
 #line 386 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_lvar_4(yymsp[-3].minor.yy0.basic.id, yymsp[-5].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col); }
 #line 4315 "out/cp1_parse.c"
@@ -4437,9 +4437,9 @@ static YYACTIONTYPE yy_reduce(
 #line 4437 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
-      case 153: /* expr_and ::= OPEN_PARENTHESIS_AMP_AMP_COMMA_SPACE expr_and1 rparen_or_comma */
-      case 156: /* expr_or ::= OPEN_PARENTHESIS_PIPE_PIPE_COMMA_SPACE expr_or1 rparen_or_comma */ yytestcase(yyruleno==156);
-      case 193: /* expr_in_paren ::= lparen_or_space opExpr rparen_or_space */ yytestcase(yyruleno==193);
+      case 153: /* expr_and ::= OPEN_PARENTHESIS_AMP_AMP_COMMA_SPACE expr_and1 close_parenthesis_or_comma */
+      case 156: /* expr_or ::= OPEN_PARENTHESIS_PIPE_PIPE_COMMA_SPACE expr_or1 close_parenthesis_or_comma */ yytestcase(yyruleno==156);
+      case 193: /* expr_in_paren ::= open_parenthesis_or_space opExpr close_parenthesis_or_space */ yytestcase(yyruleno==193);
 #line 452 "cp1_parse.y"
 { yymsp[-2].minor.yy0.basic.id = yymsp[-1].minor.yy0.basic.id; }
 #line 4445 "out/cp1_parse.c"
@@ -4552,7 +4552,7 @@ static YYACTIONTYPE yy_reduce(
 { _NCp1_Pcarg_push_str_1(yymsp[-1].minor.yy0.basic.id); }
 #line 4553 "out/cp1_parse.c"
         break;
-      case 200: /* call_args_next_group ::= lparen_or_space */
+      case 200: /* call_args_next_group ::= open_parenthesis_or_space */
 #line 551 "cp1_parse.y"
 { _NCp1_Pcarg_next_group_0(); }
 #line 4558 "out/cp1_parse.c"
@@ -4773,8 +4773,8 @@ static YYACTIONTYPE yy_reduce(
 { _NCp1_Pstmt_switch_default_end_0(); }
 #line 4774 "out/cp1_parse.c"
         break;
-      case 280: /* stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space switch_cases close_parenthesis_or_space */
-      case 281: /* stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_parenthesis_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==281);
+      case 280: /* stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space switch_cases close_curly_brace_or_space */
+      case 281: /* stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==281);
 #line 752 "cp1_parse.y"
 { _NCp1_Pstmt_switch_end_0(); }
 #line 4780 "out/cp1_parse.c"
@@ -4906,9 +4906,9 @@ static YYACTIONTYPE yy_reduce(
       /* (338) scolon_space ::= SEMICOLON SPACE */ yytestcase(yyruleno==338);
       /* (339) farg_list ::= farg (OPTIMIZED OUT) */ assert(yyruleno!=339);
       /* (340) farg_list ::= farg_list COMMA_SPACE farg */ yytestcase(yyruleno==340);
-      /* (341) fargs ::= lparen_or_space CLOSE_PARENTHESIS */ yytestcase(yyruleno==341);
-      /* (342) fargs ::= lparen_or_space farg_list rparen_or_comma */ yytestcase(yyruleno==342);
-      /* (343) fargs ::= fargs farg_next_group farg_list rparen_or_comma */ yytestcase(yyruleno==343);
+      /* (341) fargs ::= open_parenthesis_or_space CLOSE_PARENTHESIS */ yytestcase(yyruleno==341);
+      /* (342) fargs ::= open_parenthesis_or_space farg_list close_parenthesis_or_comma */ yytestcase(yyruleno==342);
+      /* (343) fargs ::= fargs farg_next_group farg_list close_parenthesis_or_comma */ yytestcase(yyruleno==343);
       /* (344) fargs ::= fargs farg_next_group CLOSE_PARENTHESIS */ yytestcase(yyruleno==344);
       /* (345) func_attrs ::= func_attr (OPTIMIZED OUT) */ assert(yyruleno!=345);
       /* (346) func_attrs ::= func_attrs func_attr */ yytestcase(yyruleno==346);
@@ -4932,12 +4932,12 @@ static YYACTIONTYPE yy_reduce(
       /* (364) typeInfo_arr ::= typeInfo_bi typeInfo_arr_exprs */ yytestcase(yyruleno==364);
       /* (365) typeInfo_arr ::= typeInfo_arr typeInfo_arr_exprs */ yytestcase(yyruleno==365);
       /* (366) typeInfo_optional ::= typeInfo_none (OPTIMIZED OUT) */ assert(yyruleno!=366);
-      /* (367) call_args_optional ::= lparen_or_space CLOSE_PARENTHESIS */ yytestcase(yyruleno==367);
+      /* (367) call_args_optional ::= open_parenthesis_or_space CLOSE_PARENTHESIS */ yytestcase(yyruleno==367);
       /* (368) call_args_optional ::= call_args */ yytestcase(yyruleno==368);
       /* (369) call_arg_list ::= call_arg (OPTIMIZED OUT) */ assert(yyruleno!=369);
       /* (370) call_arg_list ::= call_arg_list COMMA_SPACE call_arg */ yytestcase(yyruleno==370);
-      /* (371) call_args ::= lparen_or_space call_arg_list rparen_or_comma */ yytestcase(yyruleno==371);
-      /* (372) call_args ::= call_args call_args_next_group call_arg_list rparen_or_comma */ yytestcase(yyruleno==372);
+      /* (371) call_args ::= open_parenthesis_or_space call_arg_list close_parenthesis_or_comma */ yytestcase(yyruleno==371);
+      /* (372) call_args ::= call_args call_args_next_group call_arg_list close_parenthesis_or_comma */ yytestcase(yyruleno==372);
       /* (373) call_args ::= call_args call_args_next_group CLOSE_PARENTHESIS */ yytestcase(yyruleno==373);
       /* (374) stmt ::= stmt_loop (OPTIMIZED OUT) */ assert(yyruleno!=374);
       /* (375) loop_continue_stmts ::= stmts_brace */ yytestcase(yyruleno==375);
@@ -4975,13 +4975,13 @@ static YYACTIONTYPE yy_reduce(
       /* (407) stmts_expr ::= stmt_expr (OPTIMIZED OUT) */ assert(yyruleno!=407);
       /* (408) stmts_expr ::= stmts_expr scolon_space stmt_expr */ yytestcase(yyruleno==408);
       /* (409) stmts_expr ::= stmts_brace SPACE stmt_expr */ yytestcase(yyruleno==409);
-      /* (410) stmts_optional2 ::= open_parenthesis_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==410);
-      /* (411) stmts_optional2 ::= open_parenthesis_or_space stmts_brace close_parenthesis_or_space */ yytestcase(yyruleno==411);
-      /* (412) stmts_optional2 ::= open_parenthesis_or_space stmts_expr close_parenthesis_or_scolon */ yytestcase(yyruleno==412);
+      /* (410) stmts_optional2 ::= open_curly_brace_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==410);
+      /* (411) stmts_optional2 ::= open_curly_brace_or_space stmts_brace close_curly_brace_or_space */ yytestcase(yyruleno==411);
+      /* (412) stmts_optional2 ::= open_curly_brace_or_space stmts_expr close_curly_brace_or_scolon */ yytestcase(yyruleno==412);
       /* (413) decl_struct_attrs_list ::= decl_struct_attr (OPTIMIZED OUT) */ assert(yyruleno!=413);
       /* (414) decl_struct_attrs_list ::= decl_struct_attrs_list decl_struct_attr */ yytestcase(yyruleno==414);
-      /* (415) decl_struct ::= struct_decl_begin lparen_or_space CLOSE_PARENTHESIS decl_struct_attrs_optional decl_struct_close_or_at */ yytestcase(yyruleno==415);
-      /* (416) decl_struct ::= struct_decl_begin lparen_or_space struct_fvars rparen_or_comma decl_struct_attrs_optional decl_struct_close_or_at */ yytestcase(yyruleno==416);
+      /* (415) decl_struct ::= struct_decl_begin open_parenthesis_or_space CLOSE_PARENTHESIS decl_struct_attrs_optional decl_struct_close_or_at */ yytestcase(yyruleno==415);
+      /* (416) decl_struct ::= struct_decl_begin open_parenthesis_or_space struct_fvars close_parenthesis_or_comma decl_struct_attrs_optional decl_struct_close_or_at */ yytestcase(yyruleno==416);
       /* (417) decl_enum ::= enum_decl_begin open_bracket_or_space CLOSE_BRACKET enum_base_begin enum_base_end decl_enum_close_or_at */ yytestcase(yyruleno==417);
       /* (418) decl_enum ::= enum_decl_begin open_bracket_or_space enum_cvars close_bracket_or_comma enum_base_begin enum_base_end decl_enum_close_or_at */ yytestcase(yyruleno==418);
       /* (419) decl_gvar_list ::= decl_gvar (OPTIMIZED OUT) */ assert(yyruleno!=419);
