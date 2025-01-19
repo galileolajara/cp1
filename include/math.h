@@ -1,1 +1,1 @@
-<stdc/math.cp1>
+<libc/math.cp1>

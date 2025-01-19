@@ -1,1 +1,1 @@
-<stdc/stdlib.cp1>
+<libc/stdlib.cp1>
