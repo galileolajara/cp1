@@ -1094,7 +1094,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             case #id {
                tok.id = lex.get-id(0, 0);
                if lex.cursor[0] == ''( {
-                  t = #id-open-parenthesis;
+                  t = #id-then-open-parenthesis;
                }
                .last-token = t;
                psr.parse(t, tok);
@@ -1116,7 +1116,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             }
             case #space {
                if lex.cursor[0] == ''{ {
-                  t = #space-open-curly-brace;
+                  t = #space-then-open-curly-brace;
                }
                .last-token = t;
                psr.parse(t, tok);

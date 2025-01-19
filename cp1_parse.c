@@ -35,7 +35,7 @@
 #define CP1_TOKEN_PLUS                            1
 #define CP1_TOKEN_MINUS                           2
 #define CP1_TOKEN_SPACE                           3
-#define CP1_TOKEN_ID_OPEN_PARENTHESIS             4
+#define CP1_TOKEN_ID_THEN_OPEN_PARENTHESIS        4
 #define CP1_TOKEN_ID_UPPER                        5
 #define CP1_TOKEN_DOT_ID_UPPER                    6
 #define CP1_TOKEN_HASH_ID                         7
@@ -50,7 +50,7 @@
 #define CP1_TOKEN_USING                          16
 #define CP1_TOKEN_CLOSE_PARENTHESIS              17
 #define CP1_TOKEN_OPEN_PARENTHESIS               18
-#define CP1_TOKEN_SPACE_OPEN_CURLY_BRACE         19
+#define CP1_TOKEN_SPACE_THEN_OPEN_CURLY_BRACE    19
 #define CP1_TOKEN_OPEN_CURLY_BRACE_SPACE         20
 #define CP1_TOKEN_CLOSE_CURLY_BRACE              21
 #define CP1_TOKEN_SEMICOLON                      22
@@ -1745,7 +1745,7 @@ static const char *const yyTokenName[] = {
   /*    1 */ "PLUS",
   /*    2 */ "MINUS",
   /*    3 */ "SPACE",
-  /*    4 */ "ID_OPEN_PARENTHESIS",
+  /*    4 */ "ID_THEN_OPEN_PARENTHESIS",
   /*    5 */ "ID_UPPER",
   /*    6 */ "DOT_ID_UPPER",
   /*    7 */ "HASH_ID",
@@ -1760,7 +1760,7 @@ static const char *const yyTokenName[] = {
   /*   16 */ "USING",
   /*   17 */ "CLOSE_PARENTHESIS",
   /*   18 */ "OPEN_PARENTHESIS",
-  /*   19 */ "SPACE_OPEN_CURLY_BRACE",
+  /*   19 */ "SPACE_THEN_OPEN_CURLY_BRACE",
   /*   20 */ "OPEN_CURLY_BRACE_SPACE",
   /*   21 */ "CLOSE_CURLY_BRACE",
   /*   22 */ "SEMICOLON",
@@ -2064,7 +2064,7 @@ static const char *const yyTokenName[] = {
 static const char *const yyRuleName[] = {
  /*   0 */ "begin_pos ::=",
  /*   1 */ "end_pos ::=",
- /*   2 */ "func_decl_begin ::= ID_OPEN_PARENTHESIS",
+ /*   2 */ "func_decl_begin ::= ID_THEN_OPEN_PARENTHESIS",
  /*   3 */ "at_name ::= ID_UPPER",
  /*   4 */ "at_name_dot ::= DOT_ID_UPPER",
  /*   5 */ "enum_cvar_begin ::= HASH_ID",
@@ -2095,8 +2095,8 @@ static const char *const yyRuleName[] = {
  /*  30 */ "decl_at_begin_begin ::= USING SPACE",
  /*  31 */ "decl_at_begin_end ::= CLOSE_PARENTHESIS",
  /*  32 */ "decl_at_begin ::= decl_at_begin_begin OPEN_PARENTHESIS decl_at_namespace decl_at_begin_end",
- /*  33 */ "decl_at ::= decl_at_begin SPACE_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE decls SPACE_CLOSE_CURLY_BRACE",
- /*  34 */ "decl_at ::= decl_at_begin SPACE_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE CLOSE_CURLY_BRACE",
+ /*  33 */ "decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE decls SPACE_CLOSE_CURLY_BRACE",
+ /*  34 */ "decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE CLOSE_CURLY_BRACE",
  /*  35 */ "decl_alias_begin ::= USING SPACE",
  /*  36 */ "decl_alias_end ::= SEMICOLON",
  /*  37 */ "decl ::= decl_alias_begin ID_UPPER SPACE_EQUAL_SPACE at decl_alias_end",
@@ -2126,7 +2126,7 @@ static const char *const yyRuleName[] = {
  /*  61 */ "expr_type_apply ::= at",
  /*  62 */ "farg_next_group ::= open_parenthesis_or_space",
  /*  63 */ "func_attr ::= SPACE_AT_MAIN",
- /*  64 */ "func_attr ::= SPACE_AT_CASE DOT ID_OPEN_PARENTHESIS OPEN_PARENTHESIS CLOSE_PARENTHESIS",
+ /*  64 */ "func_attr ::= SPACE_AT_CASE DOT ID_THEN_OPEN_PARENTHESIS OPEN_PARENTHESIS CLOSE_PARENTHESIS",
  /*  65 */ "func_attr ::= SPACE_AT_PROCESS",
  /*  66 */ "func_attr ::= SPACE_AT_INLINE",
  /*  67 */ "func_attr ::= SPACE_AT_CP1_NAME",
@@ -2257,9 +2257,9 @@ static const char *const yyRuleName[] = {
  /* 192 */ "compareExpr ::= value compare_type value",
  /* 193 */ "expr_in_paren ::= open_parenthesis_or_space opExpr close_parenthesis_or_space",
  /* 194 */ "expr_in_paren ::= exprs",
- /* 195 */ "funcExpr ::= ID_OPEN_PARENTHESIS",
- /* 196 */ "funcExpr ::= at DOT ID_OPEN_PARENTHESIS",
- /* 197 */ "methodExpr ::= value4fix DOT ID_OPEN_PARENTHESIS",
+ /* 195 */ "funcExpr ::= ID_THEN_OPEN_PARENTHESIS",
+ /* 196 */ "funcExpr ::= at DOT ID_THEN_OPEN_PARENTHESIS",
+ /* 197 */ "methodExpr ::= value4fix DOT ID_THEN_OPEN_PARENTHESIS",
  /* 198 */ "call_arg ::= expr",
  /* 199 */ "call_arg ::= expr_str HASH",
  /* 200 */ "call_args_next_group ::= open_parenthesis_or_space",
@@ -2318,19 +2318,19 @@ static const char *const yyRuleName[] = {
  /* 253 */ "loop_expr2 ::= SEMICOLON loop_continue_begin SPACE loop_continue_stmts loop_continue_end",
  /* 254 */ "loop_expr2 ::= SPACE begin_pos expr end_pos",
  /* 255 */ "loop_expr2 ::= SPACE begin_pos expr end_pos SEMICOLON",
- /* 256 */ "stmt_loop ::= stmt_loop_begin SPACE_OPEN_CURLY_BRACE loop_forever stmts_optional2",
- /* 257 */ "stmt_loop ::= stmt_loop_begin SPACE loop_expr0 SPACE_OPEN_CURLY_BRACE stmts_optional2",
- /* 258 */ "stmt_loop ::= stmt_loop_begin2 SEMICOLON loop_expr2 SPACE_OPEN_CURLY_BRACE stmts_optional2",
- /* 259 */ "stmt_loop ::= stmt_loop_begin2 SPACE stmt_lvars_no_begin SEMICOLON loop_expr2 SPACE_OPEN_CURLY_BRACE stmts_optional2",
+ /* 256 */ "stmt_loop ::= stmt_loop_begin SPACE_THEN_OPEN_CURLY_BRACE loop_forever stmts_optional2",
+ /* 257 */ "stmt_loop ::= stmt_loop_begin SPACE loop_expr0 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2",
+ /* 258 */ "stmt_loop ::= stmt_loop_begin2 SEMICOLON loop_expr2 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2",
+ /* 259 */ "stmt_loop ::= stmt_loop_begin2 SPACE stmt_lvars_no_begin SEMICOLON loop_expr2 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2",
  /* 260 */ "stmt ::= stmt_if_chain",
  /* 261 */ "stmt ::= stmt_if_chain stmt_else",
  /* 262 */ "stmt_if_begin ::= IF SPACE",
  /* 263 */ "stmt_elif_begin ::= SPACE_ELIF SPACE",
- /* 264 */ "stmt_else_set ::= SPACE_ELSE SPACE_OPEN_CURLY_BRACE",
+ /* 264 */ "stmt_else_set ::= SPACE_ELSE SPACE_THEN_OPEN_CURLY_BRACE",
  /* 265 */ "if_expr ::= begin_pos expr end_pos",
- /* 266 */ "stmt_if ::= stmt_if_begin if_expr SPACE_OPEN_CURLY_BRACE stmts_optional2",
+ /* 266 */ "stmt_if ::= stmt_if_begin if_expr SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2",
  /* 267 */ "elif_expr ::= begin_pos expr end_pos",
- /* 268 */ "stmt_elif ::= stmt_elif_begin elif_expr SPACE_OPEN_CURLY_BRACE stmts_optional2",
+ /* 268 */ "stmt_elif ::= stmt_elif_begin elif_expr SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2",
  /* 269 */ "stmt_else ::= stmt_else_set stmts_optional2",
  /* 270 */ "stmt_switch_begin ::= SWITCH",
  /* 271 */ "switch_expr ::= begin_pos SPACE expr end_pos",
@@ -2339,11 +2339,11 @@ static const char *const yyRuleName[] = {
  /* 274 */ "switch_case_fall ::=",
  /* 275 */ "switch_case_fall ::= SPACE_AT_FALL_THROUGH",
  /* 276 */ "switch_case_expr_end ::= CASE SPACE switch_case_paren_or_expr switch_case_fall end_pos",
- /* 277 */ "switch_case ::= switch_case_expr_end SPACE_OPEN_CURLY_BRACE stmts_optional2",
+ /* 277 */ "switch_case ::= switch_case_expr_end SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2",
  /* 278 */ "switch_default_begin ::= DEFAULT switch_case_fall end_pos",
- /* 279 */ "switch_case ::= switch_default_begin SPACE_OPEN_CURLY_BRACE stmts_optional2",
- /* 280 */ "stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space switch_cases close_curly_brace_or_space",
- /* 281 */ "stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE",
+ /* 279 */ "switch_case ::= switch_default_begin SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2",
+ /* 280 */ "stmt_switch ::= stmt_switch_begin switch_expr SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space switch_cases close_curly_brace_or_space",
+ /* 281 */ "stmt_switch ::= stmt_switch_begin switch_expr SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE",
  /* 282 */ "stmt_continue ::= begin_pos CONTINUE end_pos",
  /* 283 */ "stmt_break ::= begin_pos BREAK end_pos",
  /* 284 */ "stmt_return ::= begin_pos RETURN end_pos",
@@ -2364,13 +2364,13 @@ static const char *const yyRuleName[] = {
  /* 299 */ "decl_struct_attr ::= SPACE_AT_UNION",
  /* 300 */ "decl_struct_attrs_optional ::= end_pos",
  /* 301 */ "decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos",
- /* 302 */ "decl_func ::= func_decl SPACE_OPEN_CURLY_BRACE stmts_optional2",
+ /* 302 */ "decl_func ::= func_decl SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2",
  /* 303 */ "decl_struct_close_or_at ::= SEMICOLON",
- /* 304 */ "decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space",
- /* 305 */ "decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE",
+ /* 304 */ "decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space",
+ /* 305 */ "decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE",
  /* 306 */ "decl_enum_close_or_at ::= SEMICOLON",
- /* 307 */ "decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space",
- /* 308 */ "decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE",
+ /* 307 */ "decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space",
+ /* 308 */ "decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE",
  /* 309 */ "enum_base_begin ::=",
  /* 310 */ "enum_base_end ::= COLON at end_pos",
  /* 311 */ "decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional",
@@ -2906,7 +2906,7 @@ static void yy_shift(
 static const YYCODETYPE yyRuleInfoLhs[] = {
    117,  /* (0) begin_pos ::= */
    118,  /* (1) end_pos ::= */
-   119,  /* (2) func_decl_begin ::= ID_OPEN_PARENTHESIS */
+   119,  /* (2) func_decl_begin ::= ID_THEN_OPEN_PARENTHESIS */
    120,  /* (3) at_name ::= ID_UPPER */
    121,  /* (4) at_name_dot ::= DOT_ID_UPPER */
    122,  /* (5) enum_cvar_begin ::= HASH_ID */
@@ -2937,8 +2937,8 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    147,  /* (30) decl_at_begin_begin ::= USING SPACE */
    148,  /* (31) decl_at_begin_end ::= CLOSE_PARENTHESIS */
    149,  /* (32) decl_at_begin ::= decl_at_begin_begin OPEN_PARENTHESIS decl_at_namespace decl_at_begin_end */
-   150,  /* (33) decl_at ::= decl_at_begin SPACE_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE decls SPACE_CLOSE_CURLY_BRACE */
-   150,  /* (34) decl_at ::= decl_at_begin SPACE_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE CLOSE_CURLY_BRACE */
+   150,  /* (33) decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE decls SPACE_CLOSE_CURLY_BRACE */
+   150,  /* (34) decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE CLOSE_CURLY_BRACE */
    157,  /* (35) decl_alias_begin ::= USING SPACE */
    158,  /* (36) decl_alias_end ::= SEMICOLON */
    136,  /* (37) decl ::= decl_alias_begin ID_UPPER SPACE_EQUAL_SPACE at decl_alias_end */
@@ -2968,7 +2968,7 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    173,  /* (61) expr_type_apply ::= at */
    176,  /* (62) farg_next_group ::= open_parenthesis_or_space */
    177,  /* (63) func_attr ::= SPACE_AT_MAIN */
-   177,  /* (64) func_attr ::= SPACE_AT_CASE DOT ID_OPEN_PARENTHESIS OPEN_PARENTHESIS CLOSE_PARENTHESIS */
+   177,  /* (64) func_attr ::= SPACE_AT_CASE DOT ID_THEN_OPEN_PARENTHESIS OPEN_PARENTHESIS CLOSE_PARENTHESIS */
    177,  /* (65) func_attr ::= SPACE_AT_PROCESS */
    177,  /* (66) func_attr ::= SPACE_AT_INLINE */
    177,  /* (67) func_attr ::= SPACE_AT_CP1_NAME */
@@ -3099,9 +3099,9 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    236,  /* (192) compareExpr ::= value compare_type value */
    211,  /* (193) expr_in_paren ::= open_parenthesis_or_space opExpr close_parenthesis_or_space */
    211,  /* (194) expr_in_paren ::= exprs */
-   241,  /* (195) funcExpr ::= ID_OPEN_PARENTHESIS */
-   241,  /* (196) funcExpr ::= at DOT ID_OPEN_PARENTHESIS */
-   242,  /* (197) methodExpr ::= value4fix DOT ID_OPEN_PARENTHESIS */
+   241,  /* (195) funcExpr ::= ID_THEN_OPEN_PARENTHESIS */
+   241,  /* (196) funcExpr ::= at DOT ID_THEN_OPEN_PARENTHESIS */
+   242,  /* (197) methodExpr ::= value4fix DOT ID_THEN_OPEN_PARENTHESIS */
    245,  /* (198) call_arg ::= expr */
    245,  /* (199) call_arg ::= expr_str HASH */
    247,  /* (200) call_args_next_group ::= open_parenthesis_or_space */
@@ -3160,19 +3160,19 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    269,  /* (253) loop_expr2 ::= SEMICOLON loop_continue_begin SPACE loop_continue_stmts loop_continue_end */
    269,  /* (254) loop_expr2 ::= SPACE begin_pos expr end_pos */
    269,  /* (255) loop_expr2 ::= SPACE begin_pos expr end_pos SEMICOLON */
-   259,  /* (256) stmt_loop ::= stmt_loop_begin SPACE_OPEN_CURLY_BRACE loop_forever stmts_optional2 */
-   259,  /* (257) stmt_loop ::= stmt_loop_begin SPACE loop_expr0 SPACE_OPEN_CURLY_BRACE stmts_optional2 */
-   259,  /* (258) stmt_loop ::= stmt_loop_begin2 SEMICOLON loop_expr2 SPACE_OPEN_CURLY_BRACE stmts_optional2 */
-   259,  /* (259) stmt_loop ::= stmt_loop_begin2 SPACE stmt_lvars_no_begin SEMICOLON loop_expr2 SPACE_OPEN_CURLY_BRACE stmts_optional2 */
+   259,  /* (256) stmt_loop ::= stmt_loop_begin SPACE_THEN_OPEN_CURLY_BRACE loop_forever stmts_optional2 */
+   259,  /* (257) stmt_loop ::= stmt_loop_begin SPACE loop_expr0 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
+   259,  /* (258) stmt_loop ::= stmt_loop_begin2 SEMICOLON loop_expr2 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
+   259,  /* (259) stmt_loop ::= stmt_loop_begin2 SPACE stmt_lvars_no_begin SEMICOLON loop_expr2 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
    258,  /* (260) stmt ::= stmt_if_chain */
    258,  /* (261) stmt ::= stmt_if_chain stmt_else */
    274,  /* (262) stmt_if_begin ::= IF SPACE */
    275,  /* (263) stmt_elif_begin ::= SPACE_ELIF SPACE */
-   276,  /* (264) stmt_else_set ::= SPACE_ELSE SPACE_OPEN_CURLY_BRACE */
+   276,  /* (264) stmt_else_set ::= SPACE_ELSE SPACE_THEN_OPEN_CURLY_BRACE */
    277,  /* (265) if_expr ::= begin_pos expr end_pos */
-   278,  /* (266) stmt_if ::= stmt_if_begin if_expr SPACE_OPEN_CURLY_BRACE stmts_optional2 */
+   278,  /* (266) stmt_if ::= stmt_if_begin if_expr SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
    279,  /* (267) elif_expr ::= begin_pos expr end_pos */
-   280,  /* (268) stmt_elif ::= stmt_elif_begin elif_expr SPACE_OPEN_CURLY_BRACE stmts_optional2 */
+   280,  /* (268) stmt_elif ::= stmt_elif_begin elif_expr SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
    273,  /* (269) stmt_else ::= stmt_else_set stmts_optional2 */
    282,  /* (270) stmt_switch_begin ::= SWITCH */
    283,  /* (271) switch_expr ::= begin_pos SPACE expr end_pos */
@@ -3181,11 +3181,11 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    286,  /* (274) switch_case_fall ::= */
    286,  /* (275) switch_case_fall ::= SPACE_AT_FALL_THROUGH */
    288,  /* (276) switch_case_expr_end ::= CASE SPACE switch_case_paren_or_expr switch_case_fall end_pos */
-   289,  /* (277) switch_case ::= switch_case_expr_end SPACE_OPEN_CURLY_BRACE stmts_optional2 */
+   289,  /* (277) switch_case ::= switch_case_expr_end SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
    290,  /* (278) switch_default_begin ::= DEFAULT switch_case_fall end_pos */
-   289,  /* (279) switch_case ::= switch_default_begin SPACE_OPEN_CURLY_BRACE stmts_optional2 */
-   281,  /* (280) stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space switch_cases close_curly_brace_or_space */
-   281,  /* (281) stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
+   289,  /* (279) switch_case ::= switch_default_begin SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
+   281,  /* (280) stmt_switch ::= stmt_switch_begin switch_expr SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space switch_cases close_curly_brace_or_space */
+   281,  /* (281) stmt_switch ::= stmt_switch_begin switch_expr SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
    293,  /* (282) stmt_continue ::= begin_pos CONTINUE end_pos */
    294,  /* (283) stmt_break ::= begin_pos BREAK end_pos */
    295,  /* (284) stmt_return ::= begin_pos RETURN end_pos */
@@ -3206,13 +3206,13 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    305,  /* (299) decl_struct_attr ::= SPACE_AT_UNION */
    307,  /* (300) decl_struct_attrs_optional ::= end_pos */
    307,  /* (301) decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos */
-   153,  /* (302) decl_func ::= func_decl SPACE_OPEN_CURLY_BRACE stmts_optional2 */
+   153,  /* (302) decl_func ::= func_decl SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
    308,  /* (303) decl_struct_close_or_at ::= SEMICOLON */
-   308,  /* (304) decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */
-   308,  /* (305) decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
+   308,  /* (304) decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */
+   308,  /* (305) decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
    309,  /* (306) decl_enum_close_or_at ::= SEMICOLON */
-   309,  /* (307) decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */
-   309,  /* (308) decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
+   309,  /* (307) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */
+   309,  /* (308) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
    310,  /* (309) enum_base_begin ::= */
    311,  /* (310) enum_base_end ::= COLON at end_pos */
    312,  /* (311) decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional */
@@ -3333,7 +3333,7 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
 static const signed char yyRuleInfoNRhs[] = {
     0,  /* (0) begin_pos ::= */
     0,  /* (1) end_pos ::= */
-   -1,  /* (2) func_decl_begin ::= ID_OPEN_PARENTHESIS */
+   -1,  /* (2) func_decl_begin ::= ID_THEN_OPEN_PARENTHESIS */
    -1,  /* (3) at_name ::= ID_UPPER */
    -1,  /* (4) at_name_dot ::= DOT_ID_UPPER */
    -1,  /* (5) enum_cvar_begin ::= HASH_ID */
@@ -3364,8 +3364,8 @@ static const signed char yyRuleInfoNRhs[] = {
    -2,  /* (30) decl_at_begin_begin ::= USING SPACE */
    -1,  /* (31) decl_at_begin_end ::= CLOSE_PARENTHESIS */
    -4,  /* (32) decl_at_begin ::= decl_at_begin_begin OPEN_PARENTHESIS decl_at_namespace decl_at_begin_end */
-   -5,  /* (33) decl_at ::= decl_at_begin SPACE_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE decls SPACE_CLOSE_CURLY_BRACE */
-   -4,  /* (34) decl_at ::= decl_at_begin SPACE_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE CLOSE_CURLY_BRACE */
+   -5,  /* (33) decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE decls SPACE_CLOSE_CURLY_BRACE */
+   -4,  /* (34) decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE CLOSE_CURLY_BRACE */
    -2,  /* (35) decl_alias_begin ::= USING SPACE */
    -1,  /* (36) decl_alias_end ::= SEMICOLON */
    -5,  /* (37) decl ::= decl_alias_begin ID_UPPER SPACE_EQUAL_SPACE at decl_alias_end */
@@ -3395,7 +3395,7 @@ static const signed char yyRuleInfoNRhs[] = {
    -1,  /* (61) expr_type_apply ::= at */
    -1,  /* (62) farg_next_group ::= open_parenthesis_or_space */
    -1,  /* (63) func_attr ::= SPACE_AT_MAIN */
-   -5,  /* (64) func_attr ::= SPACE_AT_CASE DOT ID_OPEN_PARENTHESIS OPEN_PARENTHESIS CLOSE_PARENTHESIS */
+   -5,  /* (64) func_attr ::= SPACE_AT_CASE DOT ID_THEN_OPEN_PARENTHESIS OPEN_PARENTHESIS CLOSE_PARENTHESIS */
    -1,  /* (65) func_attr ::= SPACE_AT_PROCESS */
    -1,  /* (66) func_attr ::= SPACE_AT_INLINE */
    -1,  /* (67) func_attr ::= SPACE_AT_CP1_NAME */
@@ -3526,9 +3526,9 @@ static const signed char yyRuleInfoNRhs[] = {
    -3,  /* (192) compareExpr ::= value compare_type value */
    -3,  /* (193) expr_in_paren ::= open_parenthesis_or_space opExpr close_parenthesis_or_space */
    -1,  /* (194) expr_in_paren ::= exprs */
-   -1,  /* (195) funcExpr ::= ID_OPEN_PARENTHESIS */
-   -3,  /* (196) funcExpr ::= at DOT ID_OPEN_PARENTHESIS */
-   -3,  /* (197) methodExpr ::= value4fix DOT ID_OPEN_PARENTHESIS */
+   -1,  /* (195) funcExpr ::= ID_THEN_OPEN_PARENTHESIS */
+   -3,  /* (196) funcExpr ::= at DOT ID_THEN_OPEN_PARENTHESIS */
+   -3,  /* (197) methodExpr ::= value4fix DOT ID_THEN_OPEN_PARENTHESIS */
    -1,  /* (198) call_arg ::= expr */
    -2,  /* (199) call_arg ::= expr_str HASH */
    -1,  /* (200) call_args_next_group ::= open_parenthesis_or_space */
@@ -3587,19 +3587,19 @@ static const signed char yyRuleInfoNRhs[] = {
    -5,  /* (253) loop_expr2 ::= SEMICOLON loop_continue_begin SPACE loop_continue_stmts loop_continue_end */
    -4,  /* (254) loop_expr2 ::= SPACE begin_pos expr end_pos */
    -5,  /* (255) loop_expr2 ::= SPACE begin_pos expr end_pos SEMICOLON */
-   -4,  /* (256) stmt_loop ::= stmt_loop_begin SPACE_OPEN_CURLY_BRACE loop_forever stmts_optional2 */
-   -5,  /* (257) stmt_loop ::= stmt_loop_begin SPACE loop_expr0 SPACE_OPEN_CURLY_BRACE stmts_optional2 */
-   -5,  /* (258) stmt_loop ::= stmt_loop_begin2 SEMICOLON loop_expr2 SPACE_OPEN_CURLY_BRACE stmts_optional2 */
-   -7,  /* (259) stmt_loop ::= stmt_loop_begin2 SPACE stmt_lvars_no_begin SEMICOLON loop_expr2 SPACE_OPEN_CURLY_BRACE stmts_optional2 */
+   -4,  /* (256) stmt_loop ::= stmt_loop_begin SPACE_THEN_OPEN_CURLY_BRACE loop_forever stmts_optional2 */
+   -5,  /* (257) stmt_loop ::= stmt_loop_begin SPACE loop_expr0 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
+   -5,  /* (258) stmt_loop ::= stmt_loop_begin2 SEMICOLON loop_expr2 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
+   -7,  /* (259) stmt_loop ::= stmt_loop_begin2 SPACE stmt_lvars_no_begin SEMICOLON loop_expr2 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
    -1,  /* (260) stmt ::= stmt_if_chain */
    -2,  /* (261) stmt ::= stmt_if_chain stmt_else */
    -2,  /* (262) stmt_if_begin ::= IF SPACE */
    -2,  /* (263) stmt_elif_begin ::= SPACE_ELIF SPACE */
-   -2,  /* (264) stmt_else_set ::= SPACE_ELSE SPACE_OPEN_CURLY_BRACE */
+   -2,  /* (264) stmt_else_set ::= SPACE_ELSE SPACE_THEN_OPEN_CURLY_BRACE */
    -3,  /* (265) if_expr ::= begin_pos expr end_pos */
-   -4,  /* (266) stmt_if ::= stmt_if_begin if_expr SPACE_OPEN_CURLY_BRACE stmts_optional2 */
+   -4,  /* (266) stmt_if ::= stmt_if_begin if_expr SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
    -3,  /* (267) elif_expr ::= begin_pos expr end_pos */
-   -4,  /* (268) stmt_elif ::= stmt_elif_begin elif_expr SPACE_OPEN_CURLY_BRACE stmts_optional2 */
+   -4,  /* (268) stmt_elif ::= stmt_elif_begin elif_expr SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
    -2,  /* (269) stmt_else ::= stmt_else_set stmts_optional2 */
    -1,  /* (270) stmt_switch_begin ::= SWITCH */
    -4,  /* (271) switch_expr ::= begin_pos SPACE expr end_pos */
@@ -3608,11 +3608,11 @@ static const signed char yyRuleInfoNRhs[] = {
     0,  /* (274) switch_case_fall ::= */
    -1,  /* (275) switch_case_fall ::= SPACE_AT_FALL_THROUGH */
    -5,  /* (276) switch_case_expr_end ::= CASE SPACE switch_case_paren_or_expr switch_case_fall end_pos */
-   -3,  /* (277) switch_case ::= switch_case_expr_end SPACE_OPEN_CURLY_BRACE stmts_optional2 */
+   -3,  /* (277) switch_case ::= switch_case_expr_end SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
    -3,  /* (278) switch_default_begin ::= DEFAULT switch_case_fall end_pos */
-   -3,  /* (279) switch_case ::= switch_default_begin SPACE_OPEN_CURLY_BRACE stmts_optional2 */
-   -6,  /* (280) stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space switch_cases close_curly_brace_or_space */
-   -5,  /* (281) stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
+   -3,  /* (279) switch_case ::= switch_default_begin SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
+   -6,  /* (280) stmt_switch ::= stmt_switch_begin switch_expr SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space switch_cases close_curly_brace_or_space */
+   -5,  /* (281) stmt_switch ::= stmt_switch_begin switch_expr SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
    -3,  /* (282) stmt_continue ::= begin_pos CONTINUE end_pos */
    -3,  /* (283) stmt_break ::= begin_pos BREAK end_pos */
    -3,  /* (284) stmt_return ::= begin_pos RETURN end_pos */
@@ -3633,13 +3633,13 @@ static const signed char yyRuleInfoNRhs[] = {
    -1,  /* (299) decl_struct_attr ::= SPACE_AT_UNION */
    -1,  /* (300) decl_struct_attrs_optional ::= end_pos */
    -2,  /* (301) decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos */
-   -3,  /* (302) decl_func ::= func_decl SPACE_OPEN_CURLY_BRACE stmts_optional2 */
+   -3,  /* (302) decl_func ::= func_decl SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
    -1,  /* (303) decl_struct_close_or_at ::= SEMICOLON */
-   -4,  /* (304) decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */
-   -3,  /* (305) decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
+   -4,  /* (304) decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */
+   -3,  /* (305) decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
    -1,  /* (306) decl_enum_close_or_at ::= SEMICOLON */
-   -4,  /* (307) decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */
-   -3,  /* (308) decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
+   -4,  /* (307) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */
+   -3,  /* (308) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */
     0,  /* (309) enum_base_begin ::= */
    -3,  /* (310) enum_base_end ::= COLON at end_pos */
    -5,  /* (311) decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional */
@@ -3805,7 +3805,7 @@ static YYACTIONTYPE yy_reduce(
 { yymsp[1].minor.yy0.basic.row = _Grow; yymsp[1].minor.yy0.basic.col = _Gcol - 1; }
 #line 3806 "out/cp1_parse.c"
         break;
-      case 2: /* func_decl_begin ::= ID_OPEN_PARENTHESIS */
+      case 2: /* func_decl_begin ::= ID_THEN_OPEN_PARENTHESIS */
 #line 39 "cp1_parse.y"
 { _NCp1_Pdecl_func_begin_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 3811 "out/cp1_parse.c"
@@ -3945,14 +3945,14 @@ static YYACTIONTYPE yy_reduce(
 { _NCp1_Pdecl_at_begin_2(yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col); }
 #line 3946 "out/cp1_parse.c"
         break;
-      case 33: /* decl_at ::= decl_at_begin SPACE_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE decls SPACE_CLOSE_CURLY_BRACE */
-      case 34: /* decl_at ::= decl_at_begin SPACE_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE CLOSE_CURLY_BRACE */ yytestcase(yyruleno==34);
+      case 33: /* decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE decls SPACE_CLOSE_CURLY_BRACE */
+      case 34: /* decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE CLOSE_CURLY_BRACE */ yytestcase(yyruleno==34);
       case 303: /* decl_struct_close_or_at ::= SEMICOLON */ yytestcase(yyruleno==303);
-      case 304: /* decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */ yytestcase(yyruleno==304);
-      case 305: /* decl_struct_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==305);
+      case 304: /* decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */ yytestcase(yyruleno==304);
+      case 305: /* decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==305);
       case 306: /* decl_enum_close_or_at ::= SEMICOLON */ yytestcase(yyruleno==306);
-      case 307: /* decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */ yytestcase(yyruleno==307);
-      case 308: /* decl_enum_close_or_at ::= SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==308);
+      case 307: /* decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space decls close_curly_brace_or_space */ yytestcase(yyruleno==307);
+      case 308: /* decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==308);
 #line 126 "cp1_parse.y"
 { _NCp1_Pdecl_at_end_0(); }
 #line 3958 "out/cp1_parse.c"
@@ -4035,7 +4035,7 @@ static YYACTIONTYPE yy_reduce(
 { _NCp1_Pfunc_attr_main_0(); }
 #line 4036 "out/cp1_parse.c"
         break;
-      case 64: /* func_attr ::= SPACE_AT_CASE DOT ID_OPEN_PARENTHESIS OPEN_PARENTHESIS CLOSE_PARENTHESIS */
+      case 64: /* func_attr ::= SPACE_AT_CASE DOT ID_THEN_OPEN_PARENTHESIS OPEN_PARENTHESIS CLOSE_PARENTHESIS */
 #line 225 "cp1_parse.y"
 { _NCp1_Pfunc_attr_case_1(yymsp[-2].minor.yy0.basic.id); }
 #line 4041 "out/cp1_parse.c"
@@ -4529,14 +4529,14 @@ static YYACTIONTYPE yy_reduce(
 #line 4529 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
-      case 195: /* funcExpr ::= ID_OPEN_PARENTHESIS */
+      case 195: /* funcExpr ::= ID_THEN_OPEN_PARENTHESIS */
 #line 536 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = -1; yylhsminor.yy0.basic.id2 = yymsp[0].minor.yy0.basic.id; _NCp1_Pexpr_push_call_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4535 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
-      case 196: /* funcExpr ::= at DOT ID_OPEN_PARENTHESIS */
-      case 197: /* methodExpr ::= value4fix DOT ID_OPEN_PARENTHESIS */ yytestcase(yyruleno==197);
+      case 196: /* funcExpr ::= at DOT ID_THEN_OPEN_PARENTHESIS */
+      case 197: /* methodExpr ::= value4fix DOT ID_THEN_OPEN_PARENTHESIS */ yytestcase(yyruleno==197);
 #line 538 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = yymsp[-2].minor.yy0.basic.id; yylhsminor.yy0.basic.id2 = yymsp[0].minor.yy0.basic.id; _NCp1_Pexpr_push_call_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4542 "out/cp1_parse.c"
@@ -4674,10 +4674,10 @@ static YYACTIONTYPE yy_reduce(
 { _NCp1_Pstmt_loop_set_6(yymsp[-2].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col, yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col, 0); }
 #line 4675 "out/cp1_parse.c"
         break;
-      case 256: /* stmt_loop ::= stmt_loop_begin SPACE_OPEN_CURLY_BRACE loop_forever stmts_optional2 */
-      case 257: /* stmt_loop ::= stmt_loop_begin SPACE loop_expr0 SPACE_OPEN_CURLY_BRACE stmts_optional2 */ yytestcase(yyruleno==257);
-      case 258: /* stmt_loop ::= stmt_loop_begin2 SEMICOLON loop_expr2 SPACE_OPEN_CURLY_BRACE stmts_optional2 */ yytestcase(yyruleno==258);
-      case 259: /* stmt_loop ::= stmt_loop_begin2 SPACE stmt_lvars_no_begin SEMICOLON loop_expr2 SPACE_OPEN_CURLY_BRACE stmts_optional2 */ yytestcase(yyruleno==259);
+      case 256: /* stmt_loop ::= stmt_loop_begin SPACE_THEN_OPEN_CURLY_BRACE loop_forever stmts_optional2 */
+      case 257: /* stmt_loop ::= stmt_loop_begin SPACE loop_expr0 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */ yytestcase(yyruleno==257);
+      case 258: /* stmt_loop ::= stmt_loop_begin2 SEMICOLON loop_expr2 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */ yytestcase(yyruleno==258);
+      case 259: /* stmt_loop ::= stmt_loop_begin2 SPACE stmt_lvars_no_begin SEMICOLON loop_expr2 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */ yytestcase(yyruleno==259);
 #line 692 "cp1_parse.y"
 { _NCp1_Pstmt_loop_end_0(); }
 #line 4683 "out/cp1_parse.c"
@@ -4698,7 +4698,7 @@ static YYACTIONTYPE yy_reduce(
 { _NCp1_Pstmt_elif_begin_0(); }
 #line 4699 "out/cp1_parse.c"
         break;
-      case 264: /* stmt_else_set ::= SPACE_ELSE SPACE_OPEN_CURLY_BRACE */
+      case 264: /* stmt_else_set ::= SPACE_ELSE SPACE_THEN_OPEN_CURLY_BRACE */
 #line 711 "cp1_parse.y"
 { _NCp1_Pstmt_else_set_0(); }
 #line 4704 "out/cp1_parse.c"
@@ -4708,7 +4708,7 @@ static YYACTIONTYPE yy_reduce(
 { _NCp1_Pstmt_if_set_5(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4709 "out/cp1_parse.c"
         break;
-      case 266: /* stmt_if ::= stmt_if_begin if_expr SPACE_OPEN_CURLY_BRACE stmts_optional2 */
+      case 266: /* stmt_if ::= stmt_if_begin if_expr SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
 #line 715 "cp1_parse.y"
 { _NCp1_Pstmt_if_end_0(); }
 #line 4714 "out/cp1_parse.c"
@@ -4718,7 +4718,7 @@ static YYACTIONTYPE yy_reduce(
 { _NCp1_Pstmt_elif_set_5(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4719 "out/cp1_parse.c"
         break;
-      case 268: /* stmt_elif ::= stmt_elif_begin elif_expr SPACE_OPEN_CURLY_BRACE stmts_optional2 */
+      case 268: /* stmt_elif ::= stmt_elif_begin elif_expr SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
 #line 719 "cp1_parse.y"
 { _NCp1_Pstmt_elif_end_0(); }
 #line 4724 "out/cp1_parse.c"
@@ -4758,7 +4758,7 @@ static YYACTIONTYPE yy_reduce(
 { _NCp1_Pstmt_switch_case_begin_5(yymsp[-4].minor.yy0.basic.row, yymsp[-4].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, yymsp[-1].minor.yy0.basic.id); }
 #line 4759 "out/cp1_parse.c"
         break;
-      case 277: /* switch_case ::= switch_case_expr_end SPACE_OPEN_CURLY_BRACE stmts_optional2 */
+      case 277: /* switch_case ::= switch_case_expr_end SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
 #line 744 "cp1_parse.y"
 { _NCp1_Pstmt_switch_case_end_0(); }
 #line 4764 "out/cp1_parse.c"
@@ -4768,13 +4768,13 @@ static YYACTIONTYPE yy_reduce(
 { _NCp1_Pstmt_switch_default_begin_5(yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, yymsp[-1].minor.yy0.basic.id); }
 #line 4769 "out/cp1_parse.c"
         break;
-      case 279: /* switch_case ::= switch_default_begin SPACE_OPEN_CURLY_BRACE stmts_optional2 */
+      case 279: /* switch_case ::= switch_default_begin SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
 #line 748 "cp1_parse.y"
 { _NCp1_Pstmt_switch_default_end_0(); }
 #line 4774 "out/cp1_parse.c"
         break;
-      case 280: /* stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space switch_cases close_curly_brace_or_space */
-      case 281: /* stmt_switch ::= stmt_switch_begin switch_expr SPACE_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==281);
+      case 280: /* stmt_switch ::= stmt_switch_begin switch_expr SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space switch_cases close_curly_brace_or_space */
+      case 281: /* stmt_switch ::= stmt_switch_begin switch_expr SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==281);
 #line 752 "cp1_parse.y"
 { _NCp1_Pstmt_switch_end_0(); }
 #line 4780 "out/cp1_parse.c"
@@ -4856,7 +4856,7 @@ static YYACTIONTYPE yy_reduce(
 { _NCp1_Pdecl_struct_end_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 4857 "out/cp1_parse.c"
         break;
-      case 302: /* decl_func ::= func_decl SPACE_OPEN_CURLY_BRACE stmts_optional2 */
+      case 302: /* decl_func ::= func_decl SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
 #line 837 "cp1_parse.y"
 { _NCp1_Pfunc_body_end_0(); }
 #line 4862 "out/cp1_parse.c"
