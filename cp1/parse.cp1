@@ -276,7 +276,7 @@ Lexer(
       // lex.limit = & data[size];
    }
    scan(lex:this):Token @real-name(cp1_lexer_scan);
-   get-u32-oct(lex:this):u32 {
+   get-oct(lex:this):u32 {
       var r-start:Rdr+;
       r-start.reff = lex.start + 2;
       var r-cursor:Rdr+;
@@ -291,18 +291,18 @@ Lexer(
          val = (val * 8:u64) + (r-start.p1[0] - ''0);
          r-start.pos++;
       }
-      if val > 4294967295 {
+      if val > 4294967295u {
          C.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
          C.exit(#failure);
       }
       return val:u32;
    }
-   get-u32-dec(lex:this):u32 {
+   get-i32(lex:this, len-minus:u8):u32 {
       var r-start:Rdr+;
       r-start.reff = lex.start;
       var r-cursor:Rdr+;
       r-cursor.reff = lex.cursor;
-      +length = r-cursor.pos - r-start.pos;
+      +length = r-cursor.pos - r-start.pos - len-minus;
       if length > 10 {
          C.out.printf("%s:%u:%u: Integer literal was too long\n", .input-path, .row, .col);
          C.exit(#failure);
@@ -312,7 +312,7 @@ Lexer(
          val = (val * 10:u64) + (r-start.p1[0] - ''0);
          r-start.pos++;
       }
-      if val > 4294967295 {
+      if val > 4294967295u {
          C.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
          C.exit(#failure);
       }
@@ -1052,13 +1052,18 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                .last-token = t;
                psr.parse(t, tok);
             }
-            case #num-dec {
-               tok.id = lex.get-u32-dec();
+            case #num-uint {
+               tok.id = lex.get-i32(1);
+               .last-token = t;
+               psr.parse(t, tok);
+            }
+            case #num-int {
+               tok.id = lex.get-i32(0);
                .last-token = t;
                psr.parse(t, tok);
             }
             case #num-oct {
-               tok.id = lex.get-u32-oct();
+               tok.id = lex.get-oct();
                .last-token = t;
                psr.parse(t, tok);
             }

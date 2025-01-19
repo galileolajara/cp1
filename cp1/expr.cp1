@@ -39,7 +39,7 @@ using (Stmt) {
 }
 ExprType[
    #nil, #call-method, #lvar, #gvar, #math, #assign, #bools,
-   #func, #method, #fvar, #i32, #cvar, #str, #index, #unary,
+   #func, #method, #fvar, #int, #cvar, #str, #index, #unary,
    #compare, #bool, #null, #cast-fast, #ref, #char, #size-of-type,
    ]:u8 {
    wr(e:this, w:Wtr) @inline {

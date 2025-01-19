@@ -385,7 +385,7 @@ carg-push-str(expr:ExprI) {
       }
       // push the string length
       +call-idx = .expr-call-c - 1;
-      .expr-call-carg-v[call-idx][.expr-call-carg-c[call-idx]++] = expr-int(len, #dec);
+      .expr-call-carg-v[call-idx][.expr-call-carg-c[call-idx]++] = expr-int(len, #int);
       .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
    }
 }

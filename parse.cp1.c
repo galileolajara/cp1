@@ -84,10 +84,11 @@
 #define _NCp1_NToken_Cf32 (_NCp1_NToken_Cusz + 1)
 #define _NCp1_NToken_Cf64 (_NCp1_NToken_Cf32 + 1)
 #define _NCp1_NToken_Campersand (_NCp1_NToken_Cf64 + 1)
-#define _NCp1_NToken_Cnum_dec (_NCp1_NToken_Campersand + 1)
-#define _NCp1_NToken_Cnum_hex (_NCp1_NToken_Cnum_dec + 1)
-#define _NCp1_NToken_Cnum_oct (_NCp1_NToken_Cnum_hex + 1)
-#define _NCp1_NToken_Cchar1 (_NCp1_NToken_Cnum_oct + 1)
+#define _NCp1_NToken_Cnum_int (_NCp1_NToken_Campersand + 1)
+#define _NCp1_NToken_Cnum_uint (_NCp1_NToken_Cnum_int + 1)
+#define _NCp1_NToken_Cnum_oct (_NCp1_NToken_Cnum_uint + 1)
+#define _NCp1_NToken_Cnum_hex (_NCp1_NToken_Cnum_oct + 1)
+#define _NCp1_NToken_Cchar1 (_NCp1_NToken_Cnum_hex + 1)
 #define _NCp1_NToken_Cchar2 (_NCp1_NToken_Cchar1 + 1)
 #define _NCp1_NToken_Ctrue (_NCp1_NToken_Cchar2 + 1)
 #define _NCp1_NToken_Cfalse (_NCp1_NToken_Ctrue + 1)
@@ -139,7 +140,7 @@
 #define _NCp1_NBasicTypeId_Ci16 (_NCp1_NBasicTypeId_Cu8 + 1)
 #define _NCp1_NBasicTypeId_Cu16 (_NCp1_NBasicTypeId_Ci16 + 1)
 #define _NCp1_NBasicTypeId_Ci32 (_NCp1_NBasicTypeId_Cu16 + 1)
-#define _NCp1_NExprInt_Cdec 0
+#define _NCp1_NExprInt_Cint 0
 #define _NCp1_NUnary_Cneg 0
 #define _NCp1_NCompare_Ceq 0
 #define _NCp1_NCvarFlags_Cset_expr (1)
@@ -196,8 +197,8 @@
 #define _NCp1_NExprType_Cfvar (_NCp1_NExprType_Cmethod + 1)
 #define _NCp1_Cdecl_at_nest_limit (8)
 #define _NCp1_NAt_Crelative (_NCp1_NAt_Croot + 1)
-#define _NCp1_NExprType_Ci32 (_NCp1_NExprType_Cfvar + 1)
-#define _NCp1_NExprType_Ccvar (_NCp1_NExprType_Ci32 + 1)
+#define _NCp1_NExprType_Cint (_NCp1_NExprType_Cfvar + 1)
+#define _NCp1_NExprType_Ccvar (_NCp1_NExprType_Cint + 1)
 #define _NCp1_NExprType_Cstr (_NCp1_NExprType_Ccvar + 1)
 #define _NCp1_NExprType_Cindex (_NCp1_NExprType_Cstr + 1)
 #define _NCp1_NExprType_Cunary (_NCp1_NExprType_Cindex + 1)
@@ -841,8 +842,8 @@ _NCp1_NToken cp1_lexer_scan(struct _NCp1_NLexer* _Llex_0);
 void cp1Parse(struct _NCp1_NParser* _Lpsr_0, _NCp1_NToken _Lt_1, struct _NCp1_NTokenData* _Ltok_2);
 int32_t _NCp1_Pchar_escape_value_1(char _Lc_0);
 int32_t _NCp1_NLexer_Pget_id_3(struct _NCp1_NLexer* _Llex_0, uint8_t _Lbegin_1, uint8_t _Lend_2);
-uint32_t _NCp1_NLexer_Pget_u32_dec_1(struct _NCp1_NLexer* _Llex_0);
-uint32_t _NCp1_NLexer_Pget_u32_oct_1(struct _NCp1_NLexer* _Llex_0);
+uint32_t _NCp1_NLexer_Pget_i32_2(struct _NCp1_NLexer* _Llex_0, uint8_t _Llen_minus_1);
+uint32_t _NCp1_NLexer_Pget_oct_1(struct _NCp1_NLexer* _Llex_0);
 int32_t _NCp1_NLexer_Pget_include_1(struct _NCp1_NLexer* _Llex_0);
 void _NCp1_NParser_Pfree_1(struct _NCp1_NParser* _Lpsr_0);
 void* qalloc(int32_t _Lsize_0);
@@ -1074,9 +1075,10 @@ case _NCp1_NToken_Cusz: return "usz";
 case _NCp1_NToken_Cf32: return "f32";
 case _NCp1_NToken_Cf64: return "f64";
 case _NCp1_NToken_Campersand: return "ampersand";
-case _NCp1_NToken_Cnum_dec: return "num-dec";
-case _NCp1_NToken_Cnum_hex: return "num-hex";
+case _NCp1_NToken_Cnum_int: return "num-int";
+case _NCp1_NToken_Cnum_uint: return "num-uint";
 case _NCp1_NToken_Cnum_oct: return "num-oct";
+case _NCp1_NToken_Cnum_hex: return "num-hex";
 case _NCp1_NToken_Cchar1: return "char1";
 case _NCp1_NToken_Cchar2: return "char2";
 case _NCp1_NToken_Ctrue: return "true";
@@ -1152,7 +1154,7 @@ void _NCp1_NExprI_Pwr_char_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw
 void _NCp1_NExprI_Pwr_method_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NExprI_Pwr_func_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NExprI_Pwr_null_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
-void _NCp1_NExprI_Pwr_i32_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
+void _NCp1_NExprI_Pwr_int_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NExprI_Pwr_size_of_type_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NExprI_Pwr_assign_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NExprI_Pwr_fvar_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
@@ -1170,7 +1172,7 @@ case _NCp1_NExprType_Cbools: return "bools";
 case _NCp1_NExprType_Cfunc: return "func";
 case _NCp1_NExprType_Cmethod: return "method";
 case _NCp1_NExprType_Cfvar: return "fvar";
-case _NCp1_NExprType_Ci32: return "i32";
+case _NCp1_NExprType_Cint: return "int";
 case _NCp1_NExprType_Ccvar: return "cvar";
 case _NCp1_NExprType_Cstr: return "str";
 case _NCp1_NExprType_Cindex: return "index";
@@ -1615,13 +1617,18 @@ _Ltok_32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_29, _Lstart_38, 1);
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
-case _NCp1_NToken_Cnum_dec:;
-_Ltok_32._Fid = _NCp1_NLexer_Pget_u32_dec_1(&_Llex_29);
+case _NCp1_NToken_Cnum_uint:;
+_Ltok_32._Fid = _NCp1_NLexer_Pget_i32_2(&_Llex_29, 1);
+_Glast_token = _Lt_33;
+cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
+break;
+case _NCp1_NToken_Cnum_int:;
+_Ltok_32._Fid = _NCp1_NLexer_Pget_i32_2(&_Llex_29, 0);
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
 case _NCp1_NToken_Cnum_oct:;
-_Ltok_32._Fid = _NCp1_NLexer_Pget_u32_oct_1(&_Llex_29);
+_Ltok_32._Fid = _NCp1_NLexer_Pget_oct_1(&_Llex_29);
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
@@ -1777,7 +1784,7 @@ _NCp1_Pwrite_func_2(&_Lw_43, false);
 _Lout_path_50 = malloc(strlen(_Llock_path_3) + 4 + 1);
 sprintf(_Lout_path_50, "%s.tmp", _Llock_path_3);
 _Lout_path_len_51 = strlen(_Lout_path_50);
-if(!_NPosix_NFd_Popen_4(&_Lout_fd_52, _Lout_path_50, O_CREAT | O_TRUNC | O_WRONLY, 32676)) {
+if(!_NPosix_NFd_Popen_4(&_Lout_fd_52, _Lout_path_50, O_CREAT | O_TRUNC | O_WRONLY, 0x1a4)) {
 fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_50);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -1836,7 +1843,7 @@ _NCp1_Pwrite_enum_2(&_Lw_43, true);
 _NCp1_Pwrite_struct_2(&_Lw_43, true);
 _NCp1_Pwrite_func_2(&_Lw_43, true);
 _Lout_path_50[(_Lout_path_len_51 - 5)] = 'h';
-if(!_NPosix_NFd_Popen_4(&_Lout_fd_52, _Lout_path_50, O_CREAT | O_TRUNC | O_WRONLY, 32676)) {
+if(!_NPosix_NFd_Popen_4(&_Lout_fd_52, _Lout_path_50, O_CREAT | O_TRUNC | O_WRONLY, 0x1a4)) {
 fprintf(stdout, "Cannot open file for writing: %s\n", _Lout_path_50);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -1924,7 +1931,7 @@ _NCp1_Ptype_info_ref_1(0);
 _NCp1_Ptype_info_static_0();
 _NCp1_Ptype_info_begin_0();
 _NCp1_Ptype_info_finalize_0();
-_NCp1_Pexpr_int_2(0, _NCp1_NExprInt_Cdec);
+_NCp1_Pexpr_int_2(0, _NCp1_NExprInt_Cint);
 _NCp1_Pexpr_size_of_type_1(_NCp1_NAt_Cnil);
 _NCp1_Pexpr_null_0();
 _NCp1_Pdecl_at_begin_enum_3(_NCp1_NId_Cnil, 0, 0);
@@ -2083,38 +2090,38 @@ return _Lid_8;
 return _Lfound_7;
 }
 }
-uint32_t _NCp1_NLexer_Pget_u32_dec_1(struct _NCp1_NLexer* _Llex_0) {
-union _NCp1_NRdr _Lr_start_1;
-union _NCp1_NRdr _Lr_cursor_2;
-size_t _Llength_3;
-uint64_t _Lval_4;
-_Lr_start_1._Freff = (*_Llex_0)._Fstart;
-_Lr_cursor_2._Freff = (*_Llex_0)._Fcursor;
-_Llength_3 = (_Lr_cursor_2._Fpos - _Lr_start_1._Fpos);
-if(_Llength_3 > 10) {
+uint32_t _NCp1_NLexer_Pget_i32_2(struct _NCp1_NLexer* _Llex_0, uint8_t _Llen_minus_1) {
+union _NCp1_NRdr _Lr_start_2;
+union _NCp1_NRdr _Lr_cursor_3;
+size_t _Llength_4;
+uint64_t _Lval_5;
+_Lr_start_2._Freff = (*_Llex_0)._Fstart;
+_Lr_cursor_3._Freff = (*_Llex_0)._Fcursor;
+_Llength_4 = (_Lr_cursor_3._Fpos - _Lr_start_2._Fpos - _Llen_minus_1);
+if(_Llength_4 > 10) {
 fprintf(stdout, "%s:%u:%u: Integer literal was too long\n", input_path, _Grow, _Gcol);
 exit(_NLibC_NExit_Cfailure);
 }
-_Lval_4 = (uint64_t)(0);
-for(int i = _Llength_3; i > 0; ) {
+_Lval_5 = (uint64_t)(0);
+for(int i = _Llength_4; i > 0; ) {
 i --;
-_Lval_4 = ((_Lval_4 * (uint64_t)(10)) + (_Lr_start_1._Fp1[0] - '0'));
-_Lr_start_1._Fpos++;
+_Lval_5 = ((_Lval_5 * (uint64_t)(10)) + (_Lr_start_2._Fp1[0] - '0'));
+_Lr_start_2._Fpos++;
 continue_0:;
 }
 break_0:;
-if(_Lval_4 > -1) {
+if(_Lval_5 > 4294967295u) {
 fprintf(stdout, "%s:%u:%u: Integer literal was out of bounds\n", input_path, _Grow, _Gcol);
 exit(_NLibC_NExit_Cfailure);
 }
-return (uint32_t)(_Lval_4);
+return (uint32_t)(_Lval_5);
 }
-uint32_t _NCp1_NLexer_Pget_u32_oct_1(struct _NCp1_NLexer* _Llex_0) {
+uint32_t _NCp1_NLexer_Pget_oct_1(struct _NCp1_NLexer* _Llex_0) {
 union _NCp1_NRdr _Lr_start_1;
 union _NCp1_NRdr _Lr_cursor_2;
 size_t _Llength_3;
 uint64_t _Lval_4;
-_Lr_start_1._Freff = (*_Llex_0)._Fstart;
+_Lr_start_1._Freff = ((*_Llex_0)._Fstart + 2);
 _Lr_cursor_2._Freff = (*_Llex_0)._Fcursor;
 _Llength_3 = (_Lr_cursor_2._Fpos - _Lr_start_1._Fpos);
 if(_Llength_3 > 12) {
@@ -2129,7 +2136,7 @@ _Lr_start_1._Fpos++;
 continue_0:;
 }
 break_0:;
-if(_Lval_4 > -1) {
+if(_Lval_4 > 4294967295u) {
 fprintf(stdout, "%s:%u:%u: Integer literal was out of bounds\n", input_path, _Grow, _Gcol);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -2796,7 +2803,7 @@ continue_0:;
 }
 break_0:;
 _Lcall_idx_5 = (_Gexpr_call_c - 1);
-_Gexpr_call_carg_v[_Lcall_idx_5][_Gexpr_call_carg_c[_Lcall_idx_5]++] = _NCp1_Pexpr_int_2(_Llen_3, _NCp1_NExprInt_Cdec);
+_Gexpr_call_carg_v[_Lcall_idx_5][_Gexpr_call_carg_c[_Lcall_idx_5]++] = _NCp1_Pexpr_int_2(_Llen_3, _NCp1_NExprInt_Cint);
 _Gexpr_call_cgrp_v[_Lcall_idx_5][(_Gexpr_call_cgrp_c[_Lcall_idx_5] - 1)]++;
 }
 }
@@ -3342,7 +3349,7 @@ _NCp1_NExprI _NCp1_Pexpr_int_2(int32_t _Lvalue_0, _NCp1_NExprInt _Ltype_1) {
 struct _NCp1_NExprIntData* _Le_2;
 _NCp1_NExprI _Le_idx_3;
 _NCp1_Pquick_alloc_one_1(_Le_2);
-_Le_idx_3 = _NCp1_Pexpr_push_2(&(*_Le_2)._Fbase, _NCp1_NExprType_Ci32);
+_Le_idx_3 = _NCp1_Pexpr_push_2(&(*_Le_2)._Fbase, _NCp1_NExprType_Cint);
 (*_Le_2)._Fvalue = _Lvalue_0;
 (*_Le_2)._Ftype = _Ltype_1;
 return _Le_idx_3;
@@ -3817,8 +3824,8 @@ break;
 case _NCp1_NExprType_Cnull:;
 _NCp1_NExprI_Pwr_null_3(_Lexpr_3, _Lw_1, _Lheader_2);
 break;
-case _NCp1_NExprType_Ci32:;
-_NCp1_NExprI_Pwr_i32_3(_Lexpr_3, _Lw_1, _Lheader_2);
+case _NCp1_NExprType_Cint:;
+_NCp1_NExprI_Pwr_int_3(_Lexpr_3, _Lw_1, _Lheader_2);
 break;
 case _NCp1_NExprType_Csize_of_type:;
 _NCp1_NExprI_Pwr_size_of_type_3(_Lexpr_3, _Lw_1, _Lheader_2);
@@ -4401,7 +4408,7 @@ inline void _NCp1_NExprI_Pwr_null_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NW
 struct _NCp1_NExprNull* _Le_3;
 _Le_3 = _Lexpr_0;
 }
-inline void _NCp1_NExprI_Pwr_i32_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2) {
+inline void _NCp1_NExprI_Pwr_int_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2) {
 struct _NCp1_NExprIntData* _Le_3;
 _Le_3 = _Lexpr_0;
 _NCp1_NWtr_Pn1_2(_Lw_1, (*_Le_3)._Ftype);

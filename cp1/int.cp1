@@ -1,47 +1,60 @@
 using Cp1 = Cp1;
 using (Cp1) {
-ExprInt[#dec, #hex, #oct]:u8;
+ExprInt[#int, #uint, #oct, #hex]:u8;
 expr-int(value:i32, type:ExprInt):ExprI {
    quick-alloc-one(+(e:ExprIntData));
-   +e-idx = expr-push(e.base, #i32);
+   +e-idx = expr-push(e.base, #int);
    e.value = value;
    e.type = type;
    return e-idx;
 }
 using (ExprI) {
-   wr-i32(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
+   wr-int(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprIntData = expr;
       w.n1(e.type);
       w.n(e.value);
    }
-   rd-i32(e-idx:ExprI, r:Rdr) @case.rd() @inline {
+   rd-int(e-idx:ExprI, r:Rdr) @case.rd() @inline {
       quick-alloc-one(+(e:ExprIntData));
-      e-idx.set(e.base, #i32);
+      e-idx.set(e.base, #int);
       e.type = r.n1():ExprInt;
       e.value = r.n();
    }
-   write-i32(expr:Expr) @case.write() @inline {
+   write-int(expr:Expr) @case.write() @inline {
       var e:ExprIntData = expr;
       switch e.type {
+         case #int {
+            .out.printf("%d", e.value);
+         }
+         case #uint {
+            .out.printf("%uu", e.value);
+         }
          case #oct {
             .out.printf("0%o", e.value);
-         }
-         case #dec {
-            .out.printf("%d", e.value);
          }
          case #hex {
             .out.printf("0x%x", e.value);
          }
       }
    }
-   process-i32(expr:Expr, ok:bool&) @case.process() @inline {
+   process-int(expr:Expr, ok:bool&) @case.process() @inline {
       ok = true;
    }
-   type-i32(expr:Expr, at:At&) @case.type() @inline {
-      at = basic-type(#i32);
+   type-int(expr:Expr, at:At&) @case.type() @inline {
+      var e:ExprIntData = expr;
+      if e.type == #int {
+         at = basic-type(#i32);
+      } else {
+         at = basic-type(#u32);
+      }
    }
-   value-i32(le:this, reff:i32, paren:bool, v:Value, ok:bool&) @case.value() @inline {
-      v.type = basic-type(#i32);
+   value-int(le:this, reff:i32, paren:bool, v:Value, ok:bool&) @case.value() @inline {
+      var e:ExprIntData = le.ptr();
+      if e.type == #int {
+         v.type = basic-type(#i32);
+      } else {
+         v.type = basic-type(#u32);
+      }
       v.info.init();
       v.info.array-c = 0;
       v.info.ref-v[0] = ''\0;

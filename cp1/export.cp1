@@ -74,7 +74,7 @@ export() {
    type-info-static();
    type-info-begin();
    type-info-finalize();
-   expr-int(0, #dec);
+   expr-int(0, #int);
    expr-size-of-type(#nil);
    expr-null();
    decl-at-begin-enum(#nil, 0, 0);

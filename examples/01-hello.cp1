@@ -30,7 +30,7 @@ main():intc { // intc is for compatibility with C's int, prefer to use i32 elsew
    C.printf("Hello world!\n");
 
    +one = 1; // '+' is the quickest way to declare a variable
-   +seven = 7;
+   +seven = 4294967295u;
    +sum = one + seven;
    C.printf("%d + %d = %d\n", one, seven, sum);
 

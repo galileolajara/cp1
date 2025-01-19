@@ -51,8 +51,9 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "[" spaces                       { return CP1_TOKEN_OPEN_BRACKET_SPACE; }
    "]"                              { return CP1_TOKEN_CLOSE_BRACKET; }
    spaces "]"                       { return CP1_TOKEN_SPACE_CLOSE_BRACKET; }
-	"0"                              { return CP1_TOKEN_NUM_DEC; }
-	[1-9] [0-9]*                     { return CP1_TOKEN_NUM_DEC; }
+	"0"                              { return CP1_TOKEN_NUM_INT; }
+	[1-9] [0-9]*                     { return CP1_TOKEN_NUM_INT; }
+	[1-9] [0-9]* "u"                 { return CP1_TOKEN_NUM_UINT; }
    "0o" [0-7]+                      { return CP1_TOKEN_NUM_OCT; }
 	"0x" [0-9a-fA-F]+                { return CP1_TOKEN_NUM_HEX; }
    "\"" {

@@ -145,7 +145,7 @@ if(!_Pvalidate_cp1_paths_5(3, _Larg_c_0, _Larg_v_1, _Lbin_2, _NCmd_Cc)) {
 _Pprint_command_2(_Larg_c_0, _Larg_v_1);
 exit(_NLibC_NExit_Cfailure);
 }
-mkdir("cp1-tmp", 32749);
+mkdir("cp1-tmp", 0x1ed);
 strcpy(_Lninja_path_15, "cp1-tmp/ninja-XXXXXXXXX");
 _Lninja_fd_16 = mkstemp(_Lninja_path_15);
 _Patexit_rm_1(strdup(_Lninja_path_15));
@@ -204,7 +204,7 @@ if(!_Pvalidate_cp1_paths_5(2, _Larg_c_0, _Larg_v_1, _Lbin_2, _NCmd_Crun)) {
 _Pprint_command_2(_Larg_c_0, _Larg_v_1);
 exit(_NLibC_NExit_Cfailure);
 }
-mkdir("cp1-tmp", 32749);
+mkdir("cp1-tmp", 0x1ed);
 strcpy(_Lc_path_22, "cp1-tmp/c-XXXXXXXXX");
 _Lc_fd_23 = mkstemp(_Lc_path_22);
 if(_Lc_fd_23 == _NPosix_NFd_Cnil) {
@@ -664,6 +664,8 @@ printf("Error from #import \"%.*s\" at file '%s' line %u\n", _Limport_path_len_2
 return false;
 }
 }
+_Lpos_8++;
+goto continue_4;
 } else if(((_Ldata_7[_Lfirst_char_17] == '#') && (_Ldata_7[(_Lfirst_char_17 + 1)] == 'i') && (_Ldata_7[(_Lfirst_char_17 + 2)] == 'n') && (_Ldata_7[(_Lfirst_char_17 + 3)] == 'c') && (_Ldata_7[(_Lfirst_char_17 + 4)] == 'l') && (_Ldata_7[(_Lfirst_char_17 + 5)] == 'u') && (_Ldata_7[(_Lfirst_char_17 + 6)] == 'd') && (_Ldata_7[(_Lfirst_char_17 + 7)] == 'e') && (_Ldata_7[(_Lfirst_char_17 + 8)] == ' '))) {
 int32_t _Lbegin_27;
 _Lstart_16 += 9;
@@ -816,6 +818,8 @@ break_15:;
 free(_Lspec_data_41);
 }
 }
+_Lpos_8++;
+goto continue_4;
 }
 _Li_52 = _Lfirst_char_17;
 while(1) {
