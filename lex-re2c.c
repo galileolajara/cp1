@@ -23,7 +23,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    re2c:yyfill:enable   = 0;
 
    spaces = [ \n]+;
-   id_one = [0-9a-zA-Z\u00c0-\U0010ffff];
+   id_one = [_0-9a-zA-Z\u00c0-\U0010ffff];
    id = id_one+("-" id_one+)*;
 
    *                                { return CP1_TOKEN_END; }
@@ -179,9 +179,9 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    ":"                              { return CP1_TOKEN_COLON; }
 
    "#" id                           { return CP1_TOKEN_HASH_ID; }
-   [a-z][0-9a-zA-Z\u00c0-\U0010ffff]*("-" id)*    { return CP1_TOKEN_ID; }
-   [A-Z][0-9a-zA-Z\u00c0-\U0010ffff]*("-" id)*    { return CP1_TOKEN_ID_UPPER; }
-   "." [A-Z][0-9a-zA-Z\u00c0-\U0010ffff]*("-" id)*    { return CP1_TOKEN_DOT_ID_UPPER; }
+   [a-z] id_one* ("-" id)*          { return CP1_TOKEN_ID; }
+   [A-Z] id_one* ("-" id)*          { return CP1_TOKEN_ID_UPPER; }
+   "." [A-Z] id_one* ("-" id)*      { return CP1_TOKEN_DOT_ID_UPPER; }
  
    */
 lex_string: {

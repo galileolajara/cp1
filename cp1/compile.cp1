@@ -640,6 +640,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       .func-main.process-later();
    }
 
+   loop f-i = 0:Func; .func-c; f-i++ {
+      +f = f-i.ptr();
+      if (f.flags & #process) != #0 {
+         f-i.process-later();
+      }
+   }
+
    loop .process-first != #nil {
       +f-i = .process-first;
       .process-first = #nil;
@@ -704,6 +711,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    }
    if .include-stddef {
       .out.printf("#include <stddef.h>\n");
+   }
+   loop i = 0; .cvar-outputted-c; i++ {
+      +c-i = .cvar-outputted-v[i];
+      +c = c-i.ptr();
+      if c.include != #nil {
+         c.include.output();
+      }
    }
    loop i = 0; .include-outputted-c; i++ {
       +inc = .include-outputted-v[i];

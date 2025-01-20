@@ -10,5 +10,13 @@ include(<math.h>) {
       sqrt(val:this):f32 {
          return C.sqrtf(val);
       }
+      abs(val:this):f32 @no-decl @real-name(fabsf);
+      round(val:this):f32 @no-decl @real-name(roundf);
+      round-i32(val:this):i32 @no-decl @real-name(lroundf);
+      min(a:this, b:f32):f32 @no-decl @real-name(fminf);
+      max(a:this, b:f32):f32 @no-decl @real-name(fmaxf);
+      atan2(y:this, x:f32):f32 @no-decl @real-name(atan2f);
+      cos(rad:this):f32 @no-decl @real-name(cosf);
+      sin(rad:this):f32 @no-decl @real-name(sinf);
    }
 }
