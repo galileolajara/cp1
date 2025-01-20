@@ -867,6 +867,7 @@ int32_t _NCp1_NLexer_Pget_id_3(struct _NCp1_NLexer* _Llex_0, uint8_t _Lbegin_1, 
 float _NCp1_NLexer_Pget_f32_1(struct _NCp1_NLexer* _Llex_0);
 uint32_t _NCp1_NLexer_Pget_int_2(struct _NCp1_NLexer* _Llex_0, uint8_t _Llen_minus_1);
 uint32_t _NCp1_NLexer_Pget_oct_1(struct _NCp1_NLexer* _Llex_0);
+uint32_t _NCp1_NLexer_Pget_hex_1(struct _NCp1_NLexer* _Llex_0);
 int32_t _NCp1_NLexer_Pget_include_1(struct _NCp1_NLexer* _Llex_0);
 void _NCp1_NParser_Pfree_1(struct _NCp1_NParser* _Lpsr_0);
 void* qalloc(int32_t _Lsize_0);
@@ -1663,6 +1664,11 @@ _Ltok_32._Fval._Fii32._Fid = _NCp1_NLexer_Pget_oct_1(&_Llex_29);
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
+case _NCp1_NToken_Cnum_hex:;
+_Ltok_32._Fval._Fii32._Fid = _NCp1_NLexer_Pget_hex_1(&_Llex_29);
+_Glast_token = _Lt_33;
+cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
+break;
 case _NCp1_NToken_Cinclude:;
 _Ltok_32._Fval._Fii32._Fid = _NCp1_NLexer_Pget_include_1(&_Llex_29);
 _Glast_token = _Lt_33;
@@ -2173,7 +2179,7 @@ uint64_t _Lval_4;
 _Lr_start_1._Freff = ((*_Llex_0)._Fstart + 2);
 _Lr_cursor_2._Freff = (*_Llex_0)._Fcursor;
 _Llength_3 = (_Lr_cursor_2._Fpos - _Lr_start_1._Fpos);
-if(_Llength_3 > 12) {
+if(_Llength_3 > 11) {
 fprintf(stdout, "%s:%u:%u: Integer literal was too long\n", input_path, _Grow, _Gcol);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -2181,6 +2187,40 @@ _Lval_4 = (uint64_t)(0);
 for(int i = _Llength_3; i > 0; ) {
 i --;
 _Lval_4 = ((_Lval_4 * (uint64_t)(8)) + (_Lr_start_1._Fp1[0] - '0'));
+_Lr_start_1._Fpos++;
+continue_0:;
+}
+break_0:;
+if(_Lval_4 > 4294967295u) {
+fprintf(stdout, "%s:%u:%u: Integer literal was out of bounds\n", input_path, _Grow, _Gcol);
+exit(_NLibC_NExit_Cfailure);
+}
+return (uint32_t)(_Lval_4);
+}
+uint32_t _NCp1_NLexer_Pget_hex_1(struct _NCp1_NLexer* _Llex_0) {
+union _NCp1_NRdr _Lr_start_1;
+union _NCp1_NRdr _Lr_cursor_2;
+size_t _Llength_3;
+uint64_t _Lval_4;
+_Lr_start_1._Freff = ((*_Llex_0)._Fstart + 2);
+_Lr_cursor_2._Freff = (*_Llex_0)._Fcursor;
+_Llength_3 = (_Lr_cursor_2._Fpos - _Lr_start_1._Fpos);
+if(_Llength_3 > 8) {
+fprintf(stdout, "%s:%u:%u: Integer literal was too long\n", input_path, _Grow, _Gcol);
+exit(_NLibC_NExit_Cfailure);
+}
+_Lval_4 = (uint64_t)(0);
+for(int i = _Llength_3; i > 0; ) {
+i --;
+uint8_t _Lc_5;
+_Lc_5 = _Lr_start_1._Fp1[0];
+if(_Lc_5 >= 'a') {
+_Lval_4 = ((_Lval_4 * (uint64_t)(16)) + ((_Lr_start_1._Fp1[0] - 'a') + 10));
+} else if(_Lc_5 >= 'A') {
+_Lval_4 = ((_Lval_4 * (uint64_t)(16)) + ((_Lr_start_1._Fp1[0] - 'A') + 10));
+} else {
+_Lval_4 = ((_Lval_4 * (uint64_t)(16)) + (_Lr_start_1._Fp1[0] - '0'));
+}
 _Lr_start_1._Fpos++;
 continue_0:;
 }

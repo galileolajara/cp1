@@ -294,13 +294,41 @@ Lexer(
       var r-cursor:Rdr+;
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
-      if length > 12 {
+      if length > 11 {
          C.out.printf("%s:%u:%u: Integer literal was too long\n", .input-path, .row, .col);
          C.exit(#failure);
       }
       +val = 0:u64;
       loop length {
          val = (val * 8:u64) + (r-start.p1[0] - ''0);
+         r-start.pos++;
+      }
+      if val > 4294967295u {
+         C.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
+         C.exit(#failure);
+      }
+      return val:u32;
+   }
+   get-hex(lex:this):u32 {
+      var r-start:Rdr+;
+      r-start.reff = lex.start + 2;
+      var r-cursor:Rdr+;
+      r-cursor.reff = lex.cursor;
+      +length = r-cursor.pos - r-start.pos;
+      if length > 8 {
+         C.out.printf("%s:%u:%u: Integer literal was too long\n", .input-path, .row, .col);
+         C.exit(#failure);
+      }
+      +val = 0:u64;
+      loop length {
+         +c = r-start.p1[0];
+         if c >= ''a {
+            val = (val * 16:u64) + ((r-start.p1[0] - ''a) + 10);
+         } elif c >= ''A {
+            val = (val * 16:u64) + ((r-start.p1[0] - ''A) + 10);
+         } else {
+            val = (val * 16:u64) + (r-start.p1[0] - ''0);
+         }
          r-start.pos++;
       }
       if val > 4294967295u {
@@ -1097,6 +1125,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             }
             case #num-oct {
                tok.val.ii32.id = lex.get-oct();
+               .last-token = t;
+               psr.parse(t, tok);
+            }
+            case #num-hex {
+               tok.val.ii32.id = lex.get-hex();
                .last-token = t;
                psr.parse(t, tok);
             }
