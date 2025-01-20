@@ -719,6 +719,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          c.include.output();
       }
    }
+   loop i = 0; .gvar-outputted-c; i++ {
+      +g-i = .gvar-outputted-v[i];
+      +g = g-i.ptr();
+      if g.include != #nil {
+         g.include.output();
+      }
+   }
    loop i = 0; .include-outputted-c; i++ {
       +inc = .include-outputted-v[i];
       .out.printf("#include %s\n", inc.str());
