@@ -26,8 +26,7 @@
 ** input grammar file:
 */
 /************ Begin %include sections from the grammar ************************/
-
-#line 31 "out/cp1_parse.c"
+#line 30 "out/cp1_parse.c"
 /**************** End of %include directives **********************************/
 /* These constants specify the various numeric values for terminal symbols.
 ***************** Begin token definitions *************************************/
@@ -3833,152 +3832,152 @@ static YYACTIONTYPE yy_reduce(
       case 293: /* lvar_list ::= */ yytestcase(yyruleno==293);
 #line 34 "cp1_parse.y"
 { yymsp[1].minor.yy0.basic.row = _Grow; yymsp[1].minor.yy0.basic.col = _Gcol; }
-#line 3836 "out/cp1_parse.c"
+#line 3835 "out/cp1_parse.c"
         break;
       case 1: /* end_pos ::= */
 #line 36 "cp1_parse.y"
 { yymsp[1].minor.yy0.basic.row = _Grow; yymsp[1].minor.yy0.basic.col = _Gcol - 1; }
-#line 3841 "out/cp1_parse.c"
+#line 3840 "out/cp1_parse.c"
         break;
       case 2: /* func_decl_begin ::= ID_THEN_OPEN_PARENTHESIS */
 #line 39 "cp1_parse.y"
 { _NCp1_Pdecl_func_begin_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 3846 "out/cp1_parse.c"
+#line 3845 "out/cp1_parse.c"
         break;
       case 3: /* at_name ::= ID_UPPER */
       case 4: /* at_name_dot ::= DOT_ID_UPPER */ yytestcase(yyruleno==4);
 #line 41 "cp1_parse.y"
 { _NCp1_Pat_push_4(yymsp[0].minor.yy0.basic.id, 1, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 3852 "out/cp1_parse.c"
+#line 3851 "out/cp1_parse.c"
         break;
       case 5: /* enum_cvar_begin ::= HASH_ID */
 #line 45 "cp1_parse.y"
 { _NCp1_Penum_add_cvar_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 3857 "out/cp1_parse.c"
+#line 3856 "out/cp1_parse.c"
         break;
       case 6: /* enum_cvar_begin_decl ::= HASH_ID typeAndInfo_optional */
 #line 47 "cp1_parse.y"
 { _NCp1_Pdecl_add_cvar_3(yymsp[-1].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
-#line 3862 "out/cp1_parse.c"
+#line 3861 "out/cp1_parse.c"
         break;
       case 7: /* struct_decl_begin ::= ID_UPPER */
 #line 49 "cp1_parse.y"
 { _NCp1_Pdecl_at_begin_struct_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 3867 "out/cp1_parse.c"
+#line 3866 "out/cp1_parse.c"
         break;
       case 8: /* fvar_decl_name ::= ID */
       case 9: /* lvar_decl_name ::= ID */ yytestcase(yyruleno==9);
 #line 51 "cp1_parse.y"
 { _NCp1_Pdecl_var_begin_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 3873 "out/cp1_parse.c"
+#line 3872 "out/cp1_parse.c"
         break;
       case 10: /* cvar_attr ::= SPACE_AT_REAL_NAME_STR */
 #line 56 "cp1_parse.y"
 { _NCp1_Pcvar_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
-#line 3878 "out/cp1_parse.c"
+#line 3877 "out/cp1_parse.c"
         break;
       case 11: /* cvar_attr ::= SPACE_AT_REAL_NAME */
 #line 58 "cp1_parse.y"
 { _NCp1_Pcvar_attr_real_name_1(-1); }
-#line 3883 "out/cp1_parse.c"
+#line 3882 "out/cp1_parse.c"
         break;
       case 12: /* cvar_attr ::= SPACE_AT_NO_DECL */
 #line 60 "cp1_parse.y"
 { _NCp1_Pcvar_attr_no_decl_0(); }
-#line 3888 "out/cp1_parse.c"
+#line 3887 "out/cp1_parse.c"
         break;
       case 13: /* enum_cvar ::= enum_cvar_begin cvar_attrs_optional SPACE_EQUAL_SPACE expr */
       case 14: /* enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional SPACE_EQUAL_SPACE expr */ yytestcase(yyruleno==14);
 #line 67 "cp1_parse.y"
 { _NCp1_Penum_set_cvar_expr_1(yymsp[0].minor.yy0.basic.id); }
-#line 3894 "out/cp1_parse.c"
+#line 3893 "out/cp1_parse.c"
         break;
       case 15: /* enum_decl_begin ::= ID_UPPER */
 #line 72 "cp1_parse.y"
 { _NCp1_Pdecl_at_begin_enum_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 3899 "out/cp1_parse.c"
+#line 3898 "out/cp1_parse.c"
         break;
       case 16: /* decl_include ::= INCLUDE */
 #line 75 "cp1_parse.y"
 { _NCp1_Pdecl_include_begin_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 3904 "out/cp1_parse.c"
+#line 3903 "out/cp1_parse.c"
         break;
       case 17: /* decl ::= decl_include SPACE decls SPACE_CLOSE_CURLY_BRACE */
       case 18: /* decl ::= decl_include SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==18);
 #line 77 "cp1_parse.y"
 { _NCp1_Pdecl_include_end_0(); }
-#line 3910 "out/cp1_parse.c"
+#line 3909 "out/cp1_parse.c"
         break;
       case 19: /* at_graves_count ::= GRAVE */
 #line 86 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = 1; yylhsminor.yy0.basic.row = yymsp[0].minor.yy0.basic.row; yylhsminor.yy0.basic.col = yymsp[0].minor.yy0.basic.col; }
-#line 3915 "out/cp1_parse.c"
+#line 3914 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 20: /* at_graves_count ::= at_graves_count GRAVE */
 #line 88 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = yymsp[-1].minor.yy0.basic.id + 1; yylhsminor.yy0.basic.row = yymsp[-1].minor.yy0.basic.row; yylhsminor.yy0.basic.col = yymsp[-1].minor.yy0.basic.col; }
-#line 3921 "out/cp1_parse.c"
+#line 3920 "out/cp1_parse.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 21: /* at_graves ::= at_graves_count */
 #line 90 "cp1_parse.y"
 { _NCp1_Pat_graves_3(yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 3927 "out/cp1_parse.c"
+#line 3926 "out/cp1_parse.c"
         break;
       case 22: /* at_names ::= DOT_ID_UPPER */
 #line 93 "cp1_parse.y"
 { _NCp1_Pat_root_0();
      _NCp1_Pat_push_4(yymsp[0].minor.yy0.basic.id, 1, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 3933 "out/cp1_parse.c"
+#line 3932 "out/cp1_parse.c"
         break;
       case 23: /* at_begin ::= */
 #line 97 "cp1_parse.y"
 { _NCp1_Pat_begin_relative_0(); }
-#line 3938 "out/cp1_parse.c"
+#line 3937 "out/cp1_parse.c"
         break;
       case 24: /* at ::= type_basic_id */
 #line 101 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pat_basic_type_1(yymsp[0].minor.yy0.basic.id); }
-#line 3943 "out/cp1_parse.c"
+#line 3942 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 25: /* at ::= at_names */
       case 26: /* at ::= at_graves */ yytestcase(yyruleno==26);
 #line 103 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = _NCp1_Pat_done_0(); }
-#line 3950 "out/cp1_parse.c"
+#line 3949 "out/cp1_parse.c"
         break;
       case 27: /* decl_at_name ::= ID_UPPER */
 #line 111 "cp1_parse.y"
 { _NCp1_Pdecl_at_add_2(yymsp[0].minor.yy0.basic.id, 1); }
-#line 3955 "out/cp1_parse.c"
+#line 3954 "out/cp1_parse.c"
         break;
       case 28: /* decl_at_begin_at ::= */
 #line 113 "cp1_parse.y"
 { _NCp1_Pat_begin_0(); }
-#line 3960 "out/cp1_parse.c"
+#line 3959 "out/cp1_parse.c"
         break;
       case 29: /* decl_at_namespace ::= type_basic_id */
 #line 118 "cp1_parse.y"
 { _NCp1_Pdecl_at_basic_1(yymsp[0].minor.yy0.basic.id); }
-#line 3965 "out/cp1_parse.c"
+#line 3964 "out/cp1_parse.c"
         break;
       case 30: /* decl_at_begin_begin ::= USING SPACE */
 #line 120 "cp1_parse.y"
 { _NCp1_Pat_begin_relative_pause_0(); yymsp[-1].minor.yy0.basic.row = yymsp[0].minor.yy0.basic.row; yymsp[-1].minor.yy0.basic.col = yymsp[0].minor.yy0.basic.col; }
-#line 3970 "out/cp1_parse.c"
+#line 3969 "out/cp1_parse.c"
         break;
       case 31: /* decl_at_begin_end ::= CLOSE_PARENTHESIS */
       case 36: /* decl_alias_end ::= SEMICOLON */ yytestcase(yyruleno==36);
 #line 122 "cp1_parse.y"
 { _NCp1_Pat_begin_relative_resume_0(); }
-#line 3976 "out/cp1_parse.c"
+#line 3975 "out/cp1_parse.c"
         break;
       case 32: /* decl_at_begin ::= decl_at_begin_begin OPEN_PARENTHESIS decl_at_namespace decl_at_begin_end */
 #line 124 "cp1_parse.y"
 { _NCp1_Pdecl_at_begin_2(yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col); }
-#line 3981 "out/cp1_parse.c"
+#line 3980 "out/cp1_parse.c"
         break;
       case 33: /* decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE decls SPACE_CLOSE_CURLY_BRACE */
       case 34: /* decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE CLOSE_CURLY_BRACE */ yytestcase(yyruleno==34);
@@ -3990,17 +3989,17 @@ static YYACTIONTYPE yy_reduce(
       case 311: /* decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==311);
 #line 126 "cp1_parse.y"
 { _NCp1_Pdecl_at_end_0(); }
-#line 3993 "out/cp1_parse.c"
+#line 3992 "out/cp1_parse.c"
         break;
       case 35: /* decl_alias_begin ::= USING SPACE */
 #line 143 "cp1_parse.y"
 { _NCp1_Pat_begin_relative_pause_0(); }
-#line 3998 "out/cp1_parse.c"
+#line 3997 "out/cp1_parse.c"
         break;
       case 37: /* decl ::= decl_alias_begin ID_UPPER SPACE_EQUAL_SPACE at decl_alias_end */
 #line 147 "cp1_parse.y"
 { _NCp1_Pdecl_alias_4(yymsp[-3].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col); }
-#line 4003 "out/cp1_parse.c"
+#line 4002 "out/cp1_parse.c"
         break;
       case 38: /* open_parenthesis_or_space ::= OPEN_PARENTHESIS */
       case 39: /* open_parenthesis_or_space ::= OPEN_PARENTHESIS_SPACE */ yytestcase(yyruleno==39);
@@ -4021,228 +4020,228 @@ static YYACTIONTYPE yy_reduce(
       case 55: /* close_bracket_or_comma ::= COMMA_SPACE_CLOSE_BRACKET */ yytestcase(yyruleno==55);
 #line 152 "cp1_parse.y"
 { yylhsminor.yy0.basic.row = yymsp[0].minor.yy0.basic.row; yylhsminor.yy0.basic.col = yymsp[0].minor.yy0.basic.col; }
-#line 4024 "out/cp1_parse.c"
+#line 4023 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 50: /* close_curly_brace_or_scolon ::= SEMICOLON SPACE_CLOSE_CURLY_BRACE */
 #line 183 "cp1_parse.y"
 { yymsp[-1].minor.yy0.basic.row = yymsp[0].minor.yy0.basic.row; yymsp[-1].minor.yy0.basic.col = yymsp[0].minor.yy0.basic.col; }
-#line 4030 "out/cp1_parse.c"
+#line 4029 "out/cp1_parse.c"
         break;
       case 56: /* lvar_decl ::= lvar_decl_name */
 #line 203 "cp1_parse.y"
 { _NCp1_Pdecl_var_end_0(); yylhsminor.yy0.basic.row = yymsp[0].minor.yy0.basic.row; yylhsminor.yy0.basic.col = yymsp[0].minor.yy0.basic.col; }
-#line 4035 "out/cp1_parse.c"
+#line 4034 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 57: /* farg ::= lvar_decl typeAndInfo_optional */
 #line 205 "cp1_parse.y"
 { _NCp1_Pdecl_var_as_farg_2(yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
-#line 4041 "out/cp1_parse.c"
+#line 4040 "out/cp1_parse.c"
         break;
       case 58: /* expr_type_this_apply ::= COLON THIS */
 #line 207 "cp1_parse.y"
 { _NCp1_Pdecl_var_this_0(); }
-#line 4046 "out/cp1_parse.c"
+#line 4045 "out/cp1_parse.c"
         break;
       case 59: /* farg ::= lvar_decl expr_type_this_apply typeInfo_optional */
 #line 209 "cp1_parse.y"
 { _NCp1_Pdecl_var_as_this_0(); }
-#line 4051 "out/cp1_parse.c"
+#line 4050 "out/cp1_parse.c"
         break;
       case 60: /* expr_type_none ::= */
 #line 211 "cp1_parse.y"
 { _NCp1_Pdecl_var_type_1(-1); }
-#line 4056 "out/cp1_parse.c"
+#line 4055 "out/cp1_parse.c"
         break;
       case 61: /* expr_type_apply ::= at */
 #line 213 "cp1_parse.y"
 { _NCp1_Pdecl_var_type_1(yymsp[0].minor.yy0.basic.id); }
-#line 4061 "out/cp1_parse.c"
+#line 4060 "out/cp1_parse.c"
         break;
       case 62: /* farg_next_group ::= open_parenthesis_or_space */
 #line 219 "cp1_parse.y"
 { _NCp1_Pfarg_next_group_0(); }
-#line 4066 "out/cp1_parse.c"
+#line 4065 "out/cp1_parse.c"
         break;
       case 63: /* func_attr ::= SPACE_AT_MAIN */
 #line 223 "cp1_parse.y"
 { _NCp1_Pfunc_attr_main_0(); }
-#line 4071 "out/cp1_parse.c"
+#line 4070 "out/cp1_parse.c"
         break;
       case 64: /* func_attr ::= SPACE_AT_CASE DOT ID_THEN_OPEN_PARENTHESIS OPEN_PARENTHESIS CLOSE_PARENTHESIS */
 #line 225 "cp1_parse.y"
 { _NCp1_Pfunc_attr_case_1(yymsp[-2].minor.yy0.basic.id); }
-#line 4076 "out/cp1_parse.c"
+#line 4075 "out/cp1_parse.c"
         break;
       case 65: /* func_attr ::= SPACE_AT_PROCESS */
 #line 227 "cp1_parse.y"
 { _NCp1_Pfunc_attr_process_0(); }
-#line 4081 "out/cp1_parse.c"
+#line 4080 "out/cp1_parse.c"
         break;
       case 66: /* func_attr ::= SPACE_AT_INLINE */
 #line 229 "cp1_parse.y"
 { _NCp1_Pfunc_attr_inline_0(); }
-#line 4086 "out/cp1_parse.c"
+#line 4085 "out/cp1_parse.c"
         break;
       case 67: /* func_attr ::= SPACE_AT_CP1_NAME */
 #line 231 "cp1_parse.y"
 { _NCp1_Pfunc_attr_cp1_name_0(); }
-#line 4091 "out/cp1_parse.c"
+#line 4090 "out/cp1_parse.c"
         break;
       case 68: /* func_attr ::= SPACE_AT_DECL OPEN_PARENTHESIS STRING CLOSE_PARENTHESIS */
 #line 233 "cp1_parse.y"
 { _NCp1_Pfunc_attr_decl_0(); }
-#line 4096 "out/cp1_parse.c"
+#line 4095 "out/cp1_parse.c"
         break;
       case 69: /* func_attr ::= SPACE_AT_VAR_ARGS */
 #line 235 "cp1_parse.y"
 { _NCp1_Pfunc_attr_var_args_0(); }
-#line 4101 "out/cp1_parse.c"
+#line 4100 "out/cp1_parse.c"
         break;
       case 70: /* func_attr ::= SPACE_AT_NO_DECL */
 #line 237 "cp1_parse.y"
 { _NCp1_Pfunc_attr_no_decl_0(); }
-#line 4106 "out/cp1_parse.c"
+#line 4105 "out/cp1_parse.c"
         break;
       case 71: /* func_attr ::= SPACE_AT_NO_BODY */
 #line 239 "cp1_parse.y"
 { _NCp1_Pfunc_attr_no_body_0(); }
-#line 4111 "out/cp1_parse.c"
+#line 4110 "out/cp1_parse.c"
         break;
       case 72: /* func_attr ::= SPACE_AT_REAL_NAME_STR */
 #line 241 "cp1_parse.y"
 { _NCp1_Pfunc_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
-#line 4116 "out/cp1_parse.c"
+#line 4115 "out/cp1_parse.c"
         break;
       case 73: /* func_attr ::= SPACE_AT_REAL_NAME */
 #line 243 "cp1_parse.y"
 { _NCp1_Pfunc_attr_real_name_1(-1); }
-#line 4121 "out/cp1_parse.c"
+#line 4120 "out/cp1_parse.c"
         break;
       case 74: /* type_basic_id ::= REF */
       case 191: /* compare_type ::= SPACE_LANGLE_SPACE */ yytestcase(yyruleno==191);
       case 210: /* assign_type ::= SPACE_MINUS_EQUAL_SPACE */ yytestcase(yyruleno==210);
 #line 257 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 2; }
-#line 4128 "out/cp1_parse.c"
+#line 4127 "out/cp1_parse.c"
         break;
       case 75: /* type_basic_id ::= BOOL */
       case 192: /* compare_type ::= SPACE_LANGLE_EQUAL_SPACE */ yytestcase(yyruleno==192);
       case 211: /* assign_type ::= SPACE_MUL_EQUAL_SPACE */ yytestcase(yyruleno==211);
 #line 259 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 3; }
-#line 4135 "out/cp1_parse.c"
+#line 4134 "out/cp1_parse.c"
         break;
       case 76: /* type_basic_id ::= CHAR */
       case 193: /* compare_type ::= SPACE_RANGLE_SPACE */ yytestcase(yyruleno==193);
       case 212: /* assign_type ::= SPACE_DIV_EQUAL_SPACE */ yytestcase(yyruleno==212);
 #line 261 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 4; }
-#line 4142 "out/cp1_parse.c"
+#line 4141 "out/cp1_parse.c"
         break;
       case 77: /* type_basic_id ::= INTC */
       case 194: /* compare_type ::= SPACE_RANGLE_EQUAL_SPACE */ yytestcase(yyruleno==194);
       case 213: /* assign_type ::= SPACE_LSHIFT_EQUAL_SPACE */ yytestcase(yyruleno==213);
 #line 263 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 5; }
-#line 4149 "out/cp1_parse.c"
+#line 4148 "out/cp1_parse.c"
         break;
       case 78: /* type_basic_id ::= I8 */
       case 214: /* assign_type ::= SPACE_RSHIFT_EQUAL_SPACE */ yytestcase(yyruleno==214);
 #line 265 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 6; }
-#line 4155 "out/cp1_parse.c"
+#line 4154 "out/cp1_parse.c"
         break;
       case 79: /* type_basic_id ::= U8 */
       case 215: /* assign_type ::= SPACE_AND_EQUAL_SPACE */ yytestcase(yyruleno==215);
 #line 267 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 7; }
-#line 4161 "out/cp1_parse.c"
+#line 4160 "out/cp1_parse.c"
         break;
       case 80: /* type_basic_id ::= I16 */
       case 216: /* assign_type ::= SPACE_OR_EQUAL_SPACE */ yytestcase(yyruleno==216);
 #line 269 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 8; }
-#line 4167 "out/cp1_parse.c"
+#line 4166 "out/cp1_parse.c"
         break;
       case 81: /* type_basic_id ::= U16 */
       case 217: /* assign_type ::= SPACE_XOR_EQUAL_SPACE */ yytestcase(yyruleno==217);
 #line 271 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 9; }
-#line 4173 "out/cp1_parse.c"
+#line 4172 "out/cp1_parse.c"
         break;
       case 82: /* type_basic_id ::= I32 */
 #line 273 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 10; }
-#line 4178 "out/cp1_parse.c"
+#line 4177 "out/cp1_parse.c"
         break;
       case 83: /* type_basic_id ::= U32 */
 #line 275 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 11; }
-#line 4183 "out/cp1_parse.c"
+#line 4182 "out/cp1_parse.c"
         break;
       case 84: /* type_basic_id ::= I64 */
 #line 277 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 12; }
-#line 4188 "out/cp1_parse.c"
+#line 4187 "out/cp1_parse.c"
         break;
       case 85: /* type_basic_id ::= U64 */
 #line 279 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 13; }
-#line 4193 "out/cp1_parse.c"
+#line 4192 "out/cp1_parse.c"
         break;
       case 86: /* type_basic_id ::= ISZ */
 #line 281 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 14; }
-#line 4198 "out/cp1_parse.c"
+#line 4197 "out/cp1_parse.c"
         break;
       case 87: /* type_basic_id ::= USZ */
 #line 283 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 15; }
-#line 4203 "out/cp1_parse.c"
+#line 4202 "out/cp1_parse.c"
         break;
       case 88: /* type_basic_id ::= F32 */
 #line 285 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 16; }
-#line 4208 "out/cp1_parse.c"
+#line 4207 "out/cp1_parse.c"
         break;
       case 89: /* type_basic_id ::= F64 */
 #line 287 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 17; }
-#line 4213 "out/cp1_parse.c"
+#line 4212 "out/cp1_parse.c"
         break;
       case 90: /* func_decl ::= func_decl_begin fargs func_type func_attrs_optional */
 #line 295 "cp1_parse.y"
 { _NCp1_Pdecl_func_end_2(_Grow, _Gcol); }
-#line 4218 "out/cp1_parse.c"
+#line 4217 "out/cp1_parse.c"
         break;
       case 91: /* fvar_decl ::= fvar_decl_name */
 #line 307 "cp1_parse.y"
 { _NCp1_Pdecl_var_end_0(); }
-#line 4223 "out/cp1_parse.c"
+#line 4222 "out/cp1_parse.c"
         break;
       case 92: /* fvar_attr ::= SPACE_AT_REAL_NAME_STR */
       case 295: /* decl_var_attr ::= SPACE_AT_REAL_NAME_STR */ yytestcase(yyruleno==295);
 #line 309 "cp1_parse.y"
 { _NCp1_Pdecl_var_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
-#line 4229 "out/cp1_parse.c"
+#line 4228 "out/cp1_parse.c"
         break;
       case 93: /* fvar_attr ::= SPACE_AT_REAL_NAME */
       case 296: /* decl_var_attr ::= SPACE_AT_REAL_NAME */ yytestcase(yyruleno==296);
 #line 311 "cp1_parse.y"
 { _NCp1_Pdecl_var_attr_real_name_1(-1); }
-#line 4235 "out/cp1_parse.c"
+#line 4234 "out/cp1_parse.c"
         break;
       case 94: /* fvar ::= fvar_decl typeAndInfo_optional fvar_attrs_optional */
 #line 317 "cp1_parse.y"
 { _NCp1_Pdecl_var_as_fvar_0(); }
-#line 4240 "out/cp1_parse.c"
+#line 4239 "out/cp1_parse.c"
         break;
       case 95: /* typeInfo_bi ::= PLUS */
 #line 329 "cp1_parse.y"
 { _NCp1_Ptype_info_static_0(); }
-#line 4245 "out/cp1_parse.c"
+#line 4244 "out/cp1_parse.c"
         break;
       case 96: /* ref_count ::= AMPERSAND */
       case 119: /* expr_lvar_plus ::= PLUS */ yytestcase(yyruleno==119);
@@ -4251,13 +4250,13 @@ static YYACTIONTYPE yy_reduce(
       case 278: /* switch_case_fall ::= SPACE_AT_FALL_THROUGH */ yytestcase(yyruleno==278);
 #line 331 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 1; }
-#line 4254 "out/cp1_parse.c"
+#line 4253 "out/cp1_parse.c"
         break;
       case 97: /* ref_count ::= ref_count AMPERSAND */
       case 120: /* expr_lvar_plus ::= expr_lvar_plus PLUS */ yytestcase(yyruleno==120);
 #line 333 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = yymsp[-1].minor.yy0.basic.id + 1; }
-#line 4260 "out/cp1_parse.c"
+#line 4259 "out/cp1_parse.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 98: /* typeInfo_ref ::= ref_count */
@@ -4265,7 +4264,7 @@ static YYACTIONTYPE yy_reduce(
       case 100: /* typeInfo_ref ::= typeInfo_bi ref_count */ yytestcase(yyruleno==100);
 #line 335 "cp1_parse.y"
 { _NCp1_Ptype_info_ref_1(yymsp[0].minor.yy0.basic.id); }
-#line 4268 "out/cp1_parse.c"
+#line 4267 "out/cp1_parse.c"
         break;
       case 101: /* typeInfo_arr ::= open_bracket_or_space CLOSE_BRACKET */
       case 102: /* typeInfo_arr ::= typeInfo_bi open_bracket_or_space CLOSE_BRACKET */ yytestcase(yyruleno==102);
@@ -4273,110 +4272,110 @@ static YYACTIONTYPE yy_reduce(
       case 104: /* typeInfo_arr ::= typeInfo_arr open_bracket_or_space CLOSE_BRACKET */ yytestcase(yyruleno==104);
 #line 341 "cp1_parse.y"
 { _NCp1_Ptype_info_arr_2(0, 0); }
-#line 4276 "out/cp1_parse.c"
+#line 4275 "out/cp1_parse.c"
         break;
       case 105: /* typeInfo_arr_exprs ::= open_bracket_or_space typeInfo_arr_exprs1 close_bracket_or_comma */
 #line 352 "cp1_parse.y"
 { _NCp1_Ptype_info_arr_2(yymsp[-1].minor.yy0.index.v, yymsp[-1].minor.yy0.index.c); }
-#line 4281 "out/cp1_parse.c"
+#line 4280 "out/cp1_parse.c"
         break;
       case 106: /* typeInfo_arr_exprs1 ::= expr */
 #line 354 "cp1_parse.y"
 { yylhsminor.yy0.index.v[(yylhsminor.yy0.index.c = 1) - 1] = yymsp[0].minor.yy0.basic.id; }
-#line 4286 "out/cp1_parse.c"
+#line 4285 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 107: /* typeInfo_arr_exprs1 ::= typeInfo_arr_exprs1 COMMA_SPACE expr */
       case 247: /* indexExpr_exprs ::= indexExpr_exprs COMMA_SPACE expr */ yytestcase(yyruleno==247);
 #line 356 "cp1_parse.y"
 { yymsp[-2].minor.yy0.index.v[yymsp[-2].minor.yy0.index.c ++] = yymsp[0].minor.yy0.basic.id; }
-#line 4293 "out/cp1_parse.c"
+#line 4292 "out/cp1_parse.c"
         break;
       case 108: /* typeInfo_begin ::= */
 #line 358 "cp1_parse.y"
 { _NCp1_Ptype_info_begin_0(); }
-#line 4298 "out/cp1_parse.c"
+#line 4297 "out/cp1_parse.c"
         break;
       case 109: /* typeInfo_none ::= typeInfo_begin */
       case 110: /* typeInfo_optional ::= typeInfo_begin typeInfo */ yytestcase(yyruleno==110);
 #line 360 "cp1_parse.y"
 { _NCp1_Ptype_info_finalize_0(); }
-#line 4304 "out/cp1_parse.c"
+#line 4303 "out/cp1_parse.c"
         break;
       case 111: /* expr_int ::= NUM_ZERO */
 #line 366 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = _NCp1_Pexpr_int_2(0, 0); }
-#line 4309 "out/cp1_parse.c"
+#line 4308 "out/cp1_parse.c"
         break;
       case 112: /* expr_int ::= NUM_I32 */
 #line 368 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_int_2(yymsp[0].minor.yy0.basic.id, 0); }
-#line 4314 "out/cp1_parse.c"
+#line 4313 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 113: /* expr_int ::= NUM_U32 */
 #line 370 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_int_2(yymsp[0].minor.yy0.basic.id, 1); }
-#line 4320 "out/cp1_parse.c"
+#line 4319 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 114: /* expr_int ::= NUM_F32 */
 #line 372 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_f32_1(yymsp[0].minor.yy0.f32.f32); }
-#line 4326 "out/cp1_parse.c"
+#line 4325 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 115: /* expr_int ::= NUM_OCT */
 #line 374 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_int_2(yymsp[0].minor.yy0.basic.id, 3); }
-#line 4332 "out/cp1_parse.c"
+#line 4331 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 116: /* expr_int ::= NUM_HEX */
 #line 376 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_int_2(yymsp[0].minor.yy0.basic.id, 4); }
-#line 4338 "out/cp1_parse.c"
+#line 4337 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 117: /* expr_str ::= STRING */
 #line 379 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = _NCp1_Pexpr_str_1(-1); }
-#line 4344 "out/cp1_parse.c"
+#line 4343 "out/cp1_parse.c"
         break;
       case 118: /* expr_str ::= expr_str SPACE STRING */
 #line 381 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_str_1(yymsp[-2].minor.yy0.basic.id); }
-#line 4349 "out/cp1_parse.c"
+#line 4348 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 121: /* expr_lvar ::= ID */
 #line 388 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_lvar_4(yymsp[0].minor.yy0.basic.id, 0, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 4355 "out/cp1_parse.c"
+#line 4354 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 122: /* expr_lvar ::= expr_lvar_plus ID expr_type_none */
 #line 390 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_lvar_4(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
-#line 4361 "out/cp1_parse.c"
+#line 4360 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 123: /* expr_lvar ::= expr_lvar_plus open_parenthesis_or_space ID COLON typeAndInfo close_parenthesis_or_space */
 #line 392 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_lvar_4(yymsp[-3].minor.yy0.basic.id, yymsp[-5].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col); }
-#line 4367 "out/cp1_parse.c"
+#line 4366 "out/cp1_parse.c"
   yymsp[-5].minor.yy0 = yylhsminor.yy0;
         break;
       case 124: /* expr_cvar ::= HASH_ID */
 #line 394 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_cvar_2(-1, yymsp[0].minor.yy0.basic.id); }
-#line 4373 "out/cp1_parse.c"
+#line 4372 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 125: /* expr_cvar ::= at HASH_ID */
 #line 396 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_cvar_2(yymsp[-1].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
-#line 4379 "out/cp1_parse.c"
+#line 4378 "out/cp1_parse.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 126: /* value ::= value4fix */
@@ -4434,59 +4433,59 @@ static YYACTIONTYPE yy_reduce(
       case 238: /* exprs ::= expr_or */ yytestcase(yyruleno==238);
 #line 398 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = yymsp[0].minor.yy0.basic.id; }
-#line 4437 "out/cp1_parse.c"
+#line 4436 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 137: /* charExpr ::= CHAR1 */
       case 138: /* charExpr ::= CHAR2 */ yytestcase(yyruleno==138);
 #line 420 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_char_1(yymsp[0].minor.yy0.basic.id); }
-#line 4444 "out/cp1_parse.c"
+#line 4443 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 139: /* boolExpr ::= TRUE */
 #line 424 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = _NCp1_Pexpr_bool_1(1); }
-#line 4450 "out/cp1_parse.c"
+#line 4449 "out/cp1_parse.c"
         break;
       case 140: /* boolExpr ::= FALSE */
 #line 426 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = _NCp1_Pexpr_bool_1(0); }
-#line 4455 "out/cp1_parse.c"
+#line 4454 "out/cp1_parse.c"
         break;
       case 141: /* nullExpr ::= NULL */
 #line 428 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = _NCp1_Pexpr_null_0(); }
-#line 4460 "out/cp1_parse.c"
+#line 4459 "out/cp1_parse.c"
         break;
       case 151: /* gvarExpr ::= DOT ID */
 #line 448 "cp1_parse.y"
 { yymsp[-1].minor.yy0.basic.id = _NCp1_Pexpr_gvar_2(-1, yymsp[0].minor.yy0.basic.id); }
-#line 4465 "out/cp1_parse.c"
+#line 4464 "out/cp1_parse.c"
         break;
       case 152: /* gvarExpr ::= at DOT ID */
 #line 450 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_gvar_2(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
-#line 4470 "out/cp1_parse.c"
+#line 4469 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 153: /* fvarExpr ::= value4fix DOT ID */
 #line 452 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_fvar_2(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
-#line 4476 "out/cp1_parse.c"
+#line 4475 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 154: /* expr_and1 ::= expr COMMA_SPACE expr */
 #line 454 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_bools_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 0); }
-#line 4482 "out/cp1_parse.c"
+#line 4481 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 155: /* expr_and1 ::= expr_and1 COMMA_SPACE expr */
       case 158: /* expr_or1 ::= expr_or1 COMMA_SPACE expr */ yytestcase(yyruleno==158);
 #line 456 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_bools_add_2(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
-#line 4489 "out/cp1_parse.c"
+#line 4488 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 156: /* expr_and ::= OPEN_PARENTHESIS_AMP_AMP_COMMA_SPACE expr_and1 close_parenthesis_or_comma */
@@ -4494,18 +4493,18 @@ static YYACTIONTYPE yy_reduce(
       case 196: /* expr_in_paren ::= open_parenthesis_or_space opExpr close_parenthesis_or_space */ yytestcase(yyruleno==196);
 #line 458 "cp1_parse.y"
 { yymsp[-2].minor.yy0.basic.id = yymsp[-1].minor.yy0.basic.id; }
-#line 4497 "out/cp1_parse.c"
+#line 4496 "out/cp1_parse.c"
         break;
       case 157: /* expr_or1 ::= expr COMMA_SPACE expr */
 #line 460 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_bools_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 1); }
-#line 4502 "out/cp1_parse.c"
+#line 4501 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 160: /* expr_add ::= value SPACE_PLUS_SPACE value */
 #line 466 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 0); }
-#line 4508 "out/cp1_parse.c"
+#line 4507 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 161: /* expr_add ::= expr_add SPACE_PLUS_SPACE value */
@@ -4517,55 +4516,55 @@ static YYACTIONTYPE yy_reduce(
       case 175: /* expr_bit_xor ::= expr_bit_xor SPACE_XOR_SPACE value */ yytestcase(yyruleno==175);
 #line 468 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_math_add_2(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
-#line 4520 "out/cp1_parse.c"
+#line 4519 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 162: /* expr_sub ::= value SPACE_MINUS_SPACE value */
 #line 470 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 1); }
-#line 4526 "out/cp1_parse.c"
+#line 4525 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 164: /* expr_mul ::= value SPACE_MUL_SPACE value */
 #line 474 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 2); }
-#line 4532 "out/cp1_parse.c"
+#line 4531 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 166: /* expr_div ::= value SPACE_DIV_SPACE value */
 #line 478 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 3); }
-#line 4538 "out/cp1_parse.c"
+#line 4537 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 168: /* expr_lshift ::= value SPACE_LANGLE_LANGLE_SPACE value */
 #line 482 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 4); }
-#line 4544 "out/cp1_parse.c"
+#line 4543 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 169: /* expr_rshift ::= value SPACE_RANGLE_RANGLE_SPACE value */
 #line 484 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 5); }
-#line 4550 "out/cp1_parse.c"
+#line 4549 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 170: /* expr_bit_and ::= value SPACE_AMP_SPACE value */
 #line 486 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 6); }
-#line 4556 "out/cp1_parse.c"
+#line 4555 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 172: /* expr_bit_or ::= value SPACE_PIPE_SPACE value */
 #line 490 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 7); }
-#line 4562 "out/cp1_parse.c"
+#line 4561 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 174: /* expr_bit_xor ::= value SPACE_XOR_SPACE value */
 #line 494 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_math_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, 8); }
-#line 4568 "out/cp1_parse.c"
+#line 4567 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 189: /* compare_type ::= SPACE_EQUAL_EQUAL_SPACE */
@@ -4573,158 +4572,158 @@ static YYACTIONTYPE yy_reduce(
       case 220: /* assign_type2 ::= SPACE_EQUAL_SPACE */ yytestcase(yyruleno==220);
 #line 524 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.id = 0; }
-#line 4576 "out/cp1_parse.c"
+#line 4575 "out/cp1_parse.c"
         break;
       case 195: /* compareExpr ::= value compare_type value */
 #line 536 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_compare_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id); }
-#line 4581 "out/cp1_parse.c"
+#line 4580 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 198: /* funcExpr ::= ID_THEN_OPEN_PARENTHESIS */
 #line 542 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = -1; yylhsminor.yy0.basic.id2 = yymsp[0].minor.yy0.basic.id; _NCp1_Pexpr_push_call_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 4587 "out/cp1_parse.c"
+#line 4586 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 199: /* funcExpr ::= at DOT ID_THEN_OPEN_PARENTHESIS */
       case 200: /* methodExpr ::= value4fix DOT ID_THEN_OPEN_PARENTHESIS */ yytestcase(yyruleno==200);
 #line 544 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = yymsp[-2].minor.yy0.basic.id; yylhsminor.yy0.basic.id2 = yymsp[0].minor.yy0.basic.id; _NCp1_Pexpr_push_call_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 4594 "out/cp1_parse.c"
+#line 4593 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 201: /* call_arg ::= expr */
 #line 550 "cp1_parse.y"
 { _NCp1_Pcarg_push_1(yymsp[0].minor.yy0.basic.id); }
-#line 4600 "out/cp1_parse.c"
+#line 4599 "out/cp1_parse.c"
         break;
       case 202: /* call_arg ::= expr_str HASH */
 #line 552 "cp1_parse.y"
 { _NCp1_Pcarg_push_str_1(yymsp[-1].minor.yy0.basic.id); }
-#line 4605 "out/cp1_parse.c"
+#line 4604 "out/cp1_parse.c"
         break;
       case 203: /* call_args_next_group ::= open_parenthesis_or_space */
 #line 557 "cp1_parse.y"
 { _NCp1_Pcarg_next_group_0(); }
-#line 4610 "out/cp1_parse.c"
+#line 4609 "out/cp1_parse.c"
         break;
       case 206: /* callExpr_func ::= funcExpr call_args_optional */
 #line 565 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_pop_func_2(yymsp[-1].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id2); }
-#line 4615 "out/cp1_parse.c"
+#line 4614 "out/cp1_parse.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 207: /* callExpr_method ::= methodExpr call_args_optional */
 #line 567 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_pop_method_2(yymsp[-1].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id2); }
-#line 4621 "out/cp1_parse.c"
+#line 4620 "out/cp1_parse.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
       case 222: /* assignExpr1 ::= value assign_type1 expr */
       case 223: /* assignExpr2 ::= value assign_type2 expr */ yytestcase(yyruleno==223);
 #line 597 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_assign_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, yymsp[-1].minor.yy0.basic.id); }
-#line 4628 "out/cp1_parse.c"
+#line 4627 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 229: /* expr2stmt ::= begin_pos expr2stmt_base end_pos */
 #line 611 "cp1_parse.y"
 { _NCp1_Pexpr2stmt_5(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 4634 "out/cp1_parse.c"
+#line 4633 "out/cp1_parse.c"
         break;
       case 239: /* sizeOfTypeExpr ::= at OPEN_BRACKET USZ CLOSE_BRACKET */
 #line 632 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_size_of_type_1(yymsp[-3].minor.yy0.basic.id); }
-#line 4639 "out/cp1_parse.c"
+#line 4638 "out/cp1_parse.c"
   yymsp[-3].minor.yy0 = yylhsminor.yy0;
         break;
       case 240: /* fastCastExpr ::= value4cast COLON at */
 #line 635 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_cast_fast_2(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
-#line 4645 "out/cp1_parse.c"
+#line 4644 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 241: /* negVal ::= MINUS value4fix */
 #line 638 "cp1_parse.y"
 { yymsp[-1].minor.yy0.basic.id = _NCp1_Pexpr_unary_2(yymsp[0].minor.yy0.basic.id, 0); }
-#line 4651 "out/cp1_parse.c"
+#line 4650 "out/cp1_parse.c"
         break;
       case 242: /* incExpr ::= value PLUS PLUS */
 #line 641 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_unary_2(yymsp[-2].minor.yy0.basic.id, 1); }
-#line 4656 "out/cp1_parse.c"
+#line 4655 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 243: /* decExpr ::= value MINUS MINUS */
 #line 644 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_unary_2(yymsp[-2].minor.yy0.basic.id, 2); }
-#line 4662 "out/cp1_parse.c"
+#line 4661 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 244: /* notExpr ::= EXCLAMATION value */
 #line 647 "cp1_parse.y"
 { yymsp[-1].minor.yy0.basic.id = _NCp1_Pexpr_unary_2(yymsp[0].minor.yy0.basic.id, 3); }
-#line 4668 "out/cp1_parse.c"
+#line 4667 "out/cp1_parse.c"
         break;
       case 245: /* refExpr ::= AMPERSAND value */
 #line 650 "cp1_parse.y"
 { yymsp[-1].minor.yy0.basic.id = _NCp1_Pexpr_ref_1(yymsp[0].minor.yy0.basic.id); }
-#line 4673 "out/cp1_parse.c"
+#line 4672 "out/cp1_parse.c"
         break;
       case 246: /* indexExpr_exprs ::= expr */
 #line 659 "cp1_parse.y"
 { yylhsminor.yy0.index.v[0] = yymsp[0].minor.yy0.basic.id; yylhsminor.yy0.index.c = 1; }
-#line 4678 "out/cp1_parse.c"
+#line 4677 "out/cp1_parse.c"
   yymsp[0].minor.yy0 = yylhsminor.yy0;
         break;
       case 248: /* indexExpr ::= valueonly open_bracket_or_space indexExpr_exprs close_bracket_or_comma */
 #line 663 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_index_3(yymsp[-3].minor.yy0.basic.id, yymsp[-1].minor.yy0.index.v, yymsp[-1].minor.yy0.index.c); }
-#line 4684 "out/cp1_parse.c"
+#line 4683 "out/cp1_parse.c"
   yymsp[-3].minor.yy0 = yylhsminor.yy0;
         break;
       case 249: /* stmt_loop_begin ::= LOOP */
       case 250: /* stmt_loop_begin2 ::= LOOP_WITH_SEMICOLON */ yytestcase(yyruleno==250);
 #line 667 "cp1_parse.y"
 { _NCp1_Pstmt_loop_begin_0(); }
-#line 4691 "out/cp1_parse.c"
+#line 4690 "out/cp1_parse.c"
         break;
       case 251: /* loop_expr0 ::= begin_pos expr end_pos */
       case 257: /* loop_expr2 ::= SPACE begin_pos expr end_pos */ yytestcase(yyruleno==257);
 #line 675 "cp1_parse.y"
 { _NCp1_Pstmt_loop_set_6(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, 0); }
-#line 4697 "out/cp1_parse.c"
+#line 4696 "out/cp1_parse.c"
         break;
       case 252: /* loop_continue_begin ::= */
 #line 679 "cp1_parse.y"
 { yymsp[1].minor.yy0.pointer = _NCp1_Pstmt_space_begin_detach_0(); }
-#line 4702 "out/cp1_parse.c"
+#line 4701 "out/cp1_parse.c"
         break;
       case 253: /* loop_continue_end ::= */
 #line 681 "cp1_parse.y"
 { _NCp1_Pstmt_space_end_0(); }
-#line 4707 "out/cp1_parse.c"
+#line 4706 "out/cp1_parse.c"
         break;
       case 254: /* loop_forever ::= */
 #line 686 "cp1_parse.y"
 { _NCp1_Pstmt_loop_set_6(-1, 0, 0, 0, 0, 0); }
-#line 4712 "out/cp1_parse.c"
+#line 4711 "out/cp1_parse.c"
         break;
       case 255: /* loop_expr2 ::= SPACE begin_pos expr end_pos SEMICOLON loop_continue_begin SPACE loop_continue_stmts loop_continue_end */
 #line 689 "cp1_parse.y"
 { _NCp1_Pstmt_loop_set_6(yymsp[-6].minor.yy0.basic.id, yymsp[-7].minor.yy0.basic.row, yymsp[-7].minor.yy0.basic.col, yymsp[-5].minor.yy0.basic.row, yymsp[-5].minor.yy0.basic.col, yymsp[-3].minor.yy0.pointer); }
-#line 4717 "out/cp1_parse.c"
+#line 4716 "out/cp1_parse.c"
         break;
       case 256: /* loop_expr2 ::= SEMICOLON loop_continue_begin SPACE loop_continue_stmts loop_continue_end */
 #line 691 "cp1_parse.y"
 { _NCp1_Pstmt_loop_set_6(-1, 0, 0, 0, 0, yymsp[-3].minor.yy0.pointer); }
-#line 4722 "out/cp1_parse.c"
+#line 4721 "out/cp1_parse.c"
         break;
       case 258: /* loop_expr2 ::= SPACE begin_pos expr end_pos SEMICOLON */
 #line 695 "cp1_parse.y"
 { _NCp1_Pstmt_loop_set_6(yymsp[-2].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col, yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col, 0); }
-#line 4727 "out/cp1_parse.c"
+#line 4726 "out/cp1_parse.c"
         break;
       case 259: /* stmt_loop ::= stmt_loop_begin SPACE_THEN_OPEN_CURLY_BRACE loop_forever stmts_optional2 */
       case 260: /* stmt_loop ::= stmt_loop_begin SPACE loop_expr0 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */ yytestcase(yyruleno==260);
@@ -4732,201 +4731,201 @@ static YYACTIONTYPE yy_reduce(
       case 262: /* stmt_loop ::= stmt_loop_begin2 SPACE stmt_lvars_no_begin SEMICOLON loop_expr2 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */ yytestcase(yyruleno==262);
 #line 698 "cp1_parse.y"
 { _NCp1_Pstmt_loop_end_0(); }
-#line 4735 "out/cp1_parse.c"
+#line 4734 "out/cp1_parse.c"
         break;
       case 263: /* stmt ::= stmt_if_chain */
       case 264: /* stmt ::= stmt_if_chain stmt_else */ yytestcase(yyruleno==264);
 #line 709 "cp1_parse.y"
 { _NCp1_Pstmt_if_end_ifs_0(); }
-#line 4741 "out/cp1_parse.c"
+#line 4740 "out/cp1_parse.c"
         break;
       case 265: /* stmt_if_begin ::= IF SPACE */
 #line 713 "cp1_parse.y"
 { _NCp1_Pstmt_if_begin_0(); }
-#line 4746 "out/cp1_parse.c"
+#line 4745 "out/cp1_parse.c"
         break;
       case 266: /* stmt_elif_begin ::= SPACE_ELIF SPACE */
 #line 715 "cp1_parse.y"
 { _NCp1_Pstmt_elif_begin_0(); }
-#line 4751 "out/cp1_parse.c"
+#line 4750 "out/cp1_parse.c"
         break;
       case 267: /* stmt_else_set ::= SPACE_ELSE SPACE_THEN_OPEN_CURLY_BRACE */
 #line 717 "cp1_parse.y"
 { _NCp1_Pstmt_else_set_0(); }
-#line 4756 "out/cp1_parse.c"
+#line 4755 "out/cp1_parse.c"
         break;
       case 268: /* if_expr ::= begin_pos expr end_pos */
 #line 719 "cp1_parse.y"
 { _NCp1_Pstmt_if_set_5(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 4761 "out/cp1_parse.c"
+#line 4760 "out/cp1_parse.c"
         break;
       case 269: /* stmt_if ::= stmt_if_begin if_expr SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
 #line 721 "cp1_parse.y"
 { _NCp1_Pstmt_if_end_0(); }
-#line 4766 "out/cp1_parse.c"
+#line 4765 "out/cp1_parse.c"
         break;
       case 270: /* elif_expr ::= begin_pos expr end_pos */
 #line 723 "cp1_parse.y"
 { _NCp1_Pstmt_elif_set_5(yymsp[-1].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 4771 "out/cp1_parse.c"
+#line 4770 "out/cp1_parse.c"
         break;
       case 271: /* stmt_elif ::= stmt_elif_begin elif_expr SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
 #line 725 "cp1_parse.y"
 { _NCp1_Pstmt_elif_end_0(); }
-#line 4776 "out/cp1_parse.c"
+#line 4775 "out/cp1_parse.c"
         break;
       case 272: /* stmt_else ::= stmt_else_set stmts_optional2 */
 #line 727 "cp1_parse.y"
 { _NCp1_Pstmt_else_end_0(); }
-#line 4781 "out/cp1_parse.c"
+#line 4780 "out/cp1_parse.c"
         break;
       case 273: /* stmt_switch_begin ::= SWITCH */
 #line 733 "cp1_parse.y"
 { _NCp1_Pstmt_switch_begin_0(); }
-#line 4786 "out/cp1_parse.c"
+#line 4785 "out/cp1_parse.c"
         break;
       case 274: /* switch_expr ::= begin_pos SPACE expr end_pos */
 #line 735 "cp1_parse.y"
 { _NCp1_Pstmt_switch_set_6(yymsp[-1].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, -1); }
-#line 4791 "out/cp1_parse.c"
+#line 4790 "out/cp1_parse.c"
         break;
       case 275: /* switch_expr ::= begin_pos DOT callExpr_func SPACE expr end_pos */
 #line 737 "cp1_parse.y"
 { _NCp1_Pstmt_switch_set_6(yymsp[-1].minor.yy0.basic.id, yymsp[-5].minor.yy0.basic.row, yymsp[-5].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, yymsp[-3].minor.yy0.basic.id); }
-#line 4796 "out/cp1_parse.c"
+#line 4795 "out/cp1_parse.c"
         break;
       case 276: /* switch_case_expr ::= expr */
 #line 739 "cp1_parse.y"
 { _NCp1_Pstmt_switch_expr_add_1(yymsp[0].minor.yy0.basic.id); }
-#line 4801 "out/cp1_parse.c"
+#line 4800 "out/cp1_parse.c"
         break;
       case 277: /* switch_case_fall ::= */
 #line 743 "cp1_parse.y"
 { yymsp[1].minor.yy0.basic.id = 0; }
-#line 4806 "out/cp1_parse.c"
+#line 4805 "out/cp1_parse.c"
         break;
       case 279: /* switch_case_expr_end ::= CASE SPACE switch_case_paren_or_expr switch_case_fall end_pos */
 #line 748 "cp1_parse.y"
 { _NCp1_Pstmt_switch_case_begin_5(yymsp[-4].minor.yy0.basic.row, yymsp[-4].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, yymsp[-1].minor.yy0.basic.id); }
-#line 4811 "out/cp1_parse.c"
+#line 4810 "out/cp1_parse.c"
         break;
       case 280: /* switch_case ::= switch_case_expr_end SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
 #line 750 "cp1_parse.y"
 { _NCp1_Pstmt_switch_case_end_0(); }
-#line 4816 "out/cp1_parse.c"
+#line 4815 "out/cp1_parse.c"
         break;
       case 281: /* switch_default_begin ::= DEFAULT switch_case_fall end_pos */
 #line 752 "cp1_parse.y"
 { _NCp1_Pstmt_switch_default_begin_5(yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col, yymsp[-1].minor.yy0.basic.id); }
-#line 4821 "out/cp1_parse.c"
+#line 4820 "out/cp1_parse.c"
         break;
       case 282: /* switch_case ::= switch_default_begin SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
 #line 754 "cp1_parse.y"
 { _NCp1_Pstmt_switch_default_end_0(); }
-#line 4826 "out/cp1_parse.c"
+#line 4825 "out/cp1_parse.c"
         break;
       case 283: /* stmt_switch ::= stmt_switch_begin switch_expr SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space switch_cases close_curly_brace_or_space */
       case 284: /* stmt_switch ::= stmt_switch_begin switch_expr SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE */ yytestcase(yyruleno==284);
 #line 758 "cp1_parse.y"
 { _NCp1_Pstmt_switch_end_0(); }
-#line 4832 "out/cp1_parse.c"
+#line 4831 "out/cp1_parse.c"
         break;
       case 285: /* stmt_continue ::= begin_pos CONTINUE end_pos */
 #line 764 "cp1_parse.y"
 { _NCp1_Pstmt_continue_5(-1, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 4837 "out/cp1_parse.c"
+#line 4836 "out/cp1_parse.c"
         break;
       case 286: /* stmt_break ::= begin_pos BREAK end_pos */
 #line 768 "cp1_parse.y"
 { _NCp1_Pstmt_break_5(-1, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 4842 "out/cp1_parse.c"
+#line 4841 "out/cp1_parse.c"
         break;
       case 287: /* stmt_return ::= begin_pos RETURN end_pos */
 #line 772 "cp1_parse.y"
 { _NCp1_Pstmt_return_5(-1, yymsp[-2].minor.yy0.basic.row, yymsp[-2].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 4847 "out/cp1_parse.c"
+#line 4846 "out/cp1_parse.c"
         break;
       case 288: /* stmt_return ::= begin_pos RETURN SPACE expr end_pos */
 #line 774 "cp1_parse.y"
 { _NCp1_Pstmt_return_5(yymsp[-1].minor.yy0.basic.id, yymsp[-4].minor.yy0.basic.row, yymsp[-4].minor.yy0.basic.col, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 4852 "out/cp1_parse.c"
+#line 4851 "out/cp1_parse.c"
         break;
       case 289: /* stmt_lvars ::= decl_lvar_begin lvar_list */
       case 290: /* stmt_lvars_no_begin ::= lvar_list */ yytestcase(yyruleno==290);
 #line 782 "cp1_parse.y"
 { _NCp1_Pstmt_lvar_end_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 4858 "out/cp1_parse.c"
+#line 4857 "out/cp1_parse.c"
         break;
       case 291: /* decl_lvar ::= ID typeAndInfo_optional SPACE_EQUAL_SPACE expr */
 #line 786 "cp1_parse.y"
 { _NCp1_Pstmt_lvar_add_4(yymsp[-3].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, yymsp[-3].minor.yy0.basic.row, yymsp[-3].minor.yy0.basic.col); }
-#line 4863 "out/cp1_parse.c"
+#line 4862 "out/cp1_parse.c"
         break;
       case 292: /* decl_lvar ::= ID typeAndInfo_optional */
 #line 788 "cp1_parse.y"
 { _NCp1_Pstmt_lvar_add_4(yymsp[-1].minor.yy0.basic.id, -1, yymsp[-1].minor.yy0.basic.row, yymsp[-1].minor.yy0.basic.col); }
-#line 4868 "out/cp1_parse.c"
+#line 4867 "out/cp1_parse.c"
         break;
       case 294: /* lvar_list ::= decl_lvars */
 #line 794 "cp1_parse.y"
 { yymsp[0].minor.yy0.basic.row = _Grow; yymsp[0].minor.yy0.basic.col = _Gcol; }
-#line 4873 "out/cp1_parse.c"
+#line 4872 "out/cp1_parse.c"
         break;
       case 297: /* decl_var_attr ::= SPACE_AT_EXTERN */
 #line 802 "cp1_parse.y"
 { _NCp1_Pdecl_var_attr_extern_0(); }
-#line 4878 "out/cp1_parse.c"
+#line 4877 "out/cp1_parse.c"
         break;
       case 298: /* decl_var_attr ::= SPACE_AT_NO_DECL */
 #line 804 "cp1_parse.y"
 { _NCp1_Pdecl_var_attr_no_decl_0(); }
-#line 4883 "out/cp1_parse.c"
+#line 4882 "out/cp1_parse.c"
         break;
       case 299: /* decl_struct_attr ::= SPACE_AT_NO_DECL */
 #line 829 "cp1_parse.y"
 { _NCp1_Pstruct_attr_no_decl_0(); }
-#line 4888 "out/cp1_parse.c"
+#line 4887 "out/cp1_parse.c"
         break;
       case 300: /* decl_struct_attr ::= SPACE_AT_REAL_NAME_STR */
 #line 831 "cp1_parse.y"
 { _NCp1_Pstruct_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
-#line 4893 "out/cp1_parse.c"
+#line 4892 "out/cp1_parse.c"
         break;
       case 301: /* decl_struct_attr ::= SPACE_AT_REAL_NAME */
 #line 833 "cp1_parse.y"
 { _NCp1_Pstruct_attr_real_name_1(-1); }
-#line 4898 "out/cp1_parse.c"
+#line 4897 "out/cp1_parse.c"
         break;
       case 302: /* decl_struct_attr ::= SPACE_AT_UNION */
 #line 835 "cp1_parse.y"
 { _NCp1_Pstruct_attr_union_0(); }
-#line 4903 "out/cp1_parse.c"
+#line 4902 "out/cp1_parse.c"
         break;
       case 303: /* decl_struct_attrs_optional ::= end_pos */
       case 304: /* decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos */ yytestcase(yyruleno==304);
 #line 839 "cp1_parse.y"
 { _NCp1_Pdecl_struct_end_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 4909 "out/cp1_parse.c"
+#line 4908 "out/cp1_parse.c"
         break;
       case 305: /* decl_func ::= func_decl SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
 #line 843 "cp1_parse.y"
 { _NCp1_Pfunc_body_end_0(); }
-#line 4914 "out/cp1_parse.c"
+#line 4913 "out/cp1_parse.c"
         break;
       case 312: /* enum_base_begin ::= */
 #line 863 "cp1_parse.y"
 { _NCp1_Penum_base_begin_0(); }
-#line 4919 "out/cp1_parse.c"
+#line 4918 "out/cp1_parse.c"
         break;
       case 313: /* enum_base_end ::= COLON at end_pos */
 #line 865 "cp1_parse.y"
 { _NCp1_Pdecl_enum_end_3(yymsp[-1].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 4924 "out/cp1_parse.c"
+#line 4923 "out/cp1_parse.c"
         break;
       case 314: /* decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional */
 #line 871 "cp1_parse.y"
 { _NCp1_Pdecl_var_as_gvar_0(); }
-#line 4929 "out/cp1_parse.c"
+#line 4928 "out/cp1_parse.c"
         break;
       default:
       /* (315) cp1 ::= decls space_or_end */ yytestcase(yyruleno==315);
@@ -5118,7 +5117,7 @@ static void yy_syntax_error(
    }
    exit(EXIT_FAILURE);
    return;
-#line 5121 "out/cp1_parse.c"
+#line 5120 "out/cp1_parse.c"
 /************ End %syntax_error code ******************************************/
   cp1ParseARG_STORE /* Suppress warning about unused %extra_argument variable */
   cp1ParseCTX_STORE

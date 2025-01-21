@@ -316,7 +316,7 @@ fvar_attrs_optional ::= fvar_attrs_list.
 fvar ::= fvar_decl typeAndInfo_optional fvar_attrs_optional.
    { _NCp1_Pdecl_var_as_fvar_0(); }
 struct_fvars ::= fvar.
-struct_fvars ::= struct_fvars COMMA_SPACE fvar.
+struct_fvars ::= struct_fvars SEMICOLON SPACE fvar.
 enum_cvars ::= enum_cvar.
 enum_cvars ::= enum_cvars COMMA_SPACE enum_cvar.
 enum_cvars_decl ::= enum_cvar_decl.
@@ -849,9 +849,9 @@ decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_spac
    { _NCp1_Pdecl_at_end_0(); }
 decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE.
    { _NCp1_Pdecl_at_end_0(); }
-decl_struct ::= struct_decl_begin open_parenthesis_or_space CLOSE_PARENTHESIS
+decl_struct ::= struct_decl_begin SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE
    decl_struct_attrs_optional decl_struct_close_or_at.
-decl_struct ::= struct_decl_begin open_parenthesis_or_space struct_fvars close_parenthesis_or_comma
+decl_struct ::= struct_decl_begin SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space struct_fvars close_curly_brace_or_scolon
    decl_struct_attrs_optional decl_struct_close_or_at.
 decl_enum_close_or_at ::= SEMICOLON.
    { _NCp1_Pdecl_at_end_0(); }
