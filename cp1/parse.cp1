@@ -1182,6 +1182,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             }
             case #id-upper {
                tok.val.ii32.id = lex.get-id(0, 0);
+               if lex.cursor[0] == ''( {
+                  t = #id-then-open-parenthesis;
+               }
                .last-token = t;
                psr.parse(t, tok);
             }

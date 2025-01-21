@@ -1723,6 +1723,9 @@ cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
 case _NCp1_NToken_Cid_upper:;
 _Ltok_32._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_29, 0, 0);
+if(_Llex_29._Fcursor[0] == '(') {
+_Lt_33 = _NCp1_NToken_Cid_then_open_parenthesis;
+}
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
