@@ -29,12 +29,14 @@
 #define _NCp1_NToken_Cid_upper (_NCp1_NToken_Cid_then_open_parenthesis + 1)
 #define _NCp1_NToken_Cdot_id_upper (_NCp1_NToken_Cid_upper + 1)
 #define _NCp1_NToken_Chash_id (_NCp1_NToken_Cdot_id_upper + 1)
-#define _NCp1_NToken_Cid (_NCp1_NToken_Chash_id + 1)
+#define _NCp1_NToken_Cstruct (_NCp1_NToken_Chash_id + 1)
+#define _NCp1_NToken_Cid (_NCp1_NToken_Cstruct + 1)
 #define _NCp1_NToken_Cspace_at_real_name_str (_NCp1_NToken_Cid + 1)
 #define _NCp1_NToken_Cspace_at_real_name (_NCp1_NToken_Cspace_at_real_name_str + 1)
 #define _NCp1_NToken_Cspace_at_no_decl (_NCp1_NToken_Cspace_at_real_name + 1)
 #define _NCp1_NToken_Cspace_equal_space (_NCp1_NToken_Cspace_at_no_decl + 1)
-#define _NCp1_NToken_Cinclude (_NCp1_NToken_Cspace_equal_space + 1)
+#define _NCp1_NToken_Cenum (_NCp1_NToken_Cspace_equal_space + 1)
+#define _NCp1_NToken_Cinclude (_NCp1_NToken_Cenum + 1)
 #define _NCp1_NToken_Cspace_close_curly_brace (_NCp1_NToken_Cinclude + 1)
 #define _NCp1_NToken_Cgrave (_NCp1_NToken_Cspace_close_curly_brace + 1)
 #define _NCp1_NToken_Cusing (_NCp1_NToken_Cgrave + 1)
@@ -1045,11 +1047,13 @@ case _NCp1_NToken_Cid_then_open_parenthesis: return "id-then-open-parenthesis";
 case _NCp1_NToken_Cid_upper: return "id-upper";
 case _NCp1_NToken_Cdot_id_upper: return "dot-id-upper";
 case _NCp1_NToken_Chash_id: return "hash-id";
+case _NCp1_NToken_Cstruct: return "struct";
 case _NCp1_NToken_Cid: return "id";
 case _NCp1_NToken_Cspace_at_real_name_str: return "space-at-real-name-str";
 case _NCp1_NToken_Cspace_at_real_name: return "space-at-real-name";
 case _NCp1_NToken_Cspace_at_no_decl: return "space-at-no-decl";
 case _NCp1_NToken_Cspace_equal_space: return "space-equal-space";
+case _NCp1_NToken_Cenum: return "enum";
 case _NCp1_NToken_Cinclude: return "include";
 case _NCp1_NToken_Cspace_close_curly_brace: return "space-close-curly-brace";
 case _NCp1_NToken_Cgrave: return "grave";
@@ -3222,7 +3226,7 @@ void _NCp1_Pstmt_lvar_end_2(int32_t _Lend_row_0, int32_t _Lend_col_1) {
 }
 void _NCp1_Pdecl_include_begin_3(_NCp1_NInclude _Linc_0, int32_t _Lrow_1, int32_t _Lcol_2) {
 if(_Gdecl_include != _NCp1_NInclude_Cnil) {
-fprintf(stdout, "%s:%u:%u: Cannot {include inside another {include of %u:%u\n", input_path, _Lrow_1, _Lcol_2, _Gdecl_include_row, _Gdecl_include_col);
+fprintf(stdout, "%s:%u:%u: Cannot include inside another include of %u:%u\n", input_path, _Lrow_1, _Lcol_2, _Gdecl_include_row, _Gdecl_include_col);
 exit(_NLibC_NExit_Cfailure);
 return;
 }

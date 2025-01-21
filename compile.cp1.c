@@ -215,8 +215,8 @@ _NCp1_NBasicTypeId _Fbasic;
 };
 union _NCp1_NAtType;
 union _NCp1_NAtType {
-_NCp1_NStruct _Fstruct;
-_NCp1_NEnum _Fenum;
+_NCp1_NStruct _Fstructt;
+_NCp1_NEnum _Fenumm;
 };
 struct _NCp1_NAtData;
 struct _NCp1_NAtData {
@@ -1169,14 +1169,14 @@ if((*_Lf_11)._Fthis_idx != -1) {
 struct _NCp1_NAtData* _Lat_12;
 _Lat_12 = _NCp1_NAt_Pptr_1((*_Lf_11)._Fat);
 if((*_Lat_12)._Ftype == _NCp1_NNameType_Cstruct_enum) {
-if((*_Lat_12)._Fdecl._Fenum == _NCp1_NEnum_Cnil) {
+if((*_Lat_12)._Fdecl._Fenumm == _NCp1_NEnum_Cnil) {
 fprintf(stdout, "%s:%u:%u: function using ':this' was declared on :%s which is not defined\n", _NCp1_NFile_Ppath_1((*_Lf_11)._Ffile), (*_Lf_11)._Fbegin_row, (*_Lf_11)._Fbegin_col, _NCp1_NId_Pstr_1((*_Lat_12)._Fname._Fid));
 exit(_NLibC_NExit_Cfailure);
 }
 if((*_Lat_12)._Fdef == _NCp1_NAtDef_Cstruct) {
 struct _NCp1_NStructData* _Lt_13;
 int32_t _Lt_method_idx_14;
-_Lt_13 = _NCp1_NStruct_Pptr_1((*_Lat_12)._Fdecl._Fstruct);
+_Lt_13 = _NCp1_NStruct_Pptr_1((*_Lat_12)._Fdecl._Fstructt);
 _Lt_method_idx_14 = (*_Lt_13)._Fmethod_c++;
 if((*_Lt_13)._Fmethod_cap <= (*_Lt_13)._Fmethod_c) {
 int32_t _Lold_cap_15;
@@ -1188,7 +1188,7 @@ _NCp1_Prealloc_3((*_Lt_13)._Fmethod_v, (*_Lt_13)._Fmethod_cap, _Lold_cap_15);
 } else if((*_Lat_12)._Fdef == _NCp1_NAtDef_Cenum) {
 struct _NCp1_NEnumData* _Lt_16;
 int32_t _Lt_method_idx_17;
-_Lt_16 = _NCp1_NEnum_Pptr_1((*_Lat_12)._Fdecl._Fenum);
+_Lt_16 = _NCp1_NEnum_Pptr_1((*_Lat_12)._Fdecl._Fenumm);
 _Lt_method_idx_17 = (*_Lt_16)._Fmethod_c++;
 if((*_Lt_16)._Fmethod_cap <= (*_Lt_16)._Fmethod_c) {
 int32_t _Lold_cap_18;
@@ -1727,7 +1727,7 @@ void _NCp1_NAtData_Pinit_4(struct _NCp1_NAtData* _Lat_0, _NCp1_NNameType _Ltype_
 (*_Lat_0)._Fgvar_c = 0;
 (*_Lat_0)._Fgvar_cap = 0;
 (*_Lat_0)._Fgvar_v = NULL;
-(*_Lat_0)._Fdecl._Fstruct = _NCp1_NStruct_Cnil;
+(*_Lat_0)._Fdecl._Fstructt = _NCp1_NStruct_Cnil;
 (*_Lat_0)._Fdef = _NCp1_NAtDef_Cundefined;
 }
 void _NCp1_Pread_1(char* _Lin_path_0) {
@@ -2005,7 +2005,7 @@ if((*_Lat_54)._Fdef == _NCp1_NAtDef_Cstruct) {
 fprintf(stdout, "struct\n");
 }
 }
-(*_Lat_54)._Fdecl._Fenum = _Le_idx_51;
+(*_Lat_54)._Fdecl._Fenumm = _Le_idx_51;
 (*_Lat_54)._Fdef = _NCp1_NAtDef_Cenum;
 if(((*_Le_52)._Fflags & _NCp1_NEnumFlags_Creal_name) != _NCp1_NEnumFlags_C0) {
 _NCp1_NId_Prd_2(&(*_Le_52)._Freal_name, &_Lr_7);
@@ -2053,7 +2053,7 @@ if((*_Lat_62)._Fdef == _NCp1_NAtDef_Cenum) {
 fprintf(stdout, "enum\n");
 }
 }
-(*_Lat_62)._Fdecl._Fstruct = _Ls_idx_58;
+(*_Lat_62)._Fdecl._Fstructt = _Ls_idx_58;
 (*_Lat_62)._Fdef = _NCp1_NAtDef_Cstruct;
 int32_t _Lj_63;
 _Lj_63 = 0;
@@ -2369,17 +2369,17 @@ _Lat_4 = _NCp1_NAt_Pptr_1(_Lat_i_0);
 switch((*_Lat_4)._Ftype) {
 case _NCp1_NNameType_Cstruct_enum:;
 if((*_Lat_4)._Fdef == _NCp1_NAtDef_Cstruct) {
-if((*_Lat_4)._Fdecl._Fstruct == _NCp1_NStruct_Cnil) {
+if((*_Lat_4)._Fdecl._Fstructt == _NCp1_NStruct_Cnil) {
 fprintf(stdout, "%s:%u:%u: Error, struct '/%s' was not defined\n", _NCp1_NFile_Ppath_1(_Lfile_1), _Lrow_2, _Lcol_3, _NCp1_NId_Pstr_1((*_Lat_4)._Fname._Fid));
 exit(_NLibC_NExit_Cfailure);
 }
-_NCp1_NStruct_Poutput_1((*_Lat_4)._Fdecl._Fstruct);
+_NCp1_NStruct_Poutput_1((*_Lat_4)._Fdecl._Fstructt);
 } else if((*_Lat_4)._Fdef == _NCp1_NAtDef_Cenum) {
-if((*_Lat_4)._Fdecl._Fenum == _NCp1_NEnum_Cnil) {
+if((*_Lat_4)._Fdecl._Fenumm == _NCp1_NEnum_Cnil) {
 fprintf(stdout, "%s:%u:%u: Error, enum '\\%s' was not defined\n", _NCp1_NFile_Ppath_1(_Lfile_1), _Lrow_2, _Lcol_3, _NCp1_NId_Pstr_1((*_Lat_4)._Fname._Fid));
 exit(_NLibC_NExit_Cfailure);
 }
-_NCp1_NEnum_Poutput_1((*_Lat_4)._Fdecl._Fenum);
+_NCp1_NEnum_Poutput_1((*_Lat_4)._Fdecl._Fenumm);
 }
 break;
 case _NCp1_NNameType_Cbasic:;
@@ -2445,7 +2445,7 @@ _Lat_i_5 = (*_Lcvar_4)._Fdecl._Ftype;
 if(_Lat_i_5 != _NCp1_NAt_Cnil) {
 struct _NCp1_NAtData* _Lat_6;
 _Lat_6 = _NCp1_NAt_Pptr_1(_Lat_i_5);
-if((((*_Lat_6)._Ftype != _NCp1_NNameType_Cbasic) && ((*_Lat_6)._Fdecl._Fstruct == _NCp1_NStruct_Cnil))) {
+if((((*_Lat_6)._Ftype != _NCp1_NNameType_Cbasic) && ((*_Lat_6)._Fdecl._Fstructt == _NCp1_NStruct_Cnil))) {
 fprintf(stdout, "Error, the type '%s' used in cvar '.%s' was not defined\n", _NCp1_NId_Pstr_1((*_Lat_6)._Fname._Fid), _NCp1_NId_Pstr_1((*_Lcvar_4)._Fdecl._Fname));
 return false;
 }
@@ -2547,7 +2547,7 @@ case _NCp1_NNameType_Cstruct_enum:;
 if((*_Lat_1)._Fdef == _NCp1_NAtDef_Cstruct) {
 _NCp1_NStruct _Lt_idx_2;
 struct _NCp1_NStructData* _Lt_3;
-_Lt_idx_2 = (*_Lat_1)._Fdecl._Fstruct;
+_Lt_idx_2 = (*_Lat_1)._Fdecl._Fstructt;
 _Lt_3 = _NCp1_NStruct_Pptr_1(_Lt_idx_2);
 if(_Lt_idx_2 != _NCp1_NStruct_Cnil) {
 if(((*_Lt_3)._Fflags & _NCp1_NStructFlags_Creal_name) != _NCp1_NStructFlags_C0) {
@@ -2578,7 +2578,7 @@ _NCp1_NAt_Pwrite_space_1((*_Lat_1)._Fparent);
 fprintf(_Gout, "_N%s", _NCp1_NId_Pc_name_1((*_Lat_1)._Fname._Fid));
 } else if((*_Lat_1)._Fdef == _NCp1_NAtDef_Cenum) {
 _NCp1_NEnum _Lt_idx_4;
-_Lt_idx_4 = (*_Lat_1)._Fdecl._Fenum;
+_Lt_idx_4 = (*_Lat_1)._Fdecl._Fenumm;
 if(_Lt_idx_4 != _NCp1_NEnum_Cnil) {
 struct _NCp1_NEnumData* _Lt_5;
 _Lt_5 = _NCp1_NEnum_Pptr_1(_Lt_idx_4);
@@ -3402,7 +3402,7 @@ struct _NCp1_NAtData* _Lat_6;
 _Lat_i_5 = _NCp1_Pat_validate_5((*_Lvd_0)._Ftype, _Lbase_at_4, _Lfile_1, _Lrow_2, _Lcol_3);
 (*_Lvd_0)._Ftype = _Lat_i_5;
 _Lat_6 = _NCp1_NAt_Pptr_1(_Lat_i_5);
-if((((*_Lat_6)._Ftype != _NCp1_NNameType_Cbasic) && ((*_Lat_6)._Fdecl._Fstruct == _NCp1_NStruct_Cnil))) {
+if((((*_Lat_6)._Ftype != _NCp1_NNameType_Cbasic) && ((*_Lat_6)._Fdecl._Fstructt == _NCp1_NStruct_Cnil))) {
 fprintf(stdout, "%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Lrow_2, _Lcol_3, _NCp1_NId_Pstr_1((*_Lat_6)._Fname._Fid), _NCp1_NId_Pstr_1((*_Lvd_0)._Fname));
 return false;
 }
@@ -3841,7 +3841,7 @@ struct _NCp1_NExprFvar* _Le_1;
 _Le_1 = _Lexpr_0;
 _NCp1_NExprI_Pwrite_value_2((*_Le_1)._Fexpr, &(*_Le_1)._Fval);
 fprintf(_Gout, ".");
-_NCp1_NDeclVarData_Pwrite_2(&(*_NCp1_NStruct_Pptr_1((*_NCp1_NAt_Pptr_1((*_Le_1)._Fval._Ftype))._Fdecl._Fstruct))._Ffvar_v[(*_Le_1)._Ffvar]._Fdecl, _NCp1_NDeclVarType_Cfvar);
+_NCp1_NDeclVarData_Pwrite_2(&(*_NCp1_NStruct_Pptr_1((*_NCp1_NAt_Pptr_1((*_Le_1)._Fval._Ftype))._Fdecl._Fstructt))._Ffvar_v[(*_Le_1)._Ffvar]._Fdecl, _NCp1_NDeclVarType_Cfvar);
 }
 inline void _NCp1_NExprI_Pwrite_gvar_1(struct _NCp1_NExpr* _Lexpr_0) {
 struct _NCp1_NExprGvar* _Le_1;
@@ -5003,7 +5003,7 @@ inline void _NCp1_NExprI_Pvalue_fvar_5(_NCp1_NExprI _Lexpr_0, int8_t _Lreff_1, b
 struct _NCp1_NExprFvar* _Le_5;
 struct _NCp1_NFvarData* _Lfvar_6;
 _Le_5 = _NCp1_NExprI_Pptr_1(_Lexpr_0);
-_Lfvar_6 = (&(*_NCp1_NStruct_Pptr_1((*_NCp1_NAt_Pptr_1((*_Le_5)._Fval._Ftype))._Fdecl._Fstruct))._Ffvar_v[(*_Le_5)._Ffvar]);
+_Lfvar_6 = (&(*_NCp1_NStruct_Pptr_1((*_NCp1_NAt_Pptr_1((*_Le_5)._Fval._Ftype))._Fdecl._Fstructt))._Ffvar_v[(*_Le_5)._Ffvar]);
 _NCp1_NValue_Pset_5(_Lv_3, _Lreff_1, _Lparen_2, (*_Lfvar_6)._Fdecl._Ftype, &(*_Lfvar_6)._Fdecl._Ftype_info);
 if((*_Lv_3)._Freff == 1) {
 (*_Lv_3)._Fparen = false;
@@ -5251,7 +5251,7 @@ struct _NCp1_NExprFvar* _Le_2;
 _NCp1_NAt _Ltype_i_3;
 struct _NCp1_NAtData* _Ltype_4;
 _NCp1_NStruct _Lstruct_i_5;
-struct _NCp1_NStructData* _Lstruct_6;
+struct _NCp1_NStructData* _Lstructt_6;
 _NCp1_NId _Lmember_7;
 _Le_2 = _Lexpr_0;
 _Ltype_i_3 = _NCp1_NExprI_Ptype_1((*_Le_2)._Fexpr);
@@ -5271,19 +5271,19 @@ if((*_Le_2)._Fval._Finfo._Farray_c > 0) {
 fprintf(stdout, "%s:%u:%u - %u:%u Cannot get member '.%s' because the expression is an array(%d)\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _NCp1_NId_Pstr_1((*_Le_2)._Fmember), (*_Le_2)._Fval._Finfo._Farray_c);
 return;
 }
-if((*_Ltype_4)._Fdecl._Fstruct == _NCp1_NStruct_Cnil) {
+if((*_Ltype_4)._Fdecl._Fstructt == _NCp1_NStruct_Cnil) {
 fprintf(stdout, "%s:%u:%u - %u:%u Cannot get member '.%s' because the type '/%s' was not defined\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _NCp1_NId_Pstr_1((*_Le_2)._Fmember), _NCp1_NId_Pstr_1((*_Ltype_4)._Fname._Fid));
 return;
 }
-_Lstruct_i_5 = (*_Ltype_4)._Fdecl._Fstruct;
+_Lstruct_i_5 = (*_Ltype_4)._Fdecl._Fstructt;
 _NCp1_NStruct_Poutput_1(_Lstruct_i_5);
-_Lstruct_6 = _NCp1_NStruct_Pptr_1(_Lstruct_i_5);
+_Lstructt_6 = _NCp1_NStruct_Pptr_1(_Lstruct_i_5);
 _Lmember_7 = (*_Le_2)._Fmember;
 _NCp1_NFvar _Li_8;
 _Li_8 = (_NCp1_NFvar)(0);
-for(int i = (*_Lstruct_6)._Ffvar_c; i > 0; ) {
+for(int i = (*_Lstructt_6)._Ffvar_c; i > 0; ) {
 i --;
-if((*_Lstruct_6)._Ffvar_v[_Li_8]._Fdecl._Fname == _Lmember_7) {
+if((*_Lstructt_6)._Ffvar_v[_Li_8]._Fdecl._Fname == _Lmember_7) {
 (*_Le_2)._Ffvar = _Li_8;
 (*_Lok_1) = true;
 return;
@@ -5439,18 +5439,18 @@ _Lt_12 = (&_Gbasic_type[(*_Lat_9)._Fname._Fbasic]);
 _Lmethod_c_10 = (*_Lt_12)._Fmethod_c;
 _Lmethod_v_11 = (*_Lt_12)._Fmethod_v;
 } else {
-if((((*_Lat_9)._Fdecl._Fstruct == _NCp1_NStruct_Cnil) && ((*_Lat_9)._Ftype != _NCp1_NNameType_Cbasic) && ((*_Lat_9)._Ftype != _NCp1_NNameType_Cmodule))) {
+if((((*_Lat_9)._Fdecl._Fstructt == _NCp1_NStruct_Cnil) && ((*_Lat_9)._Ftype != _NCp1_NNameType_Cbasic) && ((*_Lat_9)._Ftype != _NCp1_NNameType_Cmodule))) {
 fprintf(stdout, "%s:%u:%u - %u:%u: Cannot call method %s because the type :%s is not defined\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _NCp1_NId_Pstr_1(_Lfunc_name_3), _NCp1_NId_Pstr_1((*_Lat_9)._Fname._Fid));
 return;
 }
 if((*_Lat_9)._Fdef == _NCp1_NAtDef_Cstruct) {
 struct _NCp1_NStructData* _Lt_13;
-_Lt_13 = _NCp1_NStruct_Pptr_1((*_Lat_9)._Fdecl._Fstruct);
+_Lt_13 = _NCp1_NStruct_Pptr_1((*_Lat_9)._Fdecl._Fstructt);
 _Lmethod_c_10 = (*_Lt_13)._Fmethod_c;
 _Lmethod_v_11 = (*_Lt_13)._Fmethod_v;
 } else if((*_Lat_9)._Fdef == _NCp1_NAtDef_Cenum) {
 struct _NCp1_NEnumData* _Lt_14;
-_Lt_14 = _NCp1_NEnum_Pptr_1((*_Lat_9)._Fdecl._Fenum);
+_Lt_14 = _NCp1_NEnum_Pptr_1((*_Lat_9)._Fdecl._Fenumm);
 _Lmethod_c_10 = (*_Lt_14)._Fmethod_c;
 _Lmethod_v_11 = (*_Lt_14)._Fmethod_v;
 }
@@ -6336,7 +6336,7 @@ _Llvar_3 = _NCp1_NLvar_Pptr_1((*_Le_2)._Flvar);
 inline void _NCp1_NExprI_Ptype_fvar_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1) {
 struct _NCp1_NExprFvar* _Le_2;
 _Le_2 = _Lexpr_0;
-(*_Lat_1) = (*_NCp1_NStruct_Pptr_1((*_NCp1_NAt_Pptr_1((*_Le_2)._Fval._Ftype))._Fdecl._Fstruct))._Ffvar_v[(*_Le_2)._Ffvar]._Fdecl._Ftype;
+(*_Lat_1) = (*_NCp1_NStruct_Pptr_1((*_NCp1_NAt_Pptr_1((*_Le_2)._Fval._Ftype))._Fdecl._Fstructt))._Ffvar_v[(*_Le_2)._Ffvar]._Fdecl._Ftype;
 }
 inline void _NCp1_NExprI_Ptype_gvar_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1) {
 struct _NCp1_NExprGvar* _Le_2;
