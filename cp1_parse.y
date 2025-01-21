@@ -542,6 +542,8 @@ funcExpr(l) ::= ID_THEN_OPEN_PARENTHESIS(func).
    { l.basic.id = -1; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 funcExpr(l) ::= at(at) DOT ID_THEN_OPEN_PARENTHESIS(func).
    { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
+funcExpr(l) ::= at(at) DOT_ID_UPPER_THEN_OPEN_PARENTHESIS(func).
+   { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 methodExpr(l) ::= value4fix(e) DOT ID_THEN_OPEN_PARENTHESIS(func).
    { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 methodExpr(l) ::= value4fix(e) DOT_ID_UPPER_THEN_OPEN_PARENTHESIS(func).

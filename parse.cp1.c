@@ -114,7 +114,8 @@
 #define _NCp1_NToken_Cspace_langle_equal_space (_NCp1_NToken_Cspace_langle_space + 1)
 #define _NCp1_NToken_Cspace_rangle_space (_NCp1_NToken_Cspace_langle_equal_space + 1)
 #define _NCp1_NToken_Cspace_rangle_equal_space (_NCp1_NToken_Cspace_rangle_space + 1)
-#define _NCp1_NToken_Chash (_NCp1_NToken_Cspace_rangle_equal_space + 1)
+#define _NCp1_NToken_Cdot_id_upper_then_open_parenthesis (_NCp1_NToken_Cspace_rangle_equal_space + 1)
+#define _NCp1_NToken_Chash (_NCp1_NToken_Cdot_id_upper_then_open_parenthesis + 1)
 #define _NCp1_NToken_Cspace_plus_equal_space (_NCp1_NToken_Chash + 1)
 #define _NCp1_NToken_Cspace_minus_equal_space (_NCp1_NToken_Cspace_plus_equal_space + 1)
 #define _NCp1_NToken_Cspace_mul_equal_space (_NCp1_NToken_Cspace_minus_equal_space + 1)
@@ -1132,6 +1133,7 @@ case _NCp1_NToken_Cspace_langle_space: return "space-langle-space";
 case _NCp1_NToken_Cspace_langle_equal_space: return "space-langle-equal-space";
 case _NCp1_NToken_Cspace_rangle_space: return "space-rangle-space";
 case _NCp1_NToken_Cspace_rangle_equal_space: return "space-rangle-equal-space";
+case _NCp1_NToken_Cdot_id_upper_then_open_parenthesis: return "dot-id-upper-then-open-parenthesis";
 case _NCp1_NToken_Chash: return "hash";
 case _NCp1_NToken_Cspace_plus_equal_space: return "space-plus-equal-space";
 case _NCp1_NToken_Cspace_minus_equal_space: return "space-minus-equal-space";
@@ -1722,6 +1724,9 @@ cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
 case _NCp1_NToken_Cdot_id_upper:;
 _Ltok_32._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_29, 1, 0);
+if(_Llex_29._Fcursor[0] == '(') {
+_Lt_33 = _NCp1_NToken_Cdot_id_upper_then_open_parenthesis;
+}
 _Glast_token = _Lt_33;
 cp1Parse(_Lpsr_28, _Lt_33, &_Ltok_32);
 break;
