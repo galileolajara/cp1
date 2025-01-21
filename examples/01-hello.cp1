@@ -36,11 +36,11 @@ main():intc { // intc is for compatibility with C's int, prefer to use i32 elsew
    var typed-var:i32 = 9;
    C.printf("typed-var is %d\n", typed-var);
 
-   var struct:Position+; // '+' means this is allocated on the stack
-   struct.x = 9;
-   struct.y = 11;
-   struct.go(#left);
-   C.printf("position is at %d, %d\n", struct.x, struct.y);
+   var pos:Position+; // '+' means this is allocated on the stack
+   pos.x = 9;
+   pos.y = 11;
+   pos.go(#left);
+   C.printf("position is at %d, %d\n", pos.x, pos.y);
 
    +dir = Direction#left;
    C.printf("direction is %s\n", dir.string());

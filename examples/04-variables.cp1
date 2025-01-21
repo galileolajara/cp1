@@ -15,7 +15,7 @@ main():intc {
    var also-an-integer:i32 = 8;
 
    var pointer-to-struct:Struct;
-   pointer-to-struct = C.malloc(enum Struct[usz]); // allocate the struct on heap
+   pointer-to-struct = C.malloc(Struct[usz]); // allocate the struct on heap
 
    var pointer-to-another-struct:Struct;
    C.malloc-one(pointer-to-another-struct); // malloc-one automatically computes the size needed
