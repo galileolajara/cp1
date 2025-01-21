@@ -5,11 +5,11 @@ using C = LibC;
 enum Direction[#right, #up, #left, #down]:u8 { // An 8-bit unsigned enum
    string(e:this):char[] { // An example method for enums
       switch e {
-         case #right { return "right"; }
-         case #up { return "up"; }
-         case #left { return "left"; }
-         case #down { return "down"; }
-         default { return "error"; }
+         case #right { return "right" }
+         case #up { return "up" }
+         case #left { return "left" }
+         case #down { return "down" }
+         default { return "error" }
       }
    }
 }
@@ -17,10 +17,10 @@ enum Direction[#right, #up, #left, #down]:u8 { // An 8-bit unsigned enum
 struct Position[x:i32, y:i32] { // A struct
    go(pos:this, dir:Direction) {
       switch dir {
-         case #right { pos.x++; }
-         case #up { pos.y++; }
-         case #left { pos.x--; }
-         case #down { pos.y--; }
+         case #right { pos.x++ }
+         case #up { pos.y++ }
+         case #left { pos.x-- }
+         case #down { pos.y-- }
       }
    }
 }
