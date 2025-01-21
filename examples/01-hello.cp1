@@ -1,28 +1,27 @@
 #include <stdio.h>
 #include <math.h>
-
 using C = LibC;
 
-ThisIsEnum[#no, #yes]:u8 { // An 8-bit unsigned enum
+Direction[#right, #up, #left, #down]:u8 { // An 8-bit unsigned enum
    string(e:this):char[] { // An example method for enums
       switch e {
-         case #no {
-            return "no";
-         }
-         case #yes {
-            return "yes";
-         }
-         default {
-            return "error";
-         }
+         case #right { return "right"; }
+         case #up { return "up"; }
+         case #left { return "left"; }
+         case #down { return "down"; }
+         default { return "error"; }
       }
    }
 }
 
-ThisIsStruct {x:i32; y:i32} { // A struct
-   distance(s:this):f32 { // An example method for structs
-      // f32 is for casting to float
-      return (s.x:f32.sqr() + s.y:f32.sqr()).sqrt(); // even f32 have methods (sqr, sqrt)
+Position {x:i32; y:i32} { // A struct
+   go(pos:this, dir:Direction) {
+      switch dir {
+         case #right { pos.x++; }
+         case #up { pos.y++; }
+         case #left { pos.x--; }
+         case #down { pos.y--; }
+      }
    }
 }
 
@@ -30,19 +29,20 @@ main():intc { // intc is for compatibility with C's int, prefer to use i32 elsew
    C.printf("Hello world!\n");
 
    +one = 1; // '+' is the quickest way to declare a variable
-   +seven = 4294967295u;
+   +seven = 7;
    +sum = one + seven;
    C.printf("%d + %d = %d\n", one, seven, sum);
 
    var typed-var:i32 = 9;
    C.printf("typed-var is %d\n", typed-var);
 
-   var struct:ThisIsStruct+; // '+' means this is allocated on the stack
+   var struct:Position+; // '+' means this is allocated on the stack
    struct.x = 9;
    struct.y = 11;
-   C.printf("distance is %f %f\n", struct.distance(), 0.9f);
+   struct.go(#left);
+   C.printf("position is at %d, %d\n", struct.x, struct.y);
 
-   +e = ThisIsEnum#no;
-   C.printf("enum is %s\n", e.string());
+   +dir = Direction#left;
+   C.printf("direction is %s\n", dir.string());
    return 0;
 }
