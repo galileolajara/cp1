@@ -3,7 +3,7 @@
 
 using C = LibC;
 
-Struct(x:i32, y:i32) {
+Struct {x:i32; y:i32} {
    init(s:this) {
       s.x = 0;
       s.y = 0;

@@ -2,7 +2,7 @@
 
 using C = LibC;
 
-Coord(x:i32, y:i32) { // a struct
+Coord {x:i32; y:i32} { // a struct
    init(s:this) { // a method
       s.x = 0;
       s.y = 0;

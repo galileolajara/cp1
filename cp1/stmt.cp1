@@ -16,14 +16,14 @@ StmtType[
    }
    cp1-name(e:this):char[] @cp1-name;
 }
-Stmt(
-   begin-row:i32,
-   begin-col:i32,
-   end-row:i32,
-   end-col:i32,
-   type:StmtType,
-   stmt-next:Stmt,
-   ) {
+Stmt {
+   begin-row:i32;
+   begin-col:i32;
+   end-row:i32;
+   end-col:i32;
+   type:StmtType;
+   stmt-next:Stmt;
+   } {
    write(s:this) {
       switch.write(s) s.type {
          default {
@@ -51,15 +51,15 @@ Stmt(
       return ok;
    }
 }
-StmtExpr(
-   base:Stmt+,
-   expr:ExprI,
-);
-StmtReturn(
-   base:Stmt+,
-   expr:ExprI,
-   val:Value+,
-);
+StmtExpr {
+   base:Stmt+;
+   expr:ExprI;
+};
+StmtReturn {
+   base:Stmt+;
+   expr:ExprI;
+   val:Value+;
+};
 stmt-push(s:Stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:StmtType) {
    // C.out.printf("%s:%u:%u - %u:%u stmt-push()\n", .input-path, begin-row, begin-col, end-row, end-col);
    // C.out.flush();

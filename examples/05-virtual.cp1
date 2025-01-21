@@ -5,7 +5,7 @@ using C = LibC;
 
 AnimalType[#cat, #dog]:u8; // 8-bit enum
 
-Animal(type:AnimalType) { // a struct with a method
+Animal {type:AnimalType} { // a struct with a method
    make-sound(a:this) {
       // a switch statement that collects methods that
       // begins with "emit-sound-" then automatically

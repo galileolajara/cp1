@@ -8,7 +8,7 @@ include(<stdio.h>) {
       sscanf(str:char[], fmt:char[]):intc @var-args @no-decl @real-name;
 
       var out:File @real-name(stdout) @no-decl;
-      File() @real-name(FILE) @no-decl {
+      File {} @real-name(FILE) @no-decl {
          printf(f:this, str:char[]):intc @var-args @no-decl @real-name(fprintf);
          flush(f:this):intc @no-decl @real-name(fflush);
          write(f:this, buf:ref, size:usz):usz @inline {

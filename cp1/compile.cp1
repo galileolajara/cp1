@@ -10,11 +10,11 @@ var func-head-outputted-c:i32;
 var func-head-outputted-v:Func[];
 var func-body-outputted-c:i32;
 var func-body-outputted-v:Func[];
-BasicType(
-   method-c:i32,
-   method-cap:i32,
-   method-v:Func[],
-);
+BasicType {
+   method-c:i32;
+   method-cap:i32;
+   method-v:Func[];
+};
 var basic-type:BasicType+[BasicTypeId#COUNT];
 basic-type(t:BasicTypeId):At @inline {
    return t;
@@ -36,13 +36,13 @@ File[#nil = -1, #0]:i32 {
       return f.ptr().path;
    }
 }
-FileData(
-   path:char[],
-   data:ref,
-   id-table:Id[],
-   at-table:At[],
-   cvar-table:Cvar[],
-);
+FileData {
+   path:char[];
+   data:ref;
+   id-table:Id[];
+   at-table:At[];
+   cvar-table:Cvar[];
+};
 var id-table:Id[];
 var include-table-cap:i32;
 var include-table:Include[];

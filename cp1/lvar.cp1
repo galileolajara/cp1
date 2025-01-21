@@ -40,13 +40,13 @@ LvarFlags[
       w.n1(f);
    }
 }
-LvarData(
-   row:i32,
-   col:i32,
-   decl:DeclVarData+,
-   flags:LvarFlags,
-   set-expr:ExprI,
-);
+LvarData {
+   row:i32;
+   col:i32;
+   decl:DeclVarData+;
+   flags:LvarFlags;
+   set-expr:ExprI;
+};
 expr-lvar(name:Id, decl:u8, row:i32, col:i32):ExprI {
    if decl == 0 {
       +space = .decl-func-ctx-space;
