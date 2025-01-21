@@ -19,7 +19,7 @@ ThisIsEnum[#no, #yes]:u8 { // An 8-bit unsigned enum
    }
 }
 
-ThisIsStruct(x:i32, y:i32) { // A struct
+ThisIsStruct {x:i32; y:i32} { // A struct
    distance(s:this):f32 { // An example method for structs
       // f32 is for casting to float
       return (s.x:f32.sqr() + s.y:f32.sqr()).sqrt(); // even f32 have methods (sqr, sqrt)

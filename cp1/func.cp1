@@ -78,11 +78,11 @@ using (DeclFunc) {
       }
    }
 }
-Farg(
-   row:i32,
-   col:i32,
-   decl:DeclVarData+,
-   ) {
+Farg {
+   row:i32;
+   col:i32;
+   decl:DeclVarData+;
+   } {
    rd(f:this, r:Rdr) {
       f.decl.rd(r);
    }

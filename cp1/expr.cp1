@@ -210,10 +210,10 @@ ExprI[#nil = -1, #0, #1]:i32 {
    }
 }
 ExprFlags[#0, #processed = 1]:u8;
-Expr(
-   type:ExprType,
-   flags:ExprFlags,
-   ) {
+Expr {
+   type:ExprType;
+   flags:ExprFlags;
+   } {
    write(e:this, out:C.File) {
       switch e.type {
          case #call {
@@ -260,32 +260,32 @@ BasicTypeId[
 // }
    cp1-name(e:this):char[] @cp1-name;
 }
-ExprLvar(
-   base:Expr+,
-   lvar:Lvar,
-);
-ExprChar(
-   base:Expr+,
-   value:char,
-);
-ExprBool(
-   base:Expr+,
-   value:bool,
-);
-ExprNull(
-   base:Expr+,
-);
-ExprStrNode(
-   next:ExprStrNode,
-   len:i32,
-   buf:char[0],
-);
-ExprStr(
-   base:Expr+,
-   node-c:i32,
-   first:ExprStrNode,
-   last:ExprStrNode,
-);
+ExprLvar {
+   base:Expr+;
+   lvar:Lvar;
+};
+ExprChar {
+   base:Expr+;
+   value:char;
+};
+ExprBool {
+   base:Expr+;
+   value:bool;
+};
+ExprNull {
+   base:Expr+;
+};
+ExprStrNode {
+   next:ExprStrNode;
+   len:i32;
+   buf:char[0];
+};
+ExprStr {
+   base:Expr+;
+   node-c:i32;
+   first:ExprStrNode;
+   last:ExprStrNode;
+};
 var expr-c:i32;
 var expr-cap:i32;
 var expr-v:Expr[];
@@ -300,20 +300,20 @@ expr-push(e:Expr, type:ExprType):ExprI {
    .expr-v[e-idx] = e;
    return e-idx;
 }
-ExprIntValue(
-   ii32:i32,
-   uu32:u32,
-   ff32:f32,
-) @union;
-ExprIntData(
-   base:Expr+,
-   value:ExprIntValue+,
-   type:ExprInt,
-);
-ExprSizeOfType(
-   base:Expr+,
-   type:At,
-);
+ExprIntValue {
+   ii32:i32;
+   uu32:u32;
+   ff32:f32;
+} @union;
+ExprIntData {
+   base:Expr+;
+   value:ExprIntValue+;
+   type:ExprInt;
+};
+ExprSizeOfType {
+   base:Expr+;
+   type:At;
+};
  
 
 }

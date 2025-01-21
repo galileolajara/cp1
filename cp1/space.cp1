@@ -6,16 +6,16 @@ StmtSpaceFlags[
    #skip-lvar-decl = 1,
    ]:u8 {
 }
-StmtSpace(
-   base:Stmt+,
-   parent:StmtSpace,
-   flags:StmtSpaceFlags,
-   stmt-first:Stmt,
-   stmt-last:Stmt,
-   lvar-c:i32,
-   lvar-cap:i32,
-   lvar-v:Lvar[],
-   ) {
+StmtSpace {
+   base:Stmt+;
+   parent:StmtSpace;
+   flags:StmtSpaceFlags;
+   stmt-first:Stmt;
+   stmt-last:Stmt;
+   lvar-c:i32;
+   lvar-cap:i32;
+   lvar-v:Lvar[];
+   } {
    rd-space(space:StmtSpace, r:Rdr) @case.rd() @inline {
       quick-alloc-one(+(s:StmtSpace));
       s.rd(r, space);

@@ -42,9 +42,9 @@ Struct[#nil = -1, #0, #1]:i32 {
       }
    }
 }
-FvarData(
-   decl:DeclVarData+,
-   ) {
+FvarData {
+   decl:DeclVarData+;
+   } {
    rd(f:this, r:Rdr) {
       f.decl.rd(r);
    }

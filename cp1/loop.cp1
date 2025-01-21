@@ -1,7 +1,7 @@
 using Cp1 = Cp1;
 using C = LibC;
 using (Cp1) {
-Nest(do:StmtLoop, reff:ref) @union;
+Nest {do:StmtLoop; reff:ref} @union;
 var nest-stack-ptr-v:Nest+[64];
 var nest-stack-id-v:i32[64];
 var nest-stack-c:u8;
@@ -92,17 +92,17 @@ stmt-loop-begin() {
    stmt-space-begin();
    .decl-func-ctx-space.flags |= #skip-lvar-decl;
 }
-StmtLoop(
-   base:Stmt+,
-   expr:ExprI,
-   val:Value+,
-   continu:StmtSpace,
-   end:StmtLoopEnd,
-);
-StmtLoopEnd(
-   base:Stmt+,
-   do:StmtLoop,
-);
+StmtLoop {
+   base:Stmt+;
+   expr:ExprI;
+   val:Value+;
+   continu:StmtSpace;
+   end:StmtLoopEnd;
+};
+StmtLoopEnd {
+   base:Stmt+;
+   do:StmtLoop;
+};
 stmt-loop-set(expr:ExprI, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, continu:StmtSpace) {
    quick-alloc-one(+(s:StmtLoop));
    .nest-stack-id-v[.nest-stack-c] = .nest-id++;

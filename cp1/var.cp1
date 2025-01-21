@@ -193,7 +193,7 @@ using (DeclVarData) {
    }
 }
 #type-info-star-limit:i32 = 8;
-Value(reff:i8, paren:bool, type:At, info:TypeInfo+) {
+Value {reff:i8; paren:bool; type:At; info:TypeInfo+} {
    set(v:this, reff:i8, paren:bool, type:At, info:TypeInfo) {
       +c = info.ref-v[info.array-c];
       v.type = type;
@@ -217,7 +217,7 @@ Value(reff:i8, paren:bool, type:At, info:TypeInfo+) {
       v.info.wr(w);
    }
 }
-TypeInfo(ref-v:i8[#type-info-star-limit], array-c:i8, star-c:i8, built-in:bool, const:bool) {
+TypeInfo {ref-v:i8[#type-info-star-limit]; array-c:i8; star-c:i8; built-in:bool; const:bool} {
    init(ti:this) {
       ti.ref-v[0] = 0;
       ti.array-c = 0;
