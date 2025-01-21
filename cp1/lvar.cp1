@@ -1,7 +1,7 @@
 using Cp1 = Cp1;
 using C = LibC;
 using (Cp1) {
-Lvar[#nil = -1, #0]:i32 {
+enum Lvar[#nil = -1, #0]:i32 {
    rd(l:this&, r:Rdr) @inline {
       l = (r.n() - 1):Lvar;
    }
@@ -28,7 +28,7 @@ Lvar[#nil = -1, #0]:i32 {
       return lvar.decl.process(.ctx-func.file, lvar.row, lvar.col, .ctx-func.at);
    }
 }
-LvarFlags[
+enum LvarFlags[
    #0,
    #set-expr = 1,
    #processed = 2,
@@ -40,13 +40,13 @@ LvarFlags[
       w.n1(f);
    }
 }
-LvarData {
-   row:i32;
-   col:i32;
-   decl:DeclVarData+;
-   flags:LvarFlags;
-   set-expr:ExprI;
-};
+struct LvarData[
+   row:i32,
+   col:i32,
+   decl:DeclVarData+,
+   flags:LvarFlags,
+   set-expr:ExprI,
+];
 expr-lvar(name:Id, decl:u8, row:i32, col:i32):ExprI {
    if decl == 0 {
       +space = .decl-func-ctx-space;

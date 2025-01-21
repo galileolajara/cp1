@@ -1,12 +1,12 @@
 using Cp1 = Cp1;
 using C = LibC;
 using (Cp1) {
-DeclVar[]:u32 {
+enum DeclVar[]:u32 {
    ptr(v:this):DeclVarData @inline {
       return .var-v[v];
    }
 }
-DeclVarType[#gvar, #fvar]:u8;
+enum DeclVarType[#gvar, #fvar]:u8;
 #decl-var-size-limit:i32 = 8;
 at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
    +type = vd-type.ptr();
@@ -49,7 +49,7 @@ using (DeclVarData) {
       +at-i = at-validate(vd.type, base-at, file, row, col);
       vd.type = at-i;
       +at = at-i.ptr();
-      if (&&, at.type != #basic, at.decl.struct == #nil) {
+      if (&&, at.type != #basic, at.decl.structt == #nil) {
          C.out.printf("%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", .ctx-func.file.path(), row, col, at.name.id.str(), vd.name.str());
          return false;
       }
@@ -193,7 +193,7 @@ using (DeclVarData) {
    }
 }
 #type-info-star-limit:i32 = 8;
-Value {reff:i8; paren:bool; type:At; info:TypeInfo+} {
+struct Value[reff:i8, paren:bool, type:At, info:TypeInfo+] {
    set(v:this, reff:i8, paren:bool, type:At, info:TypeInfo) {
       +c = info.ref-v[info.array-c];
       v.type = type;
@@ -217,7 +217,7 @@ Value {reff:i8; paren:bool; type:At; info:TypeInfo+} {
       v.info.wr(w);
    }
 }
-TypeInfo {ref-v:i8[#type-info-star-limit]; array-c:i8; star-c:i8; built-in:bool; const:bool} {
+struct TypeInfo[ref-v:i8[#type-info-star-limit], array-c:i8, star-c:i8, built-in:bool, const:bool] {
    init(ti:this) {
       ti.ref-v[0] = 0;
       ti.array-c = 0;
@@ -297,7 +297,7 @@ var decl-var-col:i32;
 // var stack-type-info:TypeInfo+; // [#type-info-stack-limit]}
 // var stack-type-info-c:i8;
 var decl-var:DeclVarData+;
-VarFlags[
+enum VarFlags[
    #0,
    #real-name = 1,
    #extern = 2,

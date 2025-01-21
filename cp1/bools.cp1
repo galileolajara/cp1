@@ -19,7 +19,7 @@ expr-bools-add(bools:ExprI, right:ExprI):ExprI {
    e.item-v[i].expr = right;
    return bools;
 }
-Bools[#and, #or]:u8 {
+enum Bools[#and, #or]:u8 {
    wr(e:this, w:Wtr) @inline {
       w.n1(e);
    }

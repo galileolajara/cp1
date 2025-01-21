@@ -61,7 +61,7 @@ using (StmtSpace) {
       space.stmt-push(s.base, 0, 0, 0, 0, #switch-end);
    }
 }
-CaseStack {cas:StmtCase; defaul:StmtDefault} @union;
+struct CaseStack[cas:StmtCase, defaul:StmtDefault] @union;
 var case-stack-v:CaseStack+[64];
 var case-stack-c:u8;
 using (Stmt) {
@@ -246,13 +246,13 @@ using (Stmt) {
       ok = true;
    }
 }
-StmtSwitchCaseFunc {
-   cvar:Cvar;
-   func:Func;
-};
-StmtSwitchEnd {
-   base:Stmt+;
-};
+struct StmtSwitchCaseFunc[
+   cvar:Cvar,
+   func:Func,
+];
+struct StmtSwitchEnd[
+   base:Stmt+,
+];
 var switch-expr-c:u32;
 var switch-expr-cap:u32;
 var switch-expr-v:ExprI[];
@@ -265,22 +265,22 @@ stmt-switch-expr-add(expr:ExprI) {
    }
    .switch-expr-v[expr-i] = expr;
 }
-StmtCase {
-   base:Stmt+;
-   fall-through:bool;
-   expr-c:u32;
-   expr-v:StmtCaseItem+[0];
-};
-StmtCaseEnd {
-   base:Stmt+;
-};
-StmtDefault {
-   base:Stmt+;
-   fall-through:bool;
-};
-StmtDefaultEnd {
-   base:Stmt+;
-};
+struct StmtCase[
+   base:Stmt+,
+   fall-through:bool,
+   expr-c:u32,
+   expr-v:StmtCaseItem+[0],
+];
+struct StmtCaseEnd[
+   base:Stmt+,
+];
+struct StmtDefault[
+   base:Stmt+,
+   fall-through:bool,
+];
+struct StmtDefaultEnd[
+   base:Stmt+,
+];
 stmt-switch-case-begin(begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, fall-through:bool) {
    +expr-c = .switch-expr-c;
    .switch-expr-c = 0;

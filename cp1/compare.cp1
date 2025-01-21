@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using (Cp1) {
-Compare[#eq, #not-eq, #lt, #le, #gt, #ge]:u8 {
+enum Compare[#eq, #not-eq, #lt, #le, #gt, #ge]:u8 {
    wr(e:this, w:Wtr) @inline {
       w.n1(e);
    }

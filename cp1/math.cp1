@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using (Cp1) {
-Math[#add, #sub, #mul, #div, #lshift, #rshift, #and, #or, #xor]:u8 {
+enum Math[#add, #sub, #mul, #div, #lshift, #rshift, #and, #or, #xor]:u8 {
    wr(e:this, w:Wtr) @inline {
       w.n1(e);
    }
@@ -150,9 +150,9 @@ using (ExprI) {
       // +right = e.right.type();
       // +left-size = left.real.basicType.to()Size;
       // if left-size > 0 {
-      //    if left-size > right.real.basicType.to()Size { 
-      //       v.decl = left;
-      //    }
+      //    if left-size > right.real.basicType.to()struct Size[ 
+      //       v.decl = left,
+      //    ]
       // }
       v.paren = paren;
       v.reff = reff;

@@ -1,10 +1,10 @@
 using Cp1 = Cp1;
 using C = LibC;
 using (Cp1) {
-StmtContinue {
-   base:Stmt+;
-   nest:u8;
-};
+struct StmtContinue[
+   base:Stmt+,
+   nest:u8,
+];
 stmt-continue(id:Id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
    quick-alloc-one(+(s:StmtContinue));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #continue);

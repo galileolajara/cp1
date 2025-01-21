@@ -37,7 +37,7 @@ using (Stmt) {
       ok = true;
    }
 }
-ExprType[
+enum ExprType[
    #nil, #call-method, #lvar, #gvar, #math, #assign, #bools,
    #func, #method, #fvar, #int, #cvar, #str, #index, #unary,
    #compare, #bool, #null, #cast-fast, #ref, #char, #size-of-type,
@@ -51,7 +51,7 @@ ExprType[
    cp1-name(e:this):char[] @cp1-name;
 }
 #debug-rd-wr:bool = true;
-ExprI[#nil = -1, #0, #1]:i32 {
+enum ExprI[#nil = -1, #0, #1]:i32 {
    set(e:this, expr:Expr, type:ExprType) @inline {
       .expr-v[e] = expr;
       expr.type = type;
@@ -209,11 +209,11 @@ ExprI[#nil = -1, #0, #1]:i32 {
       }
    }
 }
-ExprFlags[#0, #processed = 1]:u8;
-Expr {
-   type:ExprType;
-   flags:ExprFlags;
-   } {
+enum ExprFlags[#0, #processed = 1]:u8;
+struct Expr[
+   type:ExprType,
+   flags:ExprFlags,
+   ] {
    write(e:this, out:C.File) {
       switch e.type {
          case #call {
@@ -223,7 +223,7 @@ Expr {
       }
    }
 }
-BasicTypeId[
+enum BasicTypeId[
    #root, #relative,
    #ref, #bool, #char, #intc,
    #i8, #u8,
@@ -260,32 +260,32 @@ BasicTypeId[
 // }
    cp1-name(e:this):char[] @cp1-name;
 }
-ExprLvar {
-   base:Expr+;
-   lvar:Lvar;
-};
-ExprChar {
-   base:Expr+;
-   value:char;
-};
-ExprBool {
-   base:Expr+;
-   value:bool;
-};
-ExprNull {
-   base:Expr+;
-};
-ExprStrNode {
-   next:ExprStrNode;
-   len:i32;
-   buf:char[0];
-};
-ExprStr {
-   base:Expr+;
-   node-c:i32;
-   first:ExprStrNode;
-   last:ExprStrNode;
-};
+struct ExprLvar[
+   base:Expr+,
+   lvar:Lvar,
+];
+struct ExprChar[
+   base:Expr+,
+   value:char,
+];
+struct ExprBool[
+   base:Expr+,
+   value:bool,
+];
+struct ExprNull[
+   base:Expr+,
+];
+struct ExprStrNode[
+   next:ExprStrNode,
+   len:i32,
+   buf:char[0],
+];
+struct ExprStr[
+   base:Expr+,
+   node-c:i32,
+   first:ExprStrNode,
+   last:ExprStrNode,
+];
 var expr-c:i32;
 var expr-cap:i32;
 var expr-v:Expr[];
@@ -300,20 +300,20 @@ expr-push(e:Expr, type:ExprType):ExprI {
    .expr-v[e-idx] = e;
    return e-idx;
 }
-ExprIntValue {
-   ii32:i32;
-   uu32:u32;
-   ff32:f32;
-} @union;
-ExprIntData {
-   base:Expr+;
-   value:ExprIntValue+;
-   type:ExprInt;
-};
-ExprSizeOfType {
-   base:Expr+;
-   type:At;
-};
+struct ExprIntValue[
+   ii32:i32,
+   uu32:u32,
+   ff32:f32,
+] @union;
+struct ExprIntData[
+   base:Expr+,
+   value:ExprIntValue+,
+   type:ExprInt,
+];
+struct ExprSizeOfType[
+   base:Expr+,
+   type:At,
+];
  
 
 }

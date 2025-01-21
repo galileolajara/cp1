@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using (Cp1) {
-Unary[#neg, #inc, #dec, #not]:u8 {
+enum Unary[#neg, #inc, #dec, #not]:u8 {
    rd(u:this&, r:Rdr) @inline {
       u = r.n1():Unary;
    }

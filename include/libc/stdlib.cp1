@@ -10,6 +10,6 @@ include(<stdlib.h>) {
       exit(code:Exit) @real-name @no-decl;
       getenv(name:char[]):char[] @real-name @no-decl;
       realpath(pathname:char[], resolved:char[]):char[] @real-name @no-decl;
-      Exit[#success, #failure]:intc;
+      enum Exit[#success, #failure]:intc;
    }
 }

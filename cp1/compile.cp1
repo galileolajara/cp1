@@ -10,11 +10,11 @@ var func-head-outputted-c:i32;
 var func-head-outputted-v:Func[];
 var func-body-outputted-c:i32;
 var func-body-outputted-v:Func[];
-BasicType {
-   method-c:i32;
-   method-cap:i32;
-   method-v:Func[];
-};
+struct BasicType[
+   method-c:i32,
+   method-cap:i32,
+   method-v:Func[],
+];
 var basic-type:BasicType+[BasicTypeId#COUNT];
 basic-type(t:BasicTypeId):At @inline {
    return t;
@@ -28,7 +28,7 @@ var ctx-func-id:Func;
 var file-c:File;
 var file-cap:File;
 var file-v:FileData+[];
-File[#nil = -1, #0]:i32 {
+enum File[#nil = -1, #0]:i32 {
    ptr(f:this):FileData @inline {
       return .file-v[f];
    }
@@ -36,13 +36,13 @@ File[#nil = -1, #0]:i32 {
       return f.ptr().path;
    }
 }
-FileData {
-   path:char[];
-   data:ref;
-   id-table:Id[];
-   at-table:At[];
-   cvar-table:Cvar[];
-};
+struct FileData[
+   path:char[],
+   data:ref,
+   id-table:Id[],
+   at-table:At[],
+   cvar-table:Cvar[],
+];
 var id-table:Id[];
 var include-table-cap:i32;
 var include-table:Include[];
@@ -297,7 +297,7 @@ read(in-path:char[]) {
             C.out.printf("struct\n");
          }
       }
-      at.decl.enum = e-idx;
+      at.decl.enumm = e-idx;
       at.def = #enum;
       if (e.flags & #real-name) != #0 {
          e.real-name.rd(r);
@@ -347,7 +347,7 @@ read(in-path:char[]) {
          }
       }
       // C.out.printf("at(%d) is a struct: %s, parent is %d\n", at-i, at.name.id.str(), at.parent);
-      at.decl.struct = s-idx;
+      at.decl.structt = s-idx;
       at.def = #struct;
       // s.name.rd(r);
       // C.out.printf("%u:%u - %u:%u: /%s(", s.begin-row, s.begin-col, s.end-row, s.end-col, s.name.str());
@@ -552,12 +552,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          // C.out.printf("at(%d).type = #%s, %d\n", f.at, at.type.cp1-name(), at.decl.struct);
          // C.out.flush();
          if at.type == #struct-enum {
-            if at.decl.enum == #nil {
+            if at.decl.enumm == #nil {
                C.out.printf("%s:%u:%u: function using ':this' was declared on :%s which is not defined\n", f.file.path(), f.begin-row, f.begin-col, at.name.id.str());
                C.exit(#failure);
             }
             if at.def == #struct {
-               +t = at.decl.struct.ptr();
+               +t = at.decl.structt.ptr();
                +t-method-idx = t.method-c++;
                if t.method-cap <= t.method-c {
                   +old-cap = t.method-cap;
@@ -566,7 +566,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                }
                t.method-v[t-method-idx] = f-idx;
             } elif at.def == #enum {
-               +t = at.decl.enum.ptr();
+               +t = at.decl.enumm.ptr();
                +t-method-idx = t.method-c++;
                if t.method-cap <= t.method-c {
                   +old-cap = t.method-cap;

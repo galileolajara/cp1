@@ -1,7 +1,7 @@
 using Cp1 = Cp1;
 using C = LibC;
 using (Cp1) {
-Cvar[#nil = -1, #0]:i32 {
+enum Cvar[#nil = -1, #0]:i32 {
    rd(c:this&, r:Rdr) @inline {
       +idx = (r.n() - 1):Cvar;
       if idx == #nil {
@@ -31,7 +31,7 @@ Cvar[#nil = -1, #0]:i32 {
       +at-i = cvar.decl.type;
       if at-i != #nil {
          +at = at-i.ptr();
-         if (&&, at.type != #basic, at.decl.struct == #nil) {
+         if (&&, at.type != #basic, at.decl.structt == #nil) {
             C.out.printf("Error, the type '%s' used in cvar '.%s' was not defined\n", at.name.id.str(), cvar.decl.name.str());
             return false;
          }
@@ -57,7 +57,7 @@ Cvar[#nil = -1, #0]:i32 {
       }
    }
 }
-CvarFlags[
+enum CvarFlags[
    #0,
    #set-expr = 1,
    #as-enum = 2,

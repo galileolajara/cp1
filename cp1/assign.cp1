@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using (Cp1) {
-Assign[#eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
+enum Assign[#eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
              #lshift-eq, #rshift-eq, #and-eq, #or-eq, #xor-eq,
              ]:u8 {
    wr(s:this, w:Wtr) @inline {

@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using (Cp1) {
-Enum[#nil = -1, #0, #1]:i32 {
+enum Enum[#nil = -1, #0, #1]:i32 {
    wr(f:this, w:Wtr) @inline {
       w.n(f + #1);
    }
@@ -29,7 +29,7 @@ Enum[#nil = -1, #0, #1]:i32 {
       // }
    }
 }
-EnumFlags[
+enum EnumFlags[
    #0,
    #real-name = 1,
    #no-decl = 2,

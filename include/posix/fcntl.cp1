@@ -2,7 +2,7 @@ include(<fcntl.h>) {
    using C = LibC;
    using X = Posix;
    using (Posix) {
-      Fd[#nil = -1]:intc {
+      enum Fd[#nil = -1]:intc {
          open(file:this&, path:char[], flags:OpenFlags):bool @inline {
             +fd = X.open(path, flags);
             if fd != -1 {
@@ -31,7 +31,7 @@ include(<fcntl.h>) {
             return X.fstat(file, stat);
          }
       }
-      OpenFlags[
+      enum OpenFlags[
          #read @no-decl @real-name(O_RDONLY),
          #create @no-decl @real-name(O_CREAT),
          #write @no-decl @real-name(O_WRONLY),

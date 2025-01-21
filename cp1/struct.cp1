@@ -1,7 +1,7 @@
 using Cp1 = Cp1;
 using C = LibC;
 using (Cp1) {
-Struct[#nil = -1, #0, #1]:i32 {
+enum Struct[#nil = -1, #0, #1]:i32 {
    wr(s:this, w:Wtr) @inline {
       w.n(s + #1);
    }
@@ -42,9 +42,9 @@ Struct[#nil = -1, #0, #1]:i32 {
       }
    }
 }
-FvarData {
-   decl:DeclVarData+;
-   } {
+struct FvarData[
+   decl:DeclVarData+,
+   ] {
    rd(f:this, r:Rdr) {
       f.decl.rd(r);
    }
@@ -59,7 +59,7 @@ var decl-struct-row:i32;
 var decl-struct-col:i32;
 var decl-struct-at:At;
 var decl-struct-real-name:Id;
-StructFlags[
+enum StructFlags[
    #0,
    #real-name = 1,
    #no-decl = 2,

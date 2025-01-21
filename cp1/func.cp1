@@ -1,7 +1,7 @@
 using Cp1 = Cp1;
 using C = LibC;
 using (Cp1) {
-Func[#nil = -1, #0, #1]:i32 {
+enum Func[#nil = -1, #0, #1]:i32 {
    wr(f:this, w:Wtr) @inline {
       w.n(f + #1);
    }
@@ -12,7 +12,7 @@ Func[#nil = -1, #0, #1]:i32 {
       return .func-v[f];
    }
 }
-FuncFlags[
+enum FuncFlags[
    #0,
    #has-body = 1,
    #inline = 2,
@@ -32,7 +32,7 @@ FuncFlags[
       e = r.n():FuncFlags;
    }
 }
-FuncFlags2[
+enum FuncFlags2[
    #0,
    #main = 1,
 ]:u32;
@@ -78,11 +78,11 @@ using (DeclFunc) {
       }
    }
 }
-Farg {
-   row:i32;
-   col:i32;
-   decl:DeclVarData+;
-   } {
+struct Farg[
+   row:i32,
+   col:i32,
+   decl:DeclVarData+,
+   ] {
    rd(f:this, r:Rdr) {
       f.decl.rd(r);
    }
