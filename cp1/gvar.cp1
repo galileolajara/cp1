@@ -1,8 +1,8 @@
 using Cp1 = Cp1;
 using C = LibC;
 using (Cp1) {
-GvarFlags[#0, #no-decl = 1]:u8;
-Gvar[#nil = -1, #0]:i32 {
+enum GvarFlags[#0, #no-decl = 1]:u8;
+enum Gvar[#nil = -1, #0]:i32 {
    process(g:this):bool {
       +num = g:u32;
       +n3 = num >> 3;

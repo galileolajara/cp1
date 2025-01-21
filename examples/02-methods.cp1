@@ -2,7 +2,7 @@
 
 using C = LibC;
 
-Coord {x:i32; y:i32} { // a struct
+struct Coord[x:i32, y:i32] { // a struct
    init(s:this) { // a method
       s.x = 0;
       s.y = 0;
@@ -26,7 +26,7 @@ Coord {x:i32; y:i32} { // a struct
    }
 }
 
-Dir[#left, #up, #right, #down]:u8 { // an 8-bit enum
+enum Dir[#left, #up, #right, #down]:u8 { // an 8-bit enum
    print(d:this) { // a method
       switch d {
          case #left {

@@ -1,7 +1,7 @@
 using Cp1 = Cp1;
 using C = LibC;
 using (Cp1) {
-Fvar[#nil = -1, #0]:i32;
+enum Fvar[#nil = -1, #0]:i32;
 expr-fvar(expr:ExprI, member:Id):ExprI {
    quick-alloc-one(+(e:ExprFvar));
    +e-idx = expr-push(e.base, #fvar);
@@ -23,11 +23,11 @@ using (ExprI) {
    }
    type-fvar(expr:Expr, at:At&) @case.type() @inline {
       var e:ExprFvar = expr;
-      at = e.val.type.ptr().decl.struct.ptr().fvar-v[e.fvar].decl.type;
+      at = e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar].decl.type;
    }
    value-fvar(expr:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       var e:ExprFvar = expr.ptr();
-      +fvar = e.val.type.ptr().decl.struct.ptr().fvar-v[e.fvar];
+      +fvar = e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar];
       v.set(reff, paren, fvar.decl.type, fvar.decl.type-info);
       if v.reff == 1 {
          v.paren = false;
@@ -38,7 +38,7 @@ using (ExprI) {
       var e:ExprFvar = expr;
       e.expr.write-value(e.val);
       .out.printf(".");
-      e.val.type.ptr().decl.struct.ptr().fvar-v[e.fvar].decl.write(#fvar);
+      e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar].decl.write(#fvar);
    }
    process-fvar(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprFvar = expr;
@@ -57,16 +57,16 @@ using (ExprI) {
          C.out.printf("%s:%u:%u - %u:%u Cannot get member '.%s' because the expression is an array(%d)\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, e.member.str(), e.val.info.array-c);
          return;
       }
-      if type.decl.struct == #nil {
+      if type.decl.structt == #nil {
          C.out.printf("%s:%u:%u - %u:%u Cannot get member '.%s' because the type '/%s' was not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, e.member.str(), type.name.id.str());
          return;
       }
-      +struct-i = type.decl.struct;
+      +struct-i = type.decl.structt;
       struct-i.output();
-      +struct = struct-i.ptr();
+      +structt = struct-i.ptr();
       +member = e.member;
-      loop i = 0:Fvar; struct.fvar-c; i++ {
-         if struct.fvar-v[i].decl.name == member {
+      loop i = 0:Fvar; structt.fvar-c; i++ {
+         if structt.fvar-v[i].decl.name == member {
             e.fvar = i;
             ok = true;
             return;

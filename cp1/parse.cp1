@@ -60,9 +60,10 @@ type-info-static() {
 }
 decl-include-begin(inc:Include, row:i32, col:i32) {
    if .decl-include != #nil {
-      C.out.printf("%s:%u:%u: Cannot {include inside another {include of %u:%u\n", .input-path, row, col, .decl-include-row, .decl-include-col);
+      C.out.printf("%s:%u:%u: Cannot include inside another include of %u:%u\n", .input-path, row, col, .decl-include-row, .decl-include-col);
       C.exit(#failure);
-      return}
+      return;
+   }
    .decl-include = inc;
    .decl-include-row = row;
    .decl-include-col = col;
@@ -106,13 +107,13 @@ at-begin-relative() {
       .build-at = #relative;
    }
 }
-Alias[#nil = -1, #0]:i32;
+enum Alias[#nil = -1, #0]:i32;
 var at-alias-c:Alias;
 var at-alias-cap:Alias;
 var at-alias-name-v:Id[];
 var at-alias-at-v:At[];
 var at-alias-pos-v:RowCol+[];
-RowCol {row:i32; col:i32};
+struct RowCol[row:i32, col:i32];
 at-alias(name:Id, row:i32, col:i32) {
    loop i = 0; .at-alias-c; i++ {
       if .at-alias-name-v[i] == name {
@@ -254,33 +255,33 @@ decl-at-end() {
    .decl-at-c--;
    .decl-at = .decl-at-v[.decl-at-c];
 }
-TokenDataI32 {
-   id:i32;
-   id2:i32;
-};
-TokenDataF32 {
-   ff32:f32;
-};
-TokenDataValue {
-   ii32:TokenDataI32+;
-   ff32:TokenDataF32+;
-} @union;
-TokenData {
-   row:i32;
-   col:i32;
-   val:TokenDataValue+;
-   // id:i32;
-   // id2:i32;
-   // val:i32[12];
-};
-Lexer {
-   content:u8[];
-   start:u8[];
-   cursor:u8[];
-   // limit:u8[];
-   marker:u8[];
-   // ctx-marker:u8[];
-} {
+struct TokenDataI32[
+   id:i32,
+   id2:i32,
+];
+struct TokenDataF32[
+   ff32:f32,
+];
+struct TokenDataValue[
+   ii32:TokenDataI32+,
+   ff32:TokenDataF32+,
+] @union;
+struct TokenData[
+   row:i32,
+   col:i32,
+   val:TokenDataValue+,
+   // id:i32,
+   // id2:i32,
+   // val:i32[12],
+];
+struct Lexer[
+   content:u8[],
+   start:u8[],
+   cursor:u8[],
+   // limit:u8[],
+   marker:u8[],
+   // ctx-marker:u8[],
+] {
    init(lex:this, data:u8[], size:usz) {
       lex.start = data;
       lex.cursor = data;
@@ -486,7 +487,7 @@ Lexer {
    }
 }
 var last-token:Token;
-Parser {} {
+struct Parser[] {
    alloc():Parser;
    free(psr:this);
    parse(psr:this, t:Token, tok:TokenData+) @real-name(cp1Parse);

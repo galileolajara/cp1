@@ -58,7 +58,7 @@ get-compile(bin:char[], ninja-f:C.File) {
    C.printf("Cannot execute '%s run' because the required compile was not found: tcc clang or gcc\n", bin);
    C.exit(#failure);
 }
-Cmd[#c, #run]:u8;
+enum Cmd[#c, #run]:u8;
 print-usage(bin:char[], cmd:Cmd) {
    switch cmd {
       case #c {

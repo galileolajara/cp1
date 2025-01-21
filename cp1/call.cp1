@@ -149,16 +149,16 @@ using (ExprI) {
          method-c = t.method-c;
          method-v = t.method-v;
       } else {
-         if (&&, at.decl.struct == #nil, at.type != #basic, at.type != #module) {
+         if (&&, at.decl.structt == #nil, at.type != #basic, at.type != #module) {
             C.out.printf("%s:%u:%u - %u:%u: Cannot call method %s because the type :%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), at.name.id.str());
             return;
          }
          if at.def == #struct {
-            +t = at.decl.struct.ptr();
+            +t = at.decl.structt.ptr();
             method-c = t.method-c;
             method-v = t.method-v;
          } elif at.def == #enum {
-            +t = at.decl.enum.ptr();
+            +t = at.decl.enumm.ptr();
             method-c = t.method-c;
             method-v = t.method-v;
          }

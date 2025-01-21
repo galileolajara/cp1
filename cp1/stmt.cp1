@@ -1,7 +1,7 @@
 using Cp1 = Cp1;
 using C = LibC;
 using (Cp1) {
-StmtType[
+enum StmtType[
    #space, #if, #if-elif, #if-else, #if-end,
    #loop, #loop-end, #while, #while-end,
    #expr, #return, #continue, #break,
@@ -16,14 +16,14 @@ StmtType[
    }
    cp1-name(e:this):char[] @cp1-name;
 }
-Stmt {
-   begin-row:i32;
-   begin-col:i32;
-   end-row:i32;
-   end-col:i32;
-   type:StmtType;
-   stmt-next:Stmt;
-   } {
+struct Stmt[
+   begin-row:i32,
+   begin-col:i32,
+   end-row:i32,
+   end-col:i32,
+   type:StmtType,
+   stmt-next:Stmt,
+   ] {
    write(s:this) {
       switch.write(s) s.type {
          default {
@@ -51,15 +51,15 @@ Stmt {
       return ok;
    }
 }
-StmtExpr {
-   base:Stmt+;
-   expr:ExprI;
-};
-StmtReturn {
-   base:Stmt+;
-   expr:ExprI;
-   val:Value+;
-};
+struct StmtExpr[
+   base:Stmt+,
+   expr:ExprI,
+];
+struct StmtReturn[
+   base:Stmt+,
+   expr:ExprI,
+   val:Value+,
+];
 stmt-push(s:Stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:StmtType) {
    // C.out.printf("%s:%u:%u - %u:%u stmt-push()\n", .input-path, begin-row, begin-col, end-row, end-col);
    // C.out.flush();

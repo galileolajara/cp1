@@ -1,7 +1,7 @@
 using Cp1 = Cp1;
 using C = LibC;
 using (Cp1) {
-Str[#nil = -1, #0]:i32;
+enum Str[#nil = -1, #0]:i32;
 var str-c:i32;
 var str-cap:i32;
 var str-ptr:ref[];
