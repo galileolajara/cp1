@@ -2,7 +2,7 @@
 #include <math.h>
 using C = LibC;
 
-Direction[#right, #up, #left, #down]:u8 { // An 8-bit unsigned enum
+enum Direction[#right, #up, #left, #down]:u8 { // An 8-bit unsigned enum
    string(e:this):char[] { // An example method for enums
       switch e {
          case #right { return "right"; }
@@ -14,7 +14,7 @@ Direction[#right, #up, #left, #down]:u8 { // An 8-bit unsigned enum
    }
 }
 
-Position {x:i32; y:i32} { // A struct
+struct Position[x:i32, y:i32] { // A struct
    go(pos:this, dir:Direction) {
       switch dir {
          case #right { pos.x++; }

@@ -45,7 +45,7 @@ enum_cvar_begin ::= HASH_ID(e).
    { _NCp1_Penum_add_cvar_3(e.basic.id, e.basic.row, e.basic.col); }
 enum_cvar_begin_decl ::= HASH_ID(e) typeAndInfo_optional.
    { _NCp1_Pdecl_add_cvar_3(e.basic.id, e.basic.row, e.basic.col); }
-struct_decl_begin ::= ID_UPPER(name).
+struct_decl_begin ::= STRUCT SPACE ID_UPPER(name).
    { _NCp1_Pdecl_at_begin_struct_3(name.basic.id, name.basic.row, name.basic.col); }
 fvar_decl_name ::= ID(name).
    { _NCp1_Pdecl_var_begin_3(name.basic.id, name.basic.row, name.basic.col); }
@@ -68,7 +68,7 @@ enum_cvar ::= enum_cvar_begin cvar_attrs_optional SPACE_EQUAL_SPACE expr(set).
 enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional.
 enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional SPACE_EQUAL_SPACE expr(set).
    { _NCp1_Penum_set_cvar_expr_1(set.basic.id); }
-enum_decl_begin ::= ID_UPPER(name).
+enum_decl_begin ::= ENUM SPACE ID_UPPER(name).
    { _NCp1_Pdecl_at_begin_enum_3(name.basic.id, name.basic.row, name.basic.col); }
 
 decl_include ::= INCLUDE(e).
@@ -316,7 +316,7 @@ fvar_attrs_optional ::= fvar_attrs_list.
 fvar ::= fvar_decl typeAndInfo_optional fvar_attrs_optional.
    { _NCp1_Pdecl_var_as_fvar_0(); }
 struct_fvars ::= fvar.
-struct_fvars ::= struct_fvars SEMICOLON SPACE fvar.
+struct_fvars ::= struct_fvars COMMA_SPACE fvar.
 enum_cvars ::= enum_cvar.
 enum_cvars ::= enum_cvars COMMA_SPACE enum_cvar.
 enum_cvars_decl ::= enum_cvar_decl.
@@ -849,9 +849,9 @@ decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_spac
    { _NCp1_Pdecl_at_end_0(); }
 decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE.
    { _NCp1_Pdecl_at_end_0(); }
-decl_struct ::= struct_decl_begin SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space CLOSE_CURLY_BRACE
+decl_struct ::= struct_decl_begin open_bracket_or_space CLOSE_BRACKET
    decl_struct_attrs_optional decl_struct_close_or_at.
-decl_struct ::= struct_decl_begin SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space struct_fvars close_curly_brace_or_scolon
+decl_struct ::= struct_decl_begin open_bracket_or_space struct_fvars close_bracket_or_comma
    decl_struct_attrs_optional decl_struct_close_or_at.
 decl_enum_close_or_at ::= SEMICOLON.
    { _NCp1_Pdecl_at_end_0(); }

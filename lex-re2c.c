@@ -160,6 +160,8 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces ">=" spaces               { return CP1_TOKEN_SPACE_RANGLE_EQUAL_SPACE; }
 
    "using"                          { return CP1_TOKEN_USING; }
+   "enum"                           { return CP1_TOKEN_ENUM; }
+   "struct"                         { return CP1_TOKEN_STRUCT; }
    "return"                         { return CP1_TOKEN_RETURN; }
    "loop"                           { return CP1_TOKEN_LOOP; }
    "var"                            { return CP1_TOKEN_VAR; }
