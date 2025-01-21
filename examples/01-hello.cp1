@@ -23,9 +23,6 @@ struct Position[x:i32, y:i32] { // A struct
          case #down { pos.y--; }
       }
    }
-   Func(pos:this) {
-      C.printf("Func\n");
-   }
 }
 
 main():intc { // intc is for compatibility with C's int, prefer to use i32 elsewhere
@@ -43,7 +40,6 @@ main():intc { // intc is for compatibility with C's int, prefer to use i32 elsew
    pos.x = 9;
    pos.y = 11;
    pos.go(#left);
-   pos.Func();
    C.printf("position is at %d, %d\n", pos.x, pos.y);
 
    +dir = Direction#left;
