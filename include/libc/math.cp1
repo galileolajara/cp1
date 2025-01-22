@@ -18,5 +18,10 @@ include(<math.h>) {
       atan2(y:this, x:f32):f32 @no-decl @real-name(atan2f);
       cos(rad:this):f32 @no-decl @real-name(cosf);
       sin(rad:this):f32 @no-decl @real-name(sinf);
+
+      #pi @no-decl @real-name(M_PI);
+      radian(f:this):f32 {
+         return f * (#pi / 180.0f);
+      }
    }
 }
