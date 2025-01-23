@@ -860,7 +860,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          } elif r.p1[0] == ''\' {
             if r.p1[1] == ''\' {
                // char
-               if r.p1[2] == ''\\ {
+               +c = r.p1[2];
+               if c == ''\\ {
                   if r.p1[3] == ''" {
                      get-row-col(+row, +col, r.reff, in-data);
                      C.out.printf("%s:%u:%u: char ''\\\" is invalid, please use ''\" instead\n", .input-path, row, col);
@@ -874,9 +875,51 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   r.pos += 4;
                   continue;
                } else {
+                  switch c {
+                     case ''\' {
+                        get-row-col(+row, +col, r.reff, in-data);
+                        C.out.printf("%s:%u:%u: char ''' is invalid, please use ''\\' instead\n", .input-path, row, col);
+                        C.exit(#failure);
+                     }
+                     case ''\a {
+                        get-row-col(+row, +col, r.reff, in-data);
+                        C.out.printf("%s:%u:%u: char ''(\\a) is invalid, please use ''\\a instead\n", .input-path, row, col);
+                        C.exit(#failure);
+                     }
+                     case ''\b {
+                        get-row-col(+row, +col, r.reff, in-data);
+                        C.out.printf("%s:%u:%u: char ''(\\b) is invalid, please use ''\\b instead\n", .input-path, row, col);
+                        C.exit(#failure);
+                     }
+                     case ''\f {
+                        get-row-col(+row, +col, r.reff, in-data);
+                        C.out.printf("%s:%u:%u: char ''(\\b) is invalid, please use ''\\b instead\n", .input-path, row, col);
+                        C.exit(#failure);
+                     }
+                     case ''\n {
+                        get-row-col(+row, +col, r.reff, in-data);
+                        C.out.printf("%s:%u:%u: char ''(new line) is invalid, please use ''\\n instead\n", .input-path, row, col);
+                        C.exit(#failure);
+                     }
+                     case ''\r {
+                        get-row-col(+row, +col, r.reff, in-data);
+                        C.out.printf("%s:%u:%u: char ''(\\r) is invalid, please use ''\\r instead\n", .input-path, row, col);
+                        C.exit(#failure);
+                     }
+                     case ''\t {
+                        get-row-col(+row, +col, r.reff, in-data);
+                        C.out.printf("%s:%u:%u: char ''(tab) is invalid, please use ''\\t instead\n", .input-path, row, col);
+                        C.exit(#failure);
+                     }
+                     case ''\v {
+                        get-row-col(+row, +col, r.reff, in-data);
+                        C.out.printf("%s:%u:%u: char ''(\\v) is invalid, please use ''\\v instead\n", .input-path, row, col);
+                        C.exit(#failure);
+                     }
+                  }
                   w.p1[0] = ''\';
                   w.p1[1] = ''\';
-                  w.p1[2] = r.p1[2];
+                  w.p1[2] = c;
                   w.pos += 3;
                   r.pos += 3;
                   continue;
