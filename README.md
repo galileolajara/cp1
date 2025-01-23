@@ -24,7 +24,7 @@ Cp1 means C+1 or C plus 1, named just like C++ or C plus plus
 
 Features
 -
-- Outputs C code in just a few seconds. Parsing is parallelized.
+- Outputs C code in just a few seconds. Parsing is parallelized. 145k lines of codes per second on Macbook Pro M2 running on Fedora Asahi Remix (Linux OS).
 - Self-hosted, Cp1 is written in Cp1.
 - Organize your codes easily using namespaces and modules.
 - Methods on enums, structs and even the primitive types. Method on enums can make data-oriented programming easier.
