@@ -20,7 +20,7 @@ enum Lvar[#nil = -1, #0]:i32 {
             lvar.decl.type-info.init();
             lvar.decl.type-info.copy-from(v.info);
          } else {
-            C.out.printf("%s:%u:%u: local variable '%s' doesn:T have a type or a value\n", .ctx-func.file.path(), lvar.row, lvar.col, lvar.decl.name.str());
+            C.out.printf("%s:%u:%u: local variable '%s' doesn't have a type or a value\n", .ctx-func.file.path(), lvar.row, lvar.col, lvar.decl.name.str());
             return false;
          }
          return true;

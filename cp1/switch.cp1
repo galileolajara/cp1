@@ -91,7 +91,7 @@ using (Stmt) {
          return;
       }
       if s.val.type == #nil {
-         C.out.printf("%s:%u:%u: Error, the expression used for switch doesn:T have a type\n", .ctx-func.file.path(), s.base.begin-row, s.base.begin-col);
+         C.out.printf("%s:%u:%u: Error, the expression used for switch doesn't have a type\n", .ctx-func.file.path(), s.base.begin-row, s.base.begin-col);
          return;
       }
       if s.cases != #nil {

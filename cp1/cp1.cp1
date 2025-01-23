@@ -248,7 +248,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
             var import:char[] = &data[start];
             +import-path-len = end - start;
             if (&&, import-path-len >= 4, import[import-path-len - 4] == ''., import[import-path-len - 3] == ''c, import[import-path-len - 2] == ''p, import[import-path-len - 1] == ''1) {
-               C.printf("%s:%u: #import \"%.*s\" doesn:T need a '.cp1' suffix\n", cp1-path, line, import-path-len, import);
+               C.printf("%s:%u: #import \"%.*s\" doesn't need a '.cp1' suffix\n", cp1-path, line, import-path-len, import);
                return false;
             }
             if import[0] == ''/ {
