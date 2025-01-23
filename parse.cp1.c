@@ -98,7 +98,9 @@
 #define _NCp1_NToken_Cfalse (_NCp1_NToken_Ctrue + 1)
 #define _NCp1_NToken_Cnull (_NCp1_NToken_Cfalse + 1)
 #define _NCp1_NToken_Copen_parenthesis_amp_amp_comma_space (_NCp1_NToken_Cnull + 1)
-#define _NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space (_NCp1_NToken_Copen_parenthesis_amp_amp_comma_space + 1)
+#define _NCp1_NToken_Cspace_amp_amp_space (_NCp1_NToken_Copen_parenthesis_amp_amp_comma_space + 1)
+#define _NCp1_NToken_Cspace_pipe_pipe_space (_NCp1_NToken_Cspace_amp_amp_space + 1)
+#define _NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space (_NCp1_NToken_Cspace_pipe_pipe_space + 1)
 #define _NCp1_NToken_Cspace_plus_space (_NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space + 1)
 #define _NCp1_NToken_Cspace_minus_space (_NCp1_NToken_Cspace_plus_space + 1)
 #define _NCp1_NToken_Cspace_mul_space (_NCp1_NToken_Cspace_minus_space + 1)
@@ -1117,6 +1119,8 @@ case _NCp1_NToken_Ctrue: return "true";
 case _NCp1_NToken_Cfalse: return "false";
 case _NCp1_NToken_Cnull: return "null";
 case _NCp1_NToken_Copen_parenthesis_amp_amp_comma_space: return "open-parenthesis-amp-amp-comma-space";
+case _NCp1_NToken_Cspace_amp_amp_space: return "space-amp-amp-space";
+case _NCp1_NToken_Cspace_pipe_pipe_space: return "space-pipe-pipe-space";
 case _NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space: return "open-parenthesis-pipe-pipe-comma-space";
 case _NCp1_NToken_Cspace_plus_space: return "space-plus-space";
 case _NCp1_NToken_Cspace_minus_space: return "space-minus-space";
@@ -1326,7 +1330,7 @@ fprintf(stdout, "Please convert the line endings to Unix-style line endings\n");
 exit(_NLibC_NExit_Cfailure);
 }
 if(_Lin_data_5[(_Lin_size_4 - 1)] != '\n') {
-fprintf(stdout, "Error reading file '%s' because it doesn:T end with a new line\n", input_path);
+fprintf(stdout, "Error reading file '%s' because it doesn't end with a new line\n", input_path);
 exit(_NLibC_NExit_Cfailure);
 }
 if(true) {

@@ -2337,7 +2337,7 @@ return false;
 _NCp1_NTypeInfo_Pinit_1(&(*_Llvar_1)._Fdecl._Ftype_info);
 _NCp1_NTypeInfo_Pcopy_from_2(&(*_Llvar_1)._Fdecl._Ftype_info, &_Lv_3._Finfo);
 } else {
-fprintf(stdout, "%s:%u:%u: local variable '%s' doesn:T have a type or a value\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), (*_Llvar_1)._Frow, (*_Llvar_1)._Fcol, _NCp1_NId_Pstr_1((*_Llvar_1)._Fdecl._Fname));
+fprintf(stdout, "%s:%u:%u: local variable '%s' doesn't have a type or a value\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), (*_Llvar_1)._Frow, (*_Llvar_1)._Fcol, _NCp1_NId_Pstr_1((*_Llvar_1)._Fdecl._Fname));
 return false;
 }
 return true;
@@ -4664,7 +4664,7 @@ if(!_NCp1_NExprI_Pvalue_4((*_Ls_2)._Fexpr, 1, false, &(*_Ls_2)._Fval)) {
 return;
 }
 if((*_Ls_2)._Fval._Ftype == _NCp1_NAt_Cnil) {
-fprintf(stdout, "%s:%u:%u: Error, the expression used for switch doesn:T have a type\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), (*_Ls_2)._Fbase._Fbegin_row, (*_Ls_2)._Fbase._Fbegin_col);
+fprintf(stdout, "%s:%u:%u: Error, the expression used for switch doesn't have a type\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), (*_Ls_2)._Fbase._Fbegin_row, (*_Ls_2)._Fbase._Fbegin_col);
 return;
 }
 if((*_Ls_2)._Fcases != _NCp1_NExprI_Cnil) {

@@ -621,7 +621,7 @@ return false;
 _Limport_22 = &_Ldata_7[_Lstart_16];
 _Limport_path_len_23 = (_Lend_20 - _Lstart_16);
 if(((_Limport_path_len_23 >= 4) && (_Limport_22[(_Limport_path_len_23 - 4)] == '.') && (_Limport_22[(_Limport_path_len_23 - 3)] == 'c') && (_Limport_22[(_Limport_path_len_23 - 2)] == 'p') && (_Limport_22[(_Limport_path_len_23 - 1)] == '1'))) {
-printf("%s:%u: #import \"%.*s\" doesn:T need a '.cp1' suffix\n", _Lcp1_path_0, _Lline_9, _Limport_path_len_23, _Limport_22);
+printf("%s:%u: #import \"%.*s\" doesn't need a '.cp1' suffix\n", _Lcp1_path_0, _Lline_9, _Limport_path_len_23, _Limport_22);
 return false;
 }
 if(_Limport_22[0] == '/') {

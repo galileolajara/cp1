@@ -159,6 +159,9 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces ">" spaces                { return CP1_TOKEN_SPACE_RANGLE_SPACE; }
    spaces ">=" spaces               { return CP1_TOKEN_SPACE_RANGLE_EQUAL_SPACE; }
 
+   spaces "&&" spaces               { return CP1_TOKEN_SPACE_AMP_AMP_SPACE; }
+   spaces "||" spaces               { return CP1_TOKEN_SPACE_PIPE_PIPE_SPACE; }
+
    "using"                          { return CP1_TOKEN_USING; }
    "enum"                           { return CP1_TOKEN_ENUM; }
    "struct"                         { return CP1_TOKEN_STRUCT; }
