@@ -41,10 +41,10 @@ void _Pprint_c_usage_1(char* _Lbin_0);
 bool _Pvalidate_cp1_paths_5(int32_t _Lstart_0, int32_t _Larg_c_1, char** _Larg_v_2, char* _Lbin_3, _NCmd _Lcmd_4);
 void _Pprint_command_2(int32_t _Larg_c_0, char** _Larg_v_1);
 void _Patexit_rm_1(char* _Lpath_0);
-struct FILE* _NPosix_NFd_Pfopen_2(_NPosix_NFd _Lfile_0, char* _Lmode_1);
+FILE* _NPosix_NFd_Pfopen_2(_NPosix_NFd _Lfile_0, char* _Lmode_1);
 void _Pprint_run_usage_1(char* _Lbin_0);
 int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0);
-void _Pget_compile_2(char* _Lbin_0, struct FILE* _Lninja_f_1);
+void _Pget_compile_2(char* _Lbin_0, FILE* _Lninja_f_1);
 void _Pprint_usage_2(char* _Lbin_0, _NCmd _Lcmd_1);
 bool _Pcp1_path_input_4(char* _Lcp1_path_0, int32_t _Lcp1_path_len_1, char* _Lbin_2, _NCmd _Lcmd_3);
 bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2);
@@ -127,7 +127,7 @@ char* _Lc_path_13;
 size_t _Lc_path_len_14;
 char _Lninja_path_15[24];
 _NPosix_NFd _Lninja_fd_16;
-struct FILE* _Lninja_f_17;
+FILE* _Lninja_f_17;
 char _Lcommand_20[24 + 9];
 int _Lret_21;
 if(_Larg_c_0 < 4) {
@@ -192,7 +192,7 @@ char _Lexe_path_24[24];
 _NPosix_NFd _Lexe_fd_25;
 char _Lninja_path_26[24];
 _NPosix_NFd _Lninja_fd_27;
-struct FILE* _Lninja_f_28;
+FILE* _Lninja_f_28;
 char _Lcommand_31[32 + 9];
 int _Lninja_ret_32;
 int _Lexe_ret_33;
@@ -380,7 +380,7 @@ _Gatexit_rm_v = realloc(_Gatexit_rm_v, _Gatexit_rm_cap * sizeof(size_t));
 }
 _Gatexit_rm_v[_Li_1] = _Lpath_0;
 }
-inline struct FILE* _NPosix_NFd_Pfopen_2(_NPosix_NFd _Lfile_0, char* _Lmode_1) {
+inline FILE* _NPosix_NFd_Pfopen_2(_NPosix_NFd _Lfile_0, char* _Lmode_1) {
 return fdopen(_Lfile_0, _Lmode_1);
 }
 void _Pprint_run_usage_1(char* _Lbin_0) {
@@ -389,7 +389,7 @@ printf("Usage: %s run [cp1 file/s...]\n", _Lbin_0);
 inline int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0) {
 return close(_Lfile_0);
 }
-void _Pget_compile_2(char* _Lbin_0, struct FILE* _Lninja_f_1) {
+void _Pget_compile_2(char* _Lbin_0, FILE* _Lninja_f_1) {
 char* _Lpath_2;
 char* _Lfound_3;
 _Lpath_2 = strdup(getenv("PATH"));

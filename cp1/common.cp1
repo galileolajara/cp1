@@ -670,9 +670,9 @@ enum At[#nil = -1, #root, #relative]:i32 {
                         }
                      } else {
                         if (t.flags & #union) != #0 {
-                           .out.printf("union %s", t.real-name.str());
+                           .out.printf("%s", t.real-name.str());
                         } else {
-                           .out.printf("struct %s", t.real-name.str());
+                           .out.printf("%s", t.real-name.str());
                         }
                      }
                      return;

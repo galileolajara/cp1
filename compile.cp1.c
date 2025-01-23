@@ -725,7 +725,7 @@ _NCp1_NFunc _Gprocess_first;
 _NCp1_NFunc _Gprocess_last;
 int32_t _Gfunc_head_outputted_c;
 struct _NCp1_NDeclFunc* _Gctx_func;
-struct FILE* _Gout;
+FILE* _Gout;
 int32_t _Gcvar_outputted_c;
 int32_t _Genum_outputted_c;
 int32_t _Gstruct_outputted_c;
@@ -905,7 +905,7 @@ bool _NCp1_NExprI_Pwrite_value_2(_NCp1_NExprI _Le_0, struct _NCp1_NValue* _Lv_1)
 void _NCp1_NTypeInfo_Pcount_1(struct _NCp1_NTypeInfo* _Lti_0);
 bool _NCp1_NAt_Pwrite_type_1(_NCp1_NAt _Ltd_0);
 int32_t _NCp1_NAt_Pcount_stars0_2(_NCp1_NAt _Ltd_0, struct _NCp1_NTypeInfo* _Lti_1);
-size_t _NLibC_NFile_Pwrite_3(struct FILE* _Lf_0, void* _Lbuf_1, size_t _Lsize_2);
+size_t _NLibC_NFile_Pwrite_3(FILE* _Lf_0, void* _Lbuf_1, size_t _Lsize_2);
 void _NCp1_NDeclVarData_Pwrite_lvar_2(struct _NCp1_NDeclVarData* _Lvd_0, _NCp1_NLvar _Llvar_1);
 void _NCp1_NStmt_Pwrite_1(struct _NCp1_NStmt* _Ls_0);
 void _NCp1_NVarFlags_Prd_2(_NCp1_NVarFlags* _Lf_0, union _NCp1_NRdr* _Lr_1);
@@ -2559,9 +2559,9 @@ fprintf(_Gout, "struct %s", _NCp1_NId_Pc_name_1((*_Lat_1)._Fname._Fid));
 }
 } else {
 if(((*_Lt_3)._Fflags & _NCp1_NStructFlags_Cunion) != _NCp1_NStructFlags_C0) {
-fprintf(_Gout, "union %s", _NCp1_NId_Pstr_1((*_Lt_3)._Freal_name));
+fprintf(_Gout, "%s", _NCp1_NId_Pstr_1((*_Lt_3)._Freal_name));
 } else {
-fprintf(_Gout, "struct %s", _NCp1_NId_Pstr_1((*_Lt_3)._Freal_name));
+fprintf(_Gout, "%s", _NCp1_NId_Pstr_1((*_Lt_3)._Freal_name));
 }
 }
 return;
@@ -4087,7 +4087,7 @@ return true;
 int32_t _NCp1_NAt_Pcount_stars0_2(_NCp1_NAt _Ltd_0, struct _NCp1_NTypeInfo* _Lti_1) {
 return (*_Lti_1)._Fstar_c + _NCp1_NAt_Ppointer_1(_Ltd_0);
 }
-inline size_t _NLibC_NFile_Pwrite_3(struct FILE* _Lf_0, void* _Lbuf_1, size_t _Lsize_2) {
+inline size_t _NLibC_NFile_Pwrite_3(FILE* _Lf_0, void* _Lbuf_1, size_t _Lsize_2) {
 return fwrite(_Lbuf_1, 1, _Lsize_2, _Lf_0);
 }
 void _NCp1_NDeclVarData_Pwrite_lvar_2(struct _NCp1_NDeclVarData* _Lvd_0, _NCp1_NLvar _Llvar_1) {
