@@ -34,4 +34,4 @@ Features
 
 Discord
 -
-Join us on Discord https://discord.gg/UstvVqS4
+Join us on Discord https://discord.gg/qBtunCNyUS
