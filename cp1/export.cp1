@@ -35,9 +35,11 @@ export() {
    func-attr-no-body();
    func-attr-real-name(#nil);
    func-attr-case(#nil);
+   enum-attr-soa-field(#nil, #nil);
    expr-lvar(#0, 0, 0, 0);
    expr-gvar(#nil, #0);
    expr-fvar(#nil, #nil);
+   expr-soa-field(#nil, #nil, #nil);
    expr-assign(#0, #0, #eq);
    expr-math(#0, #0, #add);
    expr-math-add(#0, #0);

@@ -100,6 +100,8 @@ struct EnumData[
    at:At,
    base-type:At,
    flags:EnumFlags,
+   soa-field-gvar-at:At,
+   soa-field-gvar-id:Id,
    real-name:Id,
 #if(compile)
    method-c:i32,
@@ -184,6 +186,16 @@ struct ExprFvar[
    member:Id,
 #if(compile)
    fvar:Fvar,
+   val:Value+,
+#endif
+];
+struct ExprSoaField[
+   base:Expr+,
+   expr:ExprI,
+   group:Id,
+   field:Id,
+#if(compile)
+   expr2:ExprI,
    val:Value+,
 #endif
 ];

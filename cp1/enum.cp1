@@ -33,6 +33,7 @@ enum EnumFlags[
    #0,
    #real-name = 1,
    #no-decl = 2,
+   #soa-field = 4,
    ]:u8 {
    wr(e:this, w:Wtr) @inline {
       w.n1(e);
@@ -49,6 +50,8 @@ var decl-enum-col:i32;
 var decl-enum-at:At;
 var decl-enum-flags:EnumFlags;
 var decl-enum-last-cvar:Cvar;
+var decl-enum-soa-field-gvar-at:At;
+var decl-enum-soa-field-gvar-id:Id;
 decl-var-as-evar() {
    +evar = .decl-evar-c++;
    if .decl-evar-cap <= .decl-evar-c {
@@ -82,6 +85,11 @@ enum-base-begin() {
 // enum-base-end() {
 //    .decl-at = .decl-enum-at;
 // }
+enum-attr-soa-field(at:At, id:Id) {
+   .decl-enum-flags |= #soa-field;
+   .decl-enum-soa-field-gvar-at = at;
+   .decl-enum-soa-field-gvar-id = id;
+}
 decl-enum-end(base-type:At, row:i32, col:i32) {
    +s-idx = .enum-c++;
    if .enum-cap <= .enum-c {
@@ -101,6 +109,8 @@ decl-enum-end(base-type:At, row:i32, col:i32) {
    s.base-type = base-type;
    .decl-at = .decl-enum-at;
    s.flags = .decl-enum-flags;
+   s.soa-field-gvar-at = .decl-enum-soa-field-gvar-at;
+   s.soa-field-gvar-id = .decl-enum-soa-field-gvar-id;
    .decl-enum-last-cvar = #nil;
    // s.name = .decl-enum-name;
    // s.evar-c = .decl-evar-c;

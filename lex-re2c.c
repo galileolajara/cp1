@@ -108,6 +108,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "@var-args"               { return CP1_TOKEN_SPACE_AT_VAR_ARGS; }
    spaces "@no-decl"                { return CP1_TOKEN_SPACE_AT_NO_DECL; }
    spaces "@no-body"                { return CP1_TOKEN_SPACE_AT_NO_BODY; }
+   spaces "@soa-field"              { return CP1_TOKEN_SPACE_AT_SOA_FIELD; }
    spaces "=" spaces                { return CP1_TOKEN_SPACE_EQUAL_SPACE; }
    spaces "+=" spaces               { return CP1_TOKEN_SPACE_PLUS_EQUAL_SPACE; }
    spaces "-=" spaces               { return CP1_TOKEN_SPACE_MINUS_EQUAL_SPACE; }
@@ -187,6 +188,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    [a-z] id_one* ("-" id)*          { return CP1_TOKEN_ID; }
    [A-Z] id_one* ("-" id)*          { return CP1_TOKEN_ID_UPPER; }
    "." [A-Z] id_one* ("-" id)*      { return CP1_TOKEN_DOT_ID_UPPER; }
+   "[" id? "]" id                           { return CP1_TOKEN_SOA_FIELD; }
  
    */
 lex_string: {

@@ -304,6 +304,10 @@ read(in-path:char[]) {
       } else {
          e.real-name = #nil;
       }
+      if (e.flags & #soa-field) != #0 {
+         e.soa-field-gvar-at.rd(r);
+         e.soa-field-gvar-id.rd(r);
+      }
       // C.out.printf("printing at of enum:\n");
       // loop {
       //    if at.type == #basic {

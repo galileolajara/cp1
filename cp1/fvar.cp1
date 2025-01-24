@@ -16,10 +16,15 @@ using (ExprI) {
       e.member.wr(w, header);
    }
    rd-fvar(e-idx:ExprI, r:Rdr) @case.rd() @inline {
+      ExprI.rd(+expr, r);
+      Id.rd(+member, r);
+      e-idx.set-fvar(expr, member);
+   }
+   set-fvar(e-idx:this, expr:ExprI, member:Id) {
       quick-alloc-one(+(e:ExprFvar));
       e-idx.set(e.base, #fvar);
-      e.expr.rd(r);
-      e.member.rd(r);
+      e.expr = expr;
+      e.member = member;
    }
    type-fvar(expr:Expr, at:At&) @case.type() @inline {
       var e:ExprFvar = expr;

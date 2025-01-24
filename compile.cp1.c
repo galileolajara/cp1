@@ -66,6 +66,7 @@
 #define _NCp1_NEnumFlags_Creal_name (1)
 #define _NCp1_NEnumFlags_C0 0
 #define _NCp1_NId_Cnil (-1)
+#define _NCp1_NEnumFlags_Csoa_field (4)
 #define _NCp1_NStructFlags_Creal_name (1)
 #define _NCp1_NLvar_Cnil (-1)
 #define _NCp1_NLvar_C0 (_NCp1_NLvar_Cnil + 1)
@@ -86,7 +87,8 @@
 #define _NCp1_NExprType_Cfunc (_NCp1_NExprType_Cbools + 1)
 #define _NCp1_NExprType_Cmethod (_NCp1_NExprType_Cfunc + 1)
 #define _NCp1_NExprType_Cfvar (_NCp1_NExprType_Cmethod + 1)
-#define _NCp1_NExprType_Cint (_NCp1_NExprType_Cfvar + 1)
+#define _NCp1_NExprType_Csoa_field (_NCp1_NExprType_Cfvar + 1)
+#define _NCp1_NExprType_Cint (_NCp1_NExprType_Csoa_field + 1)
 #define _NCp1_NExprType_Ccvar (_NCp1_NExprType_Cint + 1)
 #define _NCp1_NExprType_Cstr (_NCp1_NExprType_Ccvar + 1)
 #define _NCp1_NExprType_Cindex (_NCp1_NExprType_Cstr + 1)
@@ -354,6 +356,8 @@ _NCp1_NInclude _Finclude;
 _NCp1_NAt _Fat;
 _NCp1_NAt _Fbase_type;
 _NCp1_NEnumFlags _Fflags;
+_NCp1_NAt _Fsoa_field_gvar_at;
+_NCp1_NId _Fsoa_field_gvar_id;
 _NCp1_NId _Freal_name;
 int32_t _Fmethod_c;
 int32_t _Fmethod_cap;
@@ -476,6 +480,15 @@ struct _NCp1_NExpr _Fbase;
 _NCp1_NExprI _Fexpr;
 _NCp1_NId _Fmember;
 _NCp1_NFvar _Ffvar;
+struct _NCp1_NValue _Fval;
+};
+struct _NCp1_NExprSoaField;
+struct _NCp1_NExprSoaField {
+struct _NCp1_NExpr _Fbase;
+_NCp1_NExprI _Fexpr;
+_NCp1_NId _Fgroup;
+_NCp1_NId _Ffield;
+_NCp1_NExprI _Fexpr2;
 struct _NCp1_NValue _Fval;
 };
 struct _NCp1_NExprGvar;
@@ -768,10 +781,10 @@ int32_t _Gctx_begin_row;
 int32_t _Gctx_begin_col;
 int32_t _Gctx_end_row;
 int32_t _Gctx_end_col;
+uint8_t* _Gexpr_is_processed;
+struct _NCp1_NExpr** _Gexpr_v;
 int32_t _Gexpr_c;
 int32_t _Gexpr_cap;
-struct _NCp1_NExpr** _Gexpr_v;
-uint8_t* _Gexpr_is_processed;
 int32_t _Gnest_stack_id_v[64];
 uint8_t _Gnest_stack_c;
 union _NCp1_NNest _Gnest_stack_ptr_v[64];
@@ -863,6 +876,7 @@ void _NCp1_NExprI_Pwrite_unary_1(struct _NCp1_NExpr* _Lexpr_0);
 void _NCp1_NExprI_Pwrite_ref_1(struct _NCp1_NExpr* _Lexpr_0);
 void _NCp1_NExprI_Pwrite_lvar_1(struct _NCp1_NExpr* _Lexpr_0);
 void _NCp1_NExprI_Pwrite_fvar_1(struct _NCp1_NExpr* _Lexpr_0);
+void _NCp1_NExprI_Pwrite_soa_field_1(struct _NCp1_NExpr* _Lexpr_0);
 void _NCp1_NExprI_Pwrite_gvar_1(struct _NCp1_NExpr* _Lexpr_0);
 void _NCp1_NExprI_Pwrite_cvar_1(struct _NCp1_NExpr* _Lexpr_0);
 void _NCp1_NExprI_Pwrite_bools_1(struct _NCp1_NExpr* _Lexpr_0);
@@ -885,6 +899,7 @@ case _NCp1_NExprType_Cbools: return "bools";
 case _NCp1_NExprType_Cfunc: return "func";
 case _NCp1_NExprType_Cmethod: return "method";
 case _NCp1_NExprType_Cfvar: return "fvar";
+case _NCp1_NExprType_Csoa_field: return "soa-field";
 case _NCp1_NExprType_Cint: return "int";
 case _NCp1_NExprType_Ccvar: return "cvar";
 case _NCp1_NExprType_Cstr: return "str";
@@ -911,6 +926,7 @@ void _NCp1_NStmt_Pwrite_1(struct _NCp1_NStmt* _Ls_0);
 void _NCp1_NVarFlags_Prd_2(_NCp1_NVarFlags* _Lf_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NTypeInfo_Prd_2(struct _NCp1_NTypeInfo* _Lti_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NExprType_Prd_2(_NCp1_NExprType* _Le_0, union _NCp1_NRdr* _Lr_1);
+_NCp1_NExprI _NCp1_NExprI_Palloc_0();
 void _NCp1_NExprI_Prd_assign_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NExprI_Prd_compare_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NExprI_Prd_bool_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1);
@@ -921,6 +937,7 @@ void _NCp1_NExprI_Prd_ref_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NExprI_Prd_cast_fast_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NExprI_Prd_lvar_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NExprI_Prd_fvar_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1);
+void _NCp1_NExprI_Prd_soa_field_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NExprI_Prd_gvar_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NExprI_Prd_cvar_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NExprI_Prd_bools_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1);
@@ -1003,6 +1020,7 @@ void _NCp1_NExprI_Pvalue_ref_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen
 void _NCp1_NExprI_Pvalue_cast_fast_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
 void _NCp1_NExprI_Pvalue_lvar_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
 void _NCp1_NExprI_Pvalue_fvar_5(_NCp1_NExprI _Lexpr_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_soa_field_5(_NCp1_NExprI _Lexpr_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
 void _NCp1_NExprI_Pvalue_gvar_5(_NCp1_NExprI _Lg_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
 void _NCp1_NExprI_Pvalue_cvar_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
 void _NCp1_NExprI_Pvalue_bools_5(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
@@ -1023,6 +1041,7 @@ void _NCp1_NExprI_Pprocess_ref_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1);
 void _NCp1_NExprI_Pprocess_cast_fast_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1);
 void _NCp1_NExprI_Pprocess_lvar_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1);
 void _NCp1_NExprI_Pprocess_fvar_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1);
+void _NCp1_NExprI_Pprocess_soa_field_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1);
 void _NCp1_NExprI_Pprocess_gvar_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1);
 void _NCp1_NExprI_Pprocess_cvar_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1);
 void _NCp1_NExprI_Pprocess_bools_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1);
@@ -1061,8 +1080,11 @@ void _NCp1_NCompare_Prd_2(_NCp1_NCompare* _Le_0, union _NCp1_NRdr* _Lr_1);
 bool _NCp1_NRdr_Pb_1(union _NCp1_NRdr* _Lr_0);
 void _NCp1_NMath_Prd_2(_NCp1_NMath* _Le_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NUnary_Prd_2(_NCp1_NUnary* _Lu_0, union _NCp1_NRdr* _Lr_1);
+void _NCp1_NExprI_Pset_fvar_3(_NCp1_NExprI _Le_idx_0, _NCp1_NExprI _Lexpr_1, _NCp1_NId _Lmember_2);
+void _NCp1_NExprI_Pset_gvar_3(_NCp1_NExprI _Le_idx_0, _NCp1_NAt _Lat_idx_1, _NCp1_NId _Lname_2);
 void _NCp1_NBools_Prd_2(_NCp1_NBools* _Le_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NRdr_Pcopy_3(union _NCp1_NRdr* _Lr_0, void* _Ldata_1, int32_t _Lsize_2);
+void _NCp1_NExprI_Pset_index_3(_NCp1_NExprI _Le_idx_0, _NCp1_NExprI _Lleft_1, _NCp1_NExprI _Lright_2);
 void _NCp1_NStmtSpace_Pstmt_push_7(struct _NCp1_NStmtSpace* _Ls_0, struct _NCp1_NStmt* _Ls2_1, int32_t _Lbegin_row_2, int32_t _Lbegin_col_3, int32_t _Lend_row_4, int32_t _Lend_col_5, _NCp1_NStmtType _Ltype_6);
 bool _NCp1_NExprI_Pprocess_case_func_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NFunc _Lf_idx_1);
 uint8_t _NCp1_NId_Plen_1(_NCp1_NId _Lid_0);
@@ -1084,6 +1106,7 @@ void _NCp1_NExprI_Ptype_ref_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1);
 void _NCp1_NExprI_Ptype_cast_fast_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1);
 void _NCp1_NExprI_Ptype_lvar_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1);
 void _NCp1_NExprI_Ptype_fvar_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1);
+void _NCp1_NExprI_Ptype_soa_field_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1);
 void _NCp1_NExprI_Ptype_gvar_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1);
 void _NCp1_NExprI_Ptype_cvar_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1);
 void _NCp1_NExprI_Ptype_bools_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1);
@@ -2012,6 +2035,10 @@ _NCp1_NId_Prd_2(&(*_Le_52)._Freal_name, &_Lr_7);
 } else {
 (*_Le_52)._Freal_name = _NCp1_NId_Cnil;
 }
+if(((*_Le_52)._Fflags & _NCp1_NEnumFlags_Csoa_field) != _NCp1_NEnumFlags_C0) {
+_NCp1_NAt_Prd_2(&(*_Le_52)._Fsoa_field_gvar_at, &_Lr_7);
+_NCp1_NId_Prd_2(&(*_Le_52)._Fsoa_field_gvar_id, &_Lr_7);
+}
 continue_5:;
 _Le_idx_51++;
 }
@@ -2498,6 +2525,9 @@ break;
 case _NCp1_NExprType_Cfvar:;
 _NCp1_NExprI_Pwrite_fvar_1(_Lexpr_1);
 break;
+case _NCp1_NExprType_Csoa_field:;
+_NCp1_NExprI_Pwrite_soa_field_1(_Lexpr_1);
+break;
 case _NCp1_NExprType_Cgvar:;
 _NCp1_NExprI_Pwrite_gvar_1(_Lexpr_1);
 break;
@@ -2912,14 +2942,7 @@ if(_Ltype_2 == _NCp1_NExprType_Cnil) {
 (*_Le_0) = _NCp1_NExprI_Cnil;
 } else {
 _NCp1_NExprI _Le_idx_3;
-_Le_idx_3 = (_NCp1_NExprI)(_Gexpr_c++);
-if(_Gexpr_cap <= _Gexpr_c) {
-int32_t _Lold_cap_4;
-_Lold_cap_4 = _Gexpr_cap;
-_NCp1_Pgrow_2(_Gexpr_cap, _Gexpr_c);
-_NCp1_Prealloc_3(_Gexpr_v, _Gexpr_cap, _Lold_cap_4);
-_NCp1_Prealloc_3(_Gexpr_is_processed, (_Gexpr_cap + 7) >> 3, (_Lold_cap_4 + 7) >> 3);
-}
+_Le_idx_3 = _NCp1_NExprI_Palloc_0();
 (*_Le_0) = _Le_idx_3;
 switch(_Ltype_2) {
 case _NCp1_NExprType_Cassign:;
@@ -2951,6 +2974,9 @@ _NCp1_NExprI_Prd_lvar_2(_Le_idx_3, _Lr_1);
 break;
 case _NCp1_NExprType_Cfvar:;
 _NCp1_NExprI_Prd_fvar_2(_Le_idx_3, _Lr_1);
+break;
+case _NCp1_NExprType_Csoa_field:;
+_NCp1_NExprI_Prd_soa_field_2(_Le_idx_3, _Lr_1);
 break;
 case _NCp1_NExprType_Cgvar:;
 _NCp1_NExprI_Prd_gvar_2(_Le_idx_3, _Lr_1);
@@ -3347,6 +3373,9 @@ break;
 case _NCp1_NExprType_Cfvar:;
 _NCp1_NExprI_Pvalue_fvar_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
 break;
+case _NCp1_NExprType_Csoa_field:;
+_NCp1_NExprI_Pvalue_soa_field_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
 case _NCp1_NExprType_Cgvar:;
 _NCp1_NExprI_Pvalue_gvar_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
 break;
@@ -3533,6 +3562,9 @@ _NCp1_NExprI_Pprocess_lvar_2(_Lexpr_4, &_Lok_5);
 break;
 case _NCp1_NExprType_Cfvar:;
 _NCp1_NExprI_Pprocess_fvar_2(_Lexpr_4, &_Lok_5);
+break;
+case _NCp1_NExprType_Csoa_field:;
+_NCp1_NExprI_Pprocess_soa_field_2(_Lexpr_4, &_Lok_5);
 break;
 case _NCp1_NExprType_Cgvar:;
 _NCp1_NExprI_Pprocess_gvar_2(_Lexpr_4, &_Lok_5);
@@ -3842,6 +3874,11 @@ _Le_1 = _Lexpr_0;
 _NCp1_NExprI_Pwrite_value_2((*_Le_1)._Fexpr, &(*_Le_1)._Fval);
 fprintf(_Gout, ".");
 _NCp1_NDeclVarData_Pwrite_2(&(*_NCp1_NStruct_Pptr_1((*_NCp1_NAt_Pptr_1((*_Le_1)._Fval._Ftype))._Fdecl._Fstructt))._Ffvar_v[(*_Le_1)._Ffvar]._Fdecl, _NCp1_NDeclVarType_Cfvar);
+}
+inline void _NCp1_NExprI_Pwrite_soa_field_1(struct _NCp1_NExpr* _Lexpr_0) {
+struct _NCp1_NExprSoaField* _Le_1;
+_Le_1 = _Lexpr_0;
+_NCp1_NExprI_Pwrite_index_1(_NCp1_NExprI_Pptr_1((*_Le_1)._Fexpr2));
 }
 inline void _NCp1_NExprI_Pwrite_gvar_1(struct _NCp1_NExpr* _Lexpr_0) {
 struct _NCp1_NExprGvar* _Le_1;
@@ -4175,6 +4212,18 @@ break_0:;
 inline void _NCp1_NExprType_Prd_2(_NCp1_NExprType* _Le_0, union _NCp1_NRdr* _Lr_1) {
 (*_Le_0) = (_NCp1_NExprType)(_NCp1_NRdr_Pn1_1(_Lr_1));
 }
+_NCp1_NExprI _NCp1_NExprI_Palloc_0() {
+_NCp1_NExprI _Le_idx_0;
+_Le_idx_0 = (_NCp1_NExprI)(_Gexpr_c++);
+if(_Gexpr_cap <= _Gexpr_c) {
+int32_t _Lold_cap_1;
+_Lold_cap_1 = _Gexpr_cap;
+_NCp1_Pgrow_2(_Gexpr_cap, _Gexpr_c);
+_NCp1_Prealloc_3(_Gexpr_v, _Gexpr_cap, _Lold_cap_1);
+_NCp1_Prealloc_3(_Gexpr_is_processed, (_Gexpr_cap + 7) >> 3, (_Lold_cap_1 + 7) >> 3);
+}
+return _Le_idx_0;
+}
 inline void _NCp1_NExprI_Prd_assign_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1) {
 struct _NCp1_NExprAssign* _Le_2;
 _NCp1_Pquick_alloc_one_1(_Le_2);
@@ -4253,55 +4302,26 @@ _NCp1_NExprI_Pset_3(_Le_idx_0, &(*_Le_2)._Fbase, _NCp1_NExprType_Clvar);
 _NCp1_NLvar_Prd_2(&(*_Le_2)._Flvar, _Lr_1);
 }
 inline void _NCp1_NExprI_Prd_fvar_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1) {
-struct _NCp1_NExprFvar* _Le_2;
+_NCp1_NExprI _Lexpr_2;
+_NCp1_NId _Lmember_3;
+_NCp1_NExprI_Prd_2(&_Lexpr_2, _Lr_1);
+_NCp1_NId_Prd_2(&_Lmember_3, _Lr_1);
+_NCp1_NExprI_Pset_fvar_3(_Le_idx_0, _Lexpr_2, _Lmember_3);
+}
+inline void _NCp1_NExprI_Prd_soa_field_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1) {
+struct _NCp1_NExprSoaField* _Le_2;
 _NCp1_Pquick_alloc_one_1(_Le_2);
-_NCp1_NExprI_Pset_3(_Le_idx_0, &(*_Le_2)._Fbase, _NCp1_NExprType_Cfvar);
+_NCp1_NExprI_Pset_3(_Le_idx_0, &(*_Le_2)._Fbase, _NCp1_NExprType_Csoa_field);
 _NCp1_NExprI_Prd_2(&(*_Le_2)._Fexpr, _Lr_1);
-_NCp1_NId_Prd_2(&(*_Le_2)._Fmember, _Lr_1);
+_NCp1_NId_Prd_2(&(*_Le_2)._Fgroup, _Lr_1);
+_NCp1_NId_Prd_2(&(*_Le_2)._Ffield, _Lr_1);
 }
 inline void _NCp1_NExprI_Prd_gvar_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1) {
-struct _NCp1_NExprGvar* _Le_2;
-_NCp1_NAt _Lat_idx_3;
-_NCp1_NId _Lname_4;
-bool _Ltry_parent_5;
-_NCp1_Pquick_alloc_one_1(_Le_2);
-_NCp1_NExprI_Pset_3(_Le_idx_0, &(*_Le_2)._Fbase, _NCp1_NExprType_Cgvar);
-_NCp1_NAt_Prd_2(&_Lat_idx_3, _Lr_1);
-_NCp1_NId_Prd_2(&_Lname_4, _Lr_1);
-_Ltry_parent_5 = false;
-if(_Lat_idx_3 == _NCp1_NAt_Cnil) {
-_Lat_idx_3 = (*_Gctx_func)._Fat;
-_Ltry_parent_5 = true;
-}
-while(1) {
-struct _NCp1_NAtData* _Lat_6;
-_Lat_6 = _NCp1_NAt_Pptr_1(_Lat_idx_3);
-int32_t _Li_7;
-_Li_7 = 0;
-for(int i = (*_Lat_6)._Fgvar_c; i > 0; ) {
-i --;
-_NCp1_NGvar _Lgvar_8;
-_Lgvar_8 = (*_Lat_6)._Fgvar_v[_Li_7];
-if((*_NCp1_NGvar_Pptr_1(_Lgvar_8))._Fdecl._Fname == _Lname_4) {
-(*_Le_2)._Fgvar = _Lgvar_8;
-return;
-}
-continue_1:;
-_Li_7++;
-}
-break_1:;
-if(!_Ltry_parent_5) {
-goto break_0;
-}
-if(_Lat_idx_3 == _NCp1_NAt_Croot) {
-goto break_0;
-}
-_Lat_idx_3 = (*_Lat_6)._Fparent;
-continue_0:;
-}
-break_0:;
-fprintf(stdout, "%s:%u:%u - %u:%u: Cannot find gvar '.%s'\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _NCp1_NId_Pstr_1(_Lname_4));
-exit(_NLibC_NExit_Cfailure);
+_NCp1_NAt _Lat_idx_2;
+_NCp1_NId _Lname_3;
+_NCp1_NAt_Prd_2(&_Lat_idx_2, _Lr_1);
+_NCp1_NId_Prd_2(&_Lname_3, _Lr_1);
+_NCp1_NExprI_Pset_gvar_3(_Le_idx_0, _Lat_idx_2, _Lname_3);
 }
 inline void _NCp1_NExprI_Prd_cvar_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1) {
 struct _NCp1_NExprCvar* _Le_2;
@@ -4485,11 +4505,11 @@ _NCp1_Pquick_alloc_one_1(_Le_2);
 _NCp1_NExprI_Pset_3(_Le_idx_0, &(*_Le_2)._Fbase, _NCp1_NExprType_Cnull);
 }
 inline void _NCp1_NExprI_Prd_index_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1) {
-struct _NCp1_NExprIndex* _Le_2;
-_NCp1_Pquick_alloc_one_1(_Le_2);
-_NCp1_NExprI_Pset_3(_Le_idx_0, &(*_Le_2)._Fbase, _NCp1_NExprType_Cindex);
-_NCp1_NExprI_Prd_2(&(*_Le_2)._Fleft, _Lr_1);
-_NCp1_NExprI_Prd_2(&(*_Le_2)._Fright, _Lr_1);
+_NCp1_NExprI _Lleft_2;
+_NCp1_NExprI _Lright_3;
+_NCp1_NExprI_Prd_2(&_Lleft_2, _Lr_1);
+_NCp1_NExprI_Prd_2(&_Lright_3, _Lr_1);
+_NCp1_NExprI_Pset_index_3(_Le_idx_0, _Lleft_2, _Lright_3);
 }
 inline void _NCp1_NLvarFlags_Prd_2(_NCp1_NLvarFlags* _Lf_0, union _NCp1_NRdr* _Lr_1) {
 (*_Lf_0) = (_NCp1_NLvarFlags)(_NCp1_NRdr_Pn1_1(_Lr_1));
@@ -5010,6 +5030,11 @@ if((*_Lv_3)._Freff == 1) {
 }
 (*_Lok_4) = true;
 }
+inline void _NCp1_NExprI_Pvalue_soa_field_5(_NCp1_NExprI _Lexpr_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprSoaField* _Le_5;
+_Le_5 = _NCp1_NExprI_Pptr_1(_Lexpr_0);
+_NCp1_NExprI_Pvalue_index_5((*_Le_5)._Fexpr2, _Lreff_1, _Lparen_2, _Lv_3, _Lok_4);
+}
 inline void _NCp1_NExprI_Pvalue_gvar_5(_NCp1_NExprI _Lg_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
 struct _NCp1_NExprGvar* _Le_5;
 struct _NCp1_NDeclGvar* _Lgvar_6;
@@ -5293,6 +5318,42 @@ _Li_8++;
 }
 break_0:;
 fprintf(stdout, "%s:%u:%u - %u:%u Cannot find member named '.%s' from type '/%s'\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _NCp1_NId_Pstr_1((*_Le_2)._Fmember), _NCp1_NId_Pstr_1((*_Ltype_4)._Fname._Fid));
+}
+inline void _NCp1_NExprI_Pprocess_soa_field_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
+struct _NCp1_NExprSoaField* _Le_2;
+_NCp1_NAt _Ltype_i_3;
+struct _NCp1_NAtData* _Ltype_4;
+_NCp1_NEnum _Lenumm_5;
+struct _NCp1_NEnumData* _Lenumd_6;
+_Le_2 = _Lexpr_0;
+_Ltype_i_3 = _NCp1_NExprI_Ptype_1((*_Le_2)._Fexpr);
+if(_Ltype_i_3 == _NCp1_NAt_Cnil) {
+fprintf(stdout, "%s:%u:%u - %u:%u Cannot get structure-of-array field member '.%s' from an expression of unknown type\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _NCp1_NId_Pstr_1((*_Le_2)._Ffield));
+return;
+}
+_Ltype_4 = _NCp1_NAt_Pptr_1(_Ltype_i_3);
+if((*_Ltype_4)._Fdef != _NCp1_NAtDef_Cenum) {
+fprintf(stdout, "%s:%u:%u - %u:%u Cannot get structure-of-array field member '.%s' because its type is not an enum\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _NCp1_NId_Pstr_1((*_Le_2)._Ffield));
+return;
+}
+_Lenumm_5 = (*_Ltype_4)._Fdecl._Fenumm;
+_Lenumd_6 = _NCp1_NEnum_Pptr_1(_Lenumm_5);
+if(((*_Lenumd_6)._Fflags & _NCp1_NEnumFlags_Csoa_field) != 0) {
+_NCp1_NExprI _Lgvar_e_idx_7;
+_NCp1_NExprI _Lfvar_e_idx_8;
+_NCp1_NExprI _Lindex_e_idx_9;
+_Lgvar_e_idx_7 = _NCp1_NExprI_Palloc_0();
+_NCp1_NExprI_Pset_gvar_3(_Lgvar_e_idx_7, (*_Lenumd_6)._Fsoa_field_gvar_at, (*_Lenumd_6)._Fsoa_field_gvar_id);
+_Lfvar_e_idx_8 = _NCp1_NExprI_Palloc_0();
+_NCp1_NExprI_Pset_fvar_3(_Lfvar_e_idx_8, _Lgvar_e_idx_7, (*_Le_2)._Ffield);
+_Lindex_e_idx_9 = _NCp1_NExprI_Palloc_0();
+_NCp1_NExprI_Pset_index_3(_Lindex_e_idx_9, _Lfvar_e_idx_8, (*_Le_2)._Fexpr);
+_NCp1_NExprI_Pprocess_index_2(_NCp1_NExprI_Pptr_1(_Lindex_e_idx_9), _Lok_1);
+(*_Le_2)._Fexpr2 = _Lindex_e_idx_9;
+} else {
+fprintf(stdout, "%s:%u:%u - %u:%u Cannot get structure-of-array field member '.%s' because the enum has no @soa-field attribute\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _NCp1_NId_Pstr_1((*_Le_2)._Ffield));
+return;
+}
 }
 inline void _NCp1_NExprI_Pprocess_gvar_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
 struct _NCp1_NExprGvar* _Le_2;
@@ -6004,12 +6065,66 @@ inline void _NCp1_NMath_Prd_2(_NCp1_NMath* _Le_0, union _NCp1_NRdr* _Lr_1) {
 inline void _NCp1_NUnary_Prd_2(_NCp1_NUnary* _Lu_0, union _NCp1_NRdr* _Lr_1) {
 (*_Lu_0) = (_NCp1_NUnary)(_NCp1_NRdr_Pn1_1(_Lr_1));
 }
+void _NCp1_NExprI_Pset_fvar_3(_NCp1_NExprI _Le_idx_0, _NCp1_NExprI _Lexpr_1, _NCp1_NId _Lmember_2) {
+struct _NCp1_NExprFvar* _Le_3;
+_NCp1_Pquick_alloc_one_1(_Le_3);
+_NCp1_NExprI_Pset_3(_Le_idx_0, &(*_Le_3)._Fbase, _NCp1_NExprType_Cfvar);
+(*_Le_3)._Fexpr = _Lexpr_1;
+(*_Le_3)._Fmember = _Lmember_2;
+}
+void _NCp1_NExprI_Pset_gvar_3(_NCp1_NExprI _Le_idx_0, _NCp1_NAt _Lat_idx_1, _NCp1_NId _Lname_2) {
+struct _NCp1_NExprGvar* _Le_3;
+bool _Ltry_parent_4;
+_NCp1_Pquick_alloc_one_1(_Le_3);
+_NCp1_NExprI_Pset_3(_Le_idx_0, &(*_Le_3)._Fbase, _NCp1_NExprType_Cgvar);
+_Ltry_parent_4 = false;
+if(_Lat_idx_1 == _NCp1_NAt_Cnil) {
+_Lat_idx_1 = (*_Gctx_func)._Fat;
+_Ltry_parent_4 = true;
+}
+while(1) {
+struct _NCp1_NAtData* _Lat_5;
+_Lat_5 = _NCp1_NAt_Pptr_1(_Lat_idx_1);
+int32_t _Li_6;
+_Li_6 = 0;
+for(int i = (*_Lat_5)._Fgvar_c; i > 0; ) {
+i --;
+_NCp1_NGvar _Lgvar_7;
+_Lgvar_7 = (*_Lat_5)._Fgvar_v[_Li_6];
+if((*_NCp1_NGvar_Pptr_1(_Lgvar_7))._Fdecl._Fname == _Lname_2) {
+(*_Le_3)._Fgvar = _Lgvar_7;
+return;
+}
+continue_1:;
+_Li_6++;
+}
+break_1:;
+if(!_Ltry_parent_4) {
+goto break_0;
+}
+if(_Lat_idx_1 == _NCp1_NAt_Croot) {
+goto break_0;
+}
+_Lat_idx_1 = (*_Lat_5)._Fparent;
+continue_0:;
+}
+break_0:;
+fprintf(stdout, "%s:%u:%u - %u:%u: Cannot find gvar '.%s'\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _NCp1_NId_Pstr_1(_Lname_2));
+exit(_NLibC_NExit_Cfailure);
+}
 inline void _NCp1_NBools_Prd_2(_NCp1_NBools* _Le_0, union _NCp1_NRdr* _Lr_1) {
 (*_Le_0) = (_NCp1_NBools)(_NCp1_NRdr_Pn1_1(_Lr_1));
 }
 inline void _NCp1_NRdr_Pcopy_3(union _NCp1_NRdr* _Lr_0, void* _Ldata_1, int32_t _Lsize_2) {
 memcpy(_Ldata_1, (*_Lr_0)._Freff, _Lsize_2);
 (*_Lr_0)._Fpos += _Lsize_2;
+}
+void _NCp1_NExprI_Pset_index_3(_NCp1_NExprI _Le_idx_0, _NCp1_NExprI _Lleft_1, _NCp1_NExprI _Lright_2) {
+struct _NCp1_NExprIndex* _Le_3;
+_NCp1_Pquick_alloc_one_1(_Le_3);
+_NCp1_NExprI_Pset_3(_Le_idx_0, &(*_Le_3)._Fbase, _NCp1_NExprType_Cindex);
+(*_Le_3)._Fleft = _Lleft_1;
+(*_Le_3)._Fright = _Lright_2;
 }
 inline void _NCp1_NStmtSpace_Pstmt_push_7(struct _NCp1_NStmtSpace* _Ls_0, struct _NCp1_NStmt* _Ls2_1, int32_t _Lbegin_row_2, int32_t _Lbegin_col_3, int32_t _Lend_row_4, int32_t _Lend_col_5, _NCp1_NStmtType _Ltype_6) {
 (*_Ls2_1)._Fbegin_row = _Lbegin_row_2;
@@ -6162,6 +6277,9 @@ _NCp1_NExprI_Ptype_lvar_2(_Lexpr_1, &_Lat_2);
 break;
 case _NCp1_NExprType_Cfvar:;
 _NCp1_NExprI_Ptype_fvar_2(_Lexpr_1, &_Lat_2);
+break;
+case _NCp1_NExprType_Csoa_field:;
+_NCp1_NExprI_Ptype_soa_field_2(_Lexpr_1, &_Lat_2);
 break;
 case _NCp1_NExprType_Cgvar:;
 _NCp1_NExprI_Ptype_gvar_2(_Lexpr_1, &_Lat_2);
@@ -6337,6 +6455,11 @@ inline void _NCp1_NExprI_Ptype_fvar_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _
 struct _NCp1_NExprFvar* _Le_2;
 _Le_2 = _Lexpr_0;
 (*_Lat_1) = (*_NCp1_NStruct_Pptr_1((*_NCp1_NAt_Pptr_1((*_Le_2)._Fval._Ftype))._Fdecl._Fstructt))._Ffvar_v[(*_Le_2)._Ffvar]._Fdecl._Ftype;
+}
+inline void _NCp1_NExprI_Ptype_soa_field_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1) {
+struct _NCp1_NExprSoaField* _Le_2;
+_Le_2 = _Lexpr_0;
+_NCp1_NExprI_Ptype_index_2(_NCp1_NExprI_Pptr_1((*_Le_2)._Fexpr2), _Lat_1);
 }
 inline void _NCp1_NExprI_Ptype_gvar_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1) {
 struct _NCp1_NExprGvar* _Le_2;

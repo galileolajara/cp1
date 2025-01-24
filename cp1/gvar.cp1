@@ -66,10 +66,13 @@ using (ExprI) {
       e.name.wr(w, header);
    }
    rd-gvar(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:ExprGvar));
-      e-idx.set(e.base, #gvar);
       At.rd(+at-idx, r);
       Id.rd(+name, r);
+      e-idx.set-gvar(at-idx, name);
+   }
+   set-gvar(e-idx:this, at-idx:At, name:Id) {
+      quick-alloc-one(+(e:ExprGvar));
+      e-idx.set(e.base, #gvar);
       +try-parent = false;
       if at-idx == #nil {
          at-idx = .ctx-func.at;

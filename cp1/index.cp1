@@ -24,10 +24,15 @@ using (ExprI) {
       .out.printf("]");
    }
    rd-index(e-idx:ExprI, r:Rdr) @case.rd() @inline {
+      ExprI.rd(+left, r);
+      ExprI.rd(+right, r);
+      e-idx.set-index(left, right);
+   }
+   set-index(e-idx:this, left:ExprI, right:ExprI) {
       quick-alloc-one(+(e:ExprIndex));
       e-idx.set(e.base, #index);
-      e.left.rd(r);
-      e.right.rd(r);
+      e.left = left;
+      e.right = right;
    }
    type-index(expr:Expr, at:At&) @case.type() @inline {
       var e:ExprIndex = expr;

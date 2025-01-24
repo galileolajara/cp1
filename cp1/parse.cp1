@@ -601,6 +601,10 @@ write-enum(w:Wtr, header:bool) {
       if (e.flags & #real-name) != #0 {
          e.real-name.wr(w, header);
       }
+      if (e.flags & #soa-field) != #0 {
+         e.soa-field-gvar-at.wr(w, header);
+         e.soa-field-gvar-id.wr(w, header);
+      }
    }
 }
 write-struct(w:Wtr, header:bool) {
@@ -1211,6 +1215,44 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                if lex.cursor[0] == ''( {
                   t = #id-then-open-parenthesis;
                }
+               .last-token = t;
+               psr.parse(t, tok);
+            }
+            case #soa-field {
+               // tok.val.ii32.id = 
+               // lex.get-id(2, 0);
+               +rbracket = 1;
+               loop lex.start[rbracket] != ''] {
+                  rbracket++;
+               }
+               if true {
+                  var r-start:Rdr+;
+                  r-start.reff = lex.start;
+                  r-start.pos += 1;
+                  var r-cursor:Rdr+;
+                  r-cursor.reff = lex.cursor;
+                  +length = rbracket - 1;
+                  +end = r-cursor.pos - r-start.pos - length;
+                  if length == 0 {
+                     tok.val.ii32.id = -1;
+                     // C.printf("got empty soa-group\n");
+                  } else {
+                     tok.val.ii32.id = lex.get-id(1, end);
+                     // C.printf("got soa-group '%.*s' %s, len %d\n", length:i32, r-start.charr, tok.val.ii32.id:Id.str(), length:i32);
+                  }
+               }
+               if true {
+                  rbracket++;
+                  var r-start:Rdr+;
+                  r-start.reff = lex.start;
+                  r-start.pos += rbracket;
+                  var r-cursor:Rdr+;
+                  r-cursor.reff = lex.cursor;
+                  +length = r-cursor.pos - r-start.pos;
+                  tok.val.ii32.id2 = lex.get-id(rbracket, 0);
+                  // C.printf("got soa-field '%.*s' %s\n", length:i32, r-start.charr, tok.val.ii32.id2:Id.str());
+               }
+               // C.exit(#failure);
                .last-token = t;
                psr.parse(t, tok);
             }

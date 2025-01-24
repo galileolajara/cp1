@@ -442,6 +442,8 @@ valueonly(l) ::= callExpr(r).
    { l.basic.id = r.basic.id; }
 valueonly(l) ::= fvarExpr(r).
    { l.basic.id = r.basic.id; }
+valueonly(l) ::= soaFieldExpr(r).
+   { l.basic.id = r.basic.id; }
 valueonly(l) ::= gvarExpr(r).
    { l.basic.id = r.basic.id; }
 gvarExpr(l) ::= DOT ID(r).
@@ -450,6 +452,8 @@ gvarExpr(l) ::= at(at) DOT ID(r).
    { l.basic.id = _NCp1_Pexpr_gvar_2(at.basic.id, r.basic.id); }
 fvarExpr(l) ::= value4fix(e) DOT ID(r).
    { l.basic.id = _NCp1_Pexpr_fvar_2(e.basic.id, r.basic.id); }
+soaFieldExpr(l) ::= value4fix(e) SOA_FIELD(f).
+   { l.basic.id = _NCp1_Pexpr_soa_field_3(e.basic.id, f.basic.id, f.basic.id2); }
 expr_and1(l) ::= expr(left) COMMA_SPACE expr(right).
    { l.basic.id = _NCp1_Pexpr_bools_3(left.basic.id, right.basic.id, 0); }
 expr_and1(l) ::= expr_and1(left) COMMA_SPACE expr(right).
@@ -877,7 +881,15 @@ decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE open_curly_brace_or_space 
    { _NCp1_Pdecl_at_end_0(); }
 enum_base_begin ::= .
    { _NCp1_Penum_base_begin_0(); }
-enum_base_end ::= COLON at(at) end_pos(end).
+decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT(a) DOT ID(i) DOT CLOSE_PARENTHESIS.
+   { _NCp1_Penum_attr_soa_field_2(a.basic.id, i.basic.id); }
+decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID(i) DOT CLOSE_PARENTHESIS.
+   { _NCp1_Penum_attr_soa_field_2(-1, i.basic.id); }
+decl_enum_attrs ::= decl_enum_attr.
+decl_enum_attrs ::= decl_enum_attrs decl_enum_attr.
+decl_enum_attrs_optional ::= .
+decl_enum_attrs_optional ::= decl_enum_attrs.
+enum_base_end ::= COLON at(at) decl_enum_attrs_optional end_pos(end).
    { _NCp1_Pdecl_enum_end_3(at.basic.id, end.basic.row, end.basic.col); }
 decl_enum ::= enum_decl_begin open_bracket_or_space CLOSE_BRACKET enum_base_begin enum_base_end
    decl_enum_close_or_at.

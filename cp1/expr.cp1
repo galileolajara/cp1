@@ -39,7 +39,7 @@ using (Stmt) {
 }
 enum ExprType[
    #nil, #call-method, #lvar, #gvar, #math, #assign, #bools,
-   #func, #method, #fvar, #int, #cvar, #str, #index, #unary,
+   #func, #method, #fvar, #soa-field, #int, #cvar, #str, #index, #unary,
    #compare, #bool, #null, #cast-fast, #ref, #char, #size-of-type,
    ]:u8 {
    wr(e:this, w:Wtr) @inline {
@@ -138,6 +138,16 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
          w.n1(255);
       }
    }
+   alloc():ExprI {
+      +e-idx = (.expr-c++):ExprI;
+      if .expr-cap <= .expr-c {
+         +old-cap = .expr-cap;
+         grow(.expr-cap, .expr-c);
+         realloc(.expr-v, .expr-cap, old-cap);
+         realloc(.expr-is-processed, (.expr-cap + 7) >> 3, (old-cap + 7) >> 3);
+      }
+      return e-idx;
+   }
    rd(e:this&, r:Rdr) {
       if #debug-rd-wr {
          if r.n1() != 255 {
@@ -150,13 +160,7 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
       if type == #nil {
          e = #nil;
       } else {
-         +e-idx = (.expr-c++):ExprI;
-         if .expr-cap <= .expr-c {
-            +old-cap = .expr-cap;
-            grow(.expr-cap, .expr-c);
-            realloc(.expr-v, .expr-cap, old-cap);
-            realloc(.expr-is-processed, (.expr-cap + 7) >> 3, (old-cap + 7) >> 3);
-         }
+         +e-idx = alloc();
          e = e-idx;
          switch.rd(e-idx, r) type {
             default {
