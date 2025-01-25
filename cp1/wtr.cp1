@@ -1,12 +1,12 @@
 using Cp1 = Cp1;
 using C = LibC;
 using (Cp1) {
-struct Wtr[
+union Wtr[
    reff:ref,
    pos:usz,
    p1:u8[],
    p4:u32[],
-   ] @union {
+   ] {
    n1(w:this, n:u8) @inline {
       w.p1[0] = n;
       w.pos++;

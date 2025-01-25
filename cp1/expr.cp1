@@ -304,11 +304,11 @@ expr-push(e:Expr, type:ExprType):ExprI {
    .expr-v[e-idx] = e;
    return e-idx;
 }
-struct ExprIntValue[
+union ExprIntValue[
    ii32:i32,
    uu32:u32,
    ff32:f32,
-] @union;
+];
 struct ExprIntData[
    base:Expr+,
    value:ExprIntValue+,

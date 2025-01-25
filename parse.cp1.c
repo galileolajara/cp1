@@ -30,7 +30,8 @@
 #define _NCp1_NToken_Cdot_id_upper (_NCp1_NToken_Cid_upper + 1)
 #define _NCp1_NToken_Chash_id (_NCp1_NToken_Cdot_id_upper + 1)
 #define _NCp1_NToken_Cstruct (_NCp1_NToken_Chash_id + 1)
-#define _NCp1_NToken_Cid (_NCp1_NToken_Cstruct + 1)
+#define _NCp1_NToken_Cunion (_NCp1_NToken_Cstruct + 1)
+#define _NCp1_NToken_Cid (_NCp1_NToken_Cunion + 1)
 #define _NCp1_NToken_Cspace_at_real_name_str (_NCp1_NToken_Cid + 1)
 #define _NCp1_NToken_Cspace_at_real_name (_NCp1_NToken_Cspace_at_real_name_str + 1)
 #define _NCp1_NToken_Cspace_at_no_decl (_NCp1_NToken_Cspace_at_real_name + 1)
@@ -250,8 +251,7 @@
 #define _NCp1_NToken_Creturn (_NCp1_NToken_Cbreak + 1)
 #define _NCp1_NToken_Cvar (_NCp1_NToken_Creturn + 1)
 #define _NCp1_NToken_Cspace_at_extern (_NCp1_NToken_Cvar + 1)
-#define _NCp1_NToken_Cspace_at_union (_NCp1_NToken_Cspace_at_extern + 1)
-#define _NCp1_NToken_Cspace_at_soa_field (_NCp1_NToken_Cspace_at_union + 1)
+#define _NCp1_NToken_Cspace_at_soa_field (_NCp1_NToken_Cspace_at_extern + 1)
 #define _NCp1_NToken_Cat (_NCp1_NToken_Cspace_at_soa_field + 1)
 typedef int32_t _NCp1_NFunc;
 typedef int32_t _NCp1_NInclude;
@@ -1069,6 +1069,7 @@ case _NCp1_NToken_Cid_upper: return "id-upper";
 case _NCp1_NToken_Cdot_id_upper: return "dot-id-upper";
 case _NCp1_NToken_Chash_id: return "hash-id";
 case _NCp1_NToken_Cstruct: return "struct";
+case _NCp1_NToken_Cunion: return "union";
 case _NCp1_NToken_Cid: return "id";
 case _NCp1_NToken_Cspace_at_real_name_str: return "space-at-real-name-str";
 case _NCp1_NToken_Cspace_at_real_name: return "space-at-real-name";
@@ -1182,7 +1183,6 @@ case _NCp1_NToken_Cbreak: return "break";
 case _NCp1_NToken_Creturn: return "return";
 case _NCp1_NToken_Cvar: return "var";
 case _NCp1_NToken_Cspace_at_extern: return "space-at-extern";
-case _NCp1_NToken_Cspace_at_union: return "space-at-union";
 case _NCp1_NToken_Cspace_at_soa_field: return "space-at-soa-field";
 case _NCp1_NToken_Cat: return "at";
 }

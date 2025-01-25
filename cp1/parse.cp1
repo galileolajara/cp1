@@ -262,10 +262,10 @@ struct TokenDataI32[
 struct TokenDataF32[
    ff32:f32,
 ];
-struct TokenDataValue[
+union TokenDataValue[
    ii32:TokenDataI32+,
    ff32:TokenDataF32+,
-] @union;
+];
 struct TokenData[
    row:i32,
    col:i32,

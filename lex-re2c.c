@@ -102,7 +102,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "@decl"                   { return CP1_TOKEN_SPACE_AT_DECL; }
    spaces "@cp1-name"               { return CP1_TOKEN_SPACE_AT_CP1_NAME; }
    spaces "@case"                   { return CP1_TOKEN_SPACE_AT_CASE; }
-   spaces "@union"                  { return CP1_TOKEN_SPACE_AT_UNION; }
+   // spaces "@union"                  { return CP1_TOKEN_SPACE_AT_UNION; }
    spaces "@extern"                 { return CP1_TOKEN_SPACE_AT_EXTERN; }
    spaces "@fall-through"           { return CP1_TOKEN_SPACE_AT_FALL_THROUGH; }
    spaces "@var-args"               { return CP1_TOKEN_SPACE_AT_VAR_ARGS; }
@@ -166,6 +166,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "using"                          { return CP1_TOKEN_USING; }
    "enum"                           { return CP1_TOKEN_ENUM; }
    "struct"                         { return CP1_TOKEN_STRUCT; }
+   "union"                          { return CP1_TOKEN_UNION; }
    "return"                         { return CP1_TOKEN_RETURN; }
    "loop"                           { return CP1_TOKEN_LOOP; }
    "var"                            { return CP1_TOKEN_VAR; }

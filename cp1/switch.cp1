@@ -61,7 +61,7 @@ using (StmtSpace) {
       space.stmt-push(s.base, 0, 0, 0, 0, #switch-end);
    }
 }
-struct CaseStack[cas:StmtCase, defaul:StmtDefault] @union;
+union CaseStack[cas:StmtCase, defaul:StmtDefault];
 var case-stack-v:CaseStack+[64];
 var case-stack-c:u8;
 using (Stmt) {

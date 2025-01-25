@@ -1,13 +1,13 @@
 using Cp1 = Cp1;
 using C = LibC;
 using (Cp1) {
-struct Rdr[
+union Rdr[
    reff:ref,
    pos:usz,
    p1:u8[],
    charr:char[],
    p4:u32[],
-   ] @union {
+   ] {
    n1(r:this):u8 @inline {
       +val = r.p1[0];
       r.pos++;

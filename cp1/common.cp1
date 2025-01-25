@@ -443,8 +443,8 @@ include("num.c") {
       @inline;
 }
 #decl-at-name-limit:i32 = 3;
-struct AtName[id:Id, basic:BasicTypeId] @union;
-struct AtType[structt:Struct, enumm:Enum] @union;
+union AtName[id:Id, basic:BasicTypeId];
+union AtType[structt:Struct, enumm:Enum];
 enum AtDef[#undefined, #module, #struct, #enum, #basic]:u8;
 struct AtData[
    type:NameType,

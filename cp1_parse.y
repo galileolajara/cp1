@@ -47,6 +47,9 @@ enum_cvar_begin_decl ::= HASH_ID(e) typeAndInfo_optional.
    { _NCp1_Pdecl_add_cvar_3(e.basic.id, e.basic.row, e.basic.col); }
 struct_decl_begin ::= STRUCT SPACE ID_UPPER(name).
    { _NCp1_Pdecl_at_begin_struct_3(name.basic.id, name.basic.row, name.basic.col); }
+struct_decl_begin ::= UNION SPACE ID_UPPER(name).
+   { _NCp1_Pdecl_at_begin_struct_3(name.basic.id, name.basic.row, name.basic.col);
+     _NCp1_Pstruct_attr_union_0(); }
 fvar_decl_name ::= ID(name).
    { _NCp1_Pdecl_var_begin_3(name.basic.id, name.basic.row, name.basic.col); }
 lvar_decl_name ::= ID(name).
@@ -851,8 +854,8 @@ decl_struct_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _NCp1_Pstruct_attr_real_name_1(e.basic.id); }
 decl_struct_attr ::= SPACE_AT_REAL_NAME.
    { _NCp1_Pstruct_attr_real_name_1(-1); }
-decl_struct_attr ::= SPACE_AT_UNION.
-   { _NCp1_Pstruct_attr_union_0(); }
+/* decl_struct_attr ::= SPACE_AT_UNION.
+   { _NCp1_Pstruct_attr_union_0(); } */
 decl_struct_attrs_list ::= decl_struct_attr.
 decl_struct_attrs_list ::= decl_struct_attrs_list decl_struct_attr.
 decl_struct_attrs_optional ::= end_pos(end).
