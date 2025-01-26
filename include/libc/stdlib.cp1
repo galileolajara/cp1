@@ -11,6 +11,7 @@ include(<stdlib.h>) {
       exit(code:Exit) @real-name @no-decl;
       getenv(name:char[]):char[] @real-name @no-decl;
       realpath(pathname:char[], resolved:char[]):char[] @real-name @no-decl;
+      atoi(str:char[]):intc @real-name @no-decl;
       enum Exit[#success, #failure]:intc;
    }
 }
