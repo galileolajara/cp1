@@ -961,18 +961,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             } elif r.p1[1] == ''" {
                parse-string(r, w, ''", in-data);
                continue;
-            } elif r.p1[1] == ''| {
-               parse-string(r, w, ''|, in-data);
-               continue;
-            } elif r.p1[1] == ''; {
-               parse-string(r, w, '';, in-data);
-               continue;
-            } elif r.p1[1] == ''_ {
-               parse-string(r, w, ''_, in-data);
-               continue;
-            } elif r.p1[1] == ''+ {
-               parse-string(r, w, ''+, in-data);
-               continue;
             } elif r.p1[1] == ''< {
                parse-string(r, w, ''>, in-data);
                continue;
@@ -1193,12 +1181,67 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   C.exit(#failure);
                }
                loop i = 0; {
-                  if lex.cursor[i] == ''\0 {
+                  +c = lex.cursor[i];
+                  if c == ''\0 {
                      C.out.printf("%s:%u:%u: Keyword 'loop' was found but was not followed by '{'\n", .input-path, .row, .col);
                      C.exit(#failure);
-                  } elif lex.cursor[i] == ''{ {
+                  } elif c == ''\' {
+                     c = lex.cursor[i + 1];
+                     if c == ''\' {
+                        if lex.cursor[i + 2] == ''\\ {
+                           C.printf("[%.*s]\n", 4, &lex.cursor[i]);
+                           i += 4;
+                           continue;
+                        } else {
+                           C.printf("[%.*s]\n", 3, &lex.cursor[i]);
+                           i += 3;
+                           continue;
+                        }
+                     } elif c == ''" {
+                        i += 2;
+                        loop {
+                           if lex.cursor[i++] == ''" {
+                              break;
+                           }
+                        }
+                        continue;
+                     } elif c == ''< {
+                        i += 2;
+                        loop {
+                           if lex.cursor[i++] == ''> {
+                              break;
+                           }
+                        }
+                        continue;
+                     } elif c == ''[ {
+                        i += 2;
+                        loop {
+                           if lex.cursor[i++] == ''] {
+                              break;
+                           }
+                        }
+                        continue;
+                     } elif c == ''{ {
+                        i += 2;
+                        loop {
+                           if lex.cursor[i++] == ''} {
+                              break;
+                           }
+                        }
+                        continue;
+                     } elif c == ''( {
+                        i += 2;
+                        loop {
+                           if lex.cursor[i++] == '') {
+                              break;
+                           }
+                        }
+                        continue;
+                     }
+                  } elif c == ''" {
+                  } elif c == ''{ {
                      break;
-                  } elif lex.cursor[i] == ''; {
+                  } elif c == ''; {
                      found-semicolon = true;
                      break;
                   }
