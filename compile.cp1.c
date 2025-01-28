@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include "num.c"
 #include <string.h>
-#define _NCp1_Chash_table_size (64)
+#define _NCp1_Chash_table_size (2048)
 #define _NCp1_NFunc_Cnil (-1)
 #define _NCp1_NBasicTypeId_Croot 0
 #define _NCp1_NBasicTypeId_Crelative (_NCp1_NBasicTypeId_Croot + 1)
@@ -923,6 +923,7 @@ int32_t _NCp1_NAt_Pcount_stars0_2(_NCp1_NAt _Ltd_0, struct _NCp1_NTypeInfo* _Lti
 size_t _NLibC_NFile_Pwrite_3(FILE* _Lf_0, void* _Lbuf_1, size_t _Lsize_2);
 void _NCp1_NDeclVarData_Pwrite_lvar_2(struct _NCp1_NDeclVarData* _Lvd_0, _NCp1_NLvar _Llvar_1);
 void _NCp1_NStmt_Pwrite_1(struct _NCp1_NStmt* _Ls_0);
+int32_t _NCp1_NAtMap_Pget_or_insert_4(struct _NCp1_NAtMap* _Lm_0, uint32_t _Lparent_and_type_1, _NCp1_NId _Lname_2, int32_t _Lval_3);
 void _NCp1_NVarFlags_Prd_2(_NCp1_NVarFlags* _Lf_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NTypeInfo_Prd_2(struct _NCp1_NTypeInfo* _Lti_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NExprType_Prd_2(_NCp1_NExprType* _Le_0, union _NCp1_NRdr* _Lr_1);
@@ -2892,6 +2893,9 @@ if(_Lidx_2 == _NCp1_NId_Cnil) {
 } else {
 (*_Lid_0) = _Gid_table[_Lidx_2];
 }
+}
+int32_t _NCp1_NAtMap_Pget_or_insert_5(struct _NCp1_NAtMap* _Lm_0, _NCp1_NAt _Lparent_1, _NCp1_NNameType _Ltype_2, _NCp1_NId _Lname_3, int32_t _Lval_4) {
+return _NCp1_NAtMap_Pget_or_insert_4(_Lm_0, (uint32_t)(_Lparent_1) | ((uint32_t)(_Ltype_2) << 8), _Lname_3, _Lval_4);
 }
 inline void _NCp1_NInclude_Prd_2(_NCp1_NInclude* _Li_0, union _NCp1_NRdr* _Lr_1) {
 _NCp1_NInclude _Lidx_2;
