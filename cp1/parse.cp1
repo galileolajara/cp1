@@ -272,7 +272,7 @@ struct TokenData[
    val:TokenDataValue+,
    // id:i32,
    // id2:i32,
-   // val:i32[12],
+   reserved:i32[12],
 ];
 struct Lexer[
    content:u8[],

@@ -911,12 +911,15 @@ using (Func) {
       if (.func-in-process[n3] & n17) != 0 { return }
       .func-in-process[n3] |= n17;
       +f = f-idx.ptr();
+      +old-ctx-func = .ctx-func;
+      .ctx-func = f;
       +f-at = f.at;
       +f-file = f.file;
       +f-row = f.begin-row;
       +f-col = f.begin-col;
       loop j = 0; f.farg-c; j++ {
          f.farg-v[j].decl.type = at-validate(f.farg-v[j].decl.type, f-at, f-file, f.farg-v[j].row, f.farg-v[j].col);
+         f.farg-v[j].decl.type.finalize(f.farg-v[j].decl.type-info, f.farg-v[j].row, f.farg-v[j].col);
       }
       if f.decl.type != #nil {
          f.decl.type = at-validate(f.decl.type, f-at, f-file, f-row, f-col);
@@ -934,6 +937,7 @@ using (Func) {
             .process-last = f-idx;
          }
       }
+      .ctx-func = old-ctx-func;
    }
    process-now(f-idx:this):bool {
       +f = f-idx.ptr();
