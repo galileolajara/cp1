@@ -852,6 +852,7 @@ void* qalloc(int32_t _Lsize_0);
 void _NCp1_NFunc_Prd_2(_NCp1_NFunc* _Lf_0, union _NCp1_NRdr* _Lr_1);
 uint32_t _NCp1_NRdr_Pn4_1(union _NCp1_NRdr* _Lr_0);
 struct _NCp1_NFileData* _NCp1_NFile_Pptr_1(_NCp1_NFile _Lf_0);
+bool _NCp1_NDeclVarData_Pprocess_5(struct _NCp1_NDeclVarData* _Lvd_0, _NCp1_NFile _Lfile_1, int32_t _Lrow_2, int32_t _Lcol_3, _NCp1_NAt _Lbase_at_4);
 _NCp1_NAt _NCp1_Pat_validate_5(_NCp1_NAt _Lvd_type_0, _NCp1_NAt _Lat_i_1, _NCp1_NFile _Lfile_2, uint32_t _Lrow_3, uint32_t _Lcol_4);
 bool _NCp1_NAt_Pfinalize_4(_NCp1_NAt _Lat_i_0, struct _NCp1_NTypeInfo* _Lti_1, int32_t _Lrow_2, int32_t _Lcol_3);
 void _NCp1_NDeclFunc_Plvars_rd_2(struct _NCp1_NDeclFunc* _Lf_0, union _NCp1_NRdr* _Lr_1);
@@ -861,7 +862,6 @@ struct _NCp1_NLvarData* _NCp1_NLvar_Pptr_1(_NCp1_NLvar _Ll_0);
 bool _NCp1_NExprI_Pvalue_4(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3);
 void _NCp1_NTypeInfo_Pinit_1(struct _NCp1_NTypeInfo* _Lti_0);
 void _NCp1_NTypeInfo_Pcopy_from_2(struct _NCp1_NTypeInfo* _Lti_0, struct _NCp1_NTypeInfo* _Lti2_1);
-bool _NCp1_NDeclVarData_Pprocess_5(struct _NCp1_NDeclVarData* _Lvd_0, _NCp1_NFile _Lfile_1, int32_t _Lrow_2, int32_t _Lcol_3, _NCp1_NAt _Lbase_at_4);
 void _NCp1_NStruct_Poutput_1(_NCp1_NStruct _Ls_i_0);
 void _NCp1_NEnum_Poutput_1(_NCp1_NEnum _Le_i_0);
 bool _NCp1_NExprI_Pprocess_1(_NCp1_NExprI _Le_0);
@@ -2293,8 +2293,7 @@ int32_t _Lj_10;
 _Lj_10 = 0;
 for(int i = (*_Lf_4)._Ffarg_c; i > 0; ) {
 i --;
-(*_Lf_4)._Ffarg_v[_Lj_10]._Fdecl._Ftype = _NCp1_Pat_validate_5((*_Lf_4)._Ffarg_v[_Lj_10]._Fdecl._Ftype, _Lf_at_6, _Lf_file_7, (*_Lf_4)._Ffarg_v[_Lj_10]._Frow, (*_Lf_4)._Ffarg_v[_Lj_10]._Fcol);
-_NCp1_NAt_Pfinalize_4((*_Lf_4)._Ffarg_v[_Lj_10]._Fdecl._Ftype, &(*_Lf_4)._Ffarg_v[_Lj_10]._Fdecl._Ftype_info, (*_Lf_4)._Ffarg_v[_Lj_10]._Frow, (*_Lf_4)._Ffarg_v[_Lj_10]._Fcol);
+_NCp1_NDeclVarData_Pprocess_5(&(*_Lf_4)._Ffarg_v[_Lj_10]._Fdecl, _Lf_file_7, (*_Lf_4)._Ffarg_v[_Lj_10]._Frow, (*_Lf_4)._Ffarg_v[_Lj_10]._Fcol, _Lf_at_6);
 continue_0:;
 _Lj_10++;
 }
@@ -3086,6 +3085,33 @@ return _Lval_1;
 inline struct _NCp1_NFileData* _NCp1_NFile_Pptr_1(_NCp1_NFile _Lf_0) {
 return &_Gfile_v[_Lf_0];
 }
+bool _NCp1_NDeclVarData_Pprocess_5(struct _NCp1_NDeclVarData* _Lvd_0, _NCp1_NFile _Lfile_1, int32_t _Lrow_2, int32_t _Lcol_3, _NCp1_NAt _Lbase_at_4) {
+_NCp1_NAt _Lat_i_5;
+struct _NCp1_NAtData* _Lat_6;
+_Lat_i_5 = _NCp1_Pat_validate_5((*_Lvd_0)._Ftype, _Lbase_at_4, _Lfile_1, _Lrow_2, _Lcol_3);
+(*_Lvd_0)._Ftype = _Lat_i_5;
+_Lat_6 = _NCp1_NAt_Pptr_1(_Lat_i_5);
+if((((*_Lat_6)._Ftype != _NCp1_NNameType_Cbasic) && ((*_Lat_6)._Fdecl._Fstructt == _NCp1_NStruct_Cnil))) {
+fprintf(stdout, "%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Lrow_2, _Lcol_3, _NCp1_NId_Pstr_1((*_Lat_6)._Fname._Fid), _NCp1_NId_Pstr_1((*_Lvd_0)._Fname));
+return false;
+}
+_NCp1_NAt_Poutput_4(_Lat_i_5, (*_Gctx_func)._Ffile, _Lrow_2, _Lcol_3);
+if(!_NCp1_NAt_Pfinalize_4(_Lat_i_5, &(*_Lvd_0)._Ftype_info, _Lrow_2, _Lcol_3)) {
+return false;
+}
+int32_t _Li_7;
+_Li_7 = 0;
+for(int i = (*_Lvd_0)._Fsize_c; i > 0; ) {
+i --;
+if(!_NCp1_NExprI_Pvalue_4((*_Lvd_0)._Fsize_expr_v[_Li_7], 1, false, &(*_Lvd_0)._Fsize_value_v[_Li_7])) {
+return false;
+}
+continue_0:;
+_Li_7++;
+}
+break_0:;
+return true;
+}
 _NCp1_NAt _NCp1_Pat_validate_5(_NCp1_NAt _Lvd_type_0, _NCp1_NAt _Lat_i_1, _NCp1_NFile _Lfile_2, uint32_t _Lrow_3, uint32_t _Lcol_4) {
 struct _NCp1_NAtData* _Ltype_5;
 struct _NCp1_NAtData* _Lparent_6;
@@ -3433,33 +3459,6 @@ memcpy((*_Lti_0)._Fref_v, (*_Lti2_1)._Fref_v, _NCp1_Ctype_info_star_limit);
 (*_Lti_0)._Farray_c = (*_Lti2_1)._Farray_c;
 (*_Lti_0)._Fstar_c = (*_Lti2_1)._Fstar_c;
 (*_Lti_0)._Fconst = (*_Lti2_1)._Fconst;
-}
-bool _NCp1_NDeclVarData_Pprocess_5(struct _NCp1_NDeclVarData* _Lvd_0, _NCp1_NFile _Lfile_1, int32_t _Lrow_2, int32_t _Lcol_3, _NCp1_NAt _Lbase_at_4) {
-_NCp1_NAt _Lat_i_5;
-struct _NCp1_NAtData* _Lat_6;
-_Lat_i_5 = _NCp1_Pat_validate_5((*_Lvd_0)._Ftype, _Lbase_at_4, _Lfile_1, _Lrow_2, _Lcol_3);
-(*_Lvd_0)._Ftype = _Lat_i_5;
-_Lat_6 = _NCp1_NAt_Pptr_1(_Lat_i_5);
-if((((*_Lat_6)._Ftype != _NCp1_NNameType_Cbasic) && ((*_Lat_6)._Fdecl._Fstructt == _NCp1_NStruct_Cnil))) {
-fprintf(stdout, "%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Lrow_2, _Lcol_3, _NCp1_NId_Pstr_1((*_Lat_6)._Fname._Fid), _NCp1_NId_Pstr_1((*_Lvd_0)._Fname));
-return false;
-}
-_NCp1_NAt_Poutput_4(_Lat_i_5, (*_Gctx_func)._Ffile, _Lrow_2, _Lcol_3);
-if(!_NCp1_NAt_Pfinalize_4(_Lat_i_5, &(*_Lvd_0)._Ftype_info, _Lrow_2, _Lcol_3)) {
-return false;
-}
-int32_t _Li_7;
-_Li_7 = 0;
-for(int i = (*_Lvd_0)._Fsize_c; i > 0; ) {
-i --;
-if(!_NCp1_NExprI_Pvalue_4((*_Lvd_0)._Fsize_expr_v[_Li_7], 1, false, &(*_Lvd_0)._Fsize_value_v[_Li_7])) {
-return false;
-}
-continue_0:;
-_Li_7++;
-}
-break_0:;
-return true;
 }
 void _NCp1_NStruct_Poutput_1(_NCp1_NStruct _Ls_i_0) {
 uint32_t _Lnum_1;

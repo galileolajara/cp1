@@ -918,8 +918,7 @@ using (Func) {
       +f-row = f.begin-row;
       +f-col = f.begin-col;
       loop j = 0; f.farg-c; j++ {
-         f.farg-v[j].decl.type = at-validate(f.farg-v[j].decl.type, f-at, f-file, f.farg-v[j].row, f.farg-v[j].col);
-         f.farg-v[j].decl.type.finalize(f.farg-v[j].decl.type-info, f.farg-v[j].row, f.farg-v[j].col);
+         f.farg-v[j].decl.process(f-file, f.farg-v[j].row, f.farg-v[j].col, f-at);
       }
       if f.decl.type != #nil {
          f.decl.type = at-validate(f.decl.type, f-at, f-file, f-row, f-col);
