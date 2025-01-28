@@ -1189,11 +1189,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      c = lex.cursor[i + 1];
                      if c == ''\' {
                         if lex.cursor[i + 2] == ''\\ {
-                           C.printf("[%.*s]\n", 4, &lex.cursor[i]);
                            i += 4;
                            continue;
                         } else {
-                           C.printf("[%.*s]\n", 3, &lex.cursor[i]);
                            i += 3;
                            continue;
                         }

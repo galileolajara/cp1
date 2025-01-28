@@ -18,23 +18,18 @@ build out/compile.cp1.c.o: c compile.cp1.c
 build out/str.c.o: c str.c
 build bin/cp1-compile: ld-cpp out/compile.cp1.c.o out/str.c.o out/hashtable.cpp.o
 build bin/cp1: ld-c cp1.cp1.c
+build out/hashtable.cpp.o: cpp hashtable.cpp
 
 rule c2
  command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
 
-rule cpp2
- command = clang++ $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
-
 rule ld-c2
  command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
-
-rule ld-cpp2
- command = clang++ $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
 
 rule re2c
  command = re2c --input-encoding utf8 --utf8 $in -o $out
 
-rule ld-unsanitized
+rule ld-lemon
  command = clang -I. $in -o $out
 
 rule lemon
@@ -53,7 +48,7 @@ rule compile
 rule run
  command = $in $out
 
-build out/hash-table-size: ld-cpp2 hashtable.cpp
+build out/hash-table-size: ld-c2 hashtable.c
  flags = -DCP1_GET_SIZE
 build out/hash-table-size.cp1: run out/hash-table-size
 
@@ -125,13 +120,13 @@ build out/cp1-preprocess: ld-c2 out/preprocess.cp1.c
 build out/export: ld-c2 out/export.cp1.c
 build out/export.h: run out/export out/parse2.cp1.c
 build out/lex.c: re2c lex-re2c.c
-build out/lemon: ld-unsanitized lemon.c
+build out/lemon: ld-lemon lemon.c
 build out/cp1_parse.c out/cp1_parse.h: lemon cp1_parse.y | out/lemon
 build out/cp1: ld-c2 out/cp1.cp1.c
 build out/parse2.cp1.c.o: c2 out/parse2.cp1.c
 build out/parse2.c.o: c2 parse2.c | out/export.h out/lex.c out/cp1_parse.c
-build out/hashtable.cpp.o: cpp2 hashtable.cpp
-build out/cp1-parse: ld-cpp2 out/parse2.cp1.c.o out/parse2.c.o out/hashtable.cpp.o
+build out/hashtable.c.o: c2 hashtable.c
+build out/cp1-parse: ld-c2 out/parse2.cp1.c.o out/parse2.c.o out/hashtable.c.o
 build out/compile2.cp1.c.o: c2 out/compile2.cp1.c
 build out/str2.c.o: c2 str2.c
-build out/cp1-compile: ld-cpp2 out/compile2.cp1.c.o out/str2.c.o out/hashtable.cpp.o
+build out/cp1-compile: ld-c2 out/compile2.cp1.c.o out/str2.c.o out/hashtable.c.o

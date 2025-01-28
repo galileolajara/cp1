@@ -3,7 +3,10 @@ using C = LibC;
 using (Cp1) {
 struct AtMap[data:u64[(#hash-table-size + 7) >> 3]] {
    init(m:this);
-   get-or-insert(m:this, parent:At, type:NameType, name:Id, val:i32):i32;
+   get-or-insert(m:this, parent:At, type:NameType, name:Id, val:i32):i32 {
+      return m.get-or-insert(parent:u32 | (type:u32 << 8), name, val);
+   }
+   get-or-insert(m:this, parent-and-type:u32, name:Id, val:i32):i32;
 }
 struct Map[data:u64[(#hash-table-size + 7) >> 3]] {
    init(m:this);
