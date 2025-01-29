@@ -27,7 +27,7 @@ farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At)
             if fd-arg.type-info.built-in {
                vd.type-info.built-in = true;
                vd.type-info.ref-v[0] = ''\0;
-            } elif vd.type-info.ref-v[vd.type-info.array-c] + vd.type.pointer() {
+            } elif vd.type-info.ref-v[0] + vd.type.pointer() {
                vd.type-info.ref-v[vd.type-info.array-c] -= 1:char;
                vd.type-info.star-c -= 1;
             }

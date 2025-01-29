@@ -6387,7 +6387,7 @@ _NCp1_NTypeInfo_Pcopy_from_2(&(*_Lvd_9)._Ftype_info, &(*_Lfd_arg_3)._Ftype_info)
 if((*_Lfd_arg_3)._Ftype_info._Fbuilt_in) {
 (*_Lvd_9)._Ftype_info._Fbuilt_in = true;
 (*_Lvd_9)._Ftype_info._Fref_v[0] = '\0';
-} else if((*_Lvd_9)._Ftype_info._Fref_v[(*_Lvd_9)._Ftype_info._Farray_c] + _NCp1_NAt_Ppointer_1((*_Lvd_9)._Ftype)) {
+} else if((*_Lvd_9)._Ftype_info._Fref_v[0] + _NCp1_NAt_Ppointer_1((*_Lvd_9)._Ftype)) {
 (*_Lvd_9)._Ftype_info._Fref_v[(*_Lvd_9)._Ftype_info._Farray_c] -= (char)(1);
 (*_Lvd_9)._Ftype_info._Fstar_c -= 1;
 }
