@@ -203,6 +203,7 @@
 #define _NCp1_NFuncFlags_Cvar_args (8)
 #define _NCp1_NFuncFlags_Cno_decl (16)
 #define _NCp1_NFuncFlags_Cno_body (32)
+#define _NCp1_NEnumFlags_Cno_decl (2)
 #define _NCp1_NLvar_Cnil (-1)
 #define _NCp1_NStmtSpaceFlags_Cskip_lvar_decl (1)
 #define _NCp1_NStmtSpaceFlags_C0 0
@@ -843,6 +844,7 @@ extern char* _Gstring_buf;
 _NCp1_NEnumFlags _Gdecl_enum_flags;
 _NCp1_NAt _Gdecl_enum_soa_field_gvar_at;
 _NCp1_NId _Gdecl_enum_soa_field_gvar_id;
+_NCp1_NId _Gdecl_enum_real_name;
 int32_t _Gdecl_include_row;
 int32_t _Gdecl_include_col;
 _NCp1_NAt _Gbuild_at;
@@ -943,6 +945,8 @@ void _NCp1_Pfunc_attr_no_body_0();
 void _NCp1_Pfunc_attr_real_name_1(_NCp1_NId _Lname_0);
 void _NCp1_Pfunc_attr_case_1(_NCp1_NId _Lname_0);
 void _NCp1_Penum_attr_soa_field_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lid_1);
+void _NCp1_Penum_attr_no_decl_0();
+void _NCp1_Penum_attr_real_name_1(_NCp1_NId _Lid_0);
 _NCp1_NExprI _NCp1_Pexpr_lvar_4(_NCp1_NId _Lname_0, uint8_t _Ldecl_1, int32_t _Lrow_2, int32_t _Lcol_3);
 _NCp1_NExprI _NCp1_Pexpr_gvar_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lname_1);
 _NCp1_NExprI _NCp1_Pexpr_fvar_2(_NCp1_NExprI _Lexpr_0, _NCp1_NId _Lmember_1);
@@ -2149,6 +2153,8 @@ _NCp1_Pfunc_attr_no_body_0();
 _NCp1_Pfunc_attr_real_name_1(_NCp1_NId_Cnil);
 _NCp1_Pfunc_attr_case_1(_NCp1_NId_Cnil);
 _NCp1_Penum_attr_soa_field_2(_NCp1_NAt_Cnil, _NCp1_NId_Cnil);
+_NCp1_Penum_attr_no_decl_0();
+_NCp1_Penum_attr_real_name_1(_NCp1_NId_Cnil);
 _NCp1_Pexpr_lvar_4(_NCp1_NId_C0, 0, 0, 0);
 _NCp1_Pexpr_gvar_2(_NCp1_NAt_Cnil, _NCp1_NId_C0);
 _NCp1_Pexpr_fvar_2(_NCp1_NExprI_Cnil, _NCp1_NId_Cnil);
@@ -3256,6 +3262,13 @@ _Gdecl_enum_flags |= _NCp1_NEnumFlags_Csoa_field;
 _Gdecl_enum_soa_field_gvar_at = _Lat_0;
 _Gdecl_enum_soa_field_gvar_id = _Lid_1;
 }
+void _NCp1_Penum_attr_no_decl_0() {
+_Gdecl_enum_flags |= _NCp1_NEnumFlags_Cno_decl;
+}
+void _NCp1_Penum_attr_real_name_1(_NCp1_NId _Lid_0) {
+_Gdecl_enum_flags |= _NCp1_NEnumFlags_Creal_name;
+_Gdecl_enum_real_name = _Lid_0;
+}
 _NCp1_NExprI _NCp1_Pexpr_lvar_4(_NCp1_NId _Lname_0, uint8_t _Ldecl_1, int32_t _Lrow_2, int32_t _Lcol_3) {
 if(_Ldecl_1 == 0) {
 struct _NCp1_NStmtSpace* _Lspace_4;
@@ -3739,6 +3752,7 @@ _Gdecl_at = _Gdecl_enum_at;
 (*_Ls_5)._Fflags = _Gdecl_enum_flags;
 (*_Ls_5)._Fsoa_field_gvar_at = _Gdecl_enum_soa_field_gvar_at;
 (*_Ls_5)._Fsoa_field_gvar_id = _Gdecl_enum_soa_field_gvar_id;
+(*_Ls_5)._Freal_name = _Gdecl_enum_real_name;
 _Gdecl_enum_last_cvar = _NCp1_NCvar_Cnil;
 }
 _NCp1_NExprI _NCp1_Pexpr_cvar_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lname_1) {

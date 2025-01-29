@@ -886,6 +886,12 @@ enum_base_begin ::= .
    { _NCp1_Penum_base_begin_0(); }
 decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT(a) DOT ID(i) DOT CLOSE_PARENTHESIS.
    { _NCp1_Penum_attr_soa_field_2(a.basic.id, i.basic.id); }
+decl_enum_attr ::= SPACE_AT_NO_DECL.
+   { _NCp1_Penum_attr_no_decl_0(); }
+decl_enum_attr ::= SPACE_AT_REAL_NAME.
+   { _NCp1_Penum_attr_real_name_1(-1); }
+decl_enum_attr ::= SPACE_AT_REAL_NAME_STR(s).
+   { _NCp1_Penum_attr_real_name_1(s.basic.id); }
 decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID(i) DOT CLOSE_PARENTHESIS.
    { _NCp1_Penum_attr_soa_field_2(-1, i.basic.id); }
 decl_enum_attrs ::= decl_enum_attr.

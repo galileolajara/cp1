@@ -56,6 +56,8 @@
 #define _NCp1_NVarFlags_C0 0
 #define _NCp1_NCvarFlags_Cset_expr (1)
 #define _NCp1_NCvar_Cnil (-1)
+#define _NCp1_NEnumFlags_Cno_decl (2)
+#define _NCp1_NEnumFlags_C0 0
 #define _NCp1_NStructFlags_Cunion (4)
 #define _NCp1_NStructFlags_C0 0
 #define _NCp1_NDeclVarType_Cgvar 0
@@ -64,7 +66,6 @@
 #define _NCp1_NFuncFlags_Cinline (2)
 #define _NCp1_NStruct_Cnil (-1)
 #define _NCp1_NEnumFlags_Creal_name (1)
-#define _NCp1_NEnumFlags_C0 0
 #define _NCp1_NId_Cnil (-1)
 #define _NCp1_NEnumFlags_Csoa_field (4)
 #define _NCp1_NStructFlags_Creal_name (1)
@@ -1531,6 +1532,9 @@ _NCp1_NEnum _Le_i_65;
 struct _NCp1_NEnumData* _Le_66;
 _Le_i_65 = _Genum_outputted_v[_Li_64];
 _Le_66 = _NCp1_NEnum_Pptr_1(_Le_i_65);
+if(((*_Le_66)._Fflags & _NCp1_NEnumFlags_Cno_decl) != _NCp1_NEnumFlags_C0) {
+goto continue_18;
+}
 fprintf(_Gout, "typedef ");
 _NCp1_NAt_Pwrite_1((*_Le_66)._Fbase_type);
 fprintf(_Gout, " ");
