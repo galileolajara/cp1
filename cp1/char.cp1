@@ -1,5 +1,5 @@
 using Cp1 = Cp1;
-using (Cp1) {
+using Cp1 {
 expr-char(value:i32):ExprI {
    quick-alloc-one(+(e:ExprChar));
    +e-idx = expr-push(e.base, #char);
@@ -7,7 +7,7 @@ expr-char(value:i32):ExprI {
    return e-idx;
 }
 write-char(c:char);
-using (ExprI) {
+using ExprI {
    wr-char(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprChar = expr;
       w.n(e.value);

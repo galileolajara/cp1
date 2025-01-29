@@ -1,11 +1,11 @@
 using Cp1 = Cp1;
-using (Cp1) {
+using Cp1 {
 stmt-return(e:ExprI, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
    quick-alloc-one(+(s:StmtReturn));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #return);
    s.expr = e;
 }
-using (StmtSpace) {
+using StmtSpace {
    wr-return(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
       var s:StmtReturn = stmt;
       s.expr.wr(w, header);
@@ -16,7 +16,7 @@ using (StmtSpace) {
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #return);
    }
 }
-using (Stmt) {
+using Stmt {
    write-return(stmt:Stmt) @case.write() @inline {
       var s:StmtReturn = stmt;
       if s.expr == #nil {

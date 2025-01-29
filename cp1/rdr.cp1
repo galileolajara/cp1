@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 union Rdr[
    reff:ref,
    pos:usz,

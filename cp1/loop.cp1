@@ -1,12 +1,12 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 union Nest[do:StmtLoop, reff:ref];
 var nest-stack-ptr-v:Nest+[64];
 var nest-stack-id-v:i32[64];
 var nest-stack-c:u8;
 var nest-id:i32;
-using (StmtSpace) {
+using StmtSpace {
    wr-loop(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
       var s:StmtLoop = stmt;
       s.expr.wr(w, header);
@@ -40,7 +40,7 @@ using (StmtSpace) {
       space.stmt-push(s.base, 0, 0, 0, 0, #loop-end);
    }
 }
-using (Stmt) {
+using Stmt {
    write-loop(stmt:Stmt) @case.write() @inline {
       var s:StmtLoop = stmt;
       .nest-stack-id-v[.nest-stack-c] = .nest-id++;

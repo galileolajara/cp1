@@ -1,9 +1,9 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 var switch-stack-v:StmtSwitch[64];
 var switch-stack-c:u8;
-using (StmtSpace) {
+using StmtSpace {
    wr-switch(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
       var s:StmtSwitch = stmt;
       s.expr.wr(w, header);
@@ -64,7 +64,7 @@ using (StmtSpace) {
 union CaseStack[cas:StmtCase, defaul:StmtDefault];
 var case-stack-v:CaseStack+[64];
 var case-stack-c:u8;
-using (Stmt) {
+using Stmt {
    write-switch(stmt:Stmt) @case.write() @inline {
       var s:StmtSwitch = stmt;
       .out.printf("switch(");

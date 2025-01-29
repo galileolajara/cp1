@@ -1,11 +1,11 @@
 using Cp1 = Cp1;
-using (Cp1) {
+using Cp1 {
 expr-null():ExprI {
    quick-alloc-one(+(e:ExprNull));
    +e-idx = expr-push(e.base, #null);
    return e-idx;
 }
-using (ExprI) {
+using ExprI {
    wr-null(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprNull = expr;
    }

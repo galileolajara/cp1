@@ -138,7 +138,7 @@ struct at_map_t {
 #include <stdio.h>
 int main(int argc, char** argv) {
    FILE* fp = fopen(argv[1], "w");
-   fprintf(fp, "using (Cp1) {\n#hash-table-size = %zu;\n}\n", sizeof(struct map_t));
+   fprintf(fp, "using Cp1 {\n#hash-table-size = %zu;\n}\n", sizeof(struct map_t));
    fclose(fp);
    return 0;
 }

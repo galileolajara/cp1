@@ -21,7 +21,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
    +pos = 0;
    +out-f = C.fopen(arg-v[2], "w");
    out-f.printf(
-      "using (Cp1) {\n"
+      "using Cp1 {\n"
       "enum Token[\n"
       "#nil,\n");
    loop pos < in-size {

@@ -1,5 +1,5 @@
 using Cp1 = Cp1;
-using (Cp1) {
+using Cp1 {
 enum Compare[#eq, #not-eq, #lt, #le, #gt, #ge]:u8 {
    wr(e:this, w:Wtr) @inline {
       w.n1(e);
@@ -16,7 +16,7 @@ expr-compare(left:ExprI, right:ExprI, type:Compare):ExprI {
    e.type = type;
    return e-idx;
 }
-using (ExprI) {
+using ExprI {
    wr-compare(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprCompare = expr;
       e.left.wr(w, header);

@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 struct StmtContinue[
    base:Stmt+,
    nest:u8,
@@ -15,7 +15,7 @@ stmt-continue(id:Id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
    }
    s.nest = .nest-stack-c - 1;
 }
-using (StmtSpace) {
+using StmtSpace {
    wr-continue(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
       var s:StmtContinue = stmt;
       w.n1(s.nest);
@@ -26,7 +26,7 @@ using (StmtSpace) {
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #continue);
    }
 }
-using (Stmt) {
+using Stmt {
    write-continue(stmt:Stmt) @case.write() @inline {
       var s:StmtContinue = stmt;
       .out.printf("goto continue_%u;\n", .nest-stack-id-v[s.nest]);

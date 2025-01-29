@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
-using (Cp1) {
-using (StmtSpace) {
+using Cp1 {
+using StmtSpace {
    wr-if(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
       var s:StmtIf = stmt;
       s.expr.wr(w, header);
@@ -32,7 +32,7 @@ using (StmtSpace) {
       space.stmt-push(s.base, 0, 0, 0, 0, #if-end);
    }
 }
-using (Stmt) {
+using Stmt {
    write-if(stmt:Stmt) @case.write() @inline {
       var s:StmtIf = stmt;
       .out.printf("if(");

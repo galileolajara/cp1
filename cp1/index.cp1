@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 expr-index(left:ExprI, right-v:ExprI[], right-c:i32):ExprI {
    loop i = right-c; right-c; {
       quick-alloc-one(+(e:ExprIndex));
@@ -10,7 +10,7 @@ expr-index(left:ExprI, right-v:ExprI[], right-c:i32):ExprI {
    }
    return e-idx;
 }
-using (ExprI) {
+using ExprI {
    wr-index(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprIndex = expr;
       e.left.wr(w, header);

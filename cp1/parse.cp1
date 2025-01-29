@@ -1,7 +1,7 @@
 using Cp1 = Cp1;
 using C = LibC;
 using X = Posix;
-using (Cp1) {
+using Cp1 {
 var ctx-func:DeclFunc;
 var id-in-header-v:u8[];
 var id-in-header-idx-v:u32[];
@@ -1171,6 +1171,24 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             }
             case #include {
                tok.val.ii32.id = lex.get-include();
+               .last-token = t;
+               psr.parse(t, tok);
+            }
+            case #using {
+               +found-semicolon = false;
+               loop i = 0; {
+                  +c = lex.cursor[i];
+                  if c == ''{ {
+                     break;
+                  } elif c == ''; {
+                     found-semicolon = true;
+                     break;
+                  }
+                  i++;
+               }
+               if found-semicolon {
+                  t = #using-with-semicolon;
+               }
                .last-token = t;
                psr.parse(t, tok);
             }

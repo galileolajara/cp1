@@ -1,12 +1,12 @@
 using Cp1 = Cp1;
-using (Cp1) {
+using Cp1 {
 expr-bool(value:bool):ExprI {
    quick-alloc-one(+(e:ExprBool));
    +e-idx = expr-push(e.base, #bool);
    e.value = value;
    return e-idx;
 }
-using (ExprI) {
+using ExprI {
    wr-bool(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprBool = expr;
       w.b(e.value);

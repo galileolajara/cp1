@@ -1,7 +1,7 @@
 include(<stdio.h>) {
    using C = LibC;
    using X = Posix;
-   using (LibC) {
+   using LibC {
       printf(fmt:char[]):intc @var-args @no-decl @real-name;
       sprintf(str:char[], fmt:char[]):intc @var-args @no-decl @real-name;
       scanf(fmt:char[]):intc @var-args @no-decl @real-name;

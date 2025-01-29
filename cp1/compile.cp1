@@ -1,7 +1,7 @@
 using Cp1 = Cp1;
 using C = LibC;
 using X = Posix;
-using (Cp1) {
+using Cp1 {
 var include-stdint:bool;
 var include-stdbool:bool;
 var include-stddef:bool;
@@ -903,7 +903,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    }
    return 0;
 }
-using (Func) {
+using Func {
    process-later(f-idx:this) {
       +num = f-idx:u32;
       +n3 = num >> 3;

@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 enum StmtSpaceFlags[
    #0,
    #skip-lvar-decl = 1,
@@ -193,7 +193,7 @@ struct StmtSpace[
       return true;
    }
 }
-using (Stmt) {
+using Stmt {
    process-space(stmt:Stmt, ok:bool&) @case.process() @inline {
       var space:StmtSpace = stmt;
       if !space.process() { return }

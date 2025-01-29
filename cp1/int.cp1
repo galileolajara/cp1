@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 enum ExprInt[#i32, #u32, #f32, #oct, #hex]:u8;
 expr-int(value:i32, type:ExprInt):ExprI {
    quick-alloc-one(+(e:ExprIntData));
@@ -16,7 +16,7 @@ expr-f32(value:f32):ExprI {
    e.type = #f32;
    return e-idx;
 }
-using (ExprI) {
+using ExprI {
    wr-int(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprIntData = expr;
       w.n1(e.type);

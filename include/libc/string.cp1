@@ -1,5 +1,5 @@
 include(<string.h>) {
-   using (LibC) {
+   using LibC {
       strlen(str:char[]):usz @real-name @no-decl;
       strcmp(s1:char[], s2:char[]):intc @real-name @no-decl;
       strcpy(s1:char[], s2:char[]):char[] @real-name @no-decl;

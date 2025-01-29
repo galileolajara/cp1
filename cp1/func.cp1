@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 enum Func[#nil = -1, #0, #1]:i32 {
    wr(f:this, w:Wtr) @inline {
       w.n(f + #1);
@@ -36,7 +36,7 @@ enum FuncFlags2[
    #0,
    #main = 1,
 ]:u32;
-using (DeclFunc) {
+using DeclFunc {
    write(f:this) {
       if (f.flags & #real-name) != #0 {
          .out.printf("%s", f.real-name.str());

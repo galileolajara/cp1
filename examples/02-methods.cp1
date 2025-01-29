@@ -45,7 +45,7 @@ enum Dir[#left, #up, #right, #down]:u8 { // an 8-bit enum
    }
 }
 
-using (i32) { // access the namespace of 32-bit int, then add a "print" and "increment" method
+using i32 { // access the namespace of 32-bit int, then add a "print" and "increment" method
    print(i:this) {
       C.printf("Int's value is %d\n", i);
    }

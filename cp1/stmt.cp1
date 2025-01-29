@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 enum StmtType[
    #space, #if, #if-elif, #if-else, #if-end,
    #loop, #loop-end, #while, #while-end,

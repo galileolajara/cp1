@@ -1,7 +1,7 @@
 using C = LibC;
 using X = Posix;
 using Cp1 = Cp1;
-using (Cp1) {
+using Cp1 {
 var input-path:char[];
 main(arg-c:intc, arg-v:char[][]):intc @main {
    if arg-c < 3 {

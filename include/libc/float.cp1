@@ -1,5 +1,5 @@
 include(<float.h>) {
-   using (f32) {
+   using f32 {
       #max:f32 @no-decl @real-name(FLT_MAX);
       #min = -#max;
    }

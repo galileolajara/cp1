@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 enum GvarFlags[#0, #no-decl = 1]:u8;
 enum Gvar[#nil = -1, #0]:i32 {
    process(g:this):bool {
@@ -45,7 +45,7 @@ expr-gvar(at:At, name:Id):ExprI {
    e.name = name;
    return e-idx;
 }
-using (ExprI) {
+using ExprI {
    value-gvar(g:this, reff:i32, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       var e:ExprGvar = g.ptr();
       +gvar = e.gvar.ptr();

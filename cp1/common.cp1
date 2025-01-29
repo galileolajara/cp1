@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 struct AtMap[data:u64[(#hash-table-size + 7) >> 3]] {
    init(m:this);
    get-or-insert(m:this, parent:At, type:NameType, name:Id, val:i32):i32 {
@@ -73,7 +73,7 @@ struct StmtCaseItem[
    val:Value+,
 #endif
 ];
-using (Lvar) {
+using Lvar {
 #if(compile)
    ptr(l:this):LvarData @inline {
       return .ctx-func.lvar-v[l];

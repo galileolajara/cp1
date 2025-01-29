@@ -1,7 +1,7 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
-using (StmtSpace) {
+using Cp1 {
+using StmtSpace {
    wr-expr(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
       var s:StmtExpr = stmt;
       s.expr.wr(w, header);
@@ -12,7 +12,7 @@ using (StmtSpace) {
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #expr);
    }
 }
-using (Stmt) {
+using Stmt {
    write-expr(stmt:Stmt) @case.write() @inline {
       var s:StmtExpr = stmt;
       +expr = s.expr.ptr();

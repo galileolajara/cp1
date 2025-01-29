@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 enum Str[#nil = -1, #0]:i32;
 var str-c:i32;
 var str-cap:i32;
@@ -31,7 +31,7 @@ expr-str(prev:ExprI):ExprI {
    }
 }
 write-str-node(len:i32, ptr:ref);
-using (ExprI) {
+using ExprI {
    wr-str(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprStr = expr;
       w.n(e.node-c);

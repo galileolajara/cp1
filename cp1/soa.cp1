@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 expr-soa-field(expr:ExprI, group:Id, field:Id):ExprI {
    quick-alloc-one(+(e:ExprSoaField));
    +e-idx = expr-push(e.base, #soa-field);
@@ -9,7 +9,7 @@ expr-soa-field(expr:ExprI, group:Id, field:Id):ExprI {
    e.field = field;
    return e-idx;
 }
-using (ExprI) {
+using ExprI {
    wr-soa-field(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprSoaField = expr;
       e.expr.wr(w, header);

@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 enum Struct[#nil = -1, #0, #1]:i32 {
    wr(s:this, w:Wtr) @inline {
       w.n(s + #1);

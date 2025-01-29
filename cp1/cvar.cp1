@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 enum Cvar[#nil = -1, #0]:i32 {
    rd(c:this&, r:Rdr) @inline {
       +idx = (r.n() - 1):Cvar;
@@ -80,7 +80,7 @@ expr-cvar(at:At, name:Id):ExprI {
    e.name = name;
    return e-idx;
 }
-using (ExprI) {
+using ExprI {
    write-cvar(expr:Expr) @case.write() @inline {
       var e:ExprCvar = expr;
       e.cvar.write();

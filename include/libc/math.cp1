@@ -1,9 +1,9 @@
 include(<math.h>) {
    using C = LibC;
-   using (LibC) {
+   using LibC {
       sqrtf(val:f32):f32 @no-decl @real-name;
    }
-   using (f32) {
+   using f32 {
       sqr(val:this):f32 {
          return val * val;
       }

@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 enum Fvar[#nil = -1, #0]:i32;
 expr-fvar(expr:ExprI, member:Id):ExprI {
    quick-alloc-one(+(e:ExprFvar));
@@ -9,7 +9,7 @@ expr-fvar(expr:ExprI, member:Id):ExprI {
    e.member = member;
    return e-idx;
 }
-using (ExprI) {
+using ExprI {
    wr-fvar(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprFvar = expr;
       e.expr.wr(w, header);

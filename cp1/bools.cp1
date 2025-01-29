@@ -1,5 +1,5 @@
 using Cp1 = Cp1;
-using (Cp1) {
+using Cp1 {
 expr-bools(left:ExprI, right:ExprI, type:Bools):ExprI {
    quick-alloc-one(+(e:ExprBools));
    +e-idx = expr-push(e.base, #bools);
@@ -27,7 +27,7 @@ enum Bools[#and, #or]:u8 {
       e = r.n1():Bools;
    }
 }
-using (ExprI) {
+using ExprI {
    type-bools(expr:Expr, at:At&) @case.type() @inline {
       at = basic-type(#bool);
    }

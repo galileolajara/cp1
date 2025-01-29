@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 enum DeclVar[]:u32 {
    ptr(v:this):DeclVarData @inline {
       return .var-v[v];
@@ -40,7 +40,7 @@ at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
    }
    return vd-type;
 }
-using (DeclVarData) {
+using DeclVarData {
    validate(vd:this, base-at:At) {
       // C.out.printf("validating the type of %s\n", vd.name.str());
       vd.type = at-validate(vd.type, base-at);

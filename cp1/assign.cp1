@@ -1,5 +1,5 @@
 using Cp1 = Cp1;
-using (Cp1) {
+using Cp1 {
 enum Assign[#eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
              #lshift-eq, #rshift-eq, #and-eq, #or-eq, #xor-eq,
              ]:u8 {
@@ -18,7 +18,7 @@ expr-assign(left:ExprI, right:ExprI, type:Assign):ExprI {
    e.type = type;
    return e-idx;
 }
-using (ExprI) {
+using ExprI {
    wr-assign(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprAssign = expr;
       e.left.wr(w, header);

@@ -16,7 +16,7 @@ struct Animal[type:AnimalType] { // a struct with a method
 }
 
 // For example, in another file, you can:
-using (Animal) {
+using Animal {
    emit-sound-cat(a:this) @case.emit-sound() {
       C.printf("meow!\n");
    }

@@ -1,12 +1,12 @@
 using Cp1 = Cp1;
-using (Cp1) {
+using Cp1 {
 expr-size-of-type(at:At):ExprI {
    quick-alloc-one(+(e:ExprSizeOfType));
    +e-idx = expr-push(e.base, #size-of-type);
    e.type = at;
    return e-idx;
 }
-using (ExprI) {
+using ExprI {
    wr-size-of-type(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprSizeOfType = expr;
       e.type.wr(w, header);

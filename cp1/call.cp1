@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
-using (Cp1) {
+using Cp1 {
 farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At):bool {
    +ce = e.ptr();
    var r:i32;
@@ -39,7 +39,7 @@ farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At)
    if !e.value(r, false, ca-value) { return false }
    return true;
 }
-using (ExprI) {
+using ExprI {
    value-func(e:this, reff:i32, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       var expr:ExprFunc = e.ptr();
       +f = expr.func-idx.ptr();

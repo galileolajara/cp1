@@ -121,9 +121,9 @@ decl_at_namespace ::= type_basic_id(e).
    { _NCp1_Pdecl_at_basic_1(e.basic.id); }
 decl_at_begin_begin(l) ::= USING SPACE(r).
    { _NCp1_Pat_begin_relative_pause_0(); l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-decl_at_begin_end ::= CLOSE_PARENTHESIS.
+decl_at_begin_end ::= /* CLOSE_PARENTHESIS */.
    { _NCp1_Pat_begin_relative_resume_0(); }
-decl_at_begin ::= decl_at_begin_begin(pos) OPEN_PARENTHESIS decl_at_namespace decl_at_begin_end.
+decl_at_begin ::= decl_at_begin_begin(pos) /* OPEN_PARENTHESIS */ decl_at_namespace decl_at_begin_end.
    { _NCp1_Pdecl_at_begin_2(pos.basic.row, pos.basic.col); }
 decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE decls SPACE_CLOSE_CURLY_BRACE.
    { _NCp1_Pdecl_at_end_0(); }
@@ -142,7 +142,7 @@ decl ::= decl_func.
 decl ::= decl_struct.
 decl ::= decl_enum.
 decl ::= decl_gvars.
-decl_alias_begin ::= USING SPACE.
+decl_alias_begin ::= USING_WITH_SEMICOLON SPACE.
    { _NCp1_Pat_begin_relative_pause_0(); }
 decl_alias_end ::= SEMICOLON.
    { _NCp1_Pat_begin_relative_resume_0(); }
