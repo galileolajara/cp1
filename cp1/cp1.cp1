@@ -27,7 +27,7 @@ get-compile(bin:char[], ninja-f:C.File) {
       // C.printf("- %s\n", found);
       var fd, compile:char[512];
       C.sprintf(compile, "%s/tcc", found);
-      fd = X.open(compile, #read);
+      fd = X.open(compile, #rdonly);
       if fd != #nil {
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = tcc $in -o $out\n");
@@ -36,7 +36,7 @@ get-compile(bin:char[], ninja-f:C.File) {
          return;
       }
       C.sprintf(compile, "%s/clang", found);
-      fd = X.open(compile, #read);
+      fd = X.open(compile, #rdonly);
       if fd != #nil {
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = clang $in -o $out\n");
@@ -45,7 +45,7 @@ get-compile(bin:char[], ninja-f:C.File) {
          return;
       }
       C.sprintf(compile, "%s/gcc", found);
-      fd = X.open(compile, #read);
+      fd = X.open(compile, #rdonly);
       if fd != #nil {
          ninja-f.printf("rule c\n");
          ninja-f.printf(" command = gcc $in -o $out\n");
@@ -101,7 +101,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
          return true;
       }
    }
-   if !X.Fd.open(++fd, cp1-path, #read) {
+   if !X.Fd.open(++fd, cp1-path, #rdonly) {
       C.printf("Error, [cp1 file] (which is '%s') cannot be opened for reading\n", cp1-path);
       return false;
    }
@@ -174,7 +174,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
       C.memcpy(tmp-path-dup, tmp-path, 17);
       atexit-rm(tmp-path-dup);
       cp1-path-add(tmp-path-dup, 16, cp1-path, cp1-path-len);
-      if !X.Fd.open(fd, tmp-path-dup, #read) {
+      if !X.Fd.open(fd, tmp-path-dup, #rdonly) {
          C.printf("Error, cannot open file for reading: %s\n", tmp-path);
          return false;
       }
@@ -348,7 +348,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                      spec-path[i] = ''-;
                   }
                }
-               if !X.Fd.open(++spec-fd, spec-path, #read) {
+               if !X.Fd.open(++spec-fd, spec-path, #rdonly) {
                   C.printf("%s:%u: #include <%s> failed because '%s' does not exists\n", cp1-path, line, path, spec-path);
                   return false;
                }
@@ -514,7 +514,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
          +fd = X.Fd#nil;
          loop found != null {
             C.sprintf(abs-path, "%s/%s", found, bin);
-            fd = X.open(abs-path, #read);
+            fd = X.open(abs-path, #rdonly);
             if fd != #nil {
                break;
             }

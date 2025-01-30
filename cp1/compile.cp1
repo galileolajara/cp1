@@ -69,7 +69,7 @@ id-add(id-len:u8, id-str:char[]):Id {
 }
 read(in-path:char[]) {
    // C.out.printf("reading %s -------------------\n", in-path);
-   if !X.Fd.open(++in-fd, in-path, #read) {
+   if !X.Fd.open(++in-fd, in-path, #rdonly) {
       C.out.printf("Cannot open file for reading: %s\n", in-path);
       C.exit(#failure);
    }
@@ -85,7 +85,7 @@ read(in-path:char[]) {
    }
    var r-begin:Rdr+;
    // if true {
-   //    r-begin.ref = in-fd.map(null, in-size, #read, #shared, 0);
+   //    r-begin.ref = in-fd.map(null, in-size, #rdonly, #shared, 0);
    // } else {
       r-begin.reff = C.malloc(in-size);
       in-fd.seek(0, #set);

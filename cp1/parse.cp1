@@ -719,7 +719,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    }
    .input-path = arg-v[1];
    // C.out.printf("reading %s\n", .input-path);
-   if !X.Fd.open(++in-fd, .input-path, #read) {
+   if !X.Fd.open(++in-fd, .input-path, #rdonly) {
       C.out.printf("Cannot open file for reading: %s\n", .input-path);
       C.exit(#failure);
    }
@@ -1416,7 +1416,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    var out-path:char[] = C.malloc(C.strlen(lock-path) + 4 + 1);
    C.sprintf(out-path, "%s.tmp", lock-path);
    +out-path-len = C.strlen(out-path);
-   if !X.Fd.open(++out-fd, out-path, #create | #truncate | #write, 0o644) {
+   if !X.Fd.open(++out-fd, out-path, #create | #truncate | #wronly, 0o644) {
       C.out.printf("Cannot open file for writing: %s\n", out-path);
       C.exit(#failure);
    }
@@ -1456,7 +1456,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    write-func(w, true);
 
    out-path[out-path-len - 5] = ''h;
-   if !X.Fd.open(out-fd, out-path, #create | #truncate | #write, 0o644) {
+   if !X.Fd.open(out-fd, out-path, #create | #truncate | #wronly, 0o644) {
       C.out.printf("Cannot open file for writing: %s\n", out-path);
       C.exit(#failure);
    }
