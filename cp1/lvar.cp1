@@ -14,16 +14,16 @@ enum Lvar[#nil = -1, #0]:i32 {
       lvar.flags |= #processed;
       +at-i = lvar.decl.type;
       if at-i == #nil {
-         if (lvar.flags & #set-expr) != #0 {
-            if !lvar.set-expr.value(1, false, ++v) { return false }
-            lvar.decl.type = v.type;
-            lvar.decl.type-info.init();
-            lvar.decl.type-info.copy-from(v.info);
-         } else {
+         // if (lvar.flags & #set-expr) != #0 {
+            // if !lvar.set-expr.value(1, false, ++v) { return false }
+            // lvar.decl.type = v.type;
+            // lvar.decl.type-info.init();
+            // lvar.decl.type-info.copy-from(v.info);
+         // } else {
             C.out.printf("%s:%u:%u: local variable '%s' doesn't have a type or a value\n", .ctx-func.file.path(), lvar.row, lvar.col, lvar.decl.name.str());
             return false;
-         }
-         return true;
+         // }
+         // return true;
       }
       return lvar.decl.process(.ctx-func.file, lvar.row, lvar.col, .ctx-func.at);
    }
@@ -45,7 +45,7 @@ struct LvarData[
    col:i32,
    decl:DeclVarData+,
    flags:LvarFlags,
-   set-expr:ExprI,
+   // set-expr:ExprI,
 ];
 expr-lvar(name:Id, decl:u8, row:i32, col:i32):ExprI {
    if decl == 0 {

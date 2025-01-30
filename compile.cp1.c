@@ -76,7 +76,6 @@
 #define _NCp1_NFuncFlags_Cno_body (32)
 #define _NCp1_NLvarFlags_Cprocessed (2)
 #define _NCp1_NLvarFlags_C0 0
-#define _NCp1_NLvarFlags_Cset_expr (1)
 #define _NCp1_NVarFlags_Creal_name (1)
 #define _NCp1_NExprType_Cnil 0
 #define _NCp1_NExprType_Ccall_method (_NCp1_NExprType_Cnil + 1)
@@ -101,6 +100,7 @@
 #define _NCp1_NExprType_Cref (_NCp1_NExprType_Ccast_fast + 1)
 #define _NCp1_NExprType_Cchar (_NCp1_NExprType_Cref + 1)
 #define _NCp1_NExprType_Csize_of_type (_NCp1_NExprType_Cchar + 1)
+#define _NCp1_NLvarFlags_Cset_expr (1)
 #define _NCp1_Cdebug_rd_wr (true)
 #define _NCp1_NExprI_Cnil (-1)
 #define _NCp1_NFunc_C0 (_NCp1_NFunc_Cnil + 1)
@@ -290,7 +290,6 @@ int32_t _Frow;
 int32_t _Fcol;
 struct _NCp1_NDeclVarData _Fdecl;
 _NCp1_NLvarFlags _Fflags;
-_NCp1_NExprI _Fset_expr;
 };
 struct _NCp1_NFarg;
 struct _NCp1_NFarg {
@@ -860,9 +859,6 @@ void _NCp1_NDeclFunc_Plvars_rd_2(struct _NCp1_NDeclFunc* _Lf_0, union _NCp1_NRdr
 void _NCp1_NStmtSpace_Prd_3(struct _NCp1_NStmtSpace* _Lspace_0, union _NCp1_NRdr* _Lr_1, struct _NCp1_NStmtSpace* _Lparent_2);
 bool _NCp1_NStmt_Pprocess_1(struct _NCp1_NStmt* _Ls_0);
 struct _NCp1_NLvarData* _NCp1_NLvar_Pptr_1(_NCp1_NLvar _Ll_0);
-bool _NCp1_NExprI_Pvalue_4(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3);
-void _NCp1_NTypeInfo_Pinit_1(struct _NCp1_NTypeInfo* _Lti_0);
-void _NCp1_NTypeInfo_Pcopy_from_2(struct _NCp1_NTypeInfo* _Lti_0, struct _NCp1_NTypeInfo* _Lti2_1);
 void _NCp1_NStruct_Poutput_1(_NCp1_NStruct _Ls_i_0);
 void _NCp1_NEnum_Poutput_1(_NCp1_NEnum _Le_i_0);
 bool _NCp1_NExprI_Pprocess_1(_NCp1_NExprI _Le_0);
@@ -950,6 +946,7 @@ void _NCp1_NExprI_Prd_int_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NExprI_Prd_size_of_type_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NExprI_Prd_null_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NExprI_Prd_index_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr* _Lr_1);
+bool _NCp1_NExprI_Pvalue_4(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3);
 void _NCp1_NLvarFlags_Prd_2(_NCp1_NLvarFlags* _Lf_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NLvar_Prd_2(_NCp1_NLvar* _Ll_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NStmtType_Prd_2(_NCp1_NStmtType* _Ls_0, union _NCp1_NRdr* _Lr_1);
@@ -1012,27 +1009,6 @@ void _NCp1_NStmt_Pprocess_continue_2(struct _NCp1_NStmt* _Lstmt_0, bool* _Lok_1)
 void _NCp1_NStmt_Pprocess_break_2(struct _NCp1_NStmt* _Lstmt_0, bool* _Lok_1);
 void _NCp1_NStmt_Pprocess_return_2(struct _NCp1_NStmt* _Lstmt_0, bool* _Lok_1);
 void _NCp1_NStmt_Pprocess_space_2(struct _NCp1_NStmt* _Lstmt_0, bool* _Lok_1);
-void _NCp1_NExprI_Pvalue_assign_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_compare_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_bool_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_char_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_math_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_unary_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_ref_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_cast_fast_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_lvar_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_fvar_5(_NCp1_NExprI _Lexpr_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_soa_field_5(_NCp1_NExprI _Lexpr_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_gvar_5(_NCp1_NExprI _Lg_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_cvar_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_bools_5(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_func_5(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_method_5(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_str_5(_NCp1_NExprI _Ls_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_int_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_size_of_type_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_null_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
-void _NCp1_NExprI_Pvalue_index_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
 void _NCp1_NExprI_Pprocess_assign_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1);
 void _NCp1_NExprI_Pprocess_compare_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1);
 void _NCp1_NExprI_Pprocess_bool_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1);
@@ -1087,15 +1063,38 @@ void _NCp1_NExprI_Pset_gvar_3(_NCp1_NExprI _Le_idx_0, _NCp1_NAt _Lat_idx_1, _NCp
 void _NCp1_NBools_Prd_2(_NCp1_NBools* _Le_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NRdr_Pcopy_3(union _NCp1_NRdr* _Lr_0, void* _Ldata_1, int32_t _Lsize_2);
 void _NCp1_NExprI_Pset_index_3(_NCp1_NExprI _Le_idx_0, _NCp1_NExprI _Lleft_1, _NCp1_NExprI _Lright_2);
+void _NCp1_NExprI_Pvalue_assign_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_compare_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_bool_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_char_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_math_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_unary_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_ref_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_cast_fast_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_lvar_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_fvar_5(_NCp1_NExprI _Lexpr_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_soa_field_5(_NCp1_NExprI _Lexpr_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_gvar_5(_NCp1_NExprI _Lg_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_cvar_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_bools_5(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_func_5(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_method_5(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_str_5(_NCp1_NExprI _Ls_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_int_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_size_of_type_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_null_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
+void _NCp1_NExprI_Pvalue_index_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4);
 void _NCp1_NStmtSpace_Pstmt_push_7(struct _NCp1_NStmtSpace* _Ls_0, struct _NCp1_NStmt* _Ls2_1, int32_t _Lbegin_row_2, int32_t _Lbegin_col_3, int32_t _Lend_row_4, int32_t _Lend_col_5, _NCp1_NStmtType _Ltype_6);
 bool _NCp1_NExprI_Pprocess_case_func_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NFunc _Lf_idx_1);
 uint8_t _NCp1_NId_Plen_1(_NCp1_NId _Lid_0);
 bool _NCp1_NStmtSpace_Pprocess_1(struct _NCp1_NStmtSpace* _Lspace_0);
 void _NCp1_NExprI_Ptry_deduce_2(_NCp1_NExprI _Le_idx_0, _NCp1_NAt _Lat_1);
+void _NCp1_NTypeInfo_Pinit_1(struct _NCp1_NTypeInfo* _Lti_0);
+void _NCp1_NTypeInfo_Pcopy_from_2(struct _NCp1_NTypeInfo* _Lti_0, struct _NCp1_NTypeInfo* _Lti2_1);
 _NCp1_NAt _NCp1_NExprI_Ptype_1(_NCp1_NExprI _Le_0);
-void _NCp1_NValue_Pset_5(struct _NCp1_NValue* _Lv_0, int8_t _Lreff_1, bool _Lparen_2, _NCp1_NAt _Ltype_3, struct _NCp1_NTypeInfo* _Linfo_4);
 bool _NCp1_NGvar_Pprocess_1(_NCp1_NGvar _Lg_0);
 bool _NCp1_Pfarg_process_5(_NCp1_NExprI _Le_0, int8_t _Lca_ref_1, struct _NCp1_NValue* _Lca_value_2, struct _NCp1_NDeclVarData* _Lfd_arg_3, _NCp1_NAt _Lbase_at_4);
+void _NCp1_NValue_Pset_5(struct _NCp1_NValue* _Lv_0, int8_t _Lreff_1, bool _Lparen_2, _NCp1_NAt _Ltype_3, struct _NCp1_NTypeInfo* _Linfo_4);
 void _NCp1_NExprI_Ptry_deduce_math_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt _Lat_1);
 void _NCp1_NExprI_Ptry_deduce_cvar_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt _Lat_1);
 void _NCp1_NExprI_Ptype_assign_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1);
@@ -2364,19 +2363,8 @@ return true;
 (*_Llvar_1)._Fflags |= _NCp1_NLvarFlags_Cprocessed;
 _Lat_i_2 = (*_Llvar_1)._Fdecl._Ftype;
 if(_Lat_i_2 == _NCp1_NAt_Cnil) {
-if(((*_Llvar_1)._Fflags & _NCp1_NLvarFlags_Cset_expr) != _NCp1_NLvarFlags_C0) {
-struct _NCp1_NValue _Lv_3;
-if(!_NCp1_NExprI_Pvalue_4((*_Llvar_1)._Fset_expr, 1, false, &_Lv_3)) {
-return false;
-}
-(*_Llvar_1)._Fdecl._Ftype = _Lv_3._Ftype;
-_NCp1_NTypeInfo_Pinit_1(&(*_Llvar_1)._Fdecl._Ftype_info);
-_NCp1_NTypeInfo_Pcopy_from_2(&(*_Llvar_1)._Fdecl._Ftype_info, &_Lv_3._Finfo);
-} else {
 fprintf(stdout, "%s:%u:%u: local variable '%s' doesn't have a type or a value\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), (*_Llvar_1)._Frow, (*_Llvar_1)._Fcol, _NCp1_NId_Pstr_1((*_Llvar_1)._Fdecl._Fname));
 return false;
-}
-return true;
 }
 return _NCp1_NDeclVarData_Pprocess_5(&(*_Llvar_1)._Fdecl, (*_Gctx_func)._Ffile, (*_Llvar_1)._Frow, (*_Llvar_1)._Fcol, (*_Gctx_func)._Fat);
 }
@@ -2840,8 +2828,7 @@ _Llvar_i_3 = (*_Lspace_0)._Flvar_v[_Li_1];
 _Llvar_4 = _NCp1_NLvar_Pptr_1(_Llvar_i_3);
 _NCp1_NDeclVarData_Pwrite_lvar_type_2(&(*_Llvar_4)._Fdecl, _Llvar_i_3);
 if(((*_Llvar_4)._Fflags & _NCp1_NLvarFlags_Cset_expr) != _NCp1_NLvarFlags_C0) {
-fprintf(_Gout, " = ");
-_NCp1_NExprI_Pwrite_1((*_Llvar_4)._Fset_expr);
+fprintf(_Gout, " = {0}");
 }
 fprintf(_Gout, ";\n");
 continue_0:;
@@ -3184,9 +3171,6 @@ _Ll_4 = (&(*_Lf_0)._Flvar_v[_Li_3]);
 (*_Ll_4)._Fcol = Fgetnum(_Lr_1);
 _NCp1_NDeclVarData_Prd_2(&(*_Ll_4)._Fdecl, _Lr_1);
 _NCp1_NLvarFlags_Prd_2(&(*_Ll_4)._Fflags, _Lr_1);
-if(((*_Ll_4)._Fflags & _NCp1_NLvarFlags_Cset_expr) != _NCp1_NLvarFlags_C0) {
-_NCp1_NExprI_Prd_2(&(*_Ll_4)._Fset_expr, _Lr_1);
-}
 continue_0:;
 _Li_3++;
 }
@@ -3372,97 +3356,6 @@ return _Lok_1;
 }
 inline struct _NCp1_NLvarData* _NCp1_NLvar_Pptr_1(_NCp1_NLvar _Ll_0) {
 return &(*_Gctx_func)._Flvar_v[_Ll_0];
-}
-bool _NCp1_NExprI_Pvalue_4(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3) {
-struct _NCp1_NExpr* _Lexpr_4;
-bool _Lok_5;
-if(!_NCp1_NExprI_Pprocess_1(_Le_0)) {
-return false;
-}
-_Lexpr_4 = _NCp1_NExprI_Pptr_1(_Le_0);
-_Lok_5 = false;
-switch((*_Lexpr_4)._Ftype) {
-case _NCp1_NExprType_Cassign:;
-_NCp1_NExprI_Pvalue_assign_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Ccompare:;
-_NCp1_NExprI_Pvalue_compare_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Cbool:;
-_NCp1_NExprI_Pvalue_bool_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Cchar:;
-_NCp1_NExprI_Pvalue_char_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Cmath:;
-_NCp1_NExprI_Pvalue_math_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Cunary:;
-_NCp1_NExprI_Pvalue_unary_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Cref:;
-_NCp1_NExprI_Pvalue_ref_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Ccast_fast:;
-_NCp1_NExprI_Pvalue_cast_fast_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Clvar:;
-_NCp1_NExprI_Pvalue_lvar_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Cfvar:;
-_NCp1_NExprI_Pvalue_fvar_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Csoa_field:;
-_NCp1_NExprI_Pvalue_soa_field_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Cgvar:;
-_NCp1_NExprI_Pvalue_gvar_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Ccvar:;
-_NCp1_NExprI_Pvalue_cvar_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Cbools:;
-_NCp1_NExprI_Pvalue_bools_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Cfunc:;
-_NCp1_NExprI_Pvalue_func_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Cmethod:;
-_NCp1_NExprI_Pvalue_method_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Cstr:;
-_NCp1_NExprI_Pvalue_str_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Cint:;
-_NCp1_NExprI_Pvalue_int_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Csize_of_type:;
-_NCp1_NExprI_Pvalue_size_of_type_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Cnull:;
-_NCp1_NExprI_Pvalue_null_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-case _NCp1_NExprType_Cindex:;
-_NCp1_NExprI_Pvalue_index_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
-break;
-default:;
-fprintf(stdout, "%u:%u - %u:%u: value() not implemented for #%s\n", _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _NCp1_NExprType_Pcp1_name_1((*_Lexpr_4)._Ftype));
-break;
-}
-return _Lok_5;
-}
-void _NCp1_NTypeInfo_Pinit_1(struct _NCp1_NTypeInfo* _Lti_0) {
-(*_Lti_0)._Fref_v[0] = 0;
-(*_Lti_0)._Farray_c = 0;
-(*_Lti_0)._Fstar_c = 0;
-(*_Lti_0)._Fbuilt_in = false;
-(*_Lti_0)._Fconst = false;
-}
-void _NCp1_NTypeInfo_Pcopy_from_2(struct _NCp1_NTypeInfo* _Lti_0, struct _NCp1_NTypeInfo* _Lti2_1) {
-memcpy((*_Lti_0)._Fref_v, (*_Lti2_1)._Fref_v, _NCp1_Ctype_info_star_limit);
-(*_Lti_0)._Farray_c = (*_Lti2_1)._Farray_c;
-(*_Lti_0)._Fstar_c = (*_Lti2_1)._Fstar_c;
-(*_Lti_0)._Fconst = (*_Lti2_1)._Fconst;
 }
 void _NCp1_NStruct_Poutput_1(_NCp1_NStruct _Ls_i_0) {
 uint32_t _Lnum_1;
@@ -4523,6 +4416,84 @@ _NCp1_NExprI_Prd_2(&_Lleft_2, _Lr_1);
 _NCp1_NExprI_Prd_2(&_Lright_3, _Lr_1);
 _NCp1_NExprI_Pset_index_3(_Le_idx_0, _Lleft_2, _Lright_3);
 }
+bool _NCp1_NExprI_Pvalue_4(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3) {
+struct _NCp1_NExpr* _Lexpr_4;
+bool _Lok_5;
+if(!_NCp1_NExprI_Pprocess_1(_Le_0)) {
+return false;
+}
+_Lexpr_4 = _NCp1_NExprI_Pptr_1(_Le_0);
+_Lok_5 = false;
+switch((*_Lexpr_4)._Ftype) {
+case _NCp1_NExprType_Cassign:;
+_NCp1_NExprI_Pvalue_assign_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Ccompare:;
+_NCp1_NExprI_Pvalue_compare_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Cbool:;
+_NCp1_NExprI_Pvalue_bool_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Cchar:;
+_NCp1_NExprI_Pvalue_char_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Cmath:;
+_NCp1_NExprI_Pvalue_math_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Cunary:;
+_NCp1_NExprI_Pvalue_unary_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Cref:;
+_NCp1_NExprI_Pvalue_ref_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Ccast_fast:;
+_NCp1_NExprI_Pvalue_cast_fast_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Clvar:;
+_NCp1_NExprI_Pvalue_lvar_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Cfvar:;
+_NCp1_NExprI_Pvalue_fvar_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Csoa_field:;
+_NCp1_NExprI_Pvalue_soa_field_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Cgvar:;
+_NCp1_NExprI_Pvalue_gvar_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Ccvar:;
+_NCp1_NExprI_Pvalue_cvar_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Cbools:;
+_NCp1_NExprI_Pvalue_bools_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Cfunc:;
+_NCp1_NExprI_Pvalue_func_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Cmethod:;
+_NCp1_NExprI_Pvalue_method_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Cstr:;
+_NCp1_NExprI_Pvalue_str_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Cint:;
+_NCp1_NExprI_Pvalue_int_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Csize_of_type:;
+_NCp1_NExprI_Pvalue_size_of_type_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Cnull:;
+_NCp1_NExprI_Pvalue_null_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+case _NCp1_NExprType_Cindex:;
+_NCp1_NExprI_Pvalue_index_5(_Le_0, _Lreff_1, _Lparen_2, _Lv_3, &_Lok_5);
+break;
+default:;
+fprintf(stdout, "%u:%u - %u:%u: value() not implemented for #%s\n", _Gctx_begin_row, _Gctx_begin_col, _Gctx_end_row, _Gctx_end_col, _NCp1_NExprType_Pcp1_name_1((*_Lexpr_4)._Ftype));
+break;
+}
+return _Lok_5;
+}
 inline void _NCp1_NLvarFlags_Prd_2(_NCp1_NLvarFlags* _Lf_0, union _NCp1_NRdr* _Lr_1) {
 (*_Lf_0) = (_NCp1_NLvarFlags)(_NCp1_NRdr_Pn1_1(_Lr_1));
 }
@@ -4938,239 +4909,6 @@ if(!_NCp1_NStmtSpace_Pprocess_1(_Lspace_2)) {
 return;
 }
 (*_Lok_1) = true;
-}
-inline void _NCp1_NExprI_Pvalue_assign_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-struct _NCp1_NExprAssign* _Lexpr_5;
-_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
-if(_NCp1_NExprI_Pvalue_4((*_Lexpr_5)._Fleft, 1, _Lparen_2, _Lv_3) == false) {
-return;
-}
-(*_Lv_3)._Fparen = _Lparen_2;
-(*_Lv_3)._Freff = _Lreff_1;
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_compare_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-struct _NCp1_NExprCompare* _Lexpr_5;
-_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
-(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cbool);
-_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
-(*_Lv_3)._Finfo._Farray_c = 0;
-(*_Lv_3)._Finfo._Fref_v[0] = '\0';
-(*_Lv_3)._Finfo._Fstar_c = 0;
-(*_Lv_3)._Freff = 1;
-(*_Lv_3)._Fparen = _Lparen_2;
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_bool_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cbool);
-_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
-(*_Lv_3)._Finfo._Farray_c = 0;
-(*_Lv_3)._Finfo._Fref_v[0] = '\0';
-(*_Lv_3)._Finfo._Fstar_c = 0;
-(*_Lv_3)._Freff = 1;
-(*_Lv_3)._Fparen = false;
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_char_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cchar);
-_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
-(*_Lv_3)._Finfo._Farray_c = 0;
-(*_Lv_3)._Finfo._Fref_v[0] = '\0';
-(*_Lv_3)._Finfo._Fstar_c = 0;
-(*_Lv_3)._Freff = 1;
-(*_Lv_3)._Fparen = false;
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_math_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-struct _NCp1_NExprMath* _Lexpr_5;
-_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
-if(!_NCp1_NExprI_Pvalue_4((*_Lexpr_5)._Fleft, 1, _Lparen_2, _Lv_3)) {
-return;
-}
-(*_Lv_3)._Fparen = _Lparen_2;
-(*_Lv_3)._Freff = _Lreff_1;
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_unary_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-struct _NCp1_NExprUnary* _Lexpr_5;
-_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
-(*_Lv_3)._Ftype = _NCp1_NExprI_Ptype_1((*_Lexpr_5)._Fexpr);
-_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
-(*_Lv_3)._Finfo._Farray_c = 0;
-(*_Lv_3)._Finfo._Fref_v[0] = 0;
-(*_Lv_3)._Finfo._Fstar_c = 0;
-(*_Lv_3)._Freff = 1;
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_ref_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-struct _NCp1_NExprRef* _Lexpr_5;
-_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
-(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cref);
-_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
-(*_Lv_3)._Finfo._Farray_c = 0;
-(*_Lv_3)._Finfo._Fref_v[0] = 1;
-(*_Lv_3)._Finfo._Fstar_c = 1;
-(*_Lv_3)._Freff = 1;
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_cast_fast_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-struct _NCp1_NExprCastFast* _Lexpr_5;
-_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
-_NCp1_NExprI_Pvalue_4((*_Lexpr_5)._Fexpr, _Lreff_1, _Lparen_2, _Lv_3);
-(*_Lv_3)._Ftype = (*_Lexpr_5)._Ftype;
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_lvar_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-struct _NCp1_NExprLvar* _Lexpr_5;
-struct _NCp1_NLvarData* _Llvar_6;
-_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
-_Llvar_6 = _NCp1_NLvar_Pptr_1((*_Lexpr_5)._Flvar);
-_NCp1_NValue_Pset_5(_Lv_3, _Lreff_1, _Lparen_2, (*_Llvar_6)._Fdecl._Ftype, &(*_Llvar_6)._Fdecl._Ftype_info);
-if((*_Lv_3)._Freff == 1) {
-(*_Lv_3)._Fparen = false;
-}
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_fvar_5(_NCp1_NExprI _Lexpr_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-struct _NCp1_NExprFvar* _Le_5;
-struct _NCp1_NFvarData* _Lfvar_6;
-_Le_5 = _NCp1_NExprI_Pptr_1(_Lexpr_0);
-_Lfvar_6 = (&(*_NCp1_NStruct_Pptr_1((*_NCp1_NAt_Pptr_1((*_Le_5)._Fval._Ftype))._Fdecl._Fstructt))._Ffvar_v[(*_Le_5)._Ffvar]);
-_NCp1_NValue_Pset_5(_Lv_3, _Lreff_1, _Lparen_2, (*_Lfvar_6)._Fdecl._Ftype, &(*_Lfvar_6)._Fdecl._Ftype_info);
-if((*_Lv_3)._Freff == 1) {
-(*_Lv_3)._Fparen = false;
-}
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_soa_field_5(_NCp1_NExprI _Lexpr_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-struct _NCp1_NExprSoaField* _Le_5;
-_Le_5 = _NCp1_NExprI_Pptr_1(_Lexpr_0);
-_NCp1_NExprI_Pvalue_index_5((*_Le_5)._Fexpr2, _Lreff_1, _Lparen_2, _Lv_3, _Lok_4);
-}
-inline void _NCp1_NExprI_Pvalue_gvar_5(_NCp1_NExprI _Lg_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-struct _NCp1_NExprGvar* _Le_5;
-struct _NCp1_NDeclGvar* _Lgvar_6;
-_Le_5 = _NCp1_NExprI_Pptr_1(_Lg_0);
-_Lgvar_6 = _NCp1_NGvar_Pptr_1((*_Le_5)._Fgvar);
-_NCp1_NValue_Pset_5(_Lv_3, _Lreff_1, _Lparen_2, (*_Lgvar_6)._Fdecl._Ftype, &(*_Lgvar_6)._Fdecl._Ftype_info);
-if((*_Lv_3)._Freff == 1) {
-(*_Lv_3)._Fparen = false;
-}
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_cvar_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-struct _NCp1_NExprCvar* _Lexpr_5;
-struct _NCp1_NCvarData* _Lcvar_6;
-_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
-_Lcvar_6 = _NCp1_NCvar_Pptr_1((*_Lexpr_5)._Fcvar);
-_NCp1_NValue_Pset_5(_Lv_3, _Lreff_1, _Lparen_2, (*_Lcvar_6)._Fdecl._Ftype, &(*_Lcvar_6)._Fdecl._Ftype_info);
-if((*_Lv_3)._Freff == 1) {
-(*_Lv_3)._Fparen = false;
-}
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_bools_5(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cbool);
-_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
-(*_Lv_3)._Finfo._Farray_c = 0;
-(*_Lv_3)._Finfo._Fref_v[0] = '\0';
-(*_Lv_3)._Finfo._Fstar_c = 0;
-(*_Lv_3)._Freff = 1;
-(*_Lv_3)._Fparen = false;
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_func_5(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-struct _NCp1_NExprFunc* _Lexpr_5;
-struct _NCp1_NDeclFunc* _Lf_6;
-_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
-_Lf_6 = _NCp1_NFunc_Pptr_1((*_Lexpr_5)._Ffunc_idx);
-_NCp1_NValue_Pset_5(_Lv_3, _Lreff_1, _Lparen_2, (*_Lf_6)._Fdecl._Ftype, &(*_Lf_6)._Fdecl._Ftype_info);
-if((*_Lv_3)._Freff == 1) {
-(*_Lv_3)._Fparen = false;
-}
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_method_5(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-struct _NCp1_NExprMethod* _Lexpr_5;
-struct _NCp1_NDeclFunc* _Lf_6;
-_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
-_Lf_6 = _NCp1_NFunc_Pptr_1((*_Lexpr_5)._Ffunc_idx);
-_NCp1_NValue_Pset_5(_Lv_3, _Lreff_1, _Lparen_2, (*_Lf_6)._Fdecl._Ftype, &(*_Lf_6)._Fdecl._Ftype_info);
-if((*_Lv_3)._Freff == 1) {
-(*_Lv_3)._Fparen = false;
-}
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_str_5(_NCp1_NExprI _Ls_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cchar);
-_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
-(*_Lv_3)._Finfo._Farray_c = 1;
-(*_Lv_3)._Finfo._Fref_v[0] = '\0';
-(*_Lv_3)._Finfo._Fref_v[1] = '\0';
-(*_Lv_3)._Finfo._Fstar_c = 1;
-(*_Lv_3)._Freff = 1;
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_int_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-struct _NCp1_NExprIntData* _Le_5;
-_Le_5 = _NCp1_NExprI_Pptr_1(_Lle_0);
-switch((*_Le_5)._Ftype) {
-case _NCp1_NExprInt_Ci32:;
-(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Ci32);
-break;
-case _NCp1_NExprInt_Cf32:;
-(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cf32);
-break;
-default:;
-(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cu32);
-break;
-}
-_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
-(*_Lv_3)._Finfo._Farray_c = 0;
-(*_Lv_3)._Finfo._Fref_v[0] = '\0';
-(*_Lv_3)._Finfo._Fstar_c = 0;
-(*_Lv_3)._Freff = 1;
-(*_Lv_3)._Fparen = false;
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_size_of_type_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cusz);
-_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
-(*_Lv_3)._Finfo._Farray_c = 0;
-(*_Lv_3)._Finfo._Fref_v[0] = '\0';
-(*_Lv_3)._Finfo._Fstar_c = 0;
-(*_Lv_3)._Freff = 1;
-(*_Lv_3)._Fparen = false;
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_null_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cref);
-_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
-(*_Lv_3)._Finfo._Farray_c = 0;
-(*_Lv_3)._Finfo._Fref_v[0] = '\0';
-(*_Lv_3)._Finfo._Fstar_c = 0;
-(*_Lv_3)._Freff = 1;
-(*_Lv_3)._Fparen = false;
-(*_Lok_4) = true;
-}
-inline void _NCp1_NExprI_Pvalue_index_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
-struct _NCp1_NExprIndex* _Lexpr_5;
-int8_t _Lc_6;
-_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
-(*_Lv_3)._Ftype = (*_Lexpr_5)._Fleft_val._Ftype;
-_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
-_NCp1_NTypeInfo_Pcopy_from_2(&(*_Lv_3)._Finfo, &(*_Lexpr_5)._Fleft_val._Finfo);
-(*_Lv_3)._Finfo._Farray_c -= 1;
-_Lc_6 = (*_Lv_3)._Finfo._Fref_v[(*_Lv_3)._Finfo._Farray_c];
-(*_Lv_3)._Freff = ((_Lc_6 + 2) - _Lreff_1);
-(*_Lv_3)._Finfo._Fref_v[(*_Lv_3)._Finfo._Farray_c] = (_Lreff_1 - 1);
-_NCp1_NTypeInfo_Pcount_1(&(*_Lv_3)._Finfo);
-if((*_Lv_3)._Freff == 1) {
-(*_Lv_3)._Fparen = false;
-} else {
-(*_Lv_3)._Fparen = _Lparen_2;
-}
-(*_Lok_4) = true;
 }
 inline void _NCp1_NExprI_Pprocess_assign_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
 struct _NCp1_NExprAssign* _Le_2;
@@ -6138,6 +5876,239 @@ _NCp1_NExprI_Pset_3(_Le_idx_0, &(*_Le_3)._Fbase, _NCp1_NExprType_Cindex);
 (*_Le_3)._Fleft = _Lleft_1;
 (*_Le_3)._Fright = _Lright_2;
 }
+inline void _NCp1_NExprI_Pvalue_assign_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprAssign* _Lexpr_5;
+_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
+if(_NCp1_NExprI_Pvalue_4((*_Lexpr_5)._Fleft, 1, _Lparen_2, _Lv_3) == false) {
+return;
+}
+(*_Lv_3)._Fparen = _Lparen_2;
+(*_Lv_3)._Freff = _Lreff_1;
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_compare_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprCompare* _Lexpr_5;
+_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
+(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cbool);
+_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
+(*_Lv_3)._Finfo._Farray_c = 0;
+(*_Lv_3)._Finfo._Fref_v[0] = '\0';
+(*_Lv_3)._Finfo._Fstar_c = 0;
+(*_Lv_3)._Freff = 1;
+(*_Lv_3)._Fparen = _Lparen_2;
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_bool_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cbool);
+_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
+(*_Lv_3)._Finfo._Farray_c = 0;
+(*_Lv_3)._Finfo._Fref_v[0] = '\0';
+(*_Lv_3)._Finfo._Fstar_c = 0;
+(*_Lv_3)._Freff = 1;
+(*_Lv_3)._Fparen = false;
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_char_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cchar);
+_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
+(*_Lv_3)._Finfo._Farray_c = 0;
+(*_Lv_3)._Finfo._Fref_v[0] = '\0';
+(*_Lv_3)._Finfo._Fstar_c = 0;
+(*_Lv_3)._Freff = 1;
+(*_Lv_3)._Fparen = false;
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_math_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprMath* _Lexpr_5;
+_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
+if(!_NCp1_NExprI_Pvalue_4((*_Lexpr_5)._Fleft, 1, _Lparen_2, _Lv_3)) {
+return;
+}
+(*_Lv_3)._Fparen = _Lparen_2;
+(*_Lv_3)._Freff = _Lreff_1;
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_unary_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprUnary* _Lexpr_5;
+_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
+(*_Lv_3)._Ftype = _NCp1_NExprI_Ptype_1((*_Lexpr_5)._Fexpr);
+_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
+(*_Lv_3)._Finfo._Farray_c = 0;
+(*_Lv_3)._Finfo._Fref_v[0] = 0;
+(*_Lv_3)._Finfo._Fstar_c = 0;
+(*_Lv_3)._Freff = 1;
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_ref_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprRef* _Lexpr_5;
+_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
+(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cref);
+_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
+(*_Lv_3)._Finfo._Farray_c = 0;
+(*_Lv_3)._Finfo._Fref_v[0] = 1;
+(*_Lv_3)._Finfo._Fstar_c = 1;
+(*_Lv_3)._Freff = 1;
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_cast_fast_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprCastFast* _Lexpr_5;
+_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
+_NCp1_NExprI_Pvalue_4((*_Lexpr_5)._Fexpr, _Lreff_1, _Lparen_2, _Lv_3);
+(*_Lv_3)._Ftype = (*_Lexpr_5)._Ftype;
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_lvar_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprLvar* _Lexpr_5;
+struct _NCp1_NLvarData* _Llvar_6;
+_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
+_Llvar_6 = _NCp1_NLvar_Pptr_1((*_Lexpr_5)._Flvar);
+_NCp1_NValue_Pset_5(_Lv_3, _Lreff_1, _Lparen_2, (*_Llvar_6)._Fdecl._Ftype, &(*_Llvar_6)._Fdecl._Ftype_info);
+if((*_Lv_3)._Freff == 1) {
+(*_Lv_3)._Fparen = false;
+}
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_fvar_5(_NCp1_NExprI _Lexpr_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprFvar* _Le_5;
+struct _NCp1_NFvarData* _Lfvar_6;
+_Le_5 = _NCp1_NExprI_Pptr_1(_Lexpr_0);
+_Lfvar_6 = (&(*_NCp1_NStruct_Pptr_1((*_NCp1_NAt_Pptr_1((*_Le_5)._Fval._Ftype))._Fdecl._Fstructt))._Ffvar_v[(*_Le_5)._Ffvar]);
+_NCp1_NValue_Pset_5(_Lv_3, _Lreff_1, _Lparen_2, (*_Lfvar_6)._Fdecl._Ftype, &(*_Lfvar_6)._Fdecl._Ftype_info);
+if((*_Lv_3)._Freff == 1) {
+(*_Lv_3)._Fparen = false;
+}
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_soa_field_5(_NCp1_NExprI _Lexpr_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprSoaField* _Le_5;
+_Le_5 = _NCp1_NExprI_Pptr_1(_Lexpr_0);
+_NCp1_NExprI_Pvalue_index_5((*_Le_5)._Fexpr2, _Lreff_1, _Lparen_2, _Lv_3, _Lok_4);
+}
+inline void _NCp1_NExprI_Pvalue_gvar_5(_NCp1_NExprI _Lg_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprGvar* _Le_5;
+struct _NCp1_NDeclGvar* _Lgvar_6;
+_Le_5 = _NCp1_NExprI_Pptr_1(_Lg_0);
+_Lgvar_6 = _NCp1_NGvar_Pptr_1((*_Le_5)._Fgvar);
+_NCp1_NValue_Pset_5(_Lv_3, _Lreff_1, _Lparen_2, (*_Lgvar_6)._Fdecl._Ftype, &(*_Lgvar_6)._Fdecl._Ftype_info);
+if((*_Lv_3)._Freff == 1) {
+(*_Lv_3)._Fparen = false;
+}
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_cvar_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprCvar* _Lexpr_5;
+struct _NCp1_NCvarData* _Lcvar_6;
+_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
+_Lcvar_6 = _NCp1_NCvar_Pptr_1((*_Lexpr_5)._Fcvar);
+_NCp1_NValue_Pset_5(_Lv_3, _Lreff_1, _Lparen_2, (*_Lcvar_6)._Fdecl._Ftype, &(*_Lcvar_6)._Fdecl._Ftype_info);
+if((*_Lv_3)._Freff == 1) {
+(*_Lv_3)._Fparen = false;
+}
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_bools_5(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cbool);
+_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
+(*_Lv_3)._Finfo._Farray_c = 0;
+(*_Lv_3)._Finfo._Fref_v[0] = '\0';
+(*_Lv_3)._Finfo._Fstar_c = 0;
+(*_Lv_3)._Freff = 1;
+(*_Lv_3)._Fparen = false;
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_func_5(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprFunc* _Lexpr_5;
+struct _NCp1_NDeclFunc* _Lf_6;
+_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
+_Lf_6 = _NCp1_NFunc_Pptr_1((*_Lexpr_5)._Ffunc_idx);
+_NCp1_NValue_Pset_5(_Lv_3, _Lreff_1, _Lparen_2, (*_Lf_6)._Fdecl._Ftype, &(*_Lf_6)._Fdecl._Ftype_info);
+if((*_Lv_3)._Freff == 1) {
+(*_Lv_3)._Fparen = false;
+}
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_method_5(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprMethod* _Lexpr_5;
+struct _NCp1_NDeclFunc* _Lf_6;
+_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
+_Lf_6 = _NCp1_NFunc_Pptr_1((*_Lexpr_5)._Ffunc_idx);
+_NCp1_NValue_Pset_5(_Lv_3, _Lreff_1, _Lparen_2, (*_Lf_6)._Fdecl._Ftype, &(*_Lf_6)._Fdecl._Ftype_info);
+if((*_Lv_3)._Freff == 1) {
+(*_Lv_3)._Fparen = false;
+}
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_str_5(_NCp1_NExprI _Ls_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cchar);
+_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
+(*_Lv_3)._Finfo._Farray_c = 1;
+(*_Lv_3)._Finfo._Fref_v[0] = '\0';
+(*_Lv_3)._Finfo._Fref_v[1] = '\0';
+(*_Lv_3)._Finfo._Fstar_c = 1;
+(*_Lv_3)._Freff = 1;
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_int_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprIntData* _Le_5;
+_Le_5 = _NCp1_NExprI_Pptr_1(_Lle_0);
+switch((*_Le_5)._Ftype) {
+case _NCp1_NExprInt_Ci32:;
+(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Ci32);
+break;
+case _NCp1_NExprInt_Cf32:;
+(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cf32);
+break;
+default:;
+(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cu32);
+break;
+}
+_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
+(*_Lv_3)._Finfo._Farray_c = 0;
+(*_Lv_3)._Finfo._Fref_v[0] = '\0';
+(*_Lv_3)._Finfo._Fstar_c = 0;
+(*_Lv_3)._Freff = 1;
+(*_Lv_3)._Fparen = false;
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_size_of_type_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cusz);
+_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
+(*_Lv_3)._Finfo._Farray_c = 0;
+(*_Lv_3)._Finfo._Fref_v[0] = '\0';
+(*_Lv_3)._Finfo._Fstar_c = 0;
+(*_Lv_3)._Freff = 1;
+(*_Lv_3)._Fparen = false;
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_null_5(_NCp1_NExprI _Lle_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cref);
+_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
+(*_Lv_3)._Finfo._Farray_c = 0;
+(*_Lv_3)._Finfo._Fref_v[0] = '\0';
+(*_Lv_3)._Finfo._Fstar_c = 0;
+(*_Lv_3)._Freff = 1;
+(*_Lv_3)._Fparen = false;
+(*_Lok_4) = true;
+}
+inline void _NCp1_NExprI_Pvalue_index_5(_NCp1_NExprI _Le_0, int8_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
+struct _NCp1_NExprIndex* _Lexpr_5;
+int8_t _Lc_6;
+_Lexpr_5 = _NCp1_NExprI_Pptr_1(_Le_0);
+(*_Lv_3)._Ftype = (*_Lexpr_5)._Fleft_val._Ftype;
+_NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
+_NCp1_NTypeInfo_Pcopy_from_2(&(*_Lv_3)._Finfo, &(*_Lexpr_5)._Fleft_val._Finfo);
+(*_Lv_3)._Finfo._Farray_c -= 1;
+_Lc_6 = (*_Lv_3)._Finfo._Fref_v[(*_Lv_3)._Finfo._Farray_c];
+(*_Lv_3)._Freff = ((_Lc_6 + 2) - _Lreff_1);
+(*_Lv_3)._Finfo._Fref_v[(*_Lv_3)._Finfo._Farray_c] = (_Lreff_1 - 1);
+_NCp1_NTypeInfo_Pcount_1(&(*_Lv_3)._Finfo);
+if((*_Lv_3)._Freff == 1) {
+(*_Lv_3)._Fparen = false;
+} else {
+(*_Lv_3)._Fparen = _Lparen_2;
+}
+(*_Lok_4) = true;
+}
 inline void _NCp1_NStmtSpace_Pstmt_push_7(struct _NCp1_NStmtSpace* _Ls_0, struct _NCp1_NStmt* _Ls2_1, int32_t _Lbegin_row_2, int32_t _Lbegin_col_3, int32_t _Lend_row_4, int32_t _Lend_col_5, _NCp1_NStmtType _Ltype_6) {
 (*_Ls2_1)._Fbegin_row = _Lbegin_row_2;
 (*_Ls2_1)._Fbegin_col = _Lbegin_col_3;
@@ -6251,6 +6222,19 @@ _NCp1_NExprI_Ptry_deduce_cvar_2(_Lexpr_2, _Lat_1);
 break;
 }
 }
+void _NCp1_NTypeInfo_Pinit_1(struct _NCp1_NTypeInfo* _Lti_0) {
+(*_Lti_0)._Fref_v[0] = 0;
+(*_Lti_0)._Farray_c = 0;
+(*_Lti_0)._Fstar_c = 0;
+(*_Lti_0)._Fbuilt_in = false;
+(*_Lti_0)._Fconst = false;
+}
+void _NCp1_NTypeInfo_Pcopy_from_2(struct _NCp1_NTypeInfo* _Lti_0, struct _NCp1_NTypeInfo* _Lti2_1) {
+memcpy((*_Lti_0)._Fref_v, (*_Lti2_1)._Fref_v, _NCp1_Ctype_info_star_limit);
+(*_Lti_0)._Farray_c = (*_Lti2_1)._Farray_c;
+(*_Lti_0)._Fstar_c = (*_Lti2_1)._Fstar_c;
+(*_Lti_0)._Fconst = (*_Lti2_1)._Fconst;
+}
 _NCp1_NAt _NCp1_NExprI_Ptype_1(_NCp1_NExprI _Le_0) {
 struct _NCp1_NExpr* _Lexpr_1;
 _NCp1_NAt _Lat_2;
@@ -6326,17 +6310,6 @@ break;
 }
 return _Lat_2;
 }
-void _NCp1_NValue_Pset_5(struct _NCp1_NValue* _Lv_0, int8_t _Lreff_1, bool _Lparen_2, _NCp1_NAt _Ltype_3, struct _NCp1_NTypeInfo* _Linfo_4) {
-int8_t _Lc_5;
-_Lc_5 = (*_Linfo_4)._Fref_v[(*_Linfo_4)._Farray_c];
-(*_Lv_0)._Ftype = _Ltype_3;
-(*_Lv_0)._Freff = ((_Lc_5 + 2) - _Lreff_1);
-_NCp1_NTypeInfo_Pinit_1(&(*_Lv_0)._Finfo);
-_NCp1_NTypeInfo_Pcopy_from_2(&(*_Lv_0)._Finfo, _Linfo_4);
-(*_Lv_0)._Finfo._Fref_v[(*_Lv_0)._Finfo._Farray_c] = (_Lreff_1 - 1);
-_NCp1_NTypeInfo_Pcount_1(&(*_Lv_0)._Finfo);
-(*_Lv_0)._Fparen = _Lparen_2;
-}
 bool _NCp1_NGvar_Pprocess_1(_NCp1_NGvar _Lg_0) {
 uint32_t _Lnum_1;
 uint32_t _Ln3_2;
@@ -6399,6 +6372,17 @@ if(!_NCp1_NExprI_Pvalue_4(_Le_0, _Lr_6, false, _Lca_value_2)) {
 return false;
 }
 return true;
+}
+void _NCp1_NValue_Pset_5(struct _NCp1_NValue* _Lv_0, int8_t _Lreff_1, bool _Lparen_2, _NCp1_NAt _Ltype_3, struct _NCp1_NTypeInfo* _Linfo_4) {
+int8_t _Lc_5;
+_Lc_5 = (*_Linfo_4)._Fref_v[(*_Linfo_4)._Farray_c];
+(*_Lv_0)._Ftype = _Ltype_3;
+(*_Lv_0)._Freff = ((_Lc_5 + 2) - _Lreff_1);
+_NCp1_NTypeInfo_Pinit_1(&(*_Lv_0)._Finfo);
+_NCp1_NTypeInfo_Pcopy_from_2(&(*_Lv_0)._Finfo, _Linfo_4);
+(*_Lv_0)._Finfo._Fref_v[(*_Lv_0)._Finfo._Farray_c] = (_Lreff_1 - 1);
+_NCp1_NTypeInfo_Pcount_1(&(*_Lv_0)._Finfo);
+(*_Lv_0)._Fparen = _Lparen_2;
 }
 inline void _NCp1_NExprI_Ptry_deduce_math_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt _Lat_1) {
 struct _NCp1_NExprMath* _Le_2;

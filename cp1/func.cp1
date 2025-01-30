@@ -58,9 +58,10 @@ using DeclFunc {
          l.col = r.n();
          l.decl.rd(r);
          l.flags.rd(r);
-         if (l.flags & #set-expr) != #0 {
-            l.set-expr.rd(r);
-         }
+         // if (l.flags & #set-expr) != #0 {
+            // C.printf("1\n");
+            // l.set-expr.rd(r);
+         // }
          // C.out.printf("lvar %s has type of %s\n", l.decl.name.str(), l.decl.type.ptr().name.basic.cp1-name());
       }
    }
@@ -72,9 +73,10 @@ using DeclFunc {
          w.n(l.col);
          l.decl.wr(w, header);
          l.flags.wr(w);
-         if (l.flags & #set-expr) != #0 {
-            l.set-expr.wr(w, header);
-         }
+         // if (l.flags & #set-expr) != #0 {
+            // C.printf("2\n");
+            // l.set-expr.wr(w, header);
+         // }
       }
    }
 }

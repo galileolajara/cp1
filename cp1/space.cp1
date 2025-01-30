@@ -38,8 +38,8 @@ struct StmtSpace[
          // C.out.printf("%s %s\n", lvar.decl.type.ptr().type.cp1-name(), lvar.decl.type.ptr().name.basic.cp1-name());
          lvar.decl.write-lvar-type(lvar-i);
          if (lvar.flags & #set-expr) != #0 {
-            .out.printf(" = ");
-            lvar.set-expr.write();
+            .out.printf(" = {0}");
+            // lvar.set-expr.write();
          }
          .out.printf(";\n");
       }

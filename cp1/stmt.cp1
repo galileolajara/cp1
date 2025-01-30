@@ -91,7 +91,9 @@ stmt-lvar-add(name:Id, set:ExprI, row:i32, col:i32) {
    .decl-var.name = name;
    lvar.decl.copy-from(.decl-var);
    // C.out.printf("%s %d\n", .decl-var.name.str(), .decl-var.type-info.built-in);
-   if set != #nil {
+   if set == -2:ExprI {
+      lvar.flags |= #set-expr;
+   } elif set != #nil {
       +e = expr-assign(expr-lvar(name, 0, row, col), set, #eq);
       expr2stmt(e, row, col, row, col);
    }

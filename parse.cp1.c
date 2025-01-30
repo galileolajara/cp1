@@ -209,6 +209,7 @@
 #define _NCp1_NStmtSpaceFlags_C0 0
 #define _NCp1_NExprType_Cfvar (_NCp1_NExprType_Cmethod + 1)
 #define _NCp1_NExprType_Csoa_field (_NCp1_NExprType_Cfvar + 1)
+#define _NCp1_NLvarFlags_Cset_expr (1)
 #define _NCp1_Cdecl_at_nest_limit (8)
 #define _NCp1_NAt_Crelative (_NCp1_NAt_Croot + 1)
 #define _NCp1_NExprType_Cint (_NCp1_NExprType_Csoa_field + 1)
@@ -237,8 +238,6 @@
 #define _NCp1_Cdebug_rd_wr (true)
 #define _NCp1_NFunc_C0 (_NCp1_NFunc_Cnil + 1)
 #define _NCp1_NFunc_C1 (_NCp1_NFunc_C0 + 1)
-#define _NCp1_NLvarFlags_Cset_expr (1)
-#define _NCp1_NLvarFlags_C0 0
 #define _NCp1_NStmtType_Cnil (255)
 #define _NCp1_Cdecl_var_size_limit (8)
 #define _NCp1_NToken_Cif (_NCp1_NToken_Cloop_with_semicolon + 1)
@@ -369,7 +368,6 @@ int32_t _Frow;
 int32_t _Fcol;
 struct _NCp1_NDeclVarData _Fdecl;
 _NCp1_NLvarFlags _Fflags;
-_NCp1_NExprI _Fset_expr;
 };
 struct _NCp1_NFarg;
 struct _NCp1_NFarg {
@@ -3460,7 +3458,9 @@ _Llvar_i_4 = _NCp1_NStmtSpace_Plvar_new_4(_Gdecl_func_ctx_space, _Lname_0, _Lrow
 _Llvar_5 = _NCp1_NLvar_Pptr_1(_Llvar_i_4);
 _Gdecl_var._Fname = _Lname_0;
 _NCp1_NDeclVarData_Pcopy_from_2(&(*_Llvar_5)._Fdecl, &_Gdecl_var);
-if(_Lset_1 != _NCp1_NExprI_Cnil) {
+if(_Lset_1 == -(_NCp1_NExprI)(2)) {
+(*_Llvar_5)._Fflags |= _NCp1_NLvarFlags_Cset_expr;
+} else if(_Lset_1 != _NCp1_NExprI_Cnil) {
 _NCp1_NExprI _Le_6;
 _Le_6 = _NCp1_Pexpr_assign_3(_NCp1_Pexpr_lvar_4(_Lname_0, 0, _Lrow_2, _Lcol_3), _Lset_1, _NCp1_NAssign_Ceq);
 _NCp1_Pexpr2stmt_5(_Le_6, _Lrow_2, _Lcol_3, _Lrow_2, _Lcol_3);
@@ -4240,9 +4240,6 @@ Fputnum(_Lw_1, (*_Ll_4)._Frow);
 Fputnum(_Lw_1, (*_Ll_4)._Fcol);
 _NCp1_NDeclVarData_Pwr_3(&(*_Ll_4)._Fdecl, _Lw_1, _Lheader_2);
 _NCp1_NLvarFlags_Pwr_2((*_Ll_4)._Fflags, _Lw_1);
-if(((*_Ll_4)._Fflags & _NCp1_NLvarFlags_Cset_expr) != _NCp1_NLvarFlags_C0) {
-_NCp1_NExprI_Pwr_3((*_Ll_4)._Fset_expr, _Lw_1, _Lheader_2);
-}
 continue_0:;
 _Li_3++;
 }
