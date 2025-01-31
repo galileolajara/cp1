@@ -3143,14 +3143,14 @@ _Lat_4 = _NCp1_NAt_Pptr_1(_Lat_i_0);
 if((*_Lat_4)._Fdef == _NCp1_NAtDef_Cstruct) {
 if((*_Lti_1)._Fbuilt_in) {
 if((*_Lti_1)._Fref_v[0] != 0) {
-fprintf(stdout, "%s:%d:%d: Can:T use plus symbol (+) because type '/%s' has reference\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Lrow_2, _Lcol_3, _NCp1_NId_Pstr_1((*_Lat_4)._Fname._Fid));
+fprintf(stdout, "%s:%d:%d: Can't use plus symbol (+) because type '%s' has reference\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Lrow_2, _Lcol_3, _NCp1_NId_Pstr_1((*_Lat_4)._Fname._Fid));
 return false;
 }
 (*_Lti_1)._Fref_v[0] = -1;
 }
 } else {
 if((*_Lti_1)._Fbuilt_in) {
-fprintf(stdout, "%s:%d:%d: Can:T use plus symbol (+) because type is not a struct\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Lrow_2, _Lcol_3);
+fprintf(stdout, "%s:%d:%d: Can't use plus symbol (+) because type '%s' is not a struct\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Lrow_2, _Lcol_3, _NCp1_NId_Pstr_1((*_Lat_4)._Fname._Fid));
 return false;
 }
 }
