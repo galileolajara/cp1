@@ -435,7 +435,7 @@ struct Lexer[
       var r-cursor:Rdr+;
       r-cursor.reff = lex.cursor;
       +length = 0;
-      loop r-start.charr[length] != '') {
+      loop (r-start.charr[length] != '' ) && (r-start.charr[length] != ''\n) {
          length++;
       }
       // C.printf("include [%.*s]\n", length, r-start.charr);

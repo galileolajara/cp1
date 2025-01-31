@@ -1,6 +1,8 @@
-using u32 {
-   #max @no-decl(UINT32_MAX);
-}
-using u64 {
-   #max @no-decl(UINT64_MAX);
+include <limits.h> {
+   using u32 {
+      #max @no-decl(UINT32_MAX);
+   }
+   using u64 {
+      #max @no-decl(UINT64_MAX);
+   }
 }

@@ -30,7 +30,7 @@ union Rdr[
    id(r:this):Id @inline {
       return r.n();
    }
-   include("num.c") {
+   include "num.c" {
       n(r:this):u32 @real-name(Fgetnum) @no-decl;
       i(r:this):i32 @real-name(Fgetint) @no-decl;
    }

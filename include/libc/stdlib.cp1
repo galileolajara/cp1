@@ -1,4 +1,4 @@
-include(<stdlib.h>) {
+include <stdlib.h> {
    using C = LibC;
    using LibC {
       malloc(size:usz):ref @no-decl(malloc);

@@ -2484,7 +2484,7 @@ _Lr_start_1._Freff = (*_Llex_0)._Fstart;
 _Lr_start_1._Fpos += 8;
 _Lr_cursor_2._Freff = (*_Llex_0)._Fcursor;
 _Llength_3 = 0;
-while(_Lr_start_1._Fcharr[_Llength_3] != ')') {
+while(((_Lr_start_1._Fcharr[_Llength_3] != ' ') && (_Lr_start_1._Fcharr[_Llength_3] != '\n'))) {
 _Llength_3++;
 continue_0:;
 }

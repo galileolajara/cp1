@@ -1,4 +1,4 @@
-include(<stdio.h>) {
+include <stdio.h>  {
    using C = LibC;
    using X = Posix;
    using LibC {
