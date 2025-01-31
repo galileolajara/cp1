@@ -78,9 +78,9 @@ enum_decl_begin ::= ENUM SPACE ID_UPPER(name).
 
 decl_include ::= INCLUDE(e).
    { _NCp1_Pdecl_include_begin_3(e.basic.id, e.basic.row, e.basic.col); }
-decl ::= decl_include SPACE decls SPACE_CLOSE_CURLY_BRACE.
+decl ::= decl_include SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE decls SPACE_CLOSE_CURLY_BRACE.
    { _NCp1_Pdecl_include_end_0(); }
-decl ::= decl_include SPACE_CLOSE_CURLY_BRACE.
+decl ::= decl_include SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE CLOSE_CURLY_BRACE.
    { _NCp1_Pdecl_include_end_0(); }
 
 /*

@@ -434,10 +434,10 @@ struct Lexer[
       r-start.pos += 8;
       var r-cursor:Rdr+;
       r-cursor.reff = lex.cursor;
-      +length = 0;
-      loop (r-start.charr[length] != '' ) && (r-start.charr[length] != ''\n) {
-         length++;
-      }
+      +length = r-cursor.pos - r-start.pos;
+      // loop (r-start.charr[length] != '' ) && (r-start.charr[length] != ''\n) {
+      //   length++;
+      // }
       // C.printf("include [%.*s]\n", length, r-start.charr);
       if length > 255 {
          C.out.printf("too long include was detected\n");

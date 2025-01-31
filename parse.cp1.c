@@ -39,13 +39,13 @@
 #define _NCp1_NToken_Cspace_equal_space (_NCp1_NToken_Cspace_at_no_decl_str + 1)
 #define _NCp1_NToken_Cenum (_NCp1_NToken_Cspace_equal_space + 1)
 #define _NCp1_NToken_Cinclude (_NCp1_NToken_Cenum + 1)
-#define _NCp1_NToken_Cspace_close_curly_brace (_NCp1_NToken_Cinclude + 1)
-#define _NCp1_NToken_Cgrave (_NCp1_NToken_Cspace_close_curly_brace + 1)
-#define _NCp1_NToken_Cusing (_NCp1_NToken_Cgrave + 1)
-#define _NCp1_NToken_Cspace_then_open_curly_brace (_NCp1_NToken_Cusing + 1)
+#define _NCp1_NToken_Cspace_then_open_curly_brace (_NCp1_NToken_Cinclude + 1)
 #define _NCp1_NToken_Copen_curly_brace_space (_NCp1_NToken_Cspace_then_open_curly_brace + 1)
-#define _NCp1_NToken_Cclose_curly_brace (_NCp1_NToken_Copen_curly_brace_space + 1)
-#define _NCp1_NToken_Csemicolon (_NCp1_NToken_Cclose_curly_brace + 1)
+#define _NCp1_NToken_Cspace_close_curly_brace (_NCp1_NToken_Copen_curly_brace_space + 1)
+#define _NCp1_NToken_Cclose_curly_brace (_NCp1_NToken_Cspace_close_curly_brace + 1)
+#define _NCp1_NToken_Cgrave (_NCp1_NToken_Cclose_curly_brace + 1)
+#define _NCp1_NToken_Cusing (_NCp1_NToken_Cgrave + 1)
+#define _NCp1_NToken_Csemicolon (_NCp1_NToken_Cusing + 1)
 #define _NCp1_NToken_Cend (_NCp1_NToken_Csemicolon + 1)
 #define _NCp1_NToken_Cusing_with_semicolon (_NCp1_NToken_Cend + 1)
 #define _NCp1_NToken_Copen_parenthesis (_NCp1_NToken_Cusing_with_semicolon + 1)
@@ -1083,12 +1083,12 @@ case _NCp1_NToken_Cspace_at_no_decl_str: return "space-at-no-decl-str";
 case _NCp1_NToken_Cspace_equal_space: return "space-equal-space";
 case _NCp1_NToken_Cenum: return "enum";
 case _NCp1_NToken_Cinclude: return "include";
-case _NCp1_NToken_Cspace_close_curly_brace: return "space-close-curly-brace";
-case _NCp1_NToken_Cgrave: return "grave";
-case _NCp1_NToken_Cusing: return "using";
 case _NCp1_NToken_Cspace_then_open_curly_brace: return "space-then-open-curly-brace";
 case _NCp1_NToken_Copen_curly_brace_space: return "open-curly-brace-space";
+case _NCp1_NToken_Cspace_close_curly_brace: return "space-close-curly-brace";
 case _NCp1_NToken_Cclose_curly_brace: return "close-curly-brace";
+case _NCp1_NToken_Cgrave: return "grave";
+case _NCp1_NToken_Cusing: return "using";
 case _NCp1_NToken_Csemicolon: return "semicolon";
 case _NCp1_NToken_Cend: return "end";
 case _NCp1_NToken_Cusing_with_semicolon: return "using-with-semicolon";
@@ -2477,18 +2477,13 @@ return (uint32_t)(_Lval_4);
 int32_t _NCp1_NLexer_Pget_include_1(struct _NCp1_NLexer* _Llex_0) {
 union _NCp1_NRdr _Lr_start_1;
 union _NCp1_NRdr _Lr_cursor_2;
-int32_t _Llength_3;
+size_t _Llength_3;
 uint8_t _Llen_4;
 int32_t _Lfound_5;
 _Lr_start_1._Freff = (*_Llex_0)._Fstart;
 _Lr_start_1._Fpos += 8;
 _Lr_cursor_2._Freff = (*_Llex_0)._Fcursor;
-_Llength_3 = 0;
-while(((_Lr_start_1._Fcharr[_Llength_3] != ' ') && (_Lr_start_1._Fcharr[_Llength_3] != '\n'))) {
-_Llength_3++;
-continue_0:;
-}
-break_0:;
+_Llength_3 = (_Lr_cursor_2._Fpos - _Lr_start_1._Fpos);
 if(_Llength_3 > 255) {
 fprintf(stdout, "too long include was detected\n");
 exit(_NLibC_NExit_Cfailure);
