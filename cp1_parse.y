@@ -61,6 +61,8 @@ cvar_attr ::= SPACE_AT_REAL_NAME.
    { _NCp1_Pcvar_attr_real_name_1(-1); }
 cvar_attr ::= SPACE_AT_NO_DECL.
    { _NCp1_Pcvar_attr_no_decl_0(); }
+cvar_attr ::= SPACE_AT_NO_DECL_STR(e).
+   { _NCp1_Pcvar_attr_no_decl_0(); _NCp1_Pcvar_attr_real_name_1(e.basic.id); }
 cvar_attrs ::= cvar_attr.
 cvar_attrs ::= cvar_attrs cvar_attr.
 cvar_attrs_optional ::= .
@@ -238,6 +240,8 @@ func_attr ::= SPACE_AT_VAR_ARGS.
    { _NCp1_Pfunc_attr_var_args_0(); }
 func_attr ::= SPACE_AT_NO_DECL.
    { _NCp1_Pfunc_attr_no_decl_0(); }
+func_attr ::= SPACE_AT_NO_DECL_STR(e).
+   { _NCp1_Pfunc_attr_no_decl_0(); _NCp1_Pfunc_attr_real_name_1(e.basic.id); }
 func_attr ::= SPACE_AT_NO_BODY.
    { _NCp1_Pfunc_attr_no_body_0(); }
 func_attr ::= SPACE_AT_REAL_NAME_STR(e).
@@ -827,6 +831,8 @@ decl_var_attr ::= SPACE_AT_EXTERN.
    { _NCp1_Pdecl_var_attr_extern_0(); }
 decl_var_attr ::= SPACE_AT_NO_DECL.
    { _NCp1_Pdecl_var_attr_no_decl_0(); }
+decl_var_attr ::= SPACE_AT_NO_DECL_STR(e).
+   { _NCp1_Pdecl_var_attr_no_decl_0(); _NCp1_Pdecl_var_attr_real_name_1(e.basic.id); }
 decl_var_attrs_list ::= decl_var_attr.
 decl_var_attrs_list ::= decl_var_attrs_list decl_var_attr.
 decl_var_attrs_optional ::= .
@@ -852,6 +858,8 @@ stmts_optional3 ::= stmts_brace close_curly_brace_or_space.
 stmts_optional3 ::= stmts_expr close_curly_brace_or_scolon. */
 decl_struct_attr ::= SPACE_AT_NO_DECL.
    { _NCp1_Pstruct_attr_no_decl_0(); }
+decl_struct_attr ::= SPACE_AT_NO_DECL_STR(e).
+   { _NCp1_Pstruct_attr_no_decl_0(); _NCp1_Pstruct_attr_real_name_1(e.basic.id); }
 decl_struct_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _NCp1_Pstruct_attr_real_name_1(e.basic.id); }
 decl_struct_attr ::= SPACE_AT_REAL_NAME.
@@ -890,6 +898,8 @@ decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT(a) DOT ID(i) DOT CLOSE
    { _NCp1_Penum_attr_soa_field_2(a.basic.id, i.basic.id); }
 decl_enum_attr ::= SPACE_AT_NO_DECL.
    { _NCp1_Penum_attr_no_decl_0(); }
+decl_enum_attr ::= SPACE_AT_NO_DECL_STR(e).
+   { _NCp1_Penum_attr_no_decl_0(); _NCp1_Penum_attr_real_name_1(e.basic.id); }
 decl_enum_attr ::= SPACE_AT_REAL_NAME.
    { _NCp1_Penum_attr_real_name_1(-1); }
 decl_enum_attr ::= SPACE_AT_REAL_NAME_STR(s).

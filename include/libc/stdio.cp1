@@ -7,15 +7,15 @@ include(<stdio.h>) {
       scanf(fmt:char[]):intc @var-args @no-decl @real-name;
       sscanf(str:char[], fmt:char[]):intc @var-args @no-decl @real-name;
 
-      var out:File @real-name(stdout) @no-decl;
-      struct File[] @real-name(FILE) @no-decl {
-         printf(f:this, str:char[]):intc @var-args @no-decl @real-name(fprintf);
-         flush(f:this):intc @no-decl @real-name(fflush);
+      var out:File @no-decl(stdout);
+      struct File[] @no-decl(FILE) {
+         printf(f:this, str:char[]):intc @var-args @no-decl(fprintf);
+         flush(f:this):intc @no-decl(fflush);
          write(f:this, buf:ref, size:usz):usz @inline {
             return fwrite(buf, 1, size, f);
          }
-         putc(c:intc, f:this):intc @no-decl @real-name(fputc);
-         close(f:this):intc @no-decl @real-name(fclose);
+         putc(c:intc, f:this):intc @no-decl(fputc);
+         close(f:this):intc @no-decl(fclose);
       }
       rename(old:char[], new:char[]):intc @no-decl @real-name;
       fopen(path:char[], mode:char[]):File @no-decl @real-name;

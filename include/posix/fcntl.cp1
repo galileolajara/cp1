@@ -32,12 +32,12 @@ include(<fcntl.h>) {
          }
       }
       enum OpenFlags[
-         #rdonly @no-decl @real-name(O_RDONLY),
-         #create @no-decl @real-name(O_CREAT),
-         #wronly @no-decl @real-name(O_WRONLY),
-         #rdwr @no-decl @real-name(O_RDWR),
-         #truncate @no-decl @real-name(O_TRUNC),
-         #excl @no-decl @real-name(O_EXCL),
+         #rdonly @no-decl(O_RDONLY),
+         #create @no-decl(O_CREAT),
+         #wronly @no-decl(O_WRONLY),
+         #rdwr @no-decl(O_RDWR),
+         #truncate @no-decl(O_TRUNC),
+         #excl @no-decl(O_EXCL),
       ]:intc;
       open(path:char[], flags:OpenFlags):Fd @real-name @no-decl;
       open(path:char[], flags:OpenFlags, mode:intc):Fd @real-name @no-decl;

@@ -106,6 +106,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "@extern"                 { return CP1_TOKEN_SPACE_AT_EXTERN; }
    spaces "@fall-through"           { return CP1_TOKEN_SPACE_AT_FALL_THROUGH; }
    spaces "@var-args"               { return CP1_TOKEN_SPACE_AT_VAR_ARGS; }
+   spaces "@no-decl(" [^)]* ")"     { return CP1_TOKEN_SPACE_AT_NO_DECL_STR; }
    spaces "@no-decl"                { return CP1_TOKEN_SPACE_AT_NO_DECL; }
    spaces "@no-body"                { return CP1_TOKEN_SPACE_AT_NO_BODY; }
    spaces "@soa-field"              { return CP1_TOKEN_SPACE_AT_SOA_FIELD; }

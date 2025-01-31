@@ -1128,6 +1128,22 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                .last-token = t;
                psr.parse(t, tok);
             }
+            case #space-at-no-decl-str {
+               // find the '@' character and start counting from there
+               var r-start:Rdr+;
+               r-start.reff = lex.start;
+               +start = 9;
+               loop {
+                  start++;
+                  r-start.pos++;
+                  if r-start.p1[0] == ''@ {
+                     break;
+                  }
+               }
+               tok.val.ii32.id = lex.get-id(start, 1);
+               .last-token = t;
+               psr.parse(t, tok);
+            }
             case #space-at-real-name-str {
                // find the '@' character and start counting from there
                var r-start:Rdr+;

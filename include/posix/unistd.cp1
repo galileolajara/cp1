@@ -2,16 +2,16 @@ include(<unistd.h>) {
    using X = Posix;
    using Posix {
       using Fd {
-         seek(fd:this, offset:usz, seek:Seek):usz @no-decl @real-name(lseek);
+         seek(fd:this, offset:usz, seek:Seek):usz @no-decl(lseek);
          read(fd:this, buf:ref, size:usz):usz @no-decl @real-name;
          close(fd:this):intc @no-decl @real-name;
          write(fd:this, buf:ref, size:usz):usz @no-decl @real-name;
       }
       enum Seek[
-         #set @real-name(SEEK_SET) @no-decl,
-         #end @real-name(SEEK_END) @no-decl,
+         #set @no-decl(SEEK_SET),
+         #end @no-decl(SEEK_END),
       ]:intc;
-      seek(fd:intc, offset:usz, seek:Seek):usz @no-decl @real-name(lseek);
+      seek(fd:intc, offset:usz, seek:Seek):usz @no-decl(lseek);
       mkstemp(template:char[]):Fd @no-decl @real-name;
       unlink(path:char[]):intc @no-decl @real-name;
       sleep(seconds:u32):u32 @no-decl @real-name;

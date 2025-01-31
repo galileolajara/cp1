@@ -1,12 +1,12 @@
 include(<stdlib.h>) {
    using C = LibC;
    using LibC {
-      malloc(size:usz):ref @real-name(malloc) @no-decl;
+      malloc(size:usz):ref @no-decl(malloc);
       malloc-one(val:ref) @decl('<#define _NLibC_Pmalloc_one_1(var) var = malloc(sizeof(var[0]))>);
       malloc-arr(val:ref, count:usz) @decl('<#define _NLibC_Pmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))>);
       realloc(size:usz, new-usz:usz):ref @real-name @no-decl;
       realloc-arr(size:usz, count:usz) @decl('<#define _NLibC_Prealloc_arr_2(var, c) var = realloc(var, sizeof(var[0]) * (c))>);
-      free(ptr:ref) @real-name(free) @no-decl;
+      free(ptr:ref) @no-decl(free);
       system(command:char[]):intc @no-decl @real-name;
       exit(code:Exit) @real-name @no-decl;
       getenv(name:char[]):char[] @real-name @no-decl;
