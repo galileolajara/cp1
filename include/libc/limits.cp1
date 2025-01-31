@@ -1,0 +1,6 @@
+using u32 {
+   #max @no-decl @real-name(UINT32_MAX);
+}
+using u64 {
+   #max @no-decl @real-name(UINT64_MAX);
+}
