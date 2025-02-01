@@ -460,6 +460,7 @@ read(in-path:char[]) {
    }
    Func.rd(+func-main, r);
    if func-main != #nil {
+      func-main += f-idx-begin;
       if .func-main != #nil {
          +first = .func-main.ptr();
          +second = func-main.ptr();

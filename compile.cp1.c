@@ -2203,6 +2203,7 @@ _Lf_idx_68++;
 break_8:;
 _NCp1_NFunc_Prd_2(&_Lfunc_main_82, &_Lr_7);
 if(_Lfunc_main_82 != _NCp1_NFunc_Cnil) {
+_Lfunc_main_82 += _Lf_idx_begin_66;
 if(_Gfunc_main != _NCp1_NFunc_Cnil) {
 struct _NCp1_NDeclFunc* _Lfirst_83;
 struct _NCp1_NDeclFunc* _Lsecond_84;
