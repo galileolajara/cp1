@@ -10,5 +10,6 @@ include <string.h> {
       memcpy(dst:char[], src:char[], n:usz):ref @real-name @no-decl;
       memcmp(s1:char[], s2:char[], n:usz):intc @real-name @no-decl;
       memset(dst:char[], c:intc, n:usz):ref @real-name @no-decl;
+      memset(dst:char[]):ref @decl('{#define _NLibC_Pmemset_1(dst) memset(dst, 0, sizeof(dst[0]))});
    }
 }

@@ -50,7 +50,7 @@ using DeclVarData {
       vd.type = at-i;
       +at = at-i.ptr();
       if (&&, at.type != #basic, at.decl.structt == #nil) {
-         C.out.printf("%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", .ctx-func.file.path(), row, col, at.name.id.str(), vd.name.str());
+         C.out.printf("%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", file.path(), row, col, at.name.id.str(), vd.name.str());
          return false;
       }
       at-i.output(.ctx-func.file, row, col);

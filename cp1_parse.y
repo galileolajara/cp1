@@ -206,7 +206,7 @@ scolon_space ::= SEMICOLON SPACE.
 
 lvar_decl(l) ::= lvar_decl_name(r).
    { _NCp1_Pdecl_var_end_0(); l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-farg ::= lvar_decl(e) typeAndInfo_optional.
+farg ::= lvar_decl(e) typeAndInfo.
    { _NCp1_Pdecl_var_as_farg_2(e.basic.row, e.basic.col); }
 expr_type_this_apply ::= COLON THIS.
    { _NCp1_Pdecl_var_this_0(); }
@@ -320,7 +320,7 @@ fvar_attrs_list ::= fvar_attr.
 fvar_attrs_list ::= fvar_attrs_list fvar_attr.
 fvar_attrs_optional ::= .
 fvar_attrs_optional ::= fvar_attrs_list.
-fvar ::= fvar_decl typeAndInfo_optional fvar_attrs_optional.
+fvar ::= fvar_decl typeAndInfo fvar_attrs_optional.
    { _NCp1_Pdecl_var_as_fvar_0(); }
 struct_fvars ::= fvar.
 struct_fvars ::= struct_fvars COMMA_SPACE fvar.
@@ -800,8 +800,8 @@ stmt_return ::= begin_pos(begin) RETURN end_pos(end).
 stmt_return ::= begin_pos(begin) RETURN SPACE expr(e) end_pos(end).
    { _NCp1_Pstmt_return_5(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
 
-typeAndInfo ::= expr_type_apply typeInfo_optional.
-typeAndInfo_optional ::= COLON typeAndInfo.
+typeAndInfo ::= COLON expr_type_apply typeInfo_optional.
+typeAndInfo_optional ::= typeAndInfo.
 typeAndInfo_optional ::= expr_type_none typeInfo_none.
 
 stmt_expr ::= stmt_lvars.

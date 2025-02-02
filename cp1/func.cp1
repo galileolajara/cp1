@@ -224,7 +224,7 @@ decl-func-end(row:i32, col:i32) {
    } elif (&&, .decl-at == #root, f.decl.name.len() == 4, C.memcmp("main", f.decl.name.str(), 4) == 0) {
       if .func-main != #nil {
          +main = .func-main.ptr();
-         C.out.printf("%u:%u: There:S already a function with @main attribute at %u:%u\n", f.begin-row, f.begin-col, main.begin-row, main.begin-col);
+         C.out.printf("%u:%u: There's already a function with @main attribute at %u:%u\n", f.begin-row, f.begin-col, main.begin-row, main.begin-col);
          C.exit(#failure);
       } else {
          .func-main = f-idx;

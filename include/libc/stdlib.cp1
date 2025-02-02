@@ -6,6 +6,7 @@ include <stdlib.h> {
       malloc-arr(val:ref, count:usz) @decl('<#define _NLibC_Pmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))>);
       realloc(size:usz, new-usz:usz):ref @real-name @no-decl;
       realloc-arr(size:usz, count:usz) @decl('<#define _NLibC_Prealloc_arr_2(var, c) var = realloc(var, sizeof(var[0]) * (c))>);
+      realloc-memset-arr(size:usz, old-count:usz, count:usz) @decl('<#define _NLibC_Prealloc_memset_arr_3(var, oldc, c) var = realloc(var, sizeof(var[0]) * (c)); memset(var + oldc, 0, sizeof(var[0]) * (c - oldc));>);
       free(ptr:ref) @no-decl(free);
       system(command:char[]):intc @no-decl @real-name;
       exit(code:Exit) @real-name @no-decl;
