@@ -926,6 +926,11 @@ using Func {
       }
       if f.decl.type != #nil {
          f.decl.type = at-validate(f.decl.type, f-at, f-file, f-row, f-col);
+         +at = f.decl.type.ptr();
+         if (&&, at.type != #basic, at.decl.structt == #nil) {
+            C.out.printf("%s:%u:%u: Error, the type '%s' used as return type for function '%s' was not defined\n", f-file.path(), f-row, f-col, at.name.id.str(), f.decl.name.str());
+            C.exit(1);
+         }
          f.decl.type.finalize(f.decl.type-info, f-row, f-col);
       }
       .func-head-outputted-v[.func-head-outputted-c++] = f-idx;

@@ -2303,7 +2303,13 @@ _Lj_10++;
 }
 break_0:;
 if((*_Lf_4)._Fdecl._Ftype != _NCp1_NAt_Cnil) {
+struct _NCp1_NAtData* _Lat_11;
 (*_Lf_4)._Fdecl._Ftype = _NCp1_Pat_validate_5((*_Lf_4)._Fdecl._Ftype, _Lf_at_6, _Lf_file_7, _Lf_row_8, _Lf_col_9);
+_Lat_11 = _NCp1_NAt_Pptr_1((*_Lf_4)._Fdecl._Ftype);
+if((((*_Lat_11)._Ftype != _NCp1_NNameType_Cbasic) && ((*_Lat_11)._Fdecl._Fstructt == _NCp1_NStruct_Cnil))) {
+fprintf(stdout, "%s:%u:%u: Error, the type '%s' used as return type for function '%s' was not defined\n", _NCp1_NFile_Ppath_1(_Lf_file_7), _Lf_row_8, _Lf_col_9, _NCp1_NId_Pstr_1((*_Lat_11)._Fname._Fid), _NCp1_NId_Pstr_1((*_Lf_4)._Fdecl._Fname));
+exit(1);
+}
 _NCp1_NAt_Pfinalize_4((*_Lf_4)._Fdecl._Ftype, &(*_Lf_4)._Fdecl._Ftype_info, _Lf_row_8, _Lf_col_9);
 }
 _Gfunc_head_outputted_v[_Gfunc_head_outputted_c++] = _Lf_idx_0;
@@ -2313,9 +2319,9 @@ if(_Gprocess_first == _NCp1_NFunc_Cnil) {
 _Gprocess_first = _Lf_idx_0;
 _Gprocess_last = _Lf_idx_0;
 } else {
-struct _NCp1_NDeclFunc* _Lf_last_11;
-_Lf_last_11 = _NCp1_NFunc_Pptr_1(_Gprocess_last);
-(*_Lf_last_11)._Fprocess_next = _Lf_idx_0;
+struct _NCp1_NDeclFunc* _Lf_last_12;
+_Lf_last_12 = _NCp1_NFunc_Pptr_1(_Gprocess_last);
+(*_Lf_last_12)._Fprocess_next = _Lf_idx_0;
 _Gprocess_last = _Lf_idx_0;
 }
 }
