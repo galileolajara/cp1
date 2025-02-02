@@ -35,13 +35,16 @@ at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
          if at-i == #root { break }
          at-i = at-i.ptr().parent;
       }
-      C.out.printf("%s:%u:%u: Type :%s was not found\n", file.path(), row, col, name.id.str());
+      C.out.printf("%s:%u:%u: Type %s was not found\n", file.path(), row, col, name.id.str());
+      // C.out.flush();
+      // var i:u32[] = [];
+      // i[0] = 0;
       C.exit(#failure);
    }
    return vd-type;
 }
 using DeclVarData {
-   validate(vd:this, base-at:At) {
+   validate(vd:this, base-at:At):bool {
       // C.out.printf("validating the type of %s\n", vd.name.str());
       vd.type = at-validate(vd.type, base-at);
    }

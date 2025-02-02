@@ -86,9 +86,13 @@ struct Farg[
    decl:DeclVarData+,
    ] {
    rd(f:this, r:Rdr) {
+      f.row = r.n();
+      f.col = r.n();
       f.decl.rd(r);
    }
    wr(f:this, w:Wtr, header:bool) {
+      w.n(f.row);
+      w.n(f.col);
       f.decl.wr(w, header);
    }
    copy-from(f:this, src:Farg) {

@@ -1,4 +1,5 @@
 using Cp1 = Cp1;
+using C = LibC;
 using Cp1 {
 expr-size-of-type(at:At):ExprI {
    quick-alloc-one(+(e:ExprSizeOfType));
@@ -25,6 +26,11 @@ using ExprI {
    process-size-of-type(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprSizeOfType = expr;
       e.type = at-validate(e.type, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
+      +at = e.type.ptr();
+      if (&&, at.type != #basic, at.decl.structt == #nil) {
+         C.out.printf("%s:%u:%u: Error, the type '%s' used in [usz] was not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, at.name.id.str());
+         return;
+      }
       e.type.output(.ctx-func.file, .ctx-begin-row, .ctx-begin-col);
       ok = true;
    }
