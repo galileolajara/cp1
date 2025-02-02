@@ -441,9 +441,9 @@ realloc(r:ref, c:i32, oldc:i32)
 }
 include "num.c" {
    grow(cap:i32, c:i32)
-      @no-body
-      @decl('<# cap = Fpow2gteq((c) + 8)>)
-      @inline;
+      @decl('<# cap = Fpow2gteq((c) + 8)>);
+   grow(c:i32):i32
+      @decl('<# Fpow2gteq((c) + 8)>);
 }
 #decl-at-name-limit:i32 = 3;
 union AtName[id:Id, basic:BasicTypeId];
@@ -486,7 +486,7 @@ enum NameType[#module, #struct-enum, #basic]:u8 {
       i = r.n1():NameType;
    }
    wr(i:this, w:Wtr) @inline {
-      w.n1(i);
+      w.n1(i:base);
    }
    cp1-name(e:this):char[] @cp1-name;
 }
@@ -844,7 +844,7 @@ enum Include[#nil = -1, #0]:i32 {
       return .include-str-v[i];
    }
    wr(i:this, w:Wtr) @inline {
-      w.n(i + 1);
+      w.n(i:base + 1);
    }
    rd(i:this&, r:Rdr) @inline {
       +idx = (r.n() - 1):Include;

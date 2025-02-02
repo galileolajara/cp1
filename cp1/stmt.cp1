@@ -9,7 +9,7 @@ enum StmtType[
    #nil = 255,
    ]:u8 {
    wr(s:this, w:Wtr) @inline {
-      w.n1(s);
+      w.n1(s:base);
    }
    rd(s:this&, r:Rdr) @inline {
       s = r.n1():StmtType;

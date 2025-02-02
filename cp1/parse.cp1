@@ -81,8 +81,8 @@ at-basic-type(type:BasicTypeId):At {
    +build-idx = .at-c++;
    if .at-cap <= .at-c {
       +old-cap = .at-cap;
-      grow(.at-cap, .at-c);
-      realloc(.at-v, .at-cap, old-cap);
+      .at-cap = grow(.at-c:base);
+      realloc(.at-v, .at-cap:base, old-cap:base);
    }
    +at = .at-v[build-idx];
    at.parent = #root;
@@ -159,10 +159,10 @@ decl-alias(name:Id, at:At, row:i32, col:i32) {
    +alias-idx = .at-alias-c++;
    if .at-alias-cap <= .at-alias-c {
       +old-cap = .at-alias-cap;
-      grow(.at-alias-cap, .at-alias-c);
-      realloc(.at-alias-name-v, .at-alias-cap, old-cap);
-      realloc(.at-alias-at-v, .at-alias-cap, old-cap);
-      realloc(.at-alias-pos-v, .at-alias-cap, old-cap);
+      .at-alias-cap = grow(.at-alias-c:base);
+      realloc(.at-alias-name-v, .at-alias-cap:base, old-cap:base);
+      realloc(.at-alias-at-v, .at-alias-cap:base, old-cap:base);
+      realloc(.at-alias-pos-v, .at-alias-cap:base, old-cap:base);
    }
    .at-alias-name-v[alias-idx] = name;
    .at-alias-at-v[alias-idx] = at;
@@ -188,7 +188,7 @@ at-done():At {
    return .build-at;
 }
 at-create(parent:At, type:NameType, name:Id):At {
-   +found = .at-map.get-or-insert(parent, type, name, .at-c);
+   +found = .at-map.get-or-insert(parent, type, name, .at-c:base);
    if found != -1 { return found }
    // loop i = 0:At; .at-c; i++ {
    //    +at = .at-v[i];
@@ -202,8 +202,8 @@ at-create(parent:At, type:NameType, name:Id):At {
    +build-idx = .at-c++;
    if .at-cap <= .at-c {
       +old-cap = .at-cap;
-      grow(.at-cap, .at-c);
-      realloc(.at-v, .at-cap, old-cap);
+      .at-cap = grow(.at-c:base);
+      realloc(.at-v, .at-cap:base, old-cap:base);
    }
    +at = .at-v[build-idx];
    at.parent = parent;
@@ -223,8 +223,8 @@ at-create-basic(basic:BasicTypeId):At {
    +build-idx = .at-c++;
    if .at-cap <= .at-c {
       +old-cap = .at-cap;
-      grow(.at-cap, .at-c);
-      realloc(.at-v, .at-cap, old-cap);
+      .at-cap = grow(.at-c:base);
+      realloc(.at-v, .at-cap:base, old-cap:base);
    }
    +at = .at-v[build-idx];
    at.parent = #root;
@@ -497,7 +497,7 @@ var last-col:i32 @extern;
 var row:i32 @extern;
 var col:i32 @extern;
 write-func(w:Wtr, header:bool) @inline {
-   w.n(.func-c);
+   w.n(.func-c:base);
    loop i = 0; .func-c; {
       +f = .func-v[i++];
       w.n1(f.farg-c);
@@ -563,7 +563,7 @@ write-func(w:Wtr, header:bool) @inline {
    }
 }
 write-cvar(w:Wtr, header:bool) {
-   w.n(.cvar-c);
+   w.n(.cvar-c:base);
    loop i = 0; .cvar-c; i++ {
       +cvar = .cvar-v[i];
       cvar.include.wr(w);
@@ -578,7 +578,7 @@ write-cvar(w:Wtr, header:bool) {
    }
 }
 write-gvar(w:Wtr, header:bool) {
-   w.n(.gvar-c);
+   w.n(.gvar-c:base);
    loop i = 0; .gvar-c; i++ {
       +gvar = .gvar-v[i];
       gvar.include.wr(w);
@@ -587,7 +587,7 @@ write-gvar(w:Wtr, header:bool) {
    }
 }
 write-enum(w:Wtr, header:bool) {
-   w.n(.enum-c);
+   w.n(.enum-c:base);
    loop i = 0; .enum-c; {
       +e = .enum-v[i++];
       w.n(e.begin-row);
@@ -608,7 +608,7 @@ write-enum(w:Wtr, header:bool) {
    }
 }
 write-struct(w:Wtr, header:bool) {
-   w.n(.struct-c);
+   w.n(.struct-c:base);
    loop i = 0; .struct-c; {
       +s = .struct-v[i++];
       w.n1(s.fvar-c);
@@ -1057,7 +1057,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    malloc-arr(.include-str-v, .include-cap);
    malloc-arr(.include-len-v, .include-cap);
    .at-cap = 64:At;
-   malloc-arr(.at-v, .at-cap);
+   malloc-arr(.at-v, .at-cap:base);
    .at-c = 2:At;
    .at-v[0].type = #basic;
    .at-v[0].parent = #nil;
@@ -1066,9 +1066,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .at-v[1].parent = #nil;
    .at-v[1].name.basic = #relative;
    .func-cap = 32:Func;
-   malloc-arr(.func-v, .func-cap);
+   malloc-arr(.func-v, .func-cap:base);
    .struct-cap = 32:Struct;
-   malloc-arr(.struct-v, .struct-cap);
+   malloc-arr(.struct-v, .struct-cap:base);
    .decl-fvar-cap = 32;
    malloc-arr(.decl-fvar-v, .decl-fvar-cap);
 
@@ -1407,11 +1407,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    }
 
    +at-bit8-c = (.at-c + 7) >> 3;
-   malloc-arr(.at-in-header-v, at-bit8-c);
-   malloc-arr(.at-in-header-idx-v, .at-c);
-   malloc-arr(.at-in-header-at-v, .at-c);
+   malloc-arr(.at-in-header-v, at-bit8-c:base);
+   malloc-arr(.at-in-header-idx-v, .at-c:base);
+   malloc-arr(.at-in-header-at-v, .at-c:base);
 
-   w.n(.at-c);
+   w.n(.at-c:base);
    loop i = 0; .at-c; i++ {
       +at = .at-v[i];
       at.type.wr(w);

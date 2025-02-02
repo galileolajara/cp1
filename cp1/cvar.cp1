@@ -11,7 +11,7 @@ enum Cvar[#nil = -1, #0]:i32 {
       }
    }
    wr(g:this, w:Wtr) @inline {
-      w.n(g + 1);
+      w.n(g:base + 1);
    }
    process(c:this):bool {
       +num = c:u32;
@@ -64,7 +64,7 @@ enum CvarFlags[
    // #real-name = 2,
    ]:u8 {
    wr(f:this, w:Wtr) @inline {
-      w.n1(f);
+      w.n1(f:base);
    }
    rd(f:this&, r:Rdr) @inline {
       f = r.n1():CvarFlags;

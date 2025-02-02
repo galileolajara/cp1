@@ -5,7 +5,7 @@ enum Unary[#neg, #inc, #dec, #not]:u8 {
       u = r.n1():Unary;
    }
    wr(u:this, w:Wtr) @inline {
-      w.n1(u);
+      w.n1(u:base);
    }
 }
 expr-unary(expr:ExprI, type:Unary):ExprI {

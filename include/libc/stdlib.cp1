@@ -4,7 +4,7 @@ include <stdlib.h> {
       malloc(size:usz):ref @no-decl(malloc);
       malloc-one(val:ref) @decl('<#define _NLibC_Pmalloc_one_1(var) var = malloc(sizeof(var[0]))>);
       malloc-arr(val:ref, count:usz) @decl('<#define _NLibC_Pmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))>);
-      realloc(size:usz, new-usz:usz):ref @real-name @no-decl;
+      realloc(size:ref, new-usz:usz):ref @real-name @no-decl;
       realloc-arr(size:ref, count:usz) @decl('<#define _NLibC_Prealloc_arr_2(var, c) var = realloc(var, sizeof(var[0]) * (c))>);
       realloc-memset-arr(size:ref, old-count:usz, count:usz) @decl('<#define _NLibC_Prealloc_memset_arr_3(var, oldc, c) var = realloc(var, sizeof(var[0]) * (c)); memset(var + oldc, 0, sizeof(var[0]) * (c - oldc));>);
       free(ptr:ref) @no-decl(free);

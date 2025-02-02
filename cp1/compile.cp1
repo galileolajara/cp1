@@ -96,8 +96,8 @@ read(in-path:char[]) {
    +file-idx = .file-c++;
    if .file-cap <= .file-c {
       +old-cap = .file-cap;
-      grow(.file-cap, .file-c);
-      realloc(.file-v, .file-cap, old-cap);
+      .file-cap = grow(.file-c:base);
+      realloc(.file-v, .file-cap:base, old-cap:base);
    }
    +file = .file-v[file-idx];
    file.path = in-path;
@@ -170,7 +170,7 @@ read(in-path:char[]) {
             // C.out.printf("read at type %u %s %s\n", at-type, at-type.cp1-name(), at-name.str());
             // C.out.printf("- parent %u\n", at-parent);
             // C.out.printf("- name %s\n", at-name.str());
-            +found = .at-map.get-or-insert(at-parent, at-type, at-name, .at-c);
+            +found = .at-map.get-or-insert(at-parent, at-type, at-name, .at-c:base);
             // loop j = 0; .at-c; j++ {
             //    +at = .at-v[j];
             //    if (&&, at.parent == at-parent, at.type == at-type, at.name.id == at-name) {
@@ -184,8 +184,8 @@ read(in-path:char[]) {
                +at-idx = .at-c++;
                if .at-cap <= .at-c {
                   +old-cap = .at-cap;
-                  grow(.at-cap, .at-c);
-                  realloc(.at-v, .at-cap, old-cap);
+                  .at-cap = grow(.at-c:base);
+                  realloc(.at-v, .at-cap:base, old-cap:base);
                }
                +at = .at-v[at-idx];
                at.init(at-type, at-parent, at-name);
@@ -198,7 +198,7 @@ read(in-path:char[]) {
    }
    if true {
       +cvar-c = r.n():Cvar;
-      quick-alloc-arr(.cvar-table, cvar-c);
+      quick-alloc-arr(.cvar-table, cvar-c:base);
       file.cvar-table = .cvar-table;
       // C.out.printf("There are %u cvars\n", cvar-c);
       C.out.flush();
@@ -206,8 +206,8 @@ read(in-path:char[]) {
       .cvar-c += cvar-c;
       if .cvar-cap <= .cvar-c {
          +old-cap = .cvar-cap;
-         grow(.cvar-cap, .cvar-c);
-         realloc(.cvar-v, .cvar-cap, old-cap);
+         .cvar-cap = grow(.cvar-c:base);
+         realloc(.cvar-v, .cvar-cap:base, old-cap:base);
       }
       // malloc(.cvar-table, .cvar-c);
       // file.cvar-table = .cvar-table;
@@ -244,8 +244,8 @@ read(in-path:char[]) {
       .gvar-c += gvar-c;
       if .gvar-cap <= .gvar-c {
          +old-cap = .gvar-cap;
-         grow(.gvar-cap, .gvar-c);
-         realloc(.gvar-v, .gvar-cap, old-cap);
+         .gvar-cap = grow(.gvar-c:base);
+         realloc(.gvar-v, .gvar-cap:base, old-cap:base);
       }
       // malloc(.gvar-table, .gvar-c);
       // file.gvar-table = .gvar-table;
@@ -273,8 +273,8 @@ read(in-path:char[]) {
    .enum-c += enum-c;
    if .enum-cap <= .enum-c {
       +old-cap = .enum-cap;
-      grow(.enum-cap, .enum-c);
-      realloc(.enum-v, .enum-cap, old-cap);
+      .enum-cap = grow(.enum-c:base);
+      realloc(.enum-v, .enum-cap:base, old-cap:base);
    }
    loop e-idx = e-idx-begin; enum-c; e-idx++ {
       var e:EnumData;
@@ -325,8 +325,8 @@ read(in-path:char[]) {
    .struct-c += struct-c;
    if .struct-cap <= .struct-c {
       +old-cap = .struct-cap;
-      grow(.struct-cap, .struct-c);
-      realloc(.struct-v, .struct-cap, old-cap);
+      .struct-cap = grow(.struct-c:base);
+      realloc(.struct-v, .struct-cap:base, old-cap:base);
    }
    loop s-idx = s-idx-begin; struct-c; s-idx++ {
       +fvar-c = r.n1();
@@ -378,8 +378,8 @@ read(in-path:char[]) {
    .func-c += func-c;
    if .func-cap <= .func-c {
       +old-cap = .func-cap;
-      grow(.func-cap, .func-c);
-      realloc(.func-v, .func-cap, old-cap);
+      .func-cap = grow(.func-c:base);
+      realloc(.func-v, .func-cap:base, old-cap:base);
    }
    loop f-idx = f-idx-begin; func-c; f-idx++ {
       +farg-c = r.n1();
@@ -534,8 +534,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       +at-idx = .at-c++;
       if .at-cap <= .at-c {
          +old-cap = .at-cap;
-         grow(.at-cap, .at-c);
-         realloc(.at-v, .at-cap, old-cap);
+         .at-cap = grow(.at-c:base);
+         realloc(.at-v, .at-cap:base, old-cap:base);
       }
       +at = .at-v[at-idx];
       at.init(#basic, #root, type:Id);
@@ -608,9 +608,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    quick-alloc-arr(.id-c-name-v, .id-c); 
    if true {
       +func-c8 = (.func-c + 7) >> 3;
-      quick-alloc-arr(.func-in-process, func-c8);
-      quick-alloc-arr(.func-head-outputted-v, .func-c);
-      quick-alloc-arr(.func-body-outputted-v, .func-c);
+      quick-alloc-arr(.func-in-process, func-c8:base);
+      quick-alloc-arr(.func-head-outputted-v, .func-c:base);
+      quick-alloc-arr(.func-body-outputted-v, .func-c:base);
    }
    if true {
       +include-c8 = (.include-c + 7) >> 3;
@@ -619,23 +619,23 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    }
    if true {
       +cvar-c8 = (.cvar-c + 7) >> 3;
-      quick-alloc-arr(.cvar-is-outputted, cvar-c8);
-      quick-alloc-arr(.cvar-outputted-v, .cvar-c);
+      quick-alloc-arr(.cvar-is-outputted, cvar-c8:base);
+      quick-alloc-arr(.cvar-outputted-v, .cvar-c:base);
    }
    if true {
       +gvar-c8 = (.gvar-c + 7) >> 3;
-      quick-alloc-arr(.gvar-is-outputted, gvar-c8);
-      quick-alloc-arr(.gvar-outputted-v, .gvar-c);
+      quick-alloc-arr(.gvar-is-outputted, gvar-c8:base);
+      quick-alloc-arr(.gvar-outputted-v, .gvar-c:base);
    }
    if true {
       +enum-c8 = (.enum-c + 7) >> 3;
-      quick-alloc-arr(.enum-is-outputted, enum-c8);
-      quick-alloc-arr(.enum-outputted-v, .enum-c);
+      quick-alloc-arr(.enum-is-outputted, enum-c8:base);
+      quick-alloc-arr(.enum-outputted-v, .enum-c:base);
    }
    if true {
       +struct-c8 = (.struct-c + 7) >> 3;
-      quick-alloc-arr(.struct-is-outputted, struct-c8);
-      quick-alloc-arr(.struct-outputted-v, .struct-c);
+      quick-alloc-arr(.struct-is-outputted, struct-c8:base);
+      quick-alloc-arr(.struct-outputted-v, .struct-c:base);
    }
 
    // process the main function
@@ -929,7 +929,7 @@ using Func {
          +at = f.decl.type.ptr();
          if (&&, at.type != #basic, at.decl.structt == #nil) {
             C.out.printf("%s:%u:%u: Error, the type '%s' used as return type for function '%s' was not defined\n", f-file.path(), f-row, f-col, at.name.id.str(), f.decl.name.str());
-            C.exit(1);
+            C.exit(#failure);
          }
          f.decl.type.finalize(f.decl.type-info, f-row, f-col);
       }

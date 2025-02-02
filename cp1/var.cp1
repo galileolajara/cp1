@@ -310,7 +310,7 @@ enum VarFlags[
       f = r.n():VarFlags;
    }
    wr(f:this, w:Wtr) @inline {
-      w.n(f);
+      w.n(f:base);
    }
 }
 decl-var-begin(name:Id, row:i32, col:i32) {
@@ -375,8 +375,8 @@ decl-var-as-gvar() {
    +gvar-idx = .gvar-c++;
    if .gvar-cap <= .gvar-c {
       +old-cap = .gvar-cap;
-      grow(.gvar-cap, .gvar-c);
-      realloc(.gvar-v, .gvar-cap, old-cap);
+      .gvar-cap = grow(.gvar-c:base);
+      realloc(.gvar-v, .gvar-cap:base, old-cap:base);
    }
    +gvar = .gvar-v[gvar-idx];
    gvar.include = .decl-include;

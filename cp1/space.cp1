@@ -70,8 +70,8 @@ struct StmtSpace[
       space.lvar-v[i] = lvar;
       if f.lvar-cap <= f.lvar-c {
          +old-cap = f.lvar-cap;
-         grow(f.lvar-cap, f.lvar-c);
-         realloc(f.lvar-v, f.lvar-cap, old-cap);
+         f.lvar-cap = grow(f.lvar-c:base);
+         realloc(f.lvar-v, f.lvar-cap:base, old-cap:base);
       }
       quick-alloc-one(+(item:LvarData));
       f.lvar-v[lvar] = item;

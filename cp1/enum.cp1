@@ -36,7 +36,7 @@ enum EnumFlags[
    #soa-field = 4,
    ]:u8 {
    wr(e:this, w:Wtr) @inline {
-      w.n1(e);
+      w.n1(e:base);
    }
    rd(e:this&, r:Rdr) @inline {
       e = r.n1():EnumFlags;
@@ -102,8 +102,8 @@ decl-enum-end(base-type:At, row:i32, col:i32) {
    +s-idx = .enum-c++;
    if .enum-cap <= .enum-c {
       +old-cap = .enum-cap;
-      grow(.enum-cap, .enum-c);
-      realloc(.enum-v, .enum-cap, old-cap);
+      .enum-cap = grow(.enum-c:base);
+      realloc(.enum-v, .enum-cap:base, old-cap:base);
    }
    var s:EnumData;
    quick-alloc-one(s);
@@ -136,8 +136,8 @@ enum-add-cvar(name:Id, row:i32, col:i32) {
    .last-cvar = c-idx;
    if .cvar-cap <= .cvar-c {
       +old-cap = .cvar-cap;
-      grow(.cvar-cap, .cvar-c);
-      realloc(.cvar-v, .cvar-cap, old-cap);
+      .cvar-cap = grow(.cvar-c:base);
+      realloc(.cvar-v, .cvar-cap:base, old-cap:base);
    }
    +c = c-idx.ptr();
    c.row = row;
@@ -156,8 +156,8 @@ decl-add-cvar(name:Id, row:i32, col:i32) {
    .last-cvar = c-idx;
    if .cvar-cap <= .cvar-c {
       +old-cap = .cvar-cap;
-      grow(.cvar-cap, .cvar-c);
-      realloc(.cvar-v, .cvar-cap, old-cap);
+      .cvar-cap = grow(.cvar-c:base);
+      realloc(.cvar-v, .cvar-cap:base, old-cap:base);
    }
    +c = c-idx.ptr();
    c.row = row;

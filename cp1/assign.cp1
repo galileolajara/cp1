@@ -4,7 +4,7 @@ enum Assign[#eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
              #lshift-eq, #rshift-eq, #and-eq, #or-eq, #xor-eq,
              ]:u8 {
    wr(s:this, w:Wtr) @inline {
-      w.n1(s);
+      w.n1(s:base);
    }
    rd(s:this&, r:Rdr) @inline {
       s = r.n1():Assign;

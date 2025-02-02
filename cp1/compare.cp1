@@ -2,7 +2,7 @@ using Cp1 = Cp1;
 using Cp1 {
 enum Compare[#eq, #not-eq, #lt, #le, #gt, #ge]:u8 {
    wr(e:this, w:Wtr) @inline {
-      w.n1(e);
+      w.n1(e:base);
    }
    rd(e:this&, r:Rdr) @inline {
       e = r.n1():Compare;

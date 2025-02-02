@@ -11,8 +11,8 @@ print-type(at-i:At, info:TypeInfo) {
 }
 compatible(src:At, src-c:u8, des:At, des-c:u8):bool {
    if src == des { return true }
-   if (src >= basic-type(#intc)) && (src <= basic-type(#usz)) {
-      if (des >= basic-type(#intc)) && (des <= basic-type(#usz)) {
+   if (src >= basic-type(#char)) && (src <= basic-type(#usz)) {
+      if (des >= basic-type(#char)) && (des <= basic-type(#usz)) {
          return true;
       }
    }

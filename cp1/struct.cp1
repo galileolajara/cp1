@@ -66,7 +66,7 @@ enum StructFlags[
    #union = 4,
    ]:u8 {
    wr(f:this, w:Wtr) @inline {
-      w.n1(f);
+      w.n1(f:base);
    }
    rd(f:this&, r:Rdr) @inline {
       f = r.n1():StructFlags;
@@ -109,8 +109,8 @@ decl-struct-end(row:i32, col:i32) {
    +s-idx = .struct-c++;
    if .struct-cap <= .struct-c {
       +old-cap = .struct-cap;
-      grow(.struct-cap, .struct-c);
-      realloc(.struct-v, .struct-cap, old-cap);
+      .struct-cap = grow(.struct-c:base);
+      realloc(.struct-v, .struct-cap:base, old-cap:base);
    }
    var s:StructData;
    quick-alloc-plus(s, FvarData[usz] * .decl-fvar-c);

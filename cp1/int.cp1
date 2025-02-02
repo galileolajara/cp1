@@ -19,7 +19,7 @@ expr-f32(value:f32):ExprI {
 using ExprI {
    wr-int(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprIntData = expr;
-      w.n1(e.type);
+      w.n1(e.type:base);
       switch e.type {
          case #i32 {
             w.i(e.value.ii32);

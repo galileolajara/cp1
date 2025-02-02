@@ -79,7 +79,7 @@ export() {
    type-info-begin();
    type-info-finalize();
    expr-int(0, #i32);
-   expr-f32(0);
+   expr-f32(0.0f);
    expr-size-of-type(#nil);
    expr-null();
    decl-at-begin-enum(#nil, 0, 0);

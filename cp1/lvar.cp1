@@ -6,7 +6,7 @@ enum Lvar[#nil = -1, #0]:i32 {
       l = (r.n() - 1):Lvar;
    }
    wr(l:this, w:Wtr) @inline {
-      w.n(l + 1);
+      w.n(l:base + 1);
    }
    process(l:this):bool @inline {
       +lvar = l.ptr();
@@ -37,7 +37,7 @@ enum LvarFlags[
       f = r.n1():LvarFlags;
    }
    wr(f:this, w:Wtr) @inline {
-      w.n1(f);
+      w.n1(f:base);
    }
 }
 struct LvarData[
