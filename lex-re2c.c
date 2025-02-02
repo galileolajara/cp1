@@ -185,6 +185,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
 
    "."                              { return CP1_TOKEN_DOT; }
    ":"                              { return CP1_TOKEN_COLON; }
+   ":base"                          { return CP1_TOKEN_COLON_BASE; }
 
    "#" id                           { return CP1_TOKEN_HASH_ID; }
    [a-z] id_one* ("-" id)*          { return CP1_TOKEN_ID; }

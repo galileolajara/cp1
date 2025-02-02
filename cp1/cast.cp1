@@ -1,4 +1,5 @@
 using Cp1 = Cp1;
+using C = LibC;
 using Cp1 {
 expr-cast-fast(expr:ExprI, type:At):ExprI {
    quick-alloc-one(+(e:ExprCastFast));
@@ -9,11 +10,15 @@ expr-cast-fast(expr:ExprI, type:At):ExprI {
 }
 using ExprCastFast {
    write-value(e:this, v:Value) @inline {
-      .out.printf("(");
-      e.type.write-type-info(v.info, 0);
-      .out.printf(")(");
-      e.expr.write-value(e.val);
-      .out.printf(")");
+      if e.type != #nil {
+         .out.printf("(");
+         e.type.write-type-info(v.info, 0);
+         .out.printf(")(");
+         e.expr.write-value(e.val);
+         .out.printf(")");
+      } else {
+         e.expr.write-value(e.val);
+      }
    }
 }
 using ExprI {
@@ -42,6 +47,14 @@ using ExprI {
       var e:ExprCastFast = expr;
       if !e.expr.value(1, false, e.val) {
          return;
+      }
+      if e.type == #nil {
+         +at = e.val.type.ptr();
+         if at.def != #enum {
+            C.printf("%s:%u:%u: Operator ':base' was used but the type of expression was not an enum\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col);
+            return;
+         }
+         e.type = at.decl.enumm.ptr().base-type;
       }
       e.type = at-validate(e.type, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
       e.type.output(.ctx-func.file, .ctx-begin-row, .ctx-begin-col);

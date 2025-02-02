@@ -1,7 +1,34 @@
 using Cp1 = Cp1;
 using C = LibC;
 using Cp1 {
-farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At):bool {
+print-type(at-i:At, info:TypeInfo) {
+   +at = at-i.ptr();
+   if at.type == #basic {
+      C.printf("basic type %s, star-c %u\n", at.name.basic.cp1-name(), info.star-c);
+   } else {
+      C.printf("custom type %s, star-c %u\n", at.name.id.str(), info.star-c);
+   }
+}
+compatible(src:At, src-c:u8, des:At, des-c:u8):bool {
+   if src == des { return true }
+   if (src >= basic-type(#intc)) && (src <= basic-type(#usz)) {
+      if (des >= basic-type(#intc)) && (des <= basic-type(#usz)) {
+         return true;
+      }
+   }
+   if des == basic-type(#ref) {
+      if src-c > 0 {
+         return true;
+      }
+   }
+   if src == basic-type(#ref) {
+      if des-c > 0 {
+         return true;
+      }
+   }
+   return false;
+}
+farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At, arg-num:i32):bool {
    +ce = e.ptr();
    var r:i32;
    if ca-ref != 0 {
@@ -37,6 +64,17 @@ farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At)
    // fd-arg.validate(base-at);
    e.try-deduce(fd-arg.type);
    if !e.value(r, false, ca-value) { return false }
+   if !compatible(ca-value.type, ca-value.info.star-c + ca-value.type.pointer(), fd-arg.type, fd-arg.type-info.star-c + fd-arg.type.pointer()) {
+      C.printf("%s:%u:%u: Type mismatch for the function argument ", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col);
+      if arg-num == -1 {
+         C.printf("'this'\n");
+      } else {
+         C.printf("#%u\n", arg-num + 1);
+      }
+      // print-type(ca-value.type, ca-value.info);
+      // print-type(fd-arg.type, fd-arg.type-info);
+      return false;
+   }
    return true;
 }
 using ExprI {
@@ -223,12 +261,12 @@ using ExprI {
          +k = 0;
          loop ; f.this-idx; j++; k++ {
             +ca = e.carg-v[k];
-            if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at) { return }
+            if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, k) { return }
          }
-         if !farg-process(e.thiss, 0, e.this-value, f.farg-v[j++].decl, f-at) { return }
+         if !farg-process(e.thiss, 0, e.this-value, f.farg-v[j++].decl, f-at, -1) { return }
          loop ; (f.farg-c - 1) - f.this-idx; j++; k++ {
             +ca = e.carg-v[k];
-            if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at) { return }
+            if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, k) { return }
          }
          e.func-idx = f-idx;
          if (f.flags & #var-args) != #0 {
@@ -368,7 +406,7 @@ using ExprI {
             +j = 0;
             loop ; f.farg-c; j++ {
                +ca = e.carg-v[j];
-               if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at) { return }
+               if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, j) { return }
             }
             e.func-idx = f-idx;
             if (f.flags & #var-args) != #0 {
@@ -416,7 +454,7 @@ using ExprI {
       +j = 0;
       loop ; f.farg-c; j++ {
          +ca = e.carg-v[j];
-         if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at) { return false }
+         if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, j) { return false }
       }
       e.func-idx = f-idx;
       if (f.flags & #var-args) != #0 {

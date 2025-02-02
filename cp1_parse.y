@@ -660,6 +660,8 @@ sizeOfTypeExpr(l) ::= at(at) OPEN_BRACKET USZ CLOSE_BRACKET.
 
 fastCastExpr(l) ::= value4cast(e) COLON at(at).
    { l.basic.id = _NCp1_Pexpr_cast_fast_2(e.basic.id, at.basic.id); }
+fastCastExpr(l) ::= value4cast(e) COLON_BASE.
+   { l.basic.id = _NCp1_Pexpr_cast_fast_2(e.basic.id, -1); }
 
 negVal(l) ::= MINUS value4fix(e).
    { l.basic.id = _NCp1_Pexpr_unary_2(e.basic.id, 0); }
