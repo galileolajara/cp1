@@ -3090,7 +3090,7 @@ _Lat_i_5 = _NCp1_Pat_validate_5((*_Lvd_0)._Ftype, _Lbase_at_4, _Lfile_1, _Lrow_2
 (*_Lvd_0)._Ftype = _Lat_i_5;
 _Lat_6 = _NCp1_NAt_Pptr_1(_Lat_i_5);
 if((((*_Lat_6)._Ftype != _NCp1_NNameType_Cbasic) && ((*_Lat_6)._Fdecl._Fstructt == _NCp1_NStruct_Cnil))) {
-fprintf(stdout, "%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", _NCp1_NFile_Ppath_1((*_Gctx_func)._Ffile), _Lrow_2, _Lcol_3, _NCp1_NId_Pstr_1((*_Lat_6)._Fname._Fid), _NCp1_NId_Pstr_1((*_Lvd_0)._Fname));
+fprintf(stdout, "%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", _NCp1_NFile_Ppath_1(_Lfile_1), _Lrow_2, _Lcol_3, _NCp1_NId_Pstr_1((*_Lat_6)._Fname._Fid), _NCp1_NId_Pstr_1((*_Lvd_0)._Fname));
 return false;
 }
 _NCp1_NAt_Poutput_4(_Lat_i_5, (*_Gctx_func)._Ffile, _Lrow_2, _Lcol_3);

@@ -2872,7 +2872,7 @@ _Gfunc_main = _Lf_idx_2;
 if(_Gfunc_main != _NCp1_NFunc_Cnil) {
 struct _NCp1_NDeclFunc* _Lmain_8;
 _Lmain_8 = _NCp1_NFunc_Pptr_1(_Gfunc_main);
-fprintf(stdout, "%u:%u: There:S already a function with @main attribute at %u:%u\n", (*_Lf_4)._Fbegin_row, (*_Lf_4)._Fbegin_col, (*_Lmain_8)._Fbegin_row, (*_Lmain_8)._Fbegin_col);
+fprintf(stdout, "%u:%u: There's already a function with @main attribute at %u:%u\n", (*_Lf_4)._Fbegin_row, (*_Lf_4)._Fbegin_col, (*_Lmain_8)._Fbegin_row, (*_Lmain_8)._Fbegin_col);
 exit(_NLibC_NExit_Cfailure);
 } else {
 _Gfunc_main = _Lf_idx_2;
