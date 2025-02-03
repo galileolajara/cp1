@@ -211,7 +211,11 @@ int32_t _Li_23;
 _Li_23 = 0;
 for(int i = _Gcp1_path_c; i > 0; ) {
 i --;
+#ifdef _WIN32
+fprintf(_Lninja_f_22, "build cp1-tmp/%s-b: parse %s | %s-parse.exe\n", _Gcp1_path_v[_Li_23], _Gcp1_path_real_v[_Li_23], _Labs_path_6);
+#else
 fprintf(_Lninja_f_22, "build cp1-tmp/%s-b: parse %s | %s-parse\n", _Gcp1_path_v[_Li_23], _Gcp1_path_real_v[_Li_23], _Labs_path_6);
+#endif
 continue_5:;
 _Li_23++;
 }
@@ -226,7 +230,11 @@ continue_6:;
 _Li_24++;
 }
 break_6:;
+#ifdef _WIN32
+fprintf(_Lninja_f_22, " | %s-compile.exe\n", _Labs_path_6);
+#else
 fprintf(_Lninja_f_22, " | %s-compile\n", _Labs_path_6);
+#endif
 fclose(_Lninja_f_22);
 sprintf(_Lcommand_25, "ninja -f %s", _Lninja_path_20);
 _Lret_26 = system(_Lcommand_25);
@@ -297,7 +305,11 @@ int32_t _Li_34;
 _Li_34 = 0;
 for(int i = _Gcp1_path_c; i > 0; ) {
 i --;
+#ifdef _WIN32
+fprintf(_Lninja_f_33, "build cp1-tmp/%s-b: parse %s | %s-parse.exe\n", _Gcp1_path_v[_Li_34], _Gcp1_path_real_v[_Li_34], _Labs_path_6);
+#else
 fprintf(_Lninja_f_33, "build cp1-tmp/%s-b: parse %s | %s-parse\n", _Gcp1_path_v[_Li_34], _Gcp1_path_real_v[_Li_34], _Labs_path_6);
+#endif
 continue_7:;
 _Li_34++;
 }
@@ -312,7 +324,11 @@ continue_8:;
 _Li_35++;
 }
 break_8:;
+#ifdef _WIN32
+fprintf(_Lninja_f_33, " | %s-compile.exe\n", _Labs_path_6);
+#else
 fprintf(_Lninja_f_33, " | %s-compile\n", _Labs_path_6);
+#endif
 fprintf(_Lninja_f_33, "build %s: c %s\n", _Lexe_path_29, _Lc_path_27);
 fclose(_Lninja_f_33);
 sprintf(_Lcommand_36, "ninja --quiet -f %s", _Lninja_path_31);

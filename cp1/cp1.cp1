@@ -634,13 +634,21 @@ main(arg-c:intc, arg-v:char[][]):intc {
       ninja-f.printf("rule compile\n");
       ninja-f.printf(" command = %s-compile $in $out\n", bin);
       loop i = 0; .cp1-path-c; i++ {
+         "#ifdef _WIN32";
+         ninja-f.printf("build cp1-tmp/%s-b: parse %s | %s-parse.exe\n", .cp1-path-v[i], .cp1-path-real-v[i], abs-path);
+         "#else";
          ninja-f.printf("build cp1-tmp/%s-b: parse %s | %s-parse\n", .cp1-path-v[i], .cp1-path-real-v[i], abs-path);
+         "#endif";
       }
       ninja-f.printf("build %s: compile", c-path);
       loop i = 0; .cp1-path-c; i++ {
          ninja-f.printf(" cp1-tmp/%s-b", .cp1-path-v[i]);
       }
+      "#ifdef _WIN32";
+      ninja-f.printf(" | %s-compile.exe\n", abs-path);
+      "#else";
       ninja-f.printf(" | %s-compile\n", abs-path);
+      "#endif";
       ninja-f.close();
       var command:char[24 + 9];
       C.sprintf(command, "ninja -f %s", ninja-path);
@@ -702,13 +710,21 @@ main(arg-c:intc, arg-v:char[][]):intc {
       ninja-f.printf(" command = %s-compile $in $out\n", bin);
       get-compile(bin, ninja-f);
       loop i = 0; .cp1-path-c; i++ {
+         "#ifdef _WIN32";
+         ninja-f.printf("build cp1-tmp/%s-b: parse %s | %s-parse.exe\n", .cp1-path-v[i], .cp1-path-real-v[i], abs-path);
+         "#else";
          ninja-f.printf("build cp1-tmp/%s-b: parse %s | %s-parse\n", .cp1-path-v[i], .cp1-path-real-v[i], abs-path);
+         "#endif";
       }
       ninja-f.printf("build %s: compile", c-path);
       loop i = 0; .cp1-path-c; i++ {
          ninja-f.printf(" cp1-tmp/%s-b", .cp1-path-v[i]);
       }
+      "#ifdef _WIN32";
+      ninja-f.printf(" | %s-compile.exe\n", abs-path);
+      "#else";
       ninja-f.printf(" | %s-compile\n", abs-path);
+      "#endif";
       ninja-f.printf("build %s: c %s\n", exe-path, c-path);
       ninja-f.close();
       var command:char[32 + 9];
