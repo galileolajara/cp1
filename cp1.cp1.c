@@ -50,231 +50,297 @@ bool _Pcp1_path_input_4(char* _Lcp1_path_0, int32_t _Lcp1_path_len_1, char* _Lbi
 bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2);
 void _Pcp1_path_add_4(char* _Lcp1_path_real_0, int32_t _Lcp1_path_real_len_1, char* _Lcp1_path_2, int32_t _Lcp1_path_len_3);
 int main(int _Larg_c_0, char** _Larg_v_1) {
-char* _Lbin_2;
-char _Labs_path_3[512];
-uint16_t _Labs_path_len_4;
-char* _Lslash1_10;
-char* _Lslash2_11;
-char* _Lcmd_12;
+char* _Lbin_5;
+char _Labs_path_6[512];
+uint16_t _Labs_path_len_7;
+char* _Lslash1_15;
+char* _Lslash2_16;
+char* _Lcmd_17;
 if(false) {
 _Pon_exit_0();
 }
-atexit(_Pon_exit_0);
-_Lbin_2 = _Larg_v_1[0];
-_Labs_path_len_4 = 0;
-if(_Lbin_2[0] == '/') {
-_Labs_path_len_4 = strlen(_Lbin_2);
-memcpy(_Labs_path_3, _Lbin_2, _Labs_path_len_4);
-_Labs_path_3[_Labs_path_len_4] = '\0';
-} else {
-bool _Lhas_slash_5;
-_Lhas_slash_5 = false;
-int32_t _Li_6;
-_Li_6 = 0;
+#ifdef _WIN32
+int32_t _Li_2;
+_Li_2 = 0;
+for(int i = _Larg_c_0; i > 0; ) {
+i --;
+char* _Larg_3;
+_Larg_3 = _Larg_v_1[_Li_2];
+int32_t _Lj_4;
+_Lj_4 = 0;
 while(1) {
-if(_Lbin_2[_Li_6] == '\0') {
-goto break_0;
-}
-if(_Lbin_2[_Li_6] == '/') {
-_Lhas_slash_5 = true;
-goto break_0;
-}
-continue_0:;
-_Li_6++;
-}
-break_0:;
-if(_Lhas_slash_5) {
-realpath(_Lbin_2, _Labs_path_3);
-} else {
-char* _Lpath_7;
-char* _Lfound_8;
-_NPosix_NFd _Lfd_9;
-_Lpath_7 = strdup(getenv("PATH"));
-_Lfound_8 = strtok(_Lpath_7, ":");
-_Lfd_9 = _NPosix_NFd_Cnil;
-while(_Lfound_8 != NULL) {
-sprintf(_Labs_path_3, "%s/%s", _Lfound_8, _Lbin_2);
-_Lfd_9 = open(_Labs_path_3, O_RDONLY);
-if(_Lfd_9 != _NPosix_NFd_Cnil) {
+if(_Larg_3[_Lj_4] == '\0') {
 goto break_1;
+} else if(_Larg_3[_Lj_4] == '\\') {
+_Larg_3[_Lj_4] = '/';
 }
-_Lfound_8 = strtok(NULL, ":");
 continue_1:;
+_Lj_4++;
 }
 break_1:;
-if(_Lfd_9 == _NPosix_NFd_Cnil) {
-printf("Cannot run %s because we can:T detect its absolute path\n", _Lbin_2);
-exit(_NLibC_NExit_Cfailure);
+continue_0:;
+_Li_2++;
 }
-free(_Lpath_7);
+break_0:;
+#endif
+atexit(_Pon_exit_0);
+_Lbin_5 = _Larg_v_1[0];
+_Labs_path_len_7 = 0;
+if(_Lbin_5[0] == '/') {
+_Labs_path_len_7 = strlen(_Lbin_5);
+memcpy(_Labs_path_6, _Lbin_5, _Labs_path_len_7);
+_Labs_path_6[_Labs_path_len_7] = '\0';
+} else {
+bool _Lhas_slash_8;
+_Lhas_slash_8 = false;
+int32_t _Li_9;
+_Li_9 = 0;
+while(1) {
+if(_Lbin_5[_Li_9] == '\0') {
+goto break_2;
 }
+if(_Lbin_5[_Li_9] == '/') {
+_Lhas_slash_8 = true;
+goto break_2;
 }
-_Lslash1_10 = strrchr(_Labs_path_3, '/');
-_Lslash1_10[0] = '\0';
-_Lslash2_11 = strrchr(_Labs_path_3, '/');
-_Lslash2_11[0] = '\0';
-sprintf(_Ginclude_dir, "%s/include", _Labs_path_3);
-_Lslash1_10[0] = '/';
-_Lslash2_11[0] = '/';
-_Ginclude_dir_len = strlen(_Ginclude_dir);
-if(_Larg_c_0 < 2) {
-_Pprint_commands_1(_Lbin_2);
-exit(_NLibC_NExit_Cfailure);
-}
-_Lcmd_12 = _Larg_v_1[1];
-if(strcmp(_Lcmd_12, "c") == 0) {
-char* _Lc_path_13;
-size_t _Lc_path_len_14;
-char _Lninja_path_15[24];
-_NPosix_NFd _Lninja_fd_16;
-FILE* _Lninja_f_17;
-char _Lcommand_20[24 + 9];
-int _Lret_21;
-if(_Larg_c_0 < 4) {
-_Pprint_c_usage_1(_Lbin_2);
-exit(_NLibC_NExit_Cfailure);
-}
-_Lc_path_13 = _Larg_v_1[2];
-_Lc_path_len_14 = strlen(_Lc_path_13);
-if(!((_Lc_path_len_14 > 2) && (_Lc_path_13[(_Lc_path_len_14 - 2)] == '.') && (_Lc_path_13[(_Lc_path_len_14 - 1)] == 'c'))) {
-_Pprint_c_usage_1(_Lbin_2);
-printf("Error, [output.c] (which is '%s') must be a filename that ends with '.c', for example: main.c\n", _Lc_path_13);
-exit(_NLibC_NExit_Cfailure);
-}
-if(!_Pvalidate_cp1_paths_5(3, _Larg_c_0, _Larg_v_1, _Lbin_2, _NCmd_Cc)) {
-_Pprint_command_2(_Larg_c_0, _Larg_v_1);
-exit(_NLibC_NExit_Cfailure);
-}
-mkdir("cp1-tmp", 0755);
-strcpy(_Lninja_path_15, "cp1-tmp/ninja-XXXXXXXXX");
-_Lninja_fd_16 = mkstemp(_Lninja_path_15);
-_Patexit_rm_1(strdup(_Lninja_path_15));
-if(_Lninja_fd_16 == _NPosix_NFd_Cnil) {
-_Pprint_c_usage_1(_Lbin_2);
-printf("Error, cannot open file for reading: %s\n", _Lninja_path_15);
-exit(_NLibC_NExit_Cfailure);
-}
-_Lninja_f_17 = _NPosix_NFd_Pfopen_2(_Lninja_fd_16, "w");
-fprintf(_Lninja_f_17, "rule parse\n");
-fprintf(_Lninja_f_17, " command = %s-parse $in $out\n", _Lbin_2);
-fprintf(_Lninja_f_17, "rule compile\n");
-fprintf(_Lninja_f_17, " command = %s-compile $in $out\n", _Lbin_2);
-int32_t _Li_18;
-_Li_18 = 0;
-for(int i = _Gcp1_path_c; i > 0; ) {
-i --;
-fprintf(_Lninja_f_17, "build cp1-tmp/%s-b: parse %s | %s-parse\n", _Gcp1_path_v[_Li_18], _Gcp1_path_real_v[_Li_18], _Labs_path_3);
 continue_2:;
-_Li_18++;
+_Li_9++;
 }
 break_2:;
-fprintf(_Lninja_f_17, "build %s: compile", _Lc_path_13);
-int32_t _Li_19;
-_Li_19 = 0;
-for(int i = _Gcp1_path_c; i > 0; ) {
-i --;
-fprintf(_Lninja_f_17, " cp1-tmp/%s-b", _Gcp1_path_v[_Li_19]);
+if(_Lhas_slash_8) {
+char _Lcwd_10[512];
+int32_t _Li_11;
+#ifdef _WIN32
+getcwd(_Lcwd_10, 512);
+strcpy(_Labs_path_6, &_Lcwd_10[2]);
+_Li_11 = 0;
+while(1) {
+if(_Labs_path_6[_Li_11] == '\0') {
+goto break_3;
+} else if(_Labs_path_6[_Li_11] == '\\') {
+_Labs_path_6[_Li_11] = '/';
+}
 continue_3:;
-_Li_19++;
+_Li_11++;
 }
 break_3:;
-fprintf(_Lninja_f_17, " | %s-compile\n", _Labs_path_3);
-fclose(_Lninja_f_17);
-sprintf(_Lcommand_20, "ninja -f %s", _Lninja_path_15);
-_Lret_21 = system(_Lcommand_20);
-if(_Lret_21 != 0) {
+_Labs_path_6[_Li_11++] = '/';
+strcpy(&_Labs_path_6[_Li_11], _Lbin_5);
+#else
+realpath(_Lbin_5, _Labs_path_6);
+#endif
+} else {
+char* _Lpath_12;
+char* _Lfound_13;
+_NPosix_NFd _Lfd_14;
+_Lpath_12 = strdup(getenv("PATH"));
+_Lfound_13 = strtok(_Lpath_12, ":");
+_Lfd_14 = _NPosix_NFd_Cnil;
+while(_Lfound_13 != NULL) {
+sprintf(_Labs_path_6, "%s/%s", _Lfound_13, _Lbin_5);
+_Lfd_14 = open(_Labs_path_6, O_RDONLY);
+if(_Lfd_14 != _NPosix_NFd_Cnil) {
+goto break_4;
+}
+_Lfound_13 = strtok(NULL, ":");
+continue_4:;
+}
+break_4:;
+if(_Lfd_14 == _NPosix_NFd_Cnil) {
+printf("Cannot run %s because we can't detect its absolute path\n", _Lbin_5);
 exit(_NLibC_NExit_Cfailure);
 }
-} else if(strcmp(_Lcmd_12, "run") == 0) {
-char _Lc_path_22[22];
-_NPosix_NFd _Lc_fd_23;
-char _Lexe_path_24[24];
-_NPosix_NFd _Lexe_fd_25;
-char _Lninja_path_26[24];
-_NPosix_NFd _Lninja_fd_27;
-FILE* _Lninja_f_28;
-char _Lcommand_31[32 + 9];
-int _Lninja_ret_32;
-int _Lexe_ret_33;
-if(_Larg_c_0 < 3) {
-_Pprint_run_usage_1(_Lbin_2);
+free(_Lpath_12);
+}
+}
+_Lslash1_15 = strrchr(_Labs_path_6, '/');
+_Lslash1_15[0] = '\0';
+_Lslash2_16 = strrchr(_Labs_path_6, '/');
+_Lslash2_16[0] = '\0';
+sprintf(_Ginclude_dir, "%s/include", _Labs_path_6);
+_Lslash1_15[0] = '/';
+_Lslash2_16[0] = '/';
+_Ginclude_dir_len = strlen(_Ginclude_dir);
+if(_Larg_c_0 < 2) {
+_Pprint_commands_1(_Lbin_5);
 exit(_NLibC_NExit_Cfailure);
 }
-if(!_Pvalidate_cp1_paths_5(2, _Larg_c_0, _Larg_v_1, _Lbin_2, _NCmd_Crun)) {
+_Lcmd_17 = _Larg_v_1[1];
+if(strcmp(_Lcmd_17, "c") == 0) {
+char* _Lc_path_18;
+size_t _Lc_path_len_19;
+char _Lninja_path_20[24];
+_NPosix_NFd _Lninja_fd_21;
+FILE* _Lninja_f_22;
+char _Lcommand_25[24 + 9];
+int _Lret_26;
+if(_Larg_c_0 < 4) {
+_Pprint_c_usage_1(_Lbin_5);
+exit(_NLibC_NExit_Cfailure);
+}
+_Lc_path_18 = _Larg_v_1[2];
+_Lc_path_len_19 = strlen(_Lc_path_18);
+if(!((_Lc_path_len_19 > 2) && (_Lc_path_18[(_Lc_path_len_19 - 2)] == '.') && (_Lc_path_18[(_Lc_path_len_19 - 1)] == 'c'))) {
+_Pprint_c_usage_1(_Lbin_5);
+printf("Error, [output.c] (which is '%s') must be a filename that ends with '.c', for example: main.c\n", _Lc_path_18);
+exit(_NLibC_NExit_Cfailure);
+}
+if(!_Pvalidate_cp1_paths_5(3, _Larg_c_0, _Larg_v_1, _Lbin_5, _NCmd_Cc)) {
 _Pprint_command_2(_Larg_c_0, _Larg_v_1);
 exit(_NLibC_NExit_Cfailure);
 }
+#ifdef _WIN32
+mkdir("cp1-tmp");
+#else
 mkdir("cp1-tmp", 0755);
-strcpy(_Lc_path_22, "cp1-tmp/c-XXXXXXXXX");
-_Lc_fd_23 = mkstemp(_Lc_path_22);
-if(_Lc_fd_23 == _NPosix_NFd_Cnil) {
-_Pprint_run_usage_1(_Lbin_2);
-printf("Error, cannot open file for reading: %s\n", _Lc_path_22);
+#endif
+strcpy(_Lninja_path_20, "cp1-tmp/ninja-XXXXXXXXX");
+_Lninja_fd_21 = mkstemp(_Lninja_path_20);
+_Patexit_rm_1(strdup(_Lninja_path_20));
+if(_Lninja_fd_21 == _NPosix_NFd_Cnil) {
+_Pprint_c_usage_1(_Lbin_5);
+printf("Error, cannot open file for reading: %s\n", _Lninja_path_20);
 exit(_NLibC_NExit_Cfailure);
 }
-_NPosix_NFd_Pclose_1(_Lc_fd_23);
-unlink(_Lc_path_22);
-strcpy(_Lexe_path_24, "cp1-tmp/exe-XXXXXXXXX");
-_Lexe_fd_25 = mkstemp(_Lexe_path_24);
-if(_Lexe_fd_25 == _NPosix_NFd_Cnil) {
-_Pprint_run_usage_1(_Lbin_2);
-printf("Error, cannot open file for reading: %s\n", _Lexe_path_24);
-exit(_NLibC_NExit_Cfailure);
-}
-_NPosix_NFd_Pclose_1(_Lexe_fd_25);
-unlink(_Lexe_path_24);
-_Lc_path_22[19] = '.';
-_Lc_path_22[20] = 'c';
-_Lc_path_22[21] = '\0';
-_Patexit_rm_1(strdup(_Lc_path_22));
-strcpy(_Lninja_path_26, "cp1-tmp/ninja-XXXXXXXXX");
-_Lninja_fd_27 = mkstemp(_Lninja_path_26);
-_Patexit_rm_1(strdup(_Lninja_path_26));
-if(_Lninja_fd_27 == _NPosix_NFd_Cnil) {
-_Pprint_run_usage_1(_Lbin_2);
-printf("Error, cannot open file for reading: %s\n", _Lninja_path_26);
-exit(_NLibC_NExit_Cfailure);
-}
-_Lninja_f_28 = _NPosix_NFd_Pfopen_2(_Lninja_fd_27, "w");
-fprintf(_Lninja_f_28, "rule parse\n");
-fprintf(_Lninja_f_28, " command = %s-parse $in $out\n", _Lbin_2);
-fprintf(_Lninja_f_28, "rule compile\n");
-fprintf(_Lninja_f_28, " command = %s-compile $in $out\n", _Lbin_2);
-_Pget_compile_2(_Lbin_2, _Lninja_f_28);
-int32_t _Li_29;
-_Li_29 = 0;
+_Lninja_f_22 = _NPosix_NFd_Pfopen_2(_Lninja_fd_21, "w");
+fprintf(_Lninja_f_22, "rule parse\n");
+fprintf(_Lninja_f_22, " command = %s-parse $in $out\n", _Lbin_5);
+fprintf(_Lninja_f_22, "rule compile\n");
+fprintf(_Lninja_f_22, " command = %s-compile $in $out\n", _Lbin_5);
+int32_t _Li_23;
+_Li_23 = 0;
 for(int i = _Gcp1_path_c; i > 0; ) {
 i --;
-fprintf(_Lninja_f_28, "build cp1-tmp/%s-b: parse %s | %s-parse\n", _Gcp1_path_v[_Li_29], _Gcp1_path_real_v[_Li_29], _Labs_path_3);
-continue_4:;
-_Li_29++;
-}
-break_4:;
-fprintf(_Lninja_f_28, "build %s: compile", _Lc_path_22);
-int32_t _Li_30;
-_Li_30 = 0;
-for(int i = _Gcp1_path_c; i > 0; ) {
-i --;
-fprintf(_Lninja_f_28, " cp1-tmp/%s-b", _Gcp1_path_v[_Li_30]);
+fprintf(_Lninja_f_22, "build cp1-tmp/%s-b: parse %s | %s-parse\n", _Gcp1_path_v[_Li_23], _Gcp1_path_real_v[_Li_23], _Labs_path_6);
 continue_5:;
-_Li_30++;
+_Li_23++;
 }
 break_5:;
-fprintf(_Lninja_f_28, " | %s-compile\n", _Labs_path_3);
-fprintf(_Lninja_f_28, "build %s: c %s\n", _Lexe_path_24, _Lc_path_22);
-fclose(_Lninja_f_28);
-sprintf(_Lcommand_31, "ninja --quiet -f %s", _Lninja_path_26);
-_Lninja_ret_32 = system(_Lcommand_31);
-if(_Lninja_ret_32 != 0) {
+fprintf(_Lninja_f_22, "build %s: compile", _Lc_path_18);
+int32_t _Li_24;
+_Li_24 = 0;
+for(int i = _Gcp1_path_c; i > 0; ) {
+i --;
+fprintf(_Lninja_f_22, " cp1-tmp/%s-b", _Gcp1_path_v[_Li_24]);
+continue_6:;
+_Li_24++;
+}
+break_6:;
+fprintf(_Lninja_f_22, " | %s-compile\n", _Labs_path_6);
+fclose(_Lninja_f_22);
+sprintf(_Lcommand_25, "ninja -f %s", _Lninja_path_20);
+_Lret_26 = system(_Lcommand_25);
+if(_Lret_26 != 0) {
 exit(_NLibC_NExit_Cfailure);
 }
-_Lexe_ret_33 = system(_Lexe_path_24);
-unlink(_Lexe_path_24);
-if(_Lexe_ret_33 != 0) {
+} else if(strcmp(_Lcmd_17, "run") == 0) {
+char _Lc_path_27[22];
+_NPosix_NFd _Lc_fd_28;
+char _Lexe_path_29[24];
+_NPosix_NFd _Lexe_fd_30;
+char _Lninja_path_31[24];
+_NPosix_NFd _Lninja_fd_32;
+FILE* _Lninja_f_33;
+char _Lcommand_36[32 + 9];
+int _Lninja_ret_37;
+int _Lexe_ret_39;
+if(_Larg_c_0 < 3) {
+_Pprint_run_usage_1(_Lbin_5);
+exit(_NLibC_NExit_Cfailure);
+}
+if(!_Pvalidate_cp1_paths_5(2, _Larg_c_0, _Larg_v_1, _Lbin_5, _NCmd_Crun)) {
+_Pprint_command_2(_Larg_c_0, _Larg_v_1);
+exit(_NLibC_NExit_Cfailure);
+}
+#ifdef _WIN32
+mkdir("cp1-tmp");
+#else
+mkdir("cp1-tmp", 0755);
+#endif
+strcpy(_Lc_path_27, "cp1-tmp/c-XXXXXXXXX");
+_Lc_fd_28 = mkstemp(_Lc_path_27);
+if(_Lc_fd_28 == _NPosix_NFd_Cnil) {
+_Pprint_run_usage_1(_Lbin_5);
+printf("Error, cannot open file for reading: %s\n", _Lc_path_27);
+exit(_NLibC_NExit_Cfailure);
+}
+_NPosix_NFd_Pclose_1(_Lc_fd_28);
+unlink(_Lc_path_27);
+strcpy(_Lexe_path_29, "cp1-tmp/exe-XXXXXXXXX");
+_Lexe_fd_30 = mkstemp(_Lexe_path_29);
+if(_Lexe_fd_30 == _NPosix_NFd_Cnil) {
+_Pprint_run_usage_1(_Lbin_5);
+printf("Error, cannot open file for reading: %s\n", _Lexe_path_29);
+exit(_NLibC_NExit_Cfailure);
+}
+_NPosix_NFd_Pclose_1(_Lexe_fd_30);
+unlink(_Lexe_path_29);
+_Lc_path_27[19] = '.';
+_Lc_path_27[20] = 'c';
+_Lc_path_27[21] = '\0';
+_Patexit_rm_1(strdup(_Lc_path_27));
+strcpy(_Lninja_path_31, "cp1-tmp/ninja-XXXXXXXXX");
+_Lninja_fd_32 = mkstemp(_Lninja_path_31);
+_Patexit_rm_1(strdup(_Lninja_path_31));
+if(_Lninja_fd_32 == _NPosix_NFd_Cnil) {
+_Pprint_run_usage_1(_Lbin_5);
+printf("Error, cannot open file for reading: %s\n", _Lninja_path_31);
+exit(_NLibC_NExit_Cfailure);
+}
+_Lninja_f_33 = _NPosix_NFd_Pfopen_2(_Lninja_fd_32, "w");
+fprintf(_Lninja_f_33, "rule parse\n");
+fprintf(_Lninja_f_33, " command = %s-parse $in $out\n", _Lbin_5);
+fprintf(_Lninja_f_33, "rule compile\n");
+fprintf(_Lninja_f_33, " command = %s-compile $in $out\n", _Lbin_5);
+_Pget_compile_2(_Lbin_5, _Lninja_f_33);
+int32_t _Li_34;
+_Li_34 = 0;
+for(int i = _Gcp1_path_c; i > 0; ) {
+i --;
+fprintf(_Lninja_f_33, "build cp1-tmp/%s-b: parse %s | %s-parse\n", _Gcp1_path_v[_Li_34], _Gcp1_path_real_v[_Li_34], _Labs_path_6);
+continue_7:;
+_Li_34++;
+}
+break_7:;
+fprintf(_Lninja_f_33, "build %s: compile", _Lc_path_27);
+int32_t _Li_35;
+_Li_35 = 0;
+for(int i = _Gcp1_path_c; i > 0; ) {
+i --;
+fprintf(_Lninja_f_33, " cp1-tmp/%s-b", _Gcp1_path_v[_Li_35]);
+continue_8:;
+_Li_35++;
+}
+break_8:;
+fprintf(_Lninja_f_33, " | %s-compile\n", _Labs_path_6);
+fprintf(_Lninja_f_33, "build %s: c %s\n", _Lexe_path_29, _Lc_path_27);
+fclose(_Lninja_f_33);
+sprintf(_Lcommand_36, "ninja --quiet -f %s", _Lninja_path_31);
+_Lninja_ret_37 = system(_Lcommand_36);
+if(_Lninja_ret_37 != 0) {
+exit(_NLibC_NExit_Cfailure);
+}
+#ifdef _WIN32
+int32_t _Li_38;
+_Li_38 = 0;
+while(1) {
+if(_Lexe_path_29[_Li_38] == '\0') {
+goto break_9;
+} else if(_Lexe_path_29[_Li_38] == '/') {
+_Lexe_path_29[_Li_38] = '\\';
+}
+continue_9:;
+_Li_38++;
+}
+break_9:;
+#endif
+_Lexe_ret_39 = system(_Lexe_path_29);
+unlink(_Lexe_path_29);
+if(_Lexe_ret_39 != 0) {
 exit(_NLibC_NExit_Cfailure);
 }
 } else {
-_Pprint_commands_1(_Lbin_2);
+_Pprint_commands_1(_Lbin_5);
 exit(_NLibC_NExit_Cfailure);
 }
 return 0;
@@ -391,43 +457,77 @@ return close(_Lfile_0);
 }
 void _Pget_compile_2(char* _Lbin_0, FILE* _Lninja_f_1) {
 char* _Lpath_2;
-char* _Lfound_3;
+char* _Lfound_4;
 _Lpath_2 = strdup(getenv("PATH"));
-_Lfound_3 = strtok(_Lpath_2, ":");
-while(_Lfound_3 != NULL) {
-_NPosix_NFd _Lfd_4;
-char _Lcompile_5[512];
-sprintf(_Lcompile_5, "%s/tcc", _Lfound_3);
-_Lfd_4 = open(_Lcompile_5, O_RDONLY);
-if(_Lfd_4 != _NPosix_NFd_Cnil) {
-fprintf(_Lninja_f_1, "rule c\n");
-fprintf(_Lninja_f_1, " command = tcc $in -o $out\n");
-_NPosix_NFd_Pclose_1(_Lfd_4);
-free(_Lpath_2);
-return;
+#ifdef _WIN32
+int32_t _Li_3;
+_Li_3 = 0;
+while(1) {
+if(_Lpath_2[_Li_3] == '\0') {
+goto break_0;
+} else if(_Lpath_2[_Li_3] == '\\') {
+_Lpath_2[_Li_3] = '/';
 }
-sprintf(_Lcompile_5, "%s/clang", _Lfound_3);
-_Lfd_4 = open(_Lcompile_5, O_RDONLY);
-if(_Lfd_4 != _NPosix_NFd_Cnil) {
-fprintf(_Lninja_f_1, "rule c\n");
-fprintf(_Lninja_f_1, " command = clang $in -o $out\n");
-_NPosix_NFd_Pclose_1(_Lfd_4);
-free(_Lpath_2);
-return;
-}
-sprintf(_Lcompile_5, "%s/gcc", _Lfound_3);
-_Lfd_4 = open(_Lcompile_5, O_RDONLY);
-if(_Lfd_4 != _NPosix_NFd_Cnil) {
-fprintf(_Lninja_f_1, "rule c\n");
-fprintf(_Lninja_f_1, " command = gcc $in -o $out\n");
-_NPosix_NFd_Pclose_1(_Lfd_4);
-free(_Lpath_2);
-return;
-}
-_Lfound_3 = strtok(NULL, ":");
 continue_0:;
+_Li_3++;
 }
 break_0:;
+#endif
+#ifdef _WIN32
+_Lfound_4 = strtok(_Lpath_2, ";");
+#else
+_Lfound_4 = strtok(_Lpath_2, ":");
+#endif
+while(_Lfound_4 != NULL) {
+_NPosix_NFd _Lfd_5;
+char _Lcompile_6[512];
+#ifdef _WIN32
+sprintf(_Lcompile_6, "%s/tcc.exe", _Lfound_4);
+#else
+sprintf(_Lcompile_6, "%s/tcc", _Lfound_4);
+#endif
+_Lfd_5 = open(_Lcompile_6, O_RDONLY);
+if(_Lfd_5 != _NPosix_NFd_Cnil) {
+fprintf(_Lninja_f_1, "rule c\n");
+fprintf(_Lninja_f_1, " command = tcc $in -o $out\n");
+_NPosix_NFd_Pclose_1(_Lfd_5);
+free(_Lpath_2);
+return;
+}
+#ifdef _WIN32
+sprintf(_Lcompile_6, "%s/clang.exe", _Lfound_4);
+#else
+sprintf(_Lcompile_6, "%s/clang", _Lfound_4);
+#endif
+_Lfd_5 = open(_Lcompile_6, O_RDONLY);
+if(_Lfd_5 != _NPosix_NFd_Cnil) {
+fprintf(_Lninja_f_1, "rule c\n");
+fprintf(_Lninja_f_1, " command = clang $in -o $out\n");
+_NPosix_NFd_Pclose_1(_Lfd_5);
+free(_Lpath_2);
+return;
+}
+#ifdef _WIN32
+sprintf(_Lcompile_6, "%s/gcc.exe", _Lfound_4);
+#else
+sprintf(_Lcompile_6, "%s/gcc", _Lfound_4);
+#endif
+_Lfd_5 = open(_Lcompile_6, O_RDONLY);
+if(_Lfd_5 != _NPosix_NFd_Cnil) {
+fprintf(_Lninja_f_1, "rule c\n");
+fprintf(_Lninja_f_1, " command = gcc $in -o $out\n");
+_NPosix_NFd_Pclose_1(_Lfd_5);
+free(_Lpath_2);
+return;
+}
+#ifdef _WIN32
+_Lfound_4 = strtok(NULL, ";");
+#else
+_Lfound_4 = strtok(NULL, ":");
+#endif
+continue_1:;
+}
+break_1:;
 printf("Cannot execute '%s run' because the required compile was not found: tcc clang or gcc\n", _Lbin_0);
 exit(_NLibC_NExit_Cfailure);
 }

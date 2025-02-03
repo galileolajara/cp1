@@ -21,12 +21,29 @@ print-run-usage(bin:char[]) {
 }
 get-compile(bin:char[], ninja-f:C.File) {
    +path = C.strdup(C.getenv("PATH"));
-   // C.printf("PATH = %s\n", PATH);
-   +found = C.strtok(path, ":");
+   "#ifdef _WIN32";
+   loop i = 0; ; i++ {
+      if path[i] == ''\0 {
+         break;
+      } elif path[i] == ''\\ {
+         path[i] = ''/;
+      }
+   }
+   "#endif";
+   var found;
+   "#ifdef _WIN32";
+   found = C.strtok(path, ";");
+   "#else";
+   found = C.strtok(path, ":");
+   "#endif";
    loop found != null {
       // C.printf("- %s\n", found);
       var fd, compile:char[512];
+      "#ifdef _WIN32";
+      C.sprintf(compile, "%s/tcc.exe", found);
+      "#else";
       C.sprintf(compile, "%s/tcc", found);
+      "#endif";
       fd = X.open(compile, #rdonly);
       if fd != #nil {
          ninja-f.printf("rule c\n");
@@ -35,7 +52,11 @@ get-compile(bin:char[], ninja-f:C.File) {
          C.free(path);
          return;
       }
+      "#ifdef _WIN32";
+      C.sprintf(compile, "%s/clang.exe", found);
+      "#else";
       C.sprintf(compile, "%s/clang", found);
+      "#endif";
       fd = X.open(compile, #rdonly);
       if fd != #nil {
          ninja-f.printf("rule c\n");
@@ -44,7 +65,11 @@ get-compile(bin:char[], ninja-f:C.File) {
          C.free(path);
          return;
       }
+      "#ifdef _WIN32";
+      C.sprintf(compile, "%s/gcc.exe", found);
+      "#else";
       C.sprintf(compile, "%s/gcc", found);
+      "#endif";
       fd = X.open(compile, #rdonly);
       if fd != #nil {
          ninja-f.printf("rule c\n");
@@ -53,7 +78,11 @@ get-compile(bin:char[], ninja-f:C.File) {
          C.free(path);
          return;
       }
+      "#ifdef _WIN32";
+      found = C.strtok(null, ";");
+      "#else";
       found = C.strtok(null, ":");
+      "#endif";
    }
    C.printf("Cannot execute '%s run' because the required compile was not found: tcc clang or gcc\n", bin);
    C.exit(#failure);
@@ -489,6 +518,18 @@ main(arg-c:intc, arg-v:char[][]):intc {
    if false {
       on-exit();
    }
+   "#ifdef _WIN32";
+   loop i = 0; arg-c; i++ {
+      +arg = arg-v[i];
+      loop j = 0; ; j++ {
+         if arg[j] == ''\0 {
+            break;
+         } elif arg[j] == ''\\ {
+            arg[j] = ''/;
+         }
+      }
+   }
+   "#endif";
    "atexit(_Pon_exit_0);";
    +bin = arg-v[0];
    var abs-path:char[512];
@@ -507,7 +548,23 @@ main(arg-c:intc, arg-v:char[][]):intc {
          }
       }
       if has-slash {
+         "#ifdef _WIN32";
+         var cwd:char[512];
+         X.getcwd(cwd, 512);
+         C.strcpy(abs-path, &cwd[2]);
+         var i = 0;
+         loop ; ; i++ {
+            if abs-path[i] == ''\0 {
+               break;
+            } elif abs-path[i] == ''\\ {
+               abs-path[i] = ''/;
+            }
+         }
+         abs-path[i++] = ''/;
+         C.strcpy(&abs-path[i], bin);
+         "#else";
          C.realpath(bin, abs-path);
+         "#endif";
       } else {
          +path = C.strdup(C.getenv("PATH"));
          +found = C.strtok(path, ":");
@@ -521,7 +578,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
             found = C.strtok(null, ":");
          }
          if fd == #nil {
-            C.printf("Cannot run %s because we can:T detect its absolute path\n", bin);
+            C.printf("Cannot run %s because we can't detect its absolute path\n", bin);
             C.exit(#failure);
          }
          C.free(path);
@@ -557,7 +614,11 @@ main(arg-c:intc, arg-v:char[][]):intc {
          print-command(arg-c, arg-v);
          C.exit(#failure);
       }
+      "#ifdef _WIN32";
+      "mkdir(\"cp1-tmp\");";
+      "#else";
       X.mkdir("cp1-tmp", 0o755);
+      "#endif";
       var ninja-path:char[24];
       C.strcpy(ninja-path, "cp1-tmp/ninja-XXXXXXXXX");
       +ninja-fd = X.mkstemp(ninja-path);
@@ -596,7 +657,11 @@ main(arg-c:intc, arg-v:char[][]):intc {
          print-command(arg-c, arg-v);
          C.exit(#failure);
       }
+      "#ifdef _WIN32";
+      "mkdir(\"cp1-tmp\");";
+      "#else";
       X.mkdir("cp1-tmp", 0o755);
+      "#endif";
       var c-path:char[22];
       C.strcpy(c-path, "cp1-tmp/c-XXXXXXXXX");
       +c-fd = X.mkstemp(c-path);
@@ -652,6 +717,15 @@ main(arg-c:intc, arg-v:char[][]):intc {
       if ninja-ret != 0 {
          C.exit(#failure);
       }
+      "#ifdef _WIN32";
+      loop i = 0; ; i++ {
+         if exe-path[i] == ''\0 {
+            break;
+         } elif exe-path[i] == ''/ {
+            exe-path[i] = ''\\;
+         }
+      }
+      "#endif";
       +exe-ret = C.system(exe-path);
       X.unlink(exe-path);
       if exe-ret != 0 {
