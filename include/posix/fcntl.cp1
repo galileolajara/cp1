@@ -4,6 +4,9 @@ include <fcntl.h> {
    using Posix {
       enum Fd[#nil = -1]:intc {
          open(file:this&, path:char[], flags:OpenFlags):bool @inline {
+            "#ifdef _WIN32";
+            flags |= #binary;
+            "#endif";
             +fd = X.open(path, flags);
             if fd != -1 {
                file = fd;
@@ -13,6 +16,9 @@ include <fcntl.h> {
             }
          }
          open(file:this&, path:char[], flags:OpenFlags, mode:intc):bool @inline {
+            "#ifdef _WIN32";
+            flags |= #binary;
+            "#endif";
             +fd = X.open(path, flags, mode);
             if fd != -1 {
                file = fd;
@@ -35,6 +41,7 @@ include <fcntl.h> {
          #rdonly @no-decl(O_RDONLY),
          #create @no-decl(O_CREAT),
          #wronly @no-decl(O_WRONLY),
+         #binary @no-decl(O_BINARY), // For windows only
          #rdwr @no-decl(O_RDWR),
          #truncate @no-decl(O_TRUNC),
          #excl @no-decl(O_EXCL),

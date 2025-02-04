@@ -519,6 +519,13 @@ main(arg-c:intc, arg-v:char[][]):intc {
       on-exit();
    }
    "#ifdef _WIN32";
+   if true {
+      +arg = arg-v[0];
+      +len = C.strlen(arg);
+      if (arg[len - 4] == ''.) && (arg[len - 3] == ''e) && (arg[len - 2] == ''x) && (arg[len - 1] == ''e) {
+         arg[len - 4] = ''\0;
+      }
+   }
    loop i = 0; arg-c; i++ {
       +arg = arg-v[i];
       loop j = 0; ; j++ {
@@ -630,9 +637,17 @@ main(arg-c:intc, arg-v:char[][]):intc {
       }
       +ninja-f = ninja-fd.fopen("w");
       ninja-f.printf("rule parse\n");
+      "#ifdef _WIN32";
+      ninja-f.printf(" command = %s-parse.exe $in $out\n", bin);
+      "#else";
       ninja-f.printf(" command = %s-parse $in $out\n", bin);
+      "#endif";
       ninja-f.printf("rule compile\n");
+      "#ifdef _WIN32";
+      ninja-f.printf(" command = %s-compile.exe $in $out\n", bin);
+      "#else";
       ninja-f.printf(" command = %s-compile $in $out\n", bin);
+      "#endif";
       loop i = 0; .cp1-path-c; i++ {
          "#ifdef _WIN32";
          ninja-f.printf("build cp1-tmp/%s-b: parse %s | %s-parse.exe\n", .cp1-path-v[i], .cp1-path-real-v[i], abs-path);
@@ -705,9 +720,17 @@ main(arg-c:intc, arg-v:char[][]):intc {
       }
       +ninja-f = ninja-fd.fopen("w");
       ninja-f.printf("rule parse\n");
+      "#ifdef _WIN32";
+      ninja-f.printf(" command = %s-parse.exe $in $out\n", bin);
+      "#else";
       ninja-f.printf(" command = %s-parse $in $out\n", bin);
+      "#endif";
       ninja-f.printf("rule compile\n");
+      "#ifdef _WIN32";
+      ninja-f.printf(" command = %s-compile.exe $in $out\n", bin);
+      "#else";
       ninja-f.printf(" command = %s-compile $in $out\n", bin);
+      "#endif";
       get-compile(bin, ninja-f);
       loop i = 0; .cp1-path-c; i++ {
          "#ifdef _WIN32";
