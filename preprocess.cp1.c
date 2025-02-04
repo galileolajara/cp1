@@ -40,7 +40,17 @@ int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0);
 void _NCp1_Ppreprocess_init_0();
 void _NCp1_Ppreprocess_2(void** _Lin_out_data_0, size_t* _Lin_out_size_1);
 bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3);
+#ifdef _WIN32
+#define _NPosix_Popen_2(p, f) open(p, f | O_BINARY)
+#else
+#define _NPosix_Popen_2(p, f) open(p, f)
+#endif
 bool _NCp1_Ppreprocess_def_get_2(char* _Lname_0, uint8_t _Llen_1);
+#ifdef _WIN32
+#define _NPosix_Popen_3(p, f, m) open(p, f | O_BINARY, m)
+#else
+#define _NPosix_Popen_3(p, f, m) open(p, f, m)
+#endif
 int main(int _Larg_c_0, char** _Larg_v_1) {
 int32_t _Li_2;
 _NPosix_NFd _Lin_fd_5;
@@ -147,10 +157,7 @@ _Gpreprocess_def_len_v[_Li_2] = _Llen_1;
 }
 inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2) {
 _NPosix_NFd _Lfd_3;
-#ifdef _WIN32
-_Lflags_2 |= O_BINARY;
-#endif
-_Lfd_3 = open(_Lpath_1, _Lflags_2);
+_Lfd_3 = _NPosix_Popen_2(_Lpath_1, _Lflags_2);
 if(_Lfd_3 != -1) {
 (*_Lfile_0) = _Lfd_3;
 return true;
@@ -383,10 +390,7 @@ _NCp1_Ppreprocess_2(_Lin_out_data_0, _Lin_out_size_1);
 }
 inline bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3) {
 _NPosix_NFd _Lfd_4;
-#ifdef _WIN32
-_Lflags_2 |= O_BINARY;
-#endif
-_Lfd_4 = open(_Lpath_1, _Lflags_2, _Lmode_3);
+_Lfd_4 = _NPosix_Popen_3(_Lpath_1, _Lflags_2, _Lmode_3);
 if(_Lfd_4 != -1) {
 (*_Lfile_0) = _Lfd_4;
 return true;

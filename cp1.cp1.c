@@ -36,6 +36,11 @@ uint32_t* _Gcp1_path_len_v;
 uint32_t* _Gcp1_path_real_len_v;
 int main(int _Larg_c_0, char** _Larg_v_1);
 void _Pon_exit_0();
+#ifdef _WIN32
+#define _NPosix_Popen_2(p, f) open(p, f | O_BINARY)
+#else
+#define _NPosix_Popen_2(p, f) open(p, f)
+#endif
 void _Pprint_commands_1(char* _Lbin_0);
 void _Pprint_c_usage_1(char* _Lbin_0);
 bool _Pvalidate_cp1_paths_5(int32_t _Lstart_0, int32_t _Larg_c_1, char** _Larg_v_2, char* _Lbin_3, _NCmd _Lcmd_4);
@@ -147,7 +152,7 @@ _Lfound_15 = strtok(_Lpath_14, ":");
 _Lfd_16 = _NPosix_NFd_Cnil;
 while(_Lfound_15 != NULL) {
 sprintf(_Labs_path_8, "%s/%s", _Lfound_15, _Lbin_7);
-_Lfd_16 = open(_Labs_path_8, O_RDONLY);
+_Lfd_16 = _NPosix_Popen_2(_Labs_path_8, O_RDONLY);
 if(_Lfd_16 != _NPosix_NFd_Cnil) {
 goto break_4;
 }
@@ -527,7 +532,7 @@ sprintf(_Lcompile_6, "%s/tcc.exe", _Lfound_4);
 #else
 sprintf(_Lcompile_6, "%s/tcc", _Lfound_4);
 #endif
-_Lfd_5 = open(_Lcompile_6, O_RDONLY);
+_Lfd_5 = _NPosix_Popen_2(_Lcompile_6, O_RDONLY);
 if(_Lfd_5 != _NPosix_NFd_Cnil) {
 fprintf(_Lninja_f_1, "rule c\n");
 fprintf(_Lninja_f_1, " command = tcc $in -o $out\n");
@@ -540,7 +545,7 @@ sprintf(_Lcompile_6, "%s/clang.exe", _Lfound_4);
 #else
 sprintf(_Lcompile_6, "%s/clang", _Lfound_4);
 #endif
-_Lfd_5 = open(_Lcompile_6, O_RDONLY);
+_Lfd_5 = _NPosix_Popen_2(_Lcompile_6, O_RDONLY);
 if(_Lfd_5 != _NPosix_NFd_Cnil) {
 fprintf(_Lninja_f_1, "rule c\n");
 fprintf(_Lninja_f_1, " command = clang $in -o $out\n");
@@ -553,7 +558,7 @@ sprintf(_Lcompile_6, "%s/gcc.exe", _Lfound_4);
 #else
 sprintf(_Lcompile_6, "%s/gcc", _Lfound_4);
 #endif
-_Lfd_5 = open(_Lcompile_6, O_RDONLY);
+_Lfd_5 = _NPosix_Popen_2(_Lcompile_6, O_RDONLY);
 if(_Lfd_5 != _NPosix_NFd_Cnil) {
 fprintf(_Lninja_f_1, "rule c\n");
 fprintf(_Lninja_f_1, " command = gcc $in -o $out\n");
@@ -986,10 +991,7 @@ return true;
 }
 inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2) {
 _NPosix_NFd _Lfd_3;
-#ifdef _WIN32
-_Lflags_2 |= O_BINARY;
-#endif
-_Lfd_3 = open(_Lpath_1, _Lflags_2);
+_Lfd_3 = _NPosix_Popen_2(_Lpath_1, _Lflags_2);
 if(_Lfd_3 != -1) {
 (*_Lfile_0) = _Lfd_3;
 return true;

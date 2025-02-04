@@ -4,9 +4,6 @@ include <fcntl.h> {
    using Posix {
       enum Fd[#nil = -1]:intc {
          open(file:this&, path:char[], flags:OpenFlags):bool @inline {
-            "#ifdef _WIN32";
-            flags |= #binary;
-            "#endif";
             +fd = X.open(path, flags);
             if fd != -1 {
                file = fd;
@@ -16,9 +13,6 @@ include <fcntl.h> {
             }
          }
          open(file:this&, path:char[], flags:OpenFlags, mode:intc):bool @inline {
-            "#ifdef _WIN32";
-            flags |= #binary;
-            "#endif";
             +fd = X.open(path, flags, mode);
             if fd != -1 {
                file = fd;
@@ -46,8 +40,8 @@ include <fcntl.h> {
          #truncate @no-decl(O_TRUNC),
          #excl @no-decl(O_EXCL),
       ]:intc;
-      open(path:char[], flags:OpenFlags):Fd @real-name @no-decl;
-      open(path:char[], flags:OpenFlags, mode:intc):Fd @real-name @no-decl;
+      open(path:char[], flags:OpenFlags):Fd @decl("#ifdef _WIN32\n#define _NPosix_Popen_2(p, f) open(p, f | O_BINARY)\n#else\n#define _NPosix_Popen_2(p, f) open(p, f)\n#endif");
+      open(path:char[], flags:OpenFlags, mode:intc):Fd @decl("#ifdef _WIN32\n#define _NPosix_Popen_3(p, f, m) open(p, f | O_BINARY, m)\n#else\n#define _NPosix_Popen_3(p, f, m) open(p, f, m)\n#endif");
       close(fd:Fd):intc @real-name @no-decl;
    }
 }
