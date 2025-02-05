@@ -70,23 +70,18 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       "goto usage;";
    }
    .input-path = arg-v[i];
-   if !X.Fd.open(++in-fd, arg-v[i], #rdonly) {
+   var in-data:char[];
+   in-data = read-file(arg-v[i], 0, +in-size);
+   if in-data == null {
       C.printf("Cannot open file for reading: %s\n", arg-v[i]);
       C.exit(#failure);
    }
-   +in-size = in-fd.seek(0, #end);
-   in-fd.seek(0, #set);
-   var in-data:char[] = C.malloc(in-size);
-   in-fd.read(in-data, in-size);
-   in-fd.close();
    preprocess-init();
    preprocess(in-data, in-size);
-   if !X.Fd.open(++out-fd, arg-v[i + 1], #create | #truncate | #wronly, 0o644) {
+   if !write-file(arg-v[i + 1], in-data, in-size) {
       C.printf("Cannot open file for writing: %s\n", arg-v[i + 1]);
       C.exit(#failure);
    }
-   out-fd.write(in-data, in-size);
-   out-fd.close();
    return 0;
 }
 var preprocess-def-str-v:char[][];

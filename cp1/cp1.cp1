@@ -130,15 +130,12 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
          return true;
       }
    }
-   if !X.Fd.open(++fd, cp1-path, #rdonly) {
+   var data:char[];
+   data = Cp1.read-file(cp1-path, 0, +len);
+   if data == null {
       C.printf("Error, [cp1 file] (which is '%s') cannot be opened for reading\n", cp1-path);
       return false;
    }
-   +len = fd.seek(0, #end);
-   fd.seek(0, #set);
-   var data:char[] = C.malloc(len);
-   fd.read(data, len);
-   fd.close();
    if !(&&, len > 0, data[len - 1] == ''\n) {
       C.printf("Error, [cp1 file] (which is '%s') must end a new line\n", cp1-path);
       return false;
@@ -203,17 +200,12 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
       C.memcpy(tmp-path-dup, tmp-path, 17);
       atexit-rm(tmp-path-dup);
       cp1-path-add(tmp-path-dup, 16, cp1-path, cp1-path-len);
-      if !X.Fd.open(fd, tmp-path-dup, #rdonly) {
+
+      data = Cp1.read-file(tmp-path-dup, 0, len);
+      if data == null {
          C.printf("Error, cannot open file for reading: %s\n", tmp-path);
          return false;
       }
-
-      // Re-read the data
-      len = fd.seek(0, #end);
-      fd.seek(0, #set);
-      data = C.malloc(len);
-      fd.read(data, len);
-      fd.close();
    } else {
       cp1-path-add(cp1-path, cp1-path-len, cp1-path, cp1-path-len);
    }
@@ -377,14 +369,12 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                      spec-path[i] = ''-;
                   }
                }
-               if !X.Fd.open(++spec-fd, spec-path, #rdonly) {
+               var spec-data:char[];
+               spec-data = Cp1.read-file(spec-path, 0, +spec-len);
+               if spec-data == null {
                   C.printf("%s:%u: #include <%s> failed because '%s' does not exists\n", cp1-path, line, path, spec-path);
                   return false;
                }
-               +spec-len = spec-fd.seek(0, #end);
-               spec-fd.seek(0, #set);
-               var spec-data:char[] = C.malloc(spec-len + 1);
-               spec-fd.read(spec-data, spec-len);
                // C.printf("reading %s\n", spec-path);
                +spec-pos = 0;
                +spec-line = 0;
@@ -635,7 +625,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
          C.printf("Error, cannot open file for reading: %s\n", ninja-path);
          C.exit(#failure);
       }
-      +ninja-f = ninja-fd.fopen("w");
+      +ninja-f = ninja-fd.fopen("wb");
       ninja-f.printf("rule parse\n");
       "#ifdef _WIN32";
       ninja-f.printf(" command = %s-parse.exe $in $out\n", bin);
@@ -718,7 +708,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
          C.printf("Error, cannot open file for reading: %s\n", ninja-path);
          C.exit(#failure);
       }
-      +ninja-f = ninja-fd.fopen("w");
+      +ninja-f = ninja-fd.fopen("wb");
       ninja-f.printf("rule parse\n");
       "#ifdef _WIN32";
       ninja-f.printf(" command = %s-parse.exe $in $out\n", bin);

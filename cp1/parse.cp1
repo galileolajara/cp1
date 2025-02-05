@@ -719,7 +719,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    }
    .input-path = arg-v[1];
    // C.out.printf("reading %s\n", .input-path);
-   if !X.Fd.open(++in-fd, .input-path, #rdonly) {
+   var in-data:u8[];
+   in-data = read-file(.input-path, 2, +in-size);
+   if in-data == null {
       C.out.printf("Cannot open file for reading: %s\n", .input-path);
       C.exit(#failure);
    }
@@ -748,13 +750,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    //    }
    //    fd.close();
    // }
-   +in-size = in-fd.seek(0, #end);
-   var in-data:u8[] = C.malloc(in-size + 2);
-   in-fd.seek(0, #set);
-   in-fd.read(in-data, in-size);
-   in-data[in-size] = 0;
-   in-data[in-size + 1] = 0;
-   in-fd.close();
 
    if (&&, in-data[in-size - 2] == ''\r, in-data[in-size - 1] == ''\n) {
       C.out.printf("Error reading file '%s' because it uses Windows-style line endings\n", .input-path);
@@ -1432,12 +1427,10 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    var out-path:char[] = C.malloc(C.strlen(lock-path) + 4 + 1);
    C.sprintf(out-path, "%s.tmp", lock-path);
    +out-path-len = C.strlen(out-path);
-   if !X.Fd.open(++out-fd, out-path, #create | #truncate | #wronly, 0o644) {
+   if !write-file(out-path, w-begin.reff, w.pos - w-begin.pos) {
       C.out.printf("Cannot open file for writing: %s\n", out-path);
       C.exit(#failure);
    }
-   out-fd.write(w-begin.reff, w.pos - w-begin.pos);
-   out-fd.close();
 
    w.reff = w-begin.reff;
    w.n(.id-in-header-c);
@@ -1472,21 +1465,25 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    write-func(w, true);
 
    out-path[out-path-len - 5] = ''h;
-   if !X.Fd.open(out-fd, out-path, #create | #truncate | #wronly, 0o644) {
+   if !write-file(out-path, w-begin.reff, w.pos - w-begin.pos) {
       C.out.printf("Cannot open file for writing: %s\n", out-path);
       C.exit(#failure);
    }
-   out-fd.write(w-begin.reff, w.pos - w-begin.pos);
-   out-fd.close();
    var final-path:char[512];
    out-path[out-path-len - 5] = ''b;
    C.memcpy(final-path, out-path, out-path-len - 4);
    final-path[out-path-len - 4] = 0;
+   "#ifdef _WIN32";
+   X.unlink(final-path);
+   "#endif";
    C.rename(out-path, final-path);
    // .lock-path = null; // Do not unlink lock-path at exit
    out-path[out-path-len - 5] = ''h;
    C.memcpy(final-path, out-path, out-path-len - 4);
    final-path[out-path-len - 4] = 0;
+   "#ifdef _WIN32";
+   X.unlink(final-path);
+   "#endif";
    C.rename(out-path, final-path);
    return 0;
 }

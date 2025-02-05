@@ -1,0 +1,105 @@
+using C = LibC;
+using X = Posix;
+using W = Windows;
+include "file.cp1.h" {
+   using Windows {
+      enum Handle[#null, #invalid @no-decl(INVALID_HANDLE_VALUE)]:usz @no-decl(HANDLE);
+      CreateFileA(path:char[], access:CreateFileAccess, share-mode:CreateFileShareMode, security-attributes:ref, creation-disposition:CreateFileCreationDisposition, flags:CreateFileFlags, template-file:Handle):Handle @no-decl @real-name;
+      enum CreateFileAccess[#read @no-decl(GENERIC_READ), #write @no-decl(GENERIC_WRITE)]:u32;
+      enum CreateFileShareMode[#0, #read @no-decl(FILE_SHARE_READ)]:u32;
+      enum CreateFileCreationDisposition[#open-existing @no-decl(OPEN_EXISTING), #create-always @no-decl(CREATE_ALWAYS)]:u32;
+      enum CreateFileFlags[#normal @no-decl(FILE_ATTRIBUTE_NORMAL)]:u32;
+      GetFileSizeEx(h:Handle, i:LargeInteger):bool @no-decl @real-name;
+      union LargeInteger[
+         quadPart:u64 @real-name(QuadPart),
+      ] @no-decl(LARGE_INTEGER);
+      CloseHandle(h:Handle):bool @no-decl @real-name;
+      ReadFile(h:Handle, buf:ref, size:u32, bytes-read:u32&, overlapped:ref):bool @no-decl @real-name;
+      WriteFile(h:Handle, buf:ref, size:u32, bytes-read:u32&, overlapped:ref):bool @no-decl @real-name;
+   }
+}
+using Cp1 {
+   read-file(path:char[], add-len:i32, out-size:usz&):ref @inline {
+      "#ifdef _WIN32";
+      if true {
+         +h = W.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null);
+         if h == #invalid {
+            return null;
+         }
+         var f-size;
+         if !W.GetFileSizeEx(h, f-size) {
+            W.CloseHandle(h);
+            return null;
+         }
+         +size = f-size.quadPart;
+         var buf:u8[];
+         C.malloc-arr(buf, size + add-len);
+         var bytes-read;
+         if !W.ReadFile(h, buf, size, bytes-read, null) || (bytes-read != size) {
+            C.free(buf);
+            W.CloseHandle(h);
+            return null;
+         }
+         W.CloseHandle(h);
+         out-size = size;
+         return buf;
+      }
+      "#else";
+      if true {
+         var fd;
+         if !X.Fd.open(fd, path, #rdonly) {
+            return null;
+         }
+         +size = fd.seek(0, #end);
+         if size == -1 {
+            fd.close();
+            return null;
+         }
+         if fd.seek(0, #set) == -1 {
+            fd.close();
+            return null;
+         }
+         var buf:u8[];
+         C.malloc-arr(buf, size + add-len);
+         if fd.read(buf, size) != size {
+            C.free(buf);
+            fd.close();
+            return null;
+         }
+         fd.close();
+         out-size = size;
+         return buf;
+      }
+      "#endif";
+   }
+   write-file(path:char[], data:ref, size:usz):bool {
+      "#ifdef _WIN32";
+      if true {
+         +h = W.CreateFileA(path, #write, #0, null, #create-always, #normal, #null);
+         if h == #invalid {
+            return false;
+         }
+         var bytes-written;
+         if !W.WriteFile(h, data, size, bytes-written, null) || (bytes-written != size) {
+            W.CloseHandle(h);
+            return false;
+         }
+         W.CloseHandle(h);
+         return true;
+      }
+      "#else";
+      if true {
+         var fd;
+         if !X.Fd.open(fd, path, #create | #truncate | #wronly, 0o644) {
+            return false;
+         }
+         if fd.write(data, size) != size {
+            fd.close();
+            return false;
+         }
+         fd.close();
+         return true;
+      }
+      "#endif";
+   }
+}
