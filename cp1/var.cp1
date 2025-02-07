@@ -39,7 +39,8 @@ at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
       // C.out.flush();
       // var i:u32[] = [];
       // i[0] = 0;
-      C.exit(#failure);
+      // C.exit(#failure);
+      return #nil;
    }
    return vd-type;
 }
@@ -47,9 +48,12 @@ using DeclVarData {
    validate(vd:this, base-at:At):bool {
       // C.out.printf("validating the type of %s\n", vd.name.str());
       vd.type = at-validate(vd.type, base-at);
+      if vd.type == #nil { return false }
+      return true;
    }
    process(vd:this, file:File, row:i32, col:i32, base-at:At):bool {
       +at-i = at-validate(vd.type, base-at, file, row, col);
+      if at-i == #nil { return false }
       vd.type = at-i;
       +at = at-i.ptr();
       if (&&, at.type != #basic, at.decl.structt == #nil) {

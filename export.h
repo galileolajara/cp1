@@ -74,6 +74,7 @@ void _NCp1_Ptype_info_static_0();
 void _NCp1_Ptype_info_begin_0();
 void _NCp1_Ptype_info_finalize_0();
 _NCp1_NExprI _NCp1_Pexpr_int_2(int32_t _Lvalue_0, _NCp1_NExprInt _Ltype_1);
+_NCp1_NExprI _NCp1_Pexpr_int64_2(int64_t _Lvalue_0, _NCp1_NExprInt _Ltype_1);
 _NCp1_NExprI _NCp1_Pexpr_f32_1(float _Lvalue_0);
 _NCp1_NExprI _NCp1_Pexpr_size_of_type_1(_NCp1_NAt _Lat_0);
 _NCp1_NExprI _NCp1_Pexpr_null_0();

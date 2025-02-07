@@ -79,6 +79,7 @@ export() {
    type-info-begin();
    type-info-finalize();
    expr-int(0, #i32);
+   expr-int64(0, #u64);
    expr-f32(0.0f);
    expr-size-of-type(#nil);
    expr-null();

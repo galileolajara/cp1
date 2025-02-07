@@ -1,11 +1,18 @@
 using Cp1 = Cp1;
 using C = LibC;
 using Cp1 {
-enum ExprInt[#i32, #u32, #f32, #oct, #hex]:u8;
+enum ExprInt[#i32, #u32, #f32, #oct, #hex, #u64]:u8;
 expr-int(value:i32, type:ExprInt):ExprI {
    quick-alloc-one(+(e:ExprIntData));
    +e-idx = expr-push(e.base, #int);
    e.value.ii32 = value;
+   e.type = type;
+   return e-idx;
+}
+expr-int64(value:i64, type:ExprInt):ExprI {
+   quick-alloc-one(+(e:ExprIntData));
+   +e-idx = expr-push(e.base, #int);
+   e.value.uu64 = value;
    e.type = type;
    return e-idx;
 }
@@ -25,9 +32,11 @@ using ExprI {
             w.i(e.value.ii32);
          }
          case #f32 {
-            var n:u32;
-            C.memcpy(&n, &e.value.ff32, u32[usz]);
-            w.n4(n);
+            var n:u32[] = &e.value.ff32;
+            w.n4(n[0]);
+         }
+         case #u64 {
+            w.N(e.value.uu64);
          }
          default {
             w.n(e.value.uu32);
@@ -44,7 +53,12 @@ using ExprI {
          }
          case #f32 {
             +n = r.n4();
-            C.memcpy(&e.value.ff32, &n, u32[usz]);
+            var nv:f32[] = &n;
+            e.value.ff32 = nv[0];
+         }
+         case #u64 {
+            .include-stdint = true;
+            e.value.uu64 = r.N();
          }
          default {
             e.value.uu32 = r.n();
@@ -69,6 +83,13 @@ using ExprI {
          case #hex {
             .out.printf("0x%x", e.value.uu32);
          }
+         case #u64 {
+            "#ifdef _LP64";
+            .out.printf("UINT64_C(%lu)", e.value.uu64);
+            "#else";
+            .out.printf("UINT64_C(%llu)", e.value.uu64);
+            "#endif";
+         }
       }
    }
    process-int(expr:Expr, ok:bool&) @case.process() @inline {
@@ -83,6 +104,9 @@ using ExprI {
          case #f32 {
             at = basic-type(#f32);
          }
+         case #u64 {
+            at = basic-type(#u64);
+         }
          default {
             at = basic-type(#u32);
          }
@@ -96,6 +120,9 @@ using ExprI {
          }
          case #f32 {
             v.type = basic-type(#f32);
+         }
+         case #u64 {
+            v.type = basic-type(#u64);
          }
          default {
             v.type = basic-type(#u32);

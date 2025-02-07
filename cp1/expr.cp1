@@ -308,6 +308,7 @@ union ExprIntValue[
    ii32:i32,
    uu32:u32,
    ff32:f32,
+   uu64:u64,
 ];
 struct ExprIntData[
    base:Expr+,

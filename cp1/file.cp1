@@ -4,12 +4,12 @@ using W = Windows;
 include "file.cp1.h" {
    using Windows {
       enum Handle[#null, #invalid @no-decl(INVALID_HANDLE_VALUE)]:usz @no-decl(HANDLE);
-      CreateFileA(path:char[], access:CreateFileAccess, share-mode:CreateFileShareMode, security-attributes:ref, creation-disposition:CreateFileCreationDisposition, flags:CreateFileFlags, template-file:Handle):Handle @no-decl @real-name;
+      CreateFileA(path:char[], access:W.CreateFileAccess, share-mode:W.CreateFileShareMode, security-attributes:ref, creation-disposition:W.CreateFileCreationDisposition, flags:W.CreateFileFlags, template-file:Handle):Handle @no-decl @real-name;
       enum CreateFileAccess[#read @no-decl(GENERIC_READ), #write @no-decl(GENERIC_WRITE)]:u32;
       enum CreateFileShareMode[#0, #read @no-decl(FILE_SHARE_READ)]:u32;
       enum CreateFileCreationDisposition[#open-existing @no-decl(OPEN_EXISTING), #create-always @no-decl(CREATE_ALWAYS)]:u32;
       enum CreateFileFlags[#normal @no-decl(FILE_ATTRIBUTE_NORMAL)]:u32;
-      GetFileSizeEx(h:Handle, i:LargeInteger):bool @no-decl @real-name;
+      GetFileSizeEx(h:Handle, i:W.LargeInteger):bool @no-decl @real-name;
       union LargeInteger[
          quadPart:u64 @real-name(QuadPart),
       ] @no-decl(LARGE_INTEGER);

@@ -54,6 +54,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
 	"0"                              { return CP1_TOKEN_NUM_ZERO; }
 	[1-9] [0-9]*                     { return CP1_TOKEN_NUM_I32; }
 	[1-9] [0-9]* "u"                 { return CP1_TOKEN_NUM_U32; }
+	[0-9]+ "u64"                     { return CP1_TOKEN_NUM_U64; }
    "0o" [0-7]+                      { return CP1_TOKEN_NUM_OCT; }
 	"0x" [0-9a-fA-F]+                { return CP1_TOKEN_NUM_HEX; }
 	("0"|[1-9][0-9]*) "." [0-9]+ "f" { return CP1_TOKEN_NUM_F32; }

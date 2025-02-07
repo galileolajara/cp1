@@ -18,6 +18,11 @@ union cp1_token {
    struct {
       int row;
       int col;
+      uint64_t u64;
+   } u64;
+   struct {
+      int row;
+      int col;
       int id;
       int id2;
    } basic;

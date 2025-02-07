@@ -166,6 +166,7 @@
 #define _NCp1_NExprInt_Cf32 (_NCp1_NExprInt_Cu32 + 1)
 #define _NCp1_NExprInt_Coct (_NCp1_NExprInt_Cf32 + 1)
 #define _NCp1_NExprInt_Chex (_NCp1_NExprInt_Coct + 1)
+#define _NCp1_NExprInt_Cu64 (_NCp1_NExprInt_Chex + 1)
 #define _NCp1_NFuncFlags_Cvar_args (8)
 #define _NCp1_NGvarFlags_Cno_decl (1)
 #define _NCp1_NGvarFlags_C0 0
@@ -574,6 +575,7 @@ union _NCp1_NExprIntValue {
 int32_t _Fii32;
 uint32_t _Fuu32;
 float _Fff32;
+uint64_t _Fuu64;
 };
 struct _NCp1_NExprIntData;
 struct _NCp1_NExprIntData {
@@ -3135,6 +3137,9 @@ bool _NCp1_NDeclVarData_Pprocess_5(struct _NCp1_NDeclVarData* _Lvd_0, _NCp1_NFil
 _NCp1_NAt _Lat_i_5;
 struct _NCp1_NAtData* _Lat_6;
 _Lat_i_5 = _NCp1_Pat_validate_5((*_Lvd_0)._Ftype, _Lbase_at_4, _Lfile_1, _Lrow_2, _Lcol_3);
+if(_Lat_i_5 == _NCp1_NAt_Cnil) {
+return false;
+}
 (*_Lvd_0)._Ftype = _Lat_i_5;
 _Lat_6 = _NCp1_NAt_Pptr_1(_Lat_i_5);
 if((((*_Lat_6)._Ftype != _NCp1_NNameType_Cbasic) && ((*_Lat_6)._Fdecl._Fstructt == _NCp1_NStruct_Cnil))) {
@@ -3188,7 +3193,7 @@ continue_0:;
 }
 break_0:;
 fprintf(stdout, "%s:%u:%u: Type %s was not found\n", _NCp1_NFile_Ppath_1(_Lfile_2), _Lrow_3, _Lcol_4, _NCp1_NId_Pstr_1((*_Lname_7)._Fid));
-exit(_NLibC_NExit_Cfailure);
+return _NCp1_NAt_Cnil;
 }
 return _Lvd_type_0;
 }
@@ -3993,6 +3998,13 @@ break;
 case _NCp1_NExprInt_Chex:;
 fprintf(_Gout, "0x%x", (*_Le_1)._Fvalue._Fuu32);
 break;
+case _NCp1_NExprInt_Cu64:;
+#ifdef _LP64
+fprintf(_Gout, "UINT64_C(%lu)", (*_Le_1)._Fvalue._Fuu64);
+#else
+fprintf(_Gout, "UINT64_C(%llu)", (*_Le_1)._Fvalue._Fuu64);
+#endif
+break;
 }
 }
 inline void _NCp1_NExprI_Pwrite_size_of_type_1(struct _NCp1_NExpr* _Lexpr_0) {
@@ -4458,8 +4470,14 @@ case _NCp1_NExprInt_Ci32:;
 break;
 case _NCp1_NExprInt_Cf32:;
 uint32_t _Ln_3;
+float* _Lnv_4;
 _Ln_3 = _NCp1_NRdr_Pn4_1(_Lr_1);
-memcpy(&(*_Le_2)._Fvalue._Fff32, &_Ln_3, sizeof(uint32_t));
+_Lnv_4 = &_Ln_3;
+(*_Le_2)._Fvalue._Fff32 = _Lnv_4[0];
+break;
+case _NCp1_NExprInt_Cu64:;
+_Ginclude_stdint = true;
+(*_Le_2)._Fvalue._Fuu64 = Fgetlnum(_Lr_1);
 break;
 default:;
 (*_Le_2)._Fvalue._Fuu32 = Fgetnum(_Lr_1);
@@ -6141,6 +6159,9 @@ break;
 case _NCp1_NExprInt_Cf32:;
 (*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cf32);
 break;
+case _NCp1_NExprInt_Cu64:;
+(*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cu64);
+break;
 default:;
 (*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cu32);
 break;
@@ -6585,6 +6606,9 @@ case _NCp1_NExprInt_Ci32:;
 break;
 case _NCp1_NExprInt_Cf32:;
 (*_Lat_1) = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cf32);
+break;
+case _NCp1_NExprInt_Cu64:;
+(*_Lat_1) = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cu64);
 break;
 default:;
 (*_Lat_1) = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cu32);

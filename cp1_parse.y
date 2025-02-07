@@ -381,6 +381,8 @@ expr_int(l) ::= NUM_OCT(e).
    { l.basic.id = _NCp1_Pexpr_int_2(e.basic.id, 3); }
 expr_int(l) ::= NUM_HEX(e).
    { l.basic.id = _NCp1_Pexpr_int_2(e.basic.id, 4); }
+expr_int(l) ::= NUM_U64(e).
+   { l.basic.id = _NCp1_Pexpr_int64_2(e.u64.u64, 5); }
 
 expr_str(l) ::= STRING.
    { l.basic.id = _NCp1_Pexpr_str_1(-1); }
