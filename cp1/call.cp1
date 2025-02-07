@@ -48,6 +48,11 @@ farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At,
             //    C.err.printf("%s:%u:%u: Type deduction failed for lvar '%s', array dimension mismatch\n", .ctx-func.file.path(), lvar.row, lvar.col, vd.name.str());
             //    return false;
             // }
+            +parent = fd-arg.type.ptr().parent.ptr();
+            if (parent.type == #basic) && (parent.name.basic == #relative) {
+               C.printf("farg-process without processing farg first\n");
+               C.exit(#failure);
+            }
             vd.type = fd-arg.type;
             vd.type-info.init();
             vd.type-info.copy-from(fd-arg.type-info);
@@ -255,7 +260,9 @@ using ExprI {
             }
          }
          if !match { continue }
-         f-idx.process-later();
+         if !f-idx.process-later() {
+            return;
+         }
          +f-at = f.at;
          +j = 0;
          +k = 0;
@@ -401,7 +408,9 @@ using ExprI {
                }
             }
             if !match { continue }
-            f-idx.process-later();
+            if !f-idx.process-later() {
+               return;
+            }
             +f-at = f.at;
             +j = 0;
             loop ; f.farg-c; j++ {
@@ -448,7 +457,9 @@ using ExprI {
       +group-c = e.group-c;
       +group-v = e.group-v;
       +at = .ctx-func.at.ptr();
-      f-idx.process-later();
+      if !f-idx.process-later() {
+         return false;
+      }
       +f = f-idx.ptr();
       +f-at = f.at;
       +j = 0;

@@ -4,7 +4,7 @@ using Cp1 {
 struct AtMap[data:u64[(#hash-table-size + 7) >> 3]] {
    init(m:this);
    get-or-insert(m:this, parent:At, type:NameType, name:Id, val:i32):i32 {
-      return m.get-or-insert(parent:u32 | (type:u32 << 8), name, val);
+      return m.get-or-insert(parent:u32 | (type:u32 << 30), name, val);
    }
    get-or-insert(m:this, parent-and-type:u32, name:Id, val:i32):i32;
 }
@@ -375,11 +375,11 @@ quick-alloc(size:i32):ref @real-name(qalloc) {
    // C.memset(mem, 0, size);
    // return mem;
    // snap to usz
-   if ref[usz] == 8 {
-      size = (size + 7) & (-1 ^ 7);
-   } else {
-      size = (size + 3) & (-1 ^ 3);
-   }
+   // if ref[usz] == 8 {
+      size = (size + 7) & (-1 ^ 7); // align to u64
+   // } else {
+      // size = (size + 3) & (-1 ^ 3);
+   // }
    if size <= (.quick-alloc-cap - .quick-alloc-c) {
       var r:Rdr+;
       r.reff = .quick-alloc-v;
@@ -396,11 +396,11 @@ quick-alloc(size:i32):ref @real-name(qalloc) {
    return .quick-alloc-v;
 }
 quick-alloc-undo(size:i32) @real-name(qalloc_undo) {
-   if ref[usz] == 8 {
+   // if ref[usz] == 8 {
       size = (size + 7) & (-1 ^ 7);
-   } else {
-      size = (size + 3) & (-1 ^ 3);
-   }
+   // } else {
+      // size = (size + 3) & (-1 ^ 3);
+   // }
    .quick-alloc-c -= size;
 }
 quick-alloc-one(r:ref)

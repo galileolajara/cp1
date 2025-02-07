@@ -21,11 +21,11 @@ at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
       //       C.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cp1-name());
       //    }
       // }
-      // C.out.printf("relative type detected, finding :%s\n", name.id.str());
+      // C.out.printf("relative type detected, finding :%s, parent is %d\n", name.id.str(), at-i);
       loop {
          loop i = 0:At; .at-c; i++ {
             if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
-               // C.out.printf("%u) :%s, %d\n", i, .at-v[i].name.id.str(), .at-v[i].decl.struct);
+               // C.out.printf("%u/%u) :%s, %d, %d\n", i, .at-c, .at-v[i].name.id.str(), .at-v[i].decl.structt, at-i);
                if .at-v[i].name.id == name.id {
                   // C.out.printf("found\n");
                   return i;

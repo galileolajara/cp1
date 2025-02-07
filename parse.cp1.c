@@ -2649,11 +2649,7 @@ return _Lfound_5;
 }
 }
 void* qalloc(int32_t _Lsize_0) {
-if(sizeof(void*) == 8) {
 _Lsize_0 = ((_Lsize_0 + 7) & (-1 ^ 7));
-} else {
-_Lsize_0 = ((_Lsize_0 + 3) & (-1 ^ 3));
-}
 if(_Lsize_0 <= (_Gquick_alloc_cap - _Gquick_alloc_c)) {
 union _NCp1_NRdr _Lr_1;
 _Lr_1._Freff = _Gquick_alloc_v;
@@ -2941,11 +2937,7 @@ Fputnum(_Lw_1, 1 + _Gid_in_header_idx_v[_Lid_0]);
 }
 }
 void qalloc_undo(int32_t _Lsize_0) {
-if(sizeof(void*) == 8) {
 _Lsize_0 = ((_Lsize_0 + 7) & (-1 ^ 7));
-} else {
-_Lsize_0 = ((_Lsize_0 + 3) & (-1 ^ 3));
-}
 _Gquick_alloc_c -= _Lsize_0;
 }
 void _NCp1_Pdecl_func_begin_3(_NCp1_NId _Lname_0, int32_t _Lrow_1, int32_t _Lcol_2) {
@@ -5134,7 +5126,7 @@ if((*_Gdecl_func_ctx_space)._Fstmt_last == NULL) {
 }
 }
 int32_t _NCp1_NAtMap_Pget_or_insert_5(struct _NCp1_NAtMap* _Lm_0, _NCp1_NAt _Lparent_1, _NCp1_NNameType _Ltype_2, _NCp1_NId _Lname_3, int32_t _Lval_4) {
-return _NCp1_NAtMap_Pget_or_insert_4(_Lm_0, (uint32_t)(_Lparent_1) | ((uint32_t)(_Ltype_2) << 8), _Lname_3, _Lval_4);
+return _NCp1_NAtMap_Pget_or_insert_4(_Lm_0, (uint32_t)(_Lparent_1) | ((uint32_t)(_Ltype_2) << 30), _Lname_3, _Lval_4);
 }
 inline void _NCp1_NWtr_Pb_2(union _NCp1_NWtr* _Lw_0, bool _Lval_1) {
 if(_Lval_1) {

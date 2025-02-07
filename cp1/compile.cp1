@@ -165,6 +165,7 @@ read(in-path:char[]) {
             // C.out.printf("at %u, name-c %u, found %d\n", i, at-name-c, found);
             if found == -1 {
                +at-idx = .at-c++;
+               // C.printf("1 as %u\n", at-idx);
                if .at-cap <= .at-c {
                   +old-cap = .at-cap;
                   .at-cap = grow(.at-c:base);
@@ -174,6 +175,7 @@ read(in-path:char[]) {
                at.init(at-type, at-parent, at-name);
                .at-table[i] = at-idx:At;
             } else {
+               // C.printf("2 as %u\n", found);
                .at-table[i] = found:At;
             }
          }
@@ -625,13 +627,17 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .process-first = #nil;
    .process-last = #nil;
    if .func-main != #nil {
-      .func-main.process-later();
+      if !.func-main.process-later() {
+         C.exit(#failure);
+      }
    }
 
    loop f-i = 0:Func; .func-c; f-i++ {
       +f = f-i.ptr();
       if (f.flags & #process) != #0 {
-         f-i.process-later();
+         if !f-i.process-later() {
+            C.exit(#failure);
+         }
       }
    }
 
@@ -891,11 +897,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    return 0;
 }
 using Func {
-   process-later(f-idx:this) {
+   process-later(f-idx:this):bool {
       +num = f-idx:u32;
       +n3 = num >> 3;
       +n17 = 1 << (num & 7);
-      if (.func-in-process[n3] & n17) != 0 { return }
+      if (.func-in-process[n3] & n17) != 0 { return true }
       .func-in-process[n3] |= n17;
       +f = f-idx.ptr();
       +old-ctx-func = .ctx-func;
@@ -905,10 +911,15 @@ using Func {
       +f-row = f.begin-row;
       +f-col = f.begin-col;
       loop j = 0; f.farg-c; j++ {
-         f.farg-v[j].decl.process(f-file, f.farg-v[j].row, f.farg-v[j].col, f-at);
+         if !f.farg-v[j].decl.process(f-file, f.farg-v[j].row, f.farg-v[j].col, f-at) {
+            return false;
+         }
       }
       if f.decl.type != #nil {
          f.decl.type = at-validate(f.decl.type, f-at, f-file, f-row, f-col);
+         if f.decl.type == #nil {
+            return false;
+         }
          +at = f.decl.type.ptr();
          if (&&, at.type != #basic, at.decl.structt == #nil) {
             C.out.printf("%s:%u:%u: Error, the type '%s' used as return type for function '%s' was not defined\n", f-file.path(), f-row, f-col, at.name.id.str(), f.decl.name.str());
@@ -929,6 +940,7 @@ using Func {
          }
       }
       .ctx-func = old-ctx-func;
+      return true;
    }
    process-now(f-idx:this):bool {
       +f = f-idx.ptr();

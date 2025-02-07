@@ -47,7 +47,7 @@ get-compile(bin:char[], ninja-f:C.File) {
       fd = X.open(compile, #rdonly);
       if fd != #nil {
          ninja-f.printf("rule c\n");
-         ninja-f.printf(" command = tcc $in -o $out\n");
+         ninja-f.printf(" command = tcc -I. $in -o $out\n");
          fd.close();
          C.free(path);
          return;
@@ -60,7 +60,7 @@ get-compile(bin:char[], ninja-f:C.File) {
       fd = X.open(compile, #rdonly);
       if fd != #nil {
          ninja-f.printf("rule c\n");
-         ninja-f.printf(" command = clang $in -o $out\n");
+         ninja-f.printf(" command = clang -I. $in -o $out\n");
          fd.close();
          C.free(path);
          return;
@@ -73,7 +73,7 @@ get-compile(bin:char[], ninja-f:C.File) {
       fd = X.open(compile, #rdonly);
       if fd != #nil {
          ninja-f.printf("rule c\n");
-         ninja-f.printf(" command = gcc $in -o $out\n");
+         ninja-f.printf(" command = gcc -I. $in -o $out\n");
          fd.close();
          C.free(path);
          return;

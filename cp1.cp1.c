@@ -544,7 +544,7 @@ sprintf(_Lcompile_6, "%s/tcc", _Lfound_4);
 _Lfd_5 = _NPosix_Popen_2(_Lcompile_6, O_RDONLY);
 if(_Lfd_5 != _NPosix_NFd_Cnil) {
 fprintf(_Lninja_f_1, "rule c\n");
-fprintf(_Lninja_f_1, " command = tcc $in -o $out\n");
+fprintf(_Lninja_f_1, " command = tcc -I. $in -o $out\n");
 _NPosix_NFd_Pclose_1(_Lfd_5);
 free(_Lpath_2);
 return;
@@ -557,7 +557,7 @@ sprintf(_Lcompile_6, "%s/clang", _Lfound_4);
 _Lfd_5 = _NPosix_Popen_2(_Lcompile_6, O_RDONLY);
 if(_Lfd_5 != _NPosix_NFd_Cnil) {
 fprintf(_Lninja_f_1, "rule c\n");
-fprintf(_Lninja_f_1, " command = clang $in -o $out\n");
+fprintf(_Lninja_f_1, " command = clang -I. $in -o $out\n");
 _NPosix_NFd_Pclose_1(_Lfd_5);
 free(_Lpath_2);
 return;
@@ -570,7 +570,7 @@ sprintf(_Lcompile_6, "%s/gcc", _Lfound_4);
 _Lfd_5 = _NPosix_Popen_2(_Lcompile_6, O_RDONLY);
 if(_Lfd_5 != _NPosix_NFd_Cnil) {
 fprintf(_Lninja_f_1, "rule c\n");
-fprintf(_Lninja_f_1, " command = gcc $in -o $out\n");
+fprintf(_Lninja_f_1, " command = gcc -I. $in -o $out\n");
 _NPosix_NFd_Pclose_1(_Lfd_5);
 free(_Lpath_2);
 return;
