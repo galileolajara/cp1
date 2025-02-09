@@ -23,7 +23,7 @@ struct StmtSpace[
    }
    write(space:this) {
       // .out.printf("{ // space begin \n");
-      var i, lvar-c;
+      var i:Lvar, lvar-c:Lvar;
       if space.parent == null {
          // dont write arguments
          i = .ctx-func.farg-c;

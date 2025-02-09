@@ -15,15 +15,15 @@ union Rdr[
    }
    n2(r:this):u32 @inline {
       +val = r.p1[0]:u32;
-      val |= r.p1[1] << 8;
+      val |= r.p1[1]:u32 << 8;
       r.pos += 2;
       return val;
    }
    n4(r:this):u32 @inline {
       +val = r.p1[0]:u32;
-      val |= r.p1[1] << 8;
-      val |= r.p1[2] << 16;
-      val |= r.p1[3] << 24;
+      val |= r.p1[1]:u32 << 8;
+      val |= r.p1[2]:u32 << 16;
+      val |= r.p1[3]:u32 << 24;
       r.pos += 4;
       return val;
    }
