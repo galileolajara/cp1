@@ -2828,8 +2828,8 @@ _Li_2++;
 break_0:;
 }
 void _NCp1_NStmtSpace_Pwrite_1(struct _NCp1_NStmtSpace* _Lspace_0) {
-uint8_t _Li_1;
-int32_t _Llvar_c_2;
+_NCp1_NLvar _Li_1;
+_NCp1_NLvar _Llvar_c_2;
 struct _NCp1_NStmt* _Ls_5;
 if((*_Lspace_0)._Fparent == NULL) {
 _Li_1 = (*_Gctx_func)._Ffarg_c;
@@ -3126,9 +3126,9 @@ inline void _NCp1_NFunc_Prd_2(_NCp1_NFunc* _Lf_0, union _NCp1_NRdr* _Lr_1) {
 inline uint32_t _NCp1_NRdr_Pn4_1(union _NCp1_NRdr* _Lr_0) {
 uint32_t _Lval_1;
 _Lval_1 = (uint32_t)((*_Lr_0)._Fp1[0]);
-_Lval_1 |= ((*_Lr_0)._Fp1[1] << 8);
-_Lval_1 |= ((*_Lr_0)._Fp1[2] << 16);
-_Lval_1 |= ((*_Lr_0)._Fp1[3] << 24);
+_Lval_1 |= ((uint32_t)((*_Lr_0)._Fp1[1]) << 8);
+_Lval_1 |= ((uint32_t)((*_Lr_0)._Fp1[2]) << 16);
+_Lval_1 |= ((uint32_t)((*_Lr_0)._Fp1[3]) << 24);
 (*_Lr_0)._Fpos += 4;
 return _Lval_1;
 }
