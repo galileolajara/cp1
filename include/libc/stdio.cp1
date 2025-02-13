@@ -78,7 +78,10 @@ include <stdio.h>  {
          }
       }
       struct Stdout[] {
-         str(so:this, str:char[], len:u32) @inline {
+         str(so:this, str:char[]) @inline {
+            stdout-bytes(str, C.strlen(str));
+         }
+         cstr(so:this, str:char[], len:u32) @inline {
             stdout-bytes(str, len);
          }
          end(so:this) {

@@ -360,13 +360,14 @@ using ExprI {
       }
       ExprI.rd(+lvar, r);
 
-      +expr-c = group-c + 2;
+      +expr-c = group-c + 1;
       quick-alloc-plus(+(e:ExprMetaFunc), ExprI[usz] * expr-c);
       e-idx.set(e.base, #metafunc);
 
       e.expr-c = expr-c;
       e-idx = ExprI.alloc();
       e.expr-v[0] = e-idx;
+      +j = 0;
       if true {
          var group-v:u8[1];
          group-v[0] = 1;
@@ -374,10 +375,11 @@ using ExprI {
          carg-v[0] = lvar;
          set-func(e-idx, at-idx, func-name, 1, group-v, 1, carg-v);
       }
-      loop i = 0, j = 0; group-c; i++ {
+      // C.printf("group-c %u, carg-c %u\n", group-c, carg-c);
+      loop i = 1; group-c - 1; i++ {
          +carg-c = group-v[i];
          e-idx = ExprI.alloc();
-         e.expr-v[i + 1] = e-idx;
+         e.expr-v[i] = e-idx;
 
          +carg = carg-v[j++];
          +e-carg = carg.ptr();
@@ -396,16 +398,18 @@ using ExprI {
             loop k = 2; carg-c - 1 {
                carg2-v[k++] = carg-v[j++];
             }
-            if .id-str == 0:Id {
-               .id-str = id-add(3, "str");
+            if .id-cstr == 0:Id {
+               .id-cstr = id-add(4, "cstr");
             }
-            set-method(e-idx, lvar, .id-str, 1, group-v, group-v[0], carg2-v);
+            // C.printf("lvar.cstr()\n");
+            set-method(e-idx, lvar, .id-cstr, 1, group-v, group-v[0], carg2-v);
          } else {
             group-v[0] = 1 + (carg-c - 1);
             carg2-v[0] = lvar;
             loop k = 1; carg-c - 1 {
                carg2-v[k++] = carg-v[j++];
             }
+            // C.printf("carg.%s()\n", func-name.str());
             set-method(e-idx, carg, func-name, 1, group-v, group-v[0], carg2-v);
          }
       }
@@ -422,6 +426,7 @@ using ExprI {
    }
    var id-end:Id;
    var id-str:Id;
+   var id-cstr:Id;
    wr-func(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprFunc = expr;
       e.at.wr(w, header);
@@ -466,10 +471,39 @@ using ExprI {
    }
    process-metafunc(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprMetaFunc = expr;
-      loop i = 0; e.expr-c; i++ {
-         if !e.expr-v[i].process() {
+      if !e.expr-v[0].process() {
+         return;
+      }
+      loop i = 1; e.expr-c - 2; i++ {
+         +e-idx = e.expr-v[i];
+         var e-method:ExprMethod = e-idx.ptr();
+         +e-idx2 = e-method.thiss;
+         +e-data2 = e-idx2.ptr();
+         // C.printf("%u) carg-c %u, type %s\n", i, e-method.carg-c, e-data2.type.cp1-name());
+         if e-data2.type == #str {
+            // C.printf("constant string\n");
+         } else {
+            var val;
+            if !e-idx2.value(1, true, val) {
+               return;
+            }
+            // C.printf("val.info.array-c %u\n", val.info.array-c);
+            if (val.info.array-c > 0) && (val.type == basic-type(#char)) {
+               // C.printf("string detected\n");
+               e-method.thiss = e-method.carg-v[0].expr;
+               e-method.carg-v[0].expr = e-idx2;
+               if .id-str == 0:Id {
+                  .id-str = id-add(3, "str");
+               }
+               e-method.func-name = .id-str;
+            }
+         }
+         if !e-idx.process() {
             return;
          }
+      }
+      if !e.expr-v[e.expr-c - 1].process() {
+         return;
       }
       ok = true;
    }

@@ -36,8 +36,7 @@ enum File[#nil = -1, #0]:i32 {
       return f.ptr().path;
    }
    stdout(f:this, so:C.Stdout) {
-      +path = f.ptr().path;
-      so.str(path, C.strlen(path));
+      so.str(f.ptr().path);
    }
 }
 struct FileData[
