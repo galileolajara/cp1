@@ -17,7 +17,12 @@ export() {
    func-body-end();
    expr-push-call(0, 0);
    expr-pop-func(#nil, #nil);
+   expr-push-metacall(0, 0);
+   expr-pop-metafunc(#nil, #nil);
+   // expr-pop-metamethod(#nil, #nil);
    expr-pop-method(#nil, #nil);
+   metacarg-push(#nil);
+   metacarg-next-group();
    carg-push(#nil);
    carg-push-str(#nil);
    carg-next-group();

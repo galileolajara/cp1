@@ -300,6 +300,22 @@ struct ExprFunc[
    carg-c:u8,
    carg-v:Carg+[0],
 ];
+struct ExprMetaFunc[
+   base:Expr+,
+#if(parse)
+   at:At,
+   func-name:Id,
+   lvar:ExprI,
+   group-c:u8,
+   group-v:u8[#expr-carg-group-limit],
+   carg-c:u8,
+   carg-v:Carg+[0],
+#endif
+#if(compile)
+   expr-c:u8,
+   expr-v:ExprI[0],
+#endif
+];
 struct ExprMethod[
    base:Expr+,
    thiss:ExprI,
@@ -652,6 +668,13 @@ enum At[#nil = -1, #root, #relative]:i32 {
          w.n(1 + .at-in-header-idx-v[id]);
       }
    }
+   wr(at:this, w:Wtr) @inline {
+      if at == #nil {
+         w.n(0);
+      } else {
+         w.n(1 + at);
+      }
+   }
    wr(at:this, w:Wtr, header:bool) @inline {
       if at == #nil {
          w.n(0);
@@ -903,6 +926,13 @@ enum Id[#nil = -1, #0]:i32 {
          w.n(0);
       } else {
          w.n(1 + .id-in-header-idx-v[id]);
+      }
+   }
+   wr(id:this, w:Wtr) @inline {
+      if id == #nil {
+         w.n(0);
+      } else {
+         w.n(1 + id);
       }
    }
    wr(id:this, w:Wtr, header:bool) @inline {

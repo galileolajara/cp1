@@ -123,7 +123,10 @@
 #define _NCp1_NToken_Cspace_rangle_space (_NCp1_NToken_Cspace_langle_equal_space + 1)
 #define _NCp1_NToken_Cspace_rangle_equal_space (_NCp1_NToken_Cspace_rangle_space + 1)
 #define _NCp1_NToken_Cdot_id_upper_then_open_parenthesis (_NCp1_NToken_Cspace_rangle_equal_space + 1)
-#define _NCp1_NToken_Chash (_NCp1_NToken_Cdot_id_upper_then_open_parenthesis + 1)
+#define _NCp1_NToken_Cangular_bracket_id (_NCp1_NToken_Cdot_id_upper_then_open_parenthesis + 1)
+#define _NCp1_NToken_Cclose_angular_bracket (_NCp1_NToken_Cangular_bracket_id + 1)
+#define _NCp1_NToken_Cspace_close_angular_bracket (_NCp1_NToken_Cclose_angular_bracket + 1)
+#define _NCp1_NToken_Chash (_NCp1_NToken_Cspace_close_angular_bracket + 1)
 #define _NCp1_NToken_Cspace_plus_equal_space (_NCp1_NToken_Chash + 1)
 #define _NCp1_NToken_Cspace_minus_equal_space (_NCp1_NToken_Cspace_plus_equal_space + 1)
 #define _NCp1_NToken_Cspace_mul_equal_space (_NCp1_NToken_Cspace_minus_equal_space + 1)
@@ -194,7 +197,8 @@
 #define _NCp1_NExprType_Cbools (_NCp1_NExprType_Cassign + 1)
 #define _NCp1_NExprType_Cfunc (_NCp1_NExprType_Cbools + 1)
 #define _NCp1_Ccp1_carg_limit (64)
-#define _NCp1_NExprType_Cmethod (_NCp1_NExprType_Cfunc + 1)
+#define _NCp1_NExprType_Cmetafunc (_NCp1_NExprType_Cfunc + 1)
+#define _NCp1_NExprType_Cmethod (_NCp1_NExprType_Cmetafunc + 1)
 #define _NCp1_NStmtType_Cspace 0
 #define _NCp1_NStmtType_Cif (_NCp1_NStmtType_Cspace + 1)
 #define _NCp1_NStmtType_Cif_elif (_NCp1_NStmtType_Cif + 1)
@@ -520,6 +524,22 @@ uint8_t _Fgroup_v[_NCp1_Cexpr_carg_group_limit];
 uint8_t _Fcarg_c;
 struct _NCp1_NCarg _Fcarg_v[0];
 };
+struct _NCp1_NExprMetaFunc;
+struct _NCp1_NExprMetaFunc {
+struct _NCp1_NExpr _Fbase;
+_NCp1_NAt _Fat;
+_NCp1_NId _Ffunc_name;
+_NCp1_NExprI _Flvar;
+uint8_t _Fgroup_c;
+uint8_t _Fgroup_v[_NCp1_Cexpr_carg_group_limit];
+uint8_t _Fcarg_c;
+struct _NCp1_NCarg _Fcarg_v[0];
+};
+struct _NCp1_NExprLvar;
+struct _NCp1_NExprLvar {
+struct _NCp1_NExpr _Fbase;
+_NCp1_NLvar _Flvar;
+};
 struct _NCp1_NExprMethod;
 struct _NCp1_NExprMethod {
 struct _NCp1_NExpr _Fbase;
@@ -533,7 +553,7 @@ struct _NCp1_NCarg _Fcarg_v[0];
 struct _NCp1_NExprStrNode;
 struct _NCp1_NExprStrNode {
 struct _NCp1_NExprStrNode* _Fnext;
-int32_t _Flen;
+uint32_t _Flen;
 char _Fbuf[0];
 };
 struct _NCp1_NExprStr;
@@ -570,11 +590,6 @@ struct _NCp1_NStmtBreak;
 struct _NCp1_NStmtBreak {
 struct _NCp1_NStmt _Fbase;
 uint8_t _Fnest;
-};
-struct _NCp1_NExprLvar;
-struct _NCp1_NExprLvar {
-struct _NCp1_NExpr _Fbase;
-_NCp1_NLvar _Flvar;
 };
 struct _NCp1_NExprGvar;
 struct _NCp1_NExprGvar {
@@ -943,7 +958,11 @@ void _NCp1_Pdecl_var_as_fvar_0();
 void _NCp1_Pfunc_body_end_0();
 void _NCp1_Pexpr_push_call_2(int32_t _Lrow_0, int32_t _Lcol_1);
 _NCp1_NExprI _NCp1_Pexpr_pop_func_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lfunc_name_1);
+void _NCp1_Pexpr_push_metacall_2(int32_t _Lrow_0, int32_t _Lcol_1);
+_NCp1_NExprI _NCp1_Pexpr_pop_metafunc_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lfunc_name_1);
 _NCp1_NExprI _NCp1_Pexpr_pop_method_2(_NCp1_NExprI _Lthiss_0, _NCp1_NId _Lfunc_name_1);
+void _NCp1_Pmetacarg_push_1(_NCp1_NExprI _Lexpr_0);
+void _NCp1_Pmetacarg_next_group_0();
 void _NCp1_Pcarg_push_1(_NCp1_NExprI _Lexpr_0);
 void _NCp1_Pcarg_push_str_1(_NCp1_NExprI _Lexpr_0);
 void _NCp1_Pcarg_next_group_0();
@@ -1190,6 +1209,9 @@ case _NCp1_NToken_Cspace_langle_equal_space: return "space-langle-equal-space";
 case _NCp1_NToken_Cspace_rangle_space: return "space-rangle-space";
 case _NCp1_NToken_Cspace_rangle_equal_space: return "space-rangle-equal-space";
 case _NCp1_NToken_Cdot_id_upper_then_open_parenthesis: return "dot-id-upper-then-open-parenthesis";
+case _NCp1_NToken_Cangular_bracket_id: return "angular-bracket-id";
+case _NCp1_NToken_Cclose_angular_bracket: return "close-angular-bracket";
+case _NCp1_NToken_Cspace_close_angular_bracket: return "space-close-angular-bracket";
 case _NCp1_NToken_Chash: return "hash";
 case _NCp1_NToken_Cspace_plus_equal_space: return "space-plus-equal-space";
 case _NCp1_NToken_Cspace_minus_equal_space: return "space-minus-equal-space";
@@ -1248,6 +1270,7 @@ void _NCp1_NExprI_Pwr_compare_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* 
 void _NCp1_NExprI_Pwr_bool_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NExprI_Pwr_char_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NExprI_Pwr_method_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
+void _NCp1_NExprI_Pwr_metafunc_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NExprI_Pwr_func_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NExprI_Pwr_null_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NExprI_Pwr_int_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
@@ -1267,6 +1290,7 @@ case _NCp1_NExprType_Cmath: return "math";
 case _NCp1_NExprType_Cassign: return "assign";
 case _NCp1_NExprType_Cbools: return "bools";
 case _NCp1_NExprType_Cfunc: return "func";
+case _NCp1_NExprType_Cmetafunc: return "metafunc";
 case _NCp1_NExprType_Cmethod: return "method";
 case _NCp1_NExprType_Cfvar: return "fvar";
 case _NCp1_NExprType_Csoa_field: return "soa-field";
@@ -1982,6 +2006,11 @@ _Ltok_48._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_45, 1, 0);
 _Glast_token = _Lt_49;
 cp1Parse(_Lpsr_44, _Lt_49, _Ltok_48);
 break;
+case _NCp1_NToken_Cangular_bracket_id:;
+_Ltok_48._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_45, 1, 0);
+_Glast_token = _Lt_49;
+cp1Parse(_Lpsr_44, _Lt_49, _Ltok_48);
+break;
 case _NCp1_NToken_Cdot_id_upper:;
 _Ltok_48._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_45, 1, 0);
 if(_Llex_45._Fcursor[0] == '(') {
@@ -2187,7 +2216,11 @@ _NCp1_Pdecl_var_as_fvar_0();
 _NCp1_Pfunc_body_end_0();
 _NCp1_Pexpr_push_call_2(0, 0);
 _NCp1_Pexpr_pop_func_2(_NCp1_NAt_Cnil, _NCp1_NId_Cnil);
+_NCp1_Pexpr_push_metacall_2(0, 0);
+_NCp1_Pexpr_pop_metafunc_2(_NCp1_NAt_Cnil, _NCp1_NId_Cnil);
 _NCp1_Pexpr_pop_method_2(_NCp1_NExprI_Cnil, _NCp1_NId_Cnil);
+_NCp1_Pmetacarg_push_1(_NCp1_NExprI_Cnil);
+_NCp1_Pmetacarg_next_group_0();
 _NCp1_Pcarg_push_1(_NCp1_NExprI_Cnil);
 _NCp1_Pcarg_push_str_1(_NCp1_NExprI_Cnil);
 _NCp1_Pcarg_next_group_0();
@@ -3220,6 +3253,68 @@ _Li_7++;
 break_1:;
 return _Le_idx_5;
 }
+void _NCp1_Pexpr_push_metacall_2(int32_t _Lrow_0, int32_t _Lcol_1) {
+int8_t _Lcall_idx_2;
+_Lcall_idx_2 = _Gexpr_call_c++;
+if(_Lcall_idx_2 >= _NCp1_Cexpr_call_nest_limit) {
+fprintf(stdout, "%u:%u: Too much nested calls\n", _Lrow_0, _Lcol_1);
+exit(_NLibC_NExit_Cfailure);
+}
+_Gexpr_call_carg_c[_Lcall_idx_2] = 0;
+_Gexpr_call_cgrp_c[_Lcall_idx_2] = 1;
+_Gexpr_call_cgrp_v[_Lcall_idx_2][0] = 0;
+}
+_NCp1_NExprI _NCp1_Pexpr_pop_metafunc_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lfunc_name_1) {
+int8_t _Lcall_idx_2;
+uint8_t _Lcarg_c_3;
+struct _NCp1_NExprMetaFunc* _Le_4;
+_NCp1_NExprI _Le_idx_5;
+_Lcall_idx_2 = (_Gexpr_call_c -= 1);
+_Lcarg_c_3 = _Gexpr_call_carg_c[_Lcall_idx_2];
+_NCp1_Pquick_alloc_plus_2(_Le_4, sizeof(struct _NCp1_NCarg) * _Lcarg_c_3);
+_Le_idx_5 = _NCp1_Pexpr_push_2(&(*_Le_4)._Fbase, _NCp1_NExprType_Cmetafunc);
+(*_Le_4)._Fat = _Lat_0;
+(*_Le_4)._Ffunc_name = _Lfunc_name_1;
+(*_Le_4)._Fcarg_c = _Lcarg_c_3;
+int32_t _Li_6;
+_Li_6 = 0;
+for(int i = _Lcarg_c_3; i > 0; ) {
+i --;
+(*_Le_4)._Fcarg_v[_Li_6]._Freff = 0;
+(*_Le_4)._Fcarg_v[_Li_6]._Fexpr = _Gexpr_call_carg_v[_Lcall_idx_2][_Li_6];
+continue_0:;
+_Li_6++;
+}
+break_0:;
+(*_Le_4)._Fgroup_c = _Gexpr_call_cgrp_c[_Lcall_idx_2];
+int32_t _Li_7;
+_Li_7 = 0;
+for(int i = (*_Le_4)._Fgroup_c; i > 0; ) {
+i --;
+(*_Le_4)._Fgroup_v[_Li_7] = _Gexpr_call_cgrp_v[_Lcall_idx_2][_Li_7];
+continue_1:;
+_Li_7++;
+}
+break_1:;
+if(true) {
+_NCp1_NId _Llvar_name_8;
+struct _NCp1_NStmtSpace* _Lspace_9;
+struct _NCp1_NExprLvar* _Le2_10;
+_NCp1_NExprI _Le_idx_11;
+struct _NCp1_NLvarData* _Llvar_12;
+_Llvar_name_8 = _Lfunc_name_1;
+_Lspace_9 = _Gdecl_func_ctx_space;
+_NCp1_Pquick_alloc_one_1(_Le2_10);
+_Le_idx_11 = _NCp1_Pexpr_push_2(&(*_Le2_10)._Fbase, _NCp1_NExprType_Clvar);
+(*_Le2_10)._Flvar = _NCp1_NStmtSpace_Plvar_new_4(_Lspace_9, _Llvar_name_8, 0, 0);
+_Llvar_12 = _NCp1_NLvar_Pptr_1((*_Le2_10)._Flvar);
+_Gdecl_var._Fname = _Llvar_name_8;
+_NCp1_Pdecl_var_type_1(_NCp1_NAt_Cnil);
+_NCp1_NDeclVarData_Pcopy_from_2(&(*_Llvar_12)._Fdecl, &_Gdecl_var);
+(*_Le_4)._Flvar = _Le_idx_11;
+}
+return _Le_idx_5;
+}
 _NCp1_NExprI _NCp1_Pexpr_pop_method_2(_NCp1_NExprI _Lthiss_0, _NCp1_NId _Lfunc_name_1) {
 int8_t _Lcall_idx_2;
 uint8_t _Lcarg_c_3;
@@ -3252,6 +3347,18 @@ _Li_7++;
 }
 break_1:;
 return _Le_idx_5;
+}
+void _NCp1_Pmetacarg_push_1(_NCp1_NExprI _Lexpr_0) {
+int8_t _Lcall_idx_1;
+_Lcall_idx_1 = (_Gexpr_call_c - 1);
+_Gexpr_call_carg_v[_Lcall_idx_1][_Gexpr_call_carg_c[_Lcall_idx_1]++] = _Lexpr_0;
+_Gexpr_call_cgrp_v[_Lcall_idx_1][(_Gexpr_call_cgrp_c[_Lcall_idx_1] - 1)]++;
+}
+void _NCp1_Pmetacarg_next_group_0() {
+int8_t _Lcall_idx_0;
+_Lcall_idx_0 = (_Gexpr_call_c - 1);
+_Gexpr_call_cgrp_v[_Lcall_idx_0][_Gexpr_call_cgrp_c[_Lcall_idx_0]] = 0;
+_Gexpr_call_cgrp_c[_Lcall_idx_0]++;
 }
 void _NCp1_Pcarg_push_1(_NCp1_NExprI _Lexpr_0) {
 int8_t _Lcall_idx_1;
@@ -4357,6 +4464,9 @@ break;
 case _NCp1_NExprType_Cmethod:;
 _NCp1_NExprI_Pwr_method_3(_Lexpr_3, _Lw_1, _Lheader_2);
 break;
+case _NCp1_NExprType_Cmetafunc:;
+_NCp1_NExprI_Pwr_metafunc_3(_Lexpr_3, _Lw_1, _Lheader_2);
+break;
 case _NCp1_NExprType_Cfunc:;
 _NCp1_NExprI_Pwr_func_3(_Lexpr_3, _Lw_1, _Lheader_2);
 break;
@@ -4928,6 +5038,33 @@ continue_1:;
 _Li_5++;
 }
 break_1:;
+}
+inline void _NCp1_NExprI_Pwr_metafunc_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2) {
+struct _NCp1_NExprMetaFunc* _Le_3;
+_Le_3 = _Lexpr_0;
+_NCp1_NAt_Pwr_3((*_Le_3)._Fat, _Lw_1, _Lheader_2);
+_NCp1_NId_Pwr_3((*_Le_3)._Ffunc_name, _Lw_1, _Lheader_2);
+_NCp1_NWtr_Pn1_2(_Lw_1, (*_Le_3)._Fgroup_c);
+int32_t _Li_4;
+_Li_4 = 0;
+for(int i = (*_Le_3)._Fgroup_c; i > 0; ) {
+i --;
+_NCp1_NWtr_Pn1_2(_Lw_1, (*_Le_3)._Fgroup_v[_Li_4]);
+continue_0:;
+_Li_4++;
+}
+break_0:;
+_NCp1_NWtr_Pn1_2(_Lw_1, (*_Le_3)._Fcarg_c);
+int32_t _Li_5;
+_Li_5 = 0;
+for(int i = (*_Le_3)._Fcarg_c; i > 0; ) {
+i --;
+_NCp1_NExprI_Pwr_3((*_Le_3)._Fcarg_v[_Li_5]._Fexpr, _Lw_1, _Lheader_2);
+continue_1:;
+_Li_5++;
+}
+break_1:;
+_NCp1_NExprI_Pwr_3((*_Le_3)._Flvar, _Lw_1, _Lheader_2);
 }
 inline void _NCp1_NExprI_Pwr_func_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2) {
 struct _NCp1_NExprFunc* _Le_3;

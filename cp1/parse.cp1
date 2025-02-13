@@ -1384,6 +1384,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                .last-token = t;
                psr.parse(t, tok);
             }
+            case #angular-bracket-id {
+               tok.val.ii32.id = lex.get-id(1, 0);
+               .last-token = t;
+               psr.parse(t, tok);
+            }
             case #dot-id-upper {
                tok.val.ii32.id = lex.get-id(1, 0);
                if lex.cursor[0] == ''( {

@@ -432,6 +432,58 @@ expr-pop-method(thiss:ExprI, func-name:Id):ExprI {
    }
    return e-idx;
 }
+expr-push-metacall(row:i32, col:i32) {
+   +call-idx = .expr-call-c++;
+   if call-idx >= #expr-call-nest-limit {
+      C.out.printf("%u:%u: Too much nested calls\n", row, col);
+      C.exit(#failure);
+   }
+   .expr-call-carg-c[call-idx] = 0;
+   .expr-call-cgrp-c[call-idx] = 1;
+   .expr-call-cgrp-v[call-idx][0] = 0;
+}
+metacarg-next-group() {
+   +call-idx = .expr-call-c - 1;
+   .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx]] = 0;
+   .expr-call-cgrp-c[call-idx]++;
+}
+metacarg-push(expr:ExprI) {
+   +call-idx = .expr-call-c - 1;
+   .expr-call-carg-v[call-idx][.expr-call-carg-c[call-idx]++] = expr;
+   .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
+}
+expr-pop-metafunc(at:At, func-name:Id):ExprI {
+   +call-idx = .expr-call-c -= 1;
+   +carg-c = .expr-call-carg-c[call-idx];
+   var e:ExprMetaFunc;
+   quick-alloc-plus(e, Carg[usz] * carg-c);
+   +e-idx = expr-push(e.base, #metafunc);
+   e.at = at;
+   e.func-name = func-name;
+   // C.printf("parse func-name %s\n", func-name.str());
+   e.carg-c = carg-c;
+   loop i = 0; carg-c; i++ {
+      e.carg-v[i].reff = 0;
+      e.carg-v[i].expr = .expr-call-carg-v[call-idx][i];
+   }
+   e.group-c = .expr-call-cgrp-c[call-idx];
+   loop i = 0; e.group-c; i++ {
+      e.group-v[i] = .expr-call-cgrp-v[call-idx][i];
+   }
+   if true {
+      +lvar-name = func-name;
+      +space = .decl-func-ctx-space;
+      quick-alloc-one(+(e2:ExprLvar));
+      +e-idx = expr-push(e2.base, #lvar);
+      e2.lvar = space.lvar-new(lvar-name, 0, 0);
+      +lvar = e2.lvar.ptr();
+      .decl-var.name = lvar-name;
+      decl-var-type(#nil);
+      lvar.decl.copy-from(.decl-var);
+      e.lvar = e-idx;
+   }
+   return e-idx;
+}
  
 
 }

@@ -155,11 +155,18 @@ using ExprI {
       ExprI.rd(+this-expr, r);
       Id.rd(+func-name, r);
       +group-c = r.n1();
-      var group-v:i8[#expr-carg-group-limit];
+      var group-v:u8[#expr-carg-group-limit];
       loop i = 0; group-c; i++ {
          group-v[i] = r.n1();
       }
       +carg-c = r.n1();
+      var carg-v:ExprI[256];
+      loop i = 0; carg-c; i++ {
+         carg-v[i].rd(r);
+      }
+      set-method(e-idx, this-expr, func-name, group-c, group-v, carg-c, carg-v);
+   }
+   set-method(e-idx:ExprI, this-expr:ExprI, func-name:Id, group-c:u8, group-v:u8[], carg-c:u8, carg-v:ExprI[]) {
       quick-alloc-plus(+(e:ExprMethod), Carg[usz] * carg-c);
       e-idx.set(e.base, #method);
       e.thiss = this-expr;
@@ -170,7 +177,7 @@ using ExprI {
       }
       e.carg-c = carg-c;
       loop i = 0; carg-c; i++ {
-         e.carg-v[i].expr.rd(r);
+         e.carg-v[i].expr = carg-v[i];
       }
    }
    process-method(expr:Expr, ok:bool&) @case.process() @inline {
@@ -316,6 +323,105 @@ using ExprI {
       }
       .out.printf(")");
    }
+   write-metafunc(expr:Expr) @case.write() @inline {
+      var e:ExprMetaFunc = expr;
+      e.expr-v[0].write();
+      loop i = 1; e.expr-c - 1; i++ {
+         .out.printf(";\n");
+         e.expr-v[i].write();
+      }
+   }
+   wr-metafunc(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
+      var e:ExprMetaFunc = expr;
+      e.at.wr(w, header);
+      e.func-name.wr(w, header);
+      w.n1(e.group-c);
+      loop i = 0; e.group-c; i++ {
+         w.n1(e.group-v[i]);
+      }
+      w.n1(e.carg-c);
+      loop i = 0; e.carg-c; i++ {
+         e.carg-v[i].expr.wr(w, header);
+      }
+      e.lvar.wr(w, header);
+   }
+   rd-metafunc(e-idx:ExprI, r:Rdr) @case.rd() @inline {
+      At.rd(+at-idx, r);
+      Id.rd(+func-name, r);
+      +group-c = r.n1();
+      var group-v:i8[#expr-carg-group-limit];
+      loop i = 0; group-c; i++ {
+         group-v[i] = r.n1();
+      }
+      +carg-c = r.n1();
+      var carg-v:ExprI[256];
+      loop i = 0; carg-c; i++ {
+         carg-v[i].rd(r);
+      }
+      ExprI.rd(+lvar, r);
+
+      +expr-c = group-c + 2;
+      quick-alloc-plus(+(e:ExprMetaFunc), ExprI[usz] * expr-c);
+      e-idx.set(e.base, #metafunc);
+
+      e.expr-c = expr-c;
+      e-idx = ExprI.alloc();
+      e.expr-v[0] = e-idx;
+      if true {
+         var group-v:u8[1];
+         group-v[0] = 1;
+         var carg-v:ExprI[1];
+         carg-v[0] = lvar;
+         set-func(e-idx, at-idx, func-name, 1, group-v, 1, carg-v);
+      }
+      loop i = 0, j = 0; group-c; i++ {
+         +carg-c = group-v[i];
+         e-idx = ExprI.alloc();
+         e.expr-v[i + 1] = e-idx;
+
+         +carg = carg-v[j++];
+         +e-carg = carg.ptr();
+         var group-v:u8[1];
+         var carg2-v:ExprI[256];
+         if e-carg.type == #str {
+            var e-str:ExprStr = e-carg;
+            group-v[0] = 2 + (carg-c - 1);
+            carg2-v[0] = carg;
+            +e-idx2 = ExprI.alloc();
+            quick-alloc-one(+(e:ExprIntData));
+            e-idx2.set(e.base, #int);
+            e.value.ii32 = e-str.len();
+            e.type = #u32;
+            carg2-v[1] = e-idx2;
+            loop k = 2; carg-c - 1 {
+               carg2-v[k++] = carg-v[j++];
+            }
+            if .id-str == 0:Id {
+               .id-str = id-add(3, "str");
+            }
+            set-method(e-idx, lvar, .id-str, 1, group-v, group-v[0], carg2-v);
+         } else {
+            group-v[0] = 1 + (carg-c - 1);
+            carg2-v[0] = lvar;
+            loop k = 1; carg-c - 1 {
+               carg2-v[k++] = carg-v[j++];
+            }
+            set-method(e-idx, carg, func-name, 1, group-v, group-v[0], carg2-v);
+         }
+      }
+      e-idx = ExprI.alloc();
+      e.expr-v[e.expr-c - 1] = e-idx;
+      if true {
+         var group-v:u8[1];
+         group-v[0] = 0;
+         if .id-end == 0:Id {
+            .id-end = id-add(3, "end");
+         }
+         set-method(e-idx, lvar, .id-end, 1, group-v, 0, null);
+      }
+   }
+   var id-end:Id;
+   var id-str:Id;
    wr-func(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprFunc = expr;
       e.at.wr(w, header);
@@ -333,12 +439,18 @@ using ExprI {
       At.rd(+at-idx, r);
       Id.rd(+func-name, r);
       +group-c = r.n1();
-      var group-v:i8[#expr-carg-group-limit];
+      var group-v:u8[#expr-carg-group-limit];
       loop i = 0; group-c; i++ {
          group-v[i] = r.n1();
       }
       +carg-c = r.n1();
-
+      var carg-v:ExprI[256];
+      loop i = 0; carg-c; i++ {
+         carg-v[i].rd(r);
+      }
+      set-func(e-idx, at-idx, func-name, group-c, group-v, carg-c, carg-v);
+   }
+   set-func(e-idx:ExprI, at-idx:At, func-name:Id, group-c:u8, group-v:u8[], carg-c:u8, carg-v:ExprI[]) {
       quick-alloc-plus(+(e:ExprFunc), Carg[usz] * carg-c);
       e-idx.set(e.base, #func);
       e.at = at-idx;
@@ -349,8 +461,17 @@ using ExprI {
       }
       e.carg-c = carg-c;
       loop i = 0; carg-c; i++ {
-         e.carg-v[i].expr.rd(r);
+         e.carg-v[i].expr = carg-v[i];
       }
+   }
+   process-metafunc(expr:Expr, ok:bool&) @case.process() @inline {
+      var e:ExprMetaFunc = expr;
+      loop i = 0; e.expr-c; i++ {
+         if !e.expr-v[i].process() {
+            return;
+         }
+      }
+      ok = true;
    }
    process-func(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprFunc = expr;
