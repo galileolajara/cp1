@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using Cp1 {
-enum Math[#add, #sub, #mul, #div, #lshift, #rshift, #and, #or, #xor]:u8 {
+enum Math[#add, #sub, #mul, #div, #mod, #lshift, #rshift, #and, #or, #xor, #mod]:u8 {
    wr(e:this, w:Wtr) @inline {
       w.n1(e:base);
    }
@@ -98,6 +98,15 @@ using ExprI {
             e.right.write-value(e.right-val);
             loop i = 0; e.item-c; i++ {
                .out.printf(" / ");
+               e.item-v[i].expr.write-value(e.item-v[i].val);
+            }
+         }
+         case #mod {
+            e.left.write-value(e.left-val);
+            .out.printf(" %% ");
+            e.right.write-value(e.right-val);
+            loop i = 0; e.item-c; i++ {
+               .out.printf(" %% ");
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
          }

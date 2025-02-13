@@ -111,7 +111,8 @@
 #define _NCp1_NToken_Cspace_minus_space (_NCp1_NToken_Cspace_plus_space + 1)
 #define _NCp1_NToken_Cspace_mul_space (_NCp1_NToken_Cspace_minus_space + 1)
 #define _NCp1_NToken_Cspace_div_space (_NCp1_NToken_Cspace_mul_space + 1)
-#define _NCp1_NToken_Cspace_langle_langle_space (_NCp1_NToken_Cspace_div_space + 1)
+#define _NCp1_NToken_Cspace_mod_space (_NCp1_NToken_Cspace_div_space + 1)
+#define _NCp1_NToken_Cspace_langle_langle_space (_NCp1_NToken_Cspace_mod_space + 1)
 #define _NCp1_NToken_Cspace_rangle_rangle_space (_NCp1_NToken_Cspace_langle_langle_space + 1)
 #define _NCp1_NToken_Cspace_amp_space (_NCp1_NToken_Cspace_rangle_rangle_space + 1)
 #define _NCp1_NToken_Cspace_pipe_space (_NCp1_NToken_Cspace_amp_space + 1)
@@ -809,10 +810,10 @@ _NCp1_NStruct _Gstruct_cap;
 struct _NCp1_NStructData** _Gstruct_v;
 uint32_t _Gdecl_fvar_cap;
 struct _NCp1_NDeclVarData* _Gdecl_fvar_v;
-extern int32_t _Grow;
-extern int32_t _Gcol;
-extern int32_t _Glast_row;
-extern int32_t _Glast_col;
+extern uint32_t _Grow;
+extern uint32_t _Gcol;
+extern uint32_t _Glast_row;
+extern uint32_t _Glast_col;
 _NCp1_NToken _Glast_token;
 int32_t _Gid_c;
 uint8_t* _Gid_in_header_v;
@@ -1197,6 +1198,7 @@ case _NCp1_NToken_Cspace_plus_space: return "space-plus-space";
 case _NCp1_NToken_Cspace_minus_space: return "space-minus-space";
 case _NCp1_NToken_Cspace_mul_space: return "space-mul-space";
 case _NCp1_NToken_Cspace_div_space: return "space-div-space";
+case _NCp1_NToken_Cspace_mod_space: return "space-mod-space";
 case _NCp1_NToken_Cspace_langle_langle_space: return "space-langle-langle-space";
 case _NCp1_NToken_Cspace_rangle_rangle_space: return "space-rangle-rangle-space";
 case _NCp1_NToken_Cspace_amp_space: return "space-amp-space";

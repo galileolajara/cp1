@@ -540,10 +540,10 @@ struct Parser[] {
    free(psr:this);
    parse(psr:this, t:Token, tok:TokenData+) @real-name(cp1Parse);
 }
-var last-row:i32 @extern;
-var last-col:i32 @extern;
-var row:i32 @extern;
-var col:i32 @extern;
+var last-row:u32 @extern;
+var last-col:u32 @extern;
+var row:u32 @extern;
+var col:u32 @extern;
 write-func(w:Wtr, header:bool) @inline {
    w.n(.func-c:base);
    loop i = 0; .func-c; {

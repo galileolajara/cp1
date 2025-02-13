@@ -13,21 +13,10 @@ at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
    +parent = type.parent.ptr();
    if (&&, parent.type == #basic, parent.name.basic == #relative) {
       +name = type.name;
-      // C.out.printf("type is %s\n", at-i.ptr().type.cp1-name());
-      // if at-i.ptr().type == #module {
-      //    C.out.printf("name is %s\n", at-i.ptr().name.id.str());
-      //    C.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cp1-name());
-      //    if at-i.ptr().parent.ptr().type == #basic {
-      //       C.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cp1-name());
-      //    }
-      // }
-      // C.out.printf("relative type detected, finding :%s, parent is %d\n", name.id.str(), at-i);
       loop {
          loop i = 0:At; .at-c; i++ {
             if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
-               // C.out.printf("%u/%u) :%s, %d, %d\n", i, .at-c, .at-v[i].name.id.str(), .at-v[i].decl.structt, at-i);
                if .at-v[i].name.id == name.id {
-                  // C.out.printf("found\n");
                   return i;
                }
             }
@@ -35,29 +24,24 @@ at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
          if at-i == #root { break }
          at-i = at-i.ptr().parent;
       }
-      C.out.printf("%s:%u:%u: Type %s was not found\n", file.path(), row, col, name.id.str());
-      // C.out.flush();
-      // var i:u32[] = [];
-      // i[0] = 0;
-      // C.exit(#failure);
+      C<stdout file; ":"; row; ":"; col; ": Type '"; name.id; "' was not found\n">;
       return #nil;
    }
    return vd-type;
 }
 using DeclVarData {
    validate(vd:this, base-at:At):bool {
-      // C.out.printf("validating the type of %s\n", vd.name.str());
       vd.type = at-validate(vd.type, base-at);
       if vd.type == #nil { return false }
       return true;
    }
-   process(vd:this, file:File, row:i32, col:i32, base-at:At):bool {
+   process(vd:this, file:File, row:u32, col:u32, base-at:At):bool {
       +at-i = at-validate(vd.type, base-at, file, row, col);
       if at-i == #nil { return false }
       vd.type = at-i;
       +at = at-i.ptr();
       if (&&, at.type != #basic, at.decl.structt == #nil) {
-         C.out.printf("%s:%u:%u: Error, the type '%s' used in '%s' was not defined\n", file.path(), row, col, at.name.id.str(), vd.name.str());
+         C<stdout file; ":"; row; ":"; col; ": Error, the type '"; at.name.id; "' used in '"; vd.name; "' was not defined\n">;
          return false;
       }
       at-i.output(.ctx-func.file, row, col);
@@ -122,48 +106,11 @@ using DeclVarData {
          vd.real-name.wr(w, header);
       }
       vd.type-info.wr(w);
-      // C.out.printf("%s, vd.size-c %d\n", vd.name.str(), vd.size-c);
       w.n1(vd.size-c);
       loop i = 0; vd.size-c; i++ {
          vd.size-expr-v[i].wr(w, header);
       }
    }
-   // validate(vd-type:At, at-i:At, vd-name:Id):At {
-   //    +type = vd-type.ptr();
-   //    if type.type == #basic { return vd-type }
-   //    +parent = type.parent.ptr();
-   //    if (&&, parent.type == #basic, parent.name.basic == #relative) {
-   //       +name = type.name;
-   //       C.out.printf("type is %s\n", at-i.ptr().type.cp1-name());
-   //       if at-i.ptr().type == #module {
-   //          C.out.printf("name is %s\n", at-i.ptr().name.id.str());
-   //          C.out.printf("parent type is %s\n", at-i.ptr().parent.ptr().type.cp1-name());
-   //          if at-i.ptr().parent.ptr().type == #basic {
-   //             C.out.printf("parent basic type is %s\n", at-i.ptr().parent.ptr().name.basic.cp1-name());
-   //          }
-   //       }
-   //       C.out.printf("relative detected on var %s, finding :%s\n", vd-name.str(), name.id.str());
-   //       // +old-out = .out;
-   //       // .out = C.out;
-   //       // at-i.write-space();
-   //       // .out = old-out;
-   //       loop {
-   //          loop i = 0:At; .at-c; i++ {
-   //             if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
-   //                C.out.printf("%u) :%s\n", i, .at-v[i].name.id.str());
-   //                if .at-v[i].name.id == name.id {
-   //                   return i;
-   //                }
-   //             }
-   //          }
-   //          if at-i == #root { break }
-   //          at-i = at-i.ptr().parent;
-   //       }
-   //       C.out.printf("not found\n");
-   //       C.exit(#failure);
-   //    }
-   //    return vd-type;
-   // }
    rd(vd:this, r:Rdr) {
       vd.name.rd(r);
       vd.type.rd(r);
@@ -325,13 +272,13 @@ decl-var-begin(name:Id, row:i32, col:i32) {
    .decl-var.flags = #0;
    .decl-var.real-name = #nil;
    .decl-var.size-c = 0;
-   // C.out.printf("var-begin %s\n", name.str());
 }
 decl-var-end() {
 }
 decl-var-attr-real-name(name:Id) {
    if (.decl-var.flags & #real-name) != #0 {
       C.out.printf("%u:%u: error @real-name specified more than once\n", .last-row, .last-col);
+      // C<stdout .input-path; ":"; .last-row; ":"; .last-col; ": error @real-name specified more than once\n">;
       C.exit(#failure);
    }
    .decl-var.flags |= #real-name;

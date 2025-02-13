@@ -129,6 +129,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "-" spaces                { return CP1_TOKEN_SPACE_MINUS_SPACE; }
    spaces "*" spaces                { return CP1_TOKEN_SPACE_MUL_SPACE; }
    spaces "/" spaces                { return CP1_TOKEN_SPACE_DIV_SPACE; }
+   spaces "%" spaces                { return CP1_TOKEN_SPACE_MOD_SPACE; }
    spaces "<<" spaces               { return CP1_TOKEN_SPACE_LANGLE_LANGLE_SPACE; }
    spaces ">>" spaces               { return CP1_TOKEN_SPACE_RANGLE_RANGLE_SPACE; }
    spaces "&" spaces                { return CP1_TOKEN_SPACE_AMP_SPACE; }

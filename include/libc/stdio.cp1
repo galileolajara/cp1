@@ -23,5 +23,73 @@ include <stdio.h>  {
       fclose(f:File):intc @no-decl @real-name;
       fwrite(buf:ref, size1:usz, size2:usz, f:File):usz @no-decl @real-name;
       tempnam(dir:char[], pfx:char[]):char[] @no-decl @real-name;
+
+      var stdout-buf-data:char[];
+      var stdout-buf-cap:u32;
+      var stdout-buf-len:u32;
+      stdout(so:Stdout) {
+      }
+      stdout-bytes(data:ref, size:usz) @inline {
+         stdout-reserve(size);
+         C.memcpy(&.stdout-buf-data[.stdout-buf-len], data, size);
+         .stdout-buf-len += size;
+      }
+      stdout-u32(val:u32) {
+         stdout-reserve(10);
+         if val == 0 {
+            .stdout-buf-data[.stdout-buf-len++] = ''0;
+         } else {
+            // integer to string, count the digits
+            var data:char[];
+            data = &.stdout-buf-data[.stdout-buf-len];
+            +digits = 0;
+            loop {
+               data[digits++] = (val % 10) + ''0;
+               val /= 10;
+               if val == 0 { break }
+            }
+            // reverse the string
+            +start = 0;
+            +end = digits - 1;
+            loop start < end {
+               +tmp = data[start];
+               data[start] = data[end];
+               data[end] = tmp;
+               start++;
+               end--;
+            }
+            .stdout-buf-len += digits;
+         }
+      }
+      stdout-reserve(len:u32) @inline {
+         +space = .stdout-buf-cap - .stdout-buf-len;
+         if space < len {
+            if .stdout-buf-cap == 0 {
+               .stdout-buf-cap = 256;
+            } else {
+               .stdout-buf-cap += .stdout-buf-cap;
+            }
+            space = .stdout-buf-cap - .stdout-buf-len;
+            loop space < len {
+               .stdout-buf-cap += .stdout-buf-cap;
+               space = .stdout-buf-cap - .stdout-buf-len;
+            }
+            C.realloc-arr(.stdout-buf-data, .stdout-buf-cap);
+         }
+      }
+      struct Stdout[] {
+         str(so:this, str:char[], len:u32) @inline {
+            stdout-bytes(str, len);
+         }
+         end(so:this) {
+            1:X.Fd.write(.stdout-buf-data, .stdout-buf-len);
+            .stdout-buf-len = 0;
+         }
+      }
+   }
+   using u32 {
+      stdout(val:this, so:C.Stdout) {
+         C.stdout-u32(val);
+      }
    }
 }
