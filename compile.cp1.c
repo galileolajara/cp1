@@ -36,7 +36,7 @@
 #define _NCp1_NAt_Cnil (-1)
 #define _NCp1_NAt_Croot (_NCp1_NAt_Cnil + 1)
 #define _NCp1_Ctype_info_star_limit (8)
-#define _NCp1_Cexpr_carg_group_limit (4)
+#define _NCp1_Cexpr_carg_group_limit (256)
 #define _NCp1_NEnum_Cnil (-1)
 #define _NLibC_NExit_Csuccess 0
 #define _NLibC_NExit_Cfailure (_NLibC_NExit_Csuccess + 1)
@@ -4416,7 +4416,7 @@ inline void _NCp1_NExprI_Prd_metafunc_2(_NCp1_NExprI _Le_idx_0, union _NCp1_NRdr
 _NCp1_NAt _Lat_idx_2;
 _NCp1_NId _Lfunc_name_3;
 uint8_t _Lgroup_c_4;
-int8_t _Lgroup_v_5[_NCp1_Cexpr_carg_group_limit];
+uint8_t _Lgroup_v_5[_NCp1_Cexpr_carg_group_limit];
 uint8_t _Lcarg_c_7;
 _NCp1_NExprI _Lcarg_v_8[256];
 _NCp1_NExprI _Llvar_10;
@@ -4464,7 +4464,7 @@ _Li_15 = 0;
 _Lj_16 = 0;
 for(int i = _Lgroup_c_4; i > 0; ) {
 i --;
-int8_t _Lcarg_c_17;
+uint8_t _Lcarg_c_17;
 _NCp1_NExprI _Lcarg_18;
 struct _NCp1_NExpr* _Le_carg_19;
 uint8_t _Lgroup_v_20[1];

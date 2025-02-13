@@ -349,7 +349,7 @@ using ExprI {
       At.rd(+at-idx, r);
       Id.rd(+func-name, r);
       +group-c = r.n1();
-      var group-v:i8[#expr-carg-group-limit];
+      var group-v:u8[#expr-carg-group-limit];
       loop i = 0; group-c; i++ {
          group-v[i] = r.n1();
       }

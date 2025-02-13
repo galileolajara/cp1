@@ -345,7 +345,7 @@ func-body-end() {
    }
 }
 #expr-call-nest-limit:i32 = 8;
-#expr-carg-group-limit:i32 = 4;
+#expr-carg-group-limit:i32 = 256;
 var expr-call-c:i8;
 #cp1-carg-limit:i32 = 64;
 var expr-call-carg-c:u8[#expr-call-nest-limit];

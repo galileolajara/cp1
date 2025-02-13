@@ -21,7 +21,7 @@
 #define _NCp1_NBasicTypeId_Croot 0
 #define _NCp1_NBasicTypeId_Crelative (_NCp1_NBasicTypeId_Croot + 1)
 #define _NCp1_Ctype_info_star_limit (8)
-#define _NCp1_Cexpr_carg_group_limit (4)
+#define _NCp1_Cexpr_carg_group_limit (256)
 #define _NCp1_NToken_Cnil 0
 #define _NCp1_NToken_Cplus (_NCp1_NToken_Cnil + 1)
 #define _NCp1_NToken_Cminus (_NCp1_NToken_Cplus + 1)
