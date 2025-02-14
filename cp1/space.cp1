@@ -35,7 +35,6 @@ struct StmtSpace[
       loop ; lvar-c; i++ {
          +lvar-i = space.lvar-v[i];
          +lvar = lvar-i.ptr();
-         // C.out.printf("%s %s\n", lvar.decl.type.ptr().type.cp1-name(), lvar.decl.type.ptr().name.basic.cp1-name());
          lvar.decl.write-lvar-type(lvar-i);
          if (lvar.flags & #set-expr) != #0 {
             .out.printf(" = {0}");
@@ -50,12 +49,12 @@ struct StmtSpace[
       }
       // .out.printf("} // space end\n");
    }
-   lvar-new(space:this, name:Id, row:i32, col:i32):Lvar {
+   lvar-new(space:this, name:Id, row:u32, col:u32):Lvar {
       +v = space.lvar-v;
       loop i = 0; space.lvar-c; i++ {
          +lvar = v[i].ptr();
          if lvar.decl.name == name {
-            C.out.printf("%u:%u: lvar '%s' was already declared at %u:%u\n", row, col, name.str(), lvar.row, lvar.col);
+            C<stdout .input-path; ":"; row; ":"; col; ": lvar '"; name.str(); "' was already declared at "; lvar.row; ":"; lvar.col; "\n">;
             C.exit(#failure);
          }
       }
@@ -101,7 +100,7 @@ struct StmtSpace[
          w.n(stmt.end-col);
          switch.wr(stmt, w, header) stmt.type {
             default {
-               C.out.printf("wr() not yet implemented in stmt #%s\n", stmt.type.cp1-name());
+               C<stdout "wr() not yet implemented in stmt #"; stmt.type.cp1-name(); "\n">;
                C.exit(#failure);
             }
          }
@@ -112,7 +111,7 @@ struct StmtSpace[
       }
       StmtType#nil.wr(w);
    }
-   stmt-push(s:this, s2:Stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:StmtType) @inline {
+   stmt-push(s:this, s2:Stmt, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32, type:StmtType) @inline {
       s2.begin-row = begin-row;
       s2.begin-col = begin-col;
       s2.end-row = end-row;
@@ -144,8 +143,7 @@ struct StmtSpace[
          if type == #nil { break }
          if #debug-rd-wr {
             if r.n1() != 255 {
-               C.out.printf("Error reading stmt\n");
-               C.out.flush();
+               C<stdout "Error reading stmt\n">;
                C.exit(#failure);
             }
          }
@@ -159,14 +157,13 @@ struct StmtSpace[
          .ctx-end-col = end-col;
          switch.rd(space, r) type {
             default {
-               C.out.printf("rd() not yet implemented in stmt #%s\n", type.cp1-name());
+               C<stdout "rd() not yet implemented in stmt #"; type.cp1-name(); "\n">;
                C.exit(#failure);
             }
          }
          if #debug-rd-wr {
             if r.n1() != 255 {
-               C.out.printf("Error reading stmt\n");
-               C.out.flush();
+               C<stdout "Error reading stmt\n">;
                C.exit(#failure);
             }
          }

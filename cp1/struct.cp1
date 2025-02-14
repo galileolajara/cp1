@@ -27,7 +27,6 @@ enum Struct[#nil = -1, #0, #1]:i32 {
          // if !s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col) { return }
          s.fvar-v[i].decl.type = at-validate(s.fvar-v[i].decl.type, s-at, s-file, s-row, s-col);
          if !s.fvar-v[i].decl.process(s-file, s-row, s-col, s-at) {
-            C.out.printf("err\n");
             C.exit(#failure);
             return;
          }
@@ -55,8 +54,8 @@ struct FvarData[
 var struct-c:Struct;
 var struct-cap:Struct;
 var struct-v:StructData[];
-var decl-struct-row:i32;
-var decl-struct-col:i32;
+var decl-struct-row:u32;
+var decl-struct-col:u32;
 var decl-struct-at:At;
 var decl-struct-real-name:Id;
 enum StructFlags[
@@ -85,7 +84,7 @@ decl-var-as-fvar() {
    }
    .decl-fvar-v[fvar].copy-from(.decl-var);
 }
-decl-at-begin-struct(name:Id, row:i32, col:i32) {
+decl-at-begin-struct(name:Id, row:u32, col:u32) {
    .decl-struct-row = row;
    .decl-struct-col = col;
    .build-at = .decl-at;
@@ -96,16 +95,8 @@ decl-at-begin-struct(name:Id, row:i32, col:i32) {
    .decl-fvar-c = 0;
    .decl-struct-real-name = #nil;
    .decl-struct-flags = #0;
-   // C.out.printf("began struct at:\n");
-   // +at-i = .build-at;
-   // loop {
-   //    +at = at-i.ptr();
-   //    C.out.printf("- %s\n", at.name.id.str());
-   //    at-i = at.parent;
-   //    if at-i == #root { break }
-   // }
 }
-decl-struct-end(row:i32, col:i32) {
+decl-struct-end(row:u32, col:u32) {
    +s-idx = .struct-c++;
    if .struct-cap <= .struct-c {
       +old-cap = .struct-cap;
@@ -124,17 +115,15 @@ decl-struct-end(row:i32, col:i32) {
    s.flags = .decl-struct-flags;
    // s.name = .decl-struct-name;
    s.fvar-c = .decl-fvar-c;
-   // C.out.printf("There are %u fvars\n", s.fvar-c);
    loop i = 0; .decl-fvar-c; i++ {
       +a = s.fvar-v[i];
       a.decl.copy-from(.decl-fvar-v[i]);
-      // C.out.printf("- %s\n", a.name.str());
    }
    s.real-name = .decl-struct-real-name;
 }
 struct-attr-real-name(name:Id) {
    if (.decl-struct-flags & #real-name) != #0 {
-      C.out.printf("%u:%u: error @real-name specified more than once\n", .last-row, .last-col);
+      C<stdout .input-path; ":"; .last-row; ":"; .last-col; ": error @real-name specified more than once\n">;
       C.exit(#failure);
    }
    .decl-struct-flags |= #real-name;
@@ -142,16 +131,12 @@ struct-attr-real-name(name:Id) {
 }
 struct-attr-no-decl() {
    if (.decl-struct-flags & #no-decl) != #0 {
-      C.out.printf("%u:%u: error @no-decl specified more than once\n", .last-row, .last-col);
+      C<stdout .input-path; ":"; .last-row; ":"; .last-col; ": error @no-decl specified more than once\n">;
       C.exit(#failure);
    }
    .decl-struct-flags |= #no-decl;
 }
 struct-attr-union() {
-   if (.decl-struct-flags & #union) != #0 {
-      C.out.printf("%u:%u: error @union specified more than once\n", .last-row, .last-col);
-      C.exit(#failure);
-   }
    .decl-struct-flags |= #union;
 }
  

@@ -39,12 +39,12 @@ using ExprI {
       var e:ExprSoaField = expr;
       +type-i = e.expr.type();
       if type-i == #nil {
-         C.out.printf("%s:%u:%u - %u:%u Cannot get structure-of-array field member '.%s' from an expression of unknown type\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, e.field.str());
+         C<stdout .ctx-func.file; ":"; .ctx-begin-row; ":"; .ctx-begin-col; " - "; .ctx-end-row; ":"; .ctx-end-col; ": Cannot get structure-of-array field member ."; e.field.str(); " from an expression of unknown type\n">;
          return;
       }
       +type = type-i.ptr();
       if type.def != #enum {
-         C.out.printf("%s:%u:%u - %u:%u Cannot get structure-of-array field member '.%s' because its type is not an enum\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, e.field.str());
+         C<stdout .ctx-func.file; ":"; .ctx-begin-row; ":"; .ctx-begin-col; " - "; .ctx-end-row; ":"; .ctx-end-col; ": Cannot get structure-of-array field member ."; e.field.str(); " because its type is not an enum\n">;
          return;
       }
       +enumm = type.decl.enumm;
@@ -59,7 +59,7 @@ using ExprI {
          process-index(index-e-idx.ptr(), ok);
          e.expr2 = index-e-idx;
       } else {
-         C.out.printf("%s:%u:%u - %u:%u Cannot get structure-of-array field member '.%s' because the enum has no @soa-field attribute\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, e.field.str());
+         C<stdout .ctx-func.file; ":"; .ctx-begin-row; ":"; .ctx-begin-col; " - "; .ctx-end-row; ":"; .ctx-end-col; ": Cannot get structure-of-array field member ."; e.field.str(); " because the enum has no @soa-field attribute\n">;
          return;
       }
    }

@@ -19,10 +19,10 @@ struct StructData[
 #if(compile)
    file:File,
 #endif
-   begin-row:i32,
-   begin-col:i32,
-   end-row:i32,
-   end-col:i32,
+   begin-row:u32,
+   begin-col:u32,
+   end-row:u32,
+   end-col:u32,
    include:Include,
    at:At,
    flags:StructFlags,
@@ -95,10 +95,10 @@ struct EnumData[
 #if(compile)
    file:File,
 #endif
-   begin-row:i32,
-   begin-col:i32,
-   end-row:i32,
-   end-col:i32,
+   begin-row:u32,
+   begin-col:u32,
+   end-row:u32,
+   end-col:u32,
    include:Include,
    at:At,
    base-type:At,
@@ -248,8 +248,8 @@ struct DeclGvar[
 #if(compile)
    file:File,
 #endif
-   row:i32,
-   col:i32,
+   row:u32,
+   col:u32,
    include:Include,
    at:At,
    flags:GvarFlags,
@@ -259,8 +259,8 @@ struct CvarData[
 #if(compile)
    file:File,
 #endif
-   row:i32,
-   col:i32,
+   row:u32,
+   col:u32,
    include:Include,
    at:At,
    flags:CvarFlags,
@@ -334,10 +334,10 @@ struct DeclFunc[
    process-next:Func,
    file:File,
 #endif
-   begin-row:i32,
-   begin-col:i32,
-   end-row:i32,
-   end-col:i32,
+   begin-row:u32,
+   begin-col:u32,
+   end-row:u32,
+   end-col:u32,
    include:Include,
    at:At,
    // name:Id,
@@ -510,7 +510,7 @@ var at-c:At;
 var at-cap:At;
 var at-v:AtData+[];
 enum At[#nil = -1, #root, #relative]:i32 {
-   finalize(at-i:this, ti:TypeInfo, row:i32, col:i32):bool {
+   finalize(at-i:this, ti:TypeInfo, row:u32, col:u32):bool {
       +at = at-i.ptr();
       if at.def == #struct {
          if ti.built-in {
@@ -533,7 +533,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
       }
       return true;
    }
-   output(at-i:this, file:File, row:i32, col:i32) {
+   output(at-i:this, file:File, row:u32, col:u32) {
       +at = at-i.ptr();
       switch at.type {
          case #struct-enum {

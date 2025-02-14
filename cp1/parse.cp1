@@ -14,8 +14,8 @@ var at-in-header-at-v:u32[];
 var at-in-header-c:i32;
 
 var decl-include:Include;
-var decl-include-row:i32;
-var decl-include-col:i32;
+var decl-include-row:u32;
+var decl-include-col:u32;
 type-info-begin() {
    .decl-var.size-c = 0;
    .decl-var.type-info.init();
@@ -58,7 +58,7 @@ type-info-static() {
    // C.out.printf("built-in\n");
    .decl-var.type-info.built-in = true;
 }
-decl-include-begin(inc:Include, row:i32, col:i32) {
+decl-include-begin(inc:Include, row:u32, col:u32) {
    if .decl-include != #nil {
       C.out.printf("%s:%u:%u: Cannot include inside another include of %u:%u\n", .input-path, row, col, .decl-include-row, .decl-include-col);
       C.exit(#failure);
@@ -113,8 +113,8 @@ var at-alias-cap:Alias;
 var at-alias-name-v:Id[];
 var at-alias-at-v:At[];
 var at-alias-pos-v:RowCol+[];
-struct RowCol[row:i32, col:i32];
-at-alias(name:Id, row:i32, col:i32) {
+struct RowCol[row:u32, col:u32];
+at-alias(name:Id, row:u32, col:u32) {
    loop i = 0; .at-alias-c; i++ {
       if .at-alias-name-v[i] == name {
          .build-at = .at-alias-at-v[i];
@@ -125,7 +125,7 @@ at-alias(name:Id, row:i32, col:i32) {
    C.exit(#failure);
 }
 var build-at:At;
-at-push(name:Id, type:NameType, row:i32, col:i32) {
+at-push(name:Id, type:NameType, row:u32, col:u32) {
    // if .build-at == #root {
    //    'c.printf(".build-at is #root for %s\n", name.str());
    // } elif .build-at == #relative {
@@ -143,7 +143,7 @@ at-push(name:Id, type:NameType, row:i32, col:i32) {
    }
    .build-at = at-create(.build-at, type, name);
 }
-decl-alias(name:Id, at:At, row:i32, col:i32) {
+decl-alias(name:Id, at:At, row:u32, col:u32) {
    // if at.ptr().type != #module {
    //    C.out.printf("%s:%u:%u: Alias can only work on namespaces that ends with '%%'\n", .input-path, row, col);
    //    C.exit(#failure);
@@ -172,7 +172,7 @@ decl-alias(name:Id, at:At, row:i32, col:i32) {
 at-root() {
    .build-at = #root;
 }
-at-graves(graves:i8, row:i32, col:i32) {
+at-graves(graves:i8, row:u32, col:u32) {
    .build-at = .decl-at;
    loop graves > 0 {
       graves--;
@@ -237,7 +237,7 @@ var decl-at:At;
 #decl-at-nest-limit:i32 = 8;
 var decl-at-v:At[#decl-at-nest-limit];
 var decl-at-c:u8;
-err-msg-namespace-limit(row:i32, col:i32) {
+err-msg-namespace-limit(row:u32, col:u32) {
    C.out.printf("%s:%u:%u: Max number of ids in namespace reached\n", .input-path, row, col);
    C.exit(#failure);
 }
@@ -247,7 +247,7 @@ decl-at-add(name:Id, type:NameType) {
 decl-at-basic(type:BasicTypeId) {
    .build-at = at-create-basic(type);
 }
-decl-at-begin(row:i32, col:i32) {
+decl-at-begin(row:u32, col:u32) {
    .decl-at-v[.decl-at-c++] = .decl-at;
    .decl-at = .build-at;
 }
@@ -271,8 +271,8 @@ union TokenDataValue[
    uu64:TokenDataU64+,
 ];
 struct TokenData[
-   row:i32,
-   col:i32,
+   row:u32,
+   col:u32,
    val:TokenDataValue+,
    // id:i32,
    // id2:i32,
@@ -681,7 +681,7 @@ token-name(tok:Token):char[] {
    return tok.cp1-name();
 }
 parse-str-init(max-size:i32);
-get-row-col(out-row:i32&, out-col:i32&, end:ref, begin:ref) {
+get-row-col(out-row:u32&, out-col:u32&, end:ref, begin:ref) {
    +row = 1;
    +col = 1;
    var r:Rdr+;

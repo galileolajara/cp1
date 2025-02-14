@@ -5,7 +5,7 @@ struct StmtBreak[
    base:Stmt+,
    nest:u8,
 ];
-stmt-break(id:Id, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
+stmt-break(id:Id, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
    quick-alloc-one(+(s:StmtBreak));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #break);
    // s.id = id;

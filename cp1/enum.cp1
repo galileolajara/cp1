@@ -45,8 +45,8 @@ enum EnumFlags[
 var enum-c:Enum;
 var enum-cap:Enum;
 var enum-v:EnumData[];
-var decl-enum-row:i32;
-var decl-enum-col:i32;
+var decl-enum-row:u32;
+var decl-enum-col:u32;
 var decl-enum-at:At;
 var decl-enum-real-name:Id;
 var decl-enum-flags:EnumFlags;
@@ -61,7 +61,7 @@ decl-var-as-evar() {
    }
    .decl-evar-v[evar].copy-from(.decl-var);
 }
-decl-at-begin-enum(name:Id, row:i32, col:i32) {
+decl-at-begin-enum(name:Id, row:u32, col:u32) {
    .decl-enum-row = row;
    .decl-enum-col = col;
    .build-at = .decl-at;
@@ -98,7 +98,7 @@ enum-attr-real-name(id:Id) {
    .decl-enum-flags |= #real-name;
    .decl-enum-real-name = id;
 }
-decl-enum-end(base-type:At, row:i32, col:i32) {
+decl-enum-end(base-type:At, row:u32, col:u32) {
    +s-idx = .enum-c++;
    if .enum-cap <= .enum-c {
       +old-cap = .enum-cap;
@@ -131,7 +131,7 @@ decl-enum-end(base-type:At, row:i32, col:i32) {
    // }
 }
 var last-cvar:Cvar;
-enum-add-cvar(name:Id, row:i32, col:i32) {
+enum-add-cvar(name:Id, row:u32, col:u32) {
    +c-idx = .cvar-c++;
    .last-cvar = c-idx;
    if .cvar-cap <= .cvar-c {
@@ -151,7 +151,7 @@ enum-add-cvar(name:Id, row:i32, col:i32) {
    c.last-cvar = .decl-enum-last-cvar;
    .decl-enum-last-cvar = c-idx;
 }
-decl-add-cvar(name:Id, row:i32, col:i32) {
+decl-add-cvar(name:Id, row:u32, col:u32) {
    +c-idx = .cvar-c++;
    .last-cvar = c-idx;
    if .cvar-cap <= .cvar-c {

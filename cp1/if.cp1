@@ -82,13 +82,13 @@ stmt-if-begin() {
 }
 stmt-elif-begin() {
 }
-stmt-if-set(expr:ExprI, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
+stmt-if-set(expr:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
    quick-alloc-one(+(s:StmtIf));
    s.expr = expr;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #if);
    stmt-space-begin();
 }
-stmt-elif-set(expr:ExprI, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
+stmt-elif-set(expr:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
    quick-alloc-one(+(s:StmtIf));
    s.expr = expr;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #if-elif);

@@ -6,9 +6,10 @@ var input-path:char[];
 main(arg-c:intc, arg-v:char[][]):intc @main {
    if arg-c < 3 {
       "usage:";
-      C.printf("Usage: %s [options] [.cp1 input file] [.cp1 output file]\n", arg-v[0]);
-      C.printf("Options:\n");
-      C.printf(" -Ddefinename     Define a name that will yield true on #if(...) preprocessor\n");
+      C<stdout
+      "Usage: "; arg-v[0]; " [options] [.cp1 input file] [.cp1 output file]\n"
+      "Options:\n"
+      " -Ddefinename     Define a name that will yield true on #if(...) preprocessor\n">;
       C.exit(#failure);
    }
    +i = 1;
@@ -28,7 +29,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                } elif (&&, name[len] >= ''0, name[len] <= ''9) {
                   // Ok
                   if len == 0 {
-                     C.printf("Error, in option -Ddefinename, Definename' cannot begin with a number\n");
+                     C<stdout "Error, in option -Ddefinename, definename cannot begin with a number\n">;
                      "goto usage;";
                   }
                } elif name[len] == ''_ {
@@ -36,29 +37,29 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                } elif name[len] == ''- {
                   // Ok
                   if len == 0 {
-                     C.printf("Error, in option -Ddefinename (which is %s), Definename' cannot begin with a dash\n", arg-v[i]);
+                     C<stdout "Error, in option -Ddefinename (which is "; arg-v[i]; "), definename' cannot begin with a dash\n">;
                      "goto usage;";
                   } elif name[len - 1] == ''- {
-                     C.printf("Error, in option -Ddefinename (which is %s), Definename' cannot contain consecutive a dashes\n", arg-v[i]);
+                     C<stdout "Error, in option -Ddefinename (which is "; arg-v[i]; "), definename' cannot contain consecutive a dashes\n">;
                      "goto usage;";
                   }
                } else {
-                  C.printf("Error, in option -Ddefinename (which is %s), invalid character '%c' was detected in Definename'\n", arg-v[i], name[len]);
+                  C<stdout "Error, in option -Ddefinename (which is "; arg-v[i]; "), invalid character '"; name[len]; "' was detected in definename'\n">;
                   "goto usage;";
                }
                len++;
             }
             if len == 0 {
-               C.printf("Error, in option -Ddefinename (which is %s), Definename' cannot be blank\n", arg-v[i]);
+               C<stdout "Error, in option -Ddefinename (which is "; arg-v[i]; "), Definename' cannot be blank\n">;
                "goto usage;";
             }
             if name[len - 1] == ''- {
-               C.printf("Error, in option -Ddefinename (which is %s), Definename' cannot end with a dash\n", arg-v[i]);
+               C<stdout "Error, in option -Ddefinename (which is "; arg-v[i]; "), Definename' cannot end with a dash\n">;
                "goto usage;";
             }
             preprocess-def(name, len);
          } else {
-            C.printf("Error, invalid option '-%c'\n", arg-v[i][1]);
+            C<stdout "Error, invalid option '"; arg-v[i][1]; "'\n">;
             "goto usage;";
          }
       } else {
@@ -73,13 +74,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    var in-data:char[];
    in-data = read-file(arg-v[i], 0, +in-size);
    if in-data == null {
-      C.printf("Cannot open file for reading: %s\n", arg-v[i]);
+      C<stdout "Cannot open file for reading: "; arg-v[i + 1]; ''\n>;
       C.exit(#failure);
    }
    preprocess-init();
    preprocess(in-data, in-size);
    if !write-file(arg-v[i + 1], in-data, in-size) {
-      C.printf("Cannot open file for writing: %s\n", arg-v[i + 1]);
+      C<stdout "Cannot open file for writing: "; arg-v[i + 1]; ''\n>;
       C.exit(#failure);
    }
    return 0;
@@ -97,7 +98,6 @@ preprocess-def-get(name:char[], len:u8):bool {
    return false;
 }
 preprocess-def(name:char[], len:u8) {
-   // C.printf("defining preprocessor %s\n", name);
    +i = .preprocess-def-c++;
    if .preprocess-def-cap < .preprocess-def-c {
       .preprocess-def-cap = (.preprocess-def-c << 1) + 8;
@@ -140,7 +140,6 @@ preprocess-init() {
 "#endif";
 }
 preprocess(in-out-data:ref&, in-out-size:usz&) {
-   // C.printf("#if detected, preprocessing...\n");
    +preprocess = false;
    var in-data:char[] = in-out-data;
    +in-size = in-out-size;
@@ -153,7 +152,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
    var w:Wtr+;
    w.reff = new-data;
 
-   +line = 0;
+   +line = 0:u32;
    loop r.pos < r-end.pos {
       line++;
       +line-len = 0;
@@ -163,7 +162,6 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
          }
          line-len++;
       }
-      // C.printf("[%.*s]\n", line-len, r.p1);
       if (&&, r.p1[0] == ''#, r.p1[1] == ''i, r.p1[2] == ''f, (||, r.p1[3] == ''(, (&&, r.p1[3] == ''!, r.p1[4] == ''())) {
          +if-line = line;
          w.p1[0] = ''\n;
@@ -183,7 +181,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
             }
          }
          if rparen == -1 {
-            C.printf("%s:%u: Error in preprocessing the code, #if(...) must have a closing parenthesis ')'\n", .input-path, line);
+            C<stdout .input-path; ":"; line; ": Error in preprocessing the code, #if(...) must have a closing parenthesis ')'\n">;
             C.exit(#failure);
          }
          var def-str:char[] = &r.charr[start];
@@ -192,7 +190,6 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
          if invert {
             ok = !ok;
          }
-         // C.printf("evaluated %.*s as %u\n", def-len, def-str, ok);
          r.pos += line-len + 1;
          // Get the indention of the next line
          var indention:char[] = null;
@@ -214,7 +211,6 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
                }
                first-char++;
             }
-            // C.printf("1. indention is [%.*s]\n", first-char, r.p1);
             if ok {
                C.memcpy(w.p1, &r.p1[first-char], (line-len + 1) - first-char);
                w.pos += (line-len + 1) - first-char;
@@ -231,7 +227,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
             r.pos += line-len;
          }
          if indention-len <= 0 {
-            C.printf("%s:%u: Error in preprocessing the code, #if(...). Its next line (line %u) must be indented more than line %u\n", .input-path, line, line + 1, line);
+            C<stdout .input-path; ":"; line; ": Error in preprocessing the code, #if(...). Its next line (line "; line + 1; ") must be indented more than line "; line; "\n">;
             C.exit(#failure);
          }
          line++;
@@ -253,7 +249,6 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
                }
                first-char++;
             }
-            // C.printf("2. indention is [%.*s]\n", first-char, r.p1);
             if (&&, line-len >= indention-len, C.memcmp(r.p1, indention, indention-len) == 0) {
                if ok {
                   C.memcpy(w.p1, &r.p1[indention-len], (line-len + 1) - indention-len);
@@ -272,7 +267,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
                   w.pos++;
                   r.pos += line-len + 1;
                } else {
-                  C.printf("%s:%u: Error, expecting '#endif' with the same indention as '#if' on line %u, because line %u:S indention is different from indention at line %u\n", .input-path, line, if-line, line, if-line + 1);
+                  C<stdout .input-path; ":"; line; ": Error, expecting '#endif' with the same indention as '#if' on line "; if-line; ", because line "; line; "'s indention is different from indention at line "; if-line + 1; "\n">;
                   C.exit(#failure);
                }
                break;
@@ -298,13 +293,6 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
 
    if preprocess {
       preprocess(in-out-data, in-out-size);
-   } else {
-      // var path:char[256];
-      // C.sprintf(path, "%s-p", .input-path);
-      // C.printf("writing the preprocessed file to %s\n", path);
-      // C.Fd.open(+fd, path, #write | #truncate | #create, 0o644);
-      // fd.write(new-data, w.pos - w-begin.pos);
-      // fd.close();
    }
 }
 }

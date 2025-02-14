@@ -41,13 +41,13 @@ enum LvarFlags[
    }
 }
 struct LvarData[
-   row:i32,
-   col:i32,
+   row:u32,
+   col:u32,
    decl:DeclVarData+,
    flags:LvarFlags,
    // set-expr:ExprI,
 ];
-expr-lvar(name:Id, decl:u8, row:i32, col:i32):ExprI {
+expr-lvar(name:Id, decl:u8, row:u32, col:u32):ExprI {
    if decl == 0 {
       +space = .decl-func-ctx-space;
       loop {

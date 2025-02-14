@@ -81,8 +81,8 @@ using DeclFunc {
    }
 }
 struct Farg[
-   row:i32,
-   col:i32,
+   row:u32,
+   col:u32,
    decl:DeclVarData+,
    ] {
    rd(f:this, r:Rdr) {
@@ -106,8 +106,8 @@ var func-cap:Func;
 var func-v:DeclFunc[];
 var decl-func-name:Id;
 // var decl-func:DeclVarData+;
-var decl-func-row:i32;
-var decl-func-col:i32;
+var decl-func-row:u32;
+var decl-func-col:u32;
 var decl-func-flags:FuncFlags;
 var decl-func-flags2:FuncFlags2;
 var decl-func-real-name:Id;
@@ -127,7 +127,7 @@ var decl-func-ctx-space:StmtSpace;
 // var decl-stmt-c:u32;
 // var decl-stmt-cap:u32;
 // var decl-stmt-v:Stmt[];
-decl-func-begin(name:Id, row:i32, col:i32) {
+decl-func-begin(name:Id, row:u32, col:u32) {
    .decl-func-name = name;
    .decl-func-row = row;
    .decl-func-col = col;
@@ -150,7 +150,7 @@ farg-next-group() {
    .decl-farg-group-v[.decl-farg-group-c] = 0;
    .decl-farg-group-c++;
 }
-decl-var-as-farg(row:i32, col:i32) {
+decl-var-as-farg(row:u32, col:u32) {
    +farg-idx = .decl-farg-c++;
    if .decl-farg-cap <= .decl-farg-c {
       +old-cap = .decl-farg-cap;
@@ -180,7 +180,7 @@ decl-var-as-this() {
 // var lvar-cap:Lvar;
 // var lvar-v:LvarData[];
 // var lvar-name-v:Id[];
-decl-func-end(row:i32, col:i32) {
+decl-func-end(row:u32, col:u32) {
    +f-idx = (.func-c++):Func;
    if .func-cap <= .func-c {
       +old-cap = .func-cap;
@@ -352,7 +352,7 @@ var expr-call-carg-c:u8[#expr-call-nest-limit];
 var expr-call-carg-v:ExprI[#expr-call-nest-limit][#cp1-carg-limit];
 var expr-call-cgrp-c:u8[#expr-call-nest-limit];
 var expr-call-cgrp-v:u8[#expr-call-nest-limit][#expr-carg-group-limit];
-expr-push-call(row:i32, col:i32) {
+expr-push-call(row:u32, col:u32) {
    +call-idx = .expr-call-c++;
    if call-idx >= #expr-call-nest-limit {
       C.out.printf("%u:%u: Too much nested calls\n", row, col);
@@ -432,7 +432,7 @@ expr-pop-method(thiss:ExprI, func-name:Id):ExprI {
    }
    return e-idx;
 }
-expr-push-metacall(row:i32, col:i32) {
+expr-push-metacall(row:u32, col:u32) {
    +call-idx = .expr-call-c++;
    if call-idx >= #expr-call-nest-limit {
       C.out.printf("%u:%u: Too much nested calls\n", row, col);

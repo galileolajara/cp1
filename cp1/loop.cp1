@@ -103,7 +103,7 @@ struct StmtLoopEnd[
    base:Stmt+,
    do:StmtLoop,
 ];
-stmt-loop-set(expr:ExprI, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, continu:StmtSpace) {
+stmt-loop-set(expr:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32, continu:StmtSpace) {
    quick-alloc-one(+(s:StmtLoop));
    .nest-stack-id-v[.nest-stack-c] = .nest-id++;
    .nest-stack-ptr-v[.nest-stack-c].do = s;

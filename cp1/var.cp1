@@ -242,8 +242,8 @@ var gvar-c:Gvar;
 var gvar-cap:Gvar;
 var gvar-v:DeclGvar+[];
 
-var decl-var-row:i32;
-var decl-var-col:i32;
+var decl-var-row:u32;
+var decl-var-col:u32;
 // var decl-var-name:Id;
 // var decl-var-type:At;
 // var decl-var-type-info:TypeInfo+;
@@ -264,7 +264,7 @@ enum VarFlags[
       w.n(f:base);
    }
 }
-decl-var-begin(name:Id, row:i32, col:i32) {
+decl-var-begin(name:Id, row:u32, col:u32) {
    .decl-var.name = name;
    .decl-var-row = row;
    .decl-var-col = col;
@@ -277,8 +277,7 @@ decl-var-end() {
 }
 decl-var-attr-real-name(name:Id) {
    if (.decl-var.flags & #real-name) != #0 {
-      C.out.printf("%u:%u: error @real-name specified more than once\n", .last-row, .last-col);
-      // C<stdout .input-path; ":"; .last-row; ":"; .last-col; ": error @real-name specified more than once\n">;
+      C<stdout .input-path; ":"; .last-row; ":"; .last-col; ": error @real-name specified more than once\n">;
       C.exit(#failure);
    }
    .decl-var.flags |= #real-name;
@@ -286,26 +285,19 @@ decl-var-attr-real-name(name:Id) {
 }
 decl-var-attr-extern() {
    if (.decl-var.flags & #extern) != #0 {
-      C.out.printf("%u:%u: error @extern specified more than once\n", .last-row, .last-col);
+      C<stdout .input-path; ":"; .last-row; ":"; .last-col; ": error @extern specified more than once\n">;
       C.exit(#failure);
    }
    .decl-var.flags |= #extern;
 }
 decl-var-attr-no-decl() {
    if (.decl-var.flags & #no-decl) != #0 {
-      C.out.printf("%u:%u: error @no-decl specified more than once\n", .last-row, .last-col);
+      C<stdout .input-path; ":"; .last-row; ":"; .last-col; ": error @no-decl specified more than once\n">;
       C.exit(#failure);
    }
    .decl-var.flags |= #no-decl;
 }
 decl-var-type(type:At) {
-   if type != #nil {
-      +at = type.ptr();
-      if at.type == #module {
-         C.out.printf("%u:%u: module '%%%s' cannot be used as a type\n", .last-row, .last-col, at.name.id.str());
-         C.exit(#failure);
-      }
-   }
    .decl-var.type = type;
    .decl-var.size-c = 0;
    .decl-var.type-info.init();
@@ -314,11 +306,6 @@ decl-var-type(type:At) {
 }
 decl-var-this() {
    +type = .decl-at;
-   +at = type.ptr();
-   if at.type == #module {
-      C.out.printf("%u:%u: module '%%%s' cannot be used as a type\n", .last-row, .last-col, at.name.id.str());
-      C.exit(#failure);
-   }
    .decl-var.type = type;
    // .stack-type-info = .decl-var.type-info;
 }

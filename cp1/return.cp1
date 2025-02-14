@@ -1,6 +1,6 @@
 using Cp1 = Cp1;
 using Cp1 {
-stmt-return(e:ExprI, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
+stmt-return(e:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
    quick-alloc-one(+(s:StmtReturn));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #return);
    s.expr = e;

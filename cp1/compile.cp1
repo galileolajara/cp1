@@ -19,10 +19,10 @@ var basic-type:BasicType+[BasicTypeId#COUNT];
 basic-type(t:BasicTypeId):At @inline {
    return t;
 }
-var ctx-begin-row:i32;
-var ctx-begin-col:i32;
-var ctx-end-row:i32;
-var ctx-end-col:i32;
+var ctx-begin-row:u32;
+var ctx-begin-col:u32;
+var ctx-end-row:u32;
+var ctx-end-col:u32;
 var ctx-func:DeclFunc;
 var ctx-func-id:Func;
 var file-c:File;
@@ -36,7 +36,7 @@ enum File[#nil = -1, #0]:i32 {
       return f.ptr().path;
    }
    stdout(f:this, so:C.Stdout) {
-      so.str(f.ptr().path);
+      C.stdout-cstr(f.ptr().path);
    }
 }
 struct FileData[

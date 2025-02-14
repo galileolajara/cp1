@@ -17,17 +17,17 @@ enum StmtType[
    cp1-name(e:this):char[] @cp1-name;
 }
 struct Stmt[
-   begin-row:i32,
-   begin-col:i32,
-   end-row:i32,
-   end-col:i32,
+   begin-row:u32,
+   begin-col:u32,
+   end-row:u32,
+   end-col:u32,
    type:StmtType,
    stmt-next:Stmt,
    ] {
    write(s:this) {
       switch.write(s) s.type {
          default {
-            C.out.printf("write() not yet implemented in stmt #%s\n", s.type.cp1-name());
+            C<stdout "write() not yet implemented in stmt #"; s.type.cp1-name(); "\n">;
             C.exit(#failure);
          }
       }
@@ -40,13 +40,11 @@ struct Stmt[
       .ctx-end-col = s.end-col;
       switch.process(s, ok) s.type {
          default {
-            C.out.printf("%s:%u:%u - %u:%u: process() is not implemented in statement #%s\n",
-            .ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.cp1-name());
+            C<stdout .ctx-func.file; ":"; s.begin-row; ":"; s.begin-col; " - "; s.end-row; ":"; s.end-col; ": process() is not implemented in statement #"; s.type.cp1-name(); "\n">;
          }
       }
       if !ok {
-         C.out.printf("%s:%u:%u - %u:%u: Processing of statement #%s failed\n",
-            .ctx-func.file.path(), s.begin-row, s.begin-col, s.end-row, s.end-col, s.type.cp1-name());
+         C<stdout .ctx-func.file; ":"; s.begin-row; ":"; s.begin-col; " - "; s.end-row; ":"; s.end-col; ": Processing of statement #"; s.type.cp1-name(); " failed\n">;
       }
       return ok;
    }
@@ -60,9 +58,7 @@ struct StmtReturn[
    expr:ExprI,
    val:Value+,
 ];
-stmt-push(s:Stmt, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32, type:StmtType) {
-   // C.out.printf("%s:%u:%u - %u:%u stmt-push()\n", .input-path, begin-row, begin-col, end-row, end-col);
-   // C.out.flush();
+stmt-push(s:Stmt, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32, type:StmtType) {
    s.begin-row = begin-row;
    s.begin-col = begin-col;
    s.end-row = end-row;
@@ -80,17 +76,16 @@ func-stmt-add(s:Stmt) {
       .decl-func-ctx-space.stmt-last = s;
    }
 }
-expr2stmt(e:ExprI, begin-row:i32, begin-col:i32, end-row:i32, end-col:i32) {
+expr2stmt(e:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
    quick-alloc-one(+(s:StmtExpr));
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #expr);
    s.expr = e;
 }
-stmt-lvar-add(name:Id, set:ExprI, row:i32, col:i32) {
+stmt-lvar-add(name:Id, set:ExprI, row:u32, col:u32) {
    +lvar-i = .decl-func-ctx-space.lvar-new(name, row, col);
    +lvar = lvar-i.ptr();
    .decl-var.name = name;
    lvar.decl.copy-from(.decl-var);
-   // C.out.printf("%s %d\n", .decl-var.name.str(), .decl-var.type-info.built-in);
    if set == -2:ExprI {
       lvar.flags |= #set-expr;
    } elif set != #nil {
@@ -98,7 +93,7 @@ stmt-lvar-add(name:Id, set:ExprI, row:i32, col:i32) {
       expr2stmt(e, row, col, row, col);
    }
 }
-stmt-lvar-end(end-row:i32, end-col:i32) {
+stmt-lvar-end(end-row:u32, end-col:u32) {
 }
  
 
