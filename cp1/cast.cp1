@@ -47,7 +47,7 @@ using ExprI {
       if e.type == #nil {
          +at = e.val.type.ptr();
          if at.def != #enum {
-            C.printf("%s:%u:%u: Operator ':base' was used but the type of expression was not an enum\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col);
+            C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; ": Operator ':base' was used but the type of expression was not an enum\n">;
             return;
          }
          e.type = at.decl.enumm.ptr().base-type;

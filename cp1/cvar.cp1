@@ -32,7 +32,7 @@ enum Cvar[#nil = -1, #0]:i32 {
       if at-i != #nil {
          +at = at-i.ptr();
          if (&&, at.type != #basic, at.decl.structt == #nil) {
-            C.out.printf("Error, the type '%s' used in cvar '.%s' was not defined\n", at.name.id.str(), cvar.decl.name.str());
+            C<stdout "Error, the type '"; at.name.id; "' used in cvar '."; cvar.decl.name; "' was not defined\n">;
             return false;
          }
          at-i.output(cvar.file, cvar.row, cvar.col);
@@ -119,10 +119,10 @@ using ExprI {
          +at = e.try.ptr();
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
-         // C.out.printf("e.try = %d, %s, %s, cvar-c %d\n", e.try, at.name.id.str(), name.str(), cvar-c);
+         // C<stdout "e.try = "; e.try; ", "; at.name.id; ", "; name; ", cvar-c "; cvar-c; ''\n>;
          loop i = 0; cvar-c; i++ {
             +cvar = cvar-v[i];
-            // C.out.printf("- %s\n", cvar.ptr().decl.name.str());
+            // C<stdout "- "; cvar.ptr.decl.name; ''\n>;
             if cvar.ptr().decl.name == name {
                if !cvar.process() { return }
                e.cvar = cvar;
@@ -163,8 +163,7 @@ using ExprI {
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
       }
-      C.out.printf("%s:%u:%u - %u:%u: Cannot find #%s\n",
-         .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, name.str());
+      C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; ": Cannot find #"; name; ''\n>;
    }
    try-deduce-cvar(expr:Expr, at:At) @case.try-deduce() @inline {
       var e:ExprCvar = expr;

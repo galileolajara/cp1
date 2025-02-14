@@ -4,9 +4,9 @@ using Cp1 {
 print-type(at-i:At, info:TypeInfo) {
    +at = at-i.ptr();
    if at.type == #basic {
-      C.printf("basic type %s, star-c %u\n", at.name.basic.cp1-name(), info.star-c);
+      C<stdout "basic type "; at.name.basic.cp1-name(); ", star-c "; info.star-c; ''\n>;
    } else {
-      C.printf("custom type %s, star-c %u\n", at.name.id.str(), info.star-c);
+      C<stdout "custom type "; at.name.id; ", star-c "; info.star-c; ''\n>;
    }
 }
 compatible(src:At, src-c:u8, des:At, des-c:u8):bool {
@@ -37,7 +37,7 @@ farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At,
       r = 1;
       r += fd-arg.type-info.ref-v[fd-arg.type-info.array-c]:i32;
    }
-   // C.out.printf("r %d, %d %d %d\n", r, j, fd-arg.type-info.array-c, fd-arg.type-info.ref-v[fd-arg.type-info.array-c]);
+   // C<stdout "r "; r; ", "; j; '' ; fd-arg.type-info.array-c; '' ; fd-arg.type-info.ref-v[fd-arg.type-info.array-c]; ''\n>;
    if ce.type == #lvar {
       var ve:ExprLvar = ce;
       +lvar = ve.lvar.ptr();
@@ -50,7 +50,7 @@ farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At,
             // }
             +parent = fd-arg.type.ptr().parent.ptr();
             if (parent.type == #basic) && (parent.name.basic == #relative) {
-               C.printf("farg-process without processing farg first\n");
+               C<stdout "farg-process without processing farg first\n">;
                C.exit(#failure);
             }
             vd.type = fd-arg.type;
@@ -70,11 +70,11 @@ farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At,
    e.try-deduce(fd-arg.type);
    if !e.value(r, false, ca-value) { return false }
    if !compatible(ca-value.type, ca-value.info.star-c + ca-value.type.pointer(), fd-arg.type, fd-arg.type-info.star-c + fd-arg.type.pointer()) {
-      C.printf("%s:%u:%u: Type mismatch for the function argument ", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col);
+      C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; ": Type mismatch for the function argument ">;
       if arg-num == -1 {
-         C.printf("'this'\n");
+         C<stdout "'this'\n">;
       } else {
-         C.printf("#%u\n", arg-num + 1);
+         C<stdout ''#; (arg-num + 1):u32; ''\n>;
       }
       // print-type(ca-value.type, ca-value.info);
       // print-type(fd-arg.type, fd-arg.type-info);
@@ -189,7 +189,7 @@ using ExprI {
       +carg-c1 = carg-c + 1;
       +at-idx = e.thiss.type();
       if at-idx == #nil {
-         C.out.printf("%s:%u:%u - %u:%u: Cannot call method %s on a value without a type\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str());
+         C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; ": Cannot call method "; func-name; " on a value without a type\n">;
          return;
       }
       +at = at-idx.ptr();
@@ -200,7 +200,7 @@ using ExprI {
          method-v = t.method-v;
       } else {
          if (&&, at.decl.structt == #nil, at.type != #basic, at.type != #module) {
-            C.out.printf("%s:%u:%u - %u:%u: Cannot call method %s because the type :%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), at.name.id.str());
+            C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; ": Cannot call method "; func-name; " because the type :"; at.name.id; " is not defined\n">;
             return;
          }
          if at.def == #struct {
@@ -214,7 +214,7 @@ using ExprI {
          }
       }
       +found = -1;
-      +similar-c = 0;
+      +similar-c = 0:u32;
       loop i = 0; method-c; i++ {
          +f-idx = method-v[i];
          +f = f-idx.ptr();
@@ -298,14 +298,14 @@ using ExprI {
          ok = true;
          return;
       }
-      C.out.printf("%s:%u:%u - %u:%u: Cannot find method %s with %u argument/s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
+      C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; ": Cannot find method "; func-name; " with "; carg-c; " argument/s\n">;
       if found != -1 {
-         C.out.printf("But found %u functions with different no. of argument/s:\n", similar-c);
+         C<stdout "But found "; similar-c; " functions with different no. of argument/s:\n">;
          loop i = 0; at.func-c; i++ {
             +f-idx = at.func-v[i];
             +f = .func-v[f-idx];
             if f.decl.name == func-name {
-               C.out.printf("- :%s with %u args\n", func-name.str(), f.farg-c);
+               C<stdout "- :"; func-name; " with "; f.farg-c; " args\n">;
             }
          }
       }
@@ -375,7 +375,7 @@ using ExprI {
          carg-v[0] = lvar;
          set-func(e-idx, at-idx, func-name, 1, group-v, 1, carg-v);
       }
-      // C.printf("group-c %u, carg-c %u\n", group-c, carg-c);
+      // C<stdout "group-c "; group-c; ", carg-c "; carg-c; ''\n>;
       loop i = 1; group-c - 1; i++ {
          +carg-c = group-v[i];
          e-idx = ExprI.alloc();
@@ -401,7 +401,7 @@ using ExprI {
             if .id-cstr == 0:Id {
                .id-cstr = id-add(4, "cstr");
             }
-            // C.printf("lvar.cstr()\n");
+            // C<stdout "lvar.cstr()\n">;
             set-method(e-idx, lvar, .id-cstr, 1, group-v, group-v[0], carg2-v);
          } else {
             group-v[0] = 1 + (carg-c - 1);
@@ -409,7 +409,7 @@ using ExprI {
             loop k = 1; carg-c - 1 {
                carg2-v[k++] = carg-v[j++];
             }
-            // C.printf("carg.%s()\n", func-name.str());
+            // C<stdout "carg."; func-name; "()\n">;
             set-method(e-idx, carg, func-name, 1, group-v, group-v[0], carg2-v);
          }
       }
@@ -479,17 +479,17 @@ using ExprI {
          var e-method:ExprMethod = e-idx.ptr();
          +e-idx2 = e-method.thiss;
          +e-data2 = e-idx2.ptr();
-         // C.printf("%u) carg-c %u, type %s\n", i, e-method.carg-c, e-data2.type.cp1-name());
+         // C<stdout i; ") carg-c "; e-method.carg-c; ", type "; e-data2.type.cp1-name(); ''\n>;
          if e-data2.type == #str {
-            // C.printf("constant string\n");
+            // C<stdout "constant string\n">;
          } else {
             var val;
             if !e-idx2.value(1, true, val) {
                return;
             }
-            // C.printf("val.info.array-c %u\n", val.info.array-c);
+            // C<stdout "val.info.array-c "; val.info.array-c; ''\n>;
             if (val.info.array-c > 0) && (val.type == basic-type(#char)) {
-               // C.printf("string detected\n");
+               // C<stdout "string detected\n">;
                e-method.thiss = e-method.carg-v[0].expr;
                e-method.carg-v[0].expr = e-idx2;
                if .id-str == 0:Id {
@@ -525,12 +525,12 @@ using ExprI {
       loop {
          +at = at-idx.ptr();
          // if (&&, at.decl.struct == #nil, at.type != #basic, at.type != #module) {
-         //    C.out.printf("%s:%u:%u - %u:%u: Cannot call function %s because the type :%s is not defined\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), at.name.id.str());
+         //    C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; ": Cannot call function "; func-name; " because the type :"; at.name.id; " is not defined\n">;
          //    return;
          // }
          // +found = -1;
          // +similar-c = 0;
-         // C.out.printf("searching from %u functions\n", at.func-c);
+         // C<stdout "searching from "; at.func-c; " functions\n">;
          loop i = 0; at.func-c; i++ {
             +f-idx = at.func-v[i];
             +f = f-idx.ptr();
@@ -593,14 +593,14 @@ using ExprI {
          if at-idx == #root { break }
          at-idx = at.parent;
       }
-      C.out.printf("%s:%u:%u - %u:%u: Cannot find function %s with %u argument/s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, func-name.str(), carg-c);
+      C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; ": Cannot find function "; func-name; " with "; carg-c; " argument/s\n">;
       // if found != -1 {
-      //    C.out.printf("But found %u functions with different no. of argument/s:\n", similar-c);
+      //    C<stdout "But found "; similar-c; " functions with different no. of argument/s:\n">;
       //    loop i = 0; at.func-c; i++ {
       //       +f-idx = at.func-v[i];
       //       +f = .func-v[f-idx];
       //       if f.decl.name == func-name {
-      //          C.out.printf("- :%s with %u args\n", func-name.str(), f.farg-c);
+      //          C<stdout "- :"; func-name; " with "; f.farg-c; " args\n">;
       //       }
       //    }
       // }

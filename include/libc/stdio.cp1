@@ -92,6 +92,9 @@ include <stdio.h>  {
          str(so:this, str:char[]) @inline {
             stdout-cstr(str);
          }
+         str(so:this, str:char[], len:u32) @inline {
+            stdout-bytes(str, len);
+         }
          cstr(so:this, str:char[], len:u32) @inline {
             stdout-bytes(str, len);
          }
@@ -101,6 +104,11 @@ include <stdio.h>  {
       }
    }
    using u32 {
+      stdout(val:this, so:C.Stdout) {
+         C.stdout-u32(val);
+      }
+   }
+   using u8 {
       stdout(val:this, so:C.Stdout) {
          C.stdout-u32(val);
       }

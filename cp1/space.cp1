@@ -50,12 +50,17 @@ struct StmtSpace[
       // .out.printf("} // space end\n");
    }
    lvar-new(space:this, name:Id, row:u32, col:u32):Lvar {
-      +v = space.lvar-v;
-      loop i = 0; space.lvar-c; i++ {
-         +lvar = v[i].ptr();
-         if lvar.decl.name == name {
-            C<stdout .input-path; ":"; row; ":"; col; ": lvar '"; name.str(); "' was already declared at "; lvar.row; ":"; lvar.col; "\n">;
-            C.exit(#failure);
+      return space.lvar-new(name, row, col, true);
+   }
+   lvar-new(space:this, name:Id, row:u32, col:u32, check-duplicate:bool):Lvar {
+      if check-duplicate {
+         +v = space.lvar-v;
+         loop i = 0; space.lvar-c; i++ {
+            +lvar = v[i].ptr();
+            if lvar.decl.name == name {
+               C<stdout .input-path; ":"; row; ":"; col; ": lvar '"; name.str(); "' was already declared at "; lvar.row; ":"; lvar.col; "\n">;
+               C.exit(#failure);
+            }
          }
       }
       +i = space.lvar-c++;

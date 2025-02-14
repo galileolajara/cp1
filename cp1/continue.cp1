@@ -10,7 +10,7 @@ stmt-continue(id:Id, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #continue);
    // s.id = id;
    if .nest-stack-c <= 0 {
-      C.out.printf("%s:%u:%u: Cannot have a continue because it:S not inside a loop\n", .input-path, begin-row, begin-col);
+      C<stdout .input-path; '':; begin-row; '':; begin-col; ": Cannot have a continue because it:S not inside a loop\n">;
       C.exit(#failure);
    }
    s.nest = .nest-stack-c - 1;

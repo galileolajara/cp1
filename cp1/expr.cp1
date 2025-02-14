@@ -62,7 +62,7 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
    write-value(e:this, v:Value):bool {
       +expr = e.ptr();
       +reff = v.reff;
-      // C.out.printf("write-value v.ref = %d\n", ref);
+      // C<stdout "write-value v.ref = "; ref; ''\n>;
       if v.paren {
          if reff <= 0 {
             .out.write("(&", 2);
@@ -95,8 +95,7 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
       +ok = false;
       switch.value(e, reff, paren, v, ok) expr.type {
          default {
-            C.out.printf("%u:%u - %u:%u: value() not implemented for #%s\n",
-               .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
+            C<stdout .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; ": value() not implemented for #"; expr.type.cp1-name(); ''\n>;
          }
       }
       return ok;
@@ -107,8 +106,7 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
       +at = At#nil;
       switch.type(expr, at) expr.type {
          default {
-            C.out.printf("%u:%u - %u:%u: type() not implemented for #%s\n",
-               .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
+            C<stdout .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; ": type() not implemented for #"; expr.type.cp1-name(); ''\n>;
          }
       }
       return at;
@@ -129,7 +127,7 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
          expr.type.wr(w);
          switch.wr(expr, w, header) expr.type {
             default {
-               C.out.printf("wr() was not implemented in expression #%s\n", expr.type.cp1-name());
+               C<stdout "wr() was not implemented in expression #"; expr.type.cp1-name(); ''\n>;
                C.exit(#failure);
             }
          }
@@ -151,7 +149,7 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
    rd(e:this&, r:Rdr) {
       if #debug-rd-wr {
          if r.n1() != 255 {
-            C.out.printf("Error reading expr\n");
+            C<stdout "Error reading expr\n">;
             C.out.flush();
             C.exit(#failure);
          }
@@ -164,14 +162,14 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
          e = e-idx;
          switch.rd(e-idx, r) type {
             default {
-               C.out.printf("rd() was not implemented in expression #%s\n", type.cp1-name());
+               C<stdout "rd() was not implemented in expression #"; type.cp1-name(); ''\n>;
                C.exit(#failure);
             }
          }
       }
       if #debug-rd-wr {
          if r.n1() != 255 {
-            C.out.printf("Error reading expr\n");
+            C<stdout "Error reading expr\n">;
             C.out.flush();
             C.exit(#failure);
          }
@@ -179,8 +177,7 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
    }
    process(e:this):bool {
       if e == #nil {
-         C.out.printf("%s:%u:%u - %u:%u: Processed a nil expression\n",
-            .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col);
+         C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; ": Processed a nil expression\n">;
          return false;
       }
       +num = e:u32;
@@ -194,13 +191,12 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
       +ok = false;
       switch.process(expr, ok) expr.type {
          default {
-            C.out.printf("%s:%u:%u - %u:%u: process() not implemented for expression #%s\n",
-               .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
+            C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; ": process() not implemented for expression #"; expr.type.cp1-name(); ''\n>;
             return false;
          }
       }
       if !ok {
-         C.out.printf("%s:%u:%u - %u:%u: Processing of expression #%s failed\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
+         C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; ": Processing of expression #"; expr.type.cp1-name(); " failed\n">;
       }
       return ok;
    }
@@ -208,7 +204,7 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
       +expr = e.ptr();
       switch.write(expr) expr.type {
          default {
-            C.out.printf("%s:%u:%u - %u:%u: write() not implemented in expression #%s\n", .ctx-func.file.path(), .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, expr.type.cp1-name());
+            C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; ": write() not implemented in expression #"; expr.type.cp1-name(); ''\n>;
          }
       }
    }

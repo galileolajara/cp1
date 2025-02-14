@@ -407,7 +407,7 @@ quick-alloc(size:i32):ref @real-name(qalloc) {
    grow(.quick-alloc-cap, .quick-alloc-c + size);
    .quick-alloc-v = C.malloc(.quick-alloc-cap);
    C.memset(.quick-alloc-v, 0, .quick-alloc-cap);
-   // C.out.printf("expanding to %u\n", .quick-alloc-cap);
+   // C<stdout "expanding to "; .quick-alloc-cap; ''\n>;
    .quick-alloc-c = size;
    return .quick-alloc-v;
 }
@@ -515,7 +515,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
       if at.def == #struct {
          if ti.built-in {
             if ti.ref-v[0] != 0 {
-               C.out.printf("%s:%d:%d: Can't use plus symbol (+) because type '%s' has reference\n", .ctx-func.file.path(), row, col, at.name.id.str());
+               C<stdout .ctx-func.file; '':; row; '':; col; ": Can't use plus symbol (+) because type '"; at.name.id; "' has reference\n">;
                return false;
             }
             ti.ref-v[0] = -1;
@@ -527,7 +527,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
          }
       } else {
          if ti.built-in {
-            C.out.printf("%s:%d:%d: Can't use plus symbol (+) because type '%s' is not a struct\n", .ctx-func.file.path(), row, col, at.name.id.str());
+            C<stdout .ctx-func.file; '':; row; '':; col; ": Can't use plus symbol (+) because type '"; at.name.id; "' is not a struct\n">;
             return false;
          }
       }
@@ -539,13 +539,13 @@ enum At[#nil = -1, #root, #relative]:i32 {
          case #struct-enum {
             if at.def == #struct {
                if at.decl.structt == #nil {
-                  C.out.printf("%s:%u:%u: Error, struct '/%s' was not defined\n", file.path(), row, col, at.name.id.str());
+                  C<stdout file; '':; row; '':; col; ": Error, struct '/"; at.name.id; "' was not defined\n">;
                   C.exit(#failure);
                }
                at.decl.structt.output();
             } elif at.def == #enum {
                if at.decl.enumm == #nil {
-                  C.out.printf("%s:%u:%u: Error, enum '\\%s' was not defined\n", file.path(), row, col, at.name.id.str());
+                  C<stdout file; '':; row; '':; col; ": Error, enum '\\"; at.name.id; "' was not defined\n">;
                   C.exit(#failure);
                }
                at.decl.enumm.output();

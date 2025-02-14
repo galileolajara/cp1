@@ -47,7 +47,7 @@ type-info-arr(expr:ExprI) {
          quick-alloc-arr(vd.size-expr-v, #decl-var-size-limit);
       }
       vd.size-expr-v[vd.size-c++] = expr;
-      // C.out.printf("%s, vd.size-c = %d\n", vd.name.str(), vd.size-c);
+      // C<stdout vd.name; ", vd.size-c = "; vd.size-c; ''\n>;
    }
 }
 type-info-ref(c:i8) {
@@ -55,12 +55,12 @@ type-info-ref(c:i8) {
    ti.ref-v[ti.array-c] += c;
 }
 type-info-static() {
-   // C.out.printf("built-in\n");
+   // C<stdout "built-in\n">;
    .decl-var.type-info.built-in = true;
 }
 decl-include-begin(inc:Include, row:u32, col:u32) {
    if .decl-include != #nil {
-      C.out.printf("%s:%u:%u: Cannot include inside another include of %u:%u\n", .input-path, row, col, .decl-include-row, .decl-include-col);
+      C<stdout .input-path; '':; row; '':; col; ": Cannot include inside another include of "; .decl-include-row; '':; .decl-include-col; ''\n>;
       C.exit(#failure);
       return;
    }
@@ -121,7 +121,7 @@ at-alias(name:Id, row:u32, col:u32) {
          return;
       }
    }
-   C.out.printf("%s:%u:%u: Cannot recognize the '%s, did you forgot to put using '%s = ...;?\n", .input-path, row, col, name.str(), name.str());
+   C<stdout .input-path; '':; row; '':; col; ": Cannot recognize the '"; name; ", did you forgot to put using '"; name; " = ...;?\n">;
    C.exit(#failure);
 }
 var build-at:At;
@@ -145,13 +145,13 @@ at-push(name:Id, type:NameType, row:u32, col:u32) {
 }
 decl-alias(name:Id, at:At, row:u32, col:u32) {
    // if at.ptr().type != #module {
-   //    C.out.printf("%s:%u:%u: Alias can only work on namespaces that ends with '%%'\n", .input-path, row, col);
+   //    C<stdout .input-path; '':; row; '':; col; ": Alias can only work on namespaces that ends with '%'\n">;
    //    C.exit(#failure);
    //    return;
    // }
    loop i = 0; .at-alias-c; i++ {
       if .at-alias-name-v[i] == name {
-         C.out.printf("%s:%u:%u: Alias '%s was already declared at %u:%u\n", .input-path, row, col, name.str(), .at-alias-pos-v[i].row, .at-alias-pos-v[i].col);
+         C<stdout .input-path; '':; row; '':; col; ": Alias '"; name; " was already declared at "; .at-alias-pos-v[i].row; '':; .at-alias-pos-v[i].col; ''\n>;
          C.exit(#failure);
          return;
       }
@@ -177,7 +177,7 @@ at-graves(graves:i8, row:u32, col:u32) {
    loop graves > 0 {
       graves--;
       if .build-at == #root {
-         C.out.printf("%s:%u:%u: Too many graves in the namespace, going beyond the root namespace\n", .input-path, row, col);
+         C<stdout .input-path; '':; row; '':; col; ": Too many graves in the namespace, going beyond the root namespace\n">;
          C.exit(#failure);
       }
       +at = .build-at.ptr();
@@ -238,7 +238,7 @@ var decl-at:At;
 var decl-at-v:At[#decl-at-nest-limit];
 var decl-at-c:u8;
 err-msg-namespace-limit(row:u32, col:u32) {
-   C.out.printf("%s:%u:%u: Max number of ids in namespace reached\n", .input-path, row, col);
+   C<stdout .input-path; '':; row; '':; col; ": Max number of ids in namespace reached\n">;
    C.exit(#failure);
 }
 decl-at-add(name:Id, type:NameType) {
@@ -300,7 +300,7 @@ struct Lexer[
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
       if length > 11 {
-         C.out.printf("%s:%u:%u: Integer literal was too long\n", .input-path, .row, .col);
+         C<stdout .input-path; '':; .row; '':; .col; ": Integer literal was too long\n">;
          C.exit(#failure);
       }
       +val = 0:u64;
@@ -309,7 +309,7 @@ struct Lexer[
          r-start.pos++;
       }
       if val > 4294967295u {
-         C.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
+         C<stdout .input-path; '':; .row; '':; .col; ": Integer literal was out of bounds\n">;
          C.exit(#failure);
       }
       return val:u32;
@@ -321,7 +321,7 @@ struct Lexer[
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
       if length > 8 {
-         C.out.printf("%s:%u:%u: Integer literal was too long\n", .input-path, .row, .col);
+         C<stdout .input-path; '':; .row; '':; .col; ": Integer literal was too long\n">;
          C.exit(#failure);
       }
       +val = 0:u64;
@@ -337,7 +337,7 @@ struct Lexer[
          r-start.pos++;
       }
       if val > 4294967295u {
-         C.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
+         C<stdout .input-path; '':; .row; '':; .col; ": Integer literal was out of bounds\n">;
          C.exit(#failure);
       }
       return val:u32;
@@ -359,7 +359,7 @@ struct Lexer[
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos - len-minus;
       if length > 10 {
-         C.out.printf("%s:%u:%u: Integer literal was too long\n", .input-path, .row, .col);
+         C<stdout .input-path; '':; .row; '':; .col; ": Integer literal was too long\n">;
          C.exit(#failure);
       }
       +val = 0:u32;
@@ -371,7 +371,7 @@ struct Lexer[
          +old-val = val;
          val = (val * 10:u32) + (r-start.p1[0] - ''0);
          if (val / 10) < old-val {
-            C.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
+            C<stdout .input-path; '':; .row; '':; .col; ": Integer literal was out of bounds\n">;
             C.exit(#failure);
          }
       } else {
@@ -379,7 +379,7 @@ struct Lexer[
             +old-val = val;
             val = (val * 10:u32) + (r-start.p1[0] - ''0);
             if (val / 10) < old-val {
-               C.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
+               C<stdout .input-path; '':; .row; '':; .col; ": Integer literal was out of bounds\n">;
                C.exit(#failure);
             }
             r-start.pos++;
@@ -387,7 +387,7 @@ struct Lexer[
       }
       if len-minus == 0 { // no suffix, meaning its a signed integer
          if val > 2147483647 {
-            C.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
+            C<stdout .input-path; '':; .row; '':; .col; ": Integer literal was out of bounds\n">;
             C.exit(#failure);
          }
       }
@@ -400,7 +400,7 @@ struct Lexer[
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos - 3; // -3 to remove u64 suffix
       if length > 20 { // 18446744073709551615
-         C.out.printf("%s:%u:%u: Integer literal was too long\n", .input-path, .row, .col);
+         C<stdout .input-path; '':; .row; '':; .col; ": Integer literal was too long\n">;
          C.exit(#failure);
       }
       +val = 0:u64;
@@ -412,7 +412,7 @@ struct Lexer[
          +old-val = val;
          val = (val * 10:u64) + (r-start.p1[0] - ''0);
          if (val / 10) < old-val {
-            C.out.printf("%s:%u:%u: Integer literal was out of bounds\n", .input-path, .row, .col);
+            C<stdout .input-path; '':; .row; '':; .col; ": Integer literal was out of bounds\n">;
             C.exit(#failure);
          }
       } else {
@@ -431,7 +431,7 @@ struct Lexer[
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos - end;
       if length > 255 {
-         C.out.printf("too long id was detected\n");
+         C<stdout "too long id was detected\n">;
          C.exit(#failure);
       }
       +len = length:u8;
@@ -486,9 +486,8 @@ struct Lexer[
       // loop (r-start.charr[length] != '' ) && (r-start.charr[length] != ''\n) {
       //   length++;
       // }
-      // C.printf("include [%.*s]\n", length, r-start.charr);
       if length > 255 {
-         C.out.printf("too long include was detected\n");
+         C<stdout "too long include was detected\n">;
          C.exit(#failure);
       }
       +len = length:u8;
@@ -667,7 +666,7 @@ write-struct(w:Wtr, header:bool) {
       s.include.wr(w);
       s.at.wr(w, header);
       s.flags.wr(w);
-      // C.out.printf("write-struct %s\n", s.at.ptr().name.id.str());
+      // C<stdout "write-struct "; s.at.ptr.name.id; ''\n>;
       // s.name.wr(w, header);
       loop j = 0; s.fvar-c; j++ {
          s.fvar-v[j].wr(w, header);
@@ -713,7 +712,7 @@ parse-string(r:Rdr, w:Wtr, ending:char, in-data:ref) {
       +c = r.p1[0];
       if c == ''\n {
          get-row-col(+row, +col, r.reff, in-data);
-         C.out.printf("%s:%u:%u: Unterminated string\n", .input-path, row, col);
+         C<stdout .input-path; '':; row; '':; col; ": Unterminated string\n">;
          C.exit(#failure);
       }
       w.p1[0] = c;
@@ -732,7 +731,7 @@ parse-comment(r:Rdr, w:Wtr, ending:char, in-data:ref) {
       +c = r.p1[0];
       if c == ''\n {
          get-row-col(+row, +col, r.reff, in-data);
-         C.out.printf("%s:%u:%u: Unterminated comment\n", .input-path, row, col);
+         C<stdout .input-path; '':; row; '':; col; ": Unterminated comment\n">;
          C.exit(#failure);
       }
       r.pos++;
@@ -762,15 +761,15 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .func-main = #nil;
    .decl-include = #nil;
    if arg-c != 3 {
-      C.out.printf("Usage: %s [file.cp1] [output.cp1-b]\n", arg-v[0]);
+      C<stdout "Usage: "; arg-v[0]; " [file.cp1] [output.cp1-b]\n">;
       return 0;
    }
    .input-path = arg-v[1];
-   // C.out.printf("reading %s\n", .input-path);
+   // C<stdout "reading "; .input-path; ''\n>;
    var in-data:u8[];
    in-data = read-file(.input-path, 2, +in-size);
    if in-data == null {
-      C.out.printf("Cannot open file for reading: %s\n", .input-path);
+      C<stdout "Cannot open file for reading: "; .input-path; ''\n>;
       C.exit(#failure);
    }
    +lock-path = arg-v[2];
@@ -788,7 +787,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    //       "#endif";
    //       if skip {
    //          // Skip parsing
-   //          C.out.printf("Skipping parsing of %s because the output file is newer than the input file\n", .input-path);
+   //          C<stdout "Skipping parsing of "; .input-path; " because the output file is newer than the input file\n">;
    //          return 0;
    //       }
    //    } else {
@@ -800,12 +799,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    // }
 
    if (&&, in-data[in-size - 2] == ''\r, in-data[in-size - 1] == ''\n) {
-      C.out.printf("Error reading file '%s' because it uses Windows-style line endings\n", .input-path);
-      C.out.printf("Please convert the line endings to Unix-style line endings\n");
+      C<stdout "Error reading file '"; .input-path; "' because it uses Windows-style line endings\n">;
+      C<stdout "Please convert the line endings to Unix-style line endings\n">;
       C.exit(#failure);
    }
    if in-data[in-size - 1] != ''\n {
-      C.out.printf("Error reading file '%s' because it doesn't end with a new line\n", .input-path);
+      C<stdout "Error reading file '"; .input-path; "' because it doesn't end with a new line\n">;
       C.exit(#failure);
    }
    if true { // Process comments
@@ -824,7 +823,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       loop r.pos < r-end.pos {
          if r.p1[0] == ''\t {
             get-row-col(+row, +col, r.reff, in-data);
-            C.printf("%s:%u:%u: Error, use of tabs is discouraged, please use spaces instead\n", .input-path, row, col);
+            C<stdout .input-path; '':; row; '':; col; ": Error, use of tabs is discouraged, please use spaces instead\n">;
             C.exit(#failure);
          } elif r.p1[0] == ''/ {
             if r.p1[1] == ''/ {
@@ -834,7 +833,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   // ok
                } else {
                   get-row-col(+row, +col, r.reff, in-data);
-                  C.out.printf("%s:%u:%u: There must be a space or tab before the // comment\n", .input-path, row, col);
+                  C<stdout .input-path; '':; row; '':; col; ": There must be a space or tab before the // comment\n">;
                   C.exit(#failure);
                }
                // comment
