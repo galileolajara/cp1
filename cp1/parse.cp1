@@ -888,22 +888,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                r.pos++;
             }
             continue;
-         // } elif r.p1[0] == ''{ {
-         //    indent++;
-         // } elif r.p1[0] == ''} {
-         //    if indent == 0 {
-         //       get-row-col(+row, +col, r.ref, in-data);
-         //       C.out.printf("%s:%u:%u: Too much '}' detected\n", .input-path, row, col);
-         //       C.exit(#failure);
-         //    }
-         //    indent--;
-         // } elif indent == 0 {
-         //    if r.p1[0] == ''\n {
-         //       w.p1[0] = ''\n;
-         //       w.pos++;
-         //    }
-         //    r.pos++;
-         //    continue;
          } elif r.p1[0] == ''\' {
             if r.p1[1] == ''\' {
                // char
@@ -911,7 +895,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                if c == ''\\ {
                   if r.p1[3] == ''" {
                      get-row-col(+row, +col, r.reff, in-data);
-                     C.out.printf("%s:%u:%u: char ''\\\" is invalid, please use ''\" instead\n", .input-path, row, col);
+                     C<stdout .input-path; ":"; row; ":"; col; ": char ''\\\" is invalid, please use ''\" instead\n">;
                      C.exit(#failure);
                   }
                   w.p1[0] = ''\';
@@ -925,42 +909,42 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   switch c {
                      case ''\' {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C.out.printf("%s:%u:%u: char ''' is invalid, please use ''\\' instead\n", .input-path, row, col);
+                        C<stdout .input-path; ":"; row; ":"; col; ": char ''' is invalid, please use ''\\' instead\n">;
                         C.exit(#failure);
                      }
                      case ''\a {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C.out.printf("%s:%u:%u: char ''(\\a) is invalid, please use ''\\a instead\n", .input-path, row, col);
+                        C<stdout .input-path; ":"; row; ":"; col; ": char ''(\\a) is invalid, please use ''\\a instead\n">;
                         C.exit(#failure);
                      }
                      case ''\b {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C.out.printf("%s:%u:%u: char ''(\\b) is invalid, please use ''\\b instead\n", .input-path, row, col);
+                        C<stdout .input-path; ":"; row; ":"; col; ": char ''(\\b) is invalid, please use ''\\b instead\n">;
                         C.exit(#failure);
                      }
                      case ''\f {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C.out.printf("%s:%u:%u: char ''(\\b) is invalid, please use ''\\b instead\n", .input-path, row, col);
+                        C<stdout .input-path; ":"; row; ":"; col; ": char ''(\\f) is invalid, please use ''\\f instead\n">;
                         C.exit(#failure);
                      }
                      case ''\n {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C.out.printf("%s:%u:%u: char ''(new line) is invalid, please use ''\\n instead\n", .input-path, row, col);
+                        C<stdout .input-path; ":"; row; ":"; col; ": char ''(new line) is invalid, please use ''\\n instead\n">;
                         C.exit(#failure);
                      }
                      case ''\r {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C.out.printf("%s:%u:%u: char ''(\\r) is invalid, please use ''\\r instead\n", .input-path, row, col);
+                        C<stdout .input-path; ":"; row; ":"; col; ": char ''(\\r) is invalid, please use ''\\r instead\n">;
                         C.exit(#failure);
                      }
                      case ''\t {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C.out.printf("%s:%u:%u: char ''(tab) is invalid, please use ''\\t instead\n", .input-path, row, col);
+                        C<stdout .input-path; ":"; row; ":"; col; ": char ''(tab) is invalid, please use ''\\t instead\n">;
                         C.exit(#failure);
                      }
                      case ''\v {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C.out.printf("%s:%u:%u: char ''(\\v) is invalid, please use ''\\v instead\n", .input-path, row, col);
+                        C<stdout .input-path; ":"; row; ":"; col; ": char ''(\\v) is invalid, please use ''\\v instead\n">;
                         C.exit(#failure);
                      }
                   }
@@ -988,7 +972,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   }
                   if r.pos >= r-end.pos {
                      get-row-col(+row, +col, r.reff, in-data);
-                     C.out.printf("%s:%u:%u: String did not end with a new line\n", .input-path, row, col);
+                     C<stdout .input-path; ":"; row; ":"; col; ": Error, string must end with a new line\n">;
                      C.exit(#failure);
                   }
                }
@@ -1024,7 +1008,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             loop {
                if r.p1[0] == ''\n {
                   get-row-col(+row, +col, r.reff, in-data);
-                  C.out.printf("%s:%u:%u: Unterminated string\n", .input-path, row, col);
+                  C<stdout .input-path; ":"; row; ":"; col; ": Unterminated string\n">;
                   C.exit(#failure);
                } elif r.p1[0] == ''" {
                   w.p1[0] = ''";
@@ -1046,7 +1030,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      case ''v { }
                      default {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C.out.printf("%s:%u:%u: Encountered invalid escape sequence in the string: '\\%c'\n", .input-path, row, col, r.p1[1]);
+                        C<stdout .input-path; ":"; row; ":"; col; ": Encountered invalid escape sequence in the string: '\\"; r.charr[1]; "'\n">;
                         C.exit(#failure);
                      }
                   }
@@ -1061,7 +1045,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                }
                if r.pos >= r-end.pos {
                   get-row-col(+row, +col, r.reff, in-data);
-                  C.out.printf("%s:%u:%u: Unterminated string\n", .input-path, row, col);
+                  C<stdout .input-path; ":"; row; ":"; col; ": Error, unterminated string\n">;
                   C.exit(#failure);
                }
             }
@@ -1259,13 +1243,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             case #loop {
                +found-semicolon = false;
                if (&&, lex.cursor[0] != '' , lex.cursor[0] != ''\n)  {
-                  C.out.printf("%s:%u:%u: There must be a space or new line after the keyword 'loop'\n", .input-path, .row, .col);
+                  C<stdout .input-path; ":"; .row; ":"; .col; ": There must be a space or new line after the keyword 'loop'\n">;
                   C.exit(#failure);
                }
                loop i = 0; {
                   +c = lex.cursor[i];
                   if c == ''\0 {
-                     C.out.printf("%s:%u:%u: Keyword 'loop' was found but was not followed by '{'\n", .input-path, .row, .col);
+                     C<stdout .input-path; ":"; .row; ":"; .col; ": Keyword 'loop' was found but was not followed by '{'\n">;
                      C.exit(#failure);
                   } elif c == ''\' {
                      c = lex.cursor[i + 1];
@@ -1358,10 +1342,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   +end = r-cursor.pos - r-start.pos - length;
                   if length == 0 {
                      tok.val.ii32.id = -1;
-                     // C.printf("got empty soa-group\n");
                   } else {
                      tok.val.ii32.id = lex.get-id(1, end);
-                     // C.printf("got soa-group '%.*s' %s, len %d\n", length:i32, r-start.charr, tok.val.ii32.id:Id.str(), length:i32);
                   }
                }
                if true {
@@ -1373,9 +1355,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   r-cursor.reff = lex.cursor;
                   +length = r-cursor.pos - r-start.pos;
                   tok.val.ii32.id2 = lex.get-id(rbracket, 0);
-                  // C.printf("got soa-field '%.*s' %s\n", length:i32, r-start.charr, tok.val.ii32.id2:Id.str());
                }
-               // C.exit(#failure);
                .last-token = t;
                psr.parse(t, tok);
             }
@@ -1435,7 +1415,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .last-token = #nil;
    psr.parse(#nil, tok);
    psr.free();
-   // C.out.printf("parsing finished\n");
+   // C<stdout "parsing finished\n">;
    var w-begin:Wtr+;
    w-begin.reff = quick-alloc((in-size << 2) + 1024);
    var w:Wtr+;
@@ -1452,7 +1432,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    malloc-arr(.id-in-header-id-v, .id-c);
 
    w.n(.include-c);
-   // C.out.printf("There are %u includes\n", .include-c);
+   // C<stdout "There are "; .include-c; " includes\n">;
    loop i = 0; .include-c; i++ {
       w.n1(.include-len-v[i]);
       w.copy(.include-str-v[i], .include-len-v[i]);
@@ -1486,7 +1466,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    C.sprintf(out-path, "%s.tmp", lock-path);
    +out-path-len = C.strlen(out-path);
    if !write-file(out-path, w-begin.reff, w.pos - w-begin.pos) {
-      C.out.printf("Cannot open file for writing: %s\n", out-path);
+      C<stdout "Cannot open file for writing: "; out-path; ''\n>;
       C.exit(#failure);
    }
 
@@ -1524,7 +1504,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
 
    out-path[out-path-len - 5] = ''h;
    if !write-file(out-path, w-begin.reff, w.pos - w-begin.pos) {
-      C.out.printf("Cannot open file for writing: %s\n", out-path);
+      C<stdout "Cannot open file for writing: "; out-path; ''\n>;
       C.exit(#failure);
    }
    var final-path:char[512];
