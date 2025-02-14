@@ -452,6 +452,7 @@ metacarg-push(expr:ExprI) {
    .expr-call-carg-v[call-idx][.expr-call-carg-c[call-idx]++] = expr;
    .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
 }
+var id-blank:Id;
 expr-pop-metafunc(at:At, func-name:Id):ExprI {
    +call-idx = .expr-call-c -= 1;
    +carg-c = .expr-call-carg-c[call-idx];
@@ -471,7 +472,10 @@ expr-pop-metafunc(at:At, func-name:Id):ExprI {
       e.group-v[i] = .expr-call-cgrp-v[call-idx][i];
    }
    if true {
-      +lvar-name = func-name;
+      if .id-blank == 0:Id {
+         .id-blank = id-add(0, "");
+      }
+      +lvar-name = .id-blank;
       +space = .decl-func-ctx-space;
       quick-alloc-one(+(e2:ExprLvar));
       +e-idx = expr-push(e2.base, #lvar);

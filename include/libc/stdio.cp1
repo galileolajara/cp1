@@ -77,7 +77,7 @@ include <stdio.h>  {
             C.realloc-arr(.stdout-buf-data, .stdout-buf-cap);
          }
       }
-      stdout-cstr(str:char[]) @inline {
+      stdout-str(str:char[]) @inline {
          stdout-bytes(str, C.strlen(str));
       }
       stdout-char(val:char) @inline {
@@ -90,7 +90,7 @@ include <stdio.h>  {
       }
       struct Stdout[] {
          str(so:this, str:char[]) @inline {
-            stdout-cstr(str);
+            stdout-str(str);
          }
          str(so:this, str:char[], len:u32) @inline {
             stdout-bytes(str, len);

@@ -16,6 +16,28 @@ var at-in-header-c:i32;
 var decl-include:Include;
 var decl-include-row:u32;
 var decl-include-col:u32;
+id-add(len:u8, str:char[]):Id {
+   +found = .id-map.get-or-insert(str, len, .id-c);
+   if found == -1 {
+      // inserted
+      +id = .id-c++;
+      if .id-cap <= .id-c {
+         +old-cap = .id-cap;
+         grow(.id-cap, .id-c);
+         realloc(.id-str-v, .id-cap, old-cap);
+         realloc(.id-len-v, .id-cap, old-cap);
+      }
+      var text:char[] = quick-alloc(len + 1);
+      C.memcpy(text, str, len);
+      text[len] = 0;
+      .id-str-v[id] = text;
+      .id-len-v[id] = len;
+      return id;
+   } else {
+      // found
+      return found;
+   }
+}
 type-info-begin() {
    .decl-var.size-c = 0;
    .decl-var.type-info.init();
@@ -435,26 +457,7 @@ struct Lexer[
          C.exit(#failure);
       }
       +len = length:u8;
-      +found = .id-map.get-or-insert(r-start.reff, len, .id-c);
-      if found == -1 {
-         // inserted
-         +id = .id-c++;
-         if .id-cap <= .id-c {
-            +old-cap = .id-cap;
-            grow(.id-cap, .id-c);
-            realloc(.id-str-v, .id-cap, old-cap);
-            realloc(.id-len-v, .id-cap, old-cap);
-         }
-         var text:char[] = quick-alloc(len + 1);
-         C.memcpy(text, r-start.reff, len);
-         text[len] = 0;
-         .id-str-v[id] = text;
-         .id-len-v[id] = len;
-         return id;
-      } else {
-         // found
-         return found;
-      }
+      return id-add(length:u8, r-start.charr);
       // loop i = 0; .id-c; i++ {
       //    if .id-len-v[i] == len {
       //       if C.memcmp(.id-str-v[i], r-start.ref, len) == 0 {
@@ -799,8 +802,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    // }
 
    if (&&, in-data[in-size - 2] == ''\r, in-data[in-size - 1] == ''\n) {
-      C<stdout "Error reading file '"; .input-path; "' because it uses Windows-style line endings\n">;
-      C<stdout "Please convert the line endings to Unix-style line endings\n">;
+      C<stdout
+      "Error reading file '"; .input-path; "' because it uses Windows-style line endings\n"
+      "Please convert the line endings to Unix-style line endings\n">;
       C.exit(#failure);
    }
    if in-data[in-size - 1] != ''\n {
