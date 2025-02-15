@@ -21,8 +21,8 @@ main(arg-c:intc, arg-v:char[][]):intc {
    +pos = 0;
    +out-f = C.fopen(arg-v[2], "w");
    out-f.printf(
-      "using Cp1 {\n"
-      "enum Token[\n"
+      "using Cp1 {\n" $
+      "enum Token[\n" $
       "#nil,\n");
    loop pos < in-size {
       +start = pos;
@@ -53,9 +53,9 @@ main(arg-c:intc, arg-v:char[][]):intc {
       pos++;
    }
    out-f.printf(
-      "]:u32 {\n"
-      "cp1-name(e:this):char[] @cp1-name;\n"
-      "}\n"
+      "]:u32 {\n" $
+      "cp1-name(e:this):char[] @cp1-name;\n" $
+      "}\n" $
       "}\n");
    out-f.close();
    return 0;

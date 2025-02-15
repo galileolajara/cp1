@@ -49,21 +49,21 @@ using ExprI {
       var e:ExprFvar = expr;
       +type-i = e.expr.type();
       if type-i == #nil {
-         C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; " Cannot get member '."; e.member; "' from an expression of unknown type\n">;
+         C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col " Cannot get member '." e.member "' from an expression of unknown type\n">;
          return;
       }
       +type = type-i.ptr();
       if type.def != #struct {
-         C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; " Cannot get member '."; e.member; "' because the type is not a struct or union\n">;
+         C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col " Cannot get member '." e.member "' because the type is not a struct or union\n">;
          return;
       }
       if !e.expr.value(1 - type-i.pointer(), true, e.val) { return }
       if e.val.info.array-c > 0 {
-         C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; " Cannot get member '."; e.member; "' because the expression is an array("; e.val.info.array-c; ")\n">;
+         C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col " Cannot get member '." e.member "' because the expression is an array(" e.val.info.array-c ")\n">;
          return;
       }
       if type.decl.structt == #nil {
-         C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; " Cannot get member '."; e.member; "' because the type '/"; type.name.id; "' was not defined\n">;
+         C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col " Cannot get member '." e.member "' because the type '/" type.name.id "' was not defined\n">;
          return;
       }
       +struct-i = type.decl.structt;
@@ -77,7 +77,7 @@ using ExprI {
             return;
          }
       }
-      C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; " Cannot find member named '."; e.member; "' from type '/"; type.name.id; "'\n">;
+      C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col " Cannot find member named '." e.member "' from type '/" type.name.id "'\n">;
    }
 }
  

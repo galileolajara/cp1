@@ -91,7 +91,7 @@ using ExprI {
          if at-idx == #root { break }
          at-idx = at.parent;
       }
-      C<stdout .ctx-func.file; '':; .ctx-begin-row; '':; .ctx-begin-col; " - "; .ctx-end-row; '':; .ctx-end-col; ": Cannot find gvar '."; name; "'\n">;
+      C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find gvar '." name "'\n">;
       C.exit(#failure);
    }
    write-gvar(expr:Expr) @case.write() @inline {

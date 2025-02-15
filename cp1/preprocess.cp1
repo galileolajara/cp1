@@ -7,8 +7,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    if arg-c < 3 {
       "usage:";
       C<stdout
-      "Usage: "; arg-v[0]; " [options] [.cp1 input file] [.cp1 output file]\n"
-      "Options:\n"
+      "Usage: " arg-v[0] " [options] [.cp1 input file] [.cp1 output file]\n" $
+      "Options:\n" $
       " -Ddefinename     Define a name that will yield true on #if(...) preprocessor\n">;
       C.exit(#failure);
    }
@@ -37,29 +37,29 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                } elif name[len] == ''- {
                   // Ok
                   if len == 0 {
-                     C<stdout "Error, in option -Ddefinename (which is "; arg-v[i]; "), definename' cannot begin with a dash\n">;
+                     C<stdout "Error, in option -Ddefinename (which is " arg-v[i] "), definename' cannot begin with a dash\n">;
                      "goto usage;";
                   } elif name[len - 1] == ''- {
-                     C<stdout "Error, in option -Ddefinename (which is "; arg-v[i]; "), definename' cannot contain consecutive a dashes\n">;
+                     C<stdout "Error, in option -Ddefinename (which is " arg-v[i] "), definename' cannot contain consecutive a dashes\n">;
                      "goto usage;";
                   }
                } else {
-                  C<stdout "Error, in option -Ddefinename (which is "; arg-v[i]; "), invalid character '"; name[len]; "' was detected in definename'\n">;
+                  C<stdout "Error, in option -Ddefinename (which is " arg-v[i] "), invalid character '" name[len] "' was detected in definename'\n">;
                   "goto usage;";
                }
                len++;
             }
             if len == 0 {
-               C<stdout "Error, in option -Ddefinename (which is "; arg-v[i]; "), Definename' cannot be blank\n">;
+               C<stdout "Error, in option -Ddefinename (which is " arg-v[i] "), Definename' cannot be blank\n">;
                "goto usage;";
             }
             if name[len - 1] == ''- {
-               C<stdout "Error, in option -Ddefinename (which is "; arg-v[i]; "), Definename' cannot end with a dash\n">;
+               C<stdout "Error, in option -Ddefinename (which is " arg-v[i] "), Definename' cannot end with a dash\n">;
                "goto usage;";
             }
             preprocess-def(name, len);
          } else {
-            C<stdout "Error, invalid option '"; arg-v[i][1]; "'\n">;
+            C<stdout "Error, invalid option '" arg-v[i][1] "'\n">;
             "goto usage;";
          }
       } else {
@@ -74,13 +74,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    var in-data:char[];
    in-data = read-file(arg-v[i], 0, +in-size);
    if in-data == null {
-      C<stdout "Cannot open file for reading: "; arg-v[i + 1]; ''\n>;
+      C<stdout "Cannot open file for reading: " arg-v[i + 1] ''\n>;
       C.exit(#failure);
    }
    preprocess-init();
    preprocess(in-data, in-size);
    if !write-file(arg-v[i + 1], in-data, in-size) {
-      C<stdout "Cannot open file for writing: "; arg-v[i + 1]; ''\n>;
+      C<stdout "Cannot open file for writing: " arg-v[i + 1] ''\n>;
       C.exit(#failure);
    }
    return 0;
@@ -181,7 +181,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
             }
          }
          if rparen == -1 {
-            C<stdout .input-path; ":"; line; ": Error in preprocessing the code, #if(...) must have a closing parenthesis ')'\n">;
+            C<stdout .input-path '': line ": Error in preprocessing the code, #if(...) must have a closing parenthesis ')'\n">;
             C.exit(#failure);
          }
          var def-str:char[] = &r.charr[start];
@@ -227,7 +227,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
             r.pos += line-len;
          }
          if indention-len <= 0 {
-            C<stdout .input-path; ":"; line; ": Error in preprocessing the code, #if(...). Its next line (line "; line + 1; ") must be indented more than line "; line; "\n">;
+            C<stdout .input-path '': line ": Error in preprocessing the code, #if(...). Its next line (line " line + 1 ") must be indented more than line " line ''\n>;
             C.exit(#failure);
          }
          line++;
@@ -267,7 +267,7 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
                   w.pos++;
                   r.pos += line-len + 1;
                } else {
-                  C<stdout .input-path; ":"; line; ": Error, expecting '#endif' with the same indention as '#if' on line "; if-line; ", because line "; line; "'s indention is different from indention at line "; if-line + 1; "\n">;
+                  C<stdout .input-path '': line ": Error, expecting '#endif' with the same indention as '#if' on line " if-line ", because line " line "'s indention is different from indention at line " if-line + 1 ''\n>;
                   C.exit(#failure);
                }
                break;

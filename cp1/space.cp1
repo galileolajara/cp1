@@ -58,7 +58,7 @@ struct StmtSpace[
          loop i = 0; space.lvar-c; i++ {
             +lvar = v[i].ptr();
             if lvar.decl.name == name {
-               C<stdout .input-path; ":"; row; ":"; col; ": lvar '"; name.str(); "' was already declared at "; lvar.row; ":"; lvar.col; "\n">;
+               C<stdout .input-path '': row '': col ": lvar '" name.str() "' was already declared at " lvar.row '': lvar.col ''\n>;
                C.exit(#failure);
             }
          }
@@ -105,7 +105,7 @@ struct StmtSpace[
          w.n(stmt.end-col);
          switch.wr(stmt, w, header) stmt.type {
             default {
-               C<stdout "wr() not yet implemented in stmt #"; stmt.type.cp1-name(); "\n">;
+               C<stdout "wr() not yet implemented in stmt #" stmt.type.cp1-name() ''\n>;
                C.exit(#failure);
             }
          }
@@ -162,7 +162,7 @@ struct StmtSpace[
          .ctx-end-col = end-col;
          switch.rd(space, r) type {
             default {
-               C<stdout "rd() not yet implemented in stmt #"; type.cp1-name(); "\n">;
+               C<stdout "rd() not yet implemented in stmt #" type.cp1-name() ''\n>;
                C.exit(#failure);
             }
          }

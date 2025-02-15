@@ -90,9 +90,9 @@ usage:
 _NLibC_Pstdout_1(&_L_2);
 _NLibC_NStdout_Pcstr_3(&_L_2, "Usage: ", 7u);
 _NLibC_NStdout_Pstr_2(&_L_2, _Larg_v_1[0]);
-_NLibC_NStdout_Pcstr_3(&_L_2, " [options] [.cp1 input file] [.cp1 output file]\n"
-"Options:\n"
-" -Ddefinename     Define a name that will yield true on #if(...) preprocessor\n", 135u);
+_NLibC_NStdout_Pcstr_3(&_L_2, " [options] [.cp1 input file] [.cp1 output file]\n", 48u);
+_NLibC_NStdout_Pcstr_3(&_L_2, "Options:\n", 9u);
+_NLibC_NStdout_Pcstr_3(&_L_2, " -Ddefinename     Define a name that will yield true on #if(...) preprocessor\n", 78u);
 _NLibC_NStdout_Pend_1(&_L_2);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -395,7 +395,7 @@ if(_Lrparen_14 == -1) {
 struct _NLibC_NStdout _L_16;
 _NLibC_Pstdout_1(&_L_16);
 _NLibC_NStdout_Pstr_2(&_L_16, _Ginput_path);
-_NLibC_NStdout_Pcstr_3(&_L_16, ":", 1u);
+_Tchar_Pstdout_2(':', &_L_16);
 _Tu32_Pstdout_2(_Lline_9, &_L_16);
 _NLibC_NStdout_Pcstr_3(&_L_16, ": Error in preprocessing the code, #if(...) must have a closing parenthesis ')'\n", 80u);
 _NLibC_NStdout_Pend_1(&_L_16);
@@ -451,13 +451,13 @@ if(_Lindention_len_21 <= 0) {
 struct _NLibC_NStdout _L_24;
 _NLibC_Pstdout_1(&_L_24);
 _NLibC_NStdout_Pstr_2(&_L_24, _Ginput_path);
-_NLibC_NStdout_Pcstr_3(&_L_24, ":", 1u);
+_Tchar_Pstdout_2(':', &_L_24);
 _Tu32_Pstdout_2(_Lline_9, &_L_24);
 _NLibC_NStdout_Pcstr_3(&_L_24, ": Error in preprocessing the code, #if(...). Its next line (line ", 65u);
 _Tu32_Pstdout_2(_Lline_9 + 1, &_L_24);
 _NLibC_NStdout_Pcstr_3(&_L_24, ") must be indented more than line ", 34u);
 _Tu32_Pstdout_2(_Lline_9, &_L_24);
-_NLibC_NStdout_Pcstr_3(&_L_24, "\n", 1u);
+_Tchar_Pstdout_2('\n', &_L_24);
 _NLibC_NStdout_Pend_1(&_L_24);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -505,7 +505,7 @@ _Lr_6._Fpos += (_Lline_len_25 + 1);
 struct _NLibC_NStdout _L_27;
 _NLibC_Pstdout_1(&_L_27);
 _NLibC_NStdout_Pstr_2(&_L_27, _Ginput_path);
-_NLibC_NStdout_Pcstr_3(&_L_27, ":", 1u);
+_Tchar_Pstdout_2(':', &_L_27);
 _Tu32_Pstdout_2(_Lline_9, &_L_27);
 _NLibC_NStdout_Pcstr_3(&_L_27, ": Error, expecting '#endif' with the same indention as '#if' on line ", 69u);
 _Tu32_Pstdout_2(_Lif_line_11, &_L_27);
@@ -513,7 +513,7 @@ _NLibC_NStdout_Pcstr_3(&_L_27, ", because line ", 15u);
 _Tu32_Pstdout_2(_Lline_9, &_L_27);
 _NLibC_NStdout_Pcstr_3(&_L_27, "'s indention is different from indention at line ", 49u);
 _Tu32_Pstdout_2(_Lif_line_11 + 1, &_L_27);
-_NLibC_NStdout_Pcstr_3(&_L_27, "\n", 1u);
+_Tchar_Pstdout_2('\n', &_L_27);
 _NLibC_NStdout_Pend_1(&_L_27);
 exit(_NLibC_NExit_Cfailure);
 }

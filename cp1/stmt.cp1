@@ -27,7 +27,7 @@ struct Stmt[
    write(s:this) {
       switch.write(s) s.type {
          default {
-            C<stdout "write() not yet implemented in stmt #"; s.type.cp1-name(); "\n">;
+            C<stdout "write() not yet implemented in stmt #" s.type.cp1-name() ''\n>;
             C.exit(#failure);
          }
       }
@@ -40,11 +40,11 @@ struct Stmt[
       .ctx-end-col = s.end-col;
       switch.process(s, ok) s.type {
          default {
-            C<stdout .ctx-func.file; ":"; s.begin-row; ":"; s.begin-col; " - "; s.end-row; ":"; s.end-col; ": process() is not implemented in statement #"; s.type.cp1-name(); "\n">;
+            C<stdout .ctx-func.file '': s.begin-row '': s.begin-col " - " s.end-row '': s.end-col ": process() is not implemented in statement #" s.type.cp1-name() ''\n>;
          }
       }
       if !ok {
-         C<stdout .ctx-func.file; ":"; s.begin-row; ":"; s.begin-col; " - "; s.end-row; ":"; s.end-col; ": Processing of statement #"; s.type.cp1-name(); " failed\n">;
+         C<stdout .ctx-func.file '': s.begin-row '': s.begin-col " - " s.end-row '': s.end-col ": Processing of statement #" s.type.cp1-name() " failed\n">;
       }
       return ok;
    }

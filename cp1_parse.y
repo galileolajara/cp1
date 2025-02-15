@@ -246,6 +246,10 @@ func_attr ::= SPACE_AT_NO_BODY.
    { _NCp1_Pfunc_attr_no_body_0(); }
 func_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _NCp1_Pfunc_attr_real_name_1(e.basic.id); }
+/* func_attr ::= SPACE_AT_META_METHOD_STR1(e).
+   { _NCp1_Pfunc_attr_meta_method_2(e.basic.id, -1); }
+func_attr ::= SPACE_AT_META_METHOD_STR2(e).
+   { _NCp1_Pfunc_attr_meta_method_2(e.basic.id, e.basic.id2); } */
 func_attr ::= SPACE_AT_REAL_NAME.
    { _NCp1_Pfunc_attr_real_name_1(-1); }
 /* func_attrs(l) ::= OPEN_CURLY_BRACE_SPACE(r).
@@ -386,7 +390,7 @@ expr_int(l) ::= NUM_U64(e).
 
 expr_str(l) ::= STRING.
    { l.basic.id = _NCp1_Pexpr_str_1(-1); }
-expr_str(l) ::= expr_str(e) SPACE STRING.
+expr_str(l) ::= expr_str(e) SPACE_DOLLAR_SPACE STRING.
    { l.basic.id = _NCp1_Pexpr_str_1(e.basic.id); }
 
 expr_lvar_plus(l) ::= PLUS.
@@ -590,12 +594,11 @@ metaCall_arg ::= expr(e).
 metaCall_arg_list ::= metaCall_arg.
 metaCall_arg_list ::= metaCall_arg_list COMMA_SPACE metaCall_arg.
 metaCall_args ::= metaCall_arg_list.
-metaCall_args_next_group ::= SEMICOLON SPACE.
+metaCall_args_next_group ::= SPACE.
    { _NCp1_Pmetacarg_next_group_0(); }
 metaCall_args_next_group_empty ::= .
    { _NCp1_Pmetacarg_next_group_0(); }
 metaCall_args ::= metaCall_args metaCall_args_next_group metaCall_arg_list.
-metaCall_args ::= metaCall_args SEMICOLON.
 call_args_optional ::= open_parenthesis_or_space CLOSE_PARENTHESIS.
 call_args_optional ::= call_args.
 call_arg ::= expr(e).

@@ -71,11 +71,11 @@ id-add(id-len:u8, id-str:char[]):Id {
    return id-idx;
 }
 read(in-path:char[]) {
-   // C<stdout "reading "; in-path; " -------------------\n">;
+   // C<stdout "reading " in-path " -------------------\n">;
    var r-begin:Rdr+;
    r-begin.reff = read-file(in-path, 0, +in-size);
    if r-begin.reff == null {
-      C<stdout "Cannot open file for reading: "; in-path; ''\n>;
+      C<stdout "Cannot open file for reading: " in-path ''\n>;
       C.exit(#failure);
    }
 
@@ -93,7 +93,7 @@ read(in-path:char[]) {
    r.reff = r-begin.reff;
    if true {
       +id-c = r.n();
-      // C<stdout "There are "; id-c; " ids\n">;
+      // C<stdout "There are " id-c " ids\n">;
       quick-alloc-arr(.id-table, id-c);
       file.id-table = .id-table;
       loop i = 0; id-c; i++ {
@@ -105,7 +105,7 @@ read(in-path:char[]) {
    }
    if true {
       +include-c = r.n();
-      // C<stdout "There are "; include-c; " includes\n">;
+      // C<stdout "There are " include-c " includes\n">;
       if .include-table-cap <= include-c {
          +old-cap = .include-table-cap;
          grow(.include-table-cap, include-c);
@@ -141,7 +141,7 @@ read(in-path:char[]) {
    }
    if true {
       +at-c = r.n();
-      // C<stdout "There are "; at-c; " at\n">;
+      // C<stdout "There are " at-c " at\n">;
       quick-alloc-arr(.at-table, at-c);
       file.at-table = .at-table;
       var at-type:NameType;
@@ -153,9 +153,9 @@ read(in-path:char[]) {
          } else {
             At.rd(+at-parent, r);
             Id.rd(+at-name, r);
-            // C<stdout "read at type "; at-type; '' ; at-type.cp1-name(); '' ; at-name; ''\n>;
-            // C<stdout "- parent "; at-parent; ''\n>;
-            // C<stdout "- name "; at-name; ''\n>;
+            // C<stdout "read at type " at-type ''  at-type.cp1-name() ''  at-name ''\n>;
+            // C<stdout "- parent " at-parent ''\n>;
+            // C<stdout "- name " at-name ''\n>;
             +found = .at-map.get-or-insert(at-parent, at-type, at-name, .at-c:base);
             // loop j = 0; .at-c; j++ {
             //    +at = .at-v[j];
@@ -164,11 +164,11 @@ read(in-path:char[]) {
             //       break;
             //    }
             // }
-            // C<stdout "found "; found; ''\n>;
-            // C<stdout "at "; i; ", name-c "; at-name-c; ", found "; found; ''\n>;
+            // C<stdout "found " found ''\n>;
+            // C<stdout "at " i ", name-c " at-name-c ", found " found ''\n>;
             if found == -1 {
                +at-idx = .at-c++;
-               // C<stdout "1 as "; at-idx; ''\n>;
+               // C<stdout "1 as " at-idx ''\n>;
                if .at-cap <= .at-c {
                   +old-cap = .at-cap;
                   .at-cap = grow(.at-c:base);
@@ -178,7 +178,7 @@ read(in-path:char[]) {
                at.init(at-type, at-parent, at-name);
                .at-table[i] = at-idx:At;
             } else {
-               // C<stdout "2 as "; found; ''\n>;
+               // C<stdout "2 as " found ''\n>;
                .at-table[i] = found:At;
             }
          }
@@ -188,7 +188,7 @@ read(in-path:char[]) {
       +cvar-c = r.n():Cvar;
       quick-alloc-arr(.cvar-table, cvar-c:base);
       file.cvar-table = .cvar-table;
-      // C<stdout "There are "; cvar-c; " cvars\n">;
+      // C<stdout "There are " cvar-c " cvars\n">;
       C.out.flush();
       +cvar-begin = .cvar-c;
       .cvar-c += cvar-c;
@@ -226,7 +226,7 @@ read(in-path:char[]) {
    }
    if true {
       +gvar-c = r.n():Gvar;
-      // C<stdout "There are "; gvar-c; " gvars\n">;
+      // C<stdout "There are " gvar-c " gvars\n">;
       C.out.flush();
       +gvar-begin = .gvar-c;
       .gvar-c += gvar-c;
@@ -255,7 +255,7 @@ read(in-path:char[]) {
       }
    }
    +enum-c = r.n():Enum;
-   // C<stdout "There are "; enum-c; " enums\n">;
+   // C<stdout "There are " enum-c " enums\n">;
       C.out.flush();
    +e-idx-begin = .enum-c;
    .enum-c += enum-c;
@@ -280,7 +280,7 @@ read(in-path:char[]) {
       +at-i = e.at;
       +at = at-i.ptr();
       if at.def != #undefined {
-         C<stdout "Cannot define struct :"; at.name.id; " because it was already defined as ">;
+         C<stdout "Cannot define struct :" at.name.id " because it was already defined as ">;
          if at.def == #struct {
             C<stdout "struct\n">;
          }
@@ -299,16 +299,16 @@ read(in-path:char[]) {
       // C<stdout "printing at of enum:\n">;
       // loop {
       //    if at.type == #basic {
-      //       C<stdout "- #basic #"; at.name.basic.cp1-name(); ''\n>;
+      //       C<stdout "- #basic #" at.name.basic.cp1-name() ''\n>;
       //    } else {
-      //       C<stdout "- #"; at.type.cp1-name(); '' ; at.name.id; ''\n>;
+      //       C<stdout "- #" at.type.cp1-name() ''  at.name.id ''\n>;
       //    }
       //    if at.parent == #root { break }
       //    at = at.parent.ptr();
       // }
    }
    +struct-c = r.n():Struct;
-   // C<stdout "There are "; struct-c; " structs\n">;
+   // C<stdout "There are " struct-c " structs\n">;
    +s-idx-begin = .struct-c;
    .struct-c += struct-c;
    if .struct-cap <= .struct-c {
@@ -333,16 +333,16 @@ read(in-path:char[]) {
       +at-i = s.at;
       +at = at-i.ptr();
       if at.def != #undefined {
-         C<stdout "Cannot define struct :"; at.name.id; " because it was already defined as ">;
+         C<stdout "Cannot define struct :" at.name.id " because it was already defined as ">;
          if at.def == #enum {
             C<stdout "enum\n">;
          }
       }
-      // C<stdout "at("; at-i; ") is a struct: "; at.name.id; ", parent is "; at.parent; ''\n>;
+      // C<stdout "at(" at-i ") is a struct: " at.name.id ", parent is " at.parent ''\n>;
       at.decl.structt = s-idx;
       at.def = #struct;
       // s.name.rd(r);
-      // C<stdout s.begin-row; '':; s.begin-col; " - "; s.end-row; '':; s.end-col; ": /"; s.name; ''(>;
+      // C<stdout s.begin-row '': s.begin-col " - " s.end-row '': s.end-col ": /" s.name ''(>;
       loop j = 0; fvar-c; j++ {
          +fvar = s.fvar-v[j];
          fvar.decl.rd(r);
@@ -350,7 +350,7 @@ read(in-path:char[]) {
          //    C<stdout ", ">;
          // }
          // fvar.decl.type.write(C.out);
-         // C<stdout '' ; fvar.decl.name; "">;
+         // C<stdout ''  fvar.decl.name "">;
       }
       // C<stdout ")\n">;
       if (s.flags & #real-name) != #0 {
@@ -360,7 +360,7 @@ read(in-path:char[]) {
       }
    }
    +func-c = r.n():Func;
-   // C<stdout "There are "; func-c; " functions\n">;
+   // C<stdout "There are " func-c " functions\n">;
       C.out.flush();
    +f-idx-begin = .func-c;
    .func-c += func-c;
@@ -386,17 +386,17 @@ read(in-path:char[]) {
       f.decl.rd(r);
       var r0:Rdr+;
       r0.reff = f;
-      // C<stdout "func :"; f.decl.name; " was declared on an at:\n">;
+      // C<stdout "func :" f.decl.name " was declared on an at:\n">;
       // if true {
       //    +at-i = f.at;
       //    loop {
       //       +at = at-i.ptr();
-      //       C<stdout "- "; at.name.id; ''\n>;
+      //       C<stdout "- " at.name.id ''\n>;
       //       at-i = at.parent;
       //       if at-i == #root { break }
       //    }
       // }
-      // C<stdout f.begin-row; '':; f.begin-col; " - "; f.end-row; '':; f.end-col; ": :"; f.decl.name; ''(>;
+      // C<stdout f.begin-row '': f.begin-col " - " f.end-row '': f.end-col ": :" f.decl.name ''(>;
       f.lvar-c = #0;
       .ctx-func = f;
       .ctx-func-id = f-idx;
@@ -409,7 +409,7 @@ read(in-path:char[]) {
          //    C<stdout ", ">;
          // }
          // farg.decl.type.write(C.out);
-         // C<stdout '' ; farg.decl.name; "">;
+         // C<stdout ''  farg.decl.name "">;
       }
       +this-idx = r.n1():i8;
       f.this-idx = this-idx;
@@ -452,7 +452,7 @@ read(in-path:char[]) {
       if .func-main != #nil {
          +first = .func-main.ptr();
          +second = func-main.ptr();
-         C<stdout "There are more than one function with @main attribute, first is "; first.begin-row; '':; first.begin-col; " and second is "; second.begin-row; '':; second.begin-col; ''\n>;
+         C<stdout "There are more than one function with @main attribute, first is " first.begin-row '': first.begin-col " and second is " second.begin-row '': second.begin-col ''\n>;
          C.exit(#failure);
       }
       .func-main = func-main;
@@ -492,7 +492,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          if (&&, arg-v[arg-i][1] == ''w, arg-v[arg-i][2] == 0) {
             watermark = true;
          } else {
-            C<stdout "Error, invalid option '"; arg-v[arg-i]; "'\n">;
+            C<stdout "Error, invalid option '" arg-v[arg-i] "'\n">;
             "goto usage;";
          }
       } else {
@@ -503,8 +503,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    if (arg-c - arg-i) < 2 {
       "usage:";
       C<stdout
-      "Usage: "; arg-v[0]; " [options] [file.cp1-b] [file.c]\n"
-      "Options:\n"
+      "Usage: " arg-v[0] " [options] [file.cp1-b] [file.c]\n" $
+      "Options:\n" $
       " -w    Add disclaimer (watermark) at the top of the output C file that it is generated by Cp1\n">;
       return 0;
    }
@@ -543,11 +543,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       +f = f-idx.ptr();
       if f.this-idx != -1 {
          +at = f.at.ptr();
-         // C<stdout "at("; f.at; ").type = #"; at.type.cp1-name(); ", "; at.decl.struct; ''\n>;
+         // C<stdout "at(" f.at ").type = #" at.type.cp1-name() ", " at.decl.struct ''\n>;
          // C.out.flush();
          if at.type == #struct-enum {
             if at.decl.enumm == #nil {
-               C<stdout f.file; '':; f.begin-row; '':; f.begin-col; ": function using ':this' was declared on :"; at.name.id; " which is not defined\n">;
+               C<stdout f.file '': f.begin-row '': f.begin-col ": function using ':this' was declared on :" at.name.id " which is not defined\n">;
                C.exit(#failure);
             }
             if at.def == #struct {
@@ -569,7 +569,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                }
                t.method-v[t-method-idx] = f-idx;
             } else {
-               C<stdout f.file; '':; f.begin-row; '':; f.begin-col; ": function using ':this' was declared on :"; at.name.id; " which is not a struct or enum\n">;
+               C<stdout f.file '': f.begin-row '': f.begin-col ": function using ':this' was declared on :" at.name.id " which is not a struct or enum\n">;
                C.exit(#failure);
             }
          } elif at.type == #basic {
@@ -582,7 +582,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             }
             t.method-v[t-method-idx] = f-idx;
          } else {
-            C<stdout f.file; '':; f.begin-row; '':; f.begin-col; ": function using ':this' was declared on a type that:S not a struct or enum\n">;
+            C<stdout f.file '': f.begin-row '': f.begin-col ": function using ':this' was declared on a type that:S not a struct or enum\n">;
             C.exit(#failure);
          }
       }
@@ -926,7 +926,7 @@ using Func {
          }
          +at = f.decl.type.ptr();
          if (&&, at.type != #basic, at.decl.structt == #nil) {
-            C<stdout f-file; '':; f-row; '':; f-col; ": Error, the type '"; at.name.id; "' used as return type for function '"; f.decl.name; "' was not defined\n">;
+            C<stdout f-file '': f-row '': f-col ": Error, the type '" at.name.id "' used as return type for function '" f.decl.name "' was not defined\n">;
             C.exit(#failure);
          }
          f.decl.type.finalize(f.decl.type-info, f-row, f-col);
@@ -949,7 +949,7 @@ using Func {
    process-now(f-idx:this):bool {
       +f = f-idx.ptr();
       .ctx-func = f;
-      // C<stdout "func :"; f.decl.name; ''\n>;
+      // C<stdout "func :" f.decl.name ''\n>;
 
       // f.lvar-c = #0;
       // grow(f.lvar-cap, f.farg-c);
@@ -960,7 +960,7 @@ using Func {
       //    f.lvar-v[i].col = f.begin-col;
       //    f.lvar-v[i].decl.copy-from(farg.decl);
       //    f.lvar-v[i].flags = #0;
-      //    // C<stdout f.begin-row; '':; f.begin-col; ": lvar '"; f.lvar-v[i].decl.name; "' has a type of "; f.lvar-v[i].decl.type; ''\n>;
+      //    // C<stdout f.begin-row '': f.begin-col ": lvar '" f.lvar-v[i].decl.name "' has a type of " f.lvar-v[i].decl.type ''\n>;
       // }
       // f.lvar-c = f.farg-c:Lvar;
       var r:Rdr+;
@@ -971,7 +971,7 @@ using Func {
       .cvar-table = file.cvar-table;
       r.pos += f.body-file-pos;
       // +stmt-c = r.n();
-      // C<stdout "  function has "; stmt-c; " statements\n">;
+      // C<stdout "  function has " stmt-c " statements\n">;
       // f.stmt-c = 0;
       // f.stmt-cap = 0;
       // f.stmt-v = null;
@@ -991,7 +991,7 @@ using Func {
          .ctx-begin-col = s.begin-col;
          .ctx-end-row = s.end-row;
          .ctx-end-col = s.end-col;
-         // C<stdout f.decl.name; '' ; s.begin-row; '':; s.begin-col; " - "; s.end-row; '':; s.end-col; ''\n>;
+         // C<stdout f.decl.name ''  s.begin-row '': s.begin-col " - " s.end-row '': s.end-col ''\n>;
          if !s.process() {
             return false;
          }

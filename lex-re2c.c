@@ -135,6 +135,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "&" spaces                { return CP1_TOKEN_SPACE_AMP_SPACE; }
    spaces "|" spaces                { return CP1_TOKEN_SPACE_PIPE_SPACE; }
    spaces "^" spaces                { return CP1_TOKEN_SPACE_XOR_SPACE; }
+   spaces "$" spaces                { return CP1_TOKEN_SPACE_DOLLAR_SPACE; }
    "(&&," spaces                    { return CP1_TOKEN_OPEN_PARENTHESIS_AMP_AMP_COMMA_SPACE; }
    "(||," spaces                    { return CP1_TOKEN_OPEN_PARENTHESIS_PIPE_PIPE_COMMA_SPACE; }
 
