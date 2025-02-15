@@ -246,10 +246,8 @@ func_attr ::= SPACE_AT_NO_BODY.
    { _NCp1_Pfunc_attr_no_body_0(); }
 func_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _NCp1_Pfunc_attr_real_name_1(e.basic.id); }
-/* func_attr ::= SPACE_AT_META_METHOD_STR1(e).
-   { _NCp1_Pfunc_attr_meta_method_2(e.basic.id, -1); }
-func_attr ::= SPACE_AT_META_METHOD_STR2(e).
-   { _NCp1_Pfunc_attr_meta_method_2(e.basic.id, e.basic.id2); } */
+func_attr ::= SPACE_AT_META_METHOD_STR(e).
+   { _NCp1_Pfunc_attr_meta_method_2(e.basic.id, e.basic.id2); }
 func_attr ::= SPACE_AT_REAL_NAME.
    { _NCp1_Pfunc_attr_real_name_1(-1); }
 /* func_attrs(l) ::= OPEN_CURLY_BRACE_SPACE(r).

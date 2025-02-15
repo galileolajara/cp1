@@ -298,7 +298,13 @@ using ExprI {
          ok = true;
          return;
       }
-      C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find method " func-name " with " carg-c " argument/s\n">;
+      C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find method " func-name " from type ">;
+      if at.type == #basic {
+         C<stdout at.name.basic.cp1-name()>;
+      } else {
+         C<stdout at.name.id>;
+      }
+      C<stdout " with " carg-c " argument/s\n">;
       if found != -1 {
          C<stdout "But found " similar-c " functions with different no. of argument/s:\n">;
          loop i = 0; at.func-c; i++ {
@@ -398,11 +404,11 @@ using ExprI {
             loop k = 2; carg-c - 1 {
                carg2-v[k++] = carg-v[j++];
             }
-            if .id-cstr == 0:Id {
-               .id-cstr = id-add(4, "cstr");
-            }
+            // if .id-cstr == 0:Id {
+               // .id-cstr = id-add(4, "cstr");
+            // }
             // C<stdout "lvar.cstr()\n">;
-            set-method(e-idx, lvar, .id-cstr, 1, group-v, group-v[0], carg2-v);
+            set-method(e-idx, lvar, #nil, 1, group-v, group-v[0], carg2-v);
          } else {
             group-v[0] = 1 + (carg-c - 1);
             carg2-v[0] = lvar;
@@ -410,7 +416,7 @@ using ExprI {
                carg2-v[k++] = carg-v[j++];
             }
             // C<stdout "carg." func-name "()\n">;
-            set-method(e-idx, carg, func-name, 1, group-v, group-v[0], carg2-v);
+            set-method(e-idx, carg, #nil, 1, group-v, group-v[0], carg2-v);
          }
       }
       e-idx = ExprI.alloc();
@@ -425,8 +431,8 @@ using ExprI {
       }
    }
    var id-end:Id;
-   var id-str:Id;
-   var id-cstr:Id;
+   // var id-str:Id;
+   // var id-cstr:Id;
    wr-func(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprFunc = expr;
       e.at.wr(w, header);
@@ -474,14 +480,27 @@ using ExprI {
       if !e.expr-v[0].process() {
          return;
       }
+      var e-func:ExprFunc = e.expr-v[0].ptr();
+      +f = e-func.func-idx.ptr();
+      if (f.flags & #meta-method) == #0 {
+         C<stdout .ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": When using <" f.decl.name " ...>, there must be a @meta-method(NAME-PREFIX END-NAME) attribute in the function " f.decl.name ''\n>;
+         return;
+      }
+      // C<stdout
+      // "name = " f.meta-method-prefix "\n" $
+      // "str = " f.meta-method-str "\n" $
+      // "cstr = " f.meta-method-cstr "\n" $
+      // "end = " f.meta-method-end ''\n>;
       loop i = 1; e.expr-c - 2; i++ {
          +e-idx = e.expr-v[i];
          var e-method:ExprMethod = e-idx.ptr();
          +e-idx2 = e-method.thiss;
          +e-data2 = e-idx2.ptr();
          // C<stdout i ") carg-c " e-method.carg-c ", type " e-data2.type.cp1-name() ''\n>;
-         if e-data2.type == #str {
+         // C<stdout e-data2.type.cp1-name()>;
+         if e-data2.type == #lvar {
             // C<stdout "constant string\n">;
+            e-method.func-name = f.meta-method-cstr;
          } else {
             var val;
             if !e-idx2.value(1, true, val) {
@@ -492,17 +511,22 @@ using ExprI {
                // C<stdout "string detected\n">;
                e-method.thiss = e-method.carg-v[0].expr;
                e-method.carg-v[0].expr = e-idx2;
-               if .id-str == 0:Id {
-                  .id-str = id-add(3, "str");
-               }
-               e-method.func-name = .id-str;
+               // if .id-str == 0:Id {
+                  // .id-str = id-add(3, "str");
+               // }
+               e-method.func-name = f.meta-method-str;
+            } else {
+               e-method.func-name = f.meta-method-prefix;
             }
          }
          if !e-idx.process() {
             return;
          }
       }
-      if !e.expr-v[e.expr-c - 1].process() {
+      +e-last = e.expr-v[e.expr-c - 1];
+      var e-last-method:ExprMethod = e-last.ptr();
+      e-last-method.func-name = f.meta-method-end;
+      if !e-last.process() {
          return;
       }
       ok = true;

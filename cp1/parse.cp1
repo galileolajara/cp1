@@ -583,6 +583,10 @@ write-func(w:Wtr, header:bool) @inline {
       if (f.flags & #real-name) != #0 {
          f.real-name.wr(w, header);
       }
+      if (f.flags & #meta-method) != #0 {
+         f.meta-method-prefix.wr(w, header);
+         f.meta-method-end.wr(w, header);
+      }
       if (f.flags & #case) != #0 {
          f.cas.wr(w, header);
       }
@@ -1187,6 +1191,32 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   }
                }
                tok.val.ii32.id = lex.get-id(start, 1);
+               .last-token = t;
+               psr.parse(t, tok);
+            }
+            case #space-at-meta-method-str {
+               // find the '@' character and start counting from there
+               var r-start:Rdr+;
+               r-start.reff = lex.start;
+               +start = 13;
+               loop {
+                  start++;
+                  r-start.pos++;
+                  if r-start.p1[0] == ''@ {
+                     break;
+                  }
+               }
+               var r-end:Rdr+;
+               r-end.reff = lex.cursor;
+               r-end.pos -= 2;
+               +len = r-end.pos - r-start.pos - 10;
+               +end = 2;
+               loop r-end.p1[0] != ''  {
+                  r-end.pos--;
+                  end++;
+               }
+               tok.val.ii32.id = lex.get-id(start, end);
+               tok.val.ii32.id2 = lex.get-id(start + (len - end), 1);
                .last-token = t;
                psr.parse(t, tok);
             }

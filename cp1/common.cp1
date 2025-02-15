@@ -343,6 +343,12 @@ struct DeclFunc[
    // name:Id,
    flags:FuncFlags,
    real-name:Id,
+   meta-method-prefix:Id,
+#if(compile)
+   meta-method-str:Id,
+   meta-method-cstr:Id,
+#endif
+   meta-method-end:Id,
    decl-str:char[],
    decl-len:i32,
    cas:Id,

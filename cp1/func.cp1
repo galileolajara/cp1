@@ -24,6 +24,7 @@ enum FuncFlags[
    #case = 128,
    #cp1-name = 256,
    #decl = 512,
+   #meta-method = 1024,
    ]:u32 {
    wr(e:this, w:Wtr) @inline {
       w.n(e:base);
@@ -124,6 +125,8 @@ var decl-func-this-idx:i8;
 var decl-func-this-group:i8;
 var decl-func-space:StmtSpace;
 var decl-func-ctx-space:StmtSpace;
+var decl-func-meta-method-prefix:Id;
+var decl-func-meta-method-end:Id;
 // var decl-stmt-c:u32;
 // var decl-stmt-cap:u32;
 // var decl-stmt-v:Stmt[];
@@ -143,6 +146,8 @@ decl-func-begin(name:Id, row:u32, col:u32) {
    .decl-func-case = #nil;
    .decl-func-decl-str = null;
    .decl-func-decl-len = 0;
+   .decl-func-meta-method-prefix = #nil;
+   .decl-func-meta-method-end = #nil;
    quick-alloc-one(.decl-func-space);
    .decl-func-ctx-space = .decl-func-space;
 }
@@ -204,6 +209,10 @@ decl-func-end(row:u32, col:u32) {
       } else {
          f.real-name = .decl-func-real-name;
       }
+   }
+   if (.decl-func-flags & #meta-method) != #0 {
+      f.meta-method-prefix = .decl-func-meta-method-prefix;
+      f.meta-method-end = .decl-func-meta-method-end;
    }
    if (.decl-func-flags & #case) != #0 {
       f.cas = .decl-func-case;
@@ -306,6 +315,15 @@ func-attr-real-name(name:Id) {
    }
    .decl-func-flags |= #real-name;
    .decl-func-real-name = name;
+}
+func-attr-meta-method(prefix:Id, end:Id) {
+   if (.decl-func-flags & #meta-method) != #0 {
+      C<stdout .input-path '': .last-row '': .last-col ": Error @meta-method specified more than once\n">;
+      C.exit(#failure);
+   }
+   .decl-func-flags |= #meta-method;
+   .decl-func-meta-method-prefix = prefix;
+   .decl-func-meta-method-end = end;
 }
 func-attr-decl() {
    if (.decl-func-flags & #decl) != #0 {
