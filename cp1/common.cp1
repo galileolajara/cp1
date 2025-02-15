@@ -904,7 +904,7 @@ var include-str-v:char[][];
 var include-len-v:u8[];
 var func-main:Func;
 enum Id[#nil = -1, #0]:i32 {
-   stdout(id:this, so:C.Stdout) @inline {
+   stdout(id:this, so:C.StdOut) @inline {
       C.stdout-bytes(id.str(), id.len());
    }
    c-name(id:this):char[] {

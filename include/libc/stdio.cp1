@@ -27,7 +27,9 @@ include <stdio.h>  {
       var stdout-buf-data:char[];
       var stdout-buf-cap:u32;
       var stdout-buf-len:u32;
-      stdout(so:Stdout) {
+      stdout(so:StdOut) @meta-method(stdout end) {
+      }
+      stdbuf(so:StdOut) @meta-method(stdout end-no-flush) {
       }
       stdout-bytes(data:ref, size:usz) @inline {
          stdout-reserve(size);
@@ -88,33 +90,35 @@ include <stdio.h>  {
          1:X.Fd.write(.stdout-buf-data, .stdout-buf-len);
          .stdout-buf-len = 0;
       }
-      struct Stdout[] {
-         str(so:this, str:char[]) @inline {
+      struct StdOut[] {
+         stdout-str(so:this, str:char[]) @inline {
             stdout-str(str);
          }
-         str(so:this, str:char[], len:u32) @inline {
+         stdout-str(so:this, str:char[], len:u32) @inline {
             stdout-bytes(str, len);
          }
-         cstr(so:this, str:char[], len:u32) @inline {
+         stdout-cstr(so:this, str:char[], len:u32) @inline {
             stdout-bytes(str, len);
          }
-         end(so:this) {
+         stdout-end(so:this) {
             stdout-flush();
+         }
+         stdout-end-no-flush(so:this) {
          }
       }
    }
    using u32 {
-      stdout(val:this, so:C.Stdout) {
+      stdout(val:this, so:C.StdOut) {
          C.stdout-u32(val);
       }
    }
    using u8 {
-      stdout(val:this, so:C.Stdout) {
+      stdout(val:this, so:C.StdOut) {
          C.stdout-u32(val);
       }
    }
    using char {
-      stdout(val:this, so:C.Stdout) {
+      stdout(val:this, so:C.StdOut) {
          C.stdout-char(val);
       }
    }

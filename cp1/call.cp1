@@ -298,11 +298,11 @@ using ExprI {
          ok = true;
          return;
       }
-      C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find method " func-name " from type ">;
+      C<stdbuf .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find method " func-name " from type ">;
       if at.type == #basic {
-         C<stdout at.name.basic.cp1-name()>;
+         C<stdbuf at.name.basic.cp1-name()>;
       } else {
-         C<stdout at.name.id>;
+         C<stdbuf at.name.id>;
       }
       C<stdout " with " carg-c " argument/s\n">;
       if found != -1 {
@@ -494,14 +494,14 @@ using ExprI {
       loop i = 1; e.expr-c - 2; i++ {
          +e-idx = e.expr-v[i];
          var e-method:ExprMethod = e-idx.ptr();
-         +e-idx2 = e-method.thiss;
-         +e-data2 = e-idx2.ptr();
          // C<stdout i ") carg-c " e-method.carg-c ", type " e-data2.type.cp1-name() ''\n>;
          // C<stdout e-data2.type.cp1-name()>;
-         if e-data2.type == #lvar {
+         if e-method.carg-v[0].expr.ptr().type == #str {
             // C<stdout "constant string\n">;
             e-method.func-name = f.meta-method-cstr;
          } else {
+            +e-idx2 = e-method.thiss;
+            +e-data2 = e-idx2.ptr();
             var val;
             if !e-idx2.value(1, true, val) {
                return;

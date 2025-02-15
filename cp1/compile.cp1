@@ -35,7 +35,7 @@ enum File[#nil = -1, #0]:i32 {
    path(f:this):char[] @inline {
       return f.ptr().path;
    }
-   stdout(f:this, so:C.Stdout) {
+   stdout(f:this, so:C.StdOut) {
       C.stdout-str(f.ptr().path);
    }
 }
@@ -980,22 +980,22 @@ using Func {
          +end-str = end.str();
          +end-len = end.len();
          var name:char[];
-         C.malloc-arr(name, prefix-len + 1 + 3);
+         C.malloc-arr(name, prefix-len + 1 + 3 + 1);
          C.memcpy(name, prefix-str, prefix-len);
          name[prefix-len] = ''-;
-         C.memcpy(&name[prefix-len + 1], "str", 3);
+         C.memcpy(&name[prefix-len + 1], "str", 3 + 1);
          // C<stdout ''\' name "'\n">;
          f.meta-method-str = id-add(prefix-len + 1 + 3, name);
-         C.malloc-arr(name, prefix-len + 1 + 4);
+         C.malloc-arr(name, prefix-len + 1 + 4 + 1);
          C.memcpy(name, prefix-str, prefix-len);
          name[prefix-len] = ''-;
-         C.memcpy(&name[prefix-len + 1], "cstr", 4);
+         C.memcpy(&name[prefix-len + 1], "cstr", 4 + 1);
          // C<stdout ''\' name "'\n">;
          f.meta-method-cstr = id-add(prefix-len + 1 + 4, name);
-         C.malloc-arr(name, prefix-len + 1 + end-len);
+         C.malloc-arr(name, prefix-len + 1 + end-len + 1);
          C.memcpy(name, prefix-str, prefix-len);
          name[prefix-len] = ''-;
-         C.memcpy(&name[prefix-len + 1], end-str, end-len);
+         C.memcpy(&name[prefix-len + 1], end-str, end-len + 1);
          // C<stdout ''\' name "'\n">;
          f.meta-method-end = id-add(prefix-len + 1 + end-len, name);
          // C<stdout
