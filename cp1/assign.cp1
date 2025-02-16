@@ -30,34 +30,34 @@ using ExprI {
       e.left.write-value(e.left-val);
       switch e.type {
          case #eq {
-            .out.printf(" = ");
+            <output " = ">;
          }
          case #plus-eq {
-            .out.printf(" += ");
+            <output " += ">;
          }
          case #minus-eq {
-            .out.printf(" -= ");
+            <output " -= ">;
          }
          case #mul-eq {
-            .out.printf(" *= ");
+            <output " *= ">;
          }
          case #div-eq {
-            .out.printf(" /= ");
+            <output " /= ">;
          }
          case #lshift-eq {
-            .out.printf(" <<= ");
+            <output " <<= ">;
          }
          case #rshift-eq {
-            .out.printf(" >>= ");
+            <output " >>= ">;
          }
          case #and-eq {
-            .out.printf(" &= ");
+            <output " &= ">;
          }
          case #or-eq {
-            .out.printf(" |= ");
+            <output " |= ">;
          }
          case #xor-eq {
-            .out.printf(" ^= ");
+            <output " ^= ">;
          }
       }
       e.right.write-value(e.right-val);

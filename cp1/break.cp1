@@ -29,7 +29,7 @@ using StmtSpace {
 using Stmt {
    write-break(stmt:Stmt) @case.write() @inline {
       var s:StmtBreak = stmt;
-      .out.printf("goto break_%u;\n", .nest-stack-id-v[s.nest]);
+      <output "goto break_" .nest-stack-id-v[s.nest] ";\n">;
    }
    process-break(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtBreak = stmt;

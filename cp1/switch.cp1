@@ -67,20 +67,20 @@ var case-stack-c:u8;
 using Stmt {
    write-switch(stmt:Stmt) @case.write() @inline {
       var s:StmtSwitch = stmt;
-      .out.printf("switch(");
+      <output "switch(">;
       s.expr.write-value(s.val);
-      .out.printf(") {\n");
+      <output ") {\n">;
       if s.case-func-c > 0 {
          var e:Expr = s.cases.ptr();
          var func:ExprFunc = e;
          +v = s.case-func-v;
          loop i = 0; s.case-func-c; i++ {
-            .out.printf("case ");
+            <output "case ">;
             v[i].cvar.write();
-            .out.printf(":;\n");
+            <output ":;\n">;
             func.func-idx = v[i].func;
             ExprI.write-func(e);
-            .out.printf(";\nbreak;\n");
+            <output ";\nbreak;\n">;
          }
       }
    }
@@ -171,9 +171,9 @@ using Stmt {
    write-case(stmt:Stmt) @case.write() @inline {
       var s:StmtCase = stmt;
       loop i = 0; s.expr-c; i++ {
-         .out.printf("case ");
+         <output "case ">;
          s.expr-v[i].expr.write-value(s.expr-v[i].val);
-         .out.printf(":;\n");
+         <output ":;\n">;
       }
       .case-stack-v[.case-stack-c++].cas = s;
    }
@@ -208,7 +208,7 @@ using Stmt {
       var s:StmtCaseEnd = stmt;
       +cas = .case-stack-v[.case-stack-c -= 1].cas;
       if !cas.fall-through {
-         .out.printf("break;\n");
+         <output "break;\n">;
       }
    }
    process-case-end(stmt:Stmt, ok:bool&) @case.process() @inline {
@@ -217,7 +217,7 @@ using Stmt {
    }
    write-default(stmt:Stmt) @case.write() @inline {
       var s:StmtDefault = stmt;
-      .out.printf("default:;\n");
+      <output "default:;\n">;
       .case-stack-v[.case-stack-c++].defaul = s;
    }
    process-default(stmt:Stmt, ok:bool&) @case.process() @inline {
@@ -227,7 +227,7 @@ using Stmt {
       var s:StmtDefaultEnd = stmt;
       +defaul = .case-stack-v[.case-stack-c -= 1].defaul;
       if !defaul.fall-through {
-         .out.printf("break;\n");
+         <output "break;\n">;
       }
    }
    process-default-end(stmt:Stmt, ok:bool&) @case.process() @inline {
@@ -236,7 +236,7 @@ using Stmt {
    }
    write-switch-end(stmt:Stmt) @case.write() @inline {
       var s:StmtSwitchEnd = stmt;
-      .out.printf("}\n");
+      <output "}\n">;
    }
    process-switch-end(stmt:Stmt, ok:bool&) @case.process() @inline {
       .switch-stack-c -= 1;

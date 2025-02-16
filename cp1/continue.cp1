@@ -29,7 +29,7 @@ using StmtSpace {
 using Stmt {
    write-continue(stmt:Stmt) @case.write() @inline {
       var s:StmtContinue = stmt;
-      .out.printf("goto continue_%u;\n", .nest-stack-id-v[s.nest]);
+      <output "goto continue_" .nest-stack-id-v[s.nest] ";\n">;
    }
    process-continue(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtContinue = stmt;

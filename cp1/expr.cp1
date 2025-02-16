@@ -27,7 +27,7 @@ using Stmt {
          return;
       }
       s.expr.write();
-      .out.printf(";\n");
+      <output ";\n">;
    }
    process-expr(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtExpr = stmt;
@@ -242,19 +242,19 @@ enum BasicTypeId[
 // write(e:this, out:C.File) {
 //    switch e {
 //       case #ref {
-//          out.printf("void*");
+//         <output "void*">;
 //       }
 //       case #i32 {
-//          out.printf("int");
+//         <output "int">;
 //       }
 //       case #u32 {
-//          out.printf("unsigned int");
+//         <output "unsigned int">;
 //       }
 //       case #float {
-//          out.printf("float");
+//         <output "float">;
 //       }
 //       case #bool {
-//          out.printf("bool");
+//         <output "bool">;
 //       }
 //    }
 // }

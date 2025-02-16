@@ -113,14 +113,14 @@ using ExprI {
       var e:ExprMethod = expr;
       +f = e.func-idx.ptr();
       f.write();
-      .out.printf("(");
+      <output ''(>;
       +first = true;
       +i = 0;
       loop ; f.this-idx; i++ {
          if first {
             first = false;
          } else {
-            .out.printf(", ");
+            <output ", ">;
          }
          +ca = e.carg-v[i];
          ca.expr.write-value(ca.value);
@@ -128,15 +128,15 @@ using ExprI {
       if first {
          first = false;
       } else {
-         .out.printf(", ");
+         <output ", ">;
       }
       e.thiss.write-value(e.this-value);
       loop ; e.carg-c - f.this-idx; i++ {
-         .out.printf(", ");
+         <output ", ">;
          +ca = e.carg-v[i];
          ca.expr.write-value(ca.value);
       }
-      .out.printf(")");
+      <output '')>;
    }
    wr-method(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprMethod = expr;
@@ -320,20 +320,20 @@ using ExprI {
       var e:ExprFunc = expr;
       +f = e.func-idx.ptr();
       f.write();
-      .out.printf("(");
+      <output ''(>;
       loop i = 0; e.carg-c; i++ {
          if i != 0 {
-            .out.printf(", ");
+            <output ", ">;
          }
          e.carg-v[i].expr.write-value(e.carg-v[i].value);
       }
-      .out.printf(")");
+      <output '')>;
    }
    write-metafunc(expr:Expr) @case.write() @inline {
       var e:ExprMetaFunc = expr;
       e.expr-v[0].write();
       loop i = 1; e.expr-c - 1; i++ {
-         .out.printf(";\n");
+         <output ";\n">;
          e.expr-v[i].write();
       }
    }

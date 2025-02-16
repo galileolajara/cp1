@@ -1138,7 +1138,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       .last-col = .col;
       .row = tok.row;
       .col = tok.col;
-      // 'c.out.printf("%s:%u:%u: token %s\n", .input-path, tok.row, tok.col, t.cp1-name());
+      // 'c<output .input-path '': tok.row '': tok.col ": token " t.cp1-name() ''\n>;
       // 'c.out.flush();
       // if (&&, t >= #id-quote, t < #id) {
       //    tok.id = lex.get-id(1, 0);

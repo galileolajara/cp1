@@ -20,11 +20,11 @@ using Stmt {
    write-return(stmt:Stmt) @case.write() @inline {
       var s:StmtReturn = stmt;
       if s.expr == #nil {
-         .out.printf("return;\n");
+         <output "return;\n">;
       } else {
-         .out.printf("return ");
+         <output "return ">;
          s.expr.write-value(s.val);
-         .out.printf(";\n");
+         <output ";\n">;
       }
    }
    process-return(stmt:Stmt, ok:bool&) @case.process() @inline {

@@ -28,11 +28,11 @@ enum Gvar[#nil = -1, #0]:i32 {
    // write(g:this) {
    //    +gvar = g.ptr();
    //    if (gvar.decl.flags & #real-name) != #0 {
-   //       .out.printf("%s", gvar.decl.real-name.str());
+   //       <output gvar.decl.real-name>;
    //       return;
    //    }
    //    gvar.at.write-space();
-   //    .out.printf("_G%s", gvar.decl.name.c-name());
+   //    <output "_G" gvar.decl.name.c-name>;
    // }
    ptr(g:this):DeclGvar @inline {
       return .gvar-v[g];

@@ -19,9 +19,9 @@ using ExprI {
    write-index(expr:Expr) @case.write() @inline {
       var e:ExprIndex = expr;
       e.left.write-value(e.left-val);
-      .out.printf("[");
+      <output ''[>;
       e.right.write-value(e.right-val);
-      .out.printf("]");
+      <output '']>;
    }
    rd-index(e-idx:ExprI, r:Rdr) @case.rd() @inline {
       ExprI.rd(+left, r);

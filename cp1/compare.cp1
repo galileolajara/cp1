@@ -35,22 +35,22 @@ using ExprI {
       e.left.write-value(e.left-val);
       switch e.type {
          case #eq {
-            .out.printf(" == ");
+            <output " == ">;
          }
          case #not-eq {
-            .out.printf(" != ");
+            <output " != ">;
          }
          case #lt {
-            .out.printf(" < ");
+            <output " < ">;
          }
          case #le {
-            .out.printf(" <= ");
+            <output " <= ">;
          }
          case #gt {
-            .out.printf(" > ");
+            <output " > ">;
          }
          case #ge {
-            .out.printf(" >= ");
+            <output " >= ">;
          }
       }
       e.right.write-value(e.right-val);

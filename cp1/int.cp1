@@ -69,25 +69,25 @@ using ExprI {
       var e:ExprIntData = expr;
       switch e.type {
          case #i32 {
-            .out.printf("%d", e.value.ii32);
+            <output e.value.ii32>;
          }
          case #u32 {
-            .out.printf("%uu", e.value.uu32);
+            <output e.value.uu32 ''u>;
          }
          case #f32 {
-            .out.printf("%ff", e.value.ff32);
+            <output e.value.ff32 ''f>;
          }
          case #oct {
-            .out.printf("0%o", e.value.uu32);
+            <output ''0 e.value.uu32>;
          }
          case #hex {
-            .out.printf("0x%x", e.value.uu32);
+            <output "0x" e.value.uu32>;
          }
          case #u64 {
             "#ifdef _LP64";
-            .out.printf("UINT64_C(%lu)", e.value.uu64);
+            <output "UINT64_C(" e.value.uu64 "u)">;
             "#else";
-            .out.printf("UINT64_C(%llu)", e.value.uu64);
+            <output "UINT64_C(" e.value.uu64 "lu)">;
             "#endif";
          }
       }

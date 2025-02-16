@@ -54,48 +54,48 @@ using DeclVarData {
    write(vd:this, var-type:DeclVarType) {
       if (vd.flags & #real-name) != #0 {
          if vd.real-name == #nil {
-            .out.printf("%s", vd.name.c-name());
+            <output vd.name.c-name()>;
          } else {
-            .out.printf("%s", vd.real-name.str());
+            <output vd.real-name>;
          }
          return;
       }
       switch var-type {
          case #gvar {
-            .out.printf("_G%s", vd.name.c-name());
+            <output "_G" vd.name.c-name()>;
          }
          case #fvar {
-            .out.printf("_F%s", vd.name.c-name());
+            <output "_F" vd.name.c-name()>;
          }
       }
    }
    write-lvar(vd:this, lvar:Lvar) {
-      .out.printf("_L%s_%u", vd.name.c-name(), lvar);
+      <output "_L" vd.name.c-name() ''_ lvar:u32>;
    }
    write-type(vd:this, var-type:DeclVarType) {
       if vd.type-info.const {
-         .out.printf("const ");
+         <output "const ">;
       }
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
-      .out.printf(" ");
+      <output '' >;
       vd.write(var-type);
       loop i = 0; vd.size-c; i++ {
-         .out.printf("[");
+         <output ''[>;
          vd.size-expr-v[i].write-value(vd.size-value-v[i]);
-         .out.printf("]");
+         <output '']>;
       }
    }
    write-lvar-type(vd:this, lvar:Lvar) {
       if vd.type-info.const {
-         .out.printf("const ");
+         <output "const ">;
       }
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
-      .out.printf(" ");
+      <output '' >;
       vd.write-lvar(lvar);
       loop i = 0; vd.size-c; i++ {
-         .out.printf("[");
+         <output ''[>;
          vd.size-expr-v[i].write-value(vd.size-value-v[i]);
-         .out.printf("]");
+         <output '']>;
       }
    }
    wr(vd:this, w:Wtr, header:bool) {

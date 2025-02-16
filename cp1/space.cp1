@@ -22,7 +22,7 @@ struct StmtSpace[
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #space);
    }
    write(space:this) {
-      // .out.printf("{ // space begin \n");
+      // <output "{ // space begin \n">;
       var i:Lvar, lvar-c:Lvar;
       if space.parent == null {
          // dont write arguments
@@ -37,17 +37,17 @@ struct StmtSpace[
          +lvar = lvar-i.ptr();
          lvar.decl.write-lvar-type(lvar-i);
          if (lvar.flags & #set-expr) != #0 {
-            .out.printf(" = {0}");
+            <output " = {0}">;
             // lvar.set-expr.write();
          }
-         .out.printf(";\n");
+         <output ";\n">;
       }
       +s = space.stmt-first;
       loop s != null {
          s.write();
          s = s.stmt-next;
       }
-      // .out.printf("} // space end\n");
+      // <output "} // space end\n">;
    }
    lvar-new(space:this, name:Id, row:u32, col:u32):Lvar {
       return space.lvar-new(name, row, col, true);

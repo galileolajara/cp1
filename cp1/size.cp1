@@ -19,9 +19,9 @@ using ExprI {
    }
    write-size-of-type(expr:Expr) @case.write() @inline {
       var e:ExprSizeOfType = expr;
-      .out.printf("sizeof(");
+      <output "sizeof(">;
       e.type.write();
-      .out.printf(")");
+      <output '')>;
    }
    process-size-of-type(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprSizeOfType = expr;

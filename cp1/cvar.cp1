@@ -50,10 +50,10 @@ enum Cvar[#nil = -1, #0]:i32 {
    write(c:this) @inline {
       +cvar = c.ptr();
       if (cvar.decl.flags & #real-name) != #0 {
-         .out.printf("%s", cvar.decl.real-name.str());
+         <output cvar.decl.real-name>;
       } else {
          cvar.at.write-space();
-         .out.printf("_C%s", cvar.decl.name.c-name());
+         <output "_C" cvar.decl.name.c-name()>;
       }
    }
 }

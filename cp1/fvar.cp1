@@ -42,7 +42,7 @@ using ExprI {
    write-fvar(expr:Expr) @case.write() @inline {
       var e:ExprFvar = expr;
       e.expr.write-value(e.val);
-      .out.printf(".");
+      <output ''.>;
       e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar].decl.write(#fvar);
    }
    process-fvar(expr:Expr, ok:bool&) @case.process() @inline {

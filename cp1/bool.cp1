@@ -19,9 +19,9 @@ using ExprI {
    write-bool(expr:Expr) @case.write() @inline {
       var e:ExprBool = expr;
       if e.value {
-         .out.printf("true");
+         <output "true">;
       } else {
-         .out.printf("false");
+         <output "false">;
       }
    }
    process-bool(expr:Expr, ok:bool&) @case.process() @inline {
