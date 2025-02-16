@@ -506,15 +506,8 @@ using ExprI {
             if !e-idx2.value(1, true, val) {
                return;
             }
-            // C<stdout "val.info.array-c " val.info.array-c ''\n>;
-            if (val.info.array-c > 0) && (val.type == basic-type(#char)) {
-               // C<stdout "string detected\n">;
-               e-method.thiss = e-method.carg-v[0].expr;
-               e-method.carg-v[0].expr = e-idx2;
-               // if .id-str == 0:Id {
-                  // .id-str = id-add(3, "str");
-               // }
-               e-method.func-name = f.meta-method-str;
+            if val.info.array-c > 0 {
+               e-method.func-name = f.meta-method-arr;
             } else {
                e-method.func-name = f.meta-method-prefix;
             }
