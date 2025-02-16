@@ -78,10 +78,10 @@ using ExprI {
             <output e.value.ff32 ''f>;
          }
          case #oct {
-            <output ''0 e.value.uu32>;
+            <output ''0 e.value.uu32, #oct>;
          }
          case #hex {
-            <output "0x" e.value.uu32>;
+            <output "0x" e.value.uu32, #hex>;
          }
          case #u64 {
             "#ifdef _LP64";

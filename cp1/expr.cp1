@@ -24,6 +24,7 @@ using Stmt {
             n = n.next;
             if n == null { break }
          }
+         <output ''\n>;
          return;
       }
       s.expr.write();

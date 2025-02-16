@@ -5,6 +5,7 @@ extern char* output_data;
 extern uint32_t output_len;
 void _NCp1_Pwrite_str_node_2(uint32_t len, char* buf) {
    _NCp1_Poutput_reserve_1(2 + (len << 1));
+   output_data[output_len++] = '"';
    for (int i = 0; i < len; i ++) {
       switch(buf[i]) {
 case '\a': output_data[output_len++] = '\\'; output_data[output_len++] = 'a'; break;

@@ -859,6 +859,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          } else {
             output-bytes(f.decl-str, f.decl-len);
          }
+         <output ''\n>;
          continue;
       }
       .ctx-func = f;
@@ -928,6 +929,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       f.stmt-space.write();
       <output "}\n">;
    }
+   // .out = C.fopen(arg-v[arg-c - 1], "wb");
+   write-file(arg-v[arg-c - 1], .output-data, .output-len);
    return 0;
 }
 using Func {
@@ -1093,6 +1096,7 @@ struct Output[] {
    output-end(o:this) {
    }
 }
+enum OutputIntType[#oct, #hex]:u8;
 output(o:Output) @meta-method(output end) @inline {
 }
 output-reserve(len:u32) {
@@ -1119,6 +1123,65 @@ output-u32(val:u32) {
       loop {
          data[digits++] = (val % 10) + ''0;
          val /= 10;
+         if val == 0 { break }
+      }
+      // reverse the string
+      +start = 0;
+      +end = digits - 1;
+      loop start < end {
+         +tmp = data[start];
+         data[start] = data[end];
+         data[end] = tmp;
+         start++;
+         end--;
+      }
+      .output-len += digits;
+   }
+}
+output-o32(val:u32) {
+   output-reserve(11);
+   if val == 0 {
+      .output-data[.output-len++] = ''0;
+   } else {
+      // integer to string, count the digits
+      var data:char[];
+      data = &.output-data[.output-len];
+      +digits = 0;
+      loop {
+         data[digits++] = (val % 8) + ''0;
+         val /= 8;
+         if val == 0 { break }
+      }
+      // reverse the string
+      +start = 0;
+      +end = digits - 1;
+      loop start < end {
+         +tmp = data[start];
+         data[start] = data[end];
+         data[end] = tmp;
+         start++;
+         end--;
+      }
+      .output-len += digits;
+   }
+}
+output-x32(val:u32) {
+   output-reserve(8);
+   if val == 0 {
+      .output-data[.output-len++] = ''0;
+   } else {
+      // integer to string, count the digits
+      var data:char[];
+      data = &.output-data[.output-len];
+      +digits = 0;
+      loop {
+         +n = val % 16;
+         if n < 10 {
+            data[digits++] = n + ''0;
+         } else {
+            data[digits++] = (n - 10) + ''a;
+         }
+         val /= 16;
          if val == 0 { break }
       }
       // reverse the string
@@ -1236,6 +1299,16 @@ using i32 {
 using u32 {
    output(val:this, so:Cp1.Output) @inline {
       Cp1.output-u32(val);
+   }
+   output(val:this, so:Cp1.Output, type:Cp1.OutputIntType) @inline {
+      switch type {
+         case #oct {
+            Cp1.output-o32(val);
+         }
+         case #hex {
+            Cp1.output-x32(val);
+         }
+      }
    }
 }
 using u8 {
