@@ -65,9 +65,14 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "\"" {
       goto lex_string;
    }
-   "'" [ ] [^\n]* "\n"                  {
-      _Gstring_len = l->cursor - (l->start + 2);
-      _Gstring_buf = l->start + 2;
+   "'- " [^\n]* "\n"                  {
+      _Gstring_len = (l->cursor - 1) - (l->start + 3);
+      _Gstring_buf = l->start + 3;
+      return CP1_TOKEN_STRING;
+   }
+   "'= " [^\n]* "\n"                  {
+      _Gstring_len = l->cursor - (l->start + 3);
+      _Gstring_buf = l->start + 3;
       return CP1_TOKEN_STRING;
    }
    "'\"" [^\n"]* "\""                   {

@@ -14,7 +14,7 @@ syntax match String /[ \n]\+\$[ \n]\+/
 syntax match String /#\?include "[^"]*"/
 syntax match String /#\?include <[^>]*>/
 syntax match String /"\(\\[^\n]\|[^\\\"\n]\)*"/
-syntax match String /' [^\n]*/
+syntax match String /'[-=] [^\n]*/
 syntax match String /'"[^"]*"/
 syntax match String /'<[^>]*>/
 syntax match String /'\[[^\]]*\]/

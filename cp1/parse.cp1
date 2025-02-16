@@ -966,9 +966,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                // string
                w.p1[0] = ''\';
                w.p1[1] = r.p1[1];
-               w.p1[2] = r.p1[2];
+               w.p1[2] = '' ;
                w.pos += 3;
                r.pos += 3;
+               +r-begin = r.charr;
+               +r-pos = r.pos;
                loop {
                   +c = r.p1[0];
                   w.p1[0] = c;
@@ -1280,6 +1282,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   C.exit(#failure);
                }
                loop i = 0; {
+                  // var str:char[];
+                  // str = &lex.cursor[i];
+                  // var start = i;
                   +c = lex.cursor[i];
                   if c == ''\0 {
                      C<stdout .input-path '': .row '': .col ": Keyword 'loop' was found but was not followed by '{'\n">;
@@ -1288,9 +1293,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      c = lex.cursor[i + 1];
                      if c == ''\' {
                         if lex.cursor[i + 2] == ''\\ {
+                           // C<stdout str, 4 ''\n>;
                            i += 4;
                            continue;
                         } else {
+                           // C<stdout str, 3 ''\n>;
                            i += 3;
                            continue;
                         }
@@ -1298,6 +1305,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         i += 2;
                         loop {
                            if lex.cursor[i++] == ''" {
+                              // C<stdout str, i - start ''\n>;
                               break;
                            }
                         }
@@ -1306,6 +1314,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         i += 2;
                         loop {
                            if lex.cursor[i++] == ''> {
+                              // C<stdout str, i - start ''\n>;
                               break;
                            }
                         }
@@ -1314,6 +1323,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         i += 2;
                         loop {
                            if lex.cursor[i++] == ''] {
+                              // C<stdout str, i - start ''\n>;
                               break;
                            }
                         }
@@ -1322,6 +1332,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         i += 2;
                         loop {
                            if lex.cursor[i++] == ''} {
+                              // C<stdout str, i - start ''\n>;
                               break;
                            }
                         }
@@ -1330,12 +1341,33 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         i += 2;
                         loop {
                            if lex.cursor[i++] == '') {
+                              // C<stdout str, i - start ''\n>;
+                              break;
+                           }
+                        }
+                        continue;
+                     } elif (&&, lex.cursor[i + 2] == '' , (||, c == ''-, c == ''=)) {
+                        i += 3;
+                        loop {
+                           if lex.cursor[i++] == ''\n {
+                              // C<stdout str, (i - 1) - start ''\n>;
                               break;
                            }
                         }
                         continue;
                      }
                   } elif c == ''" {
+                     i += 1;
+                     loop {
+                        c = lex.cursor[i++];
+                        if c == ''" {
+                           // C<stdout str, i - start ''\n>;
+                           break;
+                        } elif c == ''\\ {
+                           i++;
+                        }
+                     }
+                     continue;
                   } elif c == ''{ {
                      break;
                   } elif c == ''; {
