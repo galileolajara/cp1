@@ -200,7 +200,7 @@ using ExprI {
          method-v = t.method-v;
       } else {
          if (&&, at.decl.structt == #nil, at.type != #basic, at.type != #module) {
-            C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot call method " func-name " because the type :" at.name.id " is not defined\n">;
+            C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot call method " func-name " because the type " at.name.id " is not defined\n">;
             return;
          }
          if at.def == #struct {

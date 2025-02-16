@@ -6840,7 +6840,7 @@ _Tchar_Pstdout_2(':', &_L_14);
 _Tu32_Pstdout_2(_Gctx_end_col, &_L_14);
 _NLibC_NStdOut_Pstdout_cstr_3(&_L_14, ": Cannot call method ", 21u);
 _NCp1_NId_Pstdout_2(_Lfunc_name_3, &_L_14);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_14, " because the type :", 19u);
+_NLibC_NStdOut_Pstdout_cstr_3(&_L_14, " because the type ", 18u);
 _NCp1_NId_Pstdout_2((*_Lat_10)._Fname._Fid, &_L_14);
 _NLibC_NStdOut_Pstdout_cstr_3(&_L_14, " is not defined\n", 16u);
 _NLibC_NStdOut_Pstdout_end_1(&_L_14);

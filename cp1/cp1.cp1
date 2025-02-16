@@ -1,5 +1,6 @@
 using C = LibC;
 using X = Posix;
+using Cp1 = Cp1;
 var atexit-rm-v:char[][];
 var atexit-rm-cap:u32;
 var atexit-rm-c:u32;
@@ -20,7 +21,7 @@ print-c-usage(bin:char[]) {
 print-run-usage(bin:char[]) {
    C<stdout "Usage: " bin " run [cp1 file/s...]\n">;
 }
-get-compile(bin:char[], ninja-f:C.File) {
+get-compile(bin:char[]) {
    +path = C.strdup(C.getenv("PATH"));
    "#ifdef _WIN32";
    loop i = 0; ; i++ {
@@ -47,8 +48,8 @@ get-compile(bin:char[], ninja-f:C.File) {
       "#endif";
       fd = X.open(compile, #rdonly);
       if fd != #nil {
-         ninja-f.printf("rule c\n");
-         ninja-f.printf(" command = tcc -I. $in -o $out\n");
+         Cp1<output "rule c\n">;
+         Cp1<output " command = tcc -I. $in -o $out\n">;
          fd.close();
          C.free(path);
          return;
@@ -60,8 +61,8 @@ get-compile(bin:char[], ninja-f:C.File) {
       "#endif";
       fd = X.open(compile, #rdonly);
       if fd != #nil {
-         ninja-f.printf("rule c\n");
-         ninja-f.printf(" command = clang -I. $in -o $out\n");
+         Cp1<output "rule c\n">;
+         Cp1<output " command = clang -I. $in -o $out\n">;
          fd.close();
          C.free(path);
          return;
@@ -73,8 +74,8 @@ get-compile(bin:char[], ninja-f:C.File) {
       "#endif";
       fd = X.open(compile, #rdonly);
       if fd != #nil {
-         ninja-f.printf("rule c\n");
-         ninja-f.printf(" command = gcc -I. $in -o $out\n");
+         Cp1<output "rule c\n">;
+         Cp1<output " command = gcc -I. $in -o $out\n">;
          fd.close();
          C.free(path);
          return;
@@ -594,6 +595,8 @@ main(arg-c:intc, arg-v:char[][]):intc {
       C.exit(#failure);
    }
    +cmd = arg-v[1];
+   Cp1.output-cap = 4096;
+   C.malloc-arr(Cp1.output-data, Cp1.output-cap);
    if C.strcmp(cmd, "c") == 0 {
       if arg-c < 4 {
          print-c-usage(bin);
@@ -624,36 +627,38 @@ main(arg-c:intc, arg-v:char[][]):intc {
          C<stdout "Error, cannot open file for reading: " ninja-path ''\n>;
          C.exit(#failure);
       }
-      +ninja-f = ninja-fd.fopen("wb");
-      ninja-f.printf("rule parse\n");
+      // +ninja-f = ninja-fd.fopen("wb");
+      Cp1<output "rule parse\n">;
       "#ifdef _WIN32";
-      ninja-f.printf(" command = %s-parse.exe $in $out\n", bin);
+      Cp1<output " command = " bin "-parse.exe $in $out\n">;
       "#else";
-      ninja-f.printf(" command = %s-parse $in $out\n", bin);
+      Cp1<output " command = " bin "-parse $in $out\n">;
       "#endif";
-      ninja-f.printf("rule compile\n");
+      Cp1<output "rule compile\n">;
       "#ifdef _WIN32";
-      ninja-f.printf(" command = %s-compile.exe $in $out\n", bin);
+      Cp1<output " command = " bin "-compile.exe $in $out\n">;
       "#else";
-      ninja-f.printf(" command = %s-compile $in $out\n", bin);
+      Cp1<output " command = " bin "-compile $in $out\n">;
       "#endif";
       loop i = 0; .cp1-path-c; i++ {
          "#ifdef _WIN32";
-         ninja-f.printf("build cp1-tmp/%s-b: parse %s | %s-parse.exe\n", .cp1-path-v[i], .cp1-path-real-v[i], abs-path);
+         Cp1<output "build cp1-tmp/" .cp1-path-v[i] "-b: parse " .cp1-path-real-v[i] " | " abs-path "-parse.exe\n">;
          "#else";
-         ninja-f.printf("build cp1-tmp/%s-b: parse %s | %s-parse\n", .cp1-path-v[i], .cp1-path-real-v[i], abs-path);
+         Cp1<output "build cp1-tmp/" .cp1-path-v[i] "-b: parse " .cp1-path-real-v[i] " | " abs-path "-parse\n">;
          "#endif";
       }
-      ninja-f.printf("build %s: compile", c-path);
+      Cp1<output "build " c-path ": compile">;
       loop i = 0; .cp1-path-c; i++ {
-         ninja-f.printf(" cp1-tmp/%s-b", .cp1-path-v[i]);
+         Cp1<output " cp1-tmp/" .cp1-path-v[i] "-b">;
       }
       "#ifdef _WIN32";
-      ninja-f.printf(" | %s-compile.exe\n", abs-path);
+      Cp1<output " | " abs-path "-compile.exe\n">;
       "#else";
-      ninja-f.printf(" | %s-compile\n", abs-path);
+      Cp1<output " | " abs-path "-compile\n">;
       "#endif";
-      ninja-f.close();
+      // ninja-f.close();
+      ninja-fd.write(Cp1.output-data, Cp1.output-len);
+      ninja-fd.close();
       var command:char[24 + 9];
       C.sprintf(command, "ninja -f %s", ninja-path);
       +ret = C.system(command);
@@ -707,38 +712,40 @@ main(arg-c:intc, arg-v:char[][]):intc {
          C<stdout "Error, cannot open file for reading: " ninja-path ''\n>;
          C.exit(#failure);
       }
-      +ninja-f = ninja-fd.fopen("wb");
-      ninja-f.printf("rule parse\n");
+      // +ninja-f = ninja-fd.fopen("wb");
+      Cp1<output "rule parse\n">;
       "#ifdef _WIN32";
-      ninja-f.printf(" command = %s-parse.exe $in $out\n", bin);
+      Cp1<output " command = " bin "-parse.exe $in $out\n">;
       "#else";
-      ninja-f.printf(" command = %s-parse $in $out\n", bin);
+      Cp1<output " command = " bin "-parse $in $out\n">;
       "#endif";
-      ninja-f.printf("rule compile\n");
+      Cp1<output "rule compile\n">;
       "#ifdef _WIN32";
-      ninja-f.printf(" command = %s-compile.exe $in $out\n", bin);
+      Cp1<output " command = " bin "-compile.exe $in $out\n">;
       "#else";
-      ninja-f.printf(" command = %s-compile $in $out\n", bin);
+      Cp1<output " command = " bin "-compile $in $out\n">;
       "#endif";
-      get-compile(bin, ninja-f);
+      get-compile(bin);
       loop i = 0; .cp1-path-c; i++ {
          "#ifdef _WIN32";
-         ninja-f.printf("build cp1-tmp/%s-b: parse %s | %s-parse.exe\n", .cp1-path-v[i], .cp1-path-real-v[i], abs-path);
+         Cp1<output "build cp1-tmp/" .cp1-path-v[i] "-b: parse " .cp1-path-real-v[i] " | " abs-path "-parse.exe\n">;
          "#else";
-         ninja-f.printf("build cp1-tmp/%s-b: parse %s | %s-parse\n", .cp1-path-v[i], .cp1-path-real-v[i], abs-path);
+         Cp1<output "build cp1-tmp/" .cp1-path-v[i] "-b: parse " .cp1-path-real-v[i] " | " abs-path "-parse\n">;
          "#endif";
       }
-      ninja-f.printf("build %s: compile", c-path);
+      Cp1<output "build " c-path ": compile">;
       loop i = 0; .cp1-path-c; i++ {
-         ninja-f.printf(" cp1-tmp/%s-b", .cp1-path-v[i]);
+         Cp1<output " cp1-tmp/" .cp1-path-v[i] "-b">;
       }
       "#ifdef _WIN32";
-      ninja-f.printf(" | %s-compile.exe\n", abs-path);
+      Cp1<output " | " abs-path "-compile.exe\n">;
       "#else";
-      ninja-f.printf(" | %s-compile\n", abs-path);
+      Cp1<output " | " abs-path "-compile\n">;
       "#endif";
-      ninja-f.printf("build %s: c %s\n", exe-path, c-path);
-      ninja-f.close();
+      Cp1<output "build " exe-path ": c " c-path ''\n>;
+      // ninja-f.close();
+      ninja-fd.write(Cp1.output-data, Cp1.output-len);
+      ninja-fd.close();
       var command:char[32 + 9];
       C.sprintf(command, "ninja --quiet -f %s", ninja-path);
       +ninja-ret = C.system(command);

@@ -1,6 +1,7 @@
 using C = LibC;
 using X = Posix;
 using W = Windows;
+using Cp1 = Cp1;
 include "file.cp1.h" {
    using Windows {
       enum Handle[#null, #invalid @no-decl(INVALID_HANDLE_VALUE)]:usz @no-decl(HANDLE);
@@ -101,5 +102,248 @@ using Cp1 {
          return true;
       }
       "#endif";
+   }
+   var output-data:char[] @real-name(output_data);
+   var output-cap:u32;
+   var output-len:u32 @real-name(output_len);
+   struct Output[] {
+      output-cstr(o:this, str:char[], len:u32) {
+         output-bytes(str, len);
+      }
+      output-end(o:this) {
+      }
+   }
+   enum OutputIntType[#oct, #hex]:u8;
+   output(o:Output) @meta-method(output end) @inline {
+   }
+   output-reserve(len:u32) {
+      +space = .output-cap - .output-len;
+      if space < len {
+         .output-cap += .output-cap;
+         space = .output-cap - .output-len;
+         loop space < len {
+            .output-cap += .output-cap;
+            space = .output-cap - .output-len;
+         }
+         C.realloc-arr(.output-data, .output-cap);
+      }
+   }
+   output-u32(val:u32) {
+      output-reserve(10);
+      if val == 0 {
+         .output-data[.output-len++] = ''0;
+      } else {
+         // integer to string, count the digits
+         var data:char[];
+         data = &.output-data[.output-len];
+         +digits = 0;
+         loop {
+            data[digits++] = (val % 10) + ''0;
+            val /= 10;
+            if val == 0 { break }
+         }
+         // reverse the string
+         +start = 0;
+         +end = digits - 1;
+         loop start < end {
+            +tmp = data[start];
+            data[start] = data[end];
+            data[end] = tmp;
+            start++;
+            end--;
+         }
+         .output-len += digits;
+      }
+   }
+   output-o32(val:u32) {
+      output-reserve(11);
+      if val == 0 {
+         .output-data[.output-len++] = ''0;
+      } else {
+         // integer to string, count the digits
+         var data:char[];
+         data = &.output-data[.output-len];
+         +digits = 0;
+         loop {
+            data[digits++] = (val % 8) + ''0;
+            val /= 8;
+            if val == 0 { break }
+         }
+         // reverse the string
+         +start = 0;
+         +end = digits - 1;
+         loop start < end {
+            +tmp = data[start];
+            data[start] = data[end];
+            data[end] = tmp;
+            start++;
+            end--;
+         }
+         .output-len += digits;
+      }
+   }
+   output-x32(val:u32) {
+      output-reserve(8);
+      if val == 0 {
+         .output-data[.output-len++] = ''0;
+      } else {
+         // integer to string, count the digits
+         var data:char[];
+         data = &.output-data[.output-len];
+         +digits = 0;
+         loop {
+            +n = val % 16;
+            if n < 10 {
+               data[digits++] = n + ''0;
+            } else {
+               data[digits++] = (n - 10) + ''a;
+            }
+            val /= 16;
+            if val == 0 { break }
+         }
+         // reverse the string
+         +start = 0;
+         +end = digits - 1;
+         loop start < end {
+            +tmp = data[start];
+            data[start] = data[end];
+            data[end] = tmp;
+            start++;
+            end--;
+         }
+         .output-len += digits;
+      }
+   }
+   output-f32(val:f32) {
+      var str:char[48];
+      var len:intc;
+      C.sprintf(str, "%f%n", val, &len);
+      output-bytes(str, len);
+   }
+   output-i32(val:i32) {
+      output-reserve(11);
+      if val == 0 {
+         .output-data[.output-len++] = ''0;
+      } elif val < 0 {
+         val = -val;
+         .output-data[.output-len++] = ''-;
+         // integer to string, count the digits
+         var data:char[];
+         data = &.output-data[.output-len];
+         +digits = 0;
+         loop {
+            data[digits++] = (val % 10) + ''0;
+            val /= 10;
+            if val == 0 { break }
+         }
+         // reverse the string
+         +start = 0;
+         +end = digits - 1;
+         loop start < end {
+            +tmp = data[start];
+            data[start] = data[end];
+            data[end] = tmp;
+            start++;
+            end--;
+         }
+         .output-len += digits;
+      } else {
+         // integer to string, count the digits
+         var data:char[];
+         data = &.output-data[.output-len];
+         +digits = 0;
+         loop {
+            data[digits++] = (val % 10) + ''0;
+            val /= 10;
+            if val == 0 { break }
+         }
+         // reverse the string
+         +start = 0;
+         +end = digits - 1;
+         loop start < end {
+            +tmp = data[start];
+            data[start] = data[end];
+            data[end] = tmp;
+            start++;
+            end--;
+         }
+         .output-len += digits;
+      }
+   }
+   output-u64(val:i64) {
+      output-reserve(20);
+      if val == 0 {
+         .output-data[.output-len++] = ''0;
+      } else {
+         // integer to string, count the digits
+         var data:char[];
+         data = &.output-data[.output-len];
+         +digits = 0;
+         loop {
+            data[digits++] = (val % 10) + ''0;
+            val /= 10;
+            if val == 0 { break }
+         }
+         // reverse the string
+         +start = 0;
+         +end = digits - 1;
+         loop start < end {
+            +tmp = data[start];
+            data[start] = data[end];
+            data[end] = tmp;
+            start++;
+            end--;
+         }
+         .output-len += digits;
+      }
+   }
+   output-bytes(str:char[], len:u32) {
+      output-reserve(len);
+      C.memcpy(&.output-data[.output-len], str, len);
+      .output-len += len;
+   }
+}
+using f32 {
+   output(val:this, so:Cp1.Output) @inline {
+      Cp1.output-f32(val);
+   }
+}
+using i32 {
+   output(val:this, so:Cp1.Output) @inline {
+      Cp1.output-i32(val);
+   }
+}
+using u32 {
+   output(val:this, so:Cp1.Output) @inline {
+      Cp1.output-u32(val);
+   }
+   output(val:this, so:Cp1.Output, type:Cp1.OutputIntType) @inline {
+      switch type {
+         case #oct {
+            Cp1.output-o32(val);
+         }
+         case #hex {
+            Cp1.output-x32(val);
+         }
+      }
+   }
+}
+using u8 {
+   output(val:this, so:Cp1.Output) @inline {
+      Cp1.output-u32(val);
+   }
+}
+using u64 {
+   output(val:this, so:Cp1.Output) @inline {
+      Cp1.output-u64(val);
+   }
+}
+using char {
+   output(val:this, o:Cp1.Output) {
+      Cp1.output-reserve(1);
+      Cp1.output-data[Cp1.output-len++] = val;
+   }
+   output-arr(val:this[], o:Cp1.Output) {
+      Cp1.output-bytes(val, C.strlen(val));
    }
 }
