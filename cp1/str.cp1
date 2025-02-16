@@ -72,7 +72,7 @@ using ExprI {
          write-str-node(n.len, n.buf);
          n = n.next;
          if n == null { break }
-         .out.putc(''\n);
+         <output ''\n>;
       }
    }
    value-str(s:this, reff:i32, paren:bool, v:Value, ok:bool&) @case.value() @inline {

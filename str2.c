@@ -1,40 +1,45 @@
 #include <stdio.h>
-extern FILE* _Gout;
-void _NCp1_Pwrite_str_node_2(int len, char* buf) {
-   fputc('"', _Gout);
+#include <stdint.h>
+void _NCp1_Poutput_reserve_1(uint32_t);
+extern char* output_data;
+extern uint32_t output_len;
+void _NCp1_Pwrite_str_node_2(uint32_t len, char* buf) {
+   _NCp1_Poutput_reserve_1(2 + (len << 1));
    for (int i = 0; i < len; i ++) {
       switch(buf[i]) {
-         case '\a': fputc('\\', _Gout); fputc('a', _Gout); break;
-         case '\b': fputc('\\', _Gout); fputc('b', _Gout); break;
-         case '\f': fputc('\\', _Gout); fputc('f', _Gout); break;
-         case '\n': fputc('\\', _Gout); fputc('n', _Gout); break;
-         case '\r': fputc('\\', _Gout); fputc('r', _Gout); break;
-         case '\t': fputc('\\', _Gout); fputc('t', _Gout); break;
-         case '\v': fputc('\\', _Gout); fputc('v', _Gout); break;
-         case '\\': fputc('\\', _Gout); fputc('\\', _Gout); break;
-         case '\'': fputc('\'', _Gout); break;
-         case '"': fputc('\\', _Gout); fputc('"', _Gout); break;
-         case '\0': fputc('\\', _Gout); fputc('0', _Gout); break;
-         default:
-            fputc(buf[i], _Gout);
+case '\a': output_data[output_len++] = '\\'; output_data[output_len++] = 'a'; break;
+case '\b': output_data[output_len++] = '\\'; output_data[output_len++] = 'b'; break;
+case '\f': output_data[output_len++] = '\\'; output_data[output_len++] = 'f'; break;
+case '\n': output_data[output_len++] = '\\'; output_data[output_len++] = 'n'; break;
+case '\r': output_data[output_len++] = '\\'; output_data[output_len++] = 'r'; break;
+case '\t': output_data[output_len++] = '\\'; output_data[output_len++] = 't'; break;
+case '\v': output_data[output_len++] = '\\'; output_data[output_len++] = 'v'; break;
+case '\\': output_data[output_len++] = '\\'; output_data[output_len++] = '\\'; break;
+case '\'': output_data[output_len++] = '\''; break;
+case '"':  output_data[output_len++] = '\\'; output_data[output_len++] = '"'; break;
+case '\0': output_data[output_len++] = '\\'; output_data[output_len++] = '0'; break;
+default:   output_data[output_len++] = buf[i];
       }
    }
-   fputc('"', _Gout);
+   output_data[output_len++] = '"';
 }
 
 void _NCp1_Pwrite_char_1(char c) {
+   _NCp1_Poutput_reserve_1(4);
+   output_data[output_len++] = '\'';
    switch(c) {
-      case '\a': fprintf(_Gout, "'\\a'"); break;
-      case '\b': fprintf(_Gout, "'\\b'"); break;
-      case '\f': fprintf(_Gout, "'\\f'"); break;
-      case '\n': fprintf(_Gout, "'\\n'"); break;
-      case '\r': fprintf(_Gout, "'\\r'"); break;
-      case '\t': fprintf(_Gout, "'\\t'"); break;
-      case '\v': fprintf(_Gout, "'\\v'"); break;
-      case '\\': fprintf(_Gout, "'\\\\'"); break;
-      case '\'': fprintf(_Gout, "'\\''"); break;
-      case '"': fprintf(_Gout, "'\\\"'"); break;
-      case '\0': fprintf(_Gout, "'\\0'"); break;
-      default: fprintf(_Gout, "'%c'", c); break;
+   case '\a': output_data[output_len++] = '\\'; output_data[output_len++] = 'a'; break;
+   case '\b': output_data[output_len++] = '\\'; output_data[output_len++] = 'b'; break;
+   case '\f': output_data[output_len++] = '\\'; output_data[output_len++] = 'f'; break;
+   case '\n': output_data[output_len++] = '\\'; output_data[output_len++] = 'n'; break;
+   case '\r': output_data[output_len++] = '\\'; output_data[output_len++] = 'r'; break;
+   case '\t': output_data[output_len++] = '\\'; output_data[output_len++] = 't'; break;
+   case '\v': output_data[output_len++] = '\\'; output_data[output_len++] = 'v'; break;
+   case '\\': output_data[output_len++] = '\\'; output_data[output_len++] = '\\'; break;
+   case '\'': output_data[output_len++] = '\\'; output_data[output_len++] = '\''; break;
+   case '"':  output_data[output_len++] = '\\'; output_data[output_len++] = '"'; break;
+   case '\0': output_data[output_len++] = '\\'; output_data[output_len++] = '0'; break;
+   default:   output_data[output_len++] = c;
    }
+   output_data[output_len++] = '\'';
 }

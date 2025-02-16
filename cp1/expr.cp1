@@ -20,7 +20,7 @@ using Stmt {
          var e:ExprStr = expr;
          +n = e.first;
          loop {
-            .out.printf("%.*s\n", n.len, n.buf);
+            output-bytes(n.buf, n.len);
             n = n.next;
             if n == null { break }
          }
@@ -65,15 +65,15 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
       // C<stdout "write-value v.ref = " ref ''\n>;
       if v.paren {
          if reff <= 0 {
-            .out.write("(&", 2);
+            output-bytes("(&", 2);
          } else {
-            .out.write("(*******************************", reff);
+            output-bytes("(*******************************", reff);
          }
       } else {
          if reff <= 0 {
-            .out.write("&", 1);
+            output-bytes("&", 1);
          } elif reff > 1 {
-            .out.write("*******************************", reff - 1);
+            output-bytes("*******************************", reff - 1);
          }
       }
 
@@ -85,7 +85,7 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
       }
 
       if v.paren {
-         .out.write(")", 1);
+         output-bytes(")", 1);
       }
       return true;
    }

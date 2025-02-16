@@ -598,7 +598,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
       td.write-type();
       +s = td.count-stars0(ti) + add;
       if s > 0 {
-         .out.write("********************************", s);
+         output-bytes("********************************", s);
       }
       return true;
    }

@@ -493,7 +493,7 @@ read(in-path:char[]) {
       r.pos += size;
    }
 }
-var out:C.File;
+// var out:C.File;
 var process-first:Func;
 var process-last:Func;
 var func-in-process:u8[];
@@ -855,9 +855,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                <output f.farg-v[j].decl.name>;
             }
             <output ") ">;
-            .out.printf("%.*s\n", f.decl-len - 2, &f.decl-str[2]);
+            output-bytes(&f.decl-str[2], f.decl-len - 2);
          } else {
-            .out.printf("%.*s\n", f.decl-len, f.decl-str);
+            output-bytes(f.decl-str, f.decl-len);
          }
          continue;
       }
@@ -1083,9 +1083,9 @@ using Func {
       v[f-idx >> 3] |= 1 << (f-idx & 7);
    }
 }
-var output-data:char[];
+var output-data:char[] @real-name(output_data);
 var output-cap:u32;
-var output-len:u32;
+var output-len:u32 @real-name(output_len);
 struct Output[] {
    output-cstr(o:this, str:char[], len:u32) {
       output-bytes(str, len);
