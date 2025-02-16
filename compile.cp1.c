@@ -8485,7 +8485,7 @@ output_len += _Ldigits_7;
 }
 }
 void _NCp1_Poutput_f32_1(float _Lval_0) {
-char _Lstr_1[32];
+char _Lstr_1[48];
 int _Llen_2;
 sprintf(_Lstr_1, "%f%n", _Lval_0, &_Llen_2);
 _NCp1_Poutput_bytes_2(_Lstr_1, _Llen_2);

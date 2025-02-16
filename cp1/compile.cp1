@@ -1198,7 +1198,7 @@ output-x32(val:u32) {
    }
 }
 output-f32(val:f32) {
-   var str:char[32];
+   var str:char[48];
    var len:intc;
    C.sprintf(str, "%f%n", val, &len);
    output-bytes(str, len);
