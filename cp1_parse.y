@@ -587,8 +587,8 @@ methodExpr(l) ::= value4fix(e) DOT_ID_UPPER_THEN_OPEN_PARENTHESIS(func).
    { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 /* metaMethodExpr(l) ::= value4fix(e) ANGULAR_BRACKET_ID(func).
    { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); } */
-metaCall_args_optional ::= metaCall_args_next_group_empty CLOSE_ANGULAR_BRACKET.
-metaCall_args_optional ::= metaCall_args_next_group_empty SPACE_CLOSE_ANGULAR_BRACKET.
+metaCall_args_optional ::= OPEN_ANGULAR_BRACKET CLOSE_ANGULAR_BRACKET.
+metaCall_args_optional ::= OPEN_ANGULAR_BRACKET SPACE_CLOSE_ANGULAR_BRACKET.
 metaCall_args_optional ::= metaCall_args_next_group_empty SPACE metaCall_args CLOSE_ANGULAR_BRACKET.
 metaCall_args_optional ::= metaCall_args_next_group_empty SPACE metaCall_args SPACE_CLOSE_ANGULAR_BRACKET.
 metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args CLOSE_ANGULAR_BRACKET.

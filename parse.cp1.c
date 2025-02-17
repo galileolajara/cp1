@@ -129,10 +129,10 @@
 #define _NCp1_NToken_Cid_then_open_angular_bracket (_NCp1_NToken_Cdot_id_upper_then_open_parenthesis + 1)
 #define _NCp1_NToken_Cid_upper_then_open_angular_bracket (_NCp1_NToken_Cid_then_open_angular_bracket + 1)
 #define _NCp1_NToken_Cdot_id_upper_then_open_angular_bracket (_NCp1_NToken_Cid_upper_then_open_angular_bracket + 1)
-#define _NCp1_NToken_Cclose_angular_bracket (_NCp1_NToken_Cdot_id_upper_then_open_angular_bracket + 1)
+#define _NCp1_NToken_Copen_angular_bracket (_NCp1_NToken_Cdot_id_upper_then_open_angular_bracket + 1)
+#define _NCp1_NToken_Cclose_angular_bracket (_NCp1_NToken_Copen_angular_bracket + 1)
 #define _NCp1_NToken_Cspace_close_angular_bracket (_NCp1_NToken_Cclose_angular_bracket + 1)
-#define _NCp1_NToken_Copen_angular_bracket (_NCp1_NToken_Cspace_close_angular_bracket + 1)
-#define _NCp1_NToken_Chash (_NCp1_NToken_Copen_angular_bracket + 1)
+#define _NCp1_NToken_Chash (_NCp1_NToken_Cspace_close_angular_bracket + 1)
 #define _NCp1_NToken_Cspace_plus_equal_space (_NCp1_NToken_Chash + 1)
 #define _NCp1_NToken_Cspace_minus_equal_space (_NCp1_NToken_Cspace_plus_equal_space + 1)
 #define _NCp1_NToken_Cspace_mul_equal_space (_NCp1_NToken_Cspace_minus_equal_space + 1)
@@ -1248,9 +1248,9 @@ case _NCp1_NToken_Cdot_id_upper_then_open_parenthesis: return "dot-id-upper-then
 case _NCp1_NToken_Cid_then_open_angular_bracket: return "id-then-open-angular-bracket";
 case _NCp1_NToken_Cid_upper_then_open_angular_bracket: return "id-upper-then-open-angular-bracket";
 case _NCp1_NToken_Cdot_id_upper_then_open_angular_bracket: return "dot-id-upper-then-open-angular-bracket";
+case _NCp1_NToken_Copen_angular_bracket: return "open-angular-bracket";
 case _NCp1_NToken_Cclose_angular_bracket: return "close-angular-bracket";
 case _NCp1_NToken_Cspace_close_angular_bracket: return "space-close-angular-bracket";
-case _NCp1_NToken_Copen_angular_bracket: return "open-angular-bracket";
 case _NCp1_NToken_Chash: return "hash";
 case _NCp1_NToken_Cspace_plus_equal_space: return "space-plus-equal-space";
 case _NCp1_NToken_Cspace_minus_equal_space: return "space-minus-equal-space";
