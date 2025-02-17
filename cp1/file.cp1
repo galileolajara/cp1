@@ -21,7 +21,10 @@ include "file.cp1.h" {
    }
 }
 using Cp1 {
-   read-file(path:char[], add-len:i32, out-size:usz&):ref @inline {
+   read-file(path:char[], out-size:usz&):ref @inline {
+      return read-file(path, 0, 0, out-size);
+   }
+   read-file(path:char[], add-before:i32, add-after:i32, out-size:usz&):ref @inline {
       "#ifdef _WIN32";
       if true {
          +h = W.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null);
@@ -35,9 +38,9 @@ using Cp1 {
          }
          +size = f-size.quadPart;
          var buf:u8[];
-         C.malloc-arr(buf, size + add-len);
+         C.malloc-arr(buf, add-before + size + add-after);
          var bytes-read;
-         if !W.ReadFile(h, buf, size, bytes-read, null) || (bytes-read != size) {
+         if !W.ReadFile(h, &buf[add-before], size, bytes-read, null) || (bytes-read != size) {
             C.free(buf);
             W.CloseHandle(h);
             return null;
@@ -62,8 +65,8 @@ using Cp1 {
             return null;
          }
          var buf:u8[];
-         C.malloc-arr(buf, size + add-len);
-         if fd.read(buf, size) != size {
+         C.malloc-arr(buf, add-before + size + add-after);
+         if fd.read(&buf[add-before], size) != size {
             C.free(buf);
             fd.close();
             return null;

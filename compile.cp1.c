@@ -208,7 +208,6 @@ typedef uint32_t _NWindows_NCreateFileCreationDisposition;
 typedef uint32_t _NWindows_NCreateFileFlags;
 typedef int _NPosix_NFd;
 typedef int _NPosix_NOpenFlags;
-typedef int _NPosix_NSeek;
 typedef uint8_t _NCp1_NAssign;
 typedef uint8_t _NCp1_NCompare;
 typedef uint8_t _NCp1_NMath;
@@ -217,6 +216,7 @@ typedef int32_t _NCp1_NFvar;
 typedef uint8_t _NCp1_NBools;
 typedef uint8_t _NCp1_NExprInt;
 typedef uint8_t _NCp1_NOutputIntType;
+typedef int _NPosix_NSeek;
 struct _NLibCp1_NStdOut;
 struct _NLibCp1_NStdOut {
 };
@@ -882,7 +882,7 @@ bool _NCp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
 void _NLibCp1_Pstdout_bytes_2(void* _Ldata_0, size_t _Lsize_1);
 void _NLibCp1_Pstdout_cstr_1(char* _Lstr_0);
 void _NLibCp1_Pstdout_flush_0();
-void* _NCp1_Pread_file_3(char* _Lpath_0, int32_t _Ladd_len_1, size_t* _Lout_size_2);
+void* _NCp1_Pread_file_2(char* _Lpath_0, size_t* _Lout_size_1);
 uint8_t _NCp1_NRdr_Pn1_1(union _NCp1_NRdr* _Lr_0);
 int32_t _NCp1_NMap_Pget_or_insert_4(struct _NCp1_NMap* _Lm_0, char* _Lstr_1, uint8_t _Llen_2, int32_t _Lval_3);
 void _NCp1_NNameType_Prd_2(_NCp1_NNameType* _Li_0, union _NCp1_NRdr* _Lr_1);
@@ -985,7 +985,7 @@ void _NCp1_NStmt_Pwrite_1(struct _NCp1_NStmt* _Ls_0);
 bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3);
 int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0);
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
-bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2);
+void* _NCp1_Pread_file_4(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_after_2, size_t* _Lout_size_3);
 int32_t _NCp1_NAtMap_Pget_or_insert_4(struct _NCp1_NAtMap* _Lm_0, uint32_t _Lparent_and_type_1, _NCp1_NId _Lname_2, int32_t _Lval_3);
 void _NCp1_NVarFlags_Prd_2(_NCp1_NVarFlags* _Lf_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NTypeInfo_Prd_2(struct _NCp1_NTypeInfo* _Lti_0, union _NCp1_NRdr* _Lr_1);
@@ -1131,11 +1131,7 @@ void _NCp1_NStmt_Pwrite_space_1(struct _NCp1_NStmt* _Lstmt_0);
 #else
 #define _NPosix_Popen_3(p, f, m) open(p, f, m)
 #endif
-#ifdef _WIN32
-#define _NPosix_Popen_2(p, f) open(p, f | O_BINARY)
-#else
-#define _NPosix_Popen_2(p, f) open(p, f)
-#endif
+bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2);
 void _NCp1_NExprI_Pset_3(_NCp1_NExprI _Le_0, struct _NCp1_NExpr* _Lexpr_1, _NCp1_NExprType _Ltype_2);
 void _NCp1_NAssign_Prd_2(_NCp1_NAssign* _Ls_0, union _NCp1_NRdr* _Lr_1);
 void _NCp1_NCompare_Prd_2(_NCp1_NCompare* _Le_0, union _NCp1_NRdr* _Lr_1);
@@ -1212,6 +1208,11 @@ void _NCp1_Poutput_f32_1(float _Lval_0);
 void _NCp1_Poutput_o32_1(uint32_t _Lval_0);
 void _NCp1_Poutput_x32_1(uint32_t _Lval_0);
 void _NCp1_Poutput_u64_1(int64_t _Lval_0);
+#ifdef _WIN32
+#define _NPosix_Popen_2(p, f) open(p, f | O_BINARY)
+#else
+#define _NPosix_Popen_2(p, f) open(p, f)
+#endif
 void _NCp1_NValue_Pset_5(struct _NCp1_NValue* _Lv_0, int8_t _Lreff_1, bool _Lparen_2, _NCp1_NAt _Ltype_3, struct _NCp1_NTypeInfo* _Linfo_4);
 void _NCp1_NExprI_Ptry_deduce_math_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt _Lat_1);
 void _NCp1_NExprI_Ptry_deduce_cvar_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt _Lat_1);
@@ -2086,7 +2087,7 @@ _NCp1_NStruct _Ls_idx_begin_58;
 _NCp1_NFunc _Lfunc_c_69;
 _NCp1_NFunc _Lf_idx_begin_70;
 _NCp1_NFunc _Lfunc_main_86;
-_Lr_begin_1._Freff = _NCp1_Pread_file_3(_Lin_path_0, 0, &_Lin_size_2);
+_Lr_begin_1._Freff = _NCp1_Pread_file_2(_Lin_path_0, &_Lin_size_2);
 if(_Lr_begin_1._Freff == NULL) {
 struct _NLibCp1_NStdOut _L_3;
 _NLibCp1_Pstdout_1(&_L_3);
@@ -3549,61 +3550,8 @@ inline void _NLibCp1_Pstdout_flush_0() {
 write((_NPosix_NFd)(1), _Gstdout_buf_data, _Gstdout_buf_len);
 _Gstdout_buf_len = 0;
 }
-inline void* _NCp1_Pread_file_3(char* _Lpath_0, int32_t _Ladd_len_1, size_t* _Lout_size_2) {
-#ifdef _WIN32
-if(true) {
-HANDLE _Lh_3;
-LARGE_INTEGER _Lf_size_4;
-uint64_t _Lsize_5;
-uint8_t* _Lbuf_6;
-uint32_t _Lbytes_read_7;
-_Lh_3 = CreateFileA(_Lpath_0, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, _NWindows_NHandle_Cnull);
-if(_Lh_3 == INVALID_HANDLE_VALUE) {
-return NULL;
-}
-if(!GetFileSizeEx(_Lh_3, &_Lf_size_4)) {
-CloseHandle(_Lh_3);
-return NULL;
-}
-_Lsize_5 = _Lf_size_4.QuadPart;
-_NLibC_Pmalloc_arr_2(_Lbuf_6, _Lsize_5 + _Ladd_len_1);
-if((!ReadFile(_Lh_3, _Lbuf_6, _Lsize_5, &_Lbytes_read_7, NULL) || (_Lbytes_read_7 != _Lsize_5))) {
-free(_Lbuf_6);
-CloseHandle(_Lh_3);
-return NULL;
-}
-CloseHandle(_Lh_3);
-(*_Lout_size_2) = _Lsize_5;
-return _Lbuf_6;
-}
-#else
-if(true) {
-_NPosix_NFd _Lfd_8;
-size_t _Lsize_9;
-uint8_t* _Lbuf_10;
-if(!_NPosix_NFd_Popen_3(&_Lfd_8, _Lpath_0, O_RDONLY)) {
-return NULL;
-}
-_Lsize_9 = lseek(_Lfd_8, 0, SEEK_END);
-if(_Lsize_9 == -1) {
-_NPosix_NFd_Pclose_1(_Lfd_8);
-return NULL;
-}
-if(lseek(_Lfd_8, 0, SEEK_SET) == -1) {
-_NPosix_NFd_Pclose_1(_Lfd_8);
-return NULL;
-}
-_NLibC_Pmalloc_arr_2(_Lbuf_10, _Lsize_9 + _Ladd_len_1);
-if(read(_Lfd_8, _Lbuf_10, _Lsize_9) != _Lsize_9) {
-free(_Lbuf_10);
-_NPosix_NFd_Pclose_1(_Lfd_8);
-return NULL;
-}
-_NPosix_NFd_Pclose_1(_Lfd_8);
-(*_Lout_size_2) = _Lsize_9;
-return _Lbuf_10;
-}
-#endif
+inline void* _NCp1_Pread_file_2(char* _Lpath_0, size_t* _Lout_size_1) {
+return _NCp1_Pread_file_4(_Lpath_0, 0, 0, _Lout_size_1);
 }
 inline uint8_t _NCp1_NRdr_Pn1_1(union _NCp1_NRdr* _Lr_0) {
 uint8_t _Lval_1;
@@ -5357,15 +5305,61 @@ break_0:;
 _NLibC_Prealloc_arr_2(_Gstdout_buf_data, _Gstdout_buf_cap);
 }
 }
-inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2) {
-_NPosix_NFd _Lfd_3;
-_Lfd_3 = _NPosix_Popen_2(_Lpath_1, _Lflags_2);
-if(_Lfd_3 != -1) {
-(*_Lfile_0) = _Lfd_3;
-return true;
-} else {
-return false;
+inline void* _NCp1_Pread_file_4(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_after_2, size_t* _Lout_size_3) {
+#ifdef _WIN32
+if(true) {
+HANDLE _Lh_4;
+LARGE_INTEGER _Lf_size_5;
+uint64_t _Lsize_6;
+uint8_t* _Lbuf_7;
+uint32_t _Lbytes_read_8;
+_Lh_4 = CreateFileA(_Lpath_0, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, _NWindows_NHandle_Cnull);
+if(_Lh_4 == INVALID_HANDLE_VALUE) {
+return NULL;
 }
+if(!GetFileSizeEx(_Lh_4, &_Lf_size_5)) {
+CloseHandle(_Lh_4);
+return NULL;
+}
+_Lsize_6 = _Lf_size_5.QuadPart;
+_NLibC_Pmalloc_arr_2(_Lbuf_7, _Ladd_before_1 + _Lsize_6 + _Ladd_after_2);
+if((!ReadFile(_Lh_4, &_Lbuf_7[_Ladd_before_1], _Lsize_6, &_Lbytes_read_8, NULL) || (_Lbytes_read_8 != _Lsize_6))) {
+free(_Lbuf_7);
+CloseHandle(_Lh_4);
+return NULL;
+}
+CloseHandle(_Lh_4);
+(*_Lout_size_3) = _Lsize_6;
+return _Lbuf_7;
+}
+#else
+if(true) {
+_NPosix_NFd _Lfd_9;
+size_t _Lsize_10;
+uint8_t* _Lbuf_11;
+if(!_NPosix_NFd_Popen_3(&_Lfd_9, _Lpath_0, O_RDONLY)) {
+return NULL;
+}
+_Lsize_10 = lseek(_Lfd_9, 0, SEEK_END);
+if(_Lsize_10 == -1) {
+_NPosix_NFd_Pclose_1(_Lfd_9);
+return NULL;
+}
+if(lseek(_Lfd_9, 0, SEEK_SET) == -1) {
+_NPosix_NFd_Pclose_1(_Lfd_9);
+return NULL;
+}
+_NLibC_Pmalloc_arr_2(_Lbuf_11, _Ladd_before_1 + _Lsize_10 + _Ladd_after_2);
+if(read(_Lfd_9, &_Lbuf_11[_Ladd_before_1], _Lsize_10) != _Lsize_10) {
+free(_Lbuf_11);
+_NPosix_NFd_Pclose_1(_Lfd_9);
+return NULL;
+}
+_NPosix_NFd_Pclose_1(_Lfd_9);
+(*_Lout_size_3) = _Lsize_10;
+return _Lbuf_11;
+}
+#endif
 }
 inline void _NCp1_NVarFlags_Prd_2(_NCp1_NVarFlags* _Lf_0, union _NCp1_NRdr* _Lr_1) {
 (*_Lf_0) = (_NCp1_NVarFlags)(Fgetnum(_Lr_1));
@@ -7701,6 +7695,16 @@ inline void _NCp1_NStmt_Pwrite_space_1(struct _NCp1_NStmt* _Lstmt_0) {
 struct _NCp1_NStmtSpace* _Lspace_1;
 _Lspace_1 = _Lstmt_0;
 _NCp1_NStmtSpace_Pwrite_1(_Lspace_1);
+}
+inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2) {
+_NPosix_NFd _Lfd_3;
+_Lfd_3 = _NPosix_Popen_2(_Lpath_1, _Lflags_2);
+if(_Lfd_3 != -1) {
+(*_Lfile_0) = _Lfd_3;
+return true;
+} else {
+return false;
+}
 }
 inline void _NCp1_NExprI_Pset_3(_NCp1_NExprI _Le_0, struct _NCp1_NExpr* _Lexpr_1, _NCp1_NExprType _Ltype_2) {
 _Gexpr_v[_Le_0] = _Lexpr_1;

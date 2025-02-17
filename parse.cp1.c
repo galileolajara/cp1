@@ -931,7 +931,7 @@ void _NLibCp1_Pstdout_1(struct _NLibCp1_NStdOut* _Lso_0);
 void _NLibCp1_NStdOut_Pstdout_cstr_3(struct _NLibCp1_NStdOut* _Lso_0, char* _Lstr_1, uint32_t _Llen_2);
 void _Tchar_Pstdout_arr_2(char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1);
 void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_0);
-void* _NCp1_Pread_file_3(char* _Lpath_0, int32_t _Ladd_len_1, size_t* _Lout_size_2);
+void* _NCp1_Pread_file_4(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_after_2, size_t* _Lout_size_3);
 void _Tchar_Pstdout_2(char _Lval_0, struct _NLibCp1_NStdOut* _Lso_1);
 void _NCp1_Pget_row_col_4(uint32_t* _Lout_row_0, uint32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3);
 void _Tu32_Pstdout_2(uint32_t _Lval_0, struct _NLibCp1_NStdOut* _Lso_1);
@@ -1447,7 +1447,7 @@ _NLibCp1_NStdOut_Pstdout_end_1(&_L_2);
 return 0;
 }
 input_path = _Larg_v_1[1];
-_Lin_data_3 = _NCp1_Pread_file_3(input_path, 2, &_Lin_size_4);
+_Lin_data_3 = _NCp1_Pread_file_4(input_path, 1, 2, &_Lin_size_4);
 if(_Lin_data_3 == NULL) {
 struct _NLibCp1_NStdOut _L_5;
 _NLibCp1_Pstdout_1(&_L_5);
@@ -1457,6 +1457,8 @@ _Tchar_Pstdout_2('\n', &_L_5);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_5);
 exit(_NLibC_NExit_Cfailure);
 }
+_Lin_data_3[0] = '\n';
+_Lin_data_3 = &_Lin_data_3[1];
 _Llock_path_6 = _Larg_v_1[2];
 if(((_Lin_data_3[(_Lin_size_4 - 2)] == '\r') && (_Lin_data_3[(_Lin_size_4 - 1)] == '\n'))) {
 struct _NLibCp1_NStdOut _L_7;
@@ -1877,7 +1879,7 @@ continue_0:;
 }
 break_0:;
 _Lw_13._Fp1[0] = '\0';
-free(_Lin_data_3);
+free(&_Lin_data_3[-1]);
 _Lin_data_3 = _Lnew_data_12;
 _Lw_begin_63._Freff = _Lnew_data_12;
 _Lin_size_4 = (_Lw_13._Fpos - _Lw_begin_63._Fpos);
@@ -2624,59 +2626,59 @@ _NLibCp1_Pstdout_cstr_1(_Lstr_0);
 inline void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_0) {
 _NLibCp1_Pstdout_flush_0();
 }
-inline void* _NCp1_Pread_file_3(char* _Lpath_0, int32_t _Ladd_len_1, size_t* _Lout_size_2) {
+inline void* _NCp1_Pread_file_4(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_after_2, size_t* _Lout_size_3) {
 #ifdef _WIN32
 if(true) {
-HANDLE _Lh_3;
-LARGE_INTEGER _Lf_size_4;
-uint64_t _Lsize_5;
-uint8_t* _Lbuf_6;
-uint32_t _Lbytes_read_7;
-_Lh_3 = CreateFileA(_Lpath_0, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, _NWindows_NHandle_Cnull);
-if(_Lh_3 == INVALID_HANDLE_VALUE) {
+HANDLE _Lh_4;
+LARGE_INTEGER _Lf_size_5;
+uint64_t _Lsize_6;
+uint8_t* _Lbuf_7;
+uint32_t _Lbytes_read_8;
+_Lh_4 = CreateFileA(_Lpath_0, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, _NWindows_NHandle_Cnull);
+if(_Lh_4 == INVALID_HANDLE_VALUE) {
 return NULL;
 }
-if(!GetFileSizeEx(_Lh_3, &_Lf_size_4)) {
-CloseHandle(_Lh_3);
+if(!GetFileSizeEx(_Lh_4, &_Lf_size_5)) {
+CloseHandle(_Lh_4);
 return NULL;
 }
-_Lsize_5 = _Lf_size_4.QuadPart;
-_NLibC_Pmalloc_arr_2(_Lbuf_6, _Lsize_5 + _Ladd_len_1);
-if((!ReadFile(_Lh_3, _Lbuf_6, _Lsize_5, &_Lbytes_read_7, NULL) || (_Lbytes_read_7 != _Lsize_5))) {
-free(_Lbuf_6);
-CloseHandle(_Lh_3);
+_Lsize_6 = _Lf_size_5.QuadPart;
+_NLibC_Pmalloc_arr_2(_Lbuf_7, _Ladd_before_1 + _Lsize_6 + _Ladd_after_2);
+if((!ReadFile(_Lh_4, &_Lbuf_7[_Ladd_before_1], _Lsize_6, &_Lbytes_read_8, NULL) || (_Lbytes_read_8 != _Lsize_6))) {
+free(_Lbuf_7);
+CloseHandle(_Lh_4);
 return NULL;
 }
-CloseHandle(_Lh_3);
-(*_Lout_size_2) = _Lsize_5;
-return _Lbuf_6;
+CloseHandle(_Lh_4);
+(*_Lout_size_3) = _Lsize_6;
+return _Lbuf_7;
 }
 #else
 if(true) {
-_NPosix_NFd _Lfd_8;
-size_t _Lsize_9;
-uint8_t* _Lbuf_10;
-if(!_NPosix_NFd_Popen_3(&_Lfd_8, _Lpath_0, O_RDONLY)) {
+_NPosix_NFd _Lfd_9;
+size_t _Lsize_10;
+uint8_t* _Lbuf_11;
+if(!_NPosix_NFd_Popen_3(&_Lfd_9, _Lpath_0, O_RDONLY)) {
 return NULL;
 }
-_Lsize_9 = lseek(_Lfd_8, 0, SEEK_END);
-if(_Lsize_9 == -1) {
-_NPosix_NFd_Pclose_1(_Lfd_8);
+_Lsize_10 = lseek(_Lfd_9, 0, SEEK_END);
+if(_Lsize_10 == -1) {
+_NPosix_NFd_Pclose_1(_Lfd_9);
 return NULL;
 }
-if(lseek(_Lfd_8, 0, SEEK_SET) == -1) {
-_NPosix_NFd_Pclose_1(_Lfd_8);
+if(lseek(_Lfd_9, 0, SEEK_SET) == -1) {
+_NPosix_NFd_Pclose_1(_Lfd_9);
 return NULL;
 }
-_NLibC_Pmalloc_arr_2(_Lbuf_10, _Lsize_9 + _Ladd_len_1);
-if(read(_Lfd_8, _Lbuf_10, _Lsize_9) != _Lsize_9) {
-free(_Lbuf_10);
-_NPosix_NFd_Pclose_1(_Lfd_8);
+_NLibC_Pmalloc_arr_2(_Lbuf_11, _Ladd_before_1 + _Lsize_10 + _Ladd_after_2);
+if(read(_Lfd_9, &_Lbuf_11[_Ladd_before_1], _Lsize_10) != _Lsize_10) {
+free(_Lbuf_11);
+_NPosix_NFd_Pclose_1(_Lfd_9);
 return NULL;
 }
-_NPosix_NFd_Pclose_1(_Lfd_8);
-(*_Lout_size_2) = _Lsize_9;
-return _Lbuf_10;
+_NPosix_NFd_Pclose_1(_Lfd_9);
+(*_Lout_size_3) = _Lsize_10;
+return _Lbuf_11;
 }
 #endif
 }

@@ -775,11 +775,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .input-path = arg-v[1];
    // C1.stdout<"reading " .input-path ''\n>;
    var in-data:u8[];
-   in-data = read-file(.input-path, 2, +in-size);
+   in-data = read-file(.input-path, 1, 2, +in-size);
    if in-data == null {
       C1.stdout<"Cannot open file for reading: " .input-path ''\n>;
       C.exit(#failure);
    }
+   in-data[0] = ''\n;
+   in-data = &in-data[1];
    +lock-path = arg-v[2];
    // .lock-path = lock-path;
    // if true {
@@ -836,9 +838,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             C.exit(#failure);
          } elif r.p1[0] == ''/ {
             if r.p1[1] == ''/ {
-               if r.reff == in-data {
-                  // ok
-               } elif (||, r.p1[-1] == '' , r.p1[-1] == ''\n) {
+               if (||, r.p1[-1] == '' , r.p1[-1] == ''\n) {
                   // ok
                } else {
                   get-row-col(+row, +col, r.reff, in-data);
@@ -1066,7 +1066,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          r.pos++;
       }
       w.p1[0] = ''\0;
-      C.free(in-data);
+      C.free(&in-data[-1]);
       in-data = new-data;
       var w-begin:Wtr+;
       w-begin.reff = new-data;

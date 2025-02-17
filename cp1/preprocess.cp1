@@ -73,7 +73,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    }
    .input-path = arg-v[i];
    var in-data:char[];
-   in-data = read-file(arg-v[i], 0, +in-size);
+   in-data = read-file(arg-v[i], +in-size);
    if in-data == null {
       C1.stdout<"Cannot open file for reading: " arg-v[i + 1] ''\n>;
       C.exit(#failure);

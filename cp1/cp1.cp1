@@ -134,7 +134,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
       }
    }
    var data:char[];
-   data = Cp1.read-file(cp1-path, 0, +len);
+   data = Cp1.read-file(cp1-path, +len);
    if data == null {
       C1.stdout<"Error, [cp1 file] (which is '" cp1-path "') cannot be opened for reading\n">;
       return false;
@@ -203,7 +203,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
       atexit-rm(tmp-path-dup);
       cp1-path-add(tmp-path-dup, 16, cp1-path, cp1-path-len);
 
-      data = Cp1.read-file(tmp-path-dup, 0, len);
+      data = Cp1.read-file(tmp-path-dup, len);
       if data == null {
          C1.stdout<"Error, cannot open file for reading: " tmp-path ''\n>;
          return false;
@@ -371,7 +371,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                   }
                }
                var spec-data:char[];
-               spec-data = Cp1.read-file(spec-path, 0, +spec-len);
+               spec-data = Cp1.read-file(spec-path, +spec-len);
                if spec-data == null {
                   C1.stdout<cp1-path '': line ": #include <" path "> failed because '" spec-path "' does not exists\n">;
                   return false;

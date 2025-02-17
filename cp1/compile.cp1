@@ -74,7 +74,7 @@ id-add(id-len:u8, id-str:char[]):Id {
 read(in-path:char[]) {
    // C1.stdout<"reading " in-path " -------------------\n">;
    var r-begin:Rdr+;
-   r-begin.reff = read-file(in-path, 0, +in-size);
+   r-begin.reff = read-file(in-path, +in-size);
    if r-begin.reff == null {
       C1.stdout<"Cannot open file for reading: " in-path ''\n>;
       C.exit(#failure);
