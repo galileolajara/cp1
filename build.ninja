@@ -6,12 +6,12 @@ rule ld-c
 
 build out/parse.cp1.c.o: c parse.cp1.c
 build out/parse.c.o: c parse.c | export.h lex.c cp1_parse.c
-#build bin/cp1-preprocess: ld-c preprocess.cp1.c
-#build bin/cp1-parse: ld-c out/parse.cp1.c.o out/parse.c.o out/hashtable.c.o
+build bin/cp1-preprocess: ld-c preprocess.cp1.c
+build bin/cp1-parse: ld-c out/parse.cp1.c.o out/parse.c.o out/hashtable.c.o
 build out/compile.cp1.c.o: c compile.cp1.c
 build out/str.c.o: c str.c
-#build bin/cp1-compile: ld-c out/compile.cp1.c.o out/str.c.o out/hashtable.c.o
-#build bin/cp1: ld-c cp1.cp1.c
+build bin/cp1-compile: ld-c out/compile.cp1.c.o out/str.c.o out/hashtable.c.o
+build bin/cp1: ld-c cp1.cp1.c
 
 rule c2
  command = clang $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
