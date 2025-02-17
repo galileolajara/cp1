@@ -1,4 +1,5 @@
 using C = LibC;
+using C1 = LibCp1;
 using X = Posix;
 using Cp1 = Cp1;
 var atexit-rm-v:char[][];
@@ -9,17 +10,17 @@ var include-dir-len:u16;
 // +include-dir = "/opt/cp1/include";
 // +include-dir-len = C.strlen(include-dir);
 print-commands(bin:char[]) {
-   C<stdout
+   C1<stdout
    "Usage: " bin " [command] [options]\n" $
    "Commands:\n" $
    "  c     Build a C file.\n" $
    "  run      Compile and run the cp1 codes.\n">;
 }
 print-c-usage(bin:char[]) {
-   C<stdout "Usage: " bin " c [output.c] [cp1 file/s...]\n">;
+   C1<stdout "Usage: " bin " c [output.c] [cp1 file/s...]\n">;
 }
 print-run-usage(bin:char[]) {
-   C<stdout "Usage: " bin " run [cp1 file/s...]\n">;
+   C1<stdout "Usage: " bin " run [cp1 file/s...]\n">;
 }
 get-compile(bin:char[]) {
    +path = C.strdup(C.getenv("PATH"));
@@ -39,7 +40,7 @@ get-compile(bin:char[]) {
    found = C.strtok(path, ":");
    "#endif";
    loop found != null {
-      // C<stdout "- " found ''\n>;
+      // C1<stdout "- " found ''\n>;
       var fd, compile:char[512];
       "#ifdef _WIN32";
       C.sprintf(compile, "%s/tcc.exe", found);
@@ -86,7 +87,7 @@ get-compile(bin:char[]) {
       found = C.strtok(null, ":");
       "#endif";
    }
-   C<stdout "Cannot execute '" bin " run' because the required compile was not found: tcc clang or gcc\n">;
+   C1<stdout "Cannot execute '" bin " run' because the required compile was not found: tcc clang or gcc\n">;
    C.exit(#failure);
 }
 enum Cmd[#c, #run]:u8;
@@ -111,7 +112,7 @@ var cp1-path-real-len-v:u32[];
 var cp1-path-cap:i32;
 var cp1-path-c:i32;
 cp1-path-add(cp1-path-real:char[], cp1-path-real-len:i32, cp1-path:char[], cp1-path-len:i32) {
-   // C<stdout "adding " cp1-path-real " as " cp1-path ''\n>;
+   // C1<stdout "adding " cp1-path-real " as " cp1-path ''\n>;
    +i = .cp1-path-c++;
    if .cp1-path-cap < .cp1-path-c {
       .cp1-path-cap = (.cp1-path-cap << 1) + 8;
@@ -135,15 +136,15 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
    var data:char[];
    data = Cp1.read-file(cp1-path, 0, +len);
    if data == null {
-      C<stdout "Error, [cp1 file] (which is '" cp1-path "') cannot be opened for reading\n">;
+      C1<stdout "Error, [cp1 file] (which is '" cp1-path "') cannot be opened for reading\n">;
       return false;
    }
    if !(&&, len > 0, data[len - 1] == ''\n) {
-      C<stdout "Error, [cp1 file] (which is '" cp1-path "') must end a new line\n">;
+      C1<stdout "Error, [cp1 file] (which is '" cp1-path "') must end a new line\n">;
       return false;
    }
    if data[len - 2] == ''\r {
-      C<stdout "Error, [cp1 file] (which is '" cp1-path "') must have Unix line endings '\\n' instead of Windows line endings '\\r\\n'\n">;
+      C1<stdout "Error, [cp1 file] (which is '" cp1-path "') must have Unix line endings '\\n' instead of Windows line endings '\\r\\n'\n">;
       return false;
    }
    // Detect if we need to preprocess the file
@@ -158,7 +159,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
             break;
          }
          if data[pos] == ''\t {
-            C<stdout cp1-path '': line '': (pos - start) + 1 ": Error, use of tabs is discouraged, please use spaces instead\n">;
+            C1<stdout cp1-path '': line '': (pos - start) + 1 ": Error, use of tabs is discouraged, please use spaces instead\n">;
             C.exit(#failure);
          }
          pos++;
@@ -186,13 +187,13 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
       C.memcpy(tmp-path, "cp1-tmp-XXXXXXXX", 17);
       +tmp-fd = X.mkstemp(tmp-path);
       if tmp-fd == #nil {
-         C<stdout "Error, cannot create a temporary file at the current folder\n">;
+         C1<stdout "Error, cannot create a temporary file at the current folder\n">;
          return false;
       }
       tmp-fd.close();
 
       C.sprintf(.cmd-preprocess, "%s-preprocess %.*s %s\n", bin, cp1-path-len, cp1-path, tmp-path);
-      // C<stdout "Running preprocessor: " .cmd-preprocess ''\n>;
+      // C1<stdout "Running preprocessor: " .cmd-preprocess ''\n>;
       C.out.flush();
       if C.system(.cmd-preprocess) != 0 {
          return false;
@@ -204,7 +205,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
 
       data = Cp1.read-file(tmp-path-dup, 0, len);
       if data == null {
-         C<stdout "Error, cannot open file for reading: " tmp-path ''\n>;
+         C1<stdout "Error, cannot open file for reading: " tmp-path ''\n>;
          return false;
       }
    } else {
@@ -249,7 +250,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
             } elif data[j] == ''  {
                // Ok
             } else {
-               C<stdout cp1-path '': line ": Invalid character '" data[j] "' found in #include <...>\n">;
+               C1<stdout cp1-path '': line ": Invalid character '" data[j] "' found in #include <...>\n">;
                return false;
             }
          }
@@ -263,28 +264,28 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                }
             }
             if end == -1 {
-               C<stdout cp1-path '': line ": #import \"...\" must end with '\"'\n">;
+               C1<stdout cp1-path '': line ": #import \"...\" must end with '\"'\n">;
                return false;
             }
             var import:char[] = &data[start];
             +import-path-len = end - start;
             if (&&, import-path-len >= 4, import[import-path-len - 4] == ''., import[import-path-len - 3] == ''c, import[import-path-len - 2] == ''p, import[import-path-len - 1] == ''1) {
-               C<stdout cp1-path '': line ": #import \"" import, import-path-len "\" doesn't need a '.cp1' suffix\n">;
+               C1<stdout cp1-path '': line ": #import \"" import, import-path-len "\" doesn't need a '.cp1' suffix\n">;
                return false;
             }
             if import[0] == ''/ {
-               C<stdout cp1-path '': line ": #import \"" import, import-path-len "\" must be a relative path, '/' was detected at the beginning of file path\n">;
+               C1<stdout cp1-path '': line ": #import \"" import, import-path-len "\" must be a relative path, '/' was detected at the beginning of file path\n">;
                return false;
             }
             loop j = 0; import-path-len; j++ {
                if import[j] == ''\\ {
-                  C<stdout cp1-path '': line ": #import \"" import, import-path-len "\" must not contain backslashes '\\', please use forward slashes '/' instead\n">;
+                  C1<stdout cp1-path '': line ": #import \"" import, import-path-len "\" must not contain backslashes '\\', please use forward slashes '/' instead\n">;
                   return false;
                }
             }
             loop j = 0; import-path-len - 1; j++ {
                if (&&, import[j] == ''., import[j + 1] == ''/) {
-                  C<stdout cp1-path '': line ": #import \"" import, import-path-len "\" must not contain './'\n">;
+                  C1<stdout cp1-path '': line ": #import \"" import, import-path-len "\" must not contain './'\n">;
                   return false;
                }
             }
@@ -295,9 +296,9 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
             import-path[import-path-len++] = ''p;
             import-path[import-path-len++] = ''1;
             import-path[import-path-len] = ''\0;
-            // C<stdout "importing " import-path ''\n>;
+            // C1<stdout "importing " import-path ''\n>;
             if !cp1-path-input(import-path, import-path-len, bin, cmd) {
-               C<stdout "Error from #import \"" import, import-path-len - 4 "\" at file '" cp1-path "' line " line ''\n>;
+               C1<stdout "Error from #import \"" import, import-path-len - 4 "\" at file '" cp1-path "' line " line ''\n>;
                return false;
             }
          }
@@ -323,7 +324,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
             } elif data[j] == ''  {
                // Ok
             } else {
-               C<stdout cp1-path '': line ": Invalid character '" data[j] "' found in #include <...>\n">;
+               C1<stdout cp1-path '': line ": Invalid character '" data[j] "' found in #include <...>\n">;
                return false;
             }
          }
@@ -337,7 +338,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                }
             }
             if end == -1 {
-               C<stdout cp1-path '': line ": #include <...> must end with '>'\n">;
+               C1<stdout cp1-path '': line ": #include <...> must end with '>'\n">;
                return false;
             }
             var include-path:char[] = &data[start];
@@ -361,7 +362,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                path[include-path-len] = ''\0;
                .included-v[i] = path;
                .included-len-v[i] = include-path-len;
-               // C<stdout "including " include-path, include-path-len ''\n>;
+               // C1<stdout "including " include-path, include-path-len ''\n>;
                var spec-path:char[128];
                C.sprintf(spec-path, "%s/%s", .include-dir, path);
                loop i = .include-dir-len + 1; C.strlen(spec-path) - (.include-dir-len + 1); i++ {
@@ -372,10 +373,10 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                var spec-data:char[];
                spec-data = Cp1.read-file(spec-path, 0, +spec-len);
                if spec-data == null {
-                  C<stdout cp1-path '': line ": #include <" path "> failed because '" spec-path "' does not exists\n">;
+                  C1<stdout cp1-path '': line ": #include <" path "> failed because '" spec-path "' does not exists\n">;
                   return false;
                }
-               // C<stdout "reading " spec-path ''\n>;
+               // C1<stdout "reading " spec-path ''\n>;
                +spec-pos = 0;
                +spec-line = 0;
                loop spec-pos < spec-len {
@@ -400,7 +401,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                               file-path-dup[file-path-len] = ''\0;
                               var real-path:char[] = C.malloc(.include-dir-len + 1 + file-path-len + 1);
                               C.sprintf(real-path, "%s/%.*s", .include-dir, file-path-len, file-path);
-                              // C<stdout ''[ file-path, file-path-len "] -> "; real-path; ''\n>;
+                              // C1<stdout ''[ file-path, file-path-len "] -> "; real-path; ''\n>;
                               +real-path-len = C.strlen(real-path);
                               cp1-path-add(real-path, real-path-len, file-path-dup, file-path-len);
                            }
@@ -423,10 +424,10 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
             break;
          }
          if (&&, data[i] == ''/, data[i + 1] == ''/) {
-            // C<stdout "comment detected\n">;
+            // C1<stdout "comment detected\n">;
             break;
          } else {
-            // C<stdout "character detected, stop\n">;
+            // C1<stdout "character detected, stop\n">;
             "goto stop;";
          }
          i++;
@@ -442,7 +443,7 @@ validate-cp1-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:Cmd):bo
       +cp1-path = arg-v[i];
       if cp1-path[0] == ''/ {
          print-usage(bin, cmd);
-         C<stdout "Error, [cp1 file] (which is '" cp1-path "') must be a relative filepath (e.g. file.cp1), not an absolute path (/home/user/file.cp1)\n">;
+         C1<stdout "Error, [cp1 file] (which is '" cp1-path "') must be a relative filepath (e.g. file.cp1), not an absolute path (/home/user/file.cp1)\n">;
          C.exit(#failure);
       }
       +cp1-path-len = C.strlen(cp1-path);
@@ -453,27 +454,27 @@ validate-cp1-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:Cmd):bo
       loop j = 0; cp1-path-len; j++ {
          if cp1-path[j] == ''\\ {
             print-usage(bin, cmd);
-            C<stdout "Error, [cp1 file] (which is '" cp1-path "') must not contain backslashes '\\', please use forward slashes '/' instead\n">;
+            C1<stdout "Error, [cp1 file] (which is '" cp1-path "') must not contain backslashes '\\', please use forward slashes '/' instead\n">;
             C.exit(#failure);
          }
       }
       loop j = 0; cp1-path-len - 1; j++ {
          if (&&, cp1-path[j] == ''., cp1-path[j + 1] == ''/) {
             print-usage(bin, cmd);
-            C<stdout "Error, [cp1 file] (which is '" cp1-path "') must not contain './'\n">;
+            C1<stdout "Error, [cp1 file] (which is '" cp1-path "') must not contain './'\n">;
             C.exit(#failure);
          }
       }
       // loop j = 0; cp1-path-len - 1; j++ {
       //    if (&&, cp1-path[j] == ''., cp1-path[j + 1] == ''/) {
       //       print-usage(bin, cmd);
-      //       C<stdout "Error, [cp1 file] (which is '" cp1-path "') must not contain './'\n">;
+      //       C1<stdout "Error, [cp1 file] (which is '" cp1-path "') must not contain './'\n">;
       //       C.exit(#failure);
       //    }
       // }
       if !(&&, cp1-path-len > 4, cp1-path[cp1-path-len - 4] == ''., cp1-path[cp1-path-len - 3] == ''c, cp1-path[cp1-path-len - 2] == ''p, cp1-path[cp1-path-len - 1] == ''1) {
          print-usage(bin, cmd);
-         C<stdout "Error, [cp1 file] (which is '" cp1-path "') must be a filename that ends with '.cp1', for example: main.cp1\n">;
+         C1<stdout "Error, [cp1 file] (which is '" cp1-path "') must be a filename that ends with '.cp1', for example: main.cp1\n">;
          C.exit(#failure);
       }
       if !cp1-path-input(cp1-path, cp1-path-len, bin, cmd) {
@@ -484,11 +485,11 @@ validate-cp1-paths(start:i32, arg-c:i32, arg-v:char[][], bin:char[], cmd:Cmd):bo
    return true;
 }
 print-command(arg-c:i32, arg-v:char[][]) {
-   C<stdout "Command was:">;
+   C1<stdout "Command was:">;
    loop i = 0; arg-c; i++ {
-      C<stdout ''  arg-v[i] "">;
+      C1<stdout ''  arg-v[i] "">;
    }
-   C<stdout ''\n>;
+   C1<stdout ''\n>;
 }
 atexit-rm(path:char[]) {
    +i = .atexit-rm-c++;
@@ -500,7 +501,7 @@ atexit-rm(path:char[]) {
 }
 on-exit() {
    loop i = 0; .atexit-rm-c; i++ {
-      // C<stdout "Removing " .atexit-rm-v[i] ''\n>;
+      // C1<stdout "Removing " .atexit-rm-v[i] ''\n>;
       X.unlink(.atexit-rm-v[i]);
    }
 }
@@ -575,7 +576,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
             found = C.strtok(null, ":");
          }
          if fd == #nil {
-            C<stdout "Cannot run " bin " because we can't detect its absolute path\n">;
+            C1<stdout "Cannot run " bin " because we can't detect its absolute path\n">;
             C.exit(#failure);
          }
          C.free(path);
@@ -585,7 +586,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
    slash1[0] = ''\0;
    +slash2 = C.strrchr(abs-path, ''/);
    slash2[0] = ''\0;
-   // C<stdout "absolute path of the " bin " binary is " abs-path ''\n>;
+   // C1<stdout "absolute path of the " bin " binary is " abs-path ''\n>;
    C.sprintf(.include-dir, "%s/include", abs-path);
    slash1[0] = ''/;
    slash2[0] = ''/;
@@ -606,7 +607,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       +c-path-len = C.strlen(c-path);
       if !(&&, c-path-len > 2, c-path[c-path-len - 2] == ''., c-path[c-path-len - 1] == ''c) {
          print-c-usage(bin);
-         C<stdout "Error, [output.c] (which is '" c-path "') must be a filename that ends with '.c', for example: main.c\n">;
+         C1<stdout "Error, [output.c] (which is '" c-path "') must be a filename that ends with '.c', for example: main.c\n">;
          C.exit(#failure);
       }
       if !validate-cp1-paths(3, arg-c, arg-v, bin, #c) {
@@ -624,7 +625,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       atexit-rm(C.strdup(ninja-path));
       if ninja-fd == #nil {
          print-c-usage(bin);
-         C<stdout "Error, cannot open file for reading: " ninja-path ''\n>;
+         C1<stdout "Error, cannot open file for reading: " ninja-path ''\n>;
          C.exit(#failure);
       }
       // +ninja-f = ninja-fd.fopen("wb");
@@ -684,7 +685,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       +c-fd = X.mkstemp(c-path);
       if c-fd == #nil {
          print-run-usage(bin);
-         C<stdout "Error, cannot open file for reading: " c-path ''\n>;
+         C1<stdout "Error, cannot open file for reading: " c-path ''\n>;
          C.exit(#failure);
       }
       c-fd.close();
@@ -694,7 +695,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       +exe-fd = X.mkstemp(exe-path);
       if exe-fd == #nil {
          print-run-usage(bin);
-         C<stdout "Error, cannot open file for reading: " exe-path ''\n>;
+         C1<stdout "Error, cannot open file for reading: " exe-path ''\n>;
          C.exit(#failure);
       }
       exe-fd.close();
@@ -709,7 +710,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       atexit-rm(C.strdup(ninja-path));
       if ninja-fd == #nil {
          print-run-usage(bin);
-         C<stdout "Error, cannot open file for reading: " ninja-path ''\n>;
+         C1<stdout "Error, cannot open file for reading: " ninja-path ''\n>;
          C.exit(#failure);
       }
       // +ninja-f = ninja-fd.fopen("wb");

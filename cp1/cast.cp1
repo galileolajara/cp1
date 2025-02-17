@@ -1,5 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
+using C1 = LibCp1;
 using Cp1 {
 expr-cast-fast(expr:ExprI, type:At):ExprI {
    quick-alloc-one(+(e:ExprCastFast));
@@ -47,7 +48,7 @@ using ExprI {
       if e.type == #nil {
          +at = e.val.type.ptr();
          if at.def != #enum {
-            C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Operator ':base' was used but the type of expression was not an enum\n">;
+            C1<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Operator ':base' was used but the type of expression was not an enum\n">;
             return;
          }
          e.type = at.decl.enumm.ptr().base-type;

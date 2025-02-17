@@ -1,5 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
+using C1 = LibCp1;
 using Cp1 {
 enum ExprInt[#i32, #u32, #f32, #oct, #hex, #u64]:u8;
 expr-int(value:i32, type:ExprInt):ExprI {

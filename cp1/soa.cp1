@@ -1,5 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
+using C1 = LibCp1;
 using Cp1 {
 expr-soa-field(expr:ExprI, group:Id, field:Id):ExprI {
    quick-alloc-one(+(e:ExprSoaField));
@@ -39,12 +40,12 @@ using ExprI {
       var e:ExprSoaField = expr;
       +type-i = e.expr.type();
       if type-i == #nil {
-         C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " from an expression of unknown type\n">;
+         C1<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " from an expression of unknown type\n">;
          return;
       }
       +type = type-i.ptr();
       if type.def != #enum {
-         C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " because its type is not an enum\n">;
+         C1<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " because its type is not an enum\n">;
          return;
       }
       +enumm = type.decl.enumm;
@@ -59,7 +60,7 @@ using ExprI {
          process-index(index-e-idx.ptr(), ok);
          e.expr2 = index-e-idx;
       } else {
-         C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " because the enum has no @soa-field attribute\n">;
+         C1<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " because the enum has no @soa-field attribute\n">;
          return;
       }
    }

@@ -71,11 +71,11 @@ decl-at-begin-enum(name:Id, row:u32, col:u32) {
    .decl-enum-at = .build-at;
    .decl-enum-flags = #0;
    .decl-enum-last-cvar = #nil;
-   // C<stdout "began enum at:\n">;
+   // C1<stdout "began enum at:\n">;
    // +at-i = .build-at;
    // loop {
    //    +at = at-i.ptr();
-   //    C<stdout "- " at.name.id ''\n>;
+   //    C1<stdout "- " at.name.id ''\n>;
    //    at-i = at.parent;
    //    if at-i == #root { break }
    // }
@@ -123,11 +123,11 @@ decl-enum-end(base-type:At, row:u32, col:u32) {
    .decl-enum-last-cvar = #nil;
    // s.name = .decl-enum-name;
    // s.evar-c = .decl-evar-c;
-   // C<stdout "There are " s.evar-c " evars\n">;
+   // C1<stdout "There are " s.evar-c " evars\n">;
    // loop i = 0; .decl-evar-c; i ++ {
    //    +a = s.evar-v[i];
    //    a.decl.copy-from(.decl-evar-v[i]);
-   //    // C<stdout "- " a.name ''\n>;
+   //    // C1<stdout "- " a.name ''\n>;
    // }
 }
 var last-cvar:Cvar;

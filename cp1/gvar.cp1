@@ -1,5 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
+using C1 = LibCp1;
 using Cp1 {
 enum GvarFlags[#0, #no-decl = 1]:u8;
 enum Gvar[#nil = -1, #0]:i32 {
@@ -91,7 +92,7 @@ using ExprI {
          if at-idx == #root { break }
          at-idx = at.parent;
       }
-      C<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find gvar '." name "'\n">;
+      C1<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find gvar '." name "'\n">;
       C.exit(#failure);
    }
    write-gvar(expr:Expr) @case.write() @inline {

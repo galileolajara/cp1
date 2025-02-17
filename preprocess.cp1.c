@@ -2,7 +2,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include "file.cp1.h"
 #include <fcntl.h>
@@ -20,8 +19,8 @@ typedef uint32_t _NWindows_NCreateFileFlags;
 typedef int _NPosix_NFd;
 typedef int _NPosix_NOpenFlags;
 typedef int _NPosix_NSeek;
-struct _NLibC_NStdOut;
-struct _NLibC_NStdOut {
+struct _NLibCp1_NStdOut;
+struct _NLibCp1_NStdOut {
 };
 union _NCp1_NRdr;
 union _NCp1_NRdr {
@@ -47,33 +46,33 @@ char* _Gstdout_buf_data;
 uint32_t _Gstdout_buf_len;
 uint32_t _Gstdout_buf_cap;
 int main(int _Larg_c_0, char** _Larg_v_1);
-void _NLibC_Pstdout_1(struct _NLibC_NStdOut* _Lso_0);
-void _NLibC_NStdOut_Pstdout_cstr_3(struct _NLibC_NStdOut* _Lso_0, char* _Lstr_1, uint32_t _Llen_2);
-void _Tchar_Pstdout_arr_2(char* _Lstr_0, struct _NLibC_NStdOut* _Lso_1);
-void _NLibC_NStdOut_Pstdout_end_1(struct _NLibC_NStdOut* _Lso_0);
-void _Tchar_Pstdout_2(char _Lval_0, struct _NLibC_NStdOut* _Lso_1);
+void _NLibCp1_Pstdout_1(struct _NLibCp1_NStdOut* _Lso_0);
+void _NLibCp1_NStdOut_Pstdout_cstr_3(struct _NLibCp1_NStdOut* _Lso_0, char* _Lstr_1, uint32_t _Llen_2);
+void _Tchar_Pstdout_arr_2(char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1);
+void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_0);
+void _Tchar_Pstdout_2(char _Lval_0, struct _NLibCp1_NStdOut* _Lso_1);
 void _NCp1_Ppreprocess_def_2(char* _Lname_0, uint8_t _Llen_1);
 void* _NCp1_Pread_file_3(char* _Lpath_0, int32_t _Ladd_len_1, size_t* _Lout_size_2);
 void _NCp1_Ppreprocess_init_0();
 void _NCp1_Ppreprocess_2(void** _Lin_out_data_0, size_t* _Lin_out_size_1);
 bool _NCp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
-void _NLibC_Pstdout_bytes_2(void* _Ldata_0, size_t _Lsize_1);
-void _NLibC_Pstdout_cstr_1(char* _Lstr_0);
-void _NLibC_Pstdout_flush_0();
-void _NLibC_Pstdout_char_1(char _Lval_0);
+void _NLibCp1_Pstdout_bytes_2(void* _Ldata_0, size_t _Lsize_1);
+void _NLibCp1_Pstdout_cstr_1(char* _Lstr_0);
+void _NLibCp1_Pstdout_flush_0();
+void _NLibCp1_Pstdout_char_1(char _Lval_0);
 #define _NLibC_Pmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))
 bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2);
 int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0);
-void _Tu32_Pstdout_2(uint32_t _Lval_0, struct _NLibC_NStdOut* _Lso_1);
+void _Tu32_Pstdout_2(uint32_t _Lval_0, struct _NLibCp1_NStdOut* _Lso_1);
 bool _NCp1_Ppreprocess_def_get_2(char* _Lname_0, uint8_t _Llen_1);
 bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3);
-void _NLibC_Pstdout_reserve_1(uint32_t _Llen_0);
+void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
 #ifdef _WIN32
 #define _NPosix_Popen_2(p, f) open(p, f | O_BINARY)
 #else
 #define _NPosix_Popen_2(p, f) open(p, f)
 #endif
-void _NLibC_Pstdout_u32_1(uint32_t _Lval_0);
+void _NLibCp1_Pstdout_u32_1(uint32_t _Lval_0);
 #ifdef _WIN32
 #define _NPosix_Popen_3(p, f, m) open(p, f | O_BINARY, m)
 #else
@@ -85,15 +84,15 @@ int32_t _Li_3;
 char* _Lin_data_13;
 size_t _Lin_size_14;
 if(_Larg_c_0 < 3) {
-struct _NLibC_NStdOut _L_2;
+struct _NLibCp1_NStdOut _L_2;
 usage:
-_NLibC_Pstdout_1(&_L_2);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_2, "Usage: ", 7u);
+_NLibCp1_Pstdout_1(&_L_2);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_2, "Usage: ", 7u);
 _Tchar_Pstdout_arr_2(_Larg_v_1[0], &_L_2);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_2, " [options] [.cp1 input file] [.cp1 output file]\n"
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_2, " [options] [.cp1 input file] [.cp1 output file]\n"
 "Options:\n"
 " -Ddefinename     Define a name that will yield true on #if(...) preprocessor\n", 135u);
-_NLibC_NStdOut_Pstdout_end_1(&_L_2);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_2);
 exit(_NLibC_NExit_Cfailure);
 }
 _Li_3 = 1;
@@ -113,40 +112,40 @@ if(((_Lname_4[_Llen_5] >= 'a') && (_Lname_4[_Llen_5] <= 'z'))) {
 } else if(((_Lname_4[_Llen_5] >= 'A') && (_Lname_4[_Llen_5] <= 'Z'))) {
 } else if(((_Lname_4[_Llen_5] >= '0') && (_Lname_4[_Llen_5] <= '9'))) {
 if(_Llen_5 == 0) {
-struct _NLibC_NStdOut _L_6;
-_NLibC_Pstdout_1(&_L_6);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_6, "Error, in option -Ddefinename, definename cannot begin with a number\n", 69u);
-_NLibC_NStdOut_Pstdout_end_1(&_L_6);
+struct _NLibCp1_NStdOut _L_6;
+_NLibCp1_Pstdout_1(&_L_6);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_6, "Error, in option -Ddefinename, definename cannot begin with a number\n", 69u);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_6);
 goto usage;
 }
 } else if(_Lname_4[_Llen_5] == '_') {
 } else if(_Lname_4[_Llen_5] == '-') {
 if(_Llen_5 == 0) {
-struct _NLibC_NStdOut _L_7;
-_NLibC_Pstdout_1(&_L_7);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_7, "Error, in option -Ddefinename (which is ", 40u);
+struct _NLibCp1_NStdOut _L_7;
+_NLibCp1_Pstdout_1(&_L_7);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_7, "Error, in option -Ddefinename (which is ", 40u);
 _Tchar_Pstdout_arr_2(_Larg_v_1[_Li_3], &_L_7);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_7, "), definename' cannot begin with a dash\n", 40u);
-_NLibC_NStdOut_Pstdout_end_1(&_L_7);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_7, "), definename' cannot begin with a dash\n", 40u);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_7);
 goto usage;
 } else if(_Lname_4[(_Llen_5 - 1)] == '-') {
-struct _NLibC_NStdOut _L_8;
-_NLibC_Pstdout_1(&_L_8);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_8, "Error, in option -Ddefinename (which is ", 40u);
+struct _NLibCp1_NStdOut _L_8;
+_NLibCp1_Pstdout_1(&_L_8);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_8, "Error, in option -Ddefinename (which is ", 40u);
 _Tchar_Pstdout_arr_2(_Larg_v_1[_Li_3], &_L_8);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_8, "), definename' cannot contain consecutive a dashes\n", 51u);
-_NLibC_NStdOut_Pstdout_end_1(&_L_8);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_8, "), definename' cannot contain consecutive a dashes\n", 51u);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_8);
 goto usage;
 }
 } else {
-struct _NLibC_NStdOut _L_9;
-_NLibC_Pstdout_1(&_L_9);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_9, "Error, in option -Ddefinename (which is ", 40u);
+struct _NLibCp1_NStdOut _L_9;
+_NLibCp1_Pstdout_1(&_L_9);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_9, "Error, in option -Ddefinename (which is ", 40u);
 _Tchar_Pstdout_arr_2(_Larg_v_1[_Li_3], &_L_9);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_9, "), invalid character '", 22u);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_9, "), invalid character '", 22u);
 _Tchar_Pstdout_2(_Lname_4[_Llen_5], &_L_9);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_9, "' was detected in definename'\n", 30u);
-_NLibC_NStdOut_Pstdout_end_1(&_L_9);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_9, "' was detected in definename'\n", 30u);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_9);
 goto usage;
 }
 _Llen_5++;
@@ -154,31 +153,31 @@ continue_1:;
 }
 break_1:;
 if(_Llen_5 == 0) {
-struct _NLibC_NStdOut _L_10;
-_NLibC_Pstdout_1(&_L_10);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_10, "Error, in option -Ddefinename (which is ", 40u);
+struct _NLibCp1_NStdOut _L_10;
+_NLibCp1_Pstdout_1(&_L_10);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_10, "Error, in option -Ddefinename (which is ", 40u);
 _Tchar_Pstdout_arr_2(_Larg_v_1[_Li_3], &_L_10);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_10, "), Definename' cannot be blank\n", 31u);
-_NLibC_NStdOut_Pstdout_end_1(&_L_10);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_10, "), Definename' cannot be blank\n", 31u);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_10);
 goto usage;
 }
 if(_Lname_4[(_Llen_5 - 1)] == '-') {
-struct _NLibC_NStdOut _L_11;
-_NLibC_Pstdout_1(&_L_11);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_11, "Error, in option -Ddefinename (which is ", 40u);
+struct _NLibCp1_NStdOut _L_11;
+_NLibCp1_Pstdout_1(&_L_11);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_11, "Error, in option -Ddefinename (which is ", 40u);
 _Tchar_Pstdout_arr_2(_Larg_v_1[_Li_3], &_L_11);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_11, "), Definename' cannot end with a dash\n", 38u);
-_NLibC_NStdOut_Pstdout_end_1(&_L_11);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_11, "), Definename' cannot end with a dash\n", 38u);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_11);
 goto usage;
 }
 _NCp1_Ppreprocess_def_2(_Lname_4, _Llen_5);
 } else {
-struct _NLibC_NStdOut _L_12;
-_NLibC_Pstdout_1(&_L_12);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_12, "Error, invalid option '", 23u);
+struct _NLibCp1_NStdOut _L_12;
+_NLibCp1_Pstdout_1(&_L_12);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_12, "Error, invalid option '", 23u);
 _Tchar_Pstdout_2(_Larg_v_1[_Li_3][1], &_L_12);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_12, "'\n", 2u);
-_NLibC_NStdOut_Pstdout_end_1(&_L_12);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_12, "'\n", 2u);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_12);
 goto usage;
 }
 } else {
@@ -194,40 +193,40 @@ goto usage;
 _Ginput_path = _Larg_v_1[_Li_3];
 _Lin_data_13 = _NCp1_Pread_file_3(_Larg_v_1[_Li_3], 0, &_Lin_size_14);
 if(_Lin_data_13 == NULL) {
-struct _NLibC_NStdOut _L_15;
-_NLibC_Pstdout_1(&_L_15);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_15, "Cannot open file for reading: ", 30u);
+struct _NLibCp1_NStdOut _L_15;
+_NLibCp1_Pstdout_1(&_L_15);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_15, "Cannot open file for reading: ", 30u);
 _Tchar_Pstdout_arr_2(_Larg_v_1[(_Li_3 + 1)], &_L_15);
 _Tchar_Pstdout_2('\n', &_L_15);
-_NLibC_NStdOut_Pstdout_end_1(&_L_15);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_15);
 exit(_NLibC_NExit_Cfailure);
 }
 _NCp1_Ppreprocess_init_0();
 _NCp1_Ppreprocess_2(&_Lin_data_13, &_Lin_size_14);
 if(!_NCp1_Pwrite_file_3(_Larg_v_1[(_Li_3 + 1)], _Lin_data_13, _Lin_size_14)) {
-struct _NLibC_NStdOut _L_16;
-_NLibC_Pstdout_1(&_L_16);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_16, "Cannot open file for writing: ", 30u);
+struct _NLibCp1_NStdOut _L_16;
+_NLibCp1_Pstdout_1(&_L_16);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_16, "Cannot open file for writing: ", 30u);
 _Tchar_Pstdout_arr_2(_Larg_v_1[(_Li_3 + 1)], &_L_16);
 _Tchar_Pstdout_2('\n', &_L_16);
-_NLibC_NStdOut_Pstdout_end_1(&_L_16);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_16);
 exit(_NLibC_NExit_Cfailure);
 }
 return 0;
 }
-inline void _NLibC_Pstdout_1(struct _NLibC_NStdOut* _Lso_0) {
+inline void _NLibCp1_Pstdout_1(struct _NLibCp1_NStdOut* _Lso_0) {
 }
-inline void _NLibC_NStdOut_Pstdout_cstr_3(struct _NLibC_NStdOut* _Lso_0, char* _Lstr_1, uint32_t _Llen_2) {
-_NLibC_Pstdout_bytes_2(_Lstr_1, _Llen_2);
+inline void _NLibCp1_NStdOut_Pstdout_cstr_3(struct _NLibCp1_NStdOut* _Lso_0, char* _Lstr_1, uint32_t _Llen_2) {
+_NLibCp1_Pstdout_bytes_2(_Lstr_1, _Llen_2);
 }
-inline void _Tchar_Pstdout_arr_2(char* _Lstr_0, struct _NLibC_NStdOut* _Lso_1) {
-_NLibC_Pstdout_cstr_1(_Lstr_0);
+inline void _Tchar_Pstdout_arr_2(char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1) {
+_NLibCp1_Pstdout_cstr_1(_Lstr_0);
 }
-inline void _NLibC_NStdOut_Pstdout_end_1(struct _NLibC_NStdOut* _Lso_0) {
-_NLibC_Pstdout_flush_0();
+inline void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_0) {
+_NLibCp1_Pstdout_flush_0();
 }
-inline void _Tchar_Pstdout_2(char _Lval_0, struct _NLibC_NStdOut* _Lso_1) {
-_NLibC_Pstdout_char_1(_Lval_0);
+inline void _Tchar_Pstdout_2(char _Lval_0, struct _NLibCp1_NStdOut* _Lso_1) {
+_NLibCp1_Pstdout_char_1(_Lval_0);
 }
 void _NCp1_Ppreprocess_def_2(char* _Lname_0, uint8_t _Llen_1) {
 uint32_t _Li_2;
@@ -392,13 +391,13 @@ _Li_15++;
 }
 break_2:;
 if(_Lrparen_14 == -1) {
-struct _NLibC_NStdOut _L_16;
-_NLibC_Pstdout_1(&_L_16);
+struct _NLibCp1_NStdOut _L_16;
+_NLibCp1_Pstdout_1(&_L_16);
 _Tchar_Pstdout_arr_2(_Ginput_path, &_L_16);
 _Tchar_Pstdout_2(':', &_L_16);
 _Tu32_Pstdout_2(_Lline_9, &_L_16);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_16, ": Error in preprocessing the code, #if(...) must have a closing parenthesis ')'\n", 80u);
-_NLibC_NStdOut_Pstdout_end_1(&_L_16);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_16, ": Error in preprocessing the code, #if(...) must have a closing parenthesis ')'\n", 80u);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_16);
 exit(_NLibC_NExit_Cfailure);
 }
 _Ldef_str_17 = &_Lr_6._Fcharr[_Lstart_12];
@@ -448,17 +447,17 @@ _Lline_len_22++;
 _Lr_6._Fpos += _Lline_len_22;
 }
 if(_Lindention_len_21 <= 0) {
-struct _NLibC_NStdOut _L_24;
-_NLibC_Pstdout_1(&_L_24);
+struct _NLibCp1_NStdOut _L_24;
+_NLibCp1_Pstdout_1(&_L_24);
 _Tchar_Pstdout_arr_2(_Ginput_path, &_L_24);
 _Tchar_Pstdout_2(':', &_L_24);
 _Tu32_Pstdout_2(_Lline_9, &_L_24);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_24, ": Error in preprocessing the code, #if(...). Its next line (line ", 65u);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_24, ": Error in preprocessing the code, #if(...). Its next line (line ", 65u);
 _Tu32_Pstdout_2(_Lline_9 + 1, &_L_24);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_24, ") must be indented more than line ", 34u);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_24, ") must be indented more than line ", 34u);
 _Tu32_Pstdout_2(_Lline_9, &_L_24);
 _Tchar_Pstdout_2('\n', &_L_24);
-_NLibC_NStdOut_Pstdout_end_1(&_L_24);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_24);
 exit(_NLibC_NExit_Cfailure);
 }
 _Lline_9++;
@@ -502,19 +501,19 @@ _Lw_8._Fp1[0] = '\n';
 _Lw_8._Fpos++;
 _Lr_6._Fpos += (_Lline_len_25 + 1);
 } else {
-struct _NLibC_NStdOut _L_27;
-_NLibC_Pstdout_1(&_L_27);
+struct _NLibCp1_NStdOut _L_27;
+_NLibCp1_Pstdout_1(&_L_27);
 _Tchar_Pstdout_arr_2(_Ginput_path, &_L_27);
 _Tchar_Pstdout_2(':', &_L_27);
 _Tu32_Pstdout_2(_Lline_9, &_L_27);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_27, ": Error, expecting '#endif' with the same indention as '#if' on line ", 69u);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_27, ": Error, expecting '#endif' with the same indention as '#if' on line ", 69u);
 _Tu32_Pstdout_2(_Lif_line_11, &_L_27);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_27, ", because line ", 15u);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_27, ", because line ", 15u);
 _Tu32_Pstdout_2(_Lline_9, &_L_27);
-_NLibC_NStdOut_Pstdout_cstr_3(&_L_27, "'s indention is different from indention at line ", 49u);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_27, "'s indention is different from indention at line ", 49u);
 _Tu32_Pstdout_2(_Lif_line_11 + 1, &_L_27);
 _Tchar_Pstdout_2('\n', &_L_27);
-_NLibC_NStdOut_Pstdout_end_1(&_L_27);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_27);
 exit(_NLibC_NExit_Cfailure);
 }
 goto break_5;
@@ -574,20 +573,20 @@ return true;
 }
 #endif
 }
-inline void _NLibC_Pstdout_bytes_2(void* _Ldata_0, size_t _Lsize_1) {
-_NLibC_Pstdout_reserve_1(_Lsize_1);
+inline void _NLibCp1_Pstdout_bytes_2(void* _Ldata_0, size_t _Lsize_1) {
+_NLibCp1_Pstdout_reserve_1(_Lsize_1);
 memcpy(&_Gstdout_buf_data[_Gstdout_buf_len], _Ldata_0, _Lsize_1);
 _Gstdout_buf_len += _Lsize_1;
 }
-inline void _NLibC_Pstdout_cstr_1(char* _Lstr_0) {
-_NLibC_Pstdout_bytes_2(_Lstr_0, strlen(_Lstr_0));
+inline void _NLibCp1_Pstdout_cstr_1(char* _Lstr_0) {
+_NLibCp1_Pstdout_bytes_2(_Lstr_0, strlen(_Lstr_0));
 }
-inline void _NLibC_Pstdout_flush_0() {
+inline void _NLibCp1_Pstdout_flush_0() {
 write((_NPosix_NFd)(1), _Gstdout_buf_data, _Gstdout_buf_len);
 _Gstdout_buf_len = 0;
 }
-inline void _NLibC_Pstdout_char_1(char _Lval_0) {
-_NLibC_Pstdout_reserve_1(1);
+inline void _NLibCp1_Pstdout_char_1(char _Lval_0) {
+_NLibCp1_Pstdout_reserve_1(1);
 _Gstdout_buf_data[_Gstdout_buf_len++] = _Lval_0;
 }
 inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2) {
@@ -603,8 +602,8 @@ return false;
 inline int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0) {
 return close(_Lfile_0);
 }
-inline void _Tu32_Pstdout_2(uint32_t _Lval_0, struct _NLibC_NStdOut* _Lso_1) {
-_NLibC_Pstdout_u32_1(_Lval_0);
+inline void _Tu32_Pstdout_2(uint32_t _Lval_0, struct _NLibCp1_NStdOut* _Lso_1) {
+_NLibCp1_Pstdout_u32_1(_Lval_0);
 }
 bool _NCp1_Ppreprocess_def_get_2(char* _Lname_0, uint8_t _Llen_1) {
 int32_t _Li_2;
@@ -630,7 +629,7 @@ return true;
 return false;
 }
 }
-void _NLibC_Pstdout_reserve_1(uint32_t _Llen_0) {
+void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0) {
 uint32_t _Lspace_1;
 _Lspace_1 = (_Gstdout_buf_cap - _Gstdout_buf_len);
 if(_Lspace_1 < _Llen_0) {
@@ -649,8 +648,8 @@ break_0:;
 _NLibC_Prealloc_arr_2(_Gstdout_buf_data, _Gstdout_buf_cap);
 }
 }
-void _NLibC_Pstdout_u32_1(uint32_t _Lval_0) {
-_NLibC_Pstdout_reserve_1(10);
+void _NLibCp1_Pstdout_u32_1(uint32_t _Lval_0) {
+_NLibCp1_Pstdout_reserve_1(10);
 if(_Lval_0 == 0) {
 _Gstdout_buf_data[_Gstdout_buf_len++] = '0';
 } else {

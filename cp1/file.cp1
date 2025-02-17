@@ -1,4 +1,5 @@
 using C = LibC;
+using C1 = LibCp1;
 using X = Posix;
 using W = Windows;
 using Cp1 = Cp1;

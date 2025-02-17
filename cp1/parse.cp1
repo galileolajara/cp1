@@ -1,5 +1,6 @@
 using Cp1 = Cp1;
 using C = LibC;
+using C1 = LibCp1;
 using X = Posix;
 using Cp1 {
 var ctx-func:DeclFunc;
@@ -69,7 +70,7 @@ type-info-arr(expr:ExprI) {
          quick-alloc-arr(vd.size-expr-v, #decl-var-size-limit);
       }
       vd.size-expr-v[vd.size-c++] = expr;
-      // C<stdout vd.name ", vd.size-c = " vd.size-c ''\n>;
+      // C1<stdout vd.name ", vd.size-c = " vd.size-c ''\n>;
    }
 }
 type-info-ref(c:i8) {
@@ -77,12 +78,12 @@ type-info-ref(c:i8) {
    ti.ref-v[ti.array-c] += c;
 }
 type-info-static() {
-   // C<stdout "built-in\n">;
+   // C1<stdout "built-in\n">;
    .decl-var.type-info.built-in = true;
 }
 decl-include-begin(inc:Include, row:u32, col:u32) {
    if .decl-include != #nil {
-      C<stdout .input-path '': row '': col ": Cannot include inside another include of " .decl-include-row '': .decl-include-col ''\n>;
+      C1<stdout .input-path '': row '': col ": Cannot include inside another include of " .decl-include-row '': .decl-include-col ''\n>;
       C.exit(#failure);
       return;
    }
@@ -143,7 +144,7 @@ at-alias(name:Id, row:u32, col:u32) {
          return;
       }
    }
-   C<stdout .input-path '': row '': col ": Cannot recognize the '" name ", did you forgot to put using '" name " = ...?\n">;
+   C1<stdout .input-path '': row '': col ": Cannot recognize the '" name ", did you forgot to put using '" name " = ...?\n">;
    C.exit(#failure);
 }
 var build-at:At;
@@ -167,13 +168,13 @@ at-push(name:Id, type:NameType, row:u32, col:u32) {
 }
 decl-alias(name:Id, at:At, row:u32, col:u32) {
    // if at.ptr().type != #module {
-   //    C<stdout .input-path '': row '': col ": Alias can only work on namespaces that ends with '%'\n">;
+   //    C1<stdout .input-path '': row '': col ": Alias can only work on namespaces that ends with '%'\n">;
    //    C.exit(#failure);
    //    return;
    // }
    loop i = 0; .at-alias-c; i++ {
       if .at-alias-name-v[i] == name {
-         C<stdout .input-path '': row '': col ": Alias '" name " was already declared at " .at-alias-pos-v[i].row '': .at-alias-pos-v[i].col ''\n>;
+         C1<stdout .input-path '': row '': col ": Alias '" name " was already declared at " .at-alias-pos-v[i].row '': .at-alias-pos-v[i].col ''\n>;
          C.exit(#failure);
          return;
       }
@@ -199,7 +200,7 @@ at-graves(graves:i8, row:u32, col:u32) {
    loop graves > 0 {
       graves--;
       if .build-at == #root {
-         C<stdout .input-path '': row '': col ": Too many graves in the namespace, going beyond the root namespace\n">;
+         C1<stdout .input-path '': row '': col ": Too many graves in the namespace, going beyond the root namespace\n">;
          C.exit(#failure);
       }
       +at = .build-at.ptr();
@@ -260,7 +261,7 @@ var decl-at:At;
 var decl-at-v:At[#decl-at-nest-limit];
 var decl-at-c:u8;
 err-msg-namespace-limit(row:u32, col:u32) {
-   C<stdout .input-path '': row '': col ": Max number of ids in namespace reached\n">;
+   C1<stdout .input-path '': row '': col ": Max number of ids in namespace reached\n">;
    C.exit(#failure);
 }
 decl-at-add(name:Id, type:NameType) {
@@ -322,7 +323,7 @@ struct Lexer[
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
       if length > 11 {
-         C<stdout .input-path '': .row '': .col ": Integer literal was too long\n">;
+         C1<stdout .input-path '': .row '': .col ": Integer literal was too long\n">;
          C.exit(#failure);
       }
       +val = 0:u64;
@@ -331,7 +332,7 @@ struct Lexer[
          r-start.pos++;
       }
       if val > 4294967295u {
-         C<stdout .input-path '': .row '': .col ": Integer literal was out of bounds\n">;
+         C1<stdout .input-path '': .row '': .col ": Integer literal was out of bounds\n">;
          C.exit(#failure);
       }
       return val:u32;
@@ -343,7 +344,7 @@ struct Lexer[
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
       if length > 8 {
-         C<stdout .input-path '': .row '': .col ": Integer literal was too long\n">;
+         C1<stdout .input-path '': .row '': .col ": Integer literal was too long\n">;
          C.exit(#failure);
       }
       +val = 0:u64;
@@ -359,7 +360,7 @@ struct Lexer[
          r-start.pos++;
       }
       if val > 4294967295u {
-         C<stdout .input-path '': .row '': .col ": Integer literal was out of bounds\n">;
+         C1<stdout .input-path '': .row '': .col ": Integer literal was out of bounds\n">;
          C.exit(#failure);
       }
       return val:u32;
@@ -381,7 +382,7 @@ struct Lexer[
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos - len-minus;
       if length > 10 {
-         C<stdout .input-path '': .row '': .col ": Integer literal was too long\n">;
+         C1<stdout .input-path '': .row '': .col ": Integer literal was too long\n">;
          C.exit(#failure);
       }
       +val = 0:u32;
@@ -393,7 +394,7 @@ struct Lexer[
          +old-val = val;
          val = (val * 10:u32) + (r-start.p1[0] - ''0);
          if (val / 10) < old-val {
-            C<stdout .input-path '': .row '': .col ": Integer literal was out of bounds\n">;
+            C1<stdout .input-path '': .row '': .col ": Integer literal was out of bounds\n">;
             C.exit(#failure);
          }
       } else {
@@ -401,7 +402,7 @@ struct Lexer[
             +old-val = val;
             val = (val * 10:u32) + (r-start.p1[0] - ''0);
             if (val / 10) < old-val {
-               C<stdout .input-path '': .row '': .col ": Integer literal was out of bounds\n">;
+               C1<stdout .input-path '': .row '': .col ": Integer literal was out of bounds\n">;
                C.exit(#failure);
             }
             r-start.pos++;
@@ -409,7 +410,7 @@ struct Lexer[
       }
       if len-minus == 0 { // no suffix, meaning its a signed integer
          if val > 2147483647 {
-            C<stdout .input-path '': .row '': .col ": Integer literal was out of bounds\n">;
+            C1<stdout .input-path '': .row '': .col ": Integer literal was out of bounds\n">;
             C.exit(#failure);
          }
       }
@@ -422,7 +423,7 @@ struct Lexer[
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos - 3; // -3 to remove u64 suffix
       if length > 20 { // 18446744073709551615
-         C<stdout .input-path '': .row '': .col ": Integer literal was too long\n">;
+         C1<stdout .input-path '': .row '': .col ": Integer literal was too long\n">;
          C.exit(#failure);
       }
       +val = 0:u64;
@@ -434,7 +435,7 @@ struct Lexer[
          +old-val = val;
          val = (val * 10:u64) + (r-start.p1[0] - ''0);
          if (val / 10) < old-val {
-            C<stdout .input-path '': .row '': .col ": Integer literal was out of bounds\n">;
+            C1<stdout .input-path '': .row '': .col ": Integer literal was out of bounds\n">;
             C.exit(#failure);
          }
       } else {
@@ -453,7 +454,7 @@ struct Lexer[
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos - end;
       if length > 255 {
-         C<stdout "too long id was detected\n">;
+         C1<stdout "too long id was detected\n">;
          C.exit(#failure);
       }
       +len = length:u8;
@@ -490,7 +491,7 @@ struct Lexer[
       //   length++;
       // }
       if length > 255 {
-         C<stdout "too long include was detected\n">;
+         C1<stdout "too long include was detected\n">;
          C.exit(#failure);
       }
       +len = length:u8;
@@ -673,7 +674,7 @@ write-struct(w:Wtr, header:bool) {
       s.include.wr(w);
       s.at.wr(w, header);
       s.flags.wr(w);
-      // C<stdout "write-struct " s.at.ptr.name.id ''\n>;
+      // C1<stdout "write-struct " s.at.ptr.name.id ''\n>;
       // s.name.wr(w, header);
       loop j = 0; s.fvar-c; j++ {
          s.fvar-v[j].wr(w, header);
@@ -719,7 +720,7 @@ parse-string(r:Rdr, w:Wtr, ending:char, in-data:ref) {
       +c = r.p1[0];
       if c == ''\n {
          get-row-col(+row, +col, r.reff, in-data);
-         C<stdout .input-path '': row '': col ": Unterminated string\n">;
+         C1<stdout .input-path '': row '': col ": Unterminated string\n">;
          C.exit(#failure);
       }
       w.p1[0] = c;
@@ -738,7 +739,7 @@ parse-comment(r:Rdr, w:Wtr, ending:char, in-data:ref) {
       +c = r.p1[0];
       if c == ''\n {
          get-row-col(+row, +col, r.reff, in-data);
-         C<stdout .input-path '': row '': col ": Unterminated comment\n">;
+         C1<stdout .input-path '': row '': col ": Unterminated comment\n">;
          C.exit(#failure);
       }
       r.pos++;
@@ -768,15 +769,15 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .func-main = #nil;
    .decl-include = #nil;
    if arg-c != 3 {
-      C<stdout "Usage: " arg-v[0] " [file.cp1] [output.cp1-b]\n">;
+      C1<stdout "Usage: " arg-v[0] " [file.cp1] [output.cp1-b]\n">;
       return 0;
    }
    .input-path = arg-v[1];
-   // C<stdout "reading " .input-path ''\n>;
+   // C1<stdout "reading " .input-path ''\n>;
    var in-data:u8[];
    in-data = read-file(.input-path, 2, +in-size);
    if in-data == null {
-      C<stdout "Cannot open file for reading: " .input-path ''\n>;
+      C1<stdout "Cannot open file for reading: " .input-path ''\n>;
       C.exit(#failure);
    }
    +lock-path = arg-v[2];
@@ -794,7 +795,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    //       "#endif";
    //       if skip {
    //          // Skip parsing
-   //          C<stdout "Skipping parsing of " .input-path " because the output file is newer than the input file\n">;
+   //          C1<stdout "Skipping parsing of " .input-path " because the output file is newer than the input file\n">;
    //          return 0;
    //       }
    //    } else {
@@ -806,13 +807,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    // }
 
    if (&&, in-data[in-size - 2] == ''\r, in-data[in-size - 1] == ''\n) {
-      C<stdout
+      C1<stdout
       "Error reading file '" .input-path "' because it uses Windows-style line endings\n" $
       "Please convert the line endings to Unix-style line endings\n">;
       C.exit(#failure);
    }
    if in-data[in-size - 1] != ''\n {
-      C<stdout "Error reading file '" .input-path "' because it doesn't end with a new line\n">;
+      C1<stdout "Error reading file '" .input-path "' because it doesn't end with a new line\n">;
       C.exit(#failure);
    }
    if true { // Process comments
@@ -831,7 +832,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       loop r.pos < r-end.pos {
          if r.p1[0] == ''\t {
             get-row-col(+row, +col, r.reff, in-data);
-            C<stdout .input-path '': row '': col ": Error, use of tabs is discouraged, please use spaces instead\n">;
+            C1<stdout .input-path '': row '': col ": Error, use of tabs is discouraged, please use spaces instead\n">;
             C.exit(#failure);
          } elif r.p1[0] == ''/ {
             if r.p1[1] == ''/ {
@@ -841,7 +842,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   // ok
                } else {
                   get-row-col(+row, +col, r.reff, in-data);
-                  C<stdout .input-path '': row '': col ": There must be a space or tab before the // comment\n">;
+                  C1<stdout .input-path '': row '': col ": There must be a space or tab before the // comment\n">;
                   C.exit(#failure);
                }
                // comment
@@ -902,7 +903,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                if c == ''\\ {
                   if r.p1[3] == ''" {
                      get-row-col(+row, +col, r.reff, in-data);
-                     C<stdout .input-path '': row '': col ": char ''\\\" is invalid, please use ''\" instead\n">;
+                     C1<stdout .input-path '': row '': col ": char ''\\\" is invalid, please use ''\" instead\n">;
                      C.exit(#failure);
                   }
                   w.p1[0] = ''\';
@@ -916,42 +917,42 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   switch c {
                      case ''\' {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C<stdout .input-path '': row '': col ": char ''' is invalid, please use ''\\' instead\n">;
+                        C1<stdout .input-path '': row '': col ": char ''' is invalid, please use ''\\' instead\n">;
                         C.exit(#failure);
                      }
                      case ''\a {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C<stdout .input-path '': row '': col ": char ''(\\a) is invalid, please use ''\\a instead\n">;
+                        C1<stdout .input-path '': row '': col ": char ''(\\a) is invalid, please use ''\\a instead\n">;
                         C.exit(#failure);
                      }
                      case ''\b {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C<stdout .input-path '': row '': col ": char ''(\\b) is invalid, please use ''\\b instead\n">;
+                        C1<stdout .input-path '': row '': col ": char ''(\\b) is invalid, please use ''\\b instead\n">;
                         C.exit(#failure);
                      }
                      case ''\f {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C<stdout .input-path '': row '': col ": char ''(\\f) is invalid, please use ''\\f instead\n">;
+                        C1<stdout .input-path '': row '': col ": char ''(\\f) is invalid, please use ''\\f instead\n">;
                         C.exit(#failure);
                      }
                      case ''\n {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C<stdout .input-path '': row '': col ": char ''(new line) is invalid, please use ''\\n instead\n">;
+                        C1<stdout .input-path '': row '': col ": char ''(new line) is invalid, please use ''\\n instead\n">;
                         C.exit(#failure);
                      }
                      case ''\r {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C<stdout .input-path '': row '': col ": char ''(\\r) is invalid, please use ''\\r instead\n">;
+                        C1<stdout .input-path '': row '': col ": char ''(\\r) is invalid, please use ''\\r instead\n">;
                         C.exit(#failure);
                      }
                      case ''\t {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C<stdout .input-path '': row '': col ": char ''(tab) is invalid, please use ''\\t instead\n">;
+                        C1<stdout .input-path '': row '': col ": char ''(tab) is invalid, please use ''\\t instead\n">;
                         C.exit(#failure);
                      }
                      case ''\v {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C<stdout .input-path '': row '': col ": char ''(\\v) is invalid, please use ''\\v instead\n">;
+                        C1<stdout .input-path '': row '': col ": char ''(\\v) is invalid, please use ''\\v instead\n">;
                         C.exit(#failure);
                      }
                   }
@@ -981,7 +982,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   }
                   if r.pos >= r-end.pos {
                      get-row-col(+row, +col, r.reff, in-data);
-                     C<stdout .input-path '': row '': col ": Error, string must end with a new line\n">;
+                     C1<stdout .input-path '': row '': col ": Error, string must end with a new line\n">;
                      C.exit(#failure);
                   }
                }
@@ -1017,7 +1018,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             loop {
                if r.p1[0] == ''\n {
                   get-row-col(+row, +col, r.reff, in-data);
-                  C<stdout .input-path '': row '': col ": Unterminated string\n">;
+                  C1<stdout .input-path '': row '': col ": Unterminated string\n">;
                   C.exit(#failure);
                } elif r.p1[0] == ''" {
                   w.p1[0] = ''";
@@ -1039,7 +1040,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      case ''v { }
                      default {
                         get-row-col(+row, +col, r.reff, in-data);
-                        C<stdout .input-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" r.charr[1] "'\n">;
+                        C1<stdout .input-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" r.charr[1] "'\n">;
                         C.exit(#failure);
                      }
                   }
@@ -1054,7 +1055,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                }
                if r.pos >= r-end.pos {
                   get-row-col(+row, +col, r.reff, in-data);
-                  C<stdout .input-path '': row '': col ": Error, unterminated string\n">;
+                  C1<stdout .input-path '': row '': col ": Error, unterminated string\n">;
                   C.exit(#failure);
                }
             }
@@ -1278,7 +1279,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             case #loop {
                +found-semicolon = false;
                if (&&, lex.cursor[0] != '' , lex.cursor[0] != ''\n)  {
-                  C<stdout .input-path '': .row '': .col ": There must be a space or new line after the keyword 'loop'\n">;
+                  C1<stdout .input-path '': .row '': .col ": There must be a space or new line after the keyword 'loop'\n">;
                   C.exit(#failure);
                }
                loop i = 0; {
@@ -1287,17 +1288,17 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   // var start = i;
                   +c = lex.cursor[i];
                   if c == ''\0 {
-                     C<stdout .input-path '': .row '': .col ": Keyword 'loop' was found but was not followed by '{'\n">;
+                     C1<stdout .input-path '': .row '': .col ": Keyword 'loop' was found but was not followed by '{'\n">;
                      C.exit(#failure);
                   } elif c == ''\' {
                      c = lex.cursor[i + 1];
                      if c == ''\' {
                         if lex.cursor[i + 2] == ''\\ {
-                           // C<stdout str, 4 ''\n>;
+                           // C1<stdout str, 4 ''\n>;
                            i += 4;
                            continue;
                         } else {
-                           // C<stdout str, 3 ''\n>;
+                           // C1<stdout str, 3 ''\n>;
                            i += 3;
                            continue;
                         }
@@ -1305,7 +1306,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         i += 2;
                         loop {
                            if lex.cursor[i++] == ''" {
-                              // C<stdout str, i - start ''\n>;
+                              // C1<stdout str, i - start ''\n>;
                               break;
                            }
                         }
@@ -1314,7 +1315,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         i += 2;
                         loop {
                            if lex.cursor[i++] == ''> {
-                              // C<stdout str, i - start ''\n>;
+                              // C1<stdout str, i - start ''\n>;
                               break;
                            }
                         }
@@ -1323,7 +1324,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         i += 2;
                         loop {
                            if lex.cursor[i++] == ''] {
-                              // C<stdout str, i - start ''\n>;
+                              // C1<stdout str, i - start ''\n>;
                               break;
                            }
                         }
@@ -1332,7 +1333,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         i += 2;
                         loop {
                            if lex.cursor[i++] == ''} {
-                              // C<stdout str, i - start ''\n>;
+                              // C1<stdout str, i - start ''\n>;
                               break;
                            }
                         }
@@ -1341,7 +1342,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         i += 2;
                         loop {
                            if lex.cursor[i++] == '') {
-                              // C<stdout str, i - start ''\n>;
+                              // C1<stdout str, i - start ''\n>;
                               break;
                            }
                         }
@@ -1350,7 +1351,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         i += 3;
                         loop {
                            if lex.cursor[i++] == ''\n {
-                              // C<stdout str, (i - 1) - start ''\n>;
+                              // C1<stdout str, (i - 1) - start ''\n>;
                               break;
                            }
                         }
@@ -1361,7 +1362,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      loop {
                         c = lex.cursor[i++];
                         if c == ''" {
-                           // C<stdout str, i - start ''\n>;
+                           // C1<stdout str, i - start ''\n>;
                            break;
                         } elif c == ''\\ {
                            i++;
@@ -1480,7 +1481,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .last-token = #nil;
    psr.parse(#nil, tok);
    psr.free();
-   // C<stdout "parsing finished\n">;
+   // C1<stdout "parsing finished\n">;
    var w-begin:Wtr+;
    w-begin.reff = quick-alloc((in-size << 2) + 1024);
    var w:Wtr+;
@@ -1497,7 +1498,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    malloc-arr(.id-in-header-id-v, .id-c);
 
    w.n(.include-c);
-   // C<stdout "There are " .include-c " includes\n">;
+   // C1<stdout "There are " .include-c " includes\n">;
    loop i = 0; .include-c; i++ {
       w.n1(.include-len-v[i]);
       w.copy(.include-str-v[i], .include-len-v[i]);
@@ -1531,7 +1532,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    C.sprintf(out-path, "%s.tmp", lock-path);
    +out-path-len = C.strlen(out-path);
    if !write-file(out-path, w-begin.reff, w.pos - w-begin.pos) {
-      C<stdout "Cannot open file for writing: " out-path ''\n>;
+      C1<stdout "Cannot open file for writing: " out-path ''\n>;
       C.exit(#failure);
    }
 
@@ -1569,7 +1570,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
 
    out-path[out-path-len - 5] = ''h;
    if !write-file(out-path, w-begin.reff, w.pos - w-begin.pos) {
-      C<stdout "Cannot open file for writing: " out-path ''\n>;
+      C1<stdout "Cannot open file for writing: " out-path ''\n>;
       C.exit(#failure);
    }
    var final-path:char[512];
