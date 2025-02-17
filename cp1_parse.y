@@ -600,6 +600,8 @@ metaCall_arg_list ::= metaCall_arg_list COMMA_SPACE metaCall_arg.
 metaCall_args ::= metaCall_arg_list.
 metaCall_args_next_group ::= SPACE.
    { _NCp1_Pmetacarg_next_group_0(); }
+metaCall_args_next_group ::= SEMICOLON SPACE.
+   { _NCp1_Pmetacarg_next_group_0(); }
 metaCall_args_next_group_empty ::= OPEN_ANGULAR_BRACKET.
    { _NCp1_Pmetacarg_next_group_0(); }
 metaCall_args ::= metaCall_args metaCall_args_next_group metaCall_arg_list.
