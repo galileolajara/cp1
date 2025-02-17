@@ -126,10 +126,13 @@
 #define _NCp1_NToken_Cspace_rangle_space (_NCp1_NToken_Cspace_langle_equal_space + 1)
 #define _NCp1_NToken_Cspace_rangle_equal_space (_NCp1_NToken_Cspace_rangle_space + 1)
 #define _NCp1_NToken_Cdot_id_upper_then_open_parenthesis (_NCp1_NToken_Cspace_rangle_equal_space + 1)
-#define _NCp1_NToken_Cangular_bracket_id (_NCp1_NToken_Cdot_id_upper_then_open_parenthesis + 1)
-#define _NCp1_NToken_Cclose_angular_bracket (_NCp1_NToken_Cangular_bracket_id + 1)
+#define _NCp1_NToken_Cid_then_open_angular_bracket (_NCp1_NToken_Cdot_id_upper_then_open_parenthesis + 1)
+#define _NCp1_NToken_Cid_upper_then_open_angular_bracket (_NCp1_NToken_Cid_then_open_angular_bracket + 1)
+#define _NCp1_NToken_Cdot_id_upper_then_open_angular_bracket (_NCp1_NToken_Cid_upper_then_open_angular_bracket + 1)
+#define _NCp1_NToken_Cclose_angular_bracket (_NCp1_NToken_Cdot_id_upper_then_open_angular_bracket + 1)
 #define _NCp1_NToken_Cspace_close_angular_bracket (_NCp1_NToken_Cclose_angular_bracket + 1)
-#define _NCp1_NToken_Chash (_NCp1_NToken_Cspace_close_angular_bracket + 1)
+#define _NCp1_NToken_Copen_angular_bracket (_NCp1_NToken_Cspace_close_angular_bracket + 1)
+#define _NCp1_NToken_Chash (_NCp1_NToken_Copen_angular_bracket + 1)
 #define _NCp1_NToken_Cspace_plus_equal_space (_NCp1_NToken_Chash + 1)
 #define _NCp1_NToken_Cspace_minus_equal_space (_NCp1_NToken_Cspace_plus_equal_space + 1)
 #define _NCp1_NToken_Cspace_mul_equal_space (_NCp1_NToken_Cspace_minus_equal_space + 1)
@@ -1242,9 +1245,12 @@ case _NCp1_NToken_Cspace_langle_equal_space: return "space-langle-equal-space";
 case _NCp1_NToken_Cspace_rangle_space: return "space-rangle-space";
 case _NCp1_NToken_Cspace_rangle_equal_space: return "space-rangle-equal-space";
 case _NCp1_NToken_Cdot_id_upper_then_open_parenthesis: return "dot-id-upper-then-open-parenthesis";
-case _NCp1_NToken_Cangular_bracket_id: return "angular-bracket-id";
+case _NCp1_NToken_Cid_then_open_angular_bracket: return "id-then-open-angular-bracket";
+case _NCp1_NToken_Cid_upper_then_open_angular_bracket: return "id-upper-then-open-angular-bracket";
+case _NCp1_NToken_Cdot_id_upper_then_open_angular_bracket: return "dot-id-upper-then-open-angular-bracket";
 case _NCp1_NToken_Cclose_angular_bracket: return "close-angular-bracket";
 case _NCp1_NToken_Cspace_close_angular_bracket: return "space-close-angular-bracket";
+case _NCp1_NToken_Copen_angular_bracket: return "open-angular-bracket";
 case _NCp1_NToken_Chash: return "hash";
 case _NCp1_NToken_Cspace_plus_equal_space: return "space-plus-equal-space";
 case _NCp1_NToken_Cspace_minus_equal_space: return "space-minus-equal-space";
@@ -2210,6 +2216,8 @@ case _NCp1_NToken_Cid:;
 _Ltok_69._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_66, 0, 0);
 if(_Llex_66._Fcursor[0] == '(') {
 _Lt_70 = _NCp1_NToken_Cid_then_open_parenthesis;
+} else if(_Llex_66._Fcursor[0] == '<') {
+_Lt_70 = _NCp1_NToken_Cid_then_open_angular_bracket;
 }
 _Glast_token = _Lt_70;
 cp1Parse(_Lpsr_65, _Lt_70, _Ltok_69);
@@ -2257,15 +2265,12 @@ _Ltok_69._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_66, 1, 0);
 _Glast_token = _Lt_70;
 cp1Parse(_Lpsr_65, _Lt_70, _Ltok_69);
 break;
-case _NCp1_NToken_Cangular_bracket_id:;
-_Ltok_69._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_66, 1, 0);
-_Glast_token = _Lt_70;
-cp1Parse(_Lpsr_65, _Lt_70, _Ltok_69);
-break;
 case _NCp1_NToken_Cdot_id_upper:;
 _Ltok_69._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_66, 1, 0);
 if(_Llex_66._Fcursor[0] == '(') {
 _Lt_70 = _NCp1_NToken_Cdot_id_upper_then_open_parenthesis;
+} else if(_Llex_66._Fcursor[0] == '<') {
+_Lt_70 = _NCp1_NToken_Cdot_id_upper_then_open_angular_bracket;
 }
 _Glast_token = _Lt_70;
 cp1Parse(_Lpsr_65, _Lt_70, _Ltok_69);
@@ -2274,6 +2279,8 @@ case _NCp1_NToken_Cid_upper:;
 _Ltok_69._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_66, 0, 0);
 if(_Llex_66._Fcursor[0] == '(') {
 _Lt_70 = _NCp1_NToken_Cid_then_open_parenthesis;
+} else if(_Llex_66._Fcursor[0] == '<') {
+_Lt_70 = _NCp1_NToken_Cid_then_open_angular_bracket;
 }
 _Glast_token = _Lt_70;
 cp1Parse(_Lpsr_65, _Lt_70, _Ltok_69);
