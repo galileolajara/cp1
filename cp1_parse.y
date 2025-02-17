@@ -388,7 +388,7 @@ expr_int(l) ::= NUM_U64(e).
 
 expr_str(l) ::= STRING.
    { l.basic.id = _NCp1_Pexpr_str_1(-1); }
-expr_str(l) ::= expr_str(e) SPACE_DOLLAR_SPACE STRING.
+expr_str(l) ::= expr_str(e) SPACE_THEN_STRING STRING.
    { l.basic.id = _NCp1_Pexpr_str_1(e.basic.id); }
 
 expr_lvar_plus(l) ::= PLUS.

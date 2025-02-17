@@ -808,7 +808,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
 
    if (&&, in-data[in-size - 2] == ''\r, in-data[in-size - 1] == ''\n) {
       C1.stdout<
-      "Error reading file '" .input-path "' because it uses Windows-style line endings\n" $
+      "Error reading file '" .input-path "' because it uses Windows-style line endings\n"
       "Please convert the line endings to Unix-style line endings\n">;
       C.exit(#failure);
    }
@@ -1453,8 +1453,26 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                psr.parse(t, tok);
             }
             case #space {
-               if lex.cursor[0] == ''{ {
+               +ch = lex.cursor[0];
+               if ch == ''{ {
                   t = #space-then-open-curly-brace;
+               } elif .last-token == #string {
+                  if ch == ''" {
+                     t = #space-then-string;
+                  } elif ch == ''\' {
+                     ch = lex.cursor[1];
+                     if (||,
+                        ch == ''",
+                        ch == ''<,
+                        ch == ''[,
+                        ch == ''{,
+                        ch == ''(,
+                        (&&, lex.cursor[2] == '' ,
+                           (||, ch == ''-, ch == ''=)
+                        )) {
+                        t = #space-then-string;
+                     }
+                  }
                }
                .last-token = t;
                psr.parse(t, tok);

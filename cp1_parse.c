@@ -106,7 +106,7 @@
 #define CP1_TOKEN_NUM_OCT                        73
 #define CP1_TOKEN_NUM_HEX                        74
 #define CP1_TOKEN_NUM_U64                        75
-#define CP1_TOKEN_SPACE_DOLLAR_SPACE             76
+#define CP1_TOKEN_SPACE_THEN_STRING              76
 #define CP1_TOKEN_CHAR1                          77
 #define CP1_TOKEN_CHAR2                          78
 #define CP1_TOKEN_TRUE                           79
@@ -2163,7 +2163,7 @@ static const char *const yyTokenName[] = {
   /*   73 */ "NUM_OCT",
   /*   74 */ "NUM_HEX",
   /*   75 */ "NUM_U64",
-  /*   76 */ "SPACE_DOLLAR_SPACE",
+  /*   76 */ "SPACE_THEN_STRING",
   /*   77 */ "CHAR1",
   /*   78 */ "CHAR2",
   /*   79 */ "TRUE",
@@ -2571,7 +2571,7 @@ static const char *const yyRuleName[] = {
  /* 120 */ "expr_int ::= NUM_HEX",
  /* 121 */ "expr_int ::= NUM_U64",
  /* 122 */ "expr_str ::= STRING",
- /* 123 */ "expr_str ::= expr_str SPACE_DOLLAR_SPACE STRING",
+ /* 123 */ "expr_str ::= expr_str SPACE_THEN_STRING STRING",
  /* 124 */ "expr_lvar_plus ::= PLUS",
  /* 125 */ "expr_lvar_plus ::= expr_lvar_plus PLUS",
  /* 126 */ "expr_lvar ::= ID",
@@ -3467,7 +3467,7 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    223,  /* (120) expr_int ::= NUM_HEX */
    223,  /* (121) expr_int ::= NUM_U64 */
    224,  /* (122) expr_str ::= STRING */
-   224,  /* (123) expr_str ::= expr_str SPACE_DOLLAR_SPACE STRING */
+   224,  /* (123) expr_str ::= expr_str SPACE_THEN_STRING STRING */
    225,  /* (124) expr_lvar_plus ::= PLUS */
    225,  /* (125) expr_lvar_plus ::= expr_lvar_plus PLUS */
    226,  /* (126) expr_lvar ::= ID */
@@ -3948,7 +3948,7 @@ static const signed char yyRuleInfoNRhs[] = {
    -1,  /* (120) expr_int ::= NUM_HEX */
    -1,  /* (121) expr_int ::= NUM_U64 */
    -1,  /* (122) expr_str ::= STRING */
-   -3,  /* (123) expr_str ::= expr_str SPACE_DOLLAR_SPACE STRING */
+   -3,  /* (123) expr_str ::= expr_str SPACE_THEN_STRING STRING */
    -1,  /* (124) expr_lvar_plus ::= PLUS */
    -2,  /* (125) expr_lvar_plus ::= expr_lvar_plus PLUS */
    -1,  /* (126) expr_lvar ::= ID */
@@ -4883,7 +4883,7 @@ static YYACTIONTYPE yy_reduce(
 { yymsp[0].minor.yy0.basic.id = _NCp1_Pexpr_str_1(-1); }
 #line 4884 "out/cp1_parse.c"
         break;
-      case 123: /* expr_str ::= expr_str SPACE_DOLLAR_SPACE STRING */
+      case 123: /* expr_str ::= expr_str SPACE_THEN_STRING STRING */
 #line 392 "cp1_parse.y"
 { yylhsminor.yy0.basic.id = _NCp1_Pexpr_str_1(yymsp[-2].minor.yy0.basic.id); }
 #line 4889 "out/cp1_parse.c"

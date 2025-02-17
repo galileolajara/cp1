@@ -8,8 +8,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    if arg-c < 3 {
       "usage:";
       C1.stdout<
-      "Usage: " arg-v[0] " [options] [.cp1 input file] [.cp1 output file]\n" $
-      "Options:\n" $
+      "Usage: " arg-v[0] " [options] [.cp1 input file] [.cp1 output file]\n"
+      "Options:\n"
       " -Ddefinename     Define a name that will yield true on #if(...) preprocessor\n">;
       C.exit(#failure);
    }
