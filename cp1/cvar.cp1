@@ -33,7 +33,7 @@ enum Cvar[#nil = -1, #0]:i32 {
       if at-i != #nil {
          +at = at-i.ptr();
          if (&&, at.type != #basic, at.decl.structt == #nil) {
-            C1<stdout "Error, the type '" at.name.id "' used in cvar '." cvar.decl.name "' was not defined\n">;
+            C1.stdout<"Error, the type '" at.name.id "' used in cvar '." cvar.decl.name "' was not defined\n">;
             return false;
          }
          at-i.output(cvar.file, cvar.row, cvar.col);
@@ -51,10 +51,10 @@ enum Cvar[#nil = -1, #0]:i32 {
    write(c:this) @inline {
       +cvar = c.ptr();
       if (cvar.decl.flags & #real-name) != #0 {
-         <output cvar.decl.real-name>;
+         output<cvar.decl.real-name>;
       } else {
          cvar.at.write-space();
-         <output "_C" cvar.decl.name.c-name()>;
+         output<"_C" cvar.decl.name.c-name()>;
       }
    }
 }
@@ -120,10 +120,10 @@ using ExprI {
          +at = e.try.ptr();
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
-         // C1<stdout "e.try = " e.try ", " at.name.id ", " name ", cvar-c " cvar-c ''\n>;
+         // C1.stdout<"e.try = " e.try ", " at.name.id ", " name ", cvar-c " cvar-c ''\n>;
          loop i = 0; cvar-c; i++ {
             +cvar = cvar-v[i];
-            // C1<stdout "- " cvar.ptr.decl.name ''\n>;
+            // C1.stdout<"- " cvar.ptr.decl.name ''\n>;
             if cvar.ptr().decl.name == name {
                if !cvar.process() { return }
                e.cvar = cvar;
@@ -164,7 +164,7 @@ using ExprI {
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
       }
-      C1<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find #" name ''\n>;
+      C1.stdout<.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find #" name ''\n>;
    }
    try-deduce-cvar(expr:Expr, at:At) @case.try-deduce() @inline {
       var e:ExprCvar = expr;

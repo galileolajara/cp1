@@ -25,7 +25,7 @@ at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
          if at-i == #root { break }
          at-i = at-i.ptr().parent;
       }
-      C1<stdout file '': row '': col ": Type '" name.id "' was not found\n">;
+      C1.stdout<file '': row '': col ": Type '" name.id "' was not found\n">;
       return #nil;
    }
    return vd-type;
@@ -42,7 +42,7 @@ using DeclVarData {
       vd.type = at-i;
       +at = at-i.ptr();
       if (&&, at.type != #basic, at.decl.structt == #nil) {
-         C1<stdout file '': row '': col ": Error, the type '" at.name.id "' used in '" vd.name "' was not defined\n">;
+         C1.stdout<file '': row '': col ": Error, the type '" at.name.id "' used in '" vd.name "' was not defined\n">;
          return false;
       }
       at-i.output(.ctx-func.file, row, col);
@@ -55,48 +55,48 @@ using DeclVarData {
    write(vd:this, var-type:DeclVarType) {
       if (vd.flags & #real-name) != #0 {
          if vd.real-name == #nil {
-            <output vd.name.c-name()>;
+            output<vd.name.c-name()>;
          } else {
-            <output vd.real-name>;
+            output<vd.real-name>;
          }
          return;
       }
       switch var-type {
          case #gvar {
-            <output "_G" vd.name.c-name()>;
+            output<"_G" vd.name.c-name()>;
          }
          case #fvar {
-            <output "_F" vd.name.c-name()>;
+            output<"_F" vd.name.c-name()>;
          }
       }
    }
    write-lvar(vd:this, lvar:Lvar) {
-      <output "_L" vd.name.c-name() ''_ lvar:u32>;
+      output<"_L" vd.name.c-name() ''_ lvar:u32>;
    }
    write-type(vd:this, var-type:DeclVarType) {
       if vd.type-info.const {
-         <output "const ">;
+         output<"const ">;
       }
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
-      <output '' >;
+      output<'' >;
       vd.write(var-type);
       loop i = 0; vd.size-c; i++ {
-         <output ''[>;
+         output<''[>;
          vd.size-expr-v[i].write-value(vd.size-value-v[i]);
-         <output '']>;
+         output<'']>;
       }
    }
    write-lvar-type(vd:this, lvar:Lvar) {
       if vd.type-info.const {
-         <output "const ">;
+         output<"const ">;
       }
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
-      <output '' >;
+      output<'' >;
       vd.write-lvar(lvar);
       loop i = 0; vd.size-c; i++ {
-         <output ''[>;
+         output<''[>;
          vd.size-expr-v[i].write-value(vd.size-value-v[i]);
-         <output '']>;
+         output<'']>;
       }
    }
    wr(vd:this, w:Wtr, header:bool) {
@@ -278,7 +278,7 @@ decl-var-end() {
 }
 decl-var-attr-real-name(name:Id) {
    if (.decl-var.flags & #real-name) != #0 {
-      C1<stdout .input-path '': .last-row '': .last-col ": error @real-name specified more than once\n">;
+      C1.stdout<.input-path '': .last-row '': .last-col ": error @real-name specified more than once\n">;
       C.exit(#failure);
    }
    .decl-var.flags |= #real-name;
@@ -286,14 +286,14 @@ decl-var-attr-real-name(name:Id) {
 }
 decl-var-attr-extern() {
    if (.decl-var.flags & #extern) != #0 {
-      C1<stdout .input-path '': .last-row '': .last-col ": error @extern specified more than once\n">;
+      C1.stdout<.input-path '': .last-row '': .last-col ": error @extern specified more than once\n">;
       C.exit(#failure);
    }
    .decl-var.flags |= #extern;
 }
 decl-var-attr-no-decl() {
    if (.decl-var.flags & #no-decl) != #0 {
-      C1<stdout .input-path '': .last-row '': .last-col ": error @no-decl specified more than once\n">;
+      C1.stdout<.input-path '': .last-row '': .last-col ": error @no-decl specified more than once\n">;
       C.exit(#failure);
    }
    .decl-var.flags |= #no-decl;

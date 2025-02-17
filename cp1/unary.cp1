@@ -31,19 +31,19 @@ using ExprI {
       var e:ExprUnary = expr;
       switch e.type {
          case #neg {
-            <output ''->;
+            output<''->;
             e.expr.write-value(e.val);
          }
          case #inc {
             e.expr.write-value(e.val);
-            <output "++">;
+            output<"++">;
          }
          case #dec {
             e.expr.write-value(e.val);
-            <output "--">;
+            output<"--">;
          }
          case #not {
-            <output ''!>;
+            output<''!>;
             e.expr.write-value(e.val);
          }
       }

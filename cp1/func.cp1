@@ -41,12 +41,12 @@ enum FuncFlags2[
 using DeclFunc {
    write(f:this) {
       if (f.flags & #real-name) != #0 {
-         <output f.real-name>;
+         output<f.real-name>;
       } else {
          f.at.write-space();
-         <output "_P" f.decl.name.c-name()>;
+         output<"_P" f.decl.name.c-name()>;
          loop i = 0; f.group-c; i++ {
-            <output ''_ f.group-v[i]:u32>;
+            output<''_ f.group-v[i]:u32>;
          }
       }
    }
@@ -61,10 +61,10 @@ using DeclFunc {
          l.decl.rd(r);
          l.flags.rd(r);
          // if (l.flags & #set-expr) != #0 {
-            // C1<stdout "1\n">;
+            // C1.stdout<"1\n">;
             // l.set-expr.rd(r);
          // }
-         // C1<stdout "lvar " l.decl.name " has type of " l.decl.type.ptr.name.basic.cp1-name ''\n>;
+         // C1.stdout<"lvar " l.decl.name " has type of " l.decl.type.ptr.name.basic.cp1-name ''\n>;
       }
    }
    lvars-wr(f:this, w:Wtr, header:bool) {
@@ -76,7 +76,7 @@ using DeclFunc {
          l.decl.wr(w, header);
          l.flags.wr(w);
          // if (l.flags & #set-expr) != #0 {
-            // C1<stdout "2\n">;
+            // C1.stdout<"2\n">;
             // l.set-expr.wr(w, header);
          // }
       }
@@ -238,7 +238,7 @@ decl-func-end(row:u32, col:u32) {
    } elif (&&, .decl-at == #root, f.decl.name.len() == 4, C.memcmp("main", f.decl.name.str(), 4) == 0) {
       if .func-main != #nil {
          +main = .func-main.ptr();
-         C1<stdout f.begin-row '': f.begin-col ": There's already a function with @main attribute at " main.begin-row '': main.begin-col ''\n>;
+         C1.stdout<f.begin-row '': f.begin-col ": There's already a function with @main attribute at " main.begin-row '': main.begin-col ''\n>;
          C.exit(#failure);
       } else {
          .func-main = f-idx;
@@ -257,61 +257,61 @@ decl-func-end(row:u32, col:u32) {
 }
 func-attr-main() {
    if (.decl-func-flags2 & #main) != #0 {
-      C1<stdout .input-path '': .last-row '': .last-col ": Error @main specified more than once\n">;
+      C1.stdout<.input-path '': .last-row '': .last-col ": Error @main specified more than once\n">;
       C.exit(#failure);
    }
    if .func-main != #nil {
       +first = .func-main.ptr();
-      C1<stdout "There cannot be more than one function with @main attribute, first was " .input-path '': first.begin-row '': first.begin-col " and then " .decl-func-row '': .decl-func-col ''\n>;
+      C1.stdout<"There cannot be more than one function with @main attribute, first was " .input-path '': first.begin-row '': first.begin-col " and then " .decl-func-row '': .decl-func-col ''\n>;
       C.exit(#failure);
    }
    .decl-func-flags2 |= #main;
 }
 func-attr-process() {
    if (.decl-func-flags & #process) != #0 {
-      C1<stdout .input-path '': .last-row '': .last-col ": Error @process specified more than once\n">;
+      C1.stdout<.input-path '': .last-row '': .last-col ": Error @process specified more than once\n">;
       C.exit(#failure);
    }
    .decl-func-flags |= #process;
 }
 func-attr-inline() {
    if (.decl-func-flags & #inline) != #0 {
-      C1<stdout .input-path '': .last-row '': .last-col ": Error @inline specified more than once\n">;
+      C1.stdout<.input-path '': .last-row '': .last-col ": Error @inline specified more than once\n">;
       C.exit(#failure);
    }
    .decl-func-flags |= #inline
 }
 func-attr-cp1-name() {
    if (.decl-func-flags & #cp1-name) != #0 {
-      C1<stdout .input-path '': .last-row '': .last-col ": Error @cp1-name specified more than once\n">;
+      C1.stdout<.input-path '': .last-row '': .last-col ": Error @cp1-name specified more than once\n">;
       C.exit(#failure);
    }
    .decl-func-flags |= #cp1-name;
 }
 func-attr-var-args() {
    if (.decl-func-flags & #var-args) != #0 {
-      C1<stdout .input-path '': .last-row '': .last-col ": Error @var-args specified more than once\n">;
+      C1.stdout<.input-path '': .last-row '': .last-col ": Error @var-args specified more than once\n">;
       C.exit(#failure);
    }
    .decl-func-flags |= #var-args;
 }
 func-attr-no-decl() {
    if (.decl-func-flags & #no-decl) != #0 {
-      C1<stdout .input-path '': .last-row '': .last-col ": Error @no-decl specified more than once\n">;
+      C1.stdout<.input-path '': .last-row '': .last-col ": Error @no-decl specified more than once\n">;
       C.exit(#failure);
    }
    .decl-func-flags |= #no-decl;
 }
 func-attr-no-body() {
    if (.decl-func-flags & #no-body) != #0 {
-      C1<stdout .input-path '': .last-row '': .last-col ": Error @no-body specified more than once\n">;
+      C1.stdout<.input-path '': .last-row '': .last-col ": Error @no-body specified more than once\n">;
       C.exit(#failure);
    }
    .decl-func-flags |= #no-body;
 }
 func-attr-real-name(name:Id) {
    if (.decl-func-flags & #real-name) != #0 {
-      C1<stdout .input-path '': .last-row '': .last-col ": Error @real-name specified more than once\n">;
+      C1.stdout<.input-path '': .last-row '': .last-col ": Error @real-name specified more than once\n">;
       C.exit(#failure);
    }
    .decl-func-flags |= #real-name;
@@ -319,7 +319,7 @@ func-attr-real-name(name:Id) {
 }
 func-attr-meta-method(prefix:Id, end:Id) {
    if (.decl-func-flags & #meta-method) != #0 {
-      C1<stdout .input-path '': .last-row '': .last-col ": Error @meta-method specified more than once\n">;
+      C1.stdout<.input-path '': .last-row '': .last-col ": Error @meta-method specified more than once\n">;
       C.exit(#failure);
    }
    .decl-func-flags |= #meta-method;
@@ -328,7 +328,7 @@ func-attr-meta-method(prefix:Id, end:Id) {
 }
 func-attr-decl() {
    if (.decl-func-flags & #decl) != #0 {
-      C1<stdout .input-path '': .last-row '': .last-col ": Error @decl specified more than once\n">;
+      C1.stdout<.input-path '': .last-row '': .last-col ": Error @decl specified more than once\n">;
       C.exit(#failure);
    }
    .decl-func-flags |= #decl;
@@ -339,7 +339,7 @@ func-attr-decl() {
 }
 func-attr-case(name:Id) {
    if (.decl-func-flags & #case) != #0 {
-      C1<stdout .input-path '': .last-row '': .last-col ": Error @case specified more than once\n">;
+      C1.stdout<.input-path '': .last-row '': .last-col ": Error @case specified more than once\n">;
       C.exit(#failure);
    }
    +name-str = name.str();
@@ -347,7 +347,7 @@ func-attr-case(name:Id) {
    +func-name-str = .decl-func-name.str();
    +func-name-len = .decl-func-name.len();
    if (||, name-len > func-name-len, func-name-str[name-len] != ''-, C.memcmp(name-str, func-name-str, name-len) != 0) {
-      C1<stdout .input-path '': .last-row '': .last-col ": Error, function name must begin with words used in @case followed by '-' (dash) then followed by the name of the cvar of case\n">;
+      C1.stdout<.input-path '': .last-row '': .last-col ": Error, function name must begin with words used in @case followed by '-' (dash) then followed by the name of the cvar of case\n">;
       C.exit(#failure);
    }
    .decl-func-flags |= #case;
@@ -374,7 +374,7 @@ var expr-call-cgrp-v:u8[#expr-call-nest-limit][#expr-carg-group-limit];
 expr-push-call(row:u32, col:u32) {
    +call-idx = .expr-call-c++;
    if call-idx >= #expr-call-nest-limit {
-      C1<stdout row '': col ": Too much nested calls\n">;
+      C1.stdout<row '': col ": Too much nested calls\n">;
       C.exit(#failure);
    }
    .expr-call-carg-c[call-idx] = 0;
@@ -454,7 +454,7 @@ expr-pop-method(thiss:ExprI, func-name:Id):ExprI {
 expr-push-metacall(row:u32, col:u32) {
    +call-idx = .expr-call-c++;
    if call-idx >= #expr-call-nest-limit {
-      C1<stdout row '': col ": Too much nested calls\n">;
+      C1.stdout<row '': col ": Too much nested calls\n">;
       C.exit(#failure);
    }
    .expr-call-carg-c[call-idx] = 0;
@@ -480,7 +480,7 @@ expr-pop-metafunc(at:At, func-name:Id):ExprI {
    +e-idx = expr-push(e.base, #metafunc);
    e.at = at;
    e.func-name = func-name;
-   // C1<stdout "parse func-name " func-name ''\n>;
+   // C1.stdout<"parse func-name " func-name ''\n>;
    e.carg-c = carg-c;
    loop i = 0; carg-c; i++ {
       e.carg-v[i].reff = 0;

@@ -20,16 +20,16 @@ using ExprI {
    }
    write-size-of-type(expr:Expr) @case.write() @inline {
       var e:ExprSizeOfType = expr;
-      <output "sizeof(">;
+      output<"sizeof(">;
       e.type.write();
-      <output '')>;
+      output<'')>;
    }
    process-size-of-type(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprSizeOfType = expr;
       e.type = at-validate(e.type, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
       +at = e.type.ptr();
       if (&&, at.type != #basic, at.decl.structt == #nil) {
-         C1<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Error, the type '" at.name.id "' used in [usz] was not defined\n">;
+         C1.stdout<.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Error, the type '" at.name.id "' used in [usz] was not defined\n">;
          return;
       }
       e.type.output(.ctx-func.file, .ctx-begin-row, .ctx-begin-col);
