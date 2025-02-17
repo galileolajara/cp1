@@ -1387,6 +1387,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                tok.val.ii32.id = lex.get-id(0, 0);
                if lex.cursor[0] == ''( {
                   t = #id-then-open-parenthesis;
+               } elif lex.cursor[0] == ''< {
+                  t = #id-then-open-angular-bracket;
                }
                .last-token = t;
                psr.parse(t, tok);
@@ -1430,15 +1432,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                .last-token = t;
                psr.parse(t, tok);
             }
-            case #angular-bracket-id {
-               tok.val.ii32.id = lex.get-id(1, 0);
-               .last-token = t;
-               psr.parse(t, tok);
-            }
             case #dot-id-upper {
                tok.val.ii32.id = lex.get-id(1, 0);
                if lex.cursor[0] == ''( {
                   t = #dot-id-upper-then-open-parenthesis;
+               } elif lex.cursor[0] == ''< {
+                  t = #dot-id-upper-then-open-angular-bracket;
                }
                .last-token = t;
                psr.parse(t, tok);
@@ -1447,6 +1446,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                tok.val.ii32.id = lex.get-id(0, 0);
                if lex.cursor[0] == ''( {
                   t = #id-then-open-parenthesis;
+               } elif lex.cursor[0] == ''< {
+                  t = #id-then-open-angular-bracket;
                }
                .last-token = t;
                psr.parse(t, tok);

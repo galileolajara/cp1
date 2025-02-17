@@ -51,7 +51,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "[" spaces                       { return CP1_TOKEN_OPEN_BRACKET_SPACE; }
    "]"                              { return CP1_TOKEN_CLOSE_BRACKET; }
    spaces "]"                       { return CP1_TOKEN_SPACE_CLOSE_BRACKET; }
-   // "<"                              { return CP1_TOKEN_OPEN_ANGULAR_BRACKET; }
+   "<"                              { return CP1_TOKEN_OPEN_ANGULAR_BRACKET; }
    // "<" spaces                       { return CP1_TOKEN_OPEN_ANGULAR_BRACKET_SPACE; }
    ">"                              { return CP1_TOKEN_CLOSE_ANGULAR_BRACKET; }
    spaces ">"                       { return CP1_TOKEN_SPACE_CLOSE_ANGULAR_BRACKET; }
@@ -200,7 +200,6 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    ":"                              { return CP1_TOKEN_COLON; }
    ":base"                          { return CP1_TOKEN_COLON_BASE; }
 
-   "<" id                           { return CP1_TOKEN_ANGULAR_BRACKET_ID; }
    "#" id                           { return CP1_TOKEN_HASH_ID; }
    [a-z] id_one* ("-" id)*          { return CP1_TOKEN_ID; }
    [A-Z] id_one* ("-" id)*          { return CP1_TOKEN_ID_UPPER; }
