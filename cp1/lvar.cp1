@@ -21,7 +21,7 @@ enum Lvar[#nil = -1, #0]:i32 {
             // lvar.decl.type-info.init();
             // lvar.decl.type-info.copy-from(v.info);
          // } else {
-            C1<stdout .ctx-func.file '': lvar.row '': lvar.col ": local variable '" lvar.decl.name "' doesn't have a type or a value\n">;
+            C1.stdout<.ctx-func.file '': lvar.row '': lvar.col ": local variable '" lvar.decl.name "' doesn't have a type or a value\n">;
             return false;
          // }
          // return true;
@@ -70,7 +70,7 @@ expr-lvar(name:Id, decl:u8, row:u32, col:u32):ExprI {
          space = space.parent;
          if space == null { break }
       }
-      C1<stdout .input-path '': row '': col ": local variable '" name "' was not found\n">;
+      C1.stdout<.input-path '': row '': col ": local variable '" name "' was not found\n">;
       C.exit(#failure);
       return #nil;
    } else {
@@ -78,7 +78,7 @@ expr-lvar(name:Id, decl:u8, row:u32, col:u32):ExprI {
       loop decl > 1 {
          space = space.parent;
          if space == null {
-            C1<stdout .input-path '': row '': col ": Cannot declare local variable '" name "' with too much '+'\n">;
+            C1.stdout<.input-path '': row '': col ": Cannot declare local variable '" name "' with too much '+'\n">;
             C.exit(#failure);
          }
          if (space.flags & #skip-lvar-decl) == #0 {

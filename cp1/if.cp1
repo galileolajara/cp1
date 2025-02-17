@@ -35,9 +35,9 @@ using StmtSpace {
 using Stmt {
    write-if(stmt:Stmt) @case.write() @inline {
       var s:StmtIf = stmt;
-      <output "if(">;
+      output<"if(">;
       s.expr.write-value(s.val);
-      <output ") {\n">;
+      output<") {\n">;
    }
    process-if(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtIf = stmt;
@@ -48,9 +48,9 @@ using Stmt {
    }
    write-if-elif(stmt:Stmt) @case.write() @inline {
       var s:StmtIfElif = stmt;
-      <output "} else if(">;
+      output<"} else if(">;
       s.expr.write-value(s.val);
-      <output ") {\n">;
+      output<") {\n">;
    }
    process-if-elif(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtIfElif = stmt;
@@ -61,7 +61,7 @@ using Stmt {
    }
    write-if-else(stmt:Stmt) @case.write() @inline {
       var s:StmtIfElse = stmt;
-      <output "} else {\n">;
+      output<"} else {\n">;
    }
    process-if-else(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtIfElse = stmt;
@@ -69,7 +69,7 @@ using Stmt {
    }
    write-if-end(stmt:Stmt) @case.write() @inline {
       var s:StmtIfEnd = stmt;
-      <output "}\n">;
+      output<"}\n">;
    }
    process-if-end(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtIfEnd = stmt;

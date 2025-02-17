@@ -414,7 +414,7 @@ quick-alloc(size:i32):ref @real-name(qalloc) {
    grow(.quick-alloc-cap, .quick-alloc-c + size);
    .quick-alloc-v = C.malloc(.quick-alloc-cap);
    C.memset(.quick-alloc-v, 0, .quick-alloc-cap);
-   // C1<stdout "expanding to " .quick-alloc-cap ''\n>;
+   // C1.stdout<"expanding to " .quick-alloc-cap ''\n>;
    .quick-alloc-c = size;
    return .quick-alloc-v;
 }
@@ -522,7 +522,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
       if at.def == #struct {
          if ti.built-in {
             if ti.ref-v[0] != 0 {
-               C1<stdout .ctx-func.file '': row '': col ": Can't use plus symbol (+) because type '" at.name.id "' has reference\n">;
+               C1.stdout<.ctx-func.file '': row '': col ": Can't use plus symbol (+) because type '" at.name.id "' has reference\n">;
                return false;
             }
             ti.ref-v[0] = -1;
@@ -534,7 +534,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
          }
       } else {
          if ti.built-in {
-            C1<stdout .ctx-func.file '': row '': col ": Can't use plus symbol (+) because type '" at.name.id "' is not a struct\n">;
+            C1.stdout<.ctx-func.file '': row '': col ": Can't use plus symbol (+) because type '" at.name.id "' is not a struct\n">;
             return false;
          }
       }
@@ -546,13 +546,13 @@ enum At[#nil = -1, #root, #relative]:i32 {
          case #struct-enum {
             if at.def == #struct {
                if at.decl.structt == #nil {
-                  C1<stdout file '': row '': col ": Error, struct '/" at.name.id "' was not defined\n">;
+                  C1.stdout<file '': row '': col ": Error, struct '/" at.name.id "' was not defined\n">;
                   C.exit(#failure);
                }
                at.decl.structt.output();
             } elif at.def == #enum {
                if at.decl.enumm == #nil {
-                  C1<stdout file '': row '': col ": Error, enum '\\" at.name.id "' was not defined\n">;
+                  C1.stdout<file '': row '': col ": Error, enum '\\" at.name.id "' was not defined\n">;
                   C.exit(#failure);
                }
                at.decl.enumm.output();
@@ -699,7 +699,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
       switch at.type {
          case #module {
             if at.parent != #root { at.parent.write-space() }
-            <output "_M" at.name.id.c-name()>;
+            output<"_M" at.name.id.c-name()>;
          }
          case #struct-enum {
             if at.def == #struct {
@@ -709,89 +709,89 @@ enum At[#nil = -1, #root, #relative]:i32 {
                   if (t.flags & #real-name) != #0 {
                      if t.real-name == #nil {
                         if (t.flags & #union) != #0 {
-                           <output "union " at.name.id.c-name()>;
+                           output<"union " at.name.id.c-name()>;
                         } else {
-                           <output "struct " at.name.id.c-name()>;
+                           output<"struct " at.name.id.c-name()>;
                         }
                      } else {
                         if (t.flags & #union) != #0 {
-                           <output t.real-name>;
+                           output<t.real-name>;
                         } else {
-                           <output t.real-name>;
+                           output<t.real-name>;
                         }
                      }
                      return;
                   }
                }
                if (t.flags & #union) != #0 {
-                  <output "union ">;
+                  output<"union ">;
                } else {
-                  <output "struct ">;
+                  output<"struct ">;
                }
                if at.parent != #root { at.parent.write-space() }
-               <output "_N" at.name.id.c-name()>;
+               output<"_N" at.name.id.c-name()>;
             } elif at.def == #enum {
                +t-idx = at.decl.enumm;
                if t-idx != #nil {
                   +t = t-idx.ptr();
                   if (t.flags & #real-name) != #0 {
-                     <output t.real-name>;
+                     output<t.real-name>;
                      return;
                   }
                }
                if at.parent != #root { at.parent.write-space() }
-               <output "_N" at.name.id.c-name()>;
+               output<"_N" at.name.id.c-name()>;
             }
          }
          case #basic {
             switch at.name.basic {
                case #ref {
-                  <output "void*">;
+                  output<"void*">;
                }
                case #bool {
-                  <output "bool">;
+                  output<"bool">;
                }
                case #char {
-                  <output "char">;
+                  output<"char">;
                }
                case #intc {
-                  <output "int">;
+                  output<"int">;
                }
                case #i8 {
-                  <output "int8_t">;
+                  output<"int8_t">;
                }
                case #u8 {
-                  <output "uint8_t">;
+                  output<"uint8_t">;
                }
                case #i16 {
-                  <output "int16_t">;
+                  output<"int16_t">;
                }
                case #u16 {
-                  <output "uint16_t">;
+                  output<"uint16_t">;
                }
                case #i32 {
-                  <output "int32_t">;
+                  output<"int32_t">;
                }
                case #u32 {
-                  <output "uint32_t">;
+                  output<"uint32_t">;
                }
                case #i64 {
-                  <output "int64_t">;
+                  output<"int64_t">;
                }
                case #u64 {
-                  <output "uint64_t">;
+                  output<"uint64_t">;
                }
                case #isz {
-                  <output "ssize_t">;
+                  output<"ssize_t">;
                }
                case #usz {
-                  <output "size_t">;
+                  output<"size_t">;
                }
                case #f32 {
-                  <output "float">;
+                  output<"float">;
                }
                case #f64 {
-                  <output "double">;
+                  output<"double">;
                }
             }
          }
@@ -802,66 +802,66 @@ enum At[#nil = -1, #root, #relative]:i32 {
       switch at.type {
          case #module {
             if at.parent != #root { at.parent.write-space() }
-            <output "_M" at.name.id.c-name()>;
+            output<"_M" at.name.id.c-name()>;
          }
          case #struct-enum {
             // if at.def == #struct {
                if at.parent != #root { at.parent.write-space() }
-               <output "_N" at.name.id.c-name()>;
+               output<"_N" at.name.id.c-name()>;
             // } elif at.def == #enum {
             //    if at.parent != #root { at.parent.write-space() }
-            //    <output "_E" at.name.id.c-name>;
+            //    output<"_E" at.name.id.c-name>;
             // }
          }
          case #basic {
             switch at.name.basic {
                case #ref {
-                  <output "_Tref">;
+                  output<"_Tref">;
                }
                case #bool {
-                  <output "_Tbool">;
+                  output<"_Tbool">;
                }
                case #char {
-                  <output "_Tchar">;
+                  output<"_Tchar">;
                }
                case #intc {
-                  <output "_Tintc">;
+                  output<"_Tintc">;
                }
                case #i8 {
-                  <output "_Ti8">;
+                  output<"_Ti8">;
                }
                case #u8 {
-                  <output "_Tu8">;
+                  output<"_Tu8">;
                }
                case #i16 {
-                  <output "_Ti16">;
+                  output<"_Ti16">;
                }
                case #u16 {
-                  <output "_Tu16">;
+                  output<"_Tu16">;
                }
                case #i32 {
-                  <output "_Ti32">;
+                  output<"_Ti32">;
                }
                case #u32 {
-                  <output "_Tu32">;
+                  output<"_Tu32">;
                }
                case #i64 {
-                  <output "_Ti64">;
+                  output<"_Ti64">;
                }
                case #u64 {
-                  <output "_Tu64">;
+                  output<"_Tu64">;
                }
                case #isz {
-                  <output "_Tisz">;
+                  output<"_Tisz">;
                }
                case #usz {
-                  <output "_Tusz">;
+                  output<"_Tusz">;
                }
                case #f32 {
-                  <output "_Tf32">;
+                  output<"_Tf32">;
                }
                case #f64 {
-                  <output "_Tf64">;
+                  output<"_Tf64">;
                }
             }
          }

@@ -55,28 +55,28 @@ using ExprI {
       var e:ExprBools = expr;
       switch e.type {
          case #and {
-            <output ''(>;
+            output<''(>;
             e.left.write-value(e.left-val);
-            <output " && ">;
+            output<" && ">;
             e.right.write-value(e.right-val);
             loop i = 0; e.item-c; i++ {
-               <output " && ">;
+               output<" && ">;
                +item = e.item-v[i];
                item.expr.write-value(item.val);
             }
-            <output '')>;
+            output<'')>;
          }
          case #or {
-            <output ''(>;
+            output<''(>;
             e.left.write-value(e.left-val);
-            <output " || ">;
+            output<" || ">;
             e.right.write-value(e.right-val);
             loop i = 0; e.item-c; i++ {
-               <output " || ">;
+               output<" || ">;
                +item = e.item-v[i];
                item.expr.write-value(item.val);
             }
-            <output '')>;
+            output<'')>;
          }
       }
    }

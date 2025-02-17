@@ -5,9 +5,9 @@ using Cp1 {
 print-type(at-i:At, info:TypeInfo) {
    +at = at-i.ptr();
    if at.type == #basic {
-      C1<stdout "basic type " at.name.basic.cp1-name() ", star-c " info.star-c ''\n>;
+      C1.stdout<"basic type " at.name.basic.cp1-name() ", star-c " info.star-c ''\n>;
    } else {
-      C1<stdout "custom type " at.name.id ", star-c " info.star-c ''\n>;
+      C1.stdout<"custom type " at.name.id ", star-c " info.star-c ''\n>;
    }
 }
 compatible(src:At, src-c:u8, des:At, des-c:u8):bool {
@@ -38,7 +38,7 @@ farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At,
       r = 1;
       r += fd-arg.type-info.ref-v[fd-arg.type-info.array-c]:i32;
    }
-   // C1<stdout "r " r ", " j ''  fd-arg.type-info.array-c ''  fd-arg.type-info.ref-v[fd-arg.type-info.array-c] ''\n>;
+   // C1.stdout<"r " r ", " j ''  fd-arg.type-info.array-c ''  fd-arg.type-info.ref-v[fd-arg.type-info.array-c] ''\n>;
    if ce.type == #lvar {
       var ve:ExprLvar = ce;
       +lvar = ve.lvar.ptr();
@@ -51,7 +51,7 @@ farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At,
             // }
             +parent = fd-arg.type.ptr().parent.ptr();
             if (parent.type == #basic) && (parent.name.basic == #relative) {
-               C1<stdout "farg-process without processing farg first\n">;
+               C1.stdout<"farg-process without processing farg first\n">;
                C.exit(#failure);
             }
             vd.type = fd-arg.type;
@@ -71,11 +71,11 @@ farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At,
    e.try-deduce(fd-arg.type);
    if !e.value(r, false, ca-value) { return false }
    if !compatible(ca-value.type, ca-value.info.star-c + ca-value.type.pointer(), fd-arg.type, fd-arg.type-info.star-c + fd-arg.type.pointer()) {
-      C1<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the function argument ">;
+      C1.stdout<.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the function argument ">;
       if arg-num == -1 {
-         C1<stdout "'this'\n">;
+         C1.stdout<"'this'\n">;
       } else {
-         C1<stdout ''# (arg-num + 1):u32 ''\n>;
+         C1.stdout<''# (arg-num + 1):u32 ''\n>;
       }
       // print-type(ca-value.type, ca-value.info);
       // print-type(fd-arg.type, fd-arg.type-info);
@@ -114,14 +114,14 @@ using ExprI {
       var e:ExprMethod = expr;
       +f = e.func-idx.ptr();
       f.write();
-      <output ''(>;
+      output<''(>;
       +first = true;
       +i = 0;
       loop ; f.this-idx; i++ {
          if first {
             first = false;
          } else {
-            <output ", ">;
+            output<", ">;
          }
          +ca = e.carg-v[i];
          ca.expr.write-value(ca.value);
@@ -129,15 +129,15 @@ using ExprI {
       if first {
          first = false;
       } else {
-         <output ", ">;
+         output<", ">;
       }
       e.thiss.write-value(e.this-value);
       loop ; e.carg-c - f.this-idx; i++ {
-         <output ", ">;
+         output<", ">;
          +ca = e.carg-v[i];
          ca.expr.write-value(ca.value);
       }
-      <output '')>;
+      output<'')>;
    }
    wr-method(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprMethod = expr;
@@ -190,7 +190,7 @@ using ExprI {
       +carg-c1 = carg-c + 1;
       +at-idx = e.thiss.type();
       if at-idx == #nil {
-         C1<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot call method " func-name " on a value without a type\n">;
+         C1.stdout<.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot call method " func-name " on a value without a type\n">;
          return;
       }
       +at = at-idx.ptr();
@@ -201,7 +201,7 @@ using ExprI {
          method-v = t.method-v;
       } else {
          if (&&, at.decl.structt == #nil, at.type != #basic, at.type != #module) {
-            C1<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot call method " func-name " because the type " at.name.id " is not defined\n">;
+            C1.stdout<.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot call method " func-name " because the type " at.name.id " is not defined\n">;
             return;
          }
          if at.def == #struct {
@@ -299,20 +299,20 @@ using ExprI {
          ok = true;
          return;
       }
-      C1<stdbuf .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find method " func-name " from type ">;
+      C1.stdbuf<.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find method " func-name " from type ">;
       if at.type == #basic {
-         C1<stdbuf at.name.basic.cp1-name()>;
+         C1.stdbuf<at.name.basic.cp1-name()>;
       } else {
-         C1<stdbuf at.name.id>;
+         C1.stdbuf<at.name.id>;
       }
-      C1<stdout " with " carg-c " argument/s\n">;
+      C1.stdout<" with " carg-c " argument/s\n">;
       if found != -1 {
-         C1<stdout "But found " similar-c " functions with different no. of argument/s:\n">;
+         C1.stdout<"But found " similar-c " functions with different no. of argument/s:\n">;
          loop i = 0; at.func-c; i++ {
             +f-idx = at.func-v[i];
             +f = .func-v[f-idx];
             if f.decl.name == func-name {
-               C1<stdout "- :" func-name " with " f.farg-c " args\n">;
+               C1.stdout<"- :" func-name " with " f.farg-c " args\n">;
             }
          }
       }
@@ -321,20 +321,20 @@ using ExprI {
       var e:ExprFunc = expr;
       +f = e.func-idx.ptr();
       f.write();
-      <output ''(>;
+      output<''(>;
       loop i = 0; e.carg-c; i++ {
          if i != 0 {
-            <output ", ">;
+            output<", ">;
          }
          e.carg-v[i].expr.write-value(e.carg-v[i].value);
       }
-      <output '')>;
+      output<'')>;
    }
    write-metafunc(expr:Expr) @case.write() @inline {
       var e:ExprMetaFunc = expr;
       e.expr-v[0].write();
       loop i = 1; e.expr-c - 1; i++ {
-         <output ";\n">;
+         output<";\n">;
          e.expr-v[i].write();
       }
    }
@@ -382,7 +382,7 @@ using ExprI {
          carg-v[0] = lvar;
          set-func(e-idx, at-idx, func-name, 1, group-v, 1, carg-v);
       }
-      // C1<stdout "group-c " group-c ", carg-c " carg-c ''\n>;
+      // C1.stdout<"group-c " group-c ", carg-c " carg-c ''\n>;
       loop i = 1; group-c - 1; i++ {
          +carg-c = group-v[i];
          e-idx = ExprI.alloc();
@@ -408,7 +408,7 @@ using ExprI {
             // if .id-cstr == 0:Id {
                // .id-cstr = id-add(4, "cstr");
             // }
-            // C1<stdout "lvar.cstr()\n">;
+            // C1.stdout<"lvar.cstr()\n">;
             set-method(e-idx, lvar, #nil, 1, group-v, group-v[0], carg2-v);
          } else {
             group-v[0] = 1 + (carg-c - 1);
@@ -416,7 +416,7 @@ using ExprI {
             loop k = 1; carg-c - 1 {
                carg2-v[k++] = carg-v[j++];
             }
-            // C1<stdout "carg." func-name "()\n">;
+            // C1.stdout<"carg." func-name "()\n">;
             set-method(e-idx, carg, #nil, 1, group-v, group-v[0], carg2-v);
          }
       }
@@ -484,7 +484,7 @@ using ExprI {
       var e-func:ExprFunc = e.expr-v[0].ptr();
       +f = e-func.func-idx.ptr();
       if (f.flags & #meta-method) == #0 {
-         C1<stdout .ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": When using <" f.decl.name " ...>, there must be a @meta-method(NAME-PREFIX END-NAME) attribute in the function " f.decl.name ''\n>;
+         C1.stdout<.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": When using <" f.decl.name " ...>, there must be a @meta-method(NAME-PREFIX END-NAME) attribute in the function " f.decl.name ''\n>;
          return;
       }
       // C1<stdout
@@ -495,10 +495,10 @@ using ExprI {
       loop i = 1; e.expr-c - 2; i++ {
          +e-idx = e.expr-v[i];
          var e-method:ExprMethod = e-idx.ptr();
-         // C1<stdout i ") carg-c " e-method.carg-c ", type " e-data2.type.cp1-name() ''\n>;
-         // C1<stdout e-data2.type.cp1-name()>;
+         // C1.stdout<i ") carg-c " e-method.carg-c ", type " e-data2.type.cp1-name() ''\n>;
+         // C1.stdout<e-data2.type.cp1-name()>;
          if e-method.carg-v[0].expr.ptr().type == #str {
-            // C1<stdout "constant string\n">;
+            // C1.stdout<"constant string\n">;
             e-method.func-name = f.meta-method-cstr;
          } else {
             +e-idx2 = e-method.thiss;
@@ -543,12 +543,12 @@ using ExprI {
       loop {
          +at = at-idx.ptr();
          // if (&&, at.decl.struct == #nil, at.type != #basic, at.type != #module) {
-         //    C1<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot call function " func-name " because the type :" at.name.id " is not defined\n">;
+         //    C1.stdout<.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot call function " func-name " because the type :" at.name.id " is not defined\n">;
          //    return;
          // }
          // +found = -1;
          // +similar-c = 0;
-         // C1<stdout "searching from " at.func-c " functions\n">;
+         // C1.stdout<"searching from " at.func-c " functions\n">;
          loop i = 0; at.func-c; i++ {
             +f-idx = at.func-v[i];
             +f = f-idx.ptr();
@@ -611,14 +611,14 @@ using ExprI {
          if at-idx == #root { break }
          at-idx = at.parent;
       }
-      C1<stdout .ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find function " func-name " with " carg-c " argument/s\n">;
+      C1.stdout<.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find function " func-name " with " carg-c " argument/s\n">;
       // if found != -1 {
-      //    C1<stdout "But found " similar-c " functions with different no. of argument/s:\n">;
+      //    C1.stdout<"But found " similar-c " functions with different no. of argument/s:\n">;
       //    loop i = 0; at.func-c; i++ {
       //       +f-idx = at.func-v[i];
       //       +f = .func-v[f-idx];
       //       if f.decl.name == func-name {
-      //          C1<stdout "- :" func-name " with " f.farg-c " args\n">;
+      //          C1.stdout<"- :" func-name " with " f.farg-c " args\n">;
       //       }
       //    }
       // }
