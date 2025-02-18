@@ -1,8 +1,9 @@
 using Cp1 = Cp1;
 using Cp1 {
 expr-char(value:i32):ExprI {
-   quick-alloc-one(+(e:ExprChar));
-   +e-idx = expr-push(e.base, #char);
+   var e:ExprChar;
+   quick-alloc-one(e);
+   e-idx! = expr-push(e.base, #char);
    e.value = value;
    return e-idx;
 }
@@ -13,7 +14,8 @@ using ExprI {
       w.n(e.value);
    }
    rd-char(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:ExprChar));
+      var e:ExprChar;
+      quick-alloc-one(e);
       e-idx.set(e.base, #char);
       e.value = r.n();
    }

@@ -3,8 +3,9 @@ using C = LibC;
 using C1 = LibCp1;
 using Cp1 {
 expr-size-of-type(at:At):ExprI {
-   quick-alloc-one(+(e:ExprSizeOfType));
-   +e-idx = expr-push(e.base, #size-of-type);
+   var e:ExprSizeOfType;
+   quick-alloc-one(e);
+   e-idx! = expr-push(e.base, #size-of-type);
    e.type = at;
    return e-idx;
 }
@@ -14,7 +15,8 @@ using ExprI {
       e.type.wr(w, header);
    }
    rd-size-of-type(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:ExprSizeOfType));
+      var e:ExprSizeOfType;
+      quick-alloc-one(e);
       e-idx.set(e.base, #size-of-type);
       e.type.rd(r);
    }
@@ -27,7 +29,7 @@ using ExprI {
    process-size-of-type(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprSizeOfType = expr;
       e.type = at-validate(e.type, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
-      +at = e.type.ptr();
+      at! = e.type.ptr();
       if (&&, at.type != #basic, at.decl.structt == #nil) {
          C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Error, the type '" at.name.id "' used in [usz] was not defined\n"}
          return;

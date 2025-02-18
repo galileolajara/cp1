@@ -18,7 +18,8 @@ struct StmtSpace[
    lvar-v:Lvar[],
    ] {
    rd-space(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(s:StmtSpace));
+      var s:StmtSpace;
+      quick-alloc-one(s);
       s.rd(r, space);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #space);
    }
@@ -34,8 +35,8 @@ struct StmtSpace[
          lvar-c = space.lvar-c;
       }
       loop ; lvar-c; i++ {
-         +lvar-i = space.lvar-v[i];
-         +lvar = lvar-i.ptr();
+         lvar-i! = space.lvar-v[i];
+         lvar! = lvar-i.ptr();
          lvar.decl.write-lvar-type(lvar-i);
          if (lvar.flags & #set-expr) != #0 {
             output{" = {0}"}
@@ -43,7 +44,7 @@ struct StmtSpace[
          }
          output{";\n"}
       }
-      +s = space.stmt-first;
+      s! = space.stmt-first;
       loop s != null {
          s.write();
          s = s.stmt-next;
@@ -55,30 +56,31 @@ struct StmtSpace[
    }
    lvar-new(space:this, name:Id, row:u32, col:u32, check-duplicate:bool):Lvar {
       if check-duplicate {
-         +v = space.lvar-v;
+         v! = space.lvar-v;
          loop i = 0; space.lvar-c; i++ {
-            +lvar = v[i].ptr();
+            lvar! = v[i].ptr();
             if lvar.decl.name == name {
                C1.stdout{.input-path '': row '': col ": lvar '" name.str() "' was already declared at " lvar.row '': lvar.col ''\n}
                C.exit(#failure);
             }
          }
       }
-      +i = space.lvar-c++;
+      i! = space.lvar-c++;
       if space.lvar-cap <= space.lvar-c {
-         +old-cap = space.lvar-cap;
+         old-cap! = space.lvar-cap;
          grow(space.lvar-cap, space.lvar-c);
          realloc(space.lvar-v, space.lvar-cap, old-cap);
       }
-      +f = .ctx-func;
-      +lvar = f.lvar-c++;
+      f! = .ctx-func;
+      lvar! = f.lvar-c++;
       space.lvar-v[i] = lvar;
       if f.lvar-cap <= f.lvar-c {
-         +old-cap = f.lvar-cap;
+         old-cap! = f.lvar-cap;
          f.lvar-cap = grow(f.lvar-c:base);
          realloc(f.lvar-v, f.lvar-cap:base, old-cap:base);
       }
-      quick-alloc-one(+(item:LvarData));
+      var item:LvarData;
+      quick-alloc-one(item);
       f.lvar-v[lvar] = item;
       item.row = row;
       item.col = col;
@@ -94,7 +96,7 @@ struct StmtSpace[
       loop i = 0; space.lvar-c; i++ {
          space.lvar-v[i].wr(w);
       }
-      +stmt = space.stmt-first;
+      stmt! = space.stmt-first;
       loop stmt != null {
          stmt.type.wr(w);
          if #debug-rd-wr {
@@ -137,7 +139,7 @@ struct StmtSpace[
       space.stmt-first = null;
       space.stmt-last = null;
 
-      +lvar-c = r.n();
+      lvar-c! = r.n();
       space.lvar-c = lvar-c;
       quick-alloc-arr(space.lvar-v, lvar-c);
       loop i = 0; lvar-c; i++ {
@@ -145,7 +147,7 @@ struct StmtSpace[
       }
 
       loop {
-         StmtType.rd(+type, r);
+         StmtType.rd(type!, r);
          if type == #nil { break }
          if #debug-rd-wr {
             if r.n1() != 255 {
@@ -153,10 +155,10 @@ struct StmtSpace[
                C.exit(#failure);
             }
          }
-         +begin-row = r.n();
-         +begin-col = r.n();
-         +end-row = r.n();
-         +end-col = r.n();
+         begin-row! = r.n();
+         begin-col! = r.n();
+         end-row! = r.n();
+         end-col! = r.n();
          .ctx-begin-row = begin-row;
          .ctx-begin-col = begin-col;
          .ctx-end-row = end-row;
@@ -176,7 +178,7 @@ struct StmtSpace[
       }
    }
    process(space:this):bool {
-      +s = space.stmt-first;
+      s! = space.stmt-first;
       loop s != null {
          if !s.process() { return false }
          s = s.stmt-next;
@@ -211,9 +213,9 @@ stmt-space-begin():StmtSpace {
    return stmt-space-begin(true);
 }
 stmt-space-begin(attach:bool):StmtSpace {
-   +parent = .decl-func-ctx-space;
+   parent! = .decl-func-ctx-space;
    quick-alloc-one(.decl-func-ctx-space);
-   +space = .decl-func-ctx-space;
+   space! = .decl-func-ctx-space;
    space.parent = parent;
    if attach {
       if parent.stmt-last == null {
@@ -230,7 +232,7 @@ stmt-space-begin-detach():StmtSpace {
    return stmt-space-begin(false);
 }
 stmt-space-end():StmtSpace {
-   +ret = .decl-func-ctx-space;
+   ret! = .decl-func-ctx-space;
    .decl-func-ctx-space = .decl-func-ctx-space.parent;
    return ret;
 }

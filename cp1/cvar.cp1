@@ -4,7 +4,7 @@ using C1 = LibCp1;
 using Cp1 {
 enum Cvar[#nil = -1, #0]:i32 {
    rd(c:this&, r:Rdr) @inline {
-      +idx = (r.n() - 1):Cvar;
+      idx! = (r.n() - 1):Cvar;
       if idx == #nil {
          c = #nil;
       } else {
@@ -15,13 +15,13 @@ enum Cvar[#nil = -1, #0]:i32 {
       w.n(g:base + 1);
    }
    process(c:this):bool {
-      +num = c:u32;
-      +n3 = num >> 3;
-      +n17 = 1 << (num & 7);
+      num! = c:u32;
+      n3! = num >> 3;
+      n17! = 1 << (num & 7);
       if (.cvar-is-outputted[n3] & n17) != 0 { return true }
       .cvar-is-outputted[n3] |= n17;
 
-      +cvar = c.ptr();
+      cvar! = c.ptr();
 
       if (cvar.flags & #set-expr) != #0 {
          if !cvar.expr-set.process() { return false }
@@ -29,9 +29,9 @@ enum Cvar[#nil = -1, #0]:i32 {
          if !cvar.last-cvar.process() { return false }
       }
 
-      +at-i = cvar.decl.type;
+      at-i! = cvar.decl.type;
       if at-i != #nil {
-         +at = at-i.ptr();
+         at! = at-i.ptr();
          if (&&, at.type != #basic, at.decl.structt == #nil) {
             C1.stdout{"Error, the type '" at.name.id "' used in cvar '." cvar.decl.name "' was not defined\n"}
             return false;
@@ -49,7 +49,7 @@ enum Cvar[#nil = -1, #0]:i32 {
       return .cvar-v[c];
    }
    write(c:this) @inline {
-      +cvar = c.ptr();
+      cvar! = c.ptr();
       if (cvar.decl.flags & #real-name) != #0 {
          output{cvar.decl.real-name}
       } else {
@@ -75,8 +75,9 @@ var cvar-c:Cvar;
 var cvar-cap:Cvar;
 var cvar-v:CvarData.[];
 expr-cvar(at:At, name:Id):ExprI {
-   quick-alloc-one(+(e:ExprCvar));
-   +e-idx = expr-push(e.base, #cvar);
+   var e:ExprCvar;
+   quick-alloc-one(e);
+   e-idx! = expr-push(e.base, #cvar);
    e.at = at;
    e.name = name;
    return e-idx;
@@ -92,7 +93,8 @@ using ExprI {
       e.name.wr(w, header);
    }
    rd-cvar(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:ExprCvar));
+      var e:ExprCvar;
+      quick-alloc-one(e);
       e-idx.set(e.base, #cvar);
       e.at.rd(r);
       e.name.rd(r);
@@ -100,7 +102,7 @@ using ExprI {
    }
    value-cvar(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       var expr:ExprCvar = e.ptr();
-      +cvar = expr.cvar.ptr();
+      cvar! = expr.cvar.ptr();
       v.set(reff, paren, cvar.decl.type, cvar.decl.type-info);
       if v.reff == 1 {
          v.paren = false;
@@ -109,20 +111,20 @@ using ExprI {
    }
    type-cvar(expr:Expr, at:At&) @case.type() @inline {
       var e:ExprCvar = expr;
-      +cvar = e.cvar.ptr();
+      cvar! = e.cvar.ptr();
       at = cvar.decl.type;
    }
    process-cvar(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprCvar = expr;
-      +name = e.name;
+      name! = e.name;
       var cvar-c, cvar-v;
       if e.try != #nil {
-         +at = e.try.ptr();
+         at! = e.try.ptr();
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
          // C1.stdout{"e.try = " e.try ", " at.name.id ", " name ", cvar-c " cvar-c ''\n}
          loop i = 0; cvar-c; i++ {
-            +cvar = cvar-v[i];
+            cvar! = cvar-v[i];
             // C1.stdout{"- " cvar.ptr.decl.name ''\n}
             if cvar.ptr().decl.name == name {
                if !cvar.process() { return }
@@ -133,7 +135,7 @@ using ExprI {
          }
       }
       var at-idx, at;
-      +try-parent = false;
+      try-parent! = false;
       if e.at != #nil {
          e.at = at-validate(e.at, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
          at-idx = e.at;
@@ -149,7 +151,7 @@ using ExprI {
       }
       loop {
          loop i = 0; cvar-c; i++ {
-            +cvar = cvar-v[i];
+            cvar! = cvar-v[i];
             if cvar.ptr().decl.name == name {
                if !cvar.process() { return }
                e.cvar = cvar;

@@ -13,16 +13,16 @@ enum Struct[#nil = -1, #0, #1]:i32 {
       return .struct-v[s];
    }
    output(s-i:this) {
-      +num = s-i:u32;
-      +n3 = num >> 3;
-      +n17 = 1 << (num & 7);
+      num! = s-i:u32;
+      n3! = num >> 3;
+      n17! = 1 << (num & 7);
       if (.struct-is-outputted[n3] & n17) != 0 { return }
       .struct-is-outputted[n3] |= n17;
-      +s = s-i.ptr();
-      +s-at = s.at;
-      +s-file = s.file;
-      +s-row = s.begin-row;
-      +s-col = s.begin-col;
+      s! = s-i.ptr();
+      s-at! = s.at;
+      s-file! = s.file;
+      s-row! = s.begin-row;
+      s-col! = s.begin-col;
       loop i = 0; s.fvar-c; i++ {
          // s.fvar-v[i].decl.type.output(s.file, row, col);
          // if !s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col) { return }
@@ -77,9 +77,9 @@ var decl-fvar-c:u32;
 var decl-fvar-cap:u32;
 var decl-fvar-v:DeclVarData.[];
 decl-var-as-fvar() {
-   +fvar = .decl-fvar-c++;
+   fvar! = .decl-fvar-c++;
    if .decl-fvar-cap <= .decl-fvar-c {
-      +old-cap = .decl-fvar-cap;
+      old-cap! = .decl-fvar-cap;
       grow(.decl-fvar-cap, .decl-fvar-c);
       realloc(.decl-fvar-v, .decl-fvar-cap, old-cap);
    }
@@ -98,9 +98,9 @@ decl-at-begin-struct(name:Id, row:u32, col:u32) {
    .decl-struct-flags = #0;
 }
 decl-struct-end(row:u32, col:u32) {
-   +s-idx = .struct-c++;
+   s-idx! = .struct-c++;
    if .struct-cap <= .struct-c {
-      +old-cap = .struct-cap;
+      old-cap! = .struct-cap;
       .struct-cap = grow(.struct-c:base);
       realloc(.struct-v, .struct-cap:base, old-cap:base);
    }
@@ -117,7 +117,7 @@ decl-struct-end(row:u32, col:u32) {
    // s.name = .decl-struct-name;
    s.fvar-c = .decl-fvar-c;
    loop i = 0; .decl-fvar-c; i++ {
-      +a = s.fvar-v[i];
+      a! = s.fvar-v[i];
       a.decl.copy-from(.decl-fvar-v[i]);
    }
    s.real-name = .decl-struct-real-name;

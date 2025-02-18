@@ -394,7 +394,7 @@ quick-alloc-init() {
    C.memset(.quick-alloc-v, 0, .quick-alloc-cap);
 }
 quick-alloc(size:i32):ref @real-name(qalloc) {
-   // +mem = C.malloc(size);
+   // mem! = C.malloc(size);
    // C.memset(mem, 0, size);
    // return mem;
    // snap to usz
@@ -518,7 +518,7 @@ var at-cap:At;
 var at-v:AtData.[];
 enum At[#nil = -1, #root, #relative]:i32 {
    finalize(at-i:this, ti:TypeInfo, row:u32, col:u32):bool {
-      +at = at-i.ptr();
+      at! = at-i.ptr();
       if at.def == #struct {
          if ti.built-in {
             if ti.ref-v[0] != 0 {
@@ -541,7 +541,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
       return true;
    }
    output(at-i:this, file:File, row:u32, col:u32) {
-      +at = at-i.ptr();
+      at! = at-i.ptr();
       switch at.type {
          case #struct-enum {
             if at.def == #struct {
@@ -597,7 +597,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
    write-type-info(td:this, ti:TypeInfo, add:i32):bool {
       ti.count();
       td.write-type();
-      +s = td.count-stars0(ti) + add;
+      s! = td.count-stars0(ti) + add;
       if s > 0 {
          output-bytes("********************************", s);
       }
@@ -624,7 +624,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
       td.write();
 //    if td.typeType == #value {
 //       if td.real.baseDecl == null {
-//          +loc = td.location;
+//          loc! = td.location;
 //          C.err.printf("%s:%d:%d: base type was null\n", loc.path, loc.row, loc.col);
 //          return false;
 //       }
@@ -651,7 +651,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
       return .at-v[i];
    }
    rd(i:this&, r:Rdr) @inline {
-      +idx = (r.n() - 1):At;
+      idx! = (r.n() - 1):At;
       if idx == #nil {
          i = #nil;
       } else {
@@ -695,7 +695,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
       }
    }
    write(at-idx:this) {
-      +at = at-idx.ptr();
+      at! = at-idx.ptr();
       switch at.type {
          case #module {
             if at.parent != #root { at.parent.write-space() }
@@ -703,8 +703,8 @@ enum At[#nil = -1, #root, #relative]:i32 {
          }
          case #struct-enum {
             if at.def == #struct {
-               +t-idx = at.decl.structt;
-               +t = t-idx.ptr();
+               t-idx! = at.decl.structt;
+               t! = t-idx.ptr();
                if t-idx != #nil {
                   if (t.flags & #real-name) != #0 {
                      if t.real-name == #nil {
@@ -731,9 +731,9 @@ enum At[#nil = -1, #root, #relative]:i32 {
                if at.parent != #root { at.parent.write-space() }
                output{"_N" at.name.id.c-name()}
             } elif at.def == #enum {
-               +t-idx = at.decl.enumm;
+               t-idx! = at.decl.enumm;
                if t-idx != #nil {
-                  +t = t-idx.ptr();
+                  t! = t-idx.ptr();
                   if (t.flags & #real-name) != #0 {
                      output{t.real-name}
                      return;
@@ -798,7 +798,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
       }
    }
    write-space(at-idx:this) {
-      +at = at-idx.ptr();
+      at! = at-idx.ptr();
       switch at.type {
          case #module {
             if at.parent != #root { at.parent.write-space() }
@@ -877,7 +877,7 @@ enum Include[#nil = -1, #0]:i32 {
       w.n(i:base + 1);
    }
    rd(i:this&, r:Rdr) @inline {
-      +idx = (r.n() - 1):Include;
+      idx! = (r.n() - 1):Include;
       if idx == #nil {
          i = #nil;
       } else {
@@ -885,9 +885,9 @@ enum Include[#nil = -1, #0]:i32 {
       }
    }
    output(thiss:this) @inline {
-      +num = thiss:u32;
-      +n3 = num >> 3;
-      +n17 = 1 << (num & 7);
+      num! = thiss:u32;
+      n3! = num >> 3;
+      n17! = 1 << (num & 7);
       if (.include-is-outputted[n3] & n17) != 0 { return }
       .include-is-outputted[n3] |= n17;
       .include-outputted-v[.include-outputted-c++] = thiss;
@@ -917,8 +917,8 @@ enum Id[#nil = -1, #0]:i32 {
    c-name(id:this):char[] {
       var c-name:char[] = .id-c-name-v[id];
       if c-name != null { return c-name }
-      +len = .id-len-v[id];
-      +str = .id-str-v[id];
+      len! = .id-len-v[id];
+      str! = .id-str-v[id];
       c-name = quick-alloc(len + 1);
       .id-c-name-v[id] = c-name;
       loop i = 0; len; i++ {
@@ -968,7 +968,7 @@ enum Id[#nil = -1, #0]:i32 {
       }
    }
    rd(id:this&, r:Rdr) @inline {
-      +idx = (r.n() - 1):Id;
+      idx! = (r.n() - 1):Id;
       if idx == #nil {
          id = #nil;
       } else {

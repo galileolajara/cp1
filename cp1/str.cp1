@@ -10,15 +10,17 @@ var str-len:i32[];
 var string-buf:char[] @extern;
 var string-len:i32 @extern;
 expr-str(prev:ExprI):ExprI {
-   +len = .string-len;
-   quick-alloc-plus(+(n:ExprStrNode), len + 1);
+   len! = .string-len;
+   var n:ExprStrNode;
+   quick-alloc-plus(n, len + 1);
    n.len = len;
    C.memcpy(n.buf, .string-buf, len);
    n.buf[len] = ''\0;
    n.next = null;
    if prev == #nil {
-      quick-alloc-one(+(e:ExprStr));
-      +e-idx = expr-push(e.base, #str);
+      var e:ExprStr;
+      quick-alloc-one(e);
+      e-idx! = expr-push(e.base, #str);
       e.node-c = 1;
       e.first = n;
       e.last = n;
@@ -36,7 +38,7 @@ using ExprI {
    wr-str(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprStr = expr;
       w.n(e.node-c);
-      +n = e.first;
+      n! = e.first;
       loop {
          w.n(n.len);
          w.copy(n.buf, n.len);
@@ -45,13 +47,15 @@ using ExprI {
       }
    }
    rd-str(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      +node-c = r.n();
-      quick-alloc-one(+(e:ExprStr));
+      node-c! = r.n();
+      var e:ExprStr;
+      quick-alloc-one(e);
       e-idx.set(e.base, #str);
-      +first = true;
+      first! = true;
       loop node-c {
-         +len = r.n();
-         quick-alloc-plus(+(n:ExprStrNode), len + 1);
+         len! = r.n();
+         var n:ExprStrNode;
+         quick-alloc-plus(n, len + 1);
          n.len = len;
          r.copy(n.buf, len);
          n.buf[len] = 0;
@@ -68,7 +72,7 @@ using ExprI {
    }
    write-str(expr:Expr) @case.write() @inline {
       var e:ExprStr = expr;
-      +n = e.first;
+      n! = e.first;
       loop {
          write-str-node(n.len, n.buf);
          n = n.next;

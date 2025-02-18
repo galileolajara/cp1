@@ -1,8 +1,9 @@
 using Cp1 = Cp1;
 using Cp1 {
 expr-bools(left:ExprI, right:ExprI, type:Bools):ExprI {
-   quick-alloc-one(+(e:ExprBools));
-   +e-idx = expr-push(e.base, #bools);
+   var e:ExprBools;
+   quick-alloc-one(e);
+   e-idx! = expr-push(e.base, #bools);
    e.left = left;
    e.right = right;
    e.type = type;
@@ -10,9 +11,9 @@ expr-bools(left:ExprI, right:ExprI, type:Bools):ExprI {
 }
 expr-bools-add(bools:ExprI, right:ExprI):ExprI {
    var e:ExprBools = bools.ptr();
-   +i = e.item-c++;
+   i! = e.item-c++;
    if e.item-cap <= e.item-c {
-      +old-cap = e.item-cap;
+      old-cap! = e.item-cap;
       grow(e.item-cap, e.item-c);
       realloc(e.item-v, e.item-cap, old-cap);
    }
@@ -46,7 +47,7 @@ using ExprI {
       if !e.left.value(1, true, e.left-val) { return }
       if !e.right.value(1, true, e.right-val) { return }
       loop i = 0; e.item-c; i++ {
-         +item = e.item-v[i];
+         item! = e.item-v[i];
          if !item.expr.value(1, true, item.val) { return }
       }
       ok = true;
@@ -61,7 +62,7 @@ using ExprI {
             e.right.write-value(e.right-val);
             loop i = 0; e.item-c; i++ {
                output{" && "}
-               +item = e.item-v[i];
+               item! = e.item-v[i];
                item.expr.write-value(item.val);
             }
             output{'')}
@@ -73,7 +74,7 @@ using ExprI {
             e.right.write-value(e.right-val);
             loop i = 0; e.item-c; i++ {
                output{" || "}
-               +item = e.item-v[i];
+               item! = e.item-v[i];
                item.expr.write-value(item.val);
             }
             output{'')}
@@ -91,11 +92,12 @@ using ExprI {
       e.type.wr(w);
    }
    rd-bools(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:ExprBools));
+      var e:ExprBools;
+      quick-alloc-one(e);
       e-idx.set(e.base, #bools);
       e.left.rd(r);
       e.right.rd(r);
-      +item-c = r.n1();
+      item-c! = r.n1();
       if item-c > 0 {
          e.item-c = item-c;
          quick-alloc-arr(e.item-v, item-c);

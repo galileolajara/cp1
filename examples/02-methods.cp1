@@ -54,11 +54,11 @@ using i32 { // access the namespace of 32-bit int, then add a "print" and "incre
    }
 }
 main():intc {
-   Coord.init(+s); // s is automatically declared as a coord allocated in the stack
+   Coord.init(s!); // s is automatically declared as a coord allocated in the stack
    s.walk(#left);
    s.walk(#down);
    C.printf("The location is at (%d, %d)\n", s.x, s.y);
-   +i = 7:i32;
+   i! = 7:i32;
    i.print();
    i.inc();
    i.print();

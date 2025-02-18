@@ -4,7 +4,7 @@ include <fcntl.h> {
    using Posix {
       enum Fd[#nil = -1]:intc {
          open(file:this&, path:char[], flags:OpenFlags):bool @inline {
-            +fd = X.open(path, flags);
+            fd! = X.open(path, flags);
             if fd != -1 {
                file = fd;
                return true;
@@ -13,7 +13,7 @@ include <fcntl.h> {
             }
          }
          open(file:this&, path:char[], flags:OpenFlags, mode:intc):bool @inline {
-            +fd = X.open(path, flags, mode);
+            fd! = X.open(path, flags, mode);
             if fd != -1 {
                file = fd;
                return true;

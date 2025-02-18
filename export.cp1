@@ -5,11 +5,12 @@ main(arg-c:intc, arg-v:char[][]):intc {
       C.printf("Usage: %s [.c input file] [.h output file]\n", arg-v[0]);
       C.exit(#failure);
    }
-   if !X.Fd.open(++in-fd, arg-v[1], #rdonly) {
+   var in-fd;
+   if !X.Fd.open(in-fd, arg-v[1], #rdonly) {
       C.printf("Cannot open file for reading: %s\n", arg-v[1]);
       C.exit(#failure);
    }
-   +in-size = in-fd.seek(0, #end);
+   in-size! = in-fd.seek(0, #end);
    in-fd.seek(0, #set);
    var in-data:char[] = C.malloc(in-size);
    in-fd.read(in-data, in-size);
@@ -18,26 +19,26 @@ main(arg-c:intc, arg-v:char[][]):intc {
       C.printf("Error, file '%s' does not end with a new line\n", arg-v[1]);
       C.exit(#failure);
    }
-   +pos = 0;
-   +get = false;
+   pos! = 0;
+   get! = false;
    var func-name-v:char[256][];
    var func-len-v:u8[256];
-   +func-c = 0;
+   func-c! = 0;
    loop pos < in-size {
-      +start = pos;
+      start! = pos;
       loop {
          if in-data[pos] == ''\n {
             break;
          }
          pos++;
       }
-      +len = pos - start;
+      len! = pos - start;
       var line:char[] = &in-data[start];
       if get {
          if line[0] == ''} {
             break;
          }
-         +lparen = -1;
+         lparen! = -1;
          loop i = 0; len; i++ {
             if line[i] == ''( {
                lparen = i;
@@ -53,18 +54,18 @@ main(arg-c:intc, arg-v:char[][]):intc {
       }
       pos++;
    }
-   +out-f = C.fopen(arg-v[2], "w");
+   out-f! = C.fopen(arg-v[2], "w");
    pos = 0;
-   +indent = 0;
+   indent! = 0;
    loop pos < in-size {
-      +start = pos;
+      start! = pos;
       loop {
          if in-data[pos] == ''\n {
             break;
          }
          pos++;
       }
-      +len = pos - start;
+      len! = pos - start;
       var line:char[] = &in-data[start];
       if len > 0 {
          if line[len - 1] == ''{ {
@@ -73,18 +74,18 @@ main(arg-c:intc, arg-v:char[][]):intc {
             indent--;
          } elif indent == 0 {
             if (&&, line[len - 2] == ''), line[len - 1] == '';) {
-               +lparen = -1;
+               lparen! = -1;
                loop i = 0; len; i++ {
                   if line[i] == ''( {
                      lparen = i;
                      break;
                   }
                }
-               +name = lparen;
+               name! = lparen;
                loop line[name - 1] != ''  {
                   name--;
                }
-               +func-len = lparen - name;
+               func-len! = lparen - name;
                var func:char[] = &line[name];
                loop i = 0; func-c; i++ {
                   if (&&, func-len == func-len-v[i], C.memcmp(func, func-name-v[i], func-len) == 0) {

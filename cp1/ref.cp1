@@ -1,8 +1,9 @@
 using Cp1 = Cp1;
 using Cp1 {
 expr-ref(expr:ExprI):ExprI {
-   quick-alloc-one(+(e:ExprRef));
-   +e-idx = expr-push(e.base, #ref);
+   var e:ExprRef;
+   quick-alloc-one(e);
+   e-idx! = expr-push(e.base, #ref);
    e.expr = expr;
    return e-idx;
 }
@@ -12,7 +13,8 @@ using ExprI {
       e.expr.wr(w, header);
    }
    rd-ref(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:ExprRef));
+      var e:ExprRef;
+      quick-alloc-one(e);
       e-idx.set(e.base, #ref);
       e.expr.rd(r);
    }

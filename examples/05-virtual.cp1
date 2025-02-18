@@ -26,7 +26,7 @@ using Animal {
 }
 
 main(arg-c:intc, arg-v:char[][]):intc {
-   var animal:Animal+; // create an animal object, '+' symbol allocates on stack
+   var animal:Animal.; // create an animal object, '.' symbol allocates on stack
    animal.type = #cat;
    animal.make-sound();
    animal.type = #dog;

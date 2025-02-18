@@ -27,7 +27,7 @@ using Cp1 {
    read-file(path:char[], add-before:i32, add-after:i32, out-size:usz&):ref @inline {
       "#ifdef _WIN32";
       if true {
-         +h = W.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null);
+         h! = W.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null);
          if h == #invalid {
             return null;
          }
@@ -36,7 +36,7 @@ using Cp1 {
             W.CloseHandle(h);
             return null;
          }
-         +size = f-size.quadPart;
+         size! = f-size.quadPart;
          var buf:u8[];
          C.malloc-arr(buf, add-before + size + add-after);
          var bytes-read;
@@ -55,7 +55,7 @@ using Cp1 {
          if !X.Fd.open(fd, path, #rdonly) {
             return null;
          }
-         +size = fd.seek(0, #end);
+         size! = fd.seek(0, #end);
          if size == -1 {
             fd.close();
             return null;
@@ -80,7 +80,7 @@ using Cp1 {
    write-file(path:char[], data:ref, size:usz):bool {
       "#ifdef _WIN32";
       if true {
-         +h = W.CreateFileA(path, #write, #0, null, #create-always, #normal, #null);
+         h! = W.CreateFileA(path, #write, #0, null, #create-always, #normal, #null);
          if h == #invalid {
             return false;
          }
@@ -121,7 +121,7 @@ using Cp1 {
    output(o:Output) @meta-method(output end) @inline {
    }
    output-reserve(len:u32) {
-      +space = .output-cap - .output-len;
+      space! = .output-cap - .output-len;
       if space < len {
          .output-cap += .output-cap;
          space = .output-cap - .output-len;
@@ -140,17 +140,17 @@ using Cp1 {
          // integer to string, count the digits
          var data:char[];
          data = &.output-data[.output-len];
-         +digits = 0;
+         digits! = 0;
          loop {
             data[digits++] = (val % 10) + ''0;
             val /= 10;
             if val == 0 { break }
          }
          // reverse the string
-         +start = 0;
-         +end = digits - 1;
+         start! = 0;
+         end! = digits - 1;
          loop start < end {
-            +tmp = data[start];
+            tmp! = data[start];
             data[start] = data[end];
             data[end] = tmp;
             start++;
@@ -167,17 +167,17 @@ using Cp1 {
          // integer to string, count the digits
          var data:char[];
          data = &.output-data[.output-len];
-         +digits = 0;
+         digits! = 0;
          loop {
             data[digits++] = (val % 8) + ''0;
             val /= 8;
             if val == 0 { break }
          }
          // reverse the string
-         +start = 0;
-         +end = digits - 1;
+         start! = 0;
+         end! = digits - 1;
          loop start < end {
-            +tmp = data[start];
+            tmp! = data[start];
             data[start] = data[end];
             data[end] = tmp;
             start++;
@@ -194,9 +194,9 @@ using Cp1 {
          // integer to string, count the digits
          var data:char[];
          data = &.output-data[.output-len];
-         +digits = 0;
+         digits! = 0;
          loop {
-            +n = val % 16;
+            n! = val % 16;
             if n < 10 {
                data[digits++] = n + ''0;
             } else {
@@ -206,10 +206,10 @@ using Cp1 {
             if val == 0 { break }
          }
          // reverse the string
-         +start = 0;
-         +end = digits - 1;
+         start! = 0;
+         end! = digits - 1;
          loop start < end {
-            +tmp = data[start];
+            tmp! = data[start];
             data[start] = data[end];
             data[end] = tmp;
             start++;
@@ -234,17 +234,17 @@ using Cp1 {
          // integer to string, count the digits
          var data:char[];
          data = &.output-data[.output-len];
-         +digits = 0;
+         digits! = 0;
          loop {
             data[digits++] = (val % 10) + ''0;
             val /= 10;
             if val == 0 { break }
          }
          // reverse the string
-         +start = 0;
-         +end = digits - 1;
+         start! = 0;
+         end! = digits - 1;
          loop start < end {
-            +tmp = data[start];
+            tmp! = data[start];
             data[start] = data[end];
             data[end] = tmp;
             start++;
@@ -255,17 +255,17 @@ using Cp1 {
          // integer to string, count the digits
          var data:char[];
          data = &.output-data[.output-len];
-         +digits = 0;
+         digits! = 0;
          loop {
             data[digits++] = (val % 10) + ''0;
             val /= 10;
             if val == 0 { break }
          }
          // reverse the string
-         +start = 0;
-         +end = digits - 1;
+         start! = 0;
+         end! = digits - 1;
          loop start < end {
-            +tmp = data[start];
+            tmp! = data[start];
             data[start] = data[end];
             data[end] = tmp;
             start++;
@@ -282,17 +282,17 @@ using Cp1 {
          // integer to string, count the digits
          var data:char[];
          data = &.output-data[.output-len];
-         +digits = 0;
+         digits! = 0;
          loop {
             data[digits++] = (val % 10) + ''0;
             val /= 10;
             if val == 0 { break }
          }
          // reverse the string
-         +start = 0;
-         +end = digits - 1;
+         start! = 0;
+         end! = digits - 1;
          loop start < end {
-            +tmp = data[start];
+            tmp! = data[start];
             data[start] = data[end];
             data[end] = tmp;
             start++;

@@ -11,7 +11,7 @@ struct Struct[x:i32, y:i32] {
 }
 
 main():intc {
-   +an-integer = 1;
+   an-integer! = 1;
    var also-an-integer:i32 = 8;
 
    var pointer-to-struct:Struct;
@@ -20,19 +20,19 @@ main():intc {
    var pointer-to-another-struct:Struct;
    C.malloc-one(pointer-to-another-struct); // malloc-one automatically computes the size needed
 
-   var struct-in-the-stack:Struct+; // notice the plus '+' symbol, means allocated on the stack
+   var struct-in-the-stack:Struct.; // notice the plus '.' symbol, means allocated on the stack
    struct-in-the-stack.x = 7;
 
    // Array of structs, and NOT an array of pointer to structs
-   var structs:Struct+[];
+   var structs:Struct.[];
    C.malloc-arr(structs, 7); // allocates 7 structs
 
-   // No '+' symbol after "Struct" means Array of POINTERs to structs
+   // No '.' symbol after "Struct" means Array of POINTERs to structs
    var pointer-to-structs:Struct[];
    C.malloc-arr(pointer-to-structs, 7); // which means allocate 7 pointers to struct
    C.malloc-one(pointer-to-structs[0]); // allocate the first struct
 
-   Struct.init(+another-struct-in-the-stack);
+   Struct.init(another-struct-in-the-stack!);
    C.printf("This must be zero and zero: %d, %d\n", another-struct-in-the-stack.x, another-struct-in-the-stack.y);
    return 0;
 }

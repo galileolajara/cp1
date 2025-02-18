@@ -13,12 +13,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       " -Ddefinename     Define a name that will yield true on #if(...) preprocessor\n"}
       C.exit(#failure);
    }
-   +i = 1;
+   i! = 1;
    loop arg-c - 1 {
       if arg-v[i][0] == ''- {
          if arg-v[i][1] == ''D {
             var name:char[] = &arg-v[i][2];
-            +len = 0;
+            len! = 0;
             loop {
                if name[len] == ''\0 {
                   break;
@@ -73,7 +73,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    }
    .input-path = arg-v[i];
    var in-data:char[];
-   in-data = read-file(arg-v[i], +in-size);
+   in-data = read-file(arg-v[i], in-size!);
    if in-data == null {
       C1.stdout{"Cannot open file for reading: " arg-v[i + 1] ''\n}
       C.exit(#failure);
@@ -99,7 +99,7 @@ preprocess-def-get(name:char[], len:u8):bool {
    return false;
 }
 preprocess-def(name:char[], len:u8) {
-   +i = .preprocess-def-c++;
+   i! = .preprocess-def-c++;
    if .preprocess-def-cap < .preprocess-def-c {
       .preprocess-def-cap = (.preprocess-def-c << 1) + 8;
       .preprocess-def-str-v = C.realloc(.preprocess-def-str-v, .preprocess-def-cap * usz[usz]);
@@ -141,9 +141,9 @@ preprocess-init() {
 "#endif";
 }
 preprocess(in-out-data:ref&, in-out-size:usz&) {
-   +preprocess = false;
+   preprocess! = false;
    var in-data:char[] = in-out-data;
-   +in-size = in-out-size;
+   in-size! = in-out-size;
    var r-end:Rdr.;
    r-end.reff = in-data;
    r-end.pos += in-size;
@@ -153,10 +153,10 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
    var w:Wtr.;
    w.reff = new-data;
 
-   +line = 0:u32;
+   line! = 0:u32;
    loop r.pos < r-end.pos {
       line++;
-      +line-len = 0;
+      line-len! = 0;
       loop {
          if r.p1[line-len] == ''\n {
             break;
@@ -164,17 +164,17 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
          line-len++;
       }
       if (&&, r.p1[0] == ''#, r.p1[1] == ''i, r.p1[2] == ''f, (||, r.p1[3] == ''(, (&&, r.p1[3] == ''!, r.p1[4] == ''())) {
-         +if-line = line;
+         if-line! = line;
          w.p1[0] = ''\n;
          w.pos++;
 
-         +start = 4;
-         +invert = false;
+         start! = 4;
+         invert! = false;
          if r.p1[3] == ''! {
             start = 5;
             invert = true;
          }
-         +rparen = -1;
+         rparen! = -1;
          loop i = start; line-len - start; i++ {
             if r.p1[i] == '') {
                rparen = i;
@@ -186,24 +186,24 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
             C.exit(#failure);
          }
          var def-str:char[] = &r.charr[start];
-         +def-len = rparen - start;
-         +ok = preprocess-def-get(def-str, def-len);
+         def-len! = rparen - start;
+         ok! = preprocess-def-get(def-str, def-len);
          if invert {
             ok = !ok;
          }
          r.pos += line-len + 1;
          // Get the indention of the next line
          var indention:char[] = null;
-         +indention-len = -1;
+         indention-len! = -1;
          if r.pos < r-end.pos {
-            +line-len = 0;
+            line-len! = 0;
             loop {
                if r.p1[line-len] == ''\n {
                   break;
                }
                line-len++;
             }
-            +first-char = 0;
+            first-char! = 0;
             loop {
                if (||, r.p1[first-char] == '' , r.p1[first-char] == ''\t) {
                   // Skip
@@ -234,14 +234,14 @@ preprocess(in-out-data:ref&, in-out-size:usz&) {
          line++;
          loop r.pos < r-end.pos {
             line++;
-            +line-len = 0;
+            line-len! = 0;
             loop {
                if r.p1[line-len] == ''\n {
                   break;
                }
                line-len++;
             }
-            +first-char = 0;
+            first-char! = 0;
             loop {
                if (||, r.p1[first-char] == '' , r.p1[first-char] == ''\t) {
                   // Skip

@@ -19,11 +19,13 @@ using StmtSpace {
       }
    }
    rd-loop(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(s:StmtLoop));
+      var s:StmtLoop;
+      quick-alloc-one(s);
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #loop);
       if r.b() {
-         quick-alloc-one(+(space2:StmtSpace));
+         var space2:StmtSpace;
+         quick-alloc-one(space2);
          s.continu = space2;
          space2.rd(r, space);
       }
@@ -34,8 +36,9 @@ using StmtSpace {
    wr-loop-end(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
    }
    rd-loop-end(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      +do = .nest-stack-ptr-v[.nest-stack-c -= 1].do;
-      quick-alloc-one(+(s:StmtLoopEnd));
+      do! = .nest-stack-ptr-v[.nest-stack-c -= 1].do;
+      var s:StmtLoopEnd;
+      quick-alloc-one(s);
       s.do = do;
       do.end = s;
       space.stmt-push(s.base, 0, 0, 0, 0, #loop-end);
@@ -71,10 +74,10 @@ using Stmt {
       ok = true;
    }
    write-loop-end(stmt:Stmt) @case.write() @inline {
-      +id = .nest-stack-id-v[.nest-stack-c -= 1];
+      id! = .nest-stack-id-v[.nest-stack-c -= 1];
       var s:StmtLoopEnd = stmt;
       output{"continue_" id ":;\n"}
-      +continu = s.do.continu;
+      continu! = s.do.continu;
       if continu != null {
          continu.write();
       }
@@ -82,7 +85,7 @@ using Stmt {
    }
    process-loop-end(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtLoopEnd = stmt;
-      +continu = s.do.continu;
+      continu! = s.do.continu;
       if continu != null {
          continu.process();
       }
@@ -105,7 +108,8 @@ struct StmtLoopEnd[
    do:StmtLoop,
 ];
 stmt-loop-set(expr:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32, continu:StmtSpace) {
-   quick-alloc-one(+(s:StmtLoop));
+   var s:StmtLoop;
+   quick-alloc-one(s);
    .nest-stack-id-v[.nest-stack-c] = .nest-id++;
    .nest-stack-ptr-v[.nest-stack-c].do = s;
    .nest-stack-c++;
@@ -117,7 +121,8 @@ stmt-loop-set(expr:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32
 stmt-loop-end() {
    .nest-stack-c -= 1;
    stmt-space-end();
-   quick-alloc-one(+(s:StmtLoopEnd));
+   var s:StmtLoopEnd;
+   quick-alloc-one(s);
    stmt-push(s.base, 0, 0, 0, 0, #loop-end);
    stmt-space-end();
 }

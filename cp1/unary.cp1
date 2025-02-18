@@ -9,8 +9,9 @@ enum Unary[#neg, #inc, #dec, #not]:u8 {
    }
 }
 expr-unary(expr:ExprI, type:Unary):ExprI {
-   quick-alloc-one(+(e:ExprUnary));
-   +e-idx = expr-push(e.base, #unary);
+   var e:ExprUnary;
+   quick-alloc-one(e);
+   e-idx! = expr-push(e.base, #unary);
    e.expr = expr;
    e.type = type;
    return e-idx;
@@ -22,7 +23,8 @@ using ExprI {
       e.type.wr(w);
    }
    rd-unary(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:ExprUnary));
+      var e:ExprUnary;
+      quick-alloc-one(e);
       e-idx.set(e.base, #unary);
       e.expr.rd(r);
       e.type.rd(r);

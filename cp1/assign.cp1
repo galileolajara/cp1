@@ -11,8 +11,9 @@ enum Assign[#eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
    }
 }
 expr-assign(left:ExprI, right:ExprI, type:Assign):ExprI {
-   quick-alloc-one(+(e:ExprAssign));
-   +e-idx = expr-push(e.base, #assign);
+   var e:ExprAssign;
+   quick-alloc-one(e);
+   e-idx! = expr-push(e.base, #assign);
    e.left = left;
    e.right = right;
    e.type = type;
@@ -63,7 +64,8 @@ using ExprI {
       e.right.write-value(e.right-val);
    }
    rd-assign(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:ExprAssign));
+      var e:ExprAssign;
+      quick-alloc-one(e);
       e-idx.set(e.base, #assign);
       e.left.rd(r);
       e.right.rd(r);
@@ -84,16 +86,16 @@ using ExprI {
    }
    process-assign(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprAssign = expr;
-      +left-e = e.left.ptr();
+      left-e! = e.left.ptr();
       if left-e.type == #lvar {
          var left:ExprLvar = left-e;
-         +lvar = left.lvar.ptr();
+         lvar! = left.lvar.ptr();
          if lvar.decl.type == #nil {
             if !e.right.value(1, true, e.right-val) {
                return;
             }
             lvar.decl.type = e.right-val.type;
-            +at = lvar.decl.type.ptr();
+            at! = lvar.decl.type.ptr();
             lvar.decl.type-info.init();
             lvar.decl.type-info.copy-from(e.right-val.info);
             e.left.value(1, true, e.left-val);

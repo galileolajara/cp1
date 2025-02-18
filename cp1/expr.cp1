@@ -8,7 +8,8 @@ using StmtSpace {
       s.expr.wr(w, header);
    }
    rd-expr(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(s:StmtExpr));
+      var s:StmtExpr;
+      quick-alloc-one(s);
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #expr);
    }
@@ -16,10 +17,10 @@ using StmtSpace {
 using Stmt {
    write-expr(stmt:Stmt) @case.write() @inline {
       var s:StmtExpr = stmt;
-      +expr = s.expr.ptr();
+      expr! = s.expr.ptr();
       if expr.type == #str {
          var e:ExprStr = expr;
-         +n = e.first;
+         n! = e.first;
          loop {
             output-bytes(n.buf, n.len);
             n = n.next;
@@ -62,8 +63,8 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
       return .expr-v[e];
    }
    write-value(e:this, v:Value):bool {
-      +expr = e.ptr();
-      +reff = v.reff;
+      expr! = e.ptr();
+      reff! = v.reff;
       // C1.stdout{"write-value v.ref = " ref ''\n}
       if v.paren {
          if reff <= 0 {
@@ -93,8 +94,8 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
    }
    value(e:this, reff:i32, paren:bool, v:Value):bool {
       if !e.process() { return false }
-      +expr = e.ptr();
-      +ok = false;
+      expr! = e.ptr();
+      ok! = false;
       switch.value(e, reff, paren, v, ok) expr.type {
          default {
             C1.stdout{.ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": value() not implemented for #" expr.type.cp1-name() ''\n}
@@ -104,8 +105,8 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
    }
    type(e:this):At {
       if !e.process() { return #nil }
-      +expr = e.ptr();
-      +at = At#nil;
+      expr! = e.ptr();
+      at! = At#nil;
       switch.type(expr, at) expr.type {
          default {
             C1.stdout{.ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": type() not implemented for #" expr.type.cp1-name() ''\n}
@@ -114,7 +115,7 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
       return at;
    }
    try-deduce(e-idx:this, at:At) {
-      +expr = e-idx.ptr();
+      expr! = e-idx.ptr();
       switch.try-deduce(expr, at) expr.type {
       }
    }
@@ -125,7 +126,7 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
       if e == #nil {
          ExprType#nil.wr(w);
       } else {
-         +expr = e.ptr();
+         expr! = e.ptr();
          expr.type.wr(w);
          switch.wr(expr, w, header) expr.type {
             default {
@@ -139,9 +140,9 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
       }
    }
    alloc():ExprI {
-      +e-idx = (.expr-c++):ExprI;
+      e-idx! = (.expr-c++):ExprI;
       if .expr-cap <= .expr-c {
-         +old-cap = .expr-cap;
+         old-cap! = .expr-cap;
          grow(.expr-cap, .expr-c);
          realloc(.expr-v, .expr-cap, old-cap);
          realloc(.expr-is-processed, (.expr-cap + 7) >> 3, (old-cap + 7) >> 3);
@@ -156,11 +157,11 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
             C.exit(#failure);
          }
       }
-      ExprType.rd(+type, r);
+      ExprType.rd(type!, r);
       if type == #nil {
          e = #nil;
       } else {
-         +e-idx = alloc();
+         e-idx! = alloc();
          e = e-idx;
          switch.rd(e-idx, r) type {
             default {
@@ -182,15 +183,15 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
          C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Processed a nil expression\n"}
          return false;
       }
-      +num = e:u32;
-      +n3 = num >> 3;
-      +n17 = 1 << (num & 7);
+      num! = e:u32;
+      n3! = num >> 3;
+      n17! = 1 << (num & 7);
       if (.expr-is-processed[n3] & n17) != #0 { return true }
       .expr-is-processed[n3] |= n17;
-      +expr = e.ptr();
+      expr! = e.ptr();
       // if expr.flags & #processed { return true }
       // expr.flags |= #processed;
-      +ok = false;
+      ok! = false;
       switch.process(expr, ok) expr.type {
          default {
             C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": process() not implemented for expression #" expr.type.cp1-name() ''\n}
@@ -203,7 +204,7 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
       return ok;
    }
    write(e:this) {
-      +expr = e.ptr();
+      expr! = e.ptr();
       switch.write(expr) expr.type {
          default {
             C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": write() not implemented in expression #" expr.type.cp1-name() ''\n}
@@ -289,8 +290,8 @@ struct ExprStr[
    last:ExprStrNode,
 ] {
    len(s:this):u32 {
-      +len = 0:u32;
-      +n = s.first;
+      len! = 0:u32;
+      n! = s.first;
       loop {
          len += n.len;
          n = n.next;
@@ -306,9 +307,9 @@ var expr-cap:i32;
 var expr-v:Expr[];
 expr-push(e:Expr, type:ExprType):ExprI {
    e.type = type;
-   +e-idx = .expr-c++;
+   e-idx! = .expr-c++;
    if .expr-cap <= .expr-c {
-      +old-cap = .expr-cap;
+      old-cap! = .expr-cap;
       grow(.expr-cap, .expr-c);
       realloc(.expr-v, .expr-cap, old-cap);
    }

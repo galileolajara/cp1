@@ -10,10 +10,10 @@ enum DeclVar[]:u32 {
 enum DeclVarType[#gvar, #fvar]:u8;
 #decl-var-size-limit:i32 = 8;
 at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
-   +type = vd-type.ptr();
-   +parent = type.parent.ptr();
+   type! = vd-type.ptr();
+   parent! = type.parent.ptr();
    if (&&, parent.type == #basic, parent.name.basic == #relative) {
-      +name = type.name;
+      name! = type.name;
       loop {
          loop i = 0:At; .at-c; i++ {
             if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
@@ -37,10 +37,10 @@ using DeclVarData {
       return true;
    }
    process(vd:this, file:File, row:u32, col:u32, base-at:At):bool {
-      +at-i = at-validate(vd.type, base-at, file, row, col);
+      at-i! = at-validate(vd.type, base-at, file, row, col);
       if at-i == #nil { return false }
       vd.type = at-i;
-      +at = at-i.ptr();
+      at! = at-i.ptr();
       if (&&, at.type != #basic, at.decl.structt == #nil) {
          C1.stdout{file '': row '': col ": Error, the type '" at.name.id "' used in '" vd.name "' was not defined\n"}
          return false;
@@ -115,7 +115,7 @@ using DeclVarData {
    rd(vd:this, r:Rdr) {
       vd.name.rd(r);
       vd.type.rd(r);
-      // At.rd(+vd-type, r);
+      // At.rd(vd-type!, r);
       // vd.type = validate(vd-type, default-at, vd.name);
       vd.flags.rd(r);
       if (vd.flags & #real-name) != #0 {
@@ -150,7 +150,7 @@ using DeclVarData {
 #type-info-star-limit:i32 = 8;
 struct Value[reff:i8, paren:bool, type:At, info:TypeInfo.] {
    set(v:this, reff:i8, paren:bool, type:At, info:TypeInfo) {
-      +c = info.ref-v[info.array-c];
+      c! = info.ref-v[info.array-c];
       v.type = type;
       v.reff = (c + 2) - reff;
       v.info.init();
@@ -181,7 +181,7 @@ struct TypeInfo[ref-v:i8[#type-info-star-limit], array-c:u8, star-c:i8, built-in
       ti.const = false;
    }
    rd(ti:this, r:Rdr) {
-      +c = r.n1();
+      c! = r.n1();
       loop i = 0; c; i++ {
          ti.ref-v[i] = r.n1();
       }
@@ -191,7 +191,7 @@ struct TypeInfo[ref-v:i8[#type-info-star-limit], array-c:u8, star-c:i8, built-in
       ti.const = r.n1() != 0;
    }
    wr(ti:this, w:Wtr) {
-      +c = 0;
+      c! = 0;
       loop #type-info-star-limit {
          if ti.ref-v[c] == 0 {
             break;
@@ -216,8 +216,8 @@ struct TypeInfo[ref-v:i8[#type-info-star-limit], array-c:u8, star-c:i8, built-in
    }
    finalize(ti:this) {
       var ref-v:i8[#type-info-star-limit];
-      +c = ti.array-c;
-      +star-c = ti.array-c;
+      c! = ti.array-c;
+      star-c! = ti.array-c;
       loop i = 0; c + 1; {
          ref-v[i] = ti.ref-v[i];
          star-c += ref-v[i];
@@ -231,7 +231,7 @@ struct TypeInfo[ref-v:i8[#type-info-star-limit], array-c:u8, star-c:i8, built-in
       ti.star-c = star-c;
    }
    count(ti:this) {
-      +star-c = ti.array-c;
+      star-c! = ti.array-c;
       loop i = ti.array-c; i + 1; {
          star-c += ti.ref-v[i];
          i -= 1;
@@ -306,18 +306,18 @@ decl-var-type(type:At) {
    // .stack-type-info = .decl-var.type-info;
 }
 decl-var-this() {
-   +type = .decl-at;
+   type! = .decl-at;
    .decl-var.type = type;
    // .stack-type-info = .decl-var.type-info;
 }
 decl-var-as-gvar() {
-   +gvar-idx = .gvar-c++;
+   gvar-idx! = .gvar-c++;
    if .gvar-cap <= .gvar-c {
-      +old-cap = .gvar-cap;
+      old-cap! = .gvar-cap;
       .gvar-cap = grow(.gvar-c:base);
       realloc(.gvar-v, .gvar-cap:base, old-cap:base);
    }
-   +gvar = .gvar-v[gvar-idx];
+   gvar! = .gvar-v[gvar-idx];
    gvar.include = .decl-include;
    gvar.at = .decl-at;
    gvar.decl.copy-from(.decl-var);

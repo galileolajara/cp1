@@ -1,8 +1,9 @@
 using Cp1 = Cp1;
 using Cp1 {
 expr-bool(value:bool):ExprI {
-   quick-alloc-one(+(e:ExprBool));
-   +e-idx = expr-push(e.base, #bool);
+   var e:ExprBool;
+   quick-alloc-one(e);
+   e-idx! = expr-push(e.base, #bool);
    e.value = value;
    return e-idx;
 }
@@ -12,7 +13,8 @@ using ExprI {
       w.b(e.value);
    }
    rd-bool(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:ExprBool));
+      var e:ExprBool;
+      quick-alloc-one(e);
       e-idx.set(e.base, #bool);
       e.value = r.b();
    }

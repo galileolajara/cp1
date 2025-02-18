@@ -5,15 +5,15 @@ using Cp1 {
 enum GvarFlags[#0, #no-decl = 1]:u8;
 enum Gvar[#nil = -1, #0]:i32 {
    process(g:this):bool {
-      +num = g:u32;
-      +n3 = num >> 3;
-      +n17 = 1 << (num & 7);
+      num! = g:u32;
+      n3! = num >> 3;
+      n17! = 1 << (num & 7);
       if (.gvar-is-outputted[n3] & n17) != 0 { return true }
       .gvar-is-outputted[n3] |= n17;
 
-      +gvar = g.ptr();
-      +at-i = gvar.decl.type;
-      +at = at-i.ptr();
+      gvar! = g.ptr();
+      at-i! = gvar.decl.type;
+      at! = at-i.ptr();
       if !gvar.decl.process(gvar.file, gvar.row, gvar.col, gvar.at) { return false }
 
       if (gvar.flags & #no-decl) == #0 {
@@ -23,11 +23,11 @@ enum Gvar[#nil = -1, #0]:i32 {
       return true;
    }
    write(g:this) {
-      +gvar = g.ptr();
+      gvar! = g.ptr();
       gvar.decl.write(#gvar);
    }
    // write(g:this) {
-   //    +gvar = g.ptr();
+   //    gvar! = g.ptr();
    //    if (gvar.decl.flags & #real-name) != #0 {
    //       output{gvar.decl.real-name}
    //       return;
@@ -40,8 +40,9 @@ enum Gvar[#nil = -1, #0]:i32 {
    }
 }
 expr-gvar(at:At, name:Id):ExprI {
-   quick-alloc-one(+(e:ExprGvar));
-   +e-idx = expr-push(e.base, #gvar);
+   var e:ExprGvar;
+   quick-alloc-one(e);
+   e-idx! = expr-push(e.base, #gvar);
    e.at = at;
    e.name = name;
    return e-idx;
@@ -49,7 +50,7 @@ expr-gvar(at:At, name:Id):ExprI {
 using ExprI {
    value-gvar(g:this, reff:i32, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       var e:ExprGvar = g.ptr();
-      +gvar = e.gvar.ptr();
+      gvar! = e.gvar.ptr();
       v.set(reff, paren, gvar.decl.type, gvar.decl.type-info);
       if v.reff == 1 {
          v.paren = false;
@@ -58,7 +59,7 @@ using ExprI {
    }
    type-gvar(expr:Expr, at:At&) @case.type() @inline {
       var e:ExprGvar = expr;
-      +gvar = e.gvar.ptr();
+      gvar! = e.gvar.ptr();
       at = gvar.decl.type;
    }
    wr-gvar(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
@@ -67,22 +68,23 @@ using ExprI {
       e.name.wr(w, header);
    }
    rd-gvar(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      At.rd(+at-idx, r);
-      Id.rd(+name, r);
+      At.rd(at-idx!, r);
+      Id.rd(name!, r);
       e-idx.set-gvar(at-idx, name);
    }
    set-gvar(e-idx:this, at-idx:At, name:Id) {
-      quick-alloc-one(+(e:ExprGvar));
+      var e:ExprGvar;
+      quick-alloc-one(e);
       e-idx.set(e.base, #gvar);
-      +try-parent = false;
+      try-parent! = false;
       if at-idx == #nil {
          at-idx = .ctx-func.at;
          try-parent = true;
       }
       loop {
-         +at = at-idx.ptr();
+         at! = at-idx.ptr();
          loop i = 0; at.gvar-c; i++ {
-            +gvar = at.gvar-v[i];
+            gvar! = at.gvar-v[i];
             if gvar.ptr().decl.name == name {
                e.gvar = gvar;
                return;

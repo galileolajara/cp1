@@ -4,22 +4,25 @@ using C1 = LibCp1;
 using Cp1 {
 enum ExprInt[#i32, #u32, #f32, #oct, #hex, #u64]:u8;
 expr-int(value:i32, type:ExprInt):ExprI {
-   quick-alloc-one(+(e:ExprIntData));
-   +e-idx = expr-push(e.base, #int);
+   var e:ExprIntData;
+   quick-alloc-one(e);
+   e-idx! = expr-push(e.base, #int);
    e.value.ii32 = value;
    e.type = type;
    return e-idx;
 }
 expr-int64(value:i64, type:ExprInt):ExprI {
-   quick-alloc-one(+(e:ExprIntData));
-   +e-idx = expr-push(e.base, #int);
+   var e:ExprIntData;
+   quick-alloc-one(e);
+   e-idx! = expr-push(e.base, #int);
    e.value.uu64 = value;
    e.type = type;
    return e-idx;
 }
 expr-f32(value:f32):ExprI {
-   quick-alloc-one(+(e:ExprIntData));
-   +e-idx = expr-push(e.base, #int);
+   var e:ExprIntData;
+   quick-alloc-one(e);
+   e-idx! = expr-push(e.base, #int);
    e.value.ff32 = value;
    e.type = #f32;
    return e-idx;
@@ -45,7 +48,8 @@ using ExprI {
       }
    }
    rd-int(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:ExprIntData));
+      var e:ExprIntData;
+      quick-alloc-one(e);
       e-idx.set(e.base, #int);
       e.type = r.n1():ExprInt;
       switch e.type {
@@ -53,7 +57,7 @@ using ExprI {
             e.value.ii32 = r.i();
          }
          case #f32 {
-            +n = r.n4();
+            n! = r.n4();
             var nv:f32[] = &n;
             e.value.ff32 = nv[0];
          }

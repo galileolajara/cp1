@@ -22,17 +22,17 @@ using LibCp1 {
          // integer to string, count the digits
          var data:char[];
          data = &.stdout-buf-data[.stdout-buf-len];
-         +digits = 0;
+         digits! = 0;
          loop {
             data[digits++] = (val % 10) + ''0;
             val /= 10;
             if val == 0 { break }
          }
          // reverse the string
-         +start = 0;
-         +end = digits - 1;
+         start! = 0;
+         end! = digits - 1;
          loop start < end {
-            +tmp = data[start];
+            tmp! = data[start];
             data[start] = data[end];
             data[end] = tmp;
             start++;
@@ -42,7 +42,7 @@ using LibCp1 {
       }
    }
    stdout-reserve(len:u32) {
-      +space = .stdout-buf-cap - .stdout-buf-len;
+      space! = .stdout-buf-cap - .stdout-buf-len;
       if space < len {
          if .stdout-buf-cap == 0 {
             .stdout-buf-cap = 256;

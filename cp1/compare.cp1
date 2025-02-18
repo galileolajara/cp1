@@ -9,8 +9,9 @@ enum Compare[#eq, #not-eq, #lt, #le, #gt, #ge]:u8 {
    }
 }
 expr-compare(left:ExprI, right:ExprI, type:Compare):ExprI {
-   quick-alloc-one(+(e:ExprCompare));
-   +e-idx = expr-push(e.base, #compare);
+   var e:ExprCompare;
+   quick-alloc-one(e);
+   e-idx! = expr-push(e.base, #compare);
    e.left = left;
    e.right = right;
    e.type = type;
@@ -24,7 +25,8 @@ using ExprI {
       e.type.wr(w);
    }
    rd-compare(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:ExprCompare));
+      var e:ExprCompare;
+      quick-alloc-one(e);
       e-idx.set(e.base, #compare);
       e.left.rd(r);
       e.right.rd(r);

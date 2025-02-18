@@ -6,7 +6,8 @@ using StmtSpace {
       s.expr.wr(w, header);
    }
    rd-if(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(s:StmtIf));
+      var s:StmtIf;
+      quick-alloc-one(s);
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #if);
    }
@@ -15,20 +16,23 @@ using StmtSpace {
       s.expr.wr(w, header);
    }
    rd-if-elif(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(s:StmtIfElif));
+      var s:StmtIfElif;
+      quick-alloc-one(s);
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #if-elif);
    }
    wr-if-else(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
    }
    rd-if-else(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(s:StmtIfElse));
+      var s:StmtIfElse;
+      quick-alloc-one(s);
       space.stmt-push(s.base, 0, 0, 0, 0, #if-else);
    }
    wr-if-end(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
    }
    rd-if-end(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(s:StmtIfEnd));
+      var s:StmtIfEnd;
+      quick-alloc-one(s);
       space.stmt-push(s.base, 0, 0, 0, 0, #if-end);
    }
 }
@@ -83,19 +87,22 @@ stmt-if-begin() {
 stmt-elif-begin() {
 }
 stmt-if-set(expr:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
-   quick-alloc-one(+(s:StmtIf));
+   var s:StmtIf;
+   quick-alloc-one(s);
    s.expr = expr;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #if);
    stmt-space-begin();
 }
 stmt-elif-set(expr:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
-   quick-alloc-one(+(s:StmtIf));
+   var s:StmtIfElif;
+   quick-alloc-one(s);
    s.expr = expr;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #if-elif);
    stmt-space-begin();
 }
 stmt-else-set() {
-   quick-alloc-one(+(s:StmtIfElse));
+   var s:StmtIfElse;
+   quick-alloc-one(s);
    stmt-push(s.base, 0, 0, 0, 0, #if-else);
    stmt-space-begin();
 }
@@ -109,7 +116,8 @@ stmt-else-end() {
    stmt-space-end();
 }
 stmt-if-end-ifs() {
-   quick-alloc-one(+(s:StmtIfEnd));
+   var s:StmtIfEnd;
+   quick-alloc-one(s);
    stmt-push(s.base, 0, 0, 0, 0, #if-end);
    stmt-space-end();
 }

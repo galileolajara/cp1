@@ -10,18 +10,18 @@ union Rdr[
    p4:u32[],
    ] {
    n1(r:this):u8 @inline {
-      +val = r.p1[0];
+      val! = r.p1[0];
       r.pos++;
       return val;
    }
    n2(r:this):u32 @inline {
-      +val = r.p1[0]:u32;
+      val! = r.p1[0]:u32;
       val |= r.p1[1]:u32 << 8;
       r.pos += 2;
       return val;
    }
    n4(r:this):u32 @inline {
-      +val = r.p1[0]:u32;
+      val! = r.p1[0]:u32;
       val |= r.p1[1]:u32 << 8;
       val |= r.p1[2]:u32 << 16;
       val |= r.p1[3]:u32 << 24;

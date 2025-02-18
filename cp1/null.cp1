@@ -1,8 +1,9 @@
 using Cp1 = Cp1;
 using Cp1 {
 expr-null():ExprI {
-   quick-alloc-one(+(e:ExprNull));
-   +e-idx = expr-push(e.base, #null);
+   var e:ExprNull;
+   quick-alloc-one(e);
+   e-idx! = expr-push(e.base, #null);
    return e-idx;
 }
 using ExprI {
@@ -10,7 +11,8 @@ using ExprI {
       var e:ExprNull = expr;
    }
    rd-null(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(e:ExprNull));
+      var e:ExprNull;
+      quick-alloc-one(e);
       e-idx.set(e.base, #null);
    }
    write-null(expr:Expr) @case.write() @inline {

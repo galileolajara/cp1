@@ -7,7 +7,8 @@ struct StmtBreak[
    nest:u8,
 ];
 stmt-break(id:Id, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
-   quick-alloc-one(+(s:StmtBreak));
+   var s:StmtBreak;
+   quick-alloc-one(s);
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #break);
    // s.id = id;
    if .nest-stack-c <= 0 {
@@ -22,7 +23,8 @@ using StmtSpace {
       w.n1(s.nest);
    }
    rd-break(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(s:StmtBreak));
+      var s:StmtBreak;
+      quick-alloc-one(s);
       s.nest = r.n1();
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #break);
    }

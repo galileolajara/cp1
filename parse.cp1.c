@@ -99,7 +99,8 @@
 #define _NCp1_NToken_Cnum_hex (_NCp1_NToken_Cnum_oct + 1)
 #define _NCp1_NToken_Cnum_u64 (_NCp1_NToken_Cnum_hex + 1)
 #define _NCp1_NToken_Cspace_then_string (_NCp1_NToken_Cnum_u64 + 1)
-#define _NCp1_NToken_Cchar1 (_NCp1_NToken_Cspace_then_string + 1)
+#define _NCp1_NToken_Cexclamation (_NCp1_NToken_Cspace_then_string + 1)
+#define _NCp1_NToken_Cchar1 (_NCp1_NToken_Cexclamation + 1)
 #define _NCp1_NToken_Cchar2 (_NCp1_NToken_Cchar1 + 1)
 #define _NCp1_NToken_Ctrue (_NCp1_NToken_Cchar2 + 1)
 #define _NCp1_NToken_Cfalse (_NCp1_NToken_Ctrue + 1)
@@ -140,8 +141,7 @@
 #define _NCp1_NToken_Cspace_or_equal_space (_NCp1_NToken_Cspace_and_equal_space + 1)
 #define _NCp1_NToken_Cspace_xor_equal_space (_NCp1_NToken_Cspace_or_equal_space + 1)
 #define _NCp1_NToken_Ccolon_base (_NCp1_NToken_Cspace_xor_equal_space + 1)
-#define _NCp1_NToken_Cexclamation (_NCp1_NToken_Ccolon_base + 1)
-#define _NCp1_NToken_Cloop (_NCp1_NToken_Cexclamation + 1)
+#define _NCp1_NToken_Cloop (_NCp1_NToken_Ccolon_base + 1)
 #define _NCp1_NToken_Cloop_with_semicolon (_NCp1_NToken_Cloop + 1)
 #define _NCp1_NId_Cnil (-1)
 #define _NCp1_NId_C0 (_NCp1_NId_Cnil + 1)
@@ -767,6 +767,11 @@ union _NCp1_NNest {
 struct _NCp1_NStmtLoop* _Fdo;
 void* _Freff;
 };
+struct _NCp1_NStmtIfElif;
+struct _NCp1_NStmtIfElif {
+struct _NCp1_NStmt _Fbase;
+_NCp1_NExprI _Fexpr;
+};
 struct _NCp1_NStmtIfElse;
 struct _NCp1_NStmtIfElse {
 struct _NCp1_NStmt _Fbase;
@@ -791,11 +796,6 @@ struct _NCp1_NExprChar;
 struct _NCp1_NExprChar {
 struct _NCp1_NExpr _Fbase;
 char _Fvalue;
-};
-struct _NCp1_NStmtIfElif;
-struct _NCp1_NStmtIfElif {
-struct _NCp1_NStmt _Fbase;
-_NCp1_NExprI _Fexpr;
 };
 struct _NCp1_NMap _Gid_map;
 struct _NCp1_NMap _Ginclude_map;
@@ -1215,6 +1215,7 @@ case _NCp1_NToken_Cnum_oct: return "num-oct";
 case _NCp1_NToken_Cnum_hex: return "num-hex";
 case _NCp1_NToken_Cnum_u64: return "num-u64";
 case _NCp1_NToken_Cspace_then_string: return "space-then-string";
+case _NCp1_NToken_Cexclamation: return "exclamation";
 case _NCp1_NToken_Cchar1: return "char1";
 case _NCp1_NToken_Cchar2: return "char2";
 case _NCp1_NToken_Ctrue: return "true";
@@ -1256,7 +1257,6 @@ case _NCp1_NToken_Cspace_and_equal_space: return "space-and-equal-space";
 case _NCp1_NToken_Cspace_or_equal_space: return "space-or-equal-space";
 case _NCp1_NToken_Cspace_xor_equal_space: return "space-xor-equal-space";
 case _NCp1_NToken_Ccolon_base: return "colon-base";
-case _NCp1_NToken_Cexclamation: return "exclamation";
 case _NCp1_NToken_Cloop: return "loop";
 case _NCp1_NToken_Cloop_with_semicolon: return "loop-with-semicolon";
 case _NCp1_NToken_Cif: return "if";
@@ -4792,20 +4792,20 @@ _Le_idx_3 = _NCp1_Pexpr_push_2(&(*_Le_2)._Fbase, _NCp1_NExprType_Ccast_fast);
 return _Le_idx_3;
 }
 _NCp1_NExprI _NCp1_Pexpr_index_3(_NCp1_NExprI _Lleft_0, _NCp1_NExprI* _Lright_v_1, int32_t _Lright_c_2) {
-_NCp1_NExprI _Le_idx_5;
-int32_t _Li_3;
-_Li_3 = _Lright_c_2;
+_NCp1_NExprI _Le_idx_3;
+int32_t _Li_4;
+_Li_4 = _Lright_c_2;
 for(int i = _Lright_c_2; i > 0; ) {
 i --;
-struct _NCp1_NExprIndex* _Le_4;
-_NCp1_Pquick_alloc_one_1(_Le_4);
-_Le_idx_5 = _NCp1_Pexpr_push_2(&(*_Le_4)._Fbase, _NCp1_NExprType_Cindex);
-(*_Le_4)._Fleft = _Lleft_0;
-(*_Le_4)._Fright = _Lright_v_1[(_Li_3 -= 1)];
+struct _NCp1_NExprIndex* _Le_5;
+_NCp1_Pquick_alloc_one_1(_Le_5);
+_Le_idx_3 = _NCp1_Pexpr_push_2(&(*_Le_5)._Fbase, _NCp1_NExprType_Cindex);
+(*_Le_5)._Fleft = _Lleft_0;
+(*_Le_5)._Fright = _Lright_v_1[(_Li_4 -= 1)];
 continue_0:;
 }
 break_0:;
-return _Le_idx_5;
+return _Le_idx_3;
 }
 void _NCp1_Penum_base_begin_0() {
 _Gdecl_at = (*_NCp1_NAt_Pptr_1(_Gdecl_at))._Fparent;
@@ -4918,7 +4918,7 @@ _NCp1_Pstmt_space_end_0();
 void _NCp1_Pstmt_elif_begin_0() {
 }
 void _NCp1_Pstmt_elif_set_5(_NCp1_NExprI _Lexpr_0, uint32_t _Lbegin_row_1, uint32_t _Lbegin_col_2, uint32_t _Lend_row_3, uint32_t _Lend_col_4) {
-struct _NCp1_NStmtIf* _Ls_5;
+struct _NCp1_NStmtIfElif* _Ls_5;
 _NCp1_Pquick_alloc_one_1(_Ls_5);
 (*_Ls_5)._Fexpr = _Lexpr_0;
 _NCp1_Pstmt_push_6(&(*_Ls_5)._Fbase, _Lbegin_row_1, _Lbegin_col_2, _Lend_row_3, _Lend_col_4, _NCp1_NStmtType_Cif_elif);

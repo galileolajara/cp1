@@ -1,7 +1,8 @@
 using Cp1 = Cp1;
 using Cp1 {
 stmt-return(e:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
-   quick-alloc-one(+(s:StmtReturn));
+   var s:StmtReturn;
+   quick-alloc-one(s);
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #return);
    s.expr = e;
 }
@@ -11,7 +12,8 @@ using StmtSpace {
       s.expr.wr(w, header);
    }
    rd-return(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      quick-alloc-one(+(s:StmtReturn));
+      var s:StmtReturn;
+      quick-alloc-one(s);
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #return);
    }
