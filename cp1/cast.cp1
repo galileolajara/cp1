@@ -11,11 +11,11 @@ expr-cast-fast(expr:ExprI, type:At):ExprI {
 }
 using ExprCastFast {
    write-value(e:this, v:Value) @inline {
-      output<''(>;
+      output{''(}
       e.type.write-type-info(v.info, 0);
-      output<")(">;
+      output{")("}
       e.expr.write-value(e.val);
-      output<'')>;
+      output{'')}
    }
 }
 using ExprI {
@@ -48,7 +48,7 @@ using ExprI {
       if e.type == #nil {
          +at = e.val.type.ptr();
          if at.def != #enum {
-            C1.stdout<.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Operator ':base' was used but the type of expression was not an enum\n">;
+            C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Operator ':base' was used but the type of expression was not an enum\n"}
             return;
          }
          e.type = at.decl.enumm.ptr().base-type;

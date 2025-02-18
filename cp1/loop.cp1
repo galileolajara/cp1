@@ -48,16 +48,16 @@ using Stmt {
       .nest-stack-ptr-v[.nest-stack-c].do = s;
       .nest-stack-c++;
       if s.expr == #nil {
-         output<"while(1) {\n">;
+         output{"while(1) {\n"}
       } else {
          if (&&, s.val.type == basic-type(#bool), s.val.info.star-c == 0) {
-            output<"while(">;
+            output{"while("}
             s.expr.write-value(s.val);
-            output<") {\n">;
+            output{") {\n"}
          } else {
-            output<"for(int i = ">;
+            output{"for(int i = "}
             s.expr.write-value(s.val);
-            output<"; i > 0; ) {\ni --;\n">;
+            output{"; i > 0; ) {\ni --;\n"}
          }
       }
    }
@@ -73,12 +73,12 @@ using Stmt {
    write-loop-end(stmt:Stmt) @case.write() @inline {
       +id = .nest-stack-id-v[.nest-stack-c -= 1];
       var s:StmtLoopEnd = stmt;
-      output<"continue_" id ":;\n">;
+      output{"continue_" id ":;\n"}
       +continu = s.do.continu;
       if continu != null {
          continu.write();
       }
-      output<"}\nbreak_" id ":;\n">;
+      output{"}\nbreak_" id ":;\n"}
    }
    process-loop-end(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtLoopEnd = stmt;

@@ -29,11 +29,11 @@ enum Gvar[#nil = -1, #0]:i32 {
    // write(g:this) {
    //    +gvar = g.ptr();
    //    if (gvar.decl.flags & #real-name) != #0 {
-   //       output<gvar.decl.real-name>;
+   //       output{gvar.decl.real-name}
    //       return;
    //    }
    //    gvar.at.write-space();
-   //    output<"_G" gvar.decl.name.c-name>;
+   //    output{"_G" gvar.decl.name.c-name}
    // }
    ptr(g:this):DeclGvar @inline {
       return .gvar-v[g];
@@ -92,7 +92,7 @@ using ExprI {
          if at-idx == #root { break }
          at-idx = at.parent;
       }
-      C1.stdout<.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find gvar '." name "'\n">;
+      C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find gvar '." name "'\n"}
       C.exit(#failure);
    }
    write-gvar(expr:Expr) @case.write() @inline {

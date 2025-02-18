@@ -20,9 +20,9 @@ using ExprI {
    write-index(expr:Expr) @case.write() @inline {
       var e:ExprIndex = expr;
       e.left.write-value(e.left-val);
-      output<''[>;
+      output{''[}
       e.right.write-value(e.right-val);
-      output<'']>;
+      output{'']}
    }
    rd-index(e-idx:ExprI, r:Rdr) @case.rd() @inline {
       ExprI.rd(+left, r);
