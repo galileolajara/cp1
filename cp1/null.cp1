@@ -15,7 +15,7 @@ using ExprI {
    }
    write-null(expr:Expr) @case.write() @inline {
       var e:ExprNull = expr;
-      output<"NULL">;
+      output{"NULL"}
    }
    process-null(expr:Expr, ok:bool&) @case.process() @inline {
       .include-stddef = true;

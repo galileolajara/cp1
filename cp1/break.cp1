@@ -11,7 +11,7 @@ stmt-break(id:Id, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #break);
    // s.id = id;
    if .nest-stack-c <= 0 {
-      C1.stdout<.input-path '': begin-row '': begin-col ": Cannot have a break because it:S not inside a loop\n">;
+      C1.stdout{.input-path '': begin-row '': begin-col ": Cannot have a break because it:S not inside a loop\n"}
       C.exit(#failure);
    }
    s.nest = .nest-stack-c - 1;
@@ -30,7 +30,7 @@ using StmtSpace {
 using Stmt {
    write-break(stmt:Stmt) @case.write() @inline {
       var s:StmtBreak = stmt;
-      output<"goto break_" .nest-stack-id-v[s.nest] ";\n">;
+      output{"goto break_" .nest-stack-id-v[s.nest] ";\n"}
    }
    process-break(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtBreak = stmt;

@@ -124,7 +124,7 @@ decl-struct-end(row:u32, col:u32) {
 }
 struct-attr-real-name(name:Id) {
    if (.decl-struct-flags & #real-name) != #0 {
-      C1.stdout<.input-path '': .last-row '': .last-col ": error @real-name specified more than once\n">;
+      C1.stdout{.input-path '': .last-row '': .last-col ": error @real-name specified more than once\n"}
       C.exit(#failure);
    }
    .decl-struct-flags |= #real-name;
@@ -132,7 +132,7 @@ struct-attr-real-name(name:Id) {
 }
 struct-attr-no-decl() {
    if (.decl-struct-flags & #no-decl) != #0 {
-      C1.stdout<.input-path '': .last-row '': .last-col ": error @no-decl specified more than once\n">;
+      C1.stdout{.input-path '': .last-row '': .last-col ": error @no-decl specified more than once\n"}
       C.exit(#failure);
    }
    .decl-struct-flags |= #no-decl;

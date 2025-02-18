@@ -70,25 +70,25 @@ using ExprI {
       var e:ExprIntData = expr;
       switch e.type {
          case #i32 {
-            output<e.value.ii32>;
+            output{e.value.ii32}
          }
          case #u32 {
-            output<e.value.uu32 ''u>;
+            output{e.value.uu32 ''u}
          }
          case #f32 {
-            output<e.value.ff32 ''f>;
+            output{e.value.ff32 ''f}
          }
          case #oct {
-            output<''0 e.value.uu32, #oct>;
+            output{''0 e.value.uu32, #oct}
          }
          case #hex {
-            output<"0x" e.value.uu32, #hex>;
+            output{"0x" e.value.uu32, #hex}
          }
          case #u64 {
             "#ifdef _LP64";
-            output<"UINT64_C(" e.value.uu64 "u)">;
+            output{"UINT64_C(" e.value.uu64 "u)"}
             "#else";
-            output<"UINT64_C(" e.value.uu64 "lu)">;
+            output{"UINT64_C(" e.value.uu64 "lu)"}
             "#endif";
          }
       }
