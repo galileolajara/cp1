@@ -1,7 +1,7 @@
 // This is to emulate the C++'s virtual functions
-#include <stdio.h>
+#include <stdout.h>
 
-using C = LibC;
+using C1 = LibCp1;
 
 enum AnimalType[#cat, #dog]:u8; // 8-bit enum
 
@@ -18,10 +18,10 @@ struct Animal[type:AnimalType] { // a struct with a method
 // For example, in another file, you can:
 using Animal {
    emit-sound-cat(a:this) @case.emit-sound() {
-      C.printf("meow!\n");
+      C1.stdout{"meow!\n"}
    }
    emit-sound-dog(a:this) @case.emit-sound() {
-      C.printf("arf!\n");
+      C1.stdout{"arf!\n"}
    }
 }
 

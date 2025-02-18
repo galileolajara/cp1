@@ -41,6 +41,56 @@ using LibCp1 {
          .stdout-buf-len += digits;
       }
    }
+   stdout-i32(val:u32) {
+      stdout-reserve(11);
+      if val == 0 {
+         .stdout-buf-data[.stdout-buf-len++] = ''0;
+      } elif val:i32 < 0 {
+         val = -val;
+         .stdout-buf-data[.stdout-buf-len++] = ''-;
+         // integer to string, count the digits
+         var data:char[];
+         data = &.stdout-buf-data[.stdout-buf-len];
+         digits! = 0;
+         loop {
+            data[digits++] = (val % 10) + ''0;
+            val /= 10;
+            if val == 0 { break }
+         }
+         // reverse the string
+         start! = 0;
+         end! = digits - 1;
+         loop start < end {
+            tmp! = data[start];
+            data[start] = data[end];
+            data[end] = tmp;
+            start++;
+            end--;
+         }
+         .stdout-buf-len += digits;
+      } else {
+         // integer to string, count the digits
+         var data:char[];
+         data = &.stdout-buf-data[.stdout-buf-len];
+         digits! = 0;
+         loop {
+            data[digits++] = (val % 10) + ''0;
+            val /= 10;
+            if val == 0 { break }
+         }
+         // reverse the string
+         start! = 0;
+         end! = digits - 1;
+         loop start < end {
+            tmp! = data[start];
+            data[start] = data[end];
+            data[end] = tmp;
+            start++;
+            end--;
+         }
+         .stdout-buf-len += digits;
+      }
+   }
    stdout-reserve(len:u32) {
       space! = .stdout-buf-cap - .stdout-buf-len;
       if space < len {
@@ -80,7 +130,27 @@ using LibCp1 {
       }
    }
 }
+using i32 {
+   stdout(val:this, so:C1.StdOut) @inline {
+      C1.stdout-i32(val);
+   }
+}
+using i16 {
+   stdout(val:this, so:C1.StdOut) @inline {
+      C1.stdout-i32(val);
+   }
+}
+using i8 {
+   stdout(val:this, so:C1.StdOut) @inline {
+      C1.stdout-i32(val);
+   }
+}
 using u32 {
+   stdout(val:this, so:C1.StdOut) @inline {
+      C1.stdout-u32(val);
+   }
+}
+using u16 {
    stdout(val:this, so:C1.StdOut) @inline {
       C1.stdout-u32(val);
    }

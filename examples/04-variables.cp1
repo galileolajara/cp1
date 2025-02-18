@@ -1,7 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdout.h>
 
 using C = LibC;
+using C1 = LibCp1;
 
 struct Struct[x:i32, y:i32] {
    init(s:this) {
@@ -33,6 +33,6 @@ main():intc {
    C.malloc-one(pointer-to-structs[0]); // allocate the first struct
 
    Struct.init(another-struct-in-the-stack!);
-   C.printf("This must be zero and zero: %d, %d\n", another-struct-in-the-stack.x, another-struct-in-the-stack.y);
+   C1.stdout{"This must be zero and zero: " another-struct-in-the-stack.x ", " another-struct-in-the-stack.y ''\n}
    return 0;
 }

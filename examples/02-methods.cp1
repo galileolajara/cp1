@@ -1,6 +1,6 @@
-#include <stdio.h>
+#include <stdout.h>
 
-using C = LibC;
+using C1 = LibCp1;
 
 struct Coord[x:i32, y:i32] { // a struct
    init(s:this) { // a method
@@ -30,16 +30,16 @@ enum Dir[#left, #up, #right, #down]:u8 { // an 8-bit enum
    print(d:this) { // a method
       switch d {
          case #left {
-            C.printf("Going left...\n");
+            C1.stdout{"Going left...\n"}
          }
          case #up {
-            C.printf("Going up...\n");
+            C1.stdout{"Going up...\n"}
          }
          case #right {
-            C.printf("Going right...\n");
+            C1.stdout{"Going right...\n"}
          }
          case #down {
-            C.printf("Going down...\n");
+            C1.stdout{"Going down...\n"}
          }
       }
    }
@@ -47,7 +47,7 @@ enum Dir[#left, #up, #right, #down]:u8 { // an 8-bit enum
 
 using i32 { // access the namespace of 32-bit int, then add a "print" and "increment" method
    print(i:this) {
-      C.printf("Int's value is %d\n", i);
+      C1.stdout{"Int's value is " i "\n"}
    }
    inc(i:this&) {
       i++;
@@ -57,7 +57,7 @@ main():intc {
    Coord.init(s!); // s is automatically declared as a coord allocated in the stack
    s.walk(#left);
    s.walk(#down);
-   C.printf("The location is at (%d, %d)\n", s.x, s.y);
+   C1.stdout{"The location is at (" s.x ", " s.y ")\n"}
    i! = 7:i32;
    i.print();
    i.inc();

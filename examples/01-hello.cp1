@@ -1,6 +1,5 @@
-#include <stdio.h>
-#include <math.h>
-using C = LibC;
+#include <stdout.h>
+using C1 = LibCp1;
 
 enum Direction[#right, #up, #left, #down]:u8 { // An 8-bit unsigned enum
    string(e:this):char[] { // An example method for enums
@@ -26,23 +25,23 @@ struct Position[x:i32, y:i32] { // A struct
 }
 
 main():intc { // intc is for compatibility with C's int, prefer to use i32 elsewhere
-   C.printf("Hello world!\n");
+   C1.stdout{"Hello world!\n"}
 
    one! = 1; // '!' is the quickest way to declare a variable
    seven! = 7;
    sum! = one + seven;
-   C.printf("%d + %d = %d\n", one, seven, sum);
+   C1.stdout{one " + " seven " = " sum "\n"}
 
    var typed-var:i32 = 9;
-   C.printf("typed-var is %d\n", typed-var);
+   C1.stdout{"typed-var is " typed-var "\n"}
 
    var pos:Position.; // '.' means this is allocated on the stack
    pos.x = 9;
    pos.y = 11;
    pos.go(#left);
-   C.printf("position is at %d, %d\n", pos.x, pos.y);
+   C1.stdout{"position is at " pos.x ", " pos.y "\n"}
 
    dir! = Direction#left;
-   C.printf("direction is %s\n", dir.string());
+   C1.stdout{"direction is " dir.string() ''\n}
    return 0;
 }
