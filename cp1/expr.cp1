@@ -263,19 +263,19 @@ enum BasicTypeId[
    cp1-name(e:this):char[] @cp1-name;
 }
 struct ExprLvar[
-   base:Expr+,
+   base:Expr.,
    lvar:Lvar,
 ];
 struct ExprChar[
-   base:Expr+,
+   base:Expr.,
    value:char,
 ];
 struct ExprBool[
-   base:Expr+,
+   base:Expr.,
    value:bool,
 ];
 struct ExprNull[
-   base:Expr+,
+   base:Expr.,
 ];
 struct ExprStrNode[
    next:ExprStrNode,
@@ -283,7 +283,7 @@ struct ExprStrNode[
    buf:char[0],
 ];
 struct ExprStr[
-   base:Expr+,
+   base:Expr.,
    node-c:i32,
    first:ExprStrNode,
    last:ExprStrNode,
@@ -322,12 +322,12 @@ union ExprIntValue[
    uu64:u64,
 ];
 struct ExprIntData[
-   base:Expr+,
-   value:ExprIntValue+,
+   base:Expr.,
+   value:ExprIntValue.,
    type:ExprInt,
 ];
 struct ExprSizeOfType[
-   base:Expr+,
+   base:Expr.,
    type:At,
 ];
  

@@ -334,7 +334,7 @@ enum_cvars_decl ::= enum_cvars_decl COMMA_SPACE enum_cvar_decl.
 typeInfo ::= typeInfo_arr.
 typeInfo ::= typeInfo_ref.
 typeInfo ::= typeInfo_bi.
-typeInfo_bi ::= PLUS.
+typeInfo_bi ::= DOT.
    { _NCp1_Ptype_info_static_0(); }
 ref_count(l) ::= AMPERSAND.
    { l.basic.id = 1; }

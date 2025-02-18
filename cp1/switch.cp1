@@ -63,7 +63,7 @@ using StmtSpace {
    }
 }
 union CaseStack[cas:StmtCase, defaul:StmtDefault];
-var case-stack-v:CaseStack+[64];
+var case-stack-v:CaseStack.[64];
 var case-stack-c:u8;
 using Stmt {
    write-switch(stmt:Stmt) @case.write() @inline {
@@ -250,7 +250,7 @@ struct StmtSwitchCaseFunc[
    func:Func,
 ];
 struct StmtSwitchEnd[
-   base:Stmt+,
+   base:Stmt.,
 ];
 var switch-expr-c:u32;
 var switch-expr-cap:u32;
@@ -265,20 +265,20 @@ stmt-switch-expr-add(expr:ExprI) {
    .switch-expr-v[expr-i] = expr;
 }
 struct StmtCase[
-   base:Stmt+,
+   base:Stmt.,
    fall-through:bool,
    expr-c:u32,
-   expr-v:StmtCaseItem+[0],
+   expr-v:StmtCaseItem.[0],
 ];
 struct StmtCaseEnd[
-   base:Stmt+,
+   base:Stmt.,
 ];
 struct StmtDefault[
-   base:Stmt+,
+   base:Stmt.,
    fall-through:bool,
 ];
 struct StmtDefaultEnd[
-   base:Stmt+,
+   base:Stmt.,
 ];
 stmt-switch-case-begin(begin-row:u32, begin-col:u32, end-row:u32, end-col:u32, fall-through:bool) {
    +expr-c = .switch-expr-c;

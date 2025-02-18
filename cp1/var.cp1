@@ -148,7 +148,7 @@ using DeclVarData {
    }
 }
 #type-info-star-limit:i32 = 8;
-struct Value[reff:i8, paren:bool, type:At, info:TypeInfo+] {
+struct Value[reff:i8, paren:bool, type:At, info:TypeInfo.] {
    set(v:this, reff:i8, paren:bool, type:At, info:TypeInfo) {
       +c = info.ref-v[info.array-c];
       v.type = type;
@@ -241,17 +241,17 @@ struct TypeInfo[ref-v:i8[#type-info-star-limit], array-c:u8, star-c:i8, built-in
 }
 var gvar-c:Gvar;
 var gvar-cap:Gvar;
-var gvar-v:DeclGvar+[];
+var gvar-v:DeclGvar.[];
 
 var decl-var-row:u32;
 var decl-var-col:u32;
 // var decl-var-name:Id;
 // var decl-var-type:At;
-// var decl-var-type-info:TypeInfo+;
+// var decl-var-type-info:TypeInfo.;
 #type-info-stack-limit:i32 = 8;
-// var stack-type-info:TypeInfo+; // [#type-info-stack-limit]}
+// var stack-type-info:TypeInfo.; // [#type-info-stack-limit]}
 // var stack-type-info-c:i8;
-var decl-var:DeclVarData+;
+var decl-var:DeclVarData.;
 enum VarFlags[
    #0,
    #real-name = 1,

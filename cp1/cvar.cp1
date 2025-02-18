@@ -73,7 +73,7 @@ enum CvarFlags[
 }
 var cvar-c:Cvar;
 var cvar-cap:Cvar;
-var cvar-v:CvarData+[];
+var cvar-v:CvarData.[];
 expr-cvar(at:At, name:Id):ExprI {
    quick-alloc-one(+(e:ExprCvar));
    +e-idx = expr-push(e.base, #cvar);

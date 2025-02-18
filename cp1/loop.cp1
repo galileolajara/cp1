@@ -3,7 +3,7 @@ using C = LibC;
 using C1 = LibCp1;
 using Cp1 {
 union Nest[do:StmtLoop, reff:ref];
-var nest-stack-ptr-v:Nest+[64];
+var nest-stack-ptr-v:Nest.[64];
 var nest-stack-id-v:i32[64];
 var nest-stack-c:u8;
 var nest-id:i32;
@@ -94,14 +94,14 @@ stmt-loop-begin() {
    .decl-func-ctx-space.flags |= #skip-lvar-decl;
 }
 struct StmtLoop[
-   base:Stmt+,
+   base:Stmt.,
    expr:ExprI,
-   val:Value+,
+   val:Value.,
    continu:StmtSpace,
    end:StmtLoopEnd,
 ];
 struct StmtLoopEnd[
-   base:Stmt+,
+   base:Stmt.,
    do:StmtLoop,
 ];
 stmt-loop-set(expr:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32, continu:StmtSpace) {

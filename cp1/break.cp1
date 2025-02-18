@@ -3,7 +3,7 @@ using C = LibC;
 using C1 = LibCp1;
 using Cp1 {
 struct StmtBreak[
-   base:Stmt+,
+   base:Stmt.,
    nest:u8,
 ];
 stmt-break(id:Id, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {

@@ -8,7 +8,7 @@ enum StmtSpaceFlags[
    ]:u8 {
 }
 struct StmtSpace[
-   base:Stmt+,
+   base:Stmt.,
    parent:StmtSpace,
    flags:StmtSpaceFlags,
    stmt-first:Stmt,

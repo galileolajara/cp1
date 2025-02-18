@@ -85,7 +85,7 @@ using DeclFunc {
 struct Farg[
    row:u32,
    col:u32,
-   decl:DeclVarData+,
+   decl:DeclVarData.,
    ] {
    rd(f:this, r:Rdr) {
       f.row = r.n();
@@ -107,7 +107,7 @@ var func-c:Func;
 var func-cap:Func;
 var func-v:DeclFunc[];
 var decl-func-name:Id;
-// var decl-func:DeclVarData+;
+// var decl-func:DeclVarData.;
 var decl-func-row:u32;
 var decl-func-col:u32;
 var decl-func-flags:FuncFlags;
@@ -117,7 +117,7 @@ var decl-func-decl-str:char[];
 var decl-func-decl-len:i32;
 var decl-func-case:Id;
 // #cp1-farg-limit = 1024;
-var decl-farg-v:Farg+[];
+var decl-farg-v:Farg.[];
 var decl-farg-group-c:i8;
 var decl-farg-group-v:i8[#expr-carg-group-limit];
 var decl-farg-c:i32;

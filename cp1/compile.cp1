@@ -16,7 +16,7 @@ struct BasicType[
    method-cap:i32,
    method-v:Func[],
 ];
-var basic-type:BasicType+[BasicTypeId#COUNT];
+var basic-type:BasicType.[BasicTypeId#COUNT];
 basic-type(t:BasicTypeId):At @inline {
    return t;
 }
@@ -28,7 +28,7 @@ var ctx-func:DeclFunc;
 var ctx-func-id:Func;
 var file-c:File;
 var file-cap:File;
-var file-v:FileData+[];
+var file-v:FileData.[];
 enum File[#nil = -1, #0]:i32 {
    ptr(f:this):FileData @inline {
       return .file-v[f];
@@ -73,7 +73,7 @@ id-add(id-len:u8, id-str:char[]):Id {
 }
 read(in-path:char[]) {
    // C1.stdout{"reading " in-path " -------------------\n"}
-   var r-begin:Rdr+;
+   var r-begin:Rdr.;
    r-begin.reff = read-file(in-path, +in-size);
    if r-begin.reff == null {
       C1.stdout{"Cannot open file for reading: " in-path ''\n}
@@ -90,7 +90,7 @@ read(in-path:char[]) {
    file.path = in-path;
    file.data = r-begin.reff;
 
-   var r:Rdr+;
+   var r:Rdr.;
    r.reff = r-begin.reff;
    if true {
       +id-c = r.n();
@@ -385,7 +385,7 @@ read(in-path:char[]) {
       f.at.rd(r);
       +at-i = f.at;
       f.decl.rd(r);
-      var r0:Rdr+;
+      var r0:Rdr.;
       r0.reff = f;
       // C1.stdout{"func :" f.decl.name " was declared on an at:\n"}
       // if true {
@@ -1030,7 +1030,7 @@ using Func {
       //    // C1.stdout{f.begin-row '': f.begin-col ": lvar '" f.lvar-v[i].decl.name "' has a type of " f.lvar-v[i].decl.type ''\n}
       // }
       // f.lvar-c = f.farg-c:Lvar;
-      var r:Rdr+;
+      var r:Rdr.;
       +file = f.file.ptr();
       r.reff = file.data;
       .id-table = file.id-table;

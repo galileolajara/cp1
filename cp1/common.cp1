@@ -13,9 +13,9 @@ struct Map[data:u64[(#hash-table-size + 7) >> 3]] {
    init(m:this);
    get-or-insert(m:this, str:char[], len:u8, val:i32):i32;
 }
-var id-map:Map+;
-var include-map:Map+;
-var at-map:AtMap+;
+var id-map:Map.;
+var include-map:Map.;
+var at-map:AtMap.;
 struct StructData[
 #if(compile)
    file:File,
@@ -34,44 +34,44 @@ struct StructData[
    method-v:Func[],
 #endif
    fvar-c:u32,
-   fvar-v:FvarData+[0],
+   fvar-v:FvarData.[0],
 ];
 struct StmtIf[
-   base:Stmt+,
+   base:Stmt.,
    expr:ExprI,
 #if(compile)
-   val:Value+
+   val:Value.
 #endif
 ];
 struct StmtIfElif[
-   base:Stmt+,
+   base:Stmt.,
    expr:ExprI,
 #if(compile)
-   val:Value+,
+   val:Value.,
 #endif
 ];
 struct StmtIfElse[
-   base:Stmt+,
+   base:Stmt.,
 ];
 struct StmtIfEnd[
-   base:Stmt+,
+   base:Stmt.,
 ];
 struct StmtSwitch[
-   base:Stmt+,
+   base:Stmt.,
    expr:ExprI,
 #if(compile)
-   val:Value+,
+   val:Value.,
 #endif
    cases:ExprI,
 #if(compile)
    case-func-c:u32,
-   case-func-v:StmtSwitchCaseFunc+[],
+   case-func-v:StmtSwitchCaseFunc.[],
 #endif
 ];
 struct StmtCaseItem[
    expr:ExprI,
 #if(compile)
-   val:Value+,
+   val:Value.,
 #endif
 ];
 using Lvar {
@@ -114,97 +114,97 @@ struct EnumData[
 #endif
 ];
 struct ExprCompare[
-   base:Expr+,
+   base:Expr.,
    left:ExprI,
    right:ExprI,
    type:Compare,
 #if(compile)
-   left-val:Value+,
-   right-val:Value+,
+   left-val:Value.,
+   right-val:Value.,
 #endif
 ];
 struct ExprAssign[
-   base:Expr+,
+   base:Expr.,
    left:ExprI,
    right:ExprI,
    type:Assign,
 #if(compile)
-   left-val:Value+,
-   right-val:Value+,
+   left-val:Value.,
+   right-val:Value.,
 #endif
 ];
 struct ExprIndex[
-   base:Expr+,
+   base:Expr.,
    left:ExprI,
    right:ExprI,
 #if(compile)
-   left-val:Value+,
-   right-val:Value+,
+   left-val:Value.,
+   right-val:Value.,
 #endif
 ];
 struct ExprMathItem[
    expr:ExprI,
 #if(compile)
-   val:Value+,
+   val:Value.,
 #endif
 ];
 struct ExprMath[
-   base:Expr+,
+   base:Expr.,
    left:ExprI,
    right:ExprI,
    type:Math,
 #if(compile)
-   left-val:Value+,
-   right-val:Value+,
+   left-val:Value.,
+   right-val:Value.,
 #endif
    item-c:u8,
 #if(parse)
    item-cap:u8,
 #endif
-   item-v:ExprMathItem+[],
+   item-v:ExprMathItem.[],
 ];
 struct ExprBoolsItem[
    expr:ExprI,
 #if(compile)
-   val:Value+,
+   val:Value.,
 #endif
 ];
 struct ExprBools[
-   base:Expr+,
+   base:Expr.,
    left:ExprI,
    right:ExprI,
    type:Bools,
 #if(compile)
-   left-val:Value+,
-   right-val:Value+,
+   left-val:Value.,
+   right-val:Value.,
 #endif
    item-c:u8,
 #if(parse)
    item-cap:u8,
 #endif
-   item-v:ExprBoolsItem+[],
+   item-v:ExprBoolsItem.[],
 ];
 struct ExprFvar[
-   base:Expr+,
+   base:Expr.,
    expr:ExprI,
    member:Id,
 #if(compile)
    fvar:Fvar,
-   val:Value+,
+   val:Value.,
 #endif
 ];
 struct ExprSoaField[
-   base:Expr+,
+   base:Expr.,
    expr:ExprI,
    group:Id,
    field:Id,
 #if(compile)
    expr2:ExprI,
-   val:Value+,
+   val:Value.,
 #endif
 ];
 struct ExprCvar[
-   base:Expr+,
+   base:Expr.,
    at:At,
    name:Id,
 #if(compile)
@@ -213,30 +213,30 @@ struct ExprCvar[
 #endif
 ];
 struct ExprRef[
-   base:Expr+,
+   base:Expr.,
    expr:ExprI,
 #if(compile)
-   val:Value+,
+   val:Value.,
 #endif
 ];
 struct ExprUnary[
-   base:Expr+,
+   base:Expr.,
    expr:ExprI,
    type:Unary,
 #if(compile)
-   val:Value+,
+   val:Value.,
 #endif
 ];
 struct ExprCastFast[
-   base:Expr+,
+   base:Expr.,
    expr:ExprI,
    type:At,
 #if(compile)
-   val:Value+,
+   val:Value.,
 #endif
 ];
 struct ExprGvar[
-   base:Expr+,
+   base:Expr.,
 #if(parse)
    at:At,
    name:Id,
@@ -254,7 +254,7 @@ struct DeclGvar[
    include:Include,
    at:At,
    flags:GvarFlags,
-   decl:DeclVarData+,
+   decl:DeclVarData.,
 ];
 struct CvarData[
 #if(compile)
@@ -266,7 +266,7 @@ struct CvarData[
    at:At,
    flags:CvarFlags,
    // real-name:Id,
-   decl:DeclVarData+,
+   decl:DeclVarData.,
    expr-set:ExprI,
    last-cvar:Cvar,
 ];
@@ -275,22 +275,22 @@ struct DeclVarData[
    type:At,
    flags:VarFlags,
    real-name:Id,
-   type-info:TypeInfo+,
+   type-info:TypeInfo.,
    size-c:u8,
    size-expr-v:ExprI[],
 #if(compile)
-   size-value-v:Value+[],
+   size-value-v:Value.[],
 #endif
 ];
 struct Carg[
    reff:i8,
    expr:ExprI,
 #if(compile)
-   value:Value+,
+   value:Value.,
 #endif
 ];
 struct ExprFunc[
-   base:Expr+,
+   base:Expr.,
    at:At,
    func-name:Id,
 #if(compile)
@@ -299,10 +299,10 @@ struct ExprFunc[
    group-c:u8,
    group-v:u8[#expr-carg-group-limit],
    carg-c:u8,
-   carg-v:Carg+[0],
+   carg-v:Carg.[0],
 ];
 struct ExprMetaFunc[
-   base:Expr+,
+   base:Expr.,
 #if(parse)
    at:At,
    func-name:Id,
@@ -310,7 +310,7 @@ struct ExprMetaFunc[
    group-c:u8,
    group-v:u8[#expr-carg-group-limit],
    carg-c:u8,
-   carg-v:Carg+[0],
+   carg-v:Carg.[0],
 #endif
 #if(compile)
    expr-c:u8,
@@ -318,17 +318,17 @@ struct ExprMetaFunc[
 #endif
 ];
 struct ExprMethod[
-   base:Expr+,
+   base:Expr.,
    thiss:ExprI,
    func-name:Id,
 #if(compile)
    func-idx:Func,
-   this-value:Value+,
+   this-value:Value.,
 #endif
    group-c:u8,
    group-v:u8[#expr-carg-group-limit],
    carg-c:u8,
-   carg-v:Carg+[0],
+   carg-v:Carg.[0],
 ];
 struct DeclFunc[
 #if(compile)
@@ -354,12 +354,12 @@ struct DeclFunc[
    decl-len:i32,
    cas:Id,
    // type:At,
-   decl:DeclVarData+,
+   decl:DeclVarData.,
 #if(parse)
    stmt-space:StmtSpace,
 #endif
 #if(compile)
-   stmt-space:StmtSpace+,
+   stmt-space:StmtSpace.,
 #endif
 //    stmt-c:u32,
 // #if(compile)
@@ -369,7 +369,7 @@ struct DeclFunc[
 #if(compile)
    lvar-c:Lvar,
    // lvar-cap:Lvar,
-   lvar-v:LvarData+[],
+   lvar-v:LvarData.[],
    // lvar-name-v:Id[],
    body-file-pos:u32,
 #endif
@@ -383,7 +383,7 @@ struct DeclFunc[
    group-c:i8,
    group-v:i8[#expr-carg-group-limit],
    farg-c:u8,
-   farg-v:Farg+[0],
+   farg-v:Farg.[0],
 ];
 var quick-alloc-c:i32;
 var quick-alloc-cap:i32;
@@ -404,7 +404,7 @@ quick-alloc(size:i32):ref @real-name(qalloc) {
       // size = (size + 3) & (-1 ^ 3);
    // }
    if size <= (.quick-alloc-cap - .quick-alloc-c) {
-      var r:Rdr+;
+      var r:Rdr.;
       r.reff = .quick-alloc-v;
       r.pos += .quick-alloc-c;
       .quick-alloc-c += size;
@@ -475,7 +475,7 @@ enum AtDef[#undefined, #module, #struct, #enum, #basic]:u8;
 struct AtData[
    type:NameType,
    parent:At,
-   name:AtName+,
+   name:AtName.,
 #if(compile)
    func-c:i32,
    func-cap:i32,
@@ -486,7 +486,7 @@ struct AtData[
    cvar-c:i32,
    cvar-cap:i32,
    cvar-v:Cvar[],
-   decl:AtType+,
+   decl:AtType.,
    def:AtDef,
 #endif
    ] {
@@ -515,7 +515,7 @@ enum NameType[#module, #struct-enum, #basic]:u8 {
 }
 var at-c:At;
 var at-cap:At;
-var at-v:AtData+[];
+var at-v:AtData.[];
 enum At[#nil = -1, #root, #relative]:i32 {
    finalize(at-i:this, ti:TypeInfo, row:u32, col:u32):bool {
       +at = at-i.ptr();

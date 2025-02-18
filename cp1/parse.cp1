@@ -48,7 +48,7 @@ type-info-finalize() {
    .decl-var.type-info.finalize();
 }
 type-info-arr(expr-v:ExprI[], expr-c:u8) {
-   var r:Rdr+;
+   var r:Rdr.;
    r.reff = expr-v;
    if expr-v == null {
       +ti = .decl-var.type-info;
@@ -135,7 +135,7 @@ var at-alias-c:Alias;
 var at-alias-cap:Alias;
 var at-alias-name-v:Id[];
 var at-alias-at-v:At[];
-var at-alias-pos-v:RowCol+[];
+var at-alias-pos-v:RowCol.[];
 struct RowCol[row:u32, col:u32];
 at-alias(name:Id, row:u32, col:u32) {
    loop i = 0; .at-alias-c; i++ {
@@ -289,14 +289,14 @@ struct TokenDataU64[
    id:u64,
 ];
 union TokenDataValue[
-   ii32:TokenDataI32+,
-   ff32:TokenDataF32+,
-   uu64:TokenDataU64+,
+   ii32:TokenDataI32.,
+   ff32:TokenDataF32.,
+   uu64:TokenDataU64.,
 ];
 struct TokenData[
    row:u32,
    col:u32,
-   val:TokenDataValue+,
+   val:TokenDataValue.,
    // id:i32,
    // id2:i32,
    reserved:i32[12],
@@ -317,9 +317,9 @@ struct Lexer[
    }
    scan(lex:this):Token @real-name(cp1_lexer_scan);
    get-oct(lex:this):u32 {
-      var r-start:Rdr+;
+      var r-start:Rdr.;
       r-start.reff = lex.start + 2;
-      var r-cursor:Rdr+;
+      var r-cursor:Rdr.;
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
       if length > 11 {
@@ -338,9 +338,9 @@ struct Lexer[
       return val:u32;
    }
    get-hex(lex:this):u32 {
-      var r-start:Rdr+;
+      var r-start:Rdr.;
       r-start.reff = lex.start + 2;
-      var r-cursor:Rdr+;
+      var r-cursor:Rdr.;
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
       if length > 8 {
@@ -366,9 +366,9 @@ struct Lexer[
       return val:u32;
    }
    get-f32(lex:this):f32 {
-      var r-start:Rdr+;
+      var r-start:Rdr.;
       r-start.reff = lex.start;
-      var r-cursor:Rdr+;
+      var r-cursor:Rdr.;
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos - 1;
       var val:f32;
@@ -376,9 +376,9 @@ struct Lexer[
       return val;
    }
    get-int(lex:this, len-minus:u8):u32 {
-      var r-start:Rdr+;
+      var r-start:Rdr.;
       r-start.reff = lex.start;
-      var r-cursor:Rdr+;
+      var r-cursor:Rdr.;
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos - len-minus;
       if length > 10 {
@@ -417,9 +417,9 @@ struct Lexer[
       return val;
    }
    get-u64(lex:this):u64 {
-      var r-start:Rdr+;
+      var r-start:Rdr.;
       r-start.reff = lex.start;
-      var r-cursor:Rdr+;
+      var r-cursor:Rdr.;
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos - 3; // -3 to remove u64 suffix
       if length > 20 { // 18446744073709551615
@@ -447,10 +447,10 @@ struct Lexer[
       return val;
    }
    get-id(lex:this, begin:u8, end:u8):i32 {
-      var r-start:Rdr+;
+      var r-start:Rdr.;
       r-start.reff = lex.start;
       r-start.pos += begin;
-      var r-cursor:Rdr+;
+      var r-cursor:Rdr.;
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos - end;
       if length > 255 {
@@ -481,10 +481,10 @@ struct Lexer[
       // return id;
    }
    get-include(lex:this):i32 {
-      var r-start:Rdr+;
+      var r-start:Rdr.;
       r-start.reff = lex.start;
       r-start.pos += 8;
-      var r-cursor:Rdr+;
+      var r-cursor:Rdr.;
       r-cursor.reff = lex.cursor;
       +length = r-cursor.pos - r-start.pos;
       // loop (r-start.charr[length] != '' ) && (r-start.charr[length] != ''\n) {
@@ -541,7 +541,7 @@ var last-token:Token;
 struct Parser[] {
    alloc():Parser;
    free(psr:this);
-   parse(psr:this, t:Token, tok:TokenData+) @real-name(cp1Parse);
+   parse(psr:this, t:Token, tok:TokenData.) @real-name(cp1Parse);
 }
 var last-row:u32 @extern;
 var last-col:u32 @extern;
@@ -608,7 +608,7 @@ write-func(w:Wtr, header:bool) @inline {
             continue;
          }
       }
-      var pos-4:Wtr+;
+      var pos-4:Wtr.;
       pos-4.p1 = w.p1;
       w.pos += 4;
       +pos-4-next = w.pos;
@@ -691,9 +691,9 @@ parse-str-init(max-size:i32);
 get-row-col(out-row:u32&, out-col:u32&, end:ref, begin:ref) {
    +row = 1;
    +col = 1;
-   var r:Rdr+;
+   var r:Rdr.;
    r.reff = begin;
-   var r-end:Rdr+;
+   var r-end:Rdr.;
    r-end.reff = end;
    loop r.pos < r-end.pos {
       if r.p1[0] == ''\n {
@@ -732,7 +732,7 @@ parse-string(r:Rdr, w:Wtr, ending:char, in-data:ref) {
    }
 }
 parse-comment(r:Rdr, w:Wtr, ending:char, in-data:ref) {
-   var r-begin:Rdr+;
+   var r-begin:Rdr.;
    r-begin.pos = r.pos;
    r.pos += 2;
    loop {
@@ -821,13 +821,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    if true { // Process comments
       +preprocess = false;
       // in-data = convert-old-to-new(in-data, in-size);
-      var r-end:Rdr+;
+      var r-end:Rdr.;
       r-end.reff = in-data;
       r-end.pos += in-size;
-      var r:Rdr+;
+      var r:Rdr.;
       r.reff = in-data;
       var new-data = C.malloc(in-size + 1);
-      var w:Wtr+;
+      var w:Wtr.;
       w.reff = new-data;
       // Ignore texts outside the top-level curly braces
       // +indent = 0:i32;
@@ -1068,7 +1068,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       w.p1[0] = ''\0;
       C.free(&in-data[-1]);
       in-data = new-data;
-      var w-begin:Wtr+;
+      var w-begin:Wtr.;
       w-begin.reff = new-data;
       in-size = w.pos - w-begin.pos;
 
@@ -1082,7 +1082,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       //    preprocess(in-data, in-size);
       // }
    }
-   var r-end:Rdr+;
+   var r-end:Rdr.;
    r-end.reff = in-data;
    r-end.pos += in-size;
    parse-str-init(in-size);
@@ -1115,7 +1115,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    +next-col = 1;
    .row = 1;
    .col = 1;
-   var tok:TokenData+;
+   var tok:TokenData.;
    loop {
       tok.row = next-row;
       tok.col = next-col;
@@ -1152,14 +1152,14 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             //    psr.parse(t, tok);
             // }
             case #char1 {
-               var r:Rdr+;
+               var r:Rdr.;
                r.reff = lex.start;
                tok.val.ii32.id = r.p1[2];
                .last-token = t;
                psr.parse(t, tok);
             }
             case #char2 {
-               var r:Rdr+;
+               var r:Rdr.;
                r.reff = lex.start;
                tok.val.ii32.id = char-escape-value(r.p1[3]);
                .last-token = t;
@@ -1167,7 +1167,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             }
             case #space-at-no-decl-str {
                // find the '@' character and start counting from there
-               var r-start:Rdr+;
+               var r-start:Rdr.;
                r-start.reff = lex.start;
                +start = 9;
                loop {
@@ -1183,7 +1183,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             }
             case #space-at-real-name-str {
                // find the '@' character and start counting from there
-               var r-start:Rdr+;
+               var r-start:Rdr.;
                r-start.reff = lex.start;
                +start = 11;
                loop {
@@ -1199,7 +1199,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             }
             case #space-at-meta-method-str {
                // find the '@' character and start counting from there
-               var r-start:Rdr+;
+               var r-start:Rdr.;
                r-start.reff = lex.start;
                +start = 13;
                loop {
@@ -1209,7 +1209,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      break;
                   }
                }
-               var r-end:Rdr+;
+               var r-end:Rdr.;
                r-end.reff = lex.cursor;
                r-end.pos -= 2;
                +len = r-end.pos - r-start.pos - 10;
@@ -1401,10 +1401,10 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   rbracket++;
                }
                if true {
-                  var r-start:Rdr+;
+                  var r-start:Rdr.;
                   r-start.reff = lex.start;
                   r-start.pos += 1;
-                  var r-cursor:Rdr+;
+                  var r-cursor:Rdr.;
                   r-cursor.reff = lex.cursor;
                   +length = rbracket - 1;
                   +end = r-cursor.pos - r-start.pos - length;
@@ -1416,10 +1416,10 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                }
                if true {
                   rbracket++;
-                  var r-start:Rdr+;
+                  var r-start:Rdr.;
                   r-start.reff = lex.start;
                   r-start.pos += rbracket;
-                  var r-cursor:Rdr+;
+                  var r-cursor:Rdr.;
                   r-cursor.reff = lex.cursor;
                   +length = r-cursor.pos - r-start.pos;
                   tok.val.ii32.id2 = lex.get-id(rbracket, 0);
@@ -1501,9 +1501,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    psr.parse(#nil, tok);
    psr.free();
    // C1.stdout{"parsing finished\n"}
-   var w-begin:Wtr+;
+   var w-begin:Wtr.;
    w-begin.reff = quick-alloc((in-size << 2) + 1024);
-   var w:Wtr+;
+   var w:Wtr.;
    w.reff = w-begin.reff;
    w.n(.id-c);
    loop i = 0; .id-c; i++ {

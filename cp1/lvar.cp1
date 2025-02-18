@@ -44,7 +44,7 @@ enum LvarFlags[
 struct LvarData[
    row:u32,
    col:u32,
-   decl:DeclVarData+,
+   decl:DeclVarData.,
    flags:LvarFlags,
    // set-expr:ExprI,
 ];

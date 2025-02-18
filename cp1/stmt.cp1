@@ -51,13 +51,13 @@ struct Stmt[
    }
 }
 struct StmtExpr[
-   base:Stmt+,
+   base:Stmt.,
    expr:ExprI,
 ];
 struct StmtReturn[
-   base:Stmt+,
+   base:Stmt.,
    expr:ExprI,
-   val:Value+,
+   val:Value.,
 ];
 stmt-push(s:Stmt, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32, type:StmtType) {
    s.begin-row = begin-row;

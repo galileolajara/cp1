@@ -43,7 +43,7 @@ enum Struct[#nil = -1, #0, #1]:i32 {
    }
 }
 struct FvarData[
-   decl:DeclVarData+,
+   decl:DeclVarData.,
    ] {
    rd(f:this, r:Rdr) {
       f.decl.rd(r);
@@ -75,7 +75,7 @@ enum StructFlags[
 var decl-struct-flags:StructFlags;
 var decl-fvar-c:u32;
 var decl-fvar-cap:u32;
-var decl-fvar-v:DeclVarData+[];
+var decl-fvar-v:DeclVarData.[];
 decl-var-as-fvar() {
    +fvar = .decl-fvar-c++;
    if .decl-fvar-cap <= .decl-fvar-c {
