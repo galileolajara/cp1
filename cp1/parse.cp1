@@ -3,6 +3,64 @@ using C = LibC;
 using C1 = LibCp1;
 using X = Posix;
 using Cp1 {
+var template-name-buf:char[] @extern;
+var template-name-len:u8 @extern;
+decl-template-inst(name:Id) {
+   at! = .decl-at;
+   arg-buf! = .string-buf;
+   arg-len! = .string-len;
+   // C1.stdout{"template args: " .string-buf, arg-len ", name: " name ''\n}
+   loop i = 0; .template-inst-c; i++ {
+      td! = .template-inst-v[i];
+      if (td.at == at) && (td.name == name) && (td.arg-len == arg-len) && (C.memcmp(td.arg, arg-buf, arg-len) == 0) {
+         // C1.stdout{"already found instantiation of template " name " with the same arguments, silently ignoring...\n"}
+         return;
+      }
+   }
+   i! = .template-inst-c++;
+   if .template-inst-cap <= .template-inst-c {
+      old-cap! = .template-inst-cap;
+      .template-inst-cap = grow(.template-inst-c:base);
+      realloc(.template-inst-v, .template-inst-cap:base, old-cap:base);
+   }
+   td! = .template-inst-v[i];
+   td.name = name;
+   var arg:char[];
+   quick-alloc-arr(arg, arg-len);
+   C.memcpy(arg, arg-buf, arg-len);
+   td.arg = arg;
+   td.arg-len = arg-len;
+   td.at = at;
+   td.row = .row;
+}
+decl-template-code() {
+   at! = .decl-at;
+   name! = id-add(.template-name-len, .template-name-buf);
+   loop i = 0; .template-code-c; i++ {
+      td! = .template-code-v[i];
+      if (td.at == at) && (td.name == name) {
+         C1.stdout{.input-path '': .row '': .col ": Template name '" name "' was already used at line " td.row ''\n}
+         C.exit(#failure);
+         return;
+      }
+   }
+   i! = .template-code-c++;
+   if .template-code-cap <= .template-code-c {
+      old-cap! = .template-code-cap;
+      .template-code-cap = grow(.template-code-c:base);
+      realloc(.template-code-v, .template-code-cap:base, old-cap:base);
+   }
+   td! = .template-code-v[i];
+   td.name = name;
+   code-len! = .string-len;
+   var code:char[];
+   quick-alloc-arr(code, code-len);
+   C.memcpy(code, .string-buf, code-len);
+   td.code = code;
+   td.code-len = code-len;
+   td.at = at;
+   td.row = .row;
+}
 var ctx-func:DeclFunc;
 var id-in-header-v:u8[];
 var id-in-header-idx-v:u32[];
@@ -174,8 +232,12 @@ decl-alias(name:Id, at:At, row:u32, col:u32) {
    // }
    loop i = 0; .at-alias-c; i++ {
       if .at-alias-name-v[i] == name {
-         C1.stdout{.input-path '': row '': col ": Alias '" name " was already declared at " .at-alias-pos-v[i].row '': .at-alias-pos-v[i].col ''\n}
-         C.exit(#failure);
+         if .at-alias-at-v[i] == at {
+            // Ok, because templates might emit duplicate aliases
+         } else {
+            C1.stdout{.input-path '': row '': col ": Alias '" name " was already declared at " .at-alias-pos-v[i].row '': .at-alias-pos-v[i].col ''\n}
+            C.exit(#failure);
+         }
          return;
       }
    }
@@ -268,6 +330,10 @@ decl-at-add(name:Id, type:NameType) {
    .build-at = at-create(.build-at, type, name);
 }
 decl-at-basic(type:BasicTypeId) {
+   if .decl-at != #root {
+      C1.stdout{.input-path '': .row '': .col ": Error, you cannot use 'using' on primitive types while inside another 'using'\n"}
+      C.exit(#failure);
+   }
    .build-at = at-create-basic(type);
 }
 decl-at-begin(row:u32, col:u32) {
@@ -615,6 +681,28 @@ write-func(w:Wtr, header:bool) @inline {
       f.lvars-wr(w, header);
       f.stmt-space.wr(w, header);
       pos-4.n4(w.pos - pos-4-next);
+   }
+}
+write-template-code(w:Wtr, header:bool) @inline {
+   w.n(.template-code-c:base);
+   // C1.stdout{"there are " .template-code-c:base " templates in parse stage\n"}
+   loop i = 0; .template-code-c; {
+      td! = .template-code-v[i++];
+      td.name.wr(w, header);
+      w.n(td.row);
+      w.n(td.code-len);
+      w.copy(td.code, td.code-len);
+      td.at.wr(w, header);
+   }
+   w.n(.template-inst-c:base);
+   // C1.stdout{"there are " .template-inst-c:base " templates in parse stage\n"}
+   loop i = 0; .template-inst-c; {
+      td! = .template-inst-v[i++];
+      td.name.wr(w, header);
+      w.n(td.row);
+      w.n(td.arg-len);
+      w.copy(td.arg, td.arg-len);
+      td.at.wr(w, header);
    }
 }
 write-cvar(w:Wtr, header:bool) {
@@ -1546,6 +1634,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    write-enum(w, false);
    write-struct(w, false);
    write-func(w, false);
+   write-template-code(w, false);
    
    var out-path:char[] = C.malloc(C.strlen(lock-path) + 4 + 1);
    C.sprintf(out-path, "%s.tmp", lock-path);
@@ -1586,6 +1675,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    write-enum(w, true);
    write-struct(w, true);
    write-func(w, true);
+   write-template-code(w, true);
 
    out-path[out-path-len - 5] = ''h;
    if !write-file(out-path, w-begin.reff, w.pos - w-begin.pos) {

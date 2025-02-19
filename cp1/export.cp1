@@ -2,6 +2,8 @@ using Cp1 = Cp1;
 using Cp1 {
 export() {
    quick-alloc-undo(0);
+   decl-template-inst(#nil);
+   decl-template-code();
    decl-func-begin(#0, 0, 0);
    decl-func-end(0, 0);
    decl-struct-end(0, 0);

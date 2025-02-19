@@ -911,6 +911,9 @@ enum Id[#nil = -1, #0]:i32 {
    stdout(id:this, so:C1.StdOut) @inline {
       C1.stdout-bytes(id.str(), id.len());
    }
+   jscode(id:this, jc:JsCode) @inline {
+      jscode-bytes(id.str(), id.len());
+   }
    output(id:this, o:Output) @inline {
       output-bytes(id.str(), id.len());
    }
@@ -976,6 +979,34 @@ enum Id[#nil = -1, #0]:i32 {
       }
    }
 }
- 
+struct TemplateCodeData[
+   code:char[],
+   code-len:u32,
+   name:Id,
+   at:At,
+   row:u32,
+#if(compile)
+   file:File,
+   added-to-js:i32,
+#endif
+];
+var template-code-v:TemplateCodeData.[];
+var template-code-cap:TemplateCode;
+var template-code-c:TemplateCode;
+enum TemplateCode[]:u32; 
+struct TemplateInstData[
+   arg:char[],
+   arg-len:u32,
+   name:Id,
+   at:At,
+   row:u32,
+#if(compile)
+   file:File,
+#endif
+];
+var template-inst-v:TemplateInstData.[];
+var template-inst-cap:TemplateInst;
+var template-inst-c:TemplateInst;
+enum TemplateInst[]:u32; 
 
 }

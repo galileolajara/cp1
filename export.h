@@ -1,4 +1,6 @@
 void qalloc_undo(int32_t _Lsize_0);
+void _NCp1_Pdecl_template_inst_1(_NCp1_NId _Lname_0);
+void _NCp1_Pdecl_template_code_0();
 void _NCp1_Pdecl_func_begin_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
 void _NCp1_Pdecl_func_end_2(uint32_t _Lrow_0, uint32_t _Lcol_1);
 void _NCp1_Pdecl_struct_end_2(uint32_t _Lrow_0, uint32_t _Lcol_1);

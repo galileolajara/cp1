@@ -2,7 +2,120 @@ using Cp1 = Cp1;
 using C = LibC;
 using C1 = LibCp1;
 using X = Posix;
+using u32 {
+   jscode(val:this, jc:Cp1.JsCode) @inline {
+      Cp1.jscode-u32(val);
+   }
+}
+using char {
+   jscode(val:this, jc:Cp1.JsCode) @inline {
+      Cp1.jscode-char(val);
+   }
+   jscode-arr(str:this[], jc:Cp1.JsCode, len:u32) @inline {
+      Cp1.jscode-bytes(str, len);
+   }
+}
 using Cp1 {
+var jscode-buf-data:char[];
+var jscode-buf-cap:u32;
+var jscode-buf-len:u32;
+jscode-reserve(len:u32) {
+   space! = .jscode-buf-cap - .jscode-buf-len;
+   if space < len {
+      .jscode-buf-cap += .jscode-buf-cap;
+      space = .jscode-buf-cap - .jscode-buf-len;
+      loop space < len {
+         .jscode-buf-cap += .jscode-buf-cap;
+         space = .jscode-buf-cap - .jscode-buf-len;
+      }
+      C.realloc-arr(.jscode-buf-data, .jscode-buf-cap);
+   }
+}
+jscode-char(val:char) @inline {
+   jscode-reserve(1);
+   .jscode-buf-data[.jscode-buf-len++] = val;
+}
+jscode-cstr(str:char[]) @inline {
+   jscode-bytes(str, C.strlen(str));
+}
+jscode(jc:JsCode) @meta-method(jscode end) @inline {
+}
+jscode-u32(val:u32) {
+   jscode-reserve(10);
+   if val == 0 {
+      .jscode-buf-data[.jscode-buf-len++] = ''0;
+   } else {
+      // integer to string, count the digits
+      var data:char[];
+      data = &.jscode-buf-data[.jscode-buf-len];
+      digits! = 0;
+      loop {
+         data[digits++] = (val % 10) + ''0;
+         val /= 10;
+         if val == 0 { break }
+      }
+      // reverse the string
+      start! = 0;
+      end! = digits - 1;
+      loop start < end {
+         tmp! = data[start];
+         data[start] = data[end];
+         data[end] = tmp;
+         start++;
+         end--;
+      }
+      .jscode-buf-len += digits;
+   }
+}
+struct JsCode[] {
+   jscode-cstr(jc:this, str:char[], len:u32) @inline {
+      jscode-bytes(str, len);
+   }
+   jscode-end(jc:this) @inline {
+   }
+}
+jscode-bytes(data:ref, size:usz) @inline {
+   jscode-reserve(size);
+   C.memcpy(&.jscode-buf-data[.jscode-buf-len], data, size);
+   .jscode-buf-len += size;
+}
+using TemplateCodeData {
+   add-to-js(tc:this) {
+      jscode-reserve(256);
+      jscode{
+         "// template '" tc.name "' from " tc.file " line " tc.row "\n"
+         "function " tc.name "(arg) {\n"
+      }
+      code! = tc.code;
+      i! = 0;
+      loop {
+         if i == tc.code-len {
+            break;
+         }
+         start! = i;
+         loop {
+            if code[i] == ''\n {
+               break;
+            }
+            i++;
+         }
+         var line:char[] = &code[start];
+         line-len! = i - start;
+         if (line[0] == ''#) && (line[1] == '' ) {
+            var line2:char[] = &line[2];
+            jscode{"     " line2, line-len - 1}
+         } else {
+            jscode{"cp1o(`" line, line-len "\\n`);\n"}
+         }
+         // C1.stdout{"js line [" line, line-len "]\n"}
+         i++;
+      }
+      jscode{
+         "}\n"
+      }
+   }
+}
+
 var include-stdint:bool;
 var include-stdbool:bool;
 var include-stddef:bool;
@@ -38,6 +151,9 @@ enum File[#nil = -1, #0]:i32 {
    }
    stdout(f:this, so:C1.StdOut) {
       C1.stdout-cstr(f.ptr().path);
+   }
+   jscode(f:this, jc:JsCode) {
+      jscode-cstr(f.ptr().path);
    }
 }
 struct FileData[
@@ -190,7 +306,7 @@ read(in-path:char[]) {
       quick-alloc-arr(.cvar-table, cvar-c:base);
       file.cvar-table = .cvar-table;
       // C1.stdout{"There are " cvar-c " cvars\n"}
-      C.out.flush();
+      // C.out.flush();
       cvar-begin! = .cvar-c;
       .cvar-c += cvar-c;
       if .cvar-cap <= .cvar-c {
@@ -228,7 +344,7 @@ read(in-path:char[]) {
    if true {
       gvar-c! = r.n():Gvar;
       // C1.stdout{"There are " gvar-c " gvars\n"}
-      C.out.flush();
+      // C.out.flush();
       gvar-begin! = .gvar-c;
       .gvar-c += gvar-c;
       if .gvar-cap <= .gvar-c {
@@ -257,7 +373,7 @@ read(in-path:char[]) {
    }
    enum-c! = r.n():Enum;
    // C1.stdout{"There are " enum-c " enums\n"}
-      C.out.flush();
+      // C.out.flush();
    e-idx-begin! = .enum-c;
    .enum-c += enum-c;
    if .enum-cap <= .enum-c {
@@ -362,7 +478,7 @@ read(in-path:char[]) {
    }
    func-c! = r.n():Func;
    // C1.stdout{"There are " func-c " functions\n"}
-      C.out.flush();
+      // C.out.flush();
    f-idx-begin! = .func-c;
    .func-c += func-c;
    if .func-cap <= .func-c {
@@ -493,6 +609,59 @@ read(in-path:char[]) {
       f.body-file-pos = r.pos - r-begin.pos;
       r.pos += size;
    }
+   template-code-idx-begin! = .template-code-c;
+   template-code-c! = r.n():TemplateCode;
+   // C1.stdout{"there are " template-code-c:base " template codes\n"}
+   .template-code-c += template-code-c;
+   if .template-code-cap <= .template-code-c {
+      old-cap! = .template-code-cap;
+      .template-code-cap = grow(.template-code-c:base);
+      realloc(.template-code-v, .template-code-cap:base, old-cap:base);
+   }
+   loop i = template-code-idx-begin; template-code-c; {
+      td! = .template-code-v[i++];
+      td.name.rd(r);
+      td.row = r.n();
+      td.code-len = r.n();
+      td.code = r.charr;
+      r.pos += td.code-len;
+      td.at.rd(r);
+      td.file = file-idx;
+      td.added-to-js = -1;
+      // C1.stdout{"template " td.name "\n"}
+   }
+   template-inst-idx-begin! = .template-inst-c;
+   template-inst-c! = r.n():TemplateCode;
+   // C1.stdout{"there are " template-inst-c:base " template instantiationss\n"}
+   // .template-inst-c += template-inst-c;
+   old-template-inst-c! = .template-inst-c;
+   template-inst-c2! = template-inst-c + old-template-inst-c;
+   if .template-inst-cap <= template-inst-c2 {
+      old-cap! = .template-inst-cap;
+      .template-inst-cap = grow(template-inst-c2:base);
+      realloc(.template-inst-v, .template-inst-cap:base, old-cap:base);
+   }
+   i! = template-inst-idx-begin;
+   loop template-inst-c {
+      td! = .template-inst-v[i++];
+      td.name.rd(r);
+      td.row = r.n();
+      td.arg-len = r.n();
+      td.arg = r.charr;
+      r.pos += td.arg-len;
+      td.at.rd(r);
+      td.file = file-idx;
+      loop j = 0; old-template-inst-c {
+         td2! = .template-inst-v[j++];
+         if (td2.at == td.at) && (td2.name == td.name) && (td2.arg-len = td.arg-len) && (C.memcmp(td2.arg, td.arg, td.arg-len) == 0) {
+            // C1.stdout{"template " td.name " was already instantiated with the same arguments, silently ignoring...\n"}
+            i--;
+            break;
+         }
+      }
+      // C1.stdout{"template " td.name "\n"}
+   }
+   .template-inst-c = i;
 }
 // var out:C.File;
 var process-first:Func;
@@ -566,6 +735,93 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    loop i = arg-i; arg-c - arg-i - 1; i++ {
       in-path! = arg-v[i];
       read(in-path);
+   }
+
+   if .template-inst-c != 0 {
+      var template-code-added-to-js-v:TemplateCode[];
+      template-code-added-to-js-c! = 0;
+      C.malloc-arr(template-code-added-to-js-v, .template-code-c:base);
+
+      // process template instantiations
+      .jscode-buf-cap = 4096;
+      C.malloc-arr(.jscode-buf-data, .jscode-buf-cap);
+      loop i = 0; .template-inst-c; i++ {
+         ti! = .template-inst-v[i];
+         // C1.stdout{"template instantiation of " ti.name "\n"}
+         at! = ti.at;
+         name! = ti.name;
+         found! = false;
+         loop j = 0:TemplateCode; .template-code-c; j++ {
+            tc! = .template-code-v[j];
+            if (at == tc.at) && (name == tc.name) {
+               if tc.added-to-js == -1 {
+                  tc.added-to-js = template-code-added-to-js-c++;
+                  if tc.added-to-js == 0 {
+                     jscode{
+                     '= output = [];
+                     '= function cp1o(line) {
+                     '=    output.push(line);
+                     '= }
+                     }
+                  }
+                  template-code-added-to-js-v[tc.added-to-js] = j;
+                  tc.add-to-js();
+               }
+               jscode{tc.name ''( ti.arg, ti.arg-len ");\n"}
+               found = true;
+               break;
+            }
+         }
+         if !found {
+            C1.stdout{ti.file '': ti.row ": Error, cannot instantiate the template '" name "' because its code was not found.\n"}
+            C.exit(#failure);
+         }
+      }
+
+      if template-code-added-to-js-c != 0 {
+         jscode{
+         '= let file = std.open(scriptArgs[0] + ".cp1", "wb");
+         '= file.puts(output.join(""));
+         '= file.close();
+         }
+
+         var js-tmp-path:char[15 + 4 + 2];
+         C.memcpy(js-tmp-path, "cp1-tmp-XXXXXX", 15);
+         js-tmp-fd! = X.mkstemp(js-tmp-path);
+         js-tmp-fd.write(.jscode-buf-data, .jscode-buf-len);
+         js-tmp-fd.close();
+
+         C1.stdout{"file was written at " js-tmp-path ''\n}
+
+         var command:char[128];
+         C.sprintf(command, "./qjs --std %s", js-tmp-path);
+         if C.system(command) != 0 {
+            C.exit(#failure);
+         }
+
+         X.unlink(js-tmp-path);
+
+         C.sprintf(command, "%.*s-parse %s.cp1 %s.cp1-b", (C.strlen(arg-v[0]) - 8):intc, arg-v[0], js-tmp-path, js-tmp-path);
+         if C.system(command) != 0 {
+            C.exit(#failure);
+         }
+
+         js-tmp-path[14] = ''.;
+         js-tmp-path[15] = ''c;
+         js-tmp-path[16] = ''p;
+         js-tmp-path[17] = ''1;
+         js-tmp-path[18] = ''\0;
+         X.unlink(js-tmp-path);
+
+         js-tmp-path[18] = ''-;
+         js-tmp-path[19] = ''b;
+         js-tmp-path[20] = ''\0;
+
+         read(C.strdup(js-tmp-path));
+         X.unlink(js-tmp-path);
+         js-tmp-path[19] = ''h;
+         X.unlink(js-tmp-path);
+      }
    }
 
    loop f-idx = 0:Func; .func-c; f-idx++ {

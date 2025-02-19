@@ -5,6 +5,10 @@ extern char* _Gstring_buf;
 extern int _Gstring_len;
 char* _Gstring_buf;
 int _Gstring_len;
+extern unsigned char* _Gtemplate_name_buf;
+extern uint8_t _Gtemplate_name_len;
+unsigned char* _Gtemplate_name_buf;
+uint8_t _Gtemplate_name_len;
 void _NCp1_Pparse_str_init_1(int maxsize) {
    string_mem = malloc(maxsize);
 }
@@ -62,6 +66,12 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "0o" [0-7]+                      { return CP1_TOKEN_NUM_OCT; }
 	"0x" [0-9a-fA-F]+                { return CP1_TOKEN_NUM_HEX; }
 	("0"|[1-9][0-9]*) "." [0-9]+ "f" { return CP1_TOKEN_NUM_F32; }
+   "template{" {
+      goto lex_template_inst;
+   }
+   "template" spaces id spaces "{" {
+      goto lex_template_code;
+   }
    "\"" {
       goto lex_string;
    }
@@ -209,7 +219,6 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    */
 lex_string: {
       #define pushchar(c) *(string_ptr++) = c
-      _Gstring_buf = string_mem;
       char* string_ptr = string_mem;
       unsigned char *begin;
       goto string_continue;
@@ -218,7 +227,7 @@ lex_string: {
          re2c:yyfill:enable = 0;
 
          * {
-            fprintf(stdout, "%u:%u: Error reading the string\n", _Grow, _Gcol + 1);
+            fprintf(stdout, "%s:%u:%u: Error reading the string\n", input_path, _Grow, _Gcol + 1);
             exit(EXIT_FAILURE);
          }
          "\"" {
@@ -246,8 +255,179 @@ lex_string: {
          }
       }
       string_end: {
+         _Gstring_buf = string_mem;
          _Gstring_len = string_ptr - string_mem;
          return CP1_TOKEN_STRING;
       }
+   }
+lex_template_code: {
+      unsigned char* start = l->start;
+      unsigned char* name = start + 8;
+      int col = _Gcol + 8;
+      for(;;) {
+         if (name[0] == '\n') {
+            fprintf(stdout, "%s:%u:%u: Error, the syntax 'template NAME {' must not have a new line in between\n", input_path, _Grow, col);
+            exit(EXIT_FAILURE);
+         }
+         if (name[0] != ' ') {
+            break;
+         }
+         col++;
+         name++;
+      }
+      unsigned char* name_end = name + 1;
+      col++;
+      for(;;) {
+         if (name_end[0] == '\n') {
+            fprintf(stdout, "%s:%u:%u: Error, the syntax 'template NAME {' must not have a new line in between\n", input_path, _Grow, col);
+            exit(EXIT_FAILURE);
+         }
+         if (name_end[0] == ' ') {
+            break;
+         }
+         col++;
+         name_end++;
+      }
+      int name_len = name_end - name;
+      if (name_len > 255) {
+         fprintf(stdout, "%s:%u:%u: Error, template name is too long\n", input_path, _Grow, _Gcol);
+         exit(EXIT_FAILURE);
+      }
+      _Gtemplate_name_buf = name;
+      _Gtemplate_name_len = name_len;
+      unsigned char* curly_brace = name_end;
+      for(;;) {
+         if (curly_brace[0] == '\n') {
+            fprintf(stdout, "%s:%u:%u: Error, the syntax 'template NAME {' must not have a new line in between\n", input_path, _Grow, col);
+            exit(EXIT_FAILURE);
+         }
+         if (curly_brace[0] == '{') {
+            break;
+         }
+         col++;
+         curly_brace++;
+      }
+      if (curly_brace[1] != '\n') {
+         fprintf(stdout, "%s:%u:%u: Error, the syntax 'template NAME {' must be followed by a new line\n", input_path, _Grow, col + 1);
+         exit(EXIT_FAILURE);
+      }
+      col = _Gcol;
+      int32_t indention = 0;
+      while (start[-1] != '\n') {
+         if (start[-1] != ' ') {
+            fprintf(stdout, "%s:%u:%u: Error, the line that contains 'template NAME {' must not have other character in it. Found a character '%c'.\n", input_path, _Grow, col - 1, start[-1]);
+            exit(EXIT_FAILURE);
+         }
+         col--;
+         start--;
+         indention++;
+      }
+      unsigned char* code = curly_brace + 2;
+      int32_t i = 0;
+      int row = _Grow;
+      char* string_ptr = string_mem;
+      for(;;) {
+         row++;
+         if (code[i] == '\0') {
+            fprintf(stdout, "%s:%u:%u: Error, cannot find the matching '}' of the template.\n", input_path, _Grow, _Gcol);
+            exit(EXIT_FAILURE);
+         }
+         int32_t start = i;
+         for(;;) {
+            if (code[i] == '\n') {
+               break;
+            }
+            i++;
+         }
+         unsigned char* line = &code[start];
+         int32_t line_len = i - start;
+
+         int32_t first_char = 0;
+         for(;;) {
+            if (line[first_char] != ' ') {
+               break;
+            }
+            first_char++;
+         }
+         if (line[first_char] == '\n') {
+            // ignore indention
+         } else if (first_char == indention) {
+            if (line[first_char] == '}') {
+               YYCURSOR = (const char*)(line + first_char + 1);
+               break;
+            } else if ((line[first_char] == '#') && (line[first_char + 1] == ' ')) {
+               // indention is still ok
+               goto copy_line;
+            } else {
+               goto indent_more;
+            }
+         } else if (first_char < indention) {
+            indent_more:
+            fprintf(stdout, "%s:%u:%u: Error, this line must be indented further\n", input_path, row, first_char);
+            exit(EXIT_FAILURE);
+         } else {
+            copy_line:;
+            int32_t copy_len = line_len - indention;
+            memcpy(string_ptr, line + indention, copy_len);
+            string_ptr += copy_len;
+         }
+         *(string_ptr++) = '\n';
+
+         i++;
+      }
+      // fprintf(stdout, "template code begin\n%.*stemplate code end\n", (int)(string_ptr - string_mem), string_mem);
+      _Gstring_buf = string_mem;
+      _Gstring_len = string_ptr - string_mem;
+      return CP1_TOKEN_TEMPLATE_CODE;
+   }
+lex_template_inst: {
+      // fprintf(stdout, "%.*s\n", 20, YYCURSOR);
+      unsigned char* json = YYCURSOR;
+      int32_t i = 0;
+      for(;;) {
+         uint8_t c = json[i++];
+         if (c == '"') {
+            // int32_t start = i - 1;
+            for(;;) {
+               c = json[i++];
+               if (c == '\\') {
+                  i++;
+               } else if (c == '"') {
+                  // fprintf(stdout, "%.*s\n", i - start, &json[start]);
+                  break;
+               }
+            }
+         } else if (c == '\'') {
+            // int32_t start = i - 1;
+            for(;;) {
+               c = json[i++];
+               if (c == '\\') {
+                  i++;
+               } else if (c == '\'') {
+                  // fprintf(stdout, "%.*s\n", i - start, &json[start]);
+                  break;
+               }
+            }
+         } else if (c == '`') {
+            // int32_t start = i - 1;
+            for(;;) {
+               c = json[i++];
+               if (c == '\\') {
+                  i++;
+               } else if (c == '`') {
+                  // fprintf(stdout, "%.*s\n", i - start, &json[start]);
+                  break;
+               }
+            }
+         } else if (c == '}') {
+            // int32_t start = -1;
+            // fprintf(stdout, "%.*s\n", i - start, &json[start]);
+            break;
+         }
+      }
+      _Gstring_buf = (char*)&json[-1];
+      _Gstring_len = i + 1;
+      YYCURSOR = (const char*)&json[i];
+      return CP1_TOKEN_TEMPLATE_INST;
    }
 }

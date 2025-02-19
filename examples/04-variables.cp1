@@ -20,7 +20,7 @@ main():intc {
    var pointer-to-another-struct:Struct;
    C.malloc-one(pointer-to-another-struct); // malloc-one automatically computes the size needed
 
-   var struct-in-the-stack:Struct.; // notice the plus '.' symbol, means allocated on the stack
+   var struct-in-the-stack:Struct.; // notice the dot '.' symbol, means allocated on the stack
    struct-in-the-stack.x = 7;
 
    // Array of structs, and NOT an array of pointer to structs
