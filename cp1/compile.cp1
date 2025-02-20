@@ -253,7 +253,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u32) {
 
    var command:char[4096];
    C.sprintf(command, "out/cp1-parse -I \"%s\" \"%s\"", .include-dir, in-path-cp1);
-   C1.stdout{"command = " command ''\n}
+   // C1.stdout{"command = " command ''\n}
    if C.system(command) != 0 {
       // C1.stdout{"A\n"}
       C.exit(#failure);

@@ -27,7 +27,7 @@ uint64_t current_time_millis() {
     return (uint64_t)(ts.tv_sec) * 1000LL + (ts.tv_nsec / 1000000LL);
 }
 bool _NCp1_Pwrite_cp1_4(char* text_data, size_t text_size, uint8_t* bin_data, size_t bin_size) {
-   printf("write-cp1(%s)\n", input_path);
+   // printf("write-cp1(%s)\n", input_path);
    int rc;
    rc = sqlite3_open("cp1.db", &db);
    check_error(rc, db, "Cannot open database");
@@ -41,8 +41,12 @@ bool _NCp1_Pwrite_cp1_4(char* text_data, size_t text_size, uint8_t* bin_data, si
 
    sqlite3_stmt *stmt;
    const char *sql_insert = "REPLACE INTO codes(`path`, `text`, `binary`, `parser-pid`, `mtime`) VALUES (?, ?, ?, ?, ?);";
+   prepare_again:
    rc = sqlite3_prepare_v2(db, sql_insert, -1, &stmt, NULL);
-   check_error(rc, db, "Failed to prepare SELECT statement");
+   if (rc == SQLITE_BUSY) {
+      goto prepare_again;
+   }
+   check_error(rc, db, "Failed to prepare REPLACE statement");
 
    // Bind values to placeholders (use ? placeholders in SQL)
    rc = sqlite3_bind_text(stmt, 1, input_path, -1, SQLITE_STATIC);
@@ -52,7 +56,11 @@ bool _NCp1_Pwrite_cp1_4(char* text_data, size_t text_size, uint8_t* bin_data, si
    rc = sqlite3_bind_int64(stmt, 5, current_time_millis());
 
    // Execute statement
+   execute_again:
    rc = sqlite3_step(stmt);
+   if (rc == SQLITE_BUSY) {
+      goto execute_again;
+   }
    check_error(rc, db, "Failed to execute REPLACE statement");
 
    // sqlite3_finalize(stmt);
