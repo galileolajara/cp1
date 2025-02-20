@@ -20,40 +20,184 @@ void check_error(int rc, sqlite3 *db, const char *msg) {
         exit(1);
     }
 }
+#include <sys/stat.h>
+uint64_t _NCp1_Pfile_mtime_1(const char *filename) {
+    struct stat st;
+    if (stat(filename, &st) != 0) {
+        return 0;
+    }
+    return (uint64_t)(st.st_mtim.tv_sec) * 1000LL + (st.st_mtim.tv_nsec / 1000000LL);
+}
 #include <time.h>
+// uint64_t new_mtime;
 uint64_t current_time_millis() {
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
     return (uint64_t)(ts.tv_sec) * 1000LL + (ts.tv_nsec / 1000000LL);
 }
-bool _NCp1_Pwrite_cp1_4(char* text_data, size_t text_size, uint8_t* bin_data, size_t bin_size) {
-   // printf("write-cp1(%s)\n", input_path);
+bool _NCp1_Pfile_should_parse_3(char* input_path, uint32_t input_path_len, uint64_t mtime) {
    int rc;
    rc = sqlite3_open("cp1.db", &db);
    check_error(rc, db, "Cannot open database");
    
    // Enable WAL2 mode
-   // char *errMsg = 0;
-   // rc = sqlite3_exec(db, "PRAGMA journal_mode = WAL2;", NULL, NULL, &errMsg);
+   char *errMsg = 0;
+   journal_again:
+   rc = sqlite3_exec(db, "PRAGMA journal_mode = WAL;", NULL, NULL, &errMsg);
+   if (rc == SQLITE_BUSY) {
+      usleep(1000);
+      goto journal_again;
+   }
 
    // Create a table if it doesn't exist
    // rc = sqlite3_exec(db, TABLE_SCHEMA, NULL, NULL, &errMsg);
 
    sqlite3_stmt *stmt;
-   const char *sql_insert = "REPLACE INTO codes(`path`, `text`, `binary`, `parser-pid`, `mtime`) VALUES (?, ?, ?, ?, ?);";
+   const char *sql_select = "SELECT `mtime` FROM `codes` WHERE `path` = ?";
    prepare_again:
-   rc = sqlite3_prepare_v2(db, sql_insert, -1, &stmt, NULL);
+   rc = sqlite3_prepare_v2(db, sql_select, strlen(sql_select), &stmt, NULL);
+   if (rc == SQLITE_BUSY) {
+      usleep(1000);
+      goto prepare_again;
+   }
+   check_error(rc, db, "Failed to prepare SELECT statement");
+
+   // Bind values to placeholders (use ? placeholders in SQL)
+   rc = sqlite3_bind_text(stmt, 1, input_path, input_path_len, SQLITE_STATIC);
+
+   // Execute statement
+   execute_again:
+   rc = sqlite3_step(stmt);
+   if (rc == SQLITE_BUSY) {
+      usleep(1000);
+      goto execute_again;
+   } else if (rc == SQLITE_ROW) {
+      // printf("inquire mtime for path %s, returned a row\n", input_path);
+      uint64_t mtime2 = sqlite3_column_int64(stmt, 0);
+      sqlite3_finalize(stmt);
+      if (mtime2 == 1) {
+         goto race;
+      } else if (mtime2 > mtime) {
+         // printf("%s is cached\n", input_path);
+         return false;
+      } else {
+         // printf("%s is NOT cached\n", input_path);
+         // new_mtime = current_time_millis();
+         const char *sql_update = "UPDATE `codes` SET `mtime` = ?, `parser-pid` = ? WHERE `path` = ? and `mtime` = ?";
+         prepare_again2:
+         rc = sqlite3_prepare_v2(db, sql_update, strlen(sql_update), &stmt, NULL);
+         if (rc == SQLITE_BUSY) {
+            usleep(1000);
+            goto prepare_again2;
+         }
+         check_error(rc, db, "Failed to prepare UPDATE statement");
+
+         rc = sqlite3_bind_int64(stmt, 1, 1);
+         rc = sqlite3_bind_int(stmt, 2, getpid());
+         rc = sqlite3_bind_text(stmt, 3, input_path, input_path_len, SQLITE_STATIC);
+         rc = sqlite3_bind_int64(stmt, 4, mtime2);
+         execute_again2:
+         rc = sqlite3_step(stmt);
+         if (rc == SQLITE_BUSY) {
+            usleep(1000);
+            goto execute_again2;
+         }
+         if (rc == SQLITE_DONE) {
+            if (sqlite3_changes(db) == 1) {
+               // we acquired the lock
+               sqlite3_finalize(stmt);
+               // printf("we acquired the lock\n");
+               return true;
+            } else {
+               race:
+               // printf("race condition, failed to acquire lock for %s\n", input_path);
+               return false;
+            }
+         } else {
+            check_error(rc, db, "Failed to execute UPDATE statement");
+            return false;
+         }
+      }
+   } else if (rc == SQLITE_DONE) {
+      sqlite3_finalize(stmt);
+      const char *sql_update = "INSERT INTO `codes`(`mtime`, `parser-pid`, `path`) VALUES(?, ?, ?);";
+      prepare_again3:
+      rc = sqlite3_prepare_v2(db, sql_update, strlen(sql_update), &stmt, NULL);
+      if (rc == SQLITE_BUSY) {
+         usleep(1000);
+         goto prepare_again3;
+      }
+      check_error(rc, db, "Failed to prepare INSERT statement");
+
+      rc = sqlite3_bind_int64(stmt, 1, 1);
+      rc = sqlite3_bind_int(stmt, 2, getpid());
+      rc = sqlite3_bind_text(stmt, 3, input_path, input_path_len, SQLITE_STATIC);
+      execute_again3:
+      rc = sqlite3_step(stmt);
+      if (rc == SQLITE_BUSY) {
+         usleep(1000);
+         goto execute_again3;
+      }
+      if (rc == SQLITE_DONE) {
+         sqlite3_finalize(stmt);
+         // printf("we acquired the lock thru insert\n");
+         return true;
+      } else if (rc == SQLITE_CONSTRAINT) {
+         return false;
+      } else {
+         printf("rc = %u\n", rc);
+         check_error(rc, db, "Failed to execute INSERT statement");
+         return false;
+      }
+      // printf("inquire mtime for path %s, DIDNOT returned a row\n", input_path);
+      /* new_mtime = current_time_millis();
+      const char *sql_update = "UPDATE `codes` SET `mtime` = ?, `parser-pid` = ? WHERE `path` = ?";
+      prepare_again2:
+      rc = sqlite3_prepare_v2(db, sql_update, strlen(sql_update), &stmt, NULL);
+      if (rc == SQLITE_BUSY) {
+         goto prepare_again2;
+      } else if (rc == SQLITE_DONE) {
+      } else {
+         check_error(rc, db, "Failed to prepare UPDATE statement");
+         return false;
+      } */
+      // return true;
+   } else {
+      check_error(rc, db, "Failed to execute REPLACE statement");
+      return false;
+   }
+}
+bool _NCp1_Pwrite_cp1_5(uint32_t input_path_len, char* text_data, size_t text_size, uint8_t* bin_data, size_t bin_size) {
+   // printf("write-cp1(%s)\n", input_path);
+   int rc;
+   // rc = sqlite3_open("cp1.db", &db);
+   // check_error(rc, db, "Cannot open database");
+   
+   // Enable WAL2 mode
+   // char *errMsg = 0;
+   /* journal_again:
+   rc = sqlite3_exec(db, "PRAGMA journal_mode = WAL2;", NULL, NULL, &errMsg);
+   if (rc == SQLITE_BUSY) {
+      goto journal_again;
+   } */
+
+   // Create a table if it doesn't exist
+   // rc = sqlite3_exec(db, TABLE_SCHEMA, NULL, NULL, &errMsg);
+
+   sqlite3_stmt *stmt;
+   const char *sql_insert = "UPDATE `codes` SET `text` = ?, `binary` = ?, `mtime` = ? WHERE `path` = ?;";
+   prepare_again:
+   rc = sqlite3_prepare_v2(db, sql_insert, strlen(sql_insert), &stmt, NULL);
    if (rc == SQLITE_BUSY) {
       goto prepare_again;
    }
-   check_error(rc, db, "Failed to prepare REPLACE statement");
+   check_error(rc, db, "Failed to prepare UPDATE statement");
 
    // Bind values to placeholders (use ? placeholders in SQL)
-   rc = sqlite3_bind_text(stmt, 1, input_path, -1, SQLITE_STATIC);
-   rc = sqlite3_bind_text(stmt, 2, text_data, text_size, SQLITE_STATIC);
-   rc = sqlite3_bind_blob(stmt, 3, bin_data, bin_size, SQLITE_STATIC);
-   rc = sqlite3_bind_int(stmt, 4, getpid());
-   rc = sqlite3_bind_int64(stmt, 5, current_time_millis());
+   rc = sqlite3_bind_text(stmt, 1, text_data, text_size, SQLITE_STATIC);
+   rc = sqlite3_bind_blob(stmt, 2, bin_data, bin_size, SQLITE_STATIC);
+   rc = sqlite3_bind_int64(stmt, 3, current_time_millis());
+   rc = sqlite3_bind_text(stmt, 4, input_path, input_path_len, SQLITE_STATIC);
 
    // Execute statement
    execute_again:
@@ -61,10 +205,9 @@ bool _NCp1_Pwrite_cp1_4(char* text_data, size_t text_size, uint8_t* bin_data, si
    if (rc == SQLITE_BUSY) {
       goto execute_again;
    }
-   check_error(rc, db, "Failed to execute REPLACE statement");
-
-   // sqlite3_finalize(stmt);
-   // sqlite3_close(db);
+   check_error(rc, db, "Failed to execute UPDATE statement");
+   sqlite3_finalize(stmt);
+   sqlite3_close(db);
    return true;
 }
 

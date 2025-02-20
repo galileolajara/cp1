@@ -51,9 +51,9 @@ void _NCp1_Pwrite_char_1(char c) {
 #define TABLE_SCHEMA \
    "CREATE TABLE IF NOT EXISTS codes(" \
    "`path` TEXT NOT NULL PRIMARY KEY, " \
-   "`text` TEXT NOT NULL, " \
+   "`text`, " \
    "`mtime` INT NOT NULL, " \
-   "`binary` BLOB NOT NULL, " \
+   "`binary`, " \
    "`parser-pid` INT NOT NULL) without rowid;"
 sqlite3 *db;
 sqlite3_stmt *stmt;
@@ -76,6 +76,12 @@ void _NCp1_Psqlite_init_0() {
    // atexit(closedb);
 
    char *errMsg = 0;
+   journal_again:
+   rc = sqlite3_exec(db, "PRAGMA journal_mode = WAL;", NULL, NULL, &errMsg);
+   if (rc == SQLITE_BUSY) {
+      goto journal_again;
+   }
+
    create_again:
    rc = sqlite3_exec(db, TABLE_SCHEMA, NULL, NULL, &errMsg);
    if (rc == SQLITE_BUSY) {

@@ -944,6 +944,7 @@ void _NLibCp1_Pstdout_cstr_1(char* _Lstr_0);
 void _NLibCp1_Pstdout_flush_0();
 #define _NLibC_Prealloc_arr_2(var, c) var = realloc(var, sizeof(var[0]) * (c))
 int32_t _NCp1_NMap_Pget_or_insert_4(struct _NCp1_NMap* _Lm_0, char* _Lstr_1, uint8_t _Llen_2, int32_t _Lval_3);
+void _NCp1_Pparse_2(char* _Lin_path_cp1_0, uint32_t _Lin_path_cp1_len_1);
 char* _NCp1_NInclude_Pstr_1(_NCp1_NInclude _Li_0);
 uint8_t _NCp1_NInclude_Plen_1(_NCp1_NInclude _Li_0);
 void _NCp1_Pjscode_bytes_2(void* _Ldata_0, size_t _Lsize_1);
@@ -2439,10 +2440,20 @@ for(int i = _Gimport_tmp_c; i > 0; ) {
 i --;
 _NCp1_NInclude _Lpath_2;
 _Lpath_2 = _Gimport_tmp_v[_Li_1++];
-_NCp1_Pread_2(_NCp1_NInclude_Pstr_1(_Lpath_2), _NCp1_NInclude_Plen_1(_Lpath_2));
+_NCp1_Pparse_2(_NCp1_NInclude_Pstr_1(_Lpath_2), _NCp1_NInclude_Plen_1(_Lpath_2));
 continue_2:;
 }
 break_2:;
+int32_t _Li_3;
+_Li_3 = 0;
+for(int i = _Gimport_tmp_c; i > 0; ) {
+i --;
+_NCp1_NInclude _Lpath_4;
+_Lpath_4 = _Gimport_tmp_v[_Li_3++];
+_NCp1_Pread_2(_NCp1_NInclude_Pstr_1(_Lpath_4), _NCp1_NInclude_Plen_1(_Lpath_4));
+continue_3:;
+}
+break_3:;
 }
 inline void _NCp1_Pjscode_1(struct _NCp1_NJsCode* _Ljc_0) {
 }
@@ -2536,8 +2547,7 @@ inline int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0) {
 return close(_Lfile_0);
 }
 void _NCp1_Pread_2(char* _Lin_path_cp1_0, uint32_t _Lin_path_cp1_len_1) {
-char _Lcommand_2[4096];
-union _NCp1_NRdr _Lr_begin_3;
+union _NCp1_NRdr _Lr_begin_2;
 _NCp1_NFile _Lfile_idx_4;
 struct _NCp1_NFileData* _Lfile_6;
 union _NCp1_NRdr _Lr_7;
@@ -2555,11 +2565,16 @@ _NCp1_NTemplateCode _Ltemplate_inst_c_97;
 _NCp1_NTemplateInst _Lold_template_inst_c_98;
 _NCp1_NTemplateCode _Ltemplate_inst_c2_99;
 _NCp1_NTemplateInst _Li_101;
-sprintf(_Lcommand_2, "out/cp1-parse -I \"%s\" \"%s\"", _Ginclude_dir, _Lin_path_cp1_0);
-if(system(_Lcommand_2) != 0) {
+_Lr_begin_2._Freff = _NCp1_Pread_cp1_2(_Lin_path_cp1_0, _Lin_path_cp1_len_1);
+if(_Lr_begin_2._Freff == NULL) {
+struct _NLibCp1_NStdOut _L_3;
+_NLibCp1_Pstdout_1(&_L_3);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_3, "Cannot open file for reading: ", 30u);
+_Tchar_Pstdout_arr_2(_Lin_path_cp1_0, &_L_3);
+_Tchar_Pstdout_2('\n', &_L_3);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_3);
 exit(_NLibC_NExit_Cfailure);
 }
-_Lr_begin_3._Freff = _NCp1_Pread_cp1_2(_Lin_path_cp1_0, _Lin_path_cp1_len_1);
 _Lfile_idx_4 = _Gfile_c++;
 if(_Gfile_cap <= _Gfile_c) {
 _NCp1_NFile _Lold_cap_5;
@@ -2569,8 +2584,8 @@ _NCp1_Prealloc_3(_Gfile_v, (int32_t)(_Gfile_cap), (int32_t)(_Lold_cap_5));
 }
 _Lfile_6 = (&_Gfile_v[_Lfile_idx_4]);
 (*_Lfile_6)._Fpath = _Lin_path_cp1_0;
-(*_Lfile_6)._Fdata = _Lr_begin_3._Freff;
-_Lr_7._Freff = _Lr_begin_3._Freff;
+(*_Lfile_6)._Fdata = _Lr_begin_2._Freff;
+_Lr_7._Freff = _Lr_begin_2._Freff;
 if(true) {
 uint32_t _Lid_c_8;
 _Lid_c_8 = Fgetnum(&_Lr_7);
@@ -3010,7 +3025,7 @@ if(((*_Lf_88)._Fflags & _NCp1_NFuncFlags_Chas_body) == _NCp1_NFuncFlags_C0) {
 goto continue_11;
 }
 _Lsize_89 = _NCp1_NRdr_Pn4_1(&_Lr_7);
-(*_Lf_88)._Fbody_file_pos = (_Lr_7._Fpos - _Lr_begin_3._Fpos);
+(*_Lf_88)._Fbody_file_pos = (_Lr_7._Fpos - _Lr_begin_2._Fpos);
 _Lr_7._Fpos += _Lsize_89;
 continue_11:;
 _Lf_idx_87++;
@@ -4054,6 +4069,13 @@ _NLibCp1_Pstdout_bytes_2(_Lstr_0, strlen(_Lstr_0));
 inline void _NLibCp1_Pstdout_flush_0() {
 write((_NPosix_NFd)(1), _Gstdout_buf_data, _Gstdout_buf_len);
 _Gstdout_buf_len = 0;
+}
+void _NCp1_Pparse_2(char* _Lin_path_cp1_0, uint32_t _Lin_path_cp1_len_1) {
+char _Lcommand_2[4096];
+sprintf(_Lcommand_2, "bin/cp1-parse -I \"%s\" \"%s\"", _Ginclude_dir, _Lin_path_cp1_0);
+if(system(_Lcommand_2) != 0) {
+exit(_NLibC_NExit_Cfailure);
+}
 }
 inline char* _NCp1_NInclude_Pstr_1(_NCp1_NInclude _Li_0) {
 return _Ginclude_str_v[_Li_0];

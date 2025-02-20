@@ -882,7 +882,9 @@ var include-path-cap:u8;
 var include-path-c:u8;
 // var lock-path:char[];
 // parser-at-exit();
-write-cp1(text-data:ref, text-size:usz, bin-data:ref, bin-size:usz):bool;
+write-cp1(input-path-len:u32, text-data:ref, text-size:usz, bin-data:ref, bin-size:usz):bool;
+file-mtime(path:char[]):u64;
+file-should-parse(path:char[], path-len:u32, mtime:u64):bool;
 main(arg-c:intc, arg-v:char[][]):intc @main {
    if false {
       // preprocess-def("", 0);
@@ -939,17 +941,18 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .func-main = #nil;
    // C1.stdout{"reading " .input-path ''\n}
    var in-data:u8[];
-   in-data = read-file(.input-path, 1, 2, in-size!);
-   if in-data == null {
-      input-path-len! = C.strlen(.input-path);
+   var in-size;
+   input-path-len! = C.strlen(.input-path);
+   mtime! = file-mtime(.input-path);
+   if mtime != 0 {
+      in-data = read-file(.input-path, 1, 2, in-size);
+   } else {
       loop i = 0; .include-path-c {
          inc! = .include-path-v[i++];
-         // C1.stdout{"hello " inc.len "\n"}
-         // C1.stdout{inc.str, inc.len "\n"}
          C.memcpy(&inc.str[inc.len], .input-path, input-path-len);
-         // C1.stdout{"trying " inc.str, input-path-len + inc.len "...\n"}
-         in-data = read-file(inc.str, 1, 2, in-size!);
-         if in-data != null {
+         mtime = file-mtime(inc.str);
+         if mtime != 0 {
+            in-data = read-file(inc.str, 1, 2, in-size);
             "goto begin_read;";
          }
       }
@@ -957,6 +960,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       C.exit(#failure);
    }
    "begin_read:;";
+   if file-should-parse(.input-path, input-path-len, mtime) {
+      return 0;
+   }
    in-data[0] = ''\n;
    in-data = &in-data[1];
    // lock-path! = arg-v[2];
@@ -1747,7 +1753,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    write-import(w, false);
    write-template-code(w, false);
 
-   if write-cp1(in-data, in-size, w-begin.reff, w.pos - w-begin.pos) { return 0 }
+   if write-cp1(input-path-len, in-data, in-size, w-begin.reff, w.pos - w-begin.pos) { return 0 }
    else { return 1 }
    
    // var out-path:char[] = C.malloc(C.strlen(lock-path) + 4 + 1);

@@ -974,8 +974,10 @@ void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_0);
 #define _NCp1_Pquick_alloc_plus_2(r, plus) r = qalloc(sizeof(r[0]) + plus)
 void _NCp1_NMap_Pinit_1(struct _NCp1_NMap* _Lm_0);
 void _NCp1_NAtMap_Pinit_1(struct _NCp1_NAtMap* _Lm_0);
+uint64_t _NCp1_Pfile_mtime_1(char* _Lpath_0);
 void* _NCp1_Pread_file_4(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_after_2, size_t* _Lout_size_3);
 void _Tchar_Pstdout_2(char _Lval_0, struct _NLibCp1_NStdOut* _Lso_1);
+bool _NCp1_Pfile_should_parse_3(char* _Lpath_0, uint32_t _Lpath_len_1, uint64_t _Lmtime_2);
 void _NCp1_Pget_row_col_4(uint32_t* _Lout_row_0, uint32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3);
 void _Tu32_Pstdout_2(uint32_t _Lval_0, struct _NLibCp1_NStdOut* _Lso_1);
 void _NCp1_Pparse_string_4(union _NCp1_NRdr* _Lr_0, union _NCp1_NWtr* _Lw_1, char _Lending_2, void* _Lin_data_3);
@@ -1010,7 +1012,7 @@ void _NCp1_Pwrite_struct_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
 void _NCp1_Pwrite_func_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
 void _NCp1_Pwrite_import_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
 void _NCp1_Pwrite_template_code_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
-bool _NCp1_Pwrite_cp1_4(void* _Ltext_data_0, size_t _Ltext_size_1, void* _Lbin_data_2, size_t _Lbin_size_3);
+bool _NCp1_Pwrite_cp1_5(uint32_t _Linput_path_len_0, void* _Ltext_data_1, size_t _Ltext_size_2, void* _Lbin_data_3, size_t _Lbin_size_4);
 void qalloc_undo(int32_t _Lsize_0);
 void _NCp1_Pdecl_import_3(_NCp1_NInclude _Lpath_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
 void _NCp1_Pdecl_template_inst_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
@@ -1452,6 +1454,8 @@ int32_t _NCp1_NAtMap_Pget_or_insert_4(struct _NCp1_NAtMap* _Lm_0, uint32_t _Lpar
 int main(int _Larg_c_0, char** _Larg_v_1) {
 uint8_t* _Lin_data_10;
 size_t _Lin_size_11;
+size_t _Linput_path_len_12;
+uint64_t _Lmtime_13;
 union _NCp1_NRdr _Lr_end_74;
 struct _NCp1_NParser* _Lpsr_75;
 struct _NCp1_NLexer _Llex_76;
@@ -1532,21 +1536,22 @@ _NCp1_NMap_Pinit_1(&_Gid_map);
 _NCp1_NMap_Pinit_1(&_Ginclude_map);
 _NCp1_NAtMap_Pinit_1(&_Gat_map);
 _Gfunc_main = _NCp1_NFunc_Cnil;
-_Lin_data_10 = _NCp1_Pread_file_4(input_path, 1, 2, &_Lin_size_11);
-if(_Lin_data_10 == NULL) {
-size_t _Linput_path_len_12;
-struct _NLibCp1_NStdOut _L_16;
 _Linput_path_len_12 = strlen(input_path);
-int32_t _Li_13;
-_Li_13 = 0;
+_Lmtime_13 = _NCp1_Pfile_mtime_1(input_path);
+if(_Lmtime_13 != 0) {
+_Lin_data_10 = _NCp1_Pread_file_4(input_path, 1, 2, &_Lin_size_11);
+} else {
+struct _NLibCp1_NStdOut _L_16;
+int32_t _Li_14;
+_Li_14 = 0;
 for(int i = _Ginclude_path_c; i > 0; ) {
 i --;
-struct _NCp1_NIncludePath* _Linc_14;
-size_t _Lin_size_15;
-_Linc_14 = _Ginclude_path_v[_Li_13++];
-memcpy(&(*_Linc_14)._Fstr[(*_Linc_14)._Flen], input_path, _Linput_path_len_12);
-_Lin_data_10 = _NCp1_Pread_file_4((*_Linc_14)._Fstr, 1, 2, &_Lin_size_15);
-if(_Lin_data_10 != NULL) {
+struct _NCp1_NIncludePath* _Linc_15;
+_Linc_15 = _Ginclude_path_v[_Li_14++];
+memcpy(&(*_Linc_15)._Fstr[(*_Linc_15)._Flen], input_path, _Linput_path_len_12);
+_Lmtime_13 = _NCp1_Pfile_mtime_1((*_Linc_15)._Fstr);
+if(_Lmtime_13 != 0) {
+_Lin_data_10 = _NCp1_Pread_file_4((*_Linc_15)._Fstr, 1, 2, &_Lin_size_11);
 goto begin_read;
 }
 continue_1:;
@@ -1560,6 +1565,9 @@ _NLibCp1_NStdOut_Pstdout_end_1(&_L_16);
 exit(_NLibC_NExit_Cfailure);
 }
 begin_read:;
+if(_NCp1_Pfile_should_parse_3(input_path, _Linput_path_len_12, _Lmtime_13)) {
+return 0;
+}
 _Lin_data_10[0] = '\n';
 _Lin_data_10 = &_Lin_data_10[1];
 if(((_Lin_data_10[(_Lin_size_11 - 2)] == '\r') && (_Lin_data_10[(_Lin_size_11 - 1)] == '\n'))) {
@@ -2532,7 +2540,7 @@ _NCp1_Pwrite_struct_2(&_Lw_118, false);
 _NCp1_Pwrite_func_2(&_Lw_118, false);
 _NCp1_Pwrite_import_2(&_Lw_118, false);
 _NCp1_Pwrite_template_code_2(&_Lw_118, false);
-if(_NCp1_Pwrite_cp1_4(_Lin_data_10, _Lin_size_11, _Lw_begin_117._Freff, _Lw_118._Fpos - _Lw_begin_117._Fpos)) {
+if(_NCp1_Pwrite_cp1_5(_Linput_path_len_12, _Lin_data_10, _Lin_size_11, _Lw_begin_117._Freff, _Lw_118._Fpos - _Lw_begin_117._Fpos)) {
 return 0;
 } else {
 return 1;

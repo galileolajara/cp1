@@ -238,36 +238,29 @@ import-now() {
    }
    loop i = 0; .import-tmp-c {
       path! = .import-tmp-v[i++];
+      parse(path.str(), path.len());
+   }
+   loop i = 0; .import-tmp-c {
+      path! = .import-tmp-v[i++];
       read(path.str(), path.len());
    }
 }
 sqlite-init();
 read-cp1(path:char[], path-len:u32):ref;
-read(in-path-cp1:char[], in-path-cp1-len:u32) {
-   // C1.stdout{"reading " in-path " -------------------\n"}
-   // var in-path:char[256 + 4 + 1];
-   // C.memcpy(in-path, in-path-cp1, in-path-cp1-len);
-   // in-path[in-path-cp1-len] = ''-;
-   // in-path[in-path-cp1-len + 1] = ''b;
-   // in-path[in-path-cp1-len + 2] = ''\0;
-
+parse(in-path-cp1:char[], in-path-cp1-len:u32) {
    var command:char[4096];
-   C.sprintf(command, "out/cp1-parse -I \"%s\" \"%s\"", .include-dir, in-path-cp1);
-   // C1.stdout{"command = " command ''\n}
+   C.sprintf(command, "bin/cp1-parse -I \"%s\" \"%s\"", .include-dir, in-path-cp1);
    if C.system(command) != 0 {
-      // C1.stdout{"A\n"}
       C.exit(#failure);
    }
-   // C1.stdout{"B\n"}
-
+}
+read(in-path-cp1:char[], in-path-cp1-len:u32) {
    var r-begin:Rdr.;
    r-begin.reff = read-cp1(in-path-cp1, in-path-cp1-len);
-   // var r-begin:Rdr.;
-   // r-begin.reff = read-file(in-path, in-size!);
-   // if r-begin.reff == null {
-   //    C1.stdout{"Cannot open file for reading: " in-path ''\n}
-   //    C.exit(#failure);
-   // }
+   if r-begin.reff == null {
+      C1.stdout{"Cannot open file for reading: " in-path-cp1 ''\n}
+      C.exit(#failure);
+   }
 
    file-idx! = .file-c++;
    if .file-cap <= .file-c {
