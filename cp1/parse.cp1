@@ -3,11 +3,29 @@ using C = LibC;
 using C1 = LibCp1;
 using X = Posix;
 using Cp1 {
+var import-v:Include[];
+var import-cap:u32;
+var import-c:u32;
+decl-import(path:Include, row:u32, col:u32) {
+   loop i = 0; .import-c; i++ {
+      if .import-v[i] == path {
+         C1.stdout{"already import '" path "' with the same arguments, silently ignoring...\n"}
+         return;
+      }
+   }
+   i! = .import-c++;
+   if .import-cap <= .import-c {
+      old-cap! = .import-cap;
+      .import-cap = grow(.import-c);
+      realloc(.import-v, .import-cap, old-cap);
+   }
+   .import-v[i] = path;
+}
 var template-name-buf:char[] @extern;
 var template-name-len:u8 @extern;
 var template-code-indention:u32 @extern;
 var template-code-line-c:u32 @extern;
-decl-template-inst(name:Id, row:u32) {
+decl-template-inst(name:Id, row:u32, col:u32) {
    at! = .decl-at;
    arg-buf! = .string-buf;
    arg-len! = .string-len;
@@ -34,6 +52,7 @@ decl-template-inst(name:Id, row:u32) {
    td.arg-len = arg-len;
    td.at = at;
    td.row = row;
+   td.col = col;
 }
 decl-template-code(row:u32) {
    at! = .decl-at;
@@ -63,6 +82,28 @@ decl-template-code(row:u32) {
    td.at = at;
    td.row = row;
    td.line-c = .template-code-line-c;
+}
+include-add(len:u8, str:char[]):Include {
+   found! = .include-map.get-or-insert(str, len, .include-c);
+   if found == -1 {
+      // inserted
+      include! = .include-c++;
+      if .include-cap <= .include-c {
+         old-cap! = .include-cap;
+         grow(.include-cap, .include-c);
+         realloc(.include-str-v, .include-cap, old-cap);
+         realloc(.include-len-v, .include-cap, old-cap);
+      }
+      var text:char[] = quick-alloc(len + 1);
+      C.memcpy(text, str, len);
+      text[len] = 0;
+      .include-str-v[include] = text;
+      .include-len-v[include] = len;
+      return include;
+   } else {
+      // found
+      return found;
+   }
 }
 var ctx-func:DeclFunc;
 var id-in-header-v:u8[];
@@ -563,27 +604,7 @@ struct Lexer[
          C1.stdout{"too long include was detected\n"}
          C.exit(#failure);
       }
-      len! = length:u8;
-      found! = .include-map.get-or-insert(r-start.reff, len, .include-c);
-      if found == -1 {
-         // inserted
-         include! = .include-c++;
-         if .include-cap <= .include-c {
-            old-cap! = .include-cap;
-            grow(.include-cap, .include-c);
-            realloc(.include-str-v, .include-cap, old-cap);
-            realloc(.include-len-v, .include-cap, old-cap);
-         }
-         var text:char[] = quick-alloc(len + 1);
-         C.memcpy(text, r-start.reff, len);
-         text[len] = 0;
-         .include-str-v[include] = text;
-         .include-len-v[include] = len;
-         return include;
-      } else {
-         // found
-         return found;
-      }
+      return include-add(length, r-start.charr);
       // loop i = 0; .include-c; i++ {
       //    if .include-len-v[i] == len {
       //       if C.memcmp(.include-str-v[i], r-start.ref, len) == 0 {
@@ -686,10 +707,16 @@ write-func(w:Wtr, header:bool) @inline {
       pos-4.n4(w.pos - pos-4-next);
    }
 }
+write-import(w:Wtr, header:bool) @inline {
+   w.n(.import-c);
+   loop i = 0; .import-c {
+      .import-v[i++].wr(w);
+   }
+}
 write-template-code(w:Wtr, header:bool) @inline {
    w.n(.template-code-c:base);
    // C1.stdout{"there are " .template-code-c:base " templates in parse stage\n"}
-   loop i = 0; .template-code-c; {
+   loop i = 0; .template-code-c {
       td! = .template-code-v[i++];
       td.name.wr(w, header);
       w.n(td.row);
@@ -701,10 +728,11 @@ write-template-code(w:Wtr, header:bool) @inline {
    }
    w.n(.template-inst-c:base);
    // C1.stdout{"there are " .template-inst-c:base " templates in parse stage\n"}
-   loop i = 0; .template-inst-c; {
+   loop i = 0; .template-inst-c {
       td! = .template-inst-v[i++];
       td.name.wr(w, header);
       w.n(td.row);
+      w.n(td.col);
       w.n(td.arg-len);
       w.copy(td.arg, td.arg-len);
       td.at.wr(w, header);
@@ -848,34 +876,90 @@ parse-comment(r:Rdr, w:Wtr, ending:char, in-data:ref) {
 }
 var input-path:char[] @real-name(input_path);
 char-escape-value(c:char):i32;
+struct IncludePath[len:u32, str:char[256]];
+var include-path-v:IncludePath[];
+var include-path-cap:u8;
+var include-path-c:u8;
 // var lock-path:char[];
 // parser-at-exit();
+write-cp1(text-data:ref, text-size:usz, bin-data:ref, bin-size:usz):bool;
 main(arg-c:intc, arg-v:char[][]):intc @main {
    if false {
       // preprocess-def("", 0);
       export();
    }
+   .include-path-cap = 8;
+   C.malloc-arr(.include-path-v, .include-path-cap);
+   quick-alloc-init();
+   loop i = 1; i < arg-c {
+      arg! = arg-v[i++];
+      if arg[0] == ''- {
+         if arg[1] == ''I {
+            arg = arg-v[i++];
+            if arg == null {
+               C1.stdout{arg-v[0] ": Error, '-I' must be followed by a path to a directory"}
+               "goto usage;";
+            }
+            arg-len! = C.strlen(arg);
+            if arg[arg-len - 1] != ''/ {
+               arg[arg-len++] = ''/;
+            }
+            j! = .include-path-c++;
+            if .include-path-cap < .include-path-c {
+               .include-path-cap = grow(.include-path-c);
+               C.realloc-arr(.include-path-v, .include-path-cap);
+            }
+            var inc:IncludePath;
+            quick-alloc-plus(inc, arg-len);
+            C.memcpy(inc.str, arg, arg-len);
+            inc.len = arg-len;
+            .include-path-v[j] = inc;
+         }
+      } else {
+         if .input-path != null {
+            C1.stdout{arg-v[0] ": Error, there should be only one file path\n"}
+            "goto usage;";
+         }
+         .input-path = arg;
+      }
+   }
+   if .input-path == null {
+      "usage:";
+      C1.stdout{
+        "Usage: " arg-v[0] " [file.cp1]\n"
+      '= Options:
+      '=   -I [directory]     Adds [directory] to the search path
+      }
+      return 1;
+   }
+   .decl-include = #nil;
    .id-map.init();
    .include-map.init();
    .at-map.init();
-   quick-alloc-init();
    .func-main = #nil;
-   .decl-include = #nil;
-   if arg-c != 3 {
-      C1.stdout{"Usage: " arg-v[0] " [file.cp1] [output.cp1-b]\n"}
-      return 0;
-   }
-   .input-path = arg-v[1];
    // C1.stdout{"reading " .input-path ''\n}
    var in-data:u8[];
    in-data = read-file(.input-path, 1, 2, in-size!);
    if in-data == null {
+      input-path-len! = C.strlen(.input-path);
+      loop i = 0; .include-path-c {
+         inc! = .include-path-v[i++];
+         // C1.stdout{"hello " inc.len "\n"}
+         // C1.stdout{inc.str, inc.len "\n"}
+         C.memcpy(&inc.str[inc.len], .input-path, input-path-len);
+         // C1.stdout{"trying " inc.str, input-path-len + inc.len "...\n"}
+         in-data = read-file(inc.str, 1, 2, in-size!);
+         if in-data != null {
+            "goto begin_read;";
+         }
+      }
       C1.stdout{"Cannot open file for reading: " .input-path ''\n}
       C.exit(#failure);
    }
+   "begin_read:;";
    in-data[0] = ''\n;
    in-data = &in-data[1];
-   lock-path! = arg-v[2];
+   // lock-path! = arg-v[2];
    // .lock-path = lock-path;
    // if true {
    //    if !C.Fd.open(fd!!, lock-path, #create | #excl) {
@@ -1346,6 +1430,27 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                .last-token = t;
                psr.parse(t, tok);
             }
+            case #import {
+               loop i = 0; {
+                  if lex.start[i++] == ''" {
+                     var r-begin:Rdr.;
+                     r-begin.reff = &lex.start[i];
+                     var r-end:Rdr.;
+                     r-end.reff = lex.cursor;
+                     r-end.pos--;
+                     len! = r-end.pos - r-begin.pos;
+                     if len > 255 {
+                        C1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
+                        C.exit(#failure);
+                     }
+                     tok.val.ii32.id = include-add(len, r-begin.charr);
+                     C1.stdout{"import '" r-begin.charr, len "'\n"}
+                     break;
+                  }
+               }
+               .last-token = t;
+               psr.parse(t, tok);
+            }
             case #include {
                tok.val.ii32.id = lex.get-include();
                .last-token = t;
@@ -1639,71 +1744,76 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    write-enum(w, false);
    write-struct(w, false);
    write-func(w, false);
+   write-import(w, false);
    write-template-code(w, false);
+
+   if write-cp1(in-data, in-size, w-begin.reff, w.pos - w-begin.pos) { return 0 }
+   else { return 1 }
    
-   var out-path:char[] = C.malloc(C.strlen(lock-path) + 4 + 1);
-   C.sprintf(out-path, "%s.tmp", lock-path);
-   out-path-len! = C.strlen(out-path);
-   if !write-file(out-path, w-begin.reff, w.pos - w-begin.pos) {
-      C1.stdout{"Cannot open file for writing: " out-path ''\n}
-      C.exit(#failure);
-   }
+   // var out-path:char[] = C.malloc(C.strlen(lock-path) + 4 + 1);
+   // C.sprintf(out-path, "%s.tmp", lock-path);
+   // out-path-len! = C.strlen(out-path);
+   // if !write-file(out-path, w-begin.reff, w.pos - w-begin.pos) {
+   //    C1.stdout{"Cannot open file for writing: " out-path ''\n}
+   //    C.exit(#failure);
+   // }
 
-   w.reff = w-begin.reff;
-   w.n(.id-in-header-c);
-   loop j = 0; .id-in-header-c; j++ {
-      i! = .id-in-header-id-v[j];
-      w.n1(.id-len-v[i]);
-      w.copy(.id-str-v[i], .id-len-v[i]);
-      w.n1(0);
-   }
-   w.n(.include-c);
-   loop i = 0; .include-c; i++ {
-      w.n1(.include-len-v[i]);
-      w.copy(.include-str-v[i], .include-len-v[i]);
-      w.n1(0);
-   }
-   w.n(.at-in-header-c);
-   loop j = 0; .at-in-header-c; j++ {
-      i! = .at-in-header-at-v[j];
-      at! = .at-v[i];
-      at.type.wr(w);
-      if at.type == #basic {
-         at.name.basic.wr(w);
-      } else {
-         at.parent.wr-header(w);
-         at.name.id.wr-header(w);
-      }
-   }
-   write-cvar(w, true);
-   write-gvar(w, true);
-   write-enum(w, true);
-   write-struct(w, true);
-   write-func(w, true);
-   write-template-code(w, true);
+   // w.reff = w-begin.reff;
+   // w.n(.id-in-header-c);
+   // loop j = 0; .id-in-header-c; j++ {
+   //    i! = .id-in-header-id-v[j];
+   //    w.n1(.id-len-v[i]);
+   //    w.copy(.id-str-v[i], .id-len-v[i]);
+   //    w.n1(0);
+   // }
+   // w.n(.include-c);
+   // loop i = 0; .include-c; i++ {
+   //    w.n1(.include-len-v[i]);
+   //    w.copy(.include-str-v[i], .include-len-v[i]);
+   //    w.n1(0);
+   // }
+   // w.n(.at-in-header-c);
+   // loop j = 0; .at-in-header-c; j++ {
+   //    i! = .at-in-header-at-v[j];
+   //    at! = .at-v[i];
+   //    at.type.wr(w);
+   //    if at.type == #basic {
+   //       at.name.basic.wr(w);
+   //    } else {
+   //       at.parent.wr-header(w);
+   //       at.name.id.wr-header(w);
+   //    }
+   // }
+   // write-cvar(w, true);
+   // write-gvar(w, true);
+   // write-enum(w, true);
+   // write-struct(w, true);
+   // write-func(w, true);
+   // write-import(w, true);
+   // write-template-code(w, true);
 
-   out-path[out-path-len - 5] = ''h;
-   if !write-file(out-path, w-begin.reff, w.pos - w-begin.pos) {
-      C1.stdout{"Cannot open file for writing: " out-path ''\n}
-      C.exit(#failure);
-   }
-   var final-path:char[512];
-   out-path[out-path-len - 5] = ''b;
-   C.memcpy(final-path, out-path, out-path-len - 4);
-   final-path[out-path-len - 4] = 0;
-   "#ifdef _WIN32";
-   X.unlink(final-path);
-   "#endif";
-   C.rename(out-path, final-path);
-   // .lock-path = null; // Do not unlink lock-path at exit
-   out-path[out-path-len - 5] = ''h;
-   C.memcpy(final-path, out-path, out-path-len - 4);
-   final-path[out-path-len - 4] = 0;
-   "#ifdef _WIN32";
-   X.unlink(final-path);
-   "#endif";
-   C.rename(out-path, final-path);
-   return 0;
+   // out-path[out-path-len - 5] = ''h;
+   // if !write-file(out-path, w-begin.reff, w.pos - w-begin.pos) {
+   //    C1.stdout{"Cannot open file for writing: " out-path ''\n}
+   //    C.exit(#failure);
+   // }
+   // var final-path:char[512];
+   // out-path[out-path-len - 5] = ''b;
+   // C.memcpy(final-path, out-path, out-path-len - 4);
+   // final-path[out-path-len - 4] = 0;
+   // "#ifdef _WIN32";
+   // X.unlink(final-path);
+   // "#endif";
+   // C.rename(out-path, final-path);
+   // // .lock-path = null; // Do not unlink lock-path at exit
+   // out-path[out-path-len - 5] = ''h;
+   // C.memcpy(final-path, out-path, out-path-len - 4);
+   // final-path[out-path-len - 4] = 0;
+   // "#ifdef _WIN32";
+   // X.unlink(final-path);
+   // "#endif";
+   // C.rename(out-path, final-path);
+   // return 0;
 }
  
 

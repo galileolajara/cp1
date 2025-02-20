@@ -873,6 +873,9 @@ enum Include[#nil = -1, #0]:i32 {
    str(i:this):char[] @inline {
       return .include-str-v[i];
    }
+   len(i:this):u8 @inline {
+      return .include-len-v[i];
+   }
    wr(i:this, w:Wtr) @inline {
       w.n(i:base + 1);
    }
@@ -891,6 +894,9 @@ enum Include[#nil = -1, #0]:i32 {
       if (.include-is-outputted[n3] & n17) != 0 { return }
       .include-is-outputted[n3] |= n17;
       .include-outputted-v[.include-outputted-c++] = thiss;
+   }
+   stdout(i:this, so:C1.StdOut) {
+      C1.stdout-bytes(.include-str-v[i], .include-len-v[i]);
    }
    output(i:this, o:Output) {
       output-bytes(.include-str-v[i], .include-len-v[i]);
@@ -1001,6 +1007,7 @@ struct TemplateInstData[
    name:Id,
    at:At,
    row:u32,
+   col:u32,
 #if(compile)
    file:File,
 #endif

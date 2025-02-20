@@ -148,13 +148,16 @@ template_name(l) ::= ID(r).
    { l.basic.id = r.basic.id; }
 
 decl_template_inst ::= TEMPLATE_INST(inst) SPACE template_name(name) SEMICOLON.
-   { _NCp1_Pdecl_template_inst_2(name.basic.id, inst.basic.row); }
+   { _NCp1_Pdecl_template_inst_3(name.basic.id, inst.basic.row, inst.basic.col); }
 /* decl_template_inst ::= TEMPLATE_INST SPACE at(at) template_name(name) SEMICOLON.
    { _NCp1_Pdecl_template_inst_2(name.basic.id, at); } */
 decl ::= decl_template_inst.
 decl_template_code ::= TEMPLATE_CODE(code).
    { _NCp1_Pdecl_template_code_1(code.basic.row); }
 decl ::= decl_template_code.
+decl_import ::= IMPORT(path) SEMICOLON.
+   { _NCp1_Pdecl_import_3(path.basic.id, path.basic.row, path.basic.col); }
+decl ::= decl_import.
 
 decl_cvar ::= enum_cvars_decl SEMICOLON.
 // decl_cvar ::= OPEN_CURLY_BRACE_CVAR_SPACE CLOSE_CURLY_BRACE.

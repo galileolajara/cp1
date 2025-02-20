@@ -9,6 +9,57 @@
 #include <unistd.h>
 #include <stdbool.h>
 
+#include "sqlite3/sqlite3.h"
+// #include "table.h"
+extern char* input_path;
+sqlite3* db;
+void check_error(int rc, sqlite3 *db, const char *msg) {
+    if (rc != SQLITE_OK && rc != SQLITE_DONE && rc != SQLITE_ROW) {
+        fprintf(stderr, "Error: %s - %s\n", msg, sqlite3_errmsg(db));
+        sqlite3_close(db);
+        exit(1);
+    }
+}
+#include <time.h>
+uint64_t current_time_millis() {
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    return (uint64_t)(ts.tv_sec) * 1000LL + (ts.tv_nsec / 1000000LL);
+}
+bool _NCp1_Pwrite_cp1_4(char* text_data, size_t text_size, uint8_t* bin_data, size_t bin_size) {
+   printf("write-cp1(%s)\n", input_path);
+   int rc;
+   rc = sqlite3_open("cp1.db", &db);
+   check_error(rc, db, "Cannot open database");
+   
+   // Enable WAL2 mode
+   // char *errMsg = 0;
+   // rc = sqlite3_exec(db, "PRAGMA journal_mode = WAL2;", NULL, NULL, &errMsg);
+
+   // Create a table if it doesn't exist
+   // rc = sqlite3_exec(db, TABLE_SCHEMA, NULL, NULL, &errMsg);
+
+   sqlite3_stmt *stmt;
+   const char *sql_insert = "REPLACE INTO codes(`path`, `text`, `binary`, `parser-pid`, `mtime`) VALUES (?, ?, ?, ?, ?);";
+   rc = sqlite3_prepare_v2(db, sql_insert, -1, &stmt, NULL);
+   check_error(rc, db, "Failed to prepare SELECT statement");
+
+   // Bind values to placeholders (use ? placeholders in SQL)
+   rc = sqlite3_bind_text(stmt, 1, input_path, -1, SQLITE_STATIC);
+   rc = sqlite3_bind_text(stmt, 2, text_data, text_size, SQLITE_STATIC);
+   rc = sqlite3_bind_blob(stmt, 3, bin_data, bin_size, SQLITE_STATIC);
+   rc = sqlite3_bind_int(stmt, 4, getpid());
+   rc = sqlite3_bind_int64(stmt, 5, current_time_millis());
+
+   // Execute statement
+   rc = sqlite3_step(stmt);
+   check_error(rc, db, "Failed to execute REPLACE statement");
+
+   // sqlite3_finalize(stmt);
+   // sqlite3_close(db);
+   return true;
+}
+
 union cp1_token {
    struct {
       int row;

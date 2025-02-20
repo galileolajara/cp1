@@ -111,6 +111,23 @@ using TemplateCodeData {
       }
    }
 }
+include-add(include-len:u8, include-str:char[]):Include {
+   found! = .include-map.get-or-insert(include-str, include-len, .include-c);
+   if found == -1 {
+      include-idx! = .include-c++;
+      if .include-cap <= .include-c {
+         old-cap! = .include-cap;
+         grow(.include-cap, .include-c);
+         realloc(.include-len-v, .include-cap, old-cap);
+         realloc(.include-str-v, .include-cap, old-cap);
+      }
+      .include-len-v[include-idx] = include-len;
+      .include-str-v[include-idx] = include-str;
+      return include-idx:Include;
+   } else {
+      return found:Include;
+   }
+}
 
 var include-stdint:bool;
 var include-stdbool:bool;
@@ -183,14 +200,74 @@ id-add(id-len:u8, id-str:char[]):Id {
    .id-str-v[id-idx] = id-str;
    return id-idx;
 }
-read(in-path:char[]) {
+var import-v:Include[];
+var import-cap:u32;
+var import-c:u32;
+import(path:Include) {
+   loop i = 0; .import-c {
+      if .import-v[i] == path {
+         return;
+      }
+   }
+   i! = .import-c++;
+   if .import-cap < .import-c {
+      .import-cap += .import-cap;
+      loop .import-cap < .import-c {
+         .import-cap += .import-cap;
+      }
+      C.realloc-arr(.import-v, .import-cap);
+   }
+   .import-v[i] = path;
+}
+var import-tmp-v:Include[];
+var import-tmp-cap:u32;
+var import-tmp-c:u32;
+import-now() {
+   if .import-c == 0 { return }
+   if .import-tmp-cap < .import-c {
+      .import-tmp-cap += .import-tmp-cap;
+      loop .import-tmp-cap < .import-c {
+         .import-tmp-cap += .import-tmp-cap;
+      }
+      C.realloc-arr(.import-tmp-v, .import-tmp-cap);
+   }
+   .import-tmp-c = .import-c;
+   .import-c = 0;
+   loop i = 0; .import-tmp-c; i++ {
+      .import-tmp-v[i] = .import-v[i];
+   }
+   loop i = 0; .import-tmp-c {
+      path! = .import-tmp-v[i++];
+      read(path.str(), path.len());
+   }
+}
+sqlite-init();
+read-cp1(path:char[], path-len:u32):ref;
+read(in-path-cp1:char[], in-path-cp1-len:u32) {
    // C1.stdout{"reading " in-path " -------------------\n"}
-   var r-begin:Rdr.;
-   r-begin.reff = read-file(in-path, in-size!);
-   if r-begin.reff == null {
-      C1.stdout{"Cannot open file for reading: " in-path ''\n}
+   // var in-path:char[256 + 4 + 1];
+   // C.memcpy(in-path, in-path-cp1, in-path-cp1-len);
+   // in-path[in-path-cp1-len] = ''-;
+   // in-path[in-path-cp1-len + 1] = ''b;
+   // in-path[in-path-cp1-len + 2] = ''\0;
+
+   var command:char[4096];
+   C.sprintf(command, "out/cp1-parse -I \"%s\" \"%s\"", .include-dir, in-path-cp1);
+   C1.stdout{"command = " command ''\n}
+   if C.system(command) != 0 {
+      // C1.stdout{"A\n"}
       C.exit(#failure);
    }
+   // C1.stdout{"B\n"}
+
+   var r-begin:Rdr.;
+   r-begin.reff = read-cp1(in-path-cp1, in-path-cp1-len);
+   // var r-begin:Rdr.;
+   // r-begin.reff = read-file(in-path, in-size!);
+   // if r-begin.reff == null {
+   //    C1.stdout{"Cannot open file for reading: " in-path ''\n}
+   //    C.exit(#failure);
+   // }
 
    file-idx! = .file-c++;
    if .file-cap <= .file-c {
@@ -199,7 +276,7 @@ read(in-path:char[]) {
       realloc(.file-v, .file-cap:base, old-cap:base);
    }
    file! = .file-v[file-idx];
-   file.path = in-path;
+   file.path = in-path-cp1;
    file.data = r-begin.reff;
 
    var r:Rdr.;
@@ -228,7 +305,6 @@ read(in-path:char[]) {
          include-len! = r.n1();
          include-str! = r.reff;
          r.pos += include-len + 1;
-         found! = .include-map.get-or-insert(include-str, include-len, .include-c);
          // found! = -1;
          // loop j = 0; .include-c; j++ {
          //    if (&&, .include-len-v[j] == include-len, C.memcmp(.include-str-v[j], include-str, include-len) == 0) {
@@ -236,20 +312,7 @@ read(in-path:char[]) {
          //       break;
          //    }
          // }
-         if found == -1 {
-            include-idx! = .include-c++;
-            if .include-cap <= .include-c {
-               old-cap! = .include-cap;
-               grow(.include-cap, .include-c);
-               realloc(.include-len-v, .include-cap, old-cap);
-               realloc(.include-str-v, .include-cap, old-cap);
-            }
-            .include-len-v[include-idx] = include-len;
-            .include-str-v[include-idx] = include-str;
-            .include-table[i] = include-idx:Include;
-         } else {
-            .include-table[i] = found:Include;
-         }
+         .include-table[i] = include-add(include-len, include-str);
       }
    }
    if true {
@@ -605,6 +668,10 @@ read(in-path:char[]) {
       f.body-file-pos = r.pos - r-begin.pos;
       r.pos += size;
    }
+   loop r.n() {
+      Include.rd(path!, r);
+      import(path);
+   }
    template-code-idx-begin! = .template-code-c;
    template-code-c! = r.n():TemplateCode;
    // C1.stdout{"there are " template-code-c:base " template codes\n"}
@@ -643,6 +710,7 @@ read(in-path:char[]) {
       td! = .template-inst-v[i++];
       td.name.rd(r);
       td.row = r.n();
+      td.col = r.n();
       td.arg-len = r.n();
       td.arg = r.charr;
       r.pos += td.arg-len;
@@ -679,7 +747,93 @@ var enum-outputted-v:Enum[];
 var struct-is-outputted:u8[];
 var struct-outputted-c:i32;
 var struct-outputted-v:Struct[];
+var include-dir:char[1024];
+var include-dir-len:u16;
 main(arg-c:intc, arg-v:char[][]):intc @main {
+   "#ifdef _WIN32";
+   // Remove .exe from binary path
+   if true {
+      arg! = arg-v[0];
+      len! = C.strlen(arg);
+      if (arg[len - 4] == ''.) && (arg[len - 3] == ''e) && (arg[len - 2] == ''x) && (arg[len - 1] == ''e) {
+         arg[len - 4] = ''\0;
+      }
+   }
+   // Convert path separators from '\' to '/'
+   loop i = 0; arg-c; i++ {
+      arg! = arg-v[i];
+      if arg[0] == ''- { continue }
+      loop j = 0; ; j++ {
+         if arg[j] == ''\0 {
+            break;
+         } elif arg[j] == ''\\ {
+            arg[j] = ''/;
+         }
+      }
+   }
+   "#endif";
+   bin! = arg-v[0];
+   var abs-path:char[512];
+   var abs-path-len:u16 = 0;
+   if bin[0] == ''/ {
+      abs-path-len = C.strlen(bin);
+      C.memcpy(abs-path, bin, abs-path-len);
+      abs-path[abs-path-len] = ''\0;
+   } else {
+      has-slash! = false;
+      loop i = 0; ; i++ {
+         if bin[i] == ''\0 { break; }
+         if bin[i] == ''/ {
+            has-slash = true;
+            break;
+         }
+      }
+      if has-slash {
+         "#ifdef _WIN32";
+         var cwd:char[1024];
+         X.getcwd(cwd, 1024);
+         C.strcpy(abs-path, &cwd[2]);
+         var i = 0;
+         loop ; ; i++ {
+            if abs-path[i] == ''\0 {
+               break;
+            } elif abs-path[i] == ''\\ {
+               abs-path[i] = ''/;
+            }
+         }
+         abs-path[i++] = ''/;
+         C.strcpy(&abs-path[i], bin);
+         "#else";
+         C.realpath(bin, abs-path);
+         "#endif";
+      } else {
+         path! = C.strdup(C.getenv("PATH"));
+         found! = C.strtok(path, ":");
+         fd! = X.Fd#nil;
+         loop found != null {
+            C.sprintf(abs-path, "%s/%s", found, bin);
+            fd = X.open(abs-path, #rdonly);
+            if fd != #nil {
+               break;
+            }
+            found = C.strtok(null, ":");
+         }
+         if fd == #nil {
+            C1.stdout{"Cannot run " bin " because we can't detect its absolute path\n"}
+            C.exit(#failure);
+         }
+         C.free(path);
+      }
+   }
+   slash1! = C.strrchr(abs-path, ''/);
+   slash1[0] = ''\0;
+   slash2! = C.strrchr(abs-path, ''/);
+   slash2[0] = ''\0;
+   // C1.stdout{"absolute path of the " bin " binary is " abs-path ''\n}
+   C.sprintf(.include-dir, "%s/include", abs-path);
+   slash1[0] = ''/;
+   slash2[0] = ''/;
+   .include-dir-len = C.strlen(.include-dir);
    watermark! = false;
    arg-i! = 1;
    loop arg-c - 1 {
@@ -729,9 +883,18 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    //    at-i! = basic-type(#bool);
    // }
 
+   .import-cap = 32;
+   C.malloc-arr(.import-v, .import-cap);
+   .import-tmp-cap = 32;
+   C.malloc-arr(.import-tmp-v, .import-tmp-cap);
+
+   sqlite-init();
    loop i = arg-i; arg-c - arg-i - 1; i++ {
       in-path! = arg-v[i];
-      read(in-path);
+      import(include-add(C.strlen(in-path), in-path));
+   }
+   loop .import-c != 0 {
+      import-now();
    }
 
    if .template-inst-c != 0 {
@@ -779,7 +942,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          jscode{
          '= let file = std.open(scriptArgs[0] + ".cp1", "wb");
          '= file.puts(output.join(""));
-         '= std.puts(output.join(""));
+         // '= std.puts(output.join(""));
          '= file.close();
          }
 
@@ -789,8 +952,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          js-tmp-fd.write(.jscode-buf-data, .jscode-buf-len);
          js-tmp-fd.close();
 
-         C1.stdout{"file was written at " js-tmp-path ''\n}
-         C1.stdout{.jscode-buf-data, .jscode-buf-len}
+         // C1.stdout{"file was written at " js-tmp-path ''\n}
+         // C1.stdout{.jscode-buf-data, .jscode-buf-len}
 
          var command:char[128];
          C.sprintf(command, "./qjs --std %s", js-tmp-path);
@@ -800,26 +963,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
 
          X.unlink(js-tmp-path);
 
-         C.sprintf(command, "%.*s-parse %s.cp1 %s.cp1-b", (C.strlen(arg-v[0]) - 8):intc, arg-v[0], js-tmp-path, js-tmp-path);
-         if C.system(command) != 0 {
-            C.exit(#failure);
-         }
-
          js-tmp-path[14] = ''.;
          js-tmp-path[15] = ''c;
          js-tmp-path[16] = ''p;
          js-tmp-path[17] = ''1;
          js-tmp-path[18] = ''\0;
-         X.unlink(js-tmp-path);
-
-         js-tmp-path[18] = ''-;
-         js-tmp-path[19] = ''b;
-         js-tmp-path[20] = ''\0;
-
-         read(C.strdup(js-tmp-path));
-         X.unlink(js-tmp-path);
-         js-tmp-path[19] = ''h;
-         X.unlink(js-tmp-path);
+         read(C.strdup(js-tmp-path), C.strlen(js-tmp-path));
       }
    }
 
