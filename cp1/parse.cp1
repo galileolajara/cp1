@@ -5,7 +5,9 @@ using X = Posix;
 using Cp1 {
 var template-name-buf:char[] @extern;
 var template-name-len:u8 @extern;
-decl-template-inst(name:Id) {
+var template-code-indention:u32 @extern;
+var template-code-line-c:u32 @extern;
+decl-template-inst(name:Id, row:u32) {
    at! = .decl-at;
    arg-buf! = .string-buf;
    arg-len! = .string-len;
@@ -31,9 +33,9 @@ decl-template-inst(name:Id) {
    td.arg = arg;
    td.arg-len = arg-len;
    td.at = at;
-   td.row = .row;
+   td.row = row;
 }
-decl-template-code() {
+decl-template-code(row:u32) {
    at! = .decl-at;
    name! = id-add(.template-name-len, .template-name-buf);
    loop i = 0; .template-code-c; i++ {
@@ -59,7 +61,8 @@ decl-template-code() {
    td.code = code;
    td.code-len = code-len;
    td.at = at;
-   td.row = .row;
+   td.row = row;
+   td.line-c = .template-code-line-c;
 }
 var ctx-func:DeclFunc;
 var id-in-header-v:u8[];
@@ -690,9 +693,11 @@ write-template-code(w:Wtr, header:bool) @inline {
       td! = .template-code-v[i++];
       td.name.wr(w, header);
       w.n(td.row);
+      w.n(td.line-c);
       w.n(td.code-len);
       w.copy(td.code, td.code-len);
       td.at.wr(w, header);
+      C1.stdout{"template code " td.name " at line " td.row " have " td.line-c " lines\n"}
    }
    w.n(.template-inst-c:base);
    // C1.stdout{"there are " .template-inst-c:base " templates in parse stage\n"}

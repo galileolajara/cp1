@@ -21,7 +21,7 @@ using ExprI {
    }
    write-char(expr:Expr) @case.write() @inline {
       var e:ExprChar = expr;
-      `.write-char(e.value);
+      Cp1.write-char(e.value);
    }
    process-char(expr:Expr, ok:bool&) @case.process() @inline {
       ok = true;

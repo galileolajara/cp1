@@ -88,27 +88,23 @@ using TemplateCodeData {
       }
       code! = tc.code;
       i! = 0;
-      loop {
-         if i == tc.code-len {
-            break;
-         }
-         start! = i;
-         loop {
-            if code[i] == ''\n {
-               break;
-            }
-            i++;
-         }
-         var line:char[] = &code[start];
-         line-len! = i - start;
-         if (line[0] == ''#) && (line[1] == '' ) {
-            var line2:char[] = &line[2];
-            jscode{"     " line2, line-len - 1}
+      line-num! = tc.row;
+      loop tc.line-c {
+         line-num++;
+         line-len! = code[i]:u32 | (code[i + 1]:u32 << 8);
+         i += 2;
+         if line-len == 0 {
+            jscode{''\n}
          } else {
-            jscode{"cp1o(`" line, line-len "\\n`);\n"}
+            var line:char[] = &code[i];
+            if (line-len & 0x8000) == 0 {
+               jscode{"O(`" line, line-len "\\n`);\n"}
+            } else {
+               line-len &= 0x7fff;
+               jscode{"     " line, line-len}
+            }
+            i += line-len;
          }
-         // C1.stdout{"js line [" line, line-len "]\n"}
-         i++;
       }
       jscode{
          "}\n"
@@ -622,6 +618,7 @@ read(in-path:char[]) {
       td! = .template-code-v[i++];
       td.name.rd(r);
       td.row = r.n();
+      td.line-c = r.n();
       td.code-len = r.n();
       td.code = r.charr;
       r.pos += td.code-len;
@@ -759,7 +756,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   if tc.added-to-js == 0 {
                      jscode{
                      '= output = [];
-                     '= function cp1o(line) {
+                     '= function O(line) {
                      '=    output.push(line);
                      '= }
                      }
@@ -782,6 +779,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          jscode{
          '= let file = std.open(scriptArgs[0] + ".cp1", "wb");
          '= file.puts(output.join(""));
+         '= std.puts(output.join(""));
          '= file.close();
          }
 
@@ -792,6 +790,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          js-tmp-fd.close();
 
          C1.stdout{"file was written at " js-tmp-path ''\n}
+         C1.stdout{.jscode-buf-data, .jscode-buf-len}
 
          var command:char[128];
          C.sprintf(command, "./qjs --std %s", js-tmp-path);

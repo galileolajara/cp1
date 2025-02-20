@@ -7,8 +7,12 @@ char* _Gstring_buf;
 int _Gstring_len;
 extern unsigned char* _Gtemplate_name_buf;
 extern uint8_t _Gtemplate_name_len;
+extern uint32_t _Gtemplate_code_indention;
+extern uint32_t _Gtemplate_code_line_c;
 unsigned char* _Gtemplate_name_buf;
 uint8_t _Gtemplate_name_len;
+uint32_t _Gtemplate_code_indention;
+uint32_t _Gtemplate_code_line_c;
 void _NCp1_Pparse_str_init_1(int maxsize) {
    string_mem = malloc(maxsize);
 }
@@ -30,7 +34,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    id_one = [_0-9a-zA-Z\u00c0-\U0010ffff];
    id = id_one+("-" id_one+)*;
 
-   *                                { return CP1_TOKEN_END; }
+   *                                { string_mem[0] = l->start[0]; return CP1_TOKEN_END; }
    
    "{"                              { return CP1_TOKEN_OPEN_CURLY_BRACE; }
    "{" spaces                       { return CP1_TOKEN_OPEN_CURLY_BRACE_SPACE; }
@@ -48,7 +52,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "+"                              { return CP1_TOKEN_PLUS; }
    "-"                              { return CP1_TOKEN_MINUS; }
    "!"                              { return CP1_TOKEN_EXCLAMATION; }
-   "`"                              { return CP1_TOKEN_GRAVE; }
+   // "`"                              { return CP1_TOKEN_GRAVE; }
    "&"                              { return CP1_TOKEN_AMPERSAND; }
    "#"                              { return CP1_TOKEN_HASH; }
    "["                              { return CP1_TOKEN_OPEN_BRACKET; }
@@ -327,11 +331,11 @@ lex_template_code: {
       int row = _Grow;
       char* string_ptr = string_mem;
       for(;;) {
-         row++;
          if (code[i] == '\0') {
             fprintf(stdout, "%s:%u:%u: Error, cannot find the matching '}' of the template.\n", input_path, _Grow, _Gcol);
             exit(EXIT_FAILURE);
          }
+         row++;
          int32_t start = i;
          for(;;) {
             if (code[i] == '\n') {
@@ -341,6 +345,11 @@ lex_template_code: {
          }
          unsigned char* line = &code[start];
          int32_t line_len = i - start;
+         #define TEMPLATE_MAX_LINE_LEN (32 * 1024)
+         if (line_len >= TEMPLATE_MAX_LINE_LEN) {
+            fprintf(stdout, "%s:%u: Error, the line is too long. Consists of %u bytes. Please write lines that are less than %u bytes\n", input_path, row, line_len, TEMPLATE_MAX_LINE_LEN);
+            exit(EXIT_FAILURE);
+         }
 
          int32_t first_char = 0;
          for(;;) {
@@ -349,15 +358,24 @@ lex_template_code: {
             }
             first_char++;
          }
+         int16_t *pcode_len = (int16_t*)string_ptr;
          if (line[first_char] == '\n') {
             // ignore indention
+            // *(string_ptr++) = '\n';
+            *pcode_len = 0;
+            string_ptr += 2;
          } else if (first_char == indention) {
             if (line[first_char] == '}') {
+               _Gtemplate_code_line_c = row - _Grow - 1;
                YYCURSOR = (const char*)(line + first_char + 1);
                break;
             } else if ((line[first_char] == '#') && (line[first_char + 1] == ' ')) {
                // indention is still ok
-               goto copy_line;
+               int32_t copy_len = (line_len - 1) - indention;
+               *pcode_len = copy_len | 0x8000;
+               string_ptr += 2;
+               memcpy(string_ptr, line + indention + 2, copy_len);
+               string_ptr += copy_len;
             } else {
                goto indent_more;
             }
@@ -366,12 +384,101 @@ lex_template_code: {
             fprintf(stdout, "%s:%u:%u: Error, this line must be indented further\n", input_path, row, first_char);
             exit(EXIT_FAILURE);
          } else {
-            copy_line:;
+            string_ptr += 2;
+            for(int32_t i = 0; i < first_char; i++) {
+               *(string_ptr++) = ' ';
+            }
+            // 0 - inside `...`
+            // 1 - inside ${...}
+            // 2 - inside "..."
+            // 3 - inside '...'
+            uint8_t code_type = 0;
+            int32_t code_start;
+            int32_t string_start;
+            uint32_t i = first_char;
+            while (i < line_len) {
+               uint8_t c = line[i++];
+               switch (code_type) {
+                  case 0: {
+                     if ((c == '$') && line[i] == '{') {
+                        code_start = indention + i;
+                        i++;
+                        code_type = 1;
+                        *(string_ptr++) = '$';
+                        *(string_ptr++) = '{';
+                     } else if (c == '`') {
+                        *(string_ptr++) = '\\';
+                        *(string_ptr++) = '`';
+                     } else if (c == '\\') {
+                        *(string_ptr++) = '\\';
+                        *(string_ptr++) = '\\';
+                        *(string_ptr++) = line[i++];
+                     } else {
+                        *(string_ptr++) = c;
+                     }
+                     break;
+                  }
+                  case 1: {
+                     if (c == '}') {
+                        code_type = 0;
+                     } else if (c == '"') {
+                        string_start = indention + i;
+                        code_type = 2;
+                     } else if (c == '\'') {
+                        string_start = indention + i;
+                        code_type = 3;
+                     }
+                     *(string_ptr++) = c;
+                     break;
+                  }
+                  case 2: {
+                     if (c == '"') {
+                        code_type = 0;
+                        *(string_ptr++) = c;
+                     } else if (c == '\\') {
+                        *(string_ptr++) = '\\';
+                        *(string_ptr++) = line[i++];
+                     } else {
+                        *(string_ptr++) = c;
+                     }
+                     break;
+                  }
+                  case 3: {
+                     if (c == '\'') {
+                        code_type = 0;
+                        *(string_ptr++) = c;
+                     } else if (c == '\\') {
+                        *(string_ptr++) = '\\';
+                        *(string_ptr++) = line[i++];
+                     } else {
+                        *(string_ptr++) = c;
+                     }
+                     break;
+                  }
+               }
+            }
+            switch (code_type) {
+               case 1: {
+                  fprintf(stdout, "%s:%u:%u: Error, cannot find the closing '}' for the '${...}' syntax\n", input_path, row, code_start);
+                  exit(EXIT_FAILURE);
+               }
+               case 2: {
+                  fprintf(stdout, "%s:%u:%u: Error, cannot find the closing '\"' for the '\"...\"' string syntax\n", input_path, row, string_start);
+                  exit(EXIT_FAILURE);
+               }
+               case 3: {
+                  fprintf(stdout, "%s:%u:%u: Error, cannot find the closing \"'\" for the \"'...'\" string syntax\n", input_path, row, string_start);
+                  exit(EXIT_FAILURE);
+               }
+            }
+            // *(string_ptr++) = '\n';
+            pcode_len[0] = string_ptr - (char*)&pcode_len[1];
+            /* copy_line:;
             int32_t copy_len = line_len - indention;
             memcpy(string_ptr, line + indention, copy_len);
-            string_ptr += copy_len;
+            string_ptr += copy_len; */
          }
-         *(string_ptr++) = '\n';
+         // *(string_ptr++) = '\n';
 
          i++;
       }

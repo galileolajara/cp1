@@ -985,6 +985,7 @@ struct TemplateCodeData[
    name:Id,
    at:At,
    row:u32,
+   line-c:u32,
 #if(compile)
    file:File,
    added-to-js:i32,

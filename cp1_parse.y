@@ -1,3 +1,4 @@
+%include {char* string_mem;}
 %name cp1Parse
 %token_prefix CP1_TOKEN_
 
@@ -13,7 +14,15 @@
       if (a != YY_ERROR_ACTION) {
          if (first) {
             first = false;
-            printf("%s:%u:%u: syntax error, got token #%s but expected tokens are: #%s", input_path, _Grow, _Gcol, _NCp1_Ptoken_name_1(_Glast_token), _NCp1_Ptoken_name_1(i));
+            if (_Glast_token == CP1_TOKEN_END) {
+               if (string_mem[0] == 0) {
+                  printf("%s:%u:%u: syntax error, got #end-of-file but expected tokens are: #%s", input_path, _Grow, _Gcol, _NCp1_Ptoken_name_1(i));
+               } else {
+                  printf("%s:%u:%u: syntax error, got token '%c' but expected tokens are: #%s", input_path, _Grow, _Gcol, string_mem[0], _NCp1_Ptoken_name_1(i));
+               }
+            } else {
+               printf("%s:%u:%u: syntax error, got token #%s but expected tokens are: #%s", input_path, _Grow, _Gcol, _NCp1_Ptoken_name_1(_Glast_token), _NCp1_Ptoken_name_1(i));
+            }
          } else {
             printf(", #%s", _NCp1_Ptoken_name_1(i));
          }
@@ -87,17 +96,17 @@ decl ::= decl_include SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE CLOSE_C
 at_root ::= DOT.
    { _NCp1_Pat_root_0(); }
 */
-at_graves_count(l) ::= GRAVE(e).
+/* at_graves_count(l) ::= GRAVE(e).
    { l.basic.id = 1; l.basic.row = e.basic.row; l.basic.col = e.basic.col; }
 at_graves_count(l) ::= at_graves_count(r) GRAVE.
    { l.basic.id = r.basic.id + 1; l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 at_graves ::= at_graves_count(e).
-   { _NCp1_Pat_graves_3(e.basic.id, e.basic.row, e.basic.col); }
+   { _NCp1_Pat_graves_3(e.basic.id, e.basic.row, e.basic.col); } */
 // at_names ::= at_alias.
 at_names ::= DOT_ID_UPPER(e).
    { _NCp1_Pat_root_0();
      _NCp1_Pat_push_4(e.basic.id, 1, e.basic.row, e.basic.col); }
-at_names ::= at_graves at_name.
+// at_names ::= at_graves at_name.
 at_begin ::= .
    { _NCp1_Pat_begin_relative_0(); }
 at_names ::= at_begin at_name.
@@ -110,8 +119,8 @@ at(l) ::= at_names.
 at(l) ::= at_root.
    { l.basic.id = _NCp1_Pat_done_0(); }
 */
-at(l) ::= at_graves.
-   { l.basic.id = _NCp1_Pat_done_0(); }
+/* at(l) ::= at_graves.
+   { l.basic.id = _NCp1_Pat_done_0(); } */
 decl_at_name ::= ID_UPPER(e).
    { _NCp1_Pdecl_at_add_2(e.basic.id, 1); }
 decl_at_begin_at ::= .
@@ -138,13 +147,13 @@ template_name(l) ::= ID_UPPER(r).
 template_name(l) ::= ID(r).
    { l.basic.id = r.basic.id; }
 
-decl_template_inst ::= TEMPLATE_INST SPACE template_name(name) SEMICOLON.
-   { _NCp1_Pdecl_template_inst_1(name.basic.id); }
+decl_template_inst ::= TEMPLATE_INST(inst) SPACE template_name(name) SEMICOLON.
+   { _NCp1_Pdecl_template_inst_2(name.basic.id, inst.basic.row); }
 /* decl_template_inst ::= TEMPLATE_INST SPACE at(at) template_name(name) SEMICOLON.
    { _NCp1_Pdecl_template_inst_2(name.basic.id, at); } */
 decl ::= decl_template_inst.
-decl_template_code ::= TEMPLATE_CODE.
-   { _NCp1_Pdecl_template_code_0(); }
+decl_template_code ::= TEMPLATE_CODE(code).
+   { _NCp1_Pdecl_template_code_1(code.basic.row); }
 decl ::= decl_template_code.
 
 decl_cvar ::= enum_cvars_decl SEMICOLON.
