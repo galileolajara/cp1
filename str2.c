@@ -69,6 +69,7 @@ void check_error(int rc, sqlite3 *db, const char *msg) {
         exit(1);
     }
 }
+#if 0
 void _NCp1_Psqlite_init_0() {
    int rc;
    rc = sqlite3_open("cp1.db", &db);
@@ -127,4 +128,127 @@ void* _NCp1_Pread_cp1_2(char* path, int32_t path_len) {
      exit(EXIT_FAILURE);
    }
    // return NULL;
+}
+#endif
+#include <unistd.h>
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <spawn.h>
+#include <arpa/inet.h>
+#include <signal.h>
+#include <fcntl.h>
+#define SERVER_IP "127.0.0.1"  // Change this to the server's IP if needed
+#define SERVER_PORT 60101
+extern char **environ;
+// int sock;
+void _NCp1_Prun_server_0() {
+   /* pid_t pid = fork();
+
+   if (pid < 0) {
+      // Fork failed
+      printf("fork failed\n");
+      exit(EXIT_FAILURE);
+      return;
+   } else if (pid == 0) {
+      // Child process
+      printf("fork made a child process\n");
+      // char arg
+      char* argv[1];
+      argv[0] = NULL;
+      execv("out/cp1-server", argv);
+      // execlp("gedit", "gedit", (char *)NULL); // Replace "gedit" with any program you want to launch
+      perror("execv"); // Only runs if execlp fails
+      exit(EXIT_FAILURE);
+      return;
+   } */
+   // printf("fork\n");
+
+   // int sock;
+   /* struct sigaction arg = {
+      .sa_handler=SIG_IGN,
+      .sa_flags=SA_NOCLDWAIT // Never wait for termination of a child process.
+   };
+   sigaction(SIGCHLD, &arg, NULL); */
+   /* posix_spawnattr_t attr;
+
+   // Initialize attributes
+   posix_spawnattr_init(&attr);
+
+   // Set the child process to be in a new process group (detached)
+   int ret = posix_spawnattr_setpgroup(&attr, 0); */
+   // printf("ret = %d\n", ret);
+   posix_spawnattr_t attr;
+   posix_spawn_file_actions_t file_actions;
+
+   // Initialize attributes and file actions
+   posix_spawnattr_init(&attr);
+   posix_spawn_file_actions_init(&file_actions);
+
+   // Redirect child's stdin to /dev/null (optional)
+   posix_spawn_file_actions_addopen(&file_actions, 0, "/dev/null", O_RDONLY, 0);
+   pid_t pid;
+   char *argv[] = {"out/cp1-server", NULL};
+   posix_spawn(&pid, "out/cp1-server", &file_actions, &attr, argv, environ);
+   posix_spawnattr_destroy(&attr);
+   posix_spawn_file_actions_destroy(&file_actions);
+
+   // Manually set the child’s process group after spawn
+   setpgid(pid, pid);
+   // posix_spawnattr_destroy(&attr);
+}
+void _NCp1_Preq_parse_2(const char* path, int32_t path_len) {
+   int sock;
+   struct sockaddr_in server_addr;
+   struct timespec wait_connect;
+   // char *message = "Hello";
+   
+   // Define server address
+   server_addr.sin_family = AF_INET;
+   server_addr.sin_port = htons(SERVER_PORT);
+   if (inet_pton(AF_INET, SERVER_IP, &server_addr.sin_addr) <= 0) {
+      perror("Invalid address/Address not supported");
+      close(sock);
+      exit(EXIT_FAILURE);
+   }
+   
+   // Create socket
+   create_sock:
+   sock = socket(AF_INET, SOCK_STREAM, 0);
+   if (sock == -1) {
+      perror("Socket creation failed");
+      exit(EXIT_FAILURE);
+   }
+
+   wait_connect.tv_sec = 0;
+   wait_connect.tv_nsec = 1000000; // 1 millisecond in nanoseconds
+   
+   // Connect to server
+   reconnect:
+   if (connect(sock, (struct sockaddr *)&server_addr, sizeof(server_addr)) == -1) {
+      if (wait_connect.tv_nsec <= 512000000) { // 512 milliseconds in nanoseconds
+         printf("Cannot connect to cp1-server, retrying...\n");
+         struct timespec rem;
+         nanosleep(&wait_connect, &rem);
+         wait_connect.tv_nsec += wait_connect.tv_nsec;
+         goto reconnect;
+      } else {
+         printf("Cannot connect to cp1-server\n");
+         exit(EXIT_FAILURE);
+      }
+   }
+   write(sock, path, path_len);
+   uint8_t data[4096];
+   int len = read(sock, data, sizeof(data));
+   if (len == 0) {
+      close(sock);
+      // printf("race, retrying...\n");
+      goto create_sock;
+   } else {
+      write(sock, data, 1);
+      // printf("read: %d\n", len);
+      close(sock);
+   }
 }

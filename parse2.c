@@ -36,7 +36,8 @@ uint64_t current_time_millis() {
     return (uint64_t)(ts.tv_sec) * 1000LL + (ts.tv_nsec / 1000000LL);
 }
 bool _NCp1_Pfile_should_parse_3(char* input_path, uint32_t input_path_len, uint64_t mtime) {
-   int rc;
+   // printf("should parse\n");
+   /* int rc;
    rc = sqlite3_open("cp1.db", &db);
    check_error(rc, db, "Cannot open database");
    
@@ -47,8 +48,10 @@ bool _NCp1_Pfile_should_parse_3(char* input_path, uint32_t input_path_len, uint6
    if (rc == SQLITE_BUSY) {
       usleep(1000);
       goto journal_again;
-   }
+   } */
 
+   return true;
+#if 0
    // Create a table if it doesn't exist
    // rc = sqlite3_exec(db, TABLE_SCHEMA, NULL, NULL, &errMsg);
 
@@ -143,7 +146,8 @@ bool _NCp1_Pfile_should_parse_3(char* input_path, uint32_t input_path_len, uint6
          // printf("we acquired the lock thru insert\n");
          return true;
       } else if (rc == SQLITE_CONSTRAINT) {
-         return false;
+         // return false;
+         goto race;
       } else {
          printf("rc = %u\n", rc);
          check_error(rc, db, "Failed to execute INSERT statement");
@@ -166,8 +170,27 @@ bool _NCp1_Pfile_should_parse_3(char* input_path, uint32_t input_path_len, uint6
       check_error(rc, db, "Failed to execute REPLACE statement");
       return false;
    }
+#endif
 }
 bool _NCp1_Pwrite_cp1_5(uint32_t input_path_len, char* text_data, size_t text_size, uint8_t* bin_data, size_t bin_size) {
+#if 1
+   // printf("write-cp1\n");
+   char path2[1024];
+   memcpy(path2, input_path, input_path_len);
+   path2[input_path_len] = '-';
+   path2[input_path_len + 1] = 't';
+   path2[input_path_len + 2] = '\0';
+   int fd = open(path2, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+   write(fd, bin_data, bin_size);
+   close(fd);
+   char path3[1024];
+   memcpy(path3, input_path, input_path_len);
+   path3[input_path_len] = '-';
+   path3[input_path_len + 1] = 'b';
+   path3[input_path_len + 2] = '\0';
+   rename(path2, path3);
+   return true;
+#else
    // printf("write-cp1(%s)\n", input_path);
    int rc;
    // rc = sqlite3_open("cp1.db", &db);
@@ -185,7 +208,7 @@ bool _NCp1_Pwrite_cp1_5(uint32_t input_path_len, char* text_data, size_t text_si
    // rc = sqlite3_exec(db, TABLE_SCHEMA, NULL, NULL, &errMsg);
 
    sqlite3_stmt *stmt;
-   const char *sql_insert = "UPDATE `codes` SET `text` = ?, `binary` = ?, `mtime` = ? WHERE `path` = ?;";
+   const char *sql_insert = "REPLACE INTO `codes`(`text`, `binary`, `mtime`, `path`) VALUES(?, ?, ?, ?);";
    prepare_again:
    rc = sqlite3_prepare_v2(db, sql_insert, strlen(sql_insert), &stmt, NULL);
    if (rc == SQLITE_BUSY) {
@@ -209,6 +232,7 @@ bool _NCp1_Pwrite_cp1_5(uint32_t input_path_len, char* text_data, size_t text_si
    sqlite3_finalize(stmt);
    sqlite3_close(db);
    return true;
+#endif
 }
 
 union cp1_token {

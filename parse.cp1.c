@@ -1565,7 +1565,7 @@ _NLibCp1_NStdOut_Pstdout_end_1(&_L_16);
 exit(_NLibC_NExit_Cfailure);
 }
 begin_read:;
-if(_NCp1_Pfile_should_parse_3(input_path, _Linput_path_len_12, _Lmtime_13)) {
+if(!_NCp1_Pfile_should_parse_3(input_path, _Linput_path_len_12, _Lmtime_13)) {
 return 0;
 }
 _Lin_data_10[0] = '\n';

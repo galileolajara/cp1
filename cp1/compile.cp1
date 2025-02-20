@@ -238,7 +238,9 @@ import-now() {
    }
    loop i = 0; .import-tmp-c {
       path! = .import-tmp-v[i++];
-      parse(path.str(), path.len());
+      // C1.stdout{"requesting parse of " path "...\n"}
+      req-parse(path.str(), path.len());
+      // parse(path.str(), path.len());
    }
    loop i = 0; .import-tmp-c {
       path! = .import-tmp-v[i++];
@@ -247,6 +249,7 @@ import-now() {
 }
 sqlite-init();
 read-cp1(path:char[], path-len:u32):ref;
+req-parse(in-path-cp1:char[], in-path-cp1-len:u32);
 parse(in-path-cp1:char[], in-path-cp1-len:u32) {
    var command:char[4096];
    C.sprintf(command, "bin/cp1-parse -I \"%s\" \"%s\"", .include-dir, in-path-cp1);
@@ -255,8 +258,16 @@ parse(in-path-cp1:char[], in-path-cp1-len:u32) {
    }
 }
 read(in-path-cp1:char[], in-path-cp1-len:u32) {
+   var in-path:char[256 + 4];
+   C.memcpy(in-path, in-path-cp1, in-path-cp1-len);
+   in-path[in-path-cp1-len] = ''-;
+   in-path[in-path-cp1-len + 1] = ''b;
+   in-path[in-path-cp1-len + 2] = ''\0;
+   // C1.stdout{"reading " in-path "...\n"}
+
    var r-begin:Rdr.;
-   r-begin.reff = read-cp1(in-path-cp1, in-path-cp1-len);
+   // r-begin.reff = read-cp1(in-path, in-path-cp1-len);
+   r-begin.reff = read-file(in-path, in-size!);
    if r-begin.reff == null {
       C1.stdout{"Cannot open file for reading: " in-path-cp1 ''\n}
       C.exit(#failure);
@@ -649,7 +660,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u32) {
       if .func-main != #nil {
          first! = .func-main.ptr();
          second! = func-main.ptr();
-         C1.stdout{"There are more than one function with @main attribute, first is " first.begin-row '': first.begin-col " and second is " second.begin-row '': second.begin-col ''\n}
+         C1.stdout{"There are more than one function with @main attribute, first is " first.file '': first.begin-row '': first.begin-col " and second is " file-idx '': second.begin-row '': second.begin-col ''\n}
          C.exit(#failure);
       }
       .func-main = func-main;
@@ -742,7 +753,9 @@ var struct-outputted-c:i32;
 var struct-outputted-v:Struct[];
 var include-dir:char[1024];
 var include-dir-len:u16;
+run-server();
 main(arg-c:intc, arg-v:char[][]):intc @main {
+   run-server();
    "#ifdef _WIN32";
    // Remove .exe from binary path
    if true {
@@ -881,7 +894,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .import-tmp-cap = 32;
    C.malloc-arr(.import-tmp-v, .import-tmp-cap);
 
-   sqlite-init();
+   // sqlite-init();
    loop i = arg-i; arg-c - arg-i - 1; i++ {
       in-path! = arg-v[i];
       import(include-add(C.strlen(in-path), in-path));

@@ -960,7 +960,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       C.exit(#failure);
    }
    "begin_read:;";
-   if file-should-parse(.input-path, input-path-len, mtime) {
+   if !file-should-parse(.input-path, input-path-len, mtime) {
       return 0;
    }
    in-data[0] = ''\n;
