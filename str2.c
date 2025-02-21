@@ -171,6 +171,7 @@ void _NCp1_Pc_init_0() {
       printf("- %s[%u]\n", _Ginclude_path_v[i], _Ginclude_path_len_v[i]);
    } */
 }
+int parse_main(int argc, char** argv);
 char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
    // printf("req-parse of %s\n", path);
    const char* fullpath;
@@ -188,8 +189,10 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
             goto found;
          }
       }
-      memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/include", 8);
-      memcpy(&_Ginclude_dir[_Ginclude_dir_len + 8], path, path_len);
+      memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/include/", 9);
+      memcpy(&_Ginclude_dir[_Ginclude_dir_len + 9], path, path_len);
+      _Ginclude_dir[_Ginclude_dir_len + 9 + path_len] = 0;
+      // printf("trying file '%s'\n", _Ginclude_dir);
       if (access(_Ginclude_dir, F_OK) == 0) {
          // printf("file '%s' was found\n", _Ginclude_path_v[i]);
          fullpath = _Ginclude_dir;
@@ -204,13 +207,17 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
    cp1_tmp[cp1_tmp_len + path_len + 1] = 'b';
    cp1_tmp[cp1_tmp_len + path_len + 2] = '\0';
    // printf("parsing %s to %s\n", fullpath, cp1_tmp);
-   pid_t pid;
    char *argv[] = {"cp1-parse", fullpath, cp1_tmp, NULL};
-   memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/bin/cp1-parse", 15);
+#if 1
+   int status = parse_main(3, argv);
+#else
+   pid_t pid;
+   // memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/bin/cp1-parse", 15);
    int spawn = posix_spawn(&pid, _Ginclude_dir, NULL, NULL, argv, environ);
    int status;
    waitpid(pid, &status, 0);
    // printf("spawn %s = %d, %d, %d\n", _Ginclude_dir, spawn, pid, status);
+#endif
    if (status != 0) {
       exit(EXIT_FAILURE);
    }

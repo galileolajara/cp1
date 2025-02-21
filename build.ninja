@@ -1,23 +1,32 @@
 rule c
  command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -I. -c $in -o $out
 
+rule objredef
+ command = objcopy --redefine-syms=$redefs $in $out
+
 rule ld-c
  command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out
 
 build out/parse.cp1.c.o: c parse.cp1.c
+build out/parse-redef.cp1.c.o: objredef out/parse.cp1.c.o | redefs
+ redefs = redefs
 build out/parse.c.o: c parse.c | export.h lex.c cp1_parse.c
 build bin/cp1-preprocess: ld-c preprocess.cp1.c
-build bin/cp1-parse: ld-c out/parse.cp1.c.o out/parse.c.o out/hashtable.c.o
 build out/compile.cp1.c.o: c compile.cp1.c
 build out/str.c.o: c str.c
-build bin/cp1-compile: ld-c out/compile.cp1.c.o out/str.c.o out/hashtable.c.o
+build bin/cp1-compile: ld-c out/compile.cp1.c.o out/str.c.o out/hashtable.c.o out/parse-redef.cp1.c.o out/parse.c.o
+build bin/cp1-compile-redef-output: ld-c out/compile.cp1.c.o out/str.c.o out/hashtable.c.o out/parse.cp1.c.o out/parse.c.o
 build bin/cp1: ld-c cp1.cp1.c
+build out/hashtable.c.o: c hashtable2.c
 
 rule c2
- command = clang $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
+ command = gcc $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
 
 rule ld-c2
- command = clang $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
+ command = gcc $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
+
+rule ld-c2-redef
+ command = gcc $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out.tmp 2> redefs2.txt || true && node redefs.js redefs2.txt redefs2 && touch $out
 
 rule re2c
  command = re2c --input-encoding utf8 --utf8 $in -o $out
@@ -32,16 +41,13 @@ rule lemon
 rule preprocess
  command = bin/cp1-preprocess $options $in $out
 
-# rule parse
-#  command = bin/cp1-parse $in $out
-
 rule compile
  command = bin/cp1-compile -w $in -c $out
 
 rule run
  command = $in $out
 
-build out/hash-table-size: ld-c2 hashtable.c
+build out/hash-table-size: ld-c2 hashtable2.c
  flags = -DCP1_GET_SIZE
 build out/hash-table-size.cp1: run out/hash-table-size
 
@@ -66,8 +72,11 @@ build out/cp1_parse.c out/cp1_parse.h: lemon cp1_parse.y | out/lemon
 build out/cp1: ld-c2 out/cp1.cp1.c
 build out/parse2.cp1.c.o: c2 out/parse2.cp1.c
 build out/parse2.c.o: c2 parse2.c | out/export.h out/lex.c out/cp1_parse.c
-build out/hashtable.c.o: c2 hashtable.c
-build out/cp1-parse: ld-c2 out/parse2.cp1.c.o out/parse2.c.o out/hashtable.c.o
+build out/parse2-redef.cp1.c.o: objredef out/parse2.cp1.c.o | redefs2
+ redefs = redefs2
+build out/hashtable2.c.o: c2 hashtable2.c
 build out/compile2.cp1.c.o: c2 out/compile2.cp1.c
 build out/str2.c.o: c2 str2.c
-build out/cp1-compile: ld-c2 out/compile2.cp1.c.o out/str2.c.o out/hashtable.c.o
+build out/cp1-compile: ld-c2 out/compile2.cp1.c.o out/str2.c.o out/hashtable.c.o out/parse2-redef.cp1.c.o out/parse2.c.o
+build out/cp1-compile-redef-output | redefs2: ld-c2-redef out/compile2.cp1.c.o out/str2.c.o out/hashtable.c.o out/parse2.cp1.c.o out/parse2.c.o
+default out/cp1-compile

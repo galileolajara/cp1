@@ -65,6 +65,7 @@ using Cp1 {
             return null;
          }
          var buf:u8[];
+         // C1.stdout{"malloc " (add-before + size + add-after):u32 "\n"}
          C.malloc-arr(buf, add-before + size + add-after);
          if fd.read(&buf[add-before], size) != size {
             C.free(buf);

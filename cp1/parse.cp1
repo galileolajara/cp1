@@ -886,6 +886,7 @@ write-cp1(input-path-len:u32, text-data:ref, text-size:usz, bin-data:ref, bin-si
 file-mtime(path:char[]):u64;
 file-should-parse(path:char[], path-len:u32, mtime:u64):bool;
 main(arg-c:intc, arg-v:char[][]):intc @main {
+   // C1.stdout{"hello world " arg-c:u32 " " arg-v[0] " " arg-v[1] "\n"}
    if false {
       // preprocess-def("", 0);
       export();
@@ -1765,6 +1766,20 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    // C1.stdout{"rename " tmp-path " -> " lock-path ''\n}
    C.rename(tmp-path, lock-path);
 
+   .id-c = 0;
+   .id-in-header-c = 0;
+   .include-c = 0;
+   .at-c = 0;
+   .at-in-header-c = 0;
+   .at-alias-c = 0;
+   .cvar-c = 0;
+   .gvar-c = 0;
+   .enum-c = 0;
+   .struct-c = 0;
+   .func-c = 0;
+   .import-c = 0;
+   .template-inst-c = 0;
+   .template-code-c = 0;
    // w.reff = w-begin.reff;
    // w.n(.id-in-header-c);
    // loop j = 0; .id-in-header-c; j++ {
