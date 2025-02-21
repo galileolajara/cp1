@@ -179,6 +179,49 @@ void _NCp1_Pc_init_0() {
    memcpy(cmd_path + _Ginclude_dir_len, "/bin/cp1-parse", 15);
    // printf("cmd_path %s\n", cmd_path);
    #endif
+
+   mkdir("cp1-tmp-0");
+}
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+#include <libgen.h>  // For dirname()
+#include <unistd.h>  // For access()
+void create_folders_recursively(const char *file_path) {
+    char path[1024];  
+    strncpy(path, file_path, sizeof(path));
+    path[sizeof(path) - 1] = '\0';
+
+    // Get directory path from file path
+    char *dir_path = dirname(path);
+
+    // Tokenize path components
+    char temp_path[1024] = {0};
+    char *token = strtok(dir_path, "/");
+
+    // Skip first directory
+    int first = 1;
+    while (token != NULL) {
+        if (first) {
+            first = 0;
+            strcat(temp_path, token);
+        } else {
+            strcat(temp_path, "/");
+            strcat(temp_path, token);
+
+            // Check if directory exists
+            // printf("trying to create directory %s\n", temp_path);
+            if (access(temp_path, F_OK) != 0) {
+                if (mkdir(temp_path, 0755) != 0 && errno != EEXIST) {
+                    perror("mkdir failed");
+                    return;
+                }
+            }
+        }
+        token = strtok(NULL, "/");
+    }
 }
 // int parse_main(int argc, char** argv);
 char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
@@ -215,6 +258,7 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
    cp1_tmp[cp1_tmp_len + path_len] = '-';
    cp1_tmp[cp1_tmp_len + path_len + 1] = 'b';
    cp1_tmp[cp1_tmp_len + path_len + 2] = '\0';
+   create_folders_recursively(cp1_tmp);
    // printf("parsing %s to %s\n", fullpath, cp1_tmp);
    const char *argv[] = {"cp1-parse", fullpath, cp1_tmp, NULL};
 #ifdef SPAWN_PARSE
