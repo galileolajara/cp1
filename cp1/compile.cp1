@@ -1460,7 +1460,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       }
    }
    // .out = C.fopen(arg-v[arg-c - 1], "wb");
-   write-file(arg-v[arg-c - 1], .output-data, .output-len);
+   write-file(output-file, .output-data, .output-len);
    return 0;
 }
 using Func {

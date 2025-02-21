@@ -153,6 +153,10 @@ extern uint16_t* _Ginclude_path_len_v;
 extern uint8_t _Ginclude_path_c;
 char cp1_tmp[1024];
 uint16_t cp1_tmp_len;
+#define SPAWN_PARSE
+#ifdef SPAWN_PARSE
+char cmd_path[1024];
+#endif
 // char _Gcurrent_dir[1024];
 // uint16_t _Gcurrent_dir_len;
 void _NCp1_Pc_init_0() {
@@ -170,8 +174,13 @@ void _NCp1_Pc_init_0() {
    /* for (uint8_t i = 0; i < _Ginclude_path_c; i++) {
       printf("- %s[%u]\n", _Ginclude_path_v[i], _Ginclude_path_len_v[i]);
    } */
+   #ifdef SPAWN_PARSE
+   memcpy(cmd_path, _Ginclude_dir, _Ginclude_dir_len);
+   memcpy(cmd_path + _Ginclude_dir_len, "/bin/cp1-parse", 15);
+   // printf("cmd_path %s\n", cmd_path);
+   #endif
 }
-int parse_main(int argc, char** argv);
+// int parse_main(int argc, char** argv);
 char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
    // printf("req-parse of %s\n", path);
    const char* fullpath;
@@ -208,15 +217,15 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
    cp1_tmp[cp1_tmp_len + path_len + 2] = '\0';
    // printf("parsing %s to %s\n", fullpath, cp1_tmp);
    const char *argv[] = {"cp1-parse", fullpath, cp1_tmp, NULL};
-#if 1
-   int status = parse_main(3, argv);
-#else
+#ifdef SPAWN_PARSE
    pid_t pid;
    // memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/bin/cp1-parse", 15);
-   int spawn = posix_spawn(&pid, _Ginclude_dir, NULL, NULL, argv, environ);
+   int spawn = posix_spawn(&pid, cmd_path, NULL, NULL, argv, environ);
    int status;
    waitpid(pid, &status, 0);
    // printf("spawn %s = %d, %d, %d\n", _Ginclude_dir, spawn, pid, status);
+#else
+   int status = parse_main(3, argv);
 #endif
    if (status != 0) {
       exit(EXIT_FAILURE);
