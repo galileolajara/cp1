@@ -1775,6 +1775,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .cvar-c = 0;
    .gvar-c = 0;
    .enum-c = 0;
+   .str-c = 0;
+   .expr-c = 0;
    .struct-c = 0;
    .func-c = 0;
    .import-c = 0;
