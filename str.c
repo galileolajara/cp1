@@ -180,7 +180,7 @@ void _NCp1_Prun_server_0() {
    // Set the child process to be in a new process group (detached)
    int ret = posix_spawnattr_setpgroup(&attr, 0); */
    // printf("ret = %d\n", ret);
-   posix_spawnattr_t attr;
+   /*posix_spawnattr_t attr;
    posix_spawn_file_actions_t file_actions;
 
    // Initialize attributes and file actions
@@ -188,15 +188,15 @@ void _NCp1_Prun_server_0() {
    posix_spawn_file_actions_init(&file_actions);
 
    // Redirect child's stdin to /dev/null (optional)
-   posix_spawn_file_actions_addopen(&file_actions, 0, "/dev/null", O_RDONLY, 0);
+   posix_spawn_file_actions_addopen(&file_actions, 0, "/dev/null", O_RDONLY, 0); */
    pid_t pid;
    char *argv[] = {"out/cp1-server", NULL};
-   posix_spawn(&pid, "out/cp1-server", &file_actions, &attr, argv, environ);
-   posix_spawnattr_destroy(&attr);
-   posix_spawn_file_actions_destroy(&file_actions);
+   posix_spawn(&pid, "out/cp1-server", NULL, NULL, argv, environ);
+   // posix_spawnattr_destroy(&attr);
+   // posix_spawn_file_actions_destroy(&file_actions);
 
    // Manually set the child’s process group after spawn
-   setpgid(pid, pid);
+   // setpgid(pid, pid);
    // posix_spawnattr_destroy(&attr);
 }
 void _NCp1_Preq_parse_2(const char* path, int32_t path_len) {
@@ -229,7 +229,7 @@ void _NCp1_Preq_parse_2(const char* path, int32_t path_len) {
    reconnect:
    if (connect(sock, (struct sockaddr *)&server_addr, sizeof(server_addr)) == -1) {
       if (wait_connect.tv_nsec <= 512000000) { // 512 milliseconds in nanoseconds
-         printf("Cannot connect to cp1-server, retrying...\n");
+         // printf("Cannot connect to cp1-server, retrying...\n");
          struct timespec rem;
          nanosleep(&wait_connect, &rem);
          wait_connect.tv_nsec += wait_connect.tv_nsec;

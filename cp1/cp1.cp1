@@ -5,7 +5,7 @@ using Cp1 = Cp1;
 var atexit-rm-v:char[][];
 var atexit-rm-cap:u32;
 var atexit-rm-c:u32;
-var include-dir:char[512];
+var include-dir:char[512 + 8];
 var include-dir-len:u16;
 // include-dir! = "/opt/cp1/include";
 // include-dir-len! = C.strlen(include-dir);
@@ -363,7 +363,7 @@ cp1-path-input(cp1-path:char[], cp1-path-len:i32, bin:char[], cmd:Cmd):bool {
                .included-v[i] = path;
                .included-len-v[i] = include-path-len;
                // C1.stdout{"including " include-path, include-path-len ''\n}
-               var spec-path:char[128];
+               var spec-path:char[1024];
                C.sprintf(spec-path, "%s/%s", .include-dir, path);
                loop i = .include-dir-len + 1; C.strlen(spec-path) - (.include-dir-len + 1); i++ {
                   if spec-path[i] == ''/ {

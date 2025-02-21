@@ -14,10 +14,10 @@ build bin/cp1-compile: ld-c out/compile.cp1.c.o out/str.c.o out/hashtable.c.o ou
 build bin/cp1: ld-c cp1.cp1.c
 
 rule c2
- command = clang $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
+ command = gcc $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
 
 rule ld-c2
- command = clang $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
+ command = gcc $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
 
 rule re2c
  command = re2c --input-encoding utf8 --utf8 $in -o $out

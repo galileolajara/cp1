@@ -12,6 +12,9 @@
 #include <netinet/in.h>
 #include <errno.h>
 #include <stdbool.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <signal.h>
 
 #define PORT 60101
 #define BACKLOG 5
@@ -66,7 +69,7 @@ void *handle_client(void *arg) {
 
       if (found) {
          pthread_mutex_unlock(&path_mutex);
-         printf("race condition for [%.*s]\n", path_len, path);
+         // printf("race condition for [%.*s]\n", path_len, path);
          close(new_socket);
       } else {
          int32_t i = path_c++;
@@ -111,8 +114,69 @@ void *handle_client(void *arg) {
    return NULL;
 }
 
+void daemonize() {
+   pid_t pid = fork();
+   if (pid < 0) {
+      perror("fork");
+      exit(EXIT_FAILURE);
+   }
+   if (pid > 0) {
+      // Parent exits, leaving child in background
+      exit(EXIT_SUCCESS);
+   }
+
+   // Create a new session and become session leader
+   if (setsid() < 0) {
+      perror("setsid");
+      exit(EXIT_FAILURE);
+   }
+
+   // Fork again to prevent reacquiring a terminal
+   pid = fork();
+   if (pid < 0) {
+      perror("fork");
+      exit(EXIT_FAILURE);
+   }
+   if (pid > 0) {
+      exit(EXIT_SUCCESS);
+   }
+
+   // Set file permissions mask to 0
+   umask(0);
+
+   /*
+   // Change working directory to root to avoid locking a filesystem
+   if (chdir("/") < 0) {
+      perror("chdir");
+      exit(EXIT_FAILURE);
+   }
+   */
+
+   // Redirect standard file descriptors to /dev/null
+   int fd = open("/dev/null", O_RDWR);
+   if (fd < 0) {
+      perror("open");
+      exit(EXIT_FAILURE);
+   }
+   dup2(fd, STDIN_FILENO);
+   dup2(fd, STDOUT_FILENO);
+   dup2(fd, STDERR_FILENO);
+   close(fd);
+}
+
+void handle_signal(int sig) {
+   if (sig == SIGTERM || sig == SIGINT) {
+      exit(0);
+   }
+}
+
 int main() {
-   pid_t pid = setsid();
+   daemonize();
+
+   // Handle termination signals
+   signal(SIGTERM, handle_signal);
+   signal(SIGINT, handle_signal);
+
    // printf("setsid %d %s\n", pid, strerror(errno));
 
    path_cap = 32;
@@ -154,7 +218,7 @@ int main() {
       // perror("listen failed");
       exit(EXIT_FAILURE);
    }
-   printf("Listening on port %d...\n", PORT);
+   // printf("Listening on port %d...\n", PORT);
 
    // Get number of CPU cores
    int num_threads = sysconf(_SC_NPROCESSORS_ONLN);

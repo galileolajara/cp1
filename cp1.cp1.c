@@ -31,7 +31,7 @@ struct _NLibCp1_NStdOut {
 struct _NCp1_NOutput;
 struct _NCp1_NOutput {
 };
-char _Ginclude_dir[512];
+char _Ginclude_dir[512 + 8];
 uint16_t _Ginclude_dir_len;
 uint32_t _Goutput_cap;
 char* output_data;
@@ -1277,7 +1277,7 @@ break_13:;
 if(!_Lfound_47) {
 int32_t _Li_49;
 char* _Lpath_50;
-char _Lspec_path_51[128];
+char _Lspec_path_51[1024];
 char* _Lspec_data_53;
 size_t _Lspec_len_54;
 int32_t _Lspec_pos_56;
