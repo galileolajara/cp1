@@ -1,3 +1,9 @@
+import "libcp1/stdout.cp1";
+import "libc/stdio.cp1";
+import "posix/fcntl.cp1";
+import "libc/stdlib.cp1";
+import "posix/unistd.cp1";
+import "libc/string.cp1";
 using Cp1 = Cp1;
 using C = LibC;
 using C1 = LibCp1;
@@ -113,6 +119,7 @@ using TemplateCodeData {
 }
 include-add(include-len:u8, include-str:char[]):Include {
    found! = .include-map.get-or-insert(include-str, include-len, .include-c);
+   // C1.stdout{"include-add " include-str " = " found ''\n}
    if found == -1 {
       include-idx! = .include-c++;
       if .include-cap <= .include-c {
@@ -123,8 +130,10 @@ include-add(include-len:u8, include-str:char[]):Include {
       }
       .include-len-v[include-idx] = include-len;
       .include-str-v[include-idx] = include-str;
+      // C1.stdout{"include " include-str " is " include-idx ''\n}
       return include-idx:Include;
    } else {
+      // C1.stdout{"include " include-str " is " found ''\n}
       return found:Include;
    }
 }
@@ -203,21 +212,38 @@ id-add(id-len:u8, id-str:char[]):Id {
 var import-v:Include[];
 var import-cap:u32;
 var import-c:u32;
+var imported-v:Include[];
+var imported-cap:u32;
+var imported-c:u32;
 import(path:Include) {
-   loop i = 0; .import-c {
-      if .import-v[i] == path {
+   loop i = 0; .imported-c {
+      if .imported-v[i] == path {
          return;
       }
    }
-   i! = .import-c++;
-   if .import-cap < .import-c {
-      .import-cap += .import-cap;
-      loop .import-cap < .import-c {
-         .import-cap += .import-cap;
+   // C1.stdout{"import " path ''\n}
+   if true {
+      i! = .imported-c++;
+      if .imported-cap < .imported-c {
+         .imported-cap += .imported-cap;
+         loop .imported-cap < .imported-c {
+            .imported-cap += .imported-cap;
+         }
+         C.realloc-arr(.imported-v, .imported-cap);
       }
-      C.realloc-arr(.import-v, .import-cap);
+      .imported-v[i] = path;
    }
-   .import-v[i] = path;
+   if true {
+      i! = .import-c++;
+      if .import-cap < .import-c {
+         .import-cap += .import-cap;
+         loop .import-cap < .import-c {
+            .import-cap += .import-cap;
+         }
+         C.realloc-arr(.import-v, .import-cap);
+      }
+      .import-v[i] = path;
+   }
 }
 var import-tmp-v:Include[];
 var import-tmp-cap:u32;
@@ -466,7 +492,10 @@ read(in-path-cp1:char[], in-path-cp1-len:u32) {
          C1.stdout{"Cannot define struct :" at.name.id " because it was already defined as "}
          if at.def == #struct {
             C1.stdout{"struct\n"}
+         } else {
+            C1.stdout{"enum\n"}
          }
+         C.exit(#failure);
       }
       at.decl.enumm = e-idx;
       at.def = #enum;
@@ -519,7 +548,10 @@ read(in-path-cp1:char[], in-path-cp1-len:u32) {
          C1.stdout{"Cannot define struct :" at.name.id " because it was already defined as "}
          if at.def == #enum {
             C1.stdout{"enum\n"}
+         } else {
+            C1.stdout{"struct\n"}
          }
+         C.exit(#failure);
       }
       // C1.stdout{"at(" at-i ") is a struct: " at.name.id ", parent is " at.parent ''\n}
       at.decl.structt = s-idx;
@@ -954,6 +986,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    //    at-i! = basic-type(#bool);
    // }
 
+   .imported-cap = 32;
+   C.malloc-arr(.imported-v, .imported-cap);
    .import-cap = 32;
    C.malloc-arr(.import-v, .import-cap);
    .import-tmp-cap = 32;

@@ -1,3 +1,9 @@
+import "libcp1/stdout.cp1";
+import "libc/stdio.cp1";
+import "libc/stdlib.cp1";
+import "posix/fcntl.cp1";
+import "posix/unistd.cp1";
+import "libc/string.cp1";
 using C = LibC;
 using X = Posix;
 main(arg-c:intc, arg-v:char[][]):intc {
