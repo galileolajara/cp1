@@ -143,66 +143,33 @@ void* _NCp1_Pread_cp1_2(char* path, int32_t path_len) {
 #define SERVER_IP "127.0.0.1"  // Change this to the server's IP if needed
 #define SERVER_PORT 60101
 extern char **environ;
-// int sock;
-void _NCp1_Prun_server_0() {
-   /* pid_t pid = fork();
-
-   if (pid < 0) {
-      // Fork failed
-      printf("fork failed\n");
-      exit(EXIT_FAILURE);
-      return;
-   } else if (pid == 0) {
-      // Child process
-      printf("fork made a child process\n");
-      // char arg
-      char* argv[1];
-      argv[0] = NULL;
-      execv("out/cp1-server", argv);
-      // execlp("gedit", "gedit", (char *)NULL); // Replace "gedit" with any program you want to launch
-      perror("execv"); // Only runs if execlp fails
-      exit(EXIT_FAILURE);
-      return;
-   } */
-   // printf("fork\n");
-
-   // int sock;
-   /* struct sigaction arg = {
-      .sa_handler=SIG_IGN,
-      .sa_flags=SA_NOCLDWAIT // Never wait for termination of a child process.
-   };
-   sigaction(SIGCHLD, &arg, NULL); */
-   /* posix_spawnattr_t attr;
-
-   // Initialize attributes
-   posix_spawnattr_init(&attr);
-
-   // Set the child process to be in a new process group (detached)
-   int ret = posix_spawnattr_setpgroup(&attr, 0); */
-   // printf("ret = %d\n", ret);
-   /*posix_spawnattr_t attr;
-   posix_spawn_file_actions_t file_actions;
-
-   // Initialize attributes and file actions
-   posix_spawnattr_init(&attr);
-   posix_spawn_file_actions_init(&file_actions);
-
-   // Redirect child's stdin to /dev/null (optional)
-   posix_spawn_file_actions_addopen(&file_actions, 0, "/dev/null", O_RDONLY, 0); */
+extern char _Ginclude_dir[];
+extern uint16_t _Ginclude_dir_len;
+extern char** _Ginclude_path_v;
+extern uint16_t* _Ginclude_path_len_v;
+extern uint8_t _Ginclude_path_c;
+char _Gcurrent_dir[1024];
+uint16_t _Gcurrent_dir_len;
+void _NCp1_Pc_init_0() {
+   memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/bin/cp1-server", 16);
    pid_t pid;
-   char *argv[] = {"out/cp1-server", NULL};
-   posix_spawn(&pid, "out/cp1-server", NULL, NULL, argv, environ);
-   // posix_spawnattr_destroy(&attr);
-   // posix_spawn_file_actions_destroy(&file_actions);
+   char *argv[] = {"cp1-server", NULL};
+   posix_spawn(&pid, _Ginclude_dir, NULL, NULL, argv, environ);
+   memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/include", 9);
 
-   // Manually set the child’s process group after spawn
-   // setpgid(pid, pid);
-   // posix_spawnattr_destroy(&attr);
+   getcwd(_Gcurrent_dir, sizeof(_Gcurrent_dir));
+   _Gcurrent_dir_len = strlen(_Gcurrent_dir);
+   // printf("current directory is %s\n", _Gcurrent_dir);
+   /* for (uint8_t i = 0; i < _Ginclude_path_c; i++) {
+      printf("- %s[%u]\n", _Ginclude_path_v[i], _Ginclude_path_len_v[i]);
+   } */
 }
 void _NCp1_Preq_parse_2(const char* path, int32_t path_len) {
    int sock;
    struct sockaddr_in server_addr;
    struct timespec wait_connect;
+   static char buf[16 * 1024];
+   int bufi = 0;
    // char *message = "Hello";
    
    // Define server address
