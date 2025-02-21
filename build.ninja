@@ -8,8 +8,8 @@ rule ld-c
  command = tcc $flags -w -I. $in -o $out || clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out
 
 build out/parse.cp1.c.o: c parse.cp1.c
-build out/parse-redef.cp1.c.o: objredef out/parse.cp1.c.o | redefs
- redefs = redefs
+#build out/parse-redef.cp1.c.o: objredef out/parse.cp1.c.o | redefs
+# redefs = redefs
 build out/parse.c.o: c parse.c | export.h lex.c cp1_parse.c
 build bin/cp1-preprocess: ld-c preprocess.cp1.c
 build out/compile.cp1.c.o: c compile.cp1.c
