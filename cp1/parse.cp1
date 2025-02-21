@@ -893,44 +893,50 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .include-path-cap = 8;
    C.malloc-arr(.include-path-v, .include-path-cap);
    quick-alloc-init();
-   loop i = 1; i < arg-c {
-      arg! = arg-v[i++];
-      if arg[0] == ''- {
-         if arg[1] == ''I {
-            arg = arg-v[i++];
-            if arg == null {
-               C1.stdout{arg-v[0] ": Error, '-I' must be followed by a path to a directory"}
-               "goto usage;";
-            }
-            arg-len! = C.strlen(arg);
-            if arg[arg-len - 1] != ''/ {
-               arg[arg-len++] = ''/;
-            }
-            j! = .include-path-c++;
-            if .include-path-cap < .include-path-c {
-               .include-path-cap = grow(.include-path-c);
-               C.realloc-arr(.include-path-v, .include-path-cap);
-            }
-            var inc:IncludePath;
-            quick-alloc-plus(inc, arg-len);
-            C.memcpy(inc.str, arg, arg-len);
-            inc.len = arg-len;
-            .include-path-v[j] = inc;
-         }
-      } else {
-         if .input-path != null {
-            C1.stdout{arg-v[0] ": Error, there should be only one file path\n"}
-            "goto usage;";
-         }
-         .input-path = arg;
-      }
-   }
-   if .input-path == null {
-      "usage:";
+   // loop i = 1; i < arg-c {
+   //    arg! = arg-v[i++];
+   //    if arg[0] == ''- {
+   //       if arg[1] == ''I {
+   //          arg = arg-v[i++];
+   //          if arg == null {
+   //             C1.stdout{arg-v[0] ": Error, '-I' must be followed by a path to a directory"}
+   //             "goto usage;";
+   //          }
+   //          arg-len! = C.strlen(arg);
+   //          if arg[arg-len - 1] != ''/ {
+   //             arg[arg-len++] = ''/;
+   //          }
+   //          j! = .include-path-c++;
+   //          if .include-path-cap < .include-path-c {
+   //             .include-path-cap = grow(.include-path-c);
+   //             C.realloc-arr(.include-path-v, .include-path-cap);
+   //          }
+   //          var inc:IncludePath;
+   //          quick-alloc-plus(inc, arg-len);
+   //          C.memcpy(inc.str, arg, arg-len);
+   //          inc.len = arg-len;
+   //          .include-path-v[j] = inc;
+   //       }
+   //    } else {
+   //       if .input-path != null {
+   //          C1.stdout{arg-v[0] ": Error, there should be only one file path\n"}
+   //          "goto usage;";
+   //       }
+   //       .input-path = arg;
+   //    }
+   // }
+   // if .input-path == null {
+   //    "usage:";
+   //    C1.stdout{
+   //      "Usage: " arg-v[0] " [file.cp1]\n"
+   //    '= Options:
+   //    '=   -I [directory]     Adds [directory] to the search path
+   //    }
+   //    return 1;
+   // }
+   if arg-c != 3 {
       C1.stdout{
-        "Usage: " arg-v[0] " [file.cp1]\n"
-      '= Options:
-      '=   -I [directory]     Adds [directory] to the search path
+         "Usage: " arg-v[0] " input.cp1 output.cp1-b\n"
       }
       return 1;
    }
@@ -939,33 +945,19 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .include-map.init();
    .at-map.init();
    .func-main = #nil;
+   .input-path = arg-v[1];
    // C1.stdout{"reading " .input-path ''\n}
    var in-data:u8[];
-   var in-size;
-   input-path-len! = C.strlen(.input-path);
-   mtime! = file-mtime(.input-path);
-   if mtime != 0 {
-      in-data = read-file(.input-path, 1, 2, in-size);
-   } else {
-      loop i = 0; .include-path-c {
-         inc! = .include-path-v[i++];
-         C.memcpy(&inc.str[inc.len], .input-path, input-path-len);
-         mtime = file-mtime(inc.str);
-         if mtime != 0 {
-            in-data = read-file(inc.str, 1, 2, in-size);
-            "goto begin_read;";
-         }
-      }
+   in-data = read-file(.input-path, 1, 2, in-size!);
+   // input-path-len! = C.strlen(.input-path);
+   // mtime! = file-mtime(.input-path);
+   if in-data == null {
       C1.stdout{"Cannot open file for reading: " .input-path ''\n}
       C.exit(#failure);
    }
-   "begin_read:;";
-   if !file-should-parse(.input-path, input-path-len, mtime) {
-      return 0;
-   }
    in-data[0] = ''\n;
    in-data = &in-data[1];
-   // lock-path! = arg-v[2];
+   lock-path! = arg-v[2];
    // .lock-path = lock-path;
    // if true {
    //    if !C.Fd.open(fd!!, lock-path, #create | #excl) {
@@ -1450,7 +1442,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         C.exit(#failure);
                      }
                      tok.val.ii32.id = include-add(len, r-begin.charr);
-                     C1.stdout{"import '" r-begin.charr, len "'\n"}
+                     // C1.stdout{"import '" r-begin.charr, len "'\n"}
                      break;
                   }
                }
@@ -1753,16 +1745,25 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    write-import(w, false);
    write-template-code(w, false);
 
-   if write-cp1(input-path-len, in-data, in-size, w-begin.reff, w.pos - w-begin.pos) { return 0 }
-   else { return 1 }
+   // if write-cp1(input-path-len, in-data, in-size, w-begin.reff, w.pos - w-begin.pos) { return 0 }
+   // else { return 1 }
    
    // var out-path:char[] = C.malloc(C.strlen(lock-path) + 4 + 1);
    // C.sprintf(out-path, "%s.tmp", lock-path);
    // out-path-len! = C.strlen(out-path);
-   // if !write-file(out-path, w-begin.reff, w.pos - w-begin.pos) {
-   //    C1.stdout{"Cannot open file for writing: " out-path ''\n}
-   //    C.exit(#failure);
-   // }
+   lock-path-len! = C.strlen(lock-path);
+   var tmp-path:char[256 + 16 + 10];
+   C.sprintf(tmp-path, "%s-%u", lock-path, X.getpid());
+   // C.memcpy(tmp-path, lock-path, lock-path-len - 1);
+   // tmp-path[lock-path-len - 1] = ''t;
+   // tmp-path[lock-path-len] = ''\0;
+   // C1.stdout{"write " tmp-path ''\n}
+   if !write-file(tmp-path, w-begin.reff, w.pos - w-begin.pos) {
+      C1.stdout{"Cannot open file for writing: " tmp-path ''\n}
+      C.exit(#failure);
+   }
+   // C1.stdout{"rename " tmp-path " -> " lock-path ''\n}
+   C.rename(tmp-path, lock-path);
 
    // w.reff = w-begin.reff;
    // w.n(.id-in-header-c);

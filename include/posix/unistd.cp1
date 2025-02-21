@@ -14,6 +14,7 @@ include <unistd.h> {
       seek(fd:intc, offset:usz, seek:Seek):usz @no-decl(lseek);
       mkstemp(template:char[]):Fd @no-decl @real-name;
       getcwd(buf:char[], size:usz):char[] @no-decl @real-name;
+      getpid():intc @no-decl @real-name;
       unlink(path:char[]):intc @no-decl @real-name;
       sleep(seconds:u32):u32 @no-decl @real-name;
    }

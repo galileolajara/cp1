@@ -9,9 +9,10 @@
 #include <unistd.h>
 #include <stdbool.h>
 
+extern char* input_path;
+#if 0
 #include "sqlite3/sqlite3.h"
 // #include "table.h"
-extern char* input_path;
 sqlite3* db;
 void check_error(int rc, sqlite3 *db, const char *msg) {
     if (rc != SQLITE_OK && rc != SQLITE_DONE && rc != SQLITE_ROW) {
@@ -20,6 +21,7 @@ void check_error(int rc, sqlite3 *db, const char *msg) {
         exit(1);
     }
 }
+#endif
 #include <sys/stat.h>
 uint64_t _NCp1_Pfile_mtime_1(const char *filename) {
     struct stat st;

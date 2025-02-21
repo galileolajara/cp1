@@ -236,12 +236,12 @@ import-now() {
    loop i = 0; .import-tmp-c; i++ {
       .import-tmp-v[i] = .import-v[i];
    }
-   loop i = 0; .import-tmp-c {
-      path! = .import-tmp-v[i++];
-      // C1.stdout{"requesting parse of " path "...\n"}
-      req-parse(path.str(), path.len());
-      // parse(path.str(), path.len());
-   }
+   // loop i = 0; .import-tmp-c {
+   //    path! = .import-tmp-v[i++];
+   //    // C1.stdout{"requesting parse of " path "...\n"}
+   //    req-parse(path.str(), path.len());
+   //    // parse(path.str(), path.len());
+   // }
    loop i = 0; .import-tmp-c {
       path! = .import-tmp-v[i++];
       read(path.str(), path.len());
@@ -249,7 +249,7 @@ import-now() {
 }
 sqlite-init();
 read-cp1(path:char[], path-len:u32):ref;
-req-parse(in-path-cp1:char[], in-path-cp1-len:u32);
+req-parse(in-path-cp1:char[], in-path-cp1-len:u8):char[];
 parse(in-path-cp1:char[], in-path-cp1-len:u32) {
    var command:char[4096];
    C.sprintf(command, "bin/cp1-parse -I \"%s\" \"%s\"", .include-dir, in-path-cp1);
@@ -258,11 +258,12 @@ parse(in-path-cp1:char[], in-path-cp1-len:u32) {
    }
 }
 read(in-path-cp1:char[], in-path-cp1-len:u32) {
-   var in-path:char[256 + 4];
-   C.memcpy(in-path, in-path-cp1, in-path-cp1-len);
-   in-path[in-path-cp1-len] = ''-;
-   in-path[in-path-cp1-len + 1] = ''b;
-   in-path[in-path-cp1-len + 2] = ''\0;
+   in-path! = req-parse(in-path-cp1, in-path-cp1-len);
+   // var in-path:char[256 + 16];
+   // C.memcpy(in-path, in-path-cp1, in-path-cp1-len);
+   // in-path[in-path-cp1-len] = ''-;
+   // in-path[in-path-cp1-len + 1] = ''b;
+   // in-path[in-path-cp1-len + 2] = ''\0;
    // C1.stdout{"reading " in-path "...\n"}
 
    var r-begin:Rdr.;
@@ -270,6 +271,8 @@ read(in-path-cp1:char[], in-path-cp1-len:u32) {
    r-begin.reff = read-file(in-path, in-size!);
    if r-begin.reff == null {
       C1.stdout{"Cannot open file for reading: " in-path-cp1 ''\n}
+      // var i:u8[] = [];
+      // i[0] = 0;
       C.exit(#failure);
    }
 
@@ -787,7 +790,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    "#endif";
    input-file-c! = 0:u16;
    var input-file-v:char[][];
+   var input-file-len-v:u8[];
    C.malloc-arr(input-file-v, arg-c * ref[usz]);
+   C.malloc-arr(input-file-len-v, arg-c * u8[usz]);
    C.malloc-arr(.include-path-v, arg-c * ref[usz]);
    C.malloc-arr(.include-path-len-v, arg-c * u16[usz]);
    C.malloc-arr(.define-v, arg-c * ref[usz]);
@@ -812,8 +817,17 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                C1.stdout{"The option -I must be followed by a path\n"}
                "goto usage;";
             }
-            .include-path-v[.include-path-c] = arg;
-            .include-path-len-v[.include-path-c] = C.strlen(arg);
+            arg-len! = C.strlen(arg);
+            if arg[arg-len] != ''/ {
+               arg[arg-len++] = ''/;
+            }
+            // Allocate +256 of memory so we can use
+            // include paths as scratch when checking for file existence
+            var mem:char[];
+            C.malloc-arr(mem, arg-len + 256);
+            C.memcpy(mem, arg, arg-len);
+            .include-path-v[.include-path-c] = mem;
+            .include-path-len-v[.include-path-c] = arg-len;
             .include-path-c++;
          } elif arg[1] == ''D {
             arg = arg-v[i++];
@@ -833,7 +847,14 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             "goto usage;";
          }
       } else {
-         input-file-v[input-file-c++] = arg;
+         arg-len! = C.strlen(arg);
+         if arg-len > 255 {
+            C1.stdout{"The path '" arg "' exceeds 255 bytes, please use shorter paths\n"}
+            "goto usage;";
+         }
+         input-file-v[input-file-c] = arg;
+         input-file-len-v[input-file-c] = arg-len;
+         input-file-c++;
       }
    }
    bin! = arg-v[0];
@@ -939,8 +960,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    C.malloc-arr(.import-tmp-v, .import-tmp-cap);
 
    loop i = 0; input-file-c; i++ {
-      path! = input-file-v[i];
-      import(include-add(C.strlen(path), path));
+      import(include-add(input-file-len-v[i], input-file-v[i]));
    }
    loop {
       import-now();

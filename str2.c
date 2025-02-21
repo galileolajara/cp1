@@ -46,6 +46,7 @@ void _NCp1_Pwrite_char_1(char c) {
 }
 #include <stdlib.h>
 #include <string.h>
+#if 0
 #include "sqlite3/sqlite3.h"
 // #include "table.h"
 #define TABLE_SCHEMA \
@@ -69,6 +70,7 @@ void check_error(int rc, sqlite3 *db, const char *msg) {
         exit(1);
     }
 }
+#endif
 #if 0
 void _NCp1_Psqlite_init_0() {
    int rc;
@@ -140,6 +142,7 @@ void* _NCp1_Pread_cp1_2(char* path, int32_t path_len) {
 #include <arpa/inet.h>
 #include <signal.h>
 #include <fcntl.h>
+#include <sys/wait.h>
 #define SERVER_IP "127.0.0.1"  // Change this to the server's IP if needed
 #define SERVER_PORT 60101
 extern char **environ;
@@ -148,23 +151,71 @@ extern uint16_t _Ginclude_dir_len;
 extern char** _Ginclude_path_v;
 extern uint16_t* _Ginclude_path_len_v;
 extern uint8_t _Ginclude_path_c;
-char _Gcurrent_dir[1024];
-uint16_t _Gcurrent_dir_len;
+char cp1_tmp[1024];
+uint16_t cp1_tmp_len;
+// char _Gcurrent_dir[1024];
+// uint16_t _Gcurrent_dir_len;
 void _NCp1_Pc_init_0() {
+#if 0
    memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/bin/cp1-server", 16);
    pid_t pid;
    char *argv[] = {"cp1-server", NULL};
    posix_spawn(&pid, _Ginclude_dir, NULL, NULL, argv, environ);
-   memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/include", 9);
+#endif
 
-   getcwd(_Gcurrent_dir, sizeof(_Gcurrent_dir));
-   _Gcurrent_dir_len = strlen(_Gcurrent_dir);
+   memcpy(cp1_tmp, "cp1-tmp-0/", cp1_tmp_len = 10);
+   // getcwd(_Gcurrent_dir, sizeof(_Gcurrent_dir));
+   // _Gcurrent_dir_len = strlen(_Gcurrent_dir);
    // printf("current directory is %s\n", _Gcurrent_dir);
    /* for (uint8_t i = 0; i < _Ginclude_path_c; i++) {
       printf("- %s[%u]\n", _Ginclude_path_v[i], _Ginclude_path_len_v[i]);
    } */
 }
-void _NCp1_Preq_parse_2(const char* path, int32_t path_len) {
+char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
+   // printf("req-parse of %s\n", path);
+   const char* fullpath;
+   if (access(path, F_OK) == 0) {
+      // printf("file '%s' was found\n", path);
+      fullpath = path;
+   } else {
+      for (uint8_t i = 0; i < _Ginclude_path_c; i++) {
+         memcpy(_Ginclude_path_v[i] + _Ginclude_path_len_v[i], path, path_len);
+         _Ginclude_path_v[i][_Ginclude_path_len_v[i] + path_len] = 0;
+         // printf("trying file '%.*s'\n", _Ginclude_path_len_v[i] + path_len, _Ginclude_path_v[i]);
+         if (access(_Ginclude_path_v[i], F_OK) == 0) {
+            // printf("file '%s' was found\n", _Ginclude_path_v[i]);
+            fullpath = _Ginclude_path_v[i];
+            goto found;
+         }
+      }
+      memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/include", 8);
+      memcpy(&_Ginclude_dir[_Ginclude_dir_len + 8], path, path_len);
+      if (access(_Ginclude_dir, F_OK) == 0) {
+         // printf("file '%s' was found\n", _Ginclude_path_v[i]);
+         fullpath = _Ginclude_dir;
+      } else {
+         printf("Cannot find file '%s'\n", path);
+         exit(EXIT_FAILURE);
+      }
+   }
+   found:;
+   memcpy(cp1_tmp + cp1_tmp_len, path, path_len);
+   cp1_tmp[cp1_tmp_len + path_len] = '-';
+   cp1_tmp[cp1_tmp_len + path_len + 1] = 'b';
+   cp1_tmp[cp1_tmp_len + path_len + 2] = '\0';
+   // printf("parsing %s to %s\n", fullpath, cp1_tmp);
+   pid_t pid;
+   char *argv[] = {"cp1-parse", fullpath, cp1_tmp, NULL};
+   memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/bin/cp1-parse", 15);
+   int spawn = posix_spawn(&pid, _Ginclude_dir, NULL, NULL, argv, environ);
+   int status;
+   waitpid(pid, &status, 0);
+   // printf("spawn %s = %d, %d, %d\n", _Ginclude_dir, spawn, pid, status);
+   if (status != 0) {
+      exit(EXIT_FAILURE);
+   }
+   return cp1_tmp;
+#if 0
    int sock;
    struct sockaddr_in server_addr;
    struct timespec wait_connect;
@@ -218,4 +269,5 @@ void _NCp1_Preq_parse_2(const char* path, int32_t path_len) {
       // printf("read: %d\n", len);
       close(sock);
    }
+#endif
 }
