@@ -104,6 +104,9 @@ using DeclVarData {
       vd.type.wr(w, header);
       vd.flags.wr(w);
       if (vd.flags & #real-name) != #0 {
+         // if (vd.name.len() == 7) && (C.memcmp(vd.name.str(), "failure", 7) == 0) {
+            // C1.stdout{"failure has a real-name\n"}
+         // }
          vd.real-name.wr(w, header);
       }
       vd.type-info.wr(w);

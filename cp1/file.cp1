@@ -351,4 +351,7 @@ using char {
    output-arr(val:this[], o:Cp1.Output) {
       Cp1.output-bytes(val, C.strlen(val));
    }
+   output-arr(val:this[], o:Cp1.Output, len:usz) {
+      Cp1.output-bytes(val, len);
+   }
 }

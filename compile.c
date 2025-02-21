@@ -207,7 +207,7 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
    cp1_tmp[cp1_tmp_len + path_len + 1] = 'b';
    cp1_tmp[cp1_tmp_len + path_len + 2] = '\0';
    // printf("parsing %s to %s\n", fullpath, cp1_tmp);
-   char *argv[] = {"cp1-parse", fullpath, cp1_tmp, NULL};
+   const char *argv[] = {"cp1-parse", fullpath, cp1_tmp, NULL};
 #if 1
    int status = parse_main(3, argv);
 #else

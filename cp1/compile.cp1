@@ -217,11 +217,12 @@ var imported-cap:u32;
 var imported-c:u32;
 import(path:Include) {
    loop i = 0; .imported-c {
-      if .imported-v[i] == path {
+      // C1.stdout{"import " path " " path:base " checking if exists, " i:u32 " = " path ''\n}
+      if .imported-v[i++] == path {
          return;
       }
    }
-   // C1.stdout{"import " path ''\n}
+   // C1.stdout{"import " path " " path:base ''\n}
    if true {
       i! = .imported-c++;
       if .imported-cap < .imported-c {
@@ -232,6 +233,7 @@ import(path:Include) {
          C.realloc-arr(.imported-v, .imported-cap);
       }
       .imported-v[i] = path;
+      // C1.stdout{"import " path " added as " i:u32 ''\n}
    }
    if true {
       i! = .import-c++;
@@ -489,11 +491,13 @@ read(in-path-cp1:char[], in-path-cp1-len:u32) {
       at-i! = e.at;
       at! = at-i.ptr();
       if at.def != #undefined {
-         C1.stdout{"Cannot define struct :" at.name.id " because it was already defined as "}
+         C1.stdbuf{file-idx ": Cannot define enum " at.name.id " because it was already defined as "}
          if at.def == #struct {
-            C1.stdout{"struct\n"}
+            s! = at.decl.structt.ptr();
+            C1.stdout{"struct at " s.file '': s.begin-row '': s.begin-col "\n"}
          } else {
-            C1.stdout{"enum\n"}
+            s! = at.decl.enumm.ptr();
+            C1.stdout{"enum at " s.file '': s.begin-row '': s.begin-col "\n"}
          }
          C.exit(#failure);
       }
@@ -545,11 +549,11 @@ read(in-path-cp1:char[], in-path-cp1-len:u32) {
       at-i! = s.at;
       at! = at-i.ptr();
       if at.def != #undefined {
-         C1.stdout{"Cannot define struct :" at.name.id " because it was already defined as "}
+         C1.stdbuf{file-idx ": Cannot define struct " at.name.id " because it was already defined as "}
          if at.def == #enum {
-            C1.stdout{"enum\n"}
+            C1.stdbuf{"enum"}
          } else {
-            C1.stdout{"struct\n"}
+            C1.stdbuf{"struct"}
          }
          C.exit(#failure);
       }
@@ -831,6 +835,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    C.malloc-arr(.define-len-v, arg-c * u8[usz]);
    var output-file:char[] = null;
    watermark! = false;
+   var comment-for-func:char[] = null;
+   comment-for-func-len! = 0;
    var crc32 = 0:u32;
    loop i = 1; i < arg-c {
       arg! = arg-v[i++];
@@ -843,6 +849,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                C1.stdout{"The option -c must be followed by a path\n"}
                "goto usage;";
             }
+         } elif arg[1] == ''F {
+            comment-for-func = arg-v[i++];
+            if comment-for-func == null {
+               C1.stdout{"The option -F must be followed by a path\n"}
+               "goto usage;";
+            }
+            comment-for-func-len = C.strlen(comment-for-func);
          } elif arg[1] == ''I {
             arg = arg-v[i++];
             if arg == null {
@@ -1434,9 +1447,17 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          }
          f.farg-v[j].decl.write-lvar-type(j:Lvar);
       }
-      output{") {\n"}
+      if comment-for-func != null {
+         output{") { // " comment-for-func, comment-for-func-len ''\n}
+      } else {
+         output{") {\n"}
+      }
       f.stmt-space.write();
-      output{"}\n"}
+      if comment-for-func != null {
+         output{"} // " comment-for-func, comment-for-func-len ''\n}
+      } else {
+         output{"}\n"}
+      }
    }
    // .out = C.fopen(arg-v[arg-c - 1], "wb");
    write-file(arg-v[arg-c - 1], .output-data, .output-len);

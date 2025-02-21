@@ -1,3 +1,5 @@
+using C = LibC;
+using C1 = LibCp1;
 using Cp1 = Cp1;
 using Cp1 {
 enum Enum[#nil = -1, #0, #1]:i32 {
@@ -166,6 +168,11 @@ decl-add-cvar(name:Id, row:u32, col:u32) {
    c.at = .decl-at;
    .decl-var.name = name;
    c.decl.copy-from(.decl-var);
+   if (c.decl.flags & #real-name) != #0 {
+      if (c.decl.name.len() == 7) && (C.memcmp(c.decl.name.str(), "failure", 7) == 0) {
+         C1.stdout{"failure has a real-name at decl-add-cvar\n"}
+      }
+   }
    c.flags = #0;
 }
 enum-set-cvar-expr(set:ExprI) {

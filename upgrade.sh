@@ -1,5 +1,5 @@
 #!/bin/sh
-cp str2.c str.c
+cp compile2.c compile.c
 cp parse2.c parse.c
 cp out/export.h export.h
 cp out/lex.c lex.c
