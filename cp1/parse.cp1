@@ -1025,7 +1025,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   // ok
                } else {
                   get-row-col(row!, col!, r.reff, in-data);
-                  C1.stdout{.input-path '': row '': col ": There must be a space or tab before the // comment\n"}
+                  C1.stdout{.input-path '': row '': col ": There must be a space before the // comment\n"}
                   C.exit(#failure);
                }
                // comment
@@ -1038,47 +1038,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                }
                continue;
             }
-         } elif (&&,
-            r.p1[0] == ''#,
-            r.p1[1] == ''i,
-            r.p1[2] == ''n,
-            r.p1[3] == ''c,
-            r.p1[4] == ''l,
-            r.p1[5] == ''u,
-            r.p1[6] == ''d,
-            r.p1[7] == ''e,
-            r.p1[8] == '' ,
-            r.p1[9] == ''<,
-            ) {
-            // comment
-            r.pos += 10;
-            loop {
-               if r.p1[0] == ''\n {
-                  break;
-               }
-               r.pos++;
-            }
-            continue;
-         } elif (&&,
-            r.p1[0] == ''#,
-            r.p1[1] == ''i,
-            r.p1[2] == ''m,
-            r.p1[3] == ''p,
-            r.p1[4] == ''o,
-            r.p1[5] == ''r,
-            r.p1[6] == ''t,
-            r.p1[7] == '' ,
-            r.p1[8] == ''",
-            ) {
-            // comment
-            r.pos += 9;
-            loop {
-               if r.p1[0] == ''\n {
-                  break;
-               }
-               r.pos++;
-            }
-            continue;
          } elif r.p1[0] == ''\' {
             if r.p1[1] == ''\' {
                // char

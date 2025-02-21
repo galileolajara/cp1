@@ -1565,7 +1565,7 @@ _Tchar_Pstdout_2(':', &_L_19);
 _Tu32_Pstdout_2(_Lrow_17, &_L_19);
 _Tchar_Pstdout_2(':', &_L_19);
 _Tu32_Pstdout_2(_Lcol_18, &_L_19);
-_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_19, ": There must be a space or tab before the // comment\n", 53u);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_19, ": There must be a space before the // comment\n", 46u);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_19);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -1580,28 +1580,6 @@ continue_1:;
 break_1:;
 goto continue_0;
 }
-} else if(((_Lr_11._Fp1[0] == '#') && (_Lr_11._Fp1[1] == 'i') && (_Lr_11._Fp1[2] == 'n') && (_Lr_11._Fp1[3] == 'c') && (_Lr_11._Fp1[4] == 'l') && (_Lr_11._Fp1[5] == 'u') && (_Lr_11._Fp1[6] == 'd') && (_Lr_11._Fp1[7] == 'e') && (_Lr_11._Fp1[8] == ' ') && (_Lr_11._Fp1[9] == '<'))) {
-_Lr_11._Fpos += 10;
-while(1) {
-if(_Lr_11._Fp1[0] == '\n') {
-goto break_2;
-}
-_Lr_11._Fpos++;
-continue_2:;
-}
-break_2:;
-goto continue_0;
-} else if(((_Lr_11._Fp1[0] == '#') && (_Lr_11._Fp1[1] == 'i') && (_Lr_11._Fp1[2] == 'm') && (_Lr_11._Fp1[3] == 'p') && (_Lr_11._Fp1[4] == 'o') && (_Lr_11._Fp1[5] == 'r') && (_Lr_11._Fp1[6] == 't') && (_Lr_11._Fp1[7] == ' ') && (_Lr_11._Fp1[8] == '\"'))) {
-_Lr_11._Fpos += 9;
-while(1) {
-if(_Lr_11._Fp1[0] == '\n') {
-goto break_3;
-}
-_Lr_11._Fpos++;
-continue_3:;
-}
-break_3:;
-goto continue_0;
 } else if(_Lr_11._Fp1[0] == '\'') {
 if(_Lr_11._Fp1[1] == '\'') {
 uint8_t _Lc_20;
@@ -1776,7 +1754,7 @@ _Lw_13._Fp1[0] = _Lc_50;
 _Lw_13._Fpos++;
 _Lr_11._Fpos++;
 if(_Lc_50 == '\n') {
-goto break_4;
+goto break_2;
 }
 if(_Lr_11._Fpos >= _Lr_end_10._Fpos) {
 uint32_t _Lrow_51;
@@ -1793,9 +1771,9 @@ _NLibCp1_NStdOut_Pstdout_cstr_3(&_L_53, ": Error, string must end with a new lin
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_53);
 exit(_NLibC_NExit_Cfailure);
 }
-continue_4:;
+continue_2:;
 }
-break_4:;
+break_2:;
 goto continue_0;
 #if 0
 hello
@@ -1843,7 +1821,7 @@ exit(_NLibC_NExit_Cfailure);
 _Lw_13._Fp1[0] = '\"';
 _Lw_13._Fpos++;
 _Lr_11._Fpos++;
-goto break_5;
+goto break_3;
 } else if(_Lr_11._Fp1[0] == '\\') {
 switch(_Lr_11._Fp1[1]) {
 case '0':;
@@ -1910,9 +1888,9 @@ _NLibCp1_NStdOut_Pstdout_cstr_3(&_L_62, ": Error, unterminated string\n", 29u);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_62);
 exit(_NLibC_NExit_Cfailure);
 }
-continue_5:;
+continue_3:;
 }
-break_5:;
+break_3:;
 goto continue_0;
 }
 _Lw_13._Fp1[0] = _Lr_11._Fp1[0];
@@ -1973,12 +1951,12 @@ _Ltok_69._Fcol++;
 _Ltok_69._Frow++;
 _Ltok_69._Fcol = 1;
 } else {
-goto break_7;
+goto break_5;
 }
 _Lpos_71++;
-continue_7:;
+continue_5:;
 }
-break_7:;
+break_5:;
 }
 _Glast_row = _Grow;
 _Glast_col = _Gcol;
@@ -2008,11 +1986,11 @@ while(1) {
 _Lstart_75++;
 _Lr_start_74._Fpos++;
 if(_Lr_start_74._Fp1[0] == '@') {
-goto break_8;
+goto break_6;
 }
-continue_8:;
+continue_6:;
 }
-break_8:;
+break_6:;
 _Ltok_69._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_66, _Lstart_75, 1);
 _Glast_token = _Lt_70;
 cp1Parse(_Lpsr_65, _Lt_70, _Ltok_69);
@@ -2026,11 +2004,11 @@ while(1) {
 _Lstart_77++;
 _Lr_start_76._Fpos++;
 if(_Lr_start_76._Fp1[0] == '@') {
-goto break_9;
+goto break_7;
 }
-continue_9:;
+continue_7:;
 }
-break_9:;
+break_7:;
 _Ltok_69._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_66, _Lstart_77, 1);
 _Glast_token = _Lt_70;
 cp1Parse(_Lpsr_65, _Lt_70, _Ltok_69);
@@ -2047,11 +2025,11 @@ while(1) {
 _Lstart_79++;
 _Lr_start_78._Fpos++;
 if(_Lr_start_78._Fp1[0] == '@') {
-goto break_10;
+goto break_8;
 }
-continue_10:;
+continue_8:;
 }
-break_10:;
+break_8:;
 _Lr_end_80._Freff = _Llex_66._Fcursor;
 _Lr_end_80._Fpos -= 2;
 _Llen_81 = (_Lr_end_80._Fpos - _Lr_start_78._Fpos - 10);
@@ -2059,9 +2037,9 @@ _Lend_82 = 2;
 while(_Lr_end_80._Fp1[0] != ' ') {
 _Lr_end_80._Fpos--;
 _Lend_82++;
-continue_11:;
+continue_9:;
 }
-break_11:;
+break_9:;
 _Ltok_69._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_66, _Lstart_79, _Lend_82);
 _Ltok_69._Fval._Fii32._Fid2 = _NCp1_NLexer_Pget_id_3(&_Llex_66, _Lstart_79 + (_Llen_81 - _Lend_82), 1);
 _Glast_token = _Lt_70;
@@ -2122,11 +2100,11 @@ _NLibCp1_NStdOut_Pstdout_end_1(&_L_87);
 exit(_NLibC_NExit_Cfailure);
 }
 _Ltok_69._Fval._Fii32._Fid = _NCp1_Pinclude_add_2(_Llen_86, _Lr_begin_84._Fcharr);
-goto break_12;
+goto break_10;
 }
-continue_12:;
+continue_10:;
 }
-break_12:;
+break_10:;
 _Glast_token = _Lt_70;
 cp1Parse(_Lpsr_65, _Lt_70, _Ltok_69);
 break;
@@ -2144,15 +2122,15 @@ while(1) {
 uint8_t _Lc_90;
 _Lc_90 = _Llex_66._Fcursor[_Li_89];
 if(_Lc_90 == '{') {
-goto break_13;
+goto break_11;
 } else if(_Lc_90 == ';') {
 _Lfound_semicolon_88 = true;
-goto break_13;
+goto break_11;
 }
 _Li_89++;
-continue_13:;
+continue_11:;
 }
-break_13:;
+break_11:;
 if(_Lfound_semicolon_88) {
 _Lt_70 = _NCp1_NToken_Cusing_with_semicolon;
 }
@@ -2195,95 +2173,95 @@ _Lc_94 = _Llex_66._Fcursor[(_Li_93 + 1)];
 if(_Lc_94 == '\'') {
 if(_Llex_66._Fcursor[(_Li_93 + 2)] == '\\') {
 _Li_93 += 4;
-goto continue_14;
+goto continue_12;
 } else {
 _Li_93 += 3;
-goto continue_14;
+goto continue_12;
 }
 } else if(_Lc_94 == '\"') {
 _Li_93 += 2;
 while(1) {
 if(_Llex_66._Fcursor[_Li_93++] == '\"') {
+goto break_13;
+}
+continue_13:;
+}
+break_13:;
+goto continue_12;
+} else if(_Lc_94 == '<') {
+_Li_93 += 2;
+while(1) {
+if(_Llex_66._Fcursor[_Li_93++] == '>') {
+goto break_14;
+}
+continue_14:;
+}
+break_14:;
+goto continue_12;
+} else if(_Lc_94 == '[') {
+_Li_93 += 2;
+while(1) {
+if(_Llex_66._Fcursor[_Li_93++] == ']') {
 goto break_15;
 }
 continue_15:;
 }
 break_15:;
-goto continue_14;
-} else if(_Lc_94 == '<') {
+goto continue_12;
+} else if(_Lc_94 == '{') {
 _Li_93 += 2;
 while(1) {
-if(_Llex_66._Fcursor[_Li_93++] == '>') {
+if(_Llex_66._Fcursor[_Li_93++] == '}') {
 goto break_16;
 }
 continue_16:;
 }
 break_16:;
-goto continue_14;
-} else if(_Lc_94 == '[') {
+goto continue_12;
+} else if(_Lc_94 == '(') {
 _Li_93 += 2;
 while(1) {
-if(_Llex_66._Fcursor[_Li_93++] == ']') {
+if(_Llex_66._Fcursor[_Li_93++] == ')') {
 goto break_17;
 }
 continue_17:;
 }
 break_17:;
-goto continue_14;
-} else if(_Lc_94 == '{') {
-_Li_93 += 2;
+goto continue_12;
+} else if(((_Llex_66._Fcursor[(_Li_93 + 2)] == ' ') && ((_Lc_94 == '-') || (_Lc_94 == '=')))) {
+_Li_93 += 3;
 while(1) {
-if(_Llex_66._Fcursor[_Li_93++] == '}') {
+if(_Llex_66._Fcursor[_Li_93++] == '\n') {
 goto break_18;
 }
 continue_18:;
 }
 break_18:;
-goto continue_14;
-} else if(_Lc_94 == '(') {
-_Li_93 += 2;
-while(1) {
-if(_Llex_66._Fcursor[_Li_93++] == ')') {
-goto break_19;
-}
-continue_19:;
-}
-break_19:;
-goto continue_14;
-} else if(((_Llex_66._Fcursor[(_Li_93 + 2)] == ' ') && ((_Lc_94 == '-') || (_Lc_94 == '=')))) {
-_Li_93 += 3;
-while(1) {
-if(_Llex_66._Fcursor[_Li_93++] == '\n') {
-goto break_20;
-}
-continue_20:;
-}
-break_20:;
-goto continue_14;
+goto continue_12;
 }
 } else if(_Lc_94 == '\"') {
 _Li_93 += 1;
 while(1) {
 _Lc_94 = _Llex_66._Fcursor[_Li_93++];
 if(_Lc_94 == '\"') {
-goto break_21;
+goto break_19;
 } else if(_Lc_94 == '\\') {
 _Li_93++;
 }
-continue_21:;
+continue_19:;
 }
-break_21:;
-goto continue_14;
+break_19:;
+goto continue_12;
 } else if(_Lc_94 == '{') {
-goto break_14;
+goto break_12;
 } else if(_Lc_94 == ';') {
 _Lfound_semicolon_91 = true;
-goto break_14;
+goto break_12;
 }
 _Li_93++;
-continue_14:;
+continue_12:;
 }
-break_14:;
+break_12:;
 if(_Lfound_semicolon_91) {
 _Lt_70 = _NCp1_NToken_Cloop_with_semicolon;
 }
@@ -2305,9 +2283,9 @@ int32_t _Lrbracket_96;
 _Lrbracket_96 = 1;
 while(_Llex_66._Fstart[_Lrbracket_96] != ']') {
 _Lrbracket_96++;
-continue_22:;
+continue_20:;
 }
-break_22:;
+break_20:;
 if(true) {
 union _NCp1_NRdr _Lr_start_97;
 union _NCp1_NRdr _Lr_cursor_98;
@@ -2387,7 +2365,7 @@ cp1Parse(_Lpsr_65, _Lt_70, _Ltok_69);
 break;
 }
 if(_Lt_70 == _NCp1_NToken_Cend) {
-goto break_6;
+goto break_4;
 }
 _Lpos_105 = _Llex_66._Fstart;
 while(_Lpos_105 < _Llex_66._Fcursor) {
@@ -2400,12 +2378,12 @@ _Lnext_col_68++;
 }
 }
 _Lpos_105++;
-continue_23:;
+continue_21:;
 }
-break_23:;
-continue_6:;
+break_21:;
+continue_4:;
 }
-break_6:;
+break_4:;
 _Glast_token = _NCp1_NToken_Cnil;
 cp1Parse(_Lpsr_65, _NCp1_NToken_Cnil, _Ltok_69);
 _NCp1_NParser_Pfree_1(_Lpsr_65);
@@ -2419,10 +2397,10 @@ i --;
 _NCp1_NWtr_Pn1_2(&_Lw_107, _Gid_len_v[_Li_108]);
 _NCp1_NWtr_Pcopy_3(&_Lw_107, _Gid_str_v[_Li_108], _Gid_len_v[_Li_108]);
 _NCp1_NWtr_Pn1_2(&_Lw_107, 0);
-continue_24:;
+continue_22:;
 _Li_108++;
 }
-break_24:;
+break_22:;
 _Lid_bit8_c_109 = ((_Gid_c + 7) >> 3);
 _NCp1_Pmalloc_arr_2(_Gid_in_header_v, _Lid_bit8_c_109);
 _NCp1_Pmalloc_arr_2(_Gid_in_header_idx_v, _Gid_c);
@@ -2435,10 +2413,10 @@ i --;
 _NCp1_NWtr_Pn1_2(&_Lw_107, _Ginclude_len_v[_Li_110]);
 _NCp1_NWtr_Pcopy_3(&_Lw_107, _Ginclude_str_v[_Li_110], _Ginclude_len_v[_Li_110]);
 _NCp1_NWtr_Pn1_2(&_Lw_107, 0);
-continue_25:;
+continue_23:;
 _Li_110++;
 }
-break_25:;
+break_23:;
 _Lat_bit8_c_111 = ((_Gat_c + 7) >> 3);
 _NCp1_Pmalloc_arr_2(_Gat_in_header_v, (int32_t)(_Lat_bit8_c_111));
 _NCp1_Pmalloc_arr_2(_Gat_in_header_idx_v, (int32_t)(_Gat_c));
@@ -2457,10 +2435,10 @@ _NCp1_NBasicTypeId_Pwr_2((*_Lat_113)._Fname._Fbasic, &_Lw_107);
 _NCp1_NAt_Pwr_3((*_Lat_113)._Fparent, &_Lw_107, false);
 _NCp1_NId_Pwr_3((*_Lat_113)._Fname._Fid, &_Lw_107, false);
 }
-continue_26:;
+continue_24:;
 _Li_112++;
 }
-break_26:;
+break_24:;
 _NCp1_Pwrite_cvar_2(&_Lw_107, false);
 _NCp1_Pwrite_gvar_2(&_Lw_107, false);
 _NCp1_Pwrite_enum_2(&_Lw_107, false);
