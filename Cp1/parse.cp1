@@ -1023,7 +1023,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             if r.p1[1] == ''/ {
                if (||, r.p1[-1] == '' , r.p1[-1] == ''\n) {
                   // ok
-               } elif (r.reff == new-data) {
+               } elif r.reff == new-data {
                   // ok
                } else {
                   get-row-col(row!, col!, r.reff, in-data);

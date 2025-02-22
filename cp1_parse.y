@@ -9,11 +9,14 @@
 %syntax_error{
    int n = YYNTOKEN;
    bool first = true;
+   uint8_t first_expect = 0;
+   uint8_t second_expect = 0;
    for (int i = 0; i < n; ++i) {
       int a = yy_find_shift_action((YYCODETYPE)i, yypParser->yytos->stateno);
       if (a != YY_ERROR_ACTION) {
          if (first) {
             first = false;
+            first_expect = i;
             if (_Glast_token == CP1_TOKEN_END) {
                if (string_mem[0] == 0) {
                   printf("%s:%u:%u: syntax error, got #end-of-file but expected tokens are: #%s", input_path, _Grow, _Gcol, _NCp1_Ptoken_name_1(i));
@@ -24,12 +27,44 @@
                printf("%s:%u:%u: syntax error, got token #%s but expected tokens are: #%s", input_path, _Grow, _Gcol, _NCp1_Ptoken_name_1(_Glast_token), _NCp1_Ptoken_name_1(i));
             }
          } else {
+            if (second_expect == 0) {
+               second_expect = i;
+            }
             printf(", #%s", _NCp1_Ptoken_name_1(i));
          }
       }
    }
    if (!first) {
       printf("\n");
+      if (
+         _Glast_token == CP1_TOKEN_SPACE_THEN_OPEN_CURLY_BRACE ||
+         _Glast_token == CP1_TOKEN_SPACE ||
+         _Glast_token == CP1_TOKEN_CLOSE_PARENTHESIS ||
+         _Glast_token == CP1_TOKEN_SPACE_CLOSE_PARENTHESIS) {
+         // Extra parenthesis might be a common error, help them know
+         if (
+            first_expect == CP1_TOKEN_PLUS &&
+            second_expect == CP1_TOKEN_MINUS) {
+            // Detect when the parser is suggesting ++ and -- operators
+            printf("%s:%u:%u: Maybe you have extra parenthesis?\n", input_path, _Grow, _Gcol);
+         }
+      } else {
+         const char* tokname = _NCp1_Ptoken_name_1(_Glast_token);
+         if (
+            memcmp(tokname, "space-op-", 9) == 0 ||
+            memcmp(tokname, "space-cmp-", 10) == 0 ||
+            memcmp(tokname, "space-bool-", 11) == 0) {
+            // Missing parenthesis might be a common error, help them know
+            // Detect when the parser hits the expression's end in...
+            if (
+               first_expect == CP1_TOKEN_SPACE_THEN_OPEN_CURLY_BRACE || // in: if, elif, switch
+               first_expect == CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE || // in: assign statements
+               first_expect == CP1_TOKEN_CLOSE_PARENTHESIS || // in: function arguments
+               first_expect == CP1_TOKEN_SPACE) { // in: meta function arguments
+               printf("%s:%u:%u: Maybe you lack parenthesis?\n", input_path, _Grow, _Gcol);
+            }
+         }
+      }
    }
    exit(EXIT_FAILURE);
    return;
@@ -481,13 +516,13 @@ expr_and1(l) ::= expr_and1(left) COMMA_SPACE expr(right).
    { l.basic.id = _NCp1_Pexpr_bools_add_2(left.basic.id, right.basic.id); }
 expr_and(l) ::= OPEN_PARENTHESIS_AMP_AMP_COMMA SPACE expr_and1(r) close_parenthesis_or_comma.
    { l.basic.id = r.basic.id; }
-expr_and_c(l) ::= value(left) SPACE_AMP_AMP SPACE value(right).
+expr_and_c(l) ::= value(left) SPACE_BOOL_AND_AND SPACE value(right).
    { l.basic.id = _NCp1_Pexpr_bools_3(left.basic.id, right.basic.id, 0); }
-expr_and_c(l) ::= expr_and_c(left) SPACE_AMP_AMP SPACE value(right).
+expr_and_c(l) ::= expr_and_c(left) SPACE_BOOL_AND_AND SPACE value(right).
    { l.basic.id = _NCp1_Pexpr_bools_add_2(left.basic.id, right.basic.id); }
-expr_or_c(l) ::= value(left) SPACE_PIPE_PIPE SPACE value(right).
+expr_or_c(l) ::= value(left) SPACE_BOOL_OR_OR SPACE value(right).
    { l.basic.id = _NCp1_Pexpr_bools_3(left.basic.id, right.basic.id, 1); }
-expr_or_c(l) ::= expr_or_c(left) SPACE_PIPE_PIPE SPACE value(right).
+expr_or_c(l) ::= expr_or_c(left) SPACE_BOOL_OR_OR SPACE value(right).
    { l.basic.id = _NCp1_Pexpr_bools_add_2(left.basic.id, right.basic.id); }
 expr_or1(l) ::= expr(left) COMMA_SPACE expr(right).
    { l.basic.id = _NCp1_Pexpr_bools_3(left.basic.id, right.basic.id, 1); }
@@ -495,41 +530,41 @@ expr_or1(l) ::= expr_or1(left) COMMA_SPACE expr(right).
    { l.basic.id = _NCp1_Pexpr_bools_add_2(left.basic.id, right.basic.id); }
 expr_or(l) ::= OPEN_PARENTHESIS_PIPE_PIPE_COMMA SPACE expr_or1(r) close_parenthesis_or_comma.
    { l.basic.id = r.basic.id; }
-expr_add(e) ::= value(left) SPACE_PLUS SPACE value(right).
+expr_add(e) ::= value(left) SPACE_OP_PLUS SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 0); }
-expr_add(e) ::= expr_add(left) SPACE_PLUS SPACE value(right).
+expr_add(e) ::= expr_add(left) SPACE_OP_PLUS SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
-expr_sub(e) ::= value(left) SPACE_MINUS_SPACE value(right).
+expr_sub(e) ::= value(left) SPACE_OP_MINUS_SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 1); }
-expr_sub(e) ::= expr_sub(left) SPACE_MINUS_SPACE value(right).
+expr_sub(e) ::= expr_sub(left) SPACE_OP_MINUS_SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
-expr_mul(e) ::= value(left) SPACE_MUL SPACE value(right).
+expr_mul(e) ::= value(left) SPACE_OP_MUL SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 2); }
-expr_mul(e) ::= expr_mul(left) SPACE_MUL SPACE value(right).
+expr_mul(e) ::= expr_mul(left) SPACE_OP_MUL SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
-expr_div(e) ::= value(left) SPACE_DIV SPACE value(right).
+expr_div(e) ::= value(left) SPACE_OP_DIV SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 3); }
-expr_div(e) ::= expr_div(left) SPACE_DIV SPACE value(right).
+expr_div(e) ::= expr_div(left) SPACE_OP_DIV SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
-expr_mod(e) ::= value(left) SPACE_MOD SPACE value(right).
+expr_mod(e) ::= value(left) SPACE_OP_MOD SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 4); }
-expr_mod(e) ::= expr_div(left) SPACE_MOD SPACE value(right).
+expr_mod(e) ::= expr_div(left) SPACE_OP_MOD SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
-expr_lshift(e) ::= value(left) SPACE_LANGLE_LANGLE SPACE value(right).
+expr_lshift(e) ::= value(left) SPACE_OP_LSHIFT SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 5); }
-expr_rshift(e) ::= value(left) SPACE_RANGLE_RANGLE SPACE value(right).
+expr_rshift(e) ::= value(left) SPACE_OP_RSHIFT SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 6); }
-expr_bit_and(e) ::= value(left) SPACE_AMP_SPACE value(right).
+expr_bit_and(e) ::= value(left) SPACE_OP_AND_SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 7); }
-expr_bit_and(e) ::= expr_bit_and(left) SPACE_AMP_SPACE value(right).
+expr_bit_and(e) ::= expr_bit_and(left) SPACE_OP_AND_SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
-expr_bit_or(e) ::= value(left) SPACE_PIPE SPACE value(right).
+expr_bit_or(e) ::= value(left) SPACE_OP_OR SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 8); }
-expr_bit_or(e) ::= expr_bit_or(left) SPACE_PIPE SPACE value(right).
+expr_bit_or(e) ::= expr_bit_or(left) SPACE_OP_OR SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
-expr_bit_xor(e) ::= value(left) SPACE_XOR SPACE value(right).
+expr_bit_xor(e) ::= value(left) SPACE_OP_XOR SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 9); }
-expr_bit_xor(e) ::= expr_bit_xor(left) SPACE_XOR SPACE value(right).
+expr_bit_xor(e) ::= expr_bit_xor(left) SPACE_OP_XOR SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
 opExpr(l) ::= assignExpr1(r).
    { l.basic.id = r.basic.id; }
@@ -559,17 +594,17 @@ opExpr(l) ::= incExpr(r).
    { l.basic.id = r.basic.id; }
 opExpr(l) ::= decExpr(r).
    { l.basic.id = r.basic.id; }
-compare_type(l) ::= SPACE_EQUAL_EQUAL SPACE.
+compare_type(l) ::= SPACE_CMP_EQUAL_EQUAL SPACE.
    { l.basic.id = 0; }
-compare_type(l) ::= SPACE_EXCLAMATION_EQUAL SPACE.
+compare_type(l) ::= SPACE_CMP_NOT_EQUAL SPACE.
    { l.basic.id = 1; }
-compare_type(l) ::= SPACE_LANGLE SPACE.
+compare_type(l) ::= SPACE_CMP_LESS_THAN SPACE.
    { l.basic.id = 2; }
-compare_type(l) ::= SPACE_LANGLE_EQUAL SPACE.
+compare_type(l) ::= SPACE_CMP_LESS_EQUAL SPACE.
    { l.basic.id = 3; }
-compare_type(l) ::= SPACE_RANGLE SPACE.
+compare_type(l) ::= SPACE_CMP_MORE_THAN SPACE.
    { l.basic.id = 4; }
-compare_type(l) ::= SPACE_RANGLE_EQUAL SPACE.
+compare_type(l) ::= SPACE_CMP_MORE_EQUAL SPACE.
    { l.basic.id = 5; }
 compareExpr(l) ::= value(a) compare_type(t) value(b).
    { l.basic.id = _NCp1_Pexpr_compare_3(a.basic.id, b.basic.id, t.basic.id); }

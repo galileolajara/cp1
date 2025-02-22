@@ -146,16 +146,16 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "&="                      { return CP1_TOKEN_SPACE_AND_EQUAL; }
    spaces "|="                      { return CP1_TOKEN_SPACE_OR_EQUAL; }
    spaces "^="                      { return CP1_TOKEN_SPACE_XOR_EQUAL; }
-   spaces "+"                       { return CP1_TOKEN_SPACE_PLUS; }
-   spaces "-" spaces                { return CP1_TOKEN_SPACE_MINUS_SPACE; }
-   spaces "*"                       { return CP1_TOKEN_SPACE_MUL; }
-   spaces "/"                       { return CP1_TOKEN_SPACE_DIV; }
-   spaces "%"                       { return CP1_TOKEN_SPACE_MOD; }
-   spaces "<<"                      { return CP1_TOKEN_SPACE_LANGLE_LANGLE; }
-   spaces ">>"                      { return CP1_TOKEN_SPACE_RANGLE_RANGLE; }
-   spaces "&" spaces                { return CP1_TOKEN_SPACE_AMP_SPACE; }
-   spaces "|"                       { return CP1_TOKEN_SPACE_PIPE; }
-   spaces "^"                       { return CP1_TOKEN_SPACE_XOR; }
+   spaces "+"                       { return CP1_TOKEN_SPACE_OP_PLUS; }
+   spaces "-" spaces                { return CP1_TOKEN_SPACE_OP_MINUS_SPACE; }
+   spaces "*"                       { return CP1_TOKEN_SPACE_OP_MUL; }
+   spaces "/"                       { return CP1_TOKEN_SPACE_OP_DIV; }
+   spaces "%"                       { return CP1_TOKEN_SPACE_OP_MOD; }
+   spaces "<<"                      { return CP1_TOKEN_SPACE_OP_LSHIFT; }
+   spaces ">>"                      { return CP1_TOKEN_SPACE_OP_RSHIFT; }
+   spaces "&" spaces                { return CP1_TOKEN_SPACE_OP_AND_SPACE; }
+   spaces "|"                       { return CP1_TOKEN_SPACE_OP_OR; }
+   spaces "^"                       { return CP1_TOKEN_SPACE_OP_XOR; }
    "(&&,"                           { return CP1_TOKEN_OPEN_PARENTHESIS_AMP_AMP_COMMA; }
    "(||,"                           { return CP1_TOKEN_OPEN_PARENTHESIS_PIPE_PIPE_COMMA; }
 
@@ -181,15 +181,15 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "false"                          { return CP1_TOKEN_FALSE; }
    "null"                           { return CP1_TOKEN_NULL; }
 
-   spaces "=="                      { return CP1_TOKEN_SPACE_EQUAL_EQUAL; }
-   spaces "!="                      { return CP1_TOKEN_SPACE_EXCLAMATION_EQUAL; }
-   spaces "<"                       { return CP1_TOKEN_SPACE_LANGLE; }
-   spaces "<="                      { return CP1_TOKEN_SPACE_LANGLE_EQUAL; }
-   spaces ">"                       { return CP1_TOKEN_SPACE_RANGLE; }
-   spaces ">="                      { return CP1_TOKEN_SPACE_RANGLE_EQUAL; }
+   spaces "=="                      { return CP1_TOKEN_SPACE_CMP_EQUAL_EQUAL; }
+   spaces "!="                      { return CP1_TOKEN_SPACE_CMP_NOT_EQUAL; }
+   spaces "<"                       { return CP1_TOKEN_SPACE_CMP_LESS_THAN; }
+   spaces "<="                      { return CP1_TOKEN_SPACE_CMP_LESS_EQUAL; }
+   spaces ">"                       { return CP1_TOKEN_SPACE_CMP_MORE_THAN; }
+   spaces ">="                      { return CP1_TOKEN_SPACE_CMP_MORE_EQUAL; }
 
-   spaces "&&"                      { return CP1_TOKEN_SPACE_AMP_AMP; }
-   spaces "||"                      { return CP1_TOKEN_SPACE_PIPE_PIPE; }
+   spaces "&&"                      { return CP1_TOKEN_SPACE_BOOL_AND_AND; }
+   spaces "||"                      { return CP1_TOKEN_SPACE_BOOL_OR_OR; }
 
    "using"                          { return CP1_TOKEN_USING; }
    "enum"                           { return CP1_TOKEN_ENUM; }
