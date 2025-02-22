@@ -197,14 +197,14 @@ void _NCp1_Pc_init_0() {
 }
 void _NCp1_Pquickjs_1(char* jspath) {
    const char *argv[] = {"cp1-qjs", jspath, NULL};
-   /* pid_t pid;
+   pid_t pid;
    int spawn = posix_spawn(&pid, qjs_path, NULL, NULL, argv, environ);
    int status;
    waitpid(pid, &status, 0);
    if (status != 0) {
       unlink(jspath);
       exit(EXIT_FAILURE);
-   } */
+   }
 }
 #include <sys/types.h>
 #include <stdio.h>
