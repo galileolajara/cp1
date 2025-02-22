@@ -1,9 +1,9 @@
-import "libcp1/stdout.cp1";
-import "libc/stdio.cp1";
-import "posix/fcntl.cp1";
-import "libc/stdlib.cp1";
-import "posix/unistd.cp1";
-import "libc/string.cp1";
+import "LibCp1/stdout.cp1";
+import "LibC/stdio.cp1";
+import "LibC/stdlib.cp1";
+import "LibC/string.cp1";
+import "Posix/unistd.cp1";
+import "Posix/fcntl.cp1";
 using Cp1 = Cp1;
 using C = LibC;
 using C1 = LibCp1;
