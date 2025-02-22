@@ -21,7 +21,7 @@ uint32_t _Gstdout_buf_len;
 uint32_t _Gstdout_buf_cap;
 int main(int _Larg_c_0, char** _Larg_v_1);
 void _Pprint_commands_1(char* _Lbin_0);
-bool _Pvalidate_cp1_path_2(char* _Lbin_0, char* _Lcp1_path_1);
+void _Pvalidate_cp1_path_2(char* _Lbin_0, char* _Lcp1_path_1);
 void _NLibCp1_Pstdout_1(struct _NLibCp1_NStdOut* _Lso_0);
 void _NLibCp1_NStdOut_Pstdout_cstr_3(struct _NLibCp1_NStdOut* _Lso_0, char* _Lstr_1, uint32_t _Llen_2);
 void _Tchar_Pstdout_arr_2(char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1);
@@ -38,7 +38,7 @@ int main(int _Larg_c_0, char** _Larg_v_1) {
 char* _Lbin_7;
 char _Lc_path_8[21];
 _NPosix_NFd _Lc_fd_9;
-char _Lexe_path_11[20];
+char _Lexe_path_11[21];
 _NPosix_NFd _Lexe_fd_12;
 char _Lcommand_14[1024];
 int _Lc_ret_15;
@@ -119,7 +119,7 @@ unlink(_Lexe_path_11);
 _Lc_path_8[18] = '.';
 _Lc_path_8[19] = 'c';
 _Lc_path_8[20] = '\0';
-sprintf(_Lcommand_14, "%.*s-compile -c %s %s", strlen(_Lbin_7) - 4, _Lbin_7, _Lc_path_8, _Larg_v_1[1]);
+sprintf(_Lcommand_14, "%.*s-compile -c %s %s", (int)(strlen(_Lbin_7) - 4), _Lbin_7, _Lc_path_8, _Larg_v_1[1]);
 _Lc_ret_15 = system(_Lcommand_14);
 if(_Lc_ret_15 != 0) {
 unlink(_Lc_path_8);
@@ -160,7 +160,7 @@ _Tchar_Pstdout_arr_2(_Lbin_0, &_L_1);
 _NLibCp1_NStdOut_Pstdout_cstr_3(&_L_1, " [file.cp1]\n", 12u);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_1);
 }
-bool _Pvalidate_cp1_path_2(char* _Lbin_0, char* _Lcp1_path_1) {
+void _Pvalidate_cp1_path_2(char* _Lbin_0, char* _Lcp1_path_1) {
 size_t _Lcp1_path_len_3;
 if(_Lcp1_path_1[0] == '/') {
 struct _NLibCp1_NStdOut _L_2;

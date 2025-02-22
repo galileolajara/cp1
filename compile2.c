@@ -284,11 +284,19 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
    cp1_tmp[cp1_tmp_len + path_len + 2] = '\0';
    struct stat s2;
    if (stat(cp1_tmp, &s2) == 0) {
+#ifdef __APPLE__
+      if (s2.st_mtimespec.tv_sec > s.st_mtimespec.tv_sec) {
+         return cp1_tmp;
+      } else if ((s2.st_mtimespec.tv_sec == s.st_mtimespec.tv_sec) && (s2.st_mtimespec.tv_nsec > s.st_mtimespec.tv_nsec)) {
+         return cp1_tmp;
+      }
+#else
       if (s2.st_mtim.tv_sec > s.st_mtim.tv_sec) {
          return cp1_tmp;
       } else if ((s2.st_mtim.tv_sec == s.st_mtim.tv_sec) && (s2.st_mtim.tv_nsec > s.st_mtim.tv_nsec)) {
          return cp1_tmp;
       }
+#endif
    }
    create_folders_recursively(cp1_tmp);
    // printf("parsing %s to %s\n", fullpath, cp1_tmp);

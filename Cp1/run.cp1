@@ -14,7 +14,7 @@ print-commands(bin:char[]) {
    "Usage: " bin " [file.cp1]\n"
    }
 }
-validate-cp1-path(bin:char[], cp1-path:char[]):bool {
+validate-cp1-path(bin:char[], cp1-path:char[]) {
    if cp1-path[0] == ''/ {
       print-commands(bin);
       C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must be a relative filepath (e.g. file.cp1), not an absolute path (/home/user/file.cp1)\n"}
@@ -87,7 +87,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
    }
    c-fd.close();
    X.unlink(c-path);
-   var exe-path:char[20];
+   var exe-path:char[21];
    C.strcpy(exe-path, "cp1-tmp-0/exe-XXXXXX");
    exe-fd! = X.mkstemp(exe-path);
    if exe-fd == #nil {
@@ -101,7 +101,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
    c-path[19] = ''c;
    c-path[20] = ''\0;
    var command:char[1024];
-   C.sprintf(command, "%.*s-compile -c %s %s", C.strlen(bin) - 4, bin, c-path, arg-v[1]);
+   C.sprintf(command, "%.*s-compile -c %s %s", (C.strlen(bin) - 4):intc, bin, c-path, arg-v[1]);
    // C1.stdout{"run command: " command ''\n}
    c-ret! = C.system(command);
    if c-ret != 0 {
