@@ -1546,7 +1546,7 @@ exit(_NLibC_NExit_Cfailure);
 } else if(_Lr_11._Fp1[0] == '/') {
 if(_Lr_11._Fp1[1] == '/') {
 if(((_Lr_11._Fp1[-1] == ' ') || (_Lr_11._Fp1[-1] == '\n'))) {
-} else if(_Lr_11._Freff == _Lnew_data_12) {
+} else if(_Lr_11._Freff == _Lin_data_3) {
 } else {
 uint32_t _Lrow_17;
 uint32_t _Lcol_18;
