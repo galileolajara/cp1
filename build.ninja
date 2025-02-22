@@ -22,10 +22,10 @@ build bin/cp1-run: ld-c run.cp1.c
 build out/hashtable.c.o: c hashtable2.c
 
 rule c2
- command = tcc $flags -w -DCP1_NEW -I. -c $in -o $out || gcc $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
+ command = clang $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
 
 rule ld-c2
- command = tcc $flags -w -DCP1_NEW -I. $in -o $out || gcc $flags -s -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
+ command = clang $flags -s -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
 
 rule ld-c2-redef
  command = gcc $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out.tmp 2> redefs2.txt || true && node redefs.js redefs2.txt redefs2 && touch $out
@@ -45,6 +45,9 @@ rule preprocess
 
 rule compile
  command = bin/cp1-compile -w $in -c $out $flags
+
+rule cjs
+ command = clang -D_GNU_SOURCE -DCONFIG_VERSION=\"2024-01-13\" -DCONFIG_BIGNUM -Wno-implicit-const-int-float-conversion -o $out -c $in -Iqjs
 
 rule run
  command = $in $out
@@ -80,6 +83,14 @@ build out/hashtable2.c.o: c2 hashtable2.c
 build out/compile2.cp1.c.o: c2 out/compile2.cp1.c
 build out/compile2.c.o: c2 compile2.c
 build out/cp1-parse: ld-c2 out/parse2.cp1.c.o out/parse2.c.o out/hashtable.c.o
-build out/cp1-compile: ld-c2 out/compile2.cp1.c.o out/compile2.c.o out/hashtable.c.o
+build out/cp1-compile: ld-c2 out/compile2.cp1.c.o out/compile2.c.o out/hashtable.c.o out/cp1-qjs.c.o out/quickjs.c.o out/quickjs-libc.c.o out/cutils.c.o out/libregexp.c.o out/libbf.c.o out/libunicode.c.o
+ flags = -lm
+build out/cp1-qjs.c.o: cjs cp1-qjs.c
+build out/quickjs.c.o: cjs qjs/quickjs.c
+build out/quickjs-libc.c.o: cjs qjs/quickjs-libc.c
+build out/cutils.c.o: cjs qjs/cutils.c
+build out/libregexp.c.o: cjs qjs/libregexp.c
+build out/libbf.c.o: cjs qjs/libbf.c
+build out/libunicode.c.o: cjs qjs/libunicode.c
 #build out/cp1-compile-redef-output | redefs2: ld-c2-redef out/compile2.cp1.c.o out/compile2.c.o out/hashtable.c.o out/parse2.cp1.c.o out/parse2.c.o
 #default out/cp1-compile out/cp1-run out/cp1-preprocess out/cp1-parse

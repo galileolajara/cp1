@@ -265,7 +265,7 @@ static const JSMallocFunctions trace_mf = {
    js_trace_malloc_usable_size,
 };
 
-int main(int argc, char **argv)
+int qjs_main(int argc, char **argv)
 {
    JSRuntime *rt;
    JSContext *ctx;
