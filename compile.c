@@ -159,6 +159,7 @@ char cmd_path[1024];
 #endif
 // char _Gcurrent_dir[1024];
 // uint16_t _Gcurrent_dir_len;
+#include <sys/stat.h>
 void _NCp1_Pc_init_0() {
 #if 0
    memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/bin/cp1-server", 16);
@@ -180,9 +181,8 @@ void _NCp1_Pc_init_0() {
    // printf("cmd_path %s\n", cmd_path);
    #endif
 
-   mkdir("cp1-tmp-0");
+   mkdir("cp1-tmp-0", 0755);
 }
-#include <sys/stat.h>
 #include <sys/types.h>
 #include <stdio.h>
 #include <string.h>
@@ -227,7 +227,8 @@ void create_folders_recursively(const char *file_path) {
 char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
    // printf("req-parse of %s\n", path);
    const char* fullpath;
-   if (access(path, F_OK) == 0) {
+   struct stat s;
+   if (stat(path, &s) == 0) {
       // printf("file '%s' was found\n", path);
       fullpath = path;
    } else {
@@ -235,7 +236,7 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
          memcpy(_Ginclude_path_v[i] + _Ginclude_path_len_v[i], path, path_len);
          _Ginclude_path_v[i][_Ginclude_path_len_v[i] + path_len] = 0;
          // printf("trying file '%.*s'\n", _Ginclude_path_len_v[i] + path_len, _Ginclude_path_v[i]);
-         if (access(_Ginclude_path_v[i], F_OK) == 0) {
+         if (stat(_Ginclude_path_v[i], &s) == 0) {
             // printf("file '%s' was found\n", _Ginclude_path_v[i]);
             fullpath = _Ginclude_path_v[i];
             goto found;
@@ -245,7 +246,7 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
       memcpy(&_Ginclude_dir[_Ginclude_dir_len + 9], path, path_len);
       _Ginclude_dir[_Ginclude_dir_len + 9 + path_len] = 0;
       // printf("trying file '%s'\n", _Ginclude_dir);
-      if (access(_Ginclude_dir, F_OK) == 0) {
+      if (stat(_Ginclude_dir, &s) == 0) {
          // printf("file '%s' was found\n", _Ginclude_path_v[i]);
          fullpath = _Ginclude_dir;
       } else {
@@ -258,6 +259,14 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
    cp1_tmp[cp1_tmp_len + path_len] = '-';
    cp1_tmp[cp1_tmp_len + path_len + 1] = 'b';
    cp1_tmp[cp1_tmp_len + path_len + 2] = '\0';
+   struct stat s2;
+   if (stat(cp1_tmp, &s2) == 0) {
+      if (s2.st_mtim.tv_sec > s.st_mtim.tv_sec) {
+         return cp1_tmp;
+      } else if ((s2.st_mtim.tv_sec == s.st_mtim.tv_sec) && (s2.st_mtim.tv_nsec > s.st_mtim.tv_nsec)) {
+         return cp1_tmp;
+      }
+   }
    create_folders_recursively(cp1_tmp);
    // printf("parsing %s to %s\n", fullpath, cp1_tmp);
    const char *argv[] = {"cp1-parse", fullpath, cp1_tmp, NULL};

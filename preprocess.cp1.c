@@ -64,7 +64,6 @@ void* _NCp1_Pread_file_4(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_a
 void _Tu32_Pstdout_2(uint32_t _Lval_0, struct _NLibCp1_NStdOut* _Lso_1);
 bool _NCp1_Ppreprocess_def_get_2(char* _Lname_0, uint8_t _Llen_1);
 bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3);
-int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0);
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
 #define _NLibC_Pmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))
 bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2);
@@ -513,10 +512,10 @@ if(!_NPosix_NFd_Popen_4(&_Lfd_5, _Lpath_0, O_CREAT | O_TRUNC | O_WRONLY, 0644)) 
 return false;
 }
 if(write(_Lfd_5, _Ldata_1, _Lsize_2) != _Lsize_2) {
-_NPosix_NFd_Pclose_1(_Lfd_5);
+close(_Lfd_5);
 return false;
 }
-_NPosix_NFd_Pclose_1(_Lfd_5);
+close(_Lfd_5);
 return true;
 }
 #endif
@@ -574,20 +573,20 @@ return NULL;
 }
 _Lsize_10 = lseek(_Lfd_9, 0, SEEK_END);
 if(_Lsize_10 == -1) {
-_NPosix_NFd_Pclose_1(_Lfd_9);
+close(_Lfd_9);
 return NULL;
 }
 if(lseek(_Lfd_9, 0, SEEK_SET) == -1) {
-_NPosix_NFd_Pclose_1(_Lfd_9);
+close(_Lfd_9);
 return NULL;
 }
 _NLibC_Pmalloc_arr_2(_Lbuf_11, _Ladd_before_1 + _Lsize_10 + _Ladd_after_2);
 if(read(_Lfd_9, &_Lbuf_11[_Ladd_before_1], _Lsize_10) != _Lsize_10) {
 free(_Lbuf_11);
-_NPosix_NFd_Pclose_1(_Lfd_9);
+close(_Lfd_9);
 return NULL;
 }
-_NPosix_NFd_Pclose_1(_Lfd_9);
+close(_Lfd_9);
 (*_Lout_size_3) = _Lsize_10;
 return _Lbuf_11;
 }
@@ -619,9 +618,6 @@ return true;
 } else {
 return false;
 }
-}
-inline int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0) {
-return close(_Lfile_0);
 }
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0) {
 uint32_t _Lspace_1;

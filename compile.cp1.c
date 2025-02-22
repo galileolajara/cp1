@@ -915,7 +915,6 @@ void _Tchar_Pjscode_arr_3(char* _Lstr_0, struct _NCp1_NJsCode* _Ljc_1, uint32_t 
 void _NCp1_NFile_Pstdout_2(_NCp1_NFile _Lf_0, struct _NLibCp1_NStdOut* _Lso_1);
 void _Tu32_Pstdout_2(uint32_t _Lval_0, struct _NLibCp1_NStdOut* _Lso_1);
 void _NCp1_NId_Pstdout_2(_NCp1_NId _Lid_0, struct _NLibCp1_NStdOut* _Lso_1);
-int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0);
 void _NCp1_Pread_2(char* _Lin_path_cp1_0, uint32_t _Lin_path_cp1_len_1);
 struct _NCp1_NDeclFunc* _NCp1_NFunc_Pptr_1(_NCp1_NFunc _Lf_0);
 struct _NCp1_NAtData* _NCp1_NAt_Pptr_1(_NCp1_NAt _Li_0);
@@ -1697,7 +1696,7 @@ _NCp1_NJsCode_Pjscode_end_1(&_L_58);
 memcpy(_Ljs_tmp_path_59, "cp1-tmp-XXXXXX", 15);
 _Ljs_tmp_fd_60 = mkstemp(_Ljs_tmp_path_59);
 write(_Ljs_tmp_fd_60, _Gjscode_buf_data, _Gjscode_buf_len);
-_NPosix_NFd_Pclose_1(_Ljs_tmp_fd_60);
+close(_Ljs_tmp_fd_60);
 sprintf(_Lcommand_61, "./qjs --std %s", _Ljs_tmp_path_59);
 if(system(_Lcommand_61) != 0) {
 exit(_NLibC_NExit_Cfailure);
@@ -2672,9 +2671,6 @@ _NLibCp1_Pstdout_u32_1(_Lval_0);
 }
 inline void _NCp1_NId_Pstdout_2(_NCp1_NId _Lid_0, struct _NLibCp1_NStdOut* _Lso_1) {
 _NLibCp1_Pstdout_bytes_2(_NCp1_NId_Pstr_1(_Lid_0), _NCp1_NId_Plen_1(_Lid_0));
-}
-inline int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0) {
-return close(_Lfile_0);
 }
 void _NCp1_Pread_2(char* _Lin_path_cp1_0, uint32_t _Lin_path_cp1_len_1) {
 char* _Lin_path_2;
@@ -4220,10 +4216,10 @@ if(!_NPosix_NFd_Popen_4(&_Lfd_5, _Lpath_0, O_CREAT | O_TRUNC | O_WRONLY, 0644)) 
 return false;
 }
 if(write(_Lfd_5, _Ldata_1, _Lsize_2) != _Lsize_2) {
-_NPosix_NFd_Pclose_1(_Lfd_5);
+close(_Lfd_5);
 return false;
 }
-_NPosix_NFd_Pclose_1(_Lfd_5);
+close(_Lfd_5);
 return true;
 }
 #endif
@@ -6107,20 +6103,20 @@ return NULL;
 }
 _Lsize_10 = lseek(_Lfd_9, 0, SEEK_END);
 if(_Lsize_10 == -1) {
-_NPosix_NFd_Pclose_1(_Lfd_9);
+close(_Lfd_9);
 return NULL;
 }
 if(lseek(_Lfd_9, 0, SEEK_SET) == -1) {
-_NPosix_NFd_Pclose_1(_Lfd_9);
+close(_Lfd_9);
 return NULL;
 }
 _NLibC_Pmalloc_arr_2(_Lbuf_11, _Ladd_before_1 + _Lsize_10 + _Ladd_after_2);
 if(read(_Lfd_9, &_Lbuf_11[_Ladd_before_1], _Lsize_10) != _Lsize_10) {
 free(_Lbuf_11);
-_NPosix_NFd_Pclose_1(_Lfd_9);
+close(_Lfd_9);
 return NULL;
 }
-_NPosix_NFd_Pclose_1(_Lfd_9);
+close(_Lfd_9);
 (*_Lout_size_3) = _Lsize_10;
 return _Lbuf_11;
 }

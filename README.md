@@ -20,7 +20,7 @@ Cp1 means C+1 or C plus 1, named just like C++ or C plus plus
 -
 - Cp1 is a very thin abstraction on top of C. Think of it as a TypeScript for C. The +1 in the name suggests that the thin abstraction is just the bare essentials to equip C some of the modern features today such as support for methods on enums, structs and even the primitive types, support for C++'s auto keyword for variables, namespaces, modules and more.
 - Cp1 is vastly different from Zig, Odin, C3, Rust, Vlang because Cp1 aims to maintain only few features but these few features are carefully selected to allow you to do a lot of things when these features are combined.
-- Also, Cp1's top priority is compilation speed, similar to Vlang. Cloning the repo and building it for the first time takes 0.24s on Macbook Pro M2 with Fedora Asahi Remix (Linux OS). Editing a source file of Cp1 then recompiling (incremental compilation) takes 0.1s.
+- Also, Cp1's top priority is compilation speed, similar to Vlang. Cloning the repo and building it for the first time takes 0.24s on Macbook Pro M2 with Fedora Asahi Remix (Linux OS). Editing a source file of Cp1 then recompiling (incremental compilation) takes 0.06s.
 
 Features
 -
