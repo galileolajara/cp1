@@ -77,19 +77,19 @@ cvar_attrs ::= cvar_attrs cvar_attr.
 cvar_attrs_optional ::= .
 cvar_attrs_optional ::= cvar_attrs.
 enum_cvar ::= enum_cvar_begin cvar_attrs_optional.
-enum_cvar ::= enum_cvar_begin cvar_attrs_optional SPACE_EQUAL_SPACE expr(set).
+enum_cvar ::= enum_cvar_begin cvar_attrs_optional SPACE_EQUAL SPACE expr(set).
    { _NCp1_Penum_set_cvar_expr_1(set.basic.id); }
 enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional.
-enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional SPACE_EQUAL_SPACE expr(set).
+enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional SPACE_EQUAL SPACE expr(set).
    { _NCp1_Penum_set_cvar_expr_1(set.basic.id); }
 enum_decl_begin ::= ENUM SPACE ID_UPPER(name).
    { _NCp1_Pdecl_at_begin_enum_3(name.basic.id, name.basic.row, name.basic.col); }
 
 decl_include ::= INCLUDE(e).
    { _NCp1_Pdecl_include_begin_3(e.basic.id, e.basic.row, e.basic.col); }
-decl ::= decl_include SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE decls SPACE_CLOSE_CURLY_BRACE.
+decl ::= decl_include SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE.
    { _NCp1_Pdecl_include_end_0(); }
-decl ::= decl_include SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE CLOSE_CURLY_BRACE.
+decl ::= decl_include SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE CLOSE_CURLY_BRACE.
    { _NCp1_Pdecl_include_end_0(); }
 
 /*
@@ -136,9 +136,9 @@ decl_at_begin_end ::= /* CLOSE_PARENTHESIS */.
    { _NCp1_Pat_begin_relative_resume_0(); }
 decl_at_begin ::= decl_at_begin_begin(pos) /* OPEN_PARENTHESIS */ decl_at_namespace decl_at_begin_end.
    { _NCp1_Pdecl_at_begin_2(pos.basic.row, pos.basic.col); }
-decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE decls SPACE_CLOSE_CURLY_BRACE.
+decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE.
    { _NCp1_Pdecl_at_end_0(); }
-decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE_SPACE CLOSE_CURLY_BRACE.
+decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE CLOSE_CURLY_BRACE.
    { _NCp1_Pdecl_at_end_0(); }
 decl ::= decl_at.
 
@@ -174,14 +174,14 @@ decl_alias_begin ::= USING_WITH_SEMICOLON SPACE.
    { _NCp1_Pat_begin_relative_pause_0(); }
 decl_alias_end ::= SEMICOLON.
    { _NCp1_Pat_begin_relative_resume_0(); }
-decl ::= decl_alias_begin ID_UPPER(short) SPACE_EQUAL_SPACE at(long) decl_alias_end.
+decl ::= decl_alias_begin ID_UPPER(short) SPACE_EQUAL SPACE at(long) decl_alias_end.
    { _NCp1_Pdecl_alias_4(short.basic.id, long.basic.id, short.basic.row, short.basic.col); }
 decls ::= decl.
 decls ::= decls SPACE decl.
 
 open_parenthesis_or_space(l) ::= OPEN_PARENTHESIS(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-open_parenthesis_or_space(l) ::= OPEN_PARENTHESIS_SPACE(r).
+open_parenthesis_or_space(l) ::= OPEN_PARENTHESIS SPACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 close_parenthesis_or_space(l) ::= CLOSE_PARENTHESIS(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
@@ -194,7 +194,7 @@ close_parenthesis_or_comma(l) ::= COMMA_SPACE_CLOSE_PARENTHESIS(r).
 
 open_curly_brace_or_space(l) ::= OPEN_CURLY_BRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-open_curly_brace_or_space(l) ::= OPEN_CURLY_BRACE_SPACE(r).
+open_curly_brace_or_space(l) ::= OPEN_CURLY_BRACE SPACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 close_curly_brace_or_space(l) ::= CLOSE_CURLY_BRACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
@@ -215,7 +215,7 @@ close_curly_brace_or_scolon(l) ::= SEMICOLON SPACE_CLOSE_CURLY_BRACE(r).
 
 open_bracket_or_space(l) ::= OPEN_BRACKET(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-open_bracket_or_space(l) ::= OPEN_BRACKET_SPACE(r).
+open_bracket_or_space(l) ::= OPEN_BRACKET SPACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 /* close_bracket_or_space(l) ::= CLOSE_BRACKET(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
@@ -497,13 +497,13 @@ expr_and1(l) ::= expr_and1(left) COMMA_SPACE expr(right).
    { l.basic.id = _NCp1_Pexpr_bools_add_2(left.basic.id, right.basic.id); }
 expr_and(l) ::= OPEN_PARENTHESIS_AMP_AMP_COMMA_SPACE expr_and1(r) close_parenthesis_or_comma.
    { l.basic.id = r.basic.id; }
-expr_and_c(l) ::= value(left) SPACE_AMP_AMP_SPACE value(right).
+expr_and_c(l) ::= value(left) SPACE_AMP_AMP SPACE value(right).
    { l.basic.id = _NCp1_Pexpr_bools_3(left.basic.id, right.basic.id, 0); }
-expr_and_c(l) ::= expr_and_c(left) SPACE_AMP_AMP_SPACE value(right).
+expr_and_c(l) ::= expr_and_c(left) SPACE_AMP_AMP SPACE value(right).
    { l.basic.id = _NCp1_Pexpr_bools_add_2(left.basic.id, right.basic.id); }
-expr_or_c(l) ::= value(left) SPACE_PIPE_PIPE_SPACE value(right).
+expr_or_c(l) ::= value(left) SPACE_PIPE_PIPE SPACE value(right).
    { l.basic.id = _NCp1_Pexpr_bools_3(left.basic.id, right.basic.id, 1); }
-expr_or_c(l) ::= expr_or_c(left) SPACE_PIPE_PIPE_SPACE value(right).
+expr_or_c(l) ::= expr_or_c(left) SPACE_PIPE_PIPE SPACE value(right).
    { l.basic.id = _NCp1_Pexpr_bools_add_2(left.basic.id, right.basic.id); }
 expr_or1(l) ::= expr(left) COMMA_SPACE expr(right).
    { l.basic.id = _NCp1_Pexpr_bools_3(left.basic.id, right.basic.id, 1); }
@@ -511,41 +511,41 @@ expr_or1(l) ::= expr_or1(left) COMMA_SPACE expr(right).
    { l.basic.id = _NCp1_Pexpr_bools_add_2(left.basic.id, right.basic.id); }
 expr_or(l) ::= OPEN_PARENTHESIS_PIPE_PIPE_COMMA_SPACE expr_or1(r) close_parenthesis_or_comma.
    { l.basic.id = r.basic.id; }
-expr_add(e) ::= value(left) SPACE_PLUS_SPACE value(right).
+expr_add(e) ::= value(left) SPACE_PLUS SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 0); }
-expr_add(e) ::= expr_add(left) SPACE_PLUS_SPACE value(right).
+expr_add(e) ::= expr_add(left) SPACE_PLUS SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
 expr_sub(e) ::= value(left) SPACE_MINUS_SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 1); }
 expr_sub(e) ::= expr_sub(left) SPACE_MINUS_SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
-expr_mul(e) ::= value(left) SPACE_MUL_SPACE value(right).
+expr_mul(e) ::= value(left) SPACE_MUL SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 2); }
-expr_mul(e) ::= expr_mul(left) SPACE_MUL_SPACE value(right).
+expr_mul(e) ::= expr_mul(left) SPACE_MUL SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
-expr_div(e) ::= value(left) SPACE_DIV_SPACE value(right).
+expr_div(e) ::= value(left) SPACE_DIV SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 3); }
-expr_div(e) ::= expr_div(left) SPACE_DIV_SPACE value(right).
+expr_div(e) ::= expr_div(left) SPACE_DIV SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
-expr_mod(e) ::= value(left) SPACE_MOD_SPACE value(right).
+expr_mod(e) ::= value(left) SPACE_MOD SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 4); }
-expr_mod(e) ::= expr_div(left) SPACE_MOD_SPACE value(right).
+expr_mod(e) ::= expr_div(left) SPACE_MOD SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
-expr_lshift(e) ::= value(left) SPACE_LANGLE_LANGLE_SPACE value(right).
+expr_lshift(e) ::= value(left) SPACE_LANGLE_LANGLE SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 5); }
-expr_rshift(e) ::= value(left) SPACE_RANGLE_RANGLE_SPACE value(right).
+expr_rshift(e) ::= value(left) SPACE_RANGLE_RANGLE SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 6); }
-expr_bit_and(e) ::= value(left) SPACE_AMP_SPACE value(right).
+expr_bit_and(e) ::= value(left) SPACE_AMP SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 7); }
-expr_bit_and(e) ::= expr_bit_and(left) SPACE_AMP_SPACE value(right).
+expr_bit_and(e) ::= expr_bit_and(left) SPACE_AMP SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
-expr_bit_or(e) ::= value(left) SPACE_PIPE_SPACE value(right).
+expr_bit_or(e) ::= value(left) SPACE_PIPE SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 8); }
-expr_bit_or(e) ::= expr_bit_or(left) SPACE_PIPE_SPACE value(right).
+expr_bit_or(e) ::= expr_bit_or(left) SPACE_PIPE SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
-expr_bit_xor(e) ::= value(left) SPACE_XOR_SPACE value(right).
+expr_bit_xor(e) ::= value(left) SPACE_XOR SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_3(left.basic.id, right.basic.id, 9); }
-expr_bit_xor(e) ::= expr_bit_xor(left) SPACE_XOR_SPACE value(right).
+expr_bit_xor(e) ::= expr_bit_xor(left) SPACE_XOR SPACE value(right).
    { e.basic.id = _NCp1_Pexpr_math_add_2(left.basic.id, right.basic.id); }
 opExpr(l) ::= assignExpr1(r).
    { l.basic.id = r.basic.id; }
@@ -575,17 +575,17 @@ opExpr(l) ::= incExpr(r).
    { l.basic.id = r.basic.id; }
 opExpr(l) ::= decExpr(r).
    { l.basic.id = r.basic.id; }
-compare_type(l) ::= SPACE_EQUAL_EQUAL_SPACE.
+compare_type(l) ::= SPACE_EQUAL_EQUAL SPACE.
    { l.basic.id = 0; }
-compare_type(l) ::= SPACE_EXCLAMATION_EQUAL_SPACE.
+compare_type(l) ::= SPACE_EXCLAMATION_EQUAL SPACE.
    { l.basic.id = 1; }
-compare_type(l) ::= SPACE_LANGLE_SPACE.
+compare_type(l) ::= SPACE_LANGLE SPACE.
    { l.basic.id = 2; }
-compare_type(l) ::= SPACE_LANGLE_EQUAL_SPACE.
+compare_type(l) ::= SPACE_LANGLE_EQUAL SPACE.
    { l.basic.id = 3; }
-compare_type(l) ::= SPACE_RANGLE_SPACE.
+compare_type(l) ::= SPACE_RANGLE SPACE.
    { l.basic.id = 4; }
-compare_type(l) ::= SPACE_RANGLE_EQUAL_SPACE.
+compare_type(l) ::= SPACE_RANGLE_EQUAL SPACE.
    { l.basic.id = 5; }
 compareExpr(l) ::= value(a) compare_type(t) value(b).
    { l.basic.id = _NCp1_Pexpr_compare_3(a.basic.id, b.basic.id, t.basic.id); }
@@ -614,7 +614,7 @@ methodExpr(l) ::= value4fix(e) DOT_ID_UPPER_THEN_OPEN_PARENTHESIS(func).
 /* metaMethodExpr(l) ::= value4fix(e) ANGULAR_BRACKET_ID(func).
    { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); } */
 metaCall_args_optional ::= OPEN_CURLY_BRACE CLOSE_CURLY_BRACE.
-metaCall_args_optional ::= OPEN_CURLY_BRACE_SPACE CLOSE_CURLY_BRACE.
+metaCall_args_optional ::= OPEN_CURLY_BRACE SPACE CLOSE_CURLY_BRACE.
 metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args CLOSE_CURLY_BRACE.
 metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args SPACE_CLOSE_CURLY_BRACE.
 metaCall_arg ::= expr(e).
@@ -628,7 +628,7 @@ metaCall_args_next_group ::= SEMICOLON SPACE.
    { _NCp1_Pmetacarg_next_group_0(); }
 metaCall_args_next_group_empty ::= OPEN_CURLY_BRACE.
    { _NCp1_Pmetacarg_next_group_0(); }
-metaCall_args_next_group_empty ::= OPEN_CURLY_BRACE_SPACE.
+metaCall_args_next_group_empty ::= OPEN_CURLY_BRACE SPACE.
    { _NCp1_Pmetacarg_next_group_0(); }
 metaCall_args ::= metaCall_args metaCall_args_next_group metaCall_arg_list.
 call_args_optional ::= open_parenthesis_or_space CLOSE_PARENTHESIS.
@@ -664,29 +664,29 @@ metaCallExpr(l) ::= metaCallExpr_func(r).
    { l.basic.id = r.basic.id; } */
 /* expr2stmt_base(l) ::= metaCallExpr(r).
    { l.basic.id = r.basic.id; } */
-assign_type(l) ::= SPACE_PLUS_EQUAL_SPACE.
+assign_type(l) ::= SPACE_PLUS_EQUAL SPACE.
    { l.basic.id = 1; }
-assign_type(l) ::= SPACE_MINUS_EQUAL_SPACE.
+assign_type(l) ::= SPACE_MINUS_EQUAL SPACE.
    { l.basic.id = 2; }
-assign_type(l) ::= SPACE_MUL_EQUAL_SPACE.
+assign_type(l) ::= SPACE_MUL_EQUAL SPACE.
    { l.basic.id = 3; }
-assign_type(l) ::= SPACE_DIV_EQUAL_SPACE.
+assign_type(l) ::= SPACE_DIV_EQUAL SPACE.
    { l.basic.id = 4; }
-assign_type(l) ::= SPACE_LSHIFT_EQUAL_SPACE.
+assign_type(l) ::= SPACE_LSHIFT_EQUAL SPACE.
    { l.basic.id = 5; }
-assign_type(l) ::= SPACE_RSHIFT_EQUAL_SPACE.
+assign_type(l) ::= SPACE_RSHIFT_EQUAL SPACE.
    { l.basic.id = 6; }
-assign_type(l) ::= SPACE_AND_EQUAL_SPACE.
+assign_type(l) ::= SPACE_AND_EQUAL SPACE.
    { l.basic.id = 7; }
-assign_type(l) ::= SPACE_OR_EQUAL_SPACE.
+assign_type(l) ::= SPACE_OR_EQUAL SPACE.
    { l.basic.id = 8; }
-assign_type(l) ::= SPACE_XOR_EQUAL_SPACE.
+assign_type(l) ::= SPACE_XOR_EQUAL SPACE.
    { l.basic.id = 9; }
-assign_type1(l) ::= SPACE_EQUAL_SPACE.
+assign_type1(l) ::= SPACE_EQUAL SPACE.
    { l.basic.id = 0; }
 assign_type1(l) ::= assign_type(r).
    { l.basic.id = r.basic.id; }
-assign_type2(l) ::= SPACE_EQUAL_SPACE.
+assign_type2(l) ::= SPACE_EQUAL SPACE.
    { l.basic.id = 0; }
 assign_type2(l) ::= assign_type(r).
    { l.basic.id = r.basic.id; }
@@ -887,9 +887,9 @@ stmt_lvars ::= decl_lvar_begin lvar_list(end).
    { _NCp1_Pstmt_lvar_end_2(end.basic.row, end.basic.col); }
 stmt_lvars_no_begin ::= lvar_list(end).
    { _NCp1_Pstmt_lvar_end_2(end.basic.row, end.basic.col); }
-decl_lvar ::= ID(var) typeAndInfo_optional SPACE_EQUAL_SPACE expr(e).
+decl_lvar ::= ID(var) typeAndInfo_optional SPACE_EQUAL SPACE expr(e).
    { _NCp1_Pstmt_lvar_add_4(var.basic.id, e.basic.id, var.basic.row, var.basic.col); }
-decl_lvar ::= ID(var) typeAndInfo_optional SPACE_EQUAL_SPACE OPEN_BRACKET CLOSE_BRACKET.
+decl_lvar ::= ID(var) typeAndInfo_optional SPACE_EQUAL SPACE OPEN_BRACKET CLOSE_BRACKET.
    { _NCp1_Pstmt_lvar_add_4(var.basic.id, -2, var.basic.row, var.basic.col); }
 decl_lvar ::= ID(var) typeAndInfo_optional.
    { _NCp1_Pstmt_lvar_add_4(var.basic.id, -1, var.basic.row, var.basic.col); }

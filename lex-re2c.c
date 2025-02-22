@@ -37,11 +37,9 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    *                                { string_mem[0] = l->start[0]; return CP1_TOKEN_END; }
    
    "{"                              { return CP1_TOKEN_OPEN_CURLY_BRACE; }
-   "{" spaces                       { return CP1_TOKEN_OPEN_CURLY_BRACE_SPACE; }
    "}"                              { return CP1_TOKEN_CLOSE_CURLY_BRACE; }
    spaces "}"                       { return CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE; }
    "("                              { return CP1_TOKEN_OPEN_PARENTHESIS; }
-   "(" spaces                       { return CP1_TOKEN_OPEN_PARENTHESIS_SPACE; }
    ")"                              { return CP1_TOKEN_CLOSE_PARENTHESIS; }
    spaces ")"                       { return CP1_TOKEN_SPACE_CLOSE_PARENTHESIS; }
    spaces? "," spaces ")"           { return CP1_TOKEN_COMMA_SPACE_CLOSE_PARENTHESIS; }
@@ -56,7 +54,6 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "&"                              { return CP1_TOKEN_AMPERSAND; }
    "#"                              { return CP1_TOKEN_HASH; }
    "["                              { return CP1_TOKEN_OPEN_BRACKET; }
-   "[" spaces                       { return CP1_TOKEN_OPEN_BRACKET_SPACE; }
    "]"                              { return CP1_TOKEN_CLOSE_BRACKET; }
    spaces "]"                       { return CP1_TOKEN_SPACE_CLOSE_BRACKET; }
    // "<"                              { return CP1_TOKEN_OPEN_ANGULAR_BRACKET; }
@@ -137,27 +134,26 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "@no-decl"                { return CP1_TOKEN_SPACE_AT_NO_DECL; }
    spaces "@no-body"                { return CP1_TOKEN_SPACE_AT_NO_BODY; }
    spaces "@soa-field"              { return CP1_TOKEN_SPACE_AT_SOA_FIELD; }
-   spaces "=" spaces                { return CP1_TOKEN_SPACE_EQUAL_SPACE; }
-   spaces "+=" spaces               { return CP1_TOKEN_SPACE_PLUS_EQUAL_SPACE; }
-   spaces "-=" spaces               { return CP1_TOKEN_SPACE_MINUS_EQUAL_SPACE; }
-   spaces "*=" spaces               { return CP1_TOKEN_SPACE_MUL_EQUAL_SPACE; }
-   spaces "/=" spaces               { return CP1_TOKEN_SPACE_DIV_EQUAL_SPACE; }
-   spaces "<<=" spaces              { return CP1_TOKEN_SPACE_LSHIFT_EQUAL_SPACE; }
-   spaces ">>=" spaces              { return CP1_TOKEN_SPACE_RSHIFT_EQUAL_SPACE; }
-   spaces "&=" spaces               { return CP1_TOKEN_SPACE_AND_EQUAL_SPACE; }
-   spaces "|=" spaces               { return CP1_TOKEN_SPACE_OR_EQUAL_SPACE; }
-   spaces "^=" spaces               { return CP1_TOKEN_SPACE_XOR_EQUAL_SPACE; }
-   spaces "+" spaces                { return CP1_TOKEN_SPACE_PLUS_SPACE; }
+   spaces "="                       { return CP1_TOKEN_SPACE_EQUAL; }
+   spaces "+="                      { return CP1_TOKEN_SPACE_PLUS_EQUAL; }
+   spaces "-="                      { return CP1_TOKEN_SPACE_MINUS_EQUAL; }
+   spaces "*="                      { return CP1_TOKEN_SPACE_MUL_EQUAL; }
+   spaces "/="                      { return CP1_TOKEN_SPACE_DIV_EQUAL; }
+   spaces "<<="                     { return CP1_TOKEN_SPACE_LSHIFT_EQUAL; }
+   spaces ">>="                     { return CP1_TOKEN_SPACE_RSHIFT_EQUAL; }
+   spaces "&="                      { return CP1_TOKEN_SPACE_AND_EQUAL; }
+   spaces "|="                      { return CP1_TOKEN_SPACE_OR_EQUAL; }
+   spaces "^="                      { return CP1_TOKEN_SPACE_XOR_EQUAL; }
+   spaces "+"                       { return CP1_TOKEN_SPACE_PLUS; }
    spaces "-" spaces                { return CP1_TOKEN_SPACE_MINUS_SPACE; }
-   spaces "*" spaces                { return CP1_TOKEN_SPACE_MUL_SPACE; }
-   spaces "/" spaces                { return CP1_TOKEN_SPACE_DIV_SPACE; }
-   spaces "%" spaces                { return CP1_TOKEN_SPACE_MOD_SPACE; }
-   spaces "<<" spaces               { return CP1_TOKEN_SPACE_LANGLE_LANGLE_SPACE; }
-   spaces ">>" spaces               { return CP1_TOKEN_SPACE_RANGLE_RANGLE_SPACE; }
-   spaces "&" spaces                { return CP1_TOKEN_SPACE_AMP_SPACE; }
-   spaces "|" spaces                { return CP1_TOKEN_SPACE_PIPE_SPACE; }
-   spaces "^" spaces                { return CP1_TOKEN_SPACE_XOR_SPACE; }
-   // spaces "$" spaces                { return CP1_TOKEN_SPACE_DOLLAR_SPACE; }
+   spaces "*"                       { return CP1_TOKEN_SPACE_MUL; }
+   spaces "/"                       { return CP1_TOKEN_SPACE_DIV; }
+   spaces "%"                       { return CP1_TOKEN_SPACE_MOD; }
+   spaces "<<"                      { return CP1_TOKEN_SPACE_LANGLE_LANGLE; }
+   spaces ">>"                      { return CP1_TOKEN_SPACE_RANGLE_RANGLE; }
+   spaces "&"                       { return CP1_TOKEN_SPACE_AMP; }
+   spaces "|"                       { return CP1_TOKEN_SPACE_PIPE; }
+   spaces "^"                       { return CP1_TOKEN_SPACE_XOR; }
    "(&&," spaces                    { return CP1_TOKEN_OPEN_PARENTHESIS_AMP_AMP_COMMA_SPACE; }
    "(||," spaces                    { return CP1_TOKEN_OPEN_PARENTHESIS_PIPE_PIPE_COMMA_SPACE; }
 
@@ -183,15 +179,15 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "false"                          { return CP1_TOKEN_FALSE; }
    "null"                           { return CP1_TOKEN_NULL; }
 
-   spaces "==" spaces               { return CP1_TOKEN_SPACE_EQUAL_EQUAL_SPACE; }
-   spaces "!=" spaces               { return CP1_TOKEN_SPACE_EXCLAMATION_EQUAL_SPACE; }
-   spaces "<" spaces                { return CP1_TOKEN_SPACE_LANGLE_SPACE; }
-   spaces "<=" spaces               { return CP1_TOKEN_SPACE_LANGLE_EQUAL_SPACE; }
-   spaces ">" spaces                { return CP1_TOKEN_SPACE_RANGLE_SPACE; }
-   spaces ">=" spaces               { return CP1_TOKEN_SPACE_RANGLE_EQUAL_SPACE; }
+   spaces "=="                      { return CP1_TOKEN_SPACE_EQUAL_EQUAL; }
+   spaces "!="                      { return CP1_TOKEN_SPACE_EXCLAMATION_EQUAL; }
+   spaces "<"                       { return CP1_TOKEN_SPACE_LANGLE; }
+   spaces "<="                      { return CP1_TOKEN_SPACE_LANGLE_EQUAL; }
+   spaces ">"                       { return CP1_TOKEN_SPACE_RANGLE; }
+   spaces ">="                      { return CP1_TOKEN_SPACE_RANGLE_EQUAL; }
 
-   spaces "&&" spaces               { return CP1_TOKEN_SPACE_AMP_AMP_SPACE; }
-   spaces "||" spaces               { return CP1_TOKEN_SPACE_PIPE_PIPE_SPACE; }
+   spaces "&&"                      { return CP1_TOKEN_SPACE_AMP_AMP; }
+   spaces "||"                      { return CP1_TOKEN_SPACE_PIPE_PIPE; }
 
    "using"                          { return CP1_TOKEN_USING; }
    "enum"                           { return CP1_TOKEN_ENUM; }

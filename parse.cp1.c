@@ -37,12 +37,12 @@
 #define _NCp1_NToken_Cspace_at_real_name (_NCp1_NToken_Cspace_at_real_name_str + 1)
 #define _NCp1_NToken_Cspace_at_no_decl (_NCp1_NToken_Cspace_at_real_name + 1)
 #define _NCp1_NToken_Cspace_at_no_decl_str (_NCp1_NToken_Cspace_at_no_decl + 1)
-#define _NCp1_NToken_Cspace_equal_space (_NCp1_NToken_Cspace_at_no_decl_str + 1)
-#define _NCp1_NToken_Cenum (_NCp1_NToken_Cspace_equal_space + 1)
+#define _NCp1_NToken_Cspace_equal (_NCp1_NToken_Cspace_at_no_decl_str + 1)
+#define _NCp1_NToken_Cenum (_NCp1_NToken_Cspace_equal + 1)
 #define _NCp1_NToken_Cinclude (_NCp1_NToken_Cenum + 1)
 #define _NCp1_NToken_Cspace_then_open_curly_brace (_NCp1_NToken_Cinclude + 1)
-#define _NCp1_NToken_Copen_curly_brace_space (_NCp1_NToken_Cspace_then_open_curly_brace + 1)
-#define _NCp1_NToken_Cspace_close_curly_brace (_NCp1_NToken_Copen_curly_brace_space + 1)
+#define _NCp1_NToken_Copen_curly_brace (_NCp1_NToken_Cspace_then_open_curly_brace + 1)
+#define _NCp1_NToken_Cspace_close_curly_brace (_NCp1_NToken_Copen_curly_brace + 1)
 #define _NCp1_NToken_Cclose_curly_brace (_NCp1_NToken_Cspace_close_curly_brace + 1)
 #define _NCp1_NToken_Cusing (_NCp1_NToken_Cclose_curly_brace + 1)
 #define _NCp1_NToken_Ctemplate_inst (_NCp1_NToken_Cusing + 1)
@@ -52,14 +52,11 @@
 #define _NCp1_NToken_Cend (_NCp1_NToken_Cimport + 1)
 #define _NCp1_NToken_Cusing_with_semicolon (_NCp1_NToken_Cend + 1)
 #define _NCp1_NToken_Copen_parenthesis (_NCp1_NToken_Cusing_with_semicolon + 1)
-#define _NCp1_NToken_Copen_parenthesis_space (_NCp1_NToken_Copen_parenthesis + 1)
-#define _NCp1_NToken_Cclose_parenthesis (_NCp1_NToken_Copen_parenthesis_space + 1)
+#define _NCp1_NToken_Cclose_parenthesis (_NCp1_NToken_Copen_parenthesis + 1)
 #define _NCp1_NToken_Cspace_close_parenthesis (_NCp1_NToken_Cclose_parenthesis + 1)
 #define _NCp1_NToken_Ccomma_space_close_parenthesis (_NCp1_NToken_Cspace_close_parenthesis + 1)
-#define _NCp1_NToken_Copen_curly_brace (_NCp1_NToken_Ccomma_space_close_parenthesis + 1)
-#define _NCp1_NToken_Copen_bracket (_NCp1_NToken_Copen_curly_brace + 1)
-#define _NCp1_NToken_Copen_bracket_space (_NCp1_NToken_Copen_bracket + 1)
-#define _NCp1_NToken_Cclose_bracket (_NCp1_NToken_Copen_bracket_space + 1)
+#define _NCp1_NToken_Copen_bracket (_NCp1_NToken_Ccomma_space_close_parenthesis + 1)
+#define _NCp1_NToken_Cclose_bracket (_NCp1_NToken_Copen_bracket + 1)
 #define _NCp1_NToken_Cspace_close_bracket (_NCp1_NToken_Cclose_bracket + 1)
 #define _NCp1_NToken_Ccomma_space_close_bracket (_NCp1_NToken_Cspace_close_bracket + 1)
 #define _NCp1_NToken_Ccolon (_NCp1_NToken_Ccomma_space_close_bracket + 1)
@@ -109,40 +106,40 @@
 #define _NCp1_NToken_Cnull (_NCp1_NToken_Cfalse + 1)
 #define _NCp1_NToken_Csoa_field (_NCp1_NToken_Cnull + 1)
 #define _NCp1_NToken_Copen_parenthesis_amp_amp_comma_space (_NCp1_NToken_Csoa_field + 1)
-#define _NCp1_NToken_Cspace_amp_amp_space (_NCp1_NToken_Copen_parenthesis_amp_amp_comma_space + 1)
-#define _NCp1_NToken_Cspace_pipe_pipe_space (_NCp1_NToken_Cspace_amp_amp_space + 1)
-#define _NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space (_NCp1_NToken_Cspace_pipe_pipe_space + 1)
-#define _NCp1_NToken_Cspace_plus_space (_NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space + 1)
-#define _NCp1_NToken_Cspace_minus_space (_NCp1_NToken_Cspace_plus_space + 1)
-#define _NCp1_NToken_Cspace_mul_space (_NCp1_NToken_Cspace_minus_space + 1)
-#define _NCp1_NToken_Cspace_div_space (_NCp1_NToken_Cspace_mul_space + 1)
-#define _NCp1_NToken_Cspace_mod_space (_NCp1_NToken_Cspace_div_space + 1)
-#define _NCp1_NToken_Cspace_langle_langle_space (_NCp1_NToken_Cspace_mod_space + 1)
-#define _NCp1_NToken_Cspace_rangle_rangle_space (_NCp1_NToken_Cspace_langle_langle_space + 1)
-#define _NCp1_NToken_Cspace_amp_space (_NCp1_NToken_Cspace_rangle_rangle_space + 1)
-#define _NCp1_NToken_Cspace_pipe_space (_NCp1_NToken_Cspace_amp_space + 1)
-#define _NCp1_NToken_Cspace_xor_space (_NCp1_NToken_Cspace_pipe_space + 1)
-#define _NCp1_NToken_Cspace_equal_equal_space (_NCp1_NToken_Cspace_xor_space + 1)
-#define _NCp1_NToken_Cspace_exclamation_equal_space (_NCp1_NToken_Cspace_equal_equal_space + 1)
-#define _NCp1_NToken_Cspace_langle_space (_NCp1_NToken_Cspace_exclamation_equal_space + 1)
-#define _NCp1_NToken_Cspace_langle_equal_space (_NCp1_NToken_Cspace_langle_space + 1)
-#define _NCp1_NToken_Cspace_rangle_space (_NCp1_NToken_Cspace_langle_equal_space + 1)
-#define _NCp1_NToken_Cspace_rangle_equal_space (_NCp1_NToken_Cspace_rangle_space + 1)
-#define _NCp1_NToken_Cdot_id_upper_then_open_parenthesis (_NCp1_NToken_Cspace_rangle_equal_space + 1)
+#define _NCp1_NToken_Cspace_amp_amp (_NCp1_NToken_Copen_parenthesis_amp_amp_comma_space + 1)
+#define _NCp1_NToken_Cspace_pipe_pipe (_NCp1_NToken_Cspace_amp_amp + 1)
+#define _NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space (_NCp1_NToken_Cspace_pipe_pipe + 1)
+#define _NCp1_NToken_Cspace_plus (_NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space + 1)
+#define _NCp1_NToken_Cspace_minus_space (_NCp1_NToken_Cspace_plus + 1)
+#define _NCp1_NToken_Cspace_mul (_NCp1_NToken_Cspace_minus_space + 1)
+#define _NCp1_NToken_Cspace_div (_NCp1_NToken_Cspace_mul + 1)
+#define _NCp1_NToken_Cspace_mod (_NCp1_NToken_Cspace_div + 1)
+#define _NCp1_NToken_Cspace_langle_langle (_NCp1_NToken_Cspace_mod + 1)
+#define _NCp1_NToken_Cspace_rangle_rangle (_NCp1_NToken_Cspace_langle_langle + 1)
+#define _NCp1_NToken_Cspace_amp (_NCp1_NToken_Cspace_rangle_rangle + 1)
+#define _NCp1_NToken_Cspace_pipe (_NCp1_NToken_Cspace_amp + 1)
+#define _NCp1_NToken_Cspace_xor (_NCp1_NToken_Cspace_pipe + 1)
+#define _NCp1_NToken_Cspace_equal_equal (_NCp1_NToken_Cspace_xor + 1)
+#define _NCp1_NToken_Cspace_exclamation_equal (_NCp1_NToken_Cspace_equal_equal + 1)
+#define _NCp1_NToken_Cspace_langle (_NCp1_NToken_Cspace_exclamation_equal + 1)
+#define _NCp1_NToken_Cspace_langle_equal (_NCp1_NToken_Cspace_langle + 1)
+#define _NCp1_NToken_Cspace_rangle (_NCp1_NToken_Cspace_langle_equal + 1)
+#define _NCp1_NToken_Cspace_rangle_equal (_NCp1_NToken_Cspace_rangle + 1)
+#define _NCp1_NToken_Cdot_id_upper_then_open_parenthesis (_NCp1_NToken_Cspace_rangle_equal + 1)
 #define _NCp1_NToken_Cid_then_open_curly_brace (_NCp1_NToken_Cdot_id_upper_then_open_parenthesis + 1)
 #define _NCp1_NToken_Cid_upper_then_open_curly_brace (_NCp1_NToken_Cid_then_open_curly_brace + 1)
 #define _NCp1_NToken_Cdot_id_upper_then_open_curly_brace (_NCp1_NToken_Cid_upper_then_open_curly_brace + 1)
 #define _NCp1_NToken_Chash (_NCp1_NToken_Cdot_id_upper_then_open_curly_brace + 1)
-#define _NCp1_NToken_Cspace_plus_equal_space (_NCp1_NToken_Chash + 1)
-#define _NCp1_NToken_Cspace_minus_equal_space (_NCp1_NToken_Cspace_plus_equal_space + 1)
-#define _NCp1_NToken_Cspace_mul_equal_space (_NCp1_NToken_Cspace_minus_equal_space + 1)
-#define _NCp1_NToken_Cspace_div_equal_space (_NCp1_NToken_Cspace_mul_equal_space + 1)
-#define _NCp1_NToken_Cspace_lshift_equal_space (_NCp1_NToken_Cspace_div_equal_space + 1)
-#define _NCp1_NToken_Cspace_rshift_equal_space (_NCp1_NToken_Cspace_lshift_equal_space + 1)
-#define _NCp1_NToken_Cspace_and_equal_space (_NCp1_NToken_Cspace_rshift_equal_space + 1)
-#define _NCp1_NToken_Cspace_or_equal_space (_NCp1_NToken_Cspace_and_equal_space + 1)
-#define _NCp1_NToken_Cspace_xor_equal_space (_NCp1_NToken_Cspace_or_equal_space + 1)
-#define _NCp1_NToken_Ccolon_base (_NCp1_NToken_Cspace_xor_equal_space + 1)
+#define _NCp1_NToken_Cspace_plus_equal (_NCp1_NToken_Chash + 1)
+#define _NCp1_NToken_Cspace_minus_equal (_NCp1_NToken_Cspace_plus_equal + 1)
+#define _NCp1_NToken_Cspace_mul_equal (_NCp1_NToken_Cspace_minus_equal + 1)
+#define _NCp1_NToken_Cspace_div_equal (_NCp1_NToken_Cspace_mul_equal + 1)
+#define _NCp1_NToken_Cspace_lshift_equal (_NCp1_NToken_Cspace_div_equal + 1)
+#define _NCp1_NToken_Cspace_rshift_equal (_NCp1_NToken_Cspace_lshift_equal + 1)
+#define _NCp1_NToken_Cspace_and_equal (_NCp1_NToken_Cspace_rshift_equal + 1)
+#define _NCp1_NToken_Cspace_or_equal (_NCp1_NToken_Cspace_and_equal + 1)
+#define _NCp1_NToken_Cspace_xor_equal (_NCp1_NToken_Cspace_or_equal + 1)
+#define _NCp1_NToken_Ccolon_base (_NCp1_NToken_Cspace_xor_equal + 1)
 #define _NCp1_NToken_Cloop (_NCp1_NToken_Ccolon_base + 1)
 #define _NCp1_NToken_Cloop_with_semicolon (_NCp1_NToken_Cloop + 1)
 #define _NCp1_NId_Cnil (-1)
@@ -1201,11 +1198,11 @@ case _NCp1_NToken_Cspace_at_real_name_str: return "space-at-real-name-str";
 case _NCp1_NToken_Cspace_at_real_name: return "space-at-real-name";
 case _NCp1_NToken_Cspace_at_no_decl: return "space-at-no-decl";
 case _NCp1_NToken_Cspace_at_no_decl_str: return "space-at-no-decl-str";
-case _NCp1_NToken_Cspace_equal_space: return "space-equal-space";
+case _NCp1_NToken_Cspace_equal: return "space-equal";
 case _NCp1_NToken_Cenum: return "enum";
 case _NCp1_NToken_Cinclude: return "include";
 case _NCp1_NToken_Cspace_then_open_curly_brace: return "space-then-open-curly-brace";
-case _NCp1_NToken_Copen_curly_brace_space: return "open-curly-brace-space";
+case _NCp1_NToken_Copen_curly_brace: return "open-curly-brace";
 case _NCp1_NToken_Cspace_close_curly_brace: return "space-close-curly-brace";
 case _NCp1_NToken_Cclose_curly_brace: return "close-curly-brace";
 case _NCp1_NToken_Cusing: return "using";
@@ -1216,13 +1213,10 @@ case _NCp1_NToken_Cimport: return "import";
 case _NCp1_NToken_Cend: return "end";
 case _NCp1_NToken_Cusing_with_semicolon: return "using-with-semicolon";
 case _NCp1_NToken_Copen_parenthesis: return "open-parenthesis";
-case _NCp1_NToken_Copen_parenthesis_space: return "open-parenthesis-space";
 case _NCp1_NToken_Cclose_parenthesis: return "close-parenthesis";
 case _NCp1_NToken_Cspace_close_parenthesis: return "space-close-parenthesis";
 case _NCp1_NToken_Ccomma_space_close_parenthesis: return "comma-space-close-parenthesis";
-case _NCp1_NToken_Copen_curly_brace: return "open-curly-brace";
 case _NCp1_NToken_Copen_bracket: return "open-bracket";
-case _NCp1_NToken_Copen_bracket_space: return "open-bracket-space";
 case _NCp1_NToken_Cclose_bracket: return "close-bracket";
 case _NCp1_NToken_Cspace_close_bracket: return "space-close-bracket";
 case _NCp1_NToken_Ccomma_space_close_bracket: return "comma-space-close-bracket";
@@ -1273,39 +1267,39 @@ case _NCp1_NToken_Cfalse: return "false";
 case _NCp1_NToken_Cnull: return "null";
 case _NCp1_NToken_Csoa_field: return "soa-field";
 case _NCp1_NToken_Copen_parenthesis_amp_amp_comma_space: return "open-parenthesis-amp-amp-comma-space";
-case _NCp1_NToken_Cspace_amp_amp_space: return "space-amp-amp-space";
-case _NCp1_NToken_Cspace_pipe_pipe_space: return "space-pipe-pipe-space";
+case _NCp1_NToken_Cspace_amp_amp: return "space-amp-amp";
+case _NCp1_NToken_Cspace_pipe_pipe: return "space-pipe-pipe";
 case _NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space: return "open-parenthesis-pipe-pipe-comma-space";
-case _NCp1_NToken_Cspace_plus_space: return "space-plus-space";
+case _NCp1_NToken_Cspace_plus: return "space-plus";
 case _NCp1_NToken_Cspace_minus_space: return "space-minus-space";
-case _NCp1_NToken_Cspace_mul_space: return "space-mul-space";
-case _NCp1_NToken_Cspace_div_space: return "space-div-space";
-case _NCp1_NToken_Cspace_mod_space: return "space-mod-space";
-case _NCp1_NToken_Cspace_langle_langle_space: return "space-langle-langle-space";
-case _NCp1_NToken_Cspace_rangle_rangle_space: return "space-rangle-rangle-space";
-case _NCp1_NToken_Cspace_amp_space: return "space-amp-space";
-case _NCp1_NToken_Cspace_pipe_space: return "space-pipe-space";
-case _NCp1_NToken_Cspace_xor_space: return "space-xor-space";
-case _NCp1_NToken_Cspace_equal_equal_space: return "space-equal-equal-space";
-case _NCp1_NToken_Cspace_exclamation_equal_space: return "space-exclamation-equal-space";
-case _NCp1_NToken_Cspace_langle_space: return "space-langle-space";
-case _NCp1_NToken_Cspace_langle_equal_space: return "space-langle-equal-space";
-case _NCp1_NToken_Cspace_rangle_space: return "space-rangle-space";
-case _NCp1_NToken_Cspace_rangle_equal_space: return "space-rangle-equal-space";
+case _NCp1_NToken_Cspace_mul: return "space-mul";
+case _NCp1_NToken_Cspace_div: return "space-div";
+case _NCp1_NToken_Cspace_mod: return "space-mod";
+case _NCp1_NToken_Cspace_langle_langle: return "space-langle-langle";
+case _NCp1_NToken_Cspace_rangle_rangle: return "space-rangle-rangle";
+case _NCp1_NToken_Cspace_amp: return "space-amp";
+case _NCp1_NToken_Cspace_pipe: return "space-pipe";
+case _NCp1_NToken_Cspace_xor: return "space-xor";
+case _NCp1_NToken_Cspace_equal_equal: return "space-equal-equal";
+case _NCp1_NToken_Cspace_exclamation_equal: return "space-exclamation-equal";
+case _NCp1_NToken_Cspace_langle: return "space-langle";
+case _NCp1_NToken_Cspace_langle_equal: return "space-langle-equal";
+case _NCp1_NToken_Cspace_rangle: return "space-rangle";
+case _NCp1_NToken_Cspace_rangle_equal: return "space-rangle-equal";
 case _NCp1_NToken_Cdot_id_upper_then_open_parenthesis: return "dot-id-upper-then-open-parenthesis";
 case _NCp1_NToken_Cid_then_open_curly_brace: return "id-then-open-curly-brace";
 case _NCp1_NToken_Cid_upper_then_open_curly_brace: return "id-upper-then-open-curly-brace";
 case _NCp1_NToken_Cdot_id_upper_then_open_curly_brace: return "dot-id-upper-then-open-curly-brace";
 case _NCp1_NToken_Chash: return "hash";
-case _NCp1_NToken_Cspace_plus_equal_space: return "space-plus-equal-space";
-case _NCp1_NToken_Cspace_minus_equal_space: return "space-minus-equal-space";
-case _NCp1_NToken_Cspace_mul_equal_space: return "space-mul-equal-space";
-case _NCp1_NToken_Cspace_div_equal_space: return "space-div-equal-space";
-case _NCp1_NToken_Cspace_lshift_equal_space: return "space-lshift-equal-space";
-case _NCp1_NToken_Cspace_rshift_equal_space: return "space-rshift-equal-space";
-case _NCp1_NToken_Cspace_and_equal_space: return "space-and-equal-space";
-case _NCp1_NToken_Cspace_or_equal_space: return "space-or-equal-space";
-case _NCp1_NToken_Cspace_xor_equal_space: return "space-xor-equal-space";
+case _NCp1_NToken_Cspace_plus_equal: return "space-plus-equal";
+case _NCp1_NToken_Cspace_minus_equal: return "space-minus-equal";
+case _NCp1_NToken_Cspace_mul_equal: return "space-mul-equal";
+case _NCp1_NToken_Cspace_div_equal: return "space-div-equal";
+case _NCp1_NToken_Cspace_lshift_equal: return "space-lshift-equal";
+case _NCp1_NToken_Cspace_rshift_equal: return "space-rshift-equal";
+case _NCp1_NToken_Cspace_and_equal: return "space-and-equal";
+case _NCp1_NToken_Cspace_or_equal: return "space-or-equal";
+case _NCp1_NToken_Cspace_xor_equal: return "space-xor-equal";
 case _NCp1_NToken_Ccolon_base: return "colon-base";
 case _NCp1_NToken_Cloop: return "loop";
 case _NCp1_NToken_Cloop_with_semicolon: return "loop-with-semicolon";
