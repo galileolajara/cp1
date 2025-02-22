@@ -3,8 +3,8 @@ rule c
  command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -I. -c $in -o $out
  command = gcc   $flags -O0 -Werror=format -Wno-incompatible-pointer-types -I. -c $in -o $out
 
-rule objredef
- command = objcopy --redefine-syms=$redefs $in $out
+#rule objredef
+# command = objcopy --redefine-syms=$redefs $in $out
 
 rule ld-c
  command = tcc $flags -w -I. $in -o $out
