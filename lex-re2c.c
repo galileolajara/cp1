@@ -254,12 +254,12 @@ lex_string: {
          "\\r" { pushchar('\r'); goto string_continue; }
          "\\t" { pushchar('\t'); goto string_continue; }
          "\\v" { pushchar('\v'); goto string_continue; }
-         "\\" (.|"\n") {
-            if (YYCURSOR[-1] == '\n') {
-               fprintf(stdout, "%s:%u:%u: Invalid escape sequence found '\\(newline)'\n", input_path, _Grow, _Gcol + 1);
-            } else {
-               fprintf(stdout, "%s:%u:%u: Invalid escape sequence found '\\%c'\n", input_path, _Grow, _Gcol + 1, YYCURSOR[-1]);
-            }
+         "\\\n" {
+            fprintf(stdout, "%s:%u:%u: Invalid escape sequence found '\\(newline)'\n", input_path, _Grow, _Gcol + 1);
+            exit(EXIT_FAILURE);
+         }
+         "\\". {
+            fprintf(stdout, "%s:%u:%u: Invalid escape sequence found '\\%c'\n", input_path, _Grow, _Gcol + 1, YYCURSOR[-1]);
             exit(EXIT_FAILURE);
          }
          */
