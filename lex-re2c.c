@@ -30,11 +30,15 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    re2c:indent:top      = 1;
    re2c:yyfill:enable   = 0;
 
-   spaces = [ \n]+;
+   spaces = ([ \n]+|"// "[^\n]*"\n")+;
    id_one = [_0-9a-zA-Z\u00c0-\U0010ffff];
    id = id_one+("-" id_one+)*;
 
    *                                { string_mem[0] = l->start[0]; return CP1_TOKEN_END; }
+   "\t"                             {
+      fprintf(stdout, "%s:%u:%u: Use of tabs is discouraged, please use spaces instead\n", input_path, _Grow, _Gcol);
+      exit(EXIT_FAILURE);
+   }
    
    "{"                              { return CP1_TOKEN_OPEN_CURLY_BRACE; }
    "}"                              { return CP1_TOKEN_CLOSE_CURLY_BRACE; }
@@ -149,7 +153,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "%"                       { return CP1_TOKEN_SPACE_MOD; }
    spaces "<<"                      { return CP1_TOKEN_SPACE_LANGLE_LANGLE; }
    spaces ">>"                      { return CP1_TOKEN_SPACE_RANGLE_RANGLE; }
-   spaces "&"                       { return CP1_TOKEN_SPACE_AMP; }
+   spaces "&" spaces                { return CP1_TOKEN_SPACE_AMP_SPACE; }
    spaces "|"                       { return CP1_TOKEN_SPACE_PIPE; }
    spaces "^"                       { return CP1_TOKEN_SPACE_XOR; }
    "(&&,"                           { return CP1_TOKEN_OPEN_PARENTHESIS_AMP_AMP_COMMA; }
@@ -250,6 +254,14 @@ lex_string: {
          "\\r" { pushchar('\r'); goto string_continue; }
          "\\t" { pushchar('\t'); goto string_continue; }
          "\\v" { pushchar('\v'); goto string_continue; }
+         "\\" (.|"\n") {
+            if (YYCURSOR[-1] == '\n') {
+               fprintf(stdout, "%s:%u:%u: Invalid escape sequence found '\\(newline)'\n", input_path, _Grow, _Gcol + 1);
+            } else {
+               fprintf(stdout, "%s:%u:%u: Invalid escape sequence found '\\%c'\n", input_path, _Grow, _Gcol + 1, YYCURSOR[-1]);
+            }
+            exit(EXIT_FAILURE);
+         }
          */
          string_continue: {
             begin = YYCURSOR;

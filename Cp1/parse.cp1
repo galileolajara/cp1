@@ -956,15 +956,15 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .input-path = arg-v[1];
    // C1.stdout{"reading " .input-path ''\n}
    var in-data:u8[];
-   in-data = read-file(.input-path, 1, 2, in-size!);
+   in-data = read-file(.input-path, 0, 2, in-size!);
    // input-path-len! = C.strlen(.input-path);
    // mtime! = file-mtime(.input-path);
    if in-data == null {
       C1.stdout{"Cannot open file for reading: " .input-path ''\n}
       C.exit(#failure);
    }
-   in-data[0] = ''\n;
-   in-data = &in-data[1];
+   // in-data[0] = ''\n;
+   // in-data = &in-data[1];
    lock-path! = arg-v[2];
    // .lock-path = lock-path;
    // if true {
@@ -1001,7 +1001,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       C1.stdout{"Error reading file '" .input-path "' because it doesn't end with a new line\n"}
       C.exit(#failure);
    }
-   if true { // Process comments
+   if false { // Process comments
       preprocess! = false;
       // in-data = convert-old-to-new(in-data, in-size);
       var r-end:Rdr.;
@@ -1281,7 +1281,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       .last-col = .col;
       .row = tok.row;
       .col = tok.col;
-      // 'coutput{.input-path '': tok.row '': tok.col ": token " t.cp1-name() ''\n}
+      // C1.stdout{.input-path '': tok.row '': tok.col ": token " t.cp1-name() ''\n}
       // 'c.out.flush();
       // if (&&, t >= #id-quote, t < #id) {
       //    tok.id = lex.get-id(1, 0);

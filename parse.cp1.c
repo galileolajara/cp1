@@ -116,8 +116,8 @@
 #define _NCp1_NToken_Cspace_mod (_NCp1_NToken_Cspace_div + 1)
 #define _NCp1_NToken_Cspace_langle_langle (_NCp1_NToken_Cspace_mod + 1)
 #define _NCp1_NToken_Cspace_rangle_rangle (_NCp1_NToken_Cspace_langle_langle + 1)
-#define _NCp1_NToken_Cspace_amp (_NCp1_NToken_Cspace_rangle_rangle + 1)
-#define _NCp1_NToken_Cspace_pipe (_NCp1_NToken_Cspace_amp + 1)
+#define _NCp1_NToken_Cspace_amp_space (_NCp1_NToken_Cspace_rangle_rangle + 1)
+#define _NCp1_NToken_Cspace_pipe (_NCp1_NToken_Cspace_amp_space + 1)
 #define _NCp1_NToken_Cspace_xor (_NCp1_NToken_Cspace_pipe + 1)
 #define _NCp1_NToken_Cspace_equal_equal (_NCp1_NToken_Cspace_xor + 1)
 #define _NCp1_NToken_Cspace_exclamation_equal (_NCp1_NToken_Cspace_equal_equal + 1)
@@ -1277,7 +1277,7 @@ case _NCp1_NToken_Cspace_div: return "space-div";
 case _NCp1_NToken_Cspace_mod: return "space-mod";
 case _NCp1_NToken_Cspace_langle_langle: return "space-langle-langle";
 case _NCp1_NToken_Cspace_rangle_rangle: return "space-rangle-rangle";
-case _NCp1_NToken_Cspace_amp: return "space-amp";
+case _NCp1_NToken_Cspace_amp_space: return "space-amp-space";
 case _NCp1_NToken_Cspace_pipe: return "space-pipe";
 case _NCp1_NToken_Cspace_xor: return "space-xor";
 case _NCp1_NToken_Cspace_equal_equal: return "space-equal-equal";
@@ -1485,7 +1485,7 @@ _NCp1_NMap_Pinit_1(&_Ginclude_map);
 _NCp1_NAtMap_Pinit_1(&_Gat_map);
 _Gfunc_main = _NCp1_NFunc_Cnil;
 input_path = _Larg_v_1[1];
-_Lin_data_3 = _NCp1_Pread_file_4(input_path, 1, 2, &_Lin_size_4);
+_Lin_data_3 = _NCp1_Pread_file_4(input_path, 0, 2, &_Lin_size_4);
 if(_Lin_data_3 == NULL) {
 struct _NLibCp1_NStdOut _L_5;
 _NLibCp1_Pstdout_1(&_L_5);
@@ -1495,8 +1495,6 @@ _Tchar_Pstdout_2('\n', &_L_5);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_5);
 exit(_NLibC_NExit_Cfailure);
 }
-_Lin_data_3[0] = '\n';
-_Lin_data_3 = &_Lin_data_3[1];
 _Llock_path_6 = _Larg_v_1[2];
 if(((_Lin_data_3[(_Lin_size_4 - 2)] == '\r') && (_Lin_data_3[(_Lin_size_4 - 1)] == '\n'))) {
 struct _NLibCp1_NStdOut _L_7;
@@ -1517,7 +1515,7 @@ _NLibCp1_NStdOut_Pstdout_cstr_3(&_L_8, "' because it doesn't end with a new line
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_8);
 exit(_NLibC_NExit_Cfailure);
 }
-if(true) {
+if(false) {
 bool _Lpreprocess_9;
 union _NCp1_NRdr _Lr_end_10;
 union _NCp1_NRdr _Lr_11;
