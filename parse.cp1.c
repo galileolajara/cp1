@@ -105,11 +105,11 @@
 #define _NCp1_NToken_Cfalse (_NCp1_NToken_Ctrue + 1)
 #define _NCp1_NToken_Cnull (_NCp1_NToken_Cfalse + 1)
 #define _NCp1_NToken_Csoa_field (_NCp1_NToken_Cnull + 1)
-#define _NCp1_NToken_Copen_parenthesis_amp_amp_comma_space (_NCp1_NToken_Csoa_field + 1)
-#define _NCp1_NToken_Cspace_amp_amp (_NCp1_NToken_Copen_parenthesis_amp_amp_comma_space + 1)
+#define _NCp1_NToken_Copen_parenthesis_amp_amp_comma (_NCp1_NToken_Csoa_field + 1)
+#define _NCp1_NToken_Cspace_amp_amp (_NCp1_NToken_Copen_parenthesis_amp_amp_comma + 1)
 #define _NCp1_NToken_Cspace_pipe_pipe (_NCp1_NToken_Cspace_amp_amp + 1)
-#define _NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space (_NCp1_NToken_Cspace_pipe_pipe + 1)
-#define _NCp1_NToken_Cspace_plus (_NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space + 1)
+#define _NCp1_NToken_Copen_parenthesis_pipe_pipe_comma (_NCp1_NToken_Cspace_pipe_pipe + 1)
+#define _NCp1_NToken_Cspace_plus (_NCp1_NToken_Copen_parenthesis_pipe_pipe_comma + 1)
 #define _NCp1_NToken_Cspace_minus_space (_NCp1_NToken_Cspace_plus + 1)
 #define _NCp1_NToken_Cspace_mul (_NCp1_NToken_Cspace_minus_space + 1)
 #define _NCp1_NToken_Cspace_div (_NCp1_NToken_Cspace_mul + 1)
@@ -1266,10 +1266,10 @@ case _NCp1_NToken_Ctrue: return "true";
 case _NCp1_NToken_Cfalse: return "false";
 case _NCp1_NToken_Cnull: return "null";
 case _NCp1_NToken_Csoa_field: return "soa-field";
-case _NCp1_NToken_Copen_parenthesis_amp_amp_comma_space: return "open-parenthesis-amp-amp-comma-space";
+case _NCp1_NToken_Copen_parenthesis_amp_amp_comma: return "open-parenthesis-amp-amp-comma";
 case _NCp1_NToken_Cspace_amp_amp: return "space-amp-amp";
 case _NCp1_NToken_Cspace_pipe_pipe: return "space-pipe-pipe";
-case _NCp1_NToken_Copen_parenthesis_pipe_pipe_comma_space: return "open-parenthesis-pipe-pipe-comma-space";
+case _NCp1_NToken_Copen_parenthesis_pipe_pipe_comma: return "open-parenthesis-pipe-pipe-comma";
 case _NCp1_NToken_Cspace_plus: return "space-plus";
 case _NCp1_NToken_Cspace_minus_space: return "space-minus-space";
 case _NCp1_NToken_Cspace_mul: return "space-mul";
