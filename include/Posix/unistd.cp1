@@ -1,3 +1,4 @@
+import "Posix/fcntl.cp1";
 include <unistd.h> {
    using X = Posix;
    using Posix {

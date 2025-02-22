@@ -12,8 +12,8 @@ ninja
 ```
 Then checkout the examples:
 ```
-bin/cp1 run examples/01-hello.cp1 # to run hello world
-bin/cp1 c hello.c examples/01-hello.cp1 # to see the C code
+bin/cp1-run examples/01-hello.cp1 # to run hello world
+bin/cp1-compile -c hello.c examples/01-hello.cp1 # to see the C code
 ```
 
 Cp1 means C+1 or C plus 1, named just like C++ or C plus plus

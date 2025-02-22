@@ -1,0 +1,134 @@
+import "LibCp1/stdout.cp1";
+import "LibC/stdio.cp1";
+import "LibC/stdlib.cp1";
+import "LibC/string.cp1";
+import "Posix/fcntl.cp1";
+import "Posix/unistd.cp1";
+import "Posix/stat.cp1";
+using C = LibC;
+using C1 = LibCp1;
+using X = Posix;
+using Cp1 = Cp1;
+print-commands(bin:char[]) {
+   C1.stdout{
+   "Usage: " bin " [file.cp1]\n"
+   }
+}
+validate-cp1-path(bin:char[], cp1-path:char[]):bool {
+   if cp1-path[0] == ''/ {
+      print-commands(bin);
+      C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must be a relative filepath (e.g. file.cp1), not an absolute path (/home/user/file.cp1)\n"}
+      C.exit(#failure);
+   }
+   cp1-path-len! = C.strlen(cp1-path);
+   if (&&, cp1-path[0] == ''., cp1-path[1] == ''/) {
+      cp1-path = &cp1-path[2];
+      cp1-path-len -= 2;
+   }
+   loop j = 0; cp1-path-len; j++ {
+      if cp1-path[j] == ''\\ {
+         print-commands(bin);
+         C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must not contain backslashes '\\', please use forward slashes '/' instead\n"}
+         C.exit(#failure);
+      }
+   }
+   loop j = 0; cp1-path-len - 1; j++ {
+      if (&&, cp1-path[j] == ''., cp1-path[j + 1] == ''/) {
+         print-commands(bin);
+         C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must not contain './'\n"}
+         C.exit(#failure);
+      }
+   }
+   if !(&&, cp1-path-len > 4, cp1-path[cp1-path-len - 4] == ''., cp1-path[cp1-path-len - 3] == ''c, cp1-path[cp1-path-len - 2] == ''p, cp1-path[cp1-path-len - 1] == ''1) {
+      print-commands(bin);
+      C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must be a filename that ends with '.cp1', for example: main.cp1\n"}
+      C.exit(#failure);
+   }
+}
+main(arg-c:intc, arg-v:char[][]):intc {
+   "#ifdef _WIN32";
+   if true {
+      arg! = arg-v[0];
+      len! = C.strlen(arg);
+      if (arg[len - 4] == ''.) && (arg[len - 3] == ''e) && (arg[len - 2] == ''x) && (arg[len - 1] == ''e) {
+         arg[len - 4] = ''\0;
+      }
+   }
+   loop i = 0; arg-c; i++ {
+      arg! = arg-v[i];
+      loop j = 0; ; j++ {
+         if arg[j] == ''\0 {
+            break;
+         } elif arg[j] == ''\\ {
+            arg[j] = ''/;
+         }
+      }
+   }
+   "#endif";
+   bin! = arg-v[0];
+   if arg-c != 2 {
+      print-commands(bin);
+      C.exit(#failure);
+   }
+   validate-cp1-path(bin, arg-v[1]);
+
+   "#ifdef _WIN32";
+   "mkdir(\"cp1-tmp-0\");";
+   "#else";
+   X.mkdir("cp1-tmp-0", 0o755);
+   "#endif";
+   var c-path:char[21];
+   C.strcpy(c-path, "cp1-tmp-0/c-XXXXXX");
+   c-fd! = X.mkstemp(c-path);
+   if c-fd == #nil {
+      print-commands(bin);
+      C1.stdout{"Error, cannot open file for reading: " c-path ''\n}
+      C.exit(#failure);
+   }
+   c-fd.close();
+   X.unlink(c-path);
+   var exe-path:char[20];
+   C.strcpy(exe-path, "cp1-tmp-0/exe-XXXXXX");
+   exe-fd! = X.mkstemp(exe-path);
+   if exe-fd == #nil {
+      print-commands(bin);
+      C1.stdout{"Error, cannot open file for reading: " exe-path ''\n}
+      C.exit(#failure);
+   }
+   exe-fd.close();
+   X.unlink(exe-path);
+   c-path[18] = ''.;
+   c-path[19] = ''c;
+   c-path[20] = ''\0;
+   var command:char[1024];
+   C.sprintf(command, "%.*s-compile -c %s %s", C.strlen(bin) - 4, bin, c-path, arg-v[1]);
+   // C1.stdout{"run command: " command ''\n}
+   c-ret! = C.system(command);
+   if c-ret != 0 {
+      X.unlink(c-path);
+      C.exit(#failure);
+   }
+   C.sprintf(command, "tcc -o \"%s\" \"%s\" || clang -o \"%s\" \"%s\" || gcc -o \"%s\" \"%s\"", exe-path, c-path, exe-path, c-path, exe-path, c-path);
+   // C1.stdout{"run command: " command ''\n}
+   compile-ret! = C.system(command);
+   X.unlink(c-path);
+   if compile-ret != 0 {
+      C.exit(#failure);
+   }
+   "#ifdef _WIN32";
+   loop i = 0; ; i++ {
+      if exe-path[i] == ''\0 {
+         break;
+      } elif exe-path[i] == ''/ {
+         exe-path[i] = ''\\;
+      }
+   }
+   "#endif";
+   // C1.stdout{"run command: " exe-path ''\n}
+   exe-ret! = C.system(exe-path);
+   X.unlink(exe-path);
+   if exe-ret != 0 {
+      C.exit(#failure);
+   }
+   return 0;
+}

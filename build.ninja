@@ -18,7 +18,7 @@ build bin/cp1-parse: ld-c out/parse.cp1.c.o out/parse.c.o out/hashtable.c.o
 build bin/cp1-compile: ld-c out/compile.cp1.c.o out/compile.c.o out/hashtable.c.o
 # out/parse-redef.cp1.c.o out/parse.c.o
 #build bin/cp1-compile-redef-output: ld-c out/compile.cp1.c.o out/compile.c.o out/hashtable.c.o out/parse.cp1.c.o out/parse.c.o
-build bin/cp1: ld-c cp1.cp1.c
+build bin/cp1-run: ld-c run.cp1.c
 build out/hashtable.c.o: c hashtable2.c
 
 rule c2
@@ -60,7 +60,7 @@ build out/parse-common.cp1: preprocess Cp1/common.cp1 | bin/cp1-preprocess
  options = -Dparse
 build out/compile-common.cp1: preprocess Cp1/common.cp1 | bin/cp1-preprocess
  options = -Dcompile
-build out/cp1.cp1.c: compile Cp1/cp1.cp1 Cp1/file.cp1 | include/LibCp1/stdout.cp1 include/LibC/stdio.cp1 include/Posix/fcntl.cp1 include/LibC/stdlib.cp1 include/Posix/unistd.cp1 include/LibC/string.cp1 include/Posix/stat.cp1 bin/cp1-compile bin/cp1-parse
+build out/run2.cp1.c: compile Cp1/run.cp1 Cp1/file.cp1 | include/LibCp1/stdout.cp1 include/LibC/stdio.cp1 include/Posix/fcntl.cp1 include/LibC/stdlib.cp1 include/Posix/unistd.cp1 include/LibC/string.cp1 include/Posix/stat.cp1 bin/cp1-compile bin/cp1-parse
 build out/preprocess.cp1.c: compile Cp1/preprocess.cp1 Cp1/wtr.cp1 Cp1/rdr.cp1 Cp1/file.cp1 | include/LibCp1/stdout.cp1 include/LibC/stdio.cp1 include/Posix/fcntl.cp1 include/LibC/stdlib.cp1 include/Posix/unistd.cp1 include/LibC/string.cp1 include/Posix/stat.cp1 bin/cp1-compile bin/cp1-parse
 build out/parse2.cp1.c: compile Cp1/parse.cp1 out/token.cp1 Cp1/break.cp1 Cp1/math.cp1 Cp1/bools.cp1 Cp1/str.cp1 Cp1/cvar.cp1 Cp1/unary.cp1 Cp1/ref.cp1 Cp1/cast.cp1 Cp1/index.cp1 Cp1/switch.cp1 Cp1/if.cp1 Cp1/loop.cp1 Cp1/compare.cp1 Cp1/bool.cp1 Cp1/char.cp1 Cp1/call.cp1 Cp1/null.cp1 Cp1/int.cp1 Cp1/size.cp1 Cp1/assign.cp1 Cp1/fvar.cp1 Cp1/soa.cp1 Cp1/gvar.cp1 Cp1/continue.cp1 Cp1/return.cp1 Cp1/space.cp1 Cp1/export.cp1 Cp1/rdr.cp1 Cp1/wtr.cp1 Cp1/var.cp1 Cp1/func.cp1 Cp1/lvar.cp1 Cp1/enum.cp1 Cp1/expr.cp1 Cp1/stmt.cp1 out/parse-common.cp1 Cp1/struct.cp1 Cp1/file.cp1 out/hash-table-size.cp1 | include/LibCp1/stdout.cp1 include/LibC/stdio.cp1 include/Posix/fcntl.cp1 include/LibC/stdlib.cp1 include/Posix/unistd.cp1 include/LibC/string.cp1 include/Posix/stat.cp1 bin/cp1-compile bin/cp1-parse
 build out/compile2.cp1.c: compile Cp1/compile.cp1 out/compile-common.cp1 Cp1/rdr.cp1 Cp1/wtr.cp1 Cp1/func.cp1 Cp1/struct.cp1 Cp1/enum.cp1 Cp1/expr.cp1 Cp1/stmt.cp1 Cp1/var.cp1 Cp1/assign.cp1 Cp1/compare.cp1 Cp1/bool.cp1 Cp1/char.cp1 Cp1/math.cp1 Cp1/unary.cp1 Cp1/ref.cp1 Cp1/cast.cp1 Cp1/lvar.cp1 Cp1/fvar.cp1 Cp1/soa.cp1 Cp1/gvar.cp1 Cp1/cvar.cp1 Cp1/bools.cp1 Cp1/call.cp1 Cp1/str.cp1 Cp1/int.cp1 Cp1/size.cp1 Cp1/null.cp1 Cp1/index.cp1 Cp1/if.cp1 Cp1/switch.cp1 Cp1/loop.cp1 Cp1/continue.cp1 Cp1/break.cp1 Cp1/return.cp1 Cp1/space.cp1 Cp1/export.cp1 out/hash-table-size.cp1 Cp1/file.cp1 | include/LibCp1/stdout.cp1 include/LibC/stdio.cp1 include/Posix/fcntl.cp1 include/LibC/stdlib.cp1 include/Posix/unistd.cp1 include/LibC/string.cp1 bin/cp1-compile bin/cp1-parse
@@ -71,7 +71,7 @@ build out/export.h: run out/export out/parse2.cp1.c
 build out/lex.c: re2c lex-re2c.c
 build out/lemon: ld-lemon lemon.c
 build out/cp1_parse.c out/cp1_parse.h: lemon cp1_parse.y | out/lemon
-build out/cp1: ld-c2 out/cp1.cp1.c
+build out/cp1-run: ld-c2 out/run2.cp1.c
 build out/parse2.cp1.c.o: c2 out/parse2.cp1.c
 build out/parse2.c.o: c2 parse2.c | out/export.h out/lex.c out/cp1_parse.c
 #build out/parse2-redef.cp1.c.o: objredef out/parse2.cp1.c.o | redefs2
@@ -82,4 +82,4 @@ build out/compile2.c.o: c2 compile2.c
 build out/cp1-parse: ld-c2 out/parse2.cp1.c.o out/parse2.c.o out/hashtable.c.o
 build out/cp1-compile: ld-c2 out/compile2.cp1.c.o out/compile2.c.o out/hashtable.c.o
 #build out/cp1-compile-redef-output | redefs2: ld-c2-redef out/compile2.cp1.c.o out/compile2.c.o out/hashtable.c.o out/parse2.cp1.c.o out/parse2.c.o
-default out/cp1-compile out/cp1 out/cp1-preprocess out/cp1-parse
+#default out/cp1-compile out/cp1-run out/cp1-preprocess out/cp1-parse

@@ -1,4 +1,4 @@
-#include <stdout.h>
+import "LibCp1/stdout.cp1";
 using C1 = LibCp1;
 
 enum Direction[#right, #up, #left, #down]:u8 { // An 8-bit unsigned enum
