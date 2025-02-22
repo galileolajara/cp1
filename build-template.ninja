@@ -25,6 +25,21 @@ build bin/cp1-compile: ld-c out/compile.cp1.c.o out/compile.c.o out/hashtable.c.
 build bin/cp1-run: ld-c run.cp1.c
 build out/hashtable.c.o: c hashtable2.c
 
+rule cjs
+ command = tcc -D_GNU_SOURCE -DCONFIG_VERSION=\"2024-01-13\" -DCONFIG_BIGNUM -o $out -c $in -Iqjs
+ command = clang -D_GNU_SOURCE -DCONFIG_VERSION=\"2024-01-13\" -DCONFIG_BIGNUM -Wno-implicit-const-int-float-conversion -o $out -c $in -Iqjs
+ command = gcc   -D_GNU_SOURCE -DCONFIG_VERSION=\"2024-01-13\" -DCONFIG_BIGNUM -Wno-implicit-const-int-float-conversion -o $out -c $in -Iqjs
+
+build bin/cp1-qjs: ld-c out/cp1-qjs.c.o out/quickjs.c.o out/quickjs-libc.c.o out/cutils.c.o out/libregexp.c.o out/libbf.c.o out/libunicode.c.o
+ flags = -lm
+build out/cp1-qjs.c.o: cjs cp1-qjs.c
+build out/quickjs.c.o: cjs qjs/quickjs.c
+build out/quickjs-libc.c.o: cjs qjs/quickjs-libc.c
+build out/cutils.c.o: cjs qjs/cutils.c
+build out/libregexp.c.o: cjs qjs/libregexp.c
+build out/libbf.c.o: cjs qjs/libbf.c
+build out/libunicode.c.o: cjs qjs/libunicode.c
+
 rule c2
  command = tcc $flags -w -DCP1_NEW -I. -c $in -o $out
  command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out

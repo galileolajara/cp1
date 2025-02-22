@@ -731,7 +731,7 @@ write-template-code(w:Wtr, header:bool) @inline {
       w.n(td.code-len);
       w.copy(td.code, td.code-len);
       td.at.wr(w, header);
-      C1.stdout{"template code " td.name " at line " td.row " have " td.line-c " lines\n"}
+      // C1.stdout{"template code " td.name " at line " td.row " have " td.line-c " lines\n"}
    }
    w.n(.template-inst-c:base);
    // C1.stdout{"there are " .template-inst-c:base " templates in parse stage\n"}

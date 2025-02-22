@@ -195,14 +195,16 @@ void _NCp1_Pc_init_0() {
 
    mkdir("cp1-tmp-0", 0755);
 }
+// int qjs_main(int argc, char **argv);
 void _NCp1_Pquickjs_1(char* jspath) {
    const char *argv[] = {"cp1-qjs", jspath, NULL};
+   // int status = qjs_main(2, argv);
    pid_t pid;
    int spawn = posix_spawn(&pid, qjs_path, NULL, NULL, argv, environ);
    int status;
    waitpid(pid, &status, 0);
    if (status != 0) {
-      unlink(jspath);
+      // unlink(jspath);
       exit(EXIT_FAILURE);
    }
 }
