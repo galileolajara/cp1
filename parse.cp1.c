@@ -1515,7 +1515,7 @@ _NLibCp1_NStdOut_Pstdout_cstr_3(&_L_8, "' because it doesn't end with a new line
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_8);
 exit(_NLibC_NExit_Cfailure);
 }
-if(false) {
+if(true) {
 bool _Lpreprocess_9;
 union _NCp1_NRdr _Lr_end_10;
 union _NCp1_NRdr _Lr_11;
@@ -1546,6 +1546,7 @@ exit(_NLibC_NExit_Cfailure);
 } else if(_Lr_11._Fp1[0] == '/') {
 if(_Lr_11._Fp1[1] == '/') {
 if(((_Lr_11._Fp1[-1] == ' ') || (_Lr_11._Fp1[-1] == '\n'))) {
+} else if(_Lr_11._Freff == _Lnew_data_12) {
 } else {
 uint32_t _Lrow_17;
 uint32_t _Lcol_18;
@@ -1892,7 +1893,7 @@ continue_0:;
 }
 break_0:;
 _Lw_13._Fp1[0] = '\0';
-free(&_Lin_data_3[-1]);
+free(_Lin_data_3);
 _Lin_data_3 = _Lnew_data_12;
 _Lw_begin_63._Freff = _Lnew_data_12;
 _Lin_size_4 = (_Lw_13._Fpos - _Lw_begin_63._Fpos);

@@ -1001,7 +1001,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       C1.stdout{"Error reading file '" .input-path "' because it doesn't end with a new line\n"}
       C.exit(#failure);
    }
-   if false { // Process comments
+   if true { // Process comments
       preprocess! = false;
       // in-data = convert-old-to-new(in-data, in-size);
       var r-end:Rdr.;
@@ -1022,6 +1022,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          } elif r.p1[0] == ''/ {
             if r.p1[1] == ''/ {
                if (||, r.p1[-1] == '' , r.p1[-1] == ''\n) {
+                  // ok
+               } elif (r.reff == new-data) {
                   // ok
                } else {
                   get-row-col(row!, col!, r.reff, in-data);
@@ -1208,7 +1210,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          r.pos++;
       }
       w.p1[0] = ''\0;
-      C.free(&in-data[-1]);
+      C.free(in-data);
       in-data = new-data;
       var w-begin:Wtr.;
       w-begin.reff = new-data;

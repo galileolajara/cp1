@@ -30,7 +30,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    re2c:indent:top      = 1;
    re2c:yyfill:enable   = 0;
 
-   spaces = ([ \n]+|"// "[^\n]*"\n")+;
+   spaces = [ \n]+;
    id_one = [_0-9a-zA-Z\u00c0-\U0010ffff];
    id = id_one+("-" id_one+)*;
 
