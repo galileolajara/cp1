@@ -81,7 +81,7 @@ void _NLibCp1_Pstdout_u32_1(uint32_t _Lval_0);
 #endif
 int main(int _Larg_c_0, char** _Larg_v_1) {
 int32_t _Li_3;
-char* _Lin_data_13;
+char* _Lin_data_13 = {0};
 size_t _Lin_size_14;
 if(_Larg_c_0 < 3) {
 struct _NLibCp1_NStdOut _L_2;
@@ -278,12 +278,12 @@ void _NCp1_Ppreprocess_2(void** _Lin_out_data_0, size_t* _Lin_out_size_1) {
 bool _Lpreprocess_2;
 char* _Lin_data_3;
 size_t _Lin_size_4;
-union _NCp1_NRdr _Lr_end_5;
-union _NCp1_NRdr _Lr_6;
+union _NCp1_NRdr _Lr_end_5 = {0};
+union _NCp1_NRdr _Lr_6 = {0};
 void* _Lnew_data_7;
-union _NCp1_NWtr _Lw_8;
+union _NCp1_NWtr _Lw_8 = {0};
 uint32_t _Lline_9;
-union _NCp1_NWtr _Lw_begin_28;
+union _NCp1_NWtr _Lw_begin_28 = {0};
 _Lpreprocess_2 = false;
 _Lin_data_3 = (*_Lin_out_data_0);
 _Lin_size_4 = (*_Lin_out_size_1);
@@ -493,7 +493,7 @@ bool _NCp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2) {
 #ifdef _WIN32
 if(true) {
 HANDLE _Lh_3;
-uint32_t _Lbytes_written_4;
+uint32_t _Lbytes_written_4 = {0};
 _Lh_3 = CreateFileA(_Lpath_0, GENERIC_WRITE, _NWindows_NCreateFileShareMode_C0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, _NWindows_NHandle_Cnull);
 if(_Lh_3 == INVALID_HANDLE_VALUE) {
 return false;
@@ -507,7 +507,7 @@ return true;
 }
 #else
 if(true) {
-_NPosix_NFd _Lfd_5;
+_NPosix_NFd _Lfd_5 = {0};
 if(!_NPosix_NFd_Popen_4(&_Lfd_5, _Lpath_0, O_CREAT | O_TRUNC | O_WRONLY, 0644)) {
 return false;
 }
@@ -540,10 +540,10 @@ inline void* _NCp1_Pread_file_4(char* _Lpath_0, int32_t _Ladd_before_1, int32_t 
 #ifdef _WIN32
 if(true) {
 HANDLE _Lh_4;
-LARGE_INTEGER _Lf_size_5;
+LARGE_INTEGER _Lf_size_5 = {0};
 uint64_t _Lsize_6;
-uint8_t* _Lbuf_7;
-uint32_t _Lbytes_read_8;
+uint8_t* _Lbuf_7 = {0};
+uint32_t _Lbytes_read_8 = {0};
 _Lh_4 = CreateFileA(_Lpath_0, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, _NWindows_NHandle_Cnull);
 if(_Lh_4 == INVALID_HANDLE_VALUE) {
 return NULL;
@@ -565,9 +565,9 @@ return _Lbuf_7;
 }
 #else
 if(true) {
-_NPosix_NFd _Lfd_9;
+_NPosix_NFd _Lfd_9 = {0};
 size_t _Lsize_10;
-uint8_t* _Lbuf_11;
+uint8_t* _Lbuf_11 = {0};
 if(!_NPosix_NFd_Popen_3(&_Lfd_9, _Lpath_0, O_RDONLY)) {
 return NULL;
 }
@@ -653,7 +653,7 @@ _NLibCp1_Pstdout_reserve_1(10);
 if(_Lval_0 == 0) {
 _Gstdout_buf_data[_Gstdout_buf_len++] = '0';
 } else {
-char* _Ldata_1;
+char* _Ldata_1 = {0};
 int32_t _Ldigits_2;
 int32_t _Lstart_3;
 int32_t _Lend_4;

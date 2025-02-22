@@ -908,10 +908,10 @@ stmt_lvars_no_begin ::= lvar_list(end).
    { _NCp1_Pstmt_lvar_end_2(end.basic.row, end.basic.col); }
 decl_lvar ::= ID(var) typeAndInfo_optional SPACE_EQUAL SPACE expr(e).
    { _NCp1_Pstmt_lvar_add_4(var.basic.id, e.basic.id, var.basic.row, var.basic.col); }
-decl_lvar ::= ID(var) typeAndInfo_optional SPACE_EQUAL SPACE OPEN_BRACKET CLOSE_BRACKET.
-   { _NCp1_Pstmt_lvar_add_4(var.basic.id, -2, var.basic.row, var.basic.col); }
-decl_lvar ::= ID(var) typeAndInfo_optional.
+decl_lvar ::= ID(var) typeAndInfo_optional SPACE_EQUAL SPACE QUESTION.
    { _NCp1_Pstmt_lvar_add_4(var.basic.id, -1, var.basic.row, var.basic.col); }
+decl_lvar ::= ID(var) typeAndInfo_optional.
+   { _NCp1_Pstmt_lvar_add_4(var.basic.id, -2, var.basic.row, var.basic.col); }
 decl_lvars ::= decl_lvar.
 decl_lvars ::= decl_lvars COMMA_SPACE decl_lvar.
 lvar_list(l) ::= .

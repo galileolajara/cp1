@@ -155,8 +155,9 @@ char cp1_tmp[1024];
 uint16_t cp1_tmp_len;
 #define SPAWN_PARSE
 #ifdef SPAWN_PARSE
-char cmd_path[1024];
+char parser_path[1024];
 #endif
+char qjs_path[1024];
 // char _Gcurrent_dir[1024];
 // uint16_t _Gcurrent_dir_len;
 #include <sys/stat.h>
@@ -176,12 +177,36 @@ void _NCp1_Pc_init_0() {
       printf("- %s[%u]\n", _Ginclude_path_v[i], _Ginclude_path_len_v[i]);
    } */
    #ifdef SPAWN_PARSE
-   memcpy(cmd_path, _Ginclude_dir, _Ginclude_dir_len);
-   memcpy(cmd_path + _Ginclude_dir_len, "/bin/cp1-parse", 15);
-   // printf("cmd_path %s\n", cmd_path);
+   memcpy(parser_path, _Ginclude_dir, _Ginclude_dir_len);
+#ifdef CP1_NEW
+   memcpy(parser_path + _Ginclude_dir_len, "/out/cp1-parse", 15);
+#else
+   memcpy(parser_path + _Ginclude_dir_len, "/bin/cp1-parse", 15);
+#endif
+   // printf("parser_path %s\n", parser_path);
    #endif
 
+   memcpy(qjs_path, _Ginclude_dir, _Ginclude_dir_len);
+/* #ifdef CP1_NEW
+   memcpy(qjs_path + _Ginclude_dir_len, "/out/cp1-qjs", 13);
+#else */
+   memcpy(qjs_path + _Ginclude_dir_len, "/bin/cp1-qjs", 13);
+// #endif
+
    mkdir("cp1-tmp-0", 0755);
+}
+// int qjs_main(int argc, char **argv);
+void _NCp1_Pquickjs_1(char* jspath) {
+   const char *argv[] = {"cp1-qjs", jspath, NULL};
+   // int status = qjs_main(2, argv);
+   pid_t pid;
+   int spawn = posix_spawn(&pid, qjs_path, NULL, NULL, argv, environ);
+   int status;
+   waitpid(pid, &status, 0);
+   if (status != 0) {
+      // unlink(jspath);
+      exit(EXIT_FAILURE);
+   }
 }
 #include <sys/types.h>
 #include <stdio.h>
@@ -281,7 +306,7 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
 #ifdef SPAWN_PARSE
    pid_t pid;
    // memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/bin/cp1-parse", 15);
-   int spawn = posix_spawn(&pid, cmd_path, NULL, NULL, argv, environ);
+   int spawn = posix_spawn(&pid, parser_path, NULL, NULL, argv, environ);
    int status;
    waitpid(pid, &status, 0);
    // printf("spawn %s = %d, %d, %d\n", _Ginclude_dir, spawn, pid, status);

@@ -54,6 +54,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "+"                              { return CP1_TOKEN_PLUS; }
    "-"                              { return CP1_TOKEN_MINUS; }
    "!"                              { return CP1_TOKEN_EXCLAMATION; }
+   "?"                              { return CP1_TOKEN_QUESTION; }
    // "`"                              { return CP1_TOKEN_GRAVE; }
    "&"                              { return CP1_TOKEN_AMPERSAND; }
    "#"                              { return CP1_TOKEN_HASH; }

@@ -44,7 +44,7 @@ farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At,
       lvar! = ve.lvar.ptr();
       vd! = lvar.decl;
       if vd.type == #nil {
-         if (lvar.flags & #set-expr) == #0 {
+         // if (lvar.flags & #set-expr) == #0 {
             // if vd.type-info.array-c != fd-arg.type-info.array-c {
             //    C.err.printf("%s:%u:%u: Type deduction failed for lvar '%s', array dimension mismatch\n", .ctx-func.file.path(), lvar.row, lvar.col, vd.name.str());
             //    return false;
@@ -64,7 +64,7 @@ farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At,
                vd.type-info.ref-v[vd.type-info.array-c] -= 1:char;
                vd.type-info.star-c -= 1;
             }
-         }
+         // }
       }
    }
    // fd-arg.validate(base-at);

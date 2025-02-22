@@ -36,11 +36,11 @@ void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
 #define _NLibC_Prealloc_arr_2(var, c) var = realloc(var, sizeof(var[0]) * (c))
 int main(int _Larg_c_0, char** _Larg_v_1) {
 char* _Lbin_7;
-char _Lc_path_8[21];
+char _Lc_path_8[21] = {0};
 _NPosix_NFd _Lc_fd_9;
-char _Lexe_path_11[21];
+char _Lexe_path_11[21] = {0};
 _NPosix_NFd _Lexe_fd_12;
-char _Lcommand_14[1024];
+char _Lcommand_14[1024] = {0};
 int _Lc_ret_15;
 int _Lcompile_ret_16;
 int _Lexe_ret_18;
