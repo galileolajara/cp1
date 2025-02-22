@@ -5784,7 +5784,7 @@ static void yy_syntax_error(
             first_expect == CP1_TOKEN_PLUS &&
             second_expect == CP1_TOKEN_MINUS) {
             // Detect when the parser is suggesting ++ and -- operators
-            printf("%s:%u:%u: Maybe you have extra parenthesis?\n", input_path, _Grow, _Gcol);
+            printf("%s:%u:%u: Maybe you have extra parenthesis that are not used?\n", input_path, _Grow, _Gcol);
          }
       } else {
          const char* tokname = _NCp1_Ptoken_name_1(_Glast_token);
@@ -5799,7 +5799,7 @@ static void yy_syntax_error(
                first_expect == CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE || // in: assign statements
                first_expect == CP1_TOKEN_CLOSE_PARENTHESIS || // in: function arguments
                first_expect == CP1_TOKEN_SPACE) { // in: meta function arguments
-               printf("%s:%u:%u: Maybe you lack parenthesis?\n", input_path, _Grow, _Gcol);
+               printf("%s:%u:%u: Maybe you lack parenthesis when using different operators?\n", input_path, _Grow, _Gcol);
             }
          }
       }
