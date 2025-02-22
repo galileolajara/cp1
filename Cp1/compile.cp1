@@ -85,38 +85,6 @@ jscode-bytes(data:ref, size:usz) @inline {
    C.memcpy(&.jscode-buf-data[.jscode-buf-len], data, size);
    .jscode-buf-len += size;
 }
-using TemplateCodeData {
-   add-to-js(tc:this) {
-      jscode-reserve(256);
-      jscode{
-         "// template '" tc.name "' from " tc.file " line " tc.row "\n"
-         "function " tc.name "(arg) {\n"
-      }
-      code! = tc.code;
-      i! = 0;
-      line-num! = tc.row;
-      loop tc.line-c {
-         line-num++;
-         line-len! = code[i]:u32 | (code[i + 1]:u32 << 8);
-         i += 2;
-         if line-len == 0 {
-            jscode{''\n}
-         } else {
-            var line:char[] = &code[i];
-            if (line-len & 0x8000) == 0 {
-               jscode{"O(`" line, line-len "\\n`);\n"}
-            } else {
-               line-len &= 0x7fff;
-               jscode{"     " line, line-len}
-            }
-            i += line-len;
-         }
-      }
-      jscode{
-         "}\n"
-      }
-   }
-}
 include-add(include-len:u8, include-str:char[]):Include {
    found! = .include-map.get-or-insert(include-str, include-len, .include-c);
    // C1.stdout{"include-add " include-str " = " found ''\n}
@@ -734,7 +702,6 @@ read(in-path-cp1:char[], in-path-cp1-len:u32) {
       r.pos += td.code-len;
       td.at.rd(r);
       td.file = file-idx;
-      td.added-to-js = -1;
       // C1.stdout{"template " td.name "\n"}
    }
    template-inst-idx-begin! = .template-inst-c;
@@ -801,6 +768,7 @@ var include-path-v:char[][];
 var include-path-len-v:u16[];
 var include-path-c:u8;
 c-init();
+quickjs(js-path:char[]);
 main(arg-c:intc, arg-v:char[][]):intc @main {
    "#ifdef _WIN32";
    // Remove .exe from binary path
@@ -1015,13 +983,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    }
 
    if .template-inst-c != 0 {
-      var template-code-added-to-js-v:TemplateCode[];
-      template-code-added-to-js-c! = 0;
-      C.malloc-arr(template-code-added-to-js-v, .template-code-c:base);
-
       // process template instantiations
-      .jscode-buf-cap = 4096;
-      C.malloc-arr(.jscode-buf-data, .jscode-buf-cap);
+      if .jscode-buf-cap == 0 {
+         .jscode-buf-cap = 4096;
+         C.malloc-arr(.jscode-buf-data, .jscode-buf-cap);
+      }
       loop i = 0; .template-inst-c; i++ {
          ti! = .template-inst-v[i];
          // C1.stdout{"template instantiation of " ti.name "\n"}
@@ -1031,20 +997,73 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          loop j = 0:TemplateCode; .template-code-c; j++ {
             tc! = .template-code-v[j];
             if (at == tc.at) && (name == tc.name) {
-               if tc.added-to-js == -1 {
-                  tc.added-to-js = template-code-added-to-js-c++;
-                  if tc.added-to-js == 0 {
-                     jscode{
-                     '= output = [];
-                     '= function O(line) {
-                     '=    output.push(line);
-                     '= }
+               .jscode-buf-len = 0;
+               jscode{
+               '= output = [];
+               '= function O(line) {
+               '=    output.push(line);
+               '= }
+               }
+               jscode{
+                  "// template '" tc.name "' from " tc.file " line " tc.row "\n"
+                  "function " tc.name "(arg) {\n"
+               }
+               code! = tc.code;
+               i! = 0;
+               line-num! = tc.row;
+               loop tc.line-c {
+                  line-num++;
+                  line-len! = code[i]:u32 | (code[i + 1]:u32 << 8);
+                  i += 2;
+                  if line-len == 0 {
+                     jscode{''\n}
+                  } else {
+                     var line:char[] = &code[i];
+                     if (line-len & 0x8000) == 0 {
+                        jscode{"O(`" line, line-len "\\n`);\n"}
+                     } else {
+                        line-len &= 0x7fff;
+                        jscode{"     " line, line-len}
                      }
+                     i += line-len;
                   }
-                  template-code-added-to-js-v[tc.added-to-js] = j;
-                  tc.add-to-js();
+               }
+               jscode{
+                  "}\n"
                }
                jscode{tc.name ''( ti.arg, ti.arg-len ");\n"}
+               jscode{
+               '= let file = std.open(scriptArgs[0] + ".cp1", "wb");
+               '= file.puts(output.join(""));
+               // '= std.puts(output.join(""));
+               '= file.close();
+               }
+
+               var js-tmp-path:char[15 + 4 + 2];
+               C.memcpy(js-tmp-path, "cp1-tmp-XXXXXX", 15);
+               js-tmp-fd! = X.mkstemp(js-tmp-path);
+               js-tmp-fd.write(.jscode-buf-data, .jscode-buf-len);
+               js-tmp-fd.close();
+
+               // C1.stdout{"file was written at " js-tmp-path ''\n}
+               // C1.stdout{.jscode-buf-data, .jscode-buf-len}
+
+               quickjs(js-tmp-path);
+               // var command:char[128];
+               // C.sprintf(command, "%.*s-qjs %s", js-tmp-path);
+               // if C.system(command) != 0 {
+               //    X.unlink(js-tmp-path);
+               //    C.exit(#failure);
+               // }
+               X.unlink(js-tmp-path);
+
+               js-tmp-path[14] = ''.;
+               js-tmp-path[15] = ''c;
+               js-tmp-path[16] = ''p;
+               js-tmp-path[17] = ''1;
+               js-tmp-path[18] = ''\0;
+               read(C.strdup(js-tmp-path), C.strlen(js-tmp-path));
+               X.unlink(js-tmp-path);
                found = true;
                break;
             }
@@ -1055,38 +1074,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          }
       }
 
-      if template-code-added-to-js-c != 0 {
-         jscode{
-         '= let file = std.open(scriptArgs[0] + ".cp1", "wb");
-         '= file.puts(output.join(""));
-         // '= std.puts(output.join(""));
-         '= file.close();
-         }
-
-         var js-tmp-path:char[15 + 4 + 2];
-         C.memcpy(js-tmp-path, "cp1-tmp-XXXXXX", 15);
-         js-tmp-fd! = X.mkstemp(js-tmp-path);
-         js-tmp-fd.write(.jscode-buf-data, .jscode-buf-len);
-         js-tmp-fd.close();
-
-         // C1.stdout{"file was written at " js-tmp-path ''\n}
-         // C1.stdout{.jscode-buf-data, .jscode-buf-len}
-
-         var command:char[128];
-         C.sprintf(command, "./qjs --std %s", js-tmp-path);
-         if C.system(command) != 0 {
-            C.exit(#failure);
-         }
-
-         X.unlink(js-tmp-path);
-
-         js-tmp-path[14] = ''.;
-         js-tmp-path[15] = ''c;
-         js-tmp-path[16] = ''p;
-         js-tmp-path[17] = ''1;
-         js-tmp-path[18] = ''\0;
-         read(C.strdup(js-tmp-path), C.strlen(js-tmp-path));
-      }
    }
 
    loop f-idx = 0:Func; .func-c; f-idx++ {
@@ -1097,7 +1084,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          // C.out.flush();
          if at.type == #struct-enum {
             if at.decl.enumm == #nil {
-               C1.stdout{f.file '': f.begin-row '': f.begin-col ": function using ':this' was declared on :" at.name.id " which is not defined\n"}
+               C1.stdout{f.file '': f.begin-row '': f.begin-col ": function using 'this' was declared on " at.name.id " which is not defined\n"}
                C.exit(#failure);
             }
             if at.def == #struct {
@@ -1119,7 +1106,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                }
                t.method-v[t-method-idx] = f-idx;
             } else {
-               C1.stdout{f.file '': f.begin-row '': f.begin-col ": function using ':this' was declared on :" at.name.id " which is not a struct or enum\n"}
+               C1.stdout{f.file '': f.begin-row '': f.begin-col ": function using 'this' was declared on " at.name.id " which is not a struct or enum\n"}
                C.exit(#failure);
             }
          } elif at.type == #basic {
@@ -1132,7 +1119,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             }
             t.method-v[t-method-idx] = f-idx;
          } else {
-            C1.stdout{f.file '': f.begin-row '': f.begin-col ": function using ':this' was declared on a type that:S not a struct or enum\n"}
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": function using 'this' was declared on a type that's not a struct or enum\n"}
             C.exit(#failure);
          }
       }

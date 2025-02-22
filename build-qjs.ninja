@@ -1,0 +1,14 @@
+rule c
+ command = clang -D_GNU_SOURCE -DCONFIG_VERSION=\"2024-01-13\" -DCONFIG_BIGNUM -Wno-implicit-const-int-float-conversion -o $out -c $in -Iqjs
+
+rule ld
+ command = clang $in -o $out -lm
+
+build bin/cp1-qjs: ld out/cp1-qjs.c.o out/quickjs.c.o out/quickjs-libc.c.o out/cutils.c.o out/libregexp.c.o out/libbf.c.o out/libunicode.c.o
+build out/cp1-qjs.c.o: c cp1-qjs.c
+build out/quickjs.c.o: c qjs/quickjs.c
+build out/quickjs-libc.c.o: c qjs/quickjs-libc.c
+build out/cutils.c.o: c qjs/cutils.c
+build out/libregexp.c.o: c qjs/libregexp.c
+build out/libbf.c.o: c qjs/libbf.c
+build out/libunicode.c.o: c qjs/libunicode.c

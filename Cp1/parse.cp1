@@ -283,12 +283,12 @@ decl-alias(name:Id, at:At, row:u32, col:u32) {
    // }
    loop i = 0; .at-alias-c; i++ {
       if .at-alias-name-v[i] == name {
-         if .at-alias-at-v[i] == at {
+         // if .at-alias-at-v[i] == at {
             // Ok, because templates might emit duplicate aliases
-         } else {
+         // } else {
             C1.stdout{.input-path '': row '': col ": Alias '" name " was already declared at " .at-alias-pos-v[i].row '': .at-alias-pos-v[i].col ''\n}
             C.exit(#failure);
-         }
+         // }
          return;
       }
    }

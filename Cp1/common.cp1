@@ -994,7 +994,6 @@ struct TemplateCodeData[
    line-c:u32,
 #if(compile)
    file:File,
-   added-to-js:i32,
 #endif
 ];
 var template-code-v:TemplateCodeData.[];
