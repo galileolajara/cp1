@@ -956,6 +956,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       .import-new-c = 0;
       loop i = .import-c - new-c; new-c {
          path! = .import-v[i++];
+         // C1.stdout{"import " path "\n"}
          read(path.str(), path.len());
       }
    }
