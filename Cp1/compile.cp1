@@ -228,6 +228,7 @@ sqlite-init();
 read-cp1(path:char[], path-len:u32):ref;
 req-parse(in-path-cp1:char[], in-path-cp1-len:u8):char[];
 read(in-path-cp1:char[], in-path-cp1-len:u16) {
+   // C1.stdout{"read " in-path-cp1 "\n"}
    in-path! = req-parse(in-path-cp1, in-path-cp1-len);
 
    var r-begin:Rdr.;

@@ -196,7 +196,9 @@ void _NCp1_Pquickjs_end_2(char* js_data, uint32_t js_len) {
    cp1_tmp[i++] = 'p';
    cp1_tmp[i++] = '1';
    cp1_tmp[i] = '\0';
-   _NCp1_Pread_2(cp1_tmp, i);
+   char* new_path = malloc(i + 1);
+   memcpy(new_path, cp1_tmp, i + 1);
+   _NCp1_Pread_2(new_path, i);
 }
 #include <sys/types.h>
 #include <stdio.h>
