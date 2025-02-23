@@ -1,15 +1,15 @@
 rule c
  command = tcc $flags -w -I. -c $in -o $out
- command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -I. -c $in -o $out
- command = gcc   $flags -O0 -Werror=format -Wno-incompatible-pointer-types -I. -c $in -o $out
+ command = clang $flags -Werror=format -Wno-incompatible-pointer-types -I. -c $in -o $out
+ command = gcc   $flags -Werror=format -Wno-incompatible-pointer-types -I. -c $in -o $out
 
 #rule objredef
 # command = objcopy --redefine-syms=$redefs $in $out
 
 rule ld-c
  command = tcc $flags -w -I. $in -o $out
- command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out
- command = gcc   $flags -O0 -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out
+ command = clang $flags -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out
+ command = gcc   $flags -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out
 
 build out/parse.cp1.c.o: c parse.cp1.c
 #build out/parse-redef.cp1.c.o: objredef out/parse.cp1.c.o | redefs
@@ -42,13 +42,13 @@ build out/libunicode.c.o: cjs qjs/libunicode.c
 
 rule c2
  command = tcc $flags -w -DCP1_NEW -I. -c $in -o $out
- command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
- command = gcc   $flags -fsanitize=address -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
+ command = clang $flags -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
+ command = gcc   $flags -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
 
 rule ld-c2
  command = tcc $flags -w -DCP1_NEW -I. $in -o $out
- command = clang $flags -s -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
- command = gcc   $flags -fsanitize=address -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
+ command = clang $flags -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
+ command = gcc   $flags -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
 
 #rule ld-c2-redef
 # command = gcc $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out.tmp 2> redefs2.txt || true && node redefs.js redefs2.txt redefs2 && touch $out

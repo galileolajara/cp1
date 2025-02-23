@@ -118,7 +118,12 @@ uint32_t _NCp1_Pquickjs_hex_2(char* js_data, uint32_t code_crc32c) {
    return i;
 }
 bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8_t tplt_name_len, uint32_t code_crc32c, uint32_t arg_crc32c) {
-   int i = cp1_tmp_len;
+   int i;
+   if (memcmp(path, cp1_tmp, cp1_tmp_len) == 0) {
+      i = 0;
+   } else {
+      i = cp1_tmp_len;
+   }
    memcpy(cp1_tmp + i, path, path_len);
    i += path_len;
    cp1_tmp[i++] = '-';
@@ -158,7 +163,9 @@ bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8
       _NCp1_Pquickjs_hex_2(scratch, code_crc32c);
       if (memcmp(scratch, cache, 12) == 0) {
          // printf("%s did not change, using the cached copy\n", cp1_tmp);
-         _NCp1_Pread_2(cp1_tmp, j);
+         char* new_path = malloc(j + 1);
+         memcpy(new_path, cp1_tmp, j + 1);
+         _NCp1_Pread_2(new_path, j);
          return false;
       }
    }
@@ -167,7 +174,7 @@ bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8
    return true;
 }
 void _NCp1_Pquickjs_end_2(char* js_data, uint32_t js_len) {
-   char tmp_path[1024];
+   char tmp_path[1024 + 10];
    sprintf(tmp_path, "%s-%u", cp1_tmp, getpid());
    _NCp1_Pwrite_file_3(tmp_path, js_data, js_len);
    #ifdef _WIN32
@@ -233,11 +240,14 @@ void create_folders_recursively(const char *file_path) {
 }
 // int parse_main(int argc, char** argv);
 char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
-   // printf("req-parse of %s\n", path);
+   // const char* path = *ppath;
    const char* fullpath;
    char cp1_tmp2[1024];
    struct stat s;
-   if (path == cp1_tmp) {
+   if (memcmp(path, cp1_tmp, cp1_tmp_len) == 0) {
+      /* char* new_path = malloc(path_len + 1);
+      memcpy(new_path, path, path_len + 1);
+      *ppath = new_path; */
       if (stat(path, &s) == 0) {
          // printf("file '%s' was found\n", path);
          memcpy(cp1_tmp2, path, path_len + 1);

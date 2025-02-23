@@ -2484,7 +2484,7 @@ exit(_NLibC_NExit_Cfailure);
 }
 #ifdef _WIN32
 unlink(_Llock_path_6);
-#endif;
+#endif
 rename(_Ltmp_path_116, _Llock_path_6);
 _Gid_c = 0;
 _Gid_in_header_c = 0;

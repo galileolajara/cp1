@@ -167,7 +167,7 @@ bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8
    return true;
 }
 void _NCp1_Pquickjs_end_2(char* js_data, uint32_t js_len) {
-   char tmp_path[1024];
+   char tmp_path[1024 + 10];
    sprintf(tmp_path, "%s-%u", cp1_tmp, getpid());
    _NCp1_Pwrite_file_3(tmp_path, js_data, js_len);
    #ifdef _WIN32

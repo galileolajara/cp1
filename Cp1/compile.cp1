@@ -181,93 +181,56 @@ id-add(id-len:u8, id-str:char[]):Id {
    .id-str-v[id-idx] = id-str;
    return id-idx;
 }
+var import-new-c:u32;
 var import-v:Include[];
 var import-cap:u32;
 var import-c:u32;
-var imported-v:Include[];
-var imported-cap:u32;
-var imported-c:u32;
 import(path:Include) {
-   loop i = 0; .imported-c {
+   loop i = 0; .import-c {
       // C1.stdout{"import " path " " path:base " checking if exists, " i:u32 " = " path ''\n}
-      if .imported-v[i++] == path {
+      if .import-v[i++] == path {
          return;
       }
    }
    // C1.stdout{"import " path " " path:base ''\n}
    if true {
-      i! = .imported-c++;
-      if .imported-cap < .imported-c {
-         .imported-cap += .imported-cap;
-         loop .imported-cap < .imported-c {
-            .imported-cap += .imported-cap;
-         }
-         C.realloc-arr(.imported-v, .imported-cap);
-      }
-      .imported-v[i] = path;
-      // C1.stdout{"import " path " added as " i:u32 ''\n}
-   }
-   if true {
       i! = .import-c++;
       if .import-cap < .import-c {
-         .import-cap += .import-cap;
-         loop .import-cap < .import-c {
-            .import-cap += .import-cap;
-         }
+         grow(.import-cap, .import-c);
          C.realloc-arr(.import-v, .import-cap);
       }
       .import-v[i] = path;
+      // C1.stdout{"import " path " added as " i:u32 ''\n}
    }
+   .import-new-c++;
 }
-var import-tmp-v:Include[];
-var import-tmp-cap:u32;
-var import-tmp-c:u32;
-import-now() {
-   if .import-c == 0 { return }
-   if .import-tmp-cap < .import-c {
-      .import-tmp-cap += .import-tmp-cap;
-      loop .import-tmp-cap < .import-c {
-         .import-tmp-cap += .import-tmp-cap;
+var template-inst-new-c:u32;
+template-inst(ti:TemplateInstData) {
+   loop j = 0; .template-inst-c {
+      ti2! = .template-inst-v[j++];
+      if (ti2.name == ti.name) && (ti2.at == ti.at) && (ti2.arg-crc32c == ti.arg-crc32c) {
+         return;
       }
-      C.realloc-arr(.import-tmp-v, .import-tmp-cap);
    }
-   .import-tmp-c = .import-c;
-   .import-c = 0;
-   loop i = 0; .import-tmp-c; i++ {
-      .import-tmp-v[i] = .import-v[i];
+   if true {
+      i! = .template-inst-c++;
+      if .template-inst-cap < .template-inst-c {
+         .template-inst-cap = grow(.template-inst-c:base);
+         C.realloc-arr(.template-inst-v, .template-inst-cap:base);
+      }
+      C.memcpy(.template-inst-v[i], ti, TemplateInstData[usz]);
    }
-   // loop i = 0; .import-tmp-c {
-   //    path! = .import-tmp-v[i++];
-   //    // C1.stdout{"requesting parse of " path "...\n"}
-   //    req-parse(path.str(), path.len());
-   //    // parse(path.str(), path.len());
-   // }
-   loop i = 0; .import-tmp-c {
-      path! = .import-tmp-v[i++];
-      read(path.str(), path.len());
+   if true {
+      .template-inst-new-c++;
    }
 }
 sqlite-init();
 read-cp1(path:char[], path-len:u32):ref;
 req-parse(in-path-cp1:char[], in-path-cp1-len:u8):char[];
-parse(in-path-cp1:char[], in-path-cp1-len:u32) {
-   var command:char[4096];
-   C.sprintf(command, "bin/cp1-parse -I \"%s\" \"%s\"", .include-dir, in-path-cp1);
-   if C.system(command) != 0 {
-      C.exit(#failure);
-   }
-}
 read(in-path-cp1:char[], in-path-cp1-len:u16) {
    in-path! = req-parse(in-path-cp1, in-path-cp1-len);
-   // var in-path:char[256 + 16];
-   // C.memcpy(in-path, in-path-cp1, in-path-cp1-len);
-   // in-path[in-path-cp1-len] = ''-;
-   // in-path[in-path-cp1-len + 1] = ''b;
-   // in-path[in-path-cp1-len + 2] = ''\0;
-   // C1.stdout{"reading " in-path "...\n"}
 
    var r-begin:Rdr.;
-   // r-begin.reff = read-cp1(in-path, in-path-cp1-len);
    r-begin.reff = read-file(in-path, in-size!);
    if r-begin.reff == null {
       C1.stdout{"Cannot open file for reading: " in-path-cp1 ''\n}
@@ -691,14 +654,15 @@ read(in-path-cp1:char[], in-path-cp1-len:u16) {
    template-code-idx-begin! = .template-code-c;
    template-code-c! = r.n():TemplateCode;
    // C1.stdout{"there are " template-code-c:base " template codes\n"}
+   old-template-code-c! = .template-code-c;
    .template-code-c += template-code-c;
    if .template-code-cap <= .template-code-c {
       old-cap! = .template-code-cap;
       .template-code-cap = grow(.template-code-c:base);
       realloc(.template-code-v, .template-code-cap:base, old-cap:base);
    }
-   loop i = template-code-idx-begin; template-code-c; {
-      td! = .template-code-v[i++];
+   loop i = template-code-idx-begin; template-code-c; i++ {
+      td! = .template-code-v[i];
       td.name.rd(r);
       td.row = r.n();
       td.line-c = r.n();
@@ -708,42 +672,28 @@ read(in-path-cp1:char[], in-path-cp1-len:u16) {
       r.pos += td.code-len;
       td.at.rd(r);
       td.file = file-idx;
-      // C1.stdout{"template " td.name "\n"}
-   }
-   template-inst-idx-begin! = .template-inst-c;
-   template-inst-c! = r.n():TemplateCode;
-   // C1.stdout{"there are " template-inst-c:base " template instantiationss\n"}
-   // .template-inst-c += template-inst-c;
-   old-template-inst-c! = .template-inst-c;
-   template-inst-c2! = template-inst-c + old-template-inst-c;
-   if .template-inst-cap <= template-inst-c2 {
-      old-cap! = .template-inst-cap;
-      .template-inst-cap = grow(template-inst-c2:base);
-      realloc(.template-inst-v, .template-inst-cap:base, old-cap:base);
-   }
-   i! = template-inst-idx-begin;
-   loop template-inst-c {
-      td! = .template-inst-v[i++];
-      td.name.rd(r);
-      td.row = r.n();
-      td.col = r.n();
-      td.arg-len = r.n();
-      td.arg-crc32c = r.n4();
-      td.arg = r.charr;
-      r.pos += td.arg-len;
-      td.at.rd(r);
-      td.file = file-idx;
-      loop j = 0; old-template-inst-c {
-         td2! = .template-inst-v[j++];
-         if (td2.name == td.name) && (td2.at == td.at) && (td2.arg-len = td.arg-len) && (td2.arg-crc32c == td.arg-crc32c) {
-            // C1.stdout{"template " td.name " was already instantiated with the same arguments, silently ignoring...\n"}
-            i--;
-            break;
+      loop j = 0; old-template-code-c; j++ {
+         td2! = .template-code-v[j];
+         if (td2.name == td.name) && (td2.at == td.at) {
+            C1.stdout{file-idx '': td.row ": Template code '" td.name "' was redeclared. Previously declared at " td2.file '': td2.row ''\n}
+            C.exit(#failure);
          }
       }
       // C1.stdout{"template " td.name "\n"}
    }
-   .template-inst-c = i;
+   loop r.n() {
+      var ti:TemplateInstData. = ?;
+      ti.name.rd(r);
+      ti.row = r.n();
+      ti.col = r.n();
+      ti.arg-len = r.n();
+      ti.arg-crc32c = r.n4();
+      ti.arg = r.charr;
+      r.pos += ti.arg-len;
+      ti.at.rd(r);
+      ti.file = file-idx;
+      template-inst(ti);
+   }
 }
 // var out:C.File;
 var process-first:Func;
@@ -976,12 +926,10 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    //    at-i! = basic-type(#bool);
    // }
 
-   .imported-cap = 32;
-   C.malloc-arr(.imported-v, .imported-cap);
    .import-cap = 32;
    C.malloc-arr(.import-v, .import-cap);
-   .import-tmp-cap = 32;
-   C.malloc-arr(.import-tmp-v, .import-tmp-cap);
+   .template-inst-cap = 32;
+   C.malloc-arr(.template-inst-v, .template-inst-cap:base);
 
    loop i = 0; input-file-c; i++ {
       inc! = include-add(input-file-len-v[i], input-file-v[i]);
@@ -993,22 +941,30 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       import(inc);
    }
    loop {
-      import-now();
-      if .import-c == 0 { break }
+      "import_now:;";
+      new-c! = .import-new-c;
+      if new-c == 0 { break }
+      .import-new-c = 0;
+      loop i = .import-c - new-c; new-c {
+         path! = .import-v[i++];
+         read(path.str(), path.len());
+      }
    }
 
-   if .template-inst-c != 0 {
+   if .template-inst-new-c != 0 {
       // process template instantiations
       if .jscode-buf-cap == 0 {
          .jscode-buf-cap = 4096;
          C.malloc-arr(.jscode-buf-data, .jscode-buf-cap);
       }
-      loop i = 0; .template-inst-c; i++ {
+      new-c! = .template-inst-new-c;
+      .template-inst-new-c = 0;
+      loop i = .template-inst-c - new-c; new-c; i++ {
          ti! = .template-inst-v[i];
-         C1.stdout{"template instantiation of " ti.name "\n"}
          at! = ti.at;
          name! = ti.name;
          found! = false;
+         // C1.stdout{"template instantiation of " ti.name "; " ti.arg, ti.arg-len " " ti.arg-len "\n"}
          loop j = 0:TemplateCode; .template-code-c; j++ {
             tc! = .template-code-v[j];
             if (at == tc.at) && (name == tc.name) {
@@ -1068,7 +1024,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             C.exit(#failure);
          }
       }
-
+      "goto import_now;";
    }
 
    loop f-idx = 0:Func; .func-c; f-idx++ {

@@ -42,7 +42,6 @@ decl-template-inst(name:Id, row:u32, col:u32) {
    at! = .decl-at;
    arg-buf! = .string-buf;
    arg-len! = .string-len;
-   // C1.stdout{"template args: " .string-buf, arg-len ", name: " name ''\n}
    loop i = 0; .template-inst-c; i++ {
       td! = .template-inst-v[i];
       if (td.at == at) && (td.name == name) && (td.arg-len == arg-len) && (C.memcmp(td.arg, arg-buf, arg-len) == 0) {
@@ -1748,7 +1747,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    // C1.stdout{"rename " tmp-path " -> " lock-path ''\n}
    "#ifdef _WIN32";
    X.unlink(lock-path);
-   "#endif;";
+   "#endif";
    C.rename(tmp-path, lock-path);
 
    .id-c = 0;
