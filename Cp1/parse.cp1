@@ -1237,7 +1237,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    var r-end:Rdr.;
    r-end.reff = in-data;
    r-end.pos += in-size;
-   parse-str-init(in-size);
+   parse-str-init(in-size * 2); // multiply by two for the escape sequences
 
    .id-cap = 64;
    malloc-arr(.id-str-v, .id-cap);
