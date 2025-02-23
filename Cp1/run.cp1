@@ -32,6 +32,13 @@ validate-cp1-path(bin:char[], cp1-path:char[]) {
          C.exit(#failure);
       }
    }
+   loop j = 0; cp1-path-len; j++ {
+      if cp1-path[j] == ''  {
+         print-commands(bin);
+         C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must not contain a space\n"}
+         C.exit(#failure);
+      }
+   }
    loop j = 0; cp1-path-len - 1; j++ {
       if (&&, cp1-path[j] == ''., cp1-path[j + 1] == ''/) {
          print-commands(bin);

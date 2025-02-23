@@ -869,7 +869,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
    }
 }
 
-enum IncludeError[#none, #suffix, #absolute, #dot-slash, #slash, #double-slash, #cp1]:u8 {
+enum IncludeError[#none, #suffix, #absolute, #dot-slash, #slash, #double-slash, #cp1, #space]:u8 {
    print(e:this, path:Include) {
       switch e {
          case #suffix {
@@ -889,6 +889,9 @@ enum IncludeError[#none, #suffix, #absolute, #dot-slash, #slash, #double-slash, 
          }
          case #cp1 {
             C1.stdout{''\' path "' must not contain '.cp1' character sequence except as a suffix.\n"}
+         }
+         case #space {
+            C1.stdout{''\' path "' must not contain a space character.\n"}
          }
       }
    }
@@ -910,6 +913,12 @@ enum Include[#nil = -1, #0]:i32 {
       loop i = 0; len; i++ {
          if str[i] == ''\\ {
             err = #slash;
+            return false;
+         }
+      }
+      loop i = 0; len; i++ {
+         if str[i] == ''  {
+            err = #space;
             return false;
          }
       }
