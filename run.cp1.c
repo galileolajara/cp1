@@ -35,19 +35,19 @@ void _NLibCp1_Pstdout_flush_0();
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
 #define _NLibC_Prealloc_arr_2(var, c) var = realloc(var, sizeof(var[0]) * (c))
 int main(int _Larg_c_0, char** _Larg_v_1) {
-char* _Lbin_7;
+char* _Lbin_7 = {0};
 char _Lc_path_8[21] = {0};
-_NPosix_NFd _Lc_fd_9;
+_NPosix_NFd _Lc_fd_9 = {0};
 char _Lexe_path_11[21] = {0};
-_NPosix_NFd _Lexe_fd_12;
+_NPosix_NFd _Lexe_fd_12 = {0};
 char _Lcommand_14[1024] = {0};
-int _Lc_ret_15;
-int _Lcompile_ret_16;
-int _Lexe_ret_18;
+int _Lc_ret_15 = {0};
+int _Lcompile_ret_16 = {0};
+int _Lexe_ret_18 = {0};
 #ifdef _WIN32
 if(true) {
-char* _Larg_2;
-size_t _Llen_3;
+char* _Larg_2 = {0};
+size_t _Llen_3 = {0};
 _Larg_2 = _Larg_v_1[0];
 _Llen_3 = strlen(_Larg_2);
 if(((_Larg_2[(_Llen_3 - 4)] == '.') && (_Larg_2[(_Llen_3 - 3)] == 'e') && (_Larg_2[(_Llen_3 - 2)] == 'x') && (_Larg_2[(_Llen_3 - 1)] == 'e'))) {
@@ -58,7 +58,7 @@ int32_t _Li_4;
 _Li_4 = 0;
 for(int i = _Larg_c_0; i > 0; ) {
 i --;
-char* _Larg_5;
+char* _Larg_5 = {0};
 _Larg_5 = _Larg_v_1[_Li_4];
 int32_t _Lj_6;
 _Lj_6 = 0;
@@ -161,7 +161,7 @@ _NLibCp1_NStdOut_Pstdout_cstr_3(&_L_1, " [file.cp1]\n", 12u);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_1);
 }
 void _Pvalidate_cp1_path_2(char* _Lbin_0, char* _Lcp1_path_1) {
-size_t _Lcp1_path_len_3;
+size_t _Lcp1_path_len_3 = {0};
 if(_Lcp1_path_1[0] == '/') {
 struct _NLibCp1_NStdOut _L_2;
 _Pprint_commands_1(_Lbin_0);
@@ -197,15 +197,15 @@ _Lj_4++;
 break_0:;
 int32_t _Lj_6;
 _Lj_6 = 0;
-for(int i = _Lcp1_path_len_3 - 1; i > 0; ) {
+for(int i = _Lcp1_path_len_3; i > 0; ) {
 i --;
-if(((_Lcp1_path_1[_Lj_6] == '.') && (_Lcp1_path_1[(_Lj_6 + 1)] == '/'))) {
+if(_Lcp1_path_1[_Lj_6] == ' ') {
 struct _NLibCp1_NStdOut _L_7;
 _Pprint_commands_1(_Lbin_0);
 _NLibCp1_Pstdout_1(&_L_7);
 _NLibCp1_NStdOut_Pstdout_cstr_3(&_L_7, "Error, [cp1 file] (which is '", 29u);
 _Tchar_Pstdout_arr_2(_Lcp1_path_1, &_L_7);
-_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_7, "') must not contain './'\n", 25u);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_7, "') must not contain a space\n", 28u);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_7);
 exit(_NLibC_NExit_Cfailure);
 }
@@ -213,14 +213,32 @@ continue_1:;
 _Lj_6++;
 }
 break_1:;
-if(!((_Lcp1_path_len_3 > 4) && (_Lcp1_path_1[(_Lcp1_path_len_3 - 4)] == '.') && (_Lcp1_path_1[(_Lcp1_path_len_3 - 3)] == 'c') && (_Lcp1_path_1[(_Lcp1_path_len_3 - 2)] == 'p') && (_Lcp1_path_1[(_Lcp1_path_len_3 - 1)] == '1'))) {
-struct _NLibCp1_NStdOut _L_8;
+int32_t _Lj_8;
+_Lj_8 = 0;
+for(int i = _Lcp1_path_len_3 - 1; i > 0; ) {
+i --;
+if(((_Lcp1_path_1[_Lj_8] == '.') && (_Lcp1_path_1[(_Lj_8 + 1)] == '/'))) {
+struct _NLibCp1_NStdOut _L_9;
 _Pprint_commands_1(_Lbin_0);
-_NLibCp1_Pstdout_1(&_L_8);
-_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_8, "Error, [cp1 file] (which is '", 29u);
-_Tchar_Pstdout_arr_2(_Lcp1_path_1, &_L_8);
-_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_8, "') must be a filename that ends with '.cp1', for example: main.cp1\n", 67u);
-_NLibCp1_NStdOut_Pstdout_end_1(&_L_8);
+_NLibCp1_Pstdout_1(&_L_9);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_9, "Error, [cp1 file] (which is '", 29u);
+_Tchar_Pstdout_arr_2(_Lcp1_path_1, &_L_9);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_9, "') must not contain './'\n", 25u);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_9);
+exit(_NLibC_NExit_Cfailure);
+}
+continue_2:;
+_Lj_8++;
+}
+break_2:;
+if(!((_Lcp1_path_len_3 > 4) && (_Lcp1_path_1[(_Lcp1_path_len_3 - 4)] == '.') && (_Lcp1_path_1[(_Lcp1_path_len_3 - 3)] == 'c') && (_Lcp1_path_1[(_Lcp1_path_len_3 - 2)] == 'p') && (_Lcp1_path_1[(_Lcp1_path_len_3 - 1)] == '1'))) {
+struct _NLibCp1_NStdOut _L_10;
+_Pprint_commands_1(_Lbin_0);
+_NLibCp1_Pstdout_1(&_L_10);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_10, "Error, [cp1 file] (which is '", 29u);
+_Tchar_Pstdout_arr_2(_Lcp1_path_1, &_L_10);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_10, "') must be a filename that ends with '.cp1', for example: main.cp1\n", 67u);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_10);
 exit(_NLibC_NExit_Cfailure);
 }
 }
@@ -258,7 +276,7 @@ write((_NPosix_NFd)(1), _Gstdout_buf_data, _Gstdout_buf_len);
 _Gstdout_buf_len = 0;
 }
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0) {
-uint32_t _Lspace_1;
+uint32_t _Lspace_1 = {0};
 _Lspace_1 = (_Gstdout_buf_cap - _Gstdout_buf_len);
 if(_Lspace_1 < _Llen_0) {
 if(_Gstdout_buf_cap == 0) {

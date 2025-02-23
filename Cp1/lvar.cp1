@@ -76,22 +76,15 @@ expr-lvar(name:Id, decl:u8, row:u32, col:u32):ExprI {
       return #nil;
    } else {
       space! = .decl-func-ctx-space;
-      loop decl > 1 {
-         space = space.parent;
-         if space == null {
-            C1.stdout{.input-path '': row '': col ": Cannot declare local variable '" name "' with too much '+'\n"}
-            C.exit(#failure);
-         }
-         if (space.flags & #skip-lvar-decl) == #0 {
-            decl--;
-         }
-      }
       var e:ExprLvar;
       quick-alloc-one(e);
       e-idx! = expr-push(e.base, #lvar);
       e.lvar = space.lvar-new(name, row, col);
       lvar! = e.lvar.ptr();
       .decl-var.name = name;
+      if decl == 1 {
+         lvar.flags |= #set-expr;
+      }
       lvar.decl.copy-from(.decl-var);
       return e-idx;
    }
