@@ -66,9 +66,7 @@ extern uint16_t* _Ginclude_path_len_v;
 extern uint8_t _Ginclude_path_c;
 char cp1_tmp[1024];
 char cp1_tmp_js[1024];
-// uint16_t cp1_tmp_len;
 #define cp1_tmp_len 17
-#define cp1_tmp_js_len 17
 #define SPAWN_PARSE
 #ifdef SPAWN_PARSE
 char parser_path[1024];
@@ -105,9 +103,9 @@ void _NCp1_Pc_init_1(uint32_t js_crc32c) {
 
    memcpy(cp1_tmp_js, "cp1-tmp-", 8);
    hex32(&cp1_tmp_js[8], js_crc32c);
-   cp1_tmp_js[cp1_tmp_js_len - 1] = '\0';
+   cp1_tmp_js[cp1_tmp_len - 1] = '\0';
    mkdir(cp1_tmp_js, 0755);
-   cp1_tmp_js[cp1_tmp_js_len - 1] = '/';
+   cp1_tmp_js[cp1_tmp_len - 1] = '/';
 
    #ifdef SPAWN_PARSE
    memcpy(parser_path, _Ginclude_dir, _Ginclude_dir_len);
@@ -140,7 +138,7 @@ bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8
    if (memcmp(path, "cp1-tmp-", 8) == 0) {
       i = 0;
    } else {
-      i = cp1_tmp_js_len;
+      i = cp1_tmp_len;
    }
    memcpy(cp1_tmp_js + i, path, path_len);
    i += path_len;
@@ -248,21 +246,22 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
    // const char* path = *ppath;
    const char* fullpath;
    char cp1_tmp2[1024];
+   char* tmp = cp1_tmp;
    struct stat s;
-   if (memcmp(path, "cp1-tmp-", 8) == 0) {
-      /* char* new_path = malloc(path_len + 1);
-      memcpy(new_path, path, path_len + 1);
-      *ppath = new_path; */
+   if (memcmp(path, cp1_tmp, cp1_tmp_len) == 0) {
+      stat_tmp:
       if (stat(path, &s) == 0) {
-         // printf("file '%s' was found\n", path);
          memcpy(cp1_tmp2, path, path_len + 1);
          fullpath = cp1_tmp2;
       } else {
          goto notfound;
       }
-      cp1_tmp[path_len] = '-';
-      cp1_tmp[path_len + 1] = 'b';
-      cp1_tmp[path_len + 2] = '\0';
+      tmp[path_len] = '-';
+      tmp[path_len + 1] = 'b';
+      tmp[path_len + 2] = '\0';
+   } else if (memcmp(path, cp1_tmp_js, cp1_tmp_len) == 0) {
+      tmp = cp1_tmp_js;
+      goto stat_tmp;
    } else {
       if (stat(path, &s) == 0) {
          // printf("file '%s' was found\n", path);
@@ -292,30 +291,30 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
          }
       }
       found:;
-      memcpy(cp1_tmp + cp1_tmp_len, path, path_len);
-      cp1_tmp[cp1_tmp_len + path_len] = '-';
-      cp1_tmp[cp1_tmp_len + path_len + 1] = 'b';
-      cp1_tmp[cp1_tmp_len + path_len + 2] = '\0';
+      memcpy(tmp + cp1_tmp_len, path, path_len);
+      tmp[cp1_tmp_len + path_len] = '-';
+      tmp[cp1_tmp_len + path_len + 1] = 'b';
+      tmp[cp1_tmp_len + path_len + 2] = '\0';
    }
    struct stat s2;
-   if (stat(cp1_tmp, &s2) == 0) {
+   if (stat(tmp, &s2) == 0) {
 #ifdef __APPLE__
       if (s2.st_mtimespec.tv_sec > s.st_mtimespec.tv_sec) {
-         return cp1_tmp;
+         return tmp;
       } else if ((s2.st_mtimespec.tv_sec == s.st_mtimespec.tv_sec) && (s2.st_mtimespec.tv_nsec > s.st_mtimespec.tv_nsec)) {
-         return cp1_tmp;
+         return tmp;
       }
 #else
       if (s2.st_mtim.tv_sec > s.st_mtim.tv_sec) {
-         return cp1_tmp;
+         return tmp;
       } else if ((s2.st_mtim.tv_sec == s.st_mtim.tv_sec) && (s2.st_mtim.tv_nsec > s.st_mtim.tv_nsec)) {
-         return cp1_tmp;
+         return tmp;
       }
 #endif
    }
-   create_folders_recursively(cp1_tmp);
-   // printf("parsing %s to %s\n", fullpath, cp1_tmp);
-   const char *argv[] = {"cp1-parse", fullpath, cp1_tmp, NULL};
+   create_folders_recursively(tmp);
+   // printf("parsing %s to %s\n", fullpath, tmp);
+   const char *argv[] = {"cp1-parse", fullpath, tmp, NULL};
 #ifdef SPAWN_PARSE
    pid_t pid;
    // memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/bin/cp1-parse", 15);
@@ -328,5 +327,5 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
    if (status != 0) {
       exit(EXIT_FAILURE);
    }
-   return cp1_tmp;
+   return tmp;
 }
