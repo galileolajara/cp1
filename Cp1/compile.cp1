@@ -1016,11 +1016,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   .jscode-buf-len = 0; // quickjs-hex(.jscode-buf-data, tc.code-crc32c);
                   jscode{
                     "// template '" tc.name "' from " tc.file " line " tc.row "\n"
-                  '= output = [];
+                  '= let cp1_out = [];
                   '= function O(line) {
-                  '=    output.push(line);
+                  '=    cp1_out.push(line);
                   '= }
-                  '= cp1_cache = true;
+                  '= let cp1_path = scriptArgs[0] + ".cp1";
+                  '= let cp1_cache = true;
                      ti.arg, ti.arg-len ";\n"
                     "if (cp1_cache) O(\""
                   }
@@ -1054,9 +1055,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   // }
                   jscode{
                   '= let tmp_path = scriptArgs[0] + ".cp1-" + os.getpid();
-                  '= let cp1_path = scriptArgs[0] + ".cp1";
                   '= let file = std.open(tmp_path, "wb");
-                  '= file.puts(output.join(""));
+                  '= file.puts(cp1_out.join(""));
                   '= file.close();
                   '= if (os.platform == "win32") os.remove(cp1_path);
                   '= os.rename(tmp_path, cp1_path);

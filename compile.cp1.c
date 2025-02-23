@@ -1680,11 +1680,12 @@ _NCp1_NFile_Pjscode_2((*_Ltc_55)._Ffile, &_L_56);
 _NCp1_NJsCode_Pjscode_cstr_3(&_L_56, " line ", 6u);
 _Tu32_Pjscode_2((*_Ltc_55)._Frow, &_L_56);
 _NCp1_NJsCode_Pjscode_cstr_3(&_L_56, "\n"
-"output = [];\n"
+"let cp1_out = [];\n"
 "function O(line) {\n"
-"   output.push(line);\n"
+"   cp1_out.push(line);\n"
 "}\n"
-"cp1_cache = true;\n", 75u);
+"let cp1_path = scriptArgs[0] + \".cp1\";\n"
+"let cp1_cache = true;\n", 124u);
 _Tchar_Pjscode_arr_3((*_Lti_50)._Farg, &_L_56, (*_Lti_50)._Farg_len);
 _NCp1_NJsCode_Pjscode_cstr_3(&_L_56, ";\n"
 "if (cp1_cache) O(\"", 20u);
@@ -1732,12 +1733,11 @@ continue_11:;
 break_11:;
 _NCp1_Pjscode_1(&_L_66);
 _NCp1_NJsCode_Pjscode_cstr_3(&_L_66, "let tmp_path = scriptArgs[0] + \".cp1-\" + os.getpid();\n"
-"let cp1_path = scriptArgs[0] + \".cp1\";\n"
 "let file = std.open(tmp_path, \"wb\");\n"
-"file.puts(output.join(\"\"));\n"
+"file.puts(cp1_out.join(\"\"));\n"
 "file.close();\n"
 "if (os.platform == \"win32\") os.remove(cp1_path);\n"
-"os.rename(tmp_path, cp1_path);\n", 252u);
+"os.rename(tmp_path, cp1_path);\n", 214u);
 _NCp1_NJsCode_Pjscode_end_1(&_L_66);
 _NCp1_Pquickjs_end_2(_Gjscode_buf_data, _Gjscode_buf_len);
 }
