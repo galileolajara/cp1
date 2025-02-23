@@ -323,6 +323,7 @@ lex_template_code: {
       int32_t i = 0;
       int row = _Grow;
       char* string_ptr = string_mem;
+      int32_t first_indent = -1;
       for(;;) {
          if (code[i] == '\0') {
             fprintf(stdout, "%s:%u:%u: Error, cannot find the matching '}' of the template.\n", input_path, _Grow, _Gcol);
@@ -376,8 +377,13 @@ lex_template_code: {
             fprintf(stdout, "%s:%u:%u: Error, this line must be indented further\n", input_path, row, first_char);
             exit(EXIT_FAILURE);
          } else {
+            if (first_indent == -1) {
+               first_indent = first_char;
+            } else if (first_char < first_indent) {
+               goto indent_more;
+            }
             string_ptr += 2;
-            for(int32_t i = 0; i < first_char; i++) {
+            for(int32_t i = first_indent; i < first_char; i++) {
                *(string_ptr++) = ' ';
             }
             // 0 - inside `...`
