@@ -276,7 +276,13 @@ bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8
    return true;
 }
 void _NCp1_Pquickjs_end_2(char* js_data, uint32_t js_len) {
-   _NCp1_Pwrite_file_3(cp1_tmp, js_data, js_len);
+   char tmp_path[1024];
+   sprintf(tmp_path, "%s-%u", cp1_tmp, getpid());
+   _NCp1_Pwrite_file_3(tmp_path, js_data, js_len);
+   #ifdef _WIN32
+   unlink(cp1_tmp);
+   #endif
+   rename(tmp_path, cp1_tmp);
    const char *argv[] = {"cp1-qjs", cp1_tmp, NULL};
    // int status = qjs_main(2, argv);
    pid_t pid;
