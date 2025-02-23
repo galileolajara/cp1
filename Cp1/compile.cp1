@@ -139,6 +139,9 @@ enum File[#nil = -1, #0]:i32 {
    path(f:this):char[] @inline {
       return f.ptr().path;
    }
+   path-len(f:this):u16 @inline {
+      return f.ptr().path-len;
+   }
    stdout(f:this, so:C1.StdOut) {
       C1.stdout-cstr(f.ptr().path);
    }
@@ -148,6 +151,7 @@ enum File[#nil = -1, #0]:i32 {
 }
 struct FileData[
    path:char[],
+   path-len:u16,
    data:ref,
    id-table:Id[],
    at-table:At[],
@@ -253,7 +257,7 @@ parse(in-path-cp1:char[], in-path-cp1-len:u32) {
       C.exit(#failure);
    }
 }
-read(in-path-cp1:char[], in-path-cp1-len:u32) {
+read(in-path-cp1:char[], in-path-cp1-len:u16) {
    in-path! = req-parse(in-path-cp1, in-path-cp1-len);
    // var in-path:char[256 + 16];
    // C.memcpy(in-path, in-path-cp1, in-path-cp1-len);
@@ -280,6 +284,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u32) {
    }
    file! = .file-v[file-idx];
    file.path = in-path-cp1;
+   file.path-len = in-path-cp1-len;
    file.data = r-begin.reff;
 
    var r:Rdr.;
@@ -722,13 +727,14 @@ read(in-path-cp1:char[], in-path-cp1-len:u32) {
       td.row = r.n();
       td.col = r.n();
       td.arg-len = r.n();
+      td.arg-crc32c = r.n4();
       td.arg = r.charr;
       r.pos += td.arg-len;
       td.at.rd(r);
       td.file = file-idx;
       loop j = 0; old-template-inst-c {
          td2! = .template-inst-v[j++];
-         if (td2.at == td.at) && (td2.name == td.name) && (td2.arg-len = td.arg-len) && (C.memcmp(td2.arg, td.arg, td.arg-len) == 0) {
+         if (td2.name == td.name) && (td2.at == td.at) && (td2.arg-len = td.arg-len) && (td2.arg-crc32c == td.arg-crc32c) {
             // C1.stdout{"template " td.name " was already instantiated with the same arguments, silently ignoring...\n"}
             i--;
             break;
@@ -768,7 +774,7 @@ var include-path-v:char[][];
 var include-path-len-v:u16[];
 var include-path-c:u8;
 c-init();
-quickjs(js-path:char[]);
+quickjs(file:char[], file-len:u8, tc-name:char[], tc-name-len:u8, arg-crc32c:u32, js-data:char[], js-data-len:u32);
 main(arg-c:intc, arg-v:char[][]):intc @main {
    "#ifdef _WIN32";
    // Remove .exe from binary path
@@ -975,7 +981,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    C.malloc-arr(.import-tmp-v, .import-tmp-cap);
 
    loop i = 0; input-file-c; i++ {
-      import(include-add(input-file-len-v[i], input-file-v[i]));
+      inc! = include-add(input-file-len-v[i], input-file-v[i]);
+      if !inc.validate(err!) {
+         C1.stdbuf{"Command line argument path "}
+         err.print(inc);
+         C.exit(#failure);
+      }
+      import(inc);
    }
    loop {
       import-now();
@@ -1016,7 +1028,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   line-len! = code[i]:u32 | (code[i + 1]:u32 << 8);
                   i += 2;
                   if line-len == 0 {
-                     jscode{''\n}
+                     jscode{'= O("\n");
+                     }
                   } else {
                      var line:char[] = &code[i];
                      if (line-len & 0x8000) == 0 {
@@ -1035,35 +1048,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                jscode{
                '= let file = std.open(scriptArgs[0] + ".cp1", "wb");
                '= file.puts(output.join(""));
-               // '= std.puts(output.join(""));
                '= file.close();
                }
-
-               var js-tmp-path:char[15 + 4 + 2];
-               C.memcpy(js-tmp-path, "cp1-tmp-XXXXXX", 15);
-               js-tmp-fd! = X.mkstemp(js-tmp-path);
-               js-tmp-fd.write(.jscode-buf-data, .jscode-buf-len);
-               js-tmp-fd.close();
-
-               // C1.stdout{"file was written at " js-tmp-path ''\n}
-               // C1.stdout{.jscode-buf-data, .jscode-buf-len}
-
-               quickjs(js-tmp-path);
-               // var command:char[128];
-               // C.sprintf(command, "%.*s-qjs %s", js-tmp-path);
-               // if C.system(command) != 0 {
-               //    X.unlink(js-tmp-path);
-               //    C.exit(#failure);
-               // }
-               X.unlink(js-tmp-path);
-
-               js-tmp-path[14] = ''.;
-               js-tmp-path[15] = ''c;
-               js-tmp-path[16] = ''p;
-               js-tmp-path[17] = ''1;
-               js-tmp-path[18] = ''\0;
-               read(C.strdup(js-tmp-path), C.strlen(js-tmp-path));
-               X.unlink(js-tmp-path);
+               quickjs(tc.file.path(), tc.file.path-len(), tc.name.str(), tc.name.len(), ti.arg-crc32c, .jscode-buf-data, .jscode-buf-len);
                found = true;
                break;
             }

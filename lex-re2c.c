@@ -492,7 +492,7 @@ lex_template_code: {
 
          i++;
       }
-      // fprintf(stdout, "template code begin\n%.*stemplate code end\n", (int)(string_ptr - string_mem), string_mem);
+      fprintf(stdout, "template code begin\n%.*stemplate code end\n%u\n", (int32_t)(string_ptr - string_mem), string_mem, (int32_t)(string_ptr - string_mem));
       _Gstring_buf = string_mem;
       _Gstring_len = string_ptr - string_mem;
       return CP1_TOKEN_TEMPLATE_CODE;

@@ -869,7 +869,70 @@ enum At[#nil = -1, #root, #relative]:i32 {
    }
 }
 
+enum IncludeError[#none, #suffix, #absolute, #dot-slash, #slash, #double-slash, #cp1]:u8 {
+   print(e:this, path:Include) {
+      switch e {
+         case #suffix {
+            C1.stdout{''\' path "' must end with .cp1\n"}
+         }
+         case #absolute {
+            C1.stdout{''\' path "' is an absolute path. Please use relative paths.\n"}
+         }
+         case #dot-slash {
+            C1.stdout{''\' path "' must not contain './' character sequence.\n"}
+         }
+         case #slash {
+            C1.stdout{''\' path "' must not contain '\\' character.\n"}
+         }
+         case #double-slash {
+            C1.stdout{''\' path "' must not contain '//' character sequence.\n"}
+         }
+         case #cp1 {
+            C1.stdout{''\' path "' must not contain '.cp1' character sequence except as a suffix.\n"}
+         }
+      }
+   }
+}
 enum Include[#nil = -1, #0]:i32 {
+   validate(path:this, err:IncludeError&):bool {
+      str! = path.str();
+      len! = path.len();
+      if (len >= 4) && (str[len - 4] == ''.) && (str[len - 3] == ''c) && (str[len - 2] == ''p) && (str[len - 1] == ''1) {
+         // ok
+      } else {
+         err = #suffix;
+         return false;
+      }
+      if str[0] == ''/ {
+         err = #absolute;
+         return false;
+      }
+      loop i = 0; len; i++ {
+         if str[i] == ''\\ {
+            err = #slash;
+            return false;
+         }
+      }
+      loop i = 0; len - 4; i++ {
+         if (str[i] == ''.) && (str[i + 1] == ''c) && (str[i + 2] == ''p) && (str[i + 3] == ''1) {
+            err = #cp1;
+            return false;
+         }
+      }
+      loop i = 0; len - 1; i++ {
+         if (str[i] == ''.) && (str[i + 1] == ''/) {
+            err = #dot-slash;
+            return false;
+         }
+      }
+      loop i = 0; len - 1; i++ {
+         if (str[i] == ''/) && (str[i + 1] == ''/) {
+            err = #double-slash;
+            return false;
+         }
+      }
+      return true;
+   }
    str(i:this):char[] @inline {
       return .include-str-v[i];
    }
@@ -1003,6 +1066,7 @@ enum TemplateCode[]:u32;
 struct TemplateInstData[
    arg:char[],
    arg-len:u32,
+   arg-crc32c:u32,
    name:Id,
    at:At,
    row:u32,

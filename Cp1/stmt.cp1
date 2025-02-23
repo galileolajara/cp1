@@ -26,6 +26,9 @@ struct Stmt[
    stmt-next:Stmt,
    ] {
    write(s:this) {
+      // C1.stdout{
+      //    '= printf("%s %d\n", __FILE__, __LINE__);
+      // }
       switch.write(s) s.type {
          default {
             C1.stdout{"write() not yet implemented in stmt #" s.type.cp1-name() ''\n}

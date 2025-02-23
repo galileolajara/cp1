@@ -14,9 +14,14 @@ var import-v:Include[];
 var import-cap:u32;
 var import-c:u32;
 decl-import(path:Include, row:u32, col:u32) {
+   if !path.validate(err!) {
+      C1.stdbuf{.input-path '': row '': col ": Import path "}
+      err.print(path);
+      C.exit(#failure);
+   }
    loop i = 0; .import-c; i++ {
       if .import-v[i] == path {
-         C1.stdout{"already import '" path "' with the same arguments, silently ignoring...\n"}
+         // C1.stdout{"already import '" path "' with the same arguments, silently ignoring...\n"}
          return;
       }
    }
@@ -32,6 +37,7 @@ var template-name-buf:char[] @extern;
 var template-name-len:u8 @extern;
 var template-code-indention:u32 @extern;
 var template-code-line-c:u32 @extern;
+crc32c(crc32c:u32, data:ref, size:usz):u32 @real-name;
 decl-template-inst(name:Id, row:u32, col:u32) {
    at! = .decl-at;
    arg-buf! = .string-buf;
@@ -57,6 +63,7 @@ decl-template-inst(name:Id, row:u32, col:u32) {
    C.memcpy(arg, arg-buf, arg-len);
    td.arg = arg;
    td.arg-len = arg-len;
+   td.arg-crc32c = crc32c(0, arg, arg-len);
    td.at = at;
    td.row = row;
    td.col = col;
@@ -741,6 +748,7 @@ write-template-code(w:Wtr, header:bool) @inline {
       w.n(td.row);
       w.n(td.col);
       w.n(td.arg-len);
+      w.n4(td.arg-crc32c);
       w.copy(td.arg, td.arg-len);
       td.at.wr(w, header);
    }
