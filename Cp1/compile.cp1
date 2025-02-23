@@ -1053,9 +1053,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   //    "}\n"
                   // }
                   jscode{
-                  '= let file = std.open(scriptArgs[0] + ".cp1", "wb");
+                  '= let tmp_path = scriptArgs[0] + ".cp1-" + os.getpid();
+                  '= let file = std.open(tmp_path, "wb");
                   '= file.puts(output.join(""));
                   '= file.close();
+                  '= os.rename(tmp_path, scriptArgs[0] + ".cp1");
                   }
                   quickjs-end(.jscode-buf-data, .jscode-buf-len);
                }

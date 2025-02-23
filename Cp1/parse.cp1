@@ -1742,6 +1742,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       C.exit(#failure);
    }
    // C1.stdout{"rename " tmp-path " -> " lock-path ''\n}
+   "#ifdef _WIN32";
+   X.unlink(lock-path);
+   "#endif;";
    C.rename(tmp-path, lock-path);
 
    .id-c = 0;

@@ -2469,6 +2469,9 @@ _Tchar_Pstdout_2('\n', &_L_116);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_116);
 exit(_NLibC_NExit_Cfailure);
 }
+#ifdef _WIN32
+unlink(_Llock_path_6);
+#endif;
 rename(_Ltmp_path_115, _Llock_path_6);
 _Gid_c = 0;
 _Gid_in_header_c = 0;
