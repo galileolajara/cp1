@@ -9,27 +9,31 @@
 #include <unistd.h>
 #include <stdbool.h>
 
+struct _NCp1_NTokenDataI32 {
+   uint32_t row;
+   uint32_t col;
+   int32_t id;
+   int32_t id2;
+};
+struct _NCp1_NTokenDataF32 {
+   uint32_t row;
+   uint32_t col;
+   float f32;
+};
+struct _NCp1_NTokenDataU64 {
+   uint32_t row;
+   uint32_t col;
+   uint64_t u64;
+};
+struct _NCp1_NTokenDataIndex {
+   int v[15];
+   int c;
+};
 union _NCp1_NTokenData {
-   struct {
-      int row;
-      int col;
-      float f32;
-   } f32;
-   struct {
-      int row;
-      int col;
-      uint64_t u64;
-   } u64;
-   struct {
-      int row;
-      int col;
-      int id;
-      int id2;
-   } basic;
-   struct {
-      int v[15];
-      int c;
-   } index;
+   struct _NCp1_NTokenDataI32 basic;
+   struct _NCp1_NTokenDataF32 f32;
+   struct _NCp1_NTokenDataU64 u64;
+   struct _NCp1_NTokenDataIndex index;
    void* pointer;
 };
 

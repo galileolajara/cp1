@@ -7,6 +7,9 @@ rule c
 rule ld-c
  command = gcc   $flags -ggdb -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out
 
+rule crc32c
+ command = bin/crc32c $in $out
+
 build out/parse.cp1.c.o: c parse.cp1.c
 #build out/parse-redef.cp1.c.o: objredef out/parse.cp1.c.o | redefs
 # redefs = redefs
@@ -19,6 +22,7 @@ build bin/cp1-compile: ld-c out/compile.cp1.c.o out/compile.c.o out/hashtable.c.
 # out/parse-redef.cp1.c.o out/parse.c.o
 #build bin/cp1-compile-redef-output: ld-c out/compile.cp1.c.o out/compile.c.o out/hashtable.c.o out/parse.cp1.c.o out/parse.c.o
 build bin/cp1-run: ld-c run.cp1.c
+build bin/crc32c: ld-c crc32c.c
 build out/hashtable.c.o: c hashtable2.c
 
 rule cjs
@@ -90,7 +94,8 @@ build out/parse2.c.o: c2 parse2.c | out/export.h out/lex.c out/cp1_parse.c
 #build out/parse2-redef.cp1.c.o: objredef out/parse2.cp1.c.o | redefs2
 # redefs = redefs2
 build out/hashtable2.c.o: c2 hashtable2.c
-build out/compile2.cp1.c.o: c2 out/compile2.cp1.c
+build out/build-crc32c.h: crc32c out/compile2.cp1.c out/parse2.cp1.c | bin/crc32c
+build out/compile2.cp1.c.o: c2 out/compile2.cp1.c | out/build-crc32c.h
 build out/compile2.c.o: c2 compile2.c
 build out/cp1-parse: ld-c2 out/parse2.cp1.c.o out/parse2.c.o out/hashtable.c.o
 build out/cp1-compile: ld-c2 out/compile2.cp1.c.o out/compile2.c.o out/hashtable.c.o

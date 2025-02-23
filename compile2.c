@@ -65,15 +65,41 @@ extern char** _Ginclude_path_v;
 extern uint16_t* _Ginclude_path_len_v;
 extern uint8_t _Ginclude_path_c;
 char cp1_tmp[1024];
-uint16_t cp1_tmp_len;
+// uint16_t cp1_tmp_len;
+#define cp1_tmp_len 17
 #define SPAWN_PARSE
 #ifdef SPAWN_PARSE
 char parser_path[1024];
 #endif
 char qjs_path[1024];
 #include <sys/stat.h>
-void _NCp1_Pc_init_0() {
-   memcpy(cp1_tmp, "cp1-tmp-0/", cp1_tmp_len = 10);
+void hex32(char* out, uint32_t hex) {
+   uint8_t i = 0;
+   uint8_t n;
+   n = hex >> 28;
+   out[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   n = (hex >> 24) & 15;
+   out[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   n = (hex >> 20) & 15;
+   out[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   n = (hex >> 16) & 15;
+   out[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   n = (hex >> 12) & 15;
+   out[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   n = (hex >> 8) & 15;
+   out[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   n = (hex >> 4) & 15;
+   out[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   n = hex & 15;
+   out[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+}
+void _NCp1_Pc_init_1(uint32_t crc32c) {
+   memcpy(cp1_tmp, "cp1-tmp-", 8);
+   hex32(&cp1_tmp[8], crc32c);
+   cp1_tmp[cp1_tmp_len - 1] = '\0';
+   mkdir(cp1_tmp, 0755);
+   cp1_tmp[cp1_tmp_len - 1] = '/';
+
    #ifdef SPAWN_PARSE
    memcpy(parser_path, _Ginclude_dir, _Ginclude_dir_len);
    #ifdef CP1_NEW
@@ -85,8 +111,6 @@ void _NCp1_Pc_init_0() {
 
    memcpy(qjs_path, _Ginclude_dir, _Ginclude_dir_len);
    memcpy(qjs_path + _Ginclude_dir_len, "/bin/cp1-qjs", 13);
-
-   mkdir("cp1-tmp-0", 0755);
 }
 bool _NCp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
 void _NCp1_Pread_2(char* _Lin_path_cp1_0, uint16_t _Lin_path_cp1_len_1);
@@ -97,23 +121,8 @@ uint32_t _NCp1_Pquickjs_hex_2(char* js_data, uint32_t code_crc32c) {
    js_data[i++] = '/';
    js_data[i++] = '/';
    js_data[i++] = ' ';
-   uint8_t n;
-   n = code_crc32c >> 28;
-   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
-   n = (code_crc32c >> 24) & 15;
-   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
-   n = (code_crc32c >> 20) & 15;
-   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
-   n = (code_crc32c >> 16) & 15;
-   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
-   n = (code_crc32c >> 12) & 15;
-   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
-   n = (code_crc32c >> 8) & 15;
-   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
-   n = (code_crc32c >> 4) & 15;
-   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
-   n = code_crc32c & 15;
-   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   hex32(&js_data[i], code_crc32c);
+   i += 8;
    js_data[i++] = ' ';
    return i;
 }
@@ -130,23 +139,8 @@ bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8
    memcpy(&cp1_tmp[i], tplt_name, tplt_name_len);
    i += tplt_name_len;
    cp1_tmp[i++] = '-';
-   uint8_t n;
-   n = arg_crc32c >> 28;
-   cp1_tmp[i++] = n < 10 ? '0' + n : 'a' + n - 10;
-   n = (arg_crc32c >> 24) & 15;
-   cp1_tmp[i++] = n < 10 ? '0' + n : 'a' + n - 10;
-   n = (arg_crc32c >> 20) & 15;
-   cp1_tmp[i++] = n < 10 ? '0' + n : 'a' + n - 10;
-   n = (arg_crc32c >> 16) & 15;
-   cp1_tmp[i++] = n < 10 ? '0' + n : 'a' + n - 10;
-   n = (arg_crc32c >> 12) & 15;
-   cp1_tmp[i++] = n < 10 ? '0' + n : 'a' + n - 10;
-   n = (arg_crc32c >> 8) & 15;
-   cp1_tmp[i++] = n < 10 ? '0' + n : 'a' + n - 10;
-   n = (arg_crc32c >> 4) & 15;
-   cp1_tmp[i++] = n < 10 ? '0' + n : 'a' + n - 10;
-   n = arg_crc32c & 15;
-   cp1_tmp[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   hex32(&cp1_tmp[i], arg_crc32c);
+   i += 8;
    cp1_tmp[i++] = '.';
    cp1_tmp[i++] = 'j';
    cp1_tmp[i++] = 's';

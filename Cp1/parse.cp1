@@ -37,7 +37,6 @@ var template-name-buf:char[] @extern;
 var template-name-len:u8 @extern;
 var template-code-indention:u32 @extern;
 var template-code-line-c:u32 @extern;
-crc32c(crc32c:u32, data:ref, size:u32):u32 @real-name;
 decl-template-inst(name:Id, row:u32, col:u32) {
    at! = .decl-at;
    arg-buf! = .string-buf;

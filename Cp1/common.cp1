@@ -13,6 +13,7 @@ struct Map[data:u64[(#hash-table-size + 7) >> 3]] {
    init(m:this);
    get-or-insert(m:this, str:char[], len:u8, val:i32):i32;
 }
+crc32c(crc32c:u32, data:ref, size:u32):u32 @real-name;
 var id-map:Map.;
 var include-map:Map.;
 var at-map:AtMap.;

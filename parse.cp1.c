@@ -498,6 +498,7 @@ struct _NCp1_NTokenDataI32 _Fii32;
 struct _NCp1_NTokenDataF32 _Fff32;
 struct _NCp1_NTokenDataU64 _Fuu64;
 struct _NCp1_NTokenDataIndex _Findex;
+void* _Fpointer;
 };
 struct _NCp1_NCvarData;
 struct _NCp1_NCvarData {

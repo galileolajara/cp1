@@ -720,15 +720,18 @@ var struct-outputted-v:Struct[];
 var include-dir:char[1024];
 var include-dir-len:u16;
 var define-v:char[][];
-var define-len-v:u8[];
+var define-len-v:u16[];
 var define-c:u16;
 var include-path-v:char[][];
 var include-path-len-v:u16[];
 var include-path-c:u8;
-c-init();
+c-init(crc32c:u32);
 quickjs-begin(file:char[], file-len:u8, tc-name:char[], tc-name-len:u8, code-crc32c:u32, arg-crc32c:u32):bool;
 quickjs-hex(data:char[], code-crc32c:u32):u32;
 quickjs-end(js-data:char[], js-data-len:u32);
+include "build-crc32c.c" {
+   build-crc32c():u32 @no-decl;
+}
 main(arg-c:intc, arg-v:char[][]):intc @main {
    "#ifdef _WIN32";
    // Remove .exe from binary path
@@ -765,7 +768,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    watermark! = false;
    var comment-for-func:char[] = null;
    comment-for-func-len! = 0;
-   var crc32 = 0:u32;
+   var crc32c = build-crc32c();
    loop i = 1; i < arg-c {
       arg! = arg-v[i++];
       if arg[0] == ''- {
@@ -778,6 +781,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                "goto usage;";
             }
          } elif arg[1] == ''F {
+            // For hacking the output C code,
+            // to determine the beginning and end of function bodies
             comment-for-func = arg-v[i++];
             if comment-for-func == null {
                C1.stdout{"The option -F must be followed by a path\n"}
@@ -803,13 +808,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             .include-path-len-v[.include-path-c] = arg-len;
             .include-path-c++;
          } elif arg[1] == ''D {
-            arg = arg-v[i++];
-            if arg == null {
-               C1.stdout{"The option -D must be followed by a path\n"}
-               "goto usage;";
-            }
-            .define-v[.define-c] = arg;
-            .define-len-v[.define-c] = C.strlen(arg);
+            var def:char[] = &arg[1];
+            def-len! = C.strlen(def);
+            crc32c = crc32c(crc32c, def, def-len);
+            .define-v[.define-c] = def;
+            .define-len-v[.define-c] = def-len;
             .define-c++;
          } else {
             if arg[1] == ''\0 {
@@ -888,7 +891,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    slash2! = C.strrchr(abs-path, ''/);
    slash2[0] = ''\0;
    .include-dir-len = C.strlen(.include-dir);
-   c-init();
+   c-init(crc32c);
    if (input-file-c == 0) || (output-file == null) {
       "usage:";
       C1.stdout{
