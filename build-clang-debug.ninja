@@ -17,12 +17,12 @@ build out/parse.c.o: c parse.c | export.h lex.c cp1_parse.c
 build bin/cp1-preprocess: ld-c preprocess.cp1.c
 build out/compile.cp1.c.o: c compile.cp1.c
 build out/compile.c.o: c compile.c
-build bin/cp1-parse: ld-c out/parse.cp1.c.o out/parse.c.o out/hashtable.c.o
+build bin/cp1-parse: ld-c out/parse.cp1.c.o out/parse.c.o out/hashtable.c.o | build-crc32c.h
 build bin/cp1-compile: ld-c out/compile.cp1.c.o out/compile.c.o out/hashtable.c.o
 # out/parse-redef.cp1.c.o out/parse.c.o
 #build bin/cp1-compile-redef-output: ld-c out/compile.cp1.c.o out/compile.c.o out/hashtable.c.o out/parse.cp1.c.o out/parse.c.o
 build bin/cp1-run: ld-c run.cp1.c
-build bin/crc32c: ld-c crc32c.c
+build bin/crc32c: ld-c crc32c.c | crc32c.h
 build out/hashtable.c.o: c hashtable2.c
 
 rule cjs
