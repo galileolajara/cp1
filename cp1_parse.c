@@ -232,7 +232,7 @@ char* string_mem;
 #define YYCODETYPE unsigned short int
 #define YYNOCODE 350
 #define YYACTIONTYPE unsigned short int
-#define cp1ParseTOKENTYPE union cp1_token
+#define cp1ParseTOKENTYPE union _NCp1_NTokenData
 typedef union {
   int yyinit;
   cp1ParseTOKENTYPE yy0;

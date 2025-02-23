@@ -9,27 +9,31 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-union cp1_token {
-   struct {
-      int row;
-      int col;
-      float f32;
-   } f32;
-   struct {
-      int row;
-      int col;
-      uint64_t u64;
-   } u64;
-   struct {
-      int row;
-      int col;
-      int id;
-      int id2;
-   } basic;
-   struct {
-      int v[15];
-      int c;
-   } index;
+struct _NCp1_NTokenDataI32 {
+   uint32_t row;
+   uint32_t col;
+   int32_t id;
+   int32_t id2;
+};
+struct _NCp1_NTokenDataF32 {
+   uint32_t row;
+   uint32_t col;
+   float f32;
+};
+struct _NCp1_NTokenDataU64 {
+   uint32_t row;
+   uint32_t col;
+   uint64_t u64;
+};
+struct _NCp1_NTokenDataIndex {
+   int v[15];
+   int c;
+};
+union _NCp1_NTokenData {
+   struct _NCp1_NTokenDataI32 basic;
+   struct _NCp1_NTokenDataF32 f32;
+   struct _NCp1_NTokenDataU64 u64;
+   struct _NCp1_NTokenDataIndex index;
    void* pointer;
 };
 
@@ -71,7 +75,7 @@ void _NCp1_Ppreprocess_init_0() {
 }
 */
 
-extern uint8_t _Glast_token;
+extern int _Glast_token;
 
 typedef int _NCp1_NExprI;
 typedef int _NCp1_NId;
@@ -87,7 +91,7 @@ typedef int8_t _NCp1_NStmtType;
 typedef int8_t _NCp1_NCompare;
 typedef int8_t _NCp1_NAssign;
 typedef int8_t _NCp1_NBools;
-typedef int8_t _NCp1_NToken;
+typedef int _NCp1_NToken;
 struct _NCp1_NStmtSpace;
 struct _NCp1_NStmt;
 struct _NCp1_NExprData;

@@ -98,8 +98,9 @@ static const uint32_t crc32c_table[256] = {
 };
 
 
-uint32_t crc32c(uint32_t crc, const uint8_t *data, unsigned int length)
+uint32_t crc32c(uint32_t crc, void *pdata, unsigned int length)
 {
+   uint8_t* data = pdata;
 	while (length--) {
 		crc = crc32c_table[(crc ^ *data++) & 0xFFL] ^ (crc >> 8);
 	}

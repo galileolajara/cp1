@@ -29,6 +29,17 @@ fs.writeFileSync("build-clang-debug.ninja", out.join(""));
 out = [];
 for (let line of lines) {
    if (line.startsWith(" command = tcc ")) continue;
+   if (line.startsWith(" command = gcc ")) continue;
+   if (line.startsWith(" command = clang ")) {
+      out.push(line.split("$flags").join("$flags -O3 -flto") + "\n");
+   } else {
+      out.push(line + "\n");
+   }
+}
+fs.writeFileSync("build-clang-release.ninja", out.join(""));
+out = [];
+for (let line of lines) {
+   if (line.startsWith(" command = tcc ")) continue;
    if (line.startsWith(" command = clang ")) continue;
    out.push(line + "\n");
 }
@@ -44,3 +55,14 @@ for (let line of lines) {
    }
 }
 fs.writeFileSync("build-gcc-debug.ninja", out.join(""));
+out = [];
+for (let line of lines) {
+   if (line.startsWith(" command = tcc ")) continue;
+   if (line.startsWith(" command = clang ")) continue;
+   if (line.startsWith(" command = gcc ")) {
+      out.push(line.split("$flags").join("$flags -O3 -flto") + "\n");
+   } else {
+      out.push(line + "\n");
+   }
+}
+fs.writeFileSync("build-gcc-release.ninja", out.join(""));

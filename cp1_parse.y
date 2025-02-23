@@ -2,7 +2,7 @@
 %name cp1Parse
 %token_prefix CP1_TOKEN_
 
-%token_type {union cp1_token}
+%token_type {union _NCp1_NTokenData}
 
 %left PLUS MINUS. 
 

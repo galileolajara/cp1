@@ -294,7 +294,7 @@ typedef int32_t _NCp1_NLvar;
 typedef uint8_t _NCp1_NLvarFlags;
 typedef int32_t _NCp1_NStruct;
 typedef uint8_t _NCp1_NStructFlags;
-typedef uint32_t _NCp1_NToken;
+typedef int _NCp1_NToken;
 typedef int32_t _NCp1_NAlias;
 typedef int32_t _NCp1_NCvar;
 typedef int32_t _NCp1_NGvar;
@@ -470,29 +470,34 @@ uint8_t* _Fmarker;
 };
 struct _NCp1_NTokenDataI32;
 struct _NCp1_NTokenDataI32 {
+uint32_t _Frow;
+uint32_t _Fcol;
 int32_t _Fid;
 int32_t _Fid2;
 };
 struct _NCp1_NTokenDataF32;
 struct _NCp1_NTokenDataF32 {
+uint32_t _Frow;
+uint32_t _Fcol;
 float _Fff32;
 };
 struct _NCp1_NTokenDataU64;
 struct _NCp1_NTokenDataU64 {
+uint32_t _Frow;
+uint32_t _Fcol;
 uint64_t _Fid;
 };
-union _NCp1_NTokenDataValue;
-union _NCp1_NTokenDataValue {
+struct _NCp1_NTokenDataIndex;
+struct _NCp1_NTokenDataIndex {
+int _Fv[15];
+int _Fc;
+};
+union _NCp1_NTokenData;
+union _NCp1_NTokenData {
 struct _NCp1_NTokenDataI32 _Fii32;
 struct _NCp1_NTokenDataF32 _Fff32;
 struct _NCp1_NTokenDataU64 _Fuu64;
-};
-struct _NCp1_NTokenData;
-struct _NCp1_NTokenData {
-uint32_t _Frow;
-uint32_t _Fcol;
-union _NCp1_NTokenDataValue _Fval;
-int32_t _Freserved[12];
+struct _NCp1_NTokenDataIndex _Findex;
 };
 struct _NCp1_NCvarData;
 struct _NCp1_NCvarData {
@@ -990,7 +995,7 @@ void _NCp1_Pparse_str_init_1(int32_t _Lmax_size_0);
 struct _NCp1_NParser* _NCp1_NParser_Palloc_0();
 void _NCp1_NLexer_Pinit_3(struct _NCp1_NLexer* _Llex_0, uint8_t* _Ldata_1, size_t _Lsize_2);
 _NCp1_NToken cp1_lexer_scan(struct _NCp1_NLexer* _Llex_0);
-void cp1Parse(struct _NCp1_NParser* _Lpsr_0, _NCp1_NToken _Lt_1, struct _NCp1_NTokenData _Ltok_2);
+void cp1Parse(struct _NCp1_NParser* _Lpsr_0, _NCp1_NToken _Lt_1, union _NCp1_NTokenData _Ltok_2);
 int32_t _NCp1_Pchar_escape_value_1(char _Lc_0);
 int32_t _NCp1_NLexer_Pget_id_3(struct _NCp1_NLexer* _Llex_0, uint8_t _Lbegin_1, uint8_t _Lend_2);
 float _NCp1_NLexer_Pget_f32_1(struct _NCp1_NLexer* _Llex_0);
@@ -1180,7 +1185,7 @@ void _NLibCp1_NStdOut_Pstdout_end_no_flush_1(struct _NLibCp1_NStdOut* _Lso_0);
 void _NCp1_NIncludeError_Pprint_2(_NCp1_NIncludeError _Le_0, _NCp1_NInclude _Lpath_1);
 #define _NCp1_Pgrow_1(c) Fpow2gteq((c) + 8)
 #define _NCp1_Pquick_alloc_arr_2(r, c) r = qalloc(sizeof(r[0]) * (c))
-uint32_t crc32c(uint32_t _Lcrc32c_0, void* _Ldata_1, size_t _Lsize_2);
+uint32_t crc32c(uint32_t _Lcrc32c_0, void* _Ldata_1, uint32_t _Lsize_2);
 void _NCp1_NId_Pstdout_2(_NCp1_NId _Lid_0, struct _NLibCp1_NStdOut* _Lso_1);
 #define _NCp1_Pquick_alloc_one_1(r) r = qalloc(sizeof(r[0]))
 #define _NCp1_Pquick_alloc_plus_2(r, plus) r = qalloc(sizeof(r[0]) + plus)
@@ -1477,7 +1482,7 @@ struct _NCp1_NParser* _Lpsr_66;
 struct _NCp1_NLexer _Llex_67 = {0};
 int32_t _Lnext_row_68;
 int32_t _Lnext_col_69;
-struct _NCp1_NTokenData _Ltok_70 = {0};
+union _NCp1_NTokenData _Ltok_70 = {0};
 union _NCp1_NWtr _Lw_begin_107 = {0};
 union _NCp1_NWtr _Lw_108 = {0};
 int32_t _Lid_bit8_c_110;
@@ -1963,18 +1968,18 @@ _Gcol = 1;
 while(1) {
 _NCp1_NToken _Lt_71;
 uint8_t* _Lpos_106;
-_Ltok_70._Frow = _Lnext_row_68;
-_Ltok_70._Fcol = _Lnext_col_69;
+_Ltok_70._Fii32._Frow = _Lnext_row_68;
+_Ltok_70._Fii32._Fcol = _Lnext_col_69;
 _Lt_71 = cp1_lexer_scan(&_Llex_67);
 if(true) {
 uint8_t* _Lpos_72;
 _Lpos_72 = _Llex_67._Fstart;
 while(_Lpos_72 < _Lr_end_65._Fp1) {
 if(_Lpos_72[0] == ' ') {
-_Ltok_70._Fcol++;
+_Ltok_70._Fii32._Fcol++;
 } else if(_Lpos_72[0] == '\n') {
-_Ltok_70._Frow++;
-_Ltok_70._Fcol = 1;
+_Ltok_70._Fii32._Frow++;
+_Ltok_70._Fii32._Fcol = 1;
 } else {
 goto break_5;
 }
@@ -1985,20 +1990,20 @@ break_5:;
 }
 _Glast_row = _Grow;
 _Glast_col = _Gcol;
-_Grow = _Ltok_70._Frow;
-_Gcol = _Ltok_70._Fcol;
+_Grow = _Ltok_70._Fii32._Frow;
+_Gcol = _Ltok_70._Fii32._Fcol;
 switch(_Lt_71) {
 case _NCp1_NToken_Cchar1:;
 union _NCp1_NRdr _Lr_73 = {0};
 _Lr_73._Freff = _Llex_67._Fstart;
-_Ltok_70._Fval._Fii32._Fid = _Lr_73._Fp1[2];
+_Ltok_70._Fii32._Fid = _Lr_73._Fp1[2];
 _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
 case _NCp1_NToken_Cchar2:;
 union _NCp1_NRdr _Lr_74 = {0};
 _Lr_74._Freff = _Llex_67._Fstart;
-_Ltok_70._Fval._Fii32._Fid = _NCp1_Pchar_escape_value_1(_Lr_74._Fp1[3]);
+_Ltok_70._Fii32._Fid = _NCp1_Pchar_escape_value_1(_Lr_74._Fp1[3]);
 _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
@@ -2016,7 +2021,7 @@ goto break_6;
 continue_6:;
 }
 break_6:;
-_Ltok_70._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, _Lstart_76, 1);
+_Ltok_70._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, _Lstart_76, 1);
 _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
@@ -2034,7 +2039,7 @@ goto break_7;
 continue_7:;
 }
 break_7:;
-_Ltok_70._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, _Lstart_78, 1);
+_Ltok_70._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, _Lstart_78, 1);
 _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
@@ -2065,38 +2070,38 @@ _Lend_83++;
 continue_9:;
 }
 break_9:;
-_Ltok_70._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, _Lstart_80, _Lend_83);
-_Ltok_70._Fval._Fii32._Fid2 = _NCp1_NLexer_Pget_id_3(&_Llex_67, _Lstart_80 + (_Llen_82 - _Lend_83), 1);
+_Ltok_70._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, _Lstart_80, _Lend_83);
+_Ltok_70._Fii32._Fid2 = _NCp1_NLexer_Pget_id_3(&_Llex_67, _Lstart_80 + (_Llen_82 - _Lend_83), 1);
 _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
 case _NCp1_NToken_Cnum_f32:;
-_Ltok_70._Fval._Fff32._Fff32 = _NCp1_NLexer_Pget_f32_1(&_Llex_67);
+_Ltok_70._Fff32._Fff32 = _NCp1_NLexer_Pget_f32_1(&_Llex_67);
 _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
 case _NCp1_NToken_Cnum_u32:;
-_Ltok_70._Fval._Fii32._Fid = _NCp1_NLexer_Pget_int_2(&_Llex_67, 1);
+_Ltok_70._Fii32._Fid = _NCp1_NLexer_Pget_int_2(&_Llex_67, 1);
 _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
 case _NCp1_NToken_Cnum_u64:;
-_Ltok_70._Fval._Fuu64._Fid = _NCp1_NLexer_Pget_u64_1(&_Llex_67);
+_Ltok_70._Fuu64._Fid = _NCp1_NLexer_Pget_u64_1(&_Llex_67);
 _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
 case _NCp1_NToken_Cnum_i32:;
-_Ltok_70._Fval._Fii32._Fid = _NCp1_NLexer_Pget_int_2(&_Llex_67, 0);
+_Ltok_70._Fii32._Fid = _NCp1_NLexer_Pget_int_2(&_Llex_67, 0);
 _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
 case _NCp1_NToken_Cnum_oct:;
-_Ltok_70._Fval._Fii32._Fid = _NCp1_NLexer_Pget_oct_1(&_Llex_67);
+_Ltok_70._Fii32._Fid = _NCp1_NLexer_Pget_oct_1(&_Llex_67);
 _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
 case _NCp1_NToken_Cnum_hex:;
-_Ltok_70._Fval._Fii32._Fid = _NCp1_NLexer_Pget_hex_1(&_Llex_67);
+_Ltok_70._Fii32._Fid = _NCp1_NLexer_Pget_hex_1(&_Llex_67);
 _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
@@ -2124,7 +2129,7 @@ _NLibCp1_NStdOut_Pstdout_cstr_3(&_L_88, ": Error, import path exceeded 255 bytes
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_88);
 exit(_NLibC_NExit_Cfailure);
 }
-_Ltok_70._Fval._Fii32._Fid = _NCp1_Pinclude_add_2(_Llen_87, _Lr_begin_85._Fcharr);
+_Ltok_70._Fii32._Fid = _NCp1_Pinclude_add_2(_Llen_87, _Lr_begin_85._Fcharr);
 goto break_10;
 }
 continue_10:;
@@ -2134,7 +2139,7 @@ _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
 case _NCp1_NToken_Cinclude:;
-_Ltok_70._Fval._Fii32._Fid = _NCp1_NLexer_Pget_include_1(&_Llex_67);
+_Ltok_70._Fii32._Fid = _NCp1_NLexer_Pget_include_1(&_Llex_67);
 _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
@@ -2294,7 +2299,7 @@ _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
 case _NCp1_NToken_Cid:;
-_Ltok_70._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, 0, 0);
+_Ltok_70._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, 0, 0);
 if(_Llex_67._Fcursor[0] == '(') {
 _Lt_71 = _NCp1_NToken_Cid_then_open_parenthesis;
 } else if(_Llex_67._Fcursor[0] == '{') {
@@ -2322,9 +2327,9 @@ _Lr_cursor_99._Freff = _Llex_67._Fcursor;
 _Llength_100 = (_Lrbracket_97 - 1);
 _Lend_101 = (_Lr_cursor_99._Fpos - _Lr_start_98._Fpos - _Llength_100);
 if(_Llength_100 == 0) {
-_Ltok_70._Fval._Fii32._Fid = -1;
+_Ltok_70._Fii32._Fid = -1;
 } else {
-_Ltok_70._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, 1, _Lend_101);
+_Ltok_70._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, 1, _Lend_101);
 }
 }
 if(true) {
@@ -2336,18 +2341,18 @@ _Lr_start_102._Freff = _Llex_67._Fstart;
 _Lr_start_102._Fpos += _Lrbracket_97;
 _Lr_cursor_103._Freff = _Llex_67._Fcursor;
 _Llength_104 = (_Lr_cursor_103._Fpos - _Lr_start_102._Fpos);
-_Ltok_70._Fval._Fii32._Fid2 = _NCp1_NLexer_Pget_id_3(&_Llex_67, _Lrbracket_97, 0);
+_Ltok_70._Fii32._Fid2 = _NCp1_NLexer_Pget_id_3(&_Llex_67, _Lrbracket_97, 0);
 }
 _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
 case _NCp1_NToken_Chash_id:;
-_Ltok_70._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, 1, 0);
+_Ltok_70._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, 1, 0);
 _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
 case _NCp1_NToken_Cdot_id_upper:;
-_Ltok_70._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, 1, 0);
+_Ltok_70._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, 1, 0);
 if(_Llex_67._Fcursor[0] == '(') {
 _Lt_71 = _NCp1_NToken_Cdot_id_upper_then_open_parenthesis;
 } else if(_Llex_67._Fcursor[0] == '{') {
@@ -2357,7 +2362,7 @@ _Glast_token = _Lt_71;
 cp1Parse(_Lpsr_66, _Lt_71, _Ltok_70);
 break;
 case _NCp1_NToken_Cid_upper:;
-_Ltok_70._Fval._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, 0, 0);
+_Ltok_70._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_67, 0, 0);
 if(_Llex_67._Fcursor[0] == '(') {
 _Lt_71 = _NCp1_NToken_Cid_then_open_parenthesis;
 } else if(_Llex_67._Fcursor[0] == '{') {

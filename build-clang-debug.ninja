@@ -1,0 +1,99 @@
+rule c
+ command = clang $flags -ggdb -Werror=format -Wno-incompatible-pointer-types -I. -c $in -o $out
+
+#rule objredef
+# command = objcopy --redefine-syms=$redefs $in $out
+
+rule ld-c
+ command = clang $flags -ggdb -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out
+
+build out/parse.cp1.c.o: c parse.cp1.c
+#build out/parse-redef.cp1.c.o: objredef out/parse.cp1.c.o | redefs
+# redefs = redefs
+build out/parse.c.o: c parse.c | export.h lex.c cp1_parse.c
+build bin/cp1-preprocess: ld-c preprocess.cp1.c
+build out/compile.cp1.c.o: c compile.cp1.c
+build out/compile.c.o: c compile.c
+build bin/cp1-parse: ld-c out/parse.cp1.c.o out/parse.c.o out/hashtable.c.o
+build bin/cp1-compile: ld-c out/compile.cp1.c.o out/compile.c.o out/hashtable.c.o
+# out/parse-redef.cp1.c.o out/parse.c.o
+#build bin/cp1-compile-redef-output: ld-c out/compile.cp1.c.o out/compile.c.o out/hashtable.c.o out/parse.cp1.c.o out/parse.c.o
+build bin/cp1-run: ld-c run.cp1.c
+build out/hashtable.c.o: c hashtable2.c
+
+rule cjs
+ command = clang -D_GNU_SOURCE -DCONFIG_VERSION=\"2024-01-13\" -DCONFIG_BIGNUM -Wno-implicit-const-int-float-conversion -o $out -c $in -Iqjs
+
+build bin/cp1-qjs: ld-c out/cp1-qjs.c.o out/quickjs.c.o out/quickjs-libc.c.o out/cutils.c.o out/libregexp.c.o out/libbf.c.o out/libunicode.c.o
+ flags = -lm
+build out/cp1-qjs.c.o: cjs cp1-qjs.c
+build out/quickjs.c.o: cjs qjs/quickjs.c
+build out/quickjs-libc.c.o: cjs qjs/quickjs-libc.c
+build out/cutils.c.o: cjs qjs/cutils.c
+build out/libregexp.c.o: cjs qjs/libregexp.c
+build out/libbf.c.o: cjs qjs/libbf.c
+build out/libunicode.c.o: cjs qjs/libunicode.c
+
+rule c2
+ command = clang $flags -ggdb -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
+
+rule ld-c2
+ command = clang $flags -ggdb -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
+
+#rule ld-c2-redef
+# command = gcc $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out.tmp 2> redefs2.txt || true && node redefs.js redefs2.txt redefs2 && touch $out
+
+rule re2c
+ command = re2c --input-encoding utf8 --utf8 $in -o $out
+
+rule ld-lemon
+ command = clang -I. $in -o $out
+
+rule lemon
+ restat = true
+ command = out/lemon -dout $in
+
+rule preprocess
+ command = bin/cp1-preprocess $options $in $out
+
+rule compile
+ command = bin/cp1-compile -w $in -c $out $flags
+
+rule run
+ command = $in $out
+
+build out/hash-table-size: ld-c2 hashtable2.c
+ flags = -DCP1_GET_SIZE
+build out/hash-table-size.cp1: run out/hash-table-size
+
+build out/token.cp1.c: compile token.cp1 | include/LibC/stdio.cp1 include/LibC/stdlib.cp1 include/Posix/fcntl.cp1 include/Posix/unistd.cp1 include/LibC/string.cp1 bin/cp1-compile bin/cp1-parse
+build out/token: ld-c2 out/token.cp1.c
+build out/token.cp1: run out/token out/cp1_parse.h
+build out/parse-common.cp1: preprocess Cp1/common.cp1 | bin/cp1-preprocess
+ options = -Dparse
+build out/compile-common.cp1: preprocess Cp1/common.cp1 | bin/cp1-preprocess
+ options = -Dcompile
+build out/run2.cp1.c: compile Cp1/run.cp1 Cp1/file.cp1 | include/LibCp1/stdout.cp1 include/LibC/stdio.cp1 include/Posix/fcntl.cp1 include/LibC/stdlib.cp1 include/Posix/unistd.cp1 include/LibC/string.cp1 include/Posix/stat.cp1 bin/cp1-compile bin/cp1-parse
+build out/preprocess.cp1.c: compile Cp1/preprocess.cp1 Cp1/wtr.cp1 Cp1/rdr.cp1 Cp1/file.cp1 | include/LibCp1/stdout.cp1 include/LibC/stdio.cp1 include/Posix/fcntl.cp1 include/LibC/stdlib.cp1 include/Posix/unistd.cp1 include/LibC/string.cp1 include/Posix/stat.cp1 bin/cp1-compile bin/cp1-parse
+build out/parse2.cp1.c: compile Cp1/parse.cp1 out/token.cp1 Cp1/break.cp1 Cp1/math.cp1 Cp1/bools.cp1 Cp1/str.cp1 Cp1/cvar.cp1 Cp1/unary.cp1 Cp1/ref.cp1 Cp1/cast.cp1 Cp1/index.cp1 Cp1/switch.cp1 Cp1/if.cp1 Cp1/loop.cp1 Cp1/compare.cp1 Cp1/bool.cp1 Cp1/char.cp1 Cp1/call.cp1 Cp1/null.cp1 Cp1/int.cp1 Cp1/size.cp1 Cp1/assign.cp1 Cp1/fvar.cp1 Cp1/soa.cp1 Cp1/gvar.cp1 Cp1/continue.cp1 Cp1/return.cp1 Cp1/space.cp1 Cp1/export.cp1 Cp1/rdr.cp1 Cp1/wtr.cp1 Cp1/var.cp1 Cp1/func.cp1 Cp1/lvar.cp1 Cp1/enum.cp1 Cp1/expr.cp1 Cp1/stmt.cp1 out/parse-common.cp1 Cp1/struct.cp1 Cp1/file.cp1 out/hash-table-size.cp1 | include/LibCp1/stdout.cp1 include/LibC/stdio.cp1 include/Posix/fcntl.cp1 include/LibC/stdlib.cp1 include/Posix/unistd.cp1 include/LibC/string.cp1 include/Posix/stat.cp1 bin/cp1-compile bin/cp1-parse
+build out/compile2.cp1.c: compile Cp1/compile.cp1 out/compile-common.cp1 Cp1/rdr.cp1 Cp1/wtr.cp1 Cp1/func.cp1 Cp1/struct.cp1 Cp1/enum.cp1 Cp1/expr.cp1 Cp1/stmt.cp1 Cp1/var.cp1 Cp1/assign.cp1 Cp1/compare.cp1 Cp1/bool.cp1 Cp1/char.cp1 Cp1/math.cp1 Cp1/unary.cp1 Cp1/ref.cp1 Cp1/cast.cp1 Cp1/lvar.cp1 Cp1/fvar.cp1 Cp1/soa.cp1 Cp1/gvar.cp1 Cp1/cvar.cp1 Cp1/bools.cp1 Cp1/call.cp1 Cp1/str.cp1 Cp1/int.cp1 Cp1/size.cp1 Cp1/null.cp1 Cp1/index.cp1 Cp1/if.cp1 Cp1/switch.cp1 Cp1/loop.cp1 Cp1/continue.cp1 Cp1/break.cp1 Cp1/return.cp1 Cp1/space.cp1 Cp1/export.cp1 out/hash-table-size.cp1 Cp1/file.cp1 | include/LibCp1/stdout.cp1 include/LibC/stdio.cp1 include/Posix/fcntl.cp1 include/LibC/stdlib.cp1 include/Posix/unistd.cp1 include/LibC/string.cp1 bin/cp1-compile bin/cp1-parse
+build out/export.cp1.c: compile export.cp1 | include/LibCp1/stdout.cp1 include/LibC/stdio.cp1 include/LibC/stdlib.cp1 include/Posix/fcntl.cp1 include/Posix/unistd.cp1 include/LibC/string.cp1 bin/cp1-compile bin/cp1-parse
+build out/cp1-preprocess: ld-c2 out/preprocess.cp1.c
+build out/export: ld-c2 out/export.cp1.c
+build out/export.h: run out/export out/parse2.cp1.c
+build out/lex.c: re2c lex-re2c.c
+build out/lemon: ld-lemon lemon.c
+build out/cp1_parse.c out/cp1_parse.h: lemon cp1_parse.y | out/lemon
+build out/cp1-run: ld-c2 out/run2.cp1.c
+build out/parse2.cp1.c.o: c2 out/parse2.cp1.c
+build out/parse2.c.o: c2 parse2.c | out/export.h out/lex.c out/cp1_parse.c
+#build out/parse2-redef.cp1.c.o: objredef out/parse2.cp1.c.o | redefs2
+# redefs = redefs2
+build out/hashtable2.c.o: c2 hashtable2.c
+build out/compile2.cp1.c.o: c2 out/compile2.cp1.c
+build out/compile2.c.o: c2 compile2.c
+build out/cp1-parse: ld-c2 out/parse2.cp1.c.o out/parse2.c.o out/hashtable.c.o
+build out/cp1-compile: ld-c2 out/compile2.cp1.c.o out/compile2.c.o out/hashtable.c.o
+#build out/cp1-compile-redef-output | redefs2: ld-c2-redef out/compile2.cp1.c.o out/compile2.c.o out/hashtable.c.o out/parse2.cp1.c.o out/parse2.c.o
+#default out/cp1-compile out/cp1-run out/cp1-preprocess out/cp1-parse
+

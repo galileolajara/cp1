@@ -37,7 +37,7 @@ var template-name-buf:char[] @extern;
 var template-name-len:u8 @extern;
 var template-code-indention:u32 @extern;
 var template-code-line-c:u32 @extern;
-crc32c(crc32c:u32, data:ref, size:usz):u32 @real-name;
+crc32c(crc32c:u32, data:ref, size:u32):u32 @real-name;
 decl-template-inst(name:Id, row:u32, col:u32) {
    at! = .decl-at;
    arg-buf! = .string-buf;
@@ -403,27 +403,31 @@ decl-at-end() {
    .decl-at = .decl-at-v[.decl-at-c];
 }
 struct TokenDataI32[
+   row:u32,
+   col:u32,
    id:i32,
    id2:i32,
 ];
 struct TokenDataF32[
+   row:u32,
+   col:u32,
    ff32:f32,
 ];
 struct TokenDataU64[
+   row:u32,
+   col:u32,
    id:u64,
 ];
-union TokenDataValue[
+struct TokenDataIndex[
+   v:intc[15],
+   c:intc,
+];
+union TokenData[
    ii32:TokenDataI32.,
    ff32:TokenDataF32.,
    uu64:TokenDataU64.,
-];
-struct TokenData[
-   row:u32,
-   col:u32,
-   val:TokenDataValue.,
-   // id:i32,
-   // id2:i32,
-   reserved:i32[12],
+   index:TokenDataIndex.,
+   pointer:ref,
 ];
 struct Lexer[
    content:u8[],
@@ -1274,18 +1278,18 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .col = 1;
    var tok:TokenData.;
    loop {
-      tok.row = next-row;
-      tok.col = next-col;
+      tok.ii32.row = next-row;
+      tok.ii32.col = next-col;
       t! = lex.scan();
       if true { // t != #space)
          // when reporting the row and column of tokens, skip the spaces
          pos! = lex.start;
          loop pos < r-end.p1 {
             if pos[0] == ''  {
-               tok.col++;
+               tok.ii32.col++;
             } elif pos[0] == ''\n {
-               tok.row++;
-               tok.col = 1;
+               tok.ii32.row++;
+               tok.ii32.col = 1;
             } else {
                break;
             }
@@ -1294,8 +1298,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       }
       .last-row = .row;
       .last-col = .col;
-      .row = tok.row;
-      .col = tok.col;
+      .row = tok.ii32.row;
+      .col = tok.ii32.col;
       // C1.stdout{.input-path '': tok.row '': tok.col ": token " t.cp1-name() ''\n}
       // 'c.out.flush();
       // if (&&, t >= #id-quote, t < #id) {
@@ -1311,14 +1315,14 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             case #char1 {
                var r:Rdr.;
                r.reff = lex.start;
-               tok.val.ii32.id = r.p1[2];
+               tok.ii32.id = r.p1[2];
                .last-token = t;
                psr.parse(t, tok);
             }
             case #char2 {
                var r:Rdr.;
                r.reff = lex.start;
-               tok.val.ii32.id = char-escape-value(r.p1[3]);
+               tok.ii32.id = char-escape-value(r.p1[3]);
                .last-token = t;
                psr.parse(t, tok);
             }
@@ -1334,7 +1338,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      break;
                   }
                }
-               tok.val.ii32.id = lex.get-id(start, 1);
+               tok.ii32.id = lex.get-id(start, 1);
                .last-token = t;
                psr.parse(t, tok);
             }
@@ -1350,7 +1354,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      break;
                   }
                }
-               tok.val.ii32.id = lex.get-id(start, 1);
+               tok.ii32.id = lex.get-id(start, 1);
                .last-token = t;
                psr.parse(t, tok);
             }
@@ -1375,38 +1379,38 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   r-end.pos--;
                   end++;
                }
-               tok.val.ii32.id = lex.get-id(start, end);
-               tok.val.ii32.id2 = lex.get-id(start + (len - end), 1);
+               tok.ii32.id = lex.get-id(start, end);
+               tok.ii32.id2 = lex.get-id(start + (len - end), 1);
                .last-token = t;
                psr.parse(t, tok);
             }
             case #num-f32 {
-               tok.val.ff32.ff32 = lex.get-f32();
+               tok.ff32.ff32 = lex.get-f32();
                .last-token = t;
                psr.parse(t, tok);
             }
             case #num-u32 {
-               tok.val.ii32.id = lex.get-int(1);
+               tok.ii32.id = lex.get-int(1);
                .last-token = t;
                psr.parse(t, tok);
             }
             case #num-u64 {
-               tok.val.uu64.id = lex.get-u64();
+               tok.uu64.id = lex.get-u64();
                .last-token = t;
                psr.parse(t, tok);
             }
             case #num-i32 {
-               tok.val.ii32.id = lex.get-int(0);
+               tok.ii32.id = lex.get-int(0);
                .last-token = t;
                psr.parse(t, tok);
             }
             case #num-oct {
-               tok.val.ii32.id = lex.get-oct();
+               tok.ii32.id = lex.get-oct();
                .last-token = t;
                psr.parse(t, tok);
             }
             case #num-hex {
-               tok.val.ii32.id = lex.get-hex();
+               tok.ii32.id = lex.get-hex();
                .last-token = t;
                psr.parse(t, tok);
             }
@@ -1423,7 +1427,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         C1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
                         C.exit(#failure);
                      }
-                     tok.val.ii32.id = include-add(len, r-begin.charr);
+                     tok.ii32.id = include-add(len, r-begin.charr);
                      // C1.stdout{"import '" r-begin.charr, len "'\n"}
                      break;
                   }
@@ -1432,7 +1436,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                psr.parse(t, tok);
             }
             case #include {
-               tok.val.ii32.id = lex.get-include();
+               tok.ii32.id = lex.get-include();
                .last-token = t;
                psr.parse(t, tok);
             }
@@ -1562,7 +1566,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                psr.parse(t, tok);
             }
             case #id {
-               tok.val.ii32.id = lex.get-id(0, 0);
+               tok.ii32.id = lex.get-id(0, 0);
                if lex.cursor[0] == ''( {
                   t = #id-then-open-parenthesis;
                } elif lex.cursor[0] == ''{ {
@@ -1572,7 +1576,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                psr.parse(t, tok);
             }
             case #soa-field {
-               // tok.val.ii32.id = 
+               // tok.ii32.id = 
                // lex.get-id(2, 0);
                rbracket! = 1;
                loop lex.start[rbracket] != ''] {
@@ -1587,9 +1591,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   length! = rbracket - 1;
                   end! = r-cursor.pos - r-start.pos - length;
                   if length == 0 {
-                     tok.val.ii32.id = -1;
+                     tok.ii32.id = -1;
                   } else {
-                     tok.val.ii32.id = lex.get-id(1, end);
+                     tok.ii32.id = lex.get-id(1, end);
                   }
                }
                if true {
@@ -1600,18 +1604,18 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   var r-cursor:Rdr.;
                   r-cursor.reff = lex.cursor;
                   length! = r-cursor.pos - r-start.pos;
-                  tok.val.ii32.id2 = lex.get-id(rbracket, 0);
+                  tok.ii32.id2 = lex.get-id(rbracket, 0);
                }
                .last-token = t;
                psr.parse(t, tok);
             }
             case #hash-id {
-               tok.val.ii32.id = lex.get-id(1, 0);
+               tok.ii32.id = lex.get-id(1, 0);
                .last-token = t;
                psr.parse(t, tok);
             }
             case #dot-id-upper {
-               tok.val.ii32.id = lex.get-id(1, 0);
+               tok.ii32.id = lex.get-id(1, 0);
                if lex.cursor[0] == ''( {
                   t = #dot-id-upper-then-open-parenthesis;
                } elif lex.cursor[0] == ''{ {
@@ -1621,7 +1625,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                psr.parse(t, tok);
             }
             case #id-upper {
-               tok.val.ii32.id = lex.get-id(0, 0);
+               tok.ii32.id = lex.get-id(0, 0);
                if lex.cursor[0] == ''( {
                   t = #id-then-open-parenthesis;
                } elif lex.cursor[0] == ''{ {

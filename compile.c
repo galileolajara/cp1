@@ -89,7 +89,7 @@ void _NCp1_Pc_init_0() {
    mkdir("cp1-tmp-0", 0755);
 }
 bool _NCp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
-void _NCp1_Pread_2(char* _Lin_path_cp1_0, uint32_t _Lin_path_cp1_len_1);
+void _NCp1_Pread_2(char* _Lin_path_cp1_0, uint16_t _Lin_path_cp1_len_1);
 int quickjs_path_len;
 void* _NCp1_Pread_file_5(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_after_2, size_t _Lmax_size_3, size_t* _Lout_size_4);
 uint32_t _NCp1_Pquickjs_hex_2(char* js_data, uint32_t code_crc32c) {

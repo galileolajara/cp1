@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-union cp1_token {
+union _NCp1_NTokenData {
    struct {
       int row;
       int col;
@@ -71,7 +71,7 @@ void _NCp1_Ppreprocess_init_0() {
 }
 */
 
-extern uint8_t _Glast_token;
+extern int _Glast_token;
 
 typedef int _NCp1_NExprI;
 typedef int _NCp1_NId;
@@ -87,7 +87,7 @@ typedef int8_t _NCp1_NStmtType;
 typedef int8_t _NCp1_NCompare;
 typedef int8_t _NCp1_NAssign;
 typedef int8_t _NCp1_NBools;
-typedef int8_t _NCp1_NToken;
+typedef int _NCp1_NToken;
 struct _NCp1_NStmtSpace;
 struct _NCp1_NStmt;
 struct _NCp1_NExprData;
