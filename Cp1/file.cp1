@@ -36,12 +36,12 @@ using Cp1 {
             W.CloseHandle(h);
             return null;
          }
+         size! = f-size.quadPart;
          if max-size != 0 {
-            if f-size:usz > max-size {
-               f-size =  max-size;
+            if size:usz > max-size {
+               size =  max-size;
             }
          }
-         size! = f-size.quadPart;
          var buf:u8[];
          C.malloc-arr(buf, add-before + size + add-after);
          var bytes-read;

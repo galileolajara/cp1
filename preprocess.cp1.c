@@ -552,12 +552,12 @@ if(!GetFileSizeEx(_Lh_5, &_Lf_size_6)) {
 CloseHandle(_Lh_5);
 return NULL;
 }
-if(_Lmax_size_3 != 0) {
-if((&_Lf_size_6) > _Lmax_size_3) {
-(&_Lf_size_6) = _Lmax_size_3;
-}
-}
 _Lsize_7 = _Lf_size_6.QuadPart;
+if(_Lmax_size_3 != 0) {
+if((size_t)(_Lsize_7) > _Lmax_size_3) {
+_Lsize_7 = _Lmax_size_3;
+}
+}
 _NLibC_Pmalloc_arr_2(_Lbuf_8, _Ladd_before_1 + _Lsize_7 + _Ladd_after_2);
 if((!ReadFile(_Lh_5, &_Lbuf_8[_Ladd_before_1], _Lsize_7, &_Lbytes_read_9, NULL) || (_Lbytes_read_9 != _Lsize_7))) {
 free(_Lbuf_8);
@@ -582,7 +582,7 @@ close(_Lfd_10);
 return NULL;
 }
 if(_Lmax_size_3 != 0) {
-if(_Lsize_11 > _Lmax_size_3) {
+if((size_t)(_Lsize_11) > _Lmax_size_3) {
 _Lsize_11 = _Lmax_size_3;
 }
 }

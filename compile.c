@@ -256,6 +256,7 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
       } else {
          goto notfound;
       }
+      memcpy(tmp, path, path_len + 1);
       tmp[path_len] = '-';
       tmp[path_len + 1] = 'b';
       tmp[path_len + 2] = '\0';
@@ -298,22 +299,26 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
    }
    struct stat s2;
    if (stat(tmp, &s2) == 0) {
+      // printf("comparing timestamps of %s and %s\n", tmp, path);
 #ifdef __APPLE__
       if (s2.st_mtimespec.tv_sec > s.st_mtimespec.tv_sec) {
+         // printf("cached\n");
          return tmp;
       } else if ((s2.st_mtimespec.tv_sec == s.st_mtimespec.tv_sec) && (s2.st_mtimespec.tv_nsec > s.st_mtimespec.tv_nsec)) {
+         // printf("cached\n");
          return tmp;
       }
 #else
       if (s2.st_mtim.tv_sec > s.st_mtim.tv_sec) {
+         // printf("cached\n");
          return tmp;
       } else if ((s2.st_mtim.tv_sec == s.st_mtim.tv_sec) && (s2.st_mtim.tv_nsec > s.st_mtim.tv_nsec)) {
+         // printf("cached\n");
          return tmp;
       }
 #endif
    }
    create_folders_recursively(tmp);
-   // printf("parsing %s to %s\n", fullpath, tmp);
    const char *argv[] = {"cp1-parse", fullpath, tmp, NULL};
 #ifdef SPAWN_PARSE
    pid_t pid;
