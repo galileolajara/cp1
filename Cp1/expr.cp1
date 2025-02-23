@@ -263,10 +263,6 @@ enum BasicTypeId[
 // }
    cp1-name(e:this):char[] @cp1-name;
 }
-struct ExprLvar[
-   base:Expr.,
-   lvar:Lvar,
-];
 struct ExprChar[
    base:Expr.,
    value:char,

@@ -84,6 +84,7 @@ expr-lvar(name:Id, decl:u8, row:u32, col:u32):ExprI {
       .decl-var.name = name;
       if decl == 1 {
          lvar.flags |= #set-expr;
+         e.decl = true;
       }
       lvar.decl.copy-from(.decl-var);
       return e-idx;

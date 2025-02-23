@@ -133,6 +133,13 @@ struct ExprAssign[
    right-val:Value.,
 #endif
 ];
+struct ExprLvar[
+   base:Expr.,
+   lvar:Lvar,
+#if(parse)
+   decl:bool,
+#endif
+];
 struct ExprIndex[
    base:Expr.,
    left:ExprI,

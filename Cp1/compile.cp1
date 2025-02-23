@@ -1005,7 +1005,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       }
       loop i = 0; .template-inst-c; i++ {
          ti! = .template-inst-v[i];
-         // C1.stdout{"template instantiation of " ti.name "\n"}
+         C1.stdout{"template instantiation of " ti.name "\n"}
          at! = ti.at;
          name! = ti.name;
          found! = false;
@@ -1013,9 +1013,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             tc! = .template-code-v[j];
             if (at == tc.at) && (name == tc.name) {
                if quickjs-begin(tc.file.path(), tc.file.path-len(), tc.name.str(), tc.name.len(), tc.code-crc32c, ti.arg-crc32c) {
-                  .jscode-buf-len = 0; // quickjs-hex(.jscode-buf-data, tc.code-crc32c);
+                  .jscode-buf-len = 0;
                   jscode{
-                    "// template '" tc.name "' from " tc.file " line " tc.row "\n"
                   '= let cp1_out = [];
                   '= function O(line) {
                   '=    cp1_out.push(line);
@@ -1050,9 +1049,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         i += line-len;
                      }
                   }
-                  // jscode{
-                  //    "}\n"
-                  // }
                   jscode{
                   '= let tmp_path = scriptArgs[0] + ".cp1-" + os.getpid();
                   '= let file = std.open(tmp_path, "wb");

@@ -17,6 +17,15 @@ expr-assign(left:ExprI, right:ExprI, type:Assign):ExprI {
    e.left = left;
    e.right = right;
    e.type = type;
+   if e.type == #eq {
+      e2! = left.ptr();
+      if e2.type == #lvar {
+         var lvar:ExprLvar = e2;
+         if lvar.decl {
+            lvar.lvar.ptr().flags ^= #set-expr;
+         }
+      }
+   }
    return e-idx;
 }
 using ExprI {
