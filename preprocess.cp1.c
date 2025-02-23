@@ -80,7 +80,7 @@ void _NLibCp1_Pstdout_u32_1(uint32_t _Lval_0);
 #define _NPosix_Popen_2(p, f) open(p, f)
 #endif
 int main(int _Larg_c_0, char** _Larg_v_1) {
-int32_t _Li_3 = {0};
+int32_t _Li_3;
 char* _Lin_data_13 = {0};
 size_t _Lin_size_14 = {0};
 if(_Larg_c_0 < 3) {
@@ -101,7 +101,7 @@ i --;
 if(_Larg_v_1[_Li_3][0] == '-') {
 if(_Larg_v_1[_Li_3][1] == 'D') {
 char* _Lname_4;
-int32_t _Llen_5 = {0};
+int32_t _Llen_5;
 _Lname_4 = &_Larg_v_1[_Li_3][2];
 _Llen_5 = 0;
 while(1) {
@@ -229,7 +229,7 @@ inline void _Tchar_Pstdout_2(char _Lval_0, struct _NLibCp1_NStdOut* _Lso_1) {
 _NLibCp1_Pstdout_char_1(_Lval_0);
 }
 void _NCp1_Ppreprocess_def_2(char* _Lname_0, uint8_t _Llen_1) {
-uint32_t _Li_2 = {0};
+uint32_t _Li_2;
 _Li_2 = _Gpreprocess_def_c++;
 if(_Gpreprocess_def_cap < _Gpreprocess_def_c) {
 _Gpreprocess_def_cap = ((_Gpreprocess_def_c << 1) + 8);
@@ -275,14 +275,14 @@ _NCp1_Ppreprocess_def_2("cpu64", 5);
 #endif
 }
 void _NCp1_Ppreprocess_2(void** _Lin_out_data_0, size_t* _Lin_out_size_1) {
-bool _Lpreprocess_2 = {0};
+bool _Lpreprocess_2;
 char* _Lin_data_3;
-size_t _Lin_size_4 = {0};
+size_t _Lin_size_4;
 union _NCp1_NRdr _Lr_end_5 = {0};
 union _NCp1_NRdr _Lr_6 = {0};
 void* _Lnew_data_7;
 union _NCp1_NWtr _Lw_8 = {0};
-uint32_t _Lline_9 = {0};
+uint32_t _Lline_9;
 union _NCp1_NWtr _Lw_begin_28 = {0};
 _Lpreprocess_2 = false;
 _Lin_data_3 = (*_Lin_out_data_0);
@@ -294,7 +294,7 @@ _Lnew_data_7 = malloc(_Lin_size_4 + 1);
 _Lw_8._Freff = _Lnew_data_7;
 _Lline_9 = (uint32_t)(0);
 while(_Lr_6._Fpos < _Lr_end_5._Fpos) {
-int32_t _Lline_len_10 = {0};
+int32_t _Lline_len_10;
 _Lline_9++;
 _Lline_len_10 = 0;
 while(1) {
@@ -306,15 +306,15 @@ continue_1:;
 }
 break_1:;
 if(((_Lr_6._Fp1[0] == '#') && (_Lr_6._Fp1[1] == 'i') && (_Lr_6._Fp1[2] == 'f') && ((_Lr_6._Fp1[3] == '(') || ((_Lr_6._Fp1[3] == '!') && (_Lr_6._Fp1[4] == '('))))) {
-uint32_t _Lif_line_11 = {0};
-int32_t _Lstart_12 = {0};
-bool _Linvert_13 = {0};
-int32_t _Lrparen_14 = {0};
+uint32_t _Lif_line_11;
+int32_t _Lstart_12;
+bool _Linvert_13;
+int32_t _Lrparen_14;
 char* _Ldef_str_17;
-int32_t _Ldef_len_18 = {0};
-bool _Lok_19 = {0};
+int32_t _Ldef_len_18;
+bool _Lok_19;
 char* _Lindention_20;
-int32_t _Lindention_len_21 = {0};
+int32_t _Lindention_len_21;
 _Lif_line_11 = _Lline_9;
 _Lw_8._Fp1[0] = '\n';
 _Lw_8._Fpos++;
@@ -357,8 +357,8 @@ _Lr_6._Fpos += (_Lline_len_10 + 1);
 _Lindention_20 = NULL;
 _Lindention_len_21 = -1;
 if(_Lr_6._Fpos < _Lr_end_5._Fpos) {
-int32_t _Lline_len_22 = {0};
-int32_t _Lfirst_char_23 = {0};
+int32_t _Lline_len_22;
+int32_t _Lfirst_char_23;
 _Lline_len_22 = 0;
 while(1) {
 if(_Lr_6._Fp1[_Lline_len_22] == '\n') {
@@ -409,8 +409,8 @@ exit(_NLibC_NExit_Cfailure);
 }
 _Lline_9++;
 while(_Lr_6._Fpos < _Lr_end_5._Fpos) {
-int32_t _Lline_len_25 = {0};
-int32_t _Lfirst_char_26 = {0};
+int32_t _Lline_len_25;
+int32_t _Lfirst_char_26;
 _Lline_9++;
 _Lline_len_25 = 0;
 while(1) {
@@ -492,7 +492,7 @@ _NCp1_Ppreprocess_2(_Lin_out_data_0, _Lin_out_size_1);
 bool _NCp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2) {
 #ifdef _WIN32
 if(true) {
-HANDLE _Lh_3 = {0};
+HANDLE _Lh_3;
 uint32_t _Lbytes_written_4 = {0};
 _Lh_3 = CreateFileA(_Lpath_0, GENERIC_WRITE, _NWindows_NCreateFileShareMode_C0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, _NWindows_NHandle_Cnull);
 if(_Lh_3 == INVALID_HANDLE_VALUE) {
@@ -539,9 +539,9 @@ _Gstdout_buf_data[_Gstdout_buf_len++] = _Lval_0;
 inline void* _NCp1_Pread_file_5(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_after_2, size_t _Lmax_size_3, size_t* _Lout_size_4) {
 #ifdef _WIN32
 if(true) {
-HANDLE _Lh_5 = {0};
+HANDLE _Lh_5;
 LARGE_INTEGER _Lf_size_6 = {0};
-uint64_t _Lsize_7 = {0};
+uint64_t _Lsize_7;
 uint8_t* _Lbuf_8 = {0};
 uint32_t _Lbytes_read_9 = {0};
 _Lh_5 = CreateFileA(_Lpath_0, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, _NWindows_NHandle_Cnull);
@@ -571,7 +571,7 @@ return _Lbuf_8;
 #else
 if(true) {
 _NPosix_NFd _Lfd_10 = {0};
-size_t _Lsize_11 = {0};
+size_t _Lsize_11;
 uint8_t* _Lbuf_12 = {0};
 if(!_NPosix_NFd_Popen_3(&_Lfd_10, _Lpath_0, O_RDONLY)) {
 return NULL;
@@ -620,7 +620,7 @@ break_0:;
 return false;
 }
 inline bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3) {
-_NPosix_NFd _Lfd_4 = {0};
+_NPosix_NFd _Lfd_4;
 _Lfd_4 = _NPosix_Popen_3(_Lpath_1, _Lflags_2, _Lmode_3);
 if(_Lfd_4 != -1) {
 (*_Lfile_0) = _Lfd_4;
@@ -630,7 +630,7 @@ return false;
 }
 }
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0) {
-uint32_t _Lspace_1 = {0};
+uint32_t _Lspace_1;
 _Lspace_1 = (_Gstdout_buf_cap - _Gstdout_buf_len);
 if(_Lspace_1 < _Llen_0) {
 if(_Gstdout_buf_cap == 0) {
@@ -649,7 +649,7 @@ _NLibC_Prealloc_arr_2(_Gstdout_buf_data, _Gstdout_buf_cap);
 }
 }
 inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2) {
-_NPosix_NFd _Lfd_3 = {0};
+_NPosix_NFd _Lfd_3;
 _Lfd_3 = _NPosix_Popen_2(_Lpath_1, _Lflags_2);
 if(_Lfd_3 != -1) {
 (*_Lfile_0) = _Lfd_3;
@@ -664,9 +664,9 @@ if(_Lval_0 == 0) {
 _Gstdout_buf_data[_Gstdout_buf_len++] = '0';
 } else {
 char* _Ldata_1 = {0};
-int32_t _Ldigits_2 = {0};
-int32_t _Lstart_3 = {0};
-int32_t _Lend_4 = {0};
+int32_t _Ldigits_2;
+int32_t _Lstart_3;
+int32_t _Lend_4;
 _Ldata_1 = &_Gstdout_buf_data[_Gstdout_buf_len];
 _Ldigits_2 = 0;
 while(1) {
@@ -681,7 +681,7 @@ break_0:;
 _Lstart_3 = 0;
 _Lend_4 = (_Ldigits_2 - 1);
 while(_Lstart_3 < _Lend_4) {
-char _Ltmp_5 = {0};
+char _Ltmp_5;
 _Ltmp_5 = _Ldata_1[_Lstart_3];
 _Ldata_1[_Lstart_3] = _Ldata_1[_Lend_4];
 _Ldata_1[_Lend_4] = _Ltmp_5;

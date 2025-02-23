@@ -9,18 +9,18 @@ void _NCp1_Pwrite_str_node_2(uint32_t len, char* buf) {
    output_data[output_len++] = '"';
    for (int i = 0; i < len; i ++) {
       switch(buf[i]) {
-case '\a': output_data[output_len++] = '\\'; output_data[output_len++] = 'a'; break;
-case '\b': output_data[output_len++] = '\\'; output_data[output_len++] = 'b'; break;
-case '\f': output_data[output_len++] = '\\'; output_data[output_len++] = 'f'; break;
-case '\n': output_data[output_len++] = '\\'; output_data[output_len++] = 'n'; break;
-case '\r': output_data[output_len++] = '\\'; output_data[output_len++] = 'r'; break;
-case '\t': output_data[output_len++] = '\\'; output_data[output_len++] = 't'; break;
-case '\v': output_data[output_len++] = '\\'; output_data[output_len++] = 'v'; break;
-case '\\': output_data[output_len++] = '\\'; output_data[output_len++] = '\\'; break;
-case '\'': output_data[output_len++] = '\''; break;
-case '"':  output_data[output_len++] = '\\'; output_data[output_len++] = '"'; break;
-case '\0': output_data[output_len++] = '\\'; output_data[output_len++] = '0'; break;
-default:   output_data[output_len++] = buf[i];
+         case '\a': output_data[output_len++] = '\\'; output_data[output_len++] = 'a'; break;
+         case '\b': output_data[output_len++] = '\\'; output_data[output_len++] = 'b'; break;
+         case '\f': output_data[output_len++] = '\\'; output_data[output_len++] = 'f'; break;
+         case '\n': output_data[output_len++] = '\\'; output_data[output_len++] = 'n'; break;
+         case '\r': output_data[output_len++] = '\\'; output_data[output_len++] = 'r'; break;
+         case '\t': output_data[output_len++] = '\\'; output_data[output_len++] = 't'; break;
+         case '\v': output_data[output_len++] = '\\'; output_data[output_len++] = 'v'; break;
+         case '\\': output_data[output_len++] = '\\'; output_data[output_len++] = '\\'; break;
+         case '\'': output_data[output_len++] = '\''; break;
+         case '"':  output_data[output_len++] = '\\'; output_data[output_len++] = '"'; break;
+         case '\0': output_data[output_len++] = '\\'; output_data[output_len++] = '0'; break;
+         default:   output_data[output_len++] = buf[i];
       }
    }
    output_data[output_len++] = '"';
@@ -30,18 +30,18 @@ void _NCp1_Pwrite_char_1(char c) {
    _NCp1_Poutput_reserve_1(4);
    output_data[output_len++] = '\'';
    switch(c) {
-   case '\a': output_data[output_len++] = '\\'; output_data[output_len++] = 'a'; break;
-   case '\b': output_data[output_len++] = '\\'; output_data[output_len++] = 'b'; break;
-   case '\f': output_data[output_len++] = '\\'; output_data[output_len++] = 'f'; break;
-   case '\n': output_data[output_len++] = '\\'; output_data[output_len++] = 'n'; break;
-   case '\r': output_data[output_len++] = '\\'; output_data[output_len++] = 'r'; break;
-   case '\t': output_data[output_len++] = '\\'; output_data[output_len++] = 't'; break;
-   case '\v': output_data[output_len++] = '\\'; output_data[output_len++] = 'v'; break;
-   case '\\': output_data[output_len++] = '\\'; output_data[output_len++] = '\\'; break;
-   case '\'': output_data[output_len++] = '\\'; output_data[output_len++] = '\''; break;
-   case '"':  output_data[output_len++] = '\\'; output_data[output_len++] = '"'; break;
-   case '\0': output_data[output_len++] = '\\'; output_data[output_len++] = '0'; break;
-   default:   output_data[output_len++] = c;
+      case '\a': output_data[output_len++] = '\\'; output_data[output_len++] = 'a'; break;
+      case '\b': output_data[output_len++] = '\\'; output_data[output_len++] = 'b'; break;
+      case '\f': output_data[output_len++] = '\\'; output_data[output_len++] = 'f'; break;
+      case '\n': output_data[output_len++] = '\\'; output_data[output_len++] = 'n'; break;
+      case '\r': output_data[output_len++] = '\\'; output_data[output_len++] = 'r'; break;
+      case '\t': output_data[output_len++] = '\\'; output_data[output_len++] = 't'; break;
+      case '\v': output_data[output_len++] = '\\'; output_data[output_len++] = 'v'; break;
+      case '\\': output_data[output_len++] = '\\'; output_data[output_len++] = '\\'; break;
+      case '\'': output_data[output_len++] = '\\'; output_data[output_len++] = '\''; break;
+      case '"':  output_data[output_len++] = '\\'; output_data[output_len++] = '"'; break;
+      case '\0': output_data[output_len++] = '\\'; output_data[output_len++] = '0'; break;
+      default:   output_data[output_len++] = c;
    }
    output_data[output_len++] = '\'';
 }
@@ -76,11 +76,11 @@ void _NCp1_Pc_init_0() {
    memcpy(cp1_tmp, "cp1-tmp-0/", cp1_tmp_len = 10);
    #ifdef SPAWN_PARSE
    memcpy(parser_path, _Ginclude_dir, _Ginclude_dir_len);
-#ifdef CP1_NEW
+   #ifdef CP1_NEW
    memcpy(parser_path + _Ginclude_dir_len, "/out/cp1-parse", 15);
-#else
+   #else
    memcpy(parser_path + _Ginclude_dir_len, "/bin/cp1-parse", 15);
-#endif
+   #endif
    #endif
 
    memcpy(qjs_path, _Ginclude_dir, _Ginclude_dir_len);
