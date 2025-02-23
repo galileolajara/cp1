@@ -1054,10 +1054,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   // }
                   jscode{
                   '= let tmp_path = scriptArgs[0] + ".cp1-" + os.getpid();
+                  '= let cp1_path = scriptArgs[0] + ".cp1";
                   '= let file = std.open(tmp_path, "wb");
                   '= file.puts(output.join(""));
                   '= file.close();
-                  '= os.rename(tmp_path, scriptArgs[0] + ".cp1");
+                  '= if (os.platform == "win32") os.remove(cp1_path);
+                  '= os.rename(tmp_path, cp1_path);
                   }
                   quickjs-end(.jscode-buf-data, .jscode-buf-len);
                }

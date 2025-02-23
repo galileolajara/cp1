@@ -1732,10 +1732,12 @@ continue_11:;
 break_11:;
 _NCp1_Pjscode_1(&_L_66);
 _NCp1_NJsCode_Pjscode_cstr_3(&_L_66, "let tmp_path = scriptArgs[0] + \".cp1-\" + os.getpid();\n"
+"let cp1_path = scriptArgs[0] + \".cp1\";\n"
 "let file = std.open(tmp_path, \"wb\");\n"
 "file.puts(output.join(\"\"));\n"
 "file.close();\n"
-"os.rename(tmp_path, scriptArgs[0] + \".cp1\");\n", 178u);
+"if (os.platform == \"win32\") os.remove(cp1_path);\n"
+"os.rename(tmp_path, cp1_path);\n", 252u);
 _NCp1_NJsCode_Pjscode_end_1(&_L_66);
 _NCp1_Pquickjs_end_2(_Gjscode_buf_data, _Gjscode_buf_len);
 }
