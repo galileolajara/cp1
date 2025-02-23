@@ -43,12 +43,12 @@ build out/libunicode.c.o: cjs qjs/libunicode.c
 rule c2
  command = tcc $flags -w -DCP1_NEW -I. -c $in -o $out
  command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
- command = gcc   $flags -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
+ command = gcc   $flags -fsanitize=address -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
 
 rule ld-c2
  command = tcc $flags -w -DCP1_NEW -I. $in -o $out
  command = clang $flags -s -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
- command = gcc   $flags -s -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
+ command = gcc   $flags -fsanitize=address -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
 
 #rule ld-c2-redef
 # command = gcc $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out.tmp 2> redefs2.txt || true && node redefs.js redefs2.txt redefs2 && touch $out

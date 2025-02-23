@@ -22,9 +22,9 @@ include "file.cp1.h" {
 }
 using Cp1 {
    read-file(path:char[], out-size:usz&):ref @inline {
-      return read-file(path, 0, 0, out-size);
+      return read-file(path, 0, 0, -1, out-size);
    }
-   read-file(path:char[], add-before:i32, add-after:i32, out-size:usz&):ref @inline {
+   read-file(path:char[], add-before:i32, add-after:i32, max-size:usz, out-size:usz&):ref @inline {
       "#ifdef _WIN32";
       if true {
          h! = W.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null);
@@ -35,6 +35,11 @@ using Cp1 {
          if !W.GetFileSizeEx(h, f-size) {
             W.CloseHandle(h);
             return null;
+         }
+         if max-size != 0 {
+            if f-size > max-size {
+               f-size =  max-size;
+            }
          }
          size! = f-size.quadPart;
          var buf:u8[];
@@ -59,6 +64,11 @@ using Cp1 {
          if size == -1 {
             fd.close();
             return null;
+         }
+         if max-size != 0 {
+            if size > max-size {
+               size =  max-size;
+            }
          }
          if fd.seek(0, #set) == -1 {
             fd.close();

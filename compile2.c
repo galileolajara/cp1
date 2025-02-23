@@ -199,7 +199,34 @@ void _NCp1_Pc_init_0() {
 // int qjs_main(int argc, char **argv);
 bool _NCp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
 void _NCp1_Pread_2(char* _Lin_path_cp1_0, uint32_t _Lin_path_cp1_len_1);
-void _NCp1_Pquickjs_7(char* path, uint8_t path_len, char* tplt_name, uint8_t tplt_name_len, uint32_t arg_crc32c, char* js_data, uint32_t js_len) {
+int quickjs_path_len;
+void* _NCp1_Pread_file_5(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_after_2, size_t _Lmax_size_3, size_t* _Lout_size_4);
+uint32_t _NCp1_Pquickjs_hex_2(char* js_data, uint32_t code_crc32c) {
+   int i = 0;
+   js_data[i++] = '/';
+   js_data[i++] = '/';
+   js_data[i++] = ' ';
+   uint8_t n;
+   n = code_crc32c >> 28;
+   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   n = (code_crc32c >> 24) & 15;
+   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   n = (code_crc32c >> 20) & 15;
+   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   n = (code_crc32c >> 16) & 15;
+   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   n = (code_crc32c >> 12) & 15;
+   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   n = (code_crc32c >> 8) & 15;
+   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   n = (code_crc32c >> 4) & 15;
+   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   n = code_crc32c & 15;
+   js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
+   js_data[i++] = '\n';
+   return i;
+}
+bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8_t tplt_name_len, uint32_t code_crc32c, uint32_t arg_crc32c) {
    int i = cp1_tmp_len;
    memcpy(cp1_tmp + i, path, path_len);
    i += path_len;
@@ -228,6 +255,26 @@ void _NCp1_Pquickjs_7(char* path, uint8_t path_len, char* tplt_name, uint8_t tpl
    cp1_tmp[i++] = 'j';
    cp1_tmp[i++] = 's';
    cp1_tmp[i] = '\0';
+   size_t cache_size;
+   char* cache = _NCp1_Pread_file_5(cp1_tmp, 0, 0, 12, &cache_size);
+   if (cache != NULL && cache_size == 12) {
+      char scratch[12];
+      _NCp1_Pquickjs_hex_2(scratch, code_crc32c);
+      if (memcmp(scratch, cache, 12) == 0) {
+         // printf("%s did not change, using the cached copy\n", cp1_tmp);
+         cp1_tmp[i++] = '.';
+         cp1_tmp[i++] = 'c';
+         cp1_tmp[i++] = 'p';
+         cp1_tmp[i++] = '1';
+         cp1_tmp[i] = '\0';
+         _NCp1_Pread_2(cp1_tmp, i);
+         return false;
+      }
+   }
+   quickjs_path_len = i;
+   return true;
+}
+void _NCp1_Pquickjs_end_2(char* js_data, uint32_t js_len) {
    _NCp1_Pwrite_file_3(cp1_tmp, js_data, js_len);
    const char *argv[] = {"cp1-qjs", cp1_tmp, NULL};
    // int status = qjs_main(2, argv);
@@ -239,6 +286,7 @@ void _NCp1_Pquickjs_7(char* path, uint8_t path_len, char* tplt_name, uint8_t tpl
       // unlink(jspath);
       exit(EXIT_FAILURE);
    }
+   int i = quickjs_path_len;
    cp1_tmp[i++] = '.';
    cp1_tmp[i++] = 'c';
    cp1_tmp[i++] = 'p';

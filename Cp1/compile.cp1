@@ -703,6 +703,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16) {
       td.row = r.n();
       td.line-c = r.n();
       td.code-len = r.n();
+      td.code-crc32c = r.n4();
       td.code = r.charr;
       r.pos += td.code-len;
       td.at.rd(r);
@@ -774,7 +775,9 @@ var include-path-v:char[][];
 var include-path-len-v:u16[];
 var include-path-c:u8;
 c-init();
-quickjs(file:char[], file-len:u8, tc-name:char[], tc-name-len:u8, arg-crc32c:u32, js-data:char[], js-data-len:u32);
+quickjs-begin(file:char[], file-len:u8, tc-name:char[], tc-name-len:u8, code-crc32c:u32, arg-crc32c:u32):bool;
+quickjs-hex(data:char[], code-crc32c:u32):u32;
+quickjs-end(js-data:char[], js-data-len:u32);
 main(arg-c:intc, arg-v:char[][]):intc @main {
    "#ifdef _WIN32";
    // Remove .exe from binary path
@@ -1009,48 +1012,47 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          loop j = 0:TemplateCode; .template-code-c; j++ {
             tc! = .template-code-v[j];
             if (at == tc.at) && (name == tc.name) {
-               .jscode-buf-len = 0;
-               jscode{
-               '= output = [];
-               '= function O(line) {
-               '=    output.push(line);
-               '= }
-               }
-               jscode{
-                  "// template '" tc.name "' from " tc.file " line " tc.row "\n"
-                  "function " tc.name "(arg) {\n"
-               }
-               code! = tc.code;
-               i! = 0;
-               line-num! = tc.row;
-               loop tc.line-c {
-                  line-num++;
-                  line-len! = code[i]:u32 | (code[i + 1]:u32 << 8);
-                  i += 2;
-                  if line-len == 0 {
-                     jscode{'= O("\n");
-                     }
-                  } else {
-                     var line:char[] = &code[i];
-                     if (line-len & 0x8000) == 0 {
-                        jscode{"O(`" line, line-len "\\n`);\n"}
-                     } else {
-                        line-len &= 0x7fff;
-                        jscode{"     " line, line-len}
-                     }
-                     i += line-len;
+               if quickjs-begin(tc.file.path(), tc.file.path-len(), tc.name.str(), tc.name.len(), tc.code-crc32c, ti.arg-crc32c) {
+                  .jscode-buf-len = quickjs-hex(.jscode-buf-data, tc.code-crc32c);
+                  jscode{
+                    "// template '" tc.name "' from " tc.file " line " tc.row "\n"
+                  '= output = [];
+                  '= function O(line) {
+                  '=    output.push(line);
+                  '= }
+                    "arg = " ti.arg, ti.arg-len ";\n"
                   }
+                  code! = tc.code;
+                  i! = 0;
+                  line-num! = tc.row;
+                  loop tc.line-c {
+                     line-num++;
+                     line-len! = code[i]:u32 | (code[i + 1]:u32 << 8);
+                     i += 2;
+                     if line-len == 0 {
+                        jscode{'= O("\n");
+                        }
+                     } else {
+                        var line:char[] = &code[i];
+                        if (line-len & 0x8000) == 0 {
+                           jscode{"O(`" line, line-len "\\n`);\n"}
+                        } else {
+                           line-len &= 0x7fff;
+                           jscode{"     " line, line-len}
+                        }
+                        i += line-len;
+                     }
+                  }
+                  // jscode{
+                  //    "}\n"
+                  // }
+                  jscode{
+                  '= let file = std.open(scriptArgs[0] + ".cp1", "wb");
+                  '= file.puts(output.join(""));
+                  '= file.close();
+                  }
+                  quickjs-end(.jscode-buf-data, .jscode-buf-len);
                }
-               jscode{
-                  "}\n"
-               }
-               jscode{tc.name ''( ti.arg, ti.arg-len ");\n"}
-               jscode{
-               '= let file = std.open(scriptArgs[0] + ".cp1", "wb");
-               '= file.puts(output.join(""));
-               '= file.close();
-               }
-               quickjs(tc.file.path(), tc.file.path-len(), tc.name.str(), tc.name.len(), ti.arg-crc32c, .jscode-buf-data, .jscode-buf-len);
                found = true;
                break;
             }

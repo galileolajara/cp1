@@ -1051,6 +1051,7 @@ enum Id[#nil = -1, #0]:i32 {
 struct TemplateCodeData[
    code:char[],
    code-len:u32,
+   code-crc32c:u32,
    name:Id,
    at:At,
    row:u32,

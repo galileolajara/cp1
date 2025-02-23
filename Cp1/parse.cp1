@@ -93,6 +93,7 @@ decl-template-code(row:u32) {
    C.memcpy(code, .string-buf, code-len);
    td.code = code;
    td.code-len = code-len;
+   td.code-crc32c = crc32c(0, code, code-len);
    td.at = at;
    td.row = row;
    td.line-c = .template-code-line-c;
@@ -736,6 +737,7 @@ write-template-code(w:Wtr, header:bool) @inline {
       w.n(td.row);
       w.n(td.line-c);
       w.n(td.code-len);
+      w.n4(td.code-crc32c);
       w.copy(td.code, td.code-len);
       td.at.wr(w, header);
       // C1.stdout{"template code " td.name " at line " td.row " have " td.line-c " lines\n"}
@@ -964,7 +966,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .input-path = arg-v[1];
    // C1.stdout{"reading " .input-path ''\n}
    var in-data:u8[];
-   in-data = read-file(.input-path, 0, 2, in-size!);
+   in-data = read-file(.input-path, 0, 2, 0, in-size!);
    // input-path-len! = C.strlen(.input-path);
    // mtime! = file-mtime(.input-path);
    if in-data == null {
