@@ -25,7 +25,7 @@ void _NCp1_Pmetacarg_next_group_0();
 void _NCp1_Pcarg_push_1(_NCp1_NExprI _Lexpr_0);
 void _NCp1_Pcarg_push_str_1(_NCp1_NExprI _Lexpr_0);
 void _NCp1_Pcarg_next_group_0();
-void _NCp1_Pexpr2stmt_5(_NCp1_NExprI _Le_0, uint32_t _Lbegin_row_1, uint32_t _Lbegin_col_2, uint32_t _Lend_row_3, uint32_t _Lend_col_4);
+void _NCp1_Pexpr2stmt_5(_NCp1_NExprI _Le_idx_0, uint32_t _Lbegin_row_1, uint32_t _Lbegin_col_2, uint32_t _Lend_row_3, uint32_t _Lend_col_4);
 void _NCp1_Pstmt_return_5(_NCp1_NExprI _Le_0, uint32_t _Lbegin_row_1, uint32_t _Lbegin_col_2, uint32_t _Lend_row_3, uint32_t _Lend_col_4);
 void _NCp1_Pstmt_continue_5(_NCp1_NId _Lid_0, uint32_t _Lbegin_row_1, uint32_t _Lbegin_col_2, uint32_t _Lend_row_3, uint32_t _Lend_col_4);
 void _NCp1_Pstmt_break_5(_NCp1_NId _Lid_0, uint32_t _Lbegin_row_1, uint32_t _Lbegin_col_2, uint32_t _Lend_row_3, uint32_t _Lend_col_4);

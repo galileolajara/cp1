@@ -1,6 +1,8 @@
+using C1 = LibCp1;
+using C = LibC;
 using Cp1 = Cp1;
 using Cp1 {
-enum Assign[#eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
+enum Assign[#eq, #colon-eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
              #lshift-eq, #rshift-eq, #and-eq, #or-eq, #xor-eq,
              ]:u8 {
    wr(s:this, w:Wtr) @inline {
@@ -31,6 +33,17 @@ expr-assign(left:ExprI, right:ExprI, type:Assign):ExprI {
 using ExprI {
    wr-assign(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprAssign = expr;
+      if e.is-stmt {
+         if e.type == #colon-eq {
+            C1.stdout{.input-path '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Please use '=' instead of ':=' when using assignment operator in this instance.\n"}
+            C.exit(#failure);
+         }
+      } else {
+         if e.type == #eq {
+            C1.stdout{.input-path '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Please use ':=' instead of '=' when using assignment operator in this instance.\n"}
+            C.exit(#failure);
+         }
+      }
       e.left.wr(w, header);
       e.right.wr(w, header);
       e.type.wr(w);
@@ -40,6 +53,9 @@ using ExprI {
       e.left.write-value(e.left-val);
       switch e.type {
          case #eq {
+            output{" = "}
+         }
+         case #colon-eq {
             output{" = "}
          }
          case #plus-eq {

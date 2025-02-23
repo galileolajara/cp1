@@ -131,7 +131,8 @@
 #define _NCp1_NToken_Cid_upper_then_open_curly_brace (_NCp1_NToken_Cid_then_open_curly_brace + 1)
 #define _NCp1_NToken_Cdot_id_upper_then_open_curly_brace (_NCp1_NToken_Cid_upper_then_open_curly_brace + 1)
 #define _NCp1_NToken_Chash (_NCp1_NToken_Cdot_id_upper_then_open_curly_brace + 1)
-#define _NCp1_NToken_Cspace_plus_equal (_NCp1_NToken_Chash + 1)
+#define _NCp1_NToken_Cspace_colon_equal (_NCp1_NToken_Chash + 1)
+#define _NCp1_NToken_Cspace_plus_equal (_NCp1_NToken_Cspace_colon_equal + 1)
 #define _NCp1_NToken_Cspace_minus_equal (_NCp1_NToken_Cspace_plus_equal + 1)
 #define _NCp1_NToken_Cspace_mul_equal (_NCp1_NToken_Cspace_minus_equal + 1)
 #define _NCp1_NToken_Cspace_div_equal (_NCp1_NToken_Cspace_mul_equal + 1)
@@ -264,6 +265,7 @@
 #define _NCp1_NIncludeError_Ccp1 (_NCp1_NIncludeError_Cdouble_slash + 1)
 #define _NCp1_NIncludeError_Cspace (_NCp1_NIncludeError_Ccp1 + 1)
 #define _NCp1_Cdecl_var_size_limit (8)
+#define _NCp1_NAssign_Ccolon_eq (_NCp1_NAssign_Ceq + 1)
 #define _NCp1_NToken_Cif (_NCp1_NToken_Cloop_with_semicolon + 1)
 #define _NCp1_NToken_Cspace_elif (_NCp1_NToken_Cif + 1)
 #define _NCp1_NToken_Cspace_else (_NCp1_NToken_Cspace_elif + 1)
@@ -619,6 +621,14 @@ struct _NCp1_NStmtExpr {
 struct _NCp1_NStmt _Fbase;
 _NCp1_NExprI _Fexpr;
 };
+struct _NCp1_NExprAssign;
+struct _NCp1_NExprAssign {
+struct _NCp1_NExpr _Fbase;
+_NCp1_NExprI _Fleft;
+_NCp1_NExprI _Fright;
+_NCp1_NAssign _Ftype;
+bool _Fis_stmt;
+};
 struct _NCp1_NValue;
 struct _NCp1_NValue {
 int8_t _Freff;
@@ -660,13 +670,6 @@ struct _NCp1_NExpr _Fbase;
 _NCp1_NExprI _Fexpr;
 _NCp1_NId _Fgroup;
 _NCp1_NId _Ffield;
-};
-struct _NCp1_NExprAssign;
-struct _NCp1_NExprAssign {
-struct _NCp1_NExpr _Fbase;
-_NCp1_NExprI _Fleft;
-_NCp1_NExprI _Fright;
-_NCp1_NAssign _Ftype;
 };
 struct _NCp1_NExprMathItem;
 struct _NCp1_NExprMathItem {
@@ -973,6 +976,10 @@ int32_t _Gnest_stack_id_v[64];
 union _NCp1_NNest _Gnest_stack_ptr_v[64];
 char* _Gstdout_buf_data;
 uint32_t _Gstdout_buf_len;
+uint32_t _Gctx_begin_row;
+uint32_t _Gctx_begin_col;
+uint32_t _Gctx_end_row;
+uint32_t _Gctx_end_col;
 int32_t _Gexpr_cap;
 struct _NCp1_NExpr** _Gexpr_v;
 uint32_t _Gstdout_buf_cap;
@@ -1049,7 +1056,7 @@ void _NCp1_Pmetacarg_next_group_0();
 void _NCp1_Pcarg_push_1(_NCp1_NExprI _Lexpr_0);
 void _NCp1_Pcarg_push_str_1(_NCp1_NExprI _Lexpr_0);
 void _NCp1_Pcarg_next_group_0();
-void _NCp1_Pexpr2stmt_5(_NCp1_NExprI _Le_0, uint32_t _Lbegin_row_1, uint32_t _Lbegin_col_2, uint32_t _Lend_row_3, uint32_t _Lend_col_4);
+void _NCp1_Pexpr2stmt_5(_NCp1_NExprI _Le_idx_0, uint32_t _Lbegin_row_1, uint32_t _Lbegin_col_2, uint32_t _Lend_row_3, uint32_t _Lend_col_4);
 void _NCp1_Pstmt_return_5(_NCp1_NExprI _Le_0, uint32_t _Lbegin_row_1, uint32_t _Lbegin_col_2, uint32_t _Lend_row_3, uint32_t _Lend_col_4);
 void _NCp1_Pstmt_continue_5(_NCp1_NId _Lid_0, uint32_t _Lbegin_row_1, uint32_t _Lbegin_col_2, uint32_t _Lend_row_3, uint32_t _Lend_col_4);
 void _NCp1_Pstmt_break_5(_NCp1_NId _Lid_0, uint32_t _Lbegin_row_1, uint32_t _Lbegin_col_2, uint32_t _Lend_row_3, uint32_t _Lend_col_4);
@@ -1314,6 +1321,7 @@ case _NCp1_NToken_Cid_then_open_curly_brace: return "id-then-open-curly-brace";
 case _NCp1_NToken_Cid_upper_then_open_curly_brace: return "id-upper-then-open-curly-brace";
 case _NCp1_NToken_Cdot_id_upper_then_open_curly_brace: return "dot-id-upper-then-open-curly-brace";
 case _NCp1_NToken_Chash: return "hash";
+case _NCp1_NToken_Cspace_colon_equal: return "space-colon-equal";
 case _NCp1_NToken_Cspace_plus_equal: return "space-plus-equal";
 case _NCp1_NToken_Cspace_minus_equal: return "space-minus-equal";
 case _NCp1_NToken_Cspace_mul_equal: return "space-mul-equal";
@@ -4040,11 +4048,18 @@ _Lcall_idx_0 = (_Gexpr_call_c - 1);
 _Gexpr_call_cgrp_v[_Lcall_idx_0][_Gexpr_call_cgrp_c[_Lcall_idx_0]] = 0;
 _Gexpr_call_cgrp_c[_Lcall_idx_0]++;
 }
-void _NCp1_Pexpr2stmt_5(_NCp1_NExprI _Le_0, uint32_t _Lbegin_row_1, uint32_t _Lbegin_col_2, uint32_t _Lend_row_3, uint32_t _Lend_col_4) {
+void _NCp1_Pexpr2stmt_5(_NCp1_NExprI _Le_idx_0, uint32_t _Lbegin_row_1, uint32_t _Lbegin_col_2, uint32_t _Lend_row_3, uint32_t _Lend_col_4) {
 struct _NCp1_NStmtExpr* _Ls_5 = {0};
+struct _NCp1_NExpr* _Le_6;
 _NCp1_Pquick_alloc_one_1(_Ls_5);
 _NCp1_Pstmt_push_6(&(*_Ls_5)._Fbase, _Lbegin_row_1, _Lbegin_col_2, _Lend_row_3, _Lend_col_4, _NCp1_NStmtType_Cexpr);
-(*_Ls_5)._Fexpr = _Le_0;
+(*_Ls_5)._Fexpr = _Le_idx_0;
+_Le_6 = _NCp1_NExprI_Pptr_1(_Le_idx_0);
+if((*_Le_6)._Ftype == _NCp1_NExprType_Cassign) {
+struct _NCp1_NExprAssign* _Lassign_7;
+_Lassign_7 = _Le_6;
+(*_Lassign_7)._Fis_stmt = true;
+}
 }
 void _NCp1_Pstmt_return_5(_NCp1_NExprI _Le_0, uint32_t _Lbegin_row_1, uint32_t _Lbegin_col_2, uint32_t _Lend_row_3, uint32_t _Lend_col_4) {
 struct _NCp1_NStmtReturn* _Ls_5 = {0};
@@ -5496,6 +5511,10 @@ Fputnum(_Lw_1, (*_Lstmt_4)._Fbegin_row);
 Fputnum(_Lw_1, (*_Lstmt_4)._Fbegin_col);
 Fputnum(_Lw_1, (*_Lstmt_4)._Fend_row);
 Fputnum(_Lw_1, (*_Lstmt_4)._Fend_col);
+_Gctx_begin_row = (*_Lstmt_4)._Fbegin_row;
+_Gctx_begin_col = (*_Lstmt_4)._Fbegin_col;
+_Gctx_end_row = (*_Lstmt_4)._Fend_row;
+_Gctx_end_col = (*_Lstmt_4)._Fend_col;
 switch((*_Lstmt_4)._Ftype) {
 case _NCp1_NStmtType_Cbreak:;
 _NCp1_NStmtSpace_Pwr_break_3(_Lstmt_4, _Lw_1, _Lheader_2);
@@ -6241,6 +6260,41 @@ _NCp1_NAt_Pwr_3((*_Le_3)._Ftype, _Lw_1, _Lheader_2);
 inline void _NCp1_NExprI_Pwr_assign_3(struct _NCp1_NExpr* _Lexpr_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2) {
 struct _NCp1_NExprAssign* _Le_3;
 _Le_3 = _Lexpr_0;
+if((*_Le_3)._Fis_stmt) {
+if((*_Le_3)._Ftype == _NCp1_NAssign_Ccolon_eq) {
+struct _NLibCp1_NStdOut _L_4;
+_NLibCp1_Pstdout_1(&_L_4);
+_Tchar_Pstdout_arr_2(input_path, &_L_4);
+_Tchar_Pstdout_2(':', &_L_4);
+_Tu32_Pstdout_2(_Gctx_begin_row, &_L_4);
+_Tchar_Pstdout_2(':', &_L_4);
+_Tu32_Pstdout_2(_Gctx_begin_col, &_L_4);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_4, " - ", 3u);
+_Tu32_Pstdout_2(_Gctx_end_row, &_L_4);
+_Tchar_Pstdout_2(':', &_L_4);
+_Tu32_Pstdout_2(_Gctx_end_col, &_L_4);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_4, ": Please use '=' instead of ':=' when using assignment operator in this instance.\n", 82u);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_4);
+exit(_NLibC_NExit_Cfailure);
+}
+} else {
+if((*_Le_3)._Ftype == _NCp1_NAssign_Ceq) {
+struct _NLibCp1_NStdOut _L_5;
+_NLibCp1_Pstdout_1(&_L_5);
+_Tchar_Pstdout_arr_2(input_path, &_L_5);
+_Tchar_Pstdout_2(':', &_L_5);
+_Tu32_Pstdout_2(_Gctx_begin_row, &_L_5);
+_Tchar_Pstdout_2(':', &_L_5);
+_Tu32_Pstdout_2(_Gctx_begin_col, &_L_5);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_5, " - ", 3u);
+_Tu32_Pstdout_2(_Gctx_end_row, &_L_5);
+_Tchar_Pstdout_2(':', &_L_5);
+_Tu32_Pstdout_2(_Gctx_end_col, &_L_5);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_5, ": Please use ':=' instead of '=' when using assignment operator in this instance.\n", 82u);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_5);
+exit(_NLibC_NExit_Cfailure);
+}
+}
 _NCp1_NExprI_Pwr_3((*_Le_3)._Fleft, _Lw_1, _Lheader_2);
 _NCp1_NExprI_Pwr_3((*_Le_3)._Fright, _Lw_1, _Lheader_2);
 _NCp1_NAssign_Pwr_2((*_Le_3)._Ftype, _Lw_1);

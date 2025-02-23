@@ -129,6 +129,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "@no-body"                { return CP1_TOKEN_SPACE_AT_NO_BODY; }
    spaces "@soa-field"              { return CP1_TOKEN_SPACE_AT_SOA_FIELD; }
    spaces "="                       { return CP1_TOKEN_SPACE_EQUAL; }
+   spaces ":="                      { return CP1_TOKEN_SPACE_COLON_EQUAL; }
    spaces "+="                      { return CP1_TOKEN_SPACE_PLUS_EQUAL; }
    spaces "-="                      { return CP1_TOKEN_SPACE_MINUS_EQUAL; }
    spaces "*="                      { return CP1_TOKEN_SPACE_MUL_EQUAL; }

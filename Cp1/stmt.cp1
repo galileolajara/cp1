@@ -80,11 +80,16 @@ func-stmt-add(s:Stmt) {
       .decl-func-ctx-space.stmt-last = s;
    }
 }
-expr2stmt(e:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
+expr2stmt(e-idx:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
    var s:StmtExpr;
    quick-alloc-one(s);
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #expr);
-   s.expr = e;
+   s.expr = e-idx;
+   e! = e-idx.ptr();
+   if e.type == #assign {
+      var assign:ExprAssign = e;
+      assign.is-stmt = true;
+   }
 }
 stmt-lvar-add(name:Id, set:ExprI, row:u32, col:u32) {
    lvar-i! = .decl-func-ctx-space.lvar-new(name, row, col);

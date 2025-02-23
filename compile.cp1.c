@@ -143,7 +143,8 @@
 #define _NCp1_NStructFlags_Cno_decl (2)
 #define _NCp1_NExprI_C0 (_NCp1_NExprI_Cnil + 1)
 #define _NCp1_NAssign_Ceq 0
-#define _NCp1_NAssign_Cplus_eq (_NCp1_NAssign_Ceq + 1)
+#define _NCp1_NAssign_Ccolon_eq (_NCp1_NAssign_Ceq + 1)
+#define _NCp1_NAssign_Cplus_eq (_NCp1_NAssign_Ccolon_eq + 1)
 #define _NCp1_NAssign_Cminus_eq (_NCp1_NAssign_Cplus_eq + 1)
 #define _NCp1_NAssign_Cmul_eq (_NCp1_NAssign_Cminus_eq + 1)
 #define _NCp1_NAssign_Cdiv_eq (_NCp1_NAssign_Cmul_eq + 1)
@@ -5282,59 +5283,65 @@ _NCp1_Poutput_1(&_L_2);
 _NCp1_NOutput_Poutput_cstr_3(&_L_2, " = ", 3u);
 _NCp1_NOutput_Poutput_end_1(&_L_2);
 break;
-case _NCp1_NAssign_Cplus_eq:;
+case _NCp1_NAssign_Ccolon_eq:;
 struct _NCp1_NOutput _L_3;
 _NCp1_Poutput_1(&_L_3);
-_NCp1_NOutput_Poutput_cstr_3(&_L_3, " += ", 4u);
+_NCp1_NOutput_Poutput_cstr_3(&_L_3, " = ", 3u);
 _NCp1_NOutput_Poutput_end_1(&_L_3);
 break;
-case _NCp1_NAssign_Cminus_eq:;
+case _NCp1_NAssign_Cplus_eq:;
 struct _NCp1_NOutput _L_4;
 _NCp1_Poutput_1(&_L_4);
-_NCp1_NOutput_Poutput_cstr_3(&_L_4, " -= ", 4u);
+_NCp1_NOutput_Poutput_cstr_3(&_L_4, " += ", 4u);
 _NCp1_NOutput_Poutput_end_1(&_L_4);
 break;
-case _NCp1_NAssign_Cmul_eq:;
+case _NCp1_NAssign_Cminus_eq:;
 struct _NCp1_NOutput _L_5;
 _NCp1_Poutput_1(&_L_5);
-_NCp1_NOutput_Poutput_cstr_3(&_L_5, " *= ", 4u);
+_NCp1_NOutput_Poutput_cstr_3(&_L_5, " -= ", 4u);
 _NCp1_NOutput_Poutput_end_1(&_L_5);
 break;
-case _NCp1_NAssign_Cdiv_eq:;
+case _NCp1_NAssign_Cmul_eq:;
 struct _NCp1_NOutput _L_6;
 _NCp1_Poutput_1(&_L_6);
-_NCp1_NOutput_Poutput_cstr_3(&_L_6, " /= ", 4u);
+_NCp1_NOutput_Poutput_cstr_3(&_L_6, " *= ", 4u);
 _NCp1_NOutput_Poutput_end_1(&_L_6);
 break;
-case _NCp1_NAssign_Clshift_eq:;
+case _NCp1_NAssign_Cdiv_eq:;
 struct _NCp1_NOutput _L_7;
 _NCp1_Poutput_1(&_L_7);
-_NCp1_NOutput_Poutput_cstr_3(&_L_7, " <<= ", 5u);
+_NCp1_NOutput_Poutput_cstr_3(&_L_7, " /= ", 4u);
 _NCp1_NOutput_Poutput_end_1(&_L_7);
 break;
-case _NCp1_NAssign_Crshift_eq:;
+case _NCp1_NAssign_Clshift_eq:;
 struct _NCp1_NOutput _L_8;
 _NCp1_Poutput_1(&_L_8);
-_NCp1_NOutput_Poutput_cstr_3(&_L_8, " >>= ", 5u);
+_NCp1_NOutput_Poutput_cstr_3(&_L_8, " <<= ", 5u);
 _NCp1_NOutput_Poutput_end_1(&_L_8);
 break;
-case _NCp1_NAssign_Cand_eq:;
+case _NCp1_NAssign_Crshift_eq:;
 struct _NCp1_NOutput _L_9;
 _NCp1_Poutput_1(&_L_9);
-_NCp1_NOutput_Poutput_cstr_3(&_L_9, " &= ", 4u);
+_NCp1_NOutput_Poutput_cstr_3(&_L_9, " >>= ", 5u);
 _NCp1_NOutput_Poutput_end_1(&_L_9);
 break;
-case _NCp1_NAssign_Cor_eq:;
+case _NCp1_NAssign_Cand_eq:;
 struct _NCp1_NOutput _L_10;
 _NCp1_Poutput_1(&_L_10);
-_NCp1_NOutput_Poutput_cstr_3(&_L_10, " |= ", 4u);
+_NCp1_NOutput_Poutput_cstr_3(&_L_10, " &= ", 4u);
 _NCp1_NOutput_Poutput_end_1(&_L_10);
 break;
-case _NCp1_NAssign_Cxor_eq:;
+case _NCp1_NAssign_Cor_eq:;
 struct _NCp1_NOutput _L_11;
 _NCp1_Poutput_1(&_L_11);
-_NCp1_NOutput_Poutput_cstr_3(&_L_11, " ^= ", 4u);
+_NCp1_NOutput_Poutput_cstr_3(&_L_11, " |= ", 4u);
 _NCp1_NOutput_Poutput_end_1(&_L_11);
+break;
+case _NCp1_NAssign_Cxor_eq:;
+struct _NCp1_NOutput _L_12;
+_NCp1_Poutput_1(&_L_12);
+_NCp1_NOutput_Poutput_cstr_3(&_L_12, " ^= ", 4u);
+_NCp1_NOutput_Poutput_end_1(&_L_12);
 break;
 }
 _NCp1_NExprI_Pwrite_value_2((*_Le_1)._Fright, &(*_Le_1)._Fright_val);

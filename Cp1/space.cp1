@@ -2,6 +2,10 @@ using Cp1 = Cp1;
 using C = LibC;
 using C1 = LibCp1;
 using Cp1 {
+var ctx-begin-row:u32;
+var ctx-begin-col:u32;
+var ctx-end-row:u32;
+var ctx-end-col:u32;
 enum StmtSpaceFlags[
    #0,
    #skip-lvar-decl = 1,
@@ -106,6 +110,10 @@ struct StmtSpace[
          w.n(stmt.begin-col);
          w.n(stmt.end-row);
          w.n(stmt.end-col);
+         .ctx-begin-row = stmt.begin-row;
+         .ctx-begin-col = stmt.begin-col;
+         .ctx-end-row = stmt.end-row;
+         .ctx-end-col = stmt.end-col;
          switch.wr(stmt, w, header) stmt.type {
             default {
                C1.stdout{"wr() not yet implemented in stmt #" stmt.type.cp1-name() ''\n}
