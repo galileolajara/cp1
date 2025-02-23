@@ -1013,14 +1013,20 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             tc! = .template-code-v[j];
             if (at == tc.at) && (name == tc.name) {
                if quickjs-begin(tc.file.path(), tc.file.path-len(), tc.name.str(), tc.name.len(), tc.code-crc32c, ti.arg-crc32c) {
-                  .jscode-buf-len = quickjs-hex(.jscode-buf-data, tc.code-crc32c);
+                  .jscode-buf-len = 0; // quickjs-hex(.jscode-buf-data, tc.code-crc32c);
                   jscode{
                     "// template '" tc.name "' from " tc.file " line " tc.row "\n"
                   '= output = [];
                   '= function O(line) {
                   '=    output.push(line);
                   '= }
-                    "arg = " ti.arg, ti.arg-len ";\n"
+                  '= cp1_cache = true;
+                     ti.arg, ti.arg-len ";\n"
+                    "if (cp1_cache) O(\""
+                  }
+                  .jscode-buf-len += quickjs-hex(&.jscode-buf-data[.jscode-buf-len], tc.code-crc32c);
+                  jscode{
+                    "- CRC32C\\n\");\n"
                   }
                   code! = tc.code;
                   i! = 0;

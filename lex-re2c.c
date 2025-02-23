@@ -501,8 +501,14 @@ lex_template_inst: {
       // fprintf(stdout, "%.*s\n", 20, YYCURSOR);
       const char* json = YYCURSOR;
       int32_t i = 0;
+      uint8_t indent = 1;
       for(;;) {
          uint8_t c = json[i++];
+         // printf("c = %c\n", c);
+         if (c == '\0') {
+            fprintf(stdout, "%s:%u:%u: Error, cannot find the closing '}' for the 'template{...}' syntax\n", input_path, _Grow, _Gcol);
+            exit(EXIT_FAILURE);
+         }
          if (c == '"') {
             // int32_t start = i - 1;
             for(;;) {
@@ -536,14 +542,21 @@ lex_template_inst: {
                   break;
                }
             }
+         } else if (c == '{') {
+            indent++;
          } else if (c == '}') {
-            // int32_t start = -1;
-            // fprintf(stdout, "%.*s\n", i - start, &json[start]);
-            break;
+            indent--;
+            if (indent == 0) {
+               // int32_t start = -1;
+               // fprintf(stdout, "%.*s\n", i - start, &json[start]);
+               break;
+            }
          }
       }
-      _Gstring_buf = (char*)&json[-1];
-      _Gstring_len = i + 1;
+               // int32_t start = -1;
+               // fprintf(stdout, "%.*s\n", i - start, &json[start]);
+      _Gstring_buf = (char*)&json[0];
+      _Gstring_len = i - 1;
       YYCURSOR = (const char*)&json[i];
       return CP1_TOKEN_TEMPLATE_INST;
    }

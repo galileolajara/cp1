@@ -223,7 +223,7 @@ uint32_t _NCp1_Pquickjs_hex_2(char* js_data, uint32_t code_crc32c) {
    js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
    n = code_crc32c & 15;
    js_data[i++] = n < 10 ? '0' + n : 'a' + n - 10;
-   js_data[i++] = '\n';
+   js_data[i++] = ' ';
    return i;
 }
 bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8_t tplt_name_len, uint32_t code_crc32c, uint32_t arg_crc32c) {
@@ -254,7 +254,12 @@ bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8
    cp1_tmp[i++] = '.';
    cp1_tmp[i++] = 'j';
    cp1_tmp[i++] = 's';
-   cp1_tmp[i] = '\0';
+   int j = i;
+   cp1_tmp[j++] = '.';
+   cp1_tmp[j++] = 'c';
+   cp1_tmp[j++] = 'p';
+   cp1_tmp[j++] = '1';
+   cp1_tmp[j] = '\0';
    size_t cache_size;
    char* cache = _NCp1_Pread_file_5(cp1_tmp, 0, 0, 12, &cache_size);
    if (cache != NULL && cache_size == 12) {
@@ -262,15 +267,11 @@ bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8
       _NCp1_Pquickjs_hex_2(scratch, code_crc32c);
       if (memcmp(scratch, cache, 12) == 0) {
          // printf("%s did not change, using the cached copy\n", cp1_tmp);
-         cp1_tmp[i++] = '.';
-         cp1_tmp[i++] = 'c';
-         cp1_tmp[i++] = 'p';
-         cp1_tmp[i++] = '1';
-         cp1_tmp[i] = '\0';
-         _NCp1_Pread_2(cp1_tmp, i);
+         _NCp1_Pread_2(cp1_tmp, j);
          return false;
       }
    }
+   cp1_tmp[i] = '\0';
    quickjs_path_len = i;
    return true;
 }
