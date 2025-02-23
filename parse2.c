@@ -34,8 +34,6 @@ union cp1_token {
 };
 
 /*
-void _NCp1_Ppreprocess_def_2(const char*, uint8_t);
-
 void _NCp1_Ppreprocess_init_0() {
 #ifdef _WIN32
    _NCp1_Ppreprocess_def_2("windows", 7);
@@ -74,16 +72,6 @@ void _NCp1_Ppreprocess_init_0() {
 */
 
 extern uint8_t _Glast_token;
-/* extern char* _Glock_path;
-void cleanup() {
-   if (_Glock_path != 0) {
-      // printf("deleting %s\n", _Glock_path);
-      unlink(_Glock_path);
-   }
-}
-void _NCp1_PParser_at_exit_0() {
-   atexit(cleanup);
-} */
 
 typedef int _NCp1_NExprI;
 typedef int _NCp1_NId;
@@ -130,9 +118,7 @@ struct cp1_lexer {
    const char *content;
    const char *start;
    const char *cursor;
-   // const char *limit;
    const char *marker;
-   // const char *ctx_marker;
 };
 
 void* _NCp1_NParser_Palloc_0() {

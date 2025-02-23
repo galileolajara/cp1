@@ -35,11 +35,6 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    id = id_one+("-" id_one+)*;
 
    *                                { string_mem[0] = l->start[0]; return CP1_TOKEN_END; }
-   "\t"                             {
-      fprintf(stdout, "%s:%u:%u: Use of tabs is discouraged, please use spaces instead\n", input_path, _Grow, _Gcol);
-      exit(EXIT_FAILURE);
-   }
-   
    "{"                              { return CP1_TOKEN_OPEN_CURLY_BRACE; }
    "}"                              { return CP1_TOKEN_CLOSE_CURLY_BRACE; }
    spaces "}"                       { return CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE; }
@@ -55,15 +50,11 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "-"                              { return CP1_TOKEN_MINUS; }
    "!"                              { return CP1_TOKEN_EXCLAMATION; }
    "?"                              { return CP1_TOKEN_QUESTION; }
-   // "`"                              { return CP1_TOKEN_GRAVE; }
    "&"                              { return CP1_TOKEN_AMPERSAND; }
    "#"                              { return CP1_TOKEN_HASH; }
    "["                              { return CP1_TOKEN_OPEN_BRACKET; }
    "]"                              { return CP1_TOKEN_CLOSE_BRACKET; }
    spaces "]"                       { return CP1_TOKEN_SPACE_CLOSE_BRACKET; }
-   // "<"                              { return CP1_TOKEN_OPEN_ANGULAR_BRACKET; }
-   // ">"                              { return CP1_TOKEN_CLOSE_ANGULAR_BRACKET; }
-   // spaces ">"                       { return CP1_TOKEN_SPACE_CLOSE_ANGULAR_BRACKET; }
 	"0"                              { return CP1_TOKEN_NUM_ZERO; }
 	[1-9] [0-9]*                     { return CP1_TOKEN_NUM_I32; }
 	[1-9] [0-9]* "u"                 { return CP1_TOKEN_NUM_U32; }
@@ -255,14 +246,6 @@ lex_string: {
          "\\r" { pushchar('\r'); goto string_continue; }
          "\\t" { pushchar('\t'); goto string_continue; }
          "\\v" { pushchar('\v'); goto string_continue; }
-         "\\\n" {
-            fprintf(stdout, "%s:%u:%u: Invalid escape sequence found '\\(newline)'\n", input_path, _Grow, _Gcol + 1);
-            exit(EXIT_FAILURE);
-         }
-         "\\". {
-            fprintf(stdout, "%s:%u:%u: Invalid escape sequence found '\\%c'\n", input_path, _Grow, _Gcol + 1, YYCURSOR[-1]);
-            exit(EXIT_FAILURE);
-         }
          */
          string_continue: {
             begin = YYCURSOR;
@@ -371,7 +354,6 @@ lex_template_code: {
          int16_t *pcode_len = (int16_t*)string_ptr;
          if (line[first_char] == '\n') {
             // ignore indention
-            // *(string_ptr++) = '\n';
             *pcode_len = 0;
             string_ptr += 2;
          } else if (first_char == indention) {
@@ -481,64 +463,48 @@ lex_template_code: {
                   exit(EXIT_FAILURE);
                }
             }
-            // *(string_ptr++) = '\n';
             pcode_len[0] = string_ptr - (char*)&pcode_len[1];
-            /* copy_line:;
-            int32_t copy_len = line_len - indention;
-            memcpy(string_ptr, line + indention, copy_len);
-            string_ptr += copy_len; */
          }
-         // *(string_ptr++) = '\n';
-
          i++;
       }
-      // fprintf(stdout, "template code begin\n%.*stemplate code end\n%u\n", (int32_t)(string_ptr - string_mem), string_mem, (int32_t)(string_ptr - string_mem));
       _Gstring_buf = string_mem;
       _Gstring_len = string_ptr - string_mem;
       return CP1_TOKEN_TEMPLATE_CODE;
    }
 lex_template_inst: {
-      // fprintf(stdout, "%.*s\n", 20, YYCURSOR);
       const char* json = YYCURSOR;
       int32_t i = 0;
       uint8_t indent = 1;
       for(;;) {
          uint8_t c = json[i++];
-         // printf("c = %c\n", c);
          if (c == '\0') {
             fprintf(stdout, "%s:%u:%u: Error, cannot find the closing '}' for the 'template{...}' syntax\n", input_path, _Grow, _Gcol);
             exit(EXIT_FAILURE);
          }
          if (c == '"') {
-            // int32_t start = i - 1;
             for(;;) {
                c = json[i++];
                if (c == '\\') {
                   i++;
                } else if (c == '"') {
-                  // fprintf(stdout, "%.*s\n", i - start, &json[start]);
                   break;
                }
             }
          } else if (c == '\'') {
-            // int32_t start = i - 1;
             for(;;) {
                c = json[i++];
                if (c == '\\') {
                   i++;
                } else if (c == '\'') {
-                  // fprintf(stdout, "%.*s\n", i - start, &json[start]);
                   break;
                }
             }
          } else if (c == '`') {
-            // int32_t start = i - 1;
             for(;;) {
                c = json[i++];
                if (c == '\\') {
                   i++;
                } else if (c == '`') {
-                  // fprintf(stdout, "%.*s\n", i - start, &json[start]);
                   break;
                }
             }
@@ -547,14 +513,10 @@ lex_template_inst: {
          } else if (c == '}') {
             indent--;
             if (indent == 0) {
-               // int32_t start = -1;
-               // fprintf(stdout, "%.*s\n", i - start, &json[start]);
                break;
             }
          }
       }
-               // int32_t start = -1;
-               // fprintf(stdout, "%.*s\n", i - start, &json[start]);
       _Gstring_buf = (char*)&json[0];
       _Gstring_len = i - 1;
       YYCURSOR = (const char*)&json[i];

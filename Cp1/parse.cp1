@@ -1194,7 +1194,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      case ''v { }
                      default {
                         get-row-col(row!, col!, r.reff, in-data);
-                        C1.stdout{.input-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" r.charr[1] "'\n"}
+                        if r.p1[1] == ''\n {
+                           C1.stdout{.input-path '': row '': col ": Encountered invalid escape sequence in the string: '\\(newline)'\n"}
+                        } else {
+                           C1.stdout{.input-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" r.charr[1] "'\n"}
+                        }
                         C.exit(#failure);
                      }
                   }
