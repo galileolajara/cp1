@@ -10,6 +10,7 @@ using C = LibC;
 using C1 = LibCp1;
 using X = Posix;
 using Cp1 {
+template{} BuildCommonCodes;
 var import-v:Include[];
 var import-cap:u32;
 var import-c:u32;
