@@ -65,8 +65,10 @@ extern char** _Ginclude_path_v;
 extern uint16_t* _Ginclude_path_len_v;
 extern uint8_t _Ginclude_path_c;
 char cp1_tmp[1024];
+char cp1_tmp_js[1024];
 // uint16_t cp1_tmp_len;
 #define cp1_tmp_len 17
+#define cp1_tmp_js_len 17
 #define SPAWN_PARSE
 #ifdef SPAWN_PARSE
 char parser_path[1024];
@@ -93,12 +95,19 @@ void hex32(char* out, uint32_t hex) {
    n = hex & 15;
    out[i++] = n < 10 ? '0' + n : 'a' + n - 10;
 }
-void _NCp1_Pc_init_1(uint32_t crc32c) {
+#include "build-crc32c.c"
+void _NCp1_Pc_init_1(uint32_t js_crc32c) {
    memcpy(cp1_tmp, "cp1-tmp-", 8);
-   hex32(&cp1_tmp[8], crc32c);
+   hex32(&cp1_tmp[8], _NCp1_Pbuild_crc32c_0());
    cp1_tmp[cp1_tmp_len - 1] = '\0';
    mkdir(cp1_tmp, 0755);
    cp1_tmp[cp1_tmp_len - 1] = '/';
+
+   memcpy(cp1_tmp_js, "cp1-tmp-", 8);
+   hex32(&cp1_tmp_js[8], js_crc32c);
+   cp1_tmp_js[cp1_tmp_js_len - 1] = '\0';
+   mkdir(cp1_tmp_js, 0755);
+   cp1_tmp_js[cp1_tmp_js_len - 1] = '/';
 
    #ifdef SPAWN_PARSE
    memcpy(parser_path, _Ginclude_dir, _Ginclude_dir_len);
@@ -128,54 +137,54 @@ uint32_t _NCp1_Pquickjs_hex_2(char* js_data, uint32_t code_crc32c) {
 }
 bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8_t tplt_name_len, uint32_t code_crc32c, uint32_t arg_crc32c) {
    int i;
-   if (memcmp(path, cp1_tmp, cp1_tmp_len) == 0) {
+   if (memcmp(path, "cp1-tmp-", 8) == 0) {
       i = 0;
    } else {
-      i = cp1_tmp_len;
+      i = cp1_tmp_js_len;
    }
-   memcpy(cp1_tmp + i, path, path_len);
+   memcpy(cp1_tmp_js + i, path, path_len);
    i += path_len;
-   cp1_tmp[i++] = '-';
-   memcpy(&cp1_tmp[i], tplt_name, tplt_name_len);
+   cp1_tmp_js[i++] = '-';
+   memcpy(&cp1_tmp_js[i], tplt_name, tplt_name_len);
    i += tplt_name_len;
-   cp1_tmp[i++] = '-';
-   hex32(&cp1_tmp[i], arg_crc32c);
+   cp1_tmp_js[i++] = '-';
+   hex32(&cp1_tmp_js[i], arg_crc32c);
    i += 8;
-   cp1_tmp[i++] = '.';
-   cp1_tmp[i++] = 'j';
-   cp1_tmp[i++] = 's';
+   cp1_tmp_js[i++] = '.';
+   cp1_tmp_js[i++] = 'j';
+   cp1_tmp_js[i++] = 's';
    int j = i;
-   cp1_tmp[j++] = '.';
-   cp1_tmp[j++] = 'c';
-   cp1_tmp[j++] = 'p';
-   cp1_tmp[j++] = '1';
-   cp1_tmp[j] = '\0';
+   cp1_tmp_js[j++] = '.';
+   cp1_tmp_js[j++] = 'c';
+   cp1_tmp_js[j++] = 'p';
+   cp1_tmp_js[j++] = '1';
+   cp1_tmp_js[j] = '\0';
    size_t cache_size;
-   char* cache = _NCp1_Pread_file_5(cp1_tmp, 0, 0, 12, &cache_size);
+   char* cache = _NCp1_Pread_file_5(cp1_tmp_js, 0, 0, 12, &cache_size);
    if (cache != NULL && cache_size == 12) {
       char scratch[12];
       _NCp1_Pquickjs_hex_2(scratch, code_crc32c);
       if (memcmp(scratch, cache, 12) == 0) {
-         // printf("%s did not change, using the cached copy\n", cp1_tmp);
+         // printf("%s did not change, using the cached copy\n", cp1_tmp_js);
          char* new_path = malloc(j + 1);
-         memcpy(new_path, cp1_tmp, j + 1);
+         memcpy(new_path, cp1_tmp_js, j + 1);
          _NCp1_Pread_2(new_path, j);
          return false;
       }
    }
-   cp1_tmp[i] = '\0';
+   cp1_tmp_js[i] = '\0';
    quickjs_path_len = i;
    return true;
 }
 void _NCp1_Pquickjs_end_2(char* js_data, uint32_t js_len) {
    char tmp_path[1024 + 10];
-   sprintf(tmp_path, "%s-%u", cp1_tmp, getpid());
+   sprintf(tmp_path, "%s-%u", cp1_tmp_js, getpid());
    _NCp1_Pwrite_file_3(tmp_path, js_data, js_len);
    #ifdef _WIN32
-   unlink(cp1_tmp);
+   unlink(cp1_tmp_js);
    #endif
-   rename(tmp_path, cp1_tmp);
-   const char *argv[] = {"cp1-qjs", cp1_tmp, NULL};
+   rename(tmp_path, cp1_tmp_js);
+   const char *argv[] = {"cp1-qjs", cp1_tmp_js, NULL};
    // int status = qjs_main(2, argv);
    pid_t pid;
    int spawn = posix_spawn(&pid, qjs_path, NULL, NULL, argv, environ);
@@ -185,13 +194,13 @@ void _NCp1_Pquickjs_end_2(char* js_data, uint32_t js_len) {
       exit(EXIT_FAILURE);
    }
    int i = quickjs_path_len;
-   cp1_tmp[i++] = '.';
-   cp1_tmp[i++] = 'c';
-   cp1_tmp[i++] = 'p';
-   cp1_tmp[i++] = '1';
-   cp1_tmp[i] = '\0';
+   cp1_tmp_js[i++] = '.';
+   cp1_tmp_js[i++] = 'c';
+   cp1_tmp_js[i++] = 'p';
+   cp1_tmp_js[i++] = '1';
+   cp1_tmp_js[i] = '\0';
    char* new_path = malloc(i + 1);
-   memcpy(new_path, cp1_tmp, i + 1);
+   memcpy(new_path, cp1_tmp_js, i + 1);
    _NCp1_Pread_2(new_path, i);
 }
 #include <sys/types.h>
@@ -240,7 +249,7 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
    const char* fullpath;
    char cp1_tmp2[1024];
    struct stat s;
-   if (memcmp(path, cp1_tmp, cp1_tmp_len) == 0) {
+   if (memcmp(path, "cp1-tmp-", 8) == 0) {
       /* char* new_path = malloc(path_len + 1);
       memcpy(new_path, path, path_len + 1);
       *ppath = new_path; */
