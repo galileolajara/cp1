@@ -22,7 +22,7 @@ using char {
    }
 }
 using Cp1 {
-template{compile:true} BuildCommonCodes;
+#BuildCommonCodes{compile:true}
 var jscode-buf-data:char[];
 var jscode-buf-cap:u32;
 var jscode-buf-len:u32;

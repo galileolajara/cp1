@@ -3,7 +3,7 @@ using Cp1 {
 export() {
    quick-alloc-undo(0);
    decl-import(#nil, 0, 0);
-   decl-template-inst(#nil, 0, 0);
+   decl-template-inst(0, 0);
    decl-template-code(0);
    decl-func-begin(#0, 0, 0);
    decl-func-end(0, 0);

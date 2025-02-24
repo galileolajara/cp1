@@ -17,429 +17,429 @@ crc32c(crc32c:u32, data:ref, size:u32):u32 @real-name;
 var id-map:Map.;
 var include-map:Map.;
 var at-map:AtMap.;
-template BuildCommonCodes {
+meta #BuildCommonCodes {
    using Cp1 {
-   struct StructData[
+      struct StructData[
 #  if (arg.compile) {
-      file:File,
+         file:File,
 #  }
-      begin-row:u32,
-      begin-col:u32,
-      end-row:u32,
-      end-col:u32,
-      include:Include,
-      at:At,
-      flags:StructFlags,
-      real-name:Id,
+         begin-row:u32,
+         begin-col:u32,
+         end-row:u32,
+         end-col:u32,
+         include:Include,
+         at:At,
+         flags:StructFlags,
+         real-name:Id,
 #  if (arg.compile) {
-      method-c:i32,
-      method-cap:i32,
-      method-v:Func[],
+         method-c:i32,
+         method-cap:i32,
+         method-v:Func[],
 #  }
-      fvar-c:u32,
-      fvar-v:FvarData.[0],
-   ];
-   struct StmtIf[
-      base:Stmt.,
-      expr:ExprI,
+         fvar-c:u32,
+         fvar-v:FvarData.[0],
+      ];
+      struct StmtIf[
+         base:Stmt.,
+         expr:ExprI,
 #  if (arg.compile) {
-      val:Value.
+         val:Value.
 #  }
-   ];
-   struct StmtIfElif[
-      base:Stmt.,
-      expr:ExprI,
+      ];
+      struct StmtIfElif[
+         base:Stmt.,
+         expr:ExprI,
 #  if (arg.compile) {
-      val:Value.,
+         val:Value.,
 #  }
-   ];
-   struct StmtIfElse[
-      base:Stmt.,
-   ];
-   struct StmtIfEnd[
-      base:Stmt.,
-   ];
-   struct StmtSwitch[
-      base:Stmt.,
-      expr:ExprI,
+      ];
+      struct StmtIfElse[
+         base:Stmt.,
+      ];
+      struct StmtIfEnd[
+         base:Stmt.,
+      ];
+      struct StmtSwitch[
+         base:Stmt.,
+         expr:ExprI,
 #  if (arg.compile) {
-      val:Value.,
+         val:Value.,
 #  }
-      cases:ExprI,
+         cases:ExprI,
 #  if (arg.compile) {
-      case-func-c:u32,
-      case-func-v:StmtSwitchCaseFunc.[],
+         case-func-c:u32,
+         case-func-v:StmtSwitchCaseFunc.[],
 #  }
-   ];
-   struct StmtCaseItem[
-      expr:ExprI,
+      ];
+      struct StmtCaseItem[
+         expr:ExprI,
 #  if (arg.compile) {
-      val:Value.,
+         val:Value.,
 #  }
-   ];
-   using Lvar {
+      ];
+      using Lvar {
 #  if (arg.compile) {
-      ptr(l:this):LvarData @inline {
-         return .ctx-func.lvar-v[l];
+         ptr(l:this):LvarData @inline {
+            return .ctx-func.lvar-v[l];
+         }
+         name(l:this):Id @inline {
+            return l.ptr().decl.name;
+         }
+#  }
+#  if (!arg.compile) {
+         ptr(l:this):LvarData @inline {
+            return .ctx-func.lvar-v[l];
+         }
+         name(l:this):Id @inline {
+            return l.ptr().decl.name;
+         }
+#  }
       }
-      name(l:this):Id @inline {
-         return l.ptr().decl.name;
-      }
+      struct EnumData[
+#  if (arg.compile) {
+         file:File,
+#  }
+         begin-row:u32,
+         begin-col:u32,
+         end-row:u32,
+         end-col:u32,
+         include:Include,
+         at:At,
+         base-type:At,
+         flags:EnumFlags,
+         soa-field-gvar-at:At,
+         soa-field-gvar-id:Id,
+         real-name:Id,
+#  if (arg.compile) {
+         method-c:i32,
+         method-cap:i32,
+         method-v:Func[],
+#  }
+      ];
+      struct ExprCompare[
+         base:Expr.,
+         left:ExprI,
+         right:ExprI,
+         type:Compare,
+#  if (arg.compile) {
+         left-val:Value.,
+         right-val:Value.,
+#  }
+      ];
+      struct ExprAssign[
+         base:Expr.,
+         left:ExprI,
+         right:ExprI,
+         type:Assign,
+#  if (arg.compile) {
+         left-val:Value.,
+         right-val:Value.,
 #  }
 #  if (!arg.compile) {
-      ptr(l:this):LvarData @inline {
-         return .ctx-func.lvar-v[l];
-      }
-      name(l:this):Id @inline {
-         return l.ptr().decl.name;
-      }
+         is-stmt:bool,
 #  }
-   }
-   struct EnumData[
-#  if (arg.compile) {
-      file:File,
+      ];
+      struct ExprLvar[
+         base:Expr.,
+         lvar:Lvar,
+#  if (!arg.compile) {
+         decl:bool,
 #  }
-      begin-row:u32,
-      begin-col:u32,
-      end-row:u32,
-      end-col:u32,
-      include:Include,
-      at:At,
-      base-type:At,
-      flags:EnumFlags,
-      soa-field-gvar-at:At,
-      soa-field-gvar-id:Id,
-      real-name:Id,
+      ];
+      struct ExprIndex[
+         base:Expr.,
+         left:ExprI,
+         right:ExprI,
 #  if (arg.compile) {
-      method-c:i32,
-      method-cap:i32,
-      method-v:Func[],
+         left-val:Value.,
+         right-val:Value.,
 #  }
-   ];
-   struct ExprCompare[
-      base:Expr.,
-      left:ExprI,
-      right:ExprI,
-      type:Compare,
+      ];
+      struct ExprMathItem[
+         expr:ExprI,
 #  if (arg.compile) {
-      left-val:Value.,
-      right-val:Value.,
+         val:Value.,
 #  }
-   ];
-   struct ExprAssign[
-      base:Expr.,
-      left:ExprI,
-      right:ExprI,
-      type:Assign,
+      ];
+      struct ExprMath[
+         base:Expr.,
+         left:ExprI,
+         right:ExprI,
+         type:Math,
 #  if (arg.compile) {
-      left-val:Value.,
-      right-val:Value.,
+         left-val:Value.,
+         right-val:Value.,
+#  }
+         item-c:u8,
+#  if (!arg.compile) {
+         item-cap:u8,
+#  }
+         item-v:ExprMathItem.[],
+      ];
+      struct ExprBoolsItem[
+         expr:ExprI,
+#  if (arg.compile) {
+         val:Value.,
+#  }
+      ];
+      struct ExprBools[
+         base:Expr.,
+         left:ExprI,
+         right:ExprI,
+         type:Bools,
+#  if (arg.compile) {
+         left-val:Value.,
+         right-val:Value.,
+#  }
+         item-c:u8,
+#  if (!arg.compile) {
+         item-cap:u8,
+#  }
+         item-v:ExprBoolsItem.[],
+      ];
+      struct ExprFvar[
+         base:Expr.,
+         expr:ExprI,
+         member:Id,
+#  if (arg.compile) {
+         fvar:Fvar,
+         val:Value.,
+#  }
+      ];
+      struct ExprSoaField[
+         base:Expr.,
+         expr:ExprI,
+         group:Id,
+         field:Id,
+#  if (arg.compile) {
+         expr2:ExprI,
+         val:Value.,
+#  }
+      ];
+      struct ExprCvar[
+         base:Expr.,
+         at:At,
+         name:Id,
+#  if (arg.compile) {
+         cvar:Cvar,
+         try:At,
+#  }
+      ];
+      struct ExprRef[
+         base:Expr.,
+         expr:ExprI,
+#  if (arg.compile) {
+         val:Value.,
+#  }
+      ];
+      struct ExprUnary[
+         base:Expr.,
+         expr:ExprI,
+         type:Unary,
+#  if (arg.compile) {
+         val:Value.,
+#  }
+      ];
+      struct ExprCastFast[
+         base:Expr.,
+         expr:ExprI,
+         type:At,
+#  if (arg.compile) {
+         val:Value.,
+#  }
+      ];
+      struct ExprGvar[
+         base:Expr.,
+#  if (!arg.compile) {
+         at:At,
+         name:Id,
+#  }
+#  if (arg.compile) {
+         gvar:Gvar,
+#  }
+      ];
+      struct DeclGvar[
+#  if (arg.compile) {
+         file:File,
+#  }
+         row:u32,
+         col:u32,
+         include:Include,
+         at:At,
+         flags:GvarFlags,
+         decl:DeclVarData.,
+      ];
+      struct CvarData[
+#  if (arg.compile) {
+         file:File,
+#  }
+         row:u32,
+         col:u32,
+         include:Include,
+         at:At,
+         flags:CvarFlags,
+         // real-name:Id,
+         decl:DeclVarData.,
+         expr-set:ExprI,
+         last-cvar:Cvar,
+      ];
+      struct DeclVarData[
+         name:Id,
+         type:At,
+         flags:VarFlags,
+         real-name:Id,
+         type-info:TypeInfo.,
+         size-c:u8,
+         size-expr-v:ExprI[],
+#  if (arg.compile) {
+         size-value-v:Value.[],
+#  }
+      ];
+      struct Carg[
+         reff:i8,
+         expr:ExprI,
+#  if (arg.compile) {
+         value:Value.,
+#  }
+      ];
+      struct ExprFunc[
+         base:Expr.,
+         at:At,
+         func-name:Id,
+#  if (arg.compile) {
+         func-idx:Func,
+#  }
+         group-c:u8,
+         group-v:u8[#expr-carg-group-limit],
+         carg-c:u8,
+         carg-v:Carg.[0],
+      ];
+      struct ExprMetaFunc[
+         base:Expr.,
+#  if (!arg.compile) {
+         at:At,
+         func-name:Id,
+         lvar:ExprI,
+         group-c:u8,
+         group-v:u8[#expr-carg-group-limit],
+         carg-c:u8,
+         carg-v:Carg.[0],
+#  }
+#  if (arg.compile) {
+         expr-c:u8,
+         expr-v:ExprI[0],
+#  }
+      ];
+      struct ExprMethod[
+         base:Expr.,
+         thiss:ExprI,
+         func-name:Id,
+#  if (arg.compile) {
+         func-idx:Func,
+         this-value:Value.,
+#  }
+         group-c:u8,
+         group-v:u8[#expr-carg-group-limit],
+         carg-c:u8,
+         carg-v:Carg.[0],
+      ];
+      struct DeclFunc[
+#  if (arg.compile) {
+         process-next:Func,
+         file:File,
+#  }
+         begin-row:u32,
+         begin-col:u32,
+         end-row:u32,
+         end-col:u32,
+         include:Include,
+         at:At,
+         // name:Id,
+         flags:FuncFlags,
+         real-name:Id,
+         meta-method-prefix:Id,
+#  if (arg.compile) {
+         meta-method-arr:Id,
+         meta-method-cstr:Id,
+#  }
+         meta-method-end:Id,
+         decl-str:char[],
+         decl-len:i32,
+         cas:Id,
+         // type:At,
+         decl:DeclVarData.,
+#  if (!arg.compile) {
+         stmt-space:StmtSpace,
+#  }
+#  if (arg.compile) {
+         stmt-space:StmtSpace.,
+#  }
+      //    stmt-c:u32,
+      // #  if (arg.compile) {
+      //    stmt-cap:u32,
+      // #  }
+      //    stmt-v:Stmt[],
+#  if (arg.compile) {
+         lvar-c:Lvar,
+         // lvar-cap:Lvar,
+         lvar-v:LvarData.[],
+         // lvar-name-v:Id[],
+         body-file-pos:u32,
 #  }
 #  if (!arg.compile) {
-      is-stmt:bool,
+         lvar-c:Lvar,
+         lvar-cap:Lvar,
+         lvar-v:LvarData[],
 #  }
-   ];
-   struct ExprLvar[
-      base:Expr.,
-      lvar:Lvar,
-#  if (!arg.compile) {
-      decl:bool,
-#  }
-   ];
-   struct ExprIndex[
-      base:Expr.,
-      left:ExprI,
-      right:ExprI,
+         this-idx:i8,
+         this-group:i8,
+         group-c:i8,
+         group-v:i8[#expr-carg-group-limit],
+         farg-c:u8,
+         farg-v:Farg.[0],
+      ];
+      struct AtData[
+         type:NameType,
+         parent:At,
+         name:AtName.,
 #  if (arg.compile) {
-      left-val:Value.,
-      right-val:Value.,
+         func-c:i32,
+         func-cap:i32,
+         func-v:Func[],
+         gvar-c:i32,
+         gvar-cap:i32,
+         gvar-v:Gvar[],
+         cvar-c:i32,
+         cvar-cap:i32,
+         cvar-v:Cvar[],
+         decl:AtType.,
+         def:AtDef,
 #  }
-   ];
-   struct ExprMathItem[
-      expr:ExprI,
+      ];
+      struct TemplateCodeData[
+         code:char[],
+         code-len:u32,
+         code-crc32c:u32,
+         name:Id,
+         at:At,
+         row:u32,
+         line-c:u32,
 #  if (arg.compile) {
-      val:Value.,
+         file:File,
 #  }
-   ];
-   struct ExprMath[
-      base:Expr.,
-      left:ExprI,
-      right:ExprI,
-      type:Math,
+      ];
+      struct TemplateInstData[
+         arg:char[],
+         arg-len:u32,
+         arg-crc32c:u32,
+         name:Id,
+         at:At,
+         row:u32,
+         col:u32,
 #  if (arg.compile) {
-      left-val:Value.,
-      right-val:Value.,
+         file:File,
 #  }
-      item-c:u8,
-#  if (!arg.compile) {
-      item-cap:u8,
-#  }
-      item-v:ExprMathItem.[],
-   ];
-   struct ExprBoolsItem[
-      expr:ExprI,
-#  if (arg.compile) {
-      val:Value.,
-#  }
-   ];
-   struct ExprBools[
-      base:Expr.,
-      left:ExprI,
-      right:ExprI,
-      type:Bools,
-#  if (arg.compile) {
-      left-val:Value.,
-      right-val:Value.,
-#  }
-      item-c:u8,
-#  if (!arg.compile) {
-      item-cap:u8,
-#  }
-      item-v:ExprBoolsItem.[],
-   ];
-   struct ExprFvar[
-      base:Expr.,
-      expr:ExprI,
-      member:Id,
-#  if (arg.compile) {
-      fvar:Fvar,
-      val:Value.,
-#  }
-   ];
-   struct ExprSoaField[
-      base:Expr.,
-      expr:ExprI,
-      group:Id,
-      field:Id,
-#  if (arg.compile) {
-      expr2:ExprI,
-      val:Value.,
-#  }
-   ];
-   struct ExprCvar[
-      base:Expr.,
-      at:At,
-      name:Id,
-#  if (arg.compile) {
-      cvar:Cvar,
-      try:At,
-#  }
-   ];
-   struct ExprRef[
-      base:Expr.,
-      expr:ExprI,
-#  if (arg.compile) {
-      val:Value.,
-#  }
-   ];
-   struct ExprUnary[
-      base:Expr.,
-      expr:ExprI,
-      type:Unary,
-#  if (arg.compile) {
-      val:Value.,
-#  }
-   ];
-   struct ExprCastFast[
-      base:Expr.,
-      expr:ExprI,
-      type:At,
-#  if (arg.compile) {
-      val:Value.,
-#  }
-   ];
-   struct ExprGvar[
-      base:Expr.,
-#  if (!arg.compile) {
-      at:At,
-      name:Id,
-#  }
-#  if (arg.compile) {
-      gvar:Gvar,
-#  }
-   ];
-   struct DeclGvar[
-#  if (arg.compile) {
-      file:File,
-#  }
-      row:u32,
-      col:u32,
-      include:Include,
-      at:At,
-      flags:GvarFlags,
-      decl:DeclVarData.,
-   ];
-   struct CvarData[
-#  if (arg.compile) {
-      file:File,
-#  }
-      row:u32,
-      col:u32,
-      include:Include,
-      at:At,
-      flags:CvarFlags,
-      // real-name:Id,
-      decl:DeclVarData.,
-      expr-set:ExprI,
-      last-cvar:Cvar,
-   ];
-   struct DeclVarData[
-      name:Id,
-      type:At,
-      flags:VarFlags,
-      real-name:Id,
-      type-info:TypeInfo.,
-      size-c:u8,
-      size-expr-v:ExprI[],
-#  if (arg.compile) {
-      size-value-v:Value.[],
-#  }
-   ];
-   struct Carg[
-      reff:i8,
-      expr:ExprI,
-#  if (arg.compile) {
-      value:Value.,
-#  }
-   ];
-   struct ExprFunc[
-      base:Expr.,
-      at:At,
-      func-name:Id,
-#  if (arg.compile) {
-      func-idx:Func,
-#  }
-      group-c:u8,
-      group-v:u8[#expr-carg-group-limit],
-      carg-c:u8,
-      carg-v:Carg.[0],
-   ];
-   struct ExprMetaFunc[
-      base:Expr.,
-#  if (!arg.compile) {
-      at:At,
-      func-name:Id,
-      lvar:ExprI,
-      group-c:u8,
-      group-v:u8[#expr-carg-group-limit],
-      carg-c:u8,
-      carg-v:Carg.[0],
-#  }
-#  if (arg.compile) {
-      expr-c:u8,
-      expr-v:ExprI[0],
-#  }
-   ];
-   struct ExprMethod[
-      base:Expr.,
-      thiss:ExprI,
-      func-name:Id,
-#  if (arg.compile) {
-      func-idx:Func,
-      this-value:Value.,
-#  }
-      group-c:u8,
-      group-v:u8[#expr-carg-group-limit],
-      carg-c:u8,
-      carg-v:Carg.[0],
-   ];
-   struct DeclFunc[
-#  if (arg.compile) {
-      process-next:Func,
-      file:File,
-#  }
-      begin-row:u32,
-      begin-col:u32,
-      end-row:u32,
-      end-col:u32,
-      include:Include,
-      at:At,
-      // name:Id,
-      flags:FuncFlags,
-      real-name:Id,
-      meta-method-prefix:Id,
-#  if (arg.compile) {
-      meta-method-arr:Id,
-      meta-method-cstr:Id,
-#  }
-      meta-method-end:Id,
-      decl-str:char[],
-      decl-len:i32,
-      cas:Id,
-      // type:At,
-      decl:DeclVarData.,
-#  if (!arg.compile) {
-      stmt-space:StmtSpace,
-#  }
-#  if (arg.compile) {
-      stmt-space:StmtSpace.,
-#  }
-   //    stmt-c:u32,
-   // #  if (arg.compile) {
-   //    stmt-cap:u32,
-   // #  }
-   //    stmt-v:Stmt[],
-#  if (arg.compile) {
-      lvar-c:Lvar,
-      // lvar-cap:Lvar,
-      lvar-v:LvarData.[],
-      // lvar-name-v:Id[],
-      body-file-pos:u32,
-#  }
-#  if (!arg.compile) {
-      lvar-c:Lvar,
-      lvar-cap:Lvar,
-      lvar-v:LvarData[],
-#  }
-      this-idx:i8,
-      this-group:i8,
-      group-c:i8,
-      group-v:i8[#expr-carg-group-limit],
-      farg-c:u8,
-      farg-v:Farg.[0],
-   ];
-   struct AtData[
-      type:NameType,
-      parent:At,
-      name:AtName.,
-#  if (arg.compile) {
-      func-c:i32,
-      func-cap:i32,
-      func-v:Func[],
-      gvar-c:i32,
-      gvar-cap:i32,
-      gvar-v:Gvar[],
-      cvar-c:i32,
-      cvar-cap:i32,
-      cvar-v:Cvar[],
-      decl:AtType.,
-      def:AtDef,
-#  }
-   ];
-   struct TemplateCodeData[
-      code:char[],
-      code-len:u32,
-      code-crc32c:u32,
-      name:Id,
-      at:At,
-      row:u32,
-      line-c:u32,
-#  if (arg.compile) {
-      file:File,
-#  }
-   ];
-   struct TemplateInstData[
-      arg:char[],
-      arg-len:u32,
-      arg-crc32c:u32,
-      name:Id,
-      at:At,
-      row:u32,
-      col:u32,
-#  if (arg.compile) {
-      file:File,
-#  }
-   ];
+      ];
    }
 }
 var quick-alloc-c:i32;

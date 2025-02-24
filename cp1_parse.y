@@ -177,13 +177,11 @@ decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE CLO
    { _NCp1_Pdecl_at_end_0(); }
 decl ::= decl_at.
 
-template_name(l) ::= ID_UPPER(r).
-   { l.basic.id = r.basic.id; }
-template_name(l) ::= ID(r).
-   { l.basic.id = r.basic.id; }
+/* template_name(l) ::= HASH_ID(r).
+   { l.basic.id = r.basic.id; } */
 
-decl_template_inst ::= TEMPLATE_INST(inst) SPACE template_name(name) SEMICOLON.
-   { _NCp1_Pdecl_template_inst_3(name.basic.id, inst.basic.row, inst.basic.col); }
+decl_template_inst ::= TEMPLATE_INST(inst) /* SPACE template_name(name) SEMICOLON */.
+   { _NCp1_Pdecl_template_inst_2(inst.basic.row, inst.basic.col); }
 /* decl_template_inst ::= TEMPLATE_INST SPACE at(at) template_name(name) SEMICOLON.
    { _NCp1_Pdecl_template_inst_2(name.basic.id, at); } */
 decl ::= decl_template_inst.

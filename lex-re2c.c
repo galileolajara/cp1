@@ -62,10 +62,10 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "0o" [0-7]+                      { return CP1_TOKEN_NUM_OCT; }
 	"0x" [0-9a-fA-F]+                { return CP1_TOKEN_NUM_HEX; }
 	("0"|[1-9][0-9]*) "." [0-9]+ "f" { return CP1_TOKEN_NUM_F32; }
-   "template{" {
+   "#" id "{" {
       goto lex_template_inst;
    }
-   "template" spaces id spaces "{" {
+   "meta" spaces "#" id spaces "{" {
       goto lex_template_code;
    }
    "\"" {
@@ -260,8 +260,8 @@ lex_string: {
    }
 lex_template_code: {
       const char* start = l->start;
-      const char* name = start + 8;
-      int col = _Gcol + 8;
+      const char* name = start + 4;
+      int col = _Gcol + 4;
       for(;;) {
          if (name[0] == '\n') {
             fprintf(stdout, "%s:%u:%u: Error, the syntax 'template NAME {' must not have a new line in between\n", input_path, _Grow, col);
@@ -273,6 +273,7 @@ lex_template_code: {
          col++;
          name++;
       }
+      name++;
       const char* name_end = name + 1;
       col++;
       for(;;) {
@@ -479,6 +480,9 @@ lex_template_code: {
       return CP1_TOKEN_TEMPLATE_CODE;
    }
 lex_template_inst: {
+      _Gtemplate_name_buf = l->start + 1;
+      _Gtemplate_name_len = (YYCURSOR - 1) - (l->start + 1);
+      // printf("meta [%.*s]\n", _Gtemplate_name_len, _Gtemplate_name_buf);
       const char* json = YYCURSOR;
       int32_t i = 0;
       uint8_t indent = 1;
