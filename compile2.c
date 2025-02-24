@@ -258,7 +258,7 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
       } else {
          goto notfound;
       }
-      memcpy(tmp, path, path_len + 1);
+      // memcpy(tmp, path, path_len + 1);
       tmp[path_len] = '-';
       tmp[path_len + 1] = 'b';
       tmp[path_len + 2] = '\0';
