@@ -43,9 +43,10 @@ decl-template-inst(row:u32, col:u32) {
    name! = id-add(.template-name-len, .template-name-buf);
    arg-buf! = .string-buf;
    arg-len! = .string-len;
+   arg-crc32c! = crc32c(0, arg-buf, arg-len);
    loop i = 0; .template-inst-c; i++ {
-      td! = .template-inst-v[i];
-      if (td.at == at) && (td.name == name) && (td.arg-len == arg-len) && (C.memcmp(td.arg, arg-buf, arg-len) == 0) {
+      ti! = .template-inst-v[i];
+      if (ti.name == name) && (ti.arg-crc32c == arg-crc32c) && (ti.at == at) {
          // C1.stdout{"already found instantiation of template " name " with the same arguments, silently ignoring...\n"}
          return;
       }
@@ -56,17 +57,17 @@ decl-template-inst(row:u32, col:u32) {
       .template-inst-cap = grow(.template-inst-c:base);
       realloc(.template-inst-v, .template-inst-cap:base, old-cap:base);
    }
-   td! = .template-inst-v[i];
-   td.name = name;
+   ti! = .template-inst-v[i];
+   ti.name = name;
    var arg:char[];
    quick-alloc-arr(arg, arg-len);
    C.memcpy(arg, arg-buf, arg-len);
-   td.arg = arg;
-   td.arg-len = arg-len;
-   td.arg-crc32c = crc32c(0, arg, arg-len);
-   td.at = at;
-   td.row = row;
-   td.col = col;
+   ti.arg = arg;
+   ti.arg-len = arg-len;
+   ti.arg-crc32c = arg-crc32c;
+   ti.at = at;
+   ti.row = row;
+   ti.col = col;
 }
 decl-template-code(row:u32) {
    at! = .decl-at;

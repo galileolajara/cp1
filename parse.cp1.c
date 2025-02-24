@@ -1192,8 +1192,8 @@ void _NLibCp1_Pstdbuf_1(struct _NLibCp1_NStdOut* _Lso_0);
 void _NLibCp1_NStdOut_Pstdout_end_no_flush_1(struct _NLibCp1_NStdOut* _Lso_0);
 void _NCp1_NIncludeError_Pprint_2(_NCp1_NIncludeError _Le_0, _NCp1_NInclude _Lpath_1);
 #define _NCp1_Pgrow_1(c) Fpow2gteq((c) + 8)
-#define _NCp1_Pquick_alloc_arr_2(r, c) r = qalloc(sizeof(r[0]) * (c))
 uint32_t crc32c(uint32_t _Lcrc32c_0, void* _Ldata_1, uint32_t _Lsize_2);
+#define _NCp1_Pquick_alloc_arr_2(r, c) r = qalloc(sizeof(r[0]) * (c))
 void _NCp1_NId_Pstdout_2(_NCp1_NId _Lid_0, struct _NLibCp1_NStdOut* _Lso_1);
 #define _NCp1_Pquick_alloc_one_1(r) r = qalloc(sizeof(r[0]))
 #define _NCp1_Pquick_alloc_plus_2(r, plus) r = qalloc(sizeof(r[0]) + plus)
@@ -3474,43 +3474,45 @@ _NCp1_NAt _Lat_2;
 _NCp1_NId _Lname_3;
 char* _Larg_buf_4;
 int32_t _Larg_len_5;
-_NCp1_NTemplateInst _Li_8;
-struct _NCp1_NTemplateInstData* _Ltd_10;
-char* _Larg_11 = {0};
+uint32_t _Larg_crc32c_6;
+_NCp1_NTemplateInst _Li_9;
+struct _NCp1_NTemplateInstData* _Lti_11;
+char* _Larg_12 = {0};
 _Lat_2 = _Gdecl_at;
 _Lname_3 = _NCp1_Pid_add_2(_Gtemplate_name_len, _Gtemplate_name_buf);
 _Larg_buf_4 = _Gstring_buf;
 _Larg_len_5 = _Gstring_len;
-int32_t _Li_6;
-_Li_6 = 0;
+_Larg_crc32c_6 = crc32c(0, _Larg_buf_4, _Larg_len_5);
+int32_t _Li_7;
+_Li_7 = 0;
 for(int i = _Gtemplate_inst_c; i > 0; ) {
 i --;
-struct _NCp1_NTemplateInstData* _Ltd_7;
-_Ltd_7 = (&_Gtemplate_inst_v[_Li_6]);
-if((((*_Ltd_7)._Fat == _Lat_2) && ((*_Ltd_7)._Fname == _Lname_3) && ((*_Ltd_7)._Farg_len == _Larg_len_5) && (memcmp((*_Ltd_7)._Farg, _Larg_buf_4, _Larg_len_5) == 0))) {
+struct _NCp1_NTemplateInstData* _Lti_8;
+_Lti_8 = (&_Gtemplate_inst_v[_Li_7]);
+if((((*_Lti_8)._Fname == _Lname_3) && ((*_Lti_8)._Farg_crc32c == _Larg_crc32c_6) && ((*_Lti_8)._Fat == _Lat_2))) {
 return;
 }
 continue_0:;
-_Li_6++;
+_Li_7++;
 }
 break_0:;
-_Li_8 = _Gtemplate_inst_c++;
+_Li_9 = _Gtemplate_inst_c++;
 if(_Gtemplate_inst_cap <= _Gtemplate_inst_c) {
-_NCp1_NTemplateInst _Lold_cap_9;
-_Lold_cap_9 = _Gtemplate_inst_cap;
+_NCp1_NTemplateInst _Lold_cap_10;
+_Lold_cap_10 = _Gtemplate_inst_cap;
 _Gtemplate_inst_cap = _NCp1_Pgrow_1((uint32_t)(_Gtemplate_inst_c));
-_NCp1_Prealloc_3(_Gtemplate_inst_v, (uint32_t)(_Gtemplate_inst_cap), (uint32_t)(_Lold_cap_9));
+_NCp1_Prealloc_3(_Gtemplate_inst_v, (uint32_t)(_Gtemplate_inst_cap), (uint32_t)(_Lold_cap_10));
 }
-_Ltd_10 = (&_Gtemplate_inst_v[_Li_8]);
-(*_Ltd_10)._Fname = _Lname_3;
-_NCp1_Pquick_alloc_arr_2(_Larg_11, _Larg_len_5);
-memcpy(_Larg_11, _Larg_buf_4, _Larg_len_5);
-(*_Ltd_10)._Farg = _Larg_11;
-(*_Ltd_10)._Farg_len = _Larg_len_5;
-(*_Ltd_10)._Farg_crc32c = crc32c(0, _Larg_11, _Larg_len_5);
-(*_Ltd_10)._Fat = _Lat_2;
-(*_Ltd_10)._Frow = _Lrow_0;
-(*_Ltd_10)._Fcol = _Lcol_1;
+_Lti_11 = (&_Gtemplate_inst_v[_Li_9]);
+(*_Lti_11)._Fname = _Lname_3;
+_NCp1_Pquick_alloc_arr_2(_Larg_12, _Larg_len_5);
+memcpy(_Larg_12, _Larg_buf_4, _Larg_len_5);
+(*_Lti_11)._Farg = _Larg_12;
+(*_Lti_11)._Farg_len = _Larg_len_5;
+(*_Lti_11)._Farg_crc32c = _Larg_crc32c_6;
+(*_Lti_11)._Fat = _Lat_2;
+(*_Lti_11)._Frow = _Lrow_0;
+(*_Lti_11)._Fcol = _Lcol_1;
 }
 void _NCp1_Pdecl_template_code_1(uint32_t _Lrow_0) {
 _NCp1_NAt _Lat_1;
