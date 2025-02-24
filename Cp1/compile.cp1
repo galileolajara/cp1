@@ -558,6 +558,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool) {
       td.name.rd(r);
       td.row = r.n();
       td.line-c = r.n();
+      td.with-reflection = r.b();
       td.code-len = r.n();
       td.code-crc32c = r.n4();
       td.code = r.charr;
@@ -847,7 +848,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       .import-new-c = 0;
       loop i = .import-c - new-c; new-c {
          path! = .import-v[i++];
-         // C1.stdout{"import " path "\n"}
          read(path.str(), path.len(), false);
       }
    }
@@ -882,7 +882,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   loop i = 0; .define-c {
                      jscode{"D." .define-v[i], .define-len-v[i] ";\n"}
                   }
-                  if true {
+                  if tc.with-reflection {
                      jscode{
                      '= let cp1_refl = {
                      '- "root":

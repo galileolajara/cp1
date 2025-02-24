@@ -76,6 +76,7 @@ void _NCp1_Ppreprocess_init_0() {
 */
 
 extern int _Glast_token;
+extern int _Glast_last_token;
 
 typedef int _NCp1_NExprI;
 typedef int _NCp1_NId;

@@ -68,9 +68,8 @@ decl-template-inst(name:Id, row:u32, col:u32) {
    ti.row = row;
    ti.col = col;
 }
-decl-template-code(row:u32) {
+decl-template-code(name:Id, row:u32, with-reflection:bool) {
    at! = .decl-at;
-   name! = id-add(.template-name-len, .template-name-buf);
    loop i = 0; .template-code-c; i++ {
       td! = .template-code-v[i];
       if (td.at == at) && (td.name == name) {
@@ -97,6 +96,7 @@ decl-template-code(row:u32) {
    td.at = at;
    td.row = row;
    td.line-c = .template-code-line-c;
+   td.with-reflection = with-reflection;
 }
 include-add(len:u8, str:char[]):Include {
    found! = .include-map.get-or-insert(str, len, .include-c);
@@ -647,6 +647,7 @@ struct Lexer[
    }
 }
 var last-token:Token;
+var last-last-token:Token;
 struct Parser[] {
    alloc():Parser;
    free(psr:this);
@@ -740,6 +741,7 @@ write-template-code(w:Wtr, header:bool) @inline {
       td.name.wr(w, header);
       w.n(td.row);
       w.n(td.line-c);
+      w.b(td.with-reflection);
       w.n(td.code-len);
       w.n4(td.code-crc32c);
       w.copy(td.code, td.code-len);
@@ -1308,6 +1310,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       //    .last-token = t;
       //    psr.parse(t, tok);
       // } else {
+         .last-last-token = .last-token;
          switch t {
             // case #id-lparen {
             //    tok.id = lex.get-id(0, 1);

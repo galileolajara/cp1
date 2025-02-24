@@ -46,7 +46,9 @@
 #define _NCp1_NToken_Cclose_curly_brace (_NCp1_NToken_Cspace_close_curly_brace + 1)
 #define _NCp1_NToken_Cusing (_NCp1_NToken_Cclose_curly_brace + 1)
 #define _NCp1_NToken_Ctemplate_json (_NCp1_NToken_Cusing + 1)
-#define _NCp1_NToken_Ctemplate_code (_NCp1_NToken_Ctemplate_json + 1)
+#define _NCp1_NToken_Cspace_at_reflection (_NCp1_NToken_Ctemplate_json + 1)
+#define _NCp1_NToken_Cmeta (_NCp1_NToken_Cspace_at_reflection + 1)
+#define _NCp1_NToken_Ctemplate_code (_NCp1_NToken_Cmeta + 1)
 #define _NCp1_NToken_Cimport (_NCp1_NToken_Ctemplate_code + 1)
 #define _NCp1_NToken_Csemicolon (_NCp1_NToken_Cimport + 1)
 #define _NCp1_NToken_Cend (_NCp1_NToken_Csemicolon + 1)
@@ -545,6 +547,7 @@ _NCp1_NId _Fname;
 _NCp1_NAt _Fat;
 uint32_t _Frow;
 uint32_t _Fline_c;
+bool _Fwith_reflection;
 };
 struct _NCp1_NTemplateInstData;
 struct _NCp1_NTemplateInstData {
@@ -869,6 +872,7 @@ extern uint32_t _Grow;
 extern uint32_t _Gcol;
 extern uint32_t _Glast_row;
 extern uint32_t _Glast_col;
+_NCp1_NToken _Glast_last_token;
 _NCp1_NToken _Glast_token;
 int32_t _Gid_c;
 uint8_t* _Gid_in_header_v;
@@ -905,8 +909,6 @@ _NCp1_NAt _Gdecl_at;
 extern char* _Gstring_buf;
 extern int32_t _Gstring_len;
 _NCp1_NTemplateInst _Gtemplate_inst_cap;
-extern uint8_t _Gtemplate_name_len;
-extern char* _Gtemplate_name_buf;
 _NCp1_NTemplateCode _Gtemplate_code_cap;
 extern uint32_t _Gtemplate_code_line_c;
 _NCp1_NId _Gdecl_func_name;
@@ -1032,7 +1034,7 @@ bool _NCp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
 void qalloc_undo(int32_t _Lsize_0);
 void _NCp1_Pdecl_import_3(_NCp1_NInclude _Lpath_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
 void _NCp1_Pdecl_template_inst_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
-void _NCp1_Pdecl_template_code_1(uint32_t _Lrow_0);
+void _NCp1_Pdecl_template_code_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, bool _Lwith_reflection_2);
 void _NCp1_Pdecl_func_begin_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
 void _NCp1_Pdecl_func_end_2(uint32_t _Lrow_0, uint32_t _Lcol_1);
 void _NCp1_Pdecl_struct_end_2(uint32_t _Lrow_0, uint32_t _Lcol_1);
@@ -1186,6 +1188,7 @@ void _NCp1_NFunc_Pwr_2(_NCp1_NFunc _Lf_0, union _NCp1_NWtr* _Lw_1);
 void _NCp1_NDeclFunc_Plvars_wr_3(struct _NCp1_NDeclFunc* _Lf_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NStmtSpace_Pwr_3(struct _NCp1_NStmtSpace* _Lspace_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 void _NCp1_NWtr_Pn4_2(union _NCp1_NWtr* _Lw_0, uint32_t _Ln_1);
+void _NCp1_NWtr_Pb_2(union _NCp1_NWtr* _Lw_0, bool _Lval_1);
 bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3);
 bool _NCp1_NInclude_Pvalidate_2(_NCp1_NInclude _Lpath_0, _NCp1_NIncludeError* _Lerr_1);
 void _NLibCp1_Pstdbuf_1(struct _NLibCp1_NStdOut* _Lso_0);
@@ -1236,6 +1239,8 @@ case _NCp1_NToken_Cspace_close_curly_brace: return "space-close-curly-brace";
 case _NCp1_NToken_Cclose_curly_brace: return "close-curly-brace";
 case _NCp1_NToken_Cusing: return "using";
 case _NCp1_NToken_Ctemplate_json: return "template-json";
+case _NCp1_NToken_Cspace_at_reflection: return "space-at-reflection";
+case _NCp1_NToken_Cmeta: return "meta";
 case _NCp1_NToken_Ctemplate_code: return "template-code";
 case _NCp1_NToken_Cimport: return "import";
 case _NCp1_NToken_Csemicolon: return "semicolon";
@@ -1475,7 +1480,6 @@ void _NCp1_NTypeInfo_Pcopy_from_2(struct _NCp1_NTypeInfo* _Lti_0, struct _NCp1_N
 void _NCp1_Pfunc_stmt_add_1(struct _NCp1_NStmt* _Ls_0);
 int32_t _NCp1_NAtMap_Pget_or_insert_5(struct _NCp1_NAtMap* _Lm_0, _NCp1_NAt _Lparent_1, _NCp1_NNameType _Ltype_2, _NCp1_NId _Lname_3, int32_t _Lval_4);
 #define _NLibC_Prealloc_arr_2(var, c) var = realloc(var, sizeof(var[0]) * (c))
-void _NCp1_NWtr_Pb_2(union _NCp1_NWtr* _Lw_0, bool _Lval_1);
 void _NCp1_NMath_Pwr_2(_NCp1_NMath _Le_0, union _NCp1_NWtr* _Lw_1);
 void _NCp1_NBools_Pwr_2(_NCp1_NBools _Le_0, union _NCp1_NWtr* _Lw_1);
 void _NCp1_NUnary_Pwr_2(_NCp1_NUnary _Lu_0, union _NCp1_NWtr* _Lw_1);
@@ -2001,6 +2005,7 @@ _Glast_row = _Grow;
 _Glast_col = _Gcol;
 _Grow = _Ltok_70._Fii32._Frow;
 _Gcol = _Ltok_70._Fii32._Fcol;
+_Glast_last_token = _Glast_token;
 switch(_Lt_71) {
 case _NCp1_NToken_Cchar1:;
 union _NCp1_NRdr _Lr_73 = {0};
@@ -2521,7 +2526,7 @@ void _NCp1_Pexport_0() {
 qalloc_undo(0);
 _NCp1_Pdecl_import_3(_NCp1_NInclude_Cnil, 0, 0);
 _NCp1_Pdecl_template_inst_3(_NCp1_NId_Cnil, 0, 0);
-_NCp1_Pdecl_template_code_1(0);
+_NCp1_Pdecl_template_code_3(_NCp1_NId_Cnil, 0, false);
 _NCp1_Pdecl_func_begin_3(_NCp1_NId_C0, 0, 0);
 _NCp1_Pdecl_func_end_2(0, 0);
 _NCp1_Pdecl_struct_end_2(0, 0);
@@ -3373,6 +3378,7 @@ _Ltd_3 = (&_Gtemplate_code_v[_Li_2++]);
 _NCp1_NId_Pwr_3((*_Ltd_3)._Fname, _Lw_0, _Lheader_1);
 Fputnum(_Lw_0, (*_Ltd_3)._Frow);
 Fputnum(_Lw_0, (*_Ltd_3)._Fline_c);
+_NCp1_NWtr_Pb_2(_Lw_0, (*_Ltd_3)._Fwith_reflection);
 Fputnum(_Lw_0, (*_Ltd_3)._Fcode_len);
 _NCp1_NWtr_Pn4_2(_Lw_0, (*_Ltd_3)._Fcode_crc32c);
 _NCp1_NWtr_Pcopy_3(_Lw_0, (*_Ltd_3)._Fcode, (*_Ltd_3)._Fcode_len);
@@ -3512,60 +3518,59 @@ memcpy(_Larg_12, _Larg_buf_4, _Larg_len_5);
 (*_Lti_11)._Frow = _Lrow_1;
 (*_Lti_11)._Fcol = _Lcol_2;
 }
-void _NCp1_Pdecl_template_code_1(uint32_t _Lrow_0) {
-_NCp1_NAt _Lat_1;
-_NCp1_NId _Lname_2;
-_NCp1_NTemplateCode _Li_6;
-struct _NCp1_NTemplateCodeData* _Ltd_8;
-int32_t _Lcode_len_9;
-char* _Lcode_10 = {0};
-_Lat_1 = _Gdecl_at;
-_Lname_2 = _NCp1_Pid_add_2(_Gtemplate_name_len, _Gtemplate_name_buf);
-int32_t _Li_3;
-_Li_3 = 0;
+void _NCp1_Pdecl_template_code_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, bool _Lwith_reflection_2) {
+_NCp1_NAt _Lat_3;
+_NCp1_NTemplateCode _Li_7;
+struct _NCp1_NTemplateCodeData* _Ltd_9;
+int32_t _Lcode_len_10;
+char* _Lcode_11 = {0};
+_Lat_3 = _Gdecl_at;
+int32_t _Li_4;
+_Li_4 = 0;
 for(int i = _Gtemplate_code_c; i > 0; ) {
 i --;
-struct _NCp1_NTemplateCodeData* _Ltd_4;
-_Ltd_4 = (&_Gtemplate_code_v[_Li_3]);
-if((((*_Ltd_4)._Fat == _Lat_1) && ((*_Ltd_4)._Fname == _Lname_2))) {
-struct _NLibCp1_NStdOut _L_5;
-_NLibCp1_Pstdout_1(&_L_5);
-_Tchar_Pstdout_arr_2(input_path, &_L_5);
-_Tchar_Pstdout_2(':', &_L_5);
-_Tu32_Pstdout_2(_Grow, &_L_5);
-_Tchar_Pstdout_2(':', &_L_5);
-_Tu32_Pstdout_2(_Gcol, &_L_5);
-_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_5, ": Template name '", 17u);
-_NCp1_NId_Pstdout_2(_Lname_2, &_L_5);
-_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_5, "' was already used at line ", 27u);
-_Tu32_Pstdout_2((*_Ltd_4)._Frow, &_L_5);
-_Tchar_Pstdout_2('\n', &_L_5);
-_NLibCp1_NStdOut_Pstdout_end_1(&_L_5);
+struct _NCp1_NTemplateCodeData* _Ltd_5;
+_Ltd_5 = (&_Gtemplate_code_v[_Li_4]);
+if((((*_Ltd_5)._Fat == _Lat_3) && ((*_Ltd_5)._Fname == _Lname_0))) {
+struct _NLibCp1_NStdOut _L_6;
+_NLibCp1_Pstdout_1(&_L_6);
+_Tchar_Pstdout_arr_2(input_path, &_L_6);
+_Tchar_Pstdout_2(':', &_L_6);
+_Tu32_Pstdout_2(_Grow, &_L_6);
+_Tchar_Pstdout_2(':', &_L_6);
+_Tu32_Pstdout_2(_Gcol, &_L_6);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_6, ": Template name '", 17u);
+_NCp1_NId_Pstdout_2(_Lname_0, &_L_6);
+_NLibCp1_NStdOut_Pstdout_cstr_3(&_L_6, "' was already used at line ", 27u);
+_Tu32_Pstdout_2((*_Ltd_5)._Frow, &_L_6);
+_Tchar_Pstdout_2('\n', &_L_6);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_6);
 exit(_NLibC_NExit_Cfailure);
 return;
 }
 continue_0:;
-_Li_3++;
+_Li_4++;
 }
 break_0:;
-_Li_6 = _Gtemplate_code_c++;
+_Li_7 = _Gtemplate_code_c++;
 if(_Gtemplate_code_cap <= _Gtemplate_code_c) {
-_NCp1_NTemplateCode _Lold_cap_7;
-_Lold_cap_7 = _Gtemplate_code_cap;
+_NCp1_NTemplateCode _Lold_cap_8;
+_Lold_cap_8 = _Gtemplate_code_cap;
 _Gtemplate_code_cap = _NCp1_Pgrow_1((uint32_t)(_Gtemplate_code_c));
-_NCp1_Prealloc_3(_Gtemplate_code_v, (uint32_t)(_Gtemplate_code_cap), (uint32_t)(_Lold_cap_7));
+_NCp1_Prealloc_3(_Gtemplate_code_v, (uint32_t)(_Gtemplate_code_cap), (uint32_t)(_Lold_cap_8));
 }
-_Ltd_8 = (&_Gtemplate_code_v[_Li_6]);
-(*_Ltd_8)._Fname = _Lname_2;
-_Lcode_len_9 = _Gstring_len;
-_NCp1_Pquick_alloc_arr_2(_Lcode_10, _Lcode_len_9);
-memcpy(_Lcode_10, _Gstring_buf, _Lcode_len_9);
-(*_Ltd_8)._Fcode = _Lcode_10;
-(*_Ltd_8)._Fcode_len = _Lcode_len_9;
-(*_Ltd_8)._Fcode_crc32c = crc32c(0, _Lcode_10, _Lcode_len_9);
-(*_Ltd_8)._Fat = _Lat_1;
-(*_Ltd_8)._Frow = _Lrow_0;
-(*_Ltd_8)._Fline_c = _Gtemplate_code_line_c;
+_Ltd_9 = (&_Gtemplate_code_v[_Li_7]);
+(*_Ltd_9)._Fname = _Lname_0;
+_Lcode_len_10 = _Gstring_len;
+_NCp1_Pquick_alloc_arr_2(_Lcode_11, _Lcode_len_10);
+memcpy(_Lcode_11, _Gstring_buf, _Lcode_len_10);
+(*_Ltd_9)._Fcode = _Lcode_11;
+(*_Ltd_9)._Fcode_len = _Lcode_len_10;
+(*_Ltd_9)._Fcode_crc32c = crc32c(0, _Lcode_11, _Lcode_len_10);
+(*_Ltd_9)._Fat = _Lat_3;
+(*_Ltd_9)._Frow = _Lrow_1;
+(*_Ltd_9)._Fline_c = _Gtemplate_code_line_c;
+(*_Ltd_9)._Fwith_reflection = _Lwith_reflection_2;
 }
 void _NCp1_Pdecl_func_begin_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2) {
 _Gdecl_func_name = _Lname_0;
@@ -5595,6 +5600,13 @@ inline void _NCp1_NWtr_Pn4_2(union _NCp1_NWtr* _Lw_0, uint32_t _Ln_1) {
 (*_Lw_0)._Fp1[3] = (_Ln_1 >> 24);
 (*_Lw_0)._Fpos += 4;
 }
+inline void _NCp1_NWtr_Pb_2(union _NCp1_NWtr* _Lw_0, bool _Lval_1) {
+if(_Lval_1) {
+_NCp1_NWtr_Pn1_2(_Lw_0, 1);
+} else {
+_NCp1_NWtr_Pn1_2(_Lw_0, 0);
+}
+}
 inline bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3) {
 _NPosix_NFd _Lfd_4;
 _Lfd_4 = _NPosix_Popen_3(_Lpath_1, _Lflags_2, _Lmode_3);
@@ -6445,13 +6457,6 @@ if((*_Gdecl_func_ctx_space)._Fstmt_last == NULL) {
 }
 int32_t _NCp1_NAtMap_Pget_or_insert_5(struct _NCp1_NAtMap* _Lm_0, _NCp1_NAt _Lparent_1, _NCp1_NNameType _Ltype_2, _NCp1_NId _Lname_3, int32_t _Lval_4) {
 return _NCp1_NAtMap_Pget_or_insert_4(_Lm_0, (uint32_t)(_Lparent_1) | ((uint32_t)(_Ltype_2) << 30), _Lname_3, _Lval_4);
-}
-inline void _NCp1_NWtr_Pb_2(union _NCp1_NWtr* _Lw_0, bool _Lval_1) {
-if(_Lval_1) {
-_NCp1_NWtr_Pn1_2(_Lw_0, 1);
-} else {
-_NCp1_NWtr_Pn1_2(_Lw_0, 0);
-}
 }
 inline void _NCp1_NMath_Pwr_2(_NCp1_NMath _Le_0, union _NCp1_NWtr* _Lw_1) {
 _NCp1_NWtr_Pn1_2(_Lw_1, (uint8_t)(_Le_0));

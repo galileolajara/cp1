@@ -185,8 +185,12 @@ decl_template_inst ::= HASH_ID(name) TEMPLATE_JSON(json).
 /* decl_template_inst ::= TEMPLATE_INST SPACE at(at) template_name(name) SEMICOLON.
    { _NCp1_Pdecl_template_inst_2(name.basic.id, at); } */
 decl ::= decl_template_inst.
-decl_template_code ::= TEMPLATE_CODE(code).
-   { _NCp1_Pdecl_template_code_1(code.basic.row); }
+meta_reflection(l) ::= .
+   { l.basic.id = 0; }
+meta_reflection(l) ::= SPACE_AT_REFLECTION.
+   { l.basic.id = 1; }
+decl_template_code ::= META SPACE HASH_ID(name) meta_reflection(r) SPACE_THEN_OPEN_CURLY_BRACE TEMPLATE_CODE(code).
+   { _NCp1_Pdecl_template_code_3(name.basic.id, code.basic.row, r.basic.id); }
 decl ::= decl_template_code.
 decl_import ::= IMPORT(path) SEMICOLON.
    { _NCp1_Pdecl_import_3(path.basic.id, path.basic.row, path.basic.col); }

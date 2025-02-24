@@ -424,6 +424,7 @@ meta #BuildCommonCodes {
          at:At,
          row:u32,
          line-c:u32,
+         with-reflection:bool,
 #  if (arg.compile) {
          file:File,
 #  }

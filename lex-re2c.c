@@ -13,6 +13,7 @@ const char* _Gtemplate_name_buf;
 uint8_t _Gtemplate_name_len;
 uint32_t _Gtemplate_code_indention;
 uint32_t _Gtemplate_code_line_c;
+const char* meta_start;
 void _NCp1_Pparse_str_init_1(int maxsize) {
    string_mem = malloc(maxsize);
 }
@@ -38,6 +39,8 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "{"                              {
       if (_Glast_token == CP1_TOKEN_HASH_ID) {
          goto lex_template_inst;
+      } else if (meta_start != 0) {
+         goto lex_template_code;
       } else {
          return CP1_TOKEN_OPEN_CURLY_BRACE;
       }
@@ -68,9 +71,9 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "0o" [0-7]+                      { return CP1_TOKEN_NUM_OCT; }
 	"0x" [0-9a-fA-F]+                { return CP1_TOKEN_NUM_HEX; }
 	("0"|[1-9][0-9]*) "." [0-9]+ "f" { return CP1_TOKEN_NUM_F32; }
-   "meta" spaces "#" id spaces "{" {
-      goto lex_template_code;
-   }
+   // "meta" spaces "#" id spaces "{" {
+      // goto lex_template_code;
+   // }
    "\"" {
       goto lex_string;
    }
@@ -130,6 +133,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "@no-decl(" [^)]* ")"     { return CP1_TOKEN_SPACE_AT_NO_DECL_STR; }
    spaces "@no-decl"                { return CP1_TOKEN_SPACE_AT_NO_DECL; }
    spaces "@no-body"                { return CP1_TOKEN_SPACE_AT_NO_BODY; }
+   spaces "@reflection"             { return CP1_TOKEN_SPACE_AT_REFLECTION; }
    spaces "@soa-field"              { return CP1_TOKEN_SPACE_AT_SOA_FIELD; }
    spaces "="                       { return CP1_TOKEN_SPACE_EQUAL; }
    spaces ":="                      { return CP1_TOKEN_SPACE_COLON_EQUAL; }
@@ -188,6 +192,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "||"                      { return CP1_TOKEN_SPACE_BOOL_OR_OR; }
 
    "using"                          { return CP1_TOKEN_USING; }
+   "meta"                           { meta_start = l->start; return CP1_TOKEN_META; }
    "enum"                           { return CP1_TOKEN_ENUM; }
    "struct"                         { return CP1_TOKEN_STRUCT; }
    "union"                          { return CP1_TOKEN_UNION; }
@@ -262,12 +267,13 @@ lex_string: {
       }
    }
 lex_template_code: {
-      const char* start = l->start;
+      const char* start = meta_start;
+      meta_start = 0;
       const char* name = start + 4;
       int col = _Gcol + 4;
       for(;;) {
          if (name[0] == '\n') {
-            fprintf(stdout, "%s:%u:%u: Error, the syntax 'template NAME {' must not have a new line in between\n", input_path, _Grow, col);
+            fprintf(stdout, "%s:%u:%u: Error, the syntax 'meta #NAME {' must not have a new line in between\n", input_path, _Grow, col);
             exit(EXIT_FAILURE);
          }
          if (name[0] != ' ') {
@@ -281,7 +287,7 @@ lex_template_code: {
       col++;
       for(;;) {
          if (name_end[0] == '\n') {
-            fprintf(stdout, "%s:%u:%u: Error, the syntax 'template NAME {' must not have a new line in between\n", input_path, _Grow, col);
+            fprintf(stdout, "%s:%u:%u: Error, the syntax 'meta #NAME {' must not have a new line in between\n", input_path, _Grow, col);
             exit(EXIT_FAILURE);
          }
          if (name_end[0] == ' ') {
@@ -290,17 +296,18 @@ lex_template_code: {
          col++;
          name_end++;
       }
-      int name_len = name_end - name;
+      // printf("name [%.*s]\n", (int)(name_end - name), name);
+      /* int name_len = name_end - name;
       if (name_len > 255) {
          fprintf(stdout, "%s:%u:%u: Error, template name is too long\n", input_path, _Grow, _Gcol);
          exit(EXIT_FAILURE);
       }
       _Gtemplate_name_buf = name;
-      _Gtemplate_name_len = name_len;
+      _Gtemplate_name_len = name_len; */
       const char* curly_brace = name_end;
       for(;;) {
          if (curly_brace[0] == '\n') {
-            fprintf(stdout, "%s:%u:%u: Error, the syntax 'template NAME {' must not have a new line in between\n", input_path, _Grow, col);
+            fprintf(stdout, "%s:%u:%u: Error, the syntax 'meta #NAME {' must not have a new line in between\n", input_path, _Grow, col);
             exit(EXIT_FAILURE);
          }
          if (curly_brace[0] == '{') {
@@ -310,14 +317,14 @@ lex_template_code: {
          curly_brace++;
       }
       if (curly_brace[1] != '\n') {
-         fprintf(stdout, "%s:%u:%u: Error, the syntax 'template NAME {' must be followed by a new line\n", input_path, _Grow, col + 1);
+         fprintf(stdout, "%s:%u:%u: Error, the syntax 'meta #NAME {' must be followed by a new line\n", input_path, _Grow, col + 1);
          exit(EXIT_FAILURE);
       }
       col = _Gcol;
       int32_t indention = 0;
       while (start[-1] != '\n') {
          if (start[-1] != ' ') {
-            fprintf(stdout, "%s:%u:%u: Error, the line that contains 'template NAME {' must not have other character in it. Found a character '%c'.\n", input_path, _Grow, col - 1, start[-1]);
+            fprintf(stdout, "%s:%u:%u: Error, the line that contains 'meta #NAME {' must not have other character in it. Found a character '%c'.\n", input_path, _Grow, col - 1, start[-1]);
             exit(EXIT_FAILURE);
          }
          col--;
@@ -331,7 +338,7 @@ lex_template_code: {
       int32_t first_indent = -1;
       for(;;) {
          if (code[i] == '\0') {
-            fprintf(stdout, "%s:%u:%u: Error, cannot find the matching '}' of the template.\n", input_path, _Grow, _Gcol);
+            fprintf(stdout, "%s:%u:%u: Error, cannot find the matching '}' of the meta.\n", input_path, _Grow, _Gcol);
             exit(EXIT_FAILURE);
          }
          row++;
@@ -492,7 +499,7 @@ lex_template_inst: {
       for(;;) {
          uint8_t c = json[i++];
          if (c == '\0') {
-            fprintf(stdout, "%s:%u:%u: Error, cannot find the closing '}' for the 'template{...}' syntax\n", input_path, _Grow, _Gcol);
+            fprintf(stdout, "%s:%u:%u: Error, cannot find the closing '}' for the '#NAME{...}' syntax\n", input_path, _Grow, _Gcol);
             exit(EXIT_FAILURE);
          }
          if (c == '"') {
