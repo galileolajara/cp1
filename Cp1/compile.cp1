@@ -228,7 +228,7 @@ template-inst(ti:TemplateInstData) {
 sqlite-init();
 read-cp1(path:char[], path-len:u32):ref;
 req-parse(in-path-cp1:char[], in-path-cp1-len:u8):char[];
-read(in-path-cp1:char[], in-path-cp1-len:u16) {
+read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool) {
    // C1.stdout{"read " in-path-cp1 "\n"}
    in-path! = req-parse(in-path-cp1, in-path-cp1-len);
 
@@ -248,7 +248,14 @@ read(in-path-cp1:char[], in-path-cp1-len:u16) {
       realloc(.file-v, .file-cap:base, old-cap:base);
    }
    file! = .file-v[file-idx];
-   file.path = in-path-cp1;
+   if strdup {
+      var path:char[];
+      quick-alloc-arr(path, in-path-cp1-len + 1);
+      C.memcpy(path, in-path-cp1, in-path-cp1-len + 1);
+      file.path = path;
+   } else {
+      file.path = in-path-cp1;
+   }
    file.path-len = in-path-cp1-len;
    file.data = r-begin.reff;
 
@@ -958,7 +965,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       loop i = .import-c - new-c; new-c {
          path! = .import-v[i++];
          // C1.stdout{"import " path "\n"}
-         read(path.str(), path.len());
+         read(path.str(), path.len(), false);
       }
    }
 

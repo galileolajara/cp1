@@ -7,8 +7,7 @@ syntax match Number /#\([a-zA-Z]\|_\+[a-zA-Z0-9]\|[0-9]\)[_a-zA-Z0-9]*\(-[_a-zA-
 syntax match Default /\([a-zA-Z]\|_\+[a-zA-Z0-9]\)[_a-zA-Z0-9]*\(-[_a-zA-Z0-9]\+\)*/
 syntax match Structure /[A-Z][_a-zA-Z0-9]*\(-[_a-zA-Z0-9]\+\)*/
 syntax match Function /\([a-zA-Z]\|_\+[a-zA-Z0-9]\)[_a-zA-Z0-9]*\(-[_a-zA-Z0-9]\+\)*[({]\@=/
-syntax match Operator /template<\@=/
-syntax match Operator /\(true\|false\|null\|return\|continue\|break\|using\|if\|elif\|else\|switch\|case\|default\|var\|loop\|ref\|bool\|char\|intc\|i8\|u8\|i16\|u16\|i32\|u32\|i64\|u64\|isz\|usz\|f32\|f64\|this\|enum\|struct\|union\|:base\|template\)[a-zA-Z0-9-_]\@!/
+syntax match Operator /\(true\|false\|null\|return\|continue\|break\|using\|if\|elif\|else\|switch\|case\|default\|var\|loop\|ref\|bool\|char\|intc\|i8\|u8\|i16\|u16\|i32\|u32\|i64\|u64\|isz\|usz\|f32\|f64\|this\|enum\|struct\|union\|meta\|:base\)[a-zA-Z0-9-_]\@!/
 syntax match Operator /@\(inline\|main\|case\|process\|real-name\|meta-method\|glc-name\|no-decl\|no-body\|decl\|extern\|var-args\|soa-field\|cp1-name\|fall-through\)/
 syntax match Operator /import[ ]\+"\@=/
 syntax match String /[ \n]\+\$[ \n]\+/
