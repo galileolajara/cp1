@@ -35,7 +35,13 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    id = id_one+("-" id_one+)*;
 
    *                                { string_mem[0] = l->start[0]; return CP1_TOKEN_END; }
-   "{"                              { return CP1_TOKEN_OPEN_CURLY_BRACE; }
+   "{"                              {
+      if (_Glast_token == CP1_TOKEN_HASH_ID) {
+         goto lex_template_inst;
+      } else {
+         return CP1_TOKEN_OPEN_CURLY_BRACE;
+      }
+   }
    "}"                              { return CP1_TOKEN_CLOSE_CURLY_BRACE; }
    spaces "}"                       { return CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE; }
    "("                              { return CP1_TOKEN_OPEN_PARENTHESIS; }
@@ -62,9 +68,6 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "0o" [0-7]+                      { return CP1_TOKEN_NUM_OCT; }
 	"0x" [0-9a-fA-F]+                { return CP1_TOKEN_NUM_HEX; }
 	("0"|[1-9][0-9]*) "." [0-9]+ "f" { return CP1_TOKEN_NUM_F32; }
-   "#" id "{" {
-      goto lex_template_inst;
-   }
    "meta" spaces "#" id spaces "{" {
       goto lex_template_code;
    }
@@ -480,8 +483,8 @@ lex_template_code: {
       return CP1_TOKEN_TEMPLATE_CODE;
    }
 lex_template_inst: {
-      _Gtemplate_name_buf = l->start + 1;
-      _Gtemplate_name_len = (YYCURSOR - 1) - (l->start + 1);
+      // _Gtemplate_name_buf = l->start + 1;
+      // _Gtemplate_name_len = (YYCURSOR - 1) - (l->start + 1);
       // printf("meta [%.*s]\n", _Gtemplate_name_len, _Gtemplate_name_buf);
       const char* json = YYCURSOR;
       int32_t i = 0;
@@ -531,6 +534,6 @@ lex_template_inst: {
       _Gstring_buf = (char*)&json[0];
       _Gstring_len = i - 1;
       YYCURSOR = (const char*)&json[i];
-      return CP1_TOKEN_TEMPLATE_INST;
+      return CP1_TOKEN_TEMPLATE_JSON;
    }
 }

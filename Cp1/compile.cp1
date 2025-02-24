@@ -8,105 +8,8 @@ using Cp1 = Cp1;
 using C = LibC;
 using C1 = LibCp1;
 using X = Posix;
-using u32 {
-   jscode(val:this, jc:Cp1.JsCode) @inline {
-      Cp1.jscode-u32(val);
-   }
-}
-using char {
-   jscode(val:this, jc:Cp1.JsCode) @inline {
-      Cp1.jscode-char(val);
-   }
-   jscode-arr(str:this[], jc:Cp1.JsCode, len:u32) @inline {
-      Cp1.jscode-bytes(str, len);
-   }
-}
 using Cp1 {
 #BuildCommonCodes{compile:true}
-var jscode-buf-data:char[];
-var jscode-buf-cap:u32;
-var jscode-buf-len:u32;
-jscode-reserve(len:u32) {
-   space! = .jscode-buf-cap - .jscode-buf-len;
-   if space < len {
-      .jscode-buf-cap += .jscode-buf-cap;
-      space = .jscode-buf-cap - .jscode-buf-len;
-      loop space < len {
-         .jscode-buf-cap += .jscode-buf-cap;
-         space = .jscode-buf-cap - .jscode-buf-len;
-      }
-      C.realloc-arr(.jscode-buf-data, .jscode-buf-cap);
-   }
-}
-jscode-char(val:char) @inline {
-   jscode-reserve(1);
-   .jscode-buf-data[.jscode-buf-len++] = val;
-}
-jscode-cstr(str:char[]) @inline {
-   jscode-bytes(str, C.strlen(str));
-}
-jscode(jc:JsCode) @meta-method(jscode end) @inline {
-}
-jscode-u32(val:u32) {
-   jscode-reserve(10);
-   if val == 0 {
-      .jscode-buf-data[.jscode-buf-len++] = ''0;
-   } else {
-      // integer to string, count the digits
-      var data:char[];
-      data = &.jscode-buf-data[.jscode-buf-len];
-      digits! = 0;
-      loop {
-         data[digits++] = (val % 10) + ''0;
-         val /= 10;
-         if val == 0 { break }
-      }
-      // reverse the string
-      start! = 0;
-      end! = digits - 1;
-      loop start < end {
-         tmp! = data[start];
-         data[start] = data[end];
-         data[end] = tmp;
-         start++;
-         end--;
-      }
-      .jscode-buf-len += digits;
-   }
-}
-struct JsCode[] {
-   jscode-cstr(jc:this, str:char[], len:u32) @inline {
-      jscode-bytes(str, len);
-   }
-   jscode-end(jc:this) @inline {
-   }
-}
-jscode-bytes(data:ref, size:usz) @inline {
-   jscode-reserve(size);
-   C.memcpy(&.jscode-buf-data[.jscode-buf-len], data, size);
-   .jscode-buf-len += size;
-}
-include-add(include-len:u8, include-str:char[]):Include {
-   found! = .include-map.get-or-insert(include-str, include-len, .include-c);
-   // C1.stdout{"include-add " include-str " = " found ''\n}
-   if found == -1 {
-      include-idx! = .include-c++;
-      if .include-cap <= .include-c {
-         old-cap! = .include-cap;
-         grow(.include-cap, .include-c);
-         realloc(.include-len-v, .include-cap, old-cap);
-         realloc(.include-str-v, .include-cap, old-cap);
-      }
-      .include-len-v[include-idx] = include-len;
-      .include-str-v[include-idx] = include-str;
-      // C1.stdout{"include " include-str " is " include-idx ''\n}
-      return include-idx:Include;
-   } else {
-      // C1.stdout{"include " include-str " is " found ''\n}
-      return found:Include;
-   }
-}
-
 var include-stdint:bool;
 var include-stdbool:bool;
 var include-stddef:bool;
@@ -204,26 +107,6 @@ import(path:Include) {
       // C1.stdout{"import " path " added as " i:u32 ''\n}
    }
    .import-new-c++;
-}
-var template-inst-new-c:u32;
-template-inst(ti:TemplateInstData) {
-   loop j = 0; .template-inst-c {
-      ti2! = .template-inst-v[j++];
-      if (ti2.name == ti.name) && (ti2.at == ti.at) && (ti2.arg-crc32c == ti.arg-crc32c) {
-         return;
-      }
-   }
-   if true {
-      i! = .template-inst-c++;
-      if .template-inst-cap < .template-inst-c {
-         .template-inst-cap = grow(.template-inst-c:base);
-         C.realloc-arr(.template-inst-v, .template-inst-cap:base);
-      }
-      C.memcpy(.template-inst-v[i], ti, TemplateInstData[usz]);
-   }
-   if true {
-      .template-inst-new-c++;
-   }
 }
 sqlite-init();
 read-cp1(path:char[], path-len:u32):ref;
@@ -994,15 +877,34 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   '=    cp1_out.push(line);
                   '= }
                   '= let cp1_path = scriptArgs[0] + ".cp1";
-                  '= let cp1_cache = true;
                   '= let D = {};
                   }
                   loop i = 0; .define-c {
                      jscode{"D." .define-v[i], .define-len-v[i] ";\n"}
                   }
+                  if true {
+                     jscode{
+                     '= let cp1_refl = {
+                     '- "root":
+                     }
+                     At#root.jscode-write();
+                     jscode{",\n"}
+                     loop at-idx = 2:At; .at-c - 2; at-idx++ {
+                        at! = at-idx.ptr();
+                        if at.parent == #relative { continue }
+                        jscode{''"}
+                        at-idx.jscode-write-name();
+                        jscode{'<":>}
+                        at-idx.jscode-write();
+                        jscode{",\n"}
+                     }
+                     jscode{
+                     '= };
+                     }
+                  }
                   jscode{
                     "let arg = {" ti.arg, ti.arg-len "};\n"
-                    "if (cp1_cache) O(\""
+                  '- if (!("cp1_nocache" in arg)) O("
                   }
                   .jscode-buf-len += quickjs-hex(&.jscode-buf-data[.jscode-buf-len], tc.code-crc32c);
                   jscode{
@@ -1426,6 +1328,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    return 0;
 }
 using Func {
+   in-process(f-idx:this):bool {
+      num! = f-idx:u32;
+      n3! = num >> 3;
+      n17! = 1 << (num & 7);
+      return (.func-in-process[n3] & n17) != 0;
+   }
    process-later(f-idx:this):bool {
       num! = f-idx:u32;
       n3! = num >> 3;

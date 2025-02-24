@@ -180,8 +180,8 @@ decl ::= decl_at.
 /* template_name(l) ::= HASH_ID(r).
    { l.basic.id = r.basic.id; } */
 
-decl_template_inst ::= TEMPLATE_INST(inst) /* SPACE template_name(name) SEMICOLON */.
-   { _NCp1_Pdecl_template_inst_2(inst.basic.row, inst.basic.col); }
+decl_template_inst ::= HASH_ID(name) TEMPLATE_JSON(json).
+   { _NCp1_Pdecl_template_inst_3(name.basic.id, json.basic.row, json.basic.col); }
 /* decl_template_inst ::= TEMPLATE_INST SPACE at(at) template_name(name) SEMICOLON.
    { _NCp1_Pdecl_template_inst_2(name.basic.id, at); } */
 decl ::= decl_template_inst.

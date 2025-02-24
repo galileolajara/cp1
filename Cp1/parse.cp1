@@ -38,9 +38,8 @@ var template-name-buf:char[] @extern;
 var template-name-len:u8 @extern;
 var template-code-indention:u32 @extern;
 var template-code-line-c:u32 @extern;
-decl-template-inst(row:u32, col:u32) {
+decl-template-inst(name:Id, row:u32, col:u32) {
    at! = .decl-at;
-   name! = id-add(.template-name-len, .template-name-buf);
    arg-buf! = .string-buf;
    arg-len! = .string-len;
    arg-crc32c! = crc32c(0, arg-buf, arg-len);
