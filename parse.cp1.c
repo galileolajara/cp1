@@ -45,8 +45,8 @@
 #define _NCp1_NToken_Cspace_close_curly_brace (_NCp1_NToken_Copen_curly_brace + 1)
 #define _NCp1_NToken_Cclose_curly_brace (_NCp1_NToken_Cspace_close_curly_brace + 1)
 #define _NCp1_NToken_Cusing (_NCp1_NToken_Cclose_curly_brace + 1)
-#define _NCp1_NToken_Ctemplate_inst (_NCp1_NToken_Cusing + 1)
-#define _NCp1_NToken_Ctemplate_code (_NCp1_NToken_Ctemplate_inst + 1)
+#define _NCp1_NToken_Ctemplate_json (_NCp1_NToken_Cusing + 1)
+#define _NCp1_NToken_Ctemplate_code (_NCp1_NToken_Ctemplate_json + 1)
 #define _NCp1_NToken_Cimport (_NCp1_NToken_Ctemplate_code + 1)
 #define _NCp1_NToken_Csemicolon (_NCp1_NToken_Cimport + 1)
 #define _NCp1_NToken_Cend (_NCp1_NToken_Csemicolon + 1)
@@ -902,11 +902,11 @@ struct _NCp1_NTemplateCodeData* _Gtemplate_code_v;
 struct _NCp1_NTemplateInstData* _Gtemplate_inst_v;
 uint32_t _Gimport_cap;
 _NCp1_NAt _Gdecl_at;
-extern uint8_t _Gtemplate_name_len;
-extern char* _Gtemplate_name_buf;
 extern char* _Gstring_buf;
 extern int32_t _Gstring_len;
 _NCp1_NTemplateInst _Gtemplate_inst_cap;
+extern uint8_t _Gtemplate_name_len;
+extern char* _Gtemplate_name_buf;
 _NCp1_NTemplateCode _Gtemplate_code_cap;
 extern uint32_t _Gtemplate_code_line_c;
 _NCp1_NId _Gdecl_func_name;
@@ -1031,7 +1031,7 @@ void _NCp1_Pwrite_template_code_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
 bool _NCp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
 void qalloc_undo(int32_t _Lsize_0);
 void _NCp1_Pdecl_import_3(_NCp1_NInclude _Lpath_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
-void _NCp1_Pdecl_template_inst_2(uint32_t _Lrow_0, uint32_t _Lcol_1);
+void _NCp1_Pdecl_template_inst_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
 void _NCp1_Pdecl_template_code_1(uint32_t _Lrow_0);
 void _NCp1_Pdecl_func_begin_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
 void _NCp1_Pdecl_func_end_2(uint32_t _Lrow_0, uint32_t _Lcol_1);
@@ -1235,7 +1235,7 @@ case _NCp1_NToken_Copen_curly_brace: return "open-curly-brace";
 case _NCp1_NToken_Cspace_close_curly_brace: return "space-close-curly-brace";
 case _NCp1_NToken_Cclose_curly_brace: return "close-curly-brace";
 case _NCp1_NToken_Cusing: return "using";
-case _NCp1_NToken_Ctemplate_inst: return "template-inst";
+case _NCp1_NToken_Ctemplate_json: return "template-json";
 case _NCp1_NToken_Ctemplate_code: return "template-code";
 case _NCp1_NToken_Cimport: return "import";
 case _NCp1_NToken_Csemicolon: return "semicolon";
@@ -2520,7 +2520,7 @@ _Gtemplate_code_c = 0;
 void _NCp1_Pexport_0() {
 qalloc_undo(0);
 _NCp1_Pdecl_import_3(_NCp1_NInclude_Cnil, 0, 0);
-_NCp1_Pdecl_template_inst_2(0, 0);
+_NCp1_Pdecl_template_inst_3(_NCp1_NId_Cnil, 0, 0);
 _NCp1_Pdecl_template_code_1(0);
 _NCp1_Pdecl_func_begin_3(_NCp1_NId_C0, 0, 0);
 _NCp1_Pdecl_func_end_2(0, 0);
@@ -3469,17 +3469,15 @@ _NCp1_Prealloc_3(_Gimport_v, _Gimport_cap, _Lold_cap_7);
 }
 _Gimport_v[_Li_6] = _Lpath_0;
 }
-void _NCp1_Pdecl_template_inst_2(uint32_t _Lrow_0, uint32_t _Lcol_1) {
-_NCp1_NAt _Lat_2;
-_NCp1_NId _Lname_3;
+void _NCp1_Pdecl_template_inst_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2) {
+_NCp1_NAt _Lat_3;
 char* _Larg_buf_4;
 int32_t _Larg_len_5;
 uint32_t _Larg_crc32c_6;
 _NCp1_NTemplateInst _Li_9;
 struct _NCp1_NTemplateInstData* _Lti_11;
 char* _Larg_12 = {0};
-_Lat_2 = _Gdecl_at;
-_Lname_3 = _NCp1_Pid_add_2(_Gtemplate_name_len, _Gtemplate_name_buf);
+_Lat_3 = _Gdecl_at;
 _Larg_buf_4 = _Gstring_buf;
 _Larg_len_5 = _Gstring_len;
 _Larg_crc32c_6 = crc32c(0, _Larg_buf_4, _Larg_len_5);
@@ -3489,7 +3487,7 @@ for(int i = _Gtemplate_inst_c; i > 0; ) {
 i --;
 struct _NCp1_NTemplateInstData* _Lti_8;
 _Lti_8 = (&_Gtemplate_inst_v[_Li_7]);
-if((((*_Lti_8)._Fname == _Lname_3) && ((*_Lti_8)._Farg_crc32c == _Larg_crc32c_6) && ((*_Lti_8)._Fat == _Lat_2))) {
+if((((*_Lti_8)._Fname == _Lname_0) && ((*_Lti_8)._Farg_crc32c == _Larg_crc32c_6) && ((*_Lti_8)._Fat == _Lat_3))) {
 return;
 }
 continue_0:;
@@ -3504,15 +3502,15 @@ _Gtemplate_inst_cap = _NCp1_Pgrow_1((uint32_t)(_Gtemplate_inst_c));
 _NCp1_Prealloc_3(_Gtemplate_inst_v, (uint32_t)(_Gtemplate_inst_cap), (uint32_t)(_Lold_cap_10));
 }
 _Lti_11 = (&_Gtemplate_inst_v[_Li_9]);
-(*_Lti_11)._Fname = _Lname_3;
+(*_Lti_11)._Fname = _Lname_0;
 _NCp1_Pquick_alloc_arr_2(_Larg_12, _Larg_len_5);
 memcpy(_Larg_12, _Larg_buf_4, _Larg_len_5);
 (*_Lti_11)._Farg = _Larg_12;
 (*_Lti_11)._Farg_len = _Larg_len_5;
 (*_Lti_11)._Farg_crc32c = _Larg_crc32c_6;
-(*_Lti_11)._Fat = _Lat_2;
-(*_Lti_11)._Frow = _Lrow_0;
-(*_Lti_11)._Fcol = _Lcol_1;
+(*_Lti_11)._Fat = _Lat_3;
+(*_Lti_11)._Frow = _Lrow_1;
+(*_Lti_11)._Fcol = _Lcol_2;
 }
 void _NCp1_Pdecl_template_code_1(uint32_t _Lrow_0) {
 _NCp1_NAt _Lat_1;

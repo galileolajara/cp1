@@ -117,6 +117,13 @@ using LibCp1 {
       stdout-reserve(1);
       .stdout-buf-data[.stdout-buf-len++] = val;
    }
+   stdout-bool(val:bool) @inline {
+      if val {
+         stdout-bytes("true", 4);
+      } else {
+         stdout-bytes("false", 5);
+      }
+   }
    stdout-flush() @inline {
       // file descriptor 1 = standard output
       1:X.Fd.write(.stdout-buf-data, .stdout-buf-len);
@@ -131,6 +138,11 @@ using LibCp1 {
       }
       stdout-end-no-flush(so:this) @inline {
       }
+   }
+}
+using bool {
+   stdout(val:this, so:C1.StdOut) @inline {
+      C1.stdout-bool(val);
    }
 }
 using i32 {
