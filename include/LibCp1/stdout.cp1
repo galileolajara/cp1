@@ -154,10 +154,10 @@ using LibCp1 {
       .stdout-buf-len = 0;
    }
    struct StdOut[reserve:u32] {
-      stdout-reserve-cstr(so:this, str:char[], len:u32) @inline {
+      stdout-reserve-cstr(so:this, str:char[], len:u32, unused:intc) @inline {
          so.reserve += len;
       }
-      stdout-cstr(so:this, str:char[], len:u32) @inline {
+      stdout-cstr(so:this, str:char[], len:u32, unused:intc) @inline {
          stdout-bytes-nr(str, len);
       }
       stdout-reserve-end(so:this) @inline {
@@ -210,43 +210,43 @@ using i8 {
    }
 }
 using u32 {
-   stdout-reserve(val:this, so:C1.StdOut) @inline {
+   stdout-reserve(val:this, so:C1.StdOut, unused:intc) @inline {
       so.reserve += 10;
    }
-   stdout(val:this, so:C1.StdOut) @inline {
+   stdout(val:this, so:C1.StdOut, unused:intc) @inline {
       C1.stdout-u32-nr(val);
    }
 }
 using u16 {
-   stdout-reserve(val:this, so:C1.StdOut) @inline {
+   stdout-reserve(val:this, so:C1.StdOut, unused:intc) @inline {
       so.reserve += 5;
    }
-   stdout(val:this, so:C1.StdOut) @inline {
+   stdout(val:this, so:C1.StdOut, unused:intc) @inline {
       C1.stdout-u32-nr(val);
    }
 }
 using u8 {
-   stdout-reserve(val:this, so:C1.StdOut) @inline {
+   stdout-reserve(val:this, so:C1.StdOut, unused:intc) @inline {
       so.reserve += 3;
    }
-   stdout(val:this, so:C1.StdOut) @inline {
+   stdout(val:this, so:C1.StdOut, unused:intc) @inline {
       C1.stdout-u32-nr(val);
    }
 }
 using char {
-   stdout-reserve(val:this, so:C1.StdOut) @inline {
+   stdout-reserve(val:this, so:C1.StdOut, unused:intc) @inline {
       so.reserve++;
    }
-   stdout(val:this, so:C1.StdOut) @inline {
+   stdout(val:this, so:C1.StdOut, unused:intc) @inline {
       C1.stdout-char-nr(val);
    }
-   stdout-reserve-arr(str:this[], so:C1.StdOut) @inline {
-      so.reserve += C.strlen(str);
-   }
-   stdout-arr(str:this[], so:C1.StdOut) @inline {
-      C1.stdout-cstr-nr(str);
+   stdout-reserve-arr(str:this[], so:C1.StdOut, len:u32&) @inline {
+      so.reserve += len := C.strlen(str);
    }
    stdout-arr(str:this[], so:C1.StdOut, len:u32) @inline {
-      C1.stdout-bytes(str, len);
+      C1.stdout-bytes-nr(str, len);
    }
+   // stdout-arr(str:this[], so:C1.StdOut, len:u32, ) @inline {
+      // C1.stdout-bytes(str, len);
+   // }
 }

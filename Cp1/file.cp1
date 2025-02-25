@@ -122,10 +122,10 @@ using Cp1 {
    var output-cap:u32;
    var output-len:u32 @real-name(output_len);
    struct Output[reserve:u32] {
-      output-reserve-cstr(o:this, str:char[], len:u32) {
+      output-reserve-cstr(o:this, str:char[], len:u32, unused:intc) {
          o.reserve += len;
       }
-      output-cstr(o:this, str:char[], len:u32) {
+      output-cstr(o:this, str:char[], len:u32, unused:intc) {
          output-bytes-nr(str, len);
       }
       output-reserve-end(o:this) {
@@ -347,29 +347,29 @@ using Cp1 {
    }
 }
 using f32 {
-   output-reserve(val:this, so:Cp1.Output) @inline {
+   output-reserve(val:this, so:Cp1.Output, unused:intc) @inline {
       so.reserve += 47;
    }
-   output(val:this, so:Cp1.Output) @inline {
+   output(val:this, so:Cp1.Output, unused:intc) @inline {
       Cp1.output-f32-nr(val);
    }
 }
 using i32 {
-   output-reserve(val:this, so:Cp1.Output) @inline {
+   output-reserve(val:this, so:Cp1.Output, unused:intc) @inline {
       so.reserve += 11;
    }
-   output(val:this, so:Cp1.Output) @inline {
+   output(val:this, so:Cp1.Output, unused:intc) @inline {
       Cp1.output-i32-nr(val);
    }
 }
 using u32 {
-   output-reserve(val:this, so:Cp1.Output) @inline {
+   output-reserve(val:this, so:Cp1.Output, unused:intc) @inline {
       so.reserve += 10;
    }
-   output(val:this, so:Cp1.Output) @inline {
+   output(val:this, so:Cp1.Output, unused:intc) @inline {
       Cp1.output-u32-nr(val);
    }
-   output-reserve(val:this, so:Cp1.Output, type:Cp1.OutputIntType) @inline {
+   output-reserve(val:this, so:Cp1.Output, type:Cp1.OutputIntType, unused:intc) @inline {
       switch type {
          case #oct {
             so.reserve += 11;
@@ -379,7 +379,7 @@ using u32 {
          }
       }
    }
-   output(val:this, so:Cp1.Output, type:Cp1.OutputIntType) @inline {
+   output(val:this, so:Cp1.Output, type:Cp1.OutputIntType, unused:intc) @inline {
       switch type {
          case #oct {
             Cp1.output-o32-nr(val);
@@ -396,30 +396,30 @@ using u8 {
    }
 }
 using u64 {
-   output-reserve(val:this, so:Cp1.Output) @inline {
+   output-reserve(val:this, so:Cp1.Output, unused:intc) @inline {
       so.reserve += 20;
    }
-   output(val:this, so:Cp1.Output) @inline {
+   output(val:this, so:Cp1.Output, unused:intc) @inline {
       Cp1.output-u64-nr(val);
    }
 }
 using char {
-   output-reserve(val:this, o:Cp1.Output) {
+   output-reserve(val:this, o:Cp1.Output, unused:intc) {
       o.reserve += 1;
    }
-   output(val:this, o:Cp1.Output) {
+   output(val:this, o:Cp1.Output, unused:intc) {
       Cp1.output-data[Cp1.output-len++] = val;
    }
-   output-reserve-arr(val:this[], o:Cp1.Output) {
-      o.reserve += C.strlen(val);
+   output-reserve-arr(val:this[], o:Cp1.Output, len:u32&) {
+      o.reserve += len := C.strlen(val);
    }
-   output-arr(val:this[], o:Cp1.Output) {
-      Cp1.output-bytes-nr(val, C.strlen(val));
+   output-arr(val:this[], o:Cp1.Output, len:u32) {
+      Cp1.output-bytes-nr(val, len);
    }
-   output-reserve-arr(val:this[], o:Cp1.Output, len:usz) {
+   output-reserve-arr(val:this[], o:Cp1.Output, len:usz, unused:intc) {
       o.reserve += len;
    }
-   output-arr(val:this[], o:Cp1.Output, len:usz) {
+   output-arr(val:this[], o:Cp1.Output, len:usz, unused:intc) {
       Cp1.output-bytes-nr(val, len);
    }
 }
