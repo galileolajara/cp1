@@ -293,8 +293,10 @@ func_attr ::= SPACE_AT_NO_BODY.
    { _NCp1_Pfunc_attr_no_body_0(); }
 func_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _NCp1_Pfunc_attr_real_name_1(e.basic.id); }
-func_attr ::= SPACE_AT_META_METHOD_STR(e).
-   { _NCp1_Pfunc_attr_meta_method_2(e.basic.id, e.basic.id2); }
+func_attr ::= SPACE_AT_META_METHOD OPEN_PARENTHESIS ID(id1) SPACE ID(id2) CLOSE_PARENTHESIS.
+   { _NCp1_Pfunc_attr_meta_method_3(id1.basic.id, -1, id2.basic.id); }
+func_attr ::= SPACE_AT_META_METHOD OPEN_PARENTHESIS ID(id1) SPACE ID(id2) SPACE ID(id3) CLOSE_PARENTHESIS.
+   { _NCp1_Pfunc_attr_meta_method_3(id1.basic.id, id2.basic.id, id3.basic.id); }
 func_attr ::= SPACE_AT_REAL_NAME.
    { _NCp1_Pfunc_attr_real_name_1(-1); }
 /* func_attrs(l) ::= OPEN_CURLY_BRACE_SPACE(r).

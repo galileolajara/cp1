@@ -357,12 +357,18 @@ meta #BuildCommonCodes {
          // name:Id,
          flags:FuncFlags,
          real-name:Id,
-         meta-method-prefix:Id,
+         meta-method-prefix1:Id,
+         meta-method-prefix2:Id,
 #  if (arg.compile) {
-         meta-method-arr:Id,
-         meta-method-cstr:Id,
-#  }
+         meta-method-arr1:Id,
+         meta-method-cstr1:Id,
+         meta-method-arr2:Id,
+         meta-method-cstr2:Id,
+         meta-method-end1:Id,
+         meta-method-end2:Id,
+#  } else {
          meta-method-end:Id,
+#  }
          decl-str:char[],
          decl-len:i32,
          cas:Id,

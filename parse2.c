@@ -14,6 +14,7 @@ struct _NCp1_NTokenDataI32 {
    uint32_t col;
    int32_t id;
    int32_t id2;
+   int32_t id3;
 };
 struct _NCp1_NTokenDataF32 {
    uint32_t row;

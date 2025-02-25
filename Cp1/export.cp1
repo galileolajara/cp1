@@ -42,7 +42,7 @@ export() {
    func-attr-no-decl();
    func-attr-no-body();
    func-attr-real-name(#nil);
-   func-attr-meta-method(#nil, #nil);
+   func-attr-meta-method(#nil, #nil, #nil);
    func-attr-case(#nil);
    enum-attr-soa-field(#nil, #nil);
    enum-attr-no-decl();

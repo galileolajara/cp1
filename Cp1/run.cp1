@@ -79,13 +79,8 @@ main(arg-c:intc, arg-v:char[][]):intc {
    }
    validate-cp1-path(bin, arg-v[1]);
 
-   "#ifdef _WIN32";
-   "mkdir(\"cp1-tmp-0\");";
-   "#else";
-   X.mkdir("cp1-tmp-0", 0o755);
-   "#endif";
-   var c-path:char[21];
-   C.strcpy(c-path, "cp1-tmp-0/c-XXXXXX");
+   var c-path:char[15];
+   C.strcpy(c-path, "cp1-c-XXXXXX");
    c-fd! = X.mkstemp(c-path);
    if c-fd == #nil {
       print-commands(bin);
@@ -94,8 +89,8 @@ main(arg-c:intc, arg-v:char[][]):intc {
    }
    c-fd.close();
    X.unlink(c-path);
-   var exe-path:char[21];
-   C.strcpy(exe-path, "cp1-tmp-0/exe-XXXXXX");
+   var exe-path:char[17];
+   C.strcpy(exe-path, "./cp1-exe-XXXXXX");
    exe-fd! = X.mkstemp(exe-path);
    if exe-fd == #nil {
       print-commands(bin);
@@ -104,9 +99,9 @@ main(arg-c:intc, arg-v:char[][]):intc {
    }
    exe-fd.close();
    X.unlink(exe-path);
-   c-path[18] = ''.;
-   c-path[19] = ''c;
-   c-path[20] = ''\0;
+   c-path[12] = ''.;
+   c-path[13] = ''c;
+   c-path[14] = ''\0;
    var command:char[1024];
    C.sprintf(command, "%.*s-compile -c %s %s", (C.strlen(bin) - 4):intc, bin, c-path, arg-v[1]);
    // C1.stdout{"run command: " command ''\n}
