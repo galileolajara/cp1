@@ -41,12 +41,17 @@ struct StmtSpace[
       loop ; lvar-c; i++ {
          lvar-i! = space.lvar-v[i];
          lvar! = lvar-i.ptr();
-         lvar.decl.write-lvar-type(lvar-i);
-         if (lvar.flags & #set-expr) != #0 {
-            output{" = {0}"}
-            // lvar.set-expr.write();
+         // C1.stdout{lvar.decl.name "'s lvar.decl.type = " lvar.decl.type:u32 ''\n}
+         if lvar.decl.type == #nil {
+            // Don't output a parser-generated lvar if it was not used
+         } else {
+            lvar.decl.write-lvar-type(lvar-i);
+            if (lvar.flags & #set-expr) != #0 {
+               output{" = {0}"}
+               // lvar.set-expr.write();
+            }
+            output{";\n"}
          }
-         output{";\n"}
       }
       s! = space.stmt-first;
       loop s != null {
@@ -89,6 +94,7 @@ struct StmtSpace[
       item.row = row;
       item.col = col;
       item.decl.name = name;
+      item.decl.type = #nil;
       return lvar;
    }
    wr-space(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {

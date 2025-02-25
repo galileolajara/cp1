@@ -484,22 +484,29 @@ expr-pop-metafunc(at:At, func-name:Id):ExprI {
    e-idx! = expr-push(e.base, #metafunc);
    e.at = at;
    e.func-name = func-name;
+   quick-alloc-arr(e.lvars, carg-c);
    // C1.stdout{"parse func-name " func-name ''\n}
+   space! = .decl-func-ctx-space;
+   lvar-name! = .id-blank;
    e.carg-c = carg-c;
    loop i = 0; carg-c; i++ {
       e.carg-v[i].reff = 0;
       e.carg-v[i].expr = .expr-call-carg-v[call-idx][i];
+      var e2:ExprLvar;
+      quick-alloc-one(e2);
+      e-idx! = expr-push(e2.base, #lvar);
+      e2.lvar = space.lvar-new(lvar-name, 0, 0, false);
+      lvar! = e2.lvar.ptr();
+      .decl-var.name = lvar-name;
+      decl-var-type(#nil);
+      lvar.decl.copy-from(.decl-var);
+      e.lvars[i] = e-idx;
    }
    e.group-c = .expr-call-cgrp-c[call-idx];
    loop i = 0; e.group-c; i++ {
       e.group-v[i] = .expr-call-cgrp-v[call-idx][i];
    }
    if true {
-      if .id-blank == 0:Id {
-         .id-blank = id-add(0, "");
-      }
-      lvar-name! = .id-blank;
-      space! = .decl-func-ctx-space;
       var e2:ExprLvar;
       quick-alloc-one(e2);
       e-idx! = expr-push(e2.base, #lvar);

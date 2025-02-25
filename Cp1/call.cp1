@@ -362,6 +362,7 @@ using ExprI {
       w.n1(e.carg-c);
       loop i = 0; e.carg-c; i++ {
          e.carg-v[i].expr.wr(w, header);
+         e.lvars[i].wr(w, header);
       }
       e.lvar.wr(w, header);
    }
@@ -375,8 +376,10 @@ using ExprI {
       }
       carg-c! = r.n1();
       var carg-v:ExprI[256];
+      var lvars:ExprI[256];
       loop i = 0; carg-c; i++ {
          carg-v[i].rd(r);
+         lvars[i].rd(r);
       }
       ExprI.rd(lvar!, r);
 
@@ -412,7 +415,7 @@ using ExprI {
          var carg2-v:ExprI[256];
          if e-carg.type == #str {
             var e-str:ExprStr = e-carg;
-            group-v[0] = 2 + (carg-c - 1);
+            group-v[0] = 2 + (carg-c - 1) + 1;
             carg2-v[0] = carg;
             e-idx2! = ExprI.alloc();
             var e:ExprIntData;
@@ -421,20 +424,24 @@ using ExprI {
             e.value.ii32 = e-str.len();
             e.type = #u32;
             carg2-v[1] = e-idx2;
-            loop k = 2; carg-c - 1 {
+            k! = 2;
+            loop ; carg-c - 1 {
                carg2-v[k++] = carg-v[j++];
             }
+            carg2-v[k] = lvars[i - 1];
             // if .id-cstr == 0:Id {
                // .id-cstr = id-add(4, "cstr");
             // }
             // C1.stdout{"lvar.cstr()\n"}
             set-method(e-idx, lvar, #nil, 1, group-v, group-v[0], carg2-v);
          } else {
-            group-v[0] = 1 + (carg-c - 1);
+            group-v[0] = 1 + (carg-c - 1) + 1;
             carg2-v[0] = lvar;
-            loop k = 1; carg-c - 1 {
+            k! = 1;
+            loop ; carg-c - 1 {
                carg2-v[k++] = carg-v[j++];
             }
+            carg2-v[k] = lvars[i - 1];
             // C1.stdout{"carg." func-name "()\n"}
             set-method(e-idx, carg, #nil, 1, group-v, group-v[0], carg2-v);
          }
@@ -460,7 +467,7 @@ using ExprI {
          var carg2-v:ExprI[256];
          if e-carg.type == #str {
             var e-str:ExprStr = e-carg;
-            group-v[0] = 2 + (carg-c - 1);
+            group-v[0] = 2 + (carg-c - 1) + 1;
             carg2-v[0] = carg;
             e-idx2! = ExprI.alloc();
             var e:ExprIntData;
@@ -469,20 +476,24 @@ using ExprI {
             e.value.ii32 = e-str.len();
             e.type = #u32;
             carg2-v[1] = e-idx2;
-            loop k = 2; carg-c - 1 {
+            k! = 2;
+            loop ; carg-c - 1 {
                carg2-v[k++] = carg-v[j++];
             }
+            carg2-v[k] = lvars[i - 1];
             // if .id-cstr == 0:Id {
                // .id-cstr = id-add(4, "cstr");
             // }
             // C1.stdout{"lvar.cstr()\n"}
             set-method(e-idx, lvar, #nil, 1, group-v, group-v[0], carg2-v);
          } else {
-            group-v[0] = 1 + (carg-c - 1);
+            group-v[0] = 1 + (carg-c - 1) + 1;
             carg2-v[0] = lvar;
-            loop k = 1; carg-c - 1 {
+            k! = 1;
+            loop ; carg-c - 1 {
                carg2-v[k++] = carg-v[j++];
             }
+            carg2-v[k] = lvars[i - 1];
             // C1.stdout{"carg." func-name "()\n"}
             set-method(e-idx, carg, #nil, 1, group-v, group-v[0], carg2-v);
          }
@@ -564,6 +575,10 @@ using ExprI {
       loop ; arg-c; i++ {
          e-idx! = e.expr-v[i];
          var e-method:ExprMethod = e-idx.ptr();
+         if f.meta-method-prefix2 == #nil {
+            e-method.group-v[0]--;
+            e-method.carg-c--;
+         }
          // C1.stdout{i " " e.expr-c ''\n}
          // C1.stdout{e-data2.type.cp1-name()}
          if e-method.carg-v[0].expr.ptr().type == #str {

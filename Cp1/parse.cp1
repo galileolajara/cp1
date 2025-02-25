@@ -1282,6 +1282,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    next-col! = 1;
    .row = 1;
    .col = 1;
+   .id-blank = id-add(0, "");
    var tok:TokenData.;
    loop {
       tok.ii32.row = next-row;

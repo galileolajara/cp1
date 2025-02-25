@@ -15,6 +15,10 @@ enum Lvar[#nil = -1, #0]:i32 {
       lvar.flags |= #processed;
       at-i! = lvar.decl.type;
       if at-i == #nil {
+         if lvar.decl.name == .id-blank {
+            // let it be, it is a compile-time generated variable that wasn't used
+            return true;
+         }
          // if (lvar.flags & #set-expr) != #0 {
             // if !lvar.set-expr.value(1, false, v!!) { return false }
             // lvar.decl.type = v.type;
