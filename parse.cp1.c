@@ -1877,6 +1877,8 @@ case 't':;
 break;
 case 'v':;
 break;
+case '$':;
+break;
 default:;
 uint32_t _Lrow_57 = {0};
 uint32_t _Lcol_58 = {0};
@@ -2656,7 +2658,7 @@ _NCp1_Pcvar_attr_real_name_1(_NCp1_NId_Cnil);
 _NCp1_Pcvar_attr_no_decl_0();
 }
 void _NCp1_Pquick_alloc_init_0() {
-_Gquick_alloc_cap = (16 * 1024);
+_Gquick_alloc_cap = (4 * 1024);
 _Gquick_alloc_v = malloc(_Gquick_alloc_cap);
 memset(_Gquick_alloc_v, 0, _Gquick_alloc_cap);
 }
@@ -3110,15 +3112,24 @@ exit(_NLibC_NExit_Cfailure);
 return _NCp1_Pinclude_add_2(_Llength_3, _Lr_start_1._Fcharr);
 }
 void* qalloc(int32_t _Lsize_0) {
+if(_Lsize_0 > 1024) {
+void* _Lmem_1;
+_Lmem_1 = malloc(_Lsize_0);
+memset(_Lmem_1, 0, _Lsize_0);
+return _Lmem_1;
+}
 _Lsize_0 = ((_Lsize_0 + 7) & (-1 ^ 7));
 if(_Lsize_0 <= (_Gquick_alloc_cap - _Gquick_alloc_c)) {
-union _NCp1_NRdr _Lr_1 = {0};
-_Lr_1._Freff = _Gquick_alloc_v;
-_Lr_1._Fpos += _Gquick_alloc_c;
+union _NCp1_NRdr _Lr_2 = {0};
+_Lr_2._Freff = _Gquick_alloc_v;
+_Lr_2._Fpos += _Gquick_alloc_c;
 _Gquick_alloc_c += _Lsize_0;
-return _Lr_1._Freff;
+return _Lr_2._Freff;
 }
 _NCp1_Pgrow_2(_Gquick_alloc_cap, _Gquick_alloc_c + _Lsize_0);
+if(_Gquick_alloc_cap > (64 * 1024)) {
+_Gquick_alloc_cap = (64 * 1024);
+}
 _Gquick_alloc_v = malloc(_Gquick_alloc_cap);
 memset(_Gquick_alloc_v, 0, _Gquick_alloc_cap);
 _Gquick_alloc_c = _Lsize_0;

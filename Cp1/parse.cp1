@@ -1198,6 +1198,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      case ''r { }
                      case ''t { }
                      case ''v { }
+                     case ''$ { }
                      default {
                         get-row-col(row!, col!, r.reff, in-data);
                         if r.p1[1] == ''\n {

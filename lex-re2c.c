@@ -420,9 +420,15 @@ lex_template_code: {
                         *(string_ptr++) = '\\';
                         *(string_ptr++) = '`';
                      } else if (c == '\\') {
-                        *(string_ptr++) = '\\';
-                        *(string_ptr++) = '\\';
-                        *(string_ptr++) = line[i++];
+                        if (line[i] == '$') {
+                           *(string_ptr++) = '\\';
+                           *(string_ptr++) = '$';
+                           i++;
+                        } else {
+                           *(string_ptr++) = '\\';
+                           *(string_ptr++) = '\\';
+                           *(string_ptr++) = line[i++];
+                        }
                      } else {
                         *(string_ptr++) = c;
                      }

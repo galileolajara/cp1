@@ -447,11 +447,16 @@ var quick-alloc-c:i32;
 var quick-alloc-cap:i32;
 var quick-alloc-v:ref;
 quick-alloc-init() {
-   .quick-alloc-cap = 16 * 1024;
+   .quick-alloc-cap = 4 * 1024;
    .quick-alloc-v = C.malloc(.quick-alloc-cap);
    C.memset(.quick-alloc-v, 0, .quick-alloc-cap);
 }
 quick-alloc(size:i32):ref @real-name(qalloc) {
+   if size > 1024 {
+      mem! = C.malloc(size);
+      C.memset(mem, 0, size);
+      return mem;
+   }
    // mem! = C.malloc(size);
    // C.memset(mem, 0, size);
    // return mem;
@@ -470,6 +475,9 @@ quick-alloc(size:i32):ref @real-name(qalloc) {
    }
    // expand
    grow(.quick-alloc-cap, .quick-alloc-c + size);
+   if .quick-alloc-cap > (64 * 1024) {
+      .quick-alloc-cap = 64 * 1024;
+   }
    .quick-alloc-v = C.malloc(.quick-alloc-cap);
    C.memset(.quick-alloc-v, 0, .quick-alloc-cap);
    // C1.stdout{"expanding to " .quick-alloc-cap ''\n}
