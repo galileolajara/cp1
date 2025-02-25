@@ -1022,8 +1022,11 @@ enum Include[#nil = -1, #0]:i32 {
       .include-is-outputted[n3] |= n17;
       .include-outputted-v[.include-outputted-c++] = thiss;
    }
+   stdout-reserve(i:this, so:C1.StdOut) {
+      so.reserve += .include-len-v[i];
+   }
    stdout(i:this, so:C1.StdOut) {
-      C1.stdout-bytes(.include-str-v[i], .include-len-v[i]);
+      C1.stdout-bytes-nr(.include-str-v[i], .include-len-v[i]);
    }
    output(i:this, o:Output) {
       output-bytes(.include-str-v[i], .include-len-v[i]);
@@ -1041,8 +1044,11 @@ var include-str-v:char[][];
 var include-len-v:u8[];
 var func-main:Func;
 enum Id[#nil = -1, #0]:i32 {
+   stdout-reserve(id:this, so:C1.StdOut) @inline {
+      so.reserve += id.len();
+   }
    stdout(id:this, so:C1.StdOut) @inline {
-      C1.stdout-bytes(id.str(), id.len());
+      C1.stdout-bytes-nr(id.str(), id.len());
    }
    jscode(id:this, jc:JsCode) @inline {
       jscode-bytes(id.str(), id.len());

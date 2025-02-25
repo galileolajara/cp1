@@ -38,7 +38,7 @@ void _NCp1_Pfunc_attr_var_args_0();
 void _NCp1_Pfunc_attr_no_decl_0();
 void _NCp1_Pfunc_attr_no_body_0();
 void _NCp1_Pfunc_attr_real_name_1(_NCp1_NId _Lname_0);
-void _NCp1_Pfunc_attr_meta_method_2(_NCp1_NId _Lprefix_0, _NCp1_NId _Lend_1);
+void _NCp1_Pfunc_attr_meta_method_3(_NCp1_NId _Lprefix1_0, _NCp1_NId _Lprefix2_1, _NCp1_NId _Lend_2);
 void _NCp1_Pfunc_attr_case_1(_NCp1_NId _Lname_0);
 void _NCp1_Penum_attr_soa_field_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lid_1);
 void _NCp1_Penum_attr_no_decl_0();

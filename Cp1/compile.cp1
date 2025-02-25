@@ -46,8 +46,11 @@ enum File[#nil = -1, #0]:i32 {
    path-len(f:this):u16 @inline {
       return f.ptr().path-len;
    }
+   stdout-reserve(f:this, so:C1.StdOut) {
+      so.reserve += f.ptr().path-len;
+   }
    stdout(f:this, so:C1.StdOut) {
-      C1.stdout-cstr(f.ptr().path);
+      C1.stdout-cstr-nr(f.ptr().path);
    }
    jscode(f:this, jc:JsCode) {
       jscode-cstr(f.ptr().path);

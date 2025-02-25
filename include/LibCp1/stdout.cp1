@@ -8,17 +8,25 @@ using LibCp1 {
    var stdout-buf-data:char[];
    var stdout-buf-cap:u32;
    var stdout-buf-len:u32;
-   stdout(so:StdOut) @meta-method(stdout end) @inline {
+   stdout(so:StdOut) @meta-method(stdout-reserve stdout end) @inline {
+      so.reserve = 0;
    }
-   stdbuf(so:StdOut) @meta-method(stdout end-no-flush) @inline {
+   stdbuf(so:StdOut) @meta-method(stdout-reserve stdout end-no-flush) @inline {
+      so.reserve = 0;
    }
    stdout-bytes(data:ref, size:usz) @inline {
       stdout-reserve(size);
+      stdout-bytes-nr(data, size);
+   }
+   stdout-bytes-nr(data:ref, size:usz) @inline { // nr = no-reserve
       C.memcpy(&.stdout-buf-data[.stdout-buf-len], data, size);
       .stdout-buf-len += size;
    }
    stdout-u32(val:u32) {
       stdout-reserve(10);
+      stdout-u32-nr(val);
+   }
+   stdout-u32-nr(val:u32) {
       if val == 0 {
          .stdout-buf-data[.stdout-buf-len++] = ''0;
       } else {
@@ -46,6 +54,9 @@ using LibCp1 {
    }
    stdout-i32(val:u32) {
       stdout-reserve(11);
+      stdout-i32-nr(val);
+   }
+   stdout-i32-nr(val:u32) {
       if val == 0 {
          .stdout-buf-data[.stdout-buf-len++] = ''0;
       } elif val:i32 < 0 {
@@ -113,8 +124,14 @@ using LibCp1 {
    stdout-cstr(str:char[]) @inline {
       stdout-bytes(str, C.strlen(str));
    }
+   stdout-cstr-nr(str:char[]) @inline {
+      stdout-bytes-nr(str, C.strlen(str));
+   }
    stdout-char(val:char) @inline {
       stdout-reserve(1);
+      stdout-char-nr(val);
+   }
+   stdout-char-nr(val:char) @inline {
       .stdout-buf-data[.stdout-buf-len++] = val;
    }
    stdout-bool(val:bool) @inline {
@@ -124,63 +141,110 @@ using LibCp1 {
          stdout-bytes("false", 5);
       }
    }
+   stdout-bool-nr(val:bool) @inline {
+      if val {
+         stdout-bytes-nr("true", 4);
+      } else {
+         stdout-bytes-nr("false", 5);
+      }
+   }
    stdout-flush() @inline {
       // file descriptor 1 = standard output
       1:X.Fd.write(.stdout-buf-data, .stdout-buf-len);
       .stdout-buf-len = 0;
    }
-   struct StdOut[] {
+   struct StdOut[reserve:u32] {
+      stdout-reserve-cstr(so:this, str:char[], len:u32) @inline {
+         so.reserve += len;
+      }
       stdout-cstr(so:this, str:char[], len:u32) @inline {
-         stdout-bytes(str, len);
+         stdout-bytes-nr(str, len);
+      }
+      stdout-reserve-end(so:this) @inline {
+         stdout-reserve(so.reserve);
       }
       stdout-end(so:this) @inline {
          stdout-flush();
+      }
+      stdout-reserve-end-no-flush(so:this) @inline {
+         stdout-reserve(so.reserve);
       }
       stdout-end-no-flush(so:this) @inline {
       }
    }
 }
 using bool {
+   stdout-reserve(val:this, so:C1.StdOut) @inline {
+      if val {
+         so.reserve += 4;
+      } else {
+         so.reserve += 5;
+      }
+   }
    stdout(val:this, so:C1.StdOut) @inline {
-      C1.stdout-bool(val);
+      C1.stdout-bool-nr(val);
    }
 }
 using i32 {
+   stdout-reserve(val:this, so:C1.StdOut) @inline {
+      so.reserve += 11;
+   }
    stdout(val:this, so:C1.StdOut) @inline {
-      C1.stdout-i32(val);
+      C1.stdout-i32-nr(val);
    }
 }
 using i16 {
+   stdout-reserve(val:this, so:C1.StdOut) @inline {
+      so.reserve += 6;
+   }
    stdout(val:this, so:C1.StdOut) @inline {
-      C1.stdout-i32(val);
+      C1.stdout-i32-nr(val);
    }
 }
 using i8 {
+   stdout-reserve(val:this, so:C1.StdOut) @inline {
+      so.reserve += 4;
+   }
    stdout(val:this, so:C1.StdOut) @inline {
-      C1.stdout-i32(val);
+      C1.stdout-i32-nr(val);
    }
 }
 using u32 {
+   stdout-reserve(val:this, so:C1.StdOut) @inline {
+      so.reserve += 10;
+   }
    stdout(val:this, so:C1.StdOut) @inline {
-      C1.stdout-u32(val);
+      C1.stdout-u32-nr(val);
    }
 }
 using u16 {
+   stdout-reserve(val:this, so:C1.StdOut) @inline {
+      so.reserve += 5;
+   }
    stdout(val:this, so:C1.StdOut) @inline {
-      C1.stdout-u32(val);
+      C1.stdout-u32-nr(val);
    }
 }
 using u8 {
+   stdout-reserve(val:this, so:C1.StdOut) @inline {
+      so.reserve += 3;
+   }
    stdout(val:this, so:C1.StdOut) @inline {
-      C1.stdout-u32(val);
+      C1.stdout-u32-nr(val);
    }
 }
 using char {
+   stdout-reserve(val:this, so:C1.StdOut) @inline {
+      so.reserve++;
+   }
    stdout(val:this, so:C1.StdOut) @inline {
-      C1.stdout-char(val);
+      C1.stdout-char-nr(val);
+   }
+   stdout-reserve-arr(str:this[], so:C1.StdOut) @inline {
+      so.reserve += C.strlen(str);
    }
    stdout-arr(str:this[], so:C1.StdOut) @inline {
-      C1.stdout-cstr(str);
+      C1.stdout-cstr-nr(str);
    }
    stdout-arr(str:this[], so:C1.StdOut, len:u32) @inline {
       C1.stdout-bytes(str, len);

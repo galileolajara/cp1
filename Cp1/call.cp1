@@ -381,7 +381,7 @@ using ExprI {
       ExprI.rd(lvar!, r);
 
       expr-c! = (group-c << 1) + 1;
-      C1.stdout{group-c " -> " expr-c ''\n}
+      // C1.stdout{group-c " -> " expr-c ''\n}
       var e:ExprMetaFunc;
       quick-alloc-plus(e, ExprI[usz] * expr-c);
       e-idx.set(e.base, #metafunc);
@@ -564,7 +564,7 @@ using ExprI {
       loop ; arg-c; i++ {
          e-idx! = e.expr-v[i];
          var e-method:ExprMethod = e-idx.ptr();
-         C1.stdout{i " " e.expr-c ''\n}
+         // C1.stdout{i " " e.expr-c ''\n}
          // C1.stdout{e-data2.type.cp1-name()}
          if e-method.carg-v[0].expr.ptr().type == #str {
             // C1.stdout{"constant string\n"}
