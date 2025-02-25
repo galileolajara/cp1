@@ -74,6 +74,12 @@ using ExprI {
       var e:ExprStr = expr;
       n! = e.first;
       loop {
+         output-reserve(n.len << 1);
+         n = n.next;
+         if n == null { break }
+      }
+      n = e.first;
+      loop {
          write-str-node(n.len, n.buf);
          n = n.next;
          if n == null { break }

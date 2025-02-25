@@ -5,7 +5,9 @@ void _NCp1_Poutput_reserve_1(uint32_t);
 extern char* output_data;
 extern uint32_t output_len;
 void _NCp1_Pwrite_str_node_2(uint32_t len, char* buf) {
-   _NCp1_Poutput_reserve_1(2 + (len << 1));
+   // no need to call output-reserve because
+   // it is called at write-str of Cp1/str.cp1
+   // before calling this function
    output_data[output_len++] = '"';
    for (int i = 0; i < len; i ++) {
       switch(buf[i]) {

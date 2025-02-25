@@ -1028,8 +1028,11 @@ enum Include[#nil = -1, #0]:i32 {
    stdout(i:this, so:C1.StdOut) {
       C1.stdout-bytes-nr(.include-str-v[i], .include-len-v[i]);
    }
+   output-reserve(i:this, o:Output) {
+      o.reserve += .include-len-v[i];
+   }
    output(i:this, o:Output) {
-      output-bytes(.include-str-v[i], .include-len-v[i]);
+      output-bytes-nr(.include-str-v[i], .include-len-v[i]);
    }
 }
 
@@ -1053,8 +1056,11 @@ enum Id[#nil = -1, #0]:i32 {
    jscode(id:this, jc:JsCode) @inline {
       jscode-bytes(id.str(), id.len());
    }
+   output-reserve(id:this, o:Output) @inline {
+      o.reserve += id.len();
+   }
    output(id:this, o:Output) @inline {
-      output-bytes(id.str(), id.len());
+      output-bytes-nr(id.str(), id.len());
    }
    c-name(id:this):char[] {
       var c-name:char[] = .id-c-name-v[id];

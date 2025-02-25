@@ -121,15 +121,22 @@ using Cp1 {
    var output-data:char[] @real-name(output_data);
    var output-cap:u32;
    var output-len:u32 @real-name(output_len);
-   struct Output[] {
+   struct Output[reserve:u32] {
+      output-reserve-cstr(o:this, str:char[], len:u32) {
+         o.reserve += len;
+      }
       output-cstr(o:this, str:char[], len:u32) {
-         output-bytes(str, len);
+         output-bytes-nr(str, len);
+      }
+      output-reserve-end(o:this) {
+         output-reserve(o.reserve);
       }
       output-end(o:this) {
       }
    }
    enum OutputIntType[#oct, #hex]:u8;
-   output(o:Output) @meta-method(output end) @inline {
+   output(o:Output) @meta-method(output-reserve output end) @inline {
+      o.reserve = 0;
    }
    output-reserve(len:u32) {
       space! = .output-cap - .output-len;
@@ -145,6 +152,9 @@ using Cp1 {
    }
    output-u32(val:u32) {
       output-reserve(10);
+      output-u32-nr(val);
+   }
+   output-u32-nr(val:u32) {
       if val == 0 {
          .output-data[.output-len++] = ''0;
       } else {
@@ -172,6 +182,9 @@ using Cp1 {
    }
    output-o32(val:u32) {
       output-reserve(11);
+      output-o32-nr(val:u32);
+   }
+   output-o32-nr(val:u32) {
       if val == 0 {
          .output-data[.output-len++] = ''0;
       } else {
@@ -199,6 +212,9 @@ using Cp1 {
    }
    output-x32(val:u32) {
       output-reserve(8);
+      output-x32-nr(val);
+   }
+   output-x32-nr(val:u32) {
       if val == 0 {
          .output-data[.output-len++] = ''0;
       } else {
@@ -230,13 +246,19 @@ using Cp1 {
       }
    }
    output-f32(val:f32) {
-      var str:char[48];
+      output-reserve(47);
+      output-f32-nr(val);
+   }
+   output-f32-nr(val:f32) {
       var len:intc;
-      C.sprintf(str, "%f%n", val, &len);
-      output-bytes(str, len);
+      C.sprintf(&.output-data[.output-len], "%f%n", val, &len);
+      .output-len += len;
    }
    output-i32(val:i32) {
       output-reserve(11);
+      output-i32-nr(val);
+   }
+   output-i32-nr(val:i32) {
       if val == 0 {
          .output-data[.output-len++] = ''0;
       } elif val < 0 {
@@ -287,6 +309,9 @@ using Cp1 {
    }
    output-u64(val:i64) {
       output-reserve(20);
+      output-u64-nr(val);
+   }
+   output-u64-nr(val:i64) {
       if val == 0 {
          .output-data[.output-len++] = ''0;
       } else {
@@ -314,31 +339,53 @@ using Cp1 {
    }
    output-bytes(str:char[], len:u32) {
       output-reserve(len);
+      output-bytes-nr(str, len);
+   }
+   output-bytes-nr(str:char[], len:u32) {
       C.memcpy(&.output-data[.output-len], str, len);
       .output-len += len;
    }
 }
 using f32 {
+   output-reserve(val:this, so:Cp1.Output) @inline {
+      so.reserve += 47;
+   }
    output(val:this, so:Cp1.Output) @inline {
-      Cp1.output-f32(val);
+      Cp1.output-f32-nr(val);
    }
 }
 using i32 {
+   output-reserve(val:this, so:Cp1.Output) @inline {
+      so.reserve += 11;
+   }
    output(val:this, so:Cp1.Output) @inline {
-      Cp1.output-i32(val);
+      Cp1.output-i32-nr(val);
    }
 }
 using u32 {
+   output-reserve(val:this, so:Cp1.Output) @inline {
+      so.reserve += 10;
+   }
    output(val:this, so:Cp1.Output) @inline {
-      Cp1.output-u32(val);
+      Cp1.output-u32-nr(val);
+   }
+   output-reserve(val:this, so:Cp1.Output, type:Cp1.OutputIntType) @inline {
+      switch type {
+         case #oct {
+            so.reserve += 11;
+         }
+         case #hex {
+            so.reserve += 8;
+         }
+      }
    }
    output(val:this, so:Cp1.Output, type:Cp1.OutputIntType) @inline {
       switch type {
          case #oct {
-            Cp1.output-o32(val);
+            Cp1.output-o32-nr(val);
          }
          case #hex {
-            Cp1.output-x32(val);
+            Cp1.output-x32-nr(val);
          }
       }
    }
@@ -349,19 +396,30 @@ using u8 {
    }
 }
 using u64 {
+   output-reserve(val:this, so:Cp1.Output) @inline {
+      so.reserve += 20;
+   }
    output(val:this, so:Cp1.Output) @inline {
-      Cp1.output-u64(val);
+      Cp1.output-u64-nr(val);
    }
 }
 using char {
+   output-reserve(val:this, o:Cp1.Output) {
+      o.reserve += 1;
+   }
    output(val:this, o:Cp1.Output) {
-      Cp1.output-reserve(1);
       Cp1.output-data[Cp1.output-len++] = val;
    }
+   output-reserve-arr(val:this[], o:Cp1.Output) {
+      o.reserve += C.strlen(val);
+   }
    output-arr(val:this[], o:Cp1.Output) {
-      Cp1.output-bytes(val, C.strlen(val));
+      Cp1.output-bytes-nr(val, C.strlen(val));
+   }
+   output-reserve-arr(val:this[], o:Cp1.Output, len:usz) {
+      o.reserve += len;
    }
    output-arr(val:this[], o:Cp1.Output, len:usz) {
-      Cp1.output-bytes(val, len);
+      Cp1.output-bytes-nr(val, len);
    }
 }
