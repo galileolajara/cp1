@@ -1,3 +1,5 @@
+import "LibC/stdio.cp1";
+import "Posix/stat.cp1";
 include <fcntl.h> {
    using C = LibC;
    using X = Posix;
@@ -27,8 +29,8 @@ include <fcntl.h> {
          close(file:this):intc @inline {
             return X.close(file);
          }
-         stat(file:this, stat:Sys.Stat):intc @inline {
-            return X.fstat(file, stat);
+         stat(file:this, stat:X.Stat):intc @inline {
+            return X.fstat(file:base, stat);
          }
       }
       enum OpenFlags[

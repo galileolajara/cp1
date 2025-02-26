@@ -90,13 +90,22 @@ id-add(id-len:u8, id-str:char[]):Id {
 }
 var import-new-c:u32;
 var import-v:Include[];
+var import-file-v:Include[];
 var import-required-v:u8[];
 var import-cap:u32;
 var import-c:u32;
-import(path:Include, require:bool) {
-   loop i = 0; .import-c {
+import(path:Include, require:bool, file:File) {
+   loop i = 0; .import-c; i++ {
       // C1.stdout{"import " path " " path:base " checking if exists, " i:u32 " = " path ''\n}
-      if .import-v[i++] == path {
+      if .import-v[i] == path {
+         C1.stdout{"re-import " path ''\n}
+         if require {
+            if (.import-required-v[i >> 3] & (1 << (i & 7))) == 0 {
+               C1.stdout{"Error, '" path "' was previously an import-only of '" .import-file-v[i] "' but is now required by '" file "'\n"}
+               C1.stdout{"Consider requiring '" path "' instead of importing it on '" .import-file-v[i] "'.\n"}
+               C.exit(#failure);
+            }
+         }
          return;
       }
    }
@@ -106,9 +115,11 @@ import(path:Include, require:bool) {
       if .import-cap < .import-c {
          grow(.import-cap, .import-c);
          C.realloc-arr(.import-v, .import-cap);
+         C.realloc-arr(.import-file-v, .import-cap);
          C.realloc-arr(.import-required-v, (.import-cap + 7) >> 3);
       }
       .import-v[i] = path;
+      .import-file-v[i] = file;
       if require {
          .import-required-v[i >> 3] |= 1 << (i & 7);
       } else {
@@ -531,7 +542,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
    loop r.n() {
       Include.rd(path!, r);
       require2! = r.b();
-      import(path, require2 && require);
+      import(path, require2 && require, file-idx);
    }
    template-code-idx-begin! = .template-code-c;
    template-code-c! = r.n():TemplateCode;
@@ -828,6 +839,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
 
    .import-cap = 32;
    C.malloc-arr(.import-v, .import-cap);
+   C.malloc-arr(.import-file-v, .import-cap);
    C.malloc-arr(.import-required-v, (.import-cap + 7) >> 3);
    .template-inst-cap = 32;
    C.malloc-arr(.template-inst-v, .template-inst-cap:base);
@@ -839,7 +851,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          err.print(inc);
          C.exit(#failure);
       }
-      import(inc, true);
+      import(inc, true, #nil);
    }
    loop {
       "import_now:;";

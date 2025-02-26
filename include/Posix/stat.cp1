@@ -5,7 +5,7 @@ include <sys/stat.h> {
       struct Stat[
          mtimespec:Timespec. @real-name(st_mtimespec),
          mtim:Timespec. @real-name(st_mtim),
-      ] @real-name @no-decl;
+      ] @real-name(struct stat) @no-decl;
       mkdir(path:char[], mode:intc):intc @real-name @no-decl;
       fstat(file:intc, stat:Stat):intc @real-name @no-decl;
       stat(file:char[], stat:Stat):intc @real-name @no-decl;
