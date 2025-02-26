@@ -1,5 +1,4 @@
 ## What does Hello World (with Metaprogramming) look like?
--
 ![hello](/images/helloworld-2025-02-26.5.png)
 
 How to use?
