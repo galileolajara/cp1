@@ -1,47 +1,45 @@
 require "LibCp1/stdout.cp1";
 using C1 = LibCp1;
 
-enum Direction[#right, #up, #left, #down]:u8 { // An 8-bit unsigned enum
-   string(e:this):char[] { // An example method for enums
-      switch e {
-         case #right { return "right" }
-         case #up { return "up" }
-         case #left { return "left" }
-         case #down { return "down" }
-         default { return "error" }
+// Create a metaprogram with access to reflection data
+meta #CreateHelloFunction @reflection {
+   using C1 = LibCp1;
+   hello-${arg.suffix}() {
+      C1.stdout{"Hello ${arg.suffix} from metaprogram!\n"}
+      loop i = 0; ${arg.count}; i++ {
+         C1.stdout{"Counting... " i ''\n}
       }
+      // Do some reflection
+      C1.stdout{"Have a struct called 'Cat'? ${'Cat' in cp1_refl.root.typem}\n"}
+      C1.stdout{"Have a struct called 'Dog'? ${'Dog' in cp1_refl.root.typem}\n"}
    }
 }
 
-struct Position[x:i32, y:i32] { // A struct
-   go(pos:this, dir:Direction) {
-      switch dir {
-         case #right { pos.x++ }
-         case #up { pos.y++ }
-         case #left { pos.x-- }
-         case #down { pos.y-- }
-      }
+// Use the metaprogram
+#CreateHelloFunction{suffix:"world",count:3}
+#CreateHelloFunction{suffix:"five",count:5}
+
+struct Dog[bark-times:i32] {
+   init(dog:this) {
+   }
+   bark(dog:this) {
+      dog.bark-times++;
+      C1.stdout{"arf!! " dog.bark-times "x bark\n"}
    }
 }
 
-main():intc { // intc is for compatibility with C's int, prefer to use i32 elsewhere
+main():intc { // intc is for C compatibility, use i32 elsewhere
    C1.stdout{"Hello world!\n"}
+   hello-world();
+   hello-five();
 
-   one! = 1; // '!' is the quickest way to declare a variable
+   // Declare a variable via function argument's type using '!' syntax
+   // The dog variable is allocated on the stack
+   Dog.init(dog!);
+   dog.bark(); dog.bark(); dog.bark(); // Bark 3 times
+
+   one! = 1; // '!' declares 'one' as a new variable
    seven! = 7;
-   sum! = one + seven;
-   C1.stdout{one " + " seven " = " sum "\n"}
-
-   var typed-var:i32 = 9;
-   C1.stdout{"typed-var is " typed-var "\n"}
-
-   var pos:Position.; // '.' means this is allocated on the stack
-   pos.x = 9;
-   pos.y = 11;
-   pos.go(#left);
-   C1.stdout{"position is at " pos.x ", " pos.y "\n"}
-
-   dir! = Direction#left;
-   C1.stdout{"direction is " dir.string() ''\n}
+   C1.stdout{one " + " seven " = " one + seven ''\n}
    return 0;
 }
