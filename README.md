@@ -24,6 +24,23 @@ ninja -f build-tcc.ninja # to build using TCC
 ninja -f build-clang.ninja # to build using Clang
 ninja -f build-gcc.ninja # to build using GCC
 ```
+Top 1 Feature: Extremely fast compilation speeds
+-
+- Took *incremental compilation* seriously.
+- Codes are *cached and never parsed again*.
+- Cp1 can be built in *0.1 seconds* using TCC.
+
+Top 2 Feature: Easy-to-use yet powerful metaprogramming system
+-
+- Metaprogramming is just as easy as *string intepolation*.
+- Metaprograms are also cached and have few or *zero overhead*.
+- Debugging meta-codes is *easier* because you can see the output of metaprograms in the cache folder.
+
+Top 3 Feature: Shorter codes
+-
+- *Function arguments* can be used to declare variables.
+- Enums, primitive types and literals *also have methods*.
+- Meta-methods can help you *implement printf-like functionality* easily.
 
 Cp1 means C+1 or C plus 1, named just like C++ or C plus plus
 -
