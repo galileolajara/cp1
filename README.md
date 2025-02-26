@@ -8,7 +8,9 @@ Begin by cloning the repo. Make sure to have ninja, clang and re2c installed on 
 ```
 git clone https://github.com/galileolajara/cp1
 cd cp1
-ninja
+ninja -f build-tcc.ninja # to build using TCC
+ninja -f build-clang.ninja # to build using Clang
+ninja -f build-gcc.ninja # to build using GCC
 ```
 Then checkout the examples:
 ```

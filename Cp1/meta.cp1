@@ -1,0 +1,205 @@
+using C = LibC;
+using C1 = LibCp1;
+using Cp1 = Cp1;
+using u32 {
+   jscode(val:this, jc:Cp1.JsCode) @inline {
+      Cp1.jscode-u32(val);
+   }
+}
+using char {
+   jscode(val:this, jc:Cp1.JsCode) @inline {
+      Cp1.jscode-char(val);
+   }
+   jscode-arr(str:this[], jc:Cp1.JsCode) @inline {
+      Cp1.jscode-bytes(str, C.strlen(str));
+   }
+   jscode-arr(str:this[], jc:Cp1.JsCode, len:u32) @inline {
+      Cp1.jscode-bytes(str, len);
+   }
+}
+using Cp1 {
+using At {
+   jscode-write-name(at-idx:this) {
+      at! = at-idx.ptr();
+      if at.type == #basic {
+         jscode{at.name.basic.cp1-name()}
+      } else {
+         at.parent.jscode-write-name-dot();
+         jscode{at.name.id}
+      }
+   }
+   jscode-write-name-dot(at-idx:this) {
+      if at-idx == #root {
+      } else {
+         at! = at-idx.ptr();
+         at.parent.jscode-write-name-dot();
+         jscode{at.name.id ''.}
+      }
+   }
+   jscode-write(at-idx:this) {
+      jscode{"{\n\ttypes:["}
+      loop at2-idx = 2:At; .at-c - 2; at2-idx++ {
+         at2! = at2-idx.ptr();
+         if at2.parent == at-idx {
+            if at2.type == #basic {
+               jscode{''" at2.name.basic.cp1-name() '<",>}
+            } else {
+               jscode{''" at2.name.id '<",>}
+            }
+         }
+      }
+      jscode{"],\n\ttype:"}
+      at! = at-idx.ptr();
+      var method-c, method-v;
+      if at.type == #basic {
+         t! = .basic-type[at.name.basic];
+         method-c = t.method-c;
+         method-v = t.method-v;
+         jscode{'<"basic">}
+      } else {
+         if at.def == #struct {
+            t! = at.decl.structt.ptr();
+            method-c = t.method-c;
+            method-v = t.method-v;
+            jscode{'<"struct">}
+         } elif at.def == #enum {
+            t! = at.decl.enumm.ptr();
+            method-c = t.method-c;
+            method-v = t.method-v;
+            jscode{'<"struct">}
+         } else {
+            jscode{'<"">}
+         }
+      }
+      jscode{",\n\tfunctions:{"}
+      loop i = 0; at.func-c; i++ {
+         f-idx! = at.func-v[i];
+         f! = f-idx.ptr();
+         jscode{"\n\t\t\"" f.decl.name '<":{args:[>}
+         loop j = 0, i = 0; f.group-c; j++ {
+            jscode{''[}
+            loop f.group-v[j] {
+               fa! = f.farg-v[i];
+               jscode{"{name:\"" fa.decl.name "\",type:\""}
+               fa.decl.type.jscode-write-name();
+               jscode{"\"},"}
+            }
+            jscode{"],"}
+         }
+         jscode{'<],type:">}
+         if f.decl.type != #nil {
+            f.decl.type.jscode-write-name();
+         }
+         if f.this-idx == -1 {
+            jscode{'<",this:-1},>}
+         } else {
+            jscode{'<",this:> f.this-idx:u32 '<},>}
+         }
+      }
+      jscode{"}}"}
+   }
+}
+var jscode-buf-data:char[];
+var jscode-buf-cap:u32;
+var jscode-buf-len:u32;
+jscode-reserve(len:u32) {
+   space! = .jscode-buf-cap - .jscode-buf-len;
+   if space < len {
+      .jscode-buf-cap += .jscode-buf-cap;
+      space = .jscode-buf-cap - .jscode-buf-len;
+      loop space < len {
+         .jscode-buf-cap += .jscode-buf-cap;
+         space = .jscode-buf-cap - .jscode-buf-len;
+      }
+      C.realloc-arr(.jscode-buf-data, .jscode-buf-cap);
+   }
+}
+jscode-char(val:char) @inline {
+   jscode-reserve(1);
+   .jscode-buf-data[.jscode-buf-len++] = val;
+}
+jscode-cstr(str:char[]) @inline {
+   jscode-bytes(str, C.strlen(str));
+}
+jscode(jc:JsCode) @meta-method(jscode end) @inline {
+}
+jscode-u32(val:u32) {
+   jscode-reserve(10);
+   if val == 0 {
+      .jscode-buf-data[.jscode-buf-len++] = ''0;
+   } else {
+      // integer to string, count the digits
+      var data:char[];
+      data = &.jscode-buf-data[.jscode-buf-len];
+      digits! = 0;
+      loop {
+         data[digits++] = (val % 10) + ''0;
+         val /= 10;
+         if val == 0 { break }
+      }
+      // reverse the string
+      start! = 0;
+      end! = digits - 1;
+      loop start < end {
+         tmp! = data[start];
+         data[start] = data[end];
+         data[end] = tmp;
+         start++;
+         end--;
+      }
+      .jscode-buf-len += digits;
+   }
+}
+struct JsCode[] {
+   jscode-cstr(jc:this, str:char[], len:u32) @inline {
+      jscode-bytes(str, len);
+   }
+   jscode-end(jc:this) @inline {
+   }
+}
+jscode-bytes(data:ref, size:usz) @inline {
+   jscode-reserve(size);
+   C.memcpy(&.jscode-buf-data[.jscode-buf-len], data, size);
+   .jscode-buf-len += size;
+}
+include-add(include-len:u8, include-str:char[]):Include {
+   found! = .include-map.get-or-insert(include-str, include-len, .include-c);
+   // C1.stdout{"include-add " include-str " = " found ''\n}
+   if found == -1 {
+      include-idx! = .include-c++;
+      if .include-cap <= .include-c {
+         old-cap! = .include-cap;
+         grow(.include-cap, .include-c);
+         realloc(.include-len-v, .include-cap, old-cap);
+         realloc(.include-str-v, .include-cap, old-cap);
+      }
+      .include-len-v[include-idx] = include-len;
+      .include-str-v[include-idx] = include-str;
+      // C1.stdout{"include " include-str " is " include-idx ''\n}
+      return include-idx:Include;
+   } else {
+      // C1.stdout{"include " include-str " is " found ''\n}
+      return found:Include;
+   }
+}
+var template-inst-new-c:u32;
+template-inst(ti:TemplateInstData) {
+   loop j = 0; .template-inst-c {
+      ti2! = .template-inst-v[j++];
+      if (ti2.name == ti.name) && (ti2.at == ti.at) && (ti2.arg-crc32c == ti.arg-crc32c) {
+         return;
+      }
+   }
+   if true {
+      i! = .template-inst-c++;
+      if .template-inst-cap < .template-inst-c {
+         .template-inst-cap = grow(.template-inst-c:base);
+         C.realloc-arr(.template-inst-v, .template-inst-cap:base);
+      }
+      C.memcpy(.template-inst-v[i], ti, TemplateInstData[usz]);
+   }
+   if true {
+      .template-inst-new-c++;
+   }
+}
+}
