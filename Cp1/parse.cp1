@@ -1721,16 +1721,57 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    // out-path-len! = C.strlen(out-path);
    lock-path-len! = C.strlen(lock-path);
    var tmp-path:char[256 + 16 + 10];
-   C.sprintf(tmp-path, "%s-%u", lock-path, X.getpid());
-   // C.memcpy(tmp-path, lock-path, lock-path-len - 1);
-   // tmp-path[lock-path-len - 1] = ''t;
-   // tmp-path[lock-path-len] = ''\0;
-   // C1.stdout{"write " tmp-path ''\n}
+   var tmp-path-len:intc;
+   C.sprintf(tmp-path, "%s-%u%n", lock-path, X.getpid(), &tmp-path-len);
    if !write-file(tmp-path, w-begin.reff, w.pos - w-begin.pos) {
       C1.stdout{"Cannot open file for writing: " tmp-path ''\n}
       C.exit(#failure);
    }
-   // C1.stdout{"rename " tmp-path " -> " lock-path ''\n}
+   "#ifdef _WIN32";
+   X.unlink(lock-path);
+   "#endif";
+   C.rename(tmp-path, lock-path);
+
+   w.reff = w-begin.reff;
+   w.n(.id-in-header-c);
+   loop j = 0; .id-in-header-c; j++ {
+      i! = .id-in-header-id-v[j];
+      w.n1(.id-len-v[i]);
+      w.copy(.id-str-v[i], .id-len-v[i]);
+      w.n1(0);
+   }
+   w.n(.include-c);
+   loop i = 0; .include-c; i++ {
+      w.n1(.include-len-v[i]);
+      w.copy(.include-str-v[i], .include-len-v[i]);
+      w.n1(0);
+   }
+   w.n(.at-in-header-c);
+   loop j = 0; .at-in-header-c; j++ {
+      i! = .at-in-header-at-v[j];
+      at! = .at-v[i];
+      at.type.wr(w);
+      if at.type == #basic {
+         at.name.basic.wr(w);
+      } else {
+         at.parent.wr-header(w);
+         at.name.id.wr-header(w);
+      }
+   }
+   write-cvar(w, true);
+   write-gvar(w, true);
+   write-enum(w, true);
+   write-struct(w, true);
+   write-func(w, true);
+   write-import(w, true);
+   write-template-code(w, true);
+
+   tmp-path[lock-path-len - 1] = ''h;
+   if !write-file(tmp-path, w-begin.reff, w.pos - w-begin.pos) {
+      C1.stdout{"Cannot open file for writing: " tmp-path ''\n}
+      C.exit(#failure);
+   }
+   lock-path[lock-path-len - 1] = ''h;
    "#ifdef _WIN32";
    X.unlink(lock-path);
    "#endif";
@@ -1752,62 +1793,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .import-c = 0;
    .template-inst-c = 0;
    .template-code-c = 0;
-   // w.reff = w-begin.reff;
-   // w.n(.id-in-header-c);
-   // loop j = 0; .id-in-header-c; j++ {
-   //    i! = .id-in-header-id-v[j];
-   //    w.n1(.id-len-v[i]);
-   //    w.copy(.id-str-v[i], .id-len-v[i]);
-   //    w.n1(0);
-   // }
-   // w.n(.include-c);
-   // loop i = 0; .include-c; i++ {
-   //    w.n1(.include-len-v[i]);
-   //    w.copy(.include-str-v[i], .include-len-v[i]);
-   //    w.n1(0);
-   // }
-   // w.n(.at-in-header-c);
-   // loop j = 0; .at-in-header-c; j++ {
-   //    i! = .at-in-header-at-v[j];
-   //    at! = .at-v[i];
-   //    at.type.wr(w);
-   //    if at.type == #basic {
-   //       at.name.basic.wr(w);
-   //    } else {
-   //       at.parent.wr-header(w);
-   //       at.name.id.wr-header(w);
-   //    }
-   // }
-   // write-cvar(w, true);
-   // write-gvar(w, true);
-   // write-enum(w, true);
-   // write-struct(w, true);
-   // write-func(w, true);
-   // write-import(w, true);
-   // write-template-code(w, true);
-
-   // out-path[out-path-len - 5] = ''h;
-   // if !write-file(out-path, w-begin.reff, w.pos - w-begin.pos) {
-   //    C1.stdout{"Cannot open file for writing: " out-path ''\n}
-   //    C.exit(#failure);
-   // }
-   // var final-path:char[512];
-   // out-path[out-path-len - 5] = ''b;
-   // C.memcpy(final-path, out-path, out-path-len - 4);
-   // final-path[out-path-len - 4] = 0;
-   // "#ifdef _WIN32";
-   // X.unlink(final-path);
-   // "#endif";
-   // C.rename(out-path, final-path);
-   // // .lock-path = null; // Do not unlink lock-path at exit
-   // out-path[out-path-len - 5] = ''h;
-   // C.memcpy(final-path, out-path, out-path-len - 4);
-   // final-path[out-path-len - 4] = 0;
-   // "#ifdef _WIN32";
-   // X.unlink(final-path);
-   // "#endif";
-   // C.rename(out-path, final-path);
-   // return 0;
+   return 0;
 }
  
 

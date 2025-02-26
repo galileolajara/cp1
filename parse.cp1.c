@@ -1042,6 +1042,8 @@ void _NCp1_Pwrite_func_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
 void _NCp1_Pwrite_import_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
 void _NCp1_Pwrite_template_code_2(union _NCp1_NWtr* _Lw_0, bool _Lheader_1);
 bool _NCp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
+void _NCp1_NAt_Pwr_header_2(_NCp1_NAt _Lid_0, union _NCp1_NWtr* _Lw_1);
+void _NCp1_NId_Pwr_header_2(_NCp1_NId _Lid_0, union _NCp1_NWtr* _Lw_1);
 void qalloc_undo(int32_t _Lsize_0);
 void _NCp1_Pdecl_import_3(_NCp1_NInclude _Lpath_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
 void _NCp1_Pdecl_template_inst_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
@@ -1514,6 +1516,7 @@ int32_t _Lid_bit8_c_233;
 _NCp1_NAt _Lat_bit8_c_235;
 size_t _Llock_path_len_238;
 char _Ltmp_path_239[256 + 16 + 10] = {0};
+int _Ltmp_path_len_240 = {0};
 if(false) {
 _NCp1_Pexport_0();
 }
@@ -2754,23 +2757,99 @@ _NCp1_Pwrite_func_2(&_Lw_231, false);
 _NCp1_Pwrite_import_2(&_Lw_231, false);
 _NCp1_Pwrite_template_code_2(&_Lw_231, false);
 _Llock_path_len_238 = strlen(_Llock_path_12);
-sprintf(_Ltmp_path_239, "%s-%u", _Llock_path_12, getpid());
+sprintf(_Ltmp_path_239, "%s-%u%n", _Llock_path_12, getpid(), &_Ltmp_path_len_240);
 if(!_NCp1_Pwrite_file_3(_Ltmp_path_239, _Lw_begin_230._Freff, _Lw_231._Fpos - _Lw_begin_230._Fpos)) {
-int _L_240;
-uint32_t _L_241;
-int _L_242;
-struct _NLibCp1_NStdOut _L_243;
-_NLibCp1_Pstdout_1(&_L_243);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_243, "Cannot open file for writing: ", 30u, _L_240);
-_Tchar_Pstdout_reserve_arr_3(_Ltmp_path_239, &_L_243, &_L_241);
-_Tchar_Pstdout_reserve_3('\n', &_L_243, _L_242);
-_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_243);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_243, "Cannot open file for writing: ", 30u, _L_240);
-_Tchar_Pstdout_arr_3(_Ltmp_path_239, &_L_243, _L_241);
-_Tchar_Pstdout_3('\n', &_L_243, _L_242);
-_NLibCp1_NStdOut_Pstdout_end_1(&_L_243);
+int _L_241;
+uint32_t _L_242;
+int _L_243;
+struct _NLibCp1_NStdOut _L_244;
+_NLibCp1_Pstdout_1(&_L_244);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_244, "Cannot open file for writing: ", 30u, _L_241);
+_Tchar_Pstdout_reserve_arr_3(_Ltmp_path_239, &_L_244, &_L_242);
+_Tchar_Pstdout_reserve_3('\n', &_L_244, _L_243);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_244);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_244, "Cannot open file for writing: ", 30u, _L_241);
+_Tchar_Pstdout_arr_3(_Ltmp_path_239, &_L_244, _L_242);
+_Tchar_Pstdout_3('\n', &_L_244, _L_243);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_244);
 exit(_NLibC_NExit_Cfailure);
 }
+#ifdef _WIN32
+unlink(_Llock_path_12);
+#endif
+rename(_Ltmp_path_239, _Llock_path_12);
+_Lw_231._Freff = _Lw_begin_230._Freff;
+Fputnum(&_Lw_231, _Gid_in_header_c);
+int32_t _Lj_245;
+_Lj_245 = 0;
+for(int i = _Gid_in_header_c; i > 0; ) {
+i --;
+uint32_t _Li_246;
+_Li_246 = _Gid_in_header_id_v[_Lj_245];
+_NCp1_NWtr_Pn1_2(&_Lw_231, _Gid_len_v[_Li_246]);
+_NCp1_NWtr_Pcopy_3(&_Lw_231, _Gid_str_v[_Li_246], _Gid_len_v[_Li_246]);
+_NCp1_NWtr_Pn1_2(&_Lw_231, 0);
+continue_23:;
+_Lj_245++;
+}
+break_23:;
+Fputnum(&_Lw_231, _Ginclude_c);
+int32_t _Li_247;
+_Li_247 = 0;
+for(int i = _Ginclude_c; i > 0; ) {
+i --;
+_NCp1_NWtr_Pn1_2(&_Lw_231, _Ginclude_len_v[_Li_247]);
+_NCp1_NWtr_Pcopy_3(&_Lw_231, _Ginclude_str_v[_Li_247], _Ginclude_len_v[_Li_247]);
+_NCp1_NWtr_Pn1_2(&_Lw_231, 0);
+continue_24:;
+_Li_247++;
+}
+break_24:;
+Fputnum(&_Lw_231, _Gat_in_header_c);
+int32_t _Lj_248;
+_Lj_248 = 0;
+for(int i = _Gat_in_header_c; i > 0; ) {
+i --;
+uint32_t _Li_249;
+struct _NCp1_NAtData* _Lat_250;
+_Li_249 = _Gat_in_header_at_v[_Lj_248];
+_Lat_250 = (&_Gat_v[_Li_249]);
+_NCp1_NNameType_Pwr_2((*_Lat_250)._Ftype, &_Lw_231);
+if((*_Lat_250)._Ftype == _NCp1_NNameType_Cbasic) {
+_NCp1_NBasicTypeId_Pwr_2((*_Lat_250)._Fname._Fbasic, &_Lw_231);
+} else {
+_NCp1_NAt_Pwr_header_2((*_Lat_250)._Fparent, &_Lw_231);
+_NCp1_NId_Pwr_header_2((*_Lat_250)._Fname._Fid, &_Lw_231);
+}
+continue_25:;
+_Lj_248++;
+}
+break_25:;
+_NCp1_Pwrite_cvar_2(&_Lw_231, true);
+_NCp1_Pwrite_gvar_2(&_Lw_231, true);
+_NCp1_Pwrite_enum_2(&_Lw_231, true);
+_NCp1_Pwrite_struct_2(&_Lw_231, true);
+_NCp1_Pwrite_func_2(&_Lw_231, true);
+_NCp1_Pwrite_import_2(&_Lw_231, true);
+_NCp1_Pwrite_template_code_2(&_Lw_231, true);
+_Ltmp_path_239[(_Llock_path_len_238 - 1)] = 'h';
+if(!_NCp1_Pwrite_file_3(_Ltmp_path_239, _Lw_begin_230._Freff, _Lw_231._Fpos - _Lw_begin_230._Fpos)) {
+int _L_251;
+uint32_t _L_252;
+int _L_253;
+struct _NLibCp1_NStdOut _L_254;
+_NLibCp1_Pstdout_1(&_L_254);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_254, "Cannot open file for writing: ", 30u, _L_251);
+_Tchar_Pstdout_reserve_arr_3(_Ltmp_path_239, &_L_254, &_L_252);
+_Tchar_Pstdout_reserve_3('\n', &_L_254, _L_253);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_254);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_254, "Cannot open file for writing: ", 30u, _L_251);
+_Tchar_Pstdout_arr_3(_Ltmp_path_239, &_L_254, _L_252);
+_Tchar_Pstdout_3('\n', &_L_254, _L_253);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_254);
+exit(_NLibC_NExit_Cfailure);
+}
+_Llock_path_12[(_Llock_path_len_238 - 1)] = 'h';
 #ifdef _WIN32
 unlink(_Llock_path_12);
 #endif
@@ -2791,6 +2870,7 @@ _Gfunc_c = 0;
 _Gimport_c = 0;
 _Gtemplate_inst_c = 0;
 _Gtemplate_code_c = 0;
+return 0;
 }
 void _NCp1_Pexport_0() {
 qalloc_undo(0);
@@ -3903,6 +3983,20 @@ _NPosix_NFd_Pclose_1(_Lfd_5);
 return true;
 }
 #endif
+}
+inline void _NCp1_NAt_Pwr_header_2(_NCp1_NAt _Lid_0, union _NCp1_NWtr* _Lw_1) {
+if(_Lid_0 == _NCp1_NAt_Cnil) {
+Fputnum(_Lw_1, 0);
+} else {
+Fputnum(_Lw_1, 1 + _Gat_in_header_idx_v[_Lid_0]);
+}
+}
+inline void _NCp1_NId_Pwr_header_2(_NCp1_NId _Lid_0, union _NCp1_NWtr* _Lw_1) {
+if(_Lid_0 == _NCp1_NId_Cnil) {
+Fputnum(_Lw_1, 0);
+} else {
+Fputnum(_Lw_1, 1 + _Gid_in_header_idx_v[_Lid_0]);
+}
 }
 void qalloc_undo(int32_t _Lsize_0) {
 _Lsize_0 = ((_Lsize_0 + 7) & (-1 ^ 7));
