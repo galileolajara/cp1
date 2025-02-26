@@ -920,12 +920,47 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      '=    let types = type.types = {};
                      '=    if (key == "root") {
                      '=       for (let type2 of type.typev) {
-                     '=          types[type2] = cp1_refl[type2];
+                     '=          let child = cp1_refl[type2];
+                     '=          types[type2] = child;
+                     '=          child.parent = key;
                      '=       }
                      '=    } else {
                      '=       for (let type2 of type.typev) {
-                     '=          types[type2] = cp1_refl[key + "." + type2];
+                     '=          let child = cp1_refl[key + "." + type2];
+                     '=          types[type2] = child;
+                     '=          child.parent = key;
                      '=       }
+                     '=    }
+                     '= }
+                     '= function cp1_resolve_type(type, name) {
+                     '=    if (!type.startsWith("..")) return type;
+                     '=    let key = name + type.substr(1);
+                     '=    if (key in cp1_refl) {
+                     '=       return key;
+                     '=    }
+                     '=    let parent = cp1_refl[name].parent;
+                     '=    key = parent + type.substr(1);
+                     '=    if (key in cp1_refl) {
+                     '=       return key;
+                     '=    }
+                     '=    while (parent in cp1_refl) {
+                     '=       parent = cp1_refl[parent].parent;
+                     '=       key = parent + type.substr(1);
+                     '=       if (key in cp1_refl) {
+                     '=          return key;
+                     '=       }
+                     '=    }
+                     '=    return type;
+                     '= }
+                     '= for (let key in cp1_refl) {
+                     '=    let type = cp1_refl[key];
+                     '=    for (let func of type.functionv) {
+                     '=       for (let argv of func.argvv) {
+                     '=          for (let arg of argv) {
+                     '=             arg.type = cp1_resolve_type(arg.type, key);
+                     '=          }
+                     '=       }
+                     '=       func.type = cp1_resolve_type(func.type, key);
                      '=    }
                      '= }
                      }

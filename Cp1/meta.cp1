@@ -30,6 +30,8 @@ using At {
    }
    jscode-write-name-dot(at-idx:this) {
       if at-idx == #root {
+      } elif at-idx == #relative {
+         jscode{".."}
       } else {
          at! = at-idx.ptr();
          at.parent.jscode-write-name-dot();
@@ -71,15 +73,15 @@ using At {
             jscode{'<"">}
          }
       }
-      jscode{",\n\tfunctionm:{"}
+      jscode{",\n\tfunctionv:["}
       loop i = 0; at.func-c; i++ {
          f-idx! = at.func-v[i];
          f! = f-idx.ptr();
-         jscode{"\n\t\t\"" f.decl.name '<":{argv:[>}
+         jscode{"\n\t\t{name:\"" f.decl.name '<",argvv:[>}
          loop j = 0, i = 0; f.group-c; j++ {
             jscode{''[}
             loop f.group-v[j] {
-               fa! = f.farg-v[i];
+               fa! = f.farg-v[i++];
                jscode{"{name:\"" fa.decl.name "\",type:\""}
                fa.decl.type.jscode-write-name();
                jscode{"\"},"}
@@ -96,7 +98,7 @@ using At {
             jscode{'<",this:> f.this-idx:u32 '<},>}
          }
       }
-      jscode{"}}"}
+      jscode{"]}"}
    }
 }
 var jscode-buf-data:char[];
