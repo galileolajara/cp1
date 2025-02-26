@@ -6064,12 +6064,13 @@ return true;
 }
 _NCp1_NAt _NCp1_Pat_validate_5(_NCp1_NAt _Lvd_type_0, _NCp1_NAt _Lat_i_1, _NCp1_NFile _Lfile_2, uint32_t _Lrow_3, uint32_t _Lcol_4) {
 struct _NCp1_NAtData* _Ltype_5;
-struct _NCp1_NAtData* _Lparent_6;
+_NCp1_NAt _Lparent_idx_6;
+struct _NCp1_NAtData* _Lparent_7;
 _Ltype_5 = _NCp1_NAt_Pptr_1(_Lvd_type_0);
-_Lparent_6 = _NCp1_NAt_Pptr_1((*_Ltype_5)._Fparent);
-if((((*_Lparent_6)._Ftype == _NCp1_NNameType_Cbasic) && ((*_Lparent_6)._Fname._Fbasic == _NCp1_NBasicTypeId_Crelative))) {
-union _NCp1_NAtName* _Lname_7;
-int _L_9;
+_Lparent_idx_6 = (*_Ltype_5)._Fparent;
+_Lparent_7 = _NCp1_NAt_Pptr_1(_Lparent_idx_6);
+if((((*_Lparent_7)._Ftype == _NCp1_NNameType_Cbasic) && ((*_Lparent_7)._Fname._Fbasic == _NCp1_NBasicTypeId_Crelative))) {
+union _NCp1_NAtName* _Lname_8;
 int _L_10;
 int _L_11;
 int _L_12;
@@ -6077,20 +6078,21 @@ int _L_13;
 int _L_14;
 int _L_15;
 int _L_16;
-struct _NLibCp1_NStdOut _L_17;
-_Lname_7 = (&(*_Ltype_5)._Fname);
+int _L_17;
+struct _NLibCp1_NStdOut _L_18;
+_Lname_8 = (&(*_Ltype_5)._Fname);
 while(1) {
-_NCp1_NAt _Li_8;
-_Li_8 = (_NCp1_NAt)(0);
+_NCp1_NAt _Li_9;
+_Li_9 = (_NCp1_NAt)(0);
 for(int i = _Gat_c; i > 0; ) {
 i --;
-if(((_Gat_v[_Li_8]._Fparent == _Lat_i_1) && (_Gat_v[_Li_8]._Ftype != _NCp1_NNameType_Cbasic))) {
-if(_Gat_v[_Li_8]._Fname._Fid == (*_Lname_7)._Fid) {
-return _Li_8;
+if(((_Gat_v[_Li_9]._Fparent == _Lat_i_1) && (_Gat_v[_Li_9]._Ftype != _NCp1_NNameType_Cbasic))) {
+if(_Gat_v[_Li_9]._Fname._Fid == (*_Lname_8)._Fid) {
+return _Li_9;
 }
 }
 continue_1:;
-_Li_8++;
+_Li_9++;
 }
 break_1:;
 if(_Lat_i_1 == _NCp1_NAt_Croot) {
@@ -6100,26 +6102,293 @@ _Lat_i_1 = (*_NCp1_NAt_Pptr_1(_Lat_i_1))._Fparent;
 continue_0:;
 }
 break_0:;
-_NLibCp1_Pstdout_1(&_L_17);
-_NCp1_NFile_Pstdout_reserve_3(_Lfile_2, &_L_17, _L_9);
-_Tchar_Pstdout_reserve_3(':', &_L_17, _L_10);
-_Tu32_Pstdout_reserve_3(_Lrow_3, &_L_17, _L_11);
-_Tchar_Pstdout_reserve_3(':', &_L_17, _L_12);
-_Tu32_Pstdout_reserve_3(_Lcol_4, &_L_17, _L_13);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_17, ": Type '", 8u, _L_14);
-_NCp1_NId_Pstdout_reserve_3((*_Lname_7)._Fid, &_L_17, _L_15);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_17, "' was not found\n", 16u, _L_16);
-_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_17);
-_NCp1_NFile_Pstdout_3(_Lfile_2, &_L_17, _L_9);
-_Tchar_Pstdout_3(':', &_L_17, _L_10);
-_Tu32_Pstdout_3(_Lrow_3, &_L_17, _L_11);
-_Tchar_Pstdout_3(':', &_L_17, _L_12);
-_Tu32_Pstdout_3(_Lcol_4, &_L_17, _L_13);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_17, ": Type '", 8u, _L_14);
-_NCp1_NId_Pstdout_3((*_Lname_7)._Fid, &_L_17, _L_15);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_17, "' was not found\n", 16u, _L_16);
-_NLibCp1_NStdOut_Pstdout_end_1(&_L_17);
+_NLibCp1_Pstdout_1(&_L_18);
+_NCp1_NFile_Pstdout_reserve_3(_Lfile_2, &_L_18, _L_10);
+_Tchar_Pstdout_reserve_3(':', &_L_18, _L_11);
+_Tu32_Pstdout_reserve_3(_Lrow_3, &_L_18, _L_12);
+_Tchar_Pstdout_reserve_3(':', &_L_18, _L_13);
+_Tu32_Pstdout_reserve_3(_Lcol_4, &_L_18, _L_14);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_18, ": Type '", 8u, _L_15);
+_NCp1_NId_Pstdout_reserve_3((*_Lname_8)._Fid, &_L_18, _L_16);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_18, "' was not found\n", 16u, _L_17);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_18);
+_NCp1_NFile_Pstdout_3(_Lfile_2, &_L_18, _L_10);
+_Tchar_Pstdout_3(':', &_L_18, _L_11);
+_Tu32_Pstdout_3(_Lrow_3, &_L_18, _L_12);
+_Tchar_Pstdout_3(':', &_L_18, _L_13);
+_Tu32_Pstdout_3(_Lcol_4, &_L_18, _L_14);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_18, ": Type '", 8u, _L_15);
+_NCp1_NId_Pstdout_3((*_Lname_8)._Fid, &_L_18, _L_16);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_18, "' was not found\n", 16u, _L_17);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_18);
 return _NCp1_NAt_Cnil;
+} else if(_Lparent_idx_6 != _NCp1_NAt_Croot) {
+_NCp1_NAt _Lparent2_idx_19;
+struct _NCp1_NAtData* _Lparent2_20;
+_Lparent2_idx_19 = (*_Lparent_7)._Fparent;
+_Lparent2_20 = _NCp1_NAt_Pptr_1(_Lparent2_idx_19);
+if((((*_Lparent2_20)._Ftype == _NCp1_NNameType_Cbasic) && ((*_Lparent2_20)._Fname._Fbasic == _NCp1_NBasicTypeId_Crelative))) {
+union _NCp1_NAtName* _Lname_21;
+int _L_36;
+int _L_37;
+int _L_38;
+int _L_39;
+int _L_40;
+int _L_41;
+int _L_42;
+int _L_43;
+struct _NLibCp1_NStdOut _L_44;
+_Lname_21 = (&(*_Lparent_7)._Fname);
+while(1) {
+_NCp1_NAt _Li_22;
+_Li_22 = (_NCp1_NAt)(0);
+for(int i = _Gat_c; i > 0; ) {
+i --;
+if(((_Gat_v[_Li_22]._Fparent == _Lat_i_1) && (_Gat_v[_Li_22]._Ftype != _NCp1_NNameType_Cbasic))) {
+if(_Gat_v[_Li_22]._Fname._Fid == (*_Lname_21)._Fid) {
+union _NCp1_NAtName* _Lname2_23;
+int _L_25;
+int _L_26;
+int _L_27;
+int _L_28;
+int _L_29;
+int _L_30;
+int _L_31;
+int _L_32;
+int _L_33;
+int _L_34;
+struct _NLibCp1_NStdOut _L_35;
+_Lname2_23 = (&(*_Ltype_5)._Fname);
+_NCp1_NAt _Lj_24;
+_Lj_24 = (_NCp1_NAt)(0);
+for(int i = _Gat_c; i > 0; ) {
+i --;
+if(((_Gat_v[_Lj_24]._Fparent == _Li_22) && (_Gat_v[_Li_22]._Ftype != _NCp1_NNameType_Cbasic))) {
+if(_Gat_v[_Lj_24]._Fname._Fid == (*_Lname2_23)._Fid) {
+return _Lj_24;
+}
+}
+continue_4:;
+_Lj_24++;
+}
+break_4:;
+_NLibCp1_Pstdout_1(&_L_35);
+_NCp1_NFile_Pstdout_reserve_3(_Lfile_2, &_L_35, _L_25);
+_Tchar_Pstdout_reserve_3(':', &_L_35, _L_26);
+_Tu32_Pstdout_reserve_3(_Lrow_3, &_L_35, _L_27);
+_Tchar_Pstdout_reserve_3(':', &_L_35, _L_28);
+_Tu32_Pstdout_reserve_3(_Lcol_4, &_L_35, _L_29);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_35, ": Type '", 8u, _L_30);
+_NCp1_NId_Pstdout_reserve_3((*_Lname2_23)._Fid, &_L_35, _L_31);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_35, "' was not found in '", 20u, _L_32);
+_NCp1_NId_Pstdout_reserve_3((*_Lname_21)._Fid, &_L_35, _L_33);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_35, "'\n", 2u, _L_34);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_35);
+_NCp1_NFile_Pstdout_3(_Lfile_2, &_L_35, _L_25);
+_Tchar_Pstdout_3(':', &_L_35, _L_26);
+_Tu32_Pstdout_3(_Lrow_3, &_L_35, _L_27);
+_Tchar_Pstdout_3(':', &_L_35, _L_28);
+_Tu32_Pstdout_3(_Lcol_4, &_L_35, _L_29);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_35, ": Type '", 8u, _L_30);
+_NCp1_NId_Pstdout_3((*_Lname2_23)._Fid, &_L_35, _L_31);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_35, "' was not found in '", 20u, _L_32);
+_NCp1_NId_Pstdout_3((*_Lname_21)._Fid, &_L_35, _L_33);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_35, "'\n", 2u, _L_34);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_35);
+return _NCp1_NAt_Cnil;
+}
+}
+continue_3:;
+_Li_22++;
+}
+break_3:;
+if(_Lat_i_1 == _NCp1_NAt_Croot) {
+goto break_2;
+}
+_Lat_i_1 = (*_NCp1_NAt_Pptr_1(_Lat_i_1))._Fparent;
+continue_2:;
+}
+break_2:;
+_NLibCp1_Pstdout_1(&_L_44);
+_NCp1_NFile_Pstdout_reserve_3(_Lfile_2, &_L_44, _L_36);
+_Tchar_Pstdout_reserve_3(':', &_L_44, _L_37);
+_Tu32_Pstdout_reserve_3(_Lrow_3, &_L_44, _L_38);
+_Tchar_Pstdout_reserve_3(':', &_L_44, _L_39);
+_Tu32_Pstdout_reserve_3(_Lcol_4, &_L_44, _L_40);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_44, ": Type '", 8u, _L_41);
+_NCp1_NId_Pstdout_reserve_3((*_Lname_21)._Fid, &_L_44, _L_42);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_44, "' was not found\n", 16u, _L_43);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_44);
+_NCp1_NFile_Pstdout_3(_Lfile_2, &_L_44, _L_36);
+_Tchar_Pstdout_3(':', &_L_44, _L_37);
+_Tu32_Pstdout_3(_Lrow_3, &_L_44, _L_38);
+_Tchar_Pstdout_3(':', &_L_44, _L_39);
+_Tu32_Pstdout_3(_Lcol_4, &_L_44, _L_40);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_44, ": Type '", 8u, _L_41);
+_NCp1_NId_Pstdout_3((*_Lname_21)._Fid, &_L_44, _L_42);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_44, "' was not found\n", 16u, _L_43);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_44);
+return _NCp1_NAt_Cnil;
+} else if(_Lparent2_idx_19 != _NCp1_NAt_Croot) {
+_NCp1_NAt _Lparent3_idx_45;
+struct _NCp1_NAtData* _Lparent3_46;
+_Lparent3_idx_45 = (*_Lparent2_20)._Fparent;
+_Lparent3_46 = _NCp1_NAt_Pptr_1(_Lparent3_idx_45);
+if((((*_Lparent3_46)._Ftype == _NCp1_NNameType_Cbasic) && ((*_Lparent3_46)._Fname._Fbasic == _NCp1_NBasicTypeId_Crelative))) {
+union _NCp1_NAtName* _Lname_47;
+_NCp1_NAt _Li_48;
+int _L_49;
+int _L_50;
+int _L_51;
+int _L_52;
+int _L_53;
+int _L_54;
+int _L_55;
+int _L_56;
+struct _NLibCp1_NStdOut _L_57;
+union _NCp1_NAtName* _Lname2_58;
+int _L_73;
+int _L_74;
+int _L_75;
+int _L_76;
+int _L_77;
+int _L_78;
+int _L_79;
+int _L_80;
+int _L_81;
+int _L_82;
+struct _NLibCp1_NStdOut _L_83;
+_Lname_47 = (&(*_Lparent2_20)._Fname);
+_Li_48 = (_NCp1_NAt)(0);
+while(1) {
+for(int i = _Gat_c; i > 0; ) {
+i --;
+if(((_Gat_v[_Li_48]._Fparent == _Lat_i_1) && (_Gat_v[_Li_48]._Ftype != _NCp1_NNameType_Cbasic))) {
+if(_Gat_v[_Li_48]._Fname._Fid == (*_Lname_47)._Fid) {
+goto found;
+}
+}
+continue_6:;
+_Li_48++;
+}
+break_6:;
+if(_Lat_i_1 == _NCp1_NAt_Croot) {
+goto break_5;
+}
+_Lat_i_1 = (*_NCp1_NAt_Pptr_1(_Lat_i_1))._Fparent;
+continue_5:;
+}
+break_5:;
+_NLibCp1_Pstdout_1(&_L_57);
+_NCp1_NFile_Pstdout_reserve_3(_Lfile_2, &_L_57, _L_49);
+_Tchar_Pstdout_reserve_3(':', &_L_57, _L_50);
+_Tu32_Pstdout_reserve_3(_Lrow_3, &_L_57, _L_51);
+_Tchar_Pstdout_reserve_3(':', &_L_57, _L_52);
+_Tu32_Pstdout_reserve_3(_Lcol_4, &_L_57, _L_53);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_57, ": Type '", 8u, _L_54);
+_NCp1_NId_Pstdout_reserve_3((*_Lname_47)._Fid, &_L_57, _L_55);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_57, "' was not found\n", 16u, _L_56);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_57);
+_NCp1_NFile_Pstdout_3(_Lfile_2, &_L_57, _L_49);
+_Tchar_Pstdout_3(':', &_L_57, _L_50);
+_Tu32_Pstdout_3(_Lrow_3, &_L_57, _L_51);
+_Tchar_Pstdout_3(':', &_L_57, _L_52);
+_Tu32_Pstdout_3(_Lcol_4, &_L_57, _L_53);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_57, ": Type '", 8u, _L_54);
+_NCp1_NId_Pstdout_3((*_Lname_47)._Fid, &_L_57, _L_55);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_57, "' was not found\n", 16u, _L_56);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_57);
+return _NCp1_NAt_Cnil;
+found:;
+_Lname2_58 = (&(*_Lparent_7)._Fname);
+_NCp1_NAt _Lj_59;
+_Lj_59 = (_NCp1_NAt)(0);
+for(int i = _Gat_c; i > 0; ) {
+i --;
+if(((_Gat_v[_Lj_59]._Fparent == _Li_48) && (_Gat_v[_Lj_59]._Ftype != _NCp1_NNameType_Cbasic))) {
+if(_Gat_v[_Lj_59]._Fname._Fid == (*_Lname2_58)._Fid) {
+union _NCp1_NAtName* _Lname3_60;
+int _L_62;
+int _L_63;
+int _L_64;
+int _L_65;
+int _L_66;
+int _L_67;
+int _L_68;
+int _L_69;
+int _L_70;
+int _L_71;
+struct _NLibCp1_NStdOut _L_72;
+_Lname3_60 = (&(*_Ltype_5)._Fname);
+_NCp1_NAt _Lk_61;
+_Lk_61 = (_NCp1_NAt)(0);
+for(int i = _Gat_c; i > 0; ) {
+i --;
+if(((_Gat_v[_Lk_61]._Fparent == _Lj_59) && (_Gat_v[_Lk_61]._Ftype != _NCp1_NNameType_Cbasic))) {
+if(_Gat_v[_Lk_61]._Fname._Fid == (*_Lname3_60)._Fid) {
+return _Lk_61;
+}
+}
+continue_8:;
+_Lk_61++;
+}
+break_8:;
+_NLibCp1_Pstdout_1(&_L_72);
+_NCp1_NFile_Pstdout_reserve_3(_Lfile_2, &_L_72, _L_62);
+_Tchar_Pstdout_reserve_3(':', &_L_72, _L_63);
+_Tu32_Pstdout_reserve_3(_Lrow_3, &_L_72, _L_64);
+_Tchar_Pstdout_reserve_3(':', &_L_72, _L_65);
+_Tu32_Pstdout_reserve_3(_Lcol_4, &_L_72, _L_66);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_72, ": Type '", 8u, _L_67);
+_NCp1_NId_Pstdout_reserve_3((*_Lname3_60)._Fid, &_L_72, _L_68);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_72, "' was not found in '", 20u, _L_69);
+_NCp1_NId_Pstdout_reserve_3((*_Lname2_58)._Fid, &_L_72, _L_70);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_72, "'\n", 2u, _L_71);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_72);
+_NCp1_NFile_Pstdout_3(_Lfile_2, &_L_72, _L_62);
+_Tchar_Pstdout_3(':', &_L_72, _L_63);
+_Tu32_Pstdout_3(_Lrow_3, &_L_72, _L_64);
+_Tchar_Pstdout_3(':', &_L_72, _L_65);
+_Tu32_Pstdout_3(_Lcol_4, &_L_72, _L_66);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_72, ": Type '", 8u, _L_67);
+_NCp1_NId_Pstdout_3((*_Lname3_60)._Fid, &_L_72, _L_68);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_72, "' was not found in '", 20u, _L_69);
+_NCp1_NId_Pstdout_3((*_Lname2_58)._Fid, &_L_72, _L_70);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_72, "'\n", 2u, _L_71);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_72);
+return _NCp1_NAt_Cnil;
+}
+}
+continue_7:;
+_Lj_59++;
+}
+break_7:;
+_NLibCp1_Pstdout_1(&_L_83);
+_NCp1_NFile_Pstdout_reserve_3(_Lfile_2, &_L_83, _L_73);
+_Tchar_Pstdout_reserve_3(':', &_L_83, _L_74);
+_Tu32_Pstdout_reserve_3(_Lrow_3, &_L_83, _L_75);
+_Tchar_Pstdout_reserve_3(':', &_L_83, _L_76);
+_Tu32_Pstdout_reserve_3(_Lcol_4, &_L_83, _L_77);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_83, ": Type '", 8u, _L_78);
+_NCp1_NId_Pstdout_reserve_3((*_Lname2_58)._Fid, &_L_83, _L_79);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_83, "' was not found in '", 20u, _L_80);
+_NCp1_NId_Pstdout_reserve_3((*_Lname_47)._Fid, &_L_83, _L_81);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_83, "'\n", 2u, _L_82);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_83);
+_NCp1_NFile_Pstdout_3(_Lfile_2, &_L_83, _L_73);
+_Tchar_Pstdout_3(':', &_L_83, _L_74);
+_Tu32_Pstdout_3(_Lrow_3, &_L_83, _L_75);
+_Tchar_Pstdout_3(':', &_L_83, _L_76);
+_Tu32_Pstdout_3(_Lcol_4, &_L_83, _L_77);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_83, ": Type '", 8u, _L_78);
+_NCp1_NId_Pstdout_3((*_Lname2_58)._Fid, &_L_83, _L_79);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_83, "' was not found in '", 20u, _L_80);
+_NCp1_NId_Pstdout_3((*_Lname_47)._Fid, &_L_83, _L_81);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_83, "'\n", 2u, _L_82);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_83);
+return _NCp1_NAt_Cnil;
+}
+}
 }
 return _Lvd_type_0;
 }

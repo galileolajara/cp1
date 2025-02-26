@@ -177,34 +177,6 @@ bool _NCp1_Pquickjs_begin_7(char* path, uint8_t path_len, char* tplt_name, uint8
    quickjs_path_len = i;
    return true;
 }
-void _NCp1_Pquickjs_end_3(char* js_data, uint32_t js_len, bool require) {
-   char tmp_path[1024 + 10];
-   sprintf(tmp_path, "%s-%u", cp1_tmp_js, getpid());
-   _NCp1_Pwrite_file_3(tmp_path, js_data, js_len);
-   #ifdef _WIN32
-   unlink(cp1_tmp_js);
-   #endif
-   rename(tmp_path, cp1_tmp_js);
-   const char *argv[] = {"cp1-qjs", cp1_tmp_js, NULL};
-   // int status = qjs_main(2, argv);
-   pid_t pid;
-   int spawn = posix_spawn(&pid, qjs_path, NULL, NULL, argv, environ);
-   int status;
-   waitpid(pid, &status, 0);
-   if (status != 0) {
-      exit(EXIT_FAILURE);
-   }
-   int i = quickjs_path_len;
-   cp1_tmp_js[i++] = '.';
-   cp1_tmp_js[i++] = 'c';
-   cp1_tmp_js[i++] = 'p';
-   cp1_tmp_js[i++] = '1';
-   cp1_tmp_js[i] = '\0';
-   /* char* new_path = malloc(i + 1);
-   memcpy(new_path, cp1_tmp_js, i + 1);
-   _NCp1_Pread_2(new_path, i); */
-   _NCp1_Pread_4(cp1_tmp_js, i, true, require);
-}
 #include <sys/types.h>
 #include <stdio.h>
 #include <string.h>
@@ -244,6 +216,35 @@ void create_folders_recursively(const char *file_path) {
         }
         token = strtok(NULL, "/");
     }
+}
+void _NCp1_Pquickjs_end_3(char* js_data, uint32_t js_len, bool require) {
+   create_folders_recursively(cp1_tmp_js);
+   char tmp_path[1024 + 10];
+   sprintf(tmp_path, "%s-%u", cp1_tmp_js, getpid());
+   _NCp1_Pwrite_file_3(tmp_path, js_data, js_len);
+   #ifdef _WIN32
+   unlink(cp1_tmp_js);
+   #endif
+   rename(tmp_path, cp1_tmp_js);
+   const char *argv[] = {"cp1-qjs", cp1_tmp_js, NULL};
+   // int status = qjs_main(2, argv);
+   pid_t pid;
+   int spawn = posix_spawn(&pid, qjs_path, NULL, NULL, argv, environ);
+   int status;
+   waitpid(pid, &status, 0);
+   if (status != 0) {
+      exit(EXIT_FAILURE);
+   }
+   int i = quickjs_path_len;
+   cp1_tmp_js[i++] = '.';
+   cp1_tmp_js[i++] = 'c';
+   cp1_tmp_js[i++] = 'p';
+   cp1_tmp_js[i++] = '1';
+   cp1_tmp_js[i] = '\0';
+   /* char* new_path = malloc(i + 1);
+   memcpy(new_path, cp1_tmp_js, i + 1);
+   _NCp1_Pread_2(new_path, i); */
+   _NCp1_Pread_4(cp1_tmp_js, i, true, require);
 }
 // int parse_main(int argc, char** argv);
 char* _NCp1_Preq_parse_3(const char* path, uint8_t path_len, bool require) {
