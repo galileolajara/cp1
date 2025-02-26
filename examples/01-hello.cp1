@@ -31,8 +31,8 @@ struct Dog[bark-times:i32] {
 
 main():intc { // intc is for C compatibility, use i32 elsewhere
    C1.stdout{"Hello world!\n"}
-   hello-world(); // This calls the function from metaprogram at line 19
-   hello-five(); // This calls the function from metaprogram at line 20
+   hello-world(); // This calls the function from metaprogram at line 20
+   hello-five(); // This calls the function from metaprogram at line 21
 
    // Declare a variable via function argument's type using '!' syntax
    // The dog variable is allocated on the stack
