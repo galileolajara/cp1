@@ -1721,8 +1721,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    // out-path-len! = C.strlen(out-path);
    lock-path-len! = C.strlen(lock-path);
    var tmp-path:char[256 + 16 + 10];
-   var tmp-path-len:intc;
-   C.sprintf(tmp-path, "%s-%u%n", lock-path, X.getpid(), &tmp-path-len);
+   C.sprintf(tmp-path, "%s-%u", lock-path, X.getpid());
    if !write-file(tmp-path, w-begin.reff, w.pos - w-begin.pos) {
       C1.stdout{"Cannot open file for writing: " tmp-path ''\n}
       C.exit(#failure);
