@@ -25,13 +25,13 @@ ninja -f build-gcc.ninja # to build using GCC
 ```
 Top 1 Feature: Extremely fast compilation speeds
 -
-- Took *incremental compilation* seriously.
+- Took *incremental compilation* seriously. Up to 125K lines of codes per second on Macbook M2.
 - Codes are *cached and never parsed again*.
-- Cp1 can build itself in *0.1 seconds* using TCC.
+- Cp1 can build itself in *0.1 seconds* using TCC on Macbook M2.
 
 Top 2 Feature: Easy-to-use yet powerful metaprogramming system
 -
-- Metaprogramming is just as easy as *string intepolation*.
+- Metaprogramming is just as easy as *string intepolation*. Powered by QuickJS of Fabrice Bellard (who made TCC).
 - Metaprograms are also cached and have few or *zero overhead*.
 - Debugging meta-codes is *easier* because you can see the output of metaprograms in the cache folder.
 
