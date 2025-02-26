@@ -1,4 +1,3 @@
-using Cp1 = Cp1;
 using Cp1 {
 expr-char(value:i32):ExprI {
    var e:ExprChar;

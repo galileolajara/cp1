@@ -5,7 +5,6 @@ import "LibC/string.cp1";
 import "Posix/fcntl.cp1";
 import "Posix/unistd.cp1";
 import "Posix/stat.cp1";
-using Cp1 = Cp1;
 using C = LibC;
 using C1 = LibCp1;
 using X = Posix;

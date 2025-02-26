@@ -1,4 +1,3 @@
-using Cp1 = Cp1;
 using C = LibC;
 using C1 = LibCp1;
 using Cp1 {

@@ -1,4 +1,3 @@
-using Cp1 = Cp1;
 using Cp1 {
 export() {
    quick-alloc-undo(0);

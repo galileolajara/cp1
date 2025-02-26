@@ -1,4 +1,3 @@
-using Cp1 = Cp1;
 using Cp1 {
 using StmtSpace {
    wr-if(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {

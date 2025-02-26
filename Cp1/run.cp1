@@ -8,7 +8,6 @@ import "Posix/stat.cp1";
 using C = LibC;
 using C1 = LibCp1;
 using X = Posix;
-using Cp1 = Cp1;
 print-commands(bin:char[]) {
    C1.stdout{
    "Usage: " bin " [file.cp1]\n"

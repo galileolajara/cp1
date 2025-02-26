@@ -8,7 +8,6 @@ import "Posix/stat.cp1";
 using C = LibC;
 using C1 = LibCp1;
 using X = Posix;
-using Cp1 = Cp1;
 using Cp1 {
 var input-path:char[];
 main(arg-c:intc, arg-v:char[][]):intc @main {

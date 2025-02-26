@@ -2,7 +2,6 @@ using C = LibC;
 using C1 = LibCp1;
 using X = Posix;
 using W = Windows;
-using Cp1 = Cp1;
 include "file.cp1.h" {
    using Windows {
       enum Handle[#null, #invalid @no-decl(INVALID_HANDLE_VALUE)]:usz @no-decl(HANDLE);

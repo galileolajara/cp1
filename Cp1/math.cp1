@@ -1,4 +1,3 @@
-using Cp1 = Cp1;
 using Cp1 {
 enum Math[#add, #sub, #mul, #div, #mod, #lshift, #rshift, #and, #or, #xor, #mod]:u8 {
    wr(e:this, w:Wtr) @inline {
