@@ -11,7 +11,8 @@ enum DeclVarType[#gvar, #fvar]:u8;
 #decl-var-size-limit:i32 = 8;
 at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
    type! = vd-type.ptr();
-   parent! = type.parent.ptr();
+   parent-idx! = type.parent;
+   parent! = parent-idx.ptr();
    if (&&, parent.type == #basic, parent.name.basic == #relative) {
       name! = type.name;
       loop {
@@ -27,6 +28,74 @@ at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
       }
       C1.stdout{file '': row '': col ": Type '" name.id "' was not found\n"}
       return #nil;
+   } elif parent-idx != #root {
+      parent2-idx! = parent.parent;
+      parent2! = parent2-idx.ptr();
+      if (&&, parent2.type == #basic, parent2.name.basic == #relative) {
+         name! = parent.name;
+         loop {
+            loop i = 0:At; .at-c; i++ {
+               if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
+                  if .at-v[i].name.id == name.id {
+                     name2! = type.name;
+                     loop j = 0:At; .at-c; j++ {
+                        if (&&, .at-v[j].parent == i, .at-v[i].type != #basic) {
+                           if .at-v[j].name.id == name2.id {
+                              return j;
+                           }
+                        }
+                     }
+                     C1.stdout{file '': row '': col ": Type '" name2.id "' was not found in '" name.id "'\n"}
+                     return #nil;
+                  }
+               }
+            }
+            if at-i == #root { break }
+            at-i = at-i.ptr().parent;
+         }
+         C1.stdout{file '': row '': col ": Type '" name.id "' was not found\n"}
+         return #nil;
+      } elif parent2-idx != #root {
+         parent3-idx! = parent2.parent;
+         parent3! = parent3-idx.ptr();
+         if (&&, parent3.type == #basic, parent3.name.basic == #relative) {
+            name! = parent2.name;
+            i! = 0:At;
+            loop {
+               loop ; .at-c; i++ {
+                  if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
+                     if .at-v[i].name.id == name.id {
+                        "goto found;";
+                     }
+                  }
+               }
+               if at-i == #root { break }
+               at-i = at-i.ptr().parent;
+            }
+            C1.stdout{file '': row '': col ": Type '" name.id "' was not found\n"}
+            return #nil;
+            "found:;";
+            name2! = parent.name;
+            loop j = 0:At; .at-c; j++ {
+               if (&&, .at-v[j].parent == i, .at-v[j].type != #basic) {
+                  if .at-v[j].name.id == name2.id {
+                     name3! = type.name;
+                     loop k = 0:At; .at-c; k++ {
+                        if (&&, .at-v[k].parent == j, .at-v[k].type != #basic) {
+                           if .at-v[k].name.id == name3.id {
+                              return k;
+                           }
+                        }
+                     }
+                     C1.stdout{file '': row '': col ": Type '" name3.id "' was not found in '" name2.id "'\n"}
+                     return #nil;
+                  }
+               }
+            }
+            C1.stdout{file '': row '': col ": Type '" name2.id "' was not found in '" name.id "'\n"}
+            return #nil;
+         }
+      }
    }
    return vd-type;
 }

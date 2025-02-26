@@ -39,10 +39,10 @@ build out/libbf.c.o: cjs qjs/libbf.c
 build out/libunicode.c.o: cjs qjs/libunicode.c
 
 rule c2
- command = gcc   $flags -ggdb -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
+ command = gcc   $flags -fsanitize=undefined -ggdb -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
 
 rule ld-c2
- command = gcc   $flags -ggdb -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
+ command = gcc   $flags -fsanitize=undefined -ggdb -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
 
 #rule ld-c2-redef
 # command = gcc $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out.tmp 2> redefs2.txt || true && node redefs.js redefs2.txt redefs2 && touch $out
