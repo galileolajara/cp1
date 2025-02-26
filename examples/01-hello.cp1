@@ -12,12 +12,13 @@ meta #CreateHelloFunction @reflection @no-cache {
       // Do some reflection
       C1.stdout{"Have a struct called 'Cat'? ${'Cat' in cp1_refl.root.types}\n"}
       C1.stdout{"Have a struct called 'Dog'? ${'Dog' in cp1_refl.root.types}\n"}
+#     print("Another hello world, but in compile time! " + os.now());
    }
 }
 
 // Use the metaprogram
 #CreateHelloFunction{suffix:"world",count:3}
-#CreateHelloFunction{suffix:"five",count:5,cp1_no_cache:true}
+#CreateHelloFunction{suffix:"five",count:5,cp1_no_cache:true} // disable caching
 
 struct Dog[bark-times:i32] {
    init(dog:this) {
@@ -30,8 +31,8 @@ struct Dog[bark-times:i32] {
 
 main():intc { // intc is for C compatibility, use i32 elsewhere
    C1.stdout{"Hello world!\n"}
-   hello-world();
-   hello-five();
+   hello-world(); // This calls the function from metaprogram at line 19
+   hello-five(); // This calls the function from metaprogram at line 20
 
    // Declare a variable via function argument's type using '!' syntax
    // The dog variable is allocated on the stack
