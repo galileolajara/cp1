@@ -174,38 +174,38 @@ using LibCp1 {
    }
 }
 using bool {
-   stdout-reserve(val:this, so:C1.StdOut) @inline {
+   stdout-reserve(val:this, so:C1.StdOut, unused:intc) @inline {
       if val {
          so.reserve += 4;
       } else {
          so.reserve += 5;
       }
    }
-   stdout(val:this, so:C1.StdOut) @inline {
+   stdout(val:this, so:C1.StdOut, unused:intc) @inline {
       C1.stdout-bool-nr(val);
    }
 }
 using i32 {
-   stdout-reserve(val:this, so:C1.StdOut) @inline {
+   stdout-reserve(val:this, so:C1.StdOut, unused:intc) @inline {
       so.reserve += 11;
    }
-   stdout(val:this, so:C1.StdOut) @inline {
+   stdout(val:this, so:C1.StdOut, unused:intc) @inline {
       C1.stdout-i32-nr(val);
    }
 }
 using i16 {
-   stdout-reserve(val:this, so:C1.StdOut) @inline {
+   stdout-reserve(val:this, so:C1.StdOut, unused:intc) @inline {
       so.reserve += 6;
    }
-   stdout(val:this, so:C1.StdOut) @inline {
+   stdout(val:this, so:C1.StdOut, unused:intc) @inline {
       C1.stdout-i32-nr(val);
    }
 }
 using i8 {
-   stdout-reserve(val:this, so:C1.StdOut) @inline {
+   stdout-reserve(val:this, so:C1.StdOut, unused:intc) @inline {
       so.reserve += 4;
    }
-   stdout(val:this, so:C1.StdOut) @inline {
+   stdout(val:this, so:C1.StdOut, unused:intc) @inline {
       C1.stdout-i32-nr(val);
    }
 }
