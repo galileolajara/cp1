@@ -2,7 +2,7 @@ require "LibCp1/stdout.cp1";
 using C1 = LibCp1;
 
 // Create a metaprogram with access to reflection data
-meta #CreateHelloFunction @reflection @no-cache {
+meta #CreateHelloFunction @reflection {
    using C1 = LibCp1;
    hello-${arg.suffix}() {
       C1.stdout{"Hello ${arg.suffix} from metaprogram!\n"}
