@@ -4,7 +4,7 @@ What does Hello World look like?
 
 How to use?
 -
-Begin by cloning the repo. Make sure to have ninja, clang and re2c installed on your computer.
+Begin by cloning the repo. Make sure to have ninja and re2c installed on your computer.
 ```
 git clone https://github.com/galileolajara/cp1
 cd cp1
