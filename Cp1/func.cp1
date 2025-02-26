@@ -495,7 +495,7 @@ expr-pop-metafunc(at:At, func-name:Id):ExprI {
       var e2:ExprLvar;
       quick-alloc-one(e2);
       e-idx! = expr-push(e2.base, #lvar);
-      e2.lvar = space.lvar-new(lvar-name, 0, 0, false);
+      e2.lvar = space.lvar-new(lvar-name, .row, .col, false);
       lvar! = e2.lvar.ptr();
       .decl-var.name = lvar-name;
       decl-var-type(#nil);
@@ -510,7 +510,7 @@ expr-pop-metafunc(at:At, func-name:Id):ExprI {
       var e2:ExprLvar;
       quick-alloc-one(e2);
       e-idx! = expr-push(e2.base, #lvar);
-      e2.lvar = space.lvar-new(lvar-name, 0, 0, false);
+      e2.lvar = space.lvar-new(lvar-name, .row, .col, false);
       lvar! = e2.lvar.ptr();
       .decl-var.name = lvar-name;
       decl-var-type(#nil);
