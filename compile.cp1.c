@@ -11513,6 +11513,8 @@ _Ltry_parent_4 = false;
 if(_Lat_idx_1 == _NCp1_NAt_Cnil) {
 _Lat_idx_1 = (*_Gctx_func)._Fat;
 _Ltry_parent_4 = true;
+} else {
+_Lat_idx_1 = _NCp1_Pat_validate_5(_Lat_idx_1, (*_Gctx_func)._Fat, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gctx_begin_col);
 }
 while(1) {
 struct _NCp1_NAtData* _Lat_5;

@@ -80,6 +80,8 @@ using ExprI {
       if at-idx == #nil {
          at-idx = .ctx-func.at;
          try-parent = true;
+      } else {
+         at-idx = at-validate(at-idx, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
       }
       loop {
          at! = at-idx.ptr();
