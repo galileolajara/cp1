@@ -97,4 +97,3 @@ build out/cp1-parse: ld-c2 out/parse2.cp1.c.o out/parse2.c.o out/hashtable.c.o
 build out/cp1-compile: ld-c2 out/compile2.cp1.c.o out/compile2.c.o out/hashtable.c.o
 #build out/cp1-compile-redef-output | redefs2: ld-c2-redef out/compile2.cp1.c.o out/compile2.c.o out/hashtable.c.o out/parse2.cp1.c.o out/parse2.c.o
 #default out/cp1-compile out/cp1-run out/cp1-preprocess out/cp1-parse
-
