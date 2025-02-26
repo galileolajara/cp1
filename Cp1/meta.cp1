@@ -37,7 +37,7 @@ using At {
       }
    }
    jscode-write(at-idx:this) {
-      jscode{"{\n\ttypes:["}
+      jscode{"{\n\ttypev:["}
       loop at2-idx = 2:At; .at-c - 2; at2-idx++ {
          at2! = at2-idx.ptr();
          if at2.parent == at-idx {
@@ -75,7 +75,7 @@ using At {
       loop i = 0; at.func-c; i++ {
          f-idx! = at.func-v[i];
          f! = f-idx.ptr();
-         jscode{"\n\t\t\"" f.decl.name '<":{args:[>}
+         jscode{"\n\t\t\"" f.decl.name '<":{argv:[>}
          loop j = 0, i = 0; f.group-c; j++ {
             jscode{''[}
             loop f.group-v[j] {

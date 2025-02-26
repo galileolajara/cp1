@@ -914,6 +914,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      }
                      jscode{
                      '= };
+                     '= for (let key in cp1_refl) {
+                     '=    let type = cp1_refl[key];
+                     '=    let typem = type.typem = {};
+                     '=    for (let type2 of type.typev) {
+                     '=       typem[type2] = cp1_refl[type2];
+                     '=    }
+                     '= }
                      }
                   }
                   jscode{

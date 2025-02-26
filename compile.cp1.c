@@ -1857,7 +1857,14 @@ _Lat_idx_93++;
 }
 break_13:;
 _NCp1_Pjscode_1(&_L_102);
-_NCp1_NJsCode_Pjscode_cstr_3(&_L_102, "};\n", 3u);
+_NCp1_NJsCode_Pjscode_cstr_3(&_L_102, "};\n"
+"for (let key in cp1_refl) {\n"
+"   let type = cp1_refl[key];\n"
+"   let typem = type.typem = {};\n"
+"   for (let type2 of type.typev) {\n"
+"      typem[type2] = cp1_refl[type2];\n"
+"   }\n"
+"}\n", 172u);
 _NCp1_NJsCode_Pjscode_end_1(&_L_102);
 }
 _NCp1_Pjscode_1(&_L_107);
@@ -4053,7 +4060,7 @@ _NCp1_NFunc* _Lmethod_v_17 = {0};
 struct _NCp1_NJsCode _L_30;
 struct _NCp1_NJsCode _L_60;
 _NCp1_Pjscode_1(&_L_2);
-_NCp1_NJsCode_Pjscode_cstr_3(&_L_2, "{\n\ttypes:[", 10u);
+_NCp1_NJsCode_Pjscode_cstr_3(&_L_2, "{\n\ttypev:[", 10u);
 _NCp1_NJsCode_Pjscode_end_1(&_L_2);
 _NCp1_NAt _Lat2_idx_3;
 _Lat2_idx_3 = (_NCp1_NAt)(2);
@@ -4137,7 +4144,7 @@ _Lf_33 = _NCp1_NFunc_Pptr_1(_Lf_idx_32);
 _NCp1_Pjscode_1(&_L_37);
 _NCp1_NJsCode_Pjscode_cstr_3(&_L_37, "\n\t\t\"", 4u);
 _NCp1_NId_Pjscode_2((*_Lf_33)._Fdecl._Fname, &_L_37);
-_NCp1_NJsCode_Pjscode_cstr_3(&_L_37, "\":{args:[", 9u);
+_NCp1_NJsCode_Pjscode_cstr_3(&_L_37, "\":{argv:[", 9u);
 _NCp1_NJsCode_Pjscode_end_1(&_L_37);
 int32_t _Lj_38;
 int32_t _Li_39;
