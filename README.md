@@ -27,7 +27,7 @@ Top 1 Feature: Extremely fast compilation speeds
 -
 - Took *incremental compilation* seriously.
 - Codes are *cached and never parsed again*.
-- Cp1 can be built in *0.1 seconds* using TCC.
+- Cp1 can build itself in *0.1 seconds* using TCC.
 
 Top 2 Feature: Easy-to-use yet powerful metaprogramming system
 -
