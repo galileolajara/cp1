@@ -282,6 +282,7 @@ _NCp1_NAt _Fat;
 uint32_t _Frow;
 uint32_t _Fcol;
 _NCp1_NFile _Ffile;
+bool _Frequire;
 };
 struct _NCp1_NTemplateCodeData;
 struct _NCp1_NTemplateCodeData {
@@ -937,7 +938,7 @@ void _NCp1_Pimport_3(_NCp1_NInclude _Lpath_0, bool _Lrequire_1, _NCp1_NFile _Lfi
 void _NCp1_Pread_4(char* _Lin_path_cp1_0, uint16_t _Lin_path_cp1_len_1, bool _Lstrdup_2, bool _Lrequire_3);
 static inline char* _NCp1_NInclude_Pstr_1(_NCp1_NInclude _Li_0);
 static inline uint8_t _NCp1_NInclude_Plen_1(_NCp1_NInclude _Li_0);
-bool _NCp1_Pquickjs_begin_6(char* _Lfile_0, uint8_t _Lfile_len_1, char* _Ltc_name_2, uint8_t _Ltc_name_len_3, uint32_t _Lcode_crc32c_4, uint32_t _Larg_crc32c_5);
+bool _NCp1_Pquickjs_begin_7(char* _Lfile_0, uint8_t _Lfile_len_1, char* _Ltc_name_2, uint8_t _Ltc_name_len_3, uint32_t _Lcode_crc32c_4, uint32_t _Larg_crc32c_5, bool _Lrequire_6);
 static inline char* _NCp1_NFile_Ppath_1(_NCp1_NFile _Lf_0);
 static inline uint16_t _NCp1_NFile_Ppath_len_1(_NCp1_NFile _Lf_0);
 static inline char* _NCp1_NId_Pstr_1(_NCp1_NId _Lid_0);
@@ -951,7 +952,7 @@ static inline struct _NCp1_NAtData* _NCp1_NAt_Pptr_1(_NCp1_NAt _Li_0);
 static inline void _Tchar_Pjscode_2(char _Lval_0, struct _NCp1_NJsCode* _Ljc_1);
 void _NCp1_NAt_Pjscode_write_name_1(_NCp1_NAt _Lat_idx_0);
 uint32_t _NCp1_Pquickjs_hex_2(char* _Ldata_0, uint32_t _Lcode_crc32c_1);
-void _NCp1_Pquickjs_end_2(char* _Ljs_data_0, uint32_t _Ljs_data_len_1);
+void _NCp1_Pquickjs_end_3(char* _Ljs_data_0, uint32_t _Ljs_data_len_1, bool _Lrequire_2);
 void _NCp1_NFile_Pstdout_reserve_3(_NCp1_NFile _Lf_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
 static inline void _Tu32_Pstdout_reserve_3(uint32_t _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
 static inline void _NCp1_NId_Pstdout_reserve_3(_NCp1_NId _Lid_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
@@ -1786,7 +1787,7 @@ i --;
 struct _NCp1_NTemplateCodeData* _Ltc_80;
 _Ltc_80 = (&_Gtemplate_code_v[_Lj_79]);
 if(((_Lat_76 == (*_Ltc_80)._Fat) && (_Lname_77 == (*_Ltc_80)._Fname))) {
-if(_NCp1_Pquickjs_begin_6(_NCp1_NFile_Ppath_1((*_Ltc_80)._Ffile), _NCp1_NFile_Ppath_len_1((*_Ltc_80)._Ffile), _NCp1_NId_Pstr_1((*_Ltc_80)._Fname), _NCp1_NId_Plen_1((*_Ltc_80)._Fname), (*_Ltc_80)._Fcode_crc32c, (*_Lti_75)._Farg_crc32c)) {
+if(_NCp1_Pquickjs_begin_7(_NCp1_NFile_Ppath_1((*_Ltc_80)._Ffile), _NCp1_NFile_Ppath_len_1((*_Ltc_80)._Ffile), _NCp1_NId_Pstr_1((*_Ltc_80)._Fname), _NCp1_NId_Plen_1((*_Ltc_80)._Fname), (*_Ltc_80)._Fcode_crc32c, (*_Lti_75)._Farg_crc32c, (*_Lti_75)._Frequire)) {
 struct _NCp1_NJsCode _L_82;
 struct _NCp1_NJsCode _L_107;
 struct _NCp1_NJsCode _L_109;
@@ -1914,7 +1915,7 @@ _NCp1_NJsCode_Pjscode_cstr_3(&_L_127, "let tmp_path = scriptArgs[0] + \".cp1-\" 
 "if (os.platform == \"win32\") os.remove(cp1_path);\n"
 "os.rename(tmp_path, cp1_path);\n", 214u);
 _NCp1_NJsCode_Pjscode_end_1(&_L_127);
-_NCp1_Pquickjs_end_2(_Gjscode_buf_data, _Gjscode_buf_len);
+_NCp1_Pquickjs_end_3(_Gjscode_buf_data, _Gjscode_buf_len, (*_Lti_75)._Frequire);
 }
 _Lfound_78 = true;
 goto break_11;
@@ -3219,6 +3220,12 @@ int _L_14;
 int _L_15;
 int _L_16;
 struct _NLibCp1_NStdOut _L_17;
+int _L_18;
+int _L_19;
+int _L_20;
+int _L_21;
+int _L_22;
+struct _NLibCp1_NStdOut _L_23;
 _NLibCp1_Pstdout_1(&_L_11);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_11, "Error, '", 8u, _L_4);
 _NCp1_NInclude_Pstdout_reserve_3(_Lpath_0, &_L_11, _L_5);
@@ -3249,6 +3256,19 @@ _NLibCp1_NStdOut_Pstdout_cstr_4(&_L_17, "' instead of importing it on '", 30u, _
 _NCp1_NInclude_Pstdout_3(_Gimport_file_v[_Li_3], &_L_17, _L_15);
 _NLibCp1_NStdOut_Pstdout_cstr_4(&_L_17, "'.\n", 3u, _L_16);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_17);
+_NLibCp1_Pstdout_1(&_L_23);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_23, "Or you may import '", 19u, _L_18);
+_NCp1_NInclude_Pstdout_reserve_3(_Lpath_0, &_L_23, _L_19);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_23, "' on '", 6u, _L_20);
+_NCp1_NFile_Pstdout_reserve_3(_Lfile_2, &_L_23, _L_21);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_23, "' instead of requiring it.\n", 27u, _L_22);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_23);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_23, "Or you may import '", 19u, _L_18);
+_NCp1_NInclude_Pstdout_3(_Lpath_0, &_L_23, _L_19);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_23, "' on '", 6u, _L_20);
+_NCp1_NFile_Pstdout_3(_Lfile_2, &_L_23, _L_21);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_23, "' instead of requiring it.\n", 27u, _L_22);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_23);
 exit(_NLibC_NExit_Cfailure);
 }
 }
@@ -3259,20 +3279,20 @@ _Li_3++;
 }
 break_0:;
 if(true) {
-uint32_t _Li_18;
-_Li_18 = _Gimport_c++;
+uint32_t _Li_24;
+_Li_24 = _Gimport_c++;
 if(_Gimport_cap < _Gimport_c) {
 _NCp1_Pgrow_2(_Gimport_cap, _Gimport_c);
 _NLibC_Prealloc_arr_2(_Gimport_v, _Gimport_cap);
 _NLibC_Prealloc_arr_2(_Gimport_file_v, _Gimport_cap);
 _NLibC_Prealloc_arr_2(_Gimport_required_v, (_Gimport_cap + 7) >> 3);
 }
-_Gimport_v[_Li_18] = _Lpath_0;
-_Gimport_file_v[_Li_18] = _Lfile_2;
+_Gimport_v[_Li_24] = _Lpath_0;
+_Gimport_file_v[_Li_24] = _Lfile_2;
 if(_Lrequire_1) {
-_Gimport_required_v[(_Li_18 >> 3)] |= (1 << (_Li_18 & 7));
+_Gimport_required_v[(_Li_24 >> 3)] |= (1 << (_Li_24 & 7));
 } else {
-_Gimport_required_v[(_Li_18 >> 3)] &= (0xff ^ (1 << (_Li_18 & 7)));
+_Gimport_required_v[(_Li_24 >> 3)] &= (0xff ^ (1 << (_Li_24 & 7)));
 }
 }
 _Gimport_new_c++;
@@ -3990,6 +4010,7 @@ _Lti_160._Farg = _Lr_15._Fcharr;
 _Lr_15._Fpos += _Lti_160._Farg_len;
 _NCp1_NAt_Prd_2(&_Lti_160._Fat, &_Lr_15);
 _Lti_160._Ffile = _Lfile_idx_11;
+_Lti_160._Frequire = _Lrequire_3;
 _NCp1_Ptemplate_inst_1(&_Lti_160);
 continue_15:;
 }

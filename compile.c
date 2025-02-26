@@ -135,7 +135,7 @@ uint32_t _NCp1_Pquickjs_hex_2(char* js_data, uint32_t code_crc32c) {
    js_data[i++] = ' ';
    return i;
 }
-bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8_t tplt_name_len, uint32_t code_crc32c, uint32_t arg_crc32c) {
+bool _NCp1_Pquickjs_begin_7(char* path, uint8_t path_len, char* tplt_name, uint8_t tplt_name_len, uint32_t code_crc32c, uint32_t arg_crc32c, bool require) {
    int i;
    if (memcmp(path, "cp1-tmp-", 8) == 0) {
       i = 0;
@@ -169,7 +169,7 @@ bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8
          /* char* new_path = malloc(j + 1);
          memcpy(new_path, cp1_tmp_js, j + 1);
          _NCp1_Pread_2(new_path, j); */
-         _NCp1_Pread_4(cp1_tmp_js, j, true, true);
+         _NCp1_Pread_4(cp1_tmp_js, j, true, require);
          return false;
       }
    }
@@ -177,7 +177,7 @@ bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8
    quickjs_path_len = i;
    return true;
 }
-void _NCp1_Pquickjs_end_2(char* js_data, uint32_t js_len) {
+void _NCp1_Pquickjs_end_3(char* js_data, uint32_t js_len, bool require) {
    char tmp_path[1024 + 10];
    sprintf(tmp_path, "%s-%u", cp1_tmp_js, getpid());
    _NCp1_Pwrite_file_3(tmp_path, js_data, js_len);
@@ -203,7 +203,7 @@ void _NCp1_Pquickjs_end_2(char* js_data, uint32_t js_len) {
    /* char* new_path = malloc(i + 1);
    memcpy(new_path, cp1_tmp_js, i + 1);
    _NCp1_Pread_2(new_path, i); */
-   _NCp1_Pread_4(cp1_tmp_js, i, true, true);
+   _NCp1_Pread_4(cp1_tmp_js, i, true, require);
 }
 #include <sys/types.h>
 #include <stdio.h>
