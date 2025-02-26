@@ -1,0 +1,55 @@
+all: bin/cp1-parse bin/cp1-compile bin/cp1-run bin/cp1-qjs
+
+out:
+	mkdir $@
+
+bin:
+	mkdir $@
+
+out/parse.cp1.c.o: parse.cp1.c | out
+	clang $(flags) -Werror=format -Wno-incompatible-pointer-types -I. -c $^ -o $@
+
+out/parse.c.o: parse.c
+	clang $(flags) -Werror=format -Wno-incompatible-pointer-types -I. -c $^ -o $@
+
+out/compile.cp1.c.o: compile.cp1.c | out
+	clang $(flags) -Werror=format -Wno-incompatible-pointer-types -I. -c $^ -o $@
+
+out/compile.c.o: compile.c
+	clang $(flags) -Werror=format -Wno-incompatible-pointer-types -I. -c $^ -o $@
+
+out/hashtable.c.o: hashtable.c
+	clang $(flags) -Werror=format -Wno-incompatible-pointer-types -I. -c $^ -o $@
+
+out/cp1-qjs.c.o: cp1-qjs.c
+	clang -D_GNU_SOURCE -DCONFIG_VERSION=\"2024-01-13\" -DCONFIG_BIGNUM -Wno-implicit-const-int-float-conversion -o $@ -c $^ -Iqjs
+
+out/quickjs.c.o: qjs/quickjs.c
+	clang -D_GNU_SOURCE -DCONFIG_VERSION=\"2024-01-13\" -DCONFIG_BIGNUM -Wno-implicit-const-int-float-conversion -o $@ -c $^ -Iqjs
+
+out/quickjs-libc.c.o: qjs/quickjs-libc.c
+	clang -D_GNU_SOURCE -DCONFIG_VERSION=\"2024-01-13\" -DCONFIG_BIGNUM -Wno-implicit-const-int-float-conversion -o $@ -c $^ -Iqjs
+
+out/cutils.c.o: qjs/cutils.c
+	clang -D_GNU_SOURCE -DCONFIG_VERSION=\"2024-01-13\" -DCONFIG_BIGNUM -Wno-implicit-const-int-float-conversion -o $@ -c $^ -Iqjs
+
+out/libregexp.c.o: qjs/libregexp.c
+	clang -D_GNU_SOURCE -DCONFIG_VERSION=\"2024-01-13\" -DCONFIG_BIGNUM -Wno-implicit-const-int-float-conversion -o $@ -c $^ -Iqjs
+
+out/libbf.c.o: qjs/libbf.c
+	clang -D_GNU_SOURCE -DCONFIG_VERSION=\"2024-01-13\" -DCONFIG_BIGNUM -Wno-implicit-const-int-float-conversion -o $@ -c $^ -Iqjs
+
+out/libunicode.c.o: qjs/libunicode.c
+	clang -D_GNU_SOURCE -DCONFIG_VERSION=\"2024-01-13\" -DCONFIG_BIGNUM -Wno-implicit-const-int-float-conversion -o $@ -c $^ -Iqjs
+
+bin/cp1-parse: out/parse.cp1.c.o out/parse.c.o out/hashtable.c.o | bin
+	clang $(flags) -Werror=format -Wno-incompatible-pointer-types -I. $^ -o $@
+
+bin/cp1-compile: out/compile.cp1.c.o out/compile.c.o out/hashtable.c.o | bin
+	clang $(flags) -Werror=format -Wno-incompatible-pointer-types -I. $^ -o $@
+
+bin/cp1-run: run.cp1.c | bin
+	clang $(flags) -Werror=format -Wno-incompatible-pointer-types -I. $^ -o $@
+
+bin/cp1-qjs: out/cp1-qjs.c.o out/quickjs.c.o out/quickjs-libc.c.o out/cutils.c.o out/libregexp.c.o out/libbf.c.o out/libunicode.c.o | bin
+	clang $(flags) -Werror=format -Wno-incompatible-pointer-types -I. $^ -o $@ -lm

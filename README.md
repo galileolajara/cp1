@@ -4,18 +4,25 @@ What does Hello World look like?
 
 How to use?
 -
-Begin by cloning the repo. Make sure to have ninja and re2c installed on your computer.
 ```
 git clone https://github.com/galileolajara/cp1
 cd cp1
-ninja -f build-tcc.ninja # to build using TCC
-ninja -f build-clang.ninja # to build using Clang
-ninja -f build-gcc.ninja # to build using GCC
+make -f Makefile-tcc # to build using TCC
+make -f Makefile-clang # to build using Clang
+make -f Makefile-gcc # to build using GCC
 ```
+
 Then checkout the examples:
 ```
 bin/cp1-run examples/01-hello.cp1 # to run hello world
 bin/cp1-compile -c hello.c examples/01-hello.cp1 # to see the C code
+```
+
+If you want to build Cp1 using the .cp1 files, you need ninja and re2c installed. Then:
+```
+ninja -f build-tcc.ninja # to build using TCC
+ninja -f build-clang.ninja # to build using Clang
+ninja -f build-gcc.ninja # to build using GCC
 ```
 
 Cp1 means C+1 or C plus 1, named just like C++ or C plus plus
