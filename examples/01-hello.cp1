@@ -10,11 +10,8 @@ meta #CreateHelloFunction @reflection @no-cache {
          C1.stdout{"Counting... " i ''\n}
       }
       // Do some reflection
-      C1.stdout{"Have a struct called 'Cat'? ${'Cat' in cp1_refl.root.typem}\n"}
-      C1.stdout{"Have a struct called 'Dog'? ${'Dog' in cp1_refl.root.typem}\n"}
-# let file = std.open("hello-refl.json", "wb");
-# file.puts(JSON.stringify(cp1_refl));
-# file.close();
+      C1.stdout{"Have a struct called 'Cat'? ${'Cat' in cp1_refl.root.types}\n"}
+      C1.stdout{"Have a struct called 'Dog'? ${'Dog' in cp1_refl.root.types}\n"}
    }
 }
 

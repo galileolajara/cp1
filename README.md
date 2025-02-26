@@ -1,6 +1,6 @@
 What does Hello World look like?
 -
-![hello](/images/helloworld-2025-02-26.png)
+![hello](/images/helloworld-2025-02-26.2.png)
 
 How to use?
 -

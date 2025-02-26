@@ -917,14 +917,14 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      '= };
                      '= for (let key in cp1_refl) {
                      '=    let type = cp1_refl[key];
-                     '=    let typem = type.typem = {};
+                     '=    let types = type.types = {};
                      '=    if (key == "root") {
                      '=       for (let type2 of type.typev) {
-                     '=          typem[type2] = cp1_refl[type2];
+                     '=          types[type2] = cp1_refl[type2];
                      '=       }
                      '=    } else {
                      '=       for (let type2 of type.typev) {
-                     '=          typem[type2] = cp1_refl[key + "." + type2];
+                     '=          types[type2] = cp1_refl[key + "." + type2];
                      '=       }
                      '=    }
                      '= }
