@@ -1,6 +1,6 @@
 What does Hello World look like?
 -
-![hello](/images/helloworld-2025-01-21.2.png)
+![hello](/images/helloworld-2025-02-26.png)
 
 How to use?
 -
@@ -41,6 +41,6 @@ Features
 - Ability to emulate virtual functions using switch and case statements that can be distributed across different source files.
 - Ability to write lines of codes in C using the "..."; syntax. This means that even if Cp1 doesn't support goto, #ifdef and more, you can cheat it using the "..."; syntax.
 
-Discord
+Join us on Discord!
 -
-Join us on Discord https://discord.gg/qBtunCNyUS
+[![Discord](https://dcbadge.vercel.app/api/server/qBtunCNyUS)](https://discord.gg/qBtunCNyUS)
