@@ -103,6 +103,7 @@ import(path:Include, require:bool, file:File) {
             if (.import-required-v[i >> 3] & (1 << (i & 7))) == 0 {
                C1.stdout{"Error, '" path "' was previously an import-only of '" .import-file-v[i] "' but is now required by '" file "'\n"}
                C1.stdout{"Consider requiring '" path "' instead of importing it on '" .import-file-v[i] "'.\n"}
+               C1.stdout{"Or you may import '" path "' on '" file "' instead of requiring it.\n"}
                C.exit(#failure);
             }
          }
@@ -586,6 +587,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
       r.pos += ti.arg-len;
       ti.at.rd(r);
       ti.file = file-idx;
+      ti.require = require;
       template-inst(ti);
    }
 }
@@ -619,9 +621,9 @@ var include-path-v:char[][];
 var include-path-len-v:u16[];
 var include-path-c:u8;
 c-init(crc32c:u32);
-quickjs-begin(file:char[], file-len:u8, tc-name:char[], tc-name-len:u8, code-crc32c:u32, arg-crc32c:u32):bool;
+quickjs-begin(file:char[], file-len:u8, tc-name:char[], tc-name-len:u8, code-crc32c:u32, arg-crc32c:u32, require:bool):bool;
 quickjs-hex(data:char[], code-crc32c:u32):u32;
-quickjs-end(js-data:char[], js-data-len:u32);
+quickjs-end(js-data:char[], js-data-len:u32, require:bool);
 include "build-crc32c.c" {
    build-crc32c():u32 @no-decl;
 }
@@ -881,7 +883,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          loop j = 0:TemplateCode; .template-code-c; j++ {
             tc! = .template-code-v[j];
             if (at == tc.at) && (name == tc.name) {
-               if quickjs-begin(tc.file.path(), tc.file.path-len(), tc.name.str(), tc.name.len(), tc.code-crc32c, ti.arg-crc32c) {
+               if quickjs-begin(tc.file.path(), tc.file.path-len(), tc.name.str(), tc.name.len(), tc.code-crc32c, ti.arg-crc32c, ti.require) {
                   .jscode-buf-len = 0;
                   jscode{
                   '= let cp1_out = [];
@@ -951,7 +953,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   '= if (os.platform == "win32") os.remove(cp1_path);
                   '= os.rename(tmp_path, cp1_path);
                   }
-                  quickjs-end(.jscode-buf-data, .jscode-buf-len);
+                  quickjs-end(.jscode-buf-data, .jscode-buf-len, ti.require);
                }
                found = true;
                break;

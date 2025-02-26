@@ -446,6 +446,7 @@ meta #BuildCommonCodes {
          col:u32,
 #  if (arg.compile) {
          file:File,
+         require:bool,
 #  }
       ];
    }
