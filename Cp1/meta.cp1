@@ -71,7 +71,7 @@ using At {
             jscode{'<"">}
          }
       }
-      jscode{",\n\tfunctions:{"}
+      jscode{",\n\tfunctionm:{"}
       loop i = 0; at.func-c; i++ {
          f-idx! = at.func-v[i];
          f! = f-idx.ptr();

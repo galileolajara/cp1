@@ -4,7 +4,7 @@ export() {
    quick-alloc-undo(0);
    decl-import(#nil, 0, 0, false);
    decl-template-inst(#nil, 0, 0);
-   decl-template-code(#nil, 0, false);
+   decl-template-code(#nil, 0, false, false);
    decl-func-begin(#0, 0, 0);
    decl-func-end(0, 0);
    decl-struct-end(0, 0);

@@ -561,6 +561,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
       td.row = r.n();
       td.line-c = r.n();
       td.with-reflection = r.b();
+      td.no-cache = r.b();
       td.code-len = r.n();
       td.code-crc32c = r.n4();
       td.code = r.charr;
@@ -917,19 +918,34 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      '= for (let key in cp1_refl) {
                      '=    let type = cp1_refl[key];
                      '=    let typem = type.typem = {};
-                     '=    for (let type2 of type.typev) {
-                     '=       typem[type2] = cp1_refl[type2];
+                     '=    if (key == "root") {
+                     '=       for (let type2 of type.typev) {
+                     '=          typem[type2] = cp1_refl[type2];
+                     '=       }
+                     '=    } else {
+                     '=       for (let type2 of type.typev) {
+                     '=          typem[type2] = cp1_refl[key + "." + type2];
+                     '=       }
                      '=    }
                      '= }
                      }
                   }
                   jscode{
                     "let arg = {" ti.arg, ti.arg-len "};\n"
-                  '- if (!("cp1_nocache" in arg)) O("
                   }
-                  .jscode-buf-len += quickjs-hex(&.jscode-buf-data[.jscode-buf-len], tc.code-crc32c);
-                  jscode{
-                    "- CRC32C\\n\");\n"
+                  if tc.no-cache {
+                     jscode{
+                     '= O("// XXXXXXXX - CRC32C\n");
+                     }
+                  } else {
+                     jscode{
+                     '= if ("cp1_no_cache" in arg) O("// XXXXXXXX - CRC32C\n");
+                     '- else O("
+                     }
+                     .jscode-buf-len += quickjs-hex(&.jscode-buf-data[.jscode-buf-len], tc.code-crc32c);
+                     jscode{
+                       "- CRC32C\\n\");\n"
+                     }
                   }
                   code! = tc.code;
                   i! = 0;
@@ -953,12 +969,14 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      }
                   }
                   jscode{
-                  '= let tmp_path = scriptArgs[0] + ".cp1-" + os.getpid();
-                  '= let file = std.open(tmp_path, "wb");
-                  '= file.puts(cp1_out.join(""));
-                  '= file.close();
-                  '= if (os.platform == "win32") os.remove(cp1_path);
-                  '= os.rename(tmp_path, cp1_path);
+                  '= {
+                  '=    let tmp_path = scriptArgs[0] + ".cp1-" + os.getpid();
+                  '=    let file = std.open(tmp_path, "wb");
+                  '=    file.puts(cp1_out.join(""));
+                  '=    file.close();
+                  '=    if (os.platform == "win32") os.remove(cp1_path);
+                  '=    os.rename(tmp_path, cp1_path);
+                  '= }
                   }
                   quickjs-end(.jscode-buf-data, .jscode-buf-len, ti.require);
                }
