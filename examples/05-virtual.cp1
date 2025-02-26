@@ -1,5 +1,5 @@
 // This is to emulate the C++'s virtual functions
-import "LibCp1/stdout.cp1";
+require "LibCp1/stdout.cp1";
 
 using C1 = LibCp1;
 

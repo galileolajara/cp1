@@ -1,4 +1,4 @@
-import "LibCp1/stdout.cp1";
+require "LibCp1/stdout.cp1";
 
 using C = LibC;
 using C1 = LibCp1;
