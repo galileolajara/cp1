@@ -221,6 +221,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "." [A-Z] id_one* ("-" id)*      { return CP1_TOKEN_DOT_ID_UPPER; }
    "[" id? "]" id                   { return CP1_TOKEN_SOA_FIELD; }
    "import" spaces "\"" [^"]* "\""  { return CP1_TOKEN_IMPORT; }
+   "require" spaces "\"" [^"]* "\"" { return CP1_TOKEN_REQUIRE; }
  
    */
 lex_string: {

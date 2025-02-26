@@ -1,4 +1,4 @@
-import "LibCp1/stdout.cp1";
+require "LibCp1/stdout.cp1";
 import "LibC/stdio.cp1";
 import "LibC/stdlib.cp1";
 import "LibC/string.cp1";
@@ -12,9 +12,10 @@ using X = Posix;
 using Cp1 {
 #BuildCommonCodes{}
 var import-v:Include[];
+var import-require-v:u8[];
 var import-cap:u32;
 var import-c:u32;
-decl-import(path:Include, row:u32, col:u32) {
+decl-import(path:Include, row:u32, col:u32, require:bool) {
    if !path.validate(err!) {
       C1.stdbuf{.input-path '': row '': col ": Import path "}
       err.print(path);
@@ -31,8 +32,12 @@ decl-import(path:Include, row:u32, col:u32) {
       old-cap! = .import-cap;
       .import-cap = grow(.import-c);
       realloc(.import-v, .import-cap, old-cap);
+      realloc(.import-require-v, (.import-cap + 7) >> 3, (old-cap + 7) >> 3);
    }
    .import-v[i] = path;
+   if require {
+      .import-require-v[i >> 3] |= 1 << (i & 7);
+   }
 }
 var template-name-buf:char[] @extern;
 var template-name-len:u8 @extern;
@@ -731,8 +736,9 @@ write-func(w:Wtr, header:bool) @inline {
 }
 write-import(w:Wtr, header:bool) @inline {
    w.n(.import-c);
-   loop i = 0; .import-c {
-      .import-v[i++].wr(w);
+   loop i = 0; .import-c; i++ {
+      .import-v[i].wr(w);
+      w.b((.import-require-v[i >> 3] & (1 << (i & 7))) != 0);
    }
 }
 write-template-code(w:Wtr, header:bool) @inline {
@@ -784,6 +790,9 @@ write-gvar(w:Wtr, header:bool) {
       gvar! = .gvar-v[i];
       gvar.include.wr(w);
       gvar.at.wr(w, header);
+      if header {
+         gvar.decl.flags |= #extern;
+      }
       gvar.decl.wr(w, header);
    }
 }
@@ -1397,6 +1406,27 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                psr.parse(t, tok);
             }
             case #import {
+               loop i = 0; {
+                  if lex.start[i++] == ''" {
+                     var r-begin:Rdr.;
+                     r-begin.reff = &lex.start[i];
+                     var r-end:Rdr.;
+                     r-end.reff = lex.cursor;
+                     r-end.pos--;
+                     len! = r-end.pos - r-begin.pos;
+                     if len > 255 {
+                        C1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
+                        C.exit(#failure);
+                     }
+                     tok.ii32.id = include-add(len, r-begin.charr);
+                     // C1.stdout{"import '" r-begin.charr, len "'\n"}
+                     break;
+                  }
+               }
+               .last-token = t;
+               psr.parse(t, tok);
+            }
+            case #require {
                loop i = 0; {
                   if lex.start[i++] == ''" {
                      var r-begin:Rdr.;

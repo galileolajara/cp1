@@ -193,7 +193,9 @@ decl_template_code ::= META SPACE HASH_ID(name) meta_reflection(r) SPACE_THEN_OP
    { _NCp1_Pdecl_template_code_3(name.basic.id, code.basic.row, r.basic.id); }
 decl ::= decl_template_code.
 decl_import ::= IMPORT(path) SEMICOLON.
-   { _NCp1_Pdecl_import_3(path.basic.id, path.basic.row, path.basic.col); }
+   { _NCp1_Pdecl_import_4(path.basic.id, path.basic.row, path.basic.col, false); }
+decl_import ::= REQUIRE(path) SEMICOLON.
+   { _NCp1_Pdecl_import_4(path.basic.id, path.basic.row, path.basic.col, true); }
 decl ::= decl_import.
 
 decl_cvar ::= enum_cvars_decl SEMICOLON.

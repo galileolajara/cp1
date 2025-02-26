@@ -122,7 +122,7 @@ void _NCp1_Pc_init_1(uint32_t js_crc32c) {
    memcpy(qjs_path + _Ginclude_dir_len, "/bin/cp1-qjs", 13);
 }
 bool _NCp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
-void _NCp1_Pread_3(char* _Lin_path_cp1_0, uint16_t _Lin_path_cp1_len_1, bool strdup);
+void _NCp1_Pread_4(char* _Lin_path_cp1_0, uint16_t _Lin_path_cp1_len_1, bool strdup, bool require);
 int quickjs_path_len;
 void* _NCp1_Pread_file_5(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_after_2, size_t _Lmax_size_3, size_t* _Lout_size_4);
 uint32_t _NCp1_Pquickjs_hex_2(char* js_data, uint32_t code_crc32c) {
@@ -169,7 +169,7 @@ bool _NCp1_Pquickjs_begin_6(char* path, uint8_t path_len, char* tplt_name, uint8
          /* char* new_path = malloc(j + 1);
          memcpy(new_path, cp1_tmp_js, j + 1);
          _NCp1_Pread_2(new_path, j); */
-         _NCp1_Pread_3(cp1_tmp_js, j, true);
+         _NCp1_Pread_4(cp1_tmp_js, j, true, true);
          return false;
       }
    }
@@ -203,7 +203,7 @@ void _NCp1_Pquickjs_end_2(char* js_data, uint32_t js_len) {
    /* char* new_path = malloc(i + 1);
    memcpy(new_path, cp1_tmp_js, i + 1);
    _NCp1_Pread_2(new_path, i); */
-   _NCp1_Pread_3(cp1_tmp_js, i, true);
+   _NCp1_Pread_4(cp1_tmp_js, i, true, true);
 }
 #include <sys/types.h>
 #include <stdio.h>
@@ -246,7 +246,7 @@ void create_folders_recursively(const char *file_path) {
     }
 }
 // int parse_main(int argc, char** argv);
-char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
+char* _NCp1_Preq_parse_3(const char* path, uint8_t path_len, bool require) {
    // const char* path = *ppath;
    const char* fullpath;
    char cp1_tmp2[1024];
@@ -262,7 +262,7 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
       }
       // memcpy(tmp, path, path_len + 1);
       tmp[path_len] = '-';
-      tmp[path_len + 1] = 'b';
+      tmp[path_len + 1] = require ? 'b' : 'h';
       tmp[path_len + 2] = '\0';
    } else if (cp1_tmp_js == path /* memcmp(path, cp1_tmp_js, cp1_tmp_len) == 0 */) {
       tmp = cp1_tmp_js;
@@ -298,7 +298,7 @@ char* _NCp1_Preq_parse_2(const char* path, uint8_t path_len) {
       found:;
       memcpy(tmp + cp1_tmp_len, path, path_len);
       tmp[cp1_tmp_len + path_len] = '-';
-      tmp[cp1_tmp_len + path_len + 1] = 'b';
+      tmp[cp1_tmp_len + path_len + 1] = require ? 'b' : 'h';
       tmp[cp1_tmp_len + path_len + 2] = '\0';
    }
    struct stat s2;

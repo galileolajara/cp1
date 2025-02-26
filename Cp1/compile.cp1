@@ -1,4 +1,4 @@
-import "LibCp1/stdout.cp1";
+require "LibCp1/stdout.cp1";
 import "LibC/stdio.cp1";
 import "LibC/stdlib.cp1";
 import "LibC/string.cp1";
@@ -90,9 +90,10 @@ id-add(id-len:u8, id-str:char[]):Id {
 }
 var import-new-c:u32;
 var import-v:Include[];
+var import-required-v:u8[];
 var import-cap:u32;
 var import-c:u32;
-import(path:Include) {
+import(path:Include, require:bool) {
    loop i = 0; .import-c {
       // C1.stdout{"import " path " " path:base " checking if exists, " i:u32 " = " path ''\n}
       if .import-v[i++] == path {
@@ -105,18 +106,24 @@ import(path:Include) {
       if .import-cap < .import-c {
          grow(.import-cap, .import-c);
          C.realloc-arr(.import-v, .import-cap);
+         C.realloc-arr(.import-required-v, (.import-cap + 7) >> 3);
       }
       .import-v[i] = path;
+      if require {
+         .import-required-v[i >> 3] |= 1 << (i & 7);
+      } else {
+         .import-required-v[i >> 3] &= 0xff ^ (1 << (i & 7));
+      }
       // C1.stdout{"import " path " added as " i:u32 ''\n}
    }
    .import-new-c++;
 }
 sqlite-init();
 read-cp1(path:char[], path-len:u32):ref;
-req-parse(in-path-cp1:char[], in-path-cp1-len:u8):char[];
-read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool) {
+req-parse(in-path-cp1:char[], in-path-cp1-len:u8, require:bool):char[];
+read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
    // C1.stdout{"read " in-path-cp1 "\n"}
-   in-path! = req-parse(in-path-cp1, in-path-cp1-len);
+   in-path! = req-parse(in-path-cp1, in-path-cp1-len, require);
 
    var r-begin:Rdr.;
    r-begin.reff = read-file(in-path, in-size!);
@@ -523,7 +530,8 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool) {
    }
    loop r.n() {
       Include.rd(path!, r);
-      import(path);
+      require2! = r.b();
+      import(path, require2 && require);
    }
    template-code-idx-begin! = .template-code-c;
    template-code-c! = r.n():TemplateCode;
@@ -640,65 +648,73 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    C.malloc-arr(.define-len-v, arg-c * u8[usz]);
    var output-file:char[] = null;
    watermark! = false;
+   process-all! = false;
    var comment-for-func:char[] = null;
    comment-for-func-len! = 0;
    var crc32c = build-crc32c();
    loop i = 1; i < arg-c {
       arg! = arg-v[i++];
       if arg[0] == ''- {
-         if arg[1] == ''w {
-            watermark = true;
-         } elif arg[1] == ''c {
-            output-file = arg-v[i++];
-            if output-file == null {
-               C1.stdout{"The option -c must be followed by a path\n"}
-               "goto usage;";
-            }
-         } elif arg[1] == ''F {
-            // For hacking the output C code,
-            // to determine the beginning and end of function bodies
-            comment-for-func = arg-v[i++];
-            if comment-for-func == null {
-               C1.stdout{"The option -F must be followed by a path\n"}
-               "goto usage;";
-            }
-            comment-for-func-len = C.strlen(comment-for-func);
-         } elif arg[1] == ''I {
-            arg = arg-v[i++];
-            if arg == null {
-               C1.stdout{"The option -I must be followed by a path\n"}
-               "goto usage;";
-            }
-            arg-len! = C.strlen(arg);
-            if arg[arg-len] != ''/ {
-               arg[arg-len++] = ''/;
-            }
-            // Allocate +256 of memory so we can use
-            // include paths as scratch when checking for file existence
-            var mem:char[];
-            C.malloc-arr(mem, arg-len + 256);
-            C.memcpy(mem, arg, arg-len);
-            .include-path-v[.include-path-c] = mem;
-            .include-path-len-v[.include-path-c] = arg-len;
-            .include-path-c++;
-         } elif arg[1] == ''D {
-            var def:char[] = &arg[2];
-            def-len! = C.strlen(def);
-            if def-len == 0 {
-               C1.stdout{"The option -D must follow the syntax -D[key=value] without space.\n"}
-               "goto usage;";
-            }
-            crc32c = crc32c(crc32c, def, def-len);
-            .define-v[.define-c] = def;
-            .define-len-v[.define-c] = def-len;
-            .define-c++;
-         } else {
-            if arg[1] == ''\0 {
-               C1.stdout{"Invalid option '-'\n"}
+         if arg[2] == ''\0 {
+            if arg[1] == ''w {
+               watermark = true;
+            } elif arg[1] == ''c {
+               output-file = arg-v[i++];
+               if output-file == null {
+                  C1.stdout{"The option -c must be followed by a path\n"}
+                  "goto usage;";
+               }
+            } elif arg[1] == ''F {
+               // For hacking the output C code,
+               // to determine the beginning and end of function bodies
+               comment-for-func = arg-v[i++];
+               if comment-for-func == null {
+                  C1.stdout{"The option -F must be followed by a path\n"}
+                  "goto usage;";
+               }
+               comment-for-func-len = C.strlen(comment-for-func);
+            } elif arg[1] == ''I {
+               arg = arg-v[i++];
+               if arg == null {
+                  C1.stdout{"The option -I must be followed by a path\n"}
+                  "goto usage;";
+               }
+               arg-len! = C.strlen(arg);
+               if arg[arg-len] != ''/ {
+                  arg[arg-len++] = ''/;
+               }
+               // Allocate +256 of memory so we can use
+               // include paths as scratch when checking for file existence
+               var mem:char[];
+               C.malloc-arr(mem, arg-len + 256);
+               C.memcpy(mem, arg, arg-len);
+               .include-path-v[.include-path-c] = mem;
+               .include-path-len-v[.include-path-c] = arg-len;
+               .include-path-c++;
+            } elif arg[1] == ''D {
+               var def:char[] = &arg[2];
+               def-len! = C.strlen(def);
+               if def-len == 0 {
+                  C1.stdout{"The option -D must follow the syntax -D[key=value] without space.\n"}
+                  "goto usage;";
+               }
+               crc32c = crc32c(crc32c, def, def-len);
+               .define-v[.define-c] = def;
+               .define-len-v[.define-c] = def-len;
+               .define-c++;
+            } elif arg[1] == ''P {
+               process-all = true;
             } else {
-               C1.stdout{"Invalid option '-" arg[1] "'\n"}
+               "invalid_option:;";
+               if arg[1] == ''\0 {
+                  C1.stdout{"Invalid option '-'\n"}
+               } else {
+                  C1.stdout{"Invalid option '-" arg[1] "'\n"}
+               }
+               "goto usage;";
             }
-            "goto usage;";
+         } else {
+            "goto invalid_option;";
          }
       } else {
          arg-len! = C.strlen(arg);
@@ -780,6 +796,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       '=    -D[key=val] Add a key-value pair to variable 'D' in template's js codes.
       '=    -w          Add disclaimer (watermark) at the top of the output C file
       '=                that says the output is generated by Cp1
+      '=    -P          Process all functions.
       }
       return 1;
    }
@@ -811,6 +828,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
 
    .import-cap = 32;
    C.malloc-arr(.import-v, .import-cap);
+   C.malloc-arr(.import-required-v, (.import-cap + 7) >> 3);
    .template-inst-cap = 32;
    C.malloc-arr(.template-inst-v, .template-inst-cap:base);
 
@@ -821,16 +839,16 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          err.print(inc);
          C.exit(#failure);
       }
-      import(inc);
+      import(inc, true);
    }
    loop {
       "import_now:;";
       new-c! = .import-new-c;
       if new-c == 0 { break }
       .import-new-c = 0;
-      loop i = .import-c - new-c; new-c {
-         path! = .import-v[i++];
-         read(path.str(), path.len(), false);
+      loop i = .import-c - new-c; new-c; i++ {
+         path! = .import-v[i];
+         read(path.str(), path.len(), false, (.import-required-v[i >> 3] & (1 << (i & 7))) != 0);
       }
    }
 
@@ -1026,17 +1044,26 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    // process the main function
    .process-first = #nil;
    .process-last = #nil;
-   if .func-main != #nil {
-      if !.func-main.process-later() {
-         C.exit(#failure);
-      }
-   }
-
-   loop f-i = 0:Func; .func-c; f-i++ {
-      f! = f-i.ptr();
-      if (f.flags & #process) != #0 {
+   if process-all {
+      loop f-i = 0:Func; .func-c; f-i++ {
+         f! = f-i.ptr();
          if !f-i.process-later() {
             C.exit(#failure);
+         }
+      }
+   } else {
+      if .func-main != #nil {
+         if !.func-main.process-later() {
+            C.exit(#failure);
+         }
+      }
+
+      loop f-i = 0:Func; .func-c; f-i++ {
+         f! = f-i.ptr();
+         if (f.flags & #process) != #0 {
+            if !f-i.process-later() {
+               C.exit(#failure);
+            }
          }
       }
    }
@@ -1231,6 +1258,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          continue;
       }
       .ctx-func = f;
+      if f.flags & #inline {
+         output{"static inline "}
+      }
       if f.decl.type == #nil {
          output{"void"}
       } else {
@@ -1272,7 +1302,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       .ctx-func = f;
       .nest-id = 0;
       if f.flags & #inline {
-         output{"inline "}
+         output{"static inline "}
       }
       if f.decl.type == #nil {
          output{"void"}

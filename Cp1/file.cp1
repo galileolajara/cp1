@@ -24,7 +24,7 @@ using Cp1 {
    read-file(path:char[], out-size:usz&):ref @inline {
       return read-file(path, 0, 0, -1, out-size);
    }
-   read-file(path:char[], add-before:i32, add-after:i32, max-size:usz, out-size:usz&):ref @inline {
+   read-file(path:char[], add-before:i32, add-after:i32, max-size:usz, out-size:usz&):ref {
       "#ifdef _WIN32";
       if true {
          h! = W.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null);

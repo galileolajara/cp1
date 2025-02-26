@@ -1,4 +1,4 @@
-import "LibCp1/stdout.cp1";
+require "LibCp1/stdout.cp1";
 import "LibC/stdio.cp1";
 import "LibC/stdlib.cp1";
 import "LibC/string.cp1";
