@@ -39,6 +39,7 @@
 #define _NCp1_NNameType_Cbasic (_NCp1_NNameType_Cstruct_enum + 1)
 #define _NCp1_NAt_Cnil (-1)
 #define _NCp1_NAt_Croot (_NCp1_NAt_Cnil + 1)
+#define _NCp1_NFile_Cnil (-1)
 #define _NCp1_NAt_Crelative (_NCp1_NAt_Croot + 1)
 #define _NCp1_Ctype_info_star_limit (8)
 #define _NCp1_Cexpr_carg_group_limit (256)
@@ -801,6 +802,7 @@ _NCp1_NAt _Gat_cap;
 struct _NCp1_NAtData* _Gat_v;
 uint32_t _Gimport_cap;
 _NCp1_NInclude* _Gimport_v;
+_NCp1_NInclude* _Gimport_file_v;
 uint8_t* _Gimport_required_v;
 _NCp1_NTemplateInst _Gtemplate_inst_cap;
 struct _NCp1_NTemplateInstData* _Gtemplate_inst_v;
@@ -931,7 +933,7 @@ static inline void _NLibCp1_Pstdbuf_1(struct _NLibCp1_NStdOut* _Lso_0);
 static inline void _NLibCp1_NStdOut_Pstdout_reserve_end_no_flush_1(struct _NLibCp1_NStdOut* _Lso_0);
 static inline void _NLibCp1_NStdOut_Pstdout_end_no_flush_1(struct _NLibCp1_NStdOut* _Lso_0);
 void _NCp1_NIncludeError_Pprint_2(_NCp1_NIncludeError _Le_0, _NCp1_NInclude _Lpath_1);
-void _NCp1_Pimport_2(_NCp1_NInclude _Lpath_0, bool _Lrequire_1);
+void _NCp1_Pimport_3(_NCp1_NInclude _Lpath_0, bool _Lrequire_1, _NCp1_NFile _Lfile_2);
 void _NCp1_Pread_4(char* _Lin_path_cp1_0, uint16_t _Lin_path_cp1_len_1, bool _Lstrdup_2, bool _Lrequire_3);
 static inline char* _NCp1_NInclude_Pstr_1(_NCp1_NInclude _Li_0);
 static inline uint8_t _NCp1_NInclude_Plen_1(_NCp1_NInclude _Li_0);
@@ -1708,6 +1710,7 @@ _Ltype_61++;
 break_6:;
 _Gimport_cap = 32;
 _NLibC_Pmalloc_arr_2(_Gimport_v, _Gimport_cap);
+_NLibC_Pmalloc_arr_2(_Gimport_file_v, _Gimport_cap);
 _NLibC_Pmalloc_arr_2(_Gimport_required_v, (_Gimport_cap + 7) >> 3);
 _Gtemplate_inst_cap = 32;
 _NLibC_Pmalloc_arr_2(_Gtemplate_inst_v, (uint32_t)(_Gtemplate_inst_cap));
@@ -1729,7 +1732,7 @@ _NLibCp1_NStdOut_Pstdout_end_no_flush_1(&_L_69);
 _NCp1_NIncludeError_Pprint_2(_Lerr_67, _Linc_66);
 exit(_NLibC_NExit_Cfailure);
 }
-_NCp1_Pimport_2(_Linc_66, true);
+_NCp1_Pimport_3(_Linc_66, true, _NCp1_NFile_Cnil);
 continue_7:;
 _Li_65++;
 }
@@ -3194,30 +3197,82 @@ _NLibCp1_NStdOut_Pstdout_end_1(&_L_29);
 break;
 }
 }
-void _NCp1_Pimport_2(_NCp1_NInclude _Lpath_0, bool _Lrequire_1) {
-int32_t _Li_2;
-_Li_2 = 0;
+void _NCp1_Pimport_3(_NCp1_NInclude _Lpath_0, bool _Lrequire_1, _NCp1_NFile _Lfile_2) {
+int32_t _Li_3;
+_Li_3 = 0;
 for(int i = _Gimport_c; i > 0; ) {
 i --;
-if(_Gimport_v[_Li_2++] == _Lpath_0) {
+if(_Gimport_v[_Li_3] == _Lpath_0) {
+if(_Lrequire_1) {
+if((_Gimport_required_v[(_Li_3 >> 3)] & (1 << (_Li_3 & 7))) == 0) {
+int _L_4;
+int _L_5;
+int _L_6;
+int _L_7;
+int _L_8;
+int _L_9;
+int _L_10;
+struct _NLibCp1_NStdOut _L_11;
+int _L_12;
+int _L_13;
+int _L_14;
+int _L_15;
+int _L_16;
+struct _NLibCp1_NStdOut _L_17;
+_NLibCp1_Pstdout_1(&_L_11);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_11, "Error, '", 8u, _L_4);
+_NCp1_NInclude_Pstdout_reserve_3(_Lpath_0, &_L_11, _L_5);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_11, "' was previously an import-only of '", 36u, _L_6);
+_NCp1_NInclude_Pstdout_reserve_3(_Gimport_file_v[_Li_3], &_L_11, _L_7);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_11, "' but is now required by '", 26u, _L_8);
+_NCp1_NFile_Pstdout_reserve_3(_Lfile_2, &_L_11, _L_9);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_11, "'\n", 2u, _L_10);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_11);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_11, "Error, '", 8u, _L_4);
+_NCp1_NInclude_Pstdout_3(_Lpath_0, &_L_11, _L_5);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_11, "' was previously an import-only of '", 36u, _L_6);
+_NCp1_NInclude_Pstdout_3(_Gimport_file_v[_Li_3], &_L_11, _L_7);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_11, "' but is now required by '", 26u, _L_8);
+_NCp1_NFile_Pstdout_3(_Lfile_2, &_L_11, _L_9);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_11, "'\n", 2u, _L_10);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_11);
+_NLibCp1_Pstdout_1(&_L_17);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_17, "Consider requiring '", 20u, _L_12);
+_NCp1_NInclude_Pstdout_reserve_3(_Lpath_0, &_L_17, _L_13);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_17, "' instead of importing it on '", 30u, _L_14);
+_NCp1_NInclude_Pstdout_reserve_3(_Gimport_file_v[_Li_3], &_L_17, _L_15);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_17, "'.\n", 3u, _L_16);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_17);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_17, "Consider requiring '", 20u, _L_12);
+_NCp1_NInclude_Pstdout_3(_Lpath_0, &_L_17, _L_13);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_17, "' instead of importing it on '", 30u, _L_14);
+_NCp1_NInclude_Pstdout_3(_Gimport_file_v[_Li_3], &_L_17, _L_15);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_17, "'.\n", 3u, _L_16);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_17);
+exit(_NLibC_NExit_Cfailure);
+}
+}
 return;
 }
 continue_0:;
+_Li_3++;
 }
 break_0:;
 if(true) {
-uint32_t _Li_3;
-_Li_3 = _Gimport_c++;
+uint32_t _Li_18;
+_Li_18 = _Gimport_c++;
 if(_Gimport_cap < _Gimport_c) {
 _NCp1_Pgrow_2(_Gimport_cap, _Gimport_c);
 _NLibC_Prealloc_arr_2(_Gimport_v, _Gimport_cap);
+_NLibC_Prealloc_arr_2(_Gimport_file_v, _Gimport_cap);
 _NLibC_Prealloc_arr_2(_Gimport_required_v, (_Gimport_cap + 7) >> 3);
 }
-_Gimport_v[_Li_3] = _Lpath_0;
+_Gimport_v[_Li_18] = _Lpath_0;
+_Gimport_file_v[_Li_18] = _Lfile_2;
 if(_Lrequire_1) {
-_Gimport_required_v[(_Li_3 >> 3)] |= (1 << (_Li_3 & 7));
+_Gimport_required_v[(_Li_18 >> 3)] |= (1 << (_Li_18 & 7));
 } else {
-_Gimport_required_v[(_Li_3 >> 3)] &= (0xff ^ (1 << (_Li_3 & 7)));
+_Gimport_required_v[(_Li_18 >> 3)] &= (0xff ^ (1 << (_Li_18 & 7)));
 }
 }
 _Gimport_new_c++;
@@ -3842,7 +3897,7 @@ _NCp1_NInclude _Lpath_139 = {0};
 bool _Lrequire2_140;
 _NCp1_NInclude_Prd_2(&_Lpath_139, &_Lr_15);
 _Lrequire2_140 = _NCp1_NRdr_Pb_1(&_Lr_15);
-_NCp1_Pimport_2(_Lpath_139, (_Lrequire2_140 && _Lrequire_3));
+_NCp1_Pimport_3(_Lpath_139, (_Lrequire2_140 && _Lrequire_3), _Lfile_idx_11);
 continue_12:;
 }
 break_12:;

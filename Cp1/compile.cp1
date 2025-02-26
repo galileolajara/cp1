@@ -98,7 +98,7 @@ import(path:Include, require:bool, file:File) {
    loop i = 0; .import-c; i++ {
       // C1.stdout{"import " path " " path:base " checking if exists, " i:u32 " = " path ''\n}
       if .import-v[i] == path {
-         C1.stdout{"re-import " path ''\n}
+         // C1.stdout{"re-import " path ''\n}
          if require {
             if (.import-required-v[i >> 3] & (1 << (i & 7))) == 0 {
                C1.stdout{"Error, '" path "' was previously an import-only of '" .import-file-v[i] "' but is now required by '" file "'\n"}
