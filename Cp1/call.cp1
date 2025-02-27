@@ -276,12 +276,20 @@ using ExprI {
          k! = 0;
          loop ; f.this-idx; j++; k++ {
             ca! = e.carg-v[k];
-            if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, k) { return }
+            if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, k) {
+               "error:";
+               C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Error in processing method '" func-name "'\n"}
+               return;
+            }
          }
-         if !farg-process(e.thiss, 0, e.this-value, f.farg-v[j++].decl, f-at, -1) { return }
+         if !farg-process(e.thiss, 0, e.this-value, f.farg-v[j++].decl, f-at, -1) {
+            "goto error;";
+         }
          loop ; (f.farg-c - 1) - f.this-idx; j++; k++ {
             ca! = e.carg-v[k];
-            if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, k) { return }
+            if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, k) {
+               "goto error;";
+            }
          }
          e.func-idx = f-idx;
          if (f.flags & #var-args) != #0 {
@@ -293,7 +301,9 @@ using ExprI {
                } else {
                   r = 1;
                }
-               if !ca.expr.value(r, false, ca.value) { return }
+               if !ca.expr.value(r, false, ca.value) {
+                  "goto error;";
+               }
             }
          }
          ok = true;
@@ -556,6 +566,7 @@ using ExprI {
       var e:ExprMetaFunc = expr;
       i! = 0;
       if !e.expr-v[i].process() {
+         C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the first argument group of meta-function\n"}
          return;
       }
       var e-func:ExprFunc = e.expr-v[i].ptr();
@@ -571,7 +582,8 @@ using ExprI {
       // "cstr = " f.meta-method-cstr "\n" $
       // "end = " f.meta-method-end ''\n>;
       arg-c! = ((e.expr-c - 1) >> 1) - 1;
-      loop ; arg-c; i++ {
+      arg-num! = 2;
+      loop ; arg-c; i++; arg-num++ {
          e-idx! = e.expr-v[i];
          var e-method:ExprMethod = e-idx.ptr();
          if f.meta-method-prefix2 == #nil {
@@ -588,6 +600,7 @@ using ExprI {
             e-data2! = e-idx2.ptr();
             var val;
             if !e-idx2.value(1, true, val) {
+               C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-function\n"}
                return;
             }
             if val.info.array-c > 0 {
@@ -597,6 +610,7 @@ using ExprI {
             }
          }
          if !e-idx.process() {
+            C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-function\n"}
             return;
          }
       }
@@ -604,11 +618,13 @@ using ExprI {
       var e-last-method:ExprMethod = e-last.ptr();
       e-last-method.func-name = f.meta-method-end1;
       if !e-last.process() {
+         C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the end of meta-function\n"}
          return;
       }
       if f.meta-method-prefix2 != #nil {
          // expr-c! = 1 + ((group-c - 1) * 2) + 1;
-         loop ; arg-c; i++ {
+         arg-num = 2;
+         loop ; arg-c; i++; arg-num++ {
             e-idx! = e.expr-v[i];
             var e-method:ExprMethod = e-idx.ptr();
             // C1.stdout{i ") carg-c " e-method.carg-c ", type " e-data2.type.cp1-name() ''\n}
@@ -621,6 +637,7 @@ using ExprI {
                e-data2! = e-idx2.ptr();
                var val;
                if !e-idx2.value(1, true, val) {
+                  C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-function\n"}
                   return;
                }
                if val.info.array-c > 0 {
@@ -630,6 +647,7 @@ using ExprI {
                }
             }
             if !e-idx.process() {
+               C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-function\n"}
                return;
             }
          }
@@ -637,6 +655,7 @@ using ExprI {
          var e-last-method:ExprMethod = e-last.ptr();
          e-last-method.func-name = f.meta-method-end2;
          if !e-last.process() {
+            C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the end of meta-function\n"}
             return;
          }
       }
