@@ -243,7 +243,7 @@ typedef union {
   cp1ParseTOKENTYPE yy0;
 } YYMINORTYPE;
 #ifndef YYSTACKDEPTH
-#define YYSTACKDEPTH 512
+#define YYSTACKDEPTH 0
 #endif
 #define cp1ParseARG_SDECL
 #define cp1ParseARG_PDECL

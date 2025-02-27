@@ -1,7 +1,7 @@
 %include {char* string_mem;}
 %name cp1Parse
 %token_prefix CP1_TOKEN_
-%stack_size 512
+%stack_size 0 // let it grow
 
 %token_type {union _NCp1_NTokenData}
 
