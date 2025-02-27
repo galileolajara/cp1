@@ -5703,7 +5703,7 @@ _Li_4++;
 }
 break_0:;
 }
-_Gbuild_at = _NCp1_Pat_create_3(_Gbuild_at, _Ltype_1, _Lname_0);
+_NCp1_Pdecl_at_add_4(_Lname_0, _Ltype_1, _Lrow_2, _Lcol_3);
 }
 _NCp1_NAt _NCp1_Pat_done_0() {
 return _Gbuild_at;

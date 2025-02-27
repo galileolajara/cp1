@@ -290,7 +290,8 @@ at-push(name:Id, type:NameType, row:u32, col:u32) {
          }
       }
    }
-   .build-at = at-create(.build-at, type, name);
+   // .build-at = at-create(.build-at, type, name);
+   decl-at-add(name, type, row, col);
 }
 decl-alias(name:Id, at:At, row:u32, col:u32) {
    // if at.ptr().type != #module {
