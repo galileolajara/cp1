@@ -330,6 +330,23 @@ meta #BuildCommonCodes {
          expr-v:ExprI[0],
 #  }
       ];
+      struct ExprMetaMethod[
+         base:Expr.,
+#  if (!arg.compile) {
+         thiss:ExprI,
+         func-name:Id,
+         lvar:ExprI,
+         lvars:ExprI[],
+         group-c:u8,
+         group-v:u8[#expr-carg-group-limit],
+         carg-c:u8,
+         carg-v:Carg.[0],
+#  }
+#  if (arg.compile) {
+         expr-c:u8,
+         expr-v:ExprI[0],
+#  }
+      ];
       struct ExprMethod[
          base:Expr.,
          thiss:ExprI,

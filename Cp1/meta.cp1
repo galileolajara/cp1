@@ -122,7 +122,7 @@ jscode-char(val:char) @inline {
 jscode-cstr(str:char[]) @inline {
    jscode-bytes(str, C.strlen(str));
 }
-jscode(jc:JsCode) @meta-method(jscode end) @inline {
+jscode(jc:JsCode) @meta(jscode end) @inline {
 }
 jscode-u32(val:u32) {
    jscode-reserve(10);

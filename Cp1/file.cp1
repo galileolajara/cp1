@@ -134,7 +134,7 @@ using Cp1 {
       }
    }
    enum OutputIntType[#oct, #hex]:u8;
-   output(o:Output) @meta-method(output-reserve output end) @inline {
+   output(o:Output) @meta(output-reserve output end) @inline {
       o.reserve = 0;
    }
    output-reserve(len:u32) {

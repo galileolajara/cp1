@@ -124,7 +124,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "@process"                { return CP1_TOKEN_SPACE_AT_PROCESS; }
    spaces "@real-name(" [^)]* ")"   { return CP1_TOKEN_SPACE_AT_REAL_NAME_STR; }
    spaces "@real-name"              { return CP1_TOKEN_SPACE_AT_REAL_NAME; }
-   spaces "@meta-method"            { return CP1_TOKEN_SPACE_AT_META_METHOD; }
+   spaces "@meta"                   { return CP1_TOKEN_SPACE_AT_META; }
    spaces "@decl"                   { return CP1_TOKEN_SPACE_AT_DECL; }
    spaces "@cp1-name"               { return CP1_TOKEN_SPACE_AT_CP1_NAME; }
    spaces "@case"                   { return CP1_TOKEN_SPACE_AT_CASE; }

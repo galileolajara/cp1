@@ -8,10 +8,10 @@ using LibCp1 {
    var stdout-buf-data:char[];
    var stdout-buf-cap:u32;
    var stdout-buf-len:u32;
-   stdout(so:StdOut) @meta-method(stdout-reserve stdout end) @inline {
+   stdout(so:StdOut) @meta(stdout-reserve stdout end) @inline {
       so.reserve = 0;
    }
-   stdbuf(so:StdOut) @meta-method(stdout-reserve stdout end-no-flush) @inline {
+   stdbuf(so:StdOut) @meta(stdout-reserve stdout end-no-flush) @inline {
       so.reserve = 0;
    }
    stdout-bytes(data:ref, size:usz) @inline {
@@ -256,7 +256,10 @@ using char {
    stdout-arr(str:this[], so:C1.StdOut, len:u32) @inline {
       C1.stdout-bytes-nr(str, len);
    }
-   // stdout-arr(str:this[], so:C1.StdOut, len:u32, ) @inline {
-      // C1.stdout-bytes(str, len);
-   // }
+   stdout-reserve-arr(str:this[], len:u32, so:C1.StdOut, unused:u32) @inline {
+      so.reserve += len;
+   }
+   stdout-arr(str:this[], len:u32, so:C1.StdOut, unused:u32) @inline {
+      C1.stdout-bytes-nr(str, len);
+   }
 }

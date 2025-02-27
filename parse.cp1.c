@@ -76,8 +76,8 @@
 #define _NCp1_NToken_Cstring (_NCp1_NToken_Cspace_at_decl + 1)
 #define _NCp1_NToken_Cspace_at_var_args (_NCp1_NToken_Cstring + 1)
 #define _NCp1_NToken_Cspace_at_no_body (_NCp1_NToken_Cspace_at_var_args + 1)
-#define _NCp1_NToken_Cspace_at_meta_method (_NCp1_NToken_Cspace_at_no_body + 1)
-#define _NCp1_NToken_Cref (_NCp1_NToken_Cspace_at_meta_method + 1)
+#define _NCp1_NToken_Cspace_at_meta (_NCp1_NToken_Cspace_at_no_body + 1)
+#define _NCp1_NToken_Cref (_NCp1_NToken_Cspace_at_meta + 1)
 #define _NCp1_NToken_Cbool (_NCp1_NToken_Cref + 1)
 #define _NCp1_NToken_Cchar (_NCp1_NToken_Cbool + 1)
 #define _NCp1_NToken_Cintc (_NCp1_NToken_Cchar + 1)
@@ -208,6 +208,7 @@
 #define _NCp1_Ccp1_carg_limit (64)
 #define _NCp1_NExprType_Cmetafunc (_NCp1_NExprType_Cfunc + 1)
 #define _NCp1_NExprType_Cmethod (_NCp1_NExprType_Cmetafunc + 1)
+#define _NCp1_NExprType_Cmetamethod (_NCp1_NExprType_Cmethod + 1)
 #define _NCp1_NStmtType_Cspace 0
 #define _NCp1_NStmtType_Cif (_NCp1_NStmtType_Cspace + 1)
 #define _NCp1_NStmtType_Cif_elif (_NCp1_NStmtType_Cif + 1)
@@ -229,7 +230,7 @@
 #define _NCp1_NEnumFlags_Cno_decl (2)
 #define _NCp1_NLvar_Cnil (-1)
 #define _NCp1_NLvarFlags_Cset_expr (1)
-#define _NCp1_NExprType_Cfvar (_NCp1_NExprType_Cmethod + 1)
+#define _NCp1_NExprType_Cfvar (_NCp1_NExprType_Cmetamethod + 1)
 #define _NCp1_NExprType_Csoa_field (_NCp1_NExprType_Cfvar + 1)
 #define _NCp1_NAt_Crelative (_NCp1_NAt_Croot + 1)
 #define _NCp1_Cdecl_at_nest_limit (4)
@@ -602,6 +603,18 @@ struct _NCp1_NExprLvar {
 struct _NCp1_NExpr _Fbase;
 _NCp1_NLvar _Flvar;
 bool _Fdecl;
+};
+struct _NCp1_NExprMetaMethod;
+struct _NCp1_NExprMetaMethod {
+struct _NCp1_NExpr _Fbase;
+_NCp1_NExprI _Fthiss;
+_NCp1_NId _Ffunc_name;
+_NCp1_NExprI _Flvar;
+_NCp1_NExprI* _Flvars;
+uint8_t _Fgroup_c;
+uint8_t _Fgroup_v[_NCp1_Cexpr_carg_group_limit];
+uint8_t _Fcarg_c;
+struct _NCp1_NCarg _Fcarg_v[0];
 };
 struct _NCp1_NExprMethod;
 struct _NCp1_NExprMethod {
@@ -1067,8 +1080,8 @@ void _NCp1_Pdecl_var_as_fvar_0();
 void _NCp1_Pfunc_body_end_0();
 void _NCp1_Pexpr_push_call_2(uint32_t _Lrow_0, uint32_t _Lcol_1);
 _NCp1_NExprI _NCp1_Pexpr_pop_func_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lfunc_name_1);
-void _NCp1_Pexpr_push_metacall_2(uint32_t _Lrow_0, uint32_t _Lcol_1);
 _NCp1_NExprI _NCp1_Pexpr_pop_metafunc_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lfunc_name_1);
+_NCp1_NExprI _NCp1_Pexpr_pop_metamethod_2(_NCp1_NExprI _Lthiss_0, _NCp1_NId _Lfunc_name_1);
 _NCp1_NExprI _NCp1_Pexpr_pop_method_2(_NCp1_NExprI _Lthiss_0, _NCp1_NId _Lfunc_name_1);
 void _NCp1_Pmetacarg_push_1(_NCp1_NExprI _Lexpr_0);
 void _NCp1_Pmetacarg_next_group_0();
@@ -1286,7 +1299,7 @@ case _NCp1_NToken_Cspace_at_decl: return "space-at-decl";
 case _NCp1_NToken_Cstring: return "string";
 case _NCp1_NToken_Cspace_at_var_args: return "space-at-var-args";
 case _NCp1_NToken_Cspace_at_no_body: return "space-at-no-body";
-case _NCp1_NToken_Cspace_at_meta_method: return "space-at-meta-method";
+case _NCp1_NToken_Cspace_at_meta: return "space-at-meta";
 case _NCp1_NToken_Cref: return "ref";
 case _NCp1_NToken_Cbool: return "bool";
 case _NCp1_NToken_Cchar: return "char";
@@ -1426,6 +1439,7 @@ case _NCp1_NExprType_Cbools: return "bools";
 case _NCp1_NExprType_Cfunc: return "func";
 case _NCp1_NExprType_Cmetafunc: return "metafunc";
 case _NCp1_NExprType_Cmethod: return "method";
+case _NCp1_NExprType_Cmetamethod: return "metamethod";
 case _NCp1_NExprType_Cfvar: return "fvar";
 case _NCp1_NExprType_Csoa_field: return "soa-field";
 case _NCp1_NExprType_Cint: return "int";
@@ -2943,8 +2957,8 @@ _NCp1_Pdecl_var_as_fvar_0();
 _NCp1_Pfunc_body_end_0();
 _NCp1_Pexpr_push_call_2(0, 0);
 _NCp1_Pexpr_pop_func_2(_NCp1_NAt_Cnil, _NCp1_NId_Cnil);
-_NCp1_Pexpr_push_metacall_2(0, 0);
 _NCp1_Pexpr_pop_metafunc_2(_NCp1_NAt_Cnil, _NCp1_NId_Cnil);
+_NCp1_Pexpr_pop_metamethod_2(_NCp1_NExprI_Cnil, _NCp1_NId_Cnil);
 _NCp1_Pexpr_pop_method_2(_NCp1_NExprI_Cnil, _NCp1_NId_Cnil);
 _NCp1_Pmetacarg_push_1(_NCp1_NExprI_Cnil);
 _NCp1_Pmetacarg_next_group_0();
@@ -4572,22 +4586,28 @@ void _NCp1_Pexpr_push_call_2(uint32_t _Lrow_0, uint32_t _Lcol_1) {
 int8_t _Lcall_idx_2;
 _Lcall_idx_2 = _Gexpr_call_c++;
 if(_Lcall_idx_2 >= _NCp1_Cexpr_call_nest_limit) {
-int _L_3;
+uint32_t _L_3;
 int _L_4;
 int _L_5;
 int _L_6;
-struct _NLibCp1_NStdOut _L_7;
-_NLibCp1_Pstdout_1(&_L_7);
-_Tu32_Pstdout_reserve_3(_Lrow_0, &_L_7, _L_3);
-_Tchar_Pstdout_reserve_3(':', &_L_7, _L_4);
-_Tu32_Pstdout_reserve_3(_Lcol_1, &_L_7, _L_5);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_7, ": Too much nested calls\n", 24u, _L_6);
-_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_7);
-_Tu32_Pstdout_3(_Lrow_0, &_L_7, _L_3);
-_Tchar_Pstdout_3(':', &_L_7, _L_4);
-_Tu32_Pstdout_3(_Lcol_1, &_L_7, _L_5);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_7, ": Too much nested calls\n", 24u, _L_6);
-_NLibCp1_NStdOut_Pstdout_end_1(&_L_7);
+int _L_7;
+int _L_8;
+struct _NLibCp1_NStdOut _L_9;
+_NLibCp1_Pstdout_1(&_L_9);
+_Tchar_Pstdout_reserve_arr_3(input_path, &_L_9, &_L_3);
+_Tchar_Pstdout_reserve_3(':', &_L_9, _L_4);
+_Tu32_Pstdout_reserve_3(_Lrow_0, &_L_9, _L_5);
+_Tchar_Pstdout_reserve_3(':', &_L_9, _L_6);
+_Tu32_Pstdout_reserve_3(_Lcol_1, &_L_9, _L_7);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_9, ": Too much nested calls\n", 24u, _L_8);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_9);
+_Tchar_Pstdout_arr_3(input_path, &_L_9, _L_3);
+_Tchar_Pstdout_3(':', &_L_9, _L_4);
+_Tu32_Pstdout_3(_Lrow_0, &_L_9, _L_5);
+_Tchar_Pstdout_3(':', &_L_9, _L_6);
+_Tu32_Pstdout_3(_Lcol_1, &_L_9, _L_7);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_9, ": Too much nested calls\n", 24u, _L_8);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_9);
 exit(_NLibC_NExit_Cfailure);
 }
 _Gexpr_call_carg_c[_Lcall_idx_2] = 0;
@@ -4628,32 +4648,6 @@ _Li_7++;
 break_1:;
 return _Le_idx_5;
 }
-void _NCp1_Pexpr_push_metacall_2(uint32_t _Lrow_0, uint32_t _Lcol_1) {
-int8_t _Lcall_idx_2;
-_Lcall_idx_2 = _Gexpr_call_c++;
-if(_Lcall_idx_2 >= _NCp1_Cexpr_call_nest_limit) {
-int _L_3;
-int _L_4;
-int _L_5;
-int _L_6;
-struct _NLibCp1_NStdOut _L_7;
-_NLibCp1_Pstdout_1(&_L_7);
-_Tu32_Pstdout_reserve_3(_Lrow_0, &_L_7, _L_3);
-_Tchar_Pstdout_reserve_3(':', &_L_7, _L_4);
-_Tu32_Pstdout_reserve_3(_Lcol_1, &_L_7, _L_5);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_7, ": Too much nested calls\n", 24u, _L_6);
-_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_7);
-_Tu32_Pstdout_3(_Lrow_0, &_L_7, _L_3);
-_Tchar_Pstdout_3(':', &_L_7, _L_4);
-_Tu32_Pstdout_3(_Lcol_1, &_L_7, _L_5);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_7, ": Too much nested calls\n", 24u, _L_6);
-_NLibCp1_NStdOut_Pstdout_end_1(&_L_7);
-exit(_NLibC_NExit_Cfailure);
-}
-_Gexpr_call_carg_c[_Lcall_idx_2] = 0;
-_Gexpr_call_cgrp_c[_Lcall_idx_2] = 1;
-_Gexpr_call_cgrp_v[_Lcall_idx_2][0] = 0;
-}
 _NCp1_NExprI _NCp1_Pexpr_pop_metafunc_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lfunc_name_1) {
 int8_t _Lcall_idx_2;
 uint8_t _Lcarg_c_3;
@@ -4666,6 +4660,69 @@ _Lcarg_c_3 = _Gexpr_call_carg_c[_Lcall_idx_2];
 _NCp1_Pquick_alloc_plus_2(_Le_4, sizeof(struct _NCp1_NCarg) * _Lcarg_c_3);
 _Le_idx_5 = _NCp1_Pexpr_push_2(&(*_Le_4)._Fbase, _NCp1_NExprType_Cmetafunc);
 (*_Le_4)._Fat = _Lat_0;
+(*_Le_4)._Ffunc_name = _Lfunc_name_1;
+_NCp1_Pquick_alloc_arr_2((*_Le_4)._Flvars, _Lcarg_c_3);
+_Lspace_6 = _Gdecl_func_ctx_space;
+_Llvar_name_7 = _Gid_blank;
+(*_Le_4)._Fcarg_c = _Lcarg_c_3;
+int32_t _Li_8;
+_Li_8 = 0;
+for(int i = _Lcarg_c_3; i > 0; ) {
+i --;
+struct _NCp1_NExprLvar* _Le2_9 = {0};
+_NCp1_NExprI _Le_idx_10;
+struct _NCp1_NLvarData* _Llvar_11;
+(*_Le_4)._Fcarg_v[_Li_8]._Freff = 0;
+(*_Le_4)._Fcarg_v[_Li_8]._Fexpr = _Gexpr_call_carg_v[_Lcall_idx_2][_Li_8];
+_NCp1_Pquick_alloc_one_1(_Le2_9);
+_Le_idx_10 = _NCp1_Pexpr_push_2(&(*_Le2_9)._Fbase, _NCp1_NExprType_Clvar);
+(*_Le2_9)._Flvar = _NCp1_NStmtSpace_Plvar_new_5(_Lspace_6, _Llvar_name_7, _Grow, _Gcol, false);
+_Llvar_11 = _NCp1_NLvar_Pptr_1((*_Le2_9)._Flvar);
+_Gdecl_var._Fname = _Llvar_name_7;
+_NCp1_Pdecl_var_type_1(_NCp1_NAt_Cnil);
+_NCp1_NDeclVarData_Pcopy_from_2(&(*_Llvar_11)._Fdecl, &_Gdecl_var);
+(*_Le_4)._Flvars[_Li_8] = _Le_idx_10;
+continue_0:;
+_Li_8++;
+}
+break_0:;
+(*_Le_4)._Fgroup_c = _Gexpr_call_cgrp_c[_Lcall_idx_2];
+int32_t _Li_12;
+_Li_12 = 0;
+for(int i = (*_Le_4)._Fgroup_c; i > 0; ) {
+i --;
+(*_Le_4)._Fgroup_v[_Li_12] = _Gexpr_call_cgrp_v[_Lcall_idx_2][_Li_12];
+continue_1:;
+_Li_12++;
+}
+break_1:;
+if(true) {
+struct _NCp1_NExprLvar* _Le2_13 = {0};
+_NCp1_NExprI _Le_idx_14;
+struct _NCp1_NLvarData* _Llvar_15;
+_NCp1_Pquick_alloc_one_1(_Le2_13);
+_Le_idx_14 = _NCp1_Pexpr_push_2(&(*_Le2_13)._Fbase, _NCp1_NExprType_Clvar);
+(*_Le2_13)._Flvar = _NCp1_NStmtSpace_Plvar_new_5(_Lspace_6, _Llvar_name_7, _Grow, _Gcol, false);
+_Llvar_15 = _NCp1_NLvar_Pptr_1((*_Le2_13)._Flvar);
+_Gdecl_var._Fname = _Llvar_name_7;
+_NCp1_Pdecl_var_type_1(_NCp1_NAt_Cnil);
+_NCp1_NDeclVarData_Pcopy_from_2(&(*_Llvar_15)._Fdecl, &_Gdecl_var);
+(*_Le_4)._Flvar = _Le_idx_14;
+}
+return _Le_idx_5;
+}
+_NCp1_NExprI _NCp1_Pexpr_pop_metamethod_2(_NCp1_NExprI _Lthiss_0, _NCp1_NId _Lfunc_name_1) {
+int8_t _Lcall_idx_2;
+uint8_t _Lcarg_c_3;
+struct _NCp1_NExprMetaMethod* _Le_4 = {0};
+_NCp1_NExprI _Le_idx_5;
+struct _NCp1_NStmtSpace* _Lspace_6;
+_NCp1_NId _Llvar_name_7;
+_Lcall_idx_2 = (_Gexpr_call_c -= 1);
+_Lcarg_c_3 = _Gexpr_call_carg_c[_Lcall_idx_2];
+_NCp1_Pquick_alloc_plus_2(_Le_4, sizeof(struct _NCp1_NCarg) * _Lcarg_c_3);
+_Le_idx_5 = _NCp1_Pexpr_push_2(&(*_Le_4)._Fbase, _NCp1_NExprType_Cmetamethod);
+(*_Le_4)._Fthiss = _Lthiss_0;
 (*_Le_4)._Ffunc_name = _Lfunc_name_1;
 _NCp1_Pquick_alloc_arr_2((*_Le_4)._Flvars, _Lcarg_c_3);
 _Lspace_6 = _Gdecl_func_ctx_space;

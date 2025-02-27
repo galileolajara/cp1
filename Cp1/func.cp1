@@ -377,7 +377,7 @@ var expr-call-cgrp-v:u8[#expr-call-nest-limit][#expr-carg-group-limit];
 expr-push-call(row:u32, col:u32) {
    call-idx! = .expr-call-c++;
    if call-idx >= #expr-call-nest-limit {
-      C1.stdout{row '': col ": Too much nested calls\n"}
+      C1.stdout{.input-path '': row '': col ": Too much nested calls\n"}
       C.exit(#failure);
    }
    .expr-call-carg-c[call-idx] = 0;
@@ -454,16 +454,6 @@ expr-pop-method(thiss:ExprI, func-name:Id):ExprI {
    }
    return e-idx;
 }
-expr-push-metacall(row:u32, col:u32) {
-   call-idx! = .expr-call-c++;
-   if call-idx >= #expr-call-nest-limit {
-      C1.stdout{row '': col ": Too much nested calls\n"}
-      C.exit(#failure);
-   }
-   .expr-call-carg-c[call-idx] = 0;
-   .expr-call-cgrp-c[call-idx] = 1;
-   .expr-call-cgrp-v[call-idx][0] = 0;
-}
 metacarg-next-group() {
    call-idx! = .expr-call-c - 1;
    .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx]] = 0;
@@ -482,6 +472,49 @@ expr-pop-metafunc(at:At, func-name:Id):ExprI {
    quick-alloc-plus(e, Carg[usz] * carg-c);
    e-idx! = expr-push(e.base, #metafunc);
    e.at = at;
+   e.func-name = func-name;
+   quick-alloc-arr(e.lvars, carg-c);
+   // C1.stdout{"parse func-name " func-name ''\n}
+   space! = .decl-func-ctx-space;
+   lvar-name! = .id-blank;
+   e.carg-c = carg-c;
+   loop i = 0; carg-c; i++ {
+      e.carg-v[i].reff = 0;
+      e.carg-v[i].expr = .expr-call-carg-v[call-idx][i];
+      var e2:ExprLvar;
+      quick-alloc-one(e2);
+      e-idx! = expr-push(e2.base, #lvar);
+      e2.lvar = space.lvar-new(lvar-name, .row, .col, false);
+      lvar! = e2.lvar.ptr();
+      .decl-var.name = lvar-name;
+      decl-var-type(#nil);
+      lvar.decl.copy-from(.decl-var);
+      e.lvars[i] = e-idx;
+   }
+   e.group-c = .expr-call-cgrp-c[call-idx];
+   loop i = 0; e.group-c; i++ {
+      e.group-v[i] = .expr-call-cgrp-v[call-idx][i];
+   }
+   if true {
+      var e2:ExprLvar;
+      quick-alloc-one(e2);
+      e-idx! = expr-push(e2.base, #lvar);
+      e2.lvar = space.lvar-new(lvar-name, .row, .col, false);
+      lvar! = e2.lvar.ptr();
+      .decl-var.name = lvar-name;
+      decl-var-type(#nil);
+      lvar.decl.copy-from(.decl-var);
+      e.lvar = e-idx;
+   }
+   return e-idx;
+}
+expr-pop-metamethod(thiss:ExprI, func-name:Id):ExprI {
+   call-idx! = .expr-call-c -= 1;
+   carg-c! = .expr-call-carg-c[call-idx];
+   var e:ExprMetaMethod;
+   quick-alloc-plus(e, Carg[usz] * carg-c);
+   e-idx! = expr-push(e.base, #metamethod);
+   e.thiss = thiss;
    e.func-name = func-name;
    quick-alloc-arr(e.lvars, carg-c);
    // C1.stdout{"parse func-name " func-name ''\n}

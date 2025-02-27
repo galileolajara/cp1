@@ -304,9 +304,9 @@ func_attr ::= SPACE_AT_NO_BODY.
    { _NCp1_Pfunc_attr_no_body_0(); }
 func_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _NCp1_Pfunc_attr_real_name_1(e.basic.id); }
-func_attr ::= SPACE_AT_META_METHOD OPEN_PARENTHESIS ID(id1) SPACE ID(id2) CLOSE_PARENTHESIS.
+func_attr ::= SPACE_AT_META OPEN_PARENTHESIS ID(id1) SPACE ID(id2) CLOSE_PARENTHESIS.
    { _NCp1_Pfunc_attr_meta_method_3(id1.basic.id, -1, id2.basic.id); }
-func_attr ::= SPACE_AT_META_METHOD OPEN_PARENTHESIS ID(id1) SPACE ID(id2) SPACE ID(id3) CLOSE_PARENTHESIS.
+func_attr ::= SPACE_AT_META OPEN_PARENTHESIS ID(id1) SPACE ID(id2) SPACE ID(id3) CLOSE_PARENTHESIS.
    { _NCp1_Pfunc_attr_meta_method_3(id1.basic.id, id2.basic.id, id3.basic.id); }
 func_attr ::= SPACE_AT_REAL_NAME.
    { _NCp1_Pfunc_attr_real_name_1(-1); }
@@ -636,19 +636,21 @@ funcExpr(l) ::= at(at) DOT ID_THEN_OPEN_PARENTHESIS(func).
 funcExpr(l) ::= at(at) DOT_ID_UPPER_THEN_OPEN_PARENTHESIS(func).
    { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 metaFuncExpr(l) ::= ID_THEN_OPEN_CURLY_BRACE(func).
-   { l.basic.id = -1; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_metacall_2(func.basic.row, func.basic.col); }
+   { l.basic.id = -1; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 metaFuncExpr(l) ::= ID_UPPER_THEN_OPEN_CURLY_BRACE(func).
-   { l.basic.id = -1; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_metacall_2(func.basic.row, func.basic.col); }
+   { l.basic.id = -1; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 metaFuncExpr(l) ::= at(at) DOT ID_THEN_OPEN_CURLY_BRACE(func).
-   { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_metacall_2(func.basic.row, func.basic.col); }
+   { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 metaFuncExpr(l) ::= at(at) DOT_ID_UPPER_THEN_OPEN_CURLY_BRACE(func).
-   { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_metacall_2(func.basic.row, func.basic.col); }
+   { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 methodExpr(l) ::= value4fix(e) DOT ID_THEN_OPEN_PARENTHESIS(func).
    { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 methodExpr(l) ::= value4fix(e) DOT_ID_UPPER_THEN_OPEN_PARENTHESIS(func).
    { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
-/* metaMethodExpr(l) ::= value4fix(e) ANGULAR_BRACKET_ID(func).
-   { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); } */
+metaMethodExpr(l) ::= value4fix(e) DOT ID_THEN_OPEN_CURLY_BRACE(func).
+   { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
+metaMethodExpr(l) ::= value4fix(e) DOT_ID_UPPER_THEN_OPEN_CURLY_BRACE(func).
+   { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 metaCall_args_optional ::= OPEN_CURLY_BRACE CLOSE_CURLY_BRACE.
 metaCall_args_optional ::= OPEN_CURLY_BRACE SPACE CLOSE_CURLY_BRACE.
 metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args CLOSE_CURLY_BRACE.
@@ -692,14 +694,12 @@ expr2stmt_base(l) ::= callExpr(r).
    { l.basic.id = r.basic.id; }
 metaCallExpr_func(l) ::= metaFuncExpr(e) metaCall_args_optional.
    { l.basic.id = _NCp1_Pexpr_pop_metafunc_2(e.basic.id, e.basic.id2); }
-/* metaCallExpr_method(l) ::= metaMethodExpr(e) metaCall_args_optional.
-   { l.basic.id = _NCp1_Pexpr_pop_metamethod_2(e.basic.id, e.basic.id2); } */
+metaCallExpr_method(l) ::= metaMethodExpr(e) metaCall_args_optional.
+   { l.basic.id = _NCp1_Pexpr_pop_metamethod_2(e.basic.id, e.basic.id2); }
 metaCallExpr(l) ::= metaCallExpr_func(r).
    { l.basic.id = r.basic.id; }
-/* metaCallExpr(l) ::= metaCallExpr_method(r).
-   { l.basic.id = r.basic.id; } */
-/* expr2stmt_base(l) ::= metaCallExpr(r).
-   { l.basic.id = r.basic.id; } */
+metaCallExpr(l) ::= metaCallExpr_method(r).
+   { l.basic.id = r.basic.id; }
 assign_type(l) ::= SPACE_COLON_EQUAL SPACE.
    { l.basic.id = 1; }
 assign_type(l) ::= SPACE_PLUS_EQUAL SPACE.

@@ -101,7 +101,8 @@
 #define _NCp1_NExprType_Cfunc (_NCp1_NExprType_Cbools + 1)
 #define _NCp1_NExprType_Cmetafunc (_NCp1_NExprType_Cfunc + 1)
 #define _NCp1_NExprType_Cmethod (_NCp1_NExprType_Cmetafunc + 1)
-#define _NCp1_NExprType_Cfvar (_NCp1_NExprType_Cmethod + 1)
+#define _NCp1_NExprType_Cmetamethod (_NCp1_NExprType_Cmethod + 1)
+#define _NCp1_NExprType_Cfvar (_NCp1_NExprType_Cmetamethod + 1)
 #define _NCp1_NExprType_Csoa_field (_NCp1_NExprType_Cfvar + 1)
 #define _NCp1_NExprType_Cint (_NCp1_NExprType_Csoa_field + 1)
 #define _NCp1_NExprType_Ccvar (_NCp1_NExprType_Cint + 1)
@@ -1113,6 +1114,7 @@ case _NCp1_NExprType_Cbools: return "bools";
 case _NCp1_NExprType_Cfunc: return "func";
 case _NCp1_NExprType_Cmetafunc: return "metafunc";
 case _NCp1_NExprType_Cmethod: return "method";
+case _NCp1_NExprType_Cmetamethod: return "metamethod";
 case _NCp1_NExprType_Cfvar: return "fvar";
 case _NCp1_NExprType_Csoa_field: return "soa-field";
 case _NCp1_NExprType_Cint: return "int";
