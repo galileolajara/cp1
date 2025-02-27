@@ -14,6 +14,7 @@ uint8_t _Gtemplate_name_len;
 uint32_t _Gtemplate_code_indention;
 uint32_t _Gtemplate_code_line_c;
 const char* meta_start;
+int meta_col;
 void _NCp1_Pparse_str_init_1(int maxsize) {
    string_mem = malloc(maxsize);
 }
@@ -193,7 +194,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "||"                      { return CP1_TOKEN_SPACE_BOOL_OR_OR; }
 
    "using"                          { return CP1_TOKEN_USING; }
-   "meta"                           { meta_start = l->start; return CP1_TOKEN_META; }
+   "meta"                           { meta_start = l->start; meta_col = _Gcol; return CP1_TOKEN_META; }
    "enum"                           { return CP1_TOKEN_ENUM; }
    "struct"                         { return CP1_TOKEN_STRUCT; }
    "union"                          { return CP1_TOKEN_UNION; }
@@ -322,9 +323,9 @@ lex_template_code: {
          fprintf(stdout, "%s:%u:%u: Error, the syntax 'meta #NAME {' must be followed by a new line\n", input_path, _Grow, col + 1);
          exit(EXIT_FAILURE);
       }
-      col = _Gcol;
+      col = meta_col;
       int32_t indention = 0;
-      while (start[-1] != '\n') {
+      while (col > 1) {
          if (start[-1] != ' ') {
             fprintf(stdout, "%s:%u:%u: Error, the line that contains 'meta #NAME {' must not have other character in it. Found a character '%c'.\n", input_path, _Grow, col - 1, start[-1]);
             exit(EXIT_FAILURE);
@@ -388,7 +389,7 @@ lex_template_code: {
             }
          } else if (first_char < indention) {
             indent_more:
-            fprintf(stdout, "%s:%u:%u: Error, this line must be indented further\n", input_path, row, first_char);
+            fprintf(stdout, "%s:%u:%u: Error, this line must be indented further\n", input_path, row, first_char + 1);
             exit(EXIT_FAILURE);
          } else {
             if (first_indent == -1) {
