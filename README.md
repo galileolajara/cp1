@@ -47,16 +47,6 @@ Cp1 means C+1 or C plus 1, named just like C++ or C plus plus
 - Cp1 is vastly different from Zig, Odin, C3, Rust, Vlang because Cp1 aims to maintain only few features but these few features are carefully selected to allow you to do a lot of things when these features are combined.
 - Also, Cp1's top priority is compilation speed, similar to Vlang. Cloning the repo and building it for the first time using build-tcc.ninja takes 0.1s on Macbook Pro M2 with Fedora Asahi Remix (Linux OS). Editing a source file of Cp1 then recompiling (incremental compilation) takes 0.05s.
 
-Features
--
-- Outputs C code in just a few seconds.
-- Self-hosted, Cp1 is written in Cp1.
-- Organize your codes easily using namespaces and modules.
-- Methods on enums, structs and even the primitive types. Method on enums can make data-oriented programming easier.
-- Auto deduct variable types similar to C++'s auto keyword.
-- Ability to emulate virtual functions using switch and case statements that can be distributed across different source files.
-- Ability to write lines of codes in C using the "..."; syntax. This means that even if Cp1 doesn't support goto, #ifdef and more, you can cheat it using the "..."; syntax.
-
 Join us on Discord!
 -
 [![Discord](https://dcbadge.vercel.app/api/server/qBtunCNyUS)](https://discord.gg/qBtunCNyUS)
