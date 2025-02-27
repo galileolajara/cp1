@@ -592,7 +592,8 @@ using ExprI {
          }
          // C1.stdout{i " " e.expr-c ''\n}
          // C1.stdout{e-data2.type.cp1-name()}
-         if e-method.carg-v[0].expr.ptr().type == #str {
+         var lvar:ExprLvar = e-method.thiss.ptr();
+         if (lvar.base.type == #lvar) && (lvar.lvar.ptr().decl.name == .id-blank) {
             // C1.stdout{"constant string\n"}
             e-method.func-name = f.meta-method-cstr1;
          } else {
