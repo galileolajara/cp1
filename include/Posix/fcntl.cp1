@@ -26,9 +26,6 @@ include <fcntl.h> {
          fopen(file:this, mode:char[]):C.File @inline {
             return C.fdopen(file, mode);
          }
-         close(file:this):intc @inline {
-            return X.close(file);
-         }
          stat(file:this, stat:X.Stat):intc @inline {
             return X.fstat(file:base, stat);
          }

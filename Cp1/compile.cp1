@@ -277,7 +277,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
          loop i = 0; at.cvar-c; i++ {
             cvar2! = cvar-v[i].ptr();
             if cvar2.decl.name == name {
-               C1.stdout{file-idx '': cvar.row '': cvar.col ": Cannot declare constant '" cvar.decl.name "' because it was already declared at " cvar2.file '': cvar2.row '': cvar2.col "\n"}
+               C1.stdout{file-idx '': cvar.row '': cvar.col ": Cannot declare constant '" name "' because it was already declared at " cvar2.file '': cvar2.row '': cvar2.col "\n"}
                C.exit(#failure);
             }
          }
@@ -326,7 +326,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
          loop i = 0; at.gvar-c; i++ {
             gvar2! = gvar-v[i].ptr();
             if gvar2.decl.name == name {
-               C1.stdout{file-idx '': gvar.row '': gvar.col ": Cannot declare global variable '" gvar.decl.name "' because it was already declared at " gvar2.file '': gvar2.row '': gvar2.col "\n"}
+               C1.stdout{file-idx '': gvar.row '': gvar.col ": Cannot declare global variable '" name "' because it was already declared at " gvar2.file '': gvar2.row '': gvar2.col "\n"}
                C.exit(#failure);
             }
          }
@@ -541,13 +541,23 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
          r.pos += len;
       }
       at! = at-i.ptr();
+      name! = f.decl.name;
+      func-v! = at.func-v;
+      loop i = 0; at.func-c; i++ {
+         func2! = func-v[i].ptr();
+         if (func2.decl.name == name) && (func2.farg-c == farg-c) && (func2.group-c == group-c) && (C.memcmp(func2.group-v, f.group-v, group-c) == 0) {
+            C1.stdout{file-idx '': f.begin-row '': f.begin-col ": Cannot declare function '" name "' because it was already declared at " func2.file '': func2.begin-row '': func2.begin-col "\n"}
+            C.exit(#failure);
+         }
+      }
       at-func-idx! = at.func-c++;
       if at.func-cap <= at.func-c {
          old-cap! = at.func-cap;
          grow(at.func-cap, at.func-c);
          realloc(at.func-v, at.func-cap, old-cap);
+         func-v = at.func-v;
       }
-      at.func-v[at-func-idx] = f-idx;
+      func-v[at-func-idx] = f-idx;
    }
    Func.rd(func-main!, r);
    if func-main != #nil {
