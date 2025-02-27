@@ -185,6 +185,16 @@ using bool {
       C1.stdout-bool-nr(val);
    }
 }
+using f32 {
+   stdout-reserve(val:this, so:C1.StdOut, unused:intc) @inline {
+      so.reserve += 47;
+   }
+   stdout(val:this, so:C1.StdOut, unused:intc) @inline {
+      var len:intc;
+      C.sprintf(&C1.stdout-buf-data[C1.stdout-buf-len], "%f%n", val, &len);
+      C1.stdout-buf-len += len;
+   }
+}
 using i32 {
    stdout-reserve(val:this, so:C1.StdOut, unused:intc) @inline {
       so.reserve += 11;
