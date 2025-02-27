@@ -31,7 +31,7 @@ Top 1 Feature: Extremely fast compilation speeds
 
 Top 2 Feature: Easy-to-use yet powerful metaprogramming system
 -
-- Metaprogramming is just as easy as *string intepolation*. Powered by QuickJS of Fabrice Bellard (who made TCC).
+- Metaprogramming is just as easy as *string intepolation*. Uses QuickJS of Fabrice Bellard (who made TCC).
 - Metaprograms are also cached and have few or *zero overhead*.
 - Debugging meta-codes is *easier* because you can see the output of metaprograms in the cache folder.
 
