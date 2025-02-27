@@ -72,57 +72,7 @@ meta #MetaReadWriteProcess {
          }
          j-begin! = j;
          // C1.stdout{"group-c " group-c ", carg-c " carg-c ''\n}
-         loop i = 1; group-c - 1; i++ {
-            carg-c! = group-v[i];
-            e-idx = ExprI.alloc();
-            e.expr-v[k++] = e-idx;
-
-            carg! = carg-v[j++];
-            e-carg! = carg.ptr();
-            var group-v:u8[1];
-            var carg2-v:ExprI[256];
-            if e-carg.type == #str {
-               var e-str:ExprStr = e-carg;
-               group-v[0] = 2 + (carg-c - 1) + 1;
-               carg2-v[0] = carg;
-               e-idx2! = ExprI.alloc();
-               var e:ExprIntData;
-               quick-alloc-one(e);
-               e-idx2.set(e.base, #int);
-               e.value.ii32 = e-str.len();
-               e.type = #u32;
-               carg2-v[1] = e-idx2;
-               k! = 2;
-               loop ; carg-c - 1 {
-                  carg2-v[k++] = carg-v[j++];
-               }
-               carg2-v[k] = lvars[i - 1];
-               // if .id-cstr == 0:Id {
-                  // .id-cstr = id-add(4, "cstr");
-               // }
-               // C1.stdout{"lvar.cstr()\n"}
-               set-method(e-idx, lvar, #nil, 1, group-v, group-v[0], carg2-v);
-            } else {
-               group-v[0] = 1 + (carg-c - 1) + 1;
-               k! = 0;
-               loop ; carg-c - 1 {
-                  carg2-v[k++] = carg-v[j++];
-               }
-               carg2-v[k++] = lvar;
-               carg2-v[k] = lvars[i - 1];
-               // C1.stdout{"carg." func-name "()\n"}
-               set-method(e-idx, carg, #nil, 1, group-v, group-v[0], carg2-v);
-            }
-         }
-         // Create an expression for meta-method-end1
-         e-idx = ExprI.alloc();
-         e.expr-v[k++] = e-idx;
-         if true {
-            var group-v:u8[1];
-            group-v[0] = 0;
-            set-method(e-idx, lvar, #nil, 1, group-v, 0, null);
-         }
-         // Create expressions for meta-method-prefix2
+# for (let i = 0; i < 2; i++) {
          j = j-begin;
          loop i = 1; group-c - 1; i++ {
             carg-c! = group-v[i];
@@ -149,10 +99,6 @@ meta #MetaReadWriteProcess {
                   carg2-v[k++] = carg-v[j++];
                }
                carg2-v[k] = lvars[i - 1];
-               // if .id-cstr == 0:Id {
-                  // .id-cstr = id-add(4, "cstr");
-               // }
-               // C1.stdout{"lvar.cstr()\n"}
                set-method(e-idx, lvar, #nil, 1, group-v, group-v[0], carg2-v);
             } else {
                group-v[0] = 1 + (carg-c - 1) + 1;
@@ -162,11 +108,10 @@ meta #MetaReadWriteProcess {
                }
                carg2-v[k++] = lvar;
                carg2-v[k] = lvars[i - 1];
-               // C1.stdout{"carg." func-name "()\n"}
                set-method(e-idx, carg, #nil, 1, group-v, group-v[0], carg2-v);
             }
          }
-         // Create an expression for meta-method-end2
+         // Create an expression for meta-method-end1
          e-idx = ExprI.alloc();
          e.expr-v[k++] = e-idx;
          if true {
@@ -174,6 +119,7 @@ meta #MetaReadWriteProcess {
             group-v[0] = 0;
             set-method(e-idx, lvar, #nil, 1, group-v, 0, null);
          }
+# }
       }
       process-meta${arg.method ? 'method' : 'func'}(expr:Expr, ok:bool&) @case.process() @inline {
 # if (arg.method) {
@@ -183,101 +129,65 @@ meta #MetaReadWriteProcess {
 # }
          i! = 0;
          if !e.expr-v[i].process() {
-            C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the beginning of meta-function\n"}
+            C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the beginning of meta-${arg.method ? 'method' : 'function'}\n"}
             return;
          }
          var e-func:ExprFunc = e.expr-v[i].ptr();
          f! = e-func.func-idx.ptr();
          if (f.flags & #meta-method) == #0 {
-            C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": When using " f.decl.name "{...}, there must be a @meta-method(NAME-PREFIX END-NAME) attribute in the function " f.decl.name ''\n}
+            C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": When using " f.decl.name "{...}, there must be a @meta(NAME-PREFIX END-NAME) attribute in the function " f.decl.name ''\n}
             return;
          }
          i++;
-         // C1<stdout
-         // "name = " f.meta-method-prefix "\n" $
-         // "str = " f.meta-method-str "\n" $
-         // "cstr = " f.meta-method-cstr "\n" $
-         // "end = " f.meta-method-end ''\n>;
          arg-c! = ((e.expr-c - 1) >> 1) - 1;
+# for (let i = 1; i <= 2; i++) {
+# if (i == 2) {
+         if f.meta-method-prefix2 != #nil {
+# }
          arg-num! = 1;
          loop ; arg-c; i++; arg-num++ {
             e-idx! = e.expr-v[i];
             var e-method:ExprMethod = e-idx.ptr();
+# if (i == 1) {
             if f.meta-method-prefix2 == #nil {
                e-method.group-v[0]--;
                e-method.carg-c--;
             }
-            // C1.stdout{i " " e.expr-c ''\n}
-            // C1.stdout{e-data2.type.cp1-name()}
+# }
             var lvar:ExprLvar = e-method.thiss.ptr();
             if (lvar.base.type == #lvar) && (lvar.lvar.ptr().decl.name == .id-blank) {
                // C1.stdout{"constant string\n"}
-               e-method.func-name = f.meta-method-cstr1;
+               e-method.func-name = f.meta-method-cstr${i};
             } else {
                e-idx2! = e-method.thiss;
                e-data2! = e-idx2.ptr();
                var val;
                if !e-idx2.value(1, true, val) {
-                  C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-function\n"}
+                  C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-${arg.method ? 'method' : 'function'}\n"}
                   return;
                }
                if val.info.array-c > 0 {
-                  e-method.func-name = f.meta-method-arr1;
+                  e-method.func-name = f.meta-method-arr${i};
                } else {
-                  e-method.func-name = f.meta-method-prefix1;
+                  e-method.func-name = f.meta-method-prefix${i};
                }
             }
             if !e-idx.process() {
-               C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-function\n"}
+               C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-${arg.method ? 'method' : 'function'}\n"}
                return;
             }
          }
          e-last! = e.expr-v[i++];
          var e-last-method:ExprMethod = e-last.ptr();
-         e-last-method.func-name = f.meta-method-end1;
+         e-last-method.func-name = f.meta-method-end${i};
          if !e-last.process() {
-            C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the end of meta-function\n"}
+            C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the end of meta-${arg.method ? 'method' : 'function'}\n"}
             return;
          }
-         if f.meta-method-prefix2 != #nil {
-            // expr-c! = 1 + ((group-c - 1) * 2) + 1;
-            arg-num = 1;
-            loop ; arg-c; i++; arg-num++ {
-               e-idx! = e.expr-v[i];
-               var e-method:ExprMethod = e-idx.ptr();
-               // C1.stdout{i ") carg-c " e-method.carg-c ", type " e-data2.type.cp1-name() ''\n}
-               // C1.stdout{e-data2.type.cp1-name()}
-               var lvar:ExprLvar = e-method.thiss.ptr();
-               if (lvar.base.type == #lvar) && (lvar.lvar.ptr().decl.name == .id-blank) {
-                  // C1.stdout{"constant string\n"}
-                  e-method.func-name = f.meta-method-cstr2;
-               } else {
-                  e-idx2! = e-method.thiss;
-                  e-data2! = e-idx2.ptr();
-                  var val;
-                  if !e-idx2.value(1, true, val) {
-                     C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-function\n"}
-                     return;
-                  }
-                  if val.info.array-c > 0 {
-                     e-method.func-name = f.meta-method-arr2;
-                  } else {
-                     e-method.func-name = f.meta-method-prefix2;
-                  }
-               }
-               if !e-idx.process() {
-                  C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-function\n"}
-                  return;
-               }
-            }
-            e-last! = e.expr-v[i++];
-            var e-last-method:ExprMethod = e-last.ptr();
-            e-last-method.func-name = f.meta-method-end2;
-            if !e-last.process() {
-               C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the end of meta-function\n"}
-               return;
-            }
+# if (i == 2) {
          }
+# }
+# }
          ok = true;
       }
    }
