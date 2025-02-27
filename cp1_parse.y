@@ -157,9 +157,9 @@ at(l) ::= at_root.
 /* at(l) ::= at_graves.
    { l.basic.id = _NCp1_Pat_done_0(); } */
 decl_at_name ::= ID_UPPER(e).
-   { _NCp1_Pdecl_at_add_2(e.basic.id, 1); }
+   { _NCp1_Pdecl_at_add_4(e.basic.id, 1, e.basic.row, e.basic.col); }
 decl_at_name2 ::= DOT_ID_UPPER(e).
-   { _NCp1_Pdecl_at_add_2(e.basic.id, 1); }
+   { _NCp1_Pdecl_at_add_4(e.basic.id, 1, e.basic.row, e.basic.col); }
 decl_at_begin_at ::= .
    { _NCp1_Pat_begin_0(); }
 decl_at_names ::= decl_at_begin_at decl_at_name.
@@ -175,7 +175,7 @@ decl_at_begin ::= decl_at_begin_begin(pos) /* OPEN_PARENTHESIS */ decl_at_namesp
    { _NCp1_Pdecl_at_begin_2(pos.basic.row, pos.basic.col); }
 decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE.
    { _NCp1_Pdecl_at_end_0(); }
-decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE CLOSE_CURLY_BRACE.
+decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE.
    { _NCp1_Pdecl_at_end_0(); }
 decl ::= decl_at.
 

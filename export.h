@@ -60,7 +60,7 @@ void _NCp1_Pstmt_lvar_end_2(uint32_t _Lend_row_0, uint32_t _Lend_col_1);
 void _NCp1_Pdecl_include_begin_3(_NCp1_NInclude _Linc_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
 void _NCp1_Pdecl_include_end_0();
 void _NCp1_Pdecl_at_basic_1(_NCp1_NBasicTypeId _Ltype_0);
-void _NCp1_Pdecl_at_add_2(_NCp1_NId _Lname_0, _NCp1_NNameType _Ltype_1);
+void _NCp1_Pdecl_at_add_4(_NCp1_NId _Lname_0, _NCp1_NNameType _Ltype_1, uint32_t _Lrow_2, uint32_t _Lcol_3);
 void _NCp1_Pdecl_at_begin_2(uint32_t _Lrow_0, uint32_t _Lcol_1);
 void _NCp1_Pdecl_at_begin_struct_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
 void _NCp1_Pdecl_at_end_0();

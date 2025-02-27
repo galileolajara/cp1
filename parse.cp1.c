@@ -231,8 +231,8 @@
 #define _NCp1_NLvarFlags_Cset_expr (1)
 #define _NCp1_NExprType_Cfvar (_NCp1_NExprType_Cmethod + 1)
 #define _NCp1_NExprType_Csoa_field (_NCp1_NExprType_Cfvar + 1)
-#define _NCp1_Cdecl_at_nest_limit (8)
 #define _NCp1_NAt_Crelative (_NCp1_NAt_Croot + 1)
+#define _NCp1_Cdecl_at_nest_limit (4)
 #define _NCp1_NExprType_Cint (_NCp1_NExprType_Csoa_field + 1)
 #define _NCp1_NExprType_Ccvar (_NCp1_NExprType_Cint + 1)
 #define _NCp1_NExprType_Cstr (_NCp1_NExprType_Ccvar + 1)
@@ -965,8 +965,8 @@ _NCp1_NId _Gdecl_enum_real_name;
 uint32_t _Gdecl_include_row;
 uint32_t _Gdecl_include_col;
 _NCp1_NAt _Gbuild_at;
-_NCp1_NAt _Gdecl_at_v[_NCp1_Cdecl_at_nest_limit];
 uint8_t _Gdecl_at_c;
+_NCp1_NAt _Gdecl_at_v[_NCp1_Cdecl_at_nest_limit];
 _NCp1_NId* _Gat_alias_name_v;
 struct _NCp1_NRowCol* _Gat_alias_pos_v;
 _NCp1_NAlias _Gat_alias_cap;
@@ -1110,7 +1110,7 @@ void _NCp1_Pstmt_lvar_end_2(uint32_t _Lend_row_0, uint32_t _Lend_col_1);
 void _NCp1_Pdecl_include_begin_3(_NCp1_NInclude _Linc_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
 void _NCp1_Pdecl_include_end_0();
 void _NCp1_Pdecl_at_basic_1(_NCp1_NBasicTypeId _Ltype_0);
-void _NCp1_Pdecl_at_add_2(_NCp1_NId _Lname_0, _NCp1_NNameType _Ltype_1);
+void _NCp1_Pdecl_at_add_4(_NCp1_NId _Lname_0, _NCp1_NNameType _Ltype_1, uint32_t _Lrow_2, uint32_t _Lcol_3);
 void _NCp1_Pdecl_at_begin_2(uint32_t _Lrow_0, uint32_t _Lcol_1);
 void _NCp1_Pdecl_at_begin_struct_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
 void _NCp1_Pdecl_at_end_0();
@@ -1378,6 +1378,7 @@ return "(ERROR)";
 _NCp1_NAt _NCp1_Pat_create_basic_1(_NCp1_NBasicTypeId _Lbasic_0);
 _NCp1_NAt _NCp1_Pat_create_3(_NCp1_NAt _Lparent_0, _NCp1_NNameType _Ltype_1, _NCp1_NId _Lname_2);
 static inline struct _NCp1_NAtData* _NCp1_NAt_Pptr_1(_NCp1_NAt _Li_0);
+void _NCp1_Perr_msg_namespace_limit_2(uint32_t _Lrow_0, uint32_t _Lcol_1);
 void _NCp1_Ptype_info_arr_1(_NCp1_NExprI _Lexpr_0);
 void _NCp1_NTypeInfo_Pfinalize_1(struct _NCp1_NTypeInfo* _Lti_0);
 static inline struct _NCp1_NCvarData* _NCp1_NCvar_Pptr_1(_NCp1_NCvar _Lc_0);
@@ -2985,7 +2986,7 @@ _NCp1_Pstmt_lvar_end_2(0, 0);
 _NCp1_Pdecl_include_begin_3(_NCp1_NInclude_C0, 0, 0);
 _NCp1_Pdecl_include_end_0();
 _NCp1_Pdecl_at_basic_1(_NCp1_NBasicTypeId_Croot);
-_NCp1_Pdecl_at_add_2(_NCp1_NId_C0, _NCp1_NNameType_Cmodule);
+_NCp1_Pdecl_at_add_4(_NCp1_NId_C0, _NCp1_NNameType_Cmodule, 0, 0);
 _NCp1_Pdecl_at_begin_2(0, 0);
 _NCp1_Pdecl_at_begin_struct_3(_NCp1_NId_Cnil, 0, 0);
 _NCp1_Pdecl_at_end_0();
@@ -5578,10 +5579,26 @@ exit(_NLibC_NExit_Cfailure);
 }
 _Gbuild_at = _NCp1_Pat_create_basic_1(_Ltype_0);
 }
-void _NCp1_Pdecl_at_add_2(_NCp1_NId _Lname_0, _NCp1_NNameType _Ltype_1) {
+void _NCp1_Pdecl_at_add_4(_NCp1_NId _Lname_0, _NCp1_NNameType _Ltype_1, uint32_t _Lrow_2, uint32_t _Lcol_3) {
+_NCp1_NAt _Lparent_4;
+int32_t _Lparent_c_5;
+_Lparent_4 = _Gbuild_at;
 _Gbuild_at = _NCp1_Pat_create_3(_Gbuild_at, _Ltype_1, _Lname_0);
+_Lparent_c_5 = 0;
+while(((_Lparent_4 != _NCp1_NAt_Crelative) && (_Lparent_4 != _NCp1_NAt_Croot))) {
+_Lparent_c_5++;
+_Lparent_4 = (*_NCp1_NAt_Pptr_1(_Lparent_4))._Fparent;
+continue_0:;
+}
+break_0:;
+if(_Lparent_c_5 >= _NCp1_Cdecl_at_nest_limit) {
+_NCp1_Perr_msg_namespace_limit_2(_Lrow_2, _Lcol_3);
+}
 }
 void _NCp1_Pdecl_at_begin_2(uint32_t _Lrow_0, uint32_t _Lcol_1) {
+if(_Gdecl_at_c == _NCp1_Cdecl_at_nest_limit) {
+_NCp1_Perr_msg_namespace_limit_2(_Lrow_0, _Lcol_1);
+}
 _Gdecl_at_v[_Gdecl_at_c++] = _Gdecl_at;
 _Gdecl_at = _Gbuild_at;
 }
@@ -5591,7 +5608,7 @@ _Gdecl_struct_row = _Lrow_1;
 _Gdecl_struct_col = _Lcol_2;
 _Gbuild_at = _Gdecl_at;
 _Lold_at_c_3 = _Gat_c;
-_NCp1_Pdecl_at_add_2(_Lname_0, _NCp1_NNameType_Cstruct_enum);
+_NCp1_Pdecl_at_add_4(_Lname_0, _NCp1_NNameType_Cstruct_enum, _Lrow_1, _Lcol_2);
 _Gdecl_at_v[_Gdecl_at_c++] = _Gdecl_at;
 _Gdecl_at = _Gbuild_at;
 _Gdecl_struct_at = _Gbuild_at;
@@ -5922,7 +5939,7 @@ void _NCp1_Pdecl_at_begin_enum_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t 
 _Gdecl_enum_row = _Lrow_1;
 _Gdecl_enum_col = _Lcol_2;
 _Gbuild_at = _Gdecl_at;
-_NCp1_Pdecl_at_add_2(_Lname_0, _NCp1_NNameType_Cstruct_enum);
+_NCp1_Pdecl_at_add_4(_Lname_0, _NCp1_NNameType_Cstruct_enum, _Lrow_1, _Lcol_2);
 _Gdecl_at_v[_Gdecl_at_c++] = _Gdecl_at;
 _Gdecl_at = _Gbuild_at;
 _Gdecl_enum_at = _Gbuild_at;
@@ -7125,6 +7142,31 @@ return _Lbuild_idx_4;
 }
 static inline struct _NCp1_NAtData* _NCp1_NAt_Pptr_1(_NCp1_NAt _Li_0) {
 return &_Gat_v[_Li_0];
+}
+void _NCp1_Perr_msg_namespace_limit_2(uint32_t _Lrow_0, uint32_t _Lcol_1) {
+uint32_t _L_2;
+int _L_3;
+int _L_4;
+int _L_5;
+int _L_6;
+int _L_7;
+struct _NLibCp1_NStdOut _L_8;
+_NLibCp1_Pstdout_1(&_L_8);
+_Tchar_Pstdout_reserve_arr_3(input_path, &_L_8, &_L_2);
+_Tchar_Pstdout_reserve_3(':', &_L_8, _L_3);
+_Tu32_Pstdout_reserve_3(_Lrow_0, &_L_8, _L_4);
+_Tchar_Pstdout_reserve_3(':', &_L_8, _L_5);
+_Tu32_Pstdout_reserve_3(_Lcol_1, &_L_8, _L_6);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_8, ": Max number of names in namespace reached.\n", 44u, _L_7);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_8);
+_Tchar_Pstdout_arr_3(input_path, &_L_8, _L_2);
+_Tchar_Pstdout_3(':', &_L_8, _L_3);
+_Tu32_Pstdout_3(_Lrow_0, &_L_8, _L_4);
+_Tchar_Pstdout_3(':', &_L_8, _L_5);
+_Tu32_Pstdout_3(_Lcol_1, &_L_8, _L_6);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_8, ": Max number of names in namespace reached.\n", 44u, _L_7);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_8);
+exit(_NLibC_NExit_Cfailure);
 }
 void _NCp1_Ptype_info_arr_1(_NCp1_NExprI _Lexpr_0) {
 struct _NCp1_NTypeInfo* _Lti_1;

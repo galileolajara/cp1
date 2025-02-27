@@ -66,7 +66,7 @@ decl-at-begin-enum(name:Id, row:u32, col:u32) {
    .decl-enum-row = row;
    .decl-enum-col = col;
    .build-at = .decl-at;
-   decl-at-add(name, #struct-enum);
+   decl-at-add(name, #struct-enum, row, col);
    .decl-at-v[.decl-at-c++] = .decl-at;
    .decl-at = .build-at;
    .decl-enum-at = .build-at;

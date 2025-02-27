@@ -21,7 +21,7 @@ for line in open("build-template.ninja", "r"):
     if line.startswith(" command = tcc "): continue
     if line.startswith(" command = gcc "): continue
     if line.startswith(" command = clang "):
-        line = "$flags -ggdb".join(line.split("$flags"))
+        line = "$flags -fsanitize=undefined -ggdb".join(line.split("$flags"))
     out.append(line)
 f = open("build-clang-debug.ninja", "wb")
 f.write("".join(out).encode("ascii"))
@@ -52,7 +52,7 @@ for line in open("build-template.ninja", "r"):
     if line.startswith(" command = tcc "): continue
     if line.startswith(" command = clang "): continue
     if line.startswith(" command = gcc "):
-        line = "$flags -ggdb".join(line.split("$flags"))
+        line = "$flags -fsanitize=undefined -ggdb".join(line.split("$flags"))
     out.append(line)
 f = open("build-gcc-debug.ninja", "wb")
 f.write("".join(out).encode("ascii"))

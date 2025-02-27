@@ -387,15 +387,25 @@ at-create-basic(basic:BasicTypeId):At {
 }
 
 var decl-at:At;
-#decl-at-nest-limit:i32 = 8;
+#decl-at-nest-limit:i32 = 4;
 var decl-at-v:At[#decl-at-nest-limit];
 var decl-at-c:u8;
 err-msg-namespace-limit(row:u32, col:u32) {
-   C1.stdout{.input-path '': row '': col ": Max number of ids in namespace reached\n"}
+   C1.stdout{.input-path '': row '': col ": Max number of names in namespace reached.\n"}
    C.exit(#failure);
 }
-decl-at-add(name:Id, type:NameType) {
+decl-at-add(name:Id, type:NameType, row:u32, col:u32) {
+   parent! = .build-at;
    .build-at = at-create(.build-at, type, name);
+   parent-c! = 0;
+   loop (parent != #relative) && (parent != #root) {
+      parent-c++;
+      parent = parent.ptr().parent;
+   }
+   if parent-c >= #decl-at-nest-limit {
+      err-msg-namespace-limit(row, col);
+   }
+   // C1.stdout{"Parents of " name " are " parent-c ''\n}
 }
 decl-at-basic(type:BasicTypeId) {
    if .decl-at != #root {
@@ -405,6 +415,9 @@ decl-at-basic(type:BasicTypeId) {
    .build-at = at-create-basic(type);
 }
 decl-at-begin(row:u32, col:u32) {
+   if .decl-at-c == #decl-at-nest-limit {
+      err-msg-namespace-limit(row, col);
+   }
    .decl-at-v[.decl-at-c++] = .decl-at;
    .decl-at = .build-at;
 }
