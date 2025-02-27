@@ -89,10 +89,10 @@ int32_t _Li_6;
 char* _Lin_data_37 = {0};
 size_t _Lin_size_38 = {0};
 if(_Larg_c_0 < 3) {
-int _L_2;
-uint32_t _L_3;
-int _L_4;
-struct _NLibCp1_NStdOut _L_5;
+int _L_2 = {0};
+uint32_t _L_3 = {0};
+int _L_4 = {0};
+struct _NLibCp1_NStdOut _L_5 = {0};
 usage:
 _NLibCp1_Pstdout_1(&_L_5);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_5, "Usage: ", 7u, _L_2);
@@ -126,8 +126,8 @@ if(((_Lname_7[_Llen_8] >= 'a') && (_Lname_7[_Llen_8] <= 'z'))) {
 } else if(((_Lname_7[_Llen_8] >= 'A') && (_Lname_7[_Llen_8] <= 'Z'))) {
 } else if(((_Lname_7[_Llen_8] >= '0') && (_Lname_7[_Llen_8] <= '9'))) {
 if(_Llen_8 == 0) {
-int _L_9;
-struct _NLibCp1_NStdOut _L_10;
+int _L_9 = {0};
+struct _NLibCp1_NStdOut _L_10 = {0};
 _NLibCp1_Pstdout_1(&_L_10);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_10, "Error, in option -Ddefinename, definename cannot begin with a number\n", 69u, _L_9);
 _NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_10);
@@ -138,10 +138,10 @@ goto usage;
 } else if(_Lname_7[_Llen_8] == '_') {
 } else if(_Lname_7[_Llen_8] == '-') {
 if(_Llen_8 == 0) {
-int _L_11;
-uint32_t _L_12;
-int _L_13;
-struct _NLibCp1_NStdOut _L_14;
+int _L_11 = {0};
+uint32_t _L_12 = {0};
+int _L_13 = {0};
+struct _NLibCp1_NStdOut _L_14 = {0};
 _NLibCp1_Pstdout_1(&_L_14);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_14, "Error, in option -Ddefinename (which is ", 40u, _L_11);
 _Tchar_Pstdout_reserve_arr_3(_Larg_v_1[_Li_6], &_L_14, &_L_12);
@@ -153,10 +153,10 @@ _NLibCp1_NStdOut_Pstdout_cstr_4(&_L_14, "), definename' cannot begin with a dash
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_14);
 goto usage;
 } else if(_Lname_7[(_Llen_8 - 1)] == '-') {
-int _L_15;
-uint32_t _L_16;
-int _L_17;
-struct _NLibCp1_NStdOut _L_18;
+int _L_15 = {0};
+uint32_t _L_16 = {0};
+int _L_17 = {0};
+struct _NLibCp1_NStdOut _L_18 = {0};
 _NLibCp1_Pstdout_1(&_L_18);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_18, "Error, in option -Ddefinename (which is ", 40u, _L_15);
 _Tchar_Pstdout_reserve_arr_3(_Larg_v_1[_Li_6], &_L_18, &_L_16);
@@ -169,12 +169,12 @@ _NLibCp1_NStdOut_Pstdout_end_1(&_L_18);
 goto usage;
 }
 } else {
-int _L_19;
-uint32_t _L_20;
-int _L_21;
-int _L_22;
-int _L_23;
-struct _NLibCp1_NStdOut _L_24;
+int _L_19 = {0};
+uint32_t _L_20 = {0};
+int _L_21 = {0};
+int _L_22 = {0};
+int _L_23 = {0};
+struct _NLibCp1_NStdOut _L_24 = {0};
 _NLibCp1_Pstdout_1(&_L_24);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_24, "Error, in option -Ddefinename (which is ", 40u, _L_19);
 _Tchar_Pstdout_reserve_arr_3(_Larg_v_1[_Li_6], &_L_24, &_L_20);
@@ -195,10 +195,10 @@ continue_1:;
 }
 break_1:;
 if(_Llen_8 == 0) {
-int _L_25;
-uint32_t _L_26;
-int _L_27;
-struct _NLibCp1_NStdOut _L_28;
+int _L_25 = {0};
+uint32_t _L_26 = {0};
+int _L_27 = {0};
+struct _NLibCp1_NStdOut _L_28 = {0};
 _NLibCp1_Pstdout_1(&_L_28);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_28, "Error, in option -Ddefinename (which is ", 40u, _L_25);
 _Tchar_Pstdout_reserve_arr_3(_Larg_v_1[_Li_6], &_L_28, &_L_26);
@@ -211,10 +211,10 @@ _NLibCp1_NStdOut_Pstdout_end_1(&_L_28);
 goto usage;
 }
 if(_Lname_7[(_Llen_8 - 1)] == '-') {
-int _L_29;
-uint32_t _L_30;
-int _L_31;
-struct _NLibCp1_NStdOut _L_32;
+int _L_29 = {0};
+uint32_t _L_30 = {0};
+int _L_31 = {0};
+struct _NLibCp1_NStdOut _L_32 = {0};
 _NLibCp1_Pstdout_1(&_L_32);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_32, "Error, in option -Ddefinename (which is ", 40u, _L_29);
 _Tchar_Pstdout_reserve_arr_3(_Larg_v_1[_Li_6], &_L_32, &_L_30);
@@ -228,10 +228,10 @@ goto usage;
 }
 _NCp1_Ppreprocess_def_2(_Lname_7, _Llen_8);
 } else {
-int _L_33;
-int _L_34;
-int _L_35;
-struct _NLibCp1_NStdOut _L_36;
+int _L_33 = {0};
+int _L_34 = {0};
+int _L_35 = {0};
+struct _NLibCp1_NStdOut _L_36 = {0};
 _NLibCp1_Pstdout_1(&_L_36);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_36, "Error, invalid option '", 23u, _L_33);
 _Tchar_Pstdout_reserve_3(_Larg_v_1[_Li_6][1], &_L_36, _L_34);
@@ -256,10 +256,10 @@ goto usage;
 _Ginput_path = _Larg_v_1[_Li_6];
 _Lin_data_37 = _NCp1_Pread_file_2(_Larg_v_1[_Li_6], &_Lin_size_38);
 if(_Lin_data_37 == NULL) {
-int _L_39;
-uint32_t _L_40;
-int _L_41;
-struct _NLibCp1_NStdOut _L_42;
+int _L_39 = {0};
+uint32_t _L_40 = {0};
+int _L_41 = {0};
+struct _NLibCp1_NStdOut _L_42 = {0};
 _NLibCp1_Pstdout_1(&_L_42);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_42, "Cannot open file for reading: ", 30u, _L_39);
 _Tchar_Pstdout_reserve_arr_3(_Larg_v_1[(_Li_6 + 1)], &_L_42, &_L_40);
@@ -274,10 +274,10 @@ exit(_NLibC_NExit_Cfailure);
 _NCp1_Ppreprocess_init_0();
 _NCp1_Ppreprocess_2(&_Lin_data_37, &_Lin_size_38);
 if(!_NCp1_Pwrite_file_3(_Larg_v_1[(_Li_6 + 1)], _Lin_data_37, _Lin_size_38)) {
-int _L_43;
-uint32_t _L_44;
-int _L_45;
-struct _NLibCp1_NStdOut _L_46;
+int _L_43 = {0};
+uint32_t _L_44 = {0};
+int _L_45 = {0};
+struct _NLibCp1_NStdOut _L_46 = {0};
 _NLibCp1_Pstdout_1(&_L_46);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_46, "Cannot open file for writing: ", 30u, _L_43);
 _Tchar_Pstdout_reserve_arr_3(_Larg_v_1[(_Li_6 + 1)], &_L_46, &_L_44);
@@ -428,11 +428,11 @@ _Li_15++;
 }
 break_2:;
 if(_Lrparen_14 == -1) {
-uint32_t _L_16;
-int _L_17;
-int _L_18;
-int _L_19;
-struct _NLibCp1_NStdOut _L_20;
+uint32_t _L_16 = {0};
+int _L_17 = {0};
+int _L_18 = {0};
+int _L_19 = {0};
+struct _NLibCp1_NStdOut _L_20 = {0};
 _NLibCp1_Pstdout_1(&_L_20);
 _Tchar_Pstdout_reserve_arr_3(_Ginput_path, &_L_20, &_L_16);
 _Tchar_Pstdout_reserve_3(':', &_L_20, _L_17);
@@ -493,15 +493,15 @@ _Lline_len_26++;
 _Lr_6._Fpos += _Lline_len_26;
 }
 if(_Lindention_len_25 <= 0) {
-uint32_t _L_28;
-int _L_29;
-int _L_30;
-int _L_31;
-int _L_32;
-int _L_33;
-int _L_34;
-int _L_35;
-struct _NLibCp1_NStdOut _L_36;
+uint32_t _L_28 = {0};
+int _L_29 = {0};
+int _L_30 = {0};
+int _L_31 = {0};
+int _L_32 = {0};
+int _L_33 = {0};
+int _L_34 = {0};
+int _L_35 = {0};
+struct _NLibCp1_NStdOut _L_36 = {0};
 _NLibCp1_Pstdout_1(&_L_36);
 _Tchar_Pstdout_reserve_arr_3(_Ginput_path, &_L_36, &_L_28);
 _Tchar_Pstdout_reserve_3(':', &_L_36, _L_29);
@@ -564,17 +564,17 @@ _Lw_8._Fp1[0] = '\n';
 _Lw_8._Fpos++;
 _Lr_6._Fpos += (_Lline_len_37 + 1);
 } else {
-uint32_t _L_39;
-int _L_40;
-int _L_41;
-int _L_42;
-int _L_43;
-int _L_44;
-int _L_45;
-int _L_46;
-int _L_47;
-int _L_48;
-struct _NLibCp1_NStdOut _L_49;
+uint32_t _L_39 = {0};
+int _L_40 = {0};
+int _L_41 = {0};
+int _L_42 = {0};
+int _L_43 = {0};
+int _L_44 = {0};
+int _L_45 = {0};
+int _L_46 = {0};
+int _L_47 = {0};
+int _L_48 = {0};
+struct _NLibCp1_NStdOut _L_49 = {0};
 _NLibCp1_Pstdout_1(&_L_49);
 _Tchar_Pstdout_reserve_arr_3(_Ginput_path, &_L_49, &_L_39);
 _Tchar_Pstdout_reserve_3(':', &_L_49, _L_40);

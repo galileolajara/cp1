@@ -88,10 +88,10 @@ _Pvalidate_cp1_path_2(_Lbin_7, _Larg_v_1[1]);
 strcpy(_Lc_path_8, "cp1-c-XXXXXX");
 _Lc_fd_9 = mkstemp(_Lc_path_8);
 if(_Lc_fd_9 == _NPosix_NFd_Cnil) {
-int _L_10;
-uint32_t _L_11;
-int _L_12;
-struct _NLibCp1_NStdOut _L_13;
+int _L_10 = {0};
+uint32_t _L_11 = {0};
+int _L_12 = {0};
+struct _NLibCp1_NStdOut _L_13 = {0};
 _Pprint_commands_1(_Lbin_7);
 _NLibCp1_Pstdout_1(&_L_13);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_13, "Error, cannot open file for reading: ", 37u, _L_10);
@@ -109,10 +109,10 @@ unlink(_Lc_path_8);
 strcpy(_Lexe_path_14, "./cp1-exe-XXXXXX");
 _Lexe_fd_15 = mkstemp(_Lexe_path_14);
 if(_Lexe_fd_15 == _NPosix_NFd_Cnil) {
-int _L_16;
-uint32_t _L_17;
-int _L_18;
-struct _NLibCp1_NStdOut _L_19;
+int _L_16 = {0};
+uint32_t _L_17 = {0};
+int _L_18 = {0};
+struct _NLibCp1_NStdOut _L_19 = {0};
 _Pprint_commands_1(_Lbin_7);
 _NLibCp1_Pstdout_1(&_L_19);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_19, "Error, cannot open file for reading: ", 37u, _L_16);
@@ -164,10 +164,10 @@ exit(_NLibC_NExit_Cfailure);
 return 0;
 }
 void _Pprint_commands_1(char* _Lbin_0) {
-int _L_1;
-uint32_t _L_2;
-int _L_3;
-struct _NLibCp1_NStdOut _L_4;
+int _L_1 = {0};
+uint32_t _L_2 = {0};
+int _L_3 = {0};
+struct _NLibCp1_NStdOut _L_4 = {0};
 _NLibCp1_Pstdout_1(&_L_4);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_4, "Usage: ", 7u, _L_1);
 _Tchar_Pstdout_reserve_arr_3(_Lbin_0, &_L_4, &_L_2);
@@ -181,10 +181,10 @@ _NLibCp1_NStdOut_Pstdout_end_1(&_L_4);
 void _Pvalidate_cp1_path_2(char* _Lbin_0, char* _Lcp1_path_1) {
 size_t _Lcp1_path_len_6;
 if(_Lcp1_path_1[0] == '/') {
-int _L_2;
-uint32_t _L_3;
-int _L_4;
-struct _NLibCp1_NStdOut _L_5;
+int _L_2 = {0};
+uint32_t _L_3 = {0};
+int _L_4 = {0};
+struct _NLibCp1_NStdOut _L_5 = {0};
 _Pprint_commands_1(_Lbin_0);
 _NLibCp1_Pstdout_1(&_L_5);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_5, "Error, [cp1 file] (which is '", 29u, _L_2);
@@ -207,10 +207,10 @@ _Lj_7 = 0;
 for(int i = _Lcp1_path_len_6; i > 0; ) {
 i --;
 if(_Lcp1_path_1[_Lj_7] == '\\') {
-int _L_8;
-uint32_t _L_9;
-int _L_10;
-struct _NLibCp1_NStdOut _L_11;
+int _L_8 = {0};
+uint32_t _L_9 = {0};
+int _L_10 = {0};
+struct _NLibCp1_NStdOut _L_11 = {0};
 _Pprint_commands_1(_Lbin_0);
 _NLibCp1_Pstdout_1(&_L_11);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_11, "Error, [cp1 file] (which is '", 29u, _L_8);
@@ -232,10 +232,10 @@ _Lj_12 = 0;
 for(int i = _Lcp1_path_len_6; i > 0; ) {
 i --;
 if(_Lcp1_path_1[_Lj_12] == ' ') {
-int _L_13;
-uint32_t _L_14;
-int _L_15;
-struct _NLibCp1_NStdOut _L_16;
+int _L_13 = {0};
+uint32_t _L_14 = {0};
+int _L_15 = {0};
+struct _NLibCp1_NStdOut _L_16 = {0};
 _Pprint_commands_1(_Lbin_0);
 _NLibCp1_Pstdout_1(&_L_16);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_16, "Error, [cp1 file] (which is '", 29u, _L_13);
@@ -257,10 +257,10 @@ _Lj_17 = 0;
 for(int i = _Lcp1_path_len_6 - 1; i > 0; ) {
 i --;
 if(((_Lcp1_path_1[_Lj_17] == '.') && (_Lcp1_path_1[(_Lj_17 + 1)] == '/'))) {
-int _L_18;
-uint32_t _L_19;
-int _L_20;
-struct _NLibCp1_NStdOut _L_21;
+int _L_18 = {0};
+uint32_t _L_19 = {0};
+int _L_20 = {0};
+struct _NLibCp1_NStdOut _L_21 = {0};
 _Pprint_commands_1(_Lbin_0);
 _NLibCp1_Pstdout_1(&_L_21);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_21, "Error, [cp1 file] (which is '", 29u, _L_18);
@@ -278,10 +278,10 @@ _Lj_17++;
 }
 break_2:;
 if(!((_Lcp1_path_len_6 > 4) && (_Lcp1_path_1[(_Lcp1_path_len_6 - 4)] == '.') && (_Lcp1_path_1[(_Lcp1_path_len_6 - 3)] == 'c') && (_Lcp1_path_1[(_Lcp1_path_len_6 - 2)] == 'p') && (_Lcp1_path_1[(_Lcp1_path_len_6 - 1)] == '1'))) {
-int _L_22;
-uint32_t _L_23;
-int _L_24;
-struct _NLibCp1_NStdOut _L_25;
+int _L_22 = {0};
+uint32_t _L_23 = {0};
+int _L_24 = {0};
+struct _NLibCp1_NStdOut _L_25 = {0};
 _Pprint_commands_1(_Lbin_0);
 _NLibCp1_Pstdout_1(&_L_25);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_25, "Error, [cp1 file] (which is '", 29u, _L_22);

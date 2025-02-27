@@ -489,6 +489,7 @@ expr-pop-metafunc(at:At, func-name:Id):ExprI {
       .decl-var.name = lvar-name;
       decl-var-type(#nil);
       lvar.decl.copy-from(.decl-var);
+      lvar.flags |= #set-expr;
       e.lvars[i] = e-idx;
    }
    e.group-c = .expr-call-cgrp-c[call-idx];
@@ -504,6 +505,7 @@ expr-pop-metafunc(at:At, func-name:Id):ExprI {
       .decl-var.name = lvar-name;
       decl-var-type(#nil);
       lvar.decl.copy-from(.decl-var);
+      lvar.flags |= #set-expr;
       e.lvar = e-idx;
    }
    return e-idx;
@@ -532,6 +534,7 @@ expr-pop-metamethod(thiss:ExprI, func-name:Id):ExprI {
       .decl-var.name = lvar-name;
       decl-var-type(#nil);
       lvar.decl.copy-from(.decl-var);
+      lvar.flags |= #set-expr;
       e.lvars[i] = e-idx;
    }
    e.group-c = .expr-call-cgrp-c[call-idx];
@@ -547,6 +550,7 @@ expr-pop-metamethod(thiss:ExprI, func-name:Id):ExprI {
       .decl-var.name = lvar-name;
       decl-var-type(#nil);
       lvar.decl.copy-from(.decl-var);
+      lvar.flags |= #set-expr;
       e.lvar = e-idx;
    }
    return e-idx;
