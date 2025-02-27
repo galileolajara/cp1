@@ -158,10 +158,12 @@ at(l) ::= at_root.
    { l.basic.id = _NCp1_Pat_done_0(); } */
 decl_at_name ::= ID_UPPER(e).
    { _NCp1_Pdecl_at_add_2(e.basic.id, 1); }
+decl_at_name2 ::= DOT_ID_UPPER(e).
+   { _NCp1_Pdecl_at_add_2(e.basic.id, 1); }
 decl_at_begin_at ::= .
    { _NCp1_Pat_begin_0(); }
 decl_at_names ::= decl_at_begin_at decl_at_name.
-decl_at_names ::= decl_at_names decl_at_name.
+decl_at_names ::= decl_at_names decl_at_name2.
 decl_at_namespace ::= decl_at_names.
 decl_at_namespace ::= type_basic_id(e).
    { _NCp1_Pdecl_at_basic_1(e.basic.id); }

@@ -155,7 +155,8 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
    if strdup {
       var path:char[];
       quick-alloc-arr(path, in-path-cp1-len + 1);
-      C.memcpy(path, in-path-cp1, in-path-cp1-len + 1);
+      C.memcpy(path, in-path-cp1, in-path-cp1-len);
+      path[in-path-cp1-len] = ''\0;
       file.path = path;
    } else {
       file.path = in-path-cp1;
@@ -340,7 +341,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
       at-i! = e.at;
       at! = at-i.ptr();
       if at.def != #undefined {
-         C1.stdbuf{file-idx ": Cannot define enum " at.name.id " because it was already defined as "}
+         C1.stdbuf{file-idx '': e.begin-row '': e.begin-col ": Cannot define enum " at.name.id " because it was already defined as "}
          if at.def == #struct {
             s! = at.decl.structt.ptr();
             C1.stdout{"struct at " s.file '': s.begin-row '': s.begin-col "\n"}
@@ -373,7 +374,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
       // }
    }
    struct-c! = r.n():Struct;
-   // C1.stdout{"There are " struct-c " structs\n"}
+   // C1.stdout{"There are " struct-c:base " structs\n"}
    s-idx-begin! = .struct-c;
    .struct-c += struct-c;
    if .struct-cap <= .struct-c {
@@ -398,11 +399,13 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
       at-i! = s.at;
       at! = at-i.ptr();
       if at.def != #undefined {
-         C1.stdbuf{file-idx ": Cannot define struct " at.name.id " because it was already defined as "}
+         C1.stdbuf{file-idx '': s.begin-row '': s.begin-col ": Cannot define struct " at.name.id " because it was already defined as "}
          if at.def == #enum {
-            C1.stdbuf{"enum"}
+            e! = at.decl.enumm.ptr();
+            C1.stdout{"enum at " e.file '': e.begin-row '': e.begin-col ''\n}
          } else {
-            C1.stdbuf{"struct"}
+            s2! = at.decl.structt.ptr();
+            C1.stdout{"struct at " s2.file '': s2.begin-row '': s2.begin-col ''\n}
          }
          C.exit(#failure);
       }

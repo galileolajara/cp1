@@ -5583,9 +5583,11 @@ _Gdecl_at_v[_Gdecl_at_c++] = _Gdecl_at;
 _Gdecl_at = _Gbuild_at;
 }
 void _NCp1_Pdecl_at_begin_struct_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2) {
+_NCp1_NAt _Lold_at_c_3;
 _Gdecl_struct_row = _Lrow_1;
 _Gdecl_struct_col = _Lcol_2;
 _Gbuild_at = _Gdecl_at;
+_Lold_at_c_3 = _Gat_c;
 _NCp1_Pdecl_at_add_2(_Lname_0, _NCp1_NNameType_Cstruct_enum);
 _Gdecl_at_v[_Gdecl_at_c++] = _Gdecl_at;
 _Gdecl_at = _Gbuild_at;
