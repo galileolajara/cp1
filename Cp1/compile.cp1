@@ -303,16 +303,29 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
          gvar.include.rd(r);
          gvar.at.rd(r);
          gvar.decl.rd(r);
+         gvar.row = r.n();
+         gvar.col = r.n();
+         gvar.file = file-idx;
+         name! = gvar.decl.name;
          // .gvar-table[i] = gvar-idx;
 
          at! = gvar.at.ptr();
+         gvar-v! = at.gvar-v;
+         loop i = 0; at.gvar-c; i++ {
+            gvar2! = gvar-v[i].ptr();
+            if gvar2.decl.name == name {
+               C1.stdout{file-idx '': gvar.row '': gvar.col ": Cannot declare global variable " gvar.decl.name " because it was already declared at " gvar2.file '': gvar2.row '': gvar2.col "\n"}
+               C.exit(#failure);
+            }
+         }
          at-gvar-idx! = at.gvar-c++;
          if at.gvar-cap <= at.gvar-c {
             old-cap! = at.gvar-cap;
             grow(at.gvar-cap, at.gvar-c);
             realloc(at.gvar-v, at.gvar-cap, old-cap);
+            gvar-v = at.gvar-v;
          }
-         at.gvar-v[at-gvar-idx] = gvar-idx;
+         gvar-v[at-gvar-idx] = gvar-idx;
       }
    }
    enum-c! = r.n():Enum;

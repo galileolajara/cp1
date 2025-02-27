@@ -3801,6 +3801,8 @@ if(_Lheader_1) {
 (*_Lgvar_3)._Fdecl._Fflags |= _NCp1_NVarFlags_Cextern;
 }
 _NCp1_NDeclVarData_Pwr_3(&(*_Lgvar_3)._Fdecl, _Lw_0, _Lheader_1);
+Fputnum(_Lw_0, (*_Lgvar_3)._Frow);
+Fputnum(_Lw_0, (*_Lgvar_3)._Fcol);
 continue_0:;
 _Li_2++;
 }
@@ -5835,6 +5837,8 @@ _Lgvar_2 = (&_Ggvar_v[_Lgvar_idx_0]);
 (*_Lgvar_2)._Finclude = _Gdecl_include;
 (*_Lgvar_2)._Fat = _Gdecl_at;
 _NCp1_NDeclVarData_Pcopy_from_2(&(*_Lgvar_2)._Fdecl, &_Gdecl_var);
+(*_Lgvar_2)._Frow = _Gdecl_var_row;
+(*_Lgvar_2)._Fcol = _Gdecl_var_col;
 }
 void _NCp1_Ptype_info_arr_2(_NCp1_NExprI* _Lexpr_v_0, uint8_t _Lexpr_c_1) {
 union _NCp1_NRdr _Lr_2 = {0};

@@ -392,6 +392,8 @@ decl-var-as-gvar() {
    gvar.include = .decl-include;
    gvar.at = .decl-at;
    gvar.decl.copy-from(.decl-var);
+   gvar.row = .decl-var-row;
+   gvar.col = .decl-var-col;
 }
  
 

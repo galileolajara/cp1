@@ -1,10 +1,6 @@
 using C = LibC;
 using C1 = LibCp1;
 using Cp1 {
-var ctx-begin-row:u32;
-var ctx-begin-col:u32;
-var ctx-end-row:u32;
-var ctx-end-col:u32;
 enum StmtSpaceFlags[
    #0,
    #skip-lvar-decl = 1,

@@ -9,6 +9,10 @@ using C = LibC;
 using C1 = LibCp1;
 using X = Posix;
 using Cp1 {
+var ctx-begin-row:u32;
+var ctx-begin-col:u32;
+var ctx-end-row:u32;
+var ctx-end-col:u32;
 #BuildCommonCodes{}
 var import-v:Include[];
 var import-require-v:u8[];
@@ -795,6 +799,8 @@ write-gvar(w:Wtr, header:bool) {
          gvar.decl.flags |= #extern;
       }
       gvar.decl.wr(w, header);
+      w.n(gvar.row);
+      w.n(gvar.col);
    }
 }
 write-enum(w:Wtr, header:bool) {
