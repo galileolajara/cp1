@@ -151,7 +151,7 @@ jscode-u32(val:u32) {
       .jscode-buf-len += digits;
    }
 }
-struct JsCode[unused:u8] {
+struct JsCode[] {
    jscode-cstr(jc:this, str:char[], len:u32) @inline {
       jscode-bytes(str, len);
    }

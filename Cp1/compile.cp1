@@ -1327,13 +1327,17 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          output{";\nstruct "}
       }
       s.at.write-space();
-      output{" {\n"}
-      loop j = 0; s.fvar-c; j++ {
-         fvar! = s.fvar-v[j];
-         fvar.decl.write-type(#fvar);
-         output{";\n"}
+      if s.fvar-c == 0 {
+         output{" { char unused; };\n"}
+      } else {
+         output{" {\n"}
+         loop j = 0; s.fvar-c; j++ {
+            fvar! = s.fvar-v[j];
+            fvar.decl.write-type(#fvar);
+            output{";\n"}
+         }
+         output{"};\n"}
       }
-      output{"};\n"}
    }
    loop i = 0; .gvar-outputted-c; i++ {
       g-i! = .gvar-outputted-v[i];

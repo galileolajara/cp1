@@ -468,8 +468,7 @@ uint32_t _Ffvar_c;
 struct _NCp1_NFvarData _Ffvar_v[0];
 };
 struct _NCp1_NParser;
-struct _NCp1_NParser {
-};
+struct _NCp1_NParser { char unused; };
 struct _NCp1_NLexer;
 struct _NCp1_NLexer {
 uint8_t* _Fcontent;
