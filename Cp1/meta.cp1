@@ -12,7 +12,7 @@ using char {
    jscode-arr(str:this[], jc:Cp1.JsCode) @inline {
       Cp1.jscode-bytes(str, C.strlen(str));
    }
-   jscode-arr(str:this[], jc:Cp1.JsCode, len:u32) @inline {
+   jscode-arr(str:this[], len:u32, jc:Cp1.JsCode) @inline {
       Cp1.jscode-bytes(str, len);
    }
 }

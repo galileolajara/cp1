@@ -947,7 +947,7 @@ static inline uint8_t _NCp1_NId_Plen_1(_NCp1_NId _Lid_0);
 static inline void _NCp1_Pjscode_1(struct _NCp1_NJsCode* _Ljc_0);
 static inline void _NCp1_NJsCode_Pjscode_cstr_3(struct _NCp1_NJsCode* _Ljc_0, char* _Lstr_1, uint32_t _Llen_2);
 static inline void _NCp1_NJsCode_Pjscode_end_1(struct _NCp1_NJsCode* _Ljc_0);
-static inline void _Tchar_Pjscode_arr_3(char* _Lstr_0, struct _NCp1_NJsCode* _Ljc_1, uint32_t _Llen_2);
+static inline void _Tchar_Pjscode_arr_3(char* _Lstr_0, uint32_t _Llen_1, struct _NCp1_NJsCode* _Ljc_2);
 void _NCp1_NAt_Pjscode_write_1(_NCp1_NAt _Lat_idx_0);
 static inline struct _NCp1_NAtData* _NCp1_NAt_Pptr_1(_NCp1_NAt _Li_0);
 static inline void _Tchar_Pjscode_2(char _Lval_0, struct _NCp1_NJsCode* _Ljc_1);
@@ -994,8 +994,8 @@ static inline void _NCp1_NId_Poutput_3(_NCp1_NId _Lid_0, struct _NCp1_NOutput* _
 void _NCp1_Poutput_bytes_2(char* _Lstr_0, uint32_t _Llen_1);
 bool _NCp1_NAt_Pwrite_type_info_3(_NCp1_NAt _Ltd_0, struct _NCp1_NTypeInfo* _Lti_1, int32_t _Ladd_2);
 void _NCp1_NDeclVarData_Pwrite_lvar_type_2(struct _NCp1_NDeclVarData* _Lvd_0, _NCp1_NLvar _Llvar_1);
-void _Tchar_Poutput_reserve_arr_4(char* _Lval_0, struct _NCp1_NOutput* _Lo_1, size_t _Llen_2, int _Lunused_3);
-void _Tchar_Poutput_arr_4(char* _Lval_0, struct _NCp1_NOutput* _Lo_1, size_t _Llen_2, int _Lunused_3);
+void _Tchar_Poutput_reserve_arr_4(char* _Lval_0, size_t _Llen_1, struct _NCp1_NOutput* _Lo_2, int _Lunused_3);
+void _Tchar_Poutput_arr_4(char* _Lval_0, size_t _Llen_1, struct _NCp1_NOutput* _Lo_2, int _Lunused_3);
 void _NCp1_NStmtSpace_Pwrite_1(struct _NCp1_NStmtSpace* _Lspace_0);
 bool _NCp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
@@ -1262,8 +1262,8 @@ static inline void _Ti32_Poutput_reserve_3(int32_t _Lval_0, struct _NCp1_NOutput
 static inline void _Ti32_Poutput_3(int32_t _Lval_0, struct _NCp1_NOutput* _Lso_1, int _Lunused_2);
 static inline void _Tf32_Poutput_reserve_3(float _Lval_0, struct _NCp1_NOutput* _Lso_1, int _Lunused_2);
 static inline void _Tf32_Poutput_3(float _Lval_0, struct _NCp1_NOutput* _Lso_1, int _Lunused_2);
-static inline void _Tu32_Poutput_reserve_4(uint32_t _Lval_0, struct _NCp1_NOutput* _Lso_1, _NCp1_NOutputIntType _Ltype_2, int _Lunused_3);
-static inline void _Tu32_Poutput_4(uint32_t _Lval_0, struct _NCp1_NOutput* _Lso_1, _NCp1_NOutputIntType _Ltype_2, int _Lunused_3);
+static inline void _Tu32_Poutput_reserve_4(uint32_t _Lval_0, _NCp1_NOutputIntType _Ltype_1, struct _NCp1_NOutput* _Lso_2, int _Lunused_3);
+static inline void _Tu32_Poutput_4(uint32_t _Lval_0, _NCp1_NOutputIntType _Ltype_1, struct _NCp1_NOutput* _Lso_2, int _Lunused_3);
 static inline void _Tu64_Poutput_reserve_3(uint64_t _Lval_0, struct _NCp1_NOutput* _Lso_1, int _Lunused_2);
 static inline void _Tu64_Poutput_3(uint64_t _Lval_0, struct _NCp1_NOutput* _Lso_1, int _Lunused_2);
 static inline void _NCp1_NExprCastFast_Pwrite_value_2(struct _NCp1_NExprCastFast* _Le_0, struct _NCp1_NValue* _Lv_1);
@@ -1814,7 +1814,7 @@ i --;
 struct _NCp1_NJsCode _L_88;
 _NCp1_Pjscode_1(&_L_88);
 _NCp1_NJsCode_Pjscode_cstr_3(&_L_88, "D.", 2u);
-_Tchar_Pjscode_arr_3(_Gdefine_v[_Li_83], &_L_88, _Gdefine_len_v[_Li_83]);
+_Tchar_Pjscode_arr_3(_Gdefine_v[_Li_83], _Gdefine_len_v[_Li_83], &_L_88);
 _NCp1_NJsCode_Pjscode_cstr_3(&_L_88, ";\n", 2u);
 _NCp1_NJsCode_Pjscode_end_1(&_L_88);
 continue_12:;
@@ -1913,7 +1913,7 @@ _NCp1_NJsCode_Pjscode_end_1(&_L_102);
 }
 _NCp1_Pjscode_1(&_L_107);
 _NCp1_NJsCode_Pjscode_cstr_3(&_L_107, "let arg = {", 11u);
-_Tchar_Pjscode_arr_3((*_Lti_75)._Farg, &_L_107, (*_Lti_75)._Farg_len);
+_Tchar_Pjscode_arr_3((*_Lti_75)._Farg, (*_Lti_75)._Farg_len, &_L_107);
 _NCp1_NJsCode_Pjscode_cstr_3(&_L_107, "};\n", 3u);
 _NCp1_NJsCode_Pjscode_end_1(&_L_107);
 if((*_Ltc_80)._Fno_cache) {
@@ -1954,7 +1954,7 @@ if((_Lline_len_117 & 0x8000) == 0) {
 struct _NCp1_NJsCode _L_125;
 _NCp1_Pjscode_1(&_L_125);
 _NCp1_NJsCode_Pjscode_cstr_3(&_L_125, "O(`", 3u);
-_Tchar_Pjscode_arr_3(_Lline_120, &_L_125, _Lline_len_117);
+_Tchar_Pjscode_arr_3(_Lline_120, _Lline_len_117, &_L_125);
 _NCp1_NJsCode_Pjscode_cstr_3(&_L_125, "\\n`);\n", 6u);
 _NCp1_NJsCode_Pjscode_end_1(&_L_125);
 } else {
@@ -1962,7 +1962,7 @@ struct _NCp1_NJsCode _L_129;
 _Lline_len_117 &= 0x7fff;
 _NCp1_Pjscode_1(&_L_129);
 _NCp1_NJsCode_Pjscode_cstr_3(&_L_129, "     ", 5u);
-_Tchar_Pjscode_arr_3(_Lline_120, &_L_129, _Lline_len_117);
+_Tchar_Pjscode_arr_3(_Lline_120, _Lline_len_117, &_L_129);
 _NCp1_NJsCode_Pjscode_end_1(&_L_129);
 }
 _Li_115 += _Lline_len_117;
@@ -2954,11 +2954,11 @@ int _L_343;
 struct _NCp1_NOutput _L_345;
 _NCp1_Poutput_1(&_L_345);
 _NCp1_NOutput_Poutput_reserve_cstr_4(&_L_345, ") { // ", 7u, _L_341);
-_Tchar_Poutput_reserve_arr_4(_Lcomment_for_func_13, &_L_345, _Lcomment_for_func_len_14, _L_342);
+_Tchar_Poutput_reserve_arr_4(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_345, _L_342);
 _Tchar_Poutput_reserve_3('\n', &_L_345, _L_343);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_345);
 _NCp1_NOutput_Poutput_cstr_4(&_L_345, ") { // ", 7u, _L_341);
-_Tchar_Poutput_arr_4(_Lcomment_for_func_13, &_L_345, _Lcomment_for_func_len_14, _L_342);
+_Tchar_Poutput_arr_4(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_345, _L_342);
 _Tchar_Poutput_3('\n', &_L_345, _L_343);
 _NCp1_NOutput_Poutput_end_1(&_L_345);
 } else {
@@ -2978,11 +2978,11 @@ int _L_350;
 struct _NCp1_NOutput _L_352;
 _NCp1_Poutput_1(&_L_352);
 _NCp1_NOutput_Poutput_reserve_cstr_4(&_L_352, "} // ", 5u, _L_348);
-_Tchar_Poutput_reserve_arr_4(_Lcomment_for_func_13, &_L_352, _Lcomment_for_func_len_14, _L_349);
+_Tchar_Poutput_reserve_arr_4(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_352, _L_349);
 _Tchar_Poutput_reserve_3('\n', &_L_352, _L_350);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_352);
 _NCp1_NOutput_Poutput_cstr_4(&_L_352, "} // ", 5u, _L_348);
-_Tchar_Poutput_arr_4(_Lcomment_for_func_13, &_L_352, _Lcomment_for_func_len_14, _L_349);
+_Tchar_Poutput_arr_4(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_352, _L_349);
 _Tchar_Poutput_3('\n', &_L_352, _L_350);
 _NCp1_NOutput_Poutput_end_1(&_L_352);
 } else {
@@ -4369,8 +4369,8 @@ _NCp1_Pjscode_bytes_2(_Lstr_1, _Llen_2);
 }
 static inline void _NCp1_NJsCode_Pjscode_end_1(struct _NCp1_NJsCode* _Ljc_0) {
 }
-static inline void _Tchar_Pjscode_arr_3(char* _Lstr_0, struct _NCp1_NJsCode* _Ljc_1, uint32_t _Llen_2) {
-_NCp1_Pjscode_bytes_2(_Lstr_0, _Llen_2);
+static inline void _Tchar_Pjscode_arr_3(char* _Lstr_0, uint32_t _Llen_1, struct _NCp1_NJsCode* _Ljc_2) {
+_NCp1_Pjscode_bytes_2(_Lstr_0, _Llen_1);
 }
 void _NCp1_NAt_Pjscode_write_1(_NCp1_NAt _Lat_idx_0) {
 struct _NCp1_NJsCode _L_2;
@@ -5783,11 +5783,11 @@ _Li_6++;
 }
 break_0:;
 }
-void _Tchar_Poutput_reserve_arr_4(char* _Lval_0, struct _NCp1_NOutput* _Lo_1, size_t _Llen_2, int _Lunused_3) {
-(*_Lo_1)._Freserve += _Llen_2;
+void _Tchar_Poutput_reserve_arr_4(char* _Lval_0, size_t _Llen_1, struct _NCp1_NOutput* _Lo_2, int _Lunused_3) {
+(*_Lo_2)._Freserve += _Llen_1;
 }
-void _Tchar_Poutput_arr_4(char* _Lval_0, struct _NCp1_NOutput* _Lo_1, size_t _Llen_2, int _Lunused_3) {
-_NCp1_Poutput_bytes_nr_2(_Lval_0, _Llen_2);
+void _Tchar_Poutput_arr_4(char* _Lval_0, size_t _Llen_1, struct _NCp1_NOutput* _Lo_2, int _Lunused_3) {
+_NCp1_Poutput_bytes_nr_2(_Lval_0, _Llen_1);
 }
 void _NCp1_NStmtSpace_Pwrite_1(struct _NCp1_NStmtSpace* _Lspace_0) {
 _NCp1_NLvar _Li_1 = {0};
@@ -8404,10 +8404,10 @@ int _L_11;
 struct _NCp1_NOutput _L_13;
 _NCp1_Poutput_1(&_L_13);
 _Tchar_Poutput_reserve_3('0', &_L_13, _L_10);
-_Tu32_Poutput_reserve_4((*_Le_1)._Fvalue._Fuu32, &_L_13, _NCp1_NOutputIntType_Coct, _L_11);
+_Tu32_Poutput_reserve_4((*_Le_1)._Fvalue._Fuu32, _NCp1_NOutputIntType_Coct, &_L_13, _L_11);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_13);
 _Tchar_Poutput_3('0', &_L_13, _L_10);
-_Tu32_Poutput_4((*_Le_1)._Fvalue._Fuu32, &_L_13, _NCp1_NOutputIntType_Coct, _L_11);
+_Tu32_Poutput_4((*_Le_1)._Fvalue._Fuu32, _NCp1_NOutputIntType_Coct, &_L_13, _L_11);
 _NCp1_NOutput_Poutput_end_1(&_L_13);
 break;
 case _NCp1_NExprInt_Chex:;
@@ -8416,10 +8416,10 @@ int _L_15;
 struct _NCp1_NOutput _L_17;
 _NCp1_Poutput_1(&_L_17);
 _NCp1_NOutput_Poutput_reserve_cstr_4(&_L_17, "0x", 2u, _L_14);
-_Tu32_Poutput_reserve_4((*_Le_1)._Fvalue._Fuu32, &_L_17, _NCp1_NOutputIntType_Chex, _L_15);
+_Tu32_Poutput_reserve_4((*_Le_1)._Fvalue._Fuu32, _NCp1_NOutputIntType_Chex, &_L_17, _L_15);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_17);
 _NCp1_NOutput_Poutput_cstr_4(&_L_17, "0x", 2u, _L_14);
-_Tu32_Poutput_4((*_Le_1)._Fvalue._Fuu32, &_L_17, _NCp1_NOutputIntType_Chex, _L_15);
+_Tu32_Poutput_4((*_Le_1)._Fvalue._Fuu32, _NCp1_NOutputIntType_Chex, &_L_17, _L_15);
 _NCp1_NOutput_Poutput_end_1(&_L_17);
 break;
 case _NCp1_NExprInt_Cu64:;
@@ -9065,14 +9065,14 @@ _NCp1_NExprI_Pset_method_7(_Le_idx_0, _Llvar_11, _NCp1_NId_Cnil, 1, _Lgroup_v_23
 } else {
 int32_t _Lk_29;
 _Lgroup_v_23[0] = (1 + (_Lcarg_c_20 - 1) + 1);
-_Lcarg2_v_24[0] = _Llvar_11;
-_Lk_29 = 1;
+_Lk_29 = 0;
 for(int i = _Lcarg_c_20 - 1; i > 0; ) {
 i --;
 _Lcarg2_v_24[_Lk_29++] = _Lcarg_v_8[_Lj_15++];
 continue_4:;
 }
 break_4:;
+_Lcarg2_v_24[_Lk_29++] = _Llvar_11;
 _Lcarg2_v_24[_Lk_29] = _Llvars_9[(_Li_19 - 1)];
 _NCp1_NExprI_Pset_method_7(_Le_idx_0, _Lcarg_21, _NCp1_NId_Cnil, 1, _Lgroup_v_23, _Lgroup_v_23[0], _Lcarg2_v_24);
 }
@@ -9128,14 +9128,14 @@ _NCp1_NExprI_Pset_method_7(_Le_idx_0, _Llvar_11, _NCp1_NId_Cnil, 1, _Lgroup_v_35
 } else {
 int32_t _Lk_41;
 _Lgroup_v_35[0] = (1 + (_Lcarg_c_32 - 1) + 1);
-_Lcarg2_v_36[0] = _Llvar_11;
-_Lk_41 = 1;
+_Lk_41 = 0;
 for(int i = _Lcarg_c_32 - 1; i > 0; ) {
 i --;
 _Lcarg2_v_36[_Lk_41++] = _Lcarg_v_8[_Lj_15++];
 continue_7:;
 }
 break_7:;
+_Lcarg2_v_36[_Lk_41++] = _Llvar_11;
 _Lcarg2_v_36[_Lk_41] = _Llvars_9[(_Li_31 - 1)];
 _NCp1_NExprI_Pset_method_7(_Le_idx_0, _Lcarg_33, _NCp1_NId_Cnil, 1, _Lgroup_v_35, _Lgroup_v_35[0], _Lcarg2_v_36);
 }
@@ -11751,18 +11751,18 @@ static inline void _Tf32_Poutput_reserve_3(float _Lval_0, struct _NCp1_NOutput* 
 static inline void _Tf32_Poutput_3(float _Lval_0, struct _NCp1_NOutput* _Lso_1, int _Lunused_2) {
 _NCp1_Poutput_f32_nr_1(_Lval_0);
 }
-static inline void _Tu32_Poutput_reserve_4(uint32_t _Lval_0, struct _NCp1_NOutput* _Lso_1, _NCp1_NOutputIntType _Ltype_2, int _Lunused_3) {
-switch(_Ltype_2) {
+static inline void _Tu32_Poutput_reserve_4(uint32_t _Lval_0, _NCp1_NOutputIntType _Ltype_1, struct _NCp1_NOutput* _Lso_2, int _Lunused_3) {
+switch(_Ltype_1) {
 case _NCp1_NOutputIntType_Coct:;
-(*_Lso_1)._Freserve += 11;
+(*_Lso_2)._Freserve += 11;
 break;
 case _NCp1_NOutputIntType_Chex:;
-(*_Lso_1)._Freserve += 8;
+(*_Lso_2)._Freserve += 8;
 break;
 }
 }
-static inline void _Tu32_Poutput_4(uint32_t _Lval_0, struct _NCp1_NOutput* _Lso_1, _NCp1_NOutputIntType _Ltype_2, int _Lunused_3) {
-switch(_Ltype_2) {
+static inline void _Tu32_Poutput_4(uint32_t _Lval_0, _NCp1_NOutputIntType _Ltype_1, struct _NCp1_NOutput* _Lso_2, int _Lunused_3) {
+switch(_Ltype_1) {
 case _NCp1_NOutputIntType_Coct:;
 _NCp1_Poutput_o32_nr_1(_Lval_0);
 break;

@@ -445,11 +445,11 @@ using ExprI {
             set-method(e-idx, lvar, #nil, 1, group-v, group-v[0], carg2-v);
          } else {
             group-v[0] = 1 + (carg-c - 1) + 1;
-            carg2-v[0] = lvar;
-            k! = 1;
+            k! = 0;
             loop ; carg-c - 1 {
                carg2-v[k++] = carg-v[j++];
             }
+            carg2-v[k++] = lvar;
             carg2-v[k] = lvars[i - 1];
             // C1.stdout{"carg." func-name "()\n"}
             set-method(e-idx, carg, #nil, 1, group-v, group-v[0], carg2-v);
@@ -497,11 +497,11 @@ using ExprI {
             set-method(e-idx, lvar, #nil, 1, group-v, group-v[0], carg2-v);
          } else {
             group-v[0] = 1 + (carg-c - 1) + 1;
-            carg2-v[0] = lvar;
-            k! = 1;
+            k! = 0;
             loop ; carg-c - 1 {
                carg2-v[k++] = carg-v[j++];
             }
+            carg2-v[k++] = lvar;
             carg2-v[k] = lvars[i - 1];
             // C1.stdout{"carg." func-name "()\n"}
             set-method(e-idx, carg, #nil, 1, group-v, group-v[0], carg2-v);

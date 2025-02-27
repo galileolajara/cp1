@@ -368,7 +368,7 @@ using u32 {
    output(val:this, so:Cp1.Output, unused:intc) @inline {
       Cp1.output-u32-nr(val);
    }
-   output-reserve(val:this, so:Cp1.Output, type:Cp1.OutputIntType, unused:intc) @inline {
+   output-reserve(val:this, type:Cp1.OutputIntType, so:Cp1.Output, unused:intc) @inline {
       switch type {
          case #oct {
             so.reserve += 11;
@@ -378,7 +378,7 @@ using u32 {
          }
       }
    }
-   output(val:this, so:Cp1.Output, type:Cp1.OutputIntType, unused:intc) @inline {
+   output(val:this, type:Cp1.OutputIntType, so:Cp1.Output, unused:intc) @inline {
       switch type {
          case #oct {
             Cp1.output-o32-nr(val);
@@ -387,11 +387,6 @@ using u32 {
             Cp1.output-x32-nr(val);
          }
       }
-   }
-}
-using u8 {
-   output(val:this, so:Cp1.Output) @inline {
-      Cp1.output-u32(val);
    }
 }
 using u64 {
@@ -415,10 +410,10 @@ using char {
    output-arr(val:this[], o:Cp1.Output, len:u32) {
       Cp1.output-bytes-nr(val, len);
    }
-   output-reserve-arr(val:this[], o:Cp1.Output, len:usz, unused:intc) {
+   output-reserve-arr(val:this[], len:usz, o:Cp1.Output, unused:intc) {
       o.reserve += len;
    }
-   output-arr(val:this[], o:Cp1.Output, len:usz, unused:intc) {
+   output-arr(val:this[], len:usz, o:Cp1.Output, unused:intc) {
       Cp1.output-bytes-nr(val, len);
    }
 }
