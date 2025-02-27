@@ -103,7 +103,6 @@ at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
                   loop ; .at-c; i++ {
                      if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
                         if .at-v[i].name.id == name.id {
-                           C1.stdout{"hello 1\n"}
                            "goto found2;";
                         }
                      }
@@ -119,13 +118,11 @@ at-validate(vd-type:At, at-i:At, file:File, row:u32, col:u32):At {
                loop j = 0:At; .at-c; j++ {
                   if (&&, .at-v[j].parent == i, .at-v[j].type != #basic) {
                      if .at-v[j].name.id == name2.id {
-                        C1.stdout{"hello 2\n"}
                         name3 = parent.name;
                         k = 0:At;
                         loop ; .at-c; k++ {
                            if (&&, .at-v[k].parent == j, .at-v[k].type != #basic) {
                               if .at-v[k].name.id == name3.id {
-                                 C1.stdout{"hello 3\n"}
                                  "goto found3;";
                               }
                            }
