@@ -566,7 +566,7 @@ using ExprI {
       var e:ExprMetaFunc = expr;
       i! = 0;
       if !e.expr-v[i].process() {
-         C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the first argument group of meta-function\n"}
+         C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the beginning of meta-function\n"}
          return;
       }
       var e-func:ExprFunc = e.expr-v[i].ptr();
@@ -582,7 +582,7 @@ using ExprI {
       // "cstr = " f.meta-method-cstr "\n" $
       // "end = " f.meta-method-end ''\n>;
       arg-c! = ((e.expr-c - 1) >> 1) - 1;
-      arg-num! = 2;
+      arg-num! = 1;
       loop ; arg-c; i++; arg-num++ {
          e-idx! = e.expr-v[i];
          var e-method:ExprMethod = e-idx.ptr();
@@ -623,7 +623,7 @@ using ExprI {
       }
       if f.meta-method-prefix2 != #nil {
          // expr-c! = 1 + ((group-c - 1) * 2) + 1;
-         arg-num = 2;
+         arg-num = 1;
          loop ; arg-c; i++; arg-num++ {
             e-idx! = e.expr-v[i];
             var e-method:ExprMethod = e-idx.ptr();
