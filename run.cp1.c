@@ -31,7 +31,6 @@ static inline void _NLibCp1_NStdOut_Pstdout_cstr_4(struct _NLibCp1_NStdOut* _Lso
 static inline void _Tchar_Pstdout_arr_3(char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t _Llen_2);
 static inline void _Tchar_Pstdout_3(char _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
 static inline void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_0);
-static inline int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0);
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
 static inline void _NLibCp1_Pstdout_bytes_nr_2(void* _Ldata_0, size_t _Lsize_1);
 static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0);
@@ -105,7 +104,7 @@ _Tchar_Pstdout_3('\n', &_L_13, _L_12);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_13);
 exit(_NLibC_NExit_Cfailure);
 }
-_NPosix_NFd_Pclose_1(_Lc_fd_9);
+close(_Lc_fd_9);
 unlink(_Lc_path_8);
 strcpy(_Lexe_path_14, "./cp1-exe-XXXXXX");
 _Lexe_fd_15 = mkstemp(_Lexe_path_14);
@@ -126,7 +125,7 @@ _Tchar_Pstdout_3('\n', &_L_19, _L_18);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_19);
 exit(_NLibC_NExit_Cfailure);
 }
-_NPosix_NFd_Pclose_1(_Lexe_fd_15);
+close(_Lexe_fd_15);
 unlink(_Lexe_path_14);
 _Lc_path_8[12] = '.';
 _Lc_path_8[13] = 'c';
@@ -322,9 +321,6 @@ _NLibCp1_Pstdout_char_nr_1(_Lval_0);
 }
 static inline void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_0) {
 _NLibCp1_Pstdout_flush_0();
-}
-static inline int _NPosix_NFd_Pclose_1(_NPosix_NFd _Lfile_0) {
-return close(_Lfile_0);
 }
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0) {
 uint32_t _Lspace_1;

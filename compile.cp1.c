@@ -3372,10 +3372,10 @@ _NCp1_NStruct _Lstruct_c_125;
 _NCp1_NStruct _Ls_idx_begin_126;
 _NCp1_NFunc _Lfunc_c_162;
 _NCp1_NFunc _Lf_idx_begin_163;
-_NCp1_NFunc _Lfunc_main_179 = {0};
-_NCp1_NTemplateCode _Ltemplate_code_idx_begin_201;
-_NCp1_NTemplateCode _Ltemplate_code_c_202;
-_NCp1_NTemplateCode _Lold_template_code_c_203;
+_NCp1_NFunc _Lfunc_main_198 = {0};
+_NCp1_NTemplateCode _Ltemplate_code_idx_begin_220;
+_NCp1_NTemplateCode _Ltemplate_code_c_221;
+_NCp1_NTemplateCode _Lold_template_code_c_222;
 _Lin_path_4 = _NCp1_Preq_parse_3(_Lin_path_cp1_0, _Lin_path_cp1_len_1, _Lrequire_3);
 _Lr_begin_5._Freff = _NCp1_Pread_file_2(_Lin_path_4, &_Lin_size_6);
 if(_Lr_begin_5._Freff == NULL) {
@@ -3567,7 +3567,7 @@ _Tu32_Pstdout_reserve_3((*_Lcvar_40)._Frow, &_L_60, _L_48);
 _Tchar_Pstdout_reserve_3(':', &_L_60, _L_49);
 _Tu32_Pstdout_reserve_3((*_Lcvar_40)._Fcol, &_L_60, _L_50);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_60, ": Cannot declare constant '", 27u, _L_51);
-_NCp1_NId_Pstdout_reserve_3((*_Lcvar_40)._Fdecl._Fname, &_L_60, _L_52);
+_NCp1_NId_Pstdout_reserve_3(_Lname_41, &_L_60, _L_52);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_60, "' because it was already declared at ", 37u, _L_53);
 _NCp1_NFile_Pstdout_reserve_3((*_Lcvar2_45)._Ffile, &_L_60, _L_54);
 _Tchar_Pstdout_reserve_3(':', &_L_60, _L_55);
@@ -3582,7 +3582,7 @@ _Tu32_Pstdout_3((*_Lcvar_40)._Frow, &_L_60, _L_48);
 _Tchar_Pstdout_3(':', &_L_60, _L_49);
 _Tu32_Pstdout_3((*_Lcvar_40)._Fcol, &_L_60, _L_50);
 _NLibCp1_NStdOut_Pstdout_cstr_4(&_L_60, ": Cannot declare constant '", 27u, _L_51);
-_NCp1_NId_Pstdout_3((*_Lcvar_40)._Fdecl._Fname, &_L_60, _L_52);
+_NCp1_NId_Pstdout_3(_Lname_41, &_L_60, _L_52);
 _NLibCp1_NStdOut_Pstdout_cstr_4(&_L_60, "' because it was already declared at ", 37u, _L_53);
 _NCp1_NFile_Pstdout_3((*_Lcvar2_45)._Ffile, &_L_60, _L_54);
 _Tchar_Pstdout_3(':', &_L_60, _L_55);
@@ -3680,7 +3680,7 @@ _Tu32_Pstdout_reserve_3((*_Lgvar_68)._Frow, &_L_88, _L_76);
 _Tchar_Pstdout_reserve_3(':', &_L_88, _L_77);
 _Tu32_Pstdout_reserve_3((*_Lgvar_68)._Fcol, &_L_88, _L_78);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_88, ": Cannot declare global variable '", 34u, _L_79);
-_NCp1_NId_Pstdout_reserve_3((*_Lgvar_68)._Fdecl._Fname, &_L_88, _L_80);
+_NCp1_NId_Pstdout_reserve_3(_Lname_69, &_L_88, _L_80);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_88, "' because it was already declared at ", 37u, _L_81);
 _NCp1_NFile_Pstdout_reserve_3((*_Lgvar2_73)._Ffile, &_L_88, _L_82);
 _Tchar_Pstdout_reserve_3(':', &_L_88, _L_83);
@@ -3695,7 +3695,7 @@ _Tu32_Pstdout_3((*_Lgvar_68)._Frow, &_L_88, _L_76);
 _Tchar_Pstdout_3(':', &_L_88, _L_77);
 _Tu32_Pstdout_3((*_Lgvar_68)._Fcol, &_L_88, _L_78);
 _NLibCp1_NStdOut_Pstdout_cstr_4(&_L_88, ": Cannot declare global variable '", 34u, _L_79);
-_NCp1_NId_Pstdout_3((*_Lgvar_68)._Fdecl._Fname, &_L_88, _L_80);
+_NCp1_NId_Pstdout_3(_Lname_69, &_L_88, _L_80);
 _NLibCp1_NStdOut_Pstdout_cstr_4(&_L_88, "' because it was already declared at ", 37u, _L_81);
 _NCp1_NFile_Pstdout_3((*_Lgvar2_73)._Ffile, &_L_88, _L_82);
 _Tchar_Pstdout_3(':', &_L_88, _L_83);
@@ -4018,7 +4018,9 @@ union _NCp1_NRdr _Lr0_169 = {0};
 int8_t _Lthis_idx_172;
 uint8_t _Lgroup_c_173;
 struct _NCp1_NAtData* _Lat_176;
-int32_t _Lat_func_idx_177;
+_NCp1_NId _Lname_177;
+_NCp1_NFunc* _Lfunc_v_178;
+int32_t _Lat_func_idx_196;
 _Lfarg_c_166 = _NCp1_NRdr_Pn1_1(&_Lr_15);
 _NCp1_Pquick_alloc_plus_2(_Lf_167, sizeof(struct _NCp1_NFarg) * _Lfarg_c_166);
 _Gfunc_v[_Lf_idx_165] = _Lf_167;
@@ -4087,24 +4089,16 @@ memcpy((*_Lf_167)._Fdecl_str, _Lr_15._Freff, _Llen_175);
 _Lr_15._Fpos += _Llen_175;
 }
 _Lat_176 = _NCp1_NAt_Pptr_1(_Lat_i_168);
-_Lat_func_idx_177 = (*_Lat_176)._Ffunc_c++;
-if((*_Lat_176)._Ffunc_cap <= (*_Lat_176)._Ffunc_c) {
-int32_t _Lold_cap_178;
-_Lold_cap_178 = (*_Lat_176)._Ffunc_cap;
-_NCp1_Pgrow_2((*_Lat_176)._Ffunc_cap, (*_Lat_176)._Ffunc_c);
-_NCp1_Prealloc_3((*_Lat_176)._Ffunc_v, (*_Lat_176)._Ffunc_cap, _Lold_cap_178);
-}
-(*_Lat_176)._Ffunc_v[_Lat_func_idx_177] = _Lf_idx_165;
-continue_10:;
-_Lf_idx_165++;
-}
-break_10:;
-_NCp1_NFunc_Prd_2(&_Lfunc_main_179, &_Lr_15);
-if(_Lfunc_main_179 != _NCp1_NFunc_Cnil) {
-_Lfunc_main_179 += _Lf_idx_begin_163;
-if(_Gfunc_main != _NCp1_NFunc_Cnil) {
-struct _NCp1_NDeclFunc* _Lfirst_180;
-struct _NCp1_NDeclFunc* _Lsecond_181;
+_Lname_177 = (*_Lf_167)._Fdecl._Fname;
+_Lfunc_v_178 = (*_Lat_176)._Ffunc_v;
+int32_t _Li_179;
+_Li_179 = 0;
+for(int i = (*_Lat_176)._Ffunc_c; i > 0; ) {
+i --;
+struct _NCp1_NDeclFunc* _Lfunc2_180;
+_Lfunc2_180 = _NCp1_NFunc_Pptr_1(_Lfunc_v_178[_Li_179]);
+if((((*_Lfunc2_180)._Fdecl._Fname == _Lname_177) && ((*_Lfunc2_180)._Ffarg_c == _Lfarg_c_166) && ((*_Lfunc2_180)._Fgroup_c == _Lgroup_c_173) && (memcmp((*_Lfunc2_180)._Fgroup_v, (*_Lf_167)._Fgroup_v, _Lgroup_c_173) == 0))) {
+int _L_181;
 int _L_182;
 int _L_183;
 int _L_184;
@@ -4119,163 +4113,233 @@ int _L_192;
 int _L_193;
 int _L_194;
 struct _NLibCp1_NStdOut _L_195;
-_Lfirst_180 = _NCp1_NFunc_Pptr_1(_Gfunc_main);
-_Lsecond_181 = _NCp1_NFunc_Pptr_1(_Lfunc_main_179);
 _NLibCp1_Pstdout_1(&_L_195);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_195, "There are more than one function with @main attribute, first is ", 64u, _L_182);
-_NCp1_NFile_Pstdout_reserve_3((*_Lfirst_180)._Ffile, &_L_195, _L_183);
+_NCp1_NFile_Pstdout_reserve_3(_Lfile_idx_11, &_L_195, _L_181);
+_Tchar_Pstdout_reserve_3(':', &_L_195, _L_182);
+_Tu32_Pstdout_reserve_3((*_Lf_167)._Fbegin_row, &_L_195, _L_183);
 _Tchar_Pstdout_reserve_3(':', &_L_195, _L_184);
-_Tu32_Pstdout_reserve_3((*_Lfirst_180)._Fbegin_row, &_L_195, _L_185);
-_Tchar_Pstdout_reserve_3(':', &_L_195, _L_186);
-_Tu32_Pstdout_reserve_3((*_Lfirst_180)._Fbegin_col, &_L_195, _L_187);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_195, " and second is ", 15u, _L_188);
-_NCp1_NFile_Pstdout_reserve_3(_Lfile_idx_11, &_L_195, _L_189);
+_Tu32_Pstdout_reserve_3((*_Lf_167)._Fbegin_col, &_L_195, _L_185);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_195, ": Cannot declare function '", 27u, _L_186);
+_NCp1_NId_Pstdout_reserve_3(_Lname_177, &_L_195, _L_187);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_195, "' because it was already declared at ", 37u, _L_188);
+_NCp1_NFile_Pstdout_reserve_3((*_Lfunc2_180)._Ffile, &_L_195, _L_189);
 _Tchar_Pstdout_reserve_3(':', &_L_195, _L_190);
-_Tu32_Pstdout_reserve_3((*_Lsecond_181)._Fbegin_row, &_L_195, _L_191);
+_Tu32_Pstdout_reserve_3((*_Lfunc2_180)._Fbegin_row, &_L_195, _L_191);
 _Tchar_Pstdout_reserve_3(':', &_L_195, _L_192);
-_Tu32_Pstdout_reserve_3((*_Lsecond_181)._Fbegin_col, &_L_195, _L_193);
-_Tchar_Pstdout_reserve_3('\n', &_L_195, _L_194);
+_Tu32_Pstdout_reserve_3((*_Lfunc2_180)._Fbegin_col, &_L_195, _L_193);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_195, "\n", 1u, _L_194);
 _NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_195);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_195, "There are more than one function with @main attribute, first is ", 64u, _L_182);
-_NCp1_NFile_Pstdout_3((*_Lfirst_180)._Ffile, &_L_195, _L_183);
+_NCp1_NFile_Pstdout_3(_Lfile_idx_11, &_L_195, _L_181);
+_Tchar_Pstdout_3(':', &_L_195, _L_182);
+_Tu32_Pstdout_3((*_Lf_167)._Fbegin_row, &_L_195, _L_183);
 _Tchar_Pstdout_3(':', &_L_195, _L_184);
-_Tu32_Pstdout_3((*_Lfirst_180)._Fbegin_row, &_L_195, _L_185);
-_Tchar_Pstdout_3(':', &_L_195, _L_186);
-_Tu32_Pstdout_3((*_Lfirst_180)._Fbegin_col, &_L_195, _L_187);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_195, " and second is ", 15u, _L_188);
-_NCp1_NFile_Pstdout_3(_Lfile_idx_11, &_L_195, _L_189);
+_Tu32_Pstdout_3((*_Lf_167)._Fbegin_col, &_L_195, _L_185);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_195, ": Cannot declare function '", 27u, _L_186);
+_NCp1_NId_Pstdout_3(_Lname_177, &_L_195, _L_187);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_195, "' because it was already declared at ", 37u, _L_188);
+_NCp1_NFile_Pstdout_3((*_Lfunc2_180)._Ffile, &_L_195, _L_189);
 _Tchar_Pstdout_3(':', &_L_195, _L_190);
-_Tu32_Pstdout_3((*_Lsecond_181)._Fbegin_row, &_L_195, _L_191);
+_Tu32_Pstdout_3((*_Lfunc2_180)._Fbegin_row, &_L_195, _L_191);
 _Tchar_Pstdout_3(':', &_L_195, _L_192);
-_Tu32_Pstdout_3((*_Lsecond_181)._Fbegin_col, &_L_195, _L_193);
-_Tchar_Pstdout_3('\n', &_L_195, _L_194);
+_Tu32_Pstdout_3((*_Lfunc2_180)._Fbegin_col, &_L_195, _L_193);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_195, "\n", 1u, _L_194);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_195);
 exit(_NLibC_NExit_Cfailure);
 }
-_Gfunc_main = _Lfunc_main_179;
-}
-_NCp1_NFunc _Lf_idx_196;
-_Lf_idx_196 = _Lf_idx_begin_163;
-for(int i = _Lfunc_c_162; i > 0; ) {
-i --;
-struct _NCp1_NDeclFunc* _Lf_197;
-uint32_t _Lsize_198;
-_Lf_197 = _Gfunc_v[_Lf_idx_196];
-if(((*_Lf_197)._Fflags & _NCp1_NFuncFlags_Chas_body) == _NCp1_NFuncFlags_C0) {
-goto continue_13;
-}
-_Lsize_198 = _NCp1_NRdr_Pn4_1(&_Lr_15);
-(*_Lf_197)._Fbody_file_pos = (_Lr_15._Fpos - _Lr_begin_5._Fpos);
-_Lr_15._Fpos += _Lsize_198;
 continue_13:;
-_Lf_idx_196++;
+_Li_179++;
 }
 break_13:;
-for(int i = Fgetnum(&_Lr_15); i > 0; ) {
-i --;
-_NCp1_NInclude _Lpath_199 = {0};
-bool _Lrequire2_200;
-_NCp1_NInclude_Prd_2(&_Lpath_199, &_Lr_15);
-_Lrequire2_200 = _NCp1_NRdr_Pb_1(&_Lr_15);
-_NCp1_Pimport_3(_Lpath_199, (_Lrequire2_200 && _Lrequire_3), _Lfile_idx_11);
-continue_14:;
+_Lat_func_idx_196 = (*_Lat_176)._Ffunc_c++;
+if((*_Lat_176)._Ffunc_cap <= (*_Lat_176)._Ffunc_c) {
+int32_t _Lold_cap_197;
+_Lold_cap_197 = (*_Lat_176)._Ffunc_cap;
+_NCp1_Pgrow_2((*_Lat_176)._Ffunc_cap, (*_Lat_176)._Ffunc_c);
+_NCp1_Prealloc_3((*_Lat_176)._Ffunc_v, (*_Lat_176)._Ffunc_cap, _Lold_cap_197);
+_Lfunc_v_178 = (*_Lat_176)._Ffunc_v;
 }
-break_14:;
-_Ltemplate_code_idx_begin_201 = _Gtemplate_code_c;
-_Ltemplate_code_c_202 = (_NCp1_NTemplateCode)(Fgetnum(&_Lr_15));
-_Lold_template_code_c_203 = _Gtemplate_code_c;
-_Gtemplate_code_c += _Ltemplate_code_c_202;
-if(_Gtemplate_code_cap <= _Gtemplate_code_c) {
-_NCp1_NTemplateCode _Lold_cap_204;
-_Lold_cap_204 = _Gtemplate_code_cap;
-_Gtemplate_code_cap = _NCp1_Pgrow_1((uint32_t)(_Gtemplate_code_c));
-_NCp1_Prealloc_3(_Gtemplate_code_v, (uint32_t)(_Gtemplate_code_cap), (uint32_t)(_Lold_cap_204));
+_Lfunc_v_178[_Lat_func_idx_196] = _Lf_idx_165;
+continue_10:;
+_Lf_idx_165++;
 }
-_NCp1_NTemplateCode _Li_205;
-_Li_205 = _Ltemplate_code_idx_begin_201;
-for(int i = _Ltemplate_code_c_202; i > 0; ) {
-i --;
-struct _NCp1_NTemplateCodeData* _Ltd_206;
-_Ltd_206 = (&_Gtemplate_code_v[_Li_205]);
-_NCp1_NId_Prd_2(&(*_Ltd_206)._Fname, &_Lr_15);
-(*_Ltd_206)._Frow = Fgetnum(&_Lr_15);
-(*_Ltd_206)._Fline_c = Fgetnum(&_Lr_15);
-(*_Ltd_206)._Fwith_reflection = _NCp1_NRdr_Pb_1(&_Lr_15);
-(*_Ltd_206)._Fno_cache = _NCp1_NRdr_Pb_1(&_Lr_15);
-(*_Ltd_206)._Fcode_len = Fgetnum(&_Lr_15);
-(*_Ltd_206)._Fcode_crc32c = _NCp1_NRdr_Pn4_1(&_Lr_15);
-(*_Ltd_206)._Fcode = _Lr_15._Fcharr;
-_Lr_15._Fpos += (*_Ltd_206)._Fcode_len;
-_NCp1_NAt_Prd_2(&(*_Ltd_206)._Fat, &_Lr_15);
-(*_Ltd_206)._Ffile = _Lfile_idx_11;
-int32_t _Lj_207;
-_Lj_207 = 0;
-for(int i = _Lold_template_code_c_203; i > 0; ) {
-i --;
-struct _NCp1_NTemplateCodeData* _Ltd2_208;
-_Ltd2_208 = (&_Gtemplate_code_v[_Lj_207]);
-if((((*_Ltd2_208)._Fname == (*_Ltd_206)._Fname) && ((*_Ltd2_208)._Fat == (*_Ltd_206)._Fat))) {
+break_10:;
+_NCp1_NFunc_Prd_2(&_Lfunc_main_198, &_Lr_15);
+if(_Lfunc_main_198 != _NCp1_NFunc_Cnil) {
+_Lfunc_main_198 += _Lf_idx_begin_163;
+if(_Gfunc_main != _NCp1_NFunc_Cnil) {
+struct _NCp1_NDeclFunc* _Lfirst_199;
+struct _NCp1_NDeclFunc* _Lsecond_200;
+int _L_201;
+int _L_202;
+int _L_203;
+int _L_204;
+int _L_205;
+int _L_206;
+int _L_207;
+int _L_208;
 int _L_209;
 int _L_210;
 int _L_211;
 int _L_212;
 int _L_213;
-int _L_214;
-int _L_215;
-int _L_216;
-int _L_217;
-int _L_218;
-struct _NLibCp1_NStdOut _L_219;
-_NLibCp1_Pstdout_1(&_L_219);
-_NCp1_NFile_Pstdout_reserve_3(_Lfile_idx_11, &_L_219, _L_209);
-_Tchar_Pstdout_reserve_3(':', &_L_219, _L_210);
-_Tu32_Pstdout_reserve_3((*_Ltd_206)._Frow, &_L_219, _L_211);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_219, ": Template code '", 17u, _L_212);
-_NCp1_NId_Pstdout_reserve_3((*_Ltd_206)._Fname, &_L_219, _L_213);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_219, "' was redeclared. Previously declared at ", 41u, _L_214);
-_NCp1_NFile_Pstdout_reserve_3((*_Ltd2_208)._Ffile, &_L_219, _L_215);
-_Tchar_Pstdout_reserve_3(':', &_L_219, _L_216);
-_Tu32_Pstdout_reserve_3((*_Ltd2_208)._Frow, &_L_219, _L_217);
-_Tchar_Pstdout_reserve_3('\n', &_L_219, _L_218);
-_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_219);
-_NCp1_NFile_Pstdout_3(_Lfile_idx_11, &_L_219, _L_209);
-_Tchar_Pstdout_3(':', &_L_219, _L_210);
-_Tu32_Pstdout_3((*_Ltd_206)._Frow, &_L_219, _L_211);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_219, ": Template code '", 17u, _L_212);
-_NCp1_NId_Pstdout_3((*_Ltd_206)._Fname, &_L_219, _L_213);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_219, "' was redeclared. Previously declared at ", 41u, _L_214);
-_NCp1_NFile_Pstdout_3((*_Ltd2_208)._Ffile, &_L_219, _L_215);
-_Tchar_Pstdout_3(':', &_L_219, _L_216);
-_Tu32_Pstdout_3((*_Ltd2_208)._Frow, &_L_219, _L_217);
-_Tchar_Pstdout_3('\n', &_L_219, _L_218);
-_NLibCp1_NStdOut_Pstdout_end_1(&_L_219);
+struct _NLibCp1_NStdOut _L_214;
+_Lfirst_199 = _NCp1_NFunc_Pptr_1(_Gfunc_main);
+_Lsecond_200 = _NCp1_NFunc_Pptr_1(_Lfunc_main_198);
+_NLibCp1_Pstdout_1(&_L_214);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_214, "There are more than one function with @main attribute, first is ", 64u, _L_201);
+_NCp1_NFile_Pstdout_reserve_3((*_Lfirst_199)._Ffile, &_L_214, _L_202);
+_Tchar_Pstdout_reserve_3(':', &_L_214, _L_203);
+_Tu32_Pstdout_reserve_3((*_Lfirst_199)._Fbegin_row, &_L_214, _L_204);
+_Tchar_Pstdout_reserve_3(':', &_L_214, _L_205);
+_Tu32_Pstdout_reserve_3((*_Lfirst_199)._Fbegin_col, &_L_214, _L_206);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_214, " and second is ", 15u, _L_207);
+_NCp1_NFile_Pstdout_reserve_3(_Lfile_idx_11, &_L_214, _L_208);
+_Tchar_Pstdout_reserve_3(':', &_L_214, _L_209);
+_Tu32_Pstdout_reserve_3((*_Lsecond_200)._Fbegin_row, &_L_214, _L_210);
+_Tchar_Pstdout_reserve_3(':', &_L_214, _L_211);
+_Tu32_Pstdout_reserve_3((*_Lsecond_200)._Fbegin_col, &_L_214, _L_212);
+_Tchar_Pstdout_reserve_3('\n', &_L_214, _L_213);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_214);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_214, "There are more than one function with @main attribute, first is ", 64u, _L_201);
+_NCp1_NFile_Pstdout_3((*_Lfirst_199)._Ffile, &_L_214, _L_202);
+_Tchar_Pstdout_3(':', &_L_214, _L_203);
+_Tu32_Pstdout_3((*_Lfirst_199)._Fbegin_row, &_L_214, _L_204);
+_Tchar_Pstdout_3(':', &_L_214, _L_205);
+_Tu32_Pstdout_3((*_Lfirst_199)._Fbegin_col, &_L_214, _L_206);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_214, " and second is ", 15u, _L_207);
+_NCp1_NFile_Pstdout_3(_Lfile_idx_11, &_L_214, _L_208);
+_Tchar_Pstdout_3(':', &_L_214, _L_209);
+_Tu32_Pstdout_3((*_Lsecond_200)._Fbegin_row, &_L_214, _L_210);
+_Tchar_Pstdout_3(':', &_L_214, _L_211);
+_Tu32_Pstdout_3((*_Lsecond_200)._Fbegin_col, &_L_214, _L_212);
+_Tchar_Pstdout_3('\n', &_L_214, _L_213);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_214);
 exit(_NLibC_NExit_Cfailure);
 }
-continue_16:;
-_Lj_207++;
+_Gfunc_main = _Lfunc_main_198;
 }
-break_16:;
-continue_15:;
-_Li_205++;
+_NCp1_NFunc _Lf_idx_215;
+_Lf_idx_215 = _Lf_idx_begin_163;
+for(int i = _Lfunc_c_162; i > 0; ) {
+i --;
+struct _NCp1_NDeclFunc* _Lf_216;
+uint32_t _Lsize_217;
+_Lf_216 = _Gfunc_v[_Lf_idx_215];
+if(((*_Lf_216)._Fflags & _NCp1_NFuncFlags_Chas_body) == _NCp1_NFuncFlags_C0) {
+goto continue_14;
 }
-break_15:;
+_Lsize_217 = _NCp1_NRdr_Pn4_1(&_Lr_15);
+(*_Lf_216)._Fbody_file_pos = (_Lr_15._Fpos - _Lr_begin_5._Fpos);
+_Lr_15._Fpos += _Lsize_217;
+continue_14:;
+_Lf_idx_215++;
+}
+break_14:;
 for(int i = Fgetnum(&_Lr_15); i > 0; ) {
 i --;
-struct _NCp1_NTemplateInstData _Lti_220;
-_NCp1_NId_Prd_2(&_Lti_220._Fname, &_Lr_15);
-_Lti_220._Frow = Fgetnum(&_Lr_15);
-_Lti_220._Fcol = Fgetnum(&_Lr_15);
-_Lti_220._Farg_len = Fgetnum(&_Lr_15);
-_Lti_220._Farg_crc32c = _NCp1_NRdr_Pn4_1(&_Lr_15);
-_Lti_220._Farg = _Lr_15._Fcharr;
-_Lr_15._Fpos += _Lti_220._Farg_len;
-_NCp1_NAt_Prd_2(&_Lti_220._Fat, &_Lr_15);
-_Lti_220._Ffile = _Lfile_idx_11;
-_Lti_220._Frequire = _Lrequire_3;
-_NCp1_Ptemplate_inst_1(&_Lti_220);
+_NCp1_NInclude _Lpath_218 = {0};
+bool _Lrequire2_219;
+_NCp1_NInclude_Prd_2(&_Lpath_218, &_Lr_15);
+_Lrequire2_219 = _NCp1_NRdr_Pb_1(&_Lr_15);
+_NCp1_Pimport_3(_Lpath_218, (_Lrequire2_219 && _Lrequire_3), _Lfile_idx_11);
+continue_15:;
+}
+break_15:;
+_Ltemplate_code_idx_begin_220 = _Gtemplate_code_c;
+_Ltemplate_code_c_221 = (_NCp1_NTemplateCode)(Fgetnum(&_Lr_15));
+_Lold_template_code_c_222 = _Gtemplate_code_c;
+_Gtemplate_code_c += _Ltemplate_code_c_221;
+if(_Gtemplate_code_cap <= _Gtemplate_code_c) {
+_NCp1_NTemplateCode _Lold_cap_223;
+_Lold_cap_223 = _Gtemplate_code_cap;
+_Gtemplate_code_cap = _NCp1_Pgrow_1((uint32_t)(_Gtemplate_code_c));
+_NCp1_Prealloc_3(_Gtemplate_code_v, (uint32_t)(_Gtemplate_code_cap), (uint32_t)(_Lold_cap_223));
+}
+_NCp1_NTemplateCode _Li_224;
+_Li_224 = _Ltemplate_code_idx_begin_220;
+for(int i = _Ltemplate_code_c_221; i > 0; ) {
+i --;
+struct _NCp1_NTemplateCodeData* _Ltd_225;
+_Ltd_225 = (&_Gtemplate_code_v[_Li_224]);
+_NCp1_NId_Prd_2(&(*_Ltd_225)._Fname, &_Lr_15);
+(*_Ltd_225)._Frow = Fgetnum(&_Lr_15);
+(*_Ltd_225)._Fline_c = Fgetnum(&_Lr_15);
+(*_Ltd_225)._Fwith_reflection = _NCp1_NRdr_Pb_1(&_Lr_15);
+(*_Ltd_225)._Fno_cache = _NCp1_NRdr_Pb_1(&_Lr_15);
+(*_Ltd_225)._Fcode_len = Fgetnum(&_Lr_15);
+(*_Ltd_225)._Fcode_crc32c = _NCp1_NRdr_Pn4_1(&_Lr_15);
+(*_Ltd_225)._Fcode = _Lr_15._Fcharr;
+_Lr_15._Fpos += (*_Ltd_225)._Fcode_len;
+_NCp1_NAt_Prd_2(&(*_Ltd_225)._Fat, &_Lr_15);
+(*_Ltd_225)._Ffile = _Lfile_idx_11;
+int32_t _Lj_226;
+_Lj_226 = 0;
+for(int i = _Lold_template_code_c_222; i > 0; ) {
+i --;
+struct _NCp1_NTemplateCodeData* _Ltd2_227;
+_Ltd2_227 = (&_Gtemplate_code_v[_Lj_226]);
+if((((*_Ltd2_227)._Fname == (*_Ltd_225)._Fname) && ((*_Ltd2_227)._Fat == (*_Ltd_225)._Fat))) {
+int _L_228;
+int _L_229;
+int _L_230;
+int _L_231;
+int _L_232;
+int _L_233;
+int _L_234;
+int _L_235;
+int _L_236;
+int _L_237;
+struct _NLibCp1_NStdOut _L_238;
+_NLibCp1_Pstdout_1(&_L_238);
+_NCp1_NFile_Pstdout_reserve_3(_Lfile_idx_11, &_L_238, _L_228);
+_Tchar_Pstdout_reserve_3(':', &_L_238, _L_229);
+_Tu32_Pstdout_reserve_3((*_Ltd_225)._Frow, &_L_238, _L_230);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_238, ": Template code '", 17u, _L_231);
+_NCp1_NId_Pstdout_reserve_3((*_Ltd_225)._Fname, &_L_238, _L_232);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_238, "' was redeclared. Previously declared at ", 41u, _L_233);
+_NCp1_NFile_Pstdout_reserve_3((*_Ltd2_227)._Ffile, &_L_238, _L_234);
+_Tchar_Pstdout_reserve_3(':', &_L_238, _L_235);
+_Tu32_Pstdout_reserve_3((*_Ltd2_227)._Frow, &_L_238, _L_236);
+_Tchar_Pstdout_reserve_3('\n', &_L_238, _L_237);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_238);
+_NCp1_NFile_Pstdout_3(_Lfile_idx_11, &_L_238, _L_228);
+_Tchar_Pstdout_3(':', &_L_238, _L_229);
+_Tu32_Pstdout_3((*_Ltd_225)._Frow, &_L_238, _L_230);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_238, ": Template code '", 17u, _L_231);
+_NCp1_NId_Pstdout_3((*_Ltd_225)._Fname, &_L_238, _L_232);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_238, "' was redeclared. Previously declared at ", 41u, _L_233);
+_NCp1_NFile_Pstdout_3((*_Ltd2_227)._Ffile, &_L_238, _L_234);
+_Tchar_Pstdout_3(':', &_L_238, _L_235);
+_Tu32_Pstdout_3((*_Ltd2_227)._Frow, &_L_238, _L_236);
+_Tchar_Pstdout_3('\n', &_L_238, _L_237);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_238);
+exit(_NLibC_NExit_Cfailure);
+}
 continue_17:;
+_Lj_226++;
 }
 break_17:;
+continue_16:;
+_Li_224++;
+}
+break_16:;
+for(int i = Fgetnum(&_Lr_15); i > 0; ) {
+i --;
+struct _NCp1_NTemplateInstData _Lti_239;
+_NCp1_NId_Prd_2(&_Lti_239._Fname, &_Lr_15);
+_Lti_239._Frow = Fgetnum(&_Lr_15);
+_Lti_239._Fcol = Fgetnum(&_Lr_15);
+_Lti_239._Farg_len = Fgetnum(&_Lr_15);
+_Lti_239._Farg_crc32c = _NCp1_NRdr_Pn4_1(&_Lr_15);
+_Lti_239._Farg = _Lr_15._Fcharr;
+_Lr_15._Fpos += _Lti_239._Farg_len;
+_NCp1_NAt_Prd_2(&_Lti_239._Fat, &_Lr_15);
+_Lti_239._Ffile = _Lfile_idx_11;
+_Lti_239._Frequire = _Lrequire_3;
+_NCp1_Ptemplate_inst_1(&_Lti_239);
+continue_18:;
+}
+break_18:;
 }
 static inline char* _NCp1_NInclude_Pstr_1(_NCp1_NInclude _Li_0) {
 return _Ginclude_str_v[_Li_0];
