@@ -782,6 +782,8 @@ write-cvar(w:Wtr, header:bool) {
       cvar.at.wr(w, header);
       cvar.decl.wr(w, header);
       cvar.flags.wr(w);
+      w.n(cvar.row);
+      w.n(cvar.col);
       if (cvar.flags & #set-expr) != #0 {
          cvar.expr-set.wr(w, header);
       } else {

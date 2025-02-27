@@ -267,16 +267,28 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
          cvar.at.rd(r);
          cvar.decl.rd(r);
          cvar.flags.rd(r);
+         cvar.row = r.n();
+         cvar.col = r.n();
+         name! = cvar.decl.name;
          // .cvar-table[i] = cvar-idx;
 
          at! = cvar.at.ptr();
+         cvar-v! = at.cvar-v;
+         loop i = 0; at.cvar-c; i++ {
+            cvar2! = cvar-v[i].ptr();
+            if cvar2.decl.name == name {
+               C1.stdout{file-idx '': cvar.row '': cvar.col ": Cannot declare constant '" cvar.decl.name "' because it was already declared at " cvar2.file '': cvar2.row '': cvar2.col "\n"}
+               C.exit(#failure);
+            }
+         }
          at-cvar-idx! = at.cvar-c++;
          if at.cvar-cap <= at.cvar-c {
             old-cap! = at.cvar-cap;
             grow(at.cvar-cap, at.cvar-c);
             realloc(at.cvar-v, at.cvar-cap, old-cap);
+            cvar-v = at.cvar-v;
          }
-         at.cvar-v[at-cvar-idx] = cvar-idx;
+         cvar-v[at-cvar-idx] = cvar-idx;
          if (cvar.flags & #set-expr) != #0 {
             cvar.expr-set.rd(r);
          } else {
@@ -314,7 +326,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
          loop i = 0; at.gvar-c; i++ {
             gvar2! = gvar-v[i].ptr();
             if gvar2.decl.name == name {
-               C1.stdout{file-idx '': gvar.row '': gvar.col ": Cannot declare global variable " gvar.decl.name " because it was already declared at " gvar2.file '': gvar2.row '': gvar2.col "\n"}
+               C1.stdout{file-idx '': gvar.row '': gvar.col ": Cannot declare global variable '" gvar.decl.name "' because it was already declared at " gvar2.file '': gvar2.row '': gvar2.col "\n"}
                C.exit(#failure);
             }
          }

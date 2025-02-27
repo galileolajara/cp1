@@ -1,5 +1,5 @@
 using Cp1 {
-enum Math[#add, #sub, #mul, #div, #mod, #lshift, #rshift, #and, #or, #xor, #mod]:u8 {
+enum Math[#add, #sub, #mul, #div, #mod, #lshift, #rshift, #and, #or, #xor]:u8 {
    wr(e:this, w:Wtr) @inline {
       w.n1(e:base);
    }

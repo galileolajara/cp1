@@ -3777,6 +3777,8 @@ _NCp1_NInclude_Pwr_2((*_Lcvar_3)._Finclude, _Lw_0);
 _NCp1_NAt_Pwr_3((*_Lcvar_3)._Fat, _Lw_0, _Lheader_1);
 _NCp1_NDeclVarData_Pwr_3(&(*_Lcvar_3)._Fdecl, _Lw_0, _Lheader_1);
 _NCp1_NCvarFlags_Pwr_2((*_Lcvar_3)._Fflags, _Lw_0);
+Fputnum(_Lw_0, (*_Lcvar_3)._Frow);
+Fputnum(_Lw_0, (*_Lcvar_3)._Fcol);
 if(((*_Lcvar_3)._Fflags & _NCp1_NCvarFlags_Cset_expr) != _NCp1_NCvarFlags_C0) {
 _NCp1_NExprI_Pwr_3((*_Lcvar_3)._Fexpr_set, _Lw_0, _Lheader_1);
 } else {
