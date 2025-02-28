@@ -1286,7 +1286,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    }
    loop i = 0; .include-outputted-c; i++ {
       inc! = .include-outputted-v[i];
-      output{"#include " inc ''\n}
+      if inc.str()[0] == ''[ {
+         var str:char[] = &inc.str()[1];
+         output{str, inc.len() - 2}
+      } else {
+         output{"#include " inc ''\n}
+      }
    }
    loop i = 0; .cvar-outputted-c; i++ {
       c-i! = .cvar-outputted-v[i];

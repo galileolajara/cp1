@@ -5,7 +5,10 @@
 #include <stdlib.h>
 #include "file.cp1.h"
 #include <fcntl.h>
+
+#ifndef _WIN32
 #include <unistd.h>
+#endif
 #include <string.h>
 #include "num.c"
 #include <stdio.h>

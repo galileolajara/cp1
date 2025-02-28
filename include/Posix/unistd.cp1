@@ -1,5 +1,9 @@
 import "Posix/fcntl.cp1";
-include <unistd.h> {
+include [
+#ifndef _WIN32
+#include <unistd.h>
+#endif
+] {
    using X = Posix;
    using Posix {
       using Fd {

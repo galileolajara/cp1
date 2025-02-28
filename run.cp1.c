@@ -5,7 +5,10 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <string.h>
+
+#ifndef _WIN32
 #include <unistd.h>
+#endif
 #include <stdio.h>
 #define _NLibC_NExit_Csuccess 0
 #define _NLibC_NExit_Cfailure (_NLibC_NExit_Csuccess + 1)
@@ -159,7 +162,11 @@ if(_Lc_ret_23 != 0) {
 unlink(_Lc_path_8);
 exit(_NLibC_NExit_Cfailure);
 }
+#ifdef _WIN32
+sprintf(_Lcommand_22, "%s -o %s.exe %s", _Lcompiler_20, _Lexe_path_14, _Lc_path_8);
+#else
 sprintf(_Lcommand_22, "%s -o %s %s", _Lcompiler_20, _Lexe_path_14, _Lc_path_8);
+#endif
 _Lcompile_ret_24 = system(_Lcommand_22);
 unlink(_Lc_path_8);
 if(_Lcompile_ret_24 != 0) {

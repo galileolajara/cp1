@@ -118,6 +118,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
 
    "include " '"' [^"\n]* '"'       { return CP1_TOKEN_INCLUDE; }
    "include " '<' [^>\n]* '>'       { return CP1_TOKEN_INCLUDE; }
+   "include [" [^\]]* ']'           { return CP1_TOKEN_INCLUDE; }
 
    spaces "@inline"                 { return CP1_TOKEN_SPACE_AT_INLINE; }
    spaces "@main"                   { return CP1_TOKEN_SPACE_AT_MAIN; }
