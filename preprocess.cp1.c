@@ -382,7 +382,7 @@ _Lr_end_5._Fpos += _Lin_size_4;
 _Lr_6._Freff = _Lin_data_3;
 _Lnew_data_7 = malloc(_Lin_size_4 + 1);
 _Lw_8._Freff = _Lnew_data_7;
-_Lline_9 = (uint32_t)(0);
+_Lline_9 = ((uint32_t)(0));
 while(_Lr_6._Fpos < _Lr_end_5._Fpos) {
 int32_t _Lline_len_10;
 _Lline_9++;
@@ -681,7 +681,7 @@ memcpy(&_Gstdout_buf_data[_Gstdout_buf_len], _Ldata_0, _Lsize_1);
 _Gstdout_buf_len += _Lsize_1;
 }
 static inline void _NLibCp1_Pstdout_flush_0() {
-write((_NPosix_NFd)(1), _Gstdout_buf_data, _Gstdout_buf_len);
+write(((_NPosix_NFd)(1)), _Gstdout_buf_data, _Gstdout_buf_len);
 _Gstdout_buf_len = 0;
 }
 static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0) {
@@ -705,7 +705,7 @@ return NULL;
 }
 _Lsize_7 = _Lf_size_6.QuadPart;
 if(_Lmax_size_3 != 0) {
-if((size_t)(_Lsize_7) > _Lmax_size_3) {
+if(((size_t)(_Lsize_7)) > _Lmax_size_3) {
 _Lsize_7 = _Lmax_size_3;
 }
 }
@@ -733,7 +733,7 @@ close(_Lfd_10);
 return NULL;
 }
 if(_Lmax_size_3 != 0) {
-if((size_t)(_Lsize_11) > _Lmax_size_3) {
+if(((size_t)(_Lsize_11)) > _Lmax_size_3) {
 _Lsize_11 = _Lmax_size_3;
 }
 }

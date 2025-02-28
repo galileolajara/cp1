@@ -11,11 +11,11 @@ expr-cast-fast(expr:ExprI, type:At):ExprI {
 }
 using ExprCastFast {
    write-value(e:this, v:Value) @inline {
-      output{''(}
+      output{"(("}
       e.type.write-type-info(v.info, 0);
       output{")("}
       e.expr.write-value(e.val);
-      output{'')}
+      output{"))"}
    }
 }
 using ExprI {

@@ -130,7 +130,7 @@ unlink(_Lexe_path_14);
 _Lc_path_8[12] = '.';
 _Lc_path_8[13] = 'c';
 _Lc_path_8[14] = '\0';
-sprintf(_Lcommand_20, "%.*s-compile -c %s %s", (int)(strlen(_Lbin_7) - 4), _Lbin_7, _Lc_path_8, _Larg_v_1[1]);
+sprintf(_Lcommand_20, "%.*s-compile -c %s %s", ((int)(strlen(_Lbin_7) - 4)), _Lbin_7, _Lc_path_8, _Larg_v_1[1]);
 _Lc_ret_21 = system(_Lcommand_20);
 if(_Lc_ret_21 != 0) {
 unlink(_Lc_path_8);
@@ -349,6 +349,6 @@ static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0) {
 _Gstdout_buf_data[_Gstdout_buf_len++] = _Lval_0;
 }
 static inline void _NLibCp1_Pstdout_flush_0() {
-write((_NPosix_NFd)(1), _Gstdout_buf_data, _Gstdout_buf_len);
+write(((_NPosix_NFd)(1)), _Gstdout_buf_data, _Gstdout_buf_len);
 _Gstdout_buf_len = 0;
 }
