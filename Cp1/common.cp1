@@ -440,7 +440,7 @@ meta #BuildCommonCodes {
 #  }
       ];
       struct TemplateCodeData[
-         code:char[],
+         code:u8[],
          code-len:u32,
          code-crc32c:u32,
          name:Id,

@@ -547,7 +547,7 @@ _NCp1_NId _Freal_name;
 };
 struct _NCp1_NTemplateCodeData;
 struct _NCp1_NTemplateCodeData {
-char* _Fcode;
+uint8_t* _Fcode;
 uint32_t _Fcode_len;
 uint32_t _Fcode_crc32c;
 _NCp1_NId _Fname;

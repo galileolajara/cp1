@@ -287,7 +287,7 @@ bool _Frequire;
 };
 struct _NCp1_NTemplateCodeData;
 struct _NCp1_NTemplateCodeData {
-char* _Fcode;
+uint8_t* _Fcode;
 uint32_t _Fcode_len;
 uint32_t _Fcode_crc32c;
 _NCp1_NId _Fname;
@@ -1805,7 +1805,7 @@ if(((_Lat_76 == (*_Ltc_80)._Fat) && (_Lname_77 == (*_Ltc_80)._Fname))) {
 if(_NCp1_Pquickjs_begin_7(_NCp1_NFile_Ppath_1((*_Ltc_80)._Ffile), _NCp1_NFile_Ppath_len_1((*_Ltc_80)._Ffile), _NCp1_NId_Pstr_1((*_Ltc_80)._Fname), _NCp1_NId_Plen_1((*_Ltc_80)._Fname), (*_Ltc_80)._Fcode_crc32c, (*_Lti_75)._Farg_crc32c, (*_Lti_75)._Frequire)) {
 struct _NCp1_NJsCode _L_82 = {0};
 struct _NCp1_NJsCode _L_107 = {0};
-char* _Lcode_114;
+uint8_t* _Lcode_114;
 int32_t _Li_115;
 uint32_t _Lline_num_116;
 struct _NCp1_NJsCode _L_131 = {0};
@@ -1949,9 +1949,9 @@ _Li_115 = 0;
 _Lline_num_116 = (*_Ltc_80)._Frow;
 for(int i = (*_Ltc_80)._Fline_c; i > 0; ) {
 i --;
-uint32_t _Lline_len_117;
+uint16_t _Lline_len_117;
 _Lline_num_116++;
-_Lline_len_117 = (((uint32_t)(_Lcode_114[_Li_115])) | (((uint32_t)(_Lcode_114[(_Li_115 + 1)])) << 8));
+_Lline_len_117 = (((uint16_t)(_Lcode_114[_Li_115] | (_Lcode_114[(_Li_115 + 1)] << 8))));
 _Li_115 += 2;
 if(_Lline_len_117 == 0) {
 struct _NCp1_NJsCode _L_119 = {0};
