@@ -116,7 +116,7 @@ if(_Larg_v_1[_Li_6][0] == '-') {
 if(_Larg_v_1[_Li_6][1] == 'D') {
 char* _Lname_7;
 int32_t _Llen_8;
-_Lname_7 = &_Larg_v_1[_Li_6][2];
+_Lname_7 = ((void*)&_Larg_v_1[_Li_6][2]);
 _Llen_8 = 0;
 while(1) {
 if(_Lname_7[_Llen_8] == '\0') {
@@ -446,7 +446,7 @@ _NLibCp1_NStdOut_Pstdout_cstr_4(&_L_20, ": Error in preprocessing the code, #if(
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_20);
 exit(_NLibC_NExit_Cfailure);
 }
-_Ldef_str_21 = &_Lr_6._Fcharr[_Lstart_12];
+_Ldef_str_21 = ((void*)&_Lr_6._Fcharr[_Lstart_12]);
 _Ldef_len_22 = (_Lrparen_14 - _Lstart_12);
 _Lok_23 = _NCp1_Ppreprocess_def_get_2(_Ldef_str_21, _Ldef_len_22);
 if(_Linvert_13) {
@@ -801,7 +801,7 @@ char* _Ldata_1 = {0};
 int32_t _Ldigits_2;
 int32_t _Lstart_3;
 int32_t _Lend_4;
-_Ldata_1 = &_Gstdout_buf_data[_Gstdout_buf_len];
+_Ldata_1 = ((void*)&_Gstdout_buf_data[_Gstdout_buf_len]);
 _Ldigits_2 = 0;
 while(1) {
 _Ldata_1[_Ldigits_2++] = ((_Lval_0 % 10) + '0');

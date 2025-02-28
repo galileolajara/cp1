@@ -50,6 +50,13 @@ using ExprI {
    write-assign(expr:Expr) @case.write() @inline {
       var e:ExprAssign = expr;
       e.left.write-value(e.left-val);
+      e-right! = e.right.ptr();
+      if (e.type == #eq) && (e-right.type == #ref) {
+         output{" = ((void*)"}
+         e.right.write-value(e.right-val);
+         output{'')}
+         return;
+      }
       switch e.type {
          case #eq {
             output{" = "}

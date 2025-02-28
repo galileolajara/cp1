@@ -1,15 +1,27 @@
 rule c
- command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -I. -c $in -o $out
+ command = clang -O0 -Werror=format -Wno-incompatible-pointer-types -I. -c $in -o $out $flags
 
 rule ld-c
- command = clang $flags -O0 -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out
+ command = clang -O0 -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out $flags
 
 build out/parse.cp1.c.obj: c parse.cp1.c
 build out/parse.c.obj: c parse.c | export.h lex.c cp1_parse.c
-build bin/cp1-preprocess.exe: ld-c preprocess.cp1.c
 build bin/cp1-parse.exe: ld-c out/parse.cp1.c.obj out/parse.c.obj out/hashtable.c.obj
 build out/compile.cp1.c.obj: c compile.cp1.c
 build out/compile.c.obj: c compile.c
-build bin/cp1-compile.exe: ld-c out/compile.cp1.c.obj out/str.c.obj out/hashtable.c.obj
+build bin/cp1-compile.exe: ld-c out/compile.cp1.c.obj out/compile.c.obj out/hashtable.c.obj
 build bin/cp1-run.exe: ld-c run.cp1.c
 build out/hashtable.c.obj: c hashtable.c
+
+rule cjs
+ command = clang -D_GNU_SOURCE -DCONFIG_VERSION=\"2024-01-13\" -DCONFIG_BIGNUM -Wno-implicit-const-int-float-conversion -o $out -c $in -Iqjs
+
+build bin/cp1-qjs.exe: ld-c out/cp1-qjs.c.obj out/quickjs.c.obj out/quickjs-libc.c.obj out/cutils.c.obj out/libregexp.c.obj out/libbf.c.obj out/libunicode.c.obj
+ flags = -lm -pthread
+build out/cp1-qjs.c.obj: cjs cp1-qjs.c
+build out/quickjs.c.obj: cjs qjs/quickjs.c
+build out/quickjs-libc.c.obj: cjs qjs/quickjs-libc.c
+build out/cutils.c.obj: cjs qjs/cutils.c
+build out/libregexp.c.obj: cjs qjs/libregexp.c
+build out/libbf.c.obj: cjs qjs/libbf.c
+build out/libunicode.c.obj: cjs qjs/libunicode.c

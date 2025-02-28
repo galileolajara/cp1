@@ -95,7 +95,7 @@ decl-template-code(name:Id, row:u32, with-reflection:bool, no-cache:bool) {
    td! = .template-code-v[i];
    td.name = name;
    code-len! = .string-len;
-   var code:char[];
+   var code:u8[];
    quick-alloc-arr(code, code-len);
    C.memcpy(code, .string-buf, code-len);
    td.code = code;

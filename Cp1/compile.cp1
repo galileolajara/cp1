@@ -601,7 +601,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
       td.no-cache = r.b();
       td.code-len = r.n();
       td.code-crc32c = r.n4();
-      td.code = r.charr;
+      td.code = r.p1;
       r.pos += td.code-len;
       td.at.rd(r);
       td.file = file-idx;
@@ -1042,7 +1042,17 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   }
                   jscode{
                   '= {
+                  }
+                  "#ifdef _WIN32";
+                  jscode{
+                    "   let tmp_path = scriptArgs[0] + \".cp1-" X.getpid():u32 "\";\n"
+                  }
+                  "#else";
+                  jscode{
                   '=    let tmp_path = scriptArgs[0] + ".cp1-" + os.getpid();
+                  }
+                  "#endif";
+                  jscode{
                   '=    let file = std.open(tmp_path, "wb");
                   '=    file.puts(cp1_out.join(""));
                   '=    file.close();

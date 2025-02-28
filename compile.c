@@ -55,12 +55,13 @@ void _NCp1_Pwrite_char_1(char c) {
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#ifndef _WIN32
 #include <spawn.h>
-#include <arpa/inet.h>
 #include <signal.h>
 #include <fcntl.h>
 #include <sys/wait.h>
 extern char **environ;
+#endif
 extern char _Ginclude_dir[];
 extern uint16_t _Ginclude_dir_len;
 extern char** _Ginclude_path_v;
@@ -100,13 +101,21 @@ void _NCp1_Pc_init_1(uint32_t js_crc32c) {
    memcpy(cp1_tmp, "cp1-tmp-", 8);
    hex32(&cp1_tmp[8], _NCp1_Pbuild_crc32c_0());
    cp1_tmp[cp1_tmp_len - 1] = '\0';
+   #ifdef _WIN32
+   mkdir(cp1_tmp);
+   #else
    mkdir(cp1_tmp, 0755);
+   #endif
    cp1_tmp[cp1_tmp_len - 1] = '/';
 
    memcpy(cp1_tmp_js, "cp1-tmp-", 8);
    hex32(&cp1_tmp_js[8], js_crc32c);
    cp1_tmp_js[cp1_tmp_len - 1] = '\0';
+   #ifdef _WIN32
+   mkdir(cp1_tmp_js);
+   #else
    mkdir(cp1_tmp_js, 0755);
+   #endif
    cp1_tmp_js[cp1_tmp_len - 1] = '/';
 
    #ifdef SPAWN_PARSE
@@ -208,7 +217,13 @@ void create_folders_recursively(const char *file_path) {
             // Check if directory exists
             // printf("trying to create directory %s\n", temp_path);
             if (access(temp_path, F_OK) != 0) {
-                if (mkdir(temp_path, 0755) != 0 && errno != EEXIST) {
+                if (
+                     #ifdef _WIN32
+                     mkdir(temp_path) != 0
+                     #else
+                     mkdir(temp_path, 0755) != 0
+                     #endif
+                     && errno != EEXIST) {
                     perror("mkdir failed");
                     return;
                 }
@@ -226,6 +241,14 @@ void _NCp1_Pquickjs_end_3(char* js_data, uint32_t js_len, bool require) {
    unlink(cp1_tmp_js);
    #endif
    rename(tmp_path, cp1_tmp_js);
+   #ifdef _WIN32
+   char command[1024 + 512];
+   sprintf(command, "%s %s", qjs_path, cp1_tmp_js);
+   // printf("command: %s\n", command);
+   if (system(command) != 0) {
+      exit(EXIT_FAILURE);
+   }
+   #else
    const char *argv[] = {"cp1-qjs", cp1_tmp_js, NULL};
    // int status = qjs_main(2, argv);
    pid_t pid;
@@ -235,6 +258,7 @@ void _NCp1_Pquickjs_end_3(char* js_data, uint32_t js_len, bool require) {
    if (status != 0) {
       exit(EXIT_FAILURE);
    }
+   #endif
    int i = quickjs_path_len;
    cp1_tmp_js[i++] = '.';
    cp1_tmp_js[i++] = 'c';
@@ -305,6 +329,11 @@ char* _NCp1_Preq_parse_3(const char* path, uint8_t path_len, bool require) {
    struct stat s2;
    if (stat(tmp, &s2) == 0) {
       // printf("comparing timestamps of %s and %s\n", tmp, path);
+#ifdef _WIN32
+      if (s2.st_mtime > s.st_mtime) {
+         return tmp;
+      }
+#else
 #ifdef __APPLE__
       if (s2.st_mtimespec.tv_sec > s.st_mtimespec.tv_sec) {
          // printf("cached\n");
@@ -322,8 +351,17 @@ char* _NCp1_Preq_parse_3(const char* path, uint8_t path_len, bool require) {
          return tmp;
       }
 #endif
+#endif
    }
    create_folders_recursively(tmp);
+   #ifdef _WIN32
+   char command[1024 + 1024];
+   sprintf(command, "%s %s %s", parser_path, fullpath, tmp);
+   // printf("command: %s\n", command);
+   if (system(command) != 0) {
+      exit(EXIT_FAILURE);
+   }
+   #else
    const char *argv[] = {"cp1-parse", fullpath, tmp, NULL};
 #ifdef SPAWN_PARSE
    pid_t pid;
@@ -337,5 +375,6 @@ char* _NCp1_Preq_parse_3(const char* path, uint8_t path_len, bool require) {
    if (status != 0) {
       exit(EXIT_FAILURE);
    }
+   #endif
    return tmp;
 }

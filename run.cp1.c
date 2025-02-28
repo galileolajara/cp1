@@ -42,10 +42,10 @@ char _Lc_path_8[15] = {0};
 _NPosix_NFd _Lc_fd_9;
 char _Lexe_path_14[17] = {0};
 _NPosix_NFd _Lexe_fd_15;
-char _Lcommand_20[1024] = {0};
-int _Lc_ret_21;
-int _Lcompile_ret_22;
-int _Lexe_ret_24;
+char _Lcommand_21[1024] = {0};
+int _Lc_ret_22;
+int _Lcompile_ret_23;
+int _Lexe_ret_25;
 #ifdef _WIN32
 if(true) {
 char* _Larg_2;
@@ -130,35 +130,49 @@ unlink(_Lexe_path_14);
 _Lc_path_8[12] = '.';
 _Lc_path_8[13] = 'c';
 _Lc_path_8[14] = '\0';
-sprintf(_Lcommand_20, "%.*s-compile -c %s %s", ((int)(strlen(_Lbin_7) - 4)), _Lbin_7, _Lc_path_8, _Larg_v_1[1]);
-_Lc_ret_21 = system(_Lcommand_20);
-if(_Lc_ret_21 != 0) {
+#ifdef _WIN32
+if(_Lbin_7[0] != '/') {
+int32_t _Li_20;
+_Li_20 = 0;
+while(_Lbin_7[_Li_20] != '\0') {
+if(_Lbin_7[_Li_20] == '/') {
+_Lbin_7[_Li_20] = '\\';
+}
+continue_2:;
+_Li_20++;
+}
+break_2:;
+}
+#endif
+sprintf(_Lcommand_21, "%.*s-compile -c %s %s", ((int)(strlen(_Lbin_7) - 4)), _Lbin_7, _Lc_path_8, _Larg_v_1[1]);
+_Lc_ret_22 = system(_Lcommand_21);
+if(_Lc_ret_22 != 0) {
 unlink(_Lc_path_8);
 exit(_NLibC_NExit_Cfailure);
 }
-sprintf(_Lcommand_20, "tcc -o \"%s\" \"%s\" || clang -o \"%s\" \"%s\" || gcc -o \"%s\" \"%s\"", _Lexe_path_14, _Lc_path_8, _Lexe_path_14, _Lc_path_8, _Lexe_path_14, _Lc_path_8);
-_Lcompile_ret_22 = system(_Lcommand_20);
+sprintf(_Lcommand_21, "tcc -o \"%s\" \"%s\" || clang -o \"%s\" \"%s\" || gcc -o \"%s\" \"%s\"", _Lexe_path_14, _Lc_path_8, _Lexe_path_14, _Lc_path_8, _Lexe_path_14, _Lc_path_8);
+_Lcompile_ret_23 = system(_Lcommand_21);
 unlink(_Lc_path_8);
-if(_Lcompile_ret_22 != 0) {
+if(_Lcompile_ret_23 != 0) {
 exit(_NLibC_NExit_Cfailure);
 }
 #ifdef _WIN32
-int32_t _Li_23;
-_Li_23 = 0;
+int32_t _Li_24;
+_Li_24 = 0;
 while(1) {
-if(_Lexe_path_14[_Li_23] == '\0') {
-goto break_2;
-} else if(_Lexe_path_14[_Li_23] == '/') {
-_Lexe_path_14[_Li_23] = '\\';
+if(_Lexe_path_14[_Li_24] == '\0') {
+goto break_3;
+} else if(_Lexe_path_14[_Li_24] == '/') {
+_Lexe_path_14[_Li_24] = '\\';
 }
-continue_2:;
-_Li_23++;
+continue_3:;
+_Li_24++;
 }
-break_2:;
+break_3:;
 #endif
-_Lexe_ret_24 = system(_Lexe_path_14);
+_Lexe_ret_25 = system(_Lexe_path_14);
 unlink(_Lexe_path_14);
-if(_Lexe_ret_24 != 0) {
+if(_Lexe_ret_25 != 0) {
 exit(_NLibC_NExit_Cfailure);
 }
 return 0;
@@ -199,7 +213,7 @@ exit(_NLibC_NExit_Cfailure);
 }
 _Lcp1_path_len_6 = strlen(_Lcp1_path_1);
 if(((_Lcp1_path_1[0] == '.') && (_Lcp1_path_1[1] == '/'))) {
-_Lcp1_path_1 = &_Lcp1_path_1[2];
+_Lcp1_path_1 = ((void*)&_Lcp1_path_1[2]);
 _Lcp1_path_len_6 -= 2;
 }
 int32_t _Lj_7;

@@ -101,6 +101,15 @@ main(arg-c:intc, arg-v:char[][]):intc {
    c-path[12] = ''.;
    c-path[13] = ''c;
    c-path[14] = ''\0;
+   "#ifdef _WIN32";
+   if bin[0] != ''/ {
+      loop i = 0; bin[i] != ''\0; i++ {
+         if bin[i] == ''/ {
+            bin[i] = ''\\;
+         }
+      }
+   }
+   "#endif";
    var command:char[1024];
    C.sprintf(command, "%.*s-compile -c %s %s", (C.strlen(bin) - 4):intc, bin, c-path, arg-v[1]);
    // C1.stdout{"run command: " command ''\n}
