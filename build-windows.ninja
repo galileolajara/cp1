@@ -9,7 +9,7 @@ build out/parse.c.obj: c parse.c | export.h lex.c cp1_parse.c
 build bin/cp1-preprocess.exe: ld-c preprocess.cp1.c
 build bin/cp1-parse.exe: ld-c out/parse.cp1.c.obj out/parse.c.obj out/hashtable.c.obj
 build out/compile.cp1.c.obj: c compile.cp1.c
-build out/str.c.obj: c str.c
+build out/compile.c.obj: c compile.c
 build bin/cp1-compile.exe: ld-c out/compile.cp1.c.obj out/str.c.obj out/hashtable.c.obj
-build bin/cp1.exe: ld-c cp1.cp1.c
+build bin/cp1-run.exe: ld-c run.cp1.c
 build out/hashtable.c.obj: c hashtable.c

@@ -5,7 +5,7 @@ rule c
 # command = objcopy --redefine-syms=$redefs $in $out
 
 rule ld-c
- command = gcc   $flags -O3 -flto -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out
+ command = gcc   -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out $flags -O3 -flto
 
 rule crc32c
  command = bin/crc32c $in $out

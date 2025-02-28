@@ -5,7 +5,7 @@ rule c
 # command = objcopy --redefine-syms=$redefs $in $out
 
 rule ld-c
- command = clang $flags -fsanitize=undefined -ggdb -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out
+ command = clang -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out $flags -fsanitize=undefined -ggdb
 
 rule crc32c
  command = bin/crc32c $in $out

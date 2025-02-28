@@ -5,7 +5,7 @@ rule c
 # command = objcopy --redefine-syms=$redefs $in $out
 
 rule ld-c
- command = tcc $flags -w -I. $in -o $out
+ command = tcc -w -I. $in -o $out $flags
 
 rule crc32c
  command = bin/crc32c $in $out
