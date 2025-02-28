@@ -993,6 +993,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    //    return 1;
    // }
    if arg-c != 3 {
+      "usage:";
       C1.stdout{
          "Usage: " arg-v[0] " input.cp1 output.cp1-b\n"
       }
@@ -1016,6 +1017,20 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    // in-data[0] = ''\n;
    // in-data = &in-data[1];
    lock-path! = arg-v[2];
+   lock-path-len! = C.strlen(lock-path);
+   ok! = false;
+   if (lock-path-len > 6) && (lock-path[lock-path-len - 6] == ''.) && (lock-path[lock-path-len - 5] == ''c) && (lock-path[lock-path-len - 4] == ''p) && (lock-path[lock-path-len - 3] == ''1) && (lock-path[lock-path-len - 2] == ''-) {
+      if lock-path[lock-path-len - 1] == ''h {
+         lock-path[lock-path-len - 1] = ''b;
+         ok = true;
+      } elif lock-path[lock-path-len - 1] == ''b {
+         ok = true;
+      }
+   }
+   if !ok {
+      C1.stdout{"Error, output file must either end with .cp1-b or .cp1-h\n"}
+      "goto usage;";
+   }
    // .lock-path = lock-path;
    // if true {
    //    if !C.Fd.open(fd!!, lock-path, #create | #excl) {
@@ -1772,7 +1787,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    // var out-path:char[] = C.malloc(C.strlen(lock-path) + 4 + 1);
    // C.sprintf(out-path, "%s.tmp", lock-path);
    // out-path-len! = C.strlen(out-path);
-   lock-path-len! = C.strlen(lock-path);
    var tmp-path:char[256 + 16 + 10];
    C.sprintf(tmp-path, "%s-%u", lock-path, X.getpid());
    if !write-file(tmp-path, w-begin.reff, w.pos - w-begin.pos) {
