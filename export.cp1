@@ -1,10 +1,11 @@
-import "LibCp1/stdout.cp1";
+require "LibCp1/stdout.cp1";
 import "LibC/stdio.cp1";
 import "LibC/stdlib.cp1";
 import "LibC/string.cp1";
 import "Posix/fcntl.cp1";
 import "Posix/unistd.cp1";
 using C = LibC;
+using C1 = LibCp1;
 using X = Posix;
 main(arg-c:intc, arg-v:char[][]):intc {
    if arg-c != 3 {

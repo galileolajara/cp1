@@ -1328,7 +1328,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       }
       s.at.write-space();
       if s.fvar-c == 0 {
-         output{" { char unused; };\n"}
+         output{" {\nchar unused;\n};\n"}
       } else {
          output{" {\n"}
          loop j = 0; s.fvar-c; j++ {

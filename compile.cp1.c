@@ -299,7 +299,9 @@ bool _Fno_cache;
 _NCp1_NFile _Ffile;
 };
 struct _NCp1_NJsCode;
-struct _NCp1_NJsCode { char unused; };
+struct _NCp1_NJsCode {
+char unused;
+};
 struct _NCp1_NTypeInfo;
 struct _NCp1_NTypeInfo {
 int8_t _Fref_v[_NCp1_Ctype_info_star_limit];
@@ -2635,9 +2637,9 @@ if((*_Ls_259)._Ffvar_c == 0) {
 int _L_268 = {0};
 struct _NCp1_NOutput _L_269 = {0};
 _NCp1_Poutput_1(&_L_269);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_269, " { char unused; };\n", 19u, _L_268);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_269, " {\nchar unused;\n};\n", 19u, _L_268);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_269);
-_NCp1_NOutput_Poutput_cstr_4(&_L_269, " { char unused; };\n", 19u, _L_268);
+_NCp1_NOutput_Poutput_cstr_4(&_L_269, " {\nchar unused;\n};\n", 19u, _L_268);
 _NCp1_NOutput_Poutput_end_1(&_L_269);
 } else {
 int _L_270 = {0};
