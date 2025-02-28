@@ -6,6 +6,10 @@ How to use?
 ```
 git clone https://github.com/galileolajara/cp1
 cd cp1
+
+# On Windows, no need to build. Pre-built .exe are in the bin folder
+
+# On Linux, macOS, or BSD, run one of the following:
 make -f Makefile-tcc # to build using TCC
 make -f Makefile-clang # to build using Clang
 make -f Makefile-gcc # to build using GCC
@@ -13,11 +17,16 @@ make -f Makefile-gcc # to build using GCC
 
 Then checkout the examples:
 ```
-bin/cp1-run examples/01-hello.cp1 # to run hello world
-bin/cp1-compile -c hello.c examples/01-hello.cp1 # to see the C code
+# On Windows:
+bin\cp1-run examples/01-hello.cp1 # To run hello world
+bin\cp1-compile -c hello.c examples/01-hello.cp1 # To see the C code
+
+# On Linux, macOS, or BSD:
+bin/cp1-run examples/01-hello.cp1 # To run hello world
+bin/cp1-compile -c hello.c examples/01-hello.cp1 # To see the C code
 ```
 
-If you want to build Cp1 using the .cp1 files, you need ninja and re2c installed. Then:
+On Linux, macOS or BSD, if you want to build Cp1 using the .cp1 files, you need ninja and re2c installed. Then run one of the following:
 ```
 ninja -f build-tcc.ninja # to build using TCC
 ninja -f build-clang.ninja # to build using Clang

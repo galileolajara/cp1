@@ -12,6 +12,7 @@
 #define _NPosix_NFd_Cnil (-1)
 typedef int _NLibC_NExit;
 typedef int _NPosix_NFd;
+typedef int _NPosix_NOpenFlags;
 struct _NLibCp1_NStdOut;
 struct _NLibCp1_NStdOut {
 uint32_t _Freserve;
@@ -31,10 +32,16 @@ static inline void _NLibCp1_NStdOut_Pstdout_cstr_4(struct _NLibCp1_NStdOut* _Lso
 static inline void _Tchar_Pstdout_arr_3(char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t _Llen_2);
 static inline void _Tchar_Pstdout_3(char _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
 static inline void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_0);
+void _Pget_compiler_2(char* _Lbin_0, char* _Lcompiler_1);
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
 static inline void _NLibCp1_Pstdout_bytes_nr_2(void* _Ldata_0, size_t _Lsize_1);
 static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0);
 static inline void _NLibCp1_Pstdout_flush_0();
+#ifdef _WIN32
+#define _NPosix_Popen_2(p, f) open(p, f | O_BINARY)
+#else
+#define _NPosix_Popen_2(p, f) open(p, f)
+#endif
 #define _NLibC_Prealloc_arr_2(var, c) var = realloc(var, sizeof(var[0]) * (c))
 int main(int _Larg_c_0, char** _Larg_v_1) {
 char* _Lbin_7;
@@ -42,10 +49,11 @@ char _Lc_path_8[15] = {0};
 _NPosix_NFd _Lc_fd_9;
 char _Lexe_path_14[17] = {0};
 _NPosix_NFd _Lexe_fd_15;
-char _Lcommand_21[1024] = {0};
-int _Lc_ret_22;
-int _Lcompile_ret_23;
-int _Lexe_ret_25;
+char _Lcompiler_20[8] = {0};
+char _Lcommand_22[1024] = {0};
+int _Lc_ret_23;
+int _Lcompile_ret_24;
+int _Lexe_ret_26;
 #ifdef _WIN32
 if(true) {
 char* _Larg_2;
@@ -130,49 +138,50 @@ unlink(_Lexe_path_14);
 _Lc_path_8[12] = '.';
 _Lc_path_8[13] = 'c';
 _Lc_path_8[14] = '\0';
+_Pget_compiler_2(_Lbin_7, _Lcompiler_20);
 #ifdef _WIN32
 if(_Lbin_7[0] != '/') {
-int32_t _Li_20;
-_Li_20 = 0;
-while(_Lbin_7[_Li_20] != '\0') {
-if(_Lbin_7[_Li_20] == '/') {
-_Lbin_7[_Li_20] = '\\';
+int32_t _Li_21;
+_Li_21 = 0;
+while(_Lbin_7[_Li_21] != '\0') {
+if(_Lbin_7[_Li_21] == '/') {
+_Lbin_7[_Li_21] = '\\';
 }
 continue_2:;
-_Li_20++;
+_Li_21++;
 }
 break_2:;
 }
 #endif
-sprintf(_Lcommand_21, "%.*s-compile -c %s %s", ((int)(strlen(_Lbin_7) - 4)), _Lbin_7, _Lc_path_8, _Larg_v_1[1]);
-_Lc_ret_22 = system(_Lcommand_21);
-if(_Lc_ret_22 != 0) {
+sprintf(_Lcommand_22, "%.*s-compile -c %s %s", ((int)(strlen(_Lbin_7) - 4)), _Lbin_7, _Lc_path_8, _Larg_v_1[1]);
+_Lc_ret_23 = system(_Lcommand_22);
+if(_Lc_ret_23 != 0) {
 unlink(_Lc_path_8);
 exit(_NLibC_NExit_Cfailure);
 }
-sprintf(_Lcommand_21, "tcc -o \"%s\" \"%s\" || clang -o \"%s\" \"%s\" || gcc -o \"%s\" \"%s\"", _Lexe_path_14, _Lc_path_8, _Lexe_path_14, _Lc_path_8, _Lexe_path_14, _Lc_path_8);
-_Lcompile_ret_23 = system(_Lcommand_21);
+sprintf(_Lcommand_22, "%s -o %s %s", _Lcompiler_20, _Lexe_path_14, _Lc_path_8);
+_Lcompile_ret_24 = system(_Lcommand_22);
 unlink(_Lc_path_8);
-if(_Lcompile_ret_23 != 0) {
+if(_Lcompile_ret_24 != 0) {
 exit(_NLibC_NExit_Cfailure);
 }
 #ifdef _WIN32
-int32_t _Li_24;
-_Li_24 = 0;
+int32_t _Li_25;
+_Li_25 = 0;
 while(1) {
-if(_Lexe_path_14[_Li_24] == '\0') {
+if(_Lexe_path_14[_Li_25] == '\0') {
 goto break_3;
-} else if(_Lexe_path_14[_Li_24] == '/') {
-_Lexe_path_14[_Li_24] = '\\';
+} else if(_Lexe_path_14[_Li_25] == '/') {
+_Lexe_path_14[_Li_25] = '\\';
 }
 continue_3:;
-_Li_24++;
+_Li_25++;
 }
 break_3:;
 #endif
-_Lexe_ret_25 = system(_Lexe_path_14);
+_Lexe_ret_26 = system(_Lexe_path_14);
 unlink(_Lexe_path_14);
-if(_Lexe_ret_25 != 0) {
+if(_Lexe_ret_26 != 0) {
 exit(_NLibC_NExit_Cfailure);
 }
 return 0;
@@ -335,6 +344,85 @@ _NLibCp1_Pstdout_char_nr_1(_Lval_0);
 }
 static inline void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_0) {
 _NLibCp1_Pstdout_flush_0();
+}
+void _Pget_compiler_2(char* _Lbin_0, char* _Lcompiler_1) {
+char* _Lpath_2;
+char* _Lfound_4 = {0};
+int _L_7 = {0};
+uint32_t _L_8 = {0};
+int _L_9 = {0};
+struct _NLibCp1_NStdOut _L_10 = {0};
+_Lpath_2 = strdup(getenv("PATH"));
+#ifdef _WIN32
+int32_t _Li_3;
+_Li_3 = 0;
+while(1) {
+if(_Lpath_2[_Li_3] == '\0') {
+goto break_0;
+} else if(_Lpath_2[_Li_3] == '\\') {
+_Lpath_2[_Li_3] = '/';
+}
+continue_0:;
+_Li_3++;
+}
+break_0:;
+#endif
+#ifdef _WIN32
+_Lfound_4 = strtok(_Lpath_2, ";");
+#else
+_Lfound_4 = strtok(_Lpath_2, ":");
+#endif
+while(_Lfound_4 != NULL) {
+_NPosix_NFd _Lfd_5 = {0};
+char _Lcompile_6[512] = {0};
+#ifdef _WIN32
+sprintf(_Lcompile_6, "%s/tcc.exe", _Lfound_4);
+#else
+sprintf(_Lcompile_6, "%s/tcc", _Lfound_4);
+#endif
+_Lfd_5 = _NPosix_Popen_2(_Lcompile_6, O_RDONLY);
+if(_Lfd_5 != _NPosix_NFd_Cnil) {
+strcpy(_Lcompiler_1, "tcc");
+return;
+}
+#ifdef _WIN32
+sprintf(_Lcompile_6, "%s/clang.exe", _Lfound_4);
+#else
+sprintf(_Lcompile_6, "%s/clang", _Lfound_4);
+#endif
+_Lfd_5 = _NPosix_Popen_2(_Lcompile_6, O_RDONLY);
+if(_Lfd_5 != _NPosix_NFd_Cnil) {
+strcpy(_Lcompiler_1, "clang");
+return;
+}
+#ifdef _WIN32
+sprintf(_Lcompile_6, "%s/gcc.exe", _Lfound_4);
+#else
+sprintf(_Lcompile_6, "%s/gcc", _Lfound_4);
+#endif
+_Lfd_5 = _NPosix_Popen_2(_Lcompile_6, O_RDONLY);
+if(_Lfd_5 != _NPosix_NFd_Cnil) {
+strcpy(_Lcompiler_1, "gcc");
+return;
+}
+#ifdef _WIN32
+_Lfound_4 = strtok(NULL, ";");
+#else
+_Lfound_4 = strtok(NULL, ":");
+#endif
+continue_1:;
+}
+break_1:;
+_NLibCp1_Pstdout_1(&_L_10);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_10, "Cannot execute '", 16u, _L_7);
+_Tchar_Pstdout_reserve_arr_3(_Lbin_0, &_L_10, &_L_8);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_10, " run' because the required compile was not found: tcc clang or gcc\n", 67u, _L_9);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_10);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_10, "Cannot execute '", 16u, _L_7);
+_Tchar_Pstdout_arr_3(_Lbin_0, &_L_10, _L_8);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_10, " run' because the required compile was not found: tcc clang or gcc\n", 67u, _L_9);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_10);
+exit(_NLibC_NExit_Cfailure);
 }
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0) {
 uint32_t _Lspace_1;

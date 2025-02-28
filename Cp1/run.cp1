@@ -51,6 +51,65 @@ validate-cp1-path(bin:char[], cp1-path:char[]) {
       C.exit(#failure);
    }
 }
+get-compiler(bin:char[], compiler:char[]) {
+   path! = C.strdup(C.getenv("PATH"));
+   "#ifdef _WIN32";
+   loop i = 0; ; i++ {
+      if path[i] == ''\0 {
+         break;
+      } elif path[i] == ''\\ {
+         path[i] = ''/;
+      }
+   }
+   "#endif";
+   var found;
+   "#ifdef _WIN32";
+   found = C.strtok(path, ";");
+   "#else";
+   found = C.strtok(path, ":");
+   "#endif";
+   loop found != null {
+      // C1.stdout{"- " found ''\n}
+      var fd, compile:char[512];
+      "#ifdef _WIN32";
+      C.sprintf(compile, "%s/tcc.exe", found);
+      "#else";
+      C.sprintf(compile, "%s/tcc", found);
+      "#endif";
+      fd = X.open(compile, #rdonly);
+      if fd != #nil {
+         C.strcpy(compiler, "tcc");
+         return;
+      }
+      "#ifdef _WIN32";
+      C.sprintf(compile, "%s/clang.exe", found);
+      "#else";
+      C.sprintf(compile, "%s/clang", found);
+      "#endif";
+      fd = X.open(compile, #rdonly);
+      if fd != #nil {
+         C.strcpy(compiler, "clang");
+         return;
+      }
+      "#ifdef _WIN32";
+      C.sprintf(compile, "%s/gcc.exe", found);
+      "#else";
+      C.sprintf(compile, "%s/gcc", found);
+      "#endif";
+      fd = X.open(compile, #rdonly);
+      if fd != #nil {
+         C.strcpy(compiler, "gcc");
+         return;
+      }
+      "#ifdef _WIN32";
+      found = C.strtok(null, ";");
+      "#else";
+      found = C.strtok(null, ":");
+      "#endif";
+   }
+   C1.stdout{"Cannot execute '" bin " run' because the required compile was not found: tcc clang or gcc\n"}
+   C.exit(#failure);
+}
 main(arg-c:intc, arg-v:char[][]):intc {
    "#ifdef _WIN32";
    if true {
@@ -101,6 +160,8 @@ main(arg-c:intc, arg-v:char[][]):intc {
    c-path[12] = ''.;
    c-path[13] = ''c;
    c-path[14] = ''\0;
+   var compiler:char[8];
+   get-compiler(bin, compiler);
    "#ifdef _WIN32";
    if bin[0] != ''/ {
       loop i = 0; bin[i] != ''\0; i++ {
@@ -118,7 +179,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       X.unlink(c-path);
       C.exit(#failure);
    }
-   C.sprintf(command, "tcc -o \"%s\" \"%s\" || clang -o \"%s\" \"%s\" || gcc -o \"%s\" \"%s\"", exe-path, c-path, exe-path, c-path, exe-path, c-path);
+   C.sprintf(command, "%s -o %s %s", compiler, exe-path, c-path);
    // C1.stdout{"run command: " command ''\n}
    compile-ret! = C.system(command);
    X.unlink(c-path);
