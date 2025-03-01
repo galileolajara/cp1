@@ -110,6 +110,9 @@ get-compiler(bin:char[], compiler:char[]) {
    C1.stdout{"Cannot execute '" bin " run' because the required compile was not found: tcc clang or gcc\n"}
    C.exit(#failure);
 }
+include "system2.h" {
+   system2(cmd:char[]):intc @real-name;
+}
 main(arg-c:intc, arg-v:char[][]):intc {
    "#ifdef _WIN32";
    if true {
@@ -177,16 +180,16 @@ main(arg-c:intc, arg-v:char[][]):intc {
    }
    "#endif";
    var command:char[1024];
-   C.sprintf(command, "%.*s-compile -c %s %s", (C.strlen(bin) - 4):intc, bin, c-path, arg-v[1]);
+   C.sprintf(command, "\"%.*s-compile\" -c \"%s\" \"%s\"", (C.strlen(bin) - 4):intc, bin, c-path, arg-v[1]);
    // C1.stdout{"run command: " command ''\n}
-   c-ret! = C.system(command);
+   c-ret! = system2(command);
    if c-ret != 0 {
       X.unlink(c-path);
       C.exit(#failure);
    }
    C.sprintf(command, "%s -o %s %s", compiler, exe-path, c-path);
    // C1.stdout{"run command: " command ''\n}
-   compile-ret! = C.system(command);
+   compile-ret! = system2(command);
    X.unlink(c-path);
    if compile-ret != 0 {
       C.exit(#failure);
@@ -201,7 +204,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
    }
    "#endif";
    // C1.stdout{"run command: " exe-path ''\n}
-   exe-ret! = C.system(exe-path);
+   exe-ret! = system2(exe-path);
    X.unlink(exe-path);
    if exe-ret != 0 {
       C.exit(#failure);

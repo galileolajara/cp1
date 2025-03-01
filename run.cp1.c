@@ -12,6 +12,7 @@
 #include <process.h>
 #endif
 #include <stdio.h>
+#include "system2.h"
 #define _NLibC_NExit_Csuccess 0
 #define _NLibC_NExit_Cfailure (_NLibC_NExit_Csuccess + 1)
 #define _NPosix_NFd_Cnil (-1)
@@ -38,6 +39,7 @@ static inline void _Tchar_Pstdout_arr_3(char* _Lstr_0, struct _NLibCp1_NStdOut* 
 static inline void _Tchar_Pstdout_3(char _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
 static inline void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_0);
 void _Pget_compiler_2(char* _Lbin_0, char* _Lcompiler_1);
+int system2(char* _Lcmd_0);
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
 static inline void _NLibCp1_Pstdout_bytes_nr_2(void* _Ldata_0, size_t _Lsize_1);
 static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0);
@@ -163,14 +165,14 @@ _Li_21++;
 break_2:;
 }
 #endif
-sprintf(_Lcommand_22, "%.*s-compile -c %s %s", ((int)(strlen(_Lbin_7) - 4)), _Lbin_7, _Lc_path_8, _Larg_v_1[1]);
-_Lc_ret_23 = system(_Lcommand_22);
+sprintf(_Lcommand_22, "\"%.*s-compile\" -c \"%s\" \"%s\"", ((int)(strlen(_Lbin_7) - 4)), _Lbin_7, _Lc_path_8, _Larg_v_1[1]);
+_Lc_ret_23 = system2(_Lcommand_22);
 if(_Lc_ret_23 != 0) {
 unlink(_Lc_path_8);
 exit(_NLibC_NExit_Cfailure);
 }
 sprintf(_Lcommand_22, "%s -o %s %s", _Lcompiler_20, _Lexe_path_14, _Lc_path_8);
-_Lcompile_ret_24 = system(_Lcommand_22);
+_Lcompile_ret_24 = system2(_Lcommand_22);
 unlink(_Lc_path_8);
 if(_Lcompile_ret_24 != 0) {
 exit(_NLibC_NExit_Cfailure);
@@ -189,7 +191,7 @@ _Li_25++;
 }
 break_3:;
 #endif
-_Lexe_ret_26 = system(_Lexe_path_14);
+_Lexe_ret_26 = system2(_Lexe_path_14);
 unlink(_Lexe_path_14);
 if(_Lexe_ret_26 != 0) {
 exit(_NLibC_NExit_Cfailure);

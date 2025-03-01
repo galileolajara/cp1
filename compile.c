@@ -232,6 +232,7 @@ void create_folders_recursively(const char *file_path) {
         token = strtok(NULL, "/");
     }
 }
+#include "system2.h"
 void _NCp1_Pquickjs_end_3(char* js_data, uint32_t js_len, bool require) {
    create_folders_recursively(cp1_tmp_js);
    char tmp_path[1024 + 10];
@@ -243,9 +244,9 @@ void _NCp1_Pquickjs_end_3(char* js_data, uint32_t js_len, bool require) {
    rename(tmp_path, cp1_tmp_js);
    #ifdef _WIN32
    char command[1024 + 512];
-   sprintf(command, "%s %s", qjs_path, cp1_tmp_js);
+   sprintf(command, "\"%s\" \"%s\"", qjs_path, cp1_tmp_js);
    // printf("command: %s\n", command);
-   if (system(command) != 0) {
+   if (system2(command) != 0) {
       exit(EXIT_FAILURE);
    }
    #else
@@ -356,9 +357,9 @@ char* _NCp1_Preq_parse_3(const char* path, uint8_t path_len, bool require) {
    create_folders_recursively(tmp);
    #ifdef _WIN32
    char command[1024 + 1024];
-   sprintf(command, "%s %s %s", parser_path, fullpath, tmp);
+   sprintf(command, "\"%s\" \"%s\" \"%s\"", parser_path, fullpath, tmp);
    // printf("command: %s\n", command);
-   if (system(command) != 0) {
+   if (system2(command) != 0) {
       exit(EXIT_FAILURE);
    }
    #else
