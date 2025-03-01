@@ -814,15 +814,34 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          "#endif";
       } else {
          path! = C.strdup(C.getenv("PATH"));
-         found! = C.strtok(path, ":");
+         var found;
+         "#ifdef _WIN32";
+         loop i = 0; path[i] != ''\0; i++ {
+            if path[i] == ''\\ {
+               path[i] = ''/;
+            }
+         }
+         found = C.strtok(path, ";");
+         "#else";
+         found = C.strtok(path, ":");
+         "#endif";
          fd! = X.Fd#nil;
          loop found != null {
+            "#ifdef _WIN32";
+            C.sprintf(abs-path, "%s/%s.exe", found, bin);
+            "#else";
             C.sprintf(abs-path, "%s/%s", found, bin);
+            "#endif";
             fd = X.open(abs-path, #rdonly);
             if fd != #nil {
+               fd.close();
                break;
             }
+            "#ifdef _WIN32";
+            found = C.strtok(null, ";");
+            "#else";
             found = C.strtok(null, ":");
+            "#endif";
          }
          if fd == #nil {
             C1.stdout{"Cannot run " bin " because we can't detect its absolute path\n"}
