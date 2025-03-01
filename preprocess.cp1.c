@@ -8,6 +8,8 @@
 
 #ifndef _WIN32
 #include <unistd.h>
+#else
+#include <process.h>
 #endif
 #include <string.h>
 #define _NLibC_NExit_Csuccess 0

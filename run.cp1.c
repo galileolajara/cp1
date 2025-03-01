@@ -8,6 +8,8 @@
 
 #ifndef _WIN32
 #include <unistd.h>
+#else
+#include <process.h>
 #endif
 #include <stdio.h>
 #define _NLibC_NExit_Csuccess 0
@@ -50,7 +52,7 @@ int main(int _Larg_c_0, char** _Larg_v_1) {
 char* _Lbin_7;
 char _Lc_path_8[15] = {0};
 _NPosix_NFd _Lc_fd_9;
-char _Lexe_path_14[17] = {0};
+char _Lexe_path_14[21] = {0};
 _NPosix_NFd _Lexe_fd_15;
 char _Lcompiler_20[8] = {0};
 char _Lcommand_22[1024] = {0};
@@ -143,6 +145,11 @@ _Lc_path_8[13] = 'c';
 _Lc_path_8[14] = '\0';
 _Pget_compiler_2(_Lbin_7, _Lcompiler_20);
 #ifdef _WIN32
+_Lexe_path_14[16] = '.';
+_Lexe_path_14[17] = 'e';
+_Lexe_path_14[18] = 'x';
+_Lexe_path_14[19] = 'e';
+_Lexe_path_14[20] = '\0';
 if(_Lbin_7[0] != '/') {
 int32_t _Li_21;
 _Li_21 = 0;
@@ -162,11 +169,7 @@ if(_Lc_ret_23 != 0) {
 unlink(_Lc_path_8);
 exit(_NLibC_NExit_Cfailure);
 }
-#ifdef _WIN32
-sprintf(_Lcommand_22, "%s -o %s.exe %s", _Lcompiler_20, _Lexe_path_14, _Lc_path_8);
-#else
 sprintf(_Lcommand_22, "%s -o %s %s", _Lcompiler_20, _Lexe_path_14, _Lc_path_8);
-#endif
 _Lcompile_ret_24 = system(_Lcommand_22);
 unlink(_Lc_path_8);
 if(_Lcompile_ret_24 != 0) {

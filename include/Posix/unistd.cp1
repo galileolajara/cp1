@@ -2,6 +2,8 @@ import "Posix/fcntl.cp1";
 include [
 #ifndef _WIN32
 #include <unistd.h>
+#else
+#include <process.h>
 #endif
 ] {
    using X = Posix;

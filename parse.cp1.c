@@ -8,6 +8,8 @@
 
 #ifndef _WIN32
 #include <unistd.h>
+#else
+#include <process.h>
 #endif
 #include <string.h>
 #include "num.c"

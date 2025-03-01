@@ -147,7 +147,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
    }
    c-fd.close();
    X.unlink(c-path);
-   var exe-path:char[17];
+   var exe-path:char[21];
    C.strcpy(exe-path, "./cp1-exe-XXXXXX");
    exe-fd! = X.mkstemp(exe-path);
    if exe-fd == #nil {
@@ -163,6 +163,11 @@ main(arg-c:intc, arg-v:char[][]):intc {
    var compiler:char[8];
    get-compiler(bin, compiler);
    "#ifdef _WIN32";
+   exe-path[16] = ''.;
+   exe-path[17] = ''e;
+   exe-path[18] = ''x;
+   exe-path[19] = ''e;
+   exe-path[20] = ''\0;
    if bin[0] != ''/ {
       loop i = 0; bin[i] != ''\0; i++ {
          if bin[i] == ''/ {
@@ -179,11 +184,7 @@ main(arg-c:intc, arg-v:char[][]):intc {
       X.unlink(c-path);
       C.exit(#failure);
    }
-   "#ifdef _WIN32";
-   C.sprintf(command, "%s -o %s.exe %s", compiler, exe-path, c-path);
-   "#else";
    C.sprintf(command, "%s -o %s %s", compiler, exe-path, c-path);
-   "#endif";
    // C1.stdout{"run command: " command ''\n}
    compile-ret! = C.system(command);
    X.unlink(c-path);
