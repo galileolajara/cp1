@@ -1056,12 +1056,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    //    fd.close();
    // }
 
-   if (&&, in-data[in-size - 2] == ''\r, in-data[in-size - 1] == ''\n) {
-      C1.stdout{
-      "Error reading file '" .input-path "' because it uses Windows-style line endings\n"
-      "Please convert the line endings to Unix-style line endings\n"}
-      C.exit(#failure);
-   }
+   // if (&&, in-data[in-size - 2] == ''\r, in-data[in-size - 1] == ''\n) {
+   //    C1.stdout{
+   //    "Error reading file '" .input-path "' because it uses Windows-style line endings\n"
+   //    "Please convert the line endings to Unix-style line endings\n"}
+   //    C.exit(#failure);
+   // }
    if in-data[in-size - 1] != ''\n {
       C1.stdout{"Error reading file '" .input-path "' because it doesn't end with a new line\n"}
       C.exit(#failure);
@@ -1080,7 +1080,10 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       // Ignore texts outside the top-level curly braces
       // indent! = 0:i32;
       loop r.pos < r-end.pos {
-         if r.p1[0] == ''\t {
+         if r.p1[0] == ''\r {
+            // Ignore
+            r.pos++;
+         } elif r.p1[0] == ''\t {
             get-row-col(row!, col!, r.reff, in-data);
             C1.stdout{.input-path '': row '': col ": Error, use of tabs is discouraged, please use spaces instead\n"}
             C.exit(#failure);
