@@ -47,7 +47,7 @@ export() {
    enum-attr-no-decl();
    enum-attr-real-name(#nil);
    expr-lvar(#0, 0, 0, 0);
-   expr-gvar(#nil, #0);
+   expr-gvar(#nil, #0, 0, 0);
    expr-fvar(#nil, #nil);
    expr-soa-field(#nil, #nil, #nil);
    expr-assign(#0, #0, #eq);

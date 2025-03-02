@@ -5050,12 +5050,12 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 157: /* gvarExpr ::= DOT ID */
 #line 523 "cp1_parse.y"
-{ yymsp[-1].minor.yy0.basic.id = _NCp1_Pexpr_gvar_2(-1, yymsp[0].minor.yy0.basic.id); }
+{ yymsp[-1].minor.yy0.basic.id = _NCp1_Pexpr_gvar_4(-1, yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 5054 "out/cp1_parse.c"
         break;
       case 158: /* gvarExpr ::= at DOT ID */
 #line 525 "cp1_parse.y"
-{ yylhsminor.yy0.basic.id = _NCp1_Pexpr_gvar_2(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
+{ yylhsminor.yy0.basic.id = _NCp1_Pexpr_gvar_4(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 5059 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;

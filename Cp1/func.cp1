@@ -379,6 +379,10 @@ var expr-call-carg-v:ExprI[#expr-call-nest-limit][#cp1-carg-limit];
 var expr-call-cgrp-c:u8[#expr-call-nest-limit];
 var expr-call-cgrp-v:u8[#expr-call-nest-limit][#expr-carg-group-limit];
 expr-push-call(row:u32, col:u32) {
+   if .decl-func-ctx-space == null {
+      C1.stdout{.input-path '': row '': row ": Use of functions are now allowed here\n"}
+      C.exit(#failure);
+   }
    call-idx! = .expr-call-c++;
    if call-idx >= #expr-call-nest-limit {
       C1.stdout{.input-path '': row '': col ": Too much nested calls\n"}

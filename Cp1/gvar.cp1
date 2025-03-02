@@ -38,7 +38,11 @@ enum Gvar[#nil = -1, #0]:i32 {
       return .gvar-v[g];
    }
 }
-expr-gvar(at:At, name:Id):ExprI {
+expr-gvar(at:At, name:Id, row:u32, col:u32):ExprI {
+   if .decl-func-ctx-space == null {
+      C1.stdout{.input-path '': row '': row ": Use of global variables are now allowed here\n"}
+      C.exit(#failure);
+   }
    var e:ExprGvar;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #gvar);

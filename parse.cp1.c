@@ -1114,7 +1114,7 @@ void _NCp1_Penum_attr_soa_field_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lid_1);
 void _NCp1_Penum_attr_no_decl_0();
 void _NCp1_Penum_attr_real_name_1(_NCp1_NId _Lid_0);
 _NCp1_NExprI _NCp1_Pexpr_lvar_4(_NCp1_NId _Lname_0, uint8_t _Ldecl_1, uint32_t _Lrow_2, uint32_t _Lcol_3);
-_NCp1_NExprI _NCp1_Pexpr_gvar_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lname_1);
+_NCp1_NExprI _NCp1_Pexpr_gvar_4(_NCp1_NAt _Lat_0, _NCp1_NId _Lname_1, uint32_t _Lrow_2, uint32_t _Lcol_3);
 _NCp1_NExprI _NCp1_Pexpr_fvar_2(_NCp1_NExprI _Lexpr_0, _NCp1_NId _Lmember_1);
 _NCp1_NExprI _NCp1_Pexpr_soa_field_3(_NCp1_NExprI _Lexpr_0, _NCp1_NId _Lgroup_1, _NCp1_NId _Lfield_2);
 _NCp1_NExprI _NCp1_Pexpr_assign_3(_NCp1_NExprI _Lleft_0, _NCp1_NExprI _Lright_1, _NCp1_NAssign _Ltype_2);
@@ -2998,7 +2998,7 @@ _NCp1_Penum_attr_soa_field_2(_NCp1_NAt_Cnil, _NCp1_NId_Cnil);
 _NCp1_Penum_attr_no_decl_0();
 _NCp1_Penum_attr_real_name_1(_NCp1_NId_Cnil);
 _NCp1_Pexpr_lvar_4(_NCp1_NId_C0, 0, 0, 0);
-_NCp1_Pexpr_gvar_2(_NCp1_NAt_Cnil, _NCp1_NId_C0);
+_NCp1_Pexpr_gvar_4(_NCp1_NAt_Cnil, _NCp1_NId_C0, 0, 0);
 _NCp1_Pexpr_fvar_2(_NCp1_NExprI_Cnil, _NCp1_NId_Cnil);
 _NCp1_Pexpr_soa_field_3(_NCp1_NExprI_Cnil, _NCp1_NId_Cnil, _NCp1_NId_Cnil);
 _NCp1_Pexpr_assign_3(_NCp1_NExprI_C0, _NCp1_NExprI_C0, _NCp1_NAssign_Ceq);
@@ -4601,36 +4601,61 @@ void _NCp1_Pfunc_header_end_0() {
 _Gdecl_func_ctx_space = NULL;
 }
 void _NCp1_Pexpr_push_call_2(uint32_t _Lrow_0, uint32_t _Lcol_1) {
-int8_t _Lcall_idx_2;
-_Lcall_idx_2 = _Gexpr_call_c++;
-if(_Lcall_idx_2 >= _NCp1_Cexpr_call_nest_limit) {
-uint32_t _L_3 = {0};
+int8_t _Lcall_idx_9;
+if(_Gdecl_func_ctx_space == NULL) {
+uint32_t _L_2 = {0};
+int _L_3 = {0};
 int _L_4 = {0};
 int _L_5 = {0};
 int _L_6 = {0};
 int _L_7 = {0};
-int _L_8 = {0};
-struct _NLibCp1_NStdOut _L_9 = {0};
-_NLibCp1_Pstdout_1(&_L_9);
-_Tchar_Pstdout_reserve_arr_3(input_path, &_L_9, &_L_3);
-_Tchar_Pstdout_reserve_3(':', &_L_9, _L_4);
-_Tu32_Pstdout_reserve_3(_Lrow_0, &_L_9, _L_5);
-_Tchar_Pstdout_reserve_3(':', &_L_9, _L_6);
-_Tu32_Pstdout_reserve_3(_Lcol_1, &_L_9, _L_7);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_9, ": Too much nested calls\n", 24u, _L_8);
-_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_9);
-_Tchar_Pstdout_arr_3(input_path, &_L_9, _L_3);
-_Tchar_Pstdout_3(':', &_L_9, _L_4);
-_Tu32_Pstdout_3(_Lrow_0, &_L_9, _L_5);
-_Tchar_Pstdout_3(':', &_L_9, _L_6);
-_Tu32_Pstdout_3(_Lcol_1, &_L_9, _L_7);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_9, ": Too much nested calls\n", 24u, _L_8);
-_NLibCp1_NStdOut_Pstdout_end_1(&_L_9);
+struct _NLibCp1_NStdOut _L_8 = {0};
+_NLibCp1_Pstdout_1(&_L_8);
+_Tchar_Pstdout_reserve_arr_3(input_path, &_L_8, &_L_2);
+_Tchar_Pstdout_reserve_3(':', &_L_8, _L_3);
+_Tu32_Pstdout_reserve_3(_Lrow_0, &_L_8, _L_4);
+_Tchar_Pstdout_reserve_3(':', &_L_8, _L_5);
+_Tu32_Pstdout_reserve_3(_Lrow_0, &_L_8, _L_6);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_8, ": Use of functions are now allowed here\n", 40u, _L_7);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_8);
+_Tchar_Pstdout_arr_3(input_path, &_L_8, _L_2);
+_Tchar_Pstdout_3(':', &_L_8, _L_3);
+_Tu32_Pstdout_3(_Lrow_0, &_L_8, _L_4);
+_Tchar_Pstdout_3(':', &_L_8, _L_5);
+_Tu32_Pstdout_3(_Lrow_0, &_L_8, _L_6);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_8, ": Use of functions are now allowed here\n", 40u, _L_7);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_8);
 exit(_NLibC_NExit_Cfailure);
 }
-_Gexpr_call_carg_c[_Lcall_idx_2] = 0;
-_Gexpr_call_cgrp_c[_Lcall_idx_2] = 1;
-_Gexpr_call_cgrp_v[_Lcall_idx_2][0] = 0;
+_Lcall_idx_9 = _Gexpr_call_c++;
+if(_Lcall_idx_9 >= _NCp1_Cexpr_call_nest_limit) {
+uint32_t _L_10 = {0};
+int _L_11 = {0};
+int _L_12 = {0};
+int _L_13 = {0};
+int _L_14 = {0};
+int _L_15 = {0};
+struct _NLibCp1_NStdOut _L_16 = {0};
+_NLibCp1_Pstdout_1(&_L_16);
+_Tchar_Pstdout_reserve_arr_3(input_path, &_L_16, &_L_10);
+_Tchar_Pstdout_reserve_3(':', &_L_16, _L_11);
+_Tu32_Pstdout_reserve_3(_Lrow_0, &_L_16, _L_12);
+_Tchar_Pstdout_reserve_3(':', &_L_16, _L_13);
+_Tu32_Pstdout_reserve_3(_Lcol_1, &_L_16, _L_14);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_16, ": Too much nested calls\n", 24u, _L_15);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_16);
+_Tchar_Pstdout_arr_3(input_path, &_L_16, _L_10);
+_Tchar_Pstdout_3(':', &_L_16, _L_11);
+_Tu32_Pstdout_3(_Lrow_0, &_L_16, _L_12);
+_Tchar_Pstdout_3(':', &_L_16, _L_13);
+_Tu32_Pstdout_3(_Lcol_1, &_L_16, _L_14);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_16, ": Too much nested calls\n", 24u, _L_15);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_16);
+exit(_NLibC_NExit_Cfailure);
+}
+_Gexpr_call_carg_c[_Lcall_idx_9] = 0;
+_Gexpr_call_cgrp_c[_Lcall_idx_9] = 1;
+_Gexpr_call_cgrp_v[_Lcall_idx_9][0] = 0;
 }
 _NCp1_NExprI _NCp1_Pexpr_pop_func_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lfunc_name_1) {
 int8_t _Lcall_idx_2;
@@ -5479,14 +5504,39 @@ _NCp1_NDeclVarData_Pcopy_from_2(&(*_Llvar_30)._Fdecl, &_Gdecl_var);
 return _Le_idx_29;
 }
 }
-_NCp1_NExprI _NCp1_Pexpr_gvar_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lname_1) {
-struct _NCp1_NExprGvar* _Le_2 = {0};
-_NCp1_NExprI _Le_idx_3;
-_NCp1_Pquick_alloc_one_1(_Le_2);
-_Le_idx_3 = _NCp1_Pexpr_push_2(&(*_Le_2)._Fbase, _NCp1_NExprType_Cgvar);
-(*_Le_2)._Fat = _Lat_0;
-(*_Le_2)._Fname = _Lname_1;
-return _Le_idx_3;
+_NCp1_NExprI _NCp1_Pexpr_gvar_4(_NCp1_NAt _Lat_0, _NCp1_NId _Lname_1, uint32_t _Lrow_2, uint32_t _Lcol_3) {
+struct _NCp1_NExprGvar* _Le_11 = {0};
+_NCp1_NExprI _Le_idx_12;
+if(_Gdecl_func_ctx_space == NULL) {
+uint32_t _L_4 = {0};
+int _L_5 = {0};
+int _L_6 = {0};
+int _L_7 = {0};
+int _L_8 = {0};
+int _L_9 = {0};
+struct _NLibCp1_NStdOut _L_10 = {0};
+_NLibCp1_Pstdout_1(&_L_10);
+_Tchar_Pstdout_reserve_arr_3(input_path, &_L_10, &_L_4);
+_Tchar_Pstdout_reserve_3(':', &_L_10, _L_5);
+_Tu32_Pstdout_reserve_3(_Lrow_2, &_L_10, _L_6);
+_Tchar_Pstdout_reserve_3(':', &_L_10, _L_7);
+_Tu32_Pstdout_reserve_3(_Lrow_2, &_L_10, _L_8);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_10, ": Use of global variables are now allowed here\n", 47u, _L_9);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_10);
+_Tchar_Pstdout_arr_3(input_path, &_L_10, _L_4);
+_Tchar_Pstdout_3(':', &_L_10, _L_5);
+_Tu32_Pstdout_3(_Lrow_2, &_L_10, _L_6);
+_Tchar_Pstdout_3(':', &_L_10, _L_7);
+_Tu32_Pstdout_3(_Lrow_2, &_L_10, _L_8);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_10, ": Use of global variables are now allowed here\n", 47u, _L_9);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_10);
+exit(_NLibC_NExit_Cfailure);
+}
+_NCp1_Pquick_alloc_one_1(_Le_11);
+_Le_idx_12 = _NCp1_Pexpr_push_2(&(*_Le_11)._Fbase, _NCp1_NExprType_Cgvar);
+(*_Le_11)._Fat = _Lat_0;
+(*_Le_11)._Fname = _Lname_1;
+return _Le_idx_12;
 }
 _NCp1_NExprI _NCp1_Pexpr_fvar_2(_NCp1_NExprI _Lexpr_0, _NCp1_NId _Lmember_1) {
 struct _NCp1_NExprFvar* _Le_2 = {0};
