@@ -1115,8 +1115,8 @@ void _NCp1_Penum_attr_no_decl_0();
 void _NCp1_Penum_attr_real_name_1(_NCp1_NId _Lid_0);
 _NCp1_NExprI _NCp1_Pexpr_lvar_4(_NCp1_NId _Lname_0, uint8_t _Ldecl_1, uint32_t _Lrow_2, uint32_t _Lcol_3);
 _NCp1_NExprI _NCp1_Pexpr_gvar_4(_NCp1_NAt _Lat_0, _NCp1_NId _Lname_1, uint32_t _Lrow_2, uint32_t _Lcol_3);
-_NCp1_NExprI _NCp1_Pexpr_fvar_2(_NCp1_NExprI _Lexpr_0, _NCp1_NId _Lmember_1);
-_NCp1_NExprI _NCp1_Pexpr_soa_field_3(_NCp1_NExprI _Lexpr_0, _NCp1_NId _Lgroup_1, _NCp1_NId _Lfield_2);
+_NCp1_NExprI _NCp1_Pexpr_fvar_4(_NCp1_NExprI _Lexpr_0, _NCp1_NId _Lmember_1, uint32_t _Lrow_2, uint32_t _Lcol_3);
+_NCp1_NExprI _NCp1_Pexpr_soa_field_5(_NCp1_NExprI _Lexpr_0, _NCp1_NId _Lgroup_1, _NCp1_NId _Lfield_2, uint32_t _Lrow_3, uint32_t _Lcol_4);
 _NCp1_NExprI _NCp1_Pexpr_assign_3(_NCp1_NExprI _Lleft_0, _NCp1_NExprI _Lright_1, _NCp1_NAssign _Ltype_2);
 _NCp1_NExprI _NCp1_Pexpr_math_3(_NCp1_NExprI _Lleft_0, _NCp1_NExprI _Lright_1, _NCp1_NMath _Ltype_2);
 _NCp1_NExprI _NCp1_Pexpr_math_add_2(_NCp1_NExprI _Lexpr_0, _NCp1_NExprI _Lright_1);
@@ -2999,8 +2999,8 @@ _NCp1_Penum_attr_no_decl_0();
 _NCp1_Penum_attr_real_name_1(_NCp1_NId_Cnil);
 _NCp1_Pexpr_lvar_4(_NCp1_NId_C0, 0, 0, 0);
 _NCp1_Pexpr_gvar_4(_NCp1_NAt_Cnil, _NCp1_NId_C0, 0, 0);
-_NCp1_Pexpr_fvar_2(_NCp1_NExprI_Cnil, _NCp1_NId_Cnil);
-_NCp1_Pexpr_soa_field_3(_NCp1_NExprI_Cnil, _NCp1_NId_Cnil, _NCp1_NId_Cnil);
+_NCp1_Pexpr_fvar_4(_NCp1_NExprI_Cnil, _NCp1_NId_Cnil, 0, 0);
+_NCp1_Pexpr_soa_field_5(_NCp1_NExprI_Cnil, _NCp1_NId_Cnil, _NCp1_NId_Cnil, 0, 0);
 _NCp1_Pexpr_assign_3(_NCp1_NExprI_C0, _NCp1_NExprI_C0, _NCp1_NAssign_Ceq);
 _NCp1_Pexpr_math_3(_NCp1_NExprI_C0, _NCp1_NExprI_C0, _NCp1_NMath_Cadd);
 _NCp1_Pexpr_math_add_2(_NCp1_NExprI_C0, _NCp1_NExprI_C0);
@@ -5538,24 +5538,74 @@ _Le_idx_12 = _NCp1_Pexpr_push_2(&(*_Le_11)._Fbase, _NCp1_NExprType_Cgvar);
 (*_Le_11)._Fname = _Lname_1;
 return _Le_idx_12;
 }
-_NCp1_NExprI _NCp1_Pexpr_fvar_2(_NCp1_NExprI _Lexpr_0, _NCp1_NId _Lmember_1) {
-struct _NCp1_NExprFvar* _Le_2 = {0};
-_NCp1_NExprI _Le_idx_3;
-_NCp1_Pquick_alloc_one_1(_Le_2);
-_Le_idx_3 = _NCp1_Pexpr_push_2(&(*_Le_2)._Fbase, _NCp1_NExprType_Cfvar);
-(*_Le_2)._Fexpr = _Lexpr_0;
-(*_Le_2)._Fmember = _Lmember_1;
-return _Le_idx_3;
+_NCp1_NExprI _NCp1_Pexpr_fvar_4(_NCp1_NExprI _Lexpr_0, _NCp1_NId _Lmember_1, uint32_t _Lrow_2, uint32_t _Lcol_3) {
+struct _NCp1_NExprFvar* _Le_11 = {0};
+_NCp1_NExprI _Le_idx_12;
+if(_Gdecl_func_ctx_space == NULL) {
+uint32_t _L_4 = {0};
+int _L_5 = {0};
+int _L_6 = {0};
+int _L_7 = {0};
+int _L_8 = {0};
+int _L_9 = {0};
+struct _NLibCp1_NStdOut _L_10 = {0};
+_NLibCp1_Pstdout_1(&_L_10);
+_Tchar_Pstdout_reserve_arr_3(input_path, &_L_10, &_L_4);
+_Tchar_Pstdout_reserve_3(':', &_L_10, _L_5);
+_Tu32_Pstdout_reserve_3(_Lrow_2, &_L_10, _L_6);
+_Tchar_Pstdout_reserve_3(':', &_L_10, _L_7);
+_Tu32_Pstdout_reserve_3(_Lrow_2, &_L_10, _L_8);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_10, ": Use of member variables are now allowed here\n", 47u, _L_9);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_10);
+_Tchar_Pstdout_arr_3(input_path, &_L_10, _L_4);
+_Tchar_Pstdout_3(':', &_L_10, _L_5);
+_Tu32_Pstdout_3(_Lrow_2, &_L_10, _L_6);
+_Tchar_Pstdout_3(':', &_L_10, _L_7);
+_Tu32_Pstdout_3(_Lrow_2, &_L_10, _L_8);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_10, ": Use of member variables are now allowed here\n", 47u, _L_9);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_10);
+exit(_NLibC_NExit_Cfailure);
 }
-_NCp1_NExprI _NCp1_Pexpr_soa_field_3(_NCp1_NExprI _Lexpr_0, _NCp1_NId _Lgroup_1, _NCp1_NId _Lfield_2) {
-struct _NCp1_NExprSoaField* _Le_3 = {0};
-_NCp1_NExprI _Le_idx_4;
-_NCp1_Pquick_alloc_one_1(_Le_3);
-_Le_idx_4 = _NCp1_Pexpr_push_2(&(*_Le_3)._Fbase, _NCp1_NExprType_Csoa_field);
-(*_Le_3)._Fexpr = _Lexpr_0;
-(*_Le_3)._Fgroup = _Lgroup_1;
-(*_Le_3)._Ffield = _Lfield_2;
-return _Le_idx_4;
+_NCp1_Pquick_alloc_one_1(_Le_11);
+_Le_idx_12 = _NCp1_Pexpr_push_2(&(*_Le_11)._Fbase, _NCp1_NExprType_Cfvar);
+(*_Le_11)._Fexpr = _Lexpr_0;
+(*_Le_11)._Fmember = _Lmember_1;
+return _Le_idx_12;
+}
+_NCp1_NExprI _NCp1_Pexpr_soa_field_5(_NCp1_NExprI _Lexpr_0, _NCp1_NId _Lgroup_1, _NCp1_NId _Lfield_2, uint32_t _Lrow_3, uint32_t _Lcol_4) {
+struct _NCp1_NExprSoaField* _Le_12 = {0};
+_NCp1_NExprI _Le_idx_13;
+if(_Gdecl_func_ctx_space == NULL) {
+uint32_t _L_5 = {0};
+int _L_6 = {0};
+int _L_7 = {0};
+int _L_8 = {0};
+int _L_9 = {0};
+int _L_10 = {0};
+struct _NLibCp1_NStdOut _L_11 = {0};
+_NLibCp1_Pstdout_1(&_L_11);
+_Tchar_Pstdout_reserve_arr_3(input_path, &_L_11, &_L_5);
+_Tchar_Pstdout_reserve_3(':', &_L_11, _L_6);
+_Tu32_Pstdout_reserve_3(_Lrow_3, &_L_11, _L_7);
+_Tchar_Pstdout_reserve_3(':', &_L_11, _L_8);
+_Tu32_Pstdout_reserve_3(_Lrow_3, &_L_11, _L_9);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_11, ": Use of SOA member variables are now allowed here\n", 51u, _L_10);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_11);
+_Tchar_Pstdout_arr_3(input_path, &_L_11, _L_5);
+_Tchar_Pstdout_3(':', &_L_11, _L_6);
+_Tu32_Pstdout_3(_Lrow_3, &_L_11, _L_7);
+_Tchar_Pstdout_3(':', &_L_11, _L_8);
+_Tu32_Pstdout_3(_Lrow_3, &_L_11, _L_9);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_11, ": Use of SOA member variables are now allowed here\n", 51u, _L_10);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_11);
+exit(_NLibC_NExit_Cfailure);
+}
+_NCp1_Pquick_alloc_one_1(_Le_12);
+_Le_idx_13 = _NCp1_Pexpr_push_2(&(*_Le_12)._Fbase, _NCp1_NExprType_Csoa_field);
+(*_Le_12)._Fexpr = _Lexpr_0;
+(*_Le_12)._Fgroup = _Lgroup_1;
+(*_Le_12)._Ffield = _Lfield_2;
+return _Le_idx_13;
 }
 _NCp1_NExprI _NCp1_Pexpr_assign_3(_NCp1_NExprI _Lleft_0, _NCp1_NExprI _Lright_1, _NCp1_NAssign _Ltype_2) {
 struct _NCp1_NExprAssign* _Le_3 = {0};

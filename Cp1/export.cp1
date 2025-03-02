@@ -48,8 +48,8 @@ export() {
    enum-attr-real-name(#nil);
    expr-lvar(#0, 0, 0, 0);
    expr-gvar(#nil, #0, 0, 0);
-   expr-fvar(#nil, #nil);
-   expr-soa-field(#nil, #nil, #nil);
+   expr-fvar(#nil, #nil, 0, 0);
+   expr-soa-field(#nil, #nil, #nil, 0, 0);
    expr-assign(#0, #0, #eq);
    expr-math(#0, #0, #add);
    expr-math-add(#0, #0);

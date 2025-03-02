@@ -5061,13 +5061,13 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 159: /* fvarExpr ::= value4fix DOT ID */
 #line 527 "cp1_parse.y"
-{ yylhsminor.yy0.basic.id = _NCp1_Pexpr_fvar_2(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id); }
+{ yylhsminor.yy0.basic.id = _NCp1_Pexpr_fvar_4(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 5065 "out/cp1_parse.c"
   yymsp[-2].minor.yy0 = yylhsminor.yy0;
         break;
       case 160: /* soaFieldExpr ::= value4fix SOA_FIELD */
 #line 529 "cp1_parse.y"
-{ yylhsminor.yy0.basic.id = _NCp1_Pexpr_soa_field_3(yymsp[-1].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id2); }
+{ yylhsminor.yy0.basic.id = _NCp1_Pexpr_soa_field_5(yymsp[-1].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.id2, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 5071 "out/cp1_parse.c"
   yymsp[-1].minor.yy0 = yylhsminor.yy0;
         break;
