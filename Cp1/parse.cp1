@@ -1089,9 +1089,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             C.exit(#failure);
          } elif r.p1[0] == ''/ {
             if r.p1[1] == ''/ {
-               if (||, r.p1[-1] == '' , r.p1[-1] == ''\n) {
+               if r.reff == in-data {
                   // ok
-               } elif r.reff == in-data {
+               } elif (||, r.p1[-1] == '' , r.p1[-1] == ''\n) {
                   // ok
                } else {
                   get-row-col(row!, col!, r.reff, in-data);
@@ -1357,7 +1357,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       .last-col = .col;
       .row = tok.ii32.row;
       .col = tok.ii32.col;
-      // C1.stdout{.input-path '': tok.row '': tok.col ": token " t.cp1-name() ''\n}
+      // C1.stdout{.input-path '': tok.ii32.row '': tok.ii32.col ": token " t.cp1-name() ''\n}
       // 'c.out.flush();
       // if (&&, t >= #id-quote, t < #id) {
       //    tok.id = lex.get-id(1, 0);

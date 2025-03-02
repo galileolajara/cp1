@@ -15,6 +15,7 @@ void _NCp1_Pfarg_next_group_0();
 void _NCp1_Pdecl_var_as_this_0();
 void _NCp1_Pdecl_var_as_fvar_0();
 void _NCp1_Pfunc_body_end_0();
+void _NCp1_Pfunc_header_end_0();
 void _NCp1_Pexpr_push_call_2(uint32_t _Lrow_0, uint32_t _Lcol_1);
 _NCp1_NExprI _NCp1_Pexpr_pop_func_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lfunc_name_1);
 _NCp1_NExprI _NCp1_Pexpr_pop_metafunc_2(_NCp1_NAt _Lat_0, _NCp1_NId _Lfunc_name_1);

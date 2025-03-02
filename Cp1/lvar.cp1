@@ -52,6 +52,10 @@ struct LvarData[
    // set-expr:ExprI,
 ];
 expr-lvar(name:Id, decl:u8, row:u32, col:u32):ExprI {
+   if .decl-func-ctx-space == null {
+      C1.stdout{.input-path '': row '': row ": Use of local variables are now allowed here\n"}
+      C.exit(#failure);
+   }
    if decl == 0 {
       space! = .decl-func-ctx-space;
       loop {

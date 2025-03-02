@@ -365,6 +365,10 @@ func-body-end() {
       c++;
       s = s.stmt-next;
    }
+   .decl-func-ctx-space = null;
+}
+func-header-end() {
+   .decl-func-ctx-space = null;
 }
 #expr-call-nest-limit:i32 = 8;
 #expr-carg-group-limit:i32 = 256;

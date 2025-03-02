@@ -4,12 +4,10 @@ include <math.h> {
       sqrtf(val:f32):f32 @no-decl @real-name;
    }
    using f32 {
-      sqr(val:this):f32 {
+      sqr(val:this):f32 @inline {
          return val * val;
       }
-      sqrt(val:this):f32 {
-         return C.sqrtf(val);
-      }
+      sqrt(val:this):f32 @no-decl(sqrtf);
       abs(val:this):f32 @no-decl(fabsf);
       round(val:this):f32 @no-decl(roundf);
       round-i32(val:this):i32 @no-decl(lroundf);

@@ -17,6 +17,7 @@ export() {
    decl-var-as-this();
    decl-var-as-fvar();
    func-body-end();
+   func-header-end();
    expr-push-call(0, 0);
    expr-pop-func(#nil, #nil);
    expr-pop-metafunc(#nil, #nil);

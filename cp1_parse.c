@@ -260,7 +260,7 @@ typedef union {
 #define cp1ParseCTX_STORE
 #define YYNSTATE             398
 #define YYNRULE              483
-#define YYNRULE_WITH_ACTION  359
+#define YYNRULE_WITH_ACTION  360
 #define YYNTOKEN             140
 #define YY_MAX_SHIFT         397
 #define YY_MIN_SHIFTREDUCE   803
@@ -358,11 +358,11 @@ typedef union {
 static const YYACTIONTYPE yy_action[] = {
  /*     0 */  1601,  184,  185,   96, 1312,  184,  185,  217, 1312,   61,
  /*    10 */   805,    7,   97,  105,  336,  334,  184,  185,  233, 1312,
- /*    20 */     6, 1695,  330,  821,  184,  185, 1353, 1312,  325, 1022,
- /*    30 */    33,  268,  322,  808,  316,  962,  315, 1183,  314,  805,
- /*    40 */   338, 1702,  105,  336,  334, 1405,  104,  182,  103,  337,
+ /*    20 */     6, 1696,  330,  821,  184,  185, 1353, 1312,  325, 1022,
+ /*    30 */    33,  268,  322,  808,  316,  962,  315, 1184,  314,  805,
+ /*    40 */   338, 1703,  105,  336,  334, 1405,  104,  182,  103,  337,
  /*    50 */   104,  330,  821,  184,  185,  179, 1312,  325, 1615,  273,
- /*    60 */   273,  322,  115,  316,  186,  315, 1182,  314, 1438,  393,
+ /*    60 */   273,  322,  115,  316,  186,  315, 1183,  314, 1438,  393,
  /*    70 */  1436, 1437,   92,  223,  213,  212,  211,  247,  139, 1426,
  /*    80 */  1441, 1427, 1428, 1429, 1430, 1440, 1442, 1443, 1444, 1445,
  /*    90 */    34, 1561,  384,  381,  824, 1562,  379,  377,  376,  245,
@@ -371,42 +371,42 @@ static const YYACTIONTYPE yy_action[] = {
  /*   120 */  1135, 1136, 1138, 1139,  112,  140,  140, 1385, 1520, 1521,
  /*   130 */   864,  184,  185, 1353, 1312,  184,  185, 1564, 1312,  282,
  /*   140 */  1555,   33,  254,  883,  884,  885,  886,  887,  888,  889,
- /*   150 */   890,  891,  892,  893,  894,  895,  896,  897,  898, 1630,
+ /*   150 */   890,  891,  892,  893,  894,  895,  896,  897,  898, 1631,
  /*   160 */   837, 1088, 1089,  285,  279,  168, 1112,  278,  278,  113,
- /*   170 */   170,  254,  253,  272, 1142, 1143, 1140, 1141,   78, 1438,
+ /*   170 */   170,  254,  253,  272, 1143, 1144, 1141, 1142,   78, 1438,
  /*   180 */   393, 1436, 1437,   92,  223,  213,  212,  211,  247,  139,
  /*   190 */  1426, 1441, 1427, 1428, 1429, 1430, 1440, 1442, 1443, 1444,
- /*   200 */  1445, 1630, 1561,  384,  381,  283, 1562,  379,  377,  376,
+ /*   200 */  1445, 1631, 1561,  384,  381,  283, 1562,  379,  377,  376,
  /*   210 */   245, 1483, 1484, 1485,  372,  371,  369, 1557, 1478, 1489,
  /*   220 */  1490, 1491,  812,  210,  112,   78,  111, 1545, 1517, 1545,
  /*   230 */   145,  294,  294,  184,  185,  217, 1312,  394, 1545, 1520,
  /*   240 */  1521,  288,  287,  165,  289,   78, 1137,  289,  236,  235,
  /*   250 */    83, 1555,  396,  189,  289,  165,  901,  902,   33,  812,
- /*   260 */    87,  904,  135,  141,  141, 1647,   87, 1017, 1317,  289,
+ /*   260 */    87,  904,  135,  141,  141, 1648,   87, 1017, 1317,  289,
  /*   270 */   134,  181,  180,  207,  277,  231,  276,  231, 1285,  812,
  /*   280 */   165,  165,  165,  165,  165,  108,  905, 1589,  392,  136,
- /*   290 */   172, 1542,  289,   24, 1726,  234, 1438,  246, 1436, 1437,
+ /*   290 */   172, 1542,  289,   24, 1727,  234, 1438,  246, 1436, 1437,
  /*   300 */    92,  223,  213,  212,  211,  247,  139, 1426, 1441, 1427,
  /*   310 */  1428, 1429, 1430, 1440, 1442, 1443, 1444, 1445, 1770, 1561,
  /*   320 */   384,  381,  824, 1562,  379,  377,  376,  245, 1483, 1484,
  /*   330 */  1485,  372,  371,  369, 1557, 1478, 1489, 1490, 1491, 1517,
- /*   340 */   210,  112,   36,  111,  184,  185,  217, 1312, 1158, 1157,
- /*   350 */  1155, 1156, 1758,  123,  123,   71, 1520, 1521,  851,  852,
+ /*   340 */   210,  112,   36,  111,  184,  185,  217, 1312, 1159, 1158,
+ /*   350 */  1156, 1157, 1758,  123,  123,   71, 1520, 1521,  851,  852,
  /*   360 */   854,  117,  117,  150, 1022, 1540,   30,  109, 1555,   33,
  /*   370 */   962,  883,  884,  885,  886,  887,  888,  889,  890,  891,
  /*   380 */   892,  893,  894,  895,  896,  897,  898,  883,  884,  885,
  /*   390 */   886,  887,  888,  889,  890,  891,  892,  893,  894,  895,
- /*   400 */   896,  897,  898,  117,  117,  153, 1631, 1438,  246, 1436,
+ /*   400 */   896,  897,  898,  117,  117,  153, 1632, 1438,  246, 1436,
  /*   410 */  1437,   92,  223,  213,  212,  211,  247,  139, 1426, 1441,
  /*   420 */  1427, 1428, 1429, 1430, 1440, 1442, 1443, 1444, 1445, 1348,
  /*   430 */  1561,  384,  381, 1386, 1562,  379,  377,  376,  245, 1483,
  /*   440 */  1484, 1485,  372,  371,  369, 1557, 1478, 1489, 1490, 1491,
  /*   450 */   813,  210,  112,  813,  111, 1512, 1015,  107,  824,  396,
  /*   460 */   184,  185,  217, 1312,  122,  122, 1556, 1520, 1521, 1024,
- /*   470 */    98,  130,  118,  855, 1196,  263,  281, 1193,  118, 1555,
- /*   480 */  1697, 1556,  230, 1556, 1556,   33,  808,  814,  815,  816,
+ /*   470 */    98,  130,  118,  855, 1197,  263,  281, 1194,  118, 1555,
+ /*   480 */  1698, 1556,  230, 1556, 1556,   33,  808,  814,  815,  816,
  /*   490 */   817,  161, 1556,  905,  813,  144,  144, 1556, 1556, 1556,
- /*   500 */   396, 1556, 1556, 1556, 1339, 1681, 1556,  883,  884,  885,
+ /*   500 */   396, 1556, 1556, 1556, 1339, 1682, 1556,  883,  884,  885,
  /*   510 */   886,  887,  888,  889,  890,  891,  892,  893,  894,  895,
  /*   520 */   896,  897,  898, 1438,  393, 1436, 1437,   92,  223,  213,
  /*   530 */   212,  211,  247,  139, 1426, 1441, 1427, 1428, 1429, 1430,
@@ -417,7 +417,7 @@ static const YYACTIONTYPE yy_action[] = {
  /*   580 */   851,  852,  854, 1520, 1521,   89,   27,  130,  119,   28,
  /*   590 */   851,  852,  854, 1556,  119, 1555,   33,  237,  805,   11,
  /*   600 */    75,  105,  336,  334,  859,  860,  861,  199, 1760,  127,
- /*   610 */   330,  821,  859,  860,  861,  823,  325,  106, 1339, 1680,
+ /*   610 */   330,  821,  859,  860,  861,  823,  325,  106, 1339, 1681,
  /*   620 */   322,  110,  316,  392,  315,   76,  314,  859,  860,  861,
  /*   630 */  1295,  148,   26,  190, 1438,  393, 1436, 1437,   92,  223,
  /*   640 */   213,  212,  211,  247,  139, 1426, 1441, 1427, 1428, 1429,
@@ -425,11 +425,11 @@ static const YYACTIONTYPE yy_action[] = {
  /*   660 */    14, 1562,  379,  377,  376,  245, 1483, 1484, 1485,  372,
  /*   670 */   371,  369, 1557, 1478, 1489, 1490, 1491, 1295,  210,  112,
  /*   680 */   138,  111, 1601,  879,  882,  876,  877,  184,  185,  217,
- /*   690 */  1312,   94, 1027, 1684, 1520, 1521,  859,  860,  861,  267,
- /*   700 */   267,   32,    8,  933,  933, 1519, 1555, 1016, 1744, 1222,
- /*   710 */  1221, 1764,   33,  961,  343,  342,  869,  310,  296,  871,
+ /*   690 */  1312,   94, 1027, 1685, 1520, 1521,  859,  860,  861,  267,
+ /*   700 */   267,   32,    8,  933,  933, 1519, 1555, 1016, 1745, 1223,
+ /*   710 */  1222, 1764,   33,  961,  343,  342,  869,  310,  296,  871,
  /*   720 */   872,  873,  306,   22,  875,  878,  303,  188,  293, 1354,
- /*   730 */   254,  395, 1703,  391,  391,  142,  142,  187,   94,  269,
+ /*   730 */   254,  395, 1704,  391,  391,  142,  142,  187,   94,  269,
  /*   740 */   269,  138,  221,  249,  284,   88,  146,  146,  265,   94,
  /*   750 */  1438,  393, 1436, 1437,   92,  223,  213,  212,  211,  247,
  /*   760 */   139, 1426, 1441, 1427, 1428, 1429, 1430, 1440, 1442, 1443,
@@ -437,66 +437,66 @@ static const YYACTIONTYPE yy_action[] = {
  /*   780 */   376,  245, 1483, 1484, 1485,  372,  371,  369, 1557, 1478,
  /*   790 */  1489, 1490, 1491, 1512,  210,  112, 1386,  111,  184,  185,
  /*   800 */   217, 1312,    3,  275, 1017, 1017,  137, 1021,    5, 1348,
- /*   810 */  1520, 1521, 1020,  146,  146,  332, 1652,  963,  154,  154,
+ /*   810 */  1520, 1521, 1020,  146,  146,  332, 1653,  963,  154,  154,
  /*   820 */  1389,  201, 1555,   33, 1573,    4,  354,  353,  352,  351,
  /*   830 */   350,  349,  348,  347,  346,  345,   97,  252, 1023, 1339,
- /*   840 */  1452, 1025,  277, 1732,  276,  143, 1614,  273,  273, 1729,
- /*   850 */   275,  130, 1678,  138,  161, 1339, 1459,    4, 1693, 1339,
- /*   860 */  1717, 1438,  393, 1436, 1437,   92,  223,  213,  212,  211,
+ /*   840 */  1452, 1025,  277, 1733,  276,  143, 1614,  273,  273, 1730,
+ /*   850 */   275,  130, 1679,  138,  161, 1339, 1459,    4, 1694, 1339,
+ /*   860 */  1718, 1438,  393, 1436, 1437,   92,  223,  213,  212,  211,
  /*   870 */   247,  139, 1426, 1441, 1427, 1428, 1429, 1430, 1440, 1442,
  /*   880 */  1443, 1444, 1445,  292, 1561,  384,  381, 1400, 1562,  379,
  /*   890 */   377,  376,  245, 1483, 1484, 1485,  372,  371,  369, 1557,
  /*   900 */  1478, 1489, 1490, 1491,  143,  210,  112,   20,  111, 1517,
- /*   910 */    95, 1761, 1558, 1710,  184,  185,  217, 1312, 1523,  133,
+ /*   910 */    95, 1761, 1558, 1711,  184,  185,  217, 1312, 1523,  133,
  /*   920 */  1767, 1520, 1521, 1549, 1762, 1549,  266, 1558, 1351, 1558,
- /*   930 */  1558, 1736,   18, 1555, 1549,   73,   95, 1147, 1558,   33,
- /*   940 */   258, 1339, 1718, 1558, 1558, 1558,   66, 1558, 1558, 1558,
- /*   950 */  1522,  133, 1558,   73, 1351, 1768,   73, 1736, 1524, 1689,
- /*   960 */  1524, 1526,    2, 1349,  114, 1525,    2, 1404, 1738, 1524,
- /*   970 */   320,  319,  851,  852, 1183,   74,  318, 1438,  246, 1436,
+ /*   930 */  1558, 1737,   18, 1555, 1549,   73,   95, 1148, 1558,   33,
+ /*   940 */   258, 1339, 1719, 1558, 1558, 1558,   66, 1558, 1558, 1558,
+ /*   950 */  1522,  133, 1558,   73, 1351, 1768,   73, 1737, 1524, 1690,
+ /*   960 */  1524, 1526,    2, 1349,  114, 1525,    2, 1404, 1739, 1524,
+ /*   970 */   320,  319,  851,  852, 1184,   74,  318, 1438,  246, 1436,
  /*   980 */  1437,   92,  223,  213,  212,  211,  247,  139, 1426, 1441,
  /*   990 */  1427, 1428, 1429, 1430, 1440, 1442, 1443, 1444, 1445, 1499,
  /*  1000 */  1561,  384,  381,  397, 1562,  379,  377,  376,  245, 1483,
  /*  1010 */  1484, 1485,  372,  371,  369, 1557, 1478, 1489, 1490, 1491,
  /*  1020 */   341,  210,  112,   67,  111,  184,  185,  217, 1312, 1552,
- /*  1030 */   297,  255,  178,  262, 1716,   63,   79, 1520, 1521, 1558,
- /*  1040 */  1151, 1554, 1150, 1261, 1552,  396, 1552, 1552, 1219, 1555,
- /*  1050 */    33,   67, 1152,   64,   72, 1552, 1554,   91, 1554, 1554,
- /*  1060 */  1552, 1552, 1552, 1190, 1552, 1552, 1552, 1554, 1148, 1552,
- /*  1070 */  1149, 1271, 1554, 1554, 1554,   81, 1554, 1554, 1554,  151,
+ /*  1030 */   297,  255,  178,  262, 1717,   63,   79, 1520, 1521, 1558,
+ /*  1040 */  1152, 1554, 1151, 1140, 1552,  396, 1552, 1552, 1220, 1555,
+ /*  1050 */    33,   67, 1153,   64,   72, 1552, 1554,   91, 1554, 1554,
+ /*  1060 */  1552, 1552, 1552, 1191, 1552, 1552, 1552, 1554, 1149, 1552,
+ /*  1070 */  1150, 1271, 1554, 1554, 1554,   81, 1554, 1554, 1554,  151,
  /*  1080 */   856, 1554, 1386,  126,  286,  374,  373,  100, 1438,  393,
  /*  1090 */  1436, 1437,   92,  223,  213,  212,  211,  247,  139, 1426,
  /*  1100 */  1441, 1427, 1428, 1429, 1430, 1440, 1442, 1443, 1444, 1445,
  /*  1110 */   152, 1561,  384,  381,  121, 1562,  379,  377,  376,  245,
  /*  1120 */  1483, 1484, 1485,  372,  371,  369, 1557, 1478, 1489, 1490,
  /*  1130 */  1491,  299,  210,  112,  102,  111,  387,   86,   70,  248,
- /*  1140 */   253,  184,  185,  217, 1312, 1180, 1553,  101, 1520, 1521,
+ /*  1140 */   253,  184,  185,  217, 1312, 1181, 1553,  101, 1520, 1521,
  /*  1150 */    67, 1122,   65,   67, 1123, 1270, 1552, 1079,   85,  132,
  /*  1160 */  1555, 1553,  880, 1553, 1553, 1016,   33,  835, 1554,  836,
  /*  1170 */   822,  961, 1553,  238,  209,  208, 1587, 1553, 1553, 1553,
- /*  1180 */   963, 1553, 1553, 1553, 1586,  271, 1553,   71, 1741, 1607,
+ /*  1180 */   963, 1553, 1553, 1553, 1586,  271, 1553,   71, 1742, 1607,
  /*  1190 */   192, 1117, 1605,  193, 1594, 1597, 1596, 1583, 1585, 1584,
  /*  1200 */   290, 1023,   23, 1612, 1438,  393, 1436, 1437,   92,  223,
  /*  1210 */   213,  212,  211,  247,  139, 1426, 1441, 1427, 1428, 1429,
  /*  1220 */  1430, 1440, 1442, 1443, 1444, 1445,  120, 1561,  384,  381,
- /*  1230 */  1632, 1562,  379,  377,  376,  245, 1483, 1484, 1485,  372,
+ /*  1230 */  1633, 1562,  379,  377,  376,  245, 1483, 1484, 1485,  372,
  /*  1240 */   371,  369, 1557, 1478, 1489, 1490, 1491, 1571,  210,  112,
- /*  1250 */   847,  111,  184,  185,  217, 1312, 1334,  805,  829, 1660,
- /*  1260 */   105,  336,  334,  828, 1520, 1521, 1659,  339,  807,  330,
- /*  1270 */   821, 1658,  806, 1553,  158,  325, 1555,   33, 1657,  322,
- /*  1280 */  1646,  316,  159,  315, 1581,  314,   99,   99,  270, 1606,
- /*  1290 */  1580,  176, 1604, 1320, 1650, 1600, 1599, 1593, 1417, 1595,
- /*  1300 */  1416,  291,   21, 1649, 1576,   77, 1613, 1611, 1610, 1551,
- /*  1310 */  1550,   90,  225, 1159,  256, 1438,  393, 1436, 1437,   92,
+ /*  1250 */   847,  111,  184,  185,  217, 1312, 1334,  805,  829, 1661,
+ /*  1260 */   105,  336,  334,  828, 1520, 1521, 1660,  339,  807,  330,
+ /*  1270 */   821, 1659,  806, 1553,  158,  325, 1555,   33, 1658,  322,
+ /*  1280 */  1647,  316,  159,  315, 1581,  314,   99,   99,  270, 1606,
+ /*  1290 */  1580,  176, 1604, 1320, 1651, 1600, 1599, 1593, 1417, 1595,
+ /*  1300 */  1416,  291,   21, 1650, 1576,   77, 1613, 1611, 1610, 1551,
+ /*  1310 */  1550,   90,  225, 1160,  256, 1438,  393, 1436, 1437,   92,
  /*  1320 */   223,  213,  212,  211,  247,  139, 1426, 1441, 1427, 1428,
  /*  1330 */  1429, 1430, 1440, 1442, 1443, 1444, 1445,  257, 1561,  384,
- /*  1340 */   381, 1154, 1562,  379,  377,  376,  245, 1483, 1484, 1485,
+ /*  1340 */   381, 1155, 1562,  379,  377,  376,  245, 1483, 1484, 1485,
  /*  1350 */   372,  371,  369, 1557, 1478, 1489, 1490, 1491,  259,  210,
  /*  1360 */   112,  260,  111, 1616,  261,  226,   16,  264,  184,  185,
- /*  1370 */   217, 1312,  228,  163,  125, 1520, 1521,  164,   68, 1190,
- /*  1380 */  1256,  166,   15,  274,  167,  169,    9, 1555,  147,  254,
+ /*  1370 */   217, 1312,  228,  163,  125, 1520, 1521,  164,   68, 1191,
+ /*  1380 */  1257,  166,   15,  274,  167,  169,    9, 1555,  147,  254,
  /*  1390 */     1,  232,  280,   33,   17,  881, 1016, 1104,  171,  173,
- /*  1400 */  1106, 1105,   72,   69,  175, 1055, 1028,  174,   10, 1220,
+ /*  1400 */  1106, 1105,   72,   69,  175, 1055, 1028,  174,   10, 1221,
  /*  1410 */   300,  298,  308,  304,  240,  301,  302,  309,  874,  870,
  /*  1420 */    80,  311,  305,  307,  312,  846,  845,  317,  155,  321,
  /*  1430 */   243, 1438,  393, 1436, 1437,   92,  223,  213,  212,  211,
@@ -516,7 +516,7 @@ static const YYACTIONTYPE yy_action[] = {
  /*  1570 */   379,  377,  376,  245, 1483, 1484, 1485,  372,  371,  369,
  /*  1580 */  1557, 1478, 1489, 1490, 1491,  380,  210,  112,   57,  111,
  /*  1590 */   194,   58,   12,   59,   31,  184,  185,  217, 1312,   13,
- /*  1600 */  1077,  960, 1520, 1521,  928,  390,  850,  858, 1648, 1288,
+ /*  1600 */  1077,  960, 1520, 1521,  928,  390,  850,  858, 1649, 1288,
  /*  1610 */   383, 1288, 1288, 1288, 1555, 1288, 1288, 1288,  392, 1288,
  /*  1620 */    33, 1288, 1288, 1288, 1288, 1288, 1288, 1288, 1288, 1288,
  /*  1630 */  1288, 1288, 1288, 1288, 1288, 1288, 1288, 1288, 1288, 1288,
@@ -731,7 +731,7 @@ static const YYACTIONTYPE yy_action[] = {
  /*  3720 */  1443, 1444, 1445, 1288, 1561,   60, 1288, 1015, 1562,  824,
  /*  3730 */   932, 1288, 1288,  250, 1288, 1288, 1288, 1288, 1288, 1288,
  /*  3740 */  1288, 1288, 1546, 1547, 1288,  218,  112,  129,  111,  128,
- /*  3750 */  1288, 1288, 1288, 1288, 1288, 1288,  394, 1233, 1288, 1288,
+ /*  3750 */  1288, 1288, 1288, 1288, 1288, 1288,  394, 1234, 1288, 1288,
  /*  3760 */  1288, 1520, 1521,  206, 1527, 1528,  205, 1288, 1288,  389,
  /*  3770 */  1548, 1288, 1288, 1288,  927, 1288, 1288, 1288,  883,  884,
  /*  3780 */   885,  886,  887,  888,  889,  890,  891,  892,  893,  894,
@@ -740,7 +740,7 @@ static const YYACTIONTYPE yy_action[] = {
  /*  3810 */  1288,  388, 1288, 1288,  385, 1288, 1288,   60, 1288, 1015,
  /*  3820 */  1288,  824,  932, 1288, 1288,  250, 1288, 1288, 1288, 1288,
  /*  3830 */  1288, 1288, 1288, 1288, 1288, 1288, 1288, 1288, 1288, 1288,
- /*  3840 */  1288, 1288, 1288, 1288, 1288, 1288, 1288, 1288,  394, 1227,
+ /*  3840 */  1288, 1288, 1288, 1288, 1288, 1288, 1288, 1288,  394, 1228,
  /*  3850 */  1288, 1288, 1288, 1288, 1288, 1288, 1288, 1288, 1288, 1288,
  /*  3860 */  1288,  389, 1288, 1288, 1288, 1288,  927, 1288, 1288, 1288,
  /*  3870 */   883,  884,  885,  886,  887,  888,  889,  890,  891,  892,
@@ -1095,9 +1095,9 @@ static const YYACTIONTYPE yy_action[] = {
  /*  7360 */   324,  242,  242, 1288,  242,  242,  242,  241,  242,  242,
  /*  7370 */   242,  242,  313, 1288,  131, 1288, 1288, 1288,   98, 1288,
  /*  7380 */   162, 1288, 1288, 1288, 1288, 1288, 1288, 1288,  241,  160,
- /*  7390 */   328, 1675, 1288, 1288, 1288,  239, 1288, 1288, 1288, 1288,
- /*  7400 */  1288,   82, 1288,  324, 1675, 1675, 1288, 1675, 1675, 1675,
- /*  7410 */   241, 1675, 1675, 1675, 1675,  313, 1288,  124,  229, 1288,
+ /*  7390 */   328, 1676, 1288, 1288, 1288,  239, 1288, 1288, 1288, 1288,
+ /*  7400 */  1288,   82, 1288,  324, 1676, 1676, 1288, 1676, 1676, 1676,
+ /*  7410 */   241, 1676, 1676, 1676, 1676,  313, 1288,  124,  229, 1288,
  /*  7420 */  1288,  229,  236,  235, 1288, 1288, 1288, 1288,  229,  124,
  /*  7430 */  1288, 1288, 1288, 1288,   87, 1288,  135, 1288,  239, 1288,
  /*  7440 */    87, 1288, 1288,  229,  134, 1288, 1288, 1288, 1288, 1288,
@@ -1964,16 +1964,16 @@ static const YYACTIONTYPE yy_default[] = {
  /*    60 */  1311, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1289, 1289,
  /*    70 */  1289, 1289, 1289, 1404, 1311, 1352, 1311, 1311, 1311, 1311,
  /*    80 */  1311, 1311, 1316, 1290, 1290, 1286, 1286, 1588, 1286, 1286,
- /*    90 */  1286, 1619, 1286, 1286, 1685, 1745, 1765, 1653, 1653, 1286,
- /*   100 */  1286, 1690, 1286, 1700, 1698, 1352, 1286, 1352, 1619, 1286,
+ /*    90 */  1286, 1619, 1286, 1286, 1686, 1746, 1765, 1654, 1654, 1286,
+ /*   100 */  1286, 1691, 1286, 1701, 1699, 1352, 1286, 1352, 1619, 1286,
  /*   110 */  1352, 1286, 1286, 1403, 1403, 1403, 1286, 1290, 1286, 1286,
  /*   120 */  1286, 1286, 1286, 1286, 1286, 1579, 1579, 1286, 1286, 1286,
- /*   130 */  1286, 1286, 1286, 1714, 1289, 1289, 1289, 1289, 1403, 1425,
- /*   140 */  1686, 1746, 1766, 1286, 1286, 1286, 1654, 1286, 1286, 1286,
- /*   150 */  1286, 1286, 1286, 1286, 1691, 1324, 1286, 1286, 1286, 1286,
- /*   160 */  1286, 1286, 1286, 1286, 1286, 1723, 1286, 1286, 1602, 1286,
+ /*   130 */  1286, 1286, 1286, 1715, 1289, 1289, 1289, 1289, 1403, 1425,
+ /*   140 */  1687, 1747, 1766, 1286, 1286, 1286, 1655, 1286, 1286, 1286,
+ /*   150 */  1286, 1286, 1286, 1286, 1692, 1324, 1286, 1286, 1286, 1286,
+ /*   160 */  1286, 1286, 1286, 1286, 1286, 1724, 1286, 1286, 1602, 1286,
  /*   170 */  1602, 1286, 1286, 1286, 1577, 1286, 1286, 1290, 1286, 1286,
- /*   180 */  1661, 1286, 1699, 1425, 1313, 1286, 1639, 1290, 1639, 1578,
+ /*   180 */  1662, 1286, 1700, 1425, 1313, 1286, 1640, 1290, 1640, 1578,
  /*   190 */  1577, 1578, 1290, 1290, 1290, 1290, 1290, 1290, 1290, 1289,
  /*   200 */  1290, 1579, 1290, 1290, 1290, 1290, 1290, 1319, 1352, 1352,
  /*   210 */  1500, 1423, 1422, 1421, 1286, 1420, 1439, 1286, 1500, 1442,
@@ -1981,14 +1981,14 @@ static const YYACTIONTYPE yy_default[] = {
  /*   230 */  1286, 1286, 1286, 1286, 1286, 1286, 1286, 1515, 1286, 1286,
  /*   240 */  1286, 1286, 1286, 1286, 1286, 1482, 1439, 1424, 1286, 1286,
  /*   250 */  1415, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286,
- /*   260 */  1286, 1286, 1286, 1286, 1286, 1655, 1286, 1286, 1286, 1286,
- /*   270 */  1286, 1722, 1286, 1620, 1286, 1618, 1286, 1286, 1730, 1286,
- /*   280 */  1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1721,
- /*   290 */  1286, 1582, 1286, 1286, 1711, 1712, 1286, 1516, 1286, 1286,
+ /*   260 */  1286, 1286, 1286, 1286, 1286, 1656, 1286, 1286, 1286, 1286,
+ /*   270 */  1286, 1723, 1286, 1620, 1286, 1618, 1286, 1286, 1731, 1286,
+ /*   280 */  1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1722,
+ /*   290 */  1286, 1582, 1286, 1286, 1712, 1713, 1286, 1516, 1286, 1286,
  /*   300 */  1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286,
  /*   310 */  1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1326,
  /*   320 */  1325, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286,
- /*   330 */  1286, 1286, 1656, 1286, 1286, 1286, 1286, 1393, 1395, 1286,
+ /*   330 */  1286, 1286, 1657, 1286, 1286, 1286, 1286, 1393, 1395, 1286,
  /*   340 */  1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286,
  /*   350 */  1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286,
  /*   360 */  1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1286, 1488,
@@ -2799,128 +2799,128 @@ static const char *const yyRuleName[] = {
  /* 334 */ "decl_var_attr ::= SPACE_AT_EXTERN",
  /* 335 */ "decl_var_attr ::= SPACE_AT_NO_DECL",
  /* 336 */ "decl_var_attr ::= SPACE_AT_NO_DECL_STR",
- /* 337 */ "decl_struct_attr ::= SPACE_AT_NO_DECL",
- /* 338 */ "decl_struct_attr ::= SPACE_AT_NO_DECL_STR",
- /* 339 */ "decl_struct_attr ::= SPACE_AT_REAL_NAME_STR",
- /* 340 */ "decl_struct_attr ::= SPACE_AT_REAL_NAME",
- /* 341 */ "decl_struct_attrs_optional ::= end_pos",
- /* 342 */ "decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos",
- /* 343 */ "decl_func ::= func_decl SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2",
- /* 344 */ "decl_struct_close_or_at ::= SEMICOLON",
- /* 345 */ "decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE",
- /* 346 */ "decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE",
- /* 347 */ "decl_enum_close_or_at ::= SEMICOLON",
- /* 348 */ "decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE",
- /* 349 */ "decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE",
- /* 350 */ "enum_base_begin ::=",
- /* 351 */ "decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID DOT CLOSE_PARENTHESIS",
- /* 352 */ "decl_enum_attr ::= SPACE_AT_NO_DECL",
- /* 353 */ "decl_enum_attr ::= SPACE_AT_NO_DECL_STR",
- /* 354 */ "decl_enum_attr ::= SPACE_AT_REAL_NAME",
- /* 355 */ "decl_enum_attr ::= SPACE_AT_REAL_NAME_STR",
- /* 356 */ "decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID DOT CLOSE_PARENTHESIS",
- /* 357 */ "enum_base_end ::= COLON at decl_enum_attrs_optional end_pos",
- /* 358 */ "decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional",
- /* 359 */ "cp1 ::= decls space_or_end",
- /* 360 */ "cp1 ::= SPACE decls space_or_end",
- /* 361 */ "cp1 ::= space_or_end",
- /* 362 */ "cvar_attrs ::= cvar_attr",
- /* 363 */ "cvar_attrs ::= cvar_attrs cvar_attr",
- /* 364 */ "cvar_attrs_optional ::=",
- /* 365 */ "cvar_attrs_optional ::= cvar_attrs",
- /* 366 */ "enum_cvar ::= enum_cvar_begin cvar_attrs_optional",
- /* 367 */ "enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional",
- /* 368 */ "at_names ::= at_begin at_name",
- /* 369 */ "at_names ::= at_names at_name_dot",
- /* 370 */ "decl_at_names ::= decl_at_begin_at decl_at_name",
- /* 371 */ "decl_at_names ::= decl_at_names decl_at_name2",
- /* 372 */ "decl_at_namespace ::= decl_at_names",
- /* 373 */ "decl ::= decl_at",
- /* 374 */ "decl ::= decl_template_inst",
- /* 375 */ "decl ::= decl_template_code",
- /* 376 */ "decl ::= decl_import",
- /* 377 */ "decl_cvar ::= enum_cvars_decl SEMICOLON",
- /* 378 */ "decl ::= decl_cvar",
- /* 379 */ "space_or_end ::= SPACE END",
- /* 380 */ "space_or_end ::= END",
- /* 381 */ "decl ::= decl_func",
- /* 382 */ "decl ::= decl_struct",
- /* 383 */ "decl ::= decl_enum",
- /* 384 */ "decl ::= decl_gvars",
- /* 385 */ "decls ::= decl",
- /* 386 */ "decls ::= decls SPACE decl",
- /* 387 */ "scolon_space ::= SEMICOLON SPACE",
- /* 388 */ "farg_list ::= farg",
- /* 389 */ "farg_list ::= farg_list COMMA_SPACE farg",
- /* 390 */ "fargs ::= open_parenthesis_or_space CLOSE_PARENTHESIS",
- /* 391 */ "fargs ::= open_parenthesis_or_space farg_list close_parenthesis_or_comma",
- /* 392 */ "fargs ::= fargs farg_next_group farg_list close_parenthesis_or_comma",
- /* 393 */ "fargs ::= fargs farg_next_group CLOSE_PARENTHESIS",
- /* 394 */ "func_attrs ::= func_attr",
- /* 395 */ "func_attrs ::= func_attrs func_attr",
- /* 396 */ "func_attrs_optional ::=",
- /* 397 */ "func_attrs_optional ::= func_attrs",
- /* 398 */ "func_type ::= typeAndInfo_optional",
- /* 399 */ "fvar_attrs_list ::= fvar_attr",
- /* 400 */ "fvar_attrs_list ::= fvar_attrs_list fvar_attr",
- /* 401 */ "fvar_attrs_optional ::=",
- /* 402 */ "fvar_attrs_optional ::= fvar_attrs_list",
- /* 403 */ "struct_fvars ::= fvar",
- /* 404 */ "struct_fvars ::= struct_fvars COMMA_SPACE fvar",
- /* 405 */ "enum_cvars ::= enum_cvar",
- /* 406 */ "enum_cvars ::= enum_cvars COMMA_SPACE enum_cvar",
- /* 407 */ "enum_cvars_decl ::= enum_cvar_decl",
- /* 408 */ "enum_cvars_decl ::= enum_cvars_decl COMMA_SPACE enum_cvar_decl",
- /* 409 */ "typeInfo ::= typeInfo_arr",
- /* 410 */ "typeInfo ::= typeInfo_ref",
- /* 411 */ "typeInfo ::= typeInfo_bi",
- /* 412 */ "typeInfo_arr ::= typeInfo_arr_exprs",
- /* 413 */ "typeInfo_arr ::= typeInfo_bi typeInfo_arr_exprs",
- /* 414 */ "typeInfo_arr ::= typeInfo_arr typeInfo_arr_exprs",
- /* 415 */ "typeInfo_optional ::= typeInfo_none",
- /* 416 */ "metaCall_args_optional ::= OPEN_CURLY_BRACE CLOSE_CURLY_BRACE",
- /* 417 */ "metaCall_args_optional ::= OPEN_CURLY_BRACE SPACE CLOSE_CURLY_BRACE",
- /* 418 */ "metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args CLOSE_CURLY_BRACE",
- /* 419 */ "metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args SPACE_CLOSE_CURLY_BRACE",
- /* 420 */ "metaCall_arg_list ::= metaCall_arg",
- /* 421 */ "metaCall_arg_list ::= metaCall_arg_list COMMA_SPACE metaCall_arg",
- /* 422 */ "metaCall_args ::= metaCall_arg_list",
- /* 423 */ "metaCall_args ::= metaCall_args metaCall_args_next_group metaCall_arg_list",
- /* 424 */ "call_args_optional ::= open_parenthesis_or_space CLOSE_PARENTHESIS",
- /* 425 */ "call_args_optional ::= call_args",
- /* 426 */ "call_arg_list ::= call_arg",
- /* 427 */ "call_arg_list ::= call_arg_list COMMA_SPACE call_arg",
- /* 428 */ "call_args ::= open_parenthesis_or_space call_arg_list close_parenthesis_or_comma",
- /* 429 */ "call_args ::= call_args call_args_next_group call_arg_list close_parenthesis_or_comma",
- /* 430 */ "call_args ::= call_args call_args_next_group CLOSE_PARENTHESIS",
- /* 431 */ "stmt ::= stmt_loop",
- /* 432 */ "loop_continue_stmts ::= stmts_brace",
- /* 433 */ "loop_continue_stmts ::= stmts_expr SEMICOLON",
- /* 434 */ "loop_continue_stmts ::= stmts_expr",
- /* 435 */ "loop_expr2 ::= loop_forever",
- /* 436 */ "stmt_if_chain ::= stmt_if",
- /* 437 */ "stmt_if_chain ::= stmt_if_chain stmt_elif",
- /* 438 */ "stmt ::= stmt_switch",
- /* 439 */ "switch_case_exprs ::= switch_case_expr",
- /* 440 */ "switch_case_exprs ::= switch_case_exprs COMMA_SPACE switch_case_expr",
- /* 441 */ "switch_case_paren_or_expr ::= switch_case_exprs",
- /* 442 */ "switch_cases ::= switch_case",
- /* 443 */ "switch_cases ::= switch_cases SPACE switch_case",
- /* 444 */ "stmt_expr ::= stmt_continue",
- /* 445 */ "stmt_expr ::= stmt_break",
- /* 446 */ "stmt_expr ::= stmt_return",
- /* 447 */ "typeAndInfo ::= COLON expr_type_apply typeInfo_optional",
- /* 448 */ "typeAndInfo_optional ::= typeAndInfo",
- /* 449 */ "typeAndInfo_optional ::= expr_type_none typeInfo_none",
- /* 450 */ "stmt_expr ::= stmt_lvars",
- /* 451 */ "decl_lvars ::= decl_lvar",
- /* 452 */ "decl_lvars ::= decl_lvars COMMA_SPACE decl_lvar",
- /* 453 */ "decl_lvar_begin ::= VAR SPACE",
- /* 454 */ "decl_var_attrs_list ::= decl_var_attr",
- /* 455 */ "decl_var_attrs_list ::= decl_var_attrs_list decl_var_attr",
- /* 456 */ "decl_var_attrs_optional ::=",
- /* 457 */ "decl_var_attrs_optional ::= decl_var_attrs_list",
- /* 458 */ "decl_func ::= func_decl SEMICOLON",
+ /* 337 */ "decl_func ::= func_decl SEMICOLON",
+ /* 338 */ "decl_struct_attr ::= SPACE_AT_NO_DECL",
+ /* 339 */ "decl_struct_attr ::= SPACE_AT_NO_DECL_STR",
+ /* 340 */ "decl_struct_attr ::= SPACE_AT_REAL_NAME_STR",
+ /* 341 */ "decl_struct_attr ::= SPACE_AT_REAL_NAME",
+ /* 342 */ "decl_struct_attrs_optional ::= end_pos",
+ /* 343 */ "decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos",
+ /* 344 */ "decl_func ::= func_decl SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2",
+ /* 345 */ "decl_struct_close_or_at ::= SEMICOLON",
+ /* 346 */ "decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE",
+ /* 347 */ "decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE",
+ /* 348 */ "decl_enum_close_or_at ::= SEMICOLON",
+ /* 349 */ "decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE",
+ /* 350 */ "decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE",
+ /* 351 */ "enum_base_begin ::=",
+ /* 352 */ "decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID DOT CLOSE_PARENTHESIS",
+ /* 353 */ "decl_enum_attr ::= SPACE_AT_NO_DECL",
+ /* 354 */ "decl_enum_attr ::= SPACE_AT_NO_DECL_STR",
+ /* 355 */ "decl_enum_attr ::= SPACE_AT_REAL_NAME",
+ /* 356 */ "decl_enum_attr ::= SPACE_AT_REAL_NAME_STR",
+ /* 357 */ "decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID DOT CLOSE_PARENTHESIS",
+ /* 358 */ "enum_base_end ::= COLON at decl_enum_attrs_optional end_pos",
+ /* 359 */ "decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional",
+ /* 360 */ "cp1 ::= decls space_or_end",
+ /* 361 */ "cp1 ::= SPACE decls space_or_end",
+ /* 362 */ "cp1 ::= space_or_end",
+ /* 363 */ "cvar_attrs ::= cvar_attr",
+ /* 364 */ "cvar_attrs ::= cvar_attrs cvar_attr",
+ /* 365 */ "cvar_attrs_optional ::=",
+ /* 366 */ "cvar_attrs_optional ::= cvar_attrs",
+ /* 367 */ "enum_cvar ::= enum_cvar_begin cvar_attrs_optional",
+ /* 368 */ "enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional",
+ /* 369 */ "at_names ::= at_begin at_name",
+ /* 370 */ "at_names ::= at_names at_name_dot",
+ /* 371 */ "decl_at_names ::= decl_at_begin_at decl_at_name",
+ /* 372 */ "decl_at_names ::= decl_at_names decl_at_name2",
+ /* 373 */ "decl_at_namespace ::= decl_at_names",
+ /* 374 */ "decl ::= decl_at",
+ /* 375 */ "decl ::= decl_template_inst",
+ /* 376 */ "decl ::= decl_template_code",
+ /* 377 */ "decl ::= decl_import",
+ /* 378 */ "decl_cvar ::= enum_cvars_decl SEMICOLON",
+ /* 379 */ "decl ::= decl_cvar",
+ /* 380 */ "space_or_end ::= SPACE END",
+ /* 381 */ "space_or_end ::= END",
+ /* 382 */ "decl ::= decl_func",
+ /* 383 */ "decl ::= decl_struct",
+ /* 384 */ "decl ::= decl_enum",
+ /* 385 */ "decl ::= decl_gvars",
+ /* 386 */ "decls ::= decl",
+ /* 387 */ "decls ::= decls SPACE decl",
+ /* 388 */ "scolon_space ::= SEMICOLON SPACE",
+ /* 389 */ "farg_list ::= farg",
+ /* 390 */ "farg_list ::= farg_list COMMA_SPACE farg",
+ /* 391 */ "fargs ::= open_parenthesis_or_space CLOSE_PARENTHESIS",
+ /* 392 */ "fargs ::= open_parenthesis_or_space farg_list close_parenthesis_or_comma",
+ /* 393 */ "fargs ::= fargs farg_next_group farg_list close_parenthesis_or_comma",
+ /* 394 */ "fargs ::= fargs farg_next_group CLOSE_PARENTHESIS",
+ /* 395 */ "func_attrs ::= func_attr",
+ /* 396 */ "func_attrs ::= func_attrs func_attr",
+ /* 397 */ "func_attrs_optional ::=",
+ /* 398 */ "func_attrs_optional ::= func_attrs",
+ /* 399 */ "func_type ::= typeAndInfo_optional",
+ /* 400 */ "fvar_attrs_list ::= fvar_attr",
+ /* 401 */ "fvar_attrs_list ::= fvar_attrs_list fvar_attr",
+ /* 402 */ "fvar_attrs_optional ::=",
+ /* 403 */ "fvar_attrs_optional ::= fvar_attrs_list",
+ /* 404 */ "struct_fvars ::= fvar",
+ /* 405 */ "struct_fvars ::= struct_fvars COMMA_SPACE fvar",
+ /* 406 */ "enum_cvars ::= enum_cvar",
+ /* 407 */ "enum_cvars ::= enum_cvars COMMA_SPACE enum_cvar",
+ /* 408 */ "enum_cvars_decl ::= enum_cvar_decl",
+ /* 409 */ "enum_cvars_decl ::= enum_cvars_decl COMMA_SPACE enum_cvar_decl",
+ /* 410 */ "typeInfo ::= typeInfo_arr",
+ /* 411 */ "typeInfo ::= typeInfo_ref",
+ /* 412 */ "typeInfo ::= typeInfo_bi",
+ /* 413 */ "typeInfo_arr ::= typeInfo_arr_exprs",
+ /* 414 */ "typeInfo_arr ::= typeInfo_bi typeInfo_arr_exprs",
+ /* 415 */ "typeInfo_arr ::= typeInfo_arr typeInfo_arr_exprs",
+ /* 416 */ "typeInfo_optional ::= typeInfo_none",
+ /* 417 */ "metaCall_args_optional ::= OPEN_CURLY_BRACE CLOSE_CURLY_BRACE",
+ /* 418 */ "metaCall_args_optional ::= OPEN_CURLY_BRACE SPACE CLOSE_CURLY_BRACE",
+ /* 419 */ "metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args CLOSE_CURLY_BRACE",
+ /* 420 */ "metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args SPACE_CLOSE_CURLY_BRACE",
+ /* 421 */ "metaCall_arg_list ::= metaCall_arg",
+ /* 422 */ "metaCall_arg_list ::= metaCall_arg_list COMMA_SPACE metaCall_arg",
+ /* 423 */ "metaCall_args ::= metaCall_arg_list",
+ /* 424 */ "metaCall_args ::= metaCall_args metaCall_args_next_group metaCall_arg_list",
+ /* 425 */ "call_args_optional ::= open_parenthesis_or_space CLOSE_PARENTHESIS",
+ /* 426 */ "call_args_optional ::= call_args",
+ /* 427 */ "call_arg_list ::= call_arg",
+ /* 428 */ "call_arg_list ::= call_arg_list COMMA_SPACE call_arg",
+ /* 429 */ "call_args ::= open_parenthesis_or_space call_arg_list close_parenthesis_or_comma",
+ /* 430 */ "call_args ::= call_args call_args_next_group call_arg_list close_parenthesis_or_comma",
+ /* 431 */ "call_args ::= call_args call_args_next_group CLOSE_PARENTHESIS",
+ /* 432 */ "stmt ::= stmt_loop",
+ /* 433 */ "loop_continue_stmts ::= stmts_brace",
+ /* 434 */ "loop_continue_stmts ::= stmts_expr SEMICOLON",
+ /* 435 */ "loop_continue_stmts ::= stmts_expr",
+ /* 436 */ "loop_expr2 ::= loop_forever",
+ /* 437 */ "stmt_if_chain ::= stmt_if",
+ /* 438 */ "stmt_if_chain ::= stmt_if_chain stmt_elif",
+ /* 439 */ "stmt ::= stmt_switch",
+ /* 440 */ "switch_case_exprs ::= switch_case_expr",
+ /* 441 */ "switch_case_exprs ::= switch_case_exprs COMMA_SPACE switch_case_expr",
+ /* 442 */ "switch_case_paren_or_expr ::= switch_case_exprs",
+ /* 443 */ "switch_cases ::= switch_case",
+ /* 444 */ "switch_cases ::= switch_cases SPACE switch_case",
+ /* 445 */ "stmt_expr ::= stmt_continue",
+ /* 446 */ "stmt_expr ::= stmt_break",
+ /* 447 */ "stmt_expr ::= stmt_return",
+ /* 448 */ "typeAndInfo ::= COLON expr_type_apply typeInfo_optional",
+ /* 449 */ "typeAndInfo_optional ::= typeAndInfo",
+ /* 450 */ "typeAndInfo_optional ::= expr_type_none typeInfo_none",
+ /* 451 */ "stmt_expr ::= stmt_lvars",
+ /* 452 */ "decl_lvars ::= decl_lvar",
+ /* 453 */ "decl_lvars ::= decl_lvars COMMA_SPACE decl_lvar",
+ /* 454 */ "decl_lvar_begin ::= VAR SPACE",
+ /* 455 */ "decl_var_attrs_list ::= decl_var_attr",
+ /* 456 */ "decl_var_attrs_list ::= decl_var_attrs_list decl_var_attr",
+ /* 457 */ "decl_var_attrs_optional ::=",
+ /* 458 */ "decl_var_attrs_optional ::= decl_var_attrs_list",
  /* 459 */ "stmt_brace ::= stmt",
  /* 460 */ "stmt_expr ::= expr2stmt",
  /* 461 */ "stmts_brace ::= stmt_brace",
@@ -3702,128 +3702,128 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    342,  /* (334) decl_var_attr ::= SPACE_AT_EXTERN */
    342,  /* (335) decl_var_attr ::= SPACE_AT_NO_DECL */
    342,  /* (336) decl_var_attr ::= SPACE_AT_NO_DECL_STR */
-   346,  /* (337) decl_struct_attr ::= SPACE_AT_NO_DECL */
-   346,  /* (338) decl_struct_attr ::= SPACE_AT_NO_DECL_STR */
-   346,  /* (339) decl_struct_attr ::= SPACE_AT_REAL_NAME_STR */
-   346,  /* (340) decl_struct_attr ::= SPACE_AT_REAL_NAME */
-   348,  /* (341) decl_struct_attrs_optional ::= end_pos */
-   348,  /* (342) decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos */
-   182,  /* (343) decl_func ::= func_decl SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
-   349,  /* (344) decl_struct_close_or_at ::= SEMICOLON */
-   349,  /* (345) decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE */
-   349,  /* (346) decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE */
-   350,  /* (347) decl_enum_close_or_at ::= SEMICOLON */
-   350,  /* (348) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE */
-   350,  /* (349) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE */
-   351,  /* (350) enum_base_begin ::= */
-   352,  /* (351) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID DOT CLOSE_PARENTHESIS */
-   352,  /* (352) decl_enum_attr ::= SPACE_AT_NO_DECL */
-   352,  /* (353) decl_enum_attr ::= SPACE_AT_NO_DECL_STR */
-   352,  /* (354) decl_enum_attr ::= SPACE_AT_REAL_NAME */
-   352,  /* (355) decl_enum_attr ::= SPACE_AT_REAL_NAME_STR */
-   352,  /* (356) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID DOT CLOSE_PARENTHESIS */
-   355,  /* (357) enum_base_end ::= COLON at decl_enum_attrs_optional end_pos */
-   356,  /* (358) decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional */
-   140,  /* (359) cp1 ::= decls space_or_end */
-   140,  /* (360) cp1 ::= SPACE decls space_or_end */
-   140,  /* (361) cp1 ::= space_or_end */
-   155,  /* (362) cvar_attrs ::= cvar_attr */
-   155,  /* (363) cvar_attrs ::= cvar_attrs cvar_attr */
-   156,  /* (364) cvar_attrs_optional ::= */
-   156,  /* (365) cvar_attrs_optional ::= cvar_attrs */
-   157,  /* (366) enum_cvar ::= enum_cvar_begin cvar_attrs_optional */
-   159,  /* (367) enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional */
-   163,  /* (368) at_names ::= at_begin at_name */
-   163,  /* (369) at_names ::= at_names at_name_dot */
-   170,  /* (370) decl_at_names ::= decl_at_begin_at decl_at_name */
-   170,  /* (371) decl_at_names ::= decl_at_names decl_at_name2 */
-   171,  /* (372) decl_at_namespace ::= decl_at_names */
-   162,  /* (373) decl ::= decl_at */
-   162,  /* (374) decl ::= decl_template_inst */
-   162,  /* (375) decl ::= decl_template_code */
-   162,  /* (376) decl ::= decl_import */
-   180,  /* (377) decl_cvar ::= enum_cvars_decl SEMICOLON */
-   162,  /* (378) decl ::= decl_cvar */
-   142,  /* (379) space_or_end ::= SPACE END */
-   142,  /* (380) space_or_end ::= END */
-   162,  /* (381) decl ::= decl_func */
-   162,  /* (382) decl ::= decl_struct */
-   162,  /* (383) decl ::= decl_enum */
-   162,  /* (384) decl ::= decl_gvars */
-   141,  /* (385) decls ::= decl */
-   141,  /* (386) decls ::= decls SPACE decl */
-   194,  /* (387) scolon_space ::= SEMICOLON SPACE */
-   202,  /* (388) farg_list ::= farg */
-   202,  /* (389) farg_list ::= farg_list COMMA_SPACE farg */
-   203,  /* (390) fargs ::= open_parenthesis_or_space CLOSE_PARENTHESIS */
-   203,  /* (391) fargs ::= open_parenthesis_or_space farg_list close_parenthesis_or_comma */
-   203,  /* (392) fargs ::= fargs farg_next_group farg_list close_parenthesis_or_comma */
-   203,  /* (393) fargs ::= fargs farg_next_group CLOSE_PARENTHESIS */
-   206,  /* (394) func_attrs ::= func_attr */
-   206,  /* (395) func_attrs ::= func_attrs func_attr */
-   207,  /* (396) func_attrs_optional ::= */
-   207,  /* (397) func_attrs_optional ::= func_attrs */
-   208,  /* (398) func_type ::= typeAndInfo_optional */
-   212,  /* (399) fvar_attrs_list ::= fvar_attr */
-   212,  /* (400) fvar_attrs_list ::= fvar_attrs_list fvar_attr */
-   213,  /* (401) fvar_attrs_optional ::= */
-   213,  /* (402) fvar_attrs_optional ::= fvar_attrs_list */
-   215,  /* (403) struct_fvars ::= fvar */
-   215,  /* (404) struct_fvars ::= struct_fvars COMMA_SPACE fvar */
-   216,  /* (405) enum_cvars ::= enum_cvar */
-   216,  /* (406) enum_cvars ::= enum_cvars COMMA_SPACE enum_cvar */
-   181,  /* (407) enum_cvars_decl ::= enum_cvar_decl */
-   181,  /* (408) enum_cvars_decl ::= enum_cvars_decl COMMA_SPACE enum_cvar_decl */
-   217,  /* (409) typeInfo ::= typeInfo_arr */
-   217,  /* (410) typeInfo ::= typeInfo_ref */
-   217,  /* (411) typeInfo ::= typeInfo_bi */
-   218,  /* (412) typeInfo_arr ::= typeInfo_arr_exprs */
-   218,  /* (413) typeInfo_arr ::= typeInfo_bi typeInfo_arr_exprs */
-   218,  /* (414) typeInfo_arr ::= typeInfo_arr typeInfo_arr_exprs */
-   199,  /* (415) typeInfo_optional ::= typeInfo_none */
-   275,  /* (416) metaCall_args_optional ::= OPEN_CURLY_BRACE CLOSE_CURLY_BRACE */
-   275,  /* (417) metaCall_args_optional ::= OPEN_CURLY_BRACE SPACE CLOSE_CURLY_BRACE */
-   275,  /* (418) metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args CLOSE_CURLY_BRACE */
-   275,  /* (419) metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args SPACE_CLOSE_CURLY_BRACE */
-   279,  /* (420) metaCall_arg_list ::= metaCall_arg */
-   279,  /* (421) metaCall_arg_list ::= metaCall_arg_list COMMA_SPACE metaCall_arg */
-   277,  /* (422) metaCall_args ::= metaCall_arg_list */
-   277,  /* (423) metaCall_args ::= metaCall_args metaCall_args_next_group metaCall_arg_list */
-   281,  /* (424) call_args_optional ::= open_parenthesis_or_space CLOSE_PARENTHESIS */
-   281,  /* (425) call_args_optional ::= call_args */
-   284,  /* (426) call_arg_list ::= call_arg */
-   284,  /* (427) call_arg_list ::= call_arg_list COMMA_SPACE call_arg */
-   282,  /* (428) call_args ::= open_parenthesis_or_space call_arg_list close_parenthesis_or_comma */
-   282,  /* (429) call_args ::= call_args call_args_next_group call_arg_list close_parenthesis_or_comma */
-   282,  /* (430) call_args ::= call_args call_args_next_group CLOSE_PARENTHESIS */
-   297,  /* (431) stmt ::= stmt_loop */
-   306,  /* (432) loop_continue_stmts ::= stmts_brace */
-   306,  /* (433) loop_continue_stmts ::= stmts_expr SEMICOLON */
-   306,  /* (434) loop_continue_stmts ::= stmts_expr */
-   310,  /* (435) loop_expr2 ::= loop_forever */
-   313,  /* (436) stmt_if_chain ::= stmt_if */
-   313,  /* (437) stmt_if_chain ::= stmt_if_chain stmt_elif */
-   297,  /* (438) stmt ::= stmt_switch */
-   326,  /* (439) switch_case_exprs ::= switch_case_expr */
-   326,  /* (440) switch_case_exprs ::= switch_case_exprs COMMA_SPACE switch_case_expr */
-   328,  /* (441) switch_case_paren_or_expr ::= switch_case_exprs */
-   332,  /* (442) switch_cases ::= switch_case */
-   332,  /* (443) switch_cases ::= switch_cases SPACE switch_case */
-   333,  /* (444) stmt_expr ::= stmt_continue */
-   333,  /* (445) stmt_expr ::= stmt_break */
-   333,  /* (446) stmt_expr ::= stmt_return */
-   197,  /* (447) typeAndInfo ::= COLON expr_type_apply typeInfo_optional */
-   150,  /* (448) typeAndInfo_optional ::= typeAndInfo */
-   150,  /* (449) typeAndInfo_optional ::= expr_type_none typeInfo_none */
-   333,  /* (450) stmt_expr ::= stmt_lvars */
-   341,  /* (451) decl_lvars ::= decl_lvar */
-   341,  /* (452) decl_lvars ::= decl_lvars COMMA_SPACE decl_lvar */
-   338,  /* (453) decl_lvar_begin ::= VAR SPACE */
-   343,  /* (454) decl_var_attrs_list ::= decl_var_attr */
-   343,  /* (455) decl_var_attrs_list ::= decl_var_attrs_list decl_var_attr */
-   344,  /* (456) decl_var_attrs_optional ::= */
-   344,  /* (457) decl_var_attrs_optional ::= decl_var_attrs_list */
-   182,  /* (458) decl_func ::= func_decl SEMICOLON */
+   182,  /* (337) decl_func ::= func_decl SEMICOLON */
+   346,  /* (338) decl_struct_attr ::= SPACE_AT_NO_DECL */
+   346,  /* (339) decl_struct_attr ::= SPACE_AT_NO_DECL_STR */
+   346,  /* (340) decl_struct_attr ::= SPACE_AT_REAL_NAME_STR */
+   346,  /* (341) decl_struct_attr ::= SPACE_AT_REAL_NAME */
+   348,  /* (342) decl_struct_attrs_optional ::= end_pos */
+   348,  /* (343) decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos */
+   182,  /* (344) decl_func ::= func_decl SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
+   349,  /* (345) decl_struct_close_or_at ::= SEMICOLON */
+   349,  /* (346) decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE */
+   349,  /* (347) decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE */
+   350,  /* (348) decl_enum_close_or_at ::= SEMICOLON */
+   350,  /* (349) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE */
+   350,  /* (350) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE */
+   351,  /* (351) enum_base_begin ::= */
+   352,  /* (352) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID DOT CLOSE_PARENTHESIS */
+   352,  /* (353) decl_enum_attr ::= SPACE_AT_NO_DECL */
+   352,  /* (354) decl_enum_attr ::= SPACE_AT_NO_DECL_STR */
+   352,  /* (355) decl_enum_attr ::= SPACE_AT_REAL_NAME */
+   352,  /* (356) decl_enum_attr ::= SPACE_AT_REAL_NAME_STR */
+   352,  /* (357) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID DOT CLOSE_PARENTHESIS */
+   355,  /* (358) enum_base_end ::= COLON at decl_enum_attrs_optional end_pos */
+   356,  /* (359) decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional */
+   140,  /* (360) cp1 ::= decls space_or_end */
+   140,  /* (361) cp1 ::= SPACE decls space_or_end */
+   140,  /* (362) cp1 ::= space_or_end */
+   155,  /* (363) cvar_attrs ::= cvar_attr */
+   155,  /* (364) cvar_attrs ::= cvar_attrs cvar_attr */
+   156,  /* (365) cvar_attrs_optional ::= */
+   156,  /* (366) cvar_attrs_optional ::= cvar_attrs */
+   157,  /* (367) enum_cvar ::= enum_cvar_begin cvar_attrs_optional */
+   159,  /* (368) enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional */
+   163,  /* (369) at_names ::= at_begin at_name */
+   163,  /* (370) at_names ::= at_names at_name_dot */
+   170,  /* (371) decl_at_names ::= decl_at_begin_at decl_at_name */
+   170,  /* (372) decl_at_names ::= decl_at_names decl_at_name2 */
+   171,  /* (373) decl_at_namespace ::= decl_at_names */
+   162,  /* (374) decl ::= decl_at */
+   162,  /* (375) decl ::= decl_template_inst */
+   162,  /* (376) decl ::= decl_template_code */
+   162,  /* (377) decl ::= decl_import */
+   180,  /* (378) decl_cvar ::= enum_cvars_decl SEMICOLON */
+   162,  /* (379) decl ::= decl_cvar */
+   142,  /* (380) space_or_end ::= SPACE END */
+   142,  /* (381) space_or_end ::= END */
+   162,  /* (382) decl ::= decl_func */
+   162,  /* (383) decl ::= decl_struct */
+   162,  /* (384) decl ::= decl_enum */
+   162,  /* (385) decl ::= decl_gvars */
+   141,  /* (386) decls ::= decl */
+   141,  /* (387) decls ::= decls SPACE decl */
+   194,  /* (388) scolon_space ::= SEMICOLON SPACE */
+   202,  /* (389) farg_list ::= farg */
+   202,  /* (390) farg_list ::= farg_list COMMA_SPACE farg */
+   203,  /* (391) fargs ::= open_parenthesis_or_space CLOSE_PARENTHESIS */
+   203,  /* (392) fargs ::= open_parenthesis_or_space farg_list close_parenthesis_or_comma */
+   203,  /* (393) fargs ::= fargs farg_next_group farg_list close_parenthesis_or_comma */
+   203,  /* (394) fargs ::= fargs farg_next_group CLOSE_PARENTHESIS */
+   206,  /* (395) func_attrs ::= func_attr */
+   206,  /* (396) func_attrs ::= func_attrs func_attr */
+   207,  /* (397) func_attrs_optional ::= */
+   207,  /* (398) func_attrs_optional ::= func_attrs */
+   208,  /* (399) func_type ::= typeAndInfo_optional */
+   212,  /* (400) fvar_attrs_list ::= fvar_attr */
+   212,  /* (401) fvar_attrs_list ::= fvar_attrs_list fvar_attr */
+   213,  /* (402) fvar_attrs_optional ::= */
+   213,  /* (403) fvar_attrs_optional ::= fvar_attrs_list */
+   215,  /* (404) struct_fvars ::= fvar */
+   215,  /* (405) struct_fvars ::= struct_fvars COMMA_SPACE fvar */
+   216,  /* (406) enum_cvars ::= enum_cvar */
+   216,  /* (407) enum_cvars ::= enum_cvars COMMA_SPACE enum_cvar */
+   181,  /* (408) enum_cvars_decl ::= enum_cvar_decl */
+   181,  /* (409) enum_cvars_decl ::= enum_cvars_decl COMMA_SPACE enum_cvar_decl */
+   217,  /* (410) typeInfo ::= typeInfo_arr */
+   217,  /* (411) typeInfo ::= typeInfo_ref */
+   217,  /* (412) typeInfo ::= typeInfo_bi */
+   218,  /* (413) typeInfo_arr ::= typeInfo_arr_exprs */
+   218,  /* (414) typeInfo_arr ::= typeInfo_bi typeInfo_arr_exprs */
+   218,  /* (415) typeInfo_arr ::= typeInfo_arr typeInfo_arr_exprs */
+   199,  /* (416) typeInfo_optional ::= typeInfo_none */
+   275,  /* (417) metaCall_args_optional ::= OPEN_CURLY_BRACE CLOSE_CURLY_BRACE */
+   275,  /* (418) metaCall_args_optional ::= OPEN_CURLY_BRACE SPACE CLOSE_CURLY_BRACE */
+   275,  /* (419) metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args CLOSE_CURLY_BRACE */
+   275,  /* (420) metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args SPACE_CLOSE_CURLY_BRACE */
+   279,  /* (421) metaCall_arg_list ::= metaCall_arg */
+   279,  /* (422) metaCall_arg_list ::= metaCall_arg_list COMMA_SPACE metaCall_arg */
+   277,  /* (423) metaCall_args ::= metaCall_arg_list */
+   277,  /* (424) metaCall_args ::= metaCall_args metaCall_args_next_group metaCall_arg_list */
+   281,  /* (425) call_args_optional ::= open_parenthesis_or_space CLOSE_PARENTHESIS */
+   281,  /* (426) call_args_optional ::= call_args */
+   284,  /* (427) call_arg_list ::= call_arg */
+   284,  /* (428) call_arg_list ::= call_arg_list COMMA_SPACE call_arg */
+   282,  /* (429) call_args ::= open_parenthesis_or_space call_arg_list close_parenthesis_or_comma */
+   282,  /* (430) call_args ::= call_args call_args_next_group call_arg_list close_parenthesis_or_comma */
+   282,  /* (431) call_args ::= call_args call_args_next_group CLOSE_PARENTHESIS */
+   297,  /* (432) stmt ::= stmt_loop */
+   306,  /* (433) loop_continue_stmts ::= stmts_brace */
+   306,  /* (434) loop_continue_stmts ::= stmts_expr SEMICOLON */
+   306,  /* (435) loop_continue_stmts ::= stmts_expr */
+   310,  /* (436) loop_expr2 ::= loop_forever */
+   313,  /* (437) stmt_if_chain ::= stmt_if */
+   313,  /* (438) stmt_if_chain ::= stmt_if_chain stmt_elif */
+   297,  /* (439) stmt ::= stmt_switch */
+   326,  /* (440) switch_case_exprs ::= switch_case_expr */
+   326,  /* (441) switch_case_exprs ::= switch_case_exprs COMMA_SPACE switch_case_expr */
+   328,  /* (442) switch_case_paren_or_expr ::= switch_case_exprs */
+   332,  /* (443) switch_cases ::= switch_case */
+   332,  /* (444) switch_cases ::= switch_cases SPACE switch_case */
+   333,  /* (445) stmt_expr ::= stmt_continue */
+   333,  /* (446) stmt_expr ::= stmt_break */
+   333,  /* (447) stmt_expr ::= stmt_return */
+   197,  /* (448) typeAndInfo ::= COLON expr_type_apply typeInfo_optional */
+   150,  /* (449) typeAndInfo_optional ::= typeAndInfo */
+   150,  /* (450) typeAndInfo_optional ::= expr_type_none typeInfo_none */
+   333,  /* (451) stmt_expr ::= stmt_lvars */
+   341,  /* (452) decl_lvars ::= decl_lvar */
+   341,  /* (453) decl_lvars ::= decl_lvars COMMA_SPACE decl_lvar */
+   338,  /* (454) decl_lvar_begin ::= VAR SPACE */
+   343,  /* (455) decl_var_attrs_list ::= decl_var_attr */
+   343,  /* (456) decl_var_attrs_list ::= decl_var_attrs_list decl_var_attr */
+   344,  /* (457) decl_var_attrs_optional ::= */
+   344,  /* (458) decl_var_attrs_optional ::= decl_var_attrs_list */
    345,  /* (459) stmt_brace ::= stmt */
    333,  /* (460) stmt_expr ::= expr2stmt */
    307,  /* (461) stmts_brace ::= stmt_brace */
@@ -4190,128 +4190,128 @@ static const signed char yyRuleInfoNRhs[] = {
    -1,  /* (334) decl_var_attr ::= SPACE_AT_EXTERN */
    -1,  /* (335) decl_var_attr ::= SPACE_AT_NO_DECL */
    -1,  /* (336) decl_var_attr ::= SPACE_AT_NO_DECL_STR */
-   -1,  /* (337) decl_struct_attr ::= SPACE_AT_NO_DECL */
-   -1,  /* (338) decl_struct_attr ::= SPACE_AT_NO_DECL_STR */
-   -1,  /* (339) decl_struct_attr ::= SPACE_AT_REAL_NAME_STR */
-   -1,  /* (340) decl_struct_attr ::= SPACE_AT_REAL_NAME */
-   -1,  /* (341) decl_struct_attrs_optional ::= end_pos */
-   -2,  /* (342) decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos */
-   -3,  /* (343) decl_func ::= func_decl SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
-   -1,  /* (344) decl_struct_close_or_at ::= SEMICOLON */
-   -5,  /* (345) decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE */
-   -3,  /* (346) decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE */
-   -1,  /* (347) decl_enum_close_or_at ::= SEMICOLON */
-   -5,  /* (348) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE */
-   -3,  /* (349) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE */
-    0,  /* (350) enum_base_begin ::= */
-   -7,  /* (351) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID DOT CLOSE_PARENTHESIS */
-   -1,  /* (352) decl_enum_attr ::= SPACE_AT_NO_DECL */
-   -1,  /* (353) decl_enum_attr ::= SPACE_AT_NO_DECL_STR */
-   -1,  /* (354) decl_enum_attr ::= SPACE_AT_REAL_NAME */
-   -1,  /* (355) decl_enum_attr ::= SPACE_AT_REAL_NAME_STR */
-   -6,  /* (356) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID DOT CLOSE_PARENTHESIS */
-   -4,  /* (357) enum_base_end ::= COLON at decl_enum_attrs_optional end_pos */
-   -5,  /* (358) decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional */
-   -2,  /* (359) cp1 ::= decls space_or_end */
-   -3,  /* (360) cp1 ::= SPACE decls space_or_end */
-   -1,  /* (361) cp1 ::= space_or_end */
-   -1,  /* (362) cvar_attrs ::= cvar_attr */
-   -2,  /* (363) cvar_attrs ::= cvar_attrs cvar_attr */
-    0,  /* (364) cvar_attrs_optional ::= */
-   -1,  /* (365) cvar_attrs_optional ::= cvar_attrs */
-   -2,  /* (366) enum_cvar ::= enum_cvar_begin cvar_attrs_optional */
-   -2,  /* (367) enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional */
-   -2,  /* (368) at_names ::= at_begin at_name */
-   -2,  /* (369) at_names ::= at_names at_name_dot */
-   -2,  /* (370) decl_at_names ::= decl_at_begin_at decl_at_name */
-   -2,  /* (371) decl_at_names ::= decl_at_names decl_at_name2 */
-   -1,  /* (372) decl_at_namespace ::= decl_at_names */
-   -1,  /* (373) decl ::= decl_at */
-   -1,  /* (374) decl ::= decl_template_inst */
-   -1,  /* (375) decl ::= decl_template_code */
-   -1,  /* (376) decl ::= decl_import */
-   -2,  /* (377) decl_cvar ::= enum_cvars_decl SEMICOLON */
-   -1,  /* (378) decl ::= decl_cvar */
-   -2,  /* (379) space_or_end ::= SPACE END */
-   -1,  /* (380) space_or_end ::= END */
-   -1,  /* (381) decl ::= decl_func */
-   -1,  /* (382) decl ::= decl_struct */
-   -1,  /* (383) decl ::= decl_enum */
-   -1,  /* (384) decl ::= decl_gvars */
-   -1,  /* (385) decls ::= decl */
-   -3,  /* (386) decls ::= decls SPACE decl */
-   -2,  /* (387) scolon_space ::= SEMICOLON SPACE */
-   -1,  /* (388) farg_list ::= farg */
-   -3,  /* (389) farg_list ::= farg_list COMMA_SPACE farg */
-   -2,  /* (390) fargs ::= open_parenthesis_or_space CLOSE_PARENTHESIS */
-   -3,  /* (391) fargs ::= open_parenthesis_or_space farg_list close_parenthesis_or_comma */
-   -4,  /* (392) fargs ::= fargs farg_next_group farg_list close_parenthesis_or_comma */
-   -3,  /* (393) fargs ::= fargs farg_next_group CLOSE_PARENTHESIS */
-   -1,  /* (394) func_attrs ::= func_attr */
-   -2,  /* (395) func_attrs ::= func_attrs func_attr */
-    0,  /* (396) func_attrs_optional ::= */
-   -1,  /* (397) func_attrs_optional ::= func_attrs */
-   -1,  /* (398) func_type ::= typeAndInfo_optional */
-   -1,  /* (399) fvar_attrs_list ::= fvar_attr */
-   -2,  /* (400) fvar_attrs_list ::= fvar_attrs_list fvar_attr */
-    0,  /* (401) fvar_attrs_optional ::= */
-   -1,  /* (402) fvar_attrs_optional ::= fvar_attrs_list */
-   -1,  /* (403) struct_fvars ::= fvar */
-   -3,  /* (404) struct_fvars ::= struct_fvars COMMA_SPACE fvar */
-   -1,  /* (405) enum_cvars ::= enum_cvar */
-   -3,  /* (406) enum_cvars ::= enum_cvars COMMA_SPACE enum_cvar */
-   -1,  /* (407) enum_cvars_decl ::= enum_cvar_decl */
-   -3,  /* (408) enum_cvars_decl ::= enum_cvars_decl COMMA_SPACE enum_cvar_decl */
-   -1,  /* (409) typeInfo ::= typeInfo_arr */
-   -1,  /* (410) typeInfo ::= typeInfo_ref */
-   -1,  /* (411) typeInfo ::= typeInfo_bi */
-   -1,  /* (412) typeInfo_arr ::= typeInfo_arr_exprs */
-   -2,  /* (413) typeInfo_arr ::= typeInfo_bi typeInfo_arr_exprs */
-   -2,  /* (414) typeInfo_arr ::= typeInfo_arr typeInfo_arr_exprs */
-   -1,  /* (415) typeInfo_optional ::= typeInfo_none */
-   -2,  /* (416) metaCall_args_optional ::= OPEN_CURLY_BRACE CLOSE_CURLY_BRACE */
-   -3,  /* (417) metaCall_args_optional ::= OPEN_CURLY_BRACE SPACE CLOSE_CURLY_BRACE */
-   -3,  /* (418) metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args CLOSE_CURLY_BRACE */
-   -3,  /* (419) metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args SPACE_CLOSE_CURLY_BRACE */
-   -1,  /* (420) metaCall_arg_list ::= metaCall_arg */
-   -3,  /* (421) metaCall_arg_list ::= metaCall_arg_list COMMA_SPACE metaCall_arg */
-   -1,  /* (422) metaCall_args ::= metaCall_arg_list */
-   -3,  /* (423) metaCall_args ::= metaCall_args metaCall_args_next_group metaCall_arg_list */
-   -2,  /* (424) call_args_optional ::= open_parenthesis_or_space CLOSE_PARENTHESIS */
-   -1,  /* (425) call_args_optional ::= call_args */
-   -1,  /* (426) call_arg_list ::= call_arg */
-   -3,  /* (427) call_arg_list ::= call_arg_list COMMA_SPACE call_arg */
-   -3,  /* (428) call_args ::= open_parenthesis_or_space call_arg_list close_parenthesis_or_comma */
-   -4,  /* (429) call_args ::= call_args call_args_next_group call_arg_list close_parenthesis_or_comma */
-   -3,  /* (430) call_args ::= call_args call_args_next_group CLOSE_PARENTHESIS */
-   -1,  /* (431) stmt ::= stmt_loop */
-   -1,  /* (432) loop_continue_stmts ::= stmts_brace */
-   -2,  /* (433) loop_continue_stmts ::= stmts_expr SEMICOLON */
-   -1,  /* (434) loop_continue_stmts ::= stmts_expr */
-   -1,  /* (435) loop_expr2 ::= loop_forever */
-   -1,  /* (436) stmt_if_chain ::= stmt_if */
-   -2,  /* (437) stmt_if_chain ::= stmt_if_chain stmt_elif */
-   -1,  /* (438) stmt ::= stmt_switch */
-   -1,  /* (439) switch_case_exprs ::= switch_case_expr */
-   -3,  /* (440) switch_case_exprs ::= switch_case_exprs COMMA_SPACE switch_case_expr */
-   -1,  /* (441) switch_case_paren_or_expr ::= switch_case_exprs */
-   -1,  /* (442) switch_cases ::= switch_case */
-   -3,  /* (443) switch_cases ::= switch_cases SPACE switch_case */
-   -1,  /* (444) stmt_expr ::= stmt_continue */
-   -1,  /* (445) stmt_expr ::= stmt_break */
-   -1,  /* (446) stmt_expr ::= stmt_return */
-   -3,  /* (447) typeAndInfo ::= COLON expr_type_apply typeInfo_optional */
-   -1,  /* (448) typeAndInfo_optional ::= typeAndInfo */
-   -2,  /* (449) typeAndInfo_optional ::= expr_type_none typeInfo_none */
-   -1,  /* (450) stmt_expr ::= stmt_lvars */
-   -1,  /* (451) decl_lvars ::= decl_lvar */
-   -3,  /* (452) decl_lvars ::= decl_lvars COMMA_SPACE decl_lvar */
-   -2,  /* (453) decl_lvar_begin ::= VAR SPACE */
-   -1,  /* (454) decl_var_attrs_list ::= decl_var_attr */
-   -2,  /* (455) decl_var_attrs_list ::= decl_var_attrs_list decl_var_attr */
-    0,  /* (456) decl_var_attrs_optional ::= */
-   -1,  /* (457) decl_var_attrs_optional ::= decl_var_attrs_list */
-   -2,  /* (458) decl_func ::= func_decl SEMICOLON */
+   -2,  /* (337) decl_func ::= func_decl SEMICOLON */
+   -1,  /* (338) decl_struct_attr ::= SPACE_AT_NO_DECL */
+   -1,  /* (339) decl_struct_attr ::= SPACE_AT_NO_DECL_STR */
+   -1,  /* (340) decl_struct_attr ::= SPACE_AT_REAL_NAME_STR */
+   -1,  /* (341) decl_struct_attr ::= SPACE_AT_REAL_NAME */
+   -1,  /* (342) decl_struct_attrs_optional ::= end_pos */
+   -2,  /* (343) decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos */
+   -3,  /* (344) decl_func ::= func_decl SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
+   -1,  /* (345) decl_struct_close_or_at ::= SEMICOLON */
+   -5,  /* (346) decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE */
+   -3,  /* (347) decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE */
+   -1,  /* (348) decl_enum_close_or_at ::= SEMICOLON */
+   -5,  /* (349) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE */
+   -3,  /* (350) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE */
+    0,  /* (351) enum_base_begin ::= */
+   -7,  /* (352) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID DOT CLOSE_PARENTHESIS */
+   -1,  /* (353) decl_enum_attr ::= SPACE_AT_NO_DECL */
+   -1,  /* (354) decl_enum_attr ::= SPACE_AT_NO_DECL_STR */
+   -1,  /* (355) decl_enum_attr ::= SPACE_AT_REAL_NAME */
+   -1,  /* (356) decl_enum_attr ::= SPACE_AT_REAL_NAME_STR */
+   -6,  /* (357) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID DOT CLOSE_PARENTHESIS */
+   -4,  /* (358) enum_base_end ::= COLON at decl_enum_attrs_optional end_pos */
+   -5,  /* (359) decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional */
+   -2,  /* (360) cp1 ::= decls space_or_end */
+   -3,  /* (361) cp1 ::= SPACE decls space_or_end */
+   -1,  /* (362) cp1 ::= space_or_end */
+   -1,  /* (363) cvar_attrs ::= cvar_attr */
+   -2,  /* (364) cvar_attrs ::= cvar_attrs cvar_attr */
+    0,  /* (365) cvar_attrs_optional ::= */
+   -1,  /* (366) cvar_attrs_optional ::= cvar_attrs */
+   -2,  /* (367) enum_cvar ::= enum_cvar_begin cvar_attrs_optional */
+   -2,  /* (368) enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional */
+   -2,  /* (369) at_names ::= at_begin at_name */
+   -2,  /* (370) at_names ::= at_names at_name_dot */
+   -2,  /* (371) decl_at_names ::= decl_at_begin_at decl_at_name */
+   -2,  /* (372) decl_at_names ::= decl_at_names decl_at_name2 */
+   -1,  /* (373) decl_at_namespace ::= decl_at_names */
+   -1,  /* (374) decl ::= decl_at */
+   -1,  /* (375) decl ::= decl_template_inst */
+   -1,  /* (376) decl ::= decl_template_code */
+   -1,  /* (377) decl ::= decl_import */
+   -2,  /* (378) decl_cvar ::= enum_cvars_decl SEMICOLON */
+   -1,  /* (379) decl ::= decl_cvar */
+   -2,  /* (380) space_or_end ::= SPACE END */
+   -1,  /* (381) space_or_end ::= END */
+   -1,  /* (382) decl ::= decl_func */
+   -1,  /* (383) decl ::= decl_struct */
+   -1,  /* (384) decl ::= decl_enum */
+   -1,  /* (385) decl ::= decl_gvars */
+   -1,  /* (386) decls ::= decl */
+   -3,  /* (387) decls ::= decls SPACE decl */
+   -2,  /* (388) scolon_space ::= SEMICOLON SPACE */
+   -1,  /* (389) farg_list ::= farg */
+   -3,  /* (390) farg_list ::= farg_list COMMA_SPACE farg */
+   -2,  /* (391) fargs ::= open_parenthesis_or_space CLOSE_PARENTHESIS */
+   -3,  /* (392) fargs ::= open_parenthesis_or_space farg_list close_parenthesis_or_comma */
+   -4,  /* (393) fargs ::= fargs farg_next_group farg_list close_parenthesis_or_comma */
+   -3,  /* (394) fargs ::= fargs farg_next_group CLOSE_PARENTHESIS */
+   -1,  /* (395) func_attrs ::= func_attr */
+   -2,  /* (396) func_attrs ::= func_attrs func_attr */
+    0,  /* (397) func_attrs_optional ::= */
+   -1,  /* (398) func_attrs_optional ::= func_attrs */
+   -1,  /* (399) func_type ::= typeAndInfo_optional */
+   -1,  /* (400) fvar_attrs_list ::= fvar_attr */
+   -2,  /* (401) fvar_attrs_list ::= fvar_attrs_list fvar_attr */
+    0,  /* (402) fvar_attrs_optional ::= */
+   -1,  /* (403) fvar_attrs_optional ::= fvar_attrs_list */
+   -1,  /* (404) struct_fvars ::= fvar */
+   -3,  /* (405) struct_fvars ::= struct_fvars COMMA_SPACE fvar */
+   -1,  /* (406) enum_cvars ::= enum_cvar */
+   -3,  /* (407) enum_cvars ::= enum_cvars COMMA_SPACE enum_cvar */
+   -1,  /* (408) enum_cvars_decl ::= enum_cvar_decl */
+   -3,  /* (409) enum_cvars_decl ::= enum_cvars_decl COMMA_SPACE enum_cvar_decl */
+   -1,  /* (410) typeInfo ::= typeInfo_arr */
+   -1,  /* (411) typeInfo ::= typeInfo_ref */
+   -1,  /* (412) typeInfo ::= typeInfo_bi */
+   -1,  /* (413) typeInfo_arr ::= typeInfo_arr_exprs */
+   -2,  /* (414) typeInfo_arr ::= typeInfo_bi typeInfo_arr_exprs */
+   -2,  /* (415) typeInfo_arr ::= typeInfo_arr typeInfo_arr_exprs */
+   -1,  /* (416) typeInfo_optional ::= typeInfo_none */
+   -2,  /* (417) metaCall_args_optional ::= OPEN_CURLY_BRACE CLOSE_CURLY_BRACE */
+   -3,  /* (418) metaCall_args_optional ::= OPEN_CURLY_BRACE SPACE CLOSE_CURLY_BRACE */
+   -3,  /* (419) metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args CLOSE_CURLY_BRACE */
+   -3,  /* (420) metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args SPACE_CLOSE_CURLY_BRACE */
+   -1,  /* (421) metaCall_arg_list ::= metaCall_arg */
+   -3,  /* (422) metaCall_arg_list ::= metaCall_arg_list COMMA_SPACE metaCall_arg */
+   -1,  /* (423) metaCall_args ::= metaCall_arg_list */
+   -3,  /* (424) metaCall_args ::= metaCall_args metaCall_args_next_group metaCall_arg_list */
+   -2,  /* (425) call_args_optional ::= open_parenthesis_or_space CLOSE_PARENTHESIS */
+   -1,  /* (426) call_args_optional ::= call_args */
+   -1,  /* (427) call_arg_list ::= call_arg */
+   -3,  /* (428) call_arg_list ::= call_arg_list COMMA_SPACE call_arg */
+   -3,  /* (429) call_args ::= open_parenthesis_or_space call_arg_list close_parenthesis_or_comma */
+   -4,  /* (430) call_args ::= call_args call_args_next_group call_arg_list close_parenthesis_or_comma */
+   -3,  /* (431) call_args ::= call_args call_args_next_group CLOSE_PARENTHESIS */
+   -1,  /* (432) stmt ::= stmt_loop */
+   -1,  /* (433) loop_continue_stmts ::= stmts_brace */
+   -2,  /* (434) loop_continue_stmts ::= stmts_expr SEMICOLON */
+   -1,  /* (435) loop_continue_stmts ::= stmts_expr */
+   -1,  /* (436) loop_expr2 ::= loop_forever */
+   -1,  /* (437) stmt_if_chain ::= stmt_if */
+   -2,  /* (438) stmt_if_chain ::= stmt_if_chain stmt_elif */
+   -1,  /* (439) stmt ::= stmt_switch */
+   -1,  /* (440) switch_case_exprs ::= switch_case_expr */
+   -3,  /* (441) switch_case_exprs ::= switch_case_exprs COMMA_SPACE switch_case_expr */
+   -1,  /* (442) switch_case_paren_or_expr ::= switch_case_exprs */
+   -1,  /* (443) switch_cases ::= switch_case */
+   -3,  /* (444) switch_cases ::= switch_cases SPACE switch_case */
+   -1,  /* (445) stmt_expr ::= stmt_continue */
+   -1,  /* (446) stmt_expr ::= stmt_break */
+   -1,  /* (447) stmt_expr ::= stmt_return */
+   -3,  /* (448) typeAndInfo ::= COLON expr_type_apply typeInfo_optional */
+   -1,  /* (449) typeAndInfo_optional ::= typeAndInfo */
+   -2,  /* (450) typeAndInfo_optional ::= expr_type_none typeInfo_none */
+   -1,  /* (451) stmt_expr ::= stmt_lvars */
+   -1,  /* (452) decl_lvars ::= decl_lvar */
+   -3,  /* (453) decl_lvars ::= decl_lvars COMMA_SPACE decl_lvar */
+   -2,  /* (454) decl_lvar_begin ::= VAR SPACE */
+   -1,  /* (455) decl_var_attrs_list ::= decl_var_attr */
+   -2,  /* (456) decl_var_attrs_list ::= decl_var_attrs_list decl_var_attr */
+    0,  /* (457) decl_var_attrs_optional ::= */
+   -1,  /* (458) decl_var_attrs_optional ::= decl_var_attrs_list */
    -1,  /* (459) stmt_brace ::= stmt */
    -1,  /* (460) stmt_expr ::= expr2stmt */
    -1,  /* (461) stmts_brace ::= stmt_brace */
@@ -4524,12 +4524,12 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 32: /* decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE */
       case 33: /* decl_at ::= decl_at_begin SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==33);
-      case 344: /* decl_struct_close_or_at ::= SEMICOLON */ yytestcase(yyruleno==344);
-      case 345: /* decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==345);
-      case 346: /* decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==346);
-      case 347: /* decl_enum_close_or_at ::= SEMICOLON */ yytestcase(yyruleno==347);
-      case 348: /* decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==348);
-      case 349: /* decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==349);
+      case 345: /* decl_struct_close_or_at ::= SEMICOLON */ yytestcase(yyruleno==345);
+      case 346: /* decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==346);
+      case 347: /* decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==347);
+      case 348: /* decl_enum_close_or_at ::= SEMICOLON */ yytestcase(yyruleno==348);
+      case 349: /* decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==349);
+      case 350: /* decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==350);
 #line 178 "cp1_parse.y"
 { _NCp1_Pdecl_at_end_0(); }
 #line 4535 "out/cp1_parse.c"
@@ -5622,183 +5622,187 @@ static YYACTIONTYPE yy_reduce(
 { _NCp1_Pdecl_var_attr_no_decl_0(); _NCp1_Pdecl_var_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
 #line 5623 "out/cp1_parse.c"
         break;
-      case 337: /* decl_struct_attr ::= SPACE_AT_NO_DECL */
-#line 976 "cp1_parse.y"
-{ _NCp1_Pstruct_attr_no_decl_0(); }
+      case 337: /* decl_func ::= func_decl SEMICOLON */
+#line 958 "cp1_parse.y"
+{ _NCp1_Pfunc_header_end_0(); }
 #line 5628 "out/cp1_parse.c"
         break;
-      case 338: /* decl_struct_attr ::= SPACE_AT_NO_DECL_STR */
-#line 978 "cp1_parse.y"
-{ _NCp1_Pstruct_attr_no_decl_0(); _NCp1_Pstruct_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
+      case 338: /* decl_struct_attr ::= SPACE_AT_NO_DECL */
+#line 977 "cp1_parse.y"
+{ _NCp1_Pstruct_attr_no_decl_0(); }
 #line 5633 "out/cp1_parse.c"
         break;
-      case 339: /* decl_struct_attr ::= SPACE_AT_REAL_NAME_STR */
-#line 980 "cp1_parse.y"
-{ _NCp1_Pstruct_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
+      case 339: /* decl_struct_attr ::= SPACE_AT_NO_DECL_STR */
+#line 979 "cp1_parse.y"
+{ _NCp1_Pstruct_attr_no_decl_0(); _NCp1_Pstruct_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
 #line 5638 "out/cp1_parse.c"
         break;
-      case 340: /* decl_struct_attr ::= SPACE_AT_REAL_NAME */
-#line 982 "cp1_parse.y"
-{ _NCp1_Pstruct_attr_real_name_1(-1); }
+      case 340: /* decl_struct_attr ::= SPACE_AT_REAL_NAME_STR */
+#line 981 "cp1_parse.y"
+{ _NCp1_Pstruct_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
 #line 5643 "out/cp1_parse.c"
         break;
-      case 341: /* decl_struct_attrs_optional ::= end_pos */
-      case 342: /* decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos */ yytestcase(yyruleno==342);
-#line 988 "cp1_parse.y"
-{ _NCp1_Pdecl_struct_end_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
-#line 5649 "out/cp1_parse.c"
+      case 341: /* decl_struct_attr ::= SPACE_AT_REAL_NAME */
+#line 983 "cp1_parse.y"
+{ _NCp1_Pstruct_attr_real_name_1(-1); }
+#line 5648 "out/cp1_parse.c"
         break;
-      case 343: /* decl_func ::= func_decl SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
-#line 992 "cp1_parse.y"
-{ _NCp1_Pfunc_body_end_0(); }
+      case 342: /* decl_struct_attrs_optional ::= end_pos */
+      case 343: /* decl_struct_attrs_optional ::= decl_struct_attrs_list end_pos */ yytestcase(yyruleno==343);
+#line 989 "cp1_parse.y"
+{ _NCp1_Pdecl_struct_end_2(yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 5654 "out/cp1_parse.c"
         break;
-      case 350: /* enum_base_begin ::= */
-#line 1012 "cp1_parse.y"
-{ _NCp1_Penum_base_begin_0(); }
+      case 344: /* decl_func ::= func_decl SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2 */
+#line 993 "cp1_parse.y"
+{ _NCp1_Pfunc_body_end_0(); }
 #line 5659 "out/cp1_parse.c"
         break;
-      case 351: /* decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID DOT CLOSE_PARENTHESIS */
-#line 1014 "cp1_parse.y"
-{ _NCp1_Penum_attr_soa_field_2(yymsp[-4].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.id); }
+      case 351: /* enum_base_begin ::= */
+#line 1013 "cp1_parse.y"
+{ _NCp1_Penum_base_begin_0(); }
 #line 5664 "out/cp1_parse.c"
         break;
-      case 352: /* decl_enum_attr ::= SPACE_AT_NO_DECL */
-#line 1016 "cp1_parse.y"
-{ _NCp1_Penum_attr_no_decl_0(); }
+      case 352: /* decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID DOT CLOSE_PARENTHESIS */
+#line 1015 "cp1_parse.y"
+{ _NCp1_Penum_attr_soa_field_2(yymsp[-4].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.id); }
 #line 5669 "out/cp1_parse.c"
         break;
-      case 353: /* decl_enum_attr ::= SPACE_AT_NO_DECL_STR */
-#line 1018 "cp1_parse.y"
-{ _NCp1_Penum_attr_no_decl_0(); _NCp1_Penum_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
+      case 353: /* decl_enum_attr ::= SPACE_AT_NO_DECL */
+#line 1017 "cp1_parse.y"
+{ _NCp1_Penum_attr_no_decl_0(); }
 #line 5674 "out/cp1_parse.c"
         break;
-      case 354: /* decl_enum_attr ::= SPACE_AT_REAL_NAME */
-#line 1020 "cp1_parse.y"
-{ _NCp1_Penum_attr_real_name_1(-1); }
+      case 354: /* decl_enum_attr ::= SPACE_AT_NO_DECL_STR */
+#line 1019 "cp1_parse.y"
+{ _NCp1_Penum_attr_no_decl_0(); _NCp1_Penum_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
 #line 5679 "out/cp1_parse.c"
         break;
-      case 355: /* decl_enum_attr ::= SPACE_AT_REAL_NAME_STR */
-#line 1022 "cp1_parse.y"
-{ _NCp1_Penum_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
+      case 355: /* decl_enum_attr ::= SPACE_AT_REAL_NAME */
+#line 1021 "cp1_parse.y"
+{ _NCp1_Penum_attr_real_name_1(-1); }
 #line 5684 "out/cp1_parse.c"
         break;
-      case 356: /* decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID DOT CLOSE_PARENTHESIS */
-#line 1024 "cp1_parse.y"
-{ _NCp1_Penum_attr_soa_field_2(-1, yymsp[-2].minor.yy0.basic.id); }
+      case 356: /* decl_enum_attr ::= SPACE_AT_REAL_NAME_STR */
+#line 1023 "cp1_parse.y"
+{ _NCp1_Penum_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
 #line 5689 "out/cp1_parse.c"
         break;
-      case 357: /* enum_base_end ::= COLON at decl_enum_attrs_optional end_pos */
-#line 1030 "cp1_parse.y"
-{ _NCp1_Pdecl_enum_end_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
+      case 357: /* decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID DOT CLOSE_PARENTHESIS */
+#line 1025 "cp1_parse.y"
+{ _NCp1_Penum_attr_soa_field_2(-1, yymsp[-2].minor.yy0.basic.id); }
 #line 5694 "out/cp1_parse.c"
         break;
-      case 358: /* decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional */
-#line 1036 "cp1_parse.y"
-{ _NCp1_Pdecl_var_as_gvar_0(); }
+      case 358: /* enum_base_end ::= COLON at decl_enum_attrs_optional end_pos */
+#line 1031 "cp1_parse.y"
+{ _NCp1_Pdecl_enum_end_3(yymsp[-2].minor.yy0.basic.id, yymsp[0].minor.yy0.basic.row, yymsp[0].minor.yy0.basic.col); }
 #line 5699 "out/cp1_parse.c"
         break;
+      case 359: /* decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional */
+#line 1037 "cp1_parse.y"
+{ _NCp1_Pdecl_var_as_gvar_0(); }
+#line 5704 "out/cp1_parse.c"
+        break;
       default:
-      /* (359) cp1 ::= decls space_or_end */ yytestcase(yyruleno==359);
-      /* (360) cp1 ::= SPACE decls space_or_end */ yytestcase(yyruleno==360);
-      /* (361) cp1 ::= space_or_end */ yytestcase(yyruleno==361);
-      /* (362) cvar_attrs ::= cvar_attr (OPTIMIZED OUT) */ assert(yyruleno!=362);
-      /* (363) cvar_attrs ::= cvar_attrs cvar_attr */ yytestcase(yyruleno==363);
-      /* (364) cvar_attrs_optional ::= */ yytestcase(yyruleno==364);
-      /* (365) cvar_attrs_optional ::= cvar_attrs */ yytestcase(yyruleno==365);
-      /* (366) enum_cvar ::= enum_cvar_begin cvar_attrs_optional */ yytestcase(yyruleno==366);
-      /* (367) enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional */ yytestcase(yyruleno==367);
-      /* (368) at_names ::= at_begin at_name */ yytestcase(yyruleno==368);
-      /* (369) at_names ::= at_names at_name_dot */ yytestcase(yyruleno==369);
-      /* (370) decl_at_names ::= decl_at_begin_at decl_at_name */ yytestcase(yyruleno==370);
-      /* (371) decl_at_names ::= decl_at_names decl_at_name2 */ yytestcase(yyruleno==371);
-      /* (372) decl_at_namespace ::= decl_at_names */ yytestcase(yyruleno==372);
-      /* (373) decl ::= decl_at (OPTIMIZED OUT) */ assert(yyruleno!=373);
-      /* (374) decl ::= decl_template_inst (OPTIMIZED OUT) */ assert(yyruleno!=374);
-      /* (375) decl ::= decl_template_code (OPTIMIZED OUT) */ assert(yyruleno!=375);
-      /* (376) decl ::= decl_import (OPTIMIZED OUT) */ assert(yyruleno!=376);
-      /* (377) decl_cvar ::= enum_cvars_decl SEMICOLON */ yytestcase(yyruleno==377);
-      /* (378) decl ::= decl_cvar (OPTIMIZED OUT) */ assert(yyruleno!=378);
-      /* (379) space_or_end ::= SPACE END */ yytestcase(yyruleno==379);
-      /* (380) space_or_end ::= END */ yytestcase(yyruleno==380);
-      /* (381) decl ::= decl_func (OPTIMIZED OUT) */ assert(yyruleno!=381);
-      /* (382) decl ::= decl_struct (OPTIMIZED OUT) */ assert(yyruleno!=382);
-      /* (383) decl ::= decl_enum (OPTIMIZED OUT) */ assert(yyruleno!=383);
-      /* (384) decl ::= decl_gvars (OPTIMIZED OUT) */ assert(yyruleno!=384);
-      /* (385) decls ::= decl (OPTIMIZED OUT) */ assert(yyruleno!=385);
-      /* (386) decls ::= decls SPACE decl */ yytestcase(yyruleno==386);
-      /* (387) scolon_space ::= SEMICOLON SPACE */ yytestcase(yyruleno==387);
-      /* (388) farg_list ::= farg (OPTIMIZED OUT) */ assert(yyruleno!=388);
-      /* (389) farg_list ::= farg_list COMMA_SPACE farg */ yytestcase(yyruleno==389);
-      /* (390) fargs ::= open_parenthesis_or_space CLOSE_PARENTHESIS */ yytestcase(yyruleno==390);
-      /* (391) fargs ::= open_parenthesis_or_space farg_list close_parenthesis_or_comma */ yytestcase(yyruleno==391);
-      /* (392) fargs ::= fargs farg_next_group farg_list close_parenthesis_or_comma */ yytestcase(yyruleno==392);
-      /* (393) fargs ::= fargs farg_next_group CLOSE_PARENTHESIS */ yytestcase(yyruleno==393);
-      /* (394) func_attrs ::= func_attr (OPTIMIZED OUT) */ assert(yyruleno!=394);
-      /* (395) func_attrs ::= func_attrs func_attr */ yytestcase(yyruleno==395);
-      /* (396) func_attrs_optional ::= */ yytestcase(yyruleno==396);
-      /* (397) func_attrs_optional ::= func_attrs */ yytestcase(yyruleno==397);
-      /* (398) func_type ::= typeAndInfo_optional (OPTIMIZED OUT) */ assert(yyruleno!=398);
-      /* (399) fvar_attrs_list ::= fvar_attr (OPTIMIZED OUT) */ assert(yyruleno!=399);
-      /* (400) fvar_attrs_list ::= fvar_attrs_list fvar_attr */ yytestcase(yyruleno==400);
-      /* (401) fvar_attrs_optional ::= */ yytestcase(yyruleno==401);
-      /* (402) fvar_attrs_optional ::= fvar_attrs_list */ yytestcase(yyruleno==402);
-      /* (403) struct_fvars ::= fvar (OPTIMIZED OUT) */ assert(yyruleno!=403);
-      /* (404) struct_fvars ::= struct_fvars COMMA_SPACE fvar */ yytestcase(yyruleno==404);
-      /* (405) enum_cvars ::= enum_cvar (OPTIMIZED OUT) */ assert(yyruleno!=405);
-      /* (406) enum_cvars ::= enum_cvars COMMA_SPACE enum_cvar */ yytestcase(yyruleno==406);
-      /* (407) enum_cvars_decl ::= enum_cvar_decl (OPTIMIZED OUT) */ assert(yyruleno!=407);
-      /* (408) enum_cvars_decl ::= enum_cvars_decl COMMA_SPACE enum_cvar_decl */ yytestcase(yyruleno==408);
-      /* (409) typeInfo ::= typeInfo_arr */ yytestcase(yyruleno==409);
-      /* (410) typeInfo ::= typeInfo_ref */ yytestcase(yyruleno==410);
-      /* (411) typeInfo ::= typeInfo_bi */ yytestcase(yyruleno==411);
-      /* (412) typeInfo_arr ::= typeInfo_arr_exprs (OPTIMIZED OUT) */ assert(yyruleno!=412);
-      /* (413) typeInfo_arr ::= typeInfo_bi typeInfo_arr_exprs */ yytestcase(yyruleno==413);
-      /* (414) typeInfo_arr ::= typeInfo_arr typeInfo_arr_exprs */ yytestcase(yyruleno==414);
-      /* (415) typeInfo_optional ::= typeInfo_none (OPTIMIZED OUT) */ assert(yyruleno!=415);
-      /* (416) metaCall_args_optional ::= OPEN_CURLY_BRACE CLOSE_CURLY_BRACE */ yytestcase(yyruleno==416);
-      /* (417) metaCall_args_optional ::= OPEN_CURLY_BRACE SPACE CLOSE_CURLY_BRACE */ yytestcase(yyruleno==417);
-      /* (418) metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args CLOSE_CURLY_BRACE */ yytestcase(yyruleno==418);
-      /* (419) metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==419);
-      /* (420) metaCall_arg_list ::= metaCall_arg (OPTIMIZED OUT) */ assert(yyruleno!=420);
-      /* (421) metaCall_arg_list ::= metaCall_arg_list COMMA_SPACE metaCall_arg */ yytestcase(yyruleno==421);
-      /* (422) metaCall_args ::= metaCall_arg_list */ yytestcase(yyruleno==422);
-      /* (423) metaCall_args ::= metaCall_args metaCall_args_next_group metaCall_arg_list */ yytestcase(yyruleno==423);
-      /* (424) call_args_optional ::= open_parenthesis_or_space CLOSE_PARENTHESIS */ yytestcase(yyruleno==424);
-      /* (425) call_args_optional ::= call_args */ yytestcase(yyruleno==425);
-      /* (426) call_arg_list ::= call_arg (OPTIMIZED OUT) */ assert(yyruleno!=426);
-      /* (427) call_arg_list ::= call_arg_list COMMA_SPACE call_arg */ yytestcase(yyruleno==427);
-      /* (428) call_args ::= open_parenthesis_or_space call_arg_list close_parenthesis_or_comma */ yytestcase(yyruleno==428);
-      /* (429) call_args ::= call_args call_args_next_group call_arg_list close_parenthesis_or_comma */ yytestcase(yyruleno==429);
-      /* (430) call_args ::= call_args call_args_next_group CLOSE_PARENTHESIS */ yytestcase(yyruleno==430);
-      /* (431) stmt ::= stmt_loop (OPTIMIZED OUT) */ assert(yyruleno!=431);
-      /* (432) loop_continue_stmts ::= stmts_brace */ yytestcase(yyruleno==432);
-      /* (433) loop_continue_stmts ::= stmts_expr SEMICOLON */ yytestcase(yyruleno==433);
-      /* (434) loop_continue_stmts ::= stmts_expr */ yytestcase(yyruleno==434);
-      /* (435) loop_expr2 ::= loop_forever (OPTIMIZED OUT) */ assert(yyruleno!=435);
-      /* (436) stmt_if_chain ::= stmt_if (OPTIMIZED OUT) */ assert(yyruleno!=436);
-      /* (437) stmt_if_chain ::= stmt_if_chain stmt_elif */ yytestcase(yyruleno==437);
-      /* (438) stmt ::= stmt_switch (OPTIMIZED OUT) */ assert(yyruleno!=438);
-      /* (439) switch_case_exprs ::= switch_case_expr (OPTIMIZED OUT) */ assert(yyruleno!=439);
-      /* (440) switch_case_exprs ::= switch_case_exprs COMMA_SPACE switch_case_expr */ yytestcase(yyruleno==440);
-      /* (441) switch_case_paren_or_expr ::= switch_case_exprs */ yytestcase(yyruleno==441);
-      /* (442) switch_cases ::= switch_case (OPTIMIZED OUT) */ assert(yyruleno!=442);
-      /* (443) switch_cases ::= switch_cases SPACE switch_case */ yytestcase(yyruleno==443);
-      /* (444) stmt_expr ::= stmt_continue (OPTIMIZED OUT) */ assert(yyruleno!=444);
-      /* (445) stmt_expr ::= stmt_break (OPTIMIZED OUT) */ assert(yyruleno!=445);
-      /* (446) stmt_expr ::= stmt_return (OPTIMIZED OUT) */ assert(yyruleno!=446);
-      /* (447) typeAndInfo ::= COLON expr_type_apply typeInfo_optional */ yytestcase(yyruleno==447);
-      /* (448) typeAndInfo_optional ::= typeAndInfo (OPTIMIZED OUT) */ assert(yyruleno!=448);
-      /* (449) typeAndInfo_optional ::= expr_type_none typeInfo_none */ yytestcase(yyruleno==449);
-      /* (450) stmt_expr ::= stmt_lvars (OPTIMIZED OUT) */ assert(yyruleno!=450);
-      /* (451) decl_lvars ::= decl_lvar (OPTIMIZED OUT) */ assert(yyruleno!=451);
-      /* (452) decl_lvars ::= decl_lvars COMMA_SPACE decl_lvar */ yytestcase(yyruleno==452);
-      /* (453) decl_lvar_begin ::= VAR SPACE */ yytestcase(yyruleno==453);
-      /* (454) decl_var_attrs_list ::= decl_var_attr (OPTIMIZED OUT) */ assert(yyruleno!=454);
-      /* (455) decl_var_attrs_list ::= decl_var_attrs_list decl_var_attr */ yytestcase(yyruleno==455);
-      /* (456) decl_var_attrs_optional ::= */ yytestcase(yyruleno==456);
-      /* (457) decl_var_attrs_optional ::= decl_var_attrs_list */ yytestcase(yyruleno==457);
-      /* (458) decl_func ::= func_decl SEMICOLON */ yytestcase(yyruleno==458);
+      /* (360) cp1 ::= decls space_or_end */ yytestcase(yyruleno==360);
+      /* (361) cp1 ::= SPACE decls space_or_end */ yytestcase(yyruleno==361);
+      /* (362) cp1 ::= space_or_end */ yytestcase(yyruleno==362);
+      /* (363) cvar_attrs ::= cvar_attr (OPTIMIZED OUT) */ assert(yyruleno!=363);
+      /* (364) cvar_attrs ::= cvar_attrs cvar_attr */ yytestcase(yyruleno==364);
+      /* (365) cvar_attrs_optional ::= */ yytestcase(yyruleno==365);
+      /* (366) cvar_attrs_optional ::= cvar_attrs */ yytestcase(yyruleno==366);
+      /* (367) enum_cvar ::= enum_cvar_begin cvar_attrs_optional */ yytestcase(yyruleno==367);
+      /* (368) enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional */ yytestcase(yyruleno==368);
+      /* (369) at_names ::= at_begin at_name */ yytestcase(yyruleno==369);
+      /* (370) at_names ::= at_names at_name_dot */ yytestcase(yyruleno==370);
+      /* (371) decl_at_names ::= decl_at_begin_at decl_at_name */ yytestcase(yyruleno==371);
+      /* (372) decl_at_names ::= decl_at_names decl_at_name2 */ yytestcase(yyruleno==372);
+      /* (373) decl_at_namespace ::= decl_at_names */ yytestcase(yyruleno==373);
+      /* (374) decl ::= decl_at (OPTIMIZED OUT) */ assert(yyruleno!=374);
+      /* (375) decl ::= decl_template_inst (OPTIMIZED OUT) */ assert(yyruleno!=375);
+      /* (376) decl ::= decl_template_code (OPTIMIZED OUT) */ assert(yyruleno!=376);
+      /* (377) decl ::= decl_import (OPTIMIZED OUT) */ assert(yyruleno!=377);
+      /* (378) decl_cvar ::= enum_cvars_decl SEMICOLON */ yytestcase(yyruleno==378);
+      /* (379) decl ::= decl_cvar (OPTIMIZED OUT) */ assert(yyruleno!=379);
+      /* (380) space_or_end ::= SPACE END */ yytestcase(yyruleno==380);
+      /* (381) space_or_end ::= END */ yytestcase(yyruleno==381);
+      /* (382) decl ::= decl_func (OPTIMIZED OUT) */ assert(yyruleno!=382);
+      /* (383) decl ::= decl_struct (OPTIMIZED OUT) */ assert(yyruleno!=383);
+      /* (384) decl ::= decl_enum (OPTIMIZED OUT) */ assert(yyruleno!=384);
+      /* (385) decl ::= decl_gvars (OPTIMIZED OUT) */ assert(yyruleno!=385);
+      /* (386) decls ::= decl (OPTIMIZED OUT) */ assert(yyruleno!=386);
+      /* (387) decls ::= decls SPACE decl */ yytestcase(yyruleno==387);
+      /* (388) scolon_space ::= SEMICOLON SPACE */ yytestcase(yyruleno==388);
+      /* (389) farg_list ::= farg (OPTIMIZED OUT) */ assert(yyruleno!=389);
+      /* (390) farg_list ::= farg_list COMMA_SPACE farg */ yytestcase(yyruleno==390);
+      /* (391) fargs ::= open_parenthesis_or_space CLOSE_PARENTHESIS */ yytestcase(yyruleno==391);
+      /* (392) fargs ::= open_parenthesis_or_space farg_list close_parenthesis_or_comma */ yytestcase(yyruleno==392);
+      /* (393) fargs ::= fargs farg_next_group farg_list close_parenthesis_or_comma */ yytestcase(yyruleno==393);
+      /* (394) fargs ::= fargs farg_next_group CLOSE_PARENTHESIS */ yytestcase(yyruleno==394);
+      /* (395) func_attrs ::= func_attr (OPTIMIZED OUT) */ assert(yyruleno!=395);
+      /* (396) func_attrs ::= func_attrs func_attr */ yytestcase(yyruleno==396);
+      /* (397) func_attrs_optional ::= */ yytestcase(yyruleno==397);
+      /* (398) func_attrs_optional ::= func_attrs */ yytestcase(yyruleno==398);
+      /* (399) func_type ::= typeAndInfo_optional (OPTIMIZED OUT) */ assert(yyruleno!=399);
+      /* (400) fvar_attrs_list ::= fvar_attr (OPTIMIZED OUT) */ assert(yyruleno!=400);
+      /* (401) fvar_attrs_list ::= fvar_attrs_list fvar_attr */ yytestcase(yyruleno==401);
+      /* (402) fvar_attrs_optional ::= */ yytestcase(yyruleno==402);
+      /* (403) fvar_attrs_optional ::= fvar_attrs_list */ yytestcase(yyruleno==403);
+      /* (404) struct_fvars ::= fvar (OPTIMIZED OUT) */ assert(yyruleno!=404);
+      /* (405) struct_fvars ::= struct_fvars COMMA_SPACE fvar */ yytestcase(yyruleno==405);
+      /* (406) enum_cvars ::= enum_cvar (OPTIMIZED OUT) */ assert(yyruleno!=406);
+      /* (407) enum_cvars ::= enum_cvars COMMA_SPACE enum_cvar */ yytestcase(yyruleno==407);
+      /* (408) enum_cvars_decl ::= enum_cvar_decl (OPTIMIZED OUT) */ assert(yyruleno!=408);
+      /* (409) enum_cvars_decl ::= enum_cvars_decl COMMA_SPACE enum_cvar_decl */ yytestcase(yyruleno==409);
+      /* (410) typeInfo ::= typeInfo_arr */ yytestcase(yyruleno==410);
+      /* (411) typeInfo ::= typeInfo_ref */ yytestcase(yyruleno==411);
+      /* (412) typeInfo ::= typeInfo_bi */ yytestcase(yyruleno==412);
+      /* (413) typeInfo_arr ::= typeInfo_arr_exprs (OPTIMIZED OUT) */ assert(yyruleno!=413);
+      /* (414) typeInfo_arr ::= typeInfo_bi typeInfo_arr_exprs */ yytestcase(yyruleno==414);
+      /* (415) typeInfo_arr ::= typeInfo_arr typeInfo_arr_exprs */ yytestcase(yyruleno==415);
+      /* (416) typeInfo_optional ::= typeInfo_none (OPTIMIZED OUT) */ assert(yyruleno!=416);
+      /* (417) metaCall_args_optional ::= OPEN_CURLY_BRACE CLOSE_CURLY_BRACE */ yytestcase(yyruleno==417);
+      /* (418) metaCall_args_optional ::= OPEN_CURLY_BRACE SPACE CLOSE_CURLY_BRACE */ yytestcase(yyruleno==418);
+      /* (419) metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args CLOSE_CURLY_BRACE */ yytestcase(yyruleno==419);
+      /* (420) metaCall_args_optional ::= metaCall_args_next_group_empty metaCall_args SPACE_CLOSE_CURLY_BRACE */ yytestcase(yyruleno==420);
+      /* (421) metaCall_arg_list ::= metaCall_arg (OPTIMIZED OUT) */ assert(yyruleno!=421);
+      /* (422) metaCall_arg_list ::= metaCall_arg_list COMMA_SPACE metaCall_arg */ yytestcase(yyruleno==422);
+      /* (423) metaCall_args ::= metaCall_arg_list */ yytestcase(yyruleno==423);
+      /* (424) metaCall_args ::= metaCall_args metaCall_args_next_group metaCall_arg_list */ yytestcase(yyruleno==424);
+      /* (425) call_args_optional ::= open_parenthesis_or_space CLOSE_PARENTHESIS */ yytestcase(yyruleno==425);
+      /* (426) call_args_optional ::= call_args */ yytestcase(yyruleno==426);
+      /* (427) call_arg_list ::= call_arg (OPTIMIZED OUT) */ assert(yyruleno!=427);
+      /* (428) call_arg_list ::= call_arg_list COMMA_SPACE call_arg */ yytestcase(yyruleno==428);
+      /* (429) call_args ::= open_parenthesis_or_space call_arg_list close_parenthesis_or_comma */ yytestcase(yyruleno==429);
+      /* (430) call_args ::= call_args call_args_next_group call_arg_list close_parenthesis_or_comma */ yytestcase(yyruleno==430);
+      /* (431) call_args ::= call_args call_args_next_group CLOSE_PARENTHESIS */ yytestcase(yyruleno==431);
+      /* (432) stmt ::= stmt_loop (OPTIMIZED OUT) */ assert(yyruleno!=432);
+      /* (433) loop_continue_stmts ::= stmts_brace */ yytestcase(yyruleno==433);
+      /* (434) loop_continue_stmts ::= stmts_expr SEMICOLON */ yytestcase(yyruleno==434);
+      /* (435) loop_continue_stmts ::= stmts_expr */ yytestcase(yyruleno==435);
+      /* (436) loop_expr2 ::= loop_forever (OPTIMIZED OUT) */ assert(yyruleno!=436);
+      /* (437) stmt_if_chain ::= stmt_if (OPTIMIZED OUT) */ assert(yyruleno!=437);
+      /* (438) stmt_if_chain ::= stmt_if_chain stmt_elif */ yytestcase(yyruleno==438);
+      /* (439) stmt ::= stmt_switch (OPTIMIZED OUT) */ assert(yyruleno!=439);
+      /* (440) switch_case_exprs ::= switch_case_expr (OPTIMIZED OUT) */ assert(yyruleno!=440);
+      /* (441) switch_case_exprs ::= switch_case_exprs COMMA_SPACE switch_case_expr */ yytestcase(yyruleno==441);
+      /* (442) switch_case_paren_or_expr ::= switch_case_exprs */ yytestcase(yyruleno==442);
+      /* (443) switch_cases ::= switch_case (OPTIMIZED OUT) */ assert(yyruleno!=443);
+      /* (444) switch_cases ::= switch_cases SPACE switch_case */ yytestcase(yyruleno==444);
+      /* (445) stmt_expr ::= stmt_continue (OPTIMIZED OUT) */ assert(yyruleno!=445);
+      /* (446) stmt_expr ::= stmt_break (OPTIMIZED OUT) */ assert(yyruleno!=446);
+      /* (447) stmt_expr ::= stmt_return (OPTIMIZED OUT) */ assert(yyruleno!=447);
+      /* (448) typeAndInfo ::= COLON expr_type_apply typeInfo_optional */ yytestcase(yyruleno==448);
+      /* (449) typeAndInfo_optional ::= typeAndInfo (OPTIMIZED OUT) */ assert(yyruleno!=449);
+      /* (450) typeAndInfo_optional ::= expr_type_none typeInfo_none */ yytestcase(yyruleno==450);
+      /* (451) stmt_expr ::= stmt_lvars (OPTIMIZED OUT) */ assert(yyruleno!=451);
+      /* (452) decl_lvars ::= decl_lvar (OPTIMIZED OUT) */ assert(yyruleno!=452);
+      /* (453) decl_lvars ::= decl_lvars COMMA_SPACE decl_lvar */ yytestcase(yyruleno==453);
+      /* (454) decl_lvar_begin ::= VAR SPACE */ yytestcase(yyruleno==454);
+      /* (455) decl_var_attrs_list ::= decl_var_attr (OPTIMIZED OUT) */ assert(yyruleno!=455);
+      /* (456) decl_var_attrs_list ::= decl_var_attrs_list decl_var_attr */ yytestcase(yyruleno==456);
+      /* (457) decl_var_attrs_optional ::= */ yytestcase(yyruleno==457);
+      /* (458) decl_var_attrs_optional ::= decl_var_attrs_list */ yytestcase(yyruleno==458);
       /* (459) stmt_brace ::= stmt (OPTIMIZED OUT) */ assert(yyruleno!=459);
       /* (460) stmt_expr ::= expr2stmt (OPTIMIZED OUT) */ assert(yyruleno!=460);
       /* (461) stmts_brace ::= stmt_brace (OPTIMIZED OUT) */ assert(yyruleno!=461);
@@ -5945,7 +5949,7 @@ static void yy_syntax_error(
    }
    exit(EXIT_FAILURE);
    return;
-#line 5948 "out/cp1_parse.c"
+#line 5952 "out/cp1_parse.c"
 /************ End %syntax_error code ******************************************/
   cp1ParseARG_STORE /* Suppress warning about unused %extra_argument variable */
   cp1ParseCTX_STORE

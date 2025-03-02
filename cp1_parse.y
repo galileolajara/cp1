@@ -955,6 +955,7 @@ decl_var_attrs_optional ::= .
 decl_var_attrs_optional ::= decl_var_attrs_list.
 
 decl_func ::= func_decl SEMICOLON. // CLOSE_CURLY_BRACE.
+    { _NCp1_Pfunc_header_end_0(); }
 stmt_brace ::= stmt.
 stmt_expr ::= expr2stmt.
 stmts_brace ::= stmt_brace.
