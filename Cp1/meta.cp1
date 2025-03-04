@@ -194,7 +194,7 @@ template-inst(ti:TemplateInstData) {
    if true {
       i! = .template-inst-c++;
       if .template-inst-cap < .template-inst-c {
-         .template-inst-cap = grow(.template-inst-c:base);
+         .template-inst-cap = grow(.template-inst-c:base):TemplateInst;
          C.realloc-arr(.template-inst-v, .template-inst-cap:base);
       }
       C.memcpy(.template-inst-v[i], ti, TemplateInstData[usz]);

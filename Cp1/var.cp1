@@ -428,7 +428,7 @@ decl-var-as-gvar() {
    gvar-idx! = .gvar-c++;
    if .gvar-cap <= .gvar-c {
       old-cap! = .gvar-cap;
-      .gvar-cap = grow(.gvar-c:base);
+      .gvar-cap = grow(.gvar-c:base):Gvar;
       realloc(.gvar-v, .gvar-cap:base, old-cap:base);
    }
    gvar! = .gvar-v[gvar-idx];

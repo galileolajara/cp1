@@ -89,7 +89,7 @@ id-add(id-len:u8, id-str:char[]):Id {
 }
 var import-new-c:u32;
 var import-v:Include[];
-var import-file-v:Include[];
+var import-file-v:File[];
 var import-required-v:u8[];
 var import-cap:u32;
 var import-c:u32;
@@ -148,7 +148,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
    file-idx! = .file-c++;
    if .file-cap <= .file-c {
       old-cap! = .file-cap;
-      .file-cap = grow(.file-c:base);
+      .file-cap = grow(.file-c:base):File;
       realloc(.file-v, .file-cap:base, old-cap:base);
    }
    file! = .file-v[file-idx];
@@ -232,7 +232,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
                // C1.stdout{"1 as " at-idx ''\n}
                if .at-cap <= .at-c {
                   old-cap! = .at-cap;
-                  .at-cap = grow(.at-c:base);
+                  .at-cap = grow(.at-c:base):At;
                   realloc(.at-v, .at-cap:base, old-cap:base);
                }
                at! = .at-v[at-idx];
@@ -255,7 +255,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
       .cvar-c += cvar-c;
       if .cvar-cap <= .cvar-c {
          old-cap! = .cvar-cap;
-         .cvar-cap = grow(.cvar-c:base);
+         .cvar-cap = grow(.cvar-c:base):Cvar;
          realloc(.cvar-v, .cvar-cap:base, old-cap:base);
       }
       // malloc(.cvar-table, .cvar-c);
@@ -305,7 +305,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
       .gvar-c += gvar-c;
       if .gvar-cap <= .gvar-c {
          old-cap! = .gvar-cap;
-         .gvar-cap = grow(.gvar-c:base);
+         .gvar-cap = grow(.gvar-c:base):Gvar;
          realloc(.gvar-v, .gvar-cap:base, old-cap:base);
       }
       // malloc(.gvar-table, .gvar-c);
@@ -347,7 +347,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
    .enum-c += enum-c;
    if .enum-cap <= .enum-c {
       old-cap! = .enum-cap;
-      .enum-cap = grow(.enum-c:base);
+      .enum-cap = grow(.enum-c:base):Enum;
       realloc(.enum-v, .enum-cap:base, old-cap:base);
    }
    loop e-idx = e-idx-begin; enum-c; e-idx++ {
@@ -404,7 +404,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
    .struct-c += struct-c;
    if .struct-cap <= .struct-c {
       old-cap! = .struct-cap;
-      .struct-cap = grow(.struct-c:base);
+      .struct-cap = grow(.struct-c:base):Struct;
       realloc(.struct-v, .struct-cap:base, old-cap:base);
    }
    loop s-idx = s-idx-begin; struct-c; s-idx++ {
@@ -462,7 +462,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
    .func-c += func-c;
    if .func-cap <= .func-c {
       old-cap! = .func-cap;
-      .func-cap = grow(.func-c:base);
+      .func-cap = grow(.func-c:base):Func;
       realloc(.func-v, .func-cap:base, old-cap:base);
    }
    loop f-idx = f-idx-begin; func-c; f-idx++ {
@@ -589,7 +589,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
    .template-code-c += template-code-c;
    if .template-code-cap <= .template-code-c {
       old-cap! = .template-code-cap;
-      .template-code-cap = grow(.template-code-c:base);
+      .template-code-cap = grow(.template-code-c:base):TemplateCode;
       realloc(.template-code-v, .template-code-cap:base, old-cap:base);
    }
    loop i = template-code-idx-begin; template-code-c; i++ {
@@ -885,7 +885,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       at-idx! = .at-c++;
       if .at-cap <= .at-c {
          old-cap! = .at-cap;
-         .at-cap = grow(.at-c:base);
+         .at-cap = grow(.at-c:base):At;
          realloc(.at-v, .at-cap:base, old-cap:base);
       }
       at! = .at-v[at-idx];
@@ -900,7 +900,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    C.malloc-arr(.import-v, .import-cap);
    C.malloc-arr(.import-file-v, .import-cap);
    C.malloc-arr(.import-required-v, (.import-cap + 7) >> 3);
-   .template-inst-cap = 32;
+   .template-inst-cap = 32:TemplateInst;
    C.malloc-arr(.template-inst-v, .template-inst-cap:base);
 
    loop i = 0; input-file-c; i++ {

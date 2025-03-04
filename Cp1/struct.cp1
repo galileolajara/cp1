@@ -101,7 +101,7 @@ decl-struct-end(row:u32, col:u32) {
    s-idx! = .struct-c++;
    if .struct-cap <= .struct-c {
       old-cap! = .struct-cap;
-      .struct-cap = grow(.struct-c:base);
+      .struct-cap = grow(.struct-c:base):Struct;
       realloc(.struct-v, .struct-cap:base, old-cap:base);
    }
    var s:StructData;

@@ -119,12 +119,14 @@ using ExprI {
    wr-lvar(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprLvar = expr;
       e.lvar.wr(w);
+      w.b(e.decl);
    }
    rd-lvar(e-idx:ExprI, r:Rdr) @case.rd() @inline {
       var e:ExprLvar;
       quick-alloc-one(e);
       e-idx.set(e.base, #lvar);
       e.lvar.rd(r);
+      e.decl = r.b();
    }
    process-lvar(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprLvar = expr;

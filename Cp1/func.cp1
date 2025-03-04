@@ -191,7 +191,7 @@ decl-func-end(row:u32, col:u32) {
    f-idx! = (.func-c++):Func;
    if .func-cap <= .func-c {
       old-cap! = .func-cap;
-      .func-cap = grow(.func-c:base);
+      .func-cap = grow(.func-c:base):Func;
       realloc(.func-v, .func-cap:base, old-cap:base);
    }
    var f:DeclFunc;

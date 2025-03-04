@@ -71,13 +71,13 @@ if(((_Larg_2[(_Llen_3 - 4)] == '.') && (_Larg_2[(_Llen_3 - 3)] == 'e') && (_Larg
 _Larg_2[(_Llen_3 - 4)] = '\0';
 }
 }
-int32_t _Li_4;
+int32_t _Li_4 = {0};
 _Li_4 = 0;
 for(int i = _Larg_c_0; i > 0; ) {
 i --;
 char* _Larg_5;
 _Larg_5 = _Larg_v_1[_Li_4];
-int32_t _Lj_6;
+int32_t _Lj_6 = {0};
 _Lj_6 = 0;
 while(1) {
 if(_Larg_5[_Lj_6] == '\0') {
@@ -153,7 +153,7 @@ _Lexe_path_14[18] = 'x';
 _Lexe_path_14[19] = 'e';
 _Lexe_path_14[20] = '\0';
 if(_Lbin_7[0] != '/') {
-int32_t _Li_21;
+int32_t _Li_21 = {0};
 _Li_21 = 0;
 while(_Lbin_7[_Li_21] != '\0') {
 if(_Lbin_7[_Li_21] == '/') {
@@ -178,7 +178,7 @@ if(_Lcompile_ret_24 != 0) {
 exit(_NLibC_NExit_Cfailure);
 }
 #ifdef _WIN32
-int32_t _Li_25;
+int32_t _Li_25 = {0};
 _Li_25 = 0;
 while(1) {
 if(_Lexe_path_14[_Li_25] == '\0') {
@@ -237,7 +237,7 @@ if(((_Lcp1_path_1[0] == '.') && (_Lcp1_path_1[1] == '/'))) {
 _Lcp1_path_1 = ((void*)&_Lcp1_path_1[2]);
 _Lcp1_path_len_6 -= 2;
 }
-int32_t _Lj_7;
+int32_t _Lj_7 = {0};
 _Lj_7 = 0;
 for(int i = _Lcp1_path_len_6; i > 0; ) {
 i --;
@@ -262,7 +262,7 @@ continue_0:;
 _Lj_7++;
 }
 break_0:;
-int32_t _Lj_12;
+int32_t _Lj_12 = {0};
 _Lj_12 = 0;
 for(int i = _Lcp1_path_len_6; i > 0; ) {
 i --;
@@ -287,7 +287,7 @@ continue_1:;
 _Lj_12++;
 }
 break_1:;
-int32_t _Lj_17;
+int32_t _Lj_17 = {0};
 _Lj_17 = 0;
 for(int i = _Lcp1_path_len_6 - 1; i > 0; ) {
 i --;
@@ -366,7 +366,7 @@ int _L_9 = {0};
 struct _NLibCp1_NStdOut _L_10 = {0};
 _Lpath_2 = strdup(getenv("PATH"));
 #ifdef _WIN32
-int32_t _Li_3;
+int32_t _Li_3 = {0};
 _Li_3 = 0;
 while(1) {
 if(_Lpath_2[_Li_3] == '\0') {

@@ -141,9 +141,9 @@ meta #BuildCommonCodes {
       struct ExprLvar[
          base:Expr.,
          lvar:Lvar,
-#  if (!arg.compile) {
+// #  if (!arg.compile) {
          decl:bool,
-#  }
+// #  }
       ];
       struct ExprIndex[
          base:Expr.,
@@ -736,7 +736,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
       if (.at-in-header-v[at >> 3] & (1 << (at & 7))) == 0 {
          .at-in-header-v[at >> 3] |= 1 << (at & 7);
          .at-in-header-idx-v[at] = .at-in-header-c;
-         .at-in-header-at-v[.at-in-header-c++] = at;
+         .at-in-header-at-v[.at-in-header-c++] = at:base;
          if (&&, at != #root, at != #relative) {
             at.ptr().parent.put-to-header();
          }
@@ -1129,7 +1129,7 @@ enum Id[#nil = -1, #0]:i32 {
             if (.id-in-header-v[id >> 3] & (1 << (id & 7))) == 0 {
                .id-in-header-v[id >> 3] |= 1 << (id & 7);
                .id-in-header-idx-v[id] = .id-in-header-c;
-               .id-in-header-id-v[.id-in-header-c++] = id;
+               .id-in-header-id-v[.id-in-header-c++] = id:base;
             }
          }
       }

@@ -103,7 +103,7 @@ decl-enum-end(base-type:At, row:u32, col:u32) {
    s-idx! = .enum-c++;
    if .enum-cap <= .enum-c {
       old-cap! = .enum-cap;
-      .enum-cap = grow(.enum-c:base);
+      .enum-cap = grow(.enum-c:base):Enum;
       realloc(.enum-v, .enum-cap:base, old-cap:base);
    }
    var s:EnumData;
@@ -137,7 +137,7 @@ enum-add-cvar(name:Id, row:u32, col:u32) {
    .last-cvar = c-idx;
    if .cvar-cap <= .cvar-c {
       old-cap! = .cvar-cap;
-      .cvar-cap = grow(.cvar-c:base);
+      .cvar-cap = grow(.cvar-c:base):Cvar;
       realloc(.cvar-v, .cvar-cap:base, old-cap:base);
    }
    c! = c-idx.ptr();
@@ -157,7 +157,7 @@ decl-add-cvar(name:Id, row:u32, col:u32) {
    .last-cvar = c-idx;
    if .cvar-cap <= .cvar-c {
       old-cap! = .cvar-cap;
-      .cvar-cap = grow(.cvar-c:base);
+      .cvar-cap = grow(.cvar-c:base):Cvar;
       realloc(.cvar-v, .cvar-cap:base, old-cap:base);
    }
    c! = c-idx.ptr();

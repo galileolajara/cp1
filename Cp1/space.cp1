@@ -27,11 +27,11 @@ struct StmtSpace[
       var i:Lvar, lvar-c:Lvar;
       if space.parent == null {
          // dont write arguments
-         i = .ctx-func.farg-c;
-         lvar-c = space.lvar-c - .ctx-func.farg-c;
+         i = .ctx-func.farg-c:Lvar;
+         lvar-c = (space.lvar-c - .ctx-func.farg-c):Lvar;
       } else {
-         i = 0;
-         lvar-c = space.lvar-c;
+         i = 0:Lvar;
+         lvar-c = space.lvar-c:Lvar;
       }
       loop ; lvar-c; i++ {
          lvar-i! = space.lvar-v[i];
@@ -80,7 +80,7 @@ struct StmtSpace[
       space.lvar-v[i] = lvar;
       if f.lvar-cap <= f.lvar-c {
          old-cap! = f.lvar-cap;
-         f.lvar-cap = grow(f.lvar-c:base);
+         f.lvar-cap = grow(f.lvar-c:base):Lvar;
          realloc(f.lvar-v, f.lvar-cap:base, old-cap:base);
       }
       var item:LvarData;

@@ -119,7 +119,7 @@ for(int i = _Larg_c_0 - 1; i > 0; ) {
 i --;
 if(_Larg_v_1[_Li_6][0] == '-') {
 if(_Larg_v_1[_Li_6][1] == 'D') {
-char* _Lname_7;
+char* _Lname_7 = {0};
 int32_t _Llen_8;
 _Lname_7 = ((void*)&_Larg_v_1[_Li_6][2]);
 _Llen_8 = 0;
@@ -371,11 +371,11 @@ _NCp1_Ppreprocess_def_2("cpu64", 5);
 }
 void _NCp1_Ppreprocess_2(void** _Lin_out_data_0, size_t* _Lin_out_size_1) {
 bool _Lpreprocess_2;
-char* _Lin_data_3;
+char* _Lin_data_3 = {0};
 size_t _Lin_size_4;
 union _NCp1_NRdr _Lr_end_5 = {0};
 union _NCp1_NRdr _Lr_6 = {0};
-void* _Lnew_data_7;
+void* _Lnew_data_7 = {0};
 union _NCp1_NWtr _Lw_8 = {0};
 uint32_t _Lline_9;
 union _NCp1_NWtr _Lw_begin_50 = {0};
@@ -405,10 +405,10 @@ uint32_t _Lif_line_11;
 int32_t _Lstart_12;
 bool _Linvert_13;
 int32_t _Lrparen_14;
-char* _Ldef_str_21;
+char* _Ldef_str_21 = {0};
 int32_t _Ldef_len_22;
 bool _Lok_23;
-char* _Lindention_24;
+char* _Lindention_24 = {0};
 int32_t _Lindention_len_25;
 _Lif_line_11 = _Lline_9;
 _Lw_8._Fp1[0] = '\n';
@@ -420,7 +420,7 @@ _Lstart_12 = 5;
 _Linvert_13 = true;
 }
 _Lrparen_14 = -1;
-int32_t _Li_15;
+int32_t _Li_15 = {0};
 _Li_15 = _Lstart_12;
 for(int i = _Lline_len_10 - _Lstart_12; i > 0; ) {
 i --;
@@ -765,7 +765,7 @@ static inline void _Tu32_Pstdout_3(uint32_t _Lval_0, struct _NLibCp1_NStdOut* _L
 _NLibCp1_Pstdout_u32_nr_1(_Lval_0);
 }
 bool _NCp1_Ppreprocess_def_get_2(char* _Lname_0, uint8_t _Llen_1) {
-int32_t _Li_2;
+int32_t _Li_2 = {0};
 _Li_2 = 0;
 for(int i = _Gpreprocess_def_c; i > 0; ) {
 i --;

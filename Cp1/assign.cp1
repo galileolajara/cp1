@@ -119,7 +119,10 @@ using ExprI {
       if !e.right.value(1, true, e.right-val) {
          return;
       }
-      if !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), e.right-val.type, e.right-val.info.star-c + e.right-val.type.pointer()) {
+      var e-left:ExprLvar = e.left.ptr();
+      if (e-left.base.type == #lvar) && e-left.decl {
+         // Bypass compatibility check on variable declaration assignment
+      } elif !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), e.right-val.type, e.right-val.info.star-c + e.right-val.type.pointer()) {
          C1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the assignment operator "}
          switch e.type {
             case #eq { C1.stdbuf{" = "} }

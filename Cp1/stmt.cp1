@@ -98,7 +98,10 @@ stmt-lvar-add(name:Id, set:ExprI, row:u32, col:u32) {
    if set == -2:ExprI {
       lvar.flags |= #set-expr;
    } elif set != #nil {
-      e! = expr-assign(expr-lvar(name, 0, row, col), set, #eq);
+      e2! = expr-lvar(name, 0, row, col);
+      var expr2:ExprLvar = e2.ptr();
+      expr2.decl = true;
+      e! = expr-assign(e2, set, #eq);
       expr2stmt(e, row, col, row, col);
    }
 }

@@ -61,7 +61,7 @@ decl-template-inst(name:Id, row:u32, col:u32) {
    i! = .template-inst-c++;
    if .template-inst-cap <= .template-inst-c {
       old-cap! = .template-inst-cap;
-      .template-inst-cap = grow(.template-inst-c:base);
+      .template-inst-cap = grow(.template-inst-c:base):TemplateInst;
       realloc(.template-inst-v, .template-inst-cap:base, old-cap:base);
    }
    ti! = .template-inst-v[i];
@@ -89,7 +89,7 @@ decl-template-code(name:Id, row:u32, with-reflection:bool, no-cache:bool) {
    i! = .template-code-c++;
    if .template-code-cap <= .template-code-c {
       old-cap! = .template-code-cap;
-      .template-code-cap = grow(.template-code-c:base);
+      .template-code-cap = grow(.template-code-c:base):TemplateCode;
       realloc(.template-code-v, .template-code-cap:base, old-cap:base);
    }
    td! = .template-code-v[i];
@@ -230,7 +230,7 @@ at-basic-type(type:BasicTypeId):At {
    build-idx! = .at-c++;
    if .at-cap <= .at-c {
       old-cap! = .at-cap;
-      .at-cap = grow(.at-c:base);
+      .at-cap = grow(.at-c:base):At;
       realloc(.at-v, .at-cap:base, old-cap:base);
    }
    at! = .at-v[build-idx];
@@ -313,7 +313,7 @@ decl-alias(name:Id, at:At, row:u32, col:u32) {
    alias-idx! = .at-alias-c++;
    if .at-alias-cap <= .at-alias-c {
       old-cap! = .at-alias-cap;
-      .at-alias-cap = grow(.at-alias-c:base);
+      .at-alias-cap = grow(.at-alias-c:base):Alias;
       realloc(.at-alias-name-v, .at-alias-cap:base, old-cap:base);
       realloc(.at-alias-at-v, .at-alias-cap:base, old-cap:base);
       realloc(.at-alias-pos-v, .at-alias-cap:base, old-cap:base);
@@ -356,7 +356,7 @@ at-create(parent:At, type:NameType, name:Id):At {
    build-idx! = .at-c++;
    if .at-cap <= .at-c {
       old-cap! = .at-cap;
-      .at-cap = grow(.at-c:base);
+      .at-cap = grow(.at-c:base):At;
       realloc(.at-v, .at-cap:base, old-cap:base);
    }
    at! = .at-v[build-idx];
@@ -377,7 +377,7 @@ at-create-basic(basic:BasicTypeId):At {
    build-idx! = .at-c++;
    if .at-cap <= .at-c {
       old-cap! = .at-cap;
-      .at-cap = grow(.at-c:base);
+      .at-cap = grow(.at-c:base):At;
       realloc(.at-v, .at-cap:base, old-cap:base);
    }
    at! = .at-v[build-idx];
@@ -1459,7 +1459,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         C1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
                         C.exit(#failure);
                      }
-                     tok.ii32.id = include-add(len, r-begin.charr);
+                     tok.ii32.id = include-add(len, r-begin.charr):base;
                      // C1.stdout{"import '" r-begin.charr, len "'\n"}
                      break;
                   }
@@ -1480,7 +1480,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                         C1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
                         C.exit(#failure);
                      }
-                     tok.ii32.id = include-add(len, r-begin.charr);
+                     tok.ii32.id = include-add(len, r-begin.charr):base;
                      // C1.stdout{"import '" r-begin.charr, len "'\n"}
                      break;
                   }
@@ -1849,19 +1849,19 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .id-c = 0;
    .id-in-header-c = 0;
    .include-c = 0;
-   .at-c = 0;
+   .at-c = 0:At;
    .at-in-header-c = 0;
-   .at-alias-c = 0;
-   .cvar-c = 0;
-   .gvar-c = 0;
-   .enum-c = 0;
+   .at-alias-c = 0:Alias;
+   .cvar-c = 0:Cvar;
+   .gvar-c = 0:Gvar;
+   .enum-c = 0:Enum;
    .str-c = 0;
    .expr-c = 0;
-   .struct-c = 0;
-   .func-c = 0;
+   .struct-c = 0:Struct;
+   .func-c = 0:Func;
    .import-c = 0;
-   .template-inst-c = 0;
-   .template-code-c = 0;
+   .template-inst-c = 0:TemplateInst;
+   .template-code-c = 0:TemplateCode;
    return 0;
 }
  
