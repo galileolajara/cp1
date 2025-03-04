@@ -123,21 +123,21 @@ using ExprI {
       if (e-left.base.type == #lvar) && e-left.decl {
          // Bypass compatibility check on variable declaration assignment
       } elif !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), e.right-val.type, e.right-val.info.star-c + e.right-val.type.pointer()) {
-         C1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the assignment operator "}
+         C1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the assignment operator '"}
          switch e.type {
-            case #eq { C1.stdbuf{" = "} }
-            case #colon-eq { C1.stdbuf{" := "} }
-            case #plus-eq { C1.stdbuf{" += "} }
-            case #minus-eq { C1.stdbuf{" -= "} }
-            case #mul-eq { C1.stdbuf{" *= "} }
-            case #div-eq { C1.stdbuf{" /= "} }
-            case #lshift-eq { C1.stdbuf{" <<= "} }
-            case #rshift-eq { C1.stdbuf{" >>= "} }
-            case #and-eq { C1.stdbuf{" &= "} }
-            case #or-eq { C1.stdbuf{" |= "} }
-            case #xor-eq { C1.stdbuf{" ^= "} }
+            case #eq { C1.stdbuf{"="} }
+            case #colon-eq { C1.stdbuf{":="} }
+            case #plus-eq { C1.stdbuf{"+="} }
+            case #minus-eq { C1.stdbuf{"-="} }
+            case #mul-eq { C1.stdbuf{"*="} }
+            case #div-eq { C1.stdbuf{"/="} }
+            case #lshift-eq { C1.stdbuf{"<<="} }
+            case #rshift-eq { C1.stdbuf{">>="} }
+            case #and-eq { C1.stdbuf{"&="} }
+            case #or-eq { C1.stdbuf{"|="} }
+            case #xor-eq { C1.stdbuf{"^="} }
          }
-         C1.stdout{''\n}
+         C1.stdout{"'\n"}
          return;
       }
       ok = true;

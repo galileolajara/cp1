@@ -262,9 +262,8 @@
 #define _NCp1_NStmtType_Ccase_end (_NCp1_NStmtType_Cdefault + 1)
 #define _NCp1_NStmtType_Cdefault_end (_NCp1_NStmtType_Ccase_end + 1)
 #define _NCp1_NStmtType_Cswitch_end (_NCp1_NStmtType_Cdefault_end + 1)
+#define _NPosix_NFd_Cnil (-1)
 #define _NCp1_Cdebug_rd_wr (true)
-#define _NCp1_NFunc_C0 (_NCp1_NFunc_Cnil + 1)
-#define _NCp1_NFunc_C1 (_NCp1_NFunc_C0 + 1)
 #define _NCp1_NStmtType_Cnil (255)
 #define _NCp1_NIncludeError_Cnone 0
 #define _NCp1_NIncludeError_Csuffix (_NCp1_NIncludeError_Cnone + 1)
@@ -6593,7 +6592,7 @@ _Gstdout_buf_len = 0;
 static inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2) {
 _NPosix_NFd _Lfd_3;
 _Lfd_3 = _NPosix_Popen_2(_Lpath_1, _Lflags_2);
-if(_Lfd_3 != -1) {
+if(_Lfd_3 != _NPosix_NFd_Cnil) {
 (*_Lfile_0) = _Lfd_3;
 return true;
 } else {
@@ -6795,7 +6794,7 @@ static inline void _NCp1_NFuncFlags_Pwr_2(_NCp1_NFuncFlags _Le_0, union _NCp1_NW
 Fputnum(_Lw_1, ((uint32_t)(_Le_0)));
 }
 static inline void _NCp1_NFunc_Pwr_2(_NCp1_NFunc _Lf_0, union _NCp1_NWtr* _Lw_1) {
-Fputnum(_Lw_1, ((int32_t)(_Lf_0)) + _NCp1_NFunc_C1);
+Fputnum(_Lw_1, ((int32_t)(_Lf_0)) + 1);
 }
 void _NCp1_NDeclFunc_Plvars_wr_3(struct _NCp1_NDeclFunc* _Lf_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2) {
 Fputnum(_Lw_1, ((int32_t)((*_Lf_0)._Flvar_c)));
@@ -6935,7 +6934,7 @@ _NCp1_NWtr_Pn1_2(_Lw_0, 0);
 static inline bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3) {
 _NPosix_NFd _Lfd_4;
 _Lfd_4 = _NPosix_Popen_3(_Lpath_1, _Lflags_2, _Lmode_3);
-if(_Lfd_4 != -1) {
+if(_Lfd_4 != _NPosix_NFd_Cnil) {
 (*_Lfile_0) = _Lfd_4;
 return true;
 } else {

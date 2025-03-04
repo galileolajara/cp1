@@ -55,7 +55,7 @@ using ExprI {
       }
       enumm! = type.decl.enumm;
       enumd! = enumm.ptr();
-      if (enumd.flags & #soa-field) != 0 {
+      if (enumd.flags & #soa-field) != #0 {
          gvar-e-idx! = ExprI.alloc();
          gvar-e-idx.set-gvar(enumd.soa-field-gvar-at, enumd.soa-field-gvar-id);
          fvar-e-idx! = ExprI.alloc();

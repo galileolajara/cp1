@@ -185,7 +185,7 @@ enum ExprI[#nil = -1, #0, #1]:i32 {
       num! = e:u32;
       n3! = num >> 3;
       n17! = 1 << (num & 7);
-      if (.expr-is-processed[n3] & n17) != #0 { return true }
+      if (.expr-is-processed[n3] & n17) != 0 { return true }
       .expr-is-processed[n3] |= n17;
       expr! = e.ptr();
       // if expr.flags & #processed { return true }

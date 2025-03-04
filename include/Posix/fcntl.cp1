@@ -7,7 +7,7 @@ include <fcntl.h> {
       enum Fd[#nil = -1]:intc {
          open(file:this&, path:char[], flags:OpenFlags):bool @inline {
             fd! = X.open(path, flags);
-            if fd != -1 {
+            if fd != #nil {
                file = fd;
                return true;
             } else {
@@ -16,7 +16,7 @@ include <fcntl.h> {
          }
          open(file:this&, path:char[], flags:OpenFlags, mode:intc):bool @inline {
             fd! = X.open(path, flags, mode);
-            if fd != -1 {
+            if fd != #nil {
                file = fd;
                return true;
             } else {

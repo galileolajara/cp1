@@ -16,6 +16,7 @@
 #define _NLibC_NExit_Cfailure (_NLibC_NExit_Csuccess + 1)
 #define _NWindows_NCreateFileShareMode_C0 0
 #define _NWindows_NHandle_Cnull 0
+#define _NPosix_NFd_Cnil (-1)
 typedef int _NLibC_NExit;
 typedef uint32_t _NWindows_NCreateFileAccess;
 typedef uint32_t _NWindows_NCreateFileShareMode;
@@ -781,7 +782,7 @@ return false;
 static inline bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3) {
 _NPosix_NFd _Lfd_4;
 _Lfd_4 = _NPosix_Popen_3(_Lpath_1, _Lflags_2, _Lmode_3);
-if(_Lfd_4 != -1) {
+if(_Lfd_4 != _NPosix_NFd_Cnil) {
 (*_Lfile_0) = _Lfd_4;
 return true;
 } else {
@@ -791,7 +792,7 @@ return false;
 static inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2) {
 _NPosix_NFd _Lfd_3;
 _Lfd_3 = _NPosix_Popen_2(_Lpath_1, _Lflags_2);
-if(_Lfd_3 != -1) {
+if(_Lfd_3 != _NPosix_NFd_Cnil) {
 (*_Lfile_0) = _Lfd_3;
 return true;
 } else {

@@ -1,3 +1,4 @@
+using C1 = LibCp1;
 using Cp1 {
 enum Compare[#eq, #not-eq, #lt, #le, #gt, #ge]:u8 {
    wr(e:this, w:Wtr) @inline {
@@ -35,24 +36,12 @@ using ExprI {
       var e:ExprCompare = expr;
       e.left.write-value(e.left-val);
       switch e.type {
-         case #eq {
-            output{" == "}
-         }
-         case #not-eq {
-            output{" != "}
-         }
-         case #lt {
-            output{" < "}
-         }
-         case #le {
-            output{" <= "}
-         }
-         case #gt {
-            output{" > "}
-         }
-         case #ge {
-            output{" >= "}
-         }
+         case #eq { output{" == "} }
+         case #not-eq { output{" != "} }
+         case #lt { output{" < "} }
+         case #le { output{" <= "} }
+         case #gt { output{" > "} }
+         case #ge { output{" >= "} }
       }
       e.right.write-value(e.right-val);
    }
@@ -78,6 +67,19 @@ using ExprI {
       }
       e.right.try-deduce(e.left-val.type);
       if !e.right.value(1, true, e.right-val) {
+         return;
+      }
+      if !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), e.right-val.type, e.right-val.info.star-c + e.right-val.type.pointer()) {
+         C1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the comparison operator '"}
+         switch e.type {
+            case #eq { C1.stdbuf{"=="} }
+            case #not-eq { C1.stdbuf{"!="} }
+            case #lt { C1.stdbuf{"<"} }
+            case #le { C1.stdbuf{"<="} }
+            case #gt { C1.stdbuf{">"} }
+            case #ge { C1.stdbuf{">="} }
+         }
+         C1.stdout{"'\n"}
          return;
       }
       ok = true;

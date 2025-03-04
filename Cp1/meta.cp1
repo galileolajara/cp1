@@ -39,7 +39,7 @@ using At {
    }
    jscode-write(at-idx:this) {
       jscode{"{\n\ttypev:["}
-      loop at2-idx = 2:At; .at-c - 2; at2-idx++ {
+      loop at2-idx = 2:At; .at-c - 2:At; at2-idx++ {
          at2! = at2-idx.ptr();
          if at2.parent == at-idx {
             if at2.type == #basic {
