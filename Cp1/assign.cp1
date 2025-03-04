@@ -58,39 +58,17 @@ using ExprI {
          return;
       }
       switch e.type {
-         case #eq {
-            output{" = "}
-         }
-         case #colon-eq {
-            output{" = "}
-         }
-         case #plus-eq {
-            output{" += "}
-         }
-         case #minus-eq {
-            output{" -= "}
-         }
-         case #mul-eq {
-            output{" *= "}
-         }
-         case #div-eq {
-            output{" /= "}
-         }
-         case #lshift-eq {
-            output{" <<= "}
-         }
-         case #rshift-eq {
-            output{" >>= "}
-         }
-         case #and-eq {
-            output{" &= "}
-         }
-         case #or-eq {
-            output{" |= "}
-         }
-         case #xor-eq {
-            output{" ^= "}
-         }
+         case #eq { output{" = "} }
+         case #colon-eq { output{" = "} }
+         case #plus-eq { output{" += "} }
+         case #minus-eq { output{" -= "} }
+         case #mul-eq { output{" *= "} }
+         case #div-eq { output{" /= "} }
+         case #lshift-eq { output{" <<= "} }
+         case #rshift-eq { output{" >>= "} }
+         case #and-eq { output{" &= "} }
+         case #or-eq { output{" |= "} }
+         case #xor-eq { output{" ^= "} }
       }
       e.right.write-value(e.right-val);
    }
@@ -139,6 +117,24 @@ using ExprI {
       }
       e.right.try-deduce(e.left.type());
       if !e.right.value(1, true, e.right-val) {
+         return;
+      }
+      if !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), e.right-val.type, e.right-val.info.star-c + e.right-val.type.pointer()) {
+         C1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the assignment operator "}
+         switch e.type {
+            case #eq { C1.stdbuf{" = "} }
+            case #colon-eq { C1.stdbuf{" := "} }
+            case #plus-eq { C1.stdbuf{" += "} }
+            case #minus-eq { C1.stdbuf{" -= "} }
+            case #mul-eq { C1.stdbuf{" *= "} }
+            case #div-eq { C1.stdbuf{" /= "} }
+            case #lshift-eq { C1.stdbuf{" <<= "} }
+            case #rshift-eq { C1.stdbuf{" >>= "} }
+            case #and-eq { C1.stdbuf{" &= "} }
+            case #or-eq { C1.stdbuf{" |= "} }
+            case #xor-eq { C1.stdbuf{" ^= "} }
+         }
+         C1.stdout{''\n}
          return;
       }
       ok = true;
