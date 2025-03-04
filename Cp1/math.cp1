@@ -182,46 +182,46 @@ using ExprI {
       if !e.right.value(1, true, e.right-val) {
          return;
       }
-      // if !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), e.right-val.type, e.right-val.info.star-c + e.right-val.type.pointer()) {
-      //    C1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": A Type mismatch for the left and right operands of the operator '"}
+      if !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), e.right-val.type, e.right-val.info.star-c + e.right-val.type.pointer()) {
+         C1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the operator '"}
 
-      //    switch e.type {
-      //       case #add { C1.stdbuf{"+"} }
-      //       case #sub { C1.stdbuf{"-"} }
-      //       case #mul { C1.stdbuf{"*"} }
-      //       case #div { C1.stdbuf{"/"} }
-      //       case #mod { C1.stdbuf{"%"} }
-      //       case #lshift { C1.stdbuf{"<<"} }
-      //       case #rshift { C1.stdbuf{">>"} }
-      //       case #and { C1.stdbuf{"&"} }
-      //       case #or { C1.stdbuf{"|"} }
-      //       case #xor { C1.stdbuf{"^"} }
-      //    }
-      //    C1.stdout{"'\n"}
-      //    // return;
-      // }
+         switch e.type {
+            case #add { C1.stdbuf{"+"} }
+            case #sub { C1.stdbuf{"-"} }
+            case #mul { C1.stdbuf{"*"} }
+            case #div { C1.stdbuf{"/"} }
+            case #mod { C1.stdbuf{"%"} }
+            case #lshift { C1.stdbuf{"<<"} }
+            case #rshift { C1.stdbuf{">>"} }
+            case #and { C1.stdbuf{"&"} }
+            case #or { C1.stdbuf{"|"} }
+            case #xor { C1.stdbuf{"^"} }
+         }
+         C1.stdout{"'\n"}
+         return;
+      }
       loop i = 0; e.item-c; i++ {
          item! = e.item-v[i];
          item.expr.try-deduce(e.left-val.type);
          if !item.expr.value(1, true, item.val) { return }
-         // if !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), item.val.type, item.val.info.star-c + item.val.type.pointer()) {
-         //    C1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": B Type mismatch for the left and right operands of the operator '"}
+         if !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), item.val.type, item.val.info.star-c + item.val.type.pointer()) {
+            C1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the operator '"}
 
-         //    switch e.type {
-         //       case #add { C1.stdbuf{"+"} }
-         //       case #sub { C1.stdbuf{"-"} }
-         //       case #mul { C1.stdbuf{"*"} }
-         //       case #div { C1.stdbuf{"/"} }
-         //       case #mod { C1.stdbuf{"%"} }
-         //       case #lshift { C1.stdbuf{"<<"} }
-         //       case #rshift { C1.stdbuf{">>"} }
-         //       case #and { C1.stdbuf{"&"} }
-         //       case #or { C1.stdbuf{"|"} }
-         //       case #xor { C1.stdbuf{"^"} }
-         //    }
-         //    C1.stdout{"'\n"}
-         //    // return;
-         // }
+            switch e.type {
+               case #add { C1.stdbuf{"+"} }
+               case #sub { C1.stdbuf{"-"} }
+               case #mul { C1.stdbuf{"*"} }
+               case #div { C1.stdbuf{"/"} }
+               case #mod { C1.stdbuf{"%"} }
+               case #lshift { C1.stdbuf{"<<"} }
+               case #rshift { C1.stdbuf{">>"} }
+               case #and { C1.stdbuf{"&"} }
+               case #or { C1.stdbuf{"|"} }
+               case #xor { C1.stdbuf{"^"} }
+            }
+            C1.stdout{"'\n"}
+            return;
+         }
       }
       ok = true;
    }

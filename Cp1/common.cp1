@@ -733,8 +733,8 @@ enum At[#nil = -1, #root, #relative]:i32 {
       }
    }
    put-to-header(at:this) {
-      if (.at-in-header-v[at >> 3] & (1 << (at & 7))) == 0 {
-         .at-in-header-v[at >> 3] |= 1 << (at & 7);
+      if (.at-in-header-v[at:base >> 3] & (1 << (at:base & 7))) == 0 {
+         .at-in-header-v[at:base >> 3] |= 1 << (at:base & 7);
          .at-in-header-idx-v[at] = .at-in-header-c;
          .at-in-header-at-v[.at-in-header-c++] = at:base;
          if (&&, at != #root, at != #relative) {
@@ -763,7 +763,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
          if header {
             w.n(1 + .at-in-header-idx-v[at]);
          } else {
-            w.n(1 + at);
+            w.n(1 + at:base);
             at.put-to-header();
          }
       }
@@ -1125,9 +1125,9 @@ enum Id[#nil = -1, #0]:i32 {
          if header {
             w.n(1 + .id-in-header-idx-v[id]);
          } else {
-            w.n(1 + id);
-            if (.id-in-header-v[id >> 3] & (1 << (id & 7))) == 0 {
-               .id-in-header-v[id >> 3] |= 1 << (id & 7);
+            w.n(1 + id:base);
+            if (.id-in-header-v[id:base >> 3] & (1 << (id:base & 7))) == 0 {
+               .id-in-header-v[id:base >> 3] |= 1 << (id:base & 7);
                .id-in-header-idx-v[id] = .id-in-header-c;
                .id-in-header-id-v[.id-in-header-c++] = id:base;
             }

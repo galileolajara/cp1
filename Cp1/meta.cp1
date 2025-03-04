@@ -183,7 +183,7 @@ include-add(include-len:u8, include-str:char[]):Include {
       return found:Include;
    }
 }
-var template-inst-new-c:u32;
+var template-inst-new-c:TemplateInst;
 template-inst(ti:TemplateInstData) {
    loop j = 0; .template-inst-c {
       ti2! = .template-inst-v[j++];

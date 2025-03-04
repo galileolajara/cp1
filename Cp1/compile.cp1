@@ -923,14 +923,14 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       }
    }
 
-   if .template-inst-new-c != 0 {
+   if .template-inst-new-c:base != 0 {
       // process template instantiations
       if .jscode-buf-cap == 0 {
          .jscode-buf-cap = 4096;
          C.malloc-arr(.jscode-buf-data, .jscode-buf-cap);
       }
       new-c! = .template-inst-new-c;
-      .template-inst-new-c = 0;
+      .template-inst-new-c = 0:TemplateInst;
       loop i = .template-inst-c - new-c; new-c; i++ {
          ti! = .template-inst-v[i];
          at! = ti.at;
@@ -960,7 +960,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      }
                      At#root.jscode-write();
                      jscode{",\n"}
-                     loop at-idx = 2:At; .at-c - 2; at-idx++ {
+                     loop at-idx = 2:At; .at-c - 2:At; at-idx++ {
                         at! = at-idx.ptr();
                         if at.parent == #relative { continue }
                         jscode{''"}
@@ -1150,8 +1150,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
 
    quick-alloc-arr(.id-c-name-v, .id-c); 
    if true {
-      func-c8! = (.func-c + 7) >> 3;
-      quick-alloc-arr(.func-in-process, func-c8:base);
+      func-c8! = (.func-c:base + 7) >> 3;
+      quick-alloc-arr(.func-in-process, func-c8);
       quick-alloc-arr(.func-head-outputted-v, .func-c:base);
       quick-alloc-arr(.func-body-outputted-v, .func-c:base);
    }
@@ -1161,23 +1161,23 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       quick-alloc-arr(.include-outputted-v, .include-c);
    }
    if true {
-      cvar-c8! = (.cvar-c + 7) >> 3;
-      quick-alloc-arr(.cvar-is-outputted, cvar-c8:base);
+      cvar-c8! = (.cvar-c:base + 7) >> 3;
+      quick-alloc-arr(.cvar-is-outputted, cvar-c8);
       quick-alloc-arr(.cvar-outputted-v, .cvar-c:base);
    }
    if true {
-      gvar-c8! = (.gvar-c + 7) >> 3;
-      quick-alloc-arr(.gvar-is-outputted, gvar-c8:base);
+      gvar-c8! = (.gvar-c:base + 7) >> 3;
+      quick-alloc-arr(.gvar-is-outputted, gvar-c8);
       quick-alloc-arr(.gvar-outputted-v, .gvar-c:base);
    }
    if true {
-      enum-c8! = (.enum-c + 7) >> 3;
-      quick-alloc-arr(.enum-is-outputted, enum-c8:base);
+      enum-c8! = (.enum-c:base + 7) >> 3;
+      quick-alloc-arr(.enum-is-outputted, enum-c8);
       quick-alloc-arr(.enum-outputted-v, .enum-c:base);
    }
    if true {
-      struct-c8! = (.struct-c + 7) >> 3;
-      quick-alloc-arr(.struct-is-outputted, struct-c8:base);
+      struct-c8! = (.struct-c:base + 7) >> 3;
+      quick-alloc-arr(.struct-is-outputted, struct-c8);
       quick-alloc-arr(.struct-outputted-v, .struct-c:base);
    }
 

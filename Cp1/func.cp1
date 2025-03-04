@@ -357,7 +357,7 @@ func-attr-case(name:Id) {
    .decl-func-case = name;
 }
 func-body-end() {
-   f! = .func-v[.func-c - 1];
+   f! = .func-v[.func-c:base - 1];
    f.flags |= #has-body;
    c! = 0;
    s! = f.stmt-space.stmt-first;

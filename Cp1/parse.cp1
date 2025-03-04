@@ -710,7 +710,7 @@ write-func(w:Wtr, header:bool) @inline {
             f.flags.wr(w);
          } else {
             // remove #has-body flag
-            (f.flags & (-1 ^ FuncFlags#has-body)):FuncFlags.wr(w);
+            (f.flags:base & (-1 ^ FuncFlags#has-body:base)):FuncFlags.wr(w);
          }
       } else {
          f.flags.wr(w);
@@ -1759,8 +1759,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       w.n1(0);
    }
 
-   at-bit8-c! = (.at-c + 7) >> 3;
-   malloc-arr(.at-in-header-v, at-bit8-c:base);
+   at-bit8-c! = (.at-c:base + 7) >> 3;
+   malloc-arr(.at-in-header-v, at-bit8-c);
    malloc-arr(.at-in-header-idx-v, .at-c:base);
    malloc-arr(.at-in-header-at-v, .at-c:base);
 

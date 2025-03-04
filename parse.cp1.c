@@ -1542,7 +1542,7 @@ union _NCp1_NTokenData _Ltok_180 = {0};
 union _NCp1_NWtr _Lw_begin_241 = {0};
 union _NCp1_NWtr _Lw_242 = {0};
 int32_t _Lid_bit8_c_244;
-_NCp1_NAt _Lat_bit8_c_246;
+int32_t _Lat_bit8_c_246;
 char _Ltmp_path_249[256 + 16 + 10] = {0};
 if(false) {
 _NCp1_Pexport_0();
@@ -2805,8 +2805,8 @@ continue_22:;
 _Li_245++;
 }
 break_22:;
-_Lat_bit8_c_246 = ((_Gat_c + 7) >> 3);
-_NCp1_Pmalloc_arr_2(_Gat_in_header_v, ((int32_t)(_Lat_bit8_c_246)));
+_Lat_bit8_c_246 = ((((int32_t)(_Gat_c)) + 7) >> 3);
+_NCp1_Pmalloc_arr_2(_Gat_in_header_v, _Lat_bit8_c_246);
 _NCp1_Pmalloc_arr_2(_Gat_in_header_idx_v, ((int32_t)(_Gat_c)));
 _NCp1_Pmalloc_arr_2(_Gat_in_header_at_v, ((int32_t)(_Gat_c)));
 Fputnum(&_Lw_242, ((int32_t)(_Gat_c)));
@@ -3771,7 +3771,7 @@ Fputnum(_Lw_1, 0);
 if(_Lheader_2) {
 Fputnum(_Lw_1, 1 + _Gat_in_header_idx_v[_Lat_0]);
 } else {
-Fputnum(_Lw_1, 1 + _Lat_0);
+Fputnum(_Lw_1, 1 + ((int32_t)(_Lat_0)));
 _NCp1_NAt_Pput_to_header_1(_Lat_0);
 }
 }
@@ -3783,9 +3783,9 @@ Fputnum(_Lw_1, 0);
 if(_Lheader_2) {
 Fputnum(_Lw_1, 1 + _Gid_in_header_idx_v[_Lid_0]);
 } else {
-Fputnum(_Lw_1, 1 + _Lid_0);
-if((_Gid_in_header_v[(_Lid_0 >> 3)] & (1 << (_Lid_0 & 7))) == 0) {
-_Gid_in_header_v[(_Lid_0 >> 3)] |= (1 << (_Lid_0 & 7));
+Fputnum(_Lw_1, 1 + ((int32_t)(_Lid_0)));
+if((_Gid_in_header_v[(((int32_t)(_Lid_0)) >> 3)] & (1 << (((int32_t)(_Lid_0)) & 7))) == 0) {
+_Gid_in_header_v[(((int32_t)(_Lid_0)) >> 3)] |= (1 << (((int32_t)(_Lid_0)) & 7));
 _Gid_in_header_idx_v[_Lid_0] = _Gid_in_header_c;
 _Gid_in_header_id_v[_Gid_in_header_c++] = ((int32_t)(_Lid_0));
 }
@@ -3939,7 +3939,7 @@ if(_Lheader_1) {
 if((*_Lf_3)._Fflags & _NCp1_NFuncFlags_Cinline) {
 _NCp1_NFuncFlags_Pwr_2((*_Lf_3)._Fflags, _Lw_0);
 } else {
-_NCp1_NFuncFlags_Pwr_2(((_NCp1_NFuncFlags)((*_Lf_3)._Fflags & (-1 ^ _NCp1_NFuncFlags_Chas_body))), _Lw_0);
+_NCp1_NFuncFlags_Pwr_2(((_NCp1_NFuncFlags)(((uint32_t)((*_Lf_3)._Fflags)) & (-1 ^ ((uint32_t)(_NCp1_NFuncFlags_Chas_body))))), _Lw_0);
 }
 } else {
 _NCp1_NFuncFlags_Pwr_2((*_Lf_3)._Fflags, _Lw_0);
@@ -4584,7 +4584,7 @@ void _NCp1_Pfunc_body_end_0() {
 struct _NCp1_NDeclFunc* _Lf_0;
 int32_t _Lc_1;
 struct _NCp1_NStmt* _Ls_2;
-_Lf_0 = _Gfunc_v[(_Gfunc_c - 1)];
+_Lf_0 = _Gfunc_v[(((int32_t)(_Gfunc_c)) - 1)];
 (*_Lf_0)._Fflags |= _NCp1_NFuncFlags_Chas_body;
 _Lc_1 = 0;
 _Ls_2 = (*(*_Lf_0)._Fstmt_space)._Fstmt_first;
@@ -6637,8 +6637,8 @@ _Gstdout_buf_len += _Ldigits_2;
 }
 }
 void _NCp1_NAt_Pput_to_header_1(_NCp1_NAt _Lat_0) {
-if((_Gat_in_header_v[(_Lat_0 >> 3)] & (1 << (_Lat_0 & 7))) == 0) {
-_Gat_in_header_v[(_Lat_0 >> 3)] |= (1 << (_Lat_0 & 7));
+if((_Gat_in_header_v[(((int32_t)(_Lat_0)) >> 3)] & (1 << (((int32_t)(_Lat_0)) & 7))) == 0) {
+_Gat_in_header_v[(((int32_t)(_Lat_0)) >> 3)] |= (1 << (((int32_t)(_Lat_0)) & 7));
 _Gat_in_header_idx_v[_Lat_0] = _Gat_in_header_c;
 _Gat_in_header_at_v[_Gat_in_header_c++] = ((int32_t)(_Lat_0));
 if(((_Lat_0 != _NCp1_NAt_Croot) && (_Lat_0 != _NCp1_NAt_Crelative))) {
