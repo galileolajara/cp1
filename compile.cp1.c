@@ -922,9 +922,9 @@ static inline void _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(struct _NLibCp1_NStdO
 static inline void _NLibCp1_NStdOut_Pstdout_reserve_end_1(struct _NLibCp1_NStdOut* _Lso_0);
 static inline void _NLibCp1_NStdOut_Pstdout_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, const char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3);
 static inline void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_0);
-uint32_t crc32c(uint32_t _Lcrc32c_0, void* _Ldata_1, uint32_t _Lsize_2);
 static inline void _Tchar_Pstdout_reserve_3(char _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
 static inline void _Tchar_Pstdout_3(char _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
+uint32_t crc32c(uint32_t _Lcrc32c_0, void* _Ldata_1, uint32_t _Lsize_2);
 static inline void _Tchar_Pstdout_reserve_arr_3(const char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t* _Llen_2);
 static inline void _Tchar_Pstdout_arr_3(const char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t _Llen_2);
 #ifdef _WIN32
@@ -1504,54 +1504,54 @@ memcpy(_Lmem_25, _Larg_17, _Larg_len_24);
 _Ginclude_path_v[_Ginclude_path_c] = _Lmem_25;
 _Ginclude_path_len_v[_Ginclude_path_c] = _Larg_len_24;
 _Ginclude_path_c++;
-} else if(_Larg_17[1] == 'D') {
-char* _Ldef_26 = {0};
-size_t _Ldef_len_27;
-_Ldef_26 = ((void*)&_Larg_17[2]);
-_Ldef_len_27 = strlen(_Ldef_26);
-if(_Ldef_len_27 == 0) {
-int _L_28 = {0};
-struct _NLibCp1_NStdOut _L_29 = {0};
-_NLibCp1_Pstdout_1(&_L_29);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_29, "The option -D must follow the syntax -D[key=value] without space.\n", 66u, _L_28);
-_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_29);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_29, "The option -D must follow the syntax -D[key=value] without space.\n", 66u, _L_28);
-_NLibCp1_NStdOut_Pstdout_end_1(&_L_29);
-goto usage;
-}
-_Lcrc32c_15 = crc32c(_Lcrc32c_15, _Ldef_26, _Ldef_len_27);
-_Gdefine_v[_Gdefine_c] = _Ldef_26;
-_Gdefine_len_v[_Gdefine_c] = _Ldef_len_27;
-_Gdefine_c++;
 } else if(_Larg_17[1] == 'P') {
 _Lprocess_all_12 = true;
 } else {
 invalid_option:;
 if(_Larg_17[1] == '\0') {
+int _L_26 = {0};
+struct _NLibCp1_NStdOut _L_27 = {0};
+_NLibCp1_Pstdout_1(&_L_27);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_27, "Invalid option '-'\n", 19u, _L_26);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_27);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_27, "Invalid option '-'\n", 19u, _L_26);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_27);
+} else {
+int _L_28 = {0};
+int _L_29 = {0};
 int _L_30 = {0};
 struct _NLibCp1_NStdOut _L_31 = {0};
 _NLibCp1_Pstdout_1(&_L_31);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_31, "Invalid option '-'\n", 19u, _L_30);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_31, "Invalid option '-", 17u, _L_28);
+_Tchar_Pstdout_reserve_3(_Larg_17[1], &_L_31, _L_29);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_31, "'\n", 2u, _L_30);
 _NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_31);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_31, "Invalid option '-'\n", 19u, _L_30);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_31, "Invalid option '-", 17u, _L_28);
+_Tchar_Pstdout_3(_Larg_17[1], &_L_31, _L_29);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_31, "'\n", 2u, _L_30);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_31);
-} else {
-int _L_32 = {0};
-int _L_33 = {0};
-int _L_34 = {0};
-struct _NLibCp1_NStdOut _L_35 = {0};
-_NLibCp1_Pstdout_1(&_L_35);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_35, "Invalid option '-", 17u, _L_32);
-_Tchar_Pstdout_reserve_3(_Larg_17[1], &_L_35, _L_33);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_35, "'\n", 2u, _L_34);
-_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_35);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_35, "Invalid option '-", 17u, _L_32);
-_Tchar_Pstdout_3(_Larg_17[1], &_L_35, _L_33);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_35, "'\n", 2u, _L_34);
-_NLibCp1_NStdOut_Pstdout_end_1(&_L_35);
 }
 goto usage;
 }
+} else if(_Larg_17[1] == 'D') {
+char* _Ldef_32 = {0};
+size_t _Ldef_len_33;
+_Ldef_32 = ((void*)&_Larg_17[2]);
+_Ldef_len_33 = strlen(_Ldef_32);
+if(_Ldef_len_33 == 0) {
+int _L_34 = {0};
+struct _NLibCp1_NStdOut _L_35 = {0};
+_NLibCp1_Pstdout_1(&_L_35);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_35, "The option -D must follow the syntax -D[key=value] without space.\n", 66u, _L_34);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_35);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_35, "The option -D must follow the syntax -D[key=value] without space.\n", 66u, _L_34);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_35);
+goto usage;
+}
+_Lcrc32c_15 = crc32c(_Lcrc32c_15, _Ldef_32, _Ldef_len_33);
+_Gdefine_v[_Gdefine_c] = _Ldef_32;
+_Gdefine_len_v[_Gdefine_c] = _Ldef_len_33;
+_Gdefine_c++;
 } else {
 goto invalid_option;
 }

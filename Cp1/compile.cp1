@@ -742,17 +742,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                .include-path-v[.include-path-c] = mem;
                .include-path-len-v[.include-path-c] = arg-len;
                .include-path-c++;
-            } elif arg[1] == ''D {
-               var def:char[] = &arg[2];
-               def-len! = C.strlen(def);
-               if def-len == 0 {
-                  C1.stdout{"The option -D must follow the syntax -D[key=value] without space.\n"}
-                  "goto usage;";
-               }
-               crc32c = crc32c(crc32c, def, def-len);
-               .define-v[.define-c] = def;
-               .define-len-v[.define-c] = def-len;
-               .define-c++;
             } elif arg[1] == ''P {
                process-all = true;
             } else {
@@ -764,6 +753,17 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                }
                "goto usage;";
             }
+         } elif arg[1] == ''D {
+            var def:char[] = &arg[2];
+            def-len! = C.strlen(def);
+            if def-len == 0 {
+               C1.stdout{"The option -D must follow the syntax -D[key=value] without space.\n"}
+               "goto usage;";
+            }
+            crc32c = crc32c(crc32c, def, def-len);
+            .define-v[.define-c] = def;
+            .define-len-v[.define-c] = def-len;
+            .define-c++;
          } else {
             "goto invalid_option;";
          }
