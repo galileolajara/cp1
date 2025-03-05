@@ -121,10 +121,10 @@ using LibCp1 {
          C.realloc-arr(.stdout-buf-data, .stdout-buf-cap);
       }
    }
-   stdout-cstr(str:char[]) @inline {
+   stdout-cstr(str:char @const[]) @inline {
       stdout-bytes(str, C.strlen(str));
    }
-   stdout-cstr-nr(str:char[]) @inline {
+   stdout-cstr-nr(str:char @const[]) @inline {
       stdout-bytes-nr(str, C.strlen(str));
    }
    stdout-char(val:char) @inline {
@@ -154,10 +154,10 @@ using LibCp1 {
       .stdout-buf-len = 0;
    }
    struct StdOut[reserve:u32] {
-      stdout-reserve-cstr(so:this, str:char[], len:u32, unused:intc) @inline {
+      stdout-reserve-cstr(so:this, str:char @const[], len:u32, unused:intc) @inline {
          so.reserve += len;
       }
-      stdout-cstr(so:this, str:char[], len:u32, unused:intc) @inline {
+      stdout-cstr(so:this, str:char @const[], len:u32, unused:intc) @inline {
          stdout-bytes-nr(str, len);
       }
       stdout-reserve-end(so:this) @inline {

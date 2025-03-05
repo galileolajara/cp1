@@ -918,9 +918,9 @@ uint8_t _Gcase_stack_c;
 int main(int _Larg_c_0, char** _Larg_v_1);
 #define _NLibC_Pmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))
 static inline void _NLibCp1_Pstdout_1(struct _NLibCp1_NStdOut* _Lso_0);
-static inline void _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3);
+static inline void _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, const char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3);
 static inline void _NLibCp1_NStdOut_Pstdout_reserve_end_1(struct _NLibCp1_NStdOut* _Lso_0);
-static inline void _NLibCp1_NStdOut_Pstdout_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3);
+static inline void _NLibCp1_NStdOut_Pstdout_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, const char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3);
 static inline void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_0);
 uint32_t crc32c(uint32_t _Lcrc32c_0, void* _Ldata_1, uint32_t _Lsize_2);
 static inline void _Tchar_Pstdout_reserve_3(char _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
@@ -1074,7 +1074,7 @@ static inline void _NCp1_NId_Pjscode_2(_NCp1_NId _Lid_0, struct _NCp1_NJsCode* _
 static inline void _NCp1_Pjscode_char_1(char _Lval_0);
 void _NCp1_NAt_Pjscode_write_name_dot_1(_NCp1_NAt _Lat_idx_0);
 void _NCp1_Pjscode_u32_1(uint32_t _Lval_0);
-static inline void _NLibCp1_Pstdout_cstr_nr_1(char* _Lstr_0);
+static inline void _NLibCp1_Pstdout_cstr_nr_1(const char* _Lstr_0);
 void _NLibCp1_Pstdout_u32_nr_1(uint32_t _Lval_0);
 bool _NCp1_NDeclVarData_Pprocess_5(struct _NCp1_NDeclVarData* _Lvd_0, _NCp1_NFile _Lfile_1, uint32_t _Lrow_2, uint32_t _Lcol_3, _NCp1_NAt _Lbase_at_4);
 _NCp1_NAt _NCp1_Pat_validate_5(_NCp1_NAt _Lvd_type_0, _NCp1_NAt _Lat_i_1, _NCp1_NFile _Lfile_2, uint32_t _Lrow_3, uint32_t _Lcol_4);
@@ -3078,13 +3078,13 @@ return 0;
 static inline void _NLibCp1_Pstdout_1(struct _NLibCp1_NStdOut* _Lso_0) {
 (*_Lso_0)._Freserve = 0;
 }
-static inline void _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3) {
+static inline void _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, const char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3) {
 (*_Lso_0)._Freserve += _Llen_2;
 }
 static inline void _NLibCp1_NStdOut_Pstdout_reserve_end_1(struct _NLibCp1_NStdOut* _Lso_0) {
 _NLibCp1_Pstdout_reserve_1((*_Lso_0)._Freserve);
 }
-static inline void _NLibCp1_NStdOut_Pstdout_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3) {
+static inline void _NLibCp1_NStdOut_Pstdout_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, const char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3) {
 _NLibCp1_Pstdout_bytes_nr_2(_Lstr_1, _Llen_2);
 }
 static inline void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_0) {
@@ -6339,7 +6339,7 @@ break_1:;
 _Gjscode_buf_len += _Ldigits_2;
 }
 }
-static inline void _NLibCp1_Pstdout_cstr_nr_1(char* _Lstr_0) {
+static inline void _NLibCp1_Pstdout_cstr_nr_1(const char* _Lstr_0) {
 _NLibCp1_Pstdout_bytes_nr_2(_Lstr_0, strlen(_Lstr_0));
 }
 void _NLibCp1_Pstdout_u32_nr_1(uint32_t _Lval_0) {

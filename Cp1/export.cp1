@@ -84,7 +84,7 @@ export() {
    type-info-arr(null, 0);
    type-info-ref(0);
    type-info-static();
-   type-info-begin();
+   type-info-begin(false);
    type-info-finalize();
    expr-int(0, #i32);
    expr-int64(0, #u64);

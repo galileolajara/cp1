@@ -2,14 +2,14 @@ include <stdio.h> {
    using C = LibC;
    using X = Posix;
    using LibC {
-      printf(fmt:char[]):intc @var-args @no-decl @real-name;
-      sprintf(str:char[], fmt:char[]):intc @var-args @no-decl @real-name;
-      scanf(fmt:char[]):intc @var-args @no-decl @real-name;
-      sscanf(str:char[], fmt:char[]):intc @var-args @no-decl @real-name;
+      printf(fmt:char @const[]):intc @var-args @no-decl @real-name;
+      sprintf(str:char[], fmt:char @const[]):intc @var-args @no-decl @real-name;
+      scanf(fmt:char @const[]):intc @var-args @no-decl @real-name;
+      sscanf(str:char[], fmt:char @const[]):intc @var-args @no-decl @real-name;
 
       var out:File @no-decl(stdout);
       struct File[] @no-decl(FILE) {
-         printf(f:this, str:char[]):intc @var-args @no-decl(fprintf);
+         printf(f:this, str:char @const[]):intc @var-args @no-decl(fprintf);
          flush(f:this):intc @no-decl(fflush);
          write(f:this, buf:ref, size:usz):usz @inline {
             return fwrite(buf, 1, size, f);

@@ -165,9 +165,10 @@ id-add(len:u8, str:char[]):Id {
       return found;
    }
 }
-type-info-begin() {
+type-info-begin(const:bool) {
    .decl-var.size-c = 0;
    .decl-var.type-info.init();
+   .decl-var.type-info.const = const;
    .decl-var.flags = #0;
 }
 type-info-finalize() {

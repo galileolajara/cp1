@@ -99,7 +99,8 @@
 #define _NCp1_NToken_Cf32 (_NCp1_NToken_Cusz + 1)
 #define _NCp1_NToken_Cf64 (_NCp1_NToken_Cf32 + 1)
 #define _NCp1_NToken_Campersand (_NCp1_NToken_Cf64 + 1)
-#define _NCp1_NToken_Cnum_zero (_NCp1_NToken_Campersand + 1)
+#define _NCp1_NToken_Cspace_at_const (_NCp1_NToken_Campersand + 1)
+#define _NCp1_NToken_Cnum_zero (_NCp1_NToken_Cspace_at_const + 1)
 #define _NCp1_NToken_Cnum_i32 (_NCp1_NToken_Cnum_zero + 1)
 #define _NCp1_NToken_Cnum_u32 (_NCp1_NToken_Cnum_i32 + 1)
 #define _NCp1_NToken_Cnum_f32 (_NCp1_NToken_Cnum_u32 + 1)
@@ -1017,10 +1018,10 @@ void _NCp1_Pexport_0();
 #define _NLibC_Pmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))
 void _NCp1_Pquick_alloc_init_0();
 static inline void _NLibCp1_Pstdout_1(struct _NLibCp1_NStdOut* _Lso_0);
-static inline void _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3);
+static inline void _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, const char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3);
 static inline void _Tchar_Pstdout_reserve_arr_3(char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t* _Llen_2);
 static inline void _NLibCp1_NStdOut_Pstdout_reserve_end_1(struct _NLibCp1_NStdOut* _Lso_0);
-static inline void _NLibCp1_NStdOut_Pstdout_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3);
+static inline void _NLibCp1_NStdOut_Pstdout_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, const char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3);
 static inline void _Tchar_Pstdout_arr_3(char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t _Llen_2);
 static inline void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_0);
 void _NCp1_NMap_Pinit_1(struct _NCp1_NMap* _Lm_0);
@@ -1148,7 +1149,7 @@ void _NCp1_Pdecl_var_as_gvar_0();
 void _NCp1_Ptype_info_arr_2(_NCp1_NExprI* _Lexpr_v_0, uint8_t _Lexpr_c_1);
 void _NCp1_Ptype_info_ref_1(int8_t _Lc_0);
 void _NCp1_Ptype_info_static_0();
-void _NCp1_Ptype_info_begin_0();
+void _NCp1_Ptype_info_begin_1(bool _Lconst_0);
 void _NCp1_Ptype_info_finalize_0();
 _NCp1_NExprI _NCp1_Pexpr_int_2(int32_t _Lvalue_0, _NCp1_NExprInt _Ltype_1);
 _NCp1_NExprI _NCp1_Pexpr_int64_2(int64_t _Lvalue_0, _NCp1_NExprInt _Ltype_1);
@@ -1323,6 +1324,7 @@ case _NCp1_NToken_Cusz: return "usz";
 case _NCp1_NToken_Cf32: return "f32";
 case _NCp1_NToken_Cf64: return "f64";
 case _NCp1_NToken_Campersand: return "ampersand";
+case _NCp1_NToken_Cspace_at_const: return "space-at-const";
 case _NCp1_NToken_Cnum_zero: return "num-zero";
 case _NCp1_NToken_Cnum_i32: return "num-i32";
 case _NCp1_NToken_Cnum_u32: return "num-u32";
@@ -3032,7 +3034,7 @@ _NCp1_Pdecl_var_as_gvar_0();
 _NCp1_Ptype_info_arr_2(NULL, 0);
 _NCp1_Ptype_info_ref_1(0);
 _NCp1_Ptype_info_static_0();
-_NCp1_Ptype_info_begin_0();
+_NCp1_Ptype_info_begin_1(false);
 _NCp1_Ptype_info_finalize_0();
 _NCp1_Pexpr_int_2(0, _NCp1_NExprInt_Ci32);
 _NCp1_Pexpr_int64_2(0, _NCp1_NExprInt_Cu64);
@@ -3091,7 +3093,7 @@ memset(_Gquick_alloc_v, 0, _Gquick_alloc_cap);
 static inline void _NLibCp1_Pstdout_1(struct _NLibCp1_NStdOut* _Lso_0) {
 (*_Lso_0)._Freserve = 0;
 }
-static inline void _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3) {
+static inline void _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, const char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3) {
 (*_Lso_0)._Freserve += _Llen_2;
 }
 static inline void _Tchar_Pstdout_reserve_arr_3(char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t* _Llen_2) {
@@ -3100,7 +3102,7 @@ static inline void _Tchar_Pstdout_reserve_arr_3(char* _Lstr_0, struct _NLibCp1_N
 static inline void _NLibCp1_NStdOut_Pstdout_reserve_end_1(struct _NLibCp1_NStdOut* _Lso_0) {
 _NLibCp1_Pstdout_reserve_1((*_Lso_0)._Freserve);
 }
-static inline void _NLibCp1_NStdOut_Pstdout_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3) {
+static inline void _NLibCp1_NStdOut_Pstdout_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, const char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3) {
 _NLibCp1_Pstdout_bytes_nr_2(_Lstr_1, _Llen_2);
 }
 static inline void _Tchar_Pstdout_arr_3(char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t _Llen_2) {
@@ -6093,9 +6095,10 @@ _Lti_1 = (&_Gdecl_var._Ftype_info);
 void _NCp1_Ptype_info_static_0() {
 _Gdecl_var._Ftype_info._Fbuilt_in = true;
 }
-void _NCp1_Ptype_info_begin_0() {
+void _NCp1_Ptype_info_begin_1(bool _Lconst_0) {
 _Gdecl_var._Fsize_c = 0;
 _NCp1_NTypeInfo_Pinit_1(&_Gdecl_var._Ftype_info);
+_Gdecl_var._Ftype_info._Fconst = _Lconst_0;
 _Gdecl_var._Fflags = _NCp1_NVarFlags_C0;
 }
 void _NCp1_Ptype_info_finalize_0() {

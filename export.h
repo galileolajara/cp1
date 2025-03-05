@@ -80,7 +80,7 @@ void _NCp1_Pdecl_var_as_gvar_0();
 void _NCp1_Ptype_info_arr_2(_NCp1_NExprI* _Lexpr_v_0, uint8_t _Lexpr_c_1);
 void _NCp1_Ptype_info_ref_1(int8_t _Lc_0);
 void _NCp1_Ptype_info_static_0();
-void _NCp1_Ptype_info_begin_0();
+void _NCp1_Ptype_info_begin_1(bool _Lconst_0);
 void _NCp1_Ptype_info_finalize_0();
 _NCp1_NExprI _NCp1_Pexpr_int_2(int32_t _Lvalue_0, _NCp1_NExprInt _Ltype_1);
 _NCp1_NExprI _NCp1_Pexpr_int64_2(int64_t _Lvalue_0, _NCp1_NExprInt _Ltype_1);

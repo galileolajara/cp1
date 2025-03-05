@@ -406,15 +406,15 @@ typeInfo_ref ::= typeInfo_arr ref_count(c).
    { _NCp1_Ptype_info_ref_1(c.basic.id); }
 typeInfo_ref ::= typeInfo_bi ref_count(c).
    { _NCp1_Ptype_info_ref_1(c.basic.id); }
-typeInfo_arr ::= open_bracket_or_space CLOSE_BRACKET.
+typeInfo_arr ::= OPEN_BRACKET CLOSE_BRACKET.
    { _NCp1_Ptype_info_arr_2(0, 0); }
 typeInfo_arr ::= typeInfo_arr_exprs.
-typeInfo_arr ::= typeInfo_bi open_bracket_or_space CLOSE_BRACKET.
+typeInfo_arr ::= typeInfo_bi OPEN_BRACKET CLOSE_BRACKET.
    { _NCp1_Ptype_info_arr_2(0, 0); }
 typeInfo_arr ::= typeInfo_bi typeInfo_arr_exprs.
-typeInfo_arr ::= typeInfo_ref open_bracket_or_space CLOSE_BRACKET.
+typeInfo_arr ::= typeInfo_ref OPEN_BRACKET CLOSE_BRACKET.
    { _NCp1_Ptype_info_arr_2(0, 0); }
-typeInfo_arr ::= typeInfo_arr open_bracket_or_space CLOSE_BRACKET.
+typeInfo_arr ::= typeInfo_arr OPEN_BRACKET CLOSE_BRACKET.
    { _NCp1_Ptype_info_arr_2(0, 0); }
 typeInfo_arr ::= typeInfo_arr typeInfo_arr_exprs.
 typeInfo_arr_exprs ::= open_bracket_or_space typeInfo_arr_exprs1(e) close_bracket_or_comma.
@@ -424,7 +424,9 @@ typeInfo_arr_exprs1(l) ::= expr(e).
 typeInfo_arr_exprs1(l) ::= typeInfo_arr_exprs1 COMMA_SPACE expr(e).
    { l.index.v[l.index.c ++] = e.basic.id; }
 typeInfo_begin ::= .
-   { _NCp1_Ptype_info_begin_0(); }
+   { _NCp1_Ptype_info_begin_1(false); }
+typeInfo_begin ::= SPACE_AT_CONST.
+   { _NCp1_Ptype_info_begin_1(true); }
 typeInfo_none ::= typeInfo_begin.
    { _NCp1_Ptype_info_finalize_0(); }
 typeInfo_optional ::= typeInfo_none.
