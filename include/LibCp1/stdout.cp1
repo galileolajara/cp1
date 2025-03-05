@@ -14,11 +14,11 @@ using LibCp1 {
    stdbuf(so:StdOut) @meta(stdout-reserve stdout end-no-flush) @inline {
       so.reserve = 0;
    }
-   stdout-bytes(data:ref, size:usz) @inline {
+   stdout-bytes(data:ref @const, size:usz) @inline {
       stdout-reserve(size);
       stdout-bytes-nr(data, size);
    }
-   stdout-bytes-nr(data:ref, size:usz) @inline { // nr = no-reserve
+   stdout-bytes-nr(data:ref @const, size:usz) @inline { // nr = no-reserve
       C.memcpy(&.stdout-buf-data[.stdout-buf-len], data, size);
       .stdout-buf-len += size;
    }

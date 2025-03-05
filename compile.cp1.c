@@ -1011,7 +1011,7 @@ void _NCp1_NDeclVarData_Pwrite_lvar_type_2(struct _NCp1_NDeclVarData* _Lvd_0, _N
 void _NCp1_NStmtSpace_Pwrite_1(struct _NCp1_NStmtSpace* _Lspace_0);
 bool _NCp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
-static inline void _NLibCp1_Pstdout_bytes_nr_2(void* _Ldata_0, size_t _Lsize_1);
+static inline void _NLibCp1_Pstdout_bytes_nr_2(const void* _Ldata_0, size_t _Lsize_1);
 static inline void _NLibCp1_Pstdout_flush_0();
 static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0);
 int32_t _NCp1_NMap_Pget_or_insert_4(struct _NCp1_NMap* _Lm_0, char* _Lstr_1, uint8_t _Llen_2, int32_t _Lval_3);
@@ -5965,7 +5965,7 @@ break_0:;
 _NLibC_Prealloc_arr_2(_Gstdout_buf_data, _Gstdout_buf_cap);
 }
 }
-static inline void _NLibCp1_Pstdout_bytes_nr_2(void* _Ldata_0, size_t _Lsize_1) {
+static inline void _NLibCp1_Pstdout_bytes_nr_2(const void* _Ldata_0, size_t _Lsize_1) {
 memcpy(&_Gstdout_buf_data[_Gstdout_buf_len], _Ldata_0, _Lsize_1);
 _Gstdout_buf_len += _Lsize_1;
 }
@@ -13779,6 +13779,7 @@ if((*_Lv_3)._Freff == 1) {
 static inline void _NCp1_NExprI_Pvalue_str_5(_NCp1_NExprI _Ls_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
 (*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cchar);
 _NCp1_NTypeInfo_Pinit_1(&(*_Lv_3)._Finfo);
+(*_Lv_3)._Finfo._Fconst = true;
 (*_Lv_3)._Finfo._Farray_c = 1;
 (*_Lv_3)._Finfo._Fref_v[0] = '\0';
 (*_Lv_3)._Finfo._Fref_v[1] = '\0';

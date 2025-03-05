@@ -1200,7 +1200,7 @@ _NCp1_NExprI _NCp1_Pexpr_char_1(int32_t _Lvalue_0);
 void _NCp1_Pcvar_attr_real_name_1(_NCp1_NId _Lname_0);
 void _NCp1_Pcvar_attr_no_decl_0();
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
-static inline void _NLibCp1_Pstdout_bytes_nr_2(void* _Ldata_0, size_t _Lsize_1);
+static inline void _NLibCp1_Pstdout_bytes_nr_2(const void* _Ldata_0, size_t _Lsize_1);
 static inline void _NLibCp1_Pstdout_flush_0();
 static inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2);
 static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0);
@@ -6584,7 +6584,7 @@ break_0:;
 _NLibC_Prealloc_arr_2(_Gstdout_buf_data, _Gstdout_buf_cap);
 }
 }
-static inline void _NLibCp1_Pstdout_bytes_nr_2(void* _Ldata_0, size_t _Lsize_1) {
+static inline void _NLibCp1_Pstdout_bytes_nr_2(const void* _Ldata_0, size_t _Lsize_1) {
 memcpy(&_Gstdout_buf_data[_Gstdout_buf_len], _Ldata_0, _Lsize_1);
 _Gstdout_buf_len += _Lsize_1;
 }

@@ -41,7 +41,7 @@ static inline void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_
 void _Pget_compiler_2(char* _Lbin_0, char* _Lcompiler_1);
 int system2(char* _Lcmd_0);
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
-static inline void _NLibCp1_Pstdout_bytes_nr_2(void* _Ldata_0, size_t _Lsize_1);
+static inline void _NLibCp1_Pstdout_bytes_nr_2(const void* _Ldata_0, size_t _Lsize_1);
 static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0);
 static inline void _NLibCp1_Pstdout_flush_0();
 #ifdef _WIN32
@@ -455,7 +455,7 @@ break_0:;
 _NLibC_Prealloc_arr_2(_Gstdout_buf_data, _Gstdout_buf_cap);
 }
 }
-static inline void _NLibCp1_Pstdout_bytes_nr_2(void* _Ldata_0, size_t _Lsize_1) {
+static inline void _NLibCp1_Pstdout_bytes_nr_2(const void* _Ldata_0, size_t _Lsize_1) {
 memcpy(&_Gstdout_buf_data[_Gstdout_buf_len], _Ldata_0, _Lsize_1);
 _Gstdout_buf_len += _Lsize_1;
 }

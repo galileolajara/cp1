@@ -88,6 +88,7 @@ using ExprI {
    value-str(s:this, reff:i32, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       v.type = basic-type(#char);
       v.info.init();
+      v.info.const = true;
       v.info.array-c = 1;
       v.info.ref-v[0] = ''\0;
       v.info.ref-v[1] = ''\0;
