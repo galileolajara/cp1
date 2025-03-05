@@ -250,16 +250,16 @@ using char {
    stdout(val:this, so:C1.StdOut, unused:intc) @inline {
       C1.stdout-char-nr(val);
    }
-   stdout-reserve-arr(str:this[], so:C1.StdOut, len:u32&) @inline {
+   stdout-reserve-arr(str:this @const[], so:C1.StdOut, len:u32&) @inline {
       so.reserve += len := C.strlen(str);
    }
-   stdout-arr(str:this[], so:C1.StdOut, len:u32) @inline {
+   stdout-arr(str:this @const[], so:C1.StdOut, len:u32) @inline {
       C1.stdout-bytes-nr(str, len);
    }
-   stdout-reserve-arr(str:this[], len:u32, so:C1.StdOut, unused:u32) @inline {
+   stdout-reserve-arr(str:this @const[], len:u32, so:C1.StdOut, unused:u32) @inline {
       so.reserve += len;
    }
-   stdout-arr(str:this[], len:u32, so:C1.StdOut, unused:u32) @inline {
+   stdout-arr(str:this @const[], len:u32, so:C1.StdOut, unused:u32) @inline {
       C1.stdout-bytes-nr(str, len);
    }
 }

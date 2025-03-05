@@ -925,8 +925,8 @@ static inline void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_
 uint32_t crc32c(uint32_t _Lcrc32c_0, void* _Ldata_1, uint32_t _Lsize_2);
 static inline void _Tchar_Pstdout_reserve_3(char _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
 static inline void _Tchar_Pstdout_3(char _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
-static inline void _Tchar_Pstdout_reserve_arr_3(char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t* _Llen_2);
-static inline void _Tchar_Pstdout_arr_3(char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t _Llen_2);
+static inline void _Tchar_Pstdout_reserve_arr_3(const char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t* _Llen_2);
+static inline void _Tchar_Pstdout_arr_3(const char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t _Llen_2);
 #ifdef _WIN32
 #define _NPosix_Popen_2(p, f) open(p, f | O_BINARY)
 #else
@@ -3096,10 +3096,10 @@ static inline void _Tchar_Pstdout_reserve_3(char _Lval_0, struct _NLibCp1_NStdOu
 static inline void _Tchar_Pstdout_3(char _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2) {
 _NLibCp1_Pstdout_char_nr_1(_Lval_0);
 }
-static inline void _Tchar_Pstdout_reserve_arr_3(char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t* _Llen_2) {
+static inline void _Tchar_Pstdout_reserve_arr_3(const char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t* _Llen_2) {
 (*_Lso_1)._Freserve += ((*_Llen_2) = strlen(_Lstr_0));
 }
-static inline void _Tchar_Pstdout_arr_3(char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t _Llen_2) {
+static inline void _Tchar_Pstdout_arr_3(const char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t _Llen_2) {
 _NLibCp1_Pstdout_bytes_nr_2(_Lstr_0, _Llen_2);
 }
 void qalloc_undo(int32_t _Lsize_0) {
