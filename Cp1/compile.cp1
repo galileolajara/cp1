@@ -987,6 +987,10 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      '=          child.parent = key;
                      '=       }
                      '=    }
+                     '=    let functions = type.functions = {};
+                     '=    for (let func of type.functionv) {
+                     '=       functions[func.name] = func;
+                     '=    }
                      '= }
                      '= function cp1_resolve_type(type, name) {
                      '=    if (!type.startsWith("..")) return type;

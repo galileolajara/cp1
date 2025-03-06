@@ -1917,6 +1917,10 @@ _NCp1_NJsCode_Pjscode_cstr_3(&_L_103, "};\n"
 "         child.parent = key;\n"
 "      }\n"
 "   }\n"
+"   let functions = type.functions = {};\n"
+"   for (let func of type.functionv) {\n"
+"      functions[func.name] = func;\n"
+"   }\n"
 "}\n"
 "function cp1_resolve_type(type, name) {\n"
 "   if (!type.startsWith(\"..\")) return type;\n"
@@ -1948,7 +1952,7 @@ _NCp1_NJsCode_Pjscode_cstr_3(&_L_103, "};\n"
 "      }\n"
 "      func.type = cp1_resolve_type(func.type, key);\n"
 "   }\n"
-"}\n", 1215u);
+"}\n", 1333u);
 _NCp1_NJsCode_Pjscode_end_1(&_L_103);
 }
 _NCp1_Pjscode_1(&_L_108);
