@@ -115,7 +115,7 @@ _NLibCp1_NStdOut_Pstdout_cstr_4(&_L_5, " [options] [.cp1 input file] [.cp1 outpu
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_5);
 exit(_NLibC_NExit_Cfailure);
 }
-_Li_6 = 1;
+_Li_6 = ((int32_t)(1));
 for(int i = _Larg_c_0 - 1; i > 0; ) {
 i --;
 if(_Larg_v_1[_Li_6][0] == '-') {
@@ -123,7 +123,7 @@ if(_Larg_v_1[_Li_6][1] == 'D') {
 char* _Lname_7 = {0};
 int32_t _Llen_8;
 _Lname_7 = ((void*)&_Larg_v_1[_Li_6][2]);
-_Llen_8 = 0;
+_Llen_8 = ((int32_t)(0));
 while(1) {
 if(_Lname_7[_Llen_8] == '\0') {
 goto break_1;
@@ -326,7 +326,7 @@ _NLibCp1_Pstdout_char_nr_1(_Lval_0);
 }
 void _NCp1_Ppreprocess_def_2(char* _Lname_0, uint8_t _Llen_1) {
 uint32_t _Li_2;
-_Li_2 = _Gpreprocess_def_c++;
+_Li_2 = ((uint32_t)(_Gpreprocess_def_c++));
 if(_Gpreprocess_def_cap < _Gpreprocess_def_c) {
 _Gpreprocess_def_cap = ((_Gpreprocess_def_c << 1) + 8);
 _Gpreprocess_def_str_v = realloc(_Gpreprocess_def_str_v, _Gpreprocess_def_cap * sizeof(size_t));
@@ -380,19 +380,19 @@ void* _Lnew_data_7 = {0};
 union _NCp1_NWtr _Lw_8 = {0};
 uint32_t _Lline_9;
 union _NCp1_NWtr _Lw_begin_50 = {0};
-_Lpreprocess_2 = false;
-_Lin_data_3 = (*_Lin_out_data_0);
-_Lin_size_4 = (*_Lin_out_size_1);
+_Lpreprocess_2 = ((bool)(false));
+_Lin_data_3 = ((char*)((*_Lin_out_data_0)));
+_Lin_size_4 = ((size_t)((*_Lin_out_size_1)));
 _Lr_end_5._Freff = _Lin_data_3;
 _Lr_end_5._Fpos += _Lin_size_4;
 _Lr_6._Freff = _Lin_data_3;
-_Lnew_data_7 = malloc(_Lin_size_4 + 1);
+_Lnew_data_7 = ((void*)(malloc(_Lin_size_4 + 1)));
 _Lw_8._Freff = _Lnew_data_7;
-_Lline_9 = ((uint32_t)(0));
+_Lline_9 = ((uint32_t)(((uint32_t)(0))));
 while(_Lr_6._Fpos < _Lr_end_5._Fpos) {
 int32_t _Lline_len_10;
 _Lline_9++;
-_Lline_len_10 = 0;
+_Lline_len_10 = ((int32_t)(0));
 while(1) {
 if(_Lr_6._Fp1[_Lline_len_10] == '\n') {
 goto break_1;
@@ -411,18 +411,18 @@ int32_t _Ldef_len_22;
 bool _Lok_23;
 char* _Lindention_24 = {0};
 int32_t _Lindention_len_25;
-_Lif_line_11 = _Lline_9;
+_Lif_line_11 = ((uint32_t)(_Lline_9));
 _Lw_8._Fp1[0] = '\n';
 _Lw_8._Fpos++;
-_Lstart_12 = 4;
-_Linvert_13 = false;
+_Lstart_12 = ((int32_t)(4));
+_Linvert_13 = ((bool)(false));
 if(_Lr_6._Fp1[3] == '!') {
 _Lstart_12 = 5;
 _Linvert_13 = true;
 }
-_Lrparen_14 = -1;
+_Lrparen_14 = ((int32_t)(-1));
 int32_t _Li_15 = {0};
-_Li_15 = _Lstart_12;
+_Li_15 = ((int32_t)(_Lstart_12));
 for(int i = _Lline_len_10 - _Lstart_12; i > 0; ) {
 i --;
 if(_Lr_6._Fp1[_Li_15] == ')') {
@@ -453,18 +453,18 @@ _NLibCp1_NStdOut_Pstdout_end_1(&_L_20);
 exit(_NLibC_NExit_Cfailure);
 }
 _Ldef_str_21 = ((void*)&_Lr_6._Fcharr[_Lstart_12]);
-_Ldef_len_22 = (_Lrparen_14 - _Lstart_12);
-_Lok_23 = _NCp1_Ppreprocess_def_get_2(_Ldef_str_21, _Ldef_len_22);
+_Ldef_len_22 = ((int32_t)((_Lrparen_14 - _Lstart_12)));
+_Lok_23 = ((bool)(_NCp1_Ppreprocess_def_get_2(_Ldef_str_21, _Ldef_len_22)));
 if(_Linvert_13) {
 _Lok_23 = !_Lok_23;
 }
 _Lr_6._Fpos += (_Lline_len_10 + 1);
-_Lindention_24 = NULL;
-_Lindention_len_25 = -1;
+_Lindention_24 = ((char*)(NULL));
+_Lindention_len_25 = ((int32_t)(-1));
 if(_Lr_6._Fpos < _Lr_end_5._Fpos) {
 int32_t _Lline_len_26;
 int32_t _Lfirst_char_27;
-_Lline_len_26 = 0;
+_Lline_len_26 = ((int32_t)(0));
 while(1) {
 if(_Lr_6._Fp1[_Lline_len_26] == '\n') {
 goto break_3;
@@ -473,7 +473,7 @@ _Lline_len_26++;
 continue_3:;
 }
 break_3:;
-_Lfirst_char_27 = 0;
+_Lfirst_char_27 = ((int32_t)(0));
 while(1) {
 if(((_Lr_6._Fp1[_Lfirst_char_27] == ' ') || (_Lr_6._Fp1[_Lfirst_char_27] == '\t'))) {
 } else {
@@ -534,7 +534,7 @@ while(_Lr_6._Fpos < _Lr_end_5._Fpos) {
 int32_t _Lline_len_37;
 int32_t _Lfirst_char_38;
 _Lline_9++;
-_Lline_len_37 = 0;
+_Lline_len_37 = ((int32_t)(0));
 while(1) {
 if(_Lr_6._Fp1[_Lline_len_37] == '\n') {
 goto break_6;
@@ -543,7 +543,7 @@ _Lline_len_37++;
 continue_6:;
 }
 break_6:;
-_Lfirst_char_38 = 0;
+_Lfirst_char_38 = ((int32_t)(0));
 while(1) {
 if(((_Lr_6._Fp1[_Lfirst_char_38] == ' ') || (_Lr_6._Fp1[_Lfirst_char_38] == '\t'))) {
 } else {
@@ -637,7 +637,7 @@ bool _NCp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2) {
 if(true) {
 HANDLE _Lh_3;
 uint32_t _Lbytes_written_4 = {0};
-_Lh_3 = CreateFileA(_Lpath_0, GENERIC_WRITE, _NWindows_NCreateFileShareMode_C0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, _NWindows_NHandle_Cnull);
+_Lh_3 = ((HANDLE)(CreateFileA(_Lpath_0, GENERIC_WRITE, _NWindows_NCreateFileShareMode_C0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, _NWindows_NHandle_Cnull)));
 if(_Lh_3 == INVALID_HANDLE_VALUE) {
 return false;
 }
@@ -665,7 +665,7 @@ return true;
 }
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0) {
 uint32_t _Lspace_1;
-_Lspace_1 = (_Gstdout_buf_cap - _Gstdout_buf_len);
+_Lspace_1 = ((uint32_t)((_Gstdout_buf_cap - _Gstdout_buf_len)));
 if(_Lspace_1 < _Llen_0) {
 if(_Gstdout_buf_cap == 0) {
 _Gstdout_buf_cap = 256;
@@ -701,7 +701,7 @@ LARGE_INTEGER _Lf_size_6 = {0};
 uint64_t _Lsize_7;
 uint8_t* _Lbuf_8 = {0};
 uint32_t _Lbytes_read_9 = {0};
-_Lh_5 = CreateFileA(_Lpath_0, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, _NWindows_NHandle_Cnull);
+_Lh_5 = ((HANDLE)(CreateFileA(_Lpath_0, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, _NWindows_NHandle_Cnull)));
 if(_Lh_5 == INVALID_HANDLE_VALUE) {
 return NULL;
 }
@@ -709,7 +709,7 @@ if(!GetFileSizeEx(_Lh_5, &_Lf_size_6)) {
 CloseHandle(_Lh_5);
 return NULL;
 }
-_Lsize_7 = _Lf_size_6.QuadPart;
+_Lsize_7 = ((uint64_t)(_Lf_size_6.QuadPart));
 if(_Lmax_size_3 != 0) {
 if(((size_t)(_Lsize_7)) > _Lmax_size_3) {
 _Lsize_7 = _Lmax_size_3;
@@ -733,7 +733,7 @@ uint8_t* _Lbuf_12 = {0};
 if(!_NPosix_NFd_Popen_3(&_Lfd_10, _Lpath_0, O_RDONLY)) {
 return NULL;
 }
-_Lsize_11 = lseek(_Lfd_10, 0, SEEK_END);
+_Lsize_11 = ((size_t)(lseek(_Lfd_10, 0, SEEK_END)));
 if(_Lsize_11 == -1) {
 close(_Lfd_10);
 return NULL;
@@ -767,7 +767,7 @@ _NLibCp1_Pstdout_u32_nr_1(_Lval_0);
 }
 bool _NCp1_Ppreprocess_def_get_2(char* _Lname_0, uint8_t _Llen_1) {
 int32_t _Li_2 = {0};
-_Li_2 = 0;
+_Li_2 = ((int32_t)(0));
 for(int i = _Gpreprocess_def_c; i > 0; ) {
 i --;
 if(((_Gpreprocess_def_len_v[_Li_2] == _Llen_1) && (memcmp(_Gpreprocess_def_str_v[_Li_2], _Lname_0, _Llen_1) == 0))) {
@@ -781,7 +781,7 @@ return false;
 }
 static inline bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3) {
 _NPosix_NFd _Lfd_4;
-_Lfd_4 = _NPosix_Popen_3(_Lpath_1, _Lflags_2, _Lmode_3);
+_Lfd_4 = ((_NPosix_NFd)(_NPosix_Popen_3(_Lpath_1, _Lflags_2, _Lmode_3)));
 if(_Lfd_4 != _NPosix_NFd_Cnil) {
 (*_Lfile_0) = _Lfd_4;
 return true;
@@ -791,7 +791,7 @@ return false;
 }
 static inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2) {
 _NPosix_NFd _Lfd_3;
-_Lfd_3 = _NPosix_Popen_2(_Lpath_1, _Lflags_2);
+_Lfd_3 = ((_NPosix_NFd)(_NPosix_Popen_2(_Lpath_1, _Lflags_2)));
 if(_Lfd_3 != _NPosix_NFd_Cnil) {
 (*_Lfile_0) = _Lfd_3;
 return true;
@@ -808,7 +808,7 @@ int32_t _Ldigits_2;
 int32_t _Lstart_3;
 int32_t _Lend_4;
 _Ldata_1 = ((void*)&_Gstdout_buf_data[_Gstdout_buf_len]);
-_Ldigits_2 = 0;
+_Ldigits_2 = ((int32_t)(0));
 while(1) {
 _Ldata_1[_Ldigits_2++] = ((_Lval_0 % 10) + '0');
 _Lval_0 /= 10;
@@ -818,11 +818,11 @@ goto break_0;
 continue_0:;
 }
 break_0:;
-_Lstart_3 = 0;
-_Lend_4 = (_Ldigits_2 - 1);
+_Lstart_3 = ((int32_t)(0));
+_Lend_4 = ((int32_t)((_Ldigits_2 - 1)));
 while(_Lstart_3 < _Lend_4) {
 char _Ltmp_5;
-_Ltmp_5 = _Ldata_1[_Lstart_3];
+_Ltmp_5 = ((char)(_Ldata_1[_Lstart_3]));
 _Ldata_1[_Lstart_3] = _Ldata_1[_Lend_4];
 _Ldata_1[_Lend_4] = _Ltmp_5;
 _Lstart_3++;

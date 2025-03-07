@@ -23,5 +23,6 @@ include <stdio.h> {
       fclose(f:File):intc @no-decl @real-name;
       fwrite(buf:ref, size1:usz, size2:usz, f:File):usz @no-decl @real-name;
       tempnam(dir:char[], pfx:char[]):char[] @no-decl @real-name;
+      perror(str:char @const[]) @no-decl @real-name;
    }
 }

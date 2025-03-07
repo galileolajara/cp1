@@ -65,20 +65,20 @@ int _Lexe_ret_26;
 if(true) {
 char* _Larg_2;
 size_t _Llen_3;
-_Larg_2 = _Larg_v_1[0];
-_Llen_3 = strlen(_Larg_2);
+_Larg_2 = ((char*)(_Larg_v_1[0]));
+_Llen_3 = ((size_t)(strlen(_Larg_2)));
 if(((_Larg_2[(_Llen_3 - 4)] == '.') && (_Larg_2[(_Llen_3 - 3)] == 'e') && (_Larg_2[(_Llen_3 - 2)] == 'x') && (_Larg_2[(_Llen_3 - 1)] == 'e'))) {
 _Larg_2[(_Llen_3 - 4)] = '\0';
 }
 }
 int32_t _Li_4 = {0};
-_Li_4 = 0;
+_Li_4 = ((int32_t)(0));
 for(int i = _Larg_c_0; i > 0; ) {
 i --;
 char* _Larg_5;
-_Larg_5 = _Larg_v_1[_Li_4];
+_Larg_5 = ((char*)(_Larg_v_1[_Li_4]));
 int32_t _Lj_6 = {0};
-_Lj_6 = 0;
+_Lj_6 = ((int32_t)(0));
 while(1) {
 if(_Larg_5[_Lj_6] == '\0') {
 goto break_1;
@@ -94,14 +94,14 @@ _Li_4++;
 }
 break_0:;
 #endif
-_Lbin_7 = _Larg_v_1[0];
+_Lbin_7 = ((char*)(_Larg_v_1[0]));
 if(_Larg_c_0 != 2) {
 _Pprint_commands_1(_Lbin_7);
 exit(_NLibC_NExit_Cfailure);
 }
 _Pvalidate_cp1_path_2(_Lbin_7, _Larg_v_1[1]);
 strcpy(_Lc_path_8, "cp1-c-XXXXXX");
-_Lc_fd_9 = mkstemp(_Lc_path_8);
+_Lc_fd_9 = ((_NPosix_NFd)(mkstemp(_Lc_path_8)));
 if(_Lc_fd_9 == _NPosix_NFd_Cnil) {
 int _L_10 = {0};
 uint32_t _L_11 = {0};
@@ -122,7 +122,7 @@ exit(_NLibC_NExit_Cfailure);
 close(_Lc_fd_9);
 unlink(_Lc_path_8);
 strcpy(_Lexe_path_14, "./cp1-exe-XXXXXX");
-_Lexe_fd_15 = mkstemp(_Lexe_path_14);
+_Lexe_fd_15 = ((_NPosix_NFd)(mkstemp(_Lexe_path_14)));
 if(_Lexe_fd_15 == _NPosix_NFd_Cnil) {
 int _L_16 = {0};
 uint32_t _L_17 = {0};
@@ -154,7 +154,7 @@ _Lexe_path_14[19] = 'e';
 _Lexe_path_14[20] = '\0';
 if(_Lbin_7[0] != '/') {
 int32_t _Li_21 = {0};
-_Li_21 = 0;
+_Li_21 = ((int32_t)(0));
 while(_Lbin_7[_Li_21] != '\0') {
 if(_Lbin_7[_Li_21] == '/') {
 _Lbin_7[_Li_21] = '\\';
@@ -166,20 +166,20 @@ break_2:;
 }
 #endif
 sprintf(_Lcommand_22, "\"%.*s-compile\" -c \"%s\" \"%s\"", ((int)(strlen(_Lbin_7) - 4)), _Lbin_7, _Lc_path_8, _Larg_v_1[1]);
-_Lc_ret_23 = system2(_Lcommand_22);
+_Lc_ret_23 = ((int)(system2(_Lcommand_22)));
 if(_Lc_ret_23 != 0) {
 unlink(_Lc_path_8);
 exit(_NLibC_NExit_Cfailure);
 }
 sprintf(_Lcommand_22, "%s -o %s %s", _Lcompiler_20, _Lexe_path_14, _Lc_path_8);
-_Lcompile_ret_24 = system2(_Lcommand_22);
+_Lcompile_ret_24 = ((int)(system2(_Lcommand_22)));
 unlink(_Lc_path_8);
 if(_Lcompile_ret_24 != 0) {
 exit(_NLibC_NExit_Cfailure);
 }
 #ifdef _WIN32
 int32_t _Li_25 = {0};
-_Li_25 = 0;
+_Li_25 = ((int32_t)(0));
 while(1) {
 if(_Lexe_path_14[_Li_25] == '\0') {
 goto break_3;
@@ -191,7 +191,7 @@ _Li_25++;
 }
 break_3:;
 #endif
-_Lexe_ret_26 = system2(_Lexe_path_14);
+_Lexe_ret_26 = ((int)(system2(_Lexe_path_14)));
 unlink(_Lexe_path_14);
 if(_Lexe_ret_26 != 0) {
 exit(_NLibC_NExit_Cfailure);
@@ -232,13 +232,13 @@ _NLibCp1_NStdOut_Pstdout_cstr_4(&_L_5, "') must be a relative filepath (e.g. fil
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_5);
 exit(_NLibC_NExit_Cfailure);
 }
-_Lcp1_path_len_6 = strlen(_Lcp1_path_1);
+_Lcp1_path_len_6 = ((size_t)(strlen(_Lcp1_path_1)));
 if(((_Lcp1_path_1[0] == '.') && (_Lcp1_path_1[1] == '/'))) {
 _Lcp1_path_1 = ((void*)&_Lcp1_path_1[2]);
 _Lcp1_path_len_6 -= 2;
 }
 int32_t _Lj_7 = {0};
-_Lj_7 = 0;
+_Lj_7 = ((int32_t)(0));
 for(int i = _Lcp1_path_len_6; i > 0; ) {
 i --;
 if(_Lcp1_path_1[_Lj_7] == '\\') {
@@ -263,7 +263,7 @@ _Lj_7++;
 }
 break_0:;
 int32_t _Lj_12 = {0};
-_Lj_12 = 0;
+_Lj_12 = ((int32_t)(0));
 for(int i = _Lcp1_path_len_6; i > 0; ) {
 i --;
 if(_Lcp1_path_1[_Lj_12] == ' ') {
@@ -288,7 +288,7 @@ _Lj_12++;
 }
 break_1:;
 int32_t _Lj_17 = {0};
-_Lj_17 = 0;
+_Lj_17 = ((int32_t)(0));
 for(int i = _Lcp1_path_len_6 - 1; i > 0; ) {
 i --;
 if(((_Lcp1_path_1[_Lj_17] == '.') && (_Lcp1_path_1[(_Lj_17 + 1)] == '/'))) {
@@ -364,10 +364,10 @@ int _L_7 = {0};
 uint32_t _L_8 = {0};
 int _L_9 = {0};
 struct _NLibCp1_NStdOut _L_10 = {0};
-_Lpath_2 = strdup(getenv("PATH"));
+_Lpath_2 = ((char*)(strdup(getenv("PATH"))));
 #ifdef _WIN32
 int32_t _Li_3 = {0};
-_Li_3 = 0;
+_Li_3 = ((int32_t)(0));
 while(1) {
 if(_Lpath_2[_Li_3] == '\0') {
 goto break_0;
@@ -438,7 +438,7 @@ exit(_NLibC_NExit_Cfailure);
 }
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0) {
 uint32_t _Lspace_1;
-_Lspace_1 = (_Gstdout_buf_cap - _Gstdout_buf_len);
+_Lspace_1 = ((uint32_t)((_Gstdout_buf_cap - _Gstdout_buf_len)));
 if(_Lspace_1 < _Llen_0) {
 if(_Gstdout_buf_cap == 0) {
 _Gstdout_buf_cap = 256;

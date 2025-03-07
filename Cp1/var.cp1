@@ -185,9 +185,6 @@ using DeclVarData {
       output{"_L" vd.name.c-name() ''_ lvar:u32}
    }
    write-type(vd:this, var-type:DeclVarType) {
-      if vd.type-info.const {
-         output{"const "}
-      }
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
       output{'' }
       vd.write(var-type);
@@ -198,9 +195,6 @@ using DeclVarData {
       }
    }
    write-lvar-type(vd:this, lvar:Lvar) {
-      if vd.type-info.const {
-         output{"const "}
-      }
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
       output{'' }
       vd.write-lvar(lvar);

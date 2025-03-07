@@ -70,6 +70,19 @@ using ExprI {
          case #or-eq { output{" |= "} }
          case #xor-eq { output{" ^= "} }
       }
+      e-left! = e.left.ptr();
+      if (e.type == #eq) && (e-left.type == #lvar) {
+         var lvar:ExprLvar = e-left;
+         if lvar.decl {
+            output{"(("}
+            ld! = lvar.lvar.ptr().decl;
+            ld.type.write-type-info(ld.type-info, 0 - ld.size-c);
+            output{")("}
+            e.right.write-value(e.right-val);
+            output{"))"}
+            return;
+         }
+      }
       e.right.write-value(e.right-val);
    }
    rd-assign(e-idx:ExprI, r:Rdr) @case.rd() @inline {

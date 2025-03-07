@@ -17,7 +17,7 @@ include <math.h> {
       cos(rad:this):f32 @no-decl(cosf);
       sin(rad:this):f32 @no-decl(sinf);
 
-      #pi @no-decl(M_PI);
+      #pi:f32 @no-decl(M_PI);
       radian(f:this):f32 @inline {
          return f * (#pi / 180.0f);
       }

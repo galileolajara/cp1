@@ -669,6 +669,9 @@ enum At[#nil = -1, #root, #relative]:i32 {
       }
    }
    write-type-info(td:this, ti:TypeInfo, add:i32):bool {
+      if ti.const {
+         output{"const "}
+      }
       ti.count();
       td.write-type();
       s! = td.count-stars0(ti) + add;
