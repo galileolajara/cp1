@@ -189,6 +189,7 @@
 #define _NCp1_NEnumFlags_Csoa_field (4)
 #define _NCp1_NStructFlags_Creal_name (1)
 #define _NCp1_NStructFlags_C0 0
+#define _NCp1_NStructFlags_Caligned (8)
 #define _NCp1_NFuncFlags_Cinline (2)
 #define _NCp1_NFuncFlags_Chas_body (1)
 #define _NCp1_NFuncFlags_Creal_name (64)
@@ -288,7 +289,8 @@
 #define _NCp1_NToken_Creturn (_NCp1_NToken_Cbreak + 1)
 #define _NCp1_NToken_Cvar (_NCp1_NToken_Creturn + 1)
 #define _NCp1_NToken_Cspace_at_extern (_NCp1_NToken_Cvar + 1)
-#define _NCp1_NToken_Cspace_at_soa_field (_NCp1_NToken_Cspace_at_extern + 1)
+#define _NCp1_NToken_Cspace_at_aligned (_NCp1_NToken_Cspace_at_extern + 1)
+#define _NCp1_NToken_Cspace_at_soa_field (_NCp1_NToken_Cspace_at_aligned + 1)
 #define _NCp1_NToken_Cat (_NCp1_NToken_Cspace_at_soa_field + 1)
 typedef int32_t _NCp1_NInclude;
 typedef int32_t _NCp1_NFunc;
@@ -469,6 +471,7 @@ _NCp1_NInclude _Finclude;
 _NCp1_NAt _Fat;
 _NCp1_NStructFlags _Fflags;
 _NCp1_NId _Freal_name;
+uint32_t _Faligned;
 uint32_t _Ffvar_c;
 struct _NCp1_NFvarData _Ffvar_v[0];
 };
@@ -968,6 +971,7 @@ uint32_t _Gdecl_struct_col;
 _NCp1_NAt _Gdecl_struct_at;
 _NCp1_NStructFlags _Gdecl_struct_flags;
 _NCp1_NId _Gdecl_struct_real_name;
+uint32_t _Gdecl_struct_aligned;
 uint32_t _Gdecl_var_row;
 uint32_t _Gdecl_var_col;
 int32_t _Gdecl_farg_cap;
@@ -1163,6 +1167,7 @@ void _NCp1_Penum_add_cvar_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol
 void _NCp1_Pdecl_add_cvar_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
 void _NCp1_Penum_set_cvar_expr_1(_NCp1_NExprI _Lset_0);
 void _NCp1_Pstruct_attr_real_name_1(_NCp1_NId _Lname_0);
+void _NCp1_Pstruct_attr_aligned_1(uint32_t _Laligned_0);
 void _NCp1_Pstruct_attr_union_0();
 void _NCp1_Pstruct_attr_no_decl_0();
 _NCp1_NExprI _NCp1_Pexpr_str_1(_NCp1_NExprI _Lprev_0);
@@ -1200,10 +1205,10 @@ _NCp1_NExprI _NCp1_Pexpr_char_1(int32_t _Lvalue_0);
 void _NCp1_Pcvar_attr_real_name_1(_NCp1_NId _Lname_0);
 void _NCp1_Pcvar_attr_no_decl_0();
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
+static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0);
 static inline void _NLibCp1_Pstdout_bytes_nr_2(const void* _Ldata_0, size_t _Lsize_1);
 static inline void _NLibCp1_Pstdout_flush_0();
 static inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2);
-static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0);
 void _NLibCp1_Pstdout_u32_nr_1(uint32_t _Lval_0);
 int32_t _NCp1_NMap_Pget_or_insert_4(struct _NCp1_NMap* _Lm_0, char* _Lstr_1, uint8_t _Llen_2, int32_t _Lval_3);
 #define _NCp1_Pgrow_2(cap, c) cap = Fpow2gteq((c) + 8)
@@ -1391,6 +1396,7 @@ case _NCp1_NToken_Cbreak: return "break";
 case _NCp1_NToken_Creturn: return "return";
 case _NCp1_NToken_Cvar: return "var";
 case _NCp1_NToken_Cspace_at_extern: return "space-at-extern";
+case _NCp1_NToken_Cspace_at_aligned: return "space-at-aligned";
 case _NCp1_NToken_Cspace_at_soa_field: return "space-at-soa-field";
 case _NCp1_NToken_Cat: return "at";
 }
@@ -3048,6 +3054,7 @@ _NCp1_Penum_add_cvar_3(_NCp1_NId_Cnil, 0, 0);
 _NCp1_Pdecl_add_cvar_3(_NCp1_NId_Cnil, 0, 0);
 _NCp1_Penum_set_cvar_expr_1(_NCp1_NExprI_Cnil);
 _NCp1_Pstruct_attr_real_name_1(_NCp1_NId_Cnil);
+_NCp1_Pstruct_attr_aligned_1(0);
 _NCp1_Pstruct_attr_union_0();
 _NCp1_Pstruct_attr_no_decl_0();
 _NCp1_Pexpr_str_1(_NCp1_NExprI_Cnil);
@@ -3103,7 +3110,11 @@ static inline void _NLibCp1_NStdOut_Pstdout_reserve_end_1(struct _NLibCp1_NStdOu
 _NLibCp1_Pstdout_reserve_1((*_Lso_0)._Freserve);
 }
 static inline void _NLibCp1_NStdOut_Pstdout_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, const char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3) {
+if(_Llen_2 == 1) {
+_NLibCp1_Pstdout_char_nr_1(_Lstr_1[0]);
+} else {
 _NLibCp1_Pstdout_bytes_nr_2(_Lstr_1, _Llen_2);
+}
 }
 static inline void _Tchar_Pstdout_arr_3(const char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t _Llen_2) {
 _NLibCp1_Pstdout_bytes_nr_2(_Lstr_0, _Llen_2);
@@ -3894,6 +3905,9 @@ break_1:;
 if(((*_Ls_3)._Fflags & _NCp1_NStructFlags_Creal_name) != _NCp1_NStructFlags_C0) {
 _NCp1_NId_Pwr_3((*_Ls_3)._Freal_name, _Lw_0, _Lheader_1);
 }
+if(((*_Ls_3)._Fflags & _NCp1_NStructFlags_Caligned) != _NCp1_NStructFlags_C0) {
+Fputnum(_Lw_0, (*_Ls_3)._Faligned);
+}
 continue_0:;
 }
 break_0:;
@@ -4439,6 +4453,7 @@ _Li_5++;
 }
 break_0:;
 (*_Ls_4)._Freal_name = _Gdecl_struct_real_name;
+(*_Ls_4)._Faligned = _Gdecl_struct_aligned;
 }
 void _NCp1_Pdecl_var_begin_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2) {
 _Gdecl_var._Fname = _Lname_0;
@@ -6281,6 +6296,35 @@ exit(_NLibC_NExit_Cfailure);
 _Gdecl_struct_flags |= _NCp1_NStructFlags_Creal_name;
 _Gdecl_struct_real_name = _Lname_0;
 }
+void _NCp1_Pstruct_attr_aligned_1(uint32_t _Laligned_0) {
+if((_Gdecl_struct_flags & _NCp1_NStructFlags_Caligned) != _NCp1_NStructFlags_C0) {
+uint32_t _L_1 = {0};
+int _L_2 = {0};
+int _L_3 = {0};
+int _L_4 = {0};
+int _L_5 = {0};
+int _L_6 = {0};
+struct _NLibCp1_NStdOut _L_7 = {0};
+_NLibCp1_Pstdout_1(&_L_7);
+_Tchar_Pstdout_reserve_arr_3(input_path, &_L_7, &_L_1);
+_Tchar_Pstdout_reserve_3(':', &_L_7, _L_2);
+_Tu32_Pstdout_reserve_3(_Glast_row, &_L_7, _L_3);
+_Tchar_Pstdout_reserve_3(':', &_L_7, _L_4);
+_Tu32_Pstdout_reserve_3(_Glast_col, &_L_7, _L_5);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_7, ": error @aligned specified more than once\n", 42u, _L_6);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_7);
+_Tchar_Pstdout_arr_3(input_path, &_L_7, _L_1);
+_Tchar_Pstdout_3(':', &_L_7, _L_2);
+_Tu32_Pstdout_3(_Glast_row, &_L_7, _L_3);
+_Tchar_Pstdout_3(':', &_L_7, _L_4);
+_Tu32_Pstdout_3(_Glast_col, &_L_7, _L_5);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_7, ": error @aligned specified more than once\n", 42u, _L_6);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_7);
+exit(_NLibC_NExit_Cfailure);
+}
+_Gdecl_struct_flags |= _NCp1_NStructFlags_Caligned;
+_Gdecl_struct_aligned = _Laligned_0;
+}
 void _NCp1_Pstruct_attr_union_0() {
 _Gdecl_struct_flags |= _NCp1_NStructFlags_Cunion;
 }
@@ -6584,6 +6628,9 @@ break_0:;
 _NLibC_Prealloc_arr_2(_Gstdout_buf_data, _Gstdout_buf_cap);
 }
 }
+static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0) {
+_Gstdout_buf_data[_Gstdout_buf_len++] = _Lval_0;
+}
 static inline void _NLibCp1_Pstdout_bytes_nr_2(const void* _Ldata_0, size_t _Lsize_1) {
 memcpy(&_Gstdout_buf_data[_Gstdout_buf_len], _Ldata_0, _Lsize_1);
 _Gstdout_buf_len += _Lsize_1;
@@ -6601,9 +6648,6 @@ return true;
 } else {
 return false;
 }
-}
-static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0) {
-_Gstdout_buf_data[_Gstdout_buf_len++] = _Lval_0;
 }
 void _NLibCp1_Pstdout_u32_nr_1(uint32_t _Lval_0) {
 if(_Lval_0 == 0) {

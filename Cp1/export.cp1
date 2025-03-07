@@ -99,6 +99,7 @@ export() {
    decl-add-cvar(#nil, 0, 0);
    enum-set-cvar-expr(#nil);
    struct-attr-real-name(#nil);
+   struct-attr-aligned(0);
    struct-attr-union();
    struct-attr-no-decl();
    expr-str(#nil);

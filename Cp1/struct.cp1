@@ -58,11 +58,13 @@ var decl-struct-row:u32;
 var decl-struct-col:u32;
 var decl-struct-at:At;
 var decl-struct-real-name:Id;
+var decl-struct-aligned:u32;
 enum StructFlags[
    #0,
    #real-name = 1,
    #no-decl = 2,
    #union = 4,
+   #aligned = 8,
    ]:u8 {
    wr(f:this, w:Wtr) @inline {
       w.n1(f:base);
@@ -121,6 +123,7 @@ decl-struct-end(row:u32, col:u32) {
       a.decl.copy-from(.decl-fvar-v[i]);
    }
    s.real-name = .decl-struct-real-name;
+   s.aligned = .decl-struct-aligned;
 }
 struct-attr-real-name(name:Id) {
    if (.decl-struct-flags & #real-name) != #0 {
@@ -129,6 +132,14 @@ struct-attr-real-name(name:Id) {
    }
    .decl-struct-flags |= #real-name;
    .decl-struct-real-name = name;
+}
+struct-attr-aligned(aligned:u32) {
+   if (.decl-struct-flags & #aligned) != #0 {
+      C1.stdout{.input-path '': .last-row '': .last-col ": error @aligned specified more than once\n"}
+      C.exit(#failure);
+   }
+   .decl-struct-flags |= #aligned;
+   .decl-struct-aligned = aligned;
 }
 struct-attr-no-decl() {
    if (.decl-struct-flags & #no-decl) != #0 {

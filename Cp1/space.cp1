@@ -37,7 +37,7 @@ struct StmtSpace[
          lvar-i! = space.lvar-v[i];
          lvar! = lvar-i.ptr();
          // C1.stdout{lvar.decl.name "'s lvar.decl.type = " lvar.decl.type:u32 ''\n}
-         if lvar.decl.type == #nil {
+         if (lvar.decl.type == #nil) && (lvar.decl.name == .id-blank) {
             // Don't output a parser-generated lvar if it was not used
          } else {
             lvar.decl.write-lvar-type(lvar-i);

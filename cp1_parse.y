@@ -983,6 +983,8 @@ decl_struct_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _NCp1_Pstruct_attr_real_name_1(e.basic.id); }
 decl_struct_attr ::= SPACE_AT_REAL_NAME.
    { _NCp1_Pstruct_attr_real_name_1(-1); }
+decl_struct_attr ::= SPACE_AT_ALIGNED OPEN_PARENTHESIS NUM_I32(n) CLOSE_PARENTHESIS.
+   { _NCp1_Pstruct_attr_aligned_1(n.basic.id); }
 /* decl_struct_attr ::= SPACE_AT_UNION.
    { _NCp1_Pstruct_attr_union_0(); } */
 decl_struct_attrs_list ::= decl_struct_attr.

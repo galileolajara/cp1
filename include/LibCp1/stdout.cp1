@@ -158,7 +158,11 @@ using LibCp1 {
          so.reserve += len;
       }
       stdout-cstr(so:this, str:char @const[], len:u32, unused:intc) @inline {
-         stdout-bytes-nr(str, len);
+         if len == 1 {
+            C1.stdout-char-nr(str[0]);
+         } else {
+            stdout-bytes-nr(str, len);
+         }
       }
       stdout-reserve-end(so:this) @inline {
          stdout-reserve(so.reserve);

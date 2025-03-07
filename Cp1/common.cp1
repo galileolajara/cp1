@@ -35,6 +35,7 @@ meta #BuildCommonCodes {
          method-cap:i32,
          method-v:Func[],
 #  }
+         aligned:u32,
          fvar-c:u32,
          fvar-v:FvarData.[0],
       ];

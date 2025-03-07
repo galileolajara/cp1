@@ -454,6 +454,9 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
       } else {
          s.real-name = #nil;
       }
+      if (s.flags & #aligned) != #0 {
+         s.aligned = r.n();
+      }
    }
    func-c! = r.n():Func;
    // C1.stdout{"There are " func-c " functions\n"}
@@ -1366,7 +1369,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       }
       s.at.write-space();
       if s.fvar-c == 0 {
-         output{" {\nchar unused;\n};\n"}
+         output{" {\nchar unused;\n}"}
       } else {
          output{" {\n"}
          loop j = 0; s.fvar-c; j++ {
@@ -1374,8 +1377,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             fvar.decl.write-type(#fvar);
             output{";\n"}
          }
-         output{"};\n"}
+         output{"}"}
       }
+      if (s.flags & #aligned) != #0 {
+         output{" __attribute__((aligned(" s.aligned ")))"}
+      }
+      output{";\n"}
    }
    loop i = 0; .gvar-outputted-c; i++ {
       g-i! = .gvar-outputted-v[i];

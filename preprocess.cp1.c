@@ -68,9 +68,9 @@ void _NCp1_Ppreprocess_init_0();
 void _NCp1_Ppreprocess_2(void** _Lin_out_data_0, size_t* _Lin_out_size_1);
 bool _NCp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
+static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0);
 static inline void _NLibCp1_Pstdout_bytes_nr_2(const void* _Ldata_0, size_t _Lsize_1);
 static inline void _NLibCp1_Pstdout_flush_0();
-static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0);
 void* _NCp1_Pread_file_5(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_after_2, size_t _Lmax_size_3, size_t* _Lout_size_4);
 static inline void _Tu32_Pstdout_reserve_3(uint32_t _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
 static inline void _Tu32_Pstdout_3(uint32_t _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
@@ -310,7 +310,11 @@ static inline void _NLibCp1_NStdOut_Pstdout_reserve_end_1(struct _NLibCp1_NStdOu
 _NLibCp1_Pstdout_reserve_1((*_Lso_0)._Freserve);
 }
 static inline void _NLibCp1_NStdOut_Pstdout_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, const char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3) {
+if(_Llen_2 == 1) {
+_NLibCp1_Pstdout_char_nr_1(_Lstr_1[0]);
+} else {
 _NLibCp1_Pstdout_bytes_nr_2(_Lstr_1, _Llen_2);
+}
 }
 static inline void _Tchar_Pstdout_arr_3(const char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, uint32_t _Llen_2) {
 _NLibCp1_Pstdout_bytes_nr_2(_Lstr_0, _Llen_2);
@@ -682,6 +686,9 @@ break_0:;
 _NLibC_Prealloc_arr_2(_Gstdout_buf_data, _Gstdout_buf_cap);
 }
 }
+static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0) {
+_Gstdout_buf_data[_Gstdout_buf_len++] = _Lval_0;
+}
 static inline void _NLibCp1_Pstdout_bytes_nr_2(const void* _Ldata_0, size_t _Lsize_1) {
 memcpy(&_Gstdout_buf_data[_Gstdout_buf_len], _Ldata_0, _Lsize_1);
 _Gstdout_buf_len += _Lsize_1;
@@ -689,9 +696,6 @@ _Gstdout_buf_len += _Lsize_1;
 static inline void _NLibCp1_Pstdout_flush_0() {
 write(((_NPosix_NFd)(1)), _Gstdout_buf_data, _Gstdout_buf_len);
 _Gstdout_buf_len = 0;
-}
-static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0) {
-_Gstdout_buf_data[_Gstdout_buf_len++] = _Lval_0;
 }
 void* _NCp1_Pread_file_5(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_after_2, size_t _Lmax_size_3, size_t* _Lout_size_4) {
 #ifdef _WIN32

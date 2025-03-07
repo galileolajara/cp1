@@ -861,6 +861,9 @@ write-struct(w:Wtr, header:bool) {
       if (s.flags & #real-name) != #0 {
          s.real-name.wr(w, header);
       }
+      if (s.flags & #aligned) != #0 {
+         w.n(s.aligned);
+      }
    }
 }
 token-name(tok:Token):char[] {

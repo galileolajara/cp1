@@ -94,6 +94,7 @@ void _NCp1_Penum_add_cvar_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol
 void _NCp1_Pdecl_add_cvar_3(_NCp1_NId _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
 void _NCp1_Penum_set_cvar_expr_1(_NCp1_NExprI _Lset_0);
 void _NCp1_Pstruct_attr_real_name_1(_NCp1_NId _Lname_0);
+void _NCp1_Pstruct_attr_aligned_1(uint32_t _Laligned_0);
 void _NCp1_Pstruct_attr_union_0();
 void _NCp1_Pstruct_attr_no_decl_0();
 _NCp1_NExprI _NCp1_Pexpr_str_1(_NCp1_NExprI _Lprev_0);
