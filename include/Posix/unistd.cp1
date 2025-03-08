@@ -9,10 +9,10 @@ include [
    using X = Posix;
    using Posix {
       using Fd {
-         seek(fd:this, offset:usz, seek:Seek):usz @no-decl(lseek);
-         read(fd:this, buf:ref, size:usz):usz @no-decl @real-name;
+         seek(fd:this, offset:usz, seek:Seek):isz @no-decl(lseek);
+         read(fd:this, buf:ref, size:usz):isz @no-decl @real-name;
          close(fd:this):intc @no-decl @real-name;
-         write(fd:this, buf:ref, size:usz):usz @no-decl @real-name;
+         write(fd:this, buf:ref, size:usz):isz @no-decl @real-name;
       }
       enum Seek[
          #set @no-decl(SEEK_SET),

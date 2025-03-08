@@ -98,7 +98,13 @@ void hex32(char* out, uint32_t hex) {
 }
 #include "build-crc32c.c"
 void _NCp1_Pc_init_1(uint32_t js_crc32c) {
-   memcpy(cp1_tmp, "cp1-tmp-", 8);
+   #ifdef _WIN32
+   mkdir("cp1-tmp");
+   #else
+   mkdir("cp1-tmp", 0755);
+   #endif
+
+   memcpy(cp1_tmp, "cp1-tmp/", 8);
    hex32(&cp1_tmp[8], _NCp1_Pbuild_crc32c_0());
    cp1_tmp[cp1_tmp_len - 1] = '\0';
    #ifdef _WIN32
@@ -108,7 +114,7 @@ void _NCp1_Pc_init_1(uint32_t js_crc32c) {
    #endif
    cp1_tmp[cp1_tmp_len - 1] = '/';
 
-   memcpy(cp1_tmp_js, "cp1-tmp-", 8);
+   memcpy(cp1_tmp_js, "cp1-tmp/", 8);
    hex32(&cp1_tmp_js[8], js_crc32c);
    cp1_tmp_js[cp1_tmp_len - 1] = '\0';
    #ifdef _WIN32

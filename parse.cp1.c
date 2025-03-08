@@ -3157,12 +3157,12 @@ return _Lbuf_8;
 #else
 if(true) {
 _NPosix_NFd _Lfd_10 = {0};
-size_t _Lsize_11;
+ssize_t _Lsize_11;
 uint8_t* _Lbuf_12 = {0};
 if(!_NPosix_NFd_Popen_3(&_Lfd_10, _Lpath_0, O_RDONLY)) {
 return NULL;
 }
-_Lsize_11 = ((size_t)(lseek(_Lfd_10, 0, SEEK_END)));
+_Lsize_11 = ((ssize_t)(lseek(_Lfd_10, 0, SEEK_END)));
 if(_Lsize_11 == -1) {
 close(_Lfd_10);
 return NULL;
