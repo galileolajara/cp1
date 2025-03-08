@@ -12159,6 +12159,9 @@ struct _NCp1_NExprSizeOfType* _Le_2 = {0};
 struct _NCp1_NAtData* _Lat_3;
 _Le_2 = ((struct _NCp1_NExprSizeOfType*)(_Lexpr_0));
 (*_Le_2)._Ftype = _NCp1_Pat_validate_5((*_Le_2)._Ftype, (*_Gctx_func)._Fat, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gctx_begin_col);
+if((*_Le_2)._Ftype == _NCp1_NAt_Cnil) {
+return;
+}
 _Lat_3 = ((struct _NCp1_NAtData*)(_NCp1_NAt_Pptr_1((*_Le_2)._Ftype)));
 if((((*_Lat_3)._Ftype != _NCp1_NNameType_Cbasic) && ((*_Lat_3)._Fdecl._Fstructt == _NCp1_NStruct_Cnil))) {
 int _L_4 = {0};
