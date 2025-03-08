@@ -14,6 +14,7 @@ include <stdlib.h> {
       realpath(pathname:char[], resolved:char[]):char[] @real-name @no-decl;
       atoi(str:char[]):intc @real-name @no-decl;
       rand():intc @real-name @no-decl;
+      srand(seed:u32) @real-name @no-decl;
       enum Exit[#success, #failure]:intc;
    }
 }

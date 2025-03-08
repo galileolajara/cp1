@@ -37,18 +37,22 @@
    }
    if (!first) {
       printf("\n");
-      if (
+      if (_Glast_token == CP1_TOKEN_SPACE && (first_expect == CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE && second_expect == CP1_TOKEN_SEMICOLON)) {
+         printf("%s:%u:%u: Maybe you forgot to put semicolon?\n", input_path, _Grow, _Gcol);
+      } else if (
+         (
          _Glast_token == CP1_TOKEN_SPACE_THEN_OPEN_CURLY_BRACE ||
          _Glast_token == CP1_TOKEN_SPACE ||
          _Glast_token == CP1_TOKEN_CLOSE_PARENTHESIS ||
-         _Glast_token == CP1_TOKEN_SPACE_CLOSE_PARENTHESIS) {
+         _Glast_token == CP1_TOKEN_SPACE_CLOSE_PARENTHESIS
+         ) &&
          // Extra parenthesis might be a common error, help them know
-         if (
+            (
             first_expect == CP1_TOKEN_PLUS &&
-            second_expect == CP1_TOKEN_MINUS) {
-            // Detect when the parser is suggesting ++ and -- operators
-            printf("%s:%u:%u: Maybe you have extra parenthesis that are not used?\n", input_path, _Grow, _Gcol);
-         }
+            second_expect == CP1_TOKEN_MINUS
+            )) {
+               // Detect when the parser is suggesting ++ and -- operators
+               printf("%s:%u:%u: Maybe you have extra parenthesis that are not used?\n", input_path, _Grow, _Gcol);
       } else {
          const char* tokname = _NCp1_Ptoken_name_1(_Glast_token);
          if (

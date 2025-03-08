@@ -52,6 +52,19 @@ using ExprI {
       e.left.write-value(e.left-val);
       e-right! = e.right.ptr();
       if (e.type == #eq) && (e-right.type == #ref) {
+         e-left! = e.left.ptr();
+         if (e.type == #eq) && (e-left.type == #lvar) {
+            var lvar:ExprLvar = e-left;
+            if lvar.decl {
+               output{" = (("}
+               ld! = lvar.lvar.ptr().decl;
+               ld.type.write-type-info(ld.type-info, 0 - ld.size-c);
+               output{")((void*)("}
+               e.right.write-value(e.right-val);
+               output{")))"}
+               return;
+            }
+         }
          output{" = ((void*)"}
          e.right.write-value(e.right-val);
          output{'')}

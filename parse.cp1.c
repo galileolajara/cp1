@@ -7687,7 +7687,7 @@ Fputint(_Lw_1, (*_Le_3)._Fvalue._Fii32);
 break;
 case _NCp1_NExprInt_Cf32:;
 uint32_t* _Ln_4 = {0};
-_Ln_4 = ((void*)&(*_Le_3)._Fvalue._Fff32);
+_Ln_4 = ((uint32_t*)((void*)(&(*_Le_3)._Fvalue._Fff32)));
 _NCp1_NWtr_Pn4_2(_Lw_1, _Ln_4[0]);
 break;
 case _NCp1_NExprInt_Cu64:;

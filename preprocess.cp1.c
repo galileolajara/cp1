@@ -122,7 +122,7 @@ if(_Larg_v_1[_Li_6][0] == '-') {
 if(_Larg_v_1[_Li_6][1] == 'D') {
 char* _Lname_7 = {0};
 int32_t _Llen_8;
-_Lname_7 = ((void*)&_Larg_v_1[_Li_6][2]);
+_Lname_7 = ((char*)((void*)(&_Larg_v_1[_Li_6][2])));
 _Llen_8 = ((int32_t)(0));
 while(1) {
 if(_Lname_7[_Llen_8] == '\0') {
@@ -456,7 +456,7 @@ _NLibCp1_NStdOut_Pstdout_cstr_4(&_L_20, ": Error in preprocessing the code, #if(
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_20);
 exit(_NLibC_NExit_Cfailure);
 }
-_Ldef_str_21 = ((void*)&_Lr_6._Fcharr[_Lstart_12]);
+_Ldef_str_21 = ((char*)((void*)(&_Lr_6._Fcharr[_Lstart_12])));
 _Ldef_len_22 = ((int32_t)((_Lrparen_14 - _Lstart_12)));
 _Lok_23 = ((bool)(_NCp1_Ppreprocess_def_get_2(_Ldef_str_21, _Ldef_len_22)));
 if(_Linvert_13) {

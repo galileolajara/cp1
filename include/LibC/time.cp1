@@ -1,0 +1,8 @@
+using LibC {
+   include <time.h> {
+      time(time:usz&):usz @no-decl @real-name;
+      time():usz @inline {
+         return time(null);
+      }
+   }
+}
