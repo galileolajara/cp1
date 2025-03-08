@@ -110,6 +110,8 @@ cvar_attr ::= SPACE_AT_REAL_NAME.
    { _NCp1_Pcvar_attr_real_name_1(-1); }
 cvar_attr ::= SPACE_AT_NO_DECL.
    { _NCp1_Pcvar_attr_no_decl_0(); }
+cvar_attr ::= SPACE_AT_NO_NAME.
+   { _NCp1_Pcvar_attr_no_name_0(); }
 cvar_attr ::= SPACE_AT_NO_DECL_STR(e).
    { _NCp1_Pcvar_attr_no_decl_0(); _NCp1_Pcvar_attr_real_name_1(e.basic.id); }
 cvar_attrs ::= cvar_attr.
@@ -119,8 +121,8 @@ cvar_attrs_optional ::= cvar_attrs.
 enum_cvar ::= enum_cvar_begin cvar_attrs_optional.
 enum_cvar ::= enum_cvar_begin cvar_attrs_optional SPACE_EQUAL SPACE expr(set).
    { _NCp1_Penum_set_cvar_expr_1(set.basic.id); }
-enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional.
-enum_cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional SPACE_EQUAL SPACE expr(set).
+cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional.
+cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional SPACE_EQUAL SPACE expr(set).
    { _NCp1_Penum_set_cvar_expr_1(set.basic.id); }
 enum_decl_begin ::= ENUM SPACE ID_UPPER(name).
    { _NCp1_Pdecl_at_begin_enum_3(name.basic.id, name.basic.row, name.basic.col); }
@@ -211,7 +213,7 @@ decl_import ::= REQUIRE(path) SEMICOLON.
    { _NCp1_Pdecl_import_4(path.basic.id, path.basic.row, path.basic.col, true); }
 decl ::= decl_import.
 
-decl_cvar ::= enum_cvars_decl SEMICOLON.
+decl_cvar ::= cvars_decl SEMICOLON.
 // decl_cvar ::= OPEN_CURLY_BRACE_CVAR_SPACE CLOSE_CURLY_BRACE.
 decl ::= decl_cvar.
 
@@ -392,8 +394,8 @@ struct_fvars ::= fvar.
 struct_fvars ::= struct_fvars COMMA_SPACE fvar.
 enum_cvars ::= enum_cvar.
 enum_cvars ::= enum_cvars COMMA_SPACE enum_cvar.
-enum_cvars_decl ::= enum_cvar_decl.
-enum_cvars_decl ::= enum_cvars_decl COMMA_SPACE enum_cvar_decl.
+cvars_decl ::= cvar_decl.
+cvars_decl ::= cvars_decl COMMA_SPACE cvar_decl.
 
 typeInfo ::= typeInfo_arr.
 typeInfo ::= typeInfo_ref.

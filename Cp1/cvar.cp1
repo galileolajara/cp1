@@ -30,6 +30,8 @@ enum Cvar[#nil = -1, #0]:i32 {
 
       at-i! = cvar.decl.type;
       if at-i != #nil {
+         at-i = at-validate(at-i, cvar.at, cvar.file, cvar.row, cvar.col);
+         cvar.decl.type = at-i;
          at! = at-i.ptr();
          if (&&, at.type != #basic, at.decl.structt == #nil) {
             C1.stdout{"Error, the type '" at.name.id "' used in cvar '." cvar.decl.name "' was not defined\n"}
@@ -65,6 +67,7 @@ enum CvarFlags[
    #0,
    #set-expr = 1,
    #as-enum = 2,
+   #no-name = 4,
    // #real-name = 2,
    ]:u8 {
    wr(f:this, w:Wtr) @inline {

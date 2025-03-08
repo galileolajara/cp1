@@ -75,6 +75,7 @@
 #define _NCp1_NStructFlags_Caligned (8)
 #define _NCp1_NVarFlags_Cextern (2)
 #define _NCp1_NFuncFlags_Cinline (2)
+#define _NCp1_NCvarFlags_Cno_name (4)
 #define _NCp1_NStruct_Cnil (-1)
 #define _NCp1_NIncludeError_Cnone 0
 #define _NCp1_NIncludeError_Csuffix (_NCp1_NIncludeError_Cnone + 1)
@@ -2949,6 +2950,9 @@ _Lcvar_337 = ((struct _NCp1_NCvarData*)(_NCp1_NCvar_Pptr_1(_Lcvar_i_336)));
 if(((*_Lcvar_337)._Fflags & _NCp1_NCvarFlags_Cas_enum) == _NCp1_NCvarFlags_C0) {
 goto continue_39;
 }
+if(((*_Lcvar_337)._Fflags & _NCp1_NCvarFlags_Cno_name) != _NCp1_NCvarFlags_C0) {
+goto continue_39;
+}
 _NCp1_Poutput_1(&_L_339);
 _NCp1_NOutput_Poutput_reserve_cstr_4(&_L_339, "case ", 5u, _L_338);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_339);
@@ -5103,6 +5107,8 @@ return false;
 _Lat_i_5 = ((_NCp1_NAt)((*_Lcvar_4)._Fdecl._Ftype));
 if(_Lat_i_5 != _NCp1_NAt_Cnil) {
 struct _NCp1_NAtData* _Lat_6;
+_Lat_i_5 = _NCp1_Pat_validate_5(_Lat_i_5, (*_Lcvar_4)._Fat, (*_Lcvar_4)._Ffile, (*_Lcvar_4)._Frow, (*_Lcvar_4)._Fcol);
+(*_Lcvar_4)._Fdecl._Ftype = _Lat_i_5;
 _Lat_6 = ((struct _NCp1_NAtData*)(_NCp1_NAt_Pptr_1(_Lat_i_5)));
 if((((*_Lat_6)._Ftype != _NCp1_NNameType_Cbasic) && ((*_Lat_6)._Fdecl._Fstructt == _NCp1_NStruct_Cnil))) {
 int _L_7 = {0};

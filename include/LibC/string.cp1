@@ -7,6 +7,7 @@ include <string.h> {
       strdup(s:char[]):char[] @real-name @no-decl;
       strrchr(s:char[], c:intc):char[] @real-name @no-decl;
       memcpy(dst:ref, src:ref, n:usz):ref @real-name @no-decl;
+      memmove(dst:ref, src:ref, n:usz):ref @real-name @no-decl;
       memcmp(s1:ref, s2:ref, n:usz):intc @real-name @no-decl;
       memset(dst:ref, c:intc, n:usz):ref @real-name @no-decl;
       memset(dst:ref):ref @decl('{#define _NLibC_Pmemset_1(dst) memset(dst, 0, sizeof(dst[0]))});

@@ -136,6 +136,7 @@ export() {
    expr-char(0);
    cvar-attr-real-name(#nil);
    cvar-attr-no-decl();
+   cvar-attr-no-name();
 }
  
 

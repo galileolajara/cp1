@@ -188,6 +188,10 @@ cvar-attr-no-decl() {
    c! = .last-cvar.ptr();
    c.decl.flags |= #no-decl;
 }
+cvar-attr-no-name() {
+   c! = .last-cvar.ptr();
+   c.flags |= #no-name;
+}
  
 
 }

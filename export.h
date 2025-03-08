@@ -131,3 +131,4 @@ _NCp1_NExprI _NCp1_Pexpr_bool_1(bool _Lvalue_0);
 _NCp1_NExprI _NCp1_Pexpr_char_1(int32_t _Lvalue_0);
 void _NCp1_Pcvar_attr_real_name_1(_NCp1_NId _Lname_0);
 void _NCp1_Pcvar_attr_no_decl_0();
+void _NCp1_Pcvar_attr_no_name_0();

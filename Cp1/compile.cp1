@@ -1447,6 +1447,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             cvar-i! = v[i];
             cvar! = cvar-i.ptr();
             if (cvar.flags & #as-enum) == #0 { continue }
+            if (cvar.flags & #no-name) != #0 { continue }
             output{"case "}
             cvar-i.write();
             output{": return \"" cvar.decl.name "\";\n"}

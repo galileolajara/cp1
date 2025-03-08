@@ -41,7 +41,8 @@
 #define _NCp1_NToken_Cspace_at_real_name_str (_NCp1_NToken_Cid + 1)
 #define _NCp1_NToken_Cspace_at_real_name (_NCp1_NToken_Cspace_at_real_name_str + 1)
 #define _NCp1_NToken_Cspace_at_no_decl (_NCp1_NToken_Cspace_at_real_name + 1)
-#define _NCp1_NToken_Cspace_at_no_decl_str (_NCp1_NToken_Cspace_at_no_decl + 1)
+#define _NCp1_NToken_Cspace_at_no_name (_NCp1_NToken_Cspace_at_no_decl + 1)
+#define _NCp1_NToken_Cspace_at_no_decl_str (_NCp1_NToken_Cspace_at_no_name + 1)
 #define _NCp1_NToken_Cspace_equal (_NCp1_NToken_Cspace_at_no_decl_str + 1)
 #define _NCp1_NToken_Cenum (_NCp1_NToken_Cspace_equal + 1)
 #define _NCp1_NToken_Cinclude (_NCp1_NToken_Cenum + 1)
@@ -264,6 +265,7 @@
 #define _NCp1_NStmtType_Ccase_end (_NCp1_NStmtType_Cdefault + 1)
 #define _NCp1_NStmtType_Cdefault_end (_NCp1_NStmtType_Ccase_end + 1)
 #define _NCp1_NStmtType_Cswitch_end (_NCp1_NStmtType_Cdefault_end + 1)
+#define _NCp1_NCvarFlags_Cno_name (4)
 #define _NPosix_NFd_Cnil (-1)
 #define _NCp1_Cdebug_rd_wr (true)
 #define _NCp1_NStmtType_Cnil (255)
@@ -1204,6 +1206,7 @@ _NCp1_NExprI _NCp1_Pexpr_bool_1(bool _Lvalue_0);
 _NCp1_NExprI _NCp1_Pexpr_char_1(int32_t _Lvalue_0);
 void _NCp1_Pcvar_attr_real_name_1(_NCp1_NId _Lname_0);
 void _NCp1_Pcvar_attr_no_decl_0();
+void _NCp1_Pcvar_attr_no_name_0();
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
 static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0);
 static inline void _NLibCp1_Pstdout_bytes_nr_2(const void* _Ldata_0, size_t _Lsize_1);
@@ -1271,6 +1274,7 @@ case _NCp1_NToken_Cid: return "id";
 case _NCp1_NToken_Cspace_at_real_name_str: return "space-at-real-name-str";
 case _NCp1_NToken_Cspace_at_real_name: return "space-at-real-name";
 case _NCp1_NToken_Cspace_at_no_decl: return "space-at-no-decl";
+case _NCp1_NToken_Cspace_at_no_name: return "space-at-no-name";
 case _NCp1_NToken_Cspace_at_no_decl_str: return "space-at-no-decl-str";
 case _NCp1_NToken_Cspace_equal: return "space-equal";
 case _NCp1_NToken_Cenum: return "enum";
@@ -3091,6 +3095,7 @@ _NCp1_Pexpr_bool_1(false);
 _NCp1_Pexpr_char_1(0);
 _NCp1_Pcvar_attr_real_name_1(_NCp1_NId_Cnil);
 _NCp1_Pcvar_attr_no_decl_0();
+_NCp1_Pcvar_attr_no_name_0();
 }
 void _NCp1_Pquick_alloc_init_0() {
 _Gquick_alloc_cap = (4 * 1024);
@@ -6608,6 +6613,11 @@ void _NCp1_Pcvar_attr_no_decl_0() {
 struct _NCp1_NCvarData* _Lc_0;
 _Lc_0 = ((struct _NCp1_NCvarData*)(_NCp1_NCvar_Pptr_1(_Glast_cvar)));
 (*_Lc_0)._Fdecl._Fflags |= _NCp1_NVarFlags_Cno_decl;
+}
+void _NCp1_Pcvar_attr_no_name_0() {
+struct _NCp1_NCvarData* _Lc_0;
+_Lc_0 = ((struct _NCp1_NCvarData*)(_NCp1_NCvar_Pptr_1(_Glast_cvar)));
+(*_Lc_0)._Fflags |= _NCp1_NCvarFlags_Cno_name;
 }
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0) {
 uint32_t _Lspace_1;
