@@ -1,10 +1,11 @@
+require "LibC/time.cp1";
 include <sys/stat.h> {
+   using C = LibC;
    using X = Posix;
    using Posix {
-      struct Timespec[sec:u32 @real-name(tv_sec), nsec:u32 @real-name(tv_nsec)];
       struct Stat[
-         mtimespec:Timespec. @real-name(st_mtimespec),
-         mtim:Timespec. @real-name(st_mtim),
+         mtimespec:C.Timespec. @real-name(st_mtimespec),
+         mtim:C.Timespec. @real-name(st_mtim),
       ] @real-name(struct stat) @no-decl;
       mkdir(path:char[], mode:intc):intc @real-name @no-decl;
       fstat(file:intc, stat:Stat):intc @real-name @no-decl;

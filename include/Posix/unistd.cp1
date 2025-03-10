@@ -1,4 +1,4 @@
-import "Posix/fcntl.cp1";
+require "Posix/fcntl.cp1";
 include [
 #ifndef _WIN32
 #include <unistd.h>

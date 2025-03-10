@@ -1,9 +1,9 @@
 require "LibCp1/stdout.cp1";
-import "LibC/stdio.cp1";
-import "LibC/stdlib.cp1";
-import "LibC/string.cp1";
-import "Posix/unistd.cp1";
-import "Posix/fcntl.cp1";
+require "LibC/stdio.cp1";
+require "LibC/stdlib.cp1";
+require "LibC/string.cp1";
+require "Posix/unistd.cp1";
+require "Posix/fcntl.cp1";
 using C = LibC;
 using C1 = LibCp1;
 using X = Posix;

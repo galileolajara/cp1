@@ -1009,7 +1009,9 @@ decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE d
    { _NCp1_Pdecl_at_end_0(); }
 decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE.
    { _NCp1_Pdecl_at_end_0(); }
-decl_struct ::= struct_decl_begin open_bracket_or_space CLOSE_BRACKET
+decl_struct ::= struct_decl_begin OPEN_BRACKET CLOSE_BRACKET
+   decl_struct_attrs_optional decl_struct_close_or_at.
+decl_struct ::= struct_decl_begin OPEN_BRACKET SPACE_CLOSE_BRACKET
    decl_struct_attrs_optional decl_struct_close_or_at.
 decl_struct ::= struct_decl_begin open_bracket_or_space struct_fvars close_bracket_or_comma
    decl_struct_attrs_optional decl_struct_close_or_at.
@@ -1039,7 +1041,9 @@ decl_enum_attrs_optional ::= .
 decl_enum_attrs_optional ::= decl_enum_attrs.
 enum_base_end ::= COLON at(at) decl_enum_attrs_optional end_pos(end).
    { _NCp1_Pdecl_enum_end_3(at.basic.id, end.basic.row, end.basic.col); }
-decl_enum ::= enum_decl_begin open_bracket_or_space CLOSE_BRACKET enum_base_begin enum_base_end
+decl_enum ::= enum_decl_begin OPEN_BRACKET CLOSE_BRACKET enum_base_begin enum_base_end
+   decl_enum_close_or_at.
+decl_enum ::= enum_decl_begin OPEN_BRACKET SPACE_CLOSE_BRACKET enum_base_begin enum_base_end
    decl_enum_close_or_at.
 decl_enum ::= enum_decl_begin open_bracket_or_space enum_cvars close_bracket_or_comma enum_base_begin enum_base_end
    decl_enum_close_or_at.

@@ -1,5 +1,5 @@
-import "LibC/stdio.cp1";
-import "Posix/stat.cp1";
+require "LibC/stdio.cp1";
+require "Posix/stat.cp1";
 include <fcntl.h> {
    using C = LibC;
    using X = Posix;
