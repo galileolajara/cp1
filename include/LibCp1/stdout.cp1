@@ -52,6 +52,36 @@ using LibCp1 {
          .stdout-buf-len += digits;
       }
    }
+   stdout-u64(val:u64) {
+      stdout-reserve(20);
+      stdout-u64-nr(val);
+   }
+   stdout-u64-nr(val:u64) {
+      if val == 0 {
+         .stdout-buf-data[.stdout-buf-len++] = ''0;
+      } else {
+         // integer to string, count the digits
+         var data:char[];
+         data = &.stdout-buf-data[.stdout-buf-len];
+         digits! = 0;
+         loop {
+            data[digits++] = (val % 10) + ''0;
+            val /= 10;
+            if val == 0 { break }
+         }
+         // reverse the string
+         start! = 0;
+         end! = digits - 1;
+         loop start < end {
+            tmp! = data[start];
+            data[start] = data[end];
+            data[end] = tmp;
+            start++;
+            end--;
+         }
+         .stdout-buf-len += digits;
+      }
+   }
    stdout-i32(val:u32) {
       stdout-reserve(11);
       stdout-i32-nr(val);
@@ -221,6 +251,22 @@ using i8 {
    }
    stdout(val:this, so:C1.StdOut, unused:intc) @inline {
       C1.stdout-i32-nr(val);
+   }
+}
+using usz {
+   stdout-reserve(val:this, so:C1.StdOut, unused:intc) @inline {
+      so.reserve += 20;
+   }
+   stdout(val:this, so:C1.StdOut, unused:intc) @inline {
+      C1.stdout-u64-nr(val);
+   }
+}
+using u64 {
+   stdout-reserve(val:this, so:C1.StdOut, unused:intc) @inline {
+      so.reserve += 20;
+   }
+   stdout(val:this, so:C1.StdOut, unused:intc) @inline {
+      C1.stdout-u64-nr(val);
    }
 }
 using u32 {
