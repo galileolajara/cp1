@@ -1,1 +1,0 @@
-<libc/stdio.cp1>
