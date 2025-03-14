@@ -109,16 +109,24 @@ using ExprI {
    value-cvar(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       var expr:ExprCvar = e.ptr();
       cvar! = expr.cvar.ptr();
-      v.set(reff, paren, cvar.decl.type, cvar.decl.type-info);
-      if v.reff == 1 {
-         v.paren = false;
+      if (cvar.decl.type == #nil) && ((cvar.flags & #set-expr) != #0) {
+         ok = cvar.expr-set.value(reff, paren, v);
+      } else {
+         v.set(reff, paren, cvar.decl.type, cvar.decl.type-info);
+         if v.reff == 1 {
+            v.paren = false;
+         }
+         ok = true;
       }
-      ok = true;
    }
    type-cvar(expr:Expr, at:At&) @case.type() @inline {
       var e:ExprCvar = expr;
       cvar! = e.cvar.ptr();
-      at = cvar.decl.type;
+      if (cvar.decl.type == #nil) && ((cvar.flags & #set-expr) != #0) {
+         at = cvar.expr-set.type();
+      } else {
+         at = cvar.decl.type;
+      }
    }
    process-cvar(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprCvar = expr;

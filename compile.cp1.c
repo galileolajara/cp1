@@ -13841,11 +13841,15 @@ struct _NCp1_NExprCvar* _Lexpr_5 = {0};
 struct _NCp1_NCvarData* _Lcvar_6;
 _Lexpr_5 = ((struct _NCp1_NExprCvar*)(_NCp1_NExprI_Pptr_1(_Le_0)));
 _Lcvar_6 = ((struct _NCp1_NCvarData*)(_NCp1_NCvar_Pptr_1((*_Lexpr_5)._Fcvar)));
+if((((*_Lcvar_6)._Fdecl._Ftype == _NCp1_NAt_Cnil) && (((*_Lcvar_6)._Fflags & _NCp1_NCvarFlags_Cset_expr) != _NCp1_NCvarFlags_C0))) {
+(*_Lok_4) = _NCp1_NExprI_Pvalue_4((*_Lcvar_6)._Fexpr_set, _Lreff_1, _Lparen_2, _Lv_3);
+} else {
 _NCp1_NValue_Pset_5(_Lv_3, _Lreff_1, _Lparen_2, (*_Lcvar_6)._Fdecl._Ftype, &(*_Lcvar_6)._Fdecl._Ftype_info);
 if((*_Lv_3)._Freff == 1) {
 (*_Lv_3)._Fparen = false;
 }
 (*_Lok_4) = true;
+}
 }
 static inline void _NCp1_NExprI_Pvalue_bools_5(_NCp1_NExprI _Le_0, int32_t _Lreff_1, bool _Lparen_2, struct _NCp1_NValue* _Lv_3, bool* _Lok_4) {
 (*_Lv_3)._Ftype = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cbool);
@@ -14615,7 +14619,11 @@ struct _NCp1_NExprCvar* _Le_2 = {0};
 struct _NCp1_NCvarData* _Lcvar_3;
 _Le_2 = ((struct _NCp1_NExprCvar*)(_Lexpr_0));
 _Lcvar_3 = ((struct _NCp1_NCvarData*)(_NCp1_NCvar_Pptr_1((*_Le_2)._Fcvar)));
+if((((*_Lcvar_3)._Fdecl._Ftype == _NCp1_NAt_Cnil) && (((*_Lcvar_3)._Fflags & _NCp1_NCvarFlags_Cset_expr) != _NCp1_NCvarFlags_C0))) {
+(*_Lat_1) = _NCp1_NExprI_Ptype_1((*_Lcvar_3)._Fexpr_set);
+} else {
 (*_Lat_1) = (*_Lcvar_3)._Fdecl._Ftype;
+}
 }
 static inline void _NCp1_NExprI_Ptype_bools_2(struct _NCp1_NExpr* _Lexpr_0, _NCp1_NAt* _Lat_1) {
 (*_Lat_1) = _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cbool);

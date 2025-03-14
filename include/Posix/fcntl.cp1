@@ -4,7 +4,7 @@ include <fcntl.h> {
    using C = LibC;
    using X = Posix;
    using Posix {
-      enum Fd[#nil = -1]:intc {
+      enum Fd[#in, #out, #nil = -1]:intc {
          open(file:this&, path:char[], flags:OpenFlags):bool @inline {
             fd! = X.open(path, flags);
             if fd != #nil {

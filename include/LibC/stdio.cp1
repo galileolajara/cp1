@@ -7,6 +7,7 @@ include <stdio.h> {
       scanf(fmt:char @const[]):intc @var-args @no-decl @real-name;
       sscanf(str:char[], fmt:char @const[]):intc @var-args @no-decl @real-name;
 
+      var in:File @no-decl(stdin);
       var out:File @no-decl(stdout);
       struct File[] @no-decl(FILE) {
          printf(f:this, str:char @const[]):intc @var-args @no-decl(fprintf);
@@ -15,6 +16,7 @@ include <stdio.h> {
             return fwrite(buf, 1, size, f);
          }
          putc(c:intc, f:this):intc @no-decl(fputc);
+         gets(line:char[], size:intc, f:this):char[] @no-decl(fgets);
          close(f:this):intc @no-decl(fclose);
       }
       rename(old:char[], new:char[]):intc @no-decl @real-name;
