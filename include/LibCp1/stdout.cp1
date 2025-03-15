@@ -136,6 +136,9 @@ using LibCp1 {
       }
    }
    stdout-reserve(len:u32) {
+      "#ifdef LIBCP1_ON_STDOUT";
+      len++; // + 1 for null terminator, used for LIBCP1_ON_STDOUT
+      "#endif";
       space! = .stdout-buf-cap - .stdout-buf-len;
       if space < len {
          if .stdout-buf-cap == 0 {
@@ -180,7 +183,11 @@ using LibCp1 {
    }
    stdout-flush() @inline {
       // file descriptor 1 = standard output
+      "#ifdef LIBCP1_ON_STDOUT";
+      "LIBCP1_ON_STDOUT(_Gstdout_buf_data, _Gstdout_buf_len);";
+      "#else";
       1:X.Fd.write(.stdout-buf-data, .stdout-buf-len);
+      "#endif";
       .stdout-buf-len = 0;
    }
    struct StdOut[reserve:u32] {
