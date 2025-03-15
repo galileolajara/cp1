@@ -442,6 +442,9 @@ exit(_NLibC_NExit_Cfailure);
 }
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0) {
 uint32_t _Lspace_1;
+#ifdef LIBCP1_ON_STDOUT
+_Llen_0++;
+#endif
 _Lspace_1 = ((uint32_t)((_Gstdout_buf_cap - _Gstdout_buf_len)));
 if(_Lspace_1 < _Llen_0) {
 if(_Gstdout_buf_cap == 0) {
@@ -467,6 +470,10 @@ memcpy(&_Gstdout_buf_data[_Gstdout_buf_len], _Ldata_0, _Lsize_1);
 _Gstdout_buf_len += _Lsize_1;
 }
 static inline void _NLibCp1_Pstdout_flush_0() {
+#ifdef LIBCP1_ON_STDOUT
+LIBCP1_ON_STDOUT(_Gstdout_buf_data, _Gstdout_buf_len);
+#else
 write(((_NPosix_NFd)(1)), _Gstdout_buf_data, _Gstdout_buf_len);
+#endif
 _Gstdout_buf_len = 0;
 }
