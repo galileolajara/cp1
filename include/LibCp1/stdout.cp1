@@ -9,10 +9,18 @@ using LibCp1 {
    var stdout-buf-cap:u32;
    var stdout-buf-len:u32;
    stdout(so:StdOut) @meta(stdout-reserve stdout end) @inline {
+      "#ifdef LIBCP1_ON_STDOUT";
+      so.reserve = 1; // + 1 for null terminator, used for LIBCP1_ON_STDOUT
+      "#else";
       so.reserve = 0;
+      "#endif";
    }
    stdbuf(so:StdOut) @meta(stdout-reserve stdout end-no-flush) @inline {
+      "#ifdef LIBCP1_ON_STDOUT";
+      so.reserve = 1; // + 1 for null terminator, used for LIBCP1_ON_STDOUT
+      "#else";
       so.reserve = 0;
+      "#endif";
    }
    stdout-bytes(data:ref @const, size:usz) @inline {
       stdout-reserve(size);
@@ -136,9 +144,6 @@ using LibCp1 {
       }
    }
    stdout-reserve(len:u32) {
-      "#ifdef LIBCP1_ON_STDOUT";
-      len++; // + 1 for null terminator, used for LIBCP1_ON_STDOUT
-      "#endif";
       space! = .stdout-buf-cap - .stdout-buf-len;
       if space < len {
          if .stdout-buf-cap == 0 {

@@ -3108,7 +3108,11 @@ _NCp1_Pwrite_file_3(_Loutput_file_10, output_data, output_len);
 return 0;
 }
 static inline void _NLibCp1_Pstdout_1(struct _NLibCp1_NStdOut* _Lso_0) {
+#ifdef LIBCP1_ON_STDOUT
+(*_Lso_0)._Freserve = 1;
+#else
 (*_Lso_0)._Freserve = 0;
+#endif
 }
 static inline void _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(struct _NLibCp1_NStdOut* _Lso_0, const char* _Lstr_1, uint32_t _Llen_2, int _Lunused_3) {
 (*_Lso_0)._Freserve += _Llen_2;
@@ -3257,7 +3261,11 @@ break_4:;
 return true;
 }
 static inline void _NLibCp1_Pstdbuf_1(struct _NLibCp1_NStdOut* _Lso_0) {
+#ifdef LIBCP1_ON_STDOUT
+(*_Lso_0)._Freserve = 1;
+#else
 (*_Lso_0)._Freserve = 0;
+#endif
 }
 static inline void _NLibCp1_NStdOut_Pstdout_reserve_end_no_flush_1(struct _NLibCp1_NStdOut* _Lso_0) {
 _NLibCp1_Pstdout_reserve_1((*_Lso_0)._Freserve);
@@ -5986,9 +5994,6 @@ return true;
 }
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0) {
 uint32_t _Lspace_1;
-#ifdef LIBCP1_ON_STDOUT
-_Llen_0++;
-#endif
 _Lspace_1 = ((uint32_t)((_Gstdout_buf_cap - _Gstdout_buf_len)));
 if(_Lspace_1 < _Llen_0) {
 if(_Gstdout_buf_cap == 0) {
