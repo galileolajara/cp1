@@ -21,5 +21,8 @@ include <math.h> {
       radian(f:this):f32 @inline {
          return f * (#pi / 180.0f);
       }
+      degree(f:this):f32 @inline {
+         return f * (180.0f / #pi);
+      }
    }
 }
