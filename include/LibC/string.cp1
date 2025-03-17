@@ -10,7 +10,8 @@ include <string.h> {
       memmove(dst:ref, src:ref, n:usz):ref @real-name @no-decl;
       memcmp(s1:ref, s2:ref, n:usz):intc @real-name @no-decl;
       memset(dst:ref, c:intc, n:usz):ref @real-name @no-decl;
-      memset(dst:ref):ref @decl('{#define _NLibC_Pmemset_1(dst) memset(dst, 0, sizeof(dst[0]))});
+      memset(dst:ref):ref @decl('{# memset(dst, 0, sizeof(dst[0]))});
+      memset-arr(dst:ref, c:intc):ref @decl('{# memset(dst, 0, (c) * sizeof(dst[0]))});
 
       strerror(e:intc):char[] @real-name @no-decl;
    }
