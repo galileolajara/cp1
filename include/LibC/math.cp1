@@ -16,6 +16,8 @@ include <math.h> {
       atan2(y:this, x:f32):f32 @no-decl(atan2f);
       cos(rad:this):f32 @no-decl(cosf);
       sin(rad:this):f32 @no-decl(sinf);
+      floor(val:this):f32 @no-decl(floorf);
+      ceil(val:this):f32 @no-decl(ceilf);
 
       #pi:f32 @no-decl(M_PI);
       radian(f:this):f32 @inline {
