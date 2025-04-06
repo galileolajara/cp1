@@ -82,6 +82,7 @@ id-add(id-len:u8, id-str:char[]):Id {
       grow(.id-cap, .id-c);
       realloc(.id-len-v, .id-cap, old-cap);
       realloc(.id-str-v, .id-cap, old-cap);
+      realloc(.id-c-name-v, .id-cap, old-cap); 
    }
    .id-len-v[id-idx] = id-len;
    .id-str-v[id-idx] = id-str;
@@ -913,9 +914,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .template-inst-cap = 32:TemplateInst;
    C.malloc-arr(.template-inst-v, .template-inst-cap:base);
 
-   .id-set = id-add(3, "set");
-   .id-add = id-add(3, "add");
-
    loop i = 0; input-file-c; i++ {
       inc! = include-add(input-file-len-v[i], input-file-v[i]);
       if !inc.validate(err!) {
@@ -1165,7 +1163,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       f.flags |= #real-name;
    }
 
-   quick-alloc-arr(.id-c-name-v, .id-c); 
+   .id-set = id-add(3, "set");
+   .id-add = id-add(3, "add");
+
    if true {
       func-c8! = (.func-c:base + 7) >> 3;
       quick-alloc-arr(.func-in-process, func-c8);
@@ -1201,6 +1201,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    // process the main function
    .process-first = #nil;
    .process-last = #nil;
+
    loop f-idx = 0:Func; .func-c; f-idx++ {
       f! = f-idx.ptr();
       if f.flags & #overload-get {

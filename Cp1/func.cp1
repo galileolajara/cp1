@@ -319,21 +319,21 @@ func-attr-overload-get() {
       C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload-get specified more than once\n"}
       C.exit(#failure);
    }
-   .decl-func-flags |= #overload-get;
+   // .decl-func-flags |= #overload-get;
 }
 func-attr-overload-set() {
    if (.decl-func-flags & #overload-set) != #0 {
       C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload-set specified more than once\n"}
       C.exit(#failure);
    }
-   .decl-func-flags |= #overload-set;
+   // .decl-func-flags |= #overload-set;
 }
 func-attr-overload-math() {
    if (.decl-func-flags & #overload-math) != #0 {
       C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload-math specified more than once\n"}
       C.exit(#failure);
    }
-   .decl-func-flags |= #overload-math;
+   // .decl-func-flags |= #overload-math;
 }
 func-attr-real-name(name:Id) {
    if (.decl-func-flags & #real-name) != #0 {
