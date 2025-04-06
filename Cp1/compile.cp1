@@ -363,6 +363,9 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
       e.at.rd(r);
       e.base-type.rd(r);
       e.flags.rd(r);
+      e.overload-get-last = #nil;
+      e.overload-set-last = #nil;
+      e.overload-math-last = #nil;
       at-i! = e.at;
       at! = at-i.ptr();
       if at.def != #undefined {
@@ -661,6 +664,10 @@ var define-c:u16;
 var include-path-v:char[][];
 var include-path-len-v:u16[];
 var include-path-c:u8;
+
+var id-set:Id;
+var id-add:Id;
+
 c-init(crc32c:u32);
 quickjs-begin(file:char[], file-len:u8, tc-name:char[], tc-name-len:u8, code-crc32c:u32, arg-crc32c:u32, require:bool):bool;
 quickjs-hex(data:char[], code-crc32c:u32):u32;
@@ -905,6 +912,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    C.malloc-arr(.import-required-v, (.import-cap + 7) >> 3);
    .template-inst-cap = 32:TemplateInst;
    C.malloc-arr(.template-inst-v, .template-inst-cap:base);
+
+   .id-set = id-add(3, "set");
+   .id-add = id-add(3, "add");
 
    loop i = 0; input-file-c; i++ {
       inc! = include-add(input-file-len-v[i], input-file-v[i]);
@@ -1191,6 +1201,84 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    // process the main function
    .process-first = #nil;
    .process-last = #nil;
+   loop f-idx = 0:Func; .func-c; f-idx++ {
+      f! = f-idx.ptr();
+      if f.flags & #overload-get {
+         // C1.stdout{"overload-get\n"}
+         at! = f.at.ptr();
+         if at.def != #enum {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-get is only applicable to enum types\n"}
+            C.exit(#failure);
+         }
+         if (f.farg-c != 1) || (f.group-c != 1) {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-get must have exactly 1 argument only\n"}
+            C.exit(#failure);
+         }
+         if !f-idx.process-later() { return -1 }
+         if f.decl.type != f.at {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-get must have a return type same as the namespace where it was declared\n"}
+            C.exit(#failure);
+         }
+         e! = at.decl.enumm.ptr();
+         e.flags |= #overload-get;
+         f.list1-prev = e.overload-get-last;
+         e.overload-get-last = f-idx;
+      } elif f.flags & #overload-set {
+         at! = f.at.ptr();
+         if at.def != #enum {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-set is only applicable to enum types\n"}
+            C.exit(#failure);
+         }
+         if f.this-idx == -1 {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-set is only applicable to methods\n"}
+            C.exit(#failure);
+         }
+         if f.this-idx != 0 {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-set must have 'this' as the first argument\n"}
+            C.exit(#failure);
+         }
+         if (f.farg-c != 4) || (f.group-c != 1) {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-set must have exactly 3 arguments only\n"}
+            C.exit(#failure);
+         }
+         if !f-idx.process-later() { return -1 }
+         // if f.decl.type != f.at {
+         //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-set must have a return type same as the namespace where it was declared\n"}
+         //    C.exit(#failure);
+         // }
+         e! = at.decl.enumm.ptr();
+         e.flags |= #overload-set;
+         f.list1-prev = e.overload-set-last;
+         e.overload-set-last = f-idx;
+      } elif f.flags & #overload-math {
+         at! = f.at.ptr();
+         if at.def != #enum {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-math is only applicable to enum types\n"}
+            C.exit(#failure);
+         }
+         if f.this-idx == -1 {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-math is only applicable to methods\n"}
+            C.exit(#failure);
+         }
+         if f.this-idx != 0 {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-math must have 'this' as the first argument\n"}
+            C.exit(#failure);
+         }
+         if (f.farg-c != 3) || (f.group-c != 1) {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-math must have exactly 2 arguments only\n"}
+            C.exit(#failure);
+         }
+         if !f-idx.process-later() { return -1 }
+         // if f.decl.type != f.at {
+         //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-math must have a return type same as the namespace where it was declared\n"}
+         //    C.exit(#failure);
+         // }
+         e! = at.decl.enumm.ptr();
+         e.flags |= #overload-math;
+         f.list1-prev = e.overload-math-last;
+         e.overload-math-last = f-idx;
+      }
+   }
    if process-all {
       loop f-i = 0:Func; .func-c; f-i++ {
          f! = f-i.ptr();

@@ -35,6 +35,9 @@ enum EnumFlags[
    #real-name = 1,
    #no-decl = 2,
    #soa-field = 4,
+   #overload-get = 8,
+   #overload-set = 16,
+   #overload-math = 32,
    ]:u8 {
    wr(e:this, w:Wtr) @inline {
       w.n1(e:base);

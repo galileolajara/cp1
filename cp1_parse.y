@@ -308,6 +308,12 @@ func_attr ::= SPACE_AT_NO_DECL_STR(e).
    { _NCp1_Pfunc_attr_no_decl_0(); _NCp1_Pfunc_attr_real_name_1(e.basic.id); }
 func_attr ::= SPACE_AT_NO_BODY.
    { _NCp1_Pfunc_attr_no_body_0(); }
+func_attr ::= SPACE_AT_OVERLOAD_GET.
+   { _NCp1_Pfunc_attr_overload_get_0(); }
+func_attr ::= SPACE_AT_OVERLOAD_SET.
+   { _NCp1_Pfunc_attr_overload_set_0(); }
+func_attr ::= SPACE_AT_OVERLOAD_MATH.
+   { _NCp1_Pfunc_attr_overload_math_0(); }
 func_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _NCp1_Pfunc_attr_real_name_1(e.basic.id); }
 func_attr ::= SPACE_AT_META OPEN_PARENTHESIS ID(id1) SPACE ID(id2) CLOSE_PARENTHESIS.

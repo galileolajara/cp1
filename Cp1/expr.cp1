@@ -10,6 +10,11 @@ using StmtSpace {
       var s:StmtExpr;
       quick-alloc-one(s);
       s.expr.rd(r);
+      var e = s.expr.ptr();
+      if e.type == #assign {
+         var assign:ExprAssign = e;
+         assign.is-stmt = true;
+      }
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #expr);
    }
 }

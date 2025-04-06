@@ -40,6 +40,9 @@ export() {
    func-attr-var-args();
    func-attr-no-decl();
    func-attr-no-body();
+   func-attr-overload-get();
+   func-attr-overload-set();
+   func-attr-overload-math();
    func-attr-real-name(#nil);
    func-attr-meta-method(#nil, #nil, #nil);
    func-attr-case(#nil);

@@ -25,6 +25,9 @@ enum FuncFlags[
    #cp1-name = 256,
    #decl = 512,
    #meta-method = 1024,
+   #overload-get = 2048,
+   #overload-set = 4096,
+   #overload-math = 8192,
    ]:u32 {
    wr(e:this, w:Wtr) @inline {
       w.n(e:base);
@@ -310,6 +313,27 @@ func-attr-no-body() {
       C.exit(#failure);
    }
    .decl-func-flags |= #no-body;
+}
+func-attr-overload-get() {
+   if (.decl-func-flags & #overload-get) != #0 {
+      C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload-get specified more than once\n"}
+      C.exit(#failure);
+   }
+   .decl-func-flags |= #overload-get;
+}
+func-attr-overload-set() {
+   if (.decl-func-flags & #overload-set) != #0 {
+      C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload-set specified more than once\n"}
+      C.exit(#failure);
+   }
+   .decl-func-flags |= #overload-set;
+}
+func-attr-overload-math() {
+   if (.decl-func-flags & #overload-math) != #0 {
+      C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload-math specified more than once\n"}
+      C.exit(#failure);
+   }
+   .decl-func-flags |= #overload-math;
 }
 func-attr-real-name(name:Id) {
    if (.decl-func-flags & #real-name) != #0 {

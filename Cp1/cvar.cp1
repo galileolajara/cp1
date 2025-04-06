@@ -99,11 +99,16 @@ using ExprI {
       e.name.wr(w, header);
    }
    rd-cvar(e-idx:ExprI, r:Rdr) @case.rd() @inline {
+      At.rd(at!, r);
+      Id.rd(name!, r);
+      set-cvar(e-idx, at, name);
+   }
+   set-cvar(e-idx:ExprI, at:At, name:Id) {
       var e:ExprCvar;
       quick-alloc-one(e);
       e-idx.set(e.base, #cvar);
-      e.at.rd(r);
-      e.name.rd(r);
+      e.at = at;
+      e.name = name;
       e.try = #nil;
    }
    value-cvar(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {

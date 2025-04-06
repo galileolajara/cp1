@@ -137,6 +137,9 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "@no-decl"                { return CP1_TOKEN_SPACE_AT_NO_DECL; }
    spaces "@no-name"                { return CP1_TOKEN_SPACE_AT_NO_NAME; }
    spaces "@no-body"                { return CP1_TOKEN_SPACE_AT_NO_BODY; }
+   spaces "@overload-get"           { return CP1_TOKEN_SPACE_AT_OVERLOAD_GET; }
+   spaces "@overload-set"           { return CP1_TOKEN_SPACE_AT_OVERLOAD_SET; }
+   spaces "@overload-math"          { return CP1_TOKEN_SPACE_AT_OVERLOAD_MATH; }
    spaces "@reflection"             { return CP1_TOKEN_SPACE_AT_REFLECTION; }
    spaces "@no-cache"               { return CP1_TOKEN_SPACE_AT_NO_CACHE; }
    spaces "@soa-field"              { return CP1_TOKEN_SPACE_AT_SOA_FIELD; }

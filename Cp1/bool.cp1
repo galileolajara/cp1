@@ -12,10 +12,13 @@ using ExprI {
       w.b(e.value);
    }
    rd-bool(e-idx:ExprI, r:Rdr) @case.rd() @inline {
+      set-bool(e-idx, r.b());
+   }
+   set-bool(e-idx:ExprI, val:bool) {
       var e:ExprBool;
       quick-alloc-one(e);
       e-idx.set(e.base, #bool);
-      e.value = r.b();
+      e.value = val;
    }
    write-bool(expr:Expr) @case.write() @inline {
       var e:ExprBool = expr;

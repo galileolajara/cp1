@@ -114,6 +114,9 @@ meta #BuildCommonCodes {
          method-c:i32,
          method-cap:i32,
          method-v:Func[],
+         overload-get-last:Func,
+         overload-set-last:Func,
+         overload-math-last:Func,
 #  }
       ];
       struct ExprCompare[
@@ -134,10 +137,9 @@ meta #BuildCommonCodes {
 #  if (arg.compile) {
          left-val:Value.,
          right-val:Value.,
+         is-overload:bool,
 #  }
-#  if (!arg.compile) {
          is-stmt:bool,
-#  }
       ];
       struct ExprLvar[
          base:Expr.,
@@ -169,6 +171,7 @@ meta #BuildCommonCodes {
 #  if (arg.compile) {
          left-val:Value.,
          right-val:Value.,
+         is-overload:bool,
 #  }
          item-c:u8,
 #  if (!arg.compile) {
@@ -384,6 +387,7 @@ meta #BuildCommonCodes {
          meta-method-cstr2:Id,
          meta-method-end1:Id,
          meta-method-end2:Id,
+         list1-prev:Func,
 #  } else {
          meta-method-end:Id,
 #  }
