@@ -184,9 +184,9 @@ using ExprI {
       e.right.try-deduce(left-type);
       if (e.item-c == 0) && (left-type-ptr.def == #enum) {
          en! = left-type-ptr.decl.enumm.ptr();
-         if en.flags & #overload-math {
+         f-idx! = en.overload-math-last;
+         if f-idx != #nil {
             e-right-type! = e.right.type();
-            f-idx! = en.overload-math-last;
             f! = f-idx.ptr();
             // loop {
             //    if f.farg-v[1].decl.type == e-right-type {
@@ -200,8 +200,8 @@ using ExprI {
             // f = f-idx.ptr();
             loop {
                en2! = f.farg-v[1].decl.type.ptr().decl.enumm.ptr();
-               if en2.flags & #overload-get {
-                  f2-idx! = en2.overload-get-last;
+               f2-idx! = en2.overload-get-last;
+               if f2-idx != #nil {
                   f2! = f2-idx.ptr();
                   loop {
                      if f2.farg-v[0].decl.type == e-right-type {

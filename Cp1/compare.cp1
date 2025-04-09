@@ -35,6 +35,7 @@ using ExprI {
    write-compare(expr:Expr) @case.write() @inline {
       var e:ExprCompare = expr;
       e.left.write-value(e.left-val);
+      if e.is-overload { return }
       switch e.type {
          case #eq { output{" == "} }
          case #not-eq { output{" != "} }
@@ -47,6 +48,10 @@ using ExprI {
    }
    value-compare(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
       var expr:ExprCompare = e.ptr();
+      if expr.is-overload {
+         ok = expr.left.value(reff, paren, v);
+         return;
+      }
       v.type = basic-type(#bool);
       v.info.init();
       v.info.array-c = 0;
@@ -58,14 +63,79 @@ using ExprI {
    }
    type-compare(expr:Expr, at:At&) @case.type() @inline {
       var e:ExprCompare = expr;
+      if e.is-overload {
+         at = e.left.type();
+         return;
+      }
       at = basic-type(#bool);
    }
    process-compare(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprCompare = expr;
+      left-type! = e.left.type();
+      left-type-ptr! = left-type.ptr();
+      e.right.try-deduce(left-type);
+      if left-type-ptr.def == #enum {
+         en! = left-type-ptr.decl.enumm.ptr();
+         f-idx! = en.overload-compare-last;
+         if f-idx != #nil {
+            e-right-type! = e.right.type();
+            f! = f-idx.ptr();
+            // loop {
+            //    if f.farg-v[1].decl.type == e-right-type {
+            //       break;
+            //    }
+            //    f-idx = f.list1-prev;
+            //    if f-idx == #nil { break }
+            //    f = f-idx.ptr();
+            // }
+            // f-idx = en.overload-compare-last;
+            // f = f-idx.ptr();
+            loop {
+               en2! = f.farg-v[1].decl.type.ptr().decl.enumm.ptr();
+               f2-idx! = en2.overload-get-last;
+               if f2-idx != #nil {
+                  f2! = f2-idx.ptr();
+                  loop {
+                     if f2.farg-v[0].decl.type == e-right-type {
+                        e-func! = ExprI.alloc();
+                        var group-v:u8[1];
+                        group-v[0] = 1;
+                        var carg-v:ExprI[1];
+                        carg-v[0] = e.right;
+                        set-func(e-func, f2.at, f2.decl.name, 1, group-v, 1, carg-v);
+                        if true {
+                           e-method! = ExprI.alloc();
+                           var group-v:u8[1];
+                           group-v[0] = 2;
+                           var carg-v:ExprI[2];
+                           carg-v[0] = e-func;
+                           e-cvar! = ExprI.alloc();
+                           set-cvar(e-cvar, #nil, .id-gt);
+                           carg-v[1] = e-cvar;
+                           set-method(e-method, e.left, f.decl.name, 1, group-v, 2, carg-v);
+                           e.left = e-method;
+                           e.is-overload = true;
+                        }
+                        if !e.left.value(1, true, e.left-val) {
+                           return;
+                        }
+                        ok = true;
+                        return;
+                     }
+                     f2-idx = f2.list1-prev;
+                     if f2-idx == #nil { break }
+                     f2 = f2-idx.ptr();
+                  }
+               }
+               f-idx = f.list1-prev;
+               if f-idx == #nil { break }
+               f = f-idx.ptr();
+            }
+         }
+      }
       if !e.left.value(1, true, e.left-val) {
          return;
       }
-      e.right.try-deduce(e.left-val.type);
       if !e.right.value(1, true, e.right-val) {
          return;
       }

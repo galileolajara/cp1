@@ -731,6 +731,7 @@ write-func(w:Wtr, header:bool) @inline {
          w.n(f.decl-len);
          w.copy(f.decl-str, f.decl-len);
       }
+      w.n1(f.overload:base);
    }
    .func-main.wr(w);
    loop i = 0; .func-c; {

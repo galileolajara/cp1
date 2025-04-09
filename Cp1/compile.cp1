@@ -367,6 +367,10 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
       e.overload-get-last = #nil;
       e.overload-set-last = #nil;
       e.overload-math-last = #nil;
+      e.overload-compare-last = #nil;
+      e.overload-if-begin = #nil;
+      e.overload-if-else = #nil;
+      e.overload-if-end = #nil;
       at-i! = e.at;
       at! = at-i.ptr();
       if at.def != #undefined {
@@ -547,6 +551,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
          f.decl-str[len] = 0;
          r.pos += len;
       }
+      f.overload = r.n1():Overload;
       at! = at-i.ptr();
       name! = f.decl.name;
       func-v! = at.func-v;
@@ -668,6 +673,7 @@ var include-path-c:u8;
 
 var id-set:Id;
 var id-add:Id;
+var id-gt:Id;
 
 c-init(crc32c:u32);
 quickjs-begin(file:char[], file-len:u8, tc-name:char[], tc-name-len:u8, code-crc32c:u32, arg-crc32c:u32, require:bool):bool;
@@ -1165,6 +1171,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
 
    .id-set = id-add(3, "set");
    .id-add = id-add(3, "add");
+   .id-gt = id-add(2, "gt");
 
    if true {
       func-c8! = (.func-c:base + 7) >> 3;
@@ -1204,7 +1211,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
 
    loop f-idx = 0:Func; .func-c; f-idx++ {
       f! = f-idx.ptr();
-      if f.flags & #overload-get {
+      if f.overload == #get {
          // C1.stdout{"overload-get\n"}
          at! = f.at.ptr();
          if at.def != #enum {
@@ -1221,10 +1228,10 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             C.exit(#failure);
          }
          e! = at.decl.enumm.ptr();
-         e.flags |= #overload-get;
+         // e.flags |= #overload-get;
          f.list1-prev = e.overload-get-last;
          e.overload-get-last = f-idx;
-      } elif f.flags & #overload-set {
+      } elif f.overload == #set {
          at! = f.at.ptr();
          if at.def != #enum {
             C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-set is only applicable to enum types\n"}
@@ -1248,10 +1255,10 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          //    C.exit(#failure);
          // }
          e! = at.decl.enumm.ptr();
-         e.flags |= #overload-set;
+         // e.flags |= #overload-set;
          f.list1-prev = e.overload-set-last;
          e.overload-set-last = f-idx;
-      } elif f.flags & #overload-math {
+      } elif f.overload == #math {
          at! = f.at.ptr();
          if at.def != #enum {
             C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-math is only applicable to enum types\n"}
@@ -1275,9 +1282,129 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          //    C.exit(#failure);
          // }
          e! = at.decl.enumm.ptr();
-         e.flags |= #overload-math;
+         // e.flags |= #overload-math;
          f.list1-prev = e.overload-math-last;
          e.overload-math-last = f-idx;
+      } elif f.overload == #compare {
+         at! = f.at.ptr();
+         if at.def != #enum {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-compare is only applicable to enum types\n"}
+            C.exit(#failure);
+         }
+         if f.this-idx == -1 {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-compare is only applicable to methods\n"}
+            C.exit(#failure);
+         }
+         if f.this-idx != 0 {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-compare must have 'this' as the first argument\n"}
+            C.exit(#failure);
+         }
+         if (f.farg-c != 3) || (f.group-c != 1) {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-compare must have exactly 2 arguments only\n"}
+            C.exit(#failure);
+         }
+         if !f-idx.process-later() { return -1 }
+         // if f.decl.type != f.at {
+         //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-compare must have a return type same as the namespace where it was declared\n"}
+         //    C.exit(#failure);
+         // }
+         e! = at.decl.enumm.ptr();
+         // e.flags |= #overload-compare;
+         f.list1-prev = e.overload-compare-last;
+         e.overload-compare-last = f-idx;
+      } elif f.overload == #if-begin {
+         at! = f.at.ptr();
+         if at.def != #enum {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-begin is only applicable to enum types\n"}
+            C.exit(#failure);
+         }
+         if f.this-idx == -1 {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-begin is only applicable to methods\n"}
+            C.exit(#failure);
+         }
+         if f.this-idx != 0 {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-begin must have 'this' as the first argument\n"}
+            C.exit(#failure);
+         }
+         if (f.farg-c != 2) || (f.group-c != 1) {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-begin must have exactly 1 argument\n"}
+            C.exit(#failure);
+         }
+         if !f-idx.process-later() { return -1 }
+         // if f.decl.type != f.at {
+         //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-begin must have a return type same as the namespace where it was declared\n"}
+         //    C.exit(#failure);
+         // }
+         e! = at.decl.enumm.ptr();
+         // e.flags |= #overload-if-begin;
+         if e.overload-if-begin != #nil {
+            f2! = e.overload-if-begin.ptr();
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-if-begin because there's already a function with @overload-if-begin at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
+            C.exit(#failure);
+         }
+         e.overload-if-begin = f-idx;
+      } elif f.overload == #if-else {
+         at! = f.at.ptr();
+         if at.def != #enum {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-else is only applicable to enum types\n"}
+            C.exit(#failure);
+         }
+         // if f.this-idx == -1 {
+         //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-else is only applicable to methods\n"}
+         //    C.exit(#failure);
+         // }
+         // if f.this-idx != 0 {
+         //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-else must have 'this' as the first argument\n"}
+         //    C.exit(#failure);
+         // }
+         if (f.farg-c != 0) || (f.group-c != 1) {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-else must have no arguments\n"}
+            C.exit(#failure);
+         }
+         if !f-idx.process-later() { return -1 }
+         // if f.decl.type != f.at {
+         //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-else must have a return type same as the namespace where it was declared\n"}
+         //    C.exit(#failure);
+         // }
+         e! = at.decl.enumm.ptr();
+         // e.flags |= #overload-if-else;
+         if e.overload-if-else != #nil {
+            f2! = e.overload-if-else.ptr();
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-if-else because there's already a function with @overload-if-else at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
+            C.exit(#failure);
+         }
+         e.overload-if-else = f-idx;
+      } elif f.overload == #if-end {
+         at! = f.at.ptr();
+         if at.def != #enum {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-end is only applicable to enum types\n"}
+            C.exit(#failure);
+         }
+         // if f.this-idx == -1 {
+         //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-end is only applicable to methods\n"}
+         //    C.exit(#failure);
+         // }
+         // if f.this-idx != 0 {
+         //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-end must have 'this' as the first argument\n"}
+         //    C.exit(#failure);
+         // }
+         if (f.farg-c != 0) || (f.group-c != 1) {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-end must have no arguments\n"}
+            C.exit(#failure);
+         }
+         if !f-idx.process-later() { return -1 }
+         // if f.decl.type != f.at {
+         //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-end must have a return type same as the namespace where it was declared\n"}
+         //    C.exit(#failure);
+         // }
+         e! = at.decl.enumm.ptr();
+         // e.flags |= #overload-if-end;
+         if e.overload-if-end != #nil {
+            f2! = e.overload-if-end.ptr();
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-if-end because there's already a function with @overload-if-end at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
+            C.exit(#failure);
+         }
+         e.overload-if-end = f-idx;
       }
    }
    if process-all {

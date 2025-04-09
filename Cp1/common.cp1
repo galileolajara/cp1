@@ -12,6 +12,7 @@ struct Map[data:u64[(#hash-table-size + 7) >> 3]] {
    init(m:this);
    get-or-insert(m:this, str:char[], len:u8, val:i32):i32;
 }
+enum Overload[#nil, #get, #set, #assign, #math, #compare, #if-begin, #if-else, #if-end]:u8;
 crc32c(crc32c:u32, data:ref, size:u32):u32 @real-name;
 var id-map:Map.;
 var include-map:Map.;
@@ -43,7 +44,9 @@ meta #BuildCommonCodes {
          base:Stmt.,
          expr:ExprI,
 #  if (arg.compile) {
-         val:Value.
+         val:Value.,
+         is-overload:bool,
+         overload-type:At,
 #  }
       ];
       struct StmtIfElif[
@@ -51,13 +54,22 @@ meta #BuildCommonCodes {
          expr:ExprI,
 #  if (arg.compile) {
          val:Value.,
+         is-overload:bool,
 #  }
       ];
       struct StmtIfElse[
          base:Stmt.,
+#  if (arg.compile) {
+         if-begin:StmtIf,
+         expr:ExprI,
+#  }
       ];
       struct StmtIfEnd[
          base:Stmt.,
+#  if (arg.compile) {
+         if-begin:StmtIf,
+         expr:ExprI,
+#  }
       ];
       struct StmtSwitch[
          base:Stmt.,
@@ -117,6 +129,10 @@ meta #BuildCommonCodes {
          overload-get-last:Func,
          overload-set-last:Func,
          overload-math-last:Func,
+         overload-compare-last:Func,
+         overload-if-begin:Func,
+         overload-if-else:Func,
+         overload-if-end:Func,
 #  }
       ];
       struct ExprCompare[
@@ -127,6 +143,7 @@ meta #BuildCommonCodes {
 #  if (arg.compile) {
          left-val:Value.,
          right-val:Value.,
+         is-overload:bool,
 #  }
       ];
       struct ExprAssign[
@@ -393,6 +410,7 @@ meta #BuildCommonCodes {
 #  }
          decl-str:char[],
          decl-len:i32,
+         overload:Overload,
          cas:Id,
          // type:At,
          decl:DeclVarData.,

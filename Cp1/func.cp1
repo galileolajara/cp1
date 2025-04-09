@@ -25,9 +25,6 @@ enum FuncFlags[
    #cp1-name = 256,
    #decl = 512,
    #meta-method = 1024,
-   #overload-get = 2048,
-   #overload-set = 4096,
-   #overload-math = 8192,
    ]:u32 {
    wr(e:this, w:Wtr) @inline {
       w.n(e:base);
@@ -112,6 +109,7 @@ var decl-func-name:Id;
 // var decl-func:DeclVarData.;
 var decl-func-row:u32;
 var decl-func-col:u32;
+var decl-func-overload:Overload;
 var decl-func-flags:FuncFlags;
 var decl-func-flags2:FuncFlags2;
 var decl-func-real-name:Id;
@@ -139,6 +137,7 @@ decl-func-begin(name:Id, row:u32, col:u32) {
    .decl-func-row = row;
    .decl-func-col = col;
    .decl-func-flags = #0;
+   .decl-func-overload = #nil;
    .decl-func-flags2 = #0;
    .decl-farg-c = 0;
    // .decl-stmt-c = 0;
@@ -238,6 +237,7 @@ decl-func-end(row:u32, col:u32) {
       f.group-v[i] = .decl-farg-group-v[i];
    }
    f.flags = .decl-func-flags;
+   f.overload = .decl-func-overload;
    if (.decl-func-flags2 & #main) != #0 {
       .func-main = f-idx;
    } elif (&&, .decl-at == #root, f.decl.name.len() == 4, C.memcmp("main", f.decl.name.str(), 4) == 0) {
@@ -315,25 +315,53 @@ func-attr-no-body() {
    .decl-func-flags |= #no-body;
 }
 func-attr-overload-get() {
-   if (.decl-func-flags & #overload-get) != #0 {
-      C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload-get specified more than once\n"}
+   if .decl-func-overload != #nil {
+      C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
       C.exit(#failure);
    }
-   // .decl-func-flags |= #overload-get;
+   .decl-func-overload = #get;
 }
 func-attr-overload-set() {
-   if (.decl-func-flags & #overload-set) != #0 {
-      C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload-set specified more than once\n"}
+   if .decl-func-overload != #nil {
+      C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
       C.exit(#failure);
    }
-   // .decl-func-flags |= #overload-set;
+   .decl-func-overload = #set;
 }
 func-attr-overload-math() {
-   if (.decl-func-flags & #overload-math) != #0 {
-      C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload-math specified more than once\n"}
+   if .decl-func-overload != #nil {
+      C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
       C.exit(#failure);
    }
-   // .decl-func-flags |= #overload-math;
+   .decl-func-overload = #math;
+}
+func-attr-overload-compare() {
+   if .decl-func-overload != #nil {
+      C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
+      C.exit(#failure);
+   }
+   .decl-func-overload = #compare;
+}
+func-attr-overload-if-begin() {
+   if .decl-func-overload != #nil {
+      C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
+      C.exit(#failure);
+   }
+   .decl-func-overload = #if-begin;
+}
+func-attr-overload-if-else() {
+   if .decl-func-overload != #nil {
+      C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
+      C.exit(#failure);
+   }
+   .decl-func-overload = #if-else;
+}
+func-attr-overload-if-end() {
+   if .decl-func-overload != #nil {
+      C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
+      C.exit(#failure);
+   }
+   .decl-func-overload = #if-end;
 }
 func-attr-real-name(name:Id) {
    if (.decl-func-flags & #real-name) != #0 {

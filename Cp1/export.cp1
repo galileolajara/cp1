@@ -43,6 +43,10 @@ export() {
    func-attr-overload-get();
    func-attr-overload-set();
    func-attr-overload-math();
+   func-attr-overload-compare();
+   func-attr-overload-if-begin();
+   func-attr-overload-if-else();
+   func-attr-overload-if-end();
    func-attr-real-name(#nil);
    func-attr-meta-method(#nil, #nil, #nil);
    func-attr-case(#nil);

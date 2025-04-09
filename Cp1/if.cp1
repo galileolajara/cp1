@@ -1,14 +1,20 @@
+using C1 = LibCp1;
 using Cp1 {
 using StmtSpace {
    wr-if(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
       var s:StmtIf = stmt;
       s.expr.wr(w, header);
    }
+   var if-stack-v:StmtIf[256];
+   var if-stack-c:u8;
    rd-if(space:StmtSpace, r:Rdr) @case.rd() @inline {
       var s:StmtIf;
       quick-alloc-one(s);
       s.expr.rd(r);
+      s.overload-type = #nil;
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #if);
+      .if-stack-v[.if-stack-c] = s;
+      .if-stack-c++;
    }
    wr-if-elif(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
       var s:StmtIfElif = stmt;
@@ -19,6 +25,7 @@ using StmtSpace {
       quick-alloc-one(s);
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #if-elif);
+      // s.if-begin = .if-stack-v[.if-stack-c - 1];
    }
    wr-if-else(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
    }
@@ -26,6 +33,9 @@ using StmtSpace {
       var s:StmtIfElse;
       quick-alloc-one(s);
       space.stmt-push(s.base, 0, 0, 0, 0, #if-else);
+      // s.overload = #nil;
+      s.expr = #nil;
+      s.if-begin = .if-stack-v[.if-stack-c - 1]; // .if-else = s;
    }
    wr-if-end(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
    }
@@ -33,11 +43,20 @@ using StmtSpace {
       var s:StmtIfEnd;
       quick-alloc-one(s);
       space.stmt-push(s.base, 0, 0, 0, 0, #if-end);
+      // s.overload = #nil;
+      s.expr = #nil;
+      .if-stack-c--;
+      s.if-begin = .if-stack-v[.if-stack-c]; // .if-end = s;
    }
 }
 using Stmt {
    write-if(stmt:Stmt) @case.write() @inline {
       var s:StmtIf = stmt;
+      if s.is-overload {
+         s.expr.write();
+         output{"; {\n"}
+         return;
+      }
       output{"if("}
       s.expr.write-value(s.val);
       output{") {\n"}
@@ -47,10 +66,40 @@ using Stmt {
       if !s.expr.value(1, false, s.val) {
          return;
       }
+      type-ptr! = s.val.type.ptr();
+      if type-ptr.def == #enum {
+         en! = type-ptr.decl.enumm.ptr();
+         f-idx! = en.overload-if-begin;
+         if f-idx != #nil {
+            f! = f-idx.ptr();
+            e-method! = ExprI.alloc();
+            var group-v:u8[1];
+            group-v[0] = 1;
+            var carg-v:ExprI[1];
+            e-bool! = ExprI.alloc();
+            ExprI.set-bool(e-bool, false);
+            carg-v[0] = e-bool;
+            ExprI.set-method(e-method, s.expr, f.decl.name, 1, group-v, 1, carg-v);
+            s.expr = e-method;
+            s.is-overload = true;
+            if !s.expr.process() {
+               return;
+            }
+            s.overload-type = s.val.type;
+            ok = true;
+            return;
+         }
+      }
       ok = true;
    }
    write-if-elif(stmt:Stmt) @case.write() @inline {
       var s:StmtIfElif = stmt;
+      if s.is-overload {
+         output{"} "}
+         s.expr.write();
+         output{"; {\n"}
+         return;
+      }
       output{"} else if("}
       s.expr.write-value(s.val);
       output{") {\n"}
@@ -60,22 +109,93 @@ using Stmt {
       if !s.expr.value(1, false, s.val) {
          return;
       }
+      type-ptr! = s.val.type.ptr();
+      if type-ptr.def == #enum {
+         en! = type-ptr.decl.enumm.ptr();
+         f-idx! = en.overload-if-begin;
+         if f-idx != #nil {
+            f! = f-idx.ptr();
+            e-method! = ExprI.alloc();
+            var group-v:u8[1];
+            group-v[0] = 1;
+            var carg-v:ExprI[1];
+            e-bool! = ExprI.alloc();
+            ExprI.set-bool(e-bool, true);
+            carg-v[0] = e-bool;
+            ExprI.set-method(e-method, s.expr, f.decl.name, 1, group-v, 1, carg-v);
+            s.expr = e-method;
+            s.is-overload = true;
+            if !s.expr.process() {
+               return;
+            }
+            ok = true;
+            return;
+         }
+      }
       ok = true;
    }
    write-if-else(stmt:Stmt) @case.write() @inline {
       var s:StmtIfElse = stmt;
+      if s.expr != #nil {
+         output{"} "}
+         s.expr.write();
+         output{"; {\n"}
+         return;
+      }
       output{"} else {\n"}
    }
    process-if-else(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtIfElse = stmt;
+      overload-type! = s.if-begin.overload-type;
+      if overload-type != #nil {
+         en! = overload-type.ptr().decl.enumm.ptr();
+         f-idx! = en.overload-if-else;
+         if f-idx != #nil {
+            f! = f-idx.ptr();
+            e-func! = ExprI.alloc();
+            var group-v:u8[1];
+            group-v[0] = 0;
+            ExprI.set-func(e-func, overload-type, f.decl.name, 1, group-v, 0, null);
+            s.expr = e-func;
+            if !s.expr.process() {
+               return;
+            }
+            ok = true;
+            return;
+         }
+      }
       ok = true;
    }
    write-if-end(stmt:Stmt) @case.write() @inline {
       var s:StmtIfEnd = stmt;
+      if s.expr != #nil {
+         output{"} "}
+         s.expr.write();
+         output{";\n"}
+         return;
+      }
       output{"}\n"}
    }
    process-if-end(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtIfEnd = stmt;
+      overload-type! = s.if-begin.overload-type;
+      if overload-type != #nil {
+         en! = overload-type.ptr().decl.enumm.ptr();
+         f-idx! = en.overload-if-end;
+         if f-idx != #nil {
+            f! = f-idx.ptr();
+            e-func! = ExprI.alloc();
+            var group-v:u8[1];
+            group-v[0] = 0;
+            ExprI.set-func(e-func, overload-type, f.decl.name, 1, group-v, 0, null);
+            s.expr = e-func;
+            if !s.expr.process() {
+               return;
+            }
+            ok = true;
+            return;
+         }
+      }
       ok = true;
    }
 }
