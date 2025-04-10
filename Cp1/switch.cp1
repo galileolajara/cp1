@@ -97,13 +97,13 @@ using Stmt {
          return;
       }
       if s.val.type == #nil {
-         C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": Error, the expression used for switch doesn't have a type\n"}
+         C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": Error, the expression used for 'switch' doesn't have a type\n"}
          return;
       }
       if s.cases != #nil {
          type! = s.val.type.ptr();
          if type.def != #enum {
-            C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": Error, the expression used for switch must be an enum when using @case attribute\n"}
+            C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": Error, the expression used for 'switch' must be an enum when using @case attribute\n"}
             return;
          }
          var e:ExprFunc = s.cases.ptr();

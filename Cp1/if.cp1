@@ -90,12 +90,18 @@ using Stmt {
             return;
          }
       }
+      if s.val.type != basic-type(#bool) {
+         C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": Error, the expression used for 'if' is not a boolean type\n"}
+         return;
+      }
       ok = true;
    }
    write-if-elif(stmt:Stmt) @case.write() @inline {
       var s:StmtIfElif = stmt;
       if s.is-overload {
          output{"} "}
+         s.expr-else.write();
+         output{"; "}
          s.expr.write();
          output{"; {\n"}
          return;
@@ -109,11 +115,33 @@ using Stmt {
       if !s.expr.value(1, false, s.val) {
          return;
       }
-      type-ptr! = s.val.type.ptr();
+      type! = s.val.type;
+      type-ptr! = type.ptr();
       if type-ptr.def == #enum {
          en! = type-ptr.decl.enumm.ptr();
          f-idx! = en.overload-if-begin;
          if f-idx != #nil {
+            if true {
+               f-idx! = en.overload-if-else;
+               if f-idx != #nil {
+                  f! = f-idx.ptr();
+                  e-func! = ExprI.alloc();
+                  var group-v:u8[1];
+                  group-v[0] = 1;
+                  var carg-v:ExprI[1];
+                  e-bool! = ExprI.alloc();
+                  ExprI.set-bool(e-bool, true);
+                  carg-v[0] = e-bool;
+                  ExprI.set-func(e-func, type, f.decl.name, 1, group-v, 1, carg-v);
+                  s.expr-else = e-func;
+                  if !s.expr-else.process() {
+                     return;
+                  }
+               } else {
+                  C1.stdout{"Error 2796\n"}
+                  return;
+               }
+            }
             f! = f-idx.ptr();
             e-method! = ExprI.alloc();
             var group-v:u8[1];
@@ -131,6 +159,10 @@ using Stmt {
             ok = true;
             return;
          }
+      }
+      if s.val.type != basic-type(#bool) {
+         C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": Error, the expression used for 'if' is not a boolean type\n"}
+         return;
       }
       ok = true;
    }
@@ -154,8 +186,12 @@ using Stmt {
             f! = f-idx.ptr();
             e-func! = ExprI.alloc();
             var group-v:u8[1];
-            group-v[0] = 0;
-            ExprI.set-func(e-func, overload-type, f.decl.name, 1, group-v, 0, null);
+            group-v[0] = 1;
+            var carg-v:ExprI[1];
+            e-bool! = ExprI.alloc();
+            ExprI.set-bool(e-bool, false);
+            carg-v[0] = e-bool;
+            ExprI.set-func(e-func, overload-type, f.decl.name, 1, group-v, 1, carg-v);
             s.expr = e-func;
             if !s.expr.process() {
                return;

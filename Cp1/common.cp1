@@ -53,6 +53,7 @@ meta #BuildCommonCodes {
          base:Stmt.,
          expr:ExprI,
 #  if (arg.compile) {
+         expr-else:ExprI,
          val:Value.,
          is-overload:bool,
 #  }

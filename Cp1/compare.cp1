@@ -110,7 +110,16 @@ using ExprI {
                            var carg-v:ExprI[2];
                            carg-v[0] = e-func;
                            e-cvar! = ExprI.alloc();
-                           set-cvar(e-cvar, #nil, .id-gt);
+                           var id-cmp;
+                           switch e.type {
+                              case #eq { id-cmp = .id-eq }
+                              case #not-eq { id-cmp = .id-ne }
+                              case #gt { id-cmp = .id-gt }
+                              case #ge { id-cmp = .id-ge }
+                              case #lt { id-cmp = .id-lt }
+                              case #le { id-cmp = .id-le }
+                           }
+                           set-cvar(e-cvar, #nil, id-cmp);
                            carg-v[1] = e-cvar;
                            set-method(e-method, e.left, f.decl.name, 1, group-v, 2, carg-v);
                            e.left = e-method;
