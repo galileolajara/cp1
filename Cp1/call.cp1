@@ -250,7 +250,7 @@ farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At,
             if fd-arg.type-info.built-in {
                vd.type-info.built-in = true;
                vd.type-info.ref-v[0] = ''\0;
-            } elif vd.type-info.ref-v[0] + vd.type.pointer() {
+            } elif (vd.type-info.ref-v[0] + vd.type.pointer()) != 0 {
                vd.type-info.ref-v[vd.type-info.array-c] -= 1:char;
                vd.type-info.star-c -= 1;
             }
@@ -487,7 +487,7 @@ using ExprI {
             loop ; e.carg-c - k; k++ {
                ca! = e.carg-v[k];
                var r:i32;
-               if ca.reff {
+               if ca.reff != 0 {
                   r = 1 + ca.reff;
                } else {
                   r = 1;
@@ -667,7 +667,7 @@ using ExprI {
                loop ; e.carg-c - j; j++ {
                   ca! = e.carg-v[j];
                   var r:i32;
-                  if ca.reff {
+                  if ca.reff != 0 {
                      r = 1 + ca.reff;
                   } else {
                      r = 1;
@@ -717,7 +717,7 @@ using ExprI {
          loop ; e.carg-c - j; j++ {
             ca! = e.carg-v[j];
             var r:i32;
-            if ca.reff {
+            if ca.reff != 0 {
                r = 1 + ca.reff;
             } else {
                r = 1;

@@ -1644,7 +1644,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          continue;
       }
       .ctx-func = f;
-      if f.flags & #inline {
+      if (f.flags & #inline) != #0 {
          output{"static inline "}
       }
       if f.decl.type == #nil {
@@ -1688,7 +1688,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       f! = f-idx.ptr();
       .ctx-func = f;
       .nest-id = 0;
-      if f.flags & #inline {
+      if (f.flags & #inline) != #0 {
          output{"static inline "}
       }
       if f.decl.type == #nil {

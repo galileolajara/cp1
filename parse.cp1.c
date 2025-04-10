@@ -85,7 +85,11 @@
 #define _NCp1_NToken_Cspace_at_overload_get (_NCp1_NToken_Cspace_at_no_body + 1)
 #define _NCp1_NToken_Cspace_at_overload_set (_NCp1_NToken_Cspace_at_overload_get + 1)
 #define _NCp1_NToken_Cspace_at_overload_math (_NCp1_NToken_Cspace_at_overload_set + 1)
-#define _NCp1_NToken_Cspace_at_meta (_NCp1_NToken_Cspace_at_overload_math + 1)
+#define _NCp1_NToken_Cspace_at_overload_compare (_NCp1_NToken_Cspace_at_overload_math + 1)
+#define _NCp1_NToken_Cspace_at_overload_if_begin (_NCp1_NToken_Cspace_at_overload_compare + 1)
+#define _NCp1_NToken_Cspace_at_overload_if_else (_NCp1_NToken_Cspace_at_overload_if_begin + 1)
+#define _NCp1_NToken_Cspace_at_overload_if_end (_NCp1_NToken_Cspace_at_overload_if_else + 1)
+#define _NCp1_NToken_Cspace_at_meta (_NCp1_NToken_Cspace_at_overload_if_end + 1)
 #define _NCp1_NToken_Cref (_NCp1_NToken_Cspace_at_meta + 1)
 #define _NCp1_NToken_Cbool (_NCp1_NToken_Cref + 1)
 #define _NCp1_NToken_Cchar (_NCp1_NToken_Cbool + 1)
@@ -195,12 +199,13 @@
 #define _NCp1_NStructFlags_C0 0
 #define _NCp1_NStructFlags_Caligned (8)
 #define _NCp1_NFuncFlags_Cinline (2)
+#define _NCp1_NFuncFlags_C0 0
 #define _NCp1_NFuncFlags_Chas_body (1)
 #define _NCp1_NFuncFlags_Creal_name (64)
-#define _NCp1_NFuncFlags_C0 0
 #define _NCp1_NFuncFlags_Cmeta_method (1024)
 #define _NCp1_NFuncFlags_Ccase (128)
 #define _NCp1_NFuncFlags_Cdecl (512)
+#define _NCp1_NOverload_Cnil 0
 #define _NCp1_NFuncFlags2_C0 0
 #define _NCp1_NFuncFlags2_Cmain (1)
 #define _NCp1_NAt_Croot (_NCp1_NAt_Cnil + 1)
@@ -239,9 +244,14 @@
 #define _NCp1_NFuncFlags_Cvar_args (8)
 #define _NCp1_NFuncFlags_Cno_decl (16)
 #define _NCp1_NFuncFlags_Cno_body (32)
-#define _NCp1_NFuncFlags_Coverload_get (2048)
-#define _NCp1_NFuncFlags_Coverload_set (4096)
-#define _NCp1_NFuncFlags_Coverload_math (8192)
+#define _NCp1_NOverload_Cget (_NCp1_NOverload_Cnil + 1)
+#define _NCp1_NOverload_Cset (_NCp1_NOverload_Cget + 1)
+#define _NCp1_NOverload_Cassign (_NCp1_NOverload_Cset + 1)
+#define _NCp1_NOverload_Cmath (_NCp1_NOverload_Cassign + 1)
+#define _NCp1_NOverload_Ccompare (_NCp1_NOverload_Cmath + 1)
+#define _NCp1_NOverload_Cif_begin (_NCp1_NOverload_Ccompare + 1)
+#define _NCp1_NOverload_Cif_else (_NCp1_NOverload_Cif_begin + 1)
+#define _NCp1_NOverload_Cif_end (_NCp1_NOverload_Cif_else + 1)
 #define _NCp1_NEnumFlags_Cno_decl (2)
 #define _NCp1_NLvar_Cnil (-1)
 #define _NCp1_NExprType_Cfvar (_NCp1_NExprType_Cmetamethod + 1)
@@ -308,6 +318,7 @@ typedef uint8_t _NCp1_NNameType;
 typedef int32_t _NCp1_NId;
 typedef uint8_t _NCp1_NBasicTypeId;
 typedef uint32_t _NCp1_NFuncFlags;
+typedef uint8_t _NCp1_NOverload;
 typedef uint32_t _NCp1_NVarFlags;
 typedef int32_t _NCp1_NExprI;
 typedef uint8_t _NCp1_NStmtType;
@@ -452,6 +463,7 @@ _NCp1_NId _Fmeta_method_prefix2;
 _NCp1_NId _Fmeta_method_end;
 char* _Fdecl_str;
 int32_t _Fdecl_len;
+_NCp1_NOverload _Foverload;
 _NCp1_NId _Fcas;
 struct _NCp1_NDeclVarData _Fdecl;
 struct _NCp1_NStmtSpace* _Fstmt_space;
@@ -954,6 +966,7 @@ _NCp1_NId _Gdecl_func_name;
 uint32_t _Gdecl_func_row;
 uint32_t _Gdecl_func_col;
 _NCp1_NFuncFlags _Gdecl_func_flags;
+_NCp1_NOverload _Gdecl_func_overload;
 _NCp1_NFuncFlags2 _Gdecl_func_flags2;
 int32_t _Gdecl_farg_c;
 int8_t _Gdecl_farg_group_c;
@@ -1122,6 +1135,10 @@ void _NCp1_Pfunc_attr_no_body_0();
 void _NCp1_Pfunc_attr_overload_get_0();
 void _NCp1_Pfunc_attr_overload_set_0();
 void _NCp1_Pfunc_attr_overload_math_0();
+void _NCp1_Pfunc_attr_overload_compare_0();
+void _NCp1_Pfunc_attr_overload_if_begin_0();
+void _NCp1_Pfunc_attr_overload_if_else_0();
+void _NCp1_Pfunc_attr_overload_if_end_0();
 void _NCp1_Pfunc_attr_real_name_1(_NCp1_NId _Lname_0);
 void _NCp1_Pfunc_attr_meta_method_3(_NCp1_NId _Lprefix1_0, _NCp1_NId _Lprefix2_1, _NCp1_NId _Lend_2);
 void _NCp1_Pfunc_attr_case_1(_NCp1_NId _Lname_0);
@@ -1220,7 +1237,7 @@ void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
 static inline void _NLibCp1_Pstdout_char_nr_1(char _Lval_0);
 static inline void _NLibCp1_Pstdout_bytes_nr_2(const void* _Ldata_0, size_t _Lsize_1);
 static inline void _NLibCp1_Pstdout_flush_0();
-static inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2);
+static inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, const char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2);
 void _NLibCp1_Pstdout_u32_nr_1(uint32_t _Lval_0);
 int32_t _NCp1_NMap_Pget_or_insert_4(struct _NCp1_NMap* _Lm_0, char* _Lstr_1, uint8_t _Llen_2, int32_t _Lval_3);
 #define _NCp1_Pgrow_2(cap, c) cap = Fpow2gteq((c) + 8)
@@ -1241,7 +1258,7 @@ void _NCp1_NDeclFunc_Plvars_wr_3(struct _NCp1_NDeclFunc* _Lf_0, union _NCp1_NWtr
 void _NCp1_NStmtSpace_Pwr_3(struct _NCp1_NStmtSpace* _Lspace_0, union _NCp1_NWtr* _Lw_1, bool _Lheader_2);
 static inline void _NCp1_NWtr_Pn4_2(union _NCp1_NWtr* _Lw_0, uint32_t _Ln_1);
 static inline void _NCp1_NWtr_Pb_2(union _NCp1_NWtr* _Lw_0, bool _Lval_1);
-static inline bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3);
+static inline bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, const char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3);
 bool _NCp1_NInclude_Pvalidate_2(_NCp1_NInclude _Lpath_0, _NCp1_NIncludeError* _Lerr_1);
 static inline void _NLibCp1_Pstdbuf_1(struct _NLibCp1_NStdOut* _Lso_0);
 static inline void _NLibCp1_NStdOut_Pstdout_reserve_end_no_flush_1(struct _NLibCp1_NStdOut* _Lso_0);
@@ -1327,6 +1344,10 @@ case _NCp1_NToken_Cspace_at_no_body: return "space-at-no-body";
 case _NCp1_NToken_Cspace_at_overload_get: return "space-at-overload-get";
 case _NCp1_NToken_Cspace_at_overload_set: return "space-at-overload-set";
 case _NCp1_NToken_Cspace_at_overload_math: return "space-at-overload-math";
+case _NCp1_NToken_Cspace_at_overload_compare: return "space-at-overload-compare";
+case _NCp1_NToken_Cspace_at_overload_if_begin: return "space-at-overload-if-begin";
+case _NCp1_NToken_Cspace_at_overload_if_else: return "space-at-overload-if-else";
+case _NCp1_NToken_Cspace_at_overload_if_end: return "space-at-overload-if-end";
 case _NCp1_NToken_Cspace_at_meta: return "space-at-meta";
 case _NCp1_NToken_Cref: return "ref";
 case _NCp1_NToken_Cbool: return "bool";
@@ -3017,6 +3038,10 @@ _NCp1_Pfunc_attr_no_body_0();
 _NCp1_Pfunc_attr_overload_get_0();
 _NCp1_Pfunc_attr_overload_set_0();
 _NCp1_Pfunc_attr_overload_math_0();
+_NCp1_Pfunc_attr_overload_compare_0();
+_NCp1_Pfunc_attr_overload_if_begin_0();
+_NCp1_Pfunc_attr_overload_if_else_0();
+_NCp1_Pfunc_attr_overload_if_end_0();
 _NCp1_Pfunc_attr_real_name_1(_NCp1_NId_Cnil);
 _NCp1_Pfunc_attr_meta_method_3(_NCp1_NId_Cnil, _NCp1_NId_Cnil, _NCp1_NId_Cnil);
 _NCp1_Pfunc_attr_case_1(_NCp1_NId_Cnil);
@@ -3976,7 +4001,7 @@ _Lj_5++;
 }
 break_2:;
 if(_Lheader_1) {
-if((*_Lf_3)._Fflags & _NCp1_NFuncFlags_Cinline) {
+if(((*_Lf_3)._Fflags & _NCp1_NFuncFlags_Cinline) != _NCp1_NFuncFlags_C0) {
 _NCp1_NFuncFlags_Pwr_2((*_Lf_3)._Fflags, _Lw_0);
 } else {
 _NCp1_NFuncFlags_Pwr_2(((_NCp1_NFuncFlags)(((uint32_t)((*_Lf_3)._Fflags)) & (-1 ^ ((uint32_t)(_NCp1_NFuncFlags_Chas_body))))), _Lw_0);
@@ -3999,6 +4024,7 @@ if(((*_Lf_3)._Fflags & _NCp1_NFuncFlags_Cdecl) != _NCp1_NFuncFlags_C0) {
 Fputnum(_Lw_0, (*_Lf_3)._Fdecl_len);
 _NCp1_NWtr_Pcopy_3(_Lw_0, (*_Lf_3)._Fdecl_str, (*_Lf_3)._Fdecl_len);
 }
+_NCp1_NWtr_Pn1_2(_Lw_0, ((uint8_t)((*_Lf_3)._Foverload)));
 continue_0:;
 }
 break_0:;
@@ -4015,7 +4041,7 @@ if(((*_Lf_7)._Fflags & _NCp1_NFuncFlags_Chas_body) == _NCp1_NFuncFlags_C0) {
 goto continue_3;
 }
 if(_Lheader_1) {
-if((*_Lf_7)._Fflags & _NCp1_NFuncFlags_Cinline) {
+if(((*_Lf_7)._Fflags & _NCp1_NFuncFlags_Cinline) != _NCp1_NFuncFlags_C0) {
 } else {
 goto continue_3;
 }
@@ -4307,6 +4333,7 @@ _Gdecl_func_name = _Lname_0;
 _Gdecl_func_row = _Lrow_1;
 _Gdecl_func_col = _Lcol_2;
 _Gdecl_func_flags = _NCp1_NFuncFlags_C0;
+_Gdecl_func_overload = _NCp1_NOverload_Cnil;
 _Gdecl_func_flags2 = _NCp1_NFuncFlags2_C0;
 _Gdecl_farg_c = 0;
 _Gdecl_farg_group_c = 1;
@@ -4386,6 +4413,7 @@ _Li_7++;
 }
 break_1:;
 (*_Lf_4)._Fflags = _Gdecl_func_flags;
+(*_Lf_4)._Foverload = _Gdecl_func_overload;
 if((_Gdecl_func_flags2 & _NCp1_NFuncFlags2_Cmain) != _NCp1_NFuncFlags2_C0) {
 _Gfunc_main = _Lf_idx_2;
 } else if(((_Gdecl_at == _NCp1_NAt_Croot) && (_NCp1_NId_Plen_1((*_Lf_4)._Fdecl._Fname) == 4) && (memcmp("main", _NCp1_NId_Pstr_1((*_Lf_4)._Fdecl._Fname), 4) == 0))) {
@@ -5299,7 +5327,7 @@ exit(_NLibC_NExit_Cfailure);
 _Gdecl_func_flags |= _NCp1_NFuncFlags_Cno_body;
 }
 void _NCp1_Pfunc_attr_overload_get_0() {
-if((_Gdecl_func_flags & _NCp1_NFuncFlags_Coverload_get) != _NCp1_NFuncFlags_C0) {
+if(_Gdecl_func_overload != _NCp1_NOverload_Cnil) {
 uint32_t _L_0 = {0};
 int _L_1 = {0};
 int _L_2 = {0};
@@ -5313,20 +5341,21 @@ _Tchar_Pstdout_reserve_3(':', &_L_6, _L_1);
 _Tu32_Pstdout_reserve_3(_Glast_row, &_L_6, _L_2);
 _Tchar_Pstdout_reserve_3(':', &_L_6, _L_3);
 _Tu32_Pstdout_reserve_3(_Glast_col, &_L_6, _L_4);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_6, ": Error @overload-get specified more than once\n", 47u, _L_5);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
 _NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_6);
 _Tchar_Pstdout_arr_3(input_path, &_L_6, _L_0);
 _Tchar_Pstdout_3(':', &_L_6, _L_1);
 _Tu32_Pstdout_3(_Glast_row, &_L_6, _L_2);
 _Tchar_Pstdout_3(':', &_L_6, _L_3);
 _Tu32_Pstdout_3(_Glast_col, &_L_6, _L_4);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_6, ": Error @overload-get specified more than once\n", 47u, _L_5);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_6);
 exit(_NLibC_NExit_Cfailure);
 }
+_Gdecl_func_overload = _NCp1_NOverload_Cget;
 }
 void _NCp1_Pfunc_attr_overload_set_0() {
-if((_Gdecl_func_flags & _NCp1_NFuncFlags_Coverload_set) != _NCp1_NFuncFlags_C0) {
+if(_Gdecl_func_overload != _NCp1_NOverload_Cnil) {
 uint32_t _L_0 = {0};
 int _L_1 = {0};
 int _L_2 = {0};
@@ -5340,20 +5369,21 @@ _Tchar_Pstdout_reserve_3(':', &_L_6, _L_1);
 _Tu32_Pstdout_reserve_3(_Glast_row, &_L_6, _L_2);
 _Tchar_Pstdout_reserve_3(':', &_L_6, _L_3);
 _Tu32_Pstdout_reserve_3(_Glast_col, &_L_6, _L_4);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_6, ": Error @overload-set specified more than once\n", 47u, _L_5);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
 _NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_6);
 _Tchar_Pstdout_arr_3(input_path, &_L_6, _L_0);
 _Tchar_Pstdout_3(':', &_L_6, _L_1);
 _Tu32_Pstdout_3(_Glast_row, &_L_6, _L_2);
 _Tchar_Pstdout_3(':', &_L_6, _L_3);
 _Tu32_Pstdout_3(_Glast_col, &_L_6, _L_4);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_6, ": Error @overload-set specified more than once\n", 47u, _L_5);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_6);
 exit(_NLibC_NExit_Cfailure);
 }
+_Gdecl_func_overload = _NCp1_NOverload_Cset;
 }
 void _NCp1_Pfunc_attr_overload_math_0() {
-if((_Gdecl_func_flags & _NCp1_NFuncFlags_Coverload_math) != _NCp1_NFuncFlags_C0) {
+if(_Gdecl_func_overload != _NCp1_NOverload_Cnil) {
 uint32_t _L_0 = {0};
 int _L_1 = {0};
 int _L_2 = {0};
@@ -5367,17 +5397,130 @@ _Tchar_Pstdout_reserve_3(':', &_L_6, _L_1);
 _Tu32_Pstdout_reserve_3(_Glast_row, &_L_6, _L_2);
 _Tchar_Pstdout_reserve_3(':', &_L_6, _L_3);
 _Tu32_Pstdout_reserve_3(_Glast_col, &_L_6, _L_4);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_6, ": Error @overload-math specified more than once\n", 48u, _L_5);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
 _NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_6);
 _Tchar_Pstdout_arr_3(input_path, &_L_6, _L_0);
 _Tchar_Pstdout_3(':', &_L_6, _L_1);
 _Tu32_Pstdout_3(_Glast_row, &_L_6, _L_2);
 _Tchar_Pstdout_3(':', &_L_6, _L_3);
 _Tu32_Pstdout_3(_Glast_col, &_L_6, _L_4);
-_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_6, ": Error @overload-math specified more than once\n", 48u, _L_5);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_6);
 exit(_NLibC_NExit_Cfailure);
 }
+_Gdecl_func_overload = _NCp1_NOverload_Cmath;
+}
+void _NCp1_Pfunc_attr_overload_compare_0() {
+if(_Gdecl_func_overload != _NCp1_NOverload_Cnil) {
+uint32_t _L_0 = {0};
+int _L_1 = {0};
+int _L_2 = {0};
+int _L_3 = {0};
+int _L_4 = {0};
+int _L_5 = {0};
+struct _NLibCp1_NStdOut _L_6 = {0};
+_NLibCp1_Pstdout_1(&_L_6);
+_Tchar_Pstdout_reserve_arr_3(input_path, &_L_6, &_L_0);
+_Tchar_Pstdout_reserve_3(':', &_L_6, _L_1);
+_Tu32_Pstdout_reserve_3(_Glast_row, &_L_6, _L_2);
+_Tchar_Pstdout_reserve_3(':', &_L_6, _L_3);
+_Tu32_Pstdout_reserve_3(_Glast_col, &_L_6, _L_4);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_6);
+_Tchar_Pstdout_arr_3(input_path, &_L_6, _L_0);
+_Tchar_Pstdout_3(':', &_L_6, _L_1);
+_Tu32_Pstdout_3(_Glast_row, &_L_6, _L_2);
+_Tchar_Pstdout_3(':', &_L_6, _L_3);
+_Tu32_Pstdout_3(_Glast_col, &_L_6, _L_4);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_6);
+exit(_NLibC_NExit_Cfailure);
+}
+_Gdecl_func_overload = _NCp1_NOverload_Ccompare;
+}
+void _NCp1_Pfunc_attr_overload_if_begin_0() {
+if(_Gdecl_func_overload != _NCp1_NOverload_Cnil) {
+uint32_t _L_0 = {0};
+int _L_1 = {0};
+int _L_2 = {0};
+int _L_3 = {0};
+int _L_4 = {0};
+int _L_5 = {0};
+struct _NLibCp1_NStdOut _L_6 = {0};
+_NLibCp1_Pstdout_1(&_L_6);
+_Tchar_Pstdout_reserve_arr_3(input_path, &_L_6, &_L_0);
+_Tchar_Pstdout_reserve_3(':', &_L_6, _L_1);
+_Tu32_Pstdout_reserve_3(_Glast_row, &_L_6, _L_2);
+_Tchar_Pstdout_reserve_3(':', &_L_6, _L_3);
+_Tu32_Pstdout_reserve_3(_Glast_col, &_L_6, _L_4);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_6);
+_Tchar_Pstdout_arr_3(input_path, &_L_6, _L_0);
+_Tchar_Pstdout_3(':', &_L_6, _L_1);
+_Tu32_Pstdout_3(_Glast_row, &_L_6, _L_2);
+_Tchar_Pstdout_3(':', &_L_6, _L_3);
+_Tu32_Pstdout_3(_Glast_col, &_L_6, _L_4);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_6);
+exit(_NLibC_NExit_Cfailure);
+}
+_Gdecl_func_overload = _NCp1_NOverload_Cif_begin;
+}
+void _NCp1_Pfunc_attr_overload_if_else_0() {
+if(_Gdecl_func_overload != _NCp1_NOverload_Cnil) {
+uint32_t _L_0 = {0};
+int _L_1 = {0};
+int _L_2 = {0};
+int _L_3 = {0};
+int _L_4 = {0};
+int _L_5 = {0};
+struct _NLibCp1_NStdOut _L_6 = {0};
+_NLibCp1_Pstdout_1(&_L_6);
+_Tchar_Pstdout_reserve_arr_3(input_path, &_L_6, &_L_0);
+_Tchar_Pstdout_reserve_3(':', &_L_6, _L_1);
+_Tu32_Pstdout_reserve_3(_Glast_row, &_L_6, _L_2);
+_Tchar_Pstdout_reserve_3(':', &_L_6, _L_3);
+_Tu32_Pstdout_reserve_3(_Glast_col, &_L_6, _L_4);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_6);
+_Tchar_Pstdout_arr_3(input_path, &_L_6, _L_0);
+_Tchar_Pstdout_3(':', &_L_6, _L_1);
+_Tu32_Pstdout_3(_Glast_row, &_L_6, _L_2);
+_Tchar_Pstdout_3(':', &_L_6, _L_3);
+_Tu32_Pstdout_3(_Glast_col, &_L_6, _L_4);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_6);
+exit(_NLibC_NExit_Cfailure);
+}
+_Gdecl_func_overload = _NCp1_NOverload_Cif_else;
+}
+void _NCp1_Pfunc_attr_overload_if_end_0() {
+if(_Gdecl_func_overload != _NCp1_NOverload_Cnil) {
+uint32_t _L_0 = {0};
+int _L_1 = {0};
+int _L_2 = {0};
+int _L_3 = {0};
+int _L_4 = {0};
+int _L_5 = {0};
+struct _NLibCp1_NStdOut _L_6 = {0};
+_NLibCp1_Pstdout_1(&_L_6);
+_Tchar_Pstdout_reserve_arr_3(input_path, &_L_6, &_L_0);
+_Tchar_Pstdout_reserve_3(':', &_L_6, _L_1);
+_Tu32_Pstdout_reserve_3(_Glast_row, &_L_6, _L_2);
+_Tchar_Pstdout_reserve_3(':', &_L_6, _L_3);
+_Tu32_Pstdout_reserve_3(_Glast_col, &_L_6, _L_4);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_6);
+_Tchar_Pstdout_arr_3(input_path, &_L_6, _L_0);
+_Tchar_Pstdout_3(':', &_L_6, _L_1);
+_Tu32_Pstdout_3(_Glast_row, &_L_6, _L_2);
+_Tchar_Pstdout_3(':', &_L_6, _L_3);
+_Tu32_Pstdout_3(_Glast_col, &_L_6, _L_4);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_6);
+exit(_NLibC_NExit_Cfailure);
+}
+_Gdecl_func_overload = _NCp1_NOverload_Cif_end;
 }
 void _NCp1_Pfunc_attr_real_name_1(_NCp1_NId _Lname_0) {
 if((_Gdecl_func_flags & _NCp1_NFuncFlags_Creal_name) != _NCp1_NFuncFlags_C0) {
@@ -6753,7 +6896,7 @@ write(((_NPosix_NFd)(1)), _Gstdout_buf_data, _Gstdout_buf_len);
 #endif
 _Gstdout_buf_len = 0;
 }
-static inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2) {
+static inline bool _NPosix_NFd_Popen_3(_NPosix_NFd* _Lfile_0, const char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2) {
 _NPosix_NFd _Lfd_3;
 _Lfd_3 = ((_NPosix_NFd)(_NPosix_Popen_2(_Lpath_1, _Lflags_2)));
 if(_Lfd_3 != _NPosix_NFd_Cnil) {
@@ -7092,7 +7235,7 @@ _NCp1_NWtr_Pn1_2(_Lw_0, 1);
 _NCp1_NWtr_Pn1_2(_Lw_0, 0);
 }
 }
-static inline bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3) {
+static inline bool _NPosix_NFd_Popen_4(_NPosix_NFd* _Lfile_0, const char* _Lpath_1, _NPosix_NOpenFlags _Lflags_2, int _Lmode_3) {
 _NPosix_NFd _Lfd_4;
 _Lfd_4 = ((_NPosix_NFd)(_NPosix_Popen_3(_Lpath_1, _Lflags_2, _Lmode_3)));
 if(_Lfd_4 != _NPosix_NFd_Cnil) {

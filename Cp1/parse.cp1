@@ -706,7 +706,7 @@ write-func(w:Wtr, header:bool) @inline {
          w.n1(f.group-v[j]);
       }
       if header {
-         if f.flags & #inline {
+         if (f.flags & #inline) != #0 {
             // proceed
             f.flags.wr(w);
          } else {
@@ -738,7 +738,7 @@ write-func(w:Wtr, header:bool) @inline {
       f! = .func-v[i++];
       if (f.flags & #has-body) == #0 { continue }
       if header {
-         if f.flags & #inline {
+         if (f.flags & #inline) != #0 {
             // proceed
          } else {
             // remove #has-body flag
