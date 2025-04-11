@@ -229,9 +229,9 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    ":base"                          { return CP1_TOKEN_COLON_BASE; }
 
    "#" id                           { return CP1_TOKEN_HASH_ID; }
-   [a-z] id_one* ("-" id)*          { return CP1_TOKEN_ID; }
-   [A-Z] id_one* ("-" id)*          { return CP1_TOKEN_ID_UPPER; }
-   "." [A-Z] id_one* ("-" id)*      { return CP1_TOKEN_DOT_ID_UPPER; }
+   [a-z_] id_one* ("-" id_one+)*         { return CP1_TOKEN_ID; }
+   [A-Z] id_one* ("-" id_one+)*          { return CP1_TOKEN_ID_UPPER; }
+   "." [A-Z] id_one* ("-" id_one+)*      { return CP1_TOKEN_DOT_ID_UPPER; }
    "[" id? "]" id                   { return CP1_TOKEN_SOA_FIELD; }
    "import" spaces "\"" [^"]* "\""  { return CP1_TOKEN_IMPORT; }
    "require" spaces "\"" [^"]* "\"" { return CP1_TOKEN_REQUIRE; }
