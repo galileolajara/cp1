@@ -219,7 +219,8 @@ compatible(src:At, src-c:u8, des:At, des-c:u8):bool {
    }
    return false;
 }
-farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At, arg-num:i32):bool {
+farg-process(e-in-out:ExprI&, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At, arg-num:i32, f-name:Id):bool {
+   e! = e-in-out;
    ce! = e.ptr();
    var r:i32;
    if ca-ref != 0 {
@@ -258,15 +259,43 @@ farg-process(e:ExprI, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, base-at:At,
       }
    }
    // fd-arg.validate(base-at);
+   left-type-ptr! = fd-arg.type.ptr();
    e.try-deduce(fd-arg.type);
+   if left-type-ptr.def == #enum {
+      en! = left-type-ptr.decl.enumm.ptr();
+      f-idx! = en.overload-get-last;
+      if f-idx != #nil {
+         e-right-type! = e.type();
+         f! = f-idx.ptr();
+         loop {
+            if f.farg-v[0].decl.type == e-right-type {
+               e-func! = ExprI.alloc();
+               var group-v:u8[1];
+               group-v[0] = 1;
+               var carg-v:ExprI[1];
+               carg-v[0] = e;
+               ExprI.set-func(e-func, f.at, f.decl.name, 1, group-v, 1, carg-v);
+               e-in-out = e-func;
+               if !e-func.value(1, false, ca-value) {
+                  return false;
+               }
+               return true;
+            }
+            f-idx = f.list1-prev;
+            if f-idx == #nil { break }
+            f = f-idx.ptr();
+         }
+      }
+   }
    if !e.value(r, false, ca-value) { return false }
    if !compatible(ca-value.type, ca-value.info.star-c + ca-value.type.pointer(), fd-arg.type, fd-arg.type-info.star-c + fd-arg.type.pointer()) {
-      C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the function argument "}
+      C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the argument "}
       if arg-num == -1 {
-         C1.stdout{"'this'\n"}
+         C1.stdbuf{"'this'"}
       } else {
-         C1.stdout{''# (arg-num + 1):u32 ''\n}
+         C1.stdbuf{''# (arg-num + 1):u32}
       }
+      C1.stdout{" of function '" f-name "'\n"}
       // print-type(ca-value.type, ca-value.info);
       // print-type(fd-arg.type, fd-arg.type-info);
       return false;
@@ -467,18 +496,18 @@ using ExprI {
          k! = 0;
          loop ; f.this-idx; j++; k++ {
             ca! = e.carg-v[k];
-            if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, k) {
+            if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, k, f.decl.name) {
                "error:";
                C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Error in processing method '" func-name "'\n"}
                return;
             }
          }
-         if !farg-process(e.thiss, 0, e.this-value, f.farg-v[j++].decl, f-at, -1) {
+         if !farg-process(e.thiss, 0, e.this-value, f.farg-v[j++].decl, f-at, -1, f.decl.name) {
             "goto error;";
          }
          loop ; (f.farg-c - 1) - f.this-idx; j++; k++ {
             ca! = e.carg-v[k];
-            if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, k) {
+            if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, k, f.decl.name) {
                "goto error;";
             }
          }
@@ -660,7 +689,7 @@ using ExprI {
             j! = 0;
             loop ; f.farg-c; j++ {
                ca! = e.carg-v[j];
-               if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, j) { return }
+               if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, j, f.decl.name) { return }
             }
             e.func-idx = f-idx;
             if (f.flags & #var-args) != #0 {
@@ -710,7 +739,7 @@ using ExprI {
       j! = 0;
       loop ; f.farg-c; j++ {
          ca! = e.carg-v[j];
-         if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, j) { return false }
+         if !farg-process(ca.expr, ca.reff, ca.value, f.farg-v[j].decl, f-at, j, f.decl.name) { return false }
       }
       e.func-idx = f-idx;
       if (f.flags & #var-args) != #0 {
