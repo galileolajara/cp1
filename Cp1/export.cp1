@@ -47,6 +47,7 @@ export() {
    func-attr-overload-if-begin();
    func-attr-overload-if-else();
    func-attr-overload-if-end();
+   func-attr-overload-statement();
    func-attr-real-name(#nil);
    func-attr-meta-method(#nil, #nil, #nil);
    func-attr-case(#nil);

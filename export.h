@@ -45,6 +45,7 @@ void _NCp1_Pfunc_attr_overload_compare_0();
 void _NCp1_Pfunc_attr_overload_if_begin_0();
 void _NCp1_Pfunc_attr_overload_if_else_0();
 void _NCp1_Pfunc_attr_overload_if_end_0();
+void _NCp1_Pfunc_attr_overload_statement_0();
 void _NCp1_Pfunc_attr_real_name_1(_NCp1_NId _Lname_0);
 void _NCp1_Pfunc_attr_meta_method_3(_NCp1_NId _Lprefix1_0, _NCp1_NId _Lprefix2_1, _NCp1_NId _Lend_2);
 void _NCp1_Pfunc_attr_case_1(_NCp1_NId _Lname_0);

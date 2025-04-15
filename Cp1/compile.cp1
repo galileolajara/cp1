@@ -371,6 +371,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
       e.overload-if-begin = #nil;
       e.overload-if-else = #nil;
       e.overload-if-end = #nil;
+      e.overload-statement = #nil;
       at-i! = e.at;
       at! = at-i.ptr();
       if at.def != #undefined {
@@ -1415,6 +1416,28 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             C.exit(#failure);
          }
          e.overload-if-end = f-idx;
+      } elif f.overload == #statement {
+         at! = f.at.ptr();
+         if at.def != #enum {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-statement is only applicable to enum types\n"}
+            C.exit(#failure);
+         }
+         if f.this-idx == -1 {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-statement is only applicable to methods\n"}
+            C.exit(#failure);
+         }
+         if (f.farg-c != 1) || (f.group-c != 1) {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-statement must have no arguments\n"}
+            C.exit(#failure);
+         }
+         if !f-idx.process-later() { return -1 }
+         e! = at.decl.enumm.ptr();
+         if e.overload-statement != #nil {
+            f2! = e.overload-statement.ptr();
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-statement because there's already a function with @overload-statement at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
+            C.exit(#failure);
+         }
+         e.overload-statement = f-idx;
       }
    }
    if process-all {

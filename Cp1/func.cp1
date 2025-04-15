@@ -363,6 +363,13 @@ func-attr-overload-if-end() {
    }
    .decl-func-overload = #if-end;
 }
+func-attr-overload-statement() {
+   if .decl-func-overload != #nil {
+      C1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
+      C.exit(#failure);
+   }
+   .decl-func-overload = #statement;
+}
 func-attr-real-name(name:Id) {
    if (.decl-func-flags & #real-name) != #0 {
       C1.stdout{.input-path '': .last-row '': .last-col ": Error @real-name specified more than once\n"}

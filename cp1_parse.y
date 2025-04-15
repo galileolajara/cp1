@@ -322,6 +322,8 @@ func_attr ::= SPACE_AT_OVERLOAD_IF_ELSE.
    { _NCp1_Pfunc_attr_overload_if_else_0(); }
 func_attr ::= SPACE_AT_OVERLOAD_IF_END.
    { _NCp1_Pfunc_attr_overload_if_end_0(); }
+func_attr ::= SPACE_AT_OVERLOAD_STATEMENT.
+   { _NCp1_Pfunc_attr_overload_statement_0(); }
 func_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _NCp1_Pfunc_attr_real_name_1(e.basic.id); }
 func_attr ::= SPACE_AT_META OPEN_PARENTHESIS ID(id1) SPACE ID(id2) CLOSE_PARENTHESIS.
