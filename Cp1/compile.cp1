@@ -672,8 +672,10 @@ var include-path-v:char[][];
 var include-path-len-v:u16[];
 var include-path-c:u8;
 
-var id-set:Id;
 var id-add:Id;
+var id-sub:Id;
+var id-mul:Id;
+var id-div:Id;
 var id-eq:Id;
 var id-ne:Id;
 var id-gt:Id;
@@ -1175,8 +1177,10 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       f.flags |= #real-name;
    }
 
-   .id-set = id-add(3, "set");
    .id-add = id-add(3, "add");
+   .id-sub = id-add(3, "sub");
+   .id-mul = id-add(3, "mul");
+   .id-div = id-add(3, "div");
    .id-eq = id-add(2, "eq");
    .id-ne = id-add(2, "ne");
    .id-gt = id-add(2, "gt");

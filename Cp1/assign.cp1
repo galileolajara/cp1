@@ -156,7 +156,15 @@ using ExprI {
                   var carg-v:ExprI[3];
                   carg-v[0] = e.right;
                   e-cvar! = ExprI.alloc();
-                  set-cvar(e-cvar, #nil, .id-set);
+                  var id-set;
+                  switch e.type {
+                     case #eq { id-set = .id-eq }
+                     case #plus-eq { id-set = .id-add }
+                     case #minus-eq { id-set = .id-sub }
+                     case #mul-eq { id-set = .id-mul }
+                     case #div-eq { id-set = .id-div }
+                  }
+                  set-cvar(e-cvar, #nil, id-set);
                   carg-v[1] = e-cvar;
                   e-bool! = ExprI.alloc();
                   set-bool(e-bool, e.is-stmt);
@@ -196,7 +204,15 @@ using ExprI {
                            var carg-v:ExprI[3];
                            carg-v[0] = e-func;
                            e-cvar! = ExprI.alloc();
-                           set-cvar(e-cvar, #nil, .id-set);
+                           var id-set;
+                           switch e.type {
+                              case #eq { id-set = .id-eq }
+                              case #plus-eq { id-set = .id-add }
+                              case #minus-eq { id-set = .id-sub }
+                              case #mul-eq { id-set = .id-mul }
+                              case #div-eq { id-set = .id-div }
+                           }
+                           set-cvar(e-cvar, #nil, id-set);
                            carg-v[1] = e-cvar;
                            e-bool! = ExprI.alloc();
                            set-bool(e-bool, e.is-stmt);
