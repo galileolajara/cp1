@@ -218,7 +218,22 @@ using ExprI {
                            var carg-v:ExprI[2];
                            carg-v[0] = e-func;
                            e-cvar! = ExprI.alloc();
-                           set-cvar(e-cvar, #nil, .id-add);
+                           var id-op;
+                           switch e.type {
+                              case #add {
+                                 id-op = .id-add;
+                              }
+                              case #sub {
+                                 id-op = .id-sub;
+                              }
+                              case #mul {
+                                 id-op = .id-mul;
+                              }
+                              case #div {
+                                 id-op = .id-div;
+                              }
+                           }
+                           set-cvar(e-cvar, #nil, id-op);
                            carg-v[1] = e-cvar;
                            set-method(e-method, e.left, f.decl.name, 1, group-v, 2, carg-v);
                            e.left = e-method;
