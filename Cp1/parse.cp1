@@ -914,6 +914,23 @@ parse-string(r:Rdr, w:Wtr, ending:char, in-data:ref) {
       }
    }
 }
+parse-string(r:Rdr, ending:char, in-data:ref):intc {
+   var start:Rdr.;
+   start.pos = r.pos;
+   r.pos += 2;
+   loop {
+      c! = r.p1[0];
+      if c == ''\n {
+         get-row-col(row!, col!, r.reff, in-data);
+         C1.stdout{.input-path '': row '': col ": Unterminated string\n"}
+         C.exit(#failure);
+      }
+      r.pos++;
+      if c == ending {
+         return r.pos - start.pos;
+      }
+   }
+}
 parse-comment(r:Rdr, w:Wtr, ending:char, in-data:ref) {
    var r-begin:Rdr.;
    r-begin.pos = r.pos;
@@ -1084,6 +1101,280 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       w.reff = new-data;
       // Ignore texts outside the top-level curly braces
       // indent! = 0:i32;
+      var basic-indent-c = 0;
+      var basic-indent-v:u16[256];
+      var row = 0;
+      loop {
+         row++;
+         var start-line:Rdr.;
+         start-line.pos = r.pos;
+         loop {
+            if r.p1[0] == ''\n {
+               break;
+            }
+            r.pos++;
+         }
+         var next-line:Rdr.;
+         next-line.pos = r.pos + 1;
+         if r.p1[-1] == ''\r {
+            // C1.stdout{"windows line ending detected\n"}
+            r.pos--;
+         }
+         // C1.stdout{"{{ " start-line.charr, r.pos - start-line.pos " }}2\n"}
+         var line:Rdr.;
+         line.pos = start-line.pos;
+         var col = 0;
+         var has-semicolon = false;
+         var last-char = -1;
+         loop r.pos - start-line.pos {
+            if start-line.p1[col] == ''  {
+            } else { break }
+            col++;
+         }
+         var indent = col;
+         line.pos += col;
+         loop line.pos < r.pos {
+            col++;
+            if line.p1[0] == ''\t {
+               C1.stdout{.input-path '': row '': col ": Error, use of tabs is discouraged, please use spaces instead\n"}
+               C.exit(#failure);
+            } elif line.p1[0] == ''; {
+               has-semicolon = true;
+               last-char = col - 1;
+            } elif (line.p1[0] == ''/) && (line.p1[1] == ''/) {
+               if line.p1[2] != ''  {
+                  C1.stdout{.input-path '': row '': col ": There must be a space after the '//' comment\n"}
+                  C.exit(#failure);
+               }
+               if col == 1 {
+                  col -= 1; // 2 to also remove the space
+               } elif line.p1[-1] != ''  {
+                  C1.stdout{.input-path '': row '': col ": There must be a space before the '//' comment\n"}
+                  C.exit(#failure);
+               } else {
+                  col -= 2; // 2 to also remove the space
+               }
+               break;
+            } elif line.p1[0] == ''" { // C-string
+               line.pos++;
+               col++;
+               loop {
+                  if line.p1[0] == ''\n {
+                     get-row-col(row!, col!, r.reff, in-data);
+                     C1.stdout{.input-path '': row '': col ": Unterminated string\n"}
+                     C.exit(#failure);
+                  } elif line.p1[0] == ''" {
+                     line.pos++;
+                     col++;
+                     last-char = col - 1;
+                     break;
+                  } elif line.p1[0] == ''\\ {
+                     switch line.p1[1] {
+                        case ''0 { }
+                        case ''\\ { }
+                        case ''" { }
+                        case ''\' { }
+                        case ''a { }
+                        case ''b { }
+                        case ''f { }
+                        case ''n { }
+                        case ''r { }
+                        case ''t { }
+                        case ''v { }
+                        case ''$ { }
+                        default {
+                           if line.p1[1] == ''\n {
+                              C1.stdout{.input-path '': row '': col ": Encountered invalid escape sequence in the string: '\\(newline)'\n"}
+                           } else {
+                              C1.stdout{.input-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" line.charr[1] "'\n"}
+                           }
+                           C.exit(#failure);
+                        }
+                     }
+                     line.pos += 2;
+                     col += 2;
+                  } else {
+                     line.pos++;
+                     col++;
+                  }
+               }
+            } elif line.p1[0] == ''  {
+            } elif line.p1[0] == ''\' {
+               if line.p1[1] == ''\' {
+                  // char
+                  c! = line.p1[2];
+                  if c == ''\\ {
+                     if line.p1[3] == ''" {
+                        C1.stdout{.input-path '': row '': col ": char ''\\\" is invalid, please use ''\" instead\n"}
+                        C.exit(#failure);
+                     }
+                     line.pos += 4;
+                     col += 4;
+                  } else {
+                     switch c {
+                        case ''\' {
+                           C1.stdout{.input-path '': row '': col ": char ''' is invalid, please use ''\\' instead\n"}
+                           C.exit(#failure);
+                        }
+                        case ''\a {
+                           C1.stdout{.input-path '': row '': col ": char ''(\\a) is invalid, please use ''\\a instead\n"}
+                           C.exit(#failure);
+                        }
+                        case ''\b {
+                           C1.stdout{.input-path '': row '': col ": char ''(\\b) is invalid, please use ''\\b instead\n"}
+                           C.exit(#failure);
+                        }
+                        case ''\f {
+                           C1.stdout{.input-path '': row '': col ": char ''(\\f) is invalid, please use ''\\f instead\n"}
+                           C.exit(#failure);
+                        }
+                        case ''\n {
+                           C1.stdout{.input-path '': row '': col ": char ''(new line) is invalid, please use ''\\n instead\n"}
+                           C.exit(#failure);
+                        }
+                        case ''\r {
+                           C1.stdout{.input-path '': row '': col ": char ''(\\r) is invalid, please use ''\\r instead\n"}
+                           C.exit(#failure);
+                        }
+                        case ''\t {
+                           C1.stdout{.input-path '': row '': col ": char ''(tab) is invalid, please use ''\\t instead\n"}
+                           C.exit(#failure);
+                        }
+                        case ''\v {
+                           C1.stdout{.input-path '': row '': col ": char ''(\\v) is invalid, please use ''\\v instead\n"}
+                           C.exit(#failure);
+                        }
+                     }
+                     line.pos += 3;
+                     col += 3;
+                  }
+               } elif (&&, line.p1[2] == '' , (||, line.p1[1] == ''-, line.p1[1] == ''=)) {
+                  // string
+                  line.pos += 3;
+                  col += 3;
+                  r-begin! = line.charr;
+                  r-pos! = line.pos;
+                  loop {
+                     c! = line.p1[0];
+                     line.pos++;
+                     col++;
+                     if c == ''\n {
+                        break;
+                     }
+                  }
+                  continue;
+                  // Codes to check if syntax highlighting for strings are working
+                  "#if 0";
+                     '"hello";
+                     '<hello>;
+                     '[hello];
+                     '{hello};
+                     '(hello);
+                  "#endif";
+               } elif line.p1[1] == ''" {
+                  col += parse-string(line, ''", in-data);
+               } elif line.p1[1] == ''< {
+                  col += parse-string(line, ''>, in-data);
+               } elif line.p1[1] == ''[ {
+                  col += parse-string(line, ''], in-data);
+               } elif line.p1[1] == ''{ {
+                  col += parse-string(line, ''}, in-data);
+               } elif line.p1[1] == ''( {
+                  col += parse-string(line, ''), in-data);
+               }
+               last-char = col - 1;
+            } else {
+               last-char = col - 1;
+            }
+            line.pos++;
+         }
+         // C1.stdout{"last-char " last-char ", indent " indent "\n"}
+         if (basic-indent-c != 0) && (basic-indent-v[basic-indent-c - 1] >= indent) {
+            // Currently in basic syntax mode
+            w.pos--;
+            w.p1[0] = '' ;
+            w.pos++;
+            w.p1[0] = ''};
+            w.pos++;
+            basic-indent-c--;
+            // C1.stdout{"exit basic syntax mode\n"}
+            loop (basic-indent-c != 0) && (basic-indent-v[basic-indent-c - 1] >= indent) {
+               w.p1[0] = '' ;
+               w.pos++;
+               w.p1[0] = ''};
+               w.pos++;
+               basic-indent-c--;
+               // C1.stdout{"exit basic syntax mode\n"}
+            }
+            w.p1[0] = ''\n;
+            w.pos++;
+         }
+         if (last-char != -1) && (start-line.p1[last-char] == '':) {
+            if has-semicolon {
+               C1.stdout{.input-path '': row '': col ": Semicolons ';' are not allowed in basic syntax mode\n"}
+               C.exit(#failure);
+            }
+            // C1.stdout{"[[ " start-line.charr, col " ]] CONVERTING FROM BASIC TO CP1\n"}
+            line.pos = start-line.pos;
+            loop last-char {
+               w.p1[0] = line.p1[0];
+               w.pos++;
+               line.pos++;
+            }
+            w.p1[0] = '' ;
+            w.pos++;
+            w.p1[0] = ''{;
+            w.pos++;
+            basic-indent-v[basic-indent-c++] = indent;
+         } elif basic-indent-c == 0 {
+            // C1.stdout{"[[ " start-line.charr, col " ]]\n"}
+            line.pos = start-line.pos;
+            loop col {
+               w.p1[0] = line.p1[0];
+               w.pos++;
+               line.pos++;
+            }
+         } else {
+            if has-semicolon {
+               C1.stdout{.input-path '': row '': col ": Semicolons ';' are not allowed in basic line mode\n"}
+               C.exit(#failure);
+            }
+            line.pos = start-line.pos;
+            loop col {
+               w.p1[0] = line.p1[0];
+               w.pos++;
+               line.pos++;
+            }
+            if (last-char != -1) && (start-line.p1[last-char] == ''}) {
+            } else {
+               w.p1[0] = '';;
+               w.pos++;
+            }
+         }
+         w.p1[0] = ''\n;
+         w.pos++;
+         if next-line.pos == r-end.pos { break }
+         r.pos = next-line.pos;
+      }
+      if basic-indent-c != 0 {
+         // Currently in basic syntax mode
+         w.pos--;
+         w.p1[0] = '' ;
+         w.pos++;
+         w.p1[0] = ''};
+         w.pos++;
+         // C1.stdout{"exit basic syntax mode\n"}
+         loop basic-indent-c - 1 {
+            w.p1[0] = '' ;
+            w.pos++;
+            w.p1[0] = ''};
+            w.pos++;
+            // C1.stdout{"exit basic syntax mode\n"}
+         }
+         w.p1[0] = ''\n;
+         w.pos++;
+      }
+      if false {
       loop r.pos < r-end.pos {
          if r.p1[0] == ''\r {
             // Ignore
@@ -1287,7 +1578,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          w.pos++;
          r.pos++;
       }
+      }
       w.p1[0] = ''\0;
+      // C.printf("%s", new-data);
       C.free(in-data);
       in-data = new-data;
       var w-begin:Wtr.;
