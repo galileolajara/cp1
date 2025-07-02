@@ -1340,7 +1340,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                w.pos++;
                line.pos++;
             }
-            if (last-char != -1) && (||, start-line.p1[last-char] == ''{, start-line.p1[last-char] == ''}, start-line.p1[last-char] == '';) {
+            if (last-char != -1) && (||, start-line.p1[last-char] == ''{, start-line.p1[last-char] == ''}, start-line.p1[last-char] == '';, start-line.p1[last-char] == '',) {
             } else {
                w.p1[0] = '';;
                w.pos++;
