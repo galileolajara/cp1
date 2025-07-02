@@ -1101,8 +1101,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       w.reff = new-data;
       // Ignore texts outside the top-level curly braces
       // indent! = 0:i32;
-      var basic-indent-c = 0;
-      var basic-indent-v:u16[256];
+      var basic-mode-indent-c = 0;
+      var basic-mode-indent-v:u16[256];
+      var basic-mode-row-begin = 0;
       var row = 0;
       loop {
          row++;
@@ -1124,7 +1125,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          var line:Rdr.;
          line.pos = start-line.pos;
          var col = 0;
-         var has-semicolon = false;
+         var has-semicolon = -1;
          var last-char = -1;
          loop r.pos - start-line.pos {
             if start-line.p1[col] == ''  {
@@ -1133,13 +1134,15 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          }
          var indent = col;
          line.pos += col;
+         var first-char:Rdr.;
+         first-char.pos = line.pos;
          loop line.pos < r.pos {
             col++;
             if line.p1[0] == ''\t {
                C1.stdout{.input-path '': row '': col ": Error, use of tabs is discouraged, please use spaces instead\n"}
                C.exit(#failure);
             } elif line.p1[0] == ''; {
-               has-semicolon = true;
+               has-semicolon = col;
                last-char = col - 1;
             } elif (line.p1[0] == ''/) && (line.p1[1] == ''/) {
                if line.p1[2] != ''  {
@@ -1289,30 +1292,33 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             line.pos++;
          }
          // C1.stdout{"last-char " last-char ", indent " indent "\n"}
-         if (basic-indent-c != 0) && (basic-indent-v[basic-indent-c - 1] >= indent) {
+         if (basic-mode-indent-c != 0) && (basic-mode-indent-v[basic-mode-indent-c - 1] >= indent) {
             // Currently in basic syntax mode
             w.pos--;
             w.p1[0] = '' ;
             w.pos++;
             w.p1[0] = ''};
             w.pos++;
-            basic-indent-c--;
+            basic-mode-indent-c--;
             // C1.stdout{"exit basic syntax mode\n"}
-            loop (basic-indent-c != 0) && (basic-indent-v[basic-indent-c - 1] >= indent) {
+            loop (basic-mode-indent-c != 0) && (basic-mode-indent-v[basic-mode-indent-c - 1] >= indent) {
                w.p1[0] = '' ;
                w.pos++;
                w.p1[0] = ''};
                w.pos++;
-               basic-indent-c--;
+               basic-mode-indent-c--;
                // C1.stdout{"exit basic syntax mode\n"}
             }
             w.p1[0] = ''\n;
             w.pos++;
          }
          if (last-char != -1) && (start-line.p1[last-char] == '':) {
-            if has-semicolon {
-               C1.stdout{.input-path '': row '': col ": Semicolons ';' are not allowed in basic syntax mode\n"}
-               C.exit(#failure);
+            if has-semicolon != -1 {
+               if (&&, first-char.p1[0] == ''l, first-char.p1[1] == ''o, first-char.p1[2] == ''o, first-char.p1[3] == ''p, first-char.p1[4] == '' ) {
+               } else {
+                  C1.stdout{.input-path '': row '': has-semicolon ": Semicolons ';' are not allowed in basic syntax mode. Basic sytax mode begins on line " basic-mode-row-begin ".\n"}
+                  C.exit(#failure);
+               }
             }
             // C1.stdout{"[[ " start-line.charr, col " ]] CONVERTING FROM BASIC TO CP1\n"}
             line.pos = start-line.pos;
@@ -1325,8 +1331,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             w.pos++;
             w.p1[0] = ''{;
             w.pos++;
-            basic-indent-v[basic-indent-c++] = indent;
-         } elif basic-indent-c == 0 {
+            if basic-mode-indent-c == 0 {
+               basic-mode-row-begin = row;
+            }
+            basic-mode-indent-v[basic-mode-indent-c++] = indent;
+         } elif basic-mode-indent-c == 0 {
             // C1.stdout{"[[ " start-line.charr, col " ]]\n"}
             line.pos = start-line.pos;
             loop col {
@@ -1335,9 +1344,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                line.pos++;
             }
          } else {
-            if has-semicolon {
-               C1.stdout{.input-path '': row '': col ": Semicolons ';' are not allowed in basic line mode\n"}
-               C.exit(#failure);
+            if has-semicolon != -1 {
+               if (&&, first-char.p1[0] == ''l, first-char.p1[1] == ''o, first-char.p1[2] == ''o, first-char.p1[3] == ''p, first-char.p1[4] == '' ) {
+               } else {
+                  C1.stdout{.input-path '': row '': has-semicolon ": Semicolons ';' are not allowed in basic syntax mode. Basic sytax mode begins on line " basic-mode-row-begin ".\n"}
+                  C.exit(#failure);
+               }
             }
             line.pos = start-line.pos;
             loop col {
@@ -1356,7 +1368,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          if next-line.pos == r-end.pos { break }
          r.pos = next-line.pos;
       }
-      if basic-indent-c != 0 {
+      if basic-mode-indent-c != 0 {
          // Currently in basic syntax mode
          w.pos--;
          w.p1[0] = '' ;
@@ -1364,7 +1376,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          w.p1[0] = ''};
          w.pos++;
          // C1.stdout{"exit basic syntax mode\n"}
-         loop basic-indent-c - 1 {
+         loop basic-mode-indent-c - 1 {
             w.p1[0] = '' ;
             w.pos++;
             w.p1[0] = ''};
