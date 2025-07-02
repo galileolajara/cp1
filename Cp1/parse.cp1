@@ -1096,7 +1096,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       r-end.pos += in-size;
       var r:Rdr.;
       r.reff = in-data;
-      var new-data = C.malloc(in-size + 1);
+      var new-data = C.malloc((in-size << 1) + 4); // 2x because basic syntax mode adds { and }
       var w:Wtr.;
       w.reff = new-data;
       // Ignore texts outside the top-level curly braces
@@ -1125,7 +1125,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          var line:Rdr.;
          line.pos = start-line.pos;
          var col = 0;
-         var has-semicolon = -1;
          var last-char = -1;
          loop r.pos - start-line.pos {
             if start-line.p1[col] == ''  {
@@ -1141,9 +1140,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             if line.p1[0] == ''\t {
                C1.stdout{.input-path '': row '': col ": Error, use of tabs is discouraged, please use spaces instead\n"}
                C.exit(#failure);
-            } elif line.p1[0] == ''; {
-               has-semicolon = col;
-               last-char = col - 1;
             } elif (line.p1[0] == ''/) && (line.p1[1] == ''/) {
                if line.p1[2] != ''  {
                   C1.stdout{.input-path '': row '': col ": There must be a space after the '//' comment\n"}
@@ -1161,15 +1157,16 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             } elif line.p1[0] == ''" { // C-string
                line.pos++;
                col++;
+               // C.out.printf("A\n"); C.out.flush();
                loop {
                   if line.p1[0] == ''\n {
-                     get-row-col(row!, col!, r.reff, in-data);
                      C1.stdout{.input-path '': row '': col ": Unterminated string\n"}
                      C.exit(#failure);
                   } elif line.p1[0] == ''" {
                      line.pos++;
                      col++;
                      last-char = col - 1;
+                     // C.out.printf("B\n"); C.out.flush();
                      break;
                   } elif line.p1[0] == ''\\ {
                      switch line.p1[1] {
@@ -1313,13 +1310,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             w.pos++;
          }
          if (last-char != -1) && (start-line.p1[last-char] == '':) {
-            if has-semicolon != -1 {
-               if (&&, first-char.p1[0] == ''l, first-char.p1[1] == ''o, first-char.p1[2] == ''o, first-char.p1[3] == ''p, first-char.p1[4] == '' ) {
-               } else {
-                  C1.stdout{.input-path '': row '': has-semicolon ": Semicolons ';' are not allowed in basic syntax mode. Basic sytax mode begins on line " basic-mode-row-begin ".\n"}
-                  C.exit(#failure);
-               }
-            }
             // C1.stdout{"[[ " start-line.charr, col " ]] CONVERTING FROM BASIC TO CP1\n"}
             line.pos = start-line.pos;
             loop last-char {
@@ -1344,20 +1334,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                line.pos++;
             }
          } else {
-            if has-semicolon != -1 {
-               if (&&, first-char.p1[0] == ''l, first-char.p1[1] == ''o, first-char.p1[2] == ''o, first-char.p1[3] == ''p, first-char.p1[4] == '' ) {
-               } else {
-                  C1.stdout{.input-path '': row '': has-semicolon ": Semicolons ';' are not allowed in basic syntax mode. Basic sytax mode begins on line " basic-mode-row-begin ".\n"}
-                  C.exit(#failure);
-               }
-            }
             line.pos = start-line.pos;
             loop col {
                w.p1[0] = line.p1[0];
                w.pos++;
                line.pos++;
             }
-            if (last-char != -1) && (start-line.p1[last-char] == ''}) {
+            if (last-char != -1) && (||, start-line.p1[last-char] == ''{, start-line.p1[last-char] == ''}, start-line.p1[last-char] == '';) {
             } else {
                w.p1[0] = '';;
                w.pos++;

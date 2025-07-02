@@ -374,6 +374,7 @@ char* _NCp1_Preq_parse_3(const char* path, uint8_t path_len, bool require) {
    pid_t pid;
    // memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/bin/cp1-parse", 15);
    int spawn = posix_spawn(&pid, parser_path, NULL, NULL, argv, environ);
+   // printf("%s %s %s\n", parser_path, fullpath, tmp);
    int status;
    waitpid(pid, &status, 0);
 #else
