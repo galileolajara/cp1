@@ -1849,8 +1849,6 @@ _NLibCp1_NStdOut_Pstdout_cstr_4(&_L_64, ": Unterminated string\n", 22u, _L_63);
 _NLibCp1_NStdOut_Pstdout_end_1(&_L_64);
 exit(_NLibC_NExit_Cfailure);
 } else if(_Lline_32._Fp1[0] == '\"') {
-_Lline_32._Fpos++;
-_Lcol_33++;
 _Llast_char_34 = (_Lcol_33 - 1);
 goto break_4;
 } else if(_Lline_32._Fp1[0] == '\\') {
@@ -2286,10 +2284,12 @@ _Lline_32._Fpos++;
 continue_9:;
 }
 break_9:;
-if(((_Llast_char_34 != -1) && ((_Lstart_line_30._Fp1[_Llast_char_34] == '{') || (_Lstart_line_30._Fp1[_Llast_char_34] == '}') || (_Lstart_line_30._Fp1[_Llast_char_34] == ';')))) {
+if(_Llast_char_34 != -1) {
+if(((_Lstart_line_30._Fp1[_Llast_char_34] == '{') || (_Lstart_line_30._Fp1[_Llast_char_34] == '}') || (_Lstart_line_30._Fp1[_Llast_char_34] == ';') || (_Lstart_line_30._Fp1[_Llast_char_34] == ','))) {
 } else {
 _Lw_25._Fp1[0] = ';';
 _Lw_25._Fpos++;
+}
 }
 }
 _Lw_25._Fp1[0] = '\n';

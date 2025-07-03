@@ -1163,8 +1163,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                      C1.stdout{.input-path '': row '': col ": Unterminated string\n"}
                      C.exit(#failure);
                   } elif line.p1[0] == ''" {
-                     line.pos++;
-                     col++;
                      last-char = col - 1;
                      // C.out.printf("B\n"); C.out.flush();
                      break;
@@ -1326,7 +1324,10 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             }
             basic-mode-indent-v[basic-mode-indent-c++] = indent;
          } elif basic-mode-indent-c == 0 {
-            // C1.stdout{"[[ " start-line.charr, col " ]]\n"}
+            // C1.stdout{"[[ " start-line.charr, col " ]] " col "\n"}
+            // if last-char != -1 {
+               // C1.stdout{start-line.p1[last-char] "\n"}
+            // }
             line.pos = start-line.pos;
             loop col {
                w.p1[0] = line.p1[0];
@@ -1340,10 +1341,12 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                w.pos++;
                line.pos++;
             }
-            if (last-char != -1) && (||, start-line.p1[last-char] == ''{, start-line.p1[last-char] == ''}, start-line.p1[last-char] == '';, start-line.p1[last-char] == '',) {
-            } else {
-               w.p1[0] = '';;
-               w.pos++;
+            if last-char != -1 {
+               if (||, start-line.p1[last-char] == ''{, start-line.p1[last-char] == ''}, start-line.p1[last-char] == '';, start-line.p1[last-char] == '',) {
+               } else {
+                  w.p1[0] = '';;
+                  w.pos++;
+               }
             }
          }
          w.p1[0] = ''\n;
