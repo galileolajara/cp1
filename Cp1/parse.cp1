@@ -1085,8 +1085,9 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    //    C.exit(#failure);
    // }
    if in-data[in-size - 1] != ''\n {
-      C1.stdout{"Error reading file '" .input-path "' because it doesn't end with a new line\n"}
-      C.exit(#failure);
+      in-data[in-size++] = ''\n;
+      // C1.stdout{"Error reading file '" .input-path "' because it doesn't end with a new line\n"}
+      // C.exit(#failure);
    }
    if true { // Process comments
       preprocess! = false;
@@ -1287,25 +1288,27 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             line.pos++;
          }
          // C1.stdout{"last-char " last-char ", indent " indent "\n"}
-         if (basic-mode-indent-c != 0) && (basic-mode-indent-v[basic-mode-indent-c - 1] >= indent) {
-            // Currently in basic syntax mode
-            w.pos--;
-            w.p1[0] = '' ;
-            w.pos++;
-            w.p1[0] = ''};
-            w.pos++;
-            basic-mode-indent-c--;
-            // C1.stdout{"exit basic syntax mode\n"}
-            loop (basic-mode-indent-c != 0) && (basic-mode-indent-v[basic-mode-indent-c - 1] >= indent) {
+         if last-char != -1 {
+            if (basic-mode-indent-c != 0) && (basic-mode-indent-v[basic-mode-indent-c - 1] >= indent) {
+               // Currently in basic syntax mode
+               w.pos--;
                w.p1[0] = '' ;
                w.pos++;
                w.p1[0] = ''};
                w.pos++;
                basic-mode-indent-c--;
                // C1.stdout{"exit basic syntax mode\n"}
+               loop (basic-mode-indent-c != 0) && (basic-mode-indent-v[basic-mode-indent-c - 1] >= indent) {
+                  w.p1[0] = '' ;
+                  w.pos++;
+                  w.p1[0] = ''};
+                  w.pos++;
+                  basic-mode-indent-c--;
+                  // C1.stdout{"exit basic syntax mode\n"}
+               }
+               w.p1[0] = ''\n;
+               w.pos++;
             }
-            w.p1[0] = ''\n;
-            w.pos++;
          }
          if (last-char != -1) && (start-line.p1[last-char] == '':) {
             // C1.stdout{"[[ " start-line.charr, col " ]] CONVERTING FROM BASIC TO CP1\n"}
@@ -1324,10 +1327,6 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             }
             basic-mode-indent-v[basic-mode-indent-c++] = indent;
          } elif basic-mode-indent-c == 0 {
-            // C1.stdout{"[[ " start-line.charr, col " ]] " col "\n"}
-            // if last-char != -1 {
-               // C1.stdout{start-line.p1[last-char] "\n"}
-            // }
             line.pos = start-line.pos;
             loop col {
                w.p1[0] = line.p1[0];
@@ -1578,7 +1577,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       }
       }
       w.p1[0] = ''\0;
-      // C.printf("%s", new-data);
+      // "puts(_Lnew_data_20);";
       C.free(in-data);
       in-data = new-data;
       var w-begin:Wtr.;
