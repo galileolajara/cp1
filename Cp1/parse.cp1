@@ -1341,7 +1341,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                line.pos++;
             }
             if last-char != -1 {
-               if (||, start-line.p1[last-char] == ''{, start-line.p1[last-char] == ''}, start-line.p1[last-char] == '';, start-line.p1[last-char] == '',) {
+               if (||, start-line.p1[last-char] == ''{, start-line.p1[last-char] == ''}, start-line.p1[last-char] == ''[, start-line.p1[last-char] == ''(, start-line.p1[last-char] == '';, start-line.p1[last-char] == '',) {
                } else {
                   w.p1[0] = '';;
                   w.pos++;

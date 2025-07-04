@@ -2274,7 +2274,7 @@ continue_9:;
 }
 break_9:;
 if(_Llast_char_30 != -1) {
-if(((_Lstart_line_26._Fp1[_Llast_char_30] == '{') || (_Lstart_line_26._Fp1[_Llast_char_30] == '}') || (_Lstart_line_26._Fp1[_Llast_char_30] == ';') || (_Lstart_line_26._Fp1[_Llast_char_30] == ','))) {
+if(((_Lstart_line_26._Fp1[_Llast_char_30] == '{') || (_Lstart_line_26._Fp1[_Llast_char_30] == '}') || (_Lstart_line_26._Fp1[_Llast_char_30] == '[') || (_Lstart_line_26._Fp1[_Llast_char_30] == '(') || (_Lstart_line_26._Fp1[_Llast_char_30] == ';') || (_Lstart_line_26._Fp1[_Llast_char_30] == ','))) {
 } else {
 _Lw_21._Fp1[0] = ';';
 _Lw_21._Fpos++;
