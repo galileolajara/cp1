@@ -127,8 +127,10 @@
 #define _NCp1_NToken_Csoa_field (_NCp1_NToken_Cnull + 1)
 #define _NCp1_NToken_Copen_parenthesis_amp_amp_comma (_NCp1_NToken_Csoa_field + 1)
 #define _NCp1_NToken_Cspace_bool_and_and (_NCp1_NToken_Copen_parenthesis_amp_amp_comma + 1)
-#define _NCp1_NToken_Cspace_bool_or_or (_NCp1_NToken_Cspace_bool_and_and + 1)
-#define _NCp1_NToken_Copen_parenthesis_pipe_pipe_comma (_NCp1_NToken_Cspace_bool_or_or + 1)
+#define _NCp1_NToken_Cspace_bool_and_and_space (_NCp1_NToken_Cspace_bool_and_and + 1)
+#define _NCp1_NToken_Cspace_bool_or_or (_NCp1_NToken_Cspace_bool_and_and_space + 1)
+#define _NCp1_NToken_Cspace_bool_or_or_space (_NCp1_NToken_Cspace_bool_or_or + 1)
+#define _NCp1_NToken_Copen_parenthesis_pipe_pipe_comma (_NCp1_NToken_Cspace_bool_or_or_space + 1)
 #define _NCp1_NToken_Cspace_op_plus (_NCp1_NToken_Copen_parenthesis_pipe_pipe_comma + 1)
 #define _NCp1_NToken_Cspace_op_minus_space (_NCp1_NToken_Cspace_op_plus + 1)
 #define _NCp1_NToken_Cspace_op_mul (_NCp1_NToken_Cspace_op_minus_space + 1)
@@ -1393,7 +1395,9 @@ case _NCp1_NToken_Cnull: return "null";
 case _NCp1_NToken_Csoa_field: return "soa-field";
 case _NCp1_NToken_Copen_parenthesis_amp_amp_comma: return "open-parenthesis-amp-amp-comma";
 case _NCp1_NToken_Cspace_bool_and_and: return "space-bool-and-and";
+case _NCp1_NToken_Cspace_bool_and_and_space: return "space-bool-and-and-space";
 case _NCp1_NToken_Cspace_bool_or_or: return "space-bool-or-or";
+case _NCp1_NToken_Cspace_bool_or_or_space: return "space-bool-or-or-space";
 case _NCp1_NToken_Copen_parenthesis_pipe_pipe_comma: return "open-parenthesis-pipe-pipe-comma";
 case _NCp1_NToken_Cspace_op_plus: return "space-op-plus";
 case _NCp1_NToken_Cspace_op_minus_space: return "space-op-minus-space";

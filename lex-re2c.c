@@ -203,9 +203,9 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces ">="                      { return CP1_TOKEN_SPACE_CMP_MORE_EQUAL; }
 
    spaces "&&"                      { return CP1_TOKEN_SPACE_BOOL_AND_AND; }
-   spaces "and"                     { return CP1_TOKEN_SPACE_BOOL_AND_AND; }
+   spaces "and" spaces              { return CP1_TOKEN_SPACE_BOOL_AND_AND_SPACE; }
    spaces "||"                      { return CP1_TOKEN_SPACE_BOOL_OR_OR; }
-   spaces "or"                      { return CP1_TOKEN_SPACE_BOOL_OR_OR; }
+   spaces "or" spaces               { return CP1_TOKEN_SPACE_BOOL_OR_OR_SPACE; }
 
    "using"                          { return CP1_TOKEN_USING; }
    "meta"                           { meta_start = l->start; meta_col = _Gcol; return CP1_TOKEN_META; }
