@@ -249,9 +249,7 @@ using Cp1 {
       output-f32-nr(val);
    }
    output-f32-nr(val:f32) {
-      var len:intc;
-      C.sprintf(&.output-data[.output-len], "%f%n", val, &len);
-      .output-len += len;
+      .output-len += C.sprintf(&.output-data[.output-len], "%f", val);
    }
    output-i32(val:i32) {
       output-reserve(11);

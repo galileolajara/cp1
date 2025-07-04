@@ -16111,9 +16111,7 @@ output_len += _Ldigits_7;
 }
 }
 void _NCp1_Poutput_f32_nr_1(float _Lval_0) {
-int _Llen_1 = {0};
-sprintf(&output_data[output_len], "%f%n", _Lval_0, &_Llen_1);
-output_len += _Llen_1;
+output_len += sprintf(&output_data[output_len], "%f", _Lval_0);
 }
 void _NCp1_Poutput_o32_nr_1(uint32_t _Lval_0) {
 if(_Lval_0 == 0) {

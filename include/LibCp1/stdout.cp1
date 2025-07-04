@@ -236,9 +236,7 @@ using f32 {
       so.reserve += 47;
    }
    stdout(val:this, so:C1.StdOut, unused:intc) @inline {
-      var len:intc;
-      C.sprintf(&C1.stdout-buf-data[C1.stdout-buf-len], "%f%n", val, &len);
-      C1.stdout-buf-len += len;
+      C1.stdout-buf-len += C.sprintf(&C1.stdout-buf-data[C1.stdout-buf-len], "%f", val);
    }
 }
 using i32 {
