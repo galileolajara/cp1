@@ -46,32 +46,32 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
          return CP1_TOKEN_OPEN_CURLY_BRACE;
       }
    }
-   "}"                              { return CP1_TOKEN_CLOSE_CURLY_BRACE; }
-   spaces "}"                       { return CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE; }
-   "("                              { return CP1_TOKEN_OPEN_PARENTHESIS; }
-   ")"                              { return CP1_TOKEN_CLOSE_PARENTHESIS; }
-   spaces ")"                       { return CP1_TOKEN_SPACE_CLOSE_PARENTHESIS; }
-   spaces? "," spaces ")"           { return CP1_TOKEN_COMMA_SPACE_CLOSE_PARENTHESIS; }
-   spaces? "," spaces               { return CP1_TOKEN_COMMA_SPACE; }
-   spaces? "," spaces "]"           { return CP1_TOKEN_COMMA_SPACE_CLOSE_BRACKET; }
-   spaces                           { return CP1_TOKEN_SPACE; }
-   spaces? ";"                      { return CP1_TOKEN_SEMICOLON; }
-   "+"                              { return CP1_TOKEN_PLUS; }
-   "-"                              { return CP1_TOKEN_MINUS; }
-   "!"                              { return CP1_TOKEN_EXCLAMATION; }
-   "?"                              { return CP1_TOKEN_QUESTION; }
-   "&"                              { return CP1_TOKEN_AMPERSAND; }
-   "#"                              { return CP1_TOKEN_HASH; }
-   "["                              { return CP1_TOKEN_OPEN_BRACKET; }
-   "]"                              { return CP1_TOKEN_CLOSE_BRACKET; }
-   spaces "]"                       { return CP1_TOKEN_SPACE_CLOSE_BRACKET; }
-	"0"                              { return CP1_TOKEN_NUM_ZERO; }
-	[1-9] [0-9]*                     { return CP1_TOKEN_NUM_I32; }
-	[1-9] [0-9]* "u"                 { return CP1_TOKEN_NUM_U32; }
-	[0-9]+ "u64"                     { return CP1_TOKEN_NUM_U64; }
-   "0o" [0-7]+                      { return CP1_TOKEN_NUM_OCT; }
-	"0x" [0-9a-fA-F]+                { return CP1_TOKEN_NUM_HEX; }
-	("0"|[1-9][0-9]*) "." [0-9]+ "f" { return CP1_TOKEN_NUM_F32; }
+   "}"                               { return CP1_TOKEN_CLOSE_CURLY_BRACE; }
+   spaces "}"                        { return CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE; }
+   "("                               { return CP1_TOKEN_OPEN_PARENTHESIS; }
+   ")"                               { return CP1_TOKEN_CLOSE_PARENTHESIS; }
+   spaces ")"                        { return CP1_TOKEN_SPACE_CLOSE_PARENTHESIS; }
+   spaces? "," spaces ")"            { return CP1_TOKEN_COMMA_SPACE_CLOSE_PARENTHESIS; }
+   spaces? "," spaces                { return CP1_TOKEN_COMMA_SPACE; }
+   spaces? "," spaces "]"            { return CP1_TOKEN_COMMA_SPACE_CLOSE_BRACKET; }
+   spaces                            { return CP1_TOKEN_SPACE; }
+   spaces? ";"                       { return CP1_TOKEN_SEMICOLON; }
+   "+"                               { return CP1_TOKEN_PLUS; }
+   "-"                               { return CP1_TOKEN_MINUS; }
+   "!"                               { return CP1_TOKEN_EXCLAMATION; }
+   "?"                               { return CP1_TOKEN_QUESTION; }
+   "&"                               { return CP1_TOKEN_AMPERSAND; }
+   "#"                               { return CP1_TOKEN_HASH; }
+   "["                               { return CP1_TOKEN_OPEN_BRACKET; }
+   "]"                               { return CP1_TOKEN_CLOSE_BRACKET; }
+   spaces "]"                        { return CP1_TOKEN_SPACE_CLOSE_BRACKET; }
+	"0"                               { return CP1_TOKEN_NUM_ZERO; }
+	[1-9] [0-9]*                      { return CP1_TOKEN_NUM_I32; }
+	[1-9] [0-9]* "u"                  { return CP1_TOKEN_NUM_U32; }
+	[0-9]+ "u64"                      { return CP1_TOKEN_NUM_U64; }
+   "0o" [0-7]+                       { return CP1_TOKEN_NUM_OCT; }
+	"0x" [0-9a-fA-F]+                 { return CP1_TOKEN_NUM_HEX; }
+	("0"|[1-9][0-9]*) "." [0-9]+ "f"? { return CP1_TOKEN_NUM_F32; }
    // "meta" spaces "#" id spaces "{" {
       // goto lex_template_code;
    // }
