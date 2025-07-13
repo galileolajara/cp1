@@ -1,6 +1,8 @@
 require "Posix/fcntl.cp1";
 include [
-#ifndef _WIN32
+#ifdef __MINGW32__
+#include <unistd.h>
+#elif !defined(_WIN32)
 #include <unistd.h>
 #else
 #include <process.h>

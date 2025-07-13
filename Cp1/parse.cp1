@@ -1310,7 +1310,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                w.pos++;
             }
          }
-         if (last-char != -1) && (start-line.p1[last-char] == '':) {
+         if (last-char != -1) && (start-line.p1[last-char] == '':) && (||, first-char.p1[0] != ''#, first-char.p1[1] != '' ) {
             // C1.stdout{"[[ " start-line.charr, col " ]] CONVERTING FROM BASIC TO CP1\n"}
             line.pos = start-line.pos;
             loop last-char {

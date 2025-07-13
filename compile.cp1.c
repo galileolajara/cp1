@@ -7,7 +7,9 @@
 #include "file.cp1.h"
 #include <stdio.h>
 
-#ifndef _WIN32
+#ifdef __MINGW32__
+#include <unistd.h>
+#elif !defined(_WIN32)
 #include <unistd.h>
 #else
 #include <process.h>

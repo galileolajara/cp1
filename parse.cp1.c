@@ -6,7 +6,9 @@
 #include "file.cp1.h"
 #include <fcntl.h>
 
-#ifndef _WIN32
+#ifdef __MINGW32__
+#include <unistd.h>
+#elif !defined(_WIN32)
 #include <unistd.h>
 #else
 #include <process.h>
@@ -2239,7 +2241,7 @@ _Lw_21._Fp1[0] = '\n';
 _Lw_21._Fpos++;
 }
 }
-if(((_Llast_char_30 != -1) && (_Lstart_line_26._Fp1[_Llast_char_30] == ':'))) {
+if(((_Llast_char_30 != -1) && (_Lstart_line_26._Fp1[_Llast_char_30] == ':') && ((_Lfirst_char_32._Fp1[0] != '#') || (_Lfirst_char_32._Fp1[1] != ' ')))) {
 _Lline_28._Fpos = _Lstart_line_26._Fpos;
 for(int i = _Llast_char_30; i > 0; ) {
 i --;
