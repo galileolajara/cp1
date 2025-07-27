@@ -1,0 +1,560 @@
+using C1 = LibCp1;
+using C = LibC;
+using Cp1 {
+   parse-string(in-path:char @const[], r:Rdr, w:Wtr, ending:char, in-data:ref) {
+      w.p1[0] = ''\';
+      w.p1[1] = r.p1[1];
+      w.pos += 2;
+      r.pos += 2;
+      loop {
+         c! = r.p1[0];
+         if c == ''\n {
+            get-row-col(row!, col!, r.reff, in-data);
+            C1.stdout{in-path '': row '': col ": Unterminated string\n"}
+            C.exit(#failure);
+         }
+         w.p1[0] = c;
+         w.pos++;
+         r.pos++;
+         if c == ending {
+            return;
+         }
+      }
+   }
+   parse-string(in-path:char @const[], r:Rdr, ending:char, in-data:ref):intc {
+      var start:Rdr.;
+      start.pos = r.pos;
+      r.pos += 2;
+      loop {
+         c! = r.p1[0];
+         if c == ''\n {
+            get-row-col(row!, col!, r.reff, in-data);
+            C1.stdout{in-path '': row '': col ": Unterminated string\n"}
+            C.exit(#failure);
+         }
+         r.pos++;
+         if c == ending {
+            return r.pos - start.pos;
+         }
+      }
+   }
+   get-row-col(out-row:u32&, out-col:u32&, end:ref, begin:ref) {
+      row! = 1;
+      col! = 1;
+      var r:Rdr.;
+      r.reff = begin;
+      var r-end:Rdr.;
+      r-end.reff = end;
+      loop r.pos < r-end.pos {
+         if r.p1[0] == ''\n {
+            row++;
+            col = 1;
+         } else {
+            col++;
+         }
+         r.pos++;
+      }
+      out-row = row;
+      if r.p1[0] == ''\n {
+         out-col = col - 1;
+      } else {
+         out-col = col;
+      }
+   }
+   preprocess(in-path:char @const[], in-data:u8[], in-out-size:usz&):u8[] {
+      in-size! = in-out-size;
+      if in-data[in-size - 1] != ''\n {
+         in-data[in-size++] = ''\n;
+      }
+      var r-end:Rdr.;
+      r-end.reff = in-data;
+      r-end.pos += in-size;
+      var r:Rdr.;
+      r.reff = in-data;
+      var new-data = C.malloc((in-size << 1) + 4); // 2x because basic syntax mode adds { and }
+      var w:Wtr.;
+      w.reff = new-data;
+      // Ignore texts outside the top-level curly braces
+      // indent! = 0:i32;
+      var basic-mode-indent-c = 0;
+      var basic-mode-indent-v:u16[256];
+      var basic-mode-row-begin = 0;
+      var row = 0;
+      loop {
+         row++;
+         var start-line:Rdr.;
+         start-line.pos = r.pos;
+         loop {
+            if r.p1[0] == ''\n {
+               break;
+            }
+            r.pos++;
+         }
+         var next-line:Rdr.;
+         next-line.pos = r.pos + 1;
+         if r.p1[-1] == ''\r {
+            // C1.stdout{"windows line ending detected\n"}
+            r.pos--;
+         }
+         // C1.stdout{"{{ " start-line.charr, r.pos - start-line.pos " }}2\n"}
+         var line:Rdr.;
+         line.pos = start-line.pos;
+         var col = 0;
+         var last-char = -1;
+         loop r.pos - start-line.pos {
+            if start-line.p1[col] == ''  {
+            } else { break }
+            col++;
+         }
+         var indent = col;
+         line.pos += col;
+         var first-char:Rdr.;
+         first-char.pos = line.pos;
+         loop line.pos < r.pos {
+            col++;
+            if line.p1[0] == ''\t {
+               C1.stdout{in-path '': row '': col ": Error, use of tabs is discouraged, please use spaces instead\n"}
+               C.exit(#failure);
+            } elif (line.p1[0] == ''/) && (line.p1[1] == ''/) {
+               if line.p1[2] != ''  {
+                  C1.stdout{in-path '': row '': col ": There must be a space after the '//' comment\n"}
+                  C.exit(#failure);
+               }
+               if col == 1 {
+                  col -= 1; // 2 to also remove the space
+               } elif line.p1[-1] != ''  {
+                  C1.stdout{in-path '': row '': col ": There must be a space before the '//' comment\n"}
+                  C.exit(#failure);
+               } else {
+                  col -= 2; // 2 to also remove the space
+               }
+               break;
+            } elif line.p1[0] == ''" { // C-string
+               line.pos++;
+               col++;
+               // C.out.printf("A\n"); C.out.flush();
+               loop {
+                  if line.p1[0] == ''\n {
+                     C1.stdout{in-path '': row '': col ": Unterminated string\n"}
+                     C.exit(#failure);
+                  } elif line.p1[0] == ''" {
+                     last-char = col - 1;
+                     // C.out.printf("B\n"); C.out.flush();
+                     break;
+                  } elif line.p1[0] == ''\\ {
+                     switch line.p1[1] {
+                        case ''0 { }
+                        case ''\\ { }
+                        case ''" { }
+                        case ''\' { }
+                        case ''a { }
+                        case ''b { }
+                        case ''f { }
+                        case ''n { }
+                        case ''r { }
+                        case ''t { }
+                        case ''v { }
+                        case ''$ { }
+                        default {
+                           if line.p1[1] == ''\n {
+                              C1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\(newline)'\n"}
+                           } else {
+                              C1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" line.charr[1] "'\n"}
+                           }
+                           C.exit(#failure);
+                        }
+                     }
+                     line.pos += 2;
+                     col += 2;
+                  } else {
+                     line.pos++;
+                     col++;
+                  }
+               }
+            } elif line.p1[0] == ''  {
+            } elif line.p1[0] == ''\' {
+               if line.p1[1] == ''\' {
+                  // char
+                  c! = line.p1[2];
+                  if c == ''\\ {
+                     if line.p1[3] == ''" {
+                        C1.stdout{in-path '': row '': col ": char ''\\\" is invalid, please use ''\" instead\n"}
+                        C.exit(#failure);
+                     }
+                     line.pos += 4;
+                     col += 4;
+                  } else {
+                     switch c {
+                        case ''\' {
+                           C1.stdout{in-path '': row '': col ": char ''' is invalid, please use ''\\' instead\n"}
+                           C.exit(#failure);
+                        }
+                        case ''\a {
+                           C1.stdout{in-path '': row '': col ": char ''(\\a) is invalid, please use ''\\a instead\n"}
+                           C.exit(#failure);
+                        }
+                        case ''\b {
+                           C1.stdout{in-path '': row '': col ": char ''(\\b) is invalid, please use ''\\b instead\n"}
+                           C.exit(#failure);
+                        }
+                        case ''\f {
+                           C1.stdout{in-path '': row '': col ": char ''(\\f) is invalid, please use ''\\f instead\n"}
+                           C.exit(#failure);
+                        }
+                        case ''\n {
+                           C1.stdout{in-path '': row '': col ": char ''(new line) is invalid, please use ''\\n instead\n"}
+                           C.exit(#failure);
+                        }
+                        case ''\r {
+                           C1.stdout{in-path '': row '': col ": char ''(\\r) is invalid, please use ''\\r instead\n"}
+                           C.exit(#failure);
+                        }
+                        case ''\t {
+                           C1.stdout{in-path '': row '': col ": char ''(tab) is invalid, please use ''\\t instead\n"}
+                           C.exit(#failure);
+                        }
+                        case ''\v {
+                           C1.stdout{in-path '': row '': col ": char ''(\\v) is invalid, please use ''\\v instead\n"}
+                           C.exit(#failure);
+                        }
+                     }
+                     line.pos += 3;
+                     col += 3;
+                  }
+               } elif (&&, line.p1[2] == '' , (||, line.p1[1] == ''-, line.p1[1] == ''=)) {
+                  // string
+                  line.pos += 3;
+                  col += 3;
+                  r-begin! = line.charr;
+                  r-pos! = line.pos;
+                  loop {
+                     c! = line.p1[0];
+                     line.pos++;
+                     col++;
+                     if c == ''\n {
+                        break;
+                     }
+                  }
+                  continue;
+                  // Codes to check if syntax highlighting for strings are working
+                  "#if 0";
+                     '"hello";
+                     '<hello>;
+                     '[hello];
+                     '{hello};
+                     '(hello);
+                  "#endif";
+               } elif line.p1[1] == ''" {
+                  col += parse-string(in-path, line, ''", in-data);
+               } elif line.p1[1] == ''< {
+                  col += parse-string(in-path, line, ''>, in-data);
+               } elif line.p1[1] == ''[ {
+                  col += parse-string(in-path, line, ''], in-data);
+               } elif line.p1[1] == ''{ {
+                  col += parse-string(in-path, line, ''}, in-data);
+               } elif line.p1[1] == ''( {
+                  col += parse-string(in-path, line, ''), in-data);
+               }
+               last-char = col - 1;
+            } else {
+               last-char = col - 1;
+            }
+            line.pos++;
+         }
+         // C1.stdout{"last-char " last-char ", indent " indent "\n"}
+         if last-char != -1 {
+            if (basic-mode-indent-c != 0) && (basic-mode-indent-v[basic-mode-indent-c - 1] >= indent) {
+               // Currently in basic syntax mode
+               w.pos--;
+               w.p1[0] = '' ;
+               w.pos++;
+               w.p1[0] = ''};
+               w.pos++;
+               basic-mode-indent-c--;
+               // C1.stdout{"exit basic syntax mode\n"}
+               loop (basic-mode-indent-c != 0) && (basic-mode-indent-v[basic-mode-indent-c - 1] >= indent) {
+                  w.p1[0] = '' ;
+                  w.pos++;
+                  w.p1[0] = ''};
+                  w.pos++;
+                  basic-mode-indent-c--;
+                  // C1.stdout{"exit basic syntax mode\n"}
+               }
+               w.p1[0] = ''\n;
+               w.pos++;
+            }
+         }
+         if (last-char != -1) && (start-line.p1[last-char] == '':) && (||, first-char.p1[0] != ''#, first-char.p1[1] != '' ) {
+            // C1.stdout{"[[ " start-line.charr, col " ]] CONVERTING FROM BASIC TO CP1\n"}
+            line.pos = start-line.pos;
+            loop last-char {
+               w.p1[0] = line.p1[0];
+               w.pos++;
+               line.pos++;
+            }
+            w.p1[0] = '' ;
+            w.pos++;
+            w.p1[0] = ''{;
+            w.pos++;
+            if basic-mode-indent-c == 0 {
+               basic-mode-row-begin = row;
+            }
+            basic-mode-indent-v[basic-mode-indent-c++] = indent;
+         } elif basic-mode-indent-c == 0 {
+            line.pos = start-line.pos;
+            loop col {
+               w.p1[0] = line.p1[0];
+               w.pos++;
+               line.pos++;
+            }
+         } else {
+            line.pos = start-line.pos;
+            loop col {
+               w.p1[0] = line.p1[0];
+               w.pos++;
+               line.pos++;
+            }
+            if last-char != -1 {
+               if (||, start-line.p1[last-char] == ''{, start-line.p1[last-char] == ''}, start-line.p1[last-char] == ''[, start-line.p1[last-char] == ''(, start-line.p1[last-char] == '';, start-line.p1[last-char] == '',) {
+               } else {
+                  w.p1[0] = '';;
+                  w.pos++;
+               }
+            }
+         }
+         w.p1[0] = ''\n;
+         w.pos++;
+         if next-line.pos == r-end.pos { break }
+         r.pos = next-line.pos;
+      }
+      if basic-mode-indent-c != 0 {
+         // Currently in basic syntax mode
+         w.pos--;
+         w.p1[0] = '' ;
+         w.pos++;
+         w.p1[0] = ''};
+         w.pos++;
+         // C1.stdout{"exit basic syntax mode\n"}
+         loop basic-mode-indent-c - 1 {
+            w.p1[0] = '' ;
+            w.pos++;
+            w.p1[0] = ''};
+            w.pos++;
+            // C1.stdout{"exit basic syntax mode\n"}
+         }
+         w.p1[0] = ''\n;
+         w.pos++;
+      }
+      if false {
+      loop r.pos < r-end.pos {
+         if r.p1[0] == ''\r {
+            // Ignore
+            r.pos++;
+         } elif r.p1[0] == ''\t {
+            get-row-col(row!, col!, r.reff, in-data);
+            C1.stdout{in-path '': row '': col ": Error, use of tabs is discouraged, please use spaces instead\n"}
+            C.exit(#failure);
+         } elif r.p1[0] == ''/ {
+            if r.p1[1] == ''/ {
+               if r.reff == in-data {
+                  // ok
+               } elif (||, r.p1[-1] == '' , r.p1[-1] == ''\n) {
+                  // ok
+               } else {
+                  get-row-col(row!, col!, r.reff, in-data);
+                  C1.stdout{in-path '': row '': col ": There must be a space before the // comment\n"}
+                  C.exit(#failure);
+               }
+               // comment
+               r.pos += 2;
+               loop {
+                  if r.p1[0] == ''\n {
+                     break;
+                  }
+                  r.pos++;
+               }
+               continue;
+            }
+         } elif r.p1[0] == ''\' {
+            if r.p1[1] == ''\' {
+               // char
+               c! = r.p1[2];
+               if c == ''\\ {
+                  if r.p1[3] == ''" {
+                     get-row-col(row!, col!, r.reff, in-data);
+                     C1.stdout{in-path '': row '': col ": char ''\\\" is invalid, please use ''\" instead\n"}
+                     C.exit(#failure);
+                  }
+                  w.p1[0] = ''\';
+                  w.p1[1] = ''\';
+                  w.p1[2] = ''\\;
+                  w.p1[3] = r.p1[3];
+                  w.pos += 4;
+                  r.pos += 4;
+                  continue;
+               } else {
+                  switch c {
+                     case ''\' {
+                        get-row-col(row!, col!, r.reff, in-data);
+                        C1.stdout{in-path '': row '': col ": char ''' is invalid, please use ''\\' instead\n"}
+                        C.exit(#failure);
+                     }
+                     case ''\a {
+                        get-row-col(row!, col!, r.reff, in-data);
+                        C1.stdout{in-path '': row '': col ": char ''(\\a) is invalid, please use ''\\a instead\n"}
+                        C.exit(#failure);
+                     }
+                     case ''\b {
+                        get-row-col(row!, col!, r.reff, in-data);
+                        C1.stdout{in-path '': row '': col ": char ''(\\b) is invalid, please use ''\\b instead\n"}
+                        C.exit(#failure);
+                     }
+                     case ''\f {
+                        get-row-col(row!, col!, r.reff, in-data);
+                        C1.stdout{in-path '': row '': col ": char ''(\\f) is invalid, please use ''\\f instead\n"}
+                        C.exit(#failure);
+                     }
+                     case ''\n {
+                        get-row-col(row!, col!, r.reff, in-data);
+                        C1.stdout{in-path '': row '': col ": char ''(new line) is invalid, please use ''\\n instead\n"}
+                        C.exit(#failure);
+                     }
+                     case ''\r {
+                        get-row-col(row!, col!, r.reff, in-data);
+                        C1.stdout{in-path '': row '': col ": char ''(\\r) is invalid, please use ''\\r instead\n"}
+                        C.exit(#failure);
+                     }
+                     case ''\t {
+                        get-row-col(row!, col!, r.reff, in-data);
+                        C1.stdout{in-path '': row '': col ": char ''(tab) is invalid, please use ''\\t instead\n"}
+                        C.exit(#failure);
+                     }
+                     case ''\v {
+                        get-row-col(row!, col!, r.reff, in-data);
+                        C1.stdout{in-path '': row '': col ": char ''(\\v) is invalid, please use ''\\v instead\n"}
+                        C.exit(#failure);
+                     }
+                  }
+                  w.p1[0] = ''\';
+                  w.p1[1] = ''\';
+                  w.p1[2] = c;
+                  w.pos += 3;
+                  r.pos += 3;
+                  continue;
+               }
+            } elif (&&, r.p1[2] == '' , (||, r.p1[1] == ''-, r.p1[1] == ''=)) {
+               // string
+               w.p1[0] = ''\';
+               w.p1[1] = r.p1[1];
+               w.p1[2] = '' ;
+               w.pos += 3;
+               r.pos += 3;
+               r-begin! = r.charr;
+               r-pos! = r.pos;
+               loop {
+                  c! = r.p1[0];
+                  w.p1[0] = c;
+                  w.pos++;
+                  r.pos++;
+                  if c == ''\n {
+                     break;
+                  }
+                  if r.pos >= r-end.pos {
+                     get-row-col(row!, col!, r.reff, in-data);
+                     C1.stdout{in-path '': row '': col ": Error, string must end with a new line\n"}
+                     C.exit(#failure);
+                  }
+               }
+               continue;
+               // Codes to check if syntax highlighting for strings are working
+               "#if 0";
+                  '"hello";
+                  '<hello>;
+                  '[hello];
+                  '{hello};
+                  '(hello);
+               "#endif";
+            } elif r.p1[1] == ''" {
+               parse-string(in-path, r, w, ''", in-data);
+               continue;
+            } elif r.p1[1] == ''< {
+               parse-string(in-path, r, w, ''>, in-data);
+               continue;
+            } elif r.p1[1] == ''[ {
+               parse-string(in-path, r, w, ''], in-data);
+               continue;
+            } elif r.p1[1] == ''{ {
+               parse-string(in-path, r, w, ''}, in-data);
+               continue;
+            } elif r.p1[1] == ''( {
+               parse-string(in-path, r, w, ''), in-data);
+               continue;
+            }
+         } elif r.p1[0] == ''" { // C-string
+            w.p1[0] = ''";
+            w.pos++;
+            r.pos++;
+            loop {
+               if r.p1[0] == ''\n {
+                  get-row-col(row!, col!, r.reff, in-data);
+                  C1.stdout{in-path '': row '': col ": Unterminated string\n"}
+                  C.exit(#failure);
+               } elif r.p1[0] == ''" {
+                  w.p1[0] = ''";
+                  w.pos++;
+                  r.pos++;
+                  break;
+               } elif r.p1[0] == ''\\ {
+                  switch r.p1[1] {
+                     case ''0 { }
+                     case ''\\ { }
+                     case ''" { }
+                     case ''\' { }
+                     case ''a { }
+                     case ''b { }
+                     case ''f { }
+                     case ''n { }
+                     case ''r { }
+                     case ''t { }
+                     case ''v { }
+                     case ''$ { }
+                     default {
+                        get-row-col(row!, col!, r.reff, in-data);
+                        if r.p1[1] == ''\n {
+                           C1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\(newline)'\n"}
+                        } else {
+                           C1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" r.charr[1] "'\n"}
+                        }
+                        C.exit(#failure);
+                     }
+                  }
+                  w.p1[0] = ''\\;
+                  w.p1[1] = r.p1[1];
+                  w.pos += 2;
+                  r.pos += 2;
+               } else {
+                  w.p1[0] = r.p1[0];
+                  w.pos++;
+                  r.pos++;
+               }
+               if r.pos >= r-end.pos {
+                  get-row-col(row!, col!, r.reff, in-data);
+                  C1.stdout{in-path '': row '': col ": Error, unterminated string\n"}
+                  C.exit(#failure);
+               }
+            }
+            continue;
+         }
+         w.p1[0] = r.p1[0];
+         w.pos++;
+         r.pos++;
+      }
+      }
+      w.p1[0] = ''\0;
+      // "puts(_Lnew_data_20);";
+      var w-begin:Wtr.;
+      w-begin.reff = new-data;
+      in-out-size = w.pos - w-begin.pos;
+      return new-data;
+   }
+}
