@@ -1403,6 +1403,7 @@ bool _NCp1_Pcompatible_4(_NCp1_NAt _Lsrc_0, uint8_t _Lsrc_c_1, _NCp1_NAt _Ldes_2
 static inline void _Tu8_Pstdout_reserve_3(uint8_t _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
 static inline void _Tu8_Pstdout_3(uint8_t _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
 bool _NCp1_NGvar_Pprocess_1(_NCp1_NGvar _Lg_0);
+bool _NCp1_Pensure_bool_2(_NCp1_NAt _Lat_0, _NCp1_NBools _Ltype_1);
 bool _NCp1_Pfarg_process_7(_NCp1_NExprI* _Le_in_out_0, int8_t _Lca_ref_1, struct _NCp1_NValue* _Lca_value_2, struct _NCp1_NDeclVarData* _Lfd_arg_3, _NCp1_NAt _Lbase_at_4, int32_t _Larg_num_5, _NCp1_NId _Lf_name_6);
 static inline void _Ti32_Pstdout_reserve_3(int32_t _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
 static inline void _Ti32_Pstdout_3(int32_t _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, int _Lunused_2);
@@ -13072,7 +13073,13 @@ _Le_2 = ((struct _NCp1_NExprBools*)(_Lexpr_0));
 if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fleft, 1, true, &(*_Le_2)._Fleft_val)) {
 return;
 }
+if(!_NCp1_Pensure_bool_2((*_Le_2)._Fleft_val._Ftype, (*_Le_2)._Ftype)) {
+return;
+}
 if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fright, 1, true, &(*_Le_2)._Fright_val)) {
+return;
+}
+if(!_NCp1_Pensure_bool_2((*_Le_2)._Fright_val._Ftype, (*_Le_2)._Ftype)) {
 return;
 }
 int32_t _Li_3 = {0};
@@ -13082,6 +13089,9 @@ i --;
 struct _NCp1_NExprBoolsItem* _Litem_4;
 _Litem_4 = ((struct _NCp1_NExprBoolsItem*)((&(*_Le_2)._Fitem_v[_Li_3])));
 if(!_NCp1_NExprI_Pvalue_4((*_Litem_4)._Fexpr, 1, true, &(*_Litem_4)._Fval)) {
+return;
+}
+if(!_NCp1_Pensure_bool_2((*_Litem_4)._Fval._Ftype, (*_Le_2)._Ftype)) {
 return;
 }
 continue_0:;
@@ -15897,6 +15907,61 @@ return false;
 }
 if(((*_Lgvar_4)._Fflags & _NCp1_NGvarFlags_Cno_decl) == _NCp1_NGvarFlags_C0) {
 _Ggvar_outputted_v[_Ggvar_outputted_c++] = _Lg_0;
+}
+return true;
+}
+bool _NCp1_Pensure_bool_2(_NCp1_NAt _Lat_0, _NCp1_NBools _Ltype_1) {
+if(_Lat_0 != _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cbool)) {
+int _L_2 = {0};
+int _L_3 = {0};
+int _L_4 = {0};
+int _L_5 = {0};
+int _L_6 = {0};
+int _L_7 = {0};
+struct _NLibCp1_NStdOut _L_8 = {0};
+int _L_13 = {0};
+struct _NLibCp1_NStdOut _L_14 = {0};
+_NLibCp1_Pstdbuf_1(&_L_8);
+_NCp1_NFile_Pstdout_reserve_3((*_Gctx_func)._Ffile, &_L_8, _L_2);
+_Tchar_Pstdout_reserve_3(':', &_L_8, _L_3);
+_Tu32_Pstdout_reserve_3(_Gctx_begin_row, &_L_8, _L_4);
+_Tchar_Pstdout_reserve_3(':', &_L_8, _L_5);
+_Tu32_Pstdout_reserve_3(_Gctx_begin_col, &_L_8, _L_6);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_8, ": Error, the expression used for ", 33u, _L_7);
+_NLibCp1_NStdOut_Pstdout_reserve_end_no_flush_1(&_L_8);
+_NCp1_NFile_Pstdout_3((*_Gctx_func)._Ffile, &_L_8, _L_2);
+_Tchar_Pstdout_3(':', &_L_8, _L_3);
+_Tu32_Pstdout_3(_Gctx_begin_row, &_L_8, _L_4);
+_Tchar_Pstdout_3(':', &_L_8, _L_5);
+_Tu32_Pstdout_3(_Gctx_begin_col, &_L_8, _L_6);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_8, ": Error, the expression used for ", 33u, _L_7);
+_NLibCp1_NStdOut_Pstdout_end_no_flush_1(&_L_8);
+switch(_Ltype_1) {
+case _NCp1_NBools_Cand:;
+int _L_9 = {0};
+struct _NLibCp1_NStdOut _L_10 = {0};
+_NLibCp1_Pstdbuf_1(&_L_10);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_10, "&&", 2u, _L_9);
+_NLibCp1_NStdOut_Pstdout_reserve_end_no_flush_1(&_L_10);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_10, "&&", 2u, _L_9);
+_NLibCp1_NStdOut_Pstdout_end_no_flush_1(&_L_10);
+break;
+case _NCp1_NBools_Cor:;
+int _L_11 = {0};
+struct _NLibCp1_NStdOut _L_12 = {0};
+_NLibCp1_Pstdbuf_1(&_L_12);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_12, "||", 2u, _L_11);
+_NLibCp1_NStdOut_Pstdout_reserve_end_no_flush_1(&_L_12);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_12, "||", 2u, _L_11);
+_NLibCp1_NStdOut_Pstdout_end_no_flush_1(&_L_12);
+break;
+}
+_NLibCp1_Pstdout_1(&_L_14);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_14, " operator is not a boolean type\n", 32u, _L_13);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_14);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_14, " operator is not a boolean type\n", 32u, _L_13);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_14);
+return false;
 }
 return true;
 }
