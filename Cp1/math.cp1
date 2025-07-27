@@ -1,3 +1,4 @@
+using C = LibC;
 using C1 = LibCp1;
 using Cp1 {
 enum Math[#add, #sub, #mul, #div, #mod, #lshift, #rshift, #and, #or, #xor]:u8 {
@@ -308,6 +309,7 @@ using ExprI {
             case #xor { C1.stdbuf{"^"} }
          }
          C1.stdout{"'\n"}
+         C.exit(#failure);
          return;
       }
       loop i = 0; e.item-c; i++ {
@@ -330,6 +332,7 @@ using ExprI {
                case #xor { C1.stdbuf{"^"} }
             }
             C1.stdout{"'\n"}
+            C.exit(#failure);
             return;
          }
       }
