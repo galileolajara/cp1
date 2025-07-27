@@ -43,6 +43,7 @@ export() {
    func-attr-overload-get();
    func-attr-overload-set();
    func-attr-overload-math();
+   func-attr-overload-bools();
    func-attr-overload-compare();
    func-attr-overload-if-begin();
    func-attr-overload-if-else();

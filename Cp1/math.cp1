@@ -188,16 +188,46 @@ using ExprI {
          if f-idx != #nil {
             e-right-type! = e.right.type();
             f! = f-idx.ptr();
-            // loop {
-            //    if f.farg-v[1].decl.type == e-right-type {
-            //       break;
-            //    }
-            //    f-idx = f.list1-prev;
-            //    if f-idx == #nil { break }
-            //    f = f-idx.ptr();
-            // }
-            // f-idx = en.overload-math-last;
-            // f = f-idx.ptr();
+            loop {
+               if f.farg-v[1].decl.type == e-right-type {
+                  e-method! = ExprI.alloc();
+                  var group-v:u8[1];
+                  group-v[0] = 2;
+                  var carg-v:ExprI[2];
+                  carg-v[0] = e.right;
+                  e-cvar! = ExprI.alloc();
+                  var id-op;
+                  switch e.type {
+                     case #add {
+                        id-op = .id-add;
+                     }
+                     case #sub {
+                        id-op = .id-sub;
+                     }
+                     case #mul {
+                        id-op = .id-mul;
+                     }
+                     case #div {
+                        id-op = .id-div;
+                     }
+                  }
+                  set-cvar(e-cvar, #nil, id-op);
+                  carg-v[1] = e-cvar;
+                  set-method(e-method, e.left, f.decl.name, 1, group-v, 2, carg-v);
+                  e.left = e-method;
+                  e.is-overload = true;
+                  if !e.left.value(1, true, e.left-val) {
+                     return;
+                  }
+                  ok = true;
+                  return;
+               }
+               f-idx = f.list1-prev;
+               if f-idx == #nil { break }
+               f = f-idx.ptr();
+            }
+            f-idx = en.overload-math-last;
+            f = f-idx.ptr();
             loop {
                en2! = f.farg-v[1].decl.type.ptr().decl.enumm.ptr();
                f2-idx! = en2.overload-get-last;

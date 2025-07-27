@@ -314,6 +314,8 @@ func_attr ::= SPACE_AT_OVERLOAD_SET.
    { _NCp1_Pfunc_attr_overload_set_0(); }
 func_attr ::= SPACE_AT_OVERLOAD_MATH.
    { _NCp1_Pfunc_attr_overload_math_0(); }
+func_attr ::= SPACE_AT_OVERLOAD_BOOLS.
+   { _NCp1_Pfunc_attr_overload_bools_0(); }
 func_attr ::= SPACE_AT_OVERLOAD_COMPARE.
    { _NCp1_Pfunc_attr_overload_compare_0(); }
 func_attr ::= SPACE_AT_OVERLOAD_IF_BEGIN.

@@ -41,6 +41,7 @@ void _NCp1_Pfunc_attr_no_body_0();
 void _NCp1_Pfunc_attr_overload_get_0();
 void _NCp1_Pfunc_attr_overload_set_0();
 void _NCp1_Pfunc_attr_overload_math_0();
+void _NCp1_Pfunc_attr_overload_bools_0();
 void _NCp1_Pfunc_attr_overload_compare_0();
 void _NCp1_Pfunc_attr_overload_if_begin_0();
 void _NCp1_Pfunc_attr_overload_if_else_0();

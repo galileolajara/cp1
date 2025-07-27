@@ -140,6 +140,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "@overload-get"           { return CP1_TOKEN_SPACE_AT_OVERLOAD_GET; }
    spaces "@overload-set"           { return CP1_TOKEN_SPACE_AT_OVERLOAD_SET; }
    spaces "@overload-math"          { return CP1_TOKEN_SPACE_AT_OVERLOAD_MATH; }
+   spaces "@overload-bools"         { return CP1_TOKEN_SPACE_AT_OVERLOAD_BOOLS; }
    spaces "@overload-compare"       { return CP1_TOKEN_SPACE_AT_OVERLOAD_COMPARE; }
    spaces "@overload-if-begin"      { return CP1_TOKEN_SPACE_AT_OVERLOAD_IF_BEGIN; }
    spaces "@overload-if-else"       { return CP1_TOKEN_SPACE_AT_OVERLOAD_IF_ELSE; }

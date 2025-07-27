@@ -87,7 +87,8 @@
 #define _NCp1_NToken_Cspace_at_overload_get (_NCp1_NToken_Cspace_at_no_body + 1)
 #define _NCp1_NToken_Cspace_at_overload_set (_NCp1_NToken_Cspace_at_overload_get + 1)
 #define _NCp1_NToken_Cspace_at_overload_math (_NCp1_NToken_Cspace_at_overload_set + 1)
-#define _NCp1_NToken_Cspace_at_overload_compare (_NCp1_NToken_Cspace_at_overload_math + 1)
+#define _NCp1_NToken_Cspace_at_overload_bools (_NCp1_NToken_Cspace_at_overload_math + 1)
+#define _NCp1_NToken_Cspace_at_overload_compare (_NCp1_NToken_Cspace_at_overload_bools + 1)
 #define _NCp1_NToken_Cspace_at_overload_if_begin (_NCp1_NToken_Cspace_at_overload_compare + 1)
 #define _NCp1_NToken_Cspace_at_overload_if_else (_NCp1_NToken_Cspace_at_overload_if_begin + 1)
 #define _NCp1_NToken_Cspace_at_overload_if_end (_NCp1_NToken_Cspace_at_overload_if_else + 1)
@@ -253,7 +254,8 @@
 #define _NCp1_NOverload_Cset (_NCp1_NOverload_Cget + 1)
 #define _NCp1_NOverload_Cassign (_NCp1_NOverload_Cset + 1)
 #define _NCp1_NOverload_Cmath (_NCp1_NOverload_Cassign + 1)
-#define _NCp1_NOverload_Ccompare (_NCp1_NOverload_Cmath + 1)
+#define _NCp1_NOverload_Cbools (_NCp1_NOverload_Cmath + 1)
+#define _NCp1_NOverload_Ccompare (_NCp1_NOverload_Cbools + 1)
 #define _NCp1_NOverload_Cif_begin (_NCp1_NOverload_Ccompare + 1)
 #define _NCp1_NOverload_Cif_else (_NCp1_NOverload_Cif_begin + 1)
 #define _NCp1_NOverload_Cif_end (_NCp1_NOverload_Cif_else + 1)
@@ -1140,6 +1142,7 @@ void _NCp1_Pfunc_attr_no_body_0();
 void _NCp1_Pfunc_attr_overload_get_0();
 void _NCp1_Pfunc_attr_overload_set_0();
 void _NCp1_Pfunc_attr_overload_math_0();
+void _NCp1_Pfunc_attr_overload_bools_0();
 void _NCp1_Pfunc_attr_overload_compare_0();
 void _NCp1_Pfunc_attr_overload_if_begin_0();
 void _NCp1_Pfunc_attr_overload_if_else_0();
@@ -1355,6 +1358,7 @@ case _NCp1_NToken_Cspace_at_no_body: return "space-at-no-body";
 case _NCp1_NToken_Cspace_at_overload_get: return "space-at-overload-get";
 case _NCp1_NToken_Cspace_at_overload_set: return "space-at-overload-set";
 case _NCp1_NToken_Cspace_at_overload_math: return "space-at-overload-math";
+case _NCp1_NToken_Cspace_at_overload_bools: return "space-at-overload-bools";
 case _NCp1_NToken_Cspace_at_overload_compare: return "space-at-overload-compare";
 case _NCp1_NToken_Cspace_at_overload_if_begin: return "space-at-overload-if-begin";
 case _NCp1_NToken_Cspace_at_overload_if_else: return "space-at-overload-if-else";
@@ -2430,6 +2434,7 @@ _NCp1_Pfunc_attr_no_body_0();
 _NCp1_Pfunc_attr_overload_get_0();
 _NCp1_Pfunc_attr_overload_set_0();
 _NCp1_Pfunc_attr_overload_math_0();
+_NCp1_Pfunc_attr_overload_bools_0();
 _NCp1_Pfunc_attr_overload_compare_0();
 _NCp1_Pfunc_attr_overload_if_begin_0();
 _NCp1_Pfunc_attr_overload_if_else_0();
@@ -5972,6 +5977,34 @@ _NLibCp1_NStdOut_Pstdout_end_1(&_L_6);
 exit(_NLibC_NExit_Cfailure);
 }
 _Gdecl_func_overload = _NCp1_NOverload_Cmath;
+}
+void _NCp1_Pfunc_attr_overload_bools_0() {
+if(_Gdecl_func_overload != _NCp1_NOverload_Cnil) {
+uint32_t _L_0 = {0};
+int _L_1 = {0};
+int _L_2 = {0};
+int _L_3 = {0};
+int _L_4 = {0};
+int _L_5 = {0};
+struct _NLibCp1_NStdOut _L_6 = {0};
+_NLibCp1_Pstdout_1(&_L_6);
+_Tchar_Pstdout_reserve_arr_3(input_path, &_L_6, &_L_0);
+_Tchar_Pstdout_reserve_3(':', &_L_6, _L_1);
+_Tu32_Pstdout_reserve_3(_Glast_row, &_L_6, _L_2);
+_Tchar_Pstdout_reserve_3(':', &_L_6, _L_3);
+_Tu32_Pstdout_reserve_3(_Glast_col, &_L_6, _L_4);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_6);
+_Tchar_Pstdout_arr_3(input_path, &_L_6, _L_0);
+_Tchar_Pstdout_3(':', &_L_6, _L_1);
+_Tu32_Pstdout_3(_Glast_row, &_L_6, _L_2);
+_Tchar_Pstdout_3(':', &_L_6, _L_3);
+_Tu32_Pstdout_3(_Glast_col, &_L_6, _L_4);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_6, ": Error @overload specified more than once\n", 43u, _L_5);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_6);
+exit(_NLibC_NExit_Cfailure);
+}
+_Gdecl_func_overload = _NCp1_NOverload_Cbools;
 }
 void _NCp1_Pfunc_attr_overload_compare_0() {
 if(_Gdecl_func_overload != _NCp1_NOverload_Cnil) {

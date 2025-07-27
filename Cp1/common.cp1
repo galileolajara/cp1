@@ -12,7 +12,7 @@ struct Map[data:u64[(#hash-table-size + 7) >> 3]] {
    init(m:this);
    get-or-insert(m:this, str:char[], len:u8, val:i32):i32;
 }
-enum Overload[#nil, #get, #set, #assign, #math, #compare, #if-begin, #if-else, #if-end, #statement]:u8;
+enum Overload[#nil, #get, #set, #assign, #math, #bools, #compare, #if-begin, #if-else, #if-end, #statement]:u8;
 crc32c(crc32c:u32, data:ref, size:u32):u32 @real-name;
 var id-map:Map.;
 var include-map:Map.;
@@ -130,6 +130,7 @@ meta #BuildCommonCodes {
          overload-get-last:Func,
          overload-set-last:Func,
          overload-math-last:Func,
+         overload-bools-last:Func,
          overload-compare-last:Func,
          overload-if-begin:Func,
          overload-if-else:Func,
@@ -212,6 +213,7 @@ meta #BuildCommonCodes {
 #  if (arg.compile) {
          left-val:Value.,
          right-val:Value.,
+         is-overload:bool,
 #  }
          item-c:u8,
 #  if (!arg.compile) {

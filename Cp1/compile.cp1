@@ -367,6 +367,7 @@ read(in-path-cp1:char[], in-path-cp1-len:u16, strdup:bool, require:bool) {
       e.overload-get-last = #nil;
       e.overload-set-last = #nil;
       e.overload-math-last = #nil;
+      e.overload-bools-last = #nil;
       e.overload-compare-last = #nil;
       e.overload-if-begin = #nil;
       e.overload-if-else = #nil;
@@ -682,6 +683,8 @@ var id-gt:Id;
 var id-ge:Id;
 var id-lt:Id;
 var id-le:Id;
+var id-and:Id;
+var id-or:Id;
 
 c-init(crc32c:u32);
 quickjs-begin(file:char[], file-len:u8, tc-name:char[], tc-name-len:u8, code-crc32c:u32, arg-crc32c:u32, require:bool):bool;
@@ -1187,6 +1190,8 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
    .id-ge = id-add(2, "ge");
    .id-lt = id-add(2, "lt");
    .id-le = id-add(2, "le");
+   .id-and = id-add(3, "and");
+   .id-or = id-add(2, "or");
 
    if true {
       func-c8! = (.func-c:base + 7) >> 3;
@@ -1300,6 +1305,33 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          // e.flags |= #overload-math;
          f.list1-prev = e.overload-math-last;
          e.overload-math-last = f-idx;
+      } elif f.overload == #bools {
+         at! = f.at.ptr();
+         if at.def != #enum {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-bools is only applicable to enum types\n"}
+            C.exit(#failure);
+         }
+         if f.this-idx == -1 {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-bools is only applicable to methods\n"}
+            C.exit(#failure);
+         }
+         if f.this-idx != 0 {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-bools must have 'this' as the first argument\n"}
+            C.exit(#failure);
+         }
+         if (f.farg-c != 3) || (f.group-c != 1) {
+            C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-bools must have exactly 2 arguments only\n"}
+            C.exit(#failure);
+         }
+         if !f-idx.process-later() { return -1 }
+         // if f.decl.type != f.at {
+         //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-math must have a return type same as the namespace where it was declared\n"}
+         //    C.exit(#failure);
+         // }
+         e! = at.decl.enumm.ptr();
+         // e.flags |= #overload-math;
+         f.list1-prev = e.overload-bools-last;
+         e.overload-bools-last = f-idx;
       } elif f.overload == #compare {
          at! = f.at.ptr();
          if at.def != #enum {
