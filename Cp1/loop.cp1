@@ -86,7 +86,7 @@ using Stmt {
       var s:StmtLoopEnd = stmt;
       continu! = s.do.continu;
       if continu != null {
-         continu.process();
+         if !continu.process() { return }
       }
       ok = true;
    }

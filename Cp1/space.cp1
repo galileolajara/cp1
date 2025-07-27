@@ -202,7 +202,7 @@ struct StmtSpace[
          lvar-c = space.lvar-c;
       }
       loop ; lvar-c; i++ {
-         space.lvar-v[i].process();
+         if !space.lvar-v[i].process() { return false }
       }
       return true;
    }

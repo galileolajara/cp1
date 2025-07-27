@@ -11550,7 +11550,9 @@ struct _NCp1_NStmtSpace* _Lcontinu_3;
 _Ls_2 = ((struct _NCp1_NStmtLoopEnd*)(_Lstmt_0));
 _Lcontinu_3 = ((struct _NCp1_NStmtSpace*)((*(*_Ls_2)._Fdo)._Fcontinu));
 if(_Lcontinu_3 != NULL) {
-_NCp1_NStmtSpace_Pprocess_1(_Lcontinu_3);
+if(!_NCp1_NStmtSpace_Pprocess_1(_Lcontinu_3)) {
+return;
+}
 }
 (*_Lok_1) = true;
 }
@@ -15812,7 +15814,9 @@ _Llvar_c_3 = (*_Lspace_0)._Flvar_c;
 }
 for(int i = _Llvar_c_3; i > 0; ) {
 i --;
-_NCp1_NLvar_Pprocess_1((*_Lspace_0)._Flvar_v[_Li_2]);
+if(!_NCp1_NLvar_Pprocess_1((*_Lspace_0)._Flvar_v[_Li_2])) {
+return false;
+}
 continue_1:;
 _Li_2++;
 }
