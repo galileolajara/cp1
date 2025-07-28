@@ -66,10 +66,11 @@ using ExprI {
    }
    process-bools(expr:Expr, ok:bool&) @case.process() @inline {
       var e:ExprBools = expr;
+      "again:";
       left-type! = e.left.type();
       left-type-ptr! = left-type.ptr();
       // e.right.try-deduce(left-type);
-      if (e.item-c == 0) && (left-type-ptr.def == #enum) {
+      if left-type-ptr.def == #enum {
          en! = left-type-ptr.decl.enumm.ptr();
          f-idx! = en.overload-bools-last;
          if f-idx != #nil {
@@ -99,6 +100,14 @@ using ExprI {
                   e.is-overload = true;
                   if !e.left.value(1, true, e.left-val) {
                      return;
+                  }
+                  if e.item-c != 0 {
+                     e.right = e.item-v[0].expr;
+                     e.item-c--;
+                     loop i = 0; e.item-c; i++ {
+                        e.item-v[i].expr = e.item-v[i + 1].expr;
+                     }
+                     "goto again;";
                   }
                   ok = true;
                   return;
@@ -146,6 +155,14 @@ using ExprI {
                         }
                         if !e.left.value(1, true, e.left-val) {
                            return;
+                        }
+                        if e.item-c != 0 {
+                           e.right = e.item-v[0].expr;
+                           e.item-c--;
+                           loop i = 0; e.item-c; i++ {
+                              e.item-v[i].expr = e.item-v[i + 1].expr;
+                           }
+                           "goto again;";
                         }
                         ok = true;
                         return;
