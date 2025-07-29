@@ -12717,6 +12717,35 @@ _Le_2 = ((struct _NCp1_NExprUnary*)(_Lexpr_0));
 if(!_NCp1_NExprI_Pvalue_4((*_Le_2)._Fexpr, 1, true, &(*_Le_2)._Fval)) {
 return;
 }
+switch((*_Le_2)._Ftype) {
+case _NCp1_NUnary_Cnot:;
+if((*_Le_2)._Fval._Ftype != _NCp1_Pbasic_type_1(_NCp1_NBasicTypeId_Cbool)) {
+int _L_3 = {0};
+int _L_4 = {0};
+int _L_5 = {0};
+int _L_6 = {0};
+int _L_7 = {0};
+int _L_8 = {0};
+struct _NLibCp1_NStdOut _L_9 = {0};
+_NLibCp1_Pstdout_1(&_L_9);
+_NCp1_NFile_Pstdout_reserve_3((*_Gctx_func)._Ffile, &_L_9, _L_3);
+_Tchar_Pstdout_reserve_3(':', &_L_9, _L_4);
+_Tu32_Pstdout_reserve_3(_Gctx_begin_row, &_L_9, _L_5);
+_Tchar_Pstdout_reserve_3(':', &_L_9, _L_6);
+_Tu32_Pstdout_reserve_3(_Gctx_begin_col, &_L_9, _L_7);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_9, ": Error, the expression used for '!' operator is not a boolean type\n", 68u, _L_8);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_9);
+_NCp1_NFile_Pstdout_3((*_Gctx_func)._Ffile, &_L_9, _L_3);
+_Tchar_Pstdout_3(':', &_L_9, _L_4);
+_Tu32_Pstdout_3(_Gctx_begin_row, &_L_9, _L_5);
+_Tchar_Pstdout_3(':', &_L_9, _L_6);
+_Tu32_Pstdout_3(_Gctx_begin_col, &_L_9, _L_7);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_9, ": Error, the expression used for '!' operator is not a boolean type\n", 68u, _L_8);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_9);
+return;
+}
+break;
+}
 (*_Lok_1) = true;
 }
 static inline void _NCp1_NExprI_Pprocess_ref_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {

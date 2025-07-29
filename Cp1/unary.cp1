@@ -1,3 +1,4 @@
+using C1 = LibCp1;
 using Cp1 {
 enum Unary[#neg, #inc, #dec, #not]:u8 {
    rd(u:this&, r:Rdr) @inline {
@@ -67,6 +68,14 @@ using ExprI {
       var e:ExprUnary = expr;
       if !e.expr.value(1, true, e.val) {
          return;
+      }
+      switch e.type {
+         case #not {
+            if e.val.type != basic-type(#bool) {
+               C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Error, the expression used for '!' operator is not a boolean type\n"}
+               return;
+            }
+         }
       }
       ok = true;
    }
