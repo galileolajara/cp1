@@ -686,6 +686,9 @@ var id-le:Id;
 var id-and:Id;
 var id-or:Id;
 
+var debug-func-prefix:char @const[];
+var debug-func-prefix-len:u8;
+
 c-init(crc32c:u32);
 quickjs-begin(file:char[], file-len:u8, tc-name:char[], tc-name-len:u8, code-crc32c:u32, arg-crc32c:u32, require:bool):bool;
 quickjs-hex(data:char[], code-crc32c:u32):u32;
@@ -743,6 +746,13 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                   C1.stdout{"The option -c must be followed by a path\n"}
                   "goto usage;";
                }
+            } elif arg[1] == ''d {
+               .debug-func-prefix = arg-v[i++];
+               if .debug-func-prefix == null {
+                  C1.stdout{"The option -d must be followed by a function name prefix\n"}
+                  "goto usage;";
+               }
+               .debug-func-prefix-len = C.strlen(.debug-func-prefix);
             } elif arg[1] == ''F {
                // For hacking the output C code,
                // to determine the beginning and end of function bodies
@@ -1774,7 +1784,17 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
       } else {
          output{") {\n"}
       }
+      if .debug-func-prefix != null {
+         file! = f.file;
+         file-path! = file.path();
+         file-path-len! = file.path-len();
+         row! = f.begin-row;
+         output{.debug-func-prefix "_begin(\"" file-path, file-path-len "\", " row ");\n"}
+      }
       f.stmt-space.write();
+      if .debug-func-prefix != null {
+         output{.debug-func-prefix "_end();\n"}
+      }
       if comment-for-func != null {
          output{"} // " comment-for-func, comment-for-func-len ''\n}
       } else {

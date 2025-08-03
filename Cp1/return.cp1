@@ -21,11 +21,19 @@ using Stmt {
    write-return(stmt:Stmt) @case.write() @inline {
       var s:StmtReturn = stmt;
       if s.expr == #nil {
+         if .debug-func-prefix != null {
+            output{.debug-func-prefix "_end();\n"}
+         }
          output{"return;\n"}
       } else {
-         output{"return "}
+         s.val.type.write-type-info(s.val.info, 0);
+         output{" ret_" stmt.begin-row "_" stmt.begin-col " = "}
          s.expr.write-value(s.val);
          output{";\n"}
+         if .debug-func-prefix != null {
+            output{.debug-func-prefix "_end();\n"}
+         }
+         output{"return ret_" stmt.begin-row "_" stmt.begin-col ";\n"}
       }
    }
    process-return(stmt:Stmt, ok:bool&) @case.process() @inline {
