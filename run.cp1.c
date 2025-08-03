@@ -198,7 +198,8 @@ unlink(_Lexe_path_14);
 if(_Lexe_ret_26 != 0) {
 exit(_NLibC_NExit_Cfailure);
 }
-return 0;
+int32_t ret_212_4 = 0;
+return ret_212_4;
 }
 void _Pprint_commands_1(char* _Lbin_0) {
 int _L_1 = {0};
