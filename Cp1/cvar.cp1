@@ -68,6 +68,7 @@ enum CvarFlags[
    #set-expr = 1,
    #as-enum = 2,
    #no-name = 4,
+   #dont-count = 8 | 4,
    // #real-name = 2,
    ]:u8 {
    wr(f:this, w:Wtr) @inline {

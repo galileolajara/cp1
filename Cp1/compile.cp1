@@ -1628,9 +1628,15 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          c.expr-set.write();
          output{'')}
       } elif c.last-cvar != #nil {
-         output{''(}
-         c.last-cvar.write();
-         output{" + 1)"}
+         if (c.last-cvar.ptr().flags & #dont-count) != #0 {
+            output{"("}
+            c.last-cvar.write();
+            output{")"}
+         } else {
+            output{"(("}
+            c.last-cvar.write();
+            output{") + 1)"}
+         }
       } else {
          output{''0}
       }

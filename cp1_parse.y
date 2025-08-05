@@ -112,6 +112,8 @@ cvar_attr ::= SPACE_AT_NO_DECL.
    { _NCp1_Pcvar_attr_no_decl_0(); }
 cvar_attr ::= SPACE_AT_NO_NAME.
    { _NCp1_Pcvar_attr_no_name_0(); }
+cvar_attr ::= SPACE_AT_DONT_COUNT.
+   { _NCp1_Pcvar_attr_dont_count_0(); }
 cvar_attr ::= SPACE_AT_NO_DECL_STR(e).
    { _NCp1_Pcvar_attr_no_decl_0(); _NCp1_Pcvar_attr_real_name_1(e.basic.id); }
 cvar_attrs ::= cvar_attr.

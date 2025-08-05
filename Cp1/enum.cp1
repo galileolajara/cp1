@@ -196,6 +196,10 @@ cvar-attr-no-name() {
    c! = .last-cvar.ptr();
    c.flags |= #no-name;
 }
+cvar-attr-dont-count() {
+   c! = .last-cvar.ptr();
+   c.flags |= #dont-count;
+}
  
 
 }

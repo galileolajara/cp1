@@ -146,6 +146,7 @@ export() {
    cvar-attr-real-name(#nil);
    cvar-attr-no-decl();
    cvar-attr-no-name();
+   cvar-attr-dont-count();
 }
  
 

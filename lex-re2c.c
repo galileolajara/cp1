@@ -136,6 +136,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "@no-decl(" [^)]* ")"     { return CP1_TOKEN_SPACE_AT_NO_DECL_STR; }
    spaces "@no-decl"                { return CP1_TOKEN_SPACE_AT_NO_DECL; }
    spaces "@no-name"                { return CP1_TOKEN_SPACE_AT_NO_NAME; }
+   spaces "@dont-count"             { return CP1_TOKEN_SPACE_AT_DONT_COUNT; }
    spaces "@no-body"                { return CP1_TOKEN_SPACE_AT_NO_BODY; }
    spaces "@overload-get"           { return CP1_TOKEN_SPACE_AT_OVERLOAD_GET; }
    spaces "@overload-set"           { return CP1_TOKEN_SPACE_AT_OVERLOAD_SET; }

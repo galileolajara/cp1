@@ -79,6 +79,7 @@
 #define _NCp1_NVarFlags_C0 0
 #define _NCp1_NCvarFlags_Cset_expr (1)
 #define _NCp1_NCvar_Cnil (-1)
+#define _NCp1_NCvarFlags_Cdont_count (8 | 4)
 #define _NCp1_NEnumFlags_Cno_decl (2)
 #define _NCp1_NEnumFlags_C0 0
 #define _NCp1_NStructFlags_Cunion (4)
@@ -3662,8 +3663,8 @@ int _L_533 = {0};
 struct _NCp1_NOutput _L_534 = {0};
 int _L_535 = {0};
 struct _NCp1_NOutput _L_536 = {0};
-int _L_547 = {0};
-struct _NCp1_NOutput _L_548 = {0};
+int _L_551 = {0};
+struct _NCp1_NOutput _L_552 = {0};
 _Lc_i_531 = ((_NCp1_NCvar)(_Gcvar_outputted_v[_Li_530]));
 _Lc_532 = ((struct _NCp1_NCvarData*)(_NCp1_NCvar_Pptr_1(_Lc_i_531)));
 if(((*_Lc_532)._Fdecl._Fflags & _NCp1_NVarFlags_Cno_decl) != _NCp1_NVarFlags_C0) {
@@ -3697,579 +3698,597 @@ _NCp1_NOutput_Poutput_reserve_end_1(&_L_540);
 _Tchar_Poutput_3(')', &_L_540, _L_539);
 _NCp1_NOutput_Poutput_end_1(&_L_540);
 } else if((*_Lc_532)._Flast_cvar != _NCp1_NCvar_Cnil) {
+if(((*_NCp1_NCvar_Pptr_1((*_Lc_532)._Flast_cvar))._Fflags & _NCp1_NCvarFlags_Cdont_count) != _NCp1_NCvarFlags_C0) {
 int _L_541 = {0};
 struct _NCp1_NOutput _L_542 = {0};
 int _L_543 = {0};
 struct _NCp1_NOutput _L_544 = {0};
 _NCp1_Poutput_1(&_L_542);
-_Tchar_Poutput_reserve_3('(', &_L_542, _L_541);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_542, "(", 1u, _L_541);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_542);
-_Tchar_Poutput_3('(', &_L_542, _L_541);
+_NCp1_NOutput_Poutput_cstr_4(&_L_542, "(", 1u, _L_541);
 _NCp1_NOutput_Poutput_end_1(&_L_542);
 _NCp1_NCvar_Pwrite_1((*_Lc_532)._Flast_cvar);
 _NCp1_Poutput_1(&_L_544);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_544, " + 1)", 5u, _L_543);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_544, ")", 1u, _L_543);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_544);
-_NCp1_NOutput_Poutput_cstr_4(&_L_544, " + 1)", 5u, _L_543);
+_NCp1_NOutput_Poutput_cstr_4(&_L_544, ")", 1u, _L_543);
 _NCp1_NOutput_Poutput_end_1(&_L_544);
 } else {
 int _L_545 = {0};
 struct _NCp1_NOutput _L_546 = {0};
+int _L_547 = {0};
+struct _NCp1_NOutput _L_548 = {0};
 _NCp1_Poutput_1(&_L_546);
-_Tchar_Poutput_reserve_3('0', &_L_546, _L_545);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_546, "((", 2u, _L_545);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_546);
-_Tchar_Poutput_3('0', &_L_546, _L_545);
+_NCp1_NOutput_Poutput_cstr_4(&_L_546, "((", 2u, _L_545);
 _NCp1_NOutput_Poutput_end_1(&_L_546);
-}
+_NCp1_NCvar_Pwrite_1((*_Lc_532)._Flast_cvar);
 _NCp1_Poutput_1(&_L_548);
-_Tchar_Poutput_reserve_3('\n', &_L_548, _L_547);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_548, ") + 1)", 6u, _L_547);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_548);
-_Tchar_Poutput_3('\n', &_L_548, _L_547);
+_NCp1_NOutput_Poutput_cstr_4(&_L_548, ") + 1)", 6u, _L_547);
 _NCp1_NOutput_Poutput_end_1(&_L_548);
+}
+} else {
+int _L_549 = {0};
+struct _NCp1_NOutput _L_550 = {0};
+_NCp1_Poutput_1(&_L_550);
+_Tchar_Poutput_reserve_3('0', &_L_550, _L_549);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_550);
+_Tchar_Poutput_3('0', &_L_550, _L_549);
+_NCp1_NOutput_Poutput_end_1(&_L_550);
+}
+_NCp1_Poutput_1(&_L_552);
+_Tchar_Poutput_reserve_3('\n', &_L_552, _L_551);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_552);
+_Tchar_Poutput_3('\n', &_L_552, _L_551);
+_NCp1_NOutput_Poutput_end_1(&_L_552);
 continue_32:;
 _Li_530++;
 }
 break_32:;
-int32_t _Li_549 = {0};
-_Li_549 = ((int32_t)(0));
+int32_t _Li_553 = {0};
+_Li_553 = ((int32_t)(0));
 for(int i = _Genum_outputted_c; i > 0; ) {
 i --;
-_NCp1_NEnum _Le_i_550;
-struct _NCp1_NEnumData* _Le_551;
-int _L_552 = {0};
-struct _NCp1_NOutput _L_553 = {0};
-int _L_554 = {0};
-struct _NCp1_NOutput _L_555 = {0};
+_NCp1_NEnum _Le_i_554;
+struct _NCp1_NEnumData* _Le_555;
 int _L_556 = {0};
 struct _NCp1_NOutput _L_557 = {0};
-_Le_i_550 = ((_NCp1_NEnum)(_Genum_outputted_v[_Li_549]));
-_Le_551 = ((struct _NCp1_NEnumData*)(_NCp1_NEnum_Pptr_1(_Le_i_550)));
-if(((*_Le_551)._Fflags & _NCp1_NEnumFlags_Cno_decl) != _NCp1_NEnumFlags_C0) {
+int _L_558 = {0};
+struct _NCp1_NOutput _L_559 = {0};
+int _L_560 = {0};
+struct _NCp1_NOutput _L_561 = {0};
+_Le_i_554 = ((_NCp1_NEnum)(_Genum_outputted_v[_Li_553]));
+_Le_555 = ((struct _NCp1_NEnumData*)(_NCp1_NEnum_Pptr_1(_Le_i_554)));
+if(((*_Le_555)._Fflags & _NCp1_NEnumFlags_Cno_decl) != _NCp1_NEnumFlags_C0) {
 goto continue_33;
 }
-_NCp1_Poutput_1(&_L_553);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_553, "typedef ", 8u, _L_552);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_553);
-_NCp1_NOutput_Poutput_cstr_4(&_L_553, "typedef ", 8u, _L_552);
-_NCp1_NOutput_Poutput_end_1(&_L_553);
-_NCp1_NAt_Pwrite_1((*_Le_551)._Fbase_type);
-_NCp1_Poutput_1(&_L_555);
-_Tchar_Poutput_reserve_3(' ', &_L_555, _L_554);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_555);
-_Tchar_Poutput_3(' ', &_L_555, _L_554);
-_NCp1_NOutput_Poutput_end_1(&_L_555);
-_NCp1_NAt_Pwrite_1((*_Le_551)._Fat);
 _NCp1_Poutput_1(&_L_557);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_557, ";\n", 2u, _L_556);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_557, "typedef ", 8u, _L_556);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_557);
-_NCp1_NOutput_Poutput_cstr_4(&_L_557, ";\n", 2u, _L_556);
+_NCp1_NOutput_Poutput_cstr_4(&_L_557, "typedef ", 8u, _L_556);
 _NCp1_NOutput_Poutput_end_1(&_L_557);
+_NCp1_NAt_Pwrite_1((*_Le_555)._Fbase_type);
+_NCp1_Poutput_1(&_L_559);
+_Tchar_Poutput_reserve_3(' ', &_L_559, _L_558);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_559);
+_Tchar_Poutput_3(' ', &_L_559, _L_558);
+_NCp1_NOutput_Poutput_end_1(&_L_559);
+_NCp1_NAt_Pwrite_1((*_Le_555)._Fat);
+_NCp1_Poutput_1(&_L_561);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_561, ";\n", 2u, _L_560);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_561);
+_NCp1_NOutput_Poutput_cstr_4(&_L_561, ";\n", 2u, _L_560);
+_NCp1_NOutput_Poutput_end_1(&_L_561);
 continue_33:;
-_Li_549++;
+_Li_553++;
 }
 break_33:;
-int32_t _Li_558 = {0};
-_Li_558 = ((int32_t)(0));
+int32_t _Li_562 = {0};
+_Li_562 = ((int32_t)(0));
 for(int i = _Gstruct_outputted_c; i > 0; ) {
 i --;
-_NCp1_NStruct _Ls_i_559;
-struct _NCp1_NStructData* _Ls_560;
-int _L_583 = {0};
-struct _NCp1_NOutput _L_584 = {0};
-_Ls_i_559 = ((_NCp1_NStruct)(_Gstruct_outputted_v[_Li_558]));
-_Ls_560 = ((struct _NCp1_NStructData*)(_NCp1_NStruct_Pptr_1(_Ls_i_559)));
-if(((*_Ls_560)._Fflags & _NCp1_NStructFlags_Cunion) != _NCp1_NStructFlags_C0) {
-int _L_561 = {0};
-struct _NCp1_NOutput _L_562 = {0};
-_NCp1_Poutput_1(&_L_562);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_562, "union ", 6u, _L_561);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_562);
-_NCp1_NOutput_Poutput_cstr_4(&_L_562, "union ", 6u, _L_561);
-_NCp1_NOutput_Poutput_end_1(&_L_562);
-} else {
-int _L_563 = {0};
-struct _NCp1_NOutput _L_564 = {0};
-_NCp1_Poutput_1(&_L_564);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_564, "struct ", 7u, _L_563);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_564);
-_NCp1_NOutput_Poutput_cstr_4(&_L_564, "struct ", 7u, _L_563);
-_NCp1_NOutput_Poutput_end_1(&_L_564);
-}
-_NCp1_NAt_Pwrite_space_1((*_Ls_560)._Fat);
-if(((*_Ls_560)._Fflags & _NCp1_NStructFlags_Cunion) != _NCp1_NStructFlags_C0) {
+_NCp1_NStruct _Ls_i_563;
+struct _NCp1_NStructData* _Ls_564;
+int _L_587 = {0};
+struct _NCp1_NOutput _L_588 = {0};
+_Ls_i_563 = ((_NCp1_NStruct)(_Gstruct_outputted_v[_Li_562]));
+_Ls_564 = ((struct _NCp1_NStructData*)(_NCp1_NStruct_Pptr_1(_Ls_i_563)));
+if(((*_Ls_564)._Fflags & _NCp1_NStructFlags_Cunion) != _NCp1_NStructFlags_C0) {
 int _L_565 = {0};
 struct _NCp1_NOutput _L_566 = {0};
 _NCp1_Poutput_1(&_L_566);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_566, ";\nunion ", 8u, _L_565);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_566, "union ", 6u, _L_565);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_566);
-_NCp1_NOutput_Poutput_cstr_4(&_L_566, ";\nunion ", 8u, _L_565);
+_NCp1_NOutput_Poutput_cstr_4(&_L_566, "union ", 6u, _L_565);
 _NCp1_NOutput_Poutput_end_1(&_L_566);
 } else {
 int _L_567 = {0};
 struct _NCp1_NOutput _L_568 = {0};
 _NCp1_Poutput_1(&_L_568);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_568, ";\nstruct ", 9u, _L_567);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_568, "struct ", 7u, _L_567);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_568);
-_NCp1_NOutput_Poutput_cstr_4(&_L_568, ";\nstruct ", 9u, _L_567);
+_NCp1_NOutput_Poutput_cstr_4(&_L_568, "struct ", 7u, _L_567);
 _NCp1_NOutput_Poutput_end_1(&_L_568);
 }
-_NCp1_NAt_Pwrite_space_1((*_Ls_560)._Fat);
-if((*_Ls_560)._Ffvar_c == 0) {
+_NCp1_NAt_Pwrite_space_1((*_Ls_564)._Fat);
+if(((*_Ls_564)._Fflags & _NCp1_NStructFlags_Cunion) != _NCp1_NStructFlags_C0) {
 int _L_569 = {0};
 struct _NCp1_NOutput _L_570 = {0};
 _NCp1_Poutput_1(&_L_570);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_570, " {\nchar unused;\n}", 17u, _L_569);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_570, ";\nunion ", 8u, _L_569);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_570);
-_NCp1_NOutput_Poutput_cstr_4(&_L_570, " {\nchar unused;\n}", 17u, _L_569);
+_NCp1_NOutput_Poutput_cstr_4(&_L_570, ";\nunion ", 8u, _L_569);
 _NCp1_NOutput_Poutput_end_1(&_L_570);
 } else {
 int _L_571 = {0};
 struct _NCp1_NOutput _L_572 = {0};
-int _L_577 = {0};
-struct _NCp1_NOutput _L_578 = {0};
 _NCp1_Poutput_1(&_L_572);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_572, " {\n", 3u, _L_571);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_572, ";\nstruct ", 9u, _L_571);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_572);
-_NCp1_NOutput_Poutput_cstr_4(&_L_572, " {\n", 3u, _L_571);
+_NCp1_NOutput_Poutput_cstr_4(&_L_572, ";\nstruct ", 9u, _L_571);
 _NCp1_NOutput_Poutput_end_1(&_L_572);
-int32_t _Lj_573 = {0};
-_Lj_573 = ((int32_t)(0));
-for(int i = (*_Ls_560)._Ffvar_c; i > 0; ) {
-i --;
-struct _NCp1_NFvarData* _Lfvar_574;
+}
+_NCp1_NAt_Pwrite_space_1((*_Ls_564)._Fat);
+if((*_Ls_564)._Ffvar_c == 0) {
+int _L_573 = {0};
+struct _NCp1_NOutput _L_574 = {0};
+_NCp1_Poutput_1(&_L_574);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_574, " {\nchar unused;\n}", 17u, _L_573);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_574);
+_NCp1_NOutput_Poutput_cstr_4(&_L_574, " {\nchar unused;\n}", 17u, _L_573);
+_NCp1_NOutput_Poutput_end_1(&_L_574);
+} else {
 int _L_575 = {0};
 struct _NCp1_NOutput _L_576 = {0};
-_Lfvar_574 = ((struct _NCp1_NFvarData*)((&(*_Ls_560)._Ffvar_v[_Lj_573])));
-_NCp1_NDeclVarData_Pwrite_type_2(&(*_Lfvar_574)._Fdecl, _NCp1_NDeclVarType_Cfvar);
-_NCp1_Poutput_1(&_L_576);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_576, ";\n", 2u, _L_575);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_576);
-_NCp1_NOutput_Poutput_cstr_4(&_L_576, ";\n", 2u, _L_575);
-_NCp1_NOutput_Poutput_end_1(&_L_576);
-continue_35:;
-_Lj_573++;
-}
-break_35:;
-_NCp1_Poutput_1(&_L_578);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_578, "}", 1u, _L_577);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_578);
-_NCp1_NOutput_Poutput_cstr_4(&_L_578, "}", 1u, _L_577);
-_NCp1_NOutput_Poutput_end_1(&_L_578);
-}
-if(((*_Ls_560)._Fflags & _NCp1_NStructFlags_Caligned) != _NCp1_NStructFlags_C0) {
-int _L_579 = {0};
-int _L_580 = {0};
 int _L_581 = {0};
 struct _NCp1_NOutput _L_582 = {0};
+_NCp1_Poutput_1(&_L_576);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_576, " {\n", 3u, _L_575);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_576);
+_NCp1_NOutput_Poutput_cstr_4(&_L_576, " {\n", 3u, _L_575);
+_NCp1_NOutput_Poutput_end_1(&_L_576);
+int32_t _Lj_577 = {0};
+_Lj_577 = ((int32_t)(0));
+for(int i = (*_Ls_564)._Ffvar_c; i > 0; ) {
+i --;
+struct _NCp1_NFvarData* _Lfvar_578;
+int _L_579 = {0};
+struct _NCp1_NOutput _L_580 = {0};
+_Lfvar_578 = ((struct _NCp1_NFvarData*)((&(*_Ls_564)._Ffvar_v[_Lj_577])));
+_NCp1_NDeclVarData_Pwrite_type_2(&(*_Lfvar_578)._Fdecl, _NCp1_NDeclVarType_Cfvar);
+_NCp1_Poutput_1(&_L_580);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_580, ";\n", 2u, _L_579);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_580);
+_NCp1_NOutput_Poutput_cstr_4(&_L_580, ";\n", 2u, _L_579);
+_NCp1_NOutput_Poutput_end_1(&_L_580);
+continue_35:;
+_Lj_577++;
+}
+break_35:;
 _NCp1_Poutput_1(&_L_582);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_582, " __attribute__((aligned(", 24u, _L_579);
-_Tu32_Poutput_reserve_3((*_Ls_560)._Faligned, &_L_582, _L_580);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_582, ")))", 3u, _L_581);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_582, "}", 1u, _L_581);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_582);
-_NCp1_NOutput_Poutput_cstr_4(&_L_582, " __attribute__((aligned(", 24u, _L_579);
-_Tu32_Poutput_3((*_Ls_560)._Faligned, &_L_582, _L_580);
-_NCp1_NOutput_Poutput_cstr_4(&_L_582, ")))", 3u, _L_581);
+_NCp1_NOutput_Poutput_cstr_4(&_L_582, "}", 1u, _L_581);
 _NCp1_NOutput_Poutput_end_1(&_L_582);
 }
-_NCp1_Poutput_1(&_L_584);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_584, ";\n", 2u, _L_583);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_584);
-_NCp1_NOutput_Poutput_cstr_4(&_L_584, ";\n", 2u, _L_583);
-_NCp1_NOutput_Poutput_end_1(&_L_584);
+if(((*_Ls_564)._Fflags & _NCp1_NStructFlags_Caligned) != _NCp1_NStructFlags_C0) {
+int _L_583 = {0};
+int _L_584 = {0};
+int _L_585 = {0};
+struct _NCp1_NOutput _L_586 = {0};
+_NCp1_Poutput_1(&_L_586);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_586, " __attribute__((aligned(", 24u, _L_583);
+_Tu32_Poutput_reserve_3((*_Ls_564)._Faligned, &_L_586, _L_584);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_586, ")))", 3u, _L_585);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_586);
+_NCp1_NOutput_Poutput_cstr_4(&_L_586, " __attribute__((aligned(", 24u, _L_583);
+_Tu32_Poutput_3((*_Ls_564)._Faligned, &_L_586, _L_584);
+_NCp1_NOutput_Poutput_cstr_4(&_L_586, ")))", 3u, _L_585);
+_NCp1_NOutput_Poutput_end_1(&_L_586);
+}
+_NCp1_Poutput_1(&_L_588);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_588, ";\n", 2u, _L_587);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_588);
+_NCp1_NOutput_Poutput_cstr_4(&_L_588, ";\n", 2u, _L_587);
+_NCp1_NOutput_Poutput_end_1(&_L_588);
 continue_34:;
-_Li_558++;
+_Li_562++;
 }
 break_34:;
-int32_t _Li_585 = {0};
-_Li_585 = ((int32_t)(0));
+int32_t _Li_589 = {0};
+_Li_589 = ((int32_t)(0));
 for(int i = _Ggvar_outputted_c; i > 0; ) {
 i --;
-_NCp1_NGvar _Lg_i_586;
-struct _NCp1_NDeclGvar* _Lg_587;
-int _L_590 = {0};
-struct _NCp1_NOutput _L_591 = {0};
-_Lg_i_586 = ((_NCp1_NGvar)(_Ggvar_outputted_v[_Li_585]));
-_Lg_587 = ((struct _NCp1_NDeclGvar*)(_NCp1_NGvar_Pptr_1(_Lg_i_586)));
-if(((*_Lg_587)._Fdecl._Fflags & _NCp1_NVarFlags_Cno_decl) != _NCp1_NVarFlags_C0) {
+_NCp1_NGvar _Lg_i_590;
+struct _NCp1_NDeclGvar* _Lg_591;
+int _L_594 = {0};
+struct _NCp1_NOutput _L_595 = {0};
+_Lg_i_590 = ((_NCp1_NGvar)(_Ggvar_outputted_v[_Li_589]));
+_Lg_591 = ((struct _NCp1_NDeclGvar*)(_NCp1_NGvar_Pptr_1(_Lg_i_590)));
+if(((*_Lg_591)._Fdecl._Fflags & _NCp1_NVarFlags_Cno_decl) != _NCp1_NVarFlags_C0) {
 goto continue_36;
 }
-if(((*_Lg_587)._Fdecl._Fflags & _NCp1_NVarFlags_Cextern) != _NCp1_NVarFlags_C0) {
-int _L_588 = {0};
-struct _NCp1_NOutput _L_589 = {0};
-_NCp1_Poutput_1(&_L_589);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_589, "extern ", 7u, _L_588);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_589);
-_NCp1_NOutput_Poutput_cstr_4(&_L_589, "extern ", 7u, _L_588);
-_NCp1_NOutput_Poutput_end_1(&_L_589);
+if(((*_Lg_591)._Fdecl._Fflags & _NCp1_NVarFlags_Cextern) != _NCp1_NVarFlags_C0) {
+int _L_592 = {0};
+struct _NCp1_NOutput _L_593 = {0};
+_NCp1_Poutput_1(&_L_593);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_593, "extern ", 7u, _L_592);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_593);
+_NCp1_NOutput_Poutput_cstr_4(&_L_593, "extern ", 7u, _L_592);
+_NCp1_NOutput_Poutput_end_1(&_L_593);
 }
-_NCp1_NDeclVarData_Pwrite_type_2(&(*_Lg_587)._Fdecl, _NCp1_NDeclVarType_Cgvar);
-_NCp1_Poutput_1(&_L_591);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_591, ";\n", 2u, _L_590);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_591);
-_NCp1_NOutput_Poutput_cstr_4(&_L_591, ";\n", 2u, _L_590);
-_NCp1_NOutput_Poutput_end_1(&_L_591);
+_NCp1_NDeclVarData_Pwrite_type_2(&(*_Lg_591)._Fdecl, _NCp1_NDeclVarType_Cgvar);
+_NCp1_Poutput_1(&_L_595);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_595, ";\n", 2u, _L_594);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_595);
+_NCp1_NOutput_Poutput_cstr_4(&_L_595, ";\n", 2u, _L_594);
+_NCp1_NOutput_Poutput_end_1(&_L_595);
 continue_36:;
-_Li_585++;
+_Li_589++;
 }
 break_36:;
-int32_t _Li_592 = {0};
-_Li_592 = ((int32_t)(0));
+int32_t _Li_596 = {0};
+_Li_596 = ((int32_t)(0));
 for(int i = _Gfunc_head_outputted_c; i > 0; ) {
 i --;
-_NCp1_NFunc _Lf_idx_593;
-struct _NCp1_NDeclFunc* _Lf_594;
-int _L_612 = {0};
-struct _NCp1_NOutput _L_613 = {0};
-int _L_614 = {0};
-struct _NCp1_NOutput _L_615 = {0};
-_Lf_idx_593 = ((_NCp1_NFunc)(_Gfunc_head_outputted_v[_Li_592]));
-_Lf_594 = ((struct _NCp1_NDeclFunc*)(_NCp1_NFunc_Pptr_1(_Lf_idx_593)));
-if(((*_Lf_594)._Fflags & _NCp1_NFuncFlags_Cno_decl) != _NCp1_NFuncFlags_C0) {
+_NCp1_NFunc _Lf_idx_597;
+struct _NCp1_NDeclFunc* _Lf_598;
+int _L_616 = {0};
+struct _NCp1_NOutput _L_617 = {0};
+int _L_618 = {0};
+struct _NCp1_NOutput _L_619 = {0};
+_Lf_idx_597 = ((_NCp1_NFunc)(_Gfunc_head_outputted_v[_Li_596]));
+_Lf_598 = ((struct _NCp1_NDeclFunc*)(_NCp1_NFunc_Pptr_1(_Lf_idx_597)));
+if(((*_Lf_598)._Fflags & _NCp1_NFuncFlags_Cno_decl) != _NCp1_NFuncFlags_C0) {
 goto continue_37;
 }
-if(((*_Lf_594)._Fflags & _NCp1_NFuncFlags_Cdecl) != _NCp1_NFuncFlags_C0) {
-int _L_606 = {0};
-struct _NCp1_NOutput _L_607 = {0};
-if((((*_Lf_594)._Fdecl_str[0] == '#') && ((*_Lf_594)._Fdecl_str[1] == ' '))) {
-int _L_595 = {0};
-struct _NCp1_NOutput _L_596 = {0};
-int _L_597 = {0};
-struct _NCp1_NOutput _L_598 = {0};
-int _L_604 = {0};
-struct _NCp1_NOutput _L_605 = {0};
-_NCp1_Poutput_1(&_L_596);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_596, "#define ", 8u, _L_595);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_596);
-_NCp1_NOutput_Poutput_cstr_4(&_L_596, "#define ", 8u, _L_595);
-_NCp1_NOutput_Poutput_end_1(&_L_596);
-_NCp1_NDeclFunc_Pwrite_1(_Lf_594);
-_NCp1_Poutput_1(&_L_598);
-_Tchar_Poutput_reserve_3('(', &_L_598, _L_597);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_598);
-_Tchar_Poutput_3('(', &_L_598, _L_597);
-_NCp1_NOutput_Poutput_end_1(&_L_598);
-int32_t _Lj_599 = {0};
-_Lj_599 = ((int32_t)(0));
-for(int i = (*_Lf_594)._Ffarg_c; i > 0; ) {
-i --;
-int _L_602 = {0};
-struct _NCp1_NOutput _L_603 = {0};
-if(_Lj_599 != 0) {
-int _L_600 = {0};
-struct _NCp1_NOutput _L_601 = {0};
-_NCp1_Poutput_1(&_L_601);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_601, ", ", 2u, _L_600);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_601);
-_NCp1_NOutput_Poutput_cstr_4(&_L_601, ", ", 2u, _L_600);
-_NCp1_NOutput_Poutput_end_1(&_L_601);
-}
-_NCp1_Poutput_1(&_L_603);
-_NCp1_NId_Poutput_reserve_3((*_Lf_594)._Ffarg_v[_Lj_599]._Fdecl._Fname, &_L_603, _L_602);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_603);
-_NCp1_NId_Poutput_3((*_Lf_594)._Ffarg_v[_Lj_599]._Fdecl._Fname, &_L_603, _L_602);
-_NCp1_NOutput_Poutput_end_1(&_L_603);
-continue_38:;
-_Lj_599++;
-}
-break_38:;
-_NCp1_Poutput_1(&_L_605);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_605, ") ", 2u, _L_604);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_605);
-_NCp1_NOutput_Poutput_cstr_4(&_L_605, ") ", 2u, _L_604);
-_NCp1_NOutput_Poutput_end_1(&_L_605);
-_NCp1_Poutput_bytes_2(&(*_Lf_594)._Fdecl_str[2], (*_Lf_594)._Fdecl_len - 2);
-} else {
-_NCp1_Poutput_bytes_2((*_Lf_594)._Fdecl_str, (*_Lf_594)._Fdecl_len);
-}
-_NCp1_Poutput_1(&_L_607);
-_Tchar_Poutput_reserve_3('\n', &_L_607, _L_606);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_607);
-_Tchar_Poutput_3('\n', &_L_607, _L_606);
-_NCp1_NOutput_Poutput_end_1(&_L_607);
-goto continue_37;
-}
-_Gctx_func = _Lf_594;
-if(((*_Lf_594)._Fflags & _NCp1_NFuncFlags_Cinline) != _NCp1_NFuncFlags_C0) {
-int _L_608 = {0};
-struct _NCp1_NOutput _L_609 = {0};
-_NCp1_Poutput_1(&_L_609);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_609, "static inline ", 14u, _L_608);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_609);
-_NCp1_NOutput_Poutput_cstr_4(&_L_609, "static inline ", 14u, _L_608);
-_NCp1_NOutput_Poutput_end_1(&_L_609);
-}
-if((*_Lf_594)._Fdecl._Ftype == _NCp1_NAt_Cnil) {
+if(((*_Lf_598)._Fflags & _NCp1_NFuncFlags_Cdecl) != _NCp1_NFuncFlags_C0) {
 int _L_610 = {0};
 struct _NCp1_NOutput _L_611 = {0};
-_NCp1_Poutput_1(&_L_611);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_611, "void", 4u, _L_610);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_611);
-_NCp1_NOutput_Poutput_cstr_4(&_L_611, "void", 4u, _L_610);
-_NCp1_NOutput_Poutput_end_1(&_L_611);
-} else {
-_NCp1_NAt_Pwrite_type_info_3((*_Lf_594)._Fdecl._Ftype, &(*_Lf_594)._Fdecl._Ftype_info, 0);
-}
-_NCp1_Poutput_1(&_L_613);
-_Tchar_Poutput_reserve_3(' ', &_L_613, _L_612);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_613);
-_Tchar_Poutput_3(' ', &_L_613, _L_612);
-_NCp1_NOutput_Poutput_end_1(&_L_613);
-_NCp1_NDeclFunc_Pwrite_1(_Lf_594);
-_NCp1_Poutput_1(&_L_615);
-_Tchar_Poutput_reserve_3('(', &_L_615, _L_614);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_615);
-_Tchar_Poutput_3('(', &_L_615, _L_614);
-_NCp1_NOutput_Poutput_end_1(&_L_615);
-int32_t _Lj_616 = {0};
-_Lj_616 = ((int32_t)(0));
-for(int i = (*_Lf_594)._Ffarg_c; i > 0; ) {
+if((((*_Lf_598)._Fdecl_str[0] == '#') && ((*_Lf_598)._Fdecl_str[1] == ' '))) {
+int _L_599 = {0};
+struct _NCp1_NOutput _L_600 = {0};
+int _L_601 = {0};
+struct _NCp1_NOutput _L_602 = {0};
+int _L_608 = {0};
+struct _NCp1_NOutput _L_609 = {0};
+_NCp1_Poutput_1(&_L_600);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_600, "#define ", 8u, _L_599);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_600);
+_NCp1_NOutput_Poutput_cstr_4(&_L_600, "#define ", 8u, _L_599);
+_NCp1_NOutput_Poutput_end_1(&_L_600);
+_NCp1_NDeclFunc_Pwrite_1(_Lf_598);
+_NCp1_Poutput_1(&_L_602);
+_Tchar_Poutput_reserve_3('(', &_L_602, _L_601);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_602);
+_Tchar_Poutput_3('(', &_L_602, _L_601);
+_NCp1_NOutput_Poutput_end_1(&_L_602);
+int32_t _Lj_603 = {0};
+_Lj_603 = ((int32_t)(0));
+for(int i = (*_Lf_598)._Ffarg_c; i > 0; ) {
 i --;
-if(_Lj_616 != 0) {
-int _L_617 = {0};
-struct _NCp1_NOutput _L_618 = {0};
-_NCp1_Poutput_1(&_L_618);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_618, ", ", 2u, _L_617);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_618);
-_NCp1_NOutput_Poutput_cstr_4(&_L_618, ", ", 2u, _L_617);
-_NCp1_NOutput_Poutput_end_1(&_L_618);
+int _L_606 = {0};
+struct _NCp1_NOutput _L_607 = {0};
+if(_Lj_603 != 0) {
+int _L_604 = {0};
+struct _NCp1_NOutput _L_605 = {0};
+_NCp1_Poutput_1(&_L_605);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_605, ", ", 2u, _L_604);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_605);
+_NCp1_NOutput_Poutput_cstr_4(&_L_605, ", ", 2u, _L_604);
+_NCp1_NOutput_Poutput_end_1(&_L_605);
 }
-_NCp1_NDeclVarData_Pwrite_lvar_type_2(&(*_Lf_594)._Ffarg_v[_Lj_616]._Fdecl, ((_NCp1_NLvar)(_Lj_616)));
+_NCp1_Poutput_1(&_L_607);
+_NCp1_NId_Poutput_reserve_3((*_Lf_598)._Ffarg_v[_Lj_603]._Fdecl._Fname, &_L_607, _L_606);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_607);
+_NCp1_NId_Poutput_3((*_Lf_598)._Ffarg_v[_Lj_603]._Fdecl._Fname, &_L_607, _L_606);
+_NCp1_NOutput_Poutput_end_1(&_L_607);
+continue_38:;
+_Lj_603++;
+}
+break_38:;
+_NCp1_Poutput_1(&_L_609);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_609, ") ", 2u, _L_608);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_609);
+_NCp1_NOutput_Poutput_cstr_4(&_L_609, ") ", 2u, _L_608);
+_NCp1_NOutput_Poutput_end_1(&_L_609);
+_NCp1_Poutput_bytes_2(&(*_Lf_598)._Fdecl_str[2], (*_Lf_598)._Fdecl_len - 2);
+} else {
+_NCp1_Poutput_bytes_2((*_Lf_598)._Fdecl_str, (*_Lf_598)._Fdecl_len);
+}
+_NCp1_Poutput_1(&_L_611);
+_Tchar_Poutput_reserve_3('\n', &_L_611, _L_610);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_611);
+_Tchar_Poutput_3('\n', &_L_611, _L_610);
+_NCp1_NOutput_Poutput_end_1(&_L_611);
+goto continue_37;
+}
+_Gctx_func = _Lf_598;
+if(((*_Lf_598)._Fflags & _NCp1_NFuncFlags_Cinline) != _NCp1_NFuncFlags_C0) {
+int _L_612 = {0};
+struct _NCp1_NOutput _L_613 = {0};
+_NCp1_Poutput_1(&_L_613);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_613, "static inline ", 14u, _L_612);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_613);
+_NCp1_NOutput_Poutput_cstr_4(&_L_613, "static inline ", 14u, _L_612);
+_NCp1_NOutput_Poutput_end_1(&_L_613);
+}
+if((*_Lf_598)._Fdecl._Ftype == _NCp1_NAt_Cnil) {
+int _L_614 = {0};
+struct _NCp1_NOutput _L_615 = {0};
+_NCp1_Poutput_1(&_L_615);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_615, "void", 4u, _L_614);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_615);
+_NCp1_NOutput_Poutput_cstr_4(&_L_615, "void", 4u, _L_614);
+_NCp1_NOutput_Poutput_end_1(&_L_615);
+} else {
+_NCp1_NAt_Pwrite_type_info_3((*_Lf_598)._Fdecl._Ftype, &(*_Lf_598)._Fdecl._Ftype_info, 0);
+}
+_NCp1_Poutput_1(&_L_617);
+_Tchar_Poutput_reserve_3(' ', &_L_617, _L_616);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_617);
+_Tchar_Poutput_3(' ', &_L_617, _L_616);
+_NCp1_NOutput_Poutput_end_1(&_L_617);
+_NCp1_NDeclFunc_Pwrite_1(_Lf_598);
+_NCp1_Poutput_1(&_L_619);
+_Tchar_Poutput_reserve_3('(', &_L_619, _L_618);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_619);
+_Tchar_Poutput_3('(', &_L_619, _L_618);
+_NCp1_NOutput_Poutput_end_1(&_L_619);
+int32_t _Lj_620 = {0};
+_Lj_620 = ((int32_t)(0));
+for(int i = (*_Lf_598)._Ffarg_c; i > 0; ) {
+i --;
+if(_Lj_620 != 0) {
+int _L_621 = {0};
+struct _NCp1_NOutput _L_622 = {0};
+_NCp1_Poutput_1(&_L_622);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_622, ", ", 2u, _L_621);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_622);
+_NCp1_NOutput_Poutput_cstr_4(&_L_622, ", ", 2u, _L_621);
+_NCp1_NOutput_Poutput_end_1(&_L_622);
+}
+_NCp1_NDeclVarData_Pwrite_lvar_type_2(&(*_Lf_598)._Ffarg_v[_Lj_620]._Fdecl, ((_NCp1_NLvar)(_Lj_620)));
 continue_39:;
-_Lj_616++;
+_Lj_620++;
 }
 break_39:;
-if(((*_Lf_594)._Fflags & _NCp1_NFuncFlags_Ccp1_name) != _NCp1_NFuncFlags_C0) {
-int _L_619 = {0};
-struct _NCp1_NOutput _L_620 = {0};
-struct _NCp1_NAtData* _Lat_621;
-int _L_632 = {0};
-struct _NCp1_NOutput _L_633 = {0};
-_NCp1_Poutput_1(&_L_620);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_620, ") {\nswitch(_Le_0) {\n", 20u, _L_619);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_620);
-_NCp1_NOutput_Poutput_cstr_4(&_L_620, ") {\nswitch(_Le_0) {\n", 20u, _L_619);
-_NCp1_NOutput_Poutput_end_1(&_L_620);
-_Lat_621 = ((struct _NCp1_NAtData*)(_NCp1_NAt_Pptr_1((*_Lf_594)._Fat)));
-int32_t _Li_622 = {0};
-_NCp1_NCvar* _Lv_623 = {0};
-_Li_622 = ((int32_t)(0));
-_Lv_623 = ((_NCp1_NCvar*)((*_Lat_621)._Fcvar_v));
-for(int i = (*_Lat_621)._Fcvar_c; i > 0; ) {
+if(((*_Lf_598)._Fflags & _NCp1_NFuncFlags_Ccp1_name) != _NCp1_NFuncFlags_C0) {
+int _L_623 = {0};
+struct _NCp1_NOutput _L_624 = {0};
+struct _NCp1_NAtData* _Lat_625;
+int _L_636 = {0};
+struct _NCp1_NOutput _L_637 = {0};
+_NCp1_Poutput_1(&_L_624);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_624, ") {\nswitch(_Le_0) {\n", 20u, _L_623);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_624);
+_NCp1_NOutput_Poutput_cstr_4(&_L_624, ") {\nswitch(_Le_0) {\n", 20u, _L_623);
+_NCp1_NOutput_Poutput_end_1(&_L_624);
+_Lat_625 = ((struct _NCp1_NAtData*)(_NCp1_NAt_Pptr_1((*_Lf_598)._Fat)));
+int32_t _Li_626 = {0};
+_NCp1_NCvar* _Lv_627 = {0};
+_Li_626 = ((int32_t)(0));
+_Lv_627 = ((_NCp1_NCvar*)((*_Lat_625)._Fcvar_v));
+for(int i = (*_Lat_625)._Fcvar_c; i > 0; ) {
 i --;
-_NCp1_NCvar _Lcvar_i_624;
-struct _NCp1_NCvarData* _Lcvar_625;
-int _L_626 = {0};
-struct _NCp1_NOutput _L_627 = {0};
-int _L_628 = {0};
-int _L_629 = {0};
+_NCp1_NCvar _Lcvar_i_628;
+struct _NCp1_NCvarData* _Lcvar_629;
 int _L_630 = {0};
 struct _NCp1_NOutput _L_631 = {0};
-_Lcvar_i_624 = ((_NCp1_NCvar)(_Lv_623[_Li_622]));
-_Lcvar_625 = ((struct _NCp1_NCvarData*)(_NCp1_NCvar_Pptr_1(_Lcvar_i_624)));
-if(((*_Lcvar_625)._Fflags & _NCp1_NCvarFlags_Cas_enum) == _NCp1_NCvarFlags_C0) {
-goto continue_40;
-}
-if(((*_Lcvar_625)._Fflags & _NCp1_NCvarFlags_Cno_name) != _NCp1_NCvarFlags_C0) {
-goto continue_40;
-}
-_NCp1_Poutput_1(&_L_627);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_627, "case ", 5u, _L_626);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_627);
-_NCp1_NOutput_Poutput_cstr_4(&_L_627, "case ", 5u, _L_626);
-_NCp1_NOutput_Poutput_end_1(&_L_627);
-_NCp1_NCvar_Pwrite_1(_Lcvar_i_624);
-_NCp1_Poutput_1(&_L_631);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_631, ": return \"", 10u, _L_628);
-_NCp1_NId_Poutput_reserve_3((*_Lcvar_625)._Fdecl._Fname, &_L_631, _L_629);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_631, "\";\n", 3u, _L_630);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_631);
-_NCp1_NOutput_Poutput_cstr_4(&_L_631, ": return \"", 10u, _L_628);
-_NCp1_NId_Poutput_3((*_Lcvar_625)._Fdecl._Fname, &_L_631, _L_629);
-_NCp1_NOutput_Poutput_cstr_4(&_L_631, "\";\n", 3u, _L_630);
-_NCp1_NOutput_Poutput_end_1(&_L_631);
-continue_40:;
-_Li_622++;
-}
-break_40:;
-_NCp1_Poutput_1(&_L_633);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_633, "}\nreturn \"(ERROR)\";\n}\n", 22u, _L_632);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_633);
-_NCp1_NOutput_Poutput_cstr_4(&_L_633, "}\nreturn \"(ERROR)\";\n}\n", 22u, _L_632);
-_NCp1_NOutput_Poutput_end_1(&_L_633);
-} else {
+int _L_632 = {0};
+int _L_633 = {0};
 int _L_634 = {0};
 struct _NCp1_NOutput _L_635 = {0};
+_Lcvar_i_628 = ((_NCp1_NCvar)(_Lv_627[_Li_626]));
+_Lcvar_629 = ((struct _NCp1_NCvarData*)(_NCp1_NCvar_Pptr_1(_Lcvar_i_628)));
+if(((*_Lcvar_629)._Fflags & _NCp1_NCvarFlags_Cas_enum) == _NCp1_NCvarFlags_C0) {
+goto continue_40;
+}
+if(((*_Lcvar_629)._Fflags & _NCp1_NCvarFlags_Cno_name) != _NCp1_NCvarFlags_C0) {
+goto continue_40;
+}
+_NCp1_Poutput_1(&_L_631);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_631, "case ", 5u, _L_630);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_631);
+_NCp1_NOutput_Poutput_cstr_4(&_L_631, "case ", 5u, _L_630);
+_NCp1_NOutput_Poutput_end_1(&_L_631);
+_NCp1_NCvar_Pwrite_1(_Lcvar_i_628);
 _NCp1_Poutput_1(&_L_635);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_635, ");\n", 3u, _L_634);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_635, ": return \"", 10u, _L_632);
+_NCp1_NId_Poutput_reserve_3((*_Lcvar_629)._Fdecl._Fname, &_L_635, _L_633);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_635, "\";\n", 3u, _L_634);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_635);
-_NCp1_NOutput_Poutput_cstr_4(&_L_635, ");\n", 3u, _L_634);
+_NCp1_NOutput_Poutput_cstr_4(&_L_635, ": return \"", 10u, _L_632);
+_NCp1_NId_Poutput_3((*_Lcvar_629)._Fdecl._Fname, &_L_635, _L_633);
+_NCp1_NOutput_Poutput_cstr_4(&_L_635, "\";\n", 3u, _L_634);
 _NCp1_NOutput_Poutput_end_1(&_L_635);
+continue_40:;
+_Li_626++;
+}
+break_40:;
+_NCp1_Poutput_1(&_L_637);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_637, "}\nreturn \"(ERROR)\";\n}\n", 22u, _L_636);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_637);
+_NCp1_NOutput_Poutput_cstr_4(&_L_637, "}\nreturn \"(ERROR)\";\n}\n", 22u, _L_636);
+_NCp1_NOutput_Poutput_end_1(&_L_637);
+} else {
+int _L_638 = {0};
+struct _NCp1_NOutput _L_639 = {0};
+_NCp1_Poutput_1(&_L_639);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_639, ");\n", 3u, _L_638);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_639);
+_NCp1_NOutput_Poutput_cstr_4(&_L_639, ");\n", 3u, _L_638);
+_NCp1_NOutput_Poutput_end_1(&_L_639);
 }
 continue_37:;
-_Li_592++;
+_Li_596++;
 }
 break_37:;
-int32_t _Li_636 = {0};
-_Li_636 = ((int32_t)(0));
+int32_t _Li_640 = {0};
+_Li_640 = ((int32_t)(0));
 for(int i = _Gfunc_body_outputted_c; i > 0; ) {
 i --;
-_NCp1_NFunc _Lf_idx_637;
-struct _NCp1_NDeclFunc* _Lf_638;
+_NCp1_NFunc _Lf_idx_641;
+struct _NCp1_NDeclFunc* _Lf_642;
+int _L_647 = {0};
+struct _NCp1_NOutput _L_648 = {0};
+int _L_649 = {0};
+struct _NCp1_NOutput _L_650 = {0};
+_Lf_idx_641 = ((_NCp1_NFunc)(_Gfunc_body_outputted_v[_Li_640]));
+_Lf_642 = ((struct _NCp1_NDeclFunc*)(_NCp1_NFunc_Pptr_1(_Lf_idx_641)));
+_Gctx_func = _Lf_642;
+_Gnest_id = 0;
+if(((*_Lf_642)._Fflags & _NCp1_NFuncFlags_Cinline) != _NCp1_NFuncFlags_C0) {
 int _L_643 = {0};
 struct _NCp1_NOutput _L_644 = {0};
+_NCp1_Poutput_1(&_L_644);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_644, "static inline ", 14u, _L_643);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_644);
+_NCp1_NOutput_Poutput_cstr_4(&_L_644, "static inline ", 14u, _L_643);
+_NCp1_NOutput_Poutput_end_1(&_L_644);
+}
+if((*_Lf_642)._Fdecl._Ftype == _NCp1_NAt_Cnil) {
 int _L_645 = {0};
 struct _NCp1_NOutput _L_646 = {0};
-_Lf_idx_637 = ((_NCp1_NFunc)(_Gfunc_body_outputted_v[_Li_636]));
-_Lf_638 = ((struct _NCp1_NDeclFunc*)(_NCp1_NFunc_Pptr_1(_Lf_idx_637)));
-_Gctx_func = _Lf_638;
-_Gnest_id = 0;
-if(((*_Lf_638)._Fflags & _NCp1_NFuncFlags_Cinline) != _NCp1_NFuncFlags_C0) {
-int _L_639 = {0};
-struct _NCp1_NOutput _L_640 = {0};
-_NCp1_Poutput_1(&_L_640);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_640, "static inline ", 14u, _L_639);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_640);
-_NCp1_NOutput_Poutput_cstr_4(&_L_640, "static inline ", 14u, _L_639);
-_NCp1_NOutput_Poutput_end_1(&_L_640);
-}
-if((*_Lf_638)._Fdecl._Ftype == _NCp1_NAt_Cnil) {
-int _L_641 = {0};
-struct _NCp1_NOutput _L_642 = {0};
-_NCp1_Poutput_1(&_L_642);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_642, "void", 4u, _L_641);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_642);
-_NCp1_NOutput_Poutput_cstr_4(&_L_642, "void", 4u, _L_641);
-_NCp1_NOutput_Poutput_end_1(&_L_642);
-} else {
-_NCp1_NAt_Pwrite_type_info_3((*_Lf_638)._Fdecl._Ftype, &(*_Lf_638)._Fdecl._Ftype_info, 0);
-}
-_NCp1_Poutput_1(&_L_644);
-_Tchar_Poutput_reserve_3(' ', &_L_644, _L_643);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_644);
-_Tchar_Poutput_3(' ', &_L_644, _L_643);
-_NCp1_NOutput_Poutput_end_1(&_L_644);
-_NCp1_NDeclFunc_Pwrite_1(_Lf_638);
 _NCp1_Poutput_1(&_L_646);
-_Tchar_Poutput_reserve_3('(', &_L_646, _L_645);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_646, "void", 4u, _L_645);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_646);
-_Tchar_Poutput_3('(', &_L_646, _L_645);
+_NCp1_NOutput_Poutput_cstr_4(&_L_646, "void", 4u, _L_645);
 _NCp1_NOutput_Poutput_end_1(&_L_646);
-int32_t _Lj_647 = {0};
-_Lj_647 = ((int32_t)(0));
-for(int i = (*_Lf_638)._Ffarg_c; i > 0; ) {
-i --;
-if(_Lj_647 != 0) {
-int _L_648 = {0};
-struct _NCp1_NOutput _L_649 = {0};
-_NCp1_Poutput_1(&_L_649);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_649, ", ", 2u, _L_648);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_649);
-_NCp1_NOutput_Poutput_cstr_4(&_L_649, ", ", 2u, _L_648);
-_NCp1_NOutput_Poutput_end_1(&_L_649);
+} else {
+_NCp1_NAt_Pwrite_type_info_3((*_Lf_642)._Fdecl._Ftype, &(*_Lf_642)._Fdecl._Ftype_info, 0);
 }
-_NCp1_NDeclVarData_Pwrite_lvar_type_2(&(*_Lf_638)._Ffarg_v[_Lj_647]._Fdecl, ((_NCp1_NLvar)(_Lj_647)));
+_NCp1_Poutput_1(&_L_648);
+_Tchar_Poutput_reserve_3(' ', &_L_648, _L_647);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_648);
+_Tchar_Poutput_3(' ', &_L_648, _L_647);
+_NCp1_NOutput_Poutput_end_1(&_L_648);
+_NCp1_NDeclFunc_Pwrite_1(_Lf_642);
+_NCp1_Poutput_1(&_L_650);
+_Tchar_Poutput_reserve_3('(', &_L_650, _L_649);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_650);
+_Tchar_Poutput_3('(', &_L_650, _L_649);
+_NCp1_NOutput_Poutput_end_1(&_L_650);
+int32_t _Lj_651 = {0};
+_Lj_651 = ((int32_t)(0));
+for(int i = (*_Lf_642)._Ffarg_c; i > 0; ) {
+i --;
+if(_Lj_651 != 0) {
+int _L_652 = {0};
+struct _NCp1_NOutput _L_653 = {0};
+_NCp1_Poutput_1(&_L_653);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_653, ", ", 2u, _L_652);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_653);
+_NCp1_NOutput_Poutput_cstr_4(&_L_653, ", ", 2u, _L_652);
+_NCp1_NOutput_Poutput_end_1(&_L_653);
+}
+_NCp1_NDeclVarData_Pwrite_lvar_type_2(&(*_Lf_642)._Ffarg_v[_Lj_651]._Fdecl, ((_NCp1_NLvar)(_Lj_651)));
 continue_42:;
-_Lj_647++;
+_Lj_651++;
 }
 break_42:;
 if(_Lcomment_for_func_13 != NULL) {
-int _L_650 = {0};
-int _L_651 = {0};
-int _L_652 = {0};
-struct _NCp1_NOutput _L_654 = {0};
-_NCp1_Poutput_1(&_L_654);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_654, ") { // ", 7u, _L_650);
-_Tchar_Poutput_reserve_arr_4(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_654, _L_651);
-_Tchar_Poutput_reserve_3('\n', &_L_654, _L_652);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_654);
-_NCp1_NOutput_Poutput_cstr_4(&_L_654, ") { // ", 7u, _L_650);
-_Tchar_Poutput_arr_4(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_654, _L_651);
-_Tchar_Poutput_3('\n', &_L_654, _L_652);
-_NCp1_NOutput_Poutput_end_1(&_L_654);
-} else {
+int _L_654 = {0};
 int _L_655 = {0};
-struct _NCp1_NOutput _L_656 = {0};
-_NCp1_Poutput_1(&_L_656);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_656, ") {\n", 4u, _L_655);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_656);
-_NCp1_NOutput_Poutput_cstr_4(&_L_656, ") {\n", 4u, _L_655);
-_NCp1_NOutput_Poutput_end_1(&_L_656);
+int _L_656 = {0};
+struct _NCp1_NOutput _L_658 = {0};
+_NCp1_Poutput_1(&_L_658);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_658, ") { // ", 7u, _L_654);
+_Tchar_Poutput_reserve_arr_4(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_658, _L_655);
+_Tchar_Poutput_reserve_3('\n', &_L_658, _L_656);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_658);
+_NCp1_NOutput_Poutput_cstr_4(&_L_658, ") { // ", 7u, _L_654);
+_Tchar_Poutput_arr_4(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_658, _L_655);
+_Tchar_Poutput_3('\n', &_L_658, _L_656);
+_NCp1_NOutput_Poutput_end_1(&_L_658);
+} else {
+int _L_659 = {0};
+struct _NCp1_NOutput _L_660 = {0};
+_NCp1_Poutput_1(&_L_660);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_660, ") {\n", 4u, _L_659);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_660);
+_NCp1_NOutput_Poutput_cstr_4(&_L_660, ") {\n", 4u, _L_659);
+_NCp1_NOutput_Poutput_end_1(&_L_660);
 }
 if(_Gdebug_func_prefix != NULL) {
-_NCp1_NFile _Lfile_657;
-char* _Lfile_path_658;
-uint16_t _Lfile_path_len_659;
-uint32_t _Lrow_660;
-uint32_t _L_661 = {0};
-int _L_662 = {0};
-int _L_663 = {0};
-int _L_664 = {0};
-int _L_665 = {0};
+_NCp1_NFile _Lfile_661;
+char* _Lfile_path_662;
+uint16_t _Lfile_path_len_663;
+uint32_t _Lrow_664;
+uint32_t _L_665 = {0};
 int _L_666 = {0};
-struct _NCp1_NOutput _L_668 = {0};
-_Lfile_657 = ((_NCp1_NFile)((*_Lf_638)._Ffile));
-_Lfile_path_658 = ((char*)(_NCp1_NFile_Ppath_1(_Lfile_657)));
-_Lfile_path_len_659 = ((uint16_t)(_NCp1_NFile_Ppath_len_1(_Lfile_657)));
-_Lrow_660 = ((uint32_t)((*_Lf_638)._Fbegin_row));
-_NCp1_Poutput_1(&_L_668);
-_Tchar_Poutput_reserve_arr_3(_Gdebug_func_prefix, &_L_668, &_L_661);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_668, "_begin(\"", 8u, _L_662);
-_Tchar_Poutput_reserve_arr_4(_Lfile_path_658, _Lfile_path_len_659, &_L_668, _L_663);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_668, "\", ", 3u, _L_664);
-_Tu32_Poutput_reserve_3(_Lrow_660, &_L_668, _L_665);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_668, ");\n", 3u, _L_666);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_668);
-_Tchar_Poutput_arr_3(_Gdebug_func_prefix, &_L_668, _L_661);
-_NCp1_NOutput_Poutput_cstr_4(&_L_668, "_begin(\"", 8u, _L_662);
-_Tchar_Poutput_arr_4(_Lfile_path_658, _Lfile_path_len_659, &_L_668, _L_663);
-_NCp1_NOutput_Poutput_cstr_4(&_L_668, "\", ", 3u, _L_664);
-_Tu32_Poutput_3(_Lrow_660, &_L_668, _L_665);
-_NCp1_NOutput_Poutput_cstr_4(&_L_668, ");\n", 3u, _L_666);
-_NCp1_NOutput_Poutput_end_1(&_L_668);
-}
-_NCp1_NStmtSpace_Pwrite_1(&(*_Lf_638)._Fstmt_space);
-if(_Gdebug_func_prefix != NULL) {
-uint32_t _L_669 = {0};
+int _L_667 = {0};
+int _L_668 = {0};
+int _L_669 = {0};
 int _L_670 = {0};
-struct _NCp1_NOutput _L_671 = {0};
-_NCp1_Poutput_1(&_L_671);
-_Tchar_Poutput_reserve_arr_3(_Gdebug_func_prefix, &_L_671, &_L_669);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_671, "_end();\n", 8u, _L_670);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_671);
-_Tchar_Poutput_arr_3(_Gdebug_func_prefix, &_L_671, _L_669);
-_NCp1_NOutput_Poutput_cstr_4(&_L_671, "_end();\n", 8u, _L_670);
-_NCp1_NOutput_Poutput_end_1(&_L_671);
+struct _NCp1_NOutput _L_672 = {0};
+_Lfile_661 = ((_NCp1_NFile)((*_Lf_642)._Ffile));
+_Lfile_path_662 = ((char*)(_NCp1_NFile_Ppath_1(_Lfile_661)));
+_Lfile_path_len_663 = ((uint16_t)(_NCp1_NFile_Ppath_len_1(_Lfile_661)));
+_Lrow_664 = ((uint32_t)((*_Lf_642)._Fbegin_row));
+_NCp1_Poutput_1(&_L_672);
+_Tchar_Poutput_reserve_arr_3(_Gdebug_func_prefix, &_L_672, &_L_665);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_672, "_begin(\"", 8u, _L_666);
+_Tchar_Poutput_reserve_arr_4(_Lfile_path_662, _Lfile_path_len_663, &_L_672, _L_667);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_672, "\", ", 3u, _L_668);
+_Tu32_Poutput_reserve_3(_Lrow_664, &_L_672, _L_669);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_672, ");\n", 3u, _L_670);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_672);
+_Tchar_Poutput_arr_3(_Gdebug_func_prefix, &_L_672, _L_665);
+_NCp1_NOutput_Poutput_cstr_4(&_L_672, "_begin(\"", 8u, _L_666);
+_Tchar_Poutput_arr_4(_Lfile_path_662, _Lfile_path_len_663, &_L_672, _L_667);
+_NCp1_NOutput_Poutput_cstr_4(&_L_672, "\", ", 3u, _L_668);
+_Tu32_Poutput_3(_Lrow_664, &_L_672, _L_669);
+_NCp1_NOutput_Poutput_cstr_4(&_L_672, ");\n", 3u, _L_670);
+_NCp1_NOutput_Poutput_end_1(&_L_672);
+}
+_NCp1_NStmtSpace_Pwrite_1(&(*_Lf_642)._Fstmt_space);
+if(_Gdebug_func_prefix != NULL) {
+uint32_t _L_673 = {0};
+int _L_674 = {0};
+struct _NCp1_NOutput _L_675 = {0};
+_NCp1_Poutput_1(&_L_675);
+_Tchar_Poutput_reserve_arr_3(_Gdebug_func_prefix, &_L_675, &_L_673);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_675, "_end();\n", 8u, _L_674);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_675);
+_Tchar_Poutput_arr_3(_Gdebug_func_prefix, &_L_675, _L_673);
+_NCp1_NOutput_Poutput_cstr_4(&_L_675, "_end();\n", 8u, _L_674);
+_NCp1_NOutput_Poutput_end_1(&_L_675);
 }
 if(_Lcomment_for_func_13 != NULL) {
-int _L_672 = {0};
-int _L_673 = {0};
-int _L_674 = {0};
-struct _NCp1_NOutput _L_676 = {0};
-_NCp1_Poutput_1(&_L_676);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_676, "} // ", 5u, _L_672);
-_Tchar_Poutput_reserve_arr_4(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_676, _L_673);
-_Tchar_Poutput_reserve_3('\n', &_L_676, _L_674);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_676);
-_NCp1_NOutput_Poutput_cstr_4(&_L_676, "} // ", 5u, _L_672);
-_Tchar_Poutput_arr_4(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_676, _L_673);
-_Tchar_Poutput_3('\n', &_L_676, _L_674);
-_NCp1_NOutput_Poutput_end_1(&_L_676);
-} else {
+int _L_676 = {0};
 int _L_677 = {0};
-struct _NCp1_NOutput _L_678 = {0};
-_NCp1_Poutput_1(&_L_678);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_678, "}\n", 2u, _L_677);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_678);
-_NCp1_NOutput_Poutput_cstr_4(&_L_678, "}\n", 2u, _L_677);
-_NCp1_NOutput_Poutput_end_1(&_L_678);
+int _L_678 = {0};
+struct _NCp1_NOutput _L_680 = {0};
+_NCp1_Poutput_1(&_L_680);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_680, "} // ", 5u, _L_676);
+_Tchar_Poutput_reserve_arr_4(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_680, _L_677);
+_Tchar_Poutput_reserve_3('\n', &_L_680, _L_678);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_680);
+_NCp1_NOutput_Poutput_cstr_4(&_L_680, "} // ", 5u, _L_676);
+_Tchar_Poutput_arr_4(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_680, _L_677);
+_Tchar_Poutput_3('\n', &_L_680, _L_678);
+_NCp1_NOutput_Poutput_end_1(&_L_680);
+} else {
+int _L_681 = {0};
+struct _NCp1_NOutput _L_682 = {0};
+_NCp1_Poutput_1(&_L_682);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_682, "}\n", 2u, _L_681);
+_NCp1_NOutput_Poutput_reserve_end_1(&_L_682);
+_NCp1_NOutput_Poutput_cstr_4(&_L_682, "}\n", 2u, _L_681);
+_NCp1_NOutput_Poutput_end_1(&_L_682);
 }
 continue_41:;
-_Li_636++;
+_Li_640++;
 }
 break_41:;
 _NCp1_Pwrite_file_3(_Loutput_file_10, output_data, output_len);
-int32_t ret_1886_4 = 0;
-return ret_1886_4;
+int32_t ret_1892_4 = 0;
+return ret_1892_4;
 }
 static inline void _NLibCp1_Pstdout_1(struct _NLibCp1_NStdOut* _Lso_0) {
 #ifdef LIBCP1_ON_STDOUT
@@ -5933,8 +5952,8 @@ _Lnum_1 = ((uint32_t)(((uint32_t)(_Lf_idx_0))));
 _Ln3_2 = ((uint32_t)((_Lnum_1 >> 3)));
 _Ln17_3 = ((int32_t)((1 << (_Lnum_1 & 7))));
 if((_Gfunc_in_process[_Ln3_2] & _Ln17_3) != 0) {
-bool ret_1899_46 = true;
-return ret_1899_46;
+bool ret_1905_46 = true;
+return ret_1905_46;
 }
 _Gfunc_in_process[_Ln3_2] |= _Ln17_3;
 _Lf_4 = ((struct _NCp1_NDeclFunc*)(_NCp1_NFunc_Pptr_1(_Lf_idx_0)));
@@ -5949,8 +5968,8 @@ _Lj_10 = ((int32_t)(0));
 for(int i = (*_Lf_4)._Ffarg_c; i > 0; ) {
 i --;
 if(!_NCp1_NDeclVarData_Pprocess_5(&(*_Lf_4)._Ffarg_v[_Lj_10]._Fdecl, _Lf_file_7, (*_Lf_4)._Ffarg_v[_Lj_10]._Frow, (*_Lf_4)._Ffarg_v[_Lj_10]._Fcol, _Lf_at_6)) {
-bool ret_1910_13 = false;
-return ret_1910_13;
+bool ret_1916_13 = false;
+return ret_1916_13;
 }
 continue_0:;
 _Lj_10++;
@@ -5960,8 +5979,8 @@ if((*_Lf_4)._Fdecl._Ftype != _NCp1_NAt_Cnil) {
 struct _NCp1_NAtData* _Lat_11;
 (*_Lf_4)._Fdecl._Ftype = _NCp1_Pat_validate_5((*_Lf_4)._Fdecl._Ftype, _Lf_at_6, _Lf_file_7, _Lf_row_8, _Lf_col_9);
 if((*_Lf_4)._Fdecl._Ftype == _NCp1_NAt_Cnil) {
-bool ret_1916_13 = false;
-return ret_1916_13;
+bool ret_1922_13 = false;
+return ret_1922_13;
 }
 _Lat_11 = ((struct _NCp1_NAtData*)(_NCp1_NAt_Pptr_1((*_Lf_4)._Fdecl._Ftype)));
 if((((*_Lat_11)._Ftype != _NCp1_NNameType_Cbasic) && ((*_Lat_11)._Fdecl._Fstructt == _NCp1_NStruct_Cnil))) {
@@ -6067,8 +6086,8 @@ memcpy(&_Lname_30[(_Lprefix_len_26 + 1)], _Lend_str_28, _Lend_len_29 + 1);
 }
 }
 _Gctx_func = _Lold_ctx_func_5;
-bool ret_1986_7 = true;
-return ret_1986_7;
+bool ret_1992_7 = true;
+return ret_1992_7;
 }
 bool _NCp1_NFunc_Pprocess_now_1(_NCp1_NFunc _Lf_idx_0) {
 struct _NCp1_NDeclFunc* _Lf_1;
@@ -6092,8 +6111,8 @@ _Gctx_begin_col = (*_Ls_4)._Fbegin_col;
 _Gctx_end_row = (*_Ls_4)._Fend_row;
 _Gctx_end_col = (*_Ls_4)._Fend_col;
 if(!_NCp1_NStmt_Pprocess_1(_Ls_4)) {
-bool ret_2035_13 = false;
-return ret_2035_13;
+bool ret_2041_13 = false;
+return ret_2041_13;
 }
 _Ls_4 = (*_Ls_4)._Fstmt_next;
 continue_0:;
@@ -6102,8 +6121,8 @@ break_0:;
 if(((*_Lf_1)._Fflags & _NCp1_NFuncFlags_Cno_body) == _NCp1_NFuncFlags_C0) {
 _Gfunc_body_outputted_v[_Gfunc_body_outputted_c++] = _Lf_idx_0;
 }
-bool ret_2053_7 = true;
-return ret_2053_7;
+bool ret_2059_7 = true;
+return ret_2059_7;
 }
 static inline bool _NCp1_NLvar_Pprocess_1(_NCp1_NLvar _Ll_0) {
 struct _NCp1_NLvarData* _Llvar_1;
