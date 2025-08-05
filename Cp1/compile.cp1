@@ -1629,13 +1629,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          output{'')}
       } elif c.last-cvar != #nil {
          if (c.last-cvar.ptr().flags & #dont-count) != #0 {
+            c.last-cvar.write();
+         } else {
             output{"("}
             c.last-cvar.write();
-            output{")"}
-         } else {
-            output{"(("}
-            c.last-cvar.write();
-            output{") + 1)"}
+            output{" + 1)"}
          }
       } else {
          output{''0}
