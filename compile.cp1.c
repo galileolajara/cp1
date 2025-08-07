@@ -8696,6 +8696,7 @@ _Lspace_1 = (_Goutput_cap - output_len);
 continue_0:;
 }
 break_0:;
+_Goutput_cap += _Goutput_cap;
 _NLibC_Prealloc_arr_2(output_data, _Goutput_cap);
 }
 }

@@ -146,6 +146,7 @@ using Cp1 {
             .output-cap += .output-cap;
             space = .output-cap - .output-len;
          }
+         .output-cap += .output-cap;
          C.realloc-arr(.output-data, .output-cap);
       }
    }
