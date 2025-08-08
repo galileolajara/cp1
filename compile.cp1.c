@@ -12993,10 +12993,49 @@ _NLibCp1_NStdOut_Pstdout_end_1(&_L_10);
 return;
 }
 (*_Le_2)._Ftype = (*_NCp1_NEnum_Pptr_1((*_Lat_3)._Fdecl._Fenumm))._Fbase_type;
-}
-(*_Le_2)._Ftype = _NCp1_Pat_validate_5((*_Le_2)._Ftype, (*_Gctx_func)._Fat, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gctx_begin_col);
 _NCp1_NAt_Poutput_4((*_Le_2)._Ftype, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gctx_begin_col);
 (*_Lok_1) = true;
+return;
+}
+(*_Le_2)._Ftype = _NCp1_Pat_validate_5((*_Le_2)._Ftype, (*_Gctx_func)._Fat, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gctx_begin_col);
+if((*_Le_2)._Ftype != _NCp1_NAt_Cnil) {
+struct _NCp1_NAtData* _Lat_11;
+_Lat_11 = ((struct _NCp1_NAtData*)(_NCp1_NAt_Pptr_1((*_Le_2)._Ftype)));
+if((*_Lat_11)._Ftype == _NCp1_NNameType_Cbasic) {
+} else if((*_Lat_11)._Fdef == _NCp1_NAtDef_Cundefined) {
+int _L_12 = {0};
+int _L_13 = {0};
+int _L_14 = {0};
+int _L_15 = {0};
+int _L_16 = {0};
+int _L_17 = {0};
+int _L_18 = {0};
+int _L_19 = {0};
+struct _NLibCp1_NStdOut _L_20 = {0};
+_NLibCp1_Pstdout_1(&_L_20);
+_NCp1_NFile_Pstdout_reserve_3((*_Gctx_func)._Ffile, &_L_20, _L_12);
+_Tchar_Pstdout_reserve_3(':', &_L_20, _L_13);
+_Tu32_Pstdout_reserve_3(_Gctx_begin_row, &_L_20, _L_14);
+_Tchar_Pstdout_reserve_3(':', &_L_20, _L_15);
+_Tu32_Pstdout_reserve_3(_Gctx_begin_col, &_L_20, _L_16);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_20, ": Type '", 8u, _L_17);
+_NCp1_NId_Pstdout_reserve_3((*_Lat_11)._Fname._Fid, &_L_20, _L_18);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_20, "' was not found\n", 16u, _L_19);
+_NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_20);
+_NCp1_NFile_Pstdout_3((*_Gctx_func)._Ffile, &_L_20, _L_12);
+_Tchar_Pstdout_3(':', &_L_20, _L_13);
+_Tu32_Pstdout_3(_Gctx_begin_row, &_L_20, _L_14);
+_Tchar_Pstdout_3(':', &_L_20, _L_15);
+_Tu32_Pstdout_3(_Gctx_begin_col, &_L_20, _L_16);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_20, ": Type '", 8u, _L_17);
+_NCp1_NId_Pstdout_3((*_Lat_11)._Fname._Fid, &_L_20, _L_18);
+_NLibCp1_NStdOut_Pstdout_cstr_4(&_L_20, "' was not found\n", 16u, _L_19);
+_NLibCp1_NStdOut_Pstdout_end_1(&_L_20);
+return;
+}
+_NCp1_NAt_Poutput_4((*_Le_2)._Ftype, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gctx_begin_col);
+(*_Lok_1) = true;
+}
 }
 static inline void _NCp1_NExprI_Pprocess_lvar_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
 struct _NCp1_NExprLvar* _Le_2 = {0};

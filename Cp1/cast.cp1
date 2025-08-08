@@ -53,10 +53,21 @@ using ExprI {
             return;
          }
          e.type = at.decl.enumm.ptr().base-type;
+         e.type.output(.ctx-func.file, .ctx-begin-row, .ctx-begin-col);
+         ok = true;
+         return;
       }
       e.type = at-validate(e.type, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
-      e.type.output(.ctx-func.file, .ctx-begin-row, .ctx-begin-col);
-      ok = true;
+      if e.type != #nil {
+         at! = e.type.ptr();
+         if at.type == #basic {
+         } elif at.def == #undefined {
+            C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type '" at.name.id "' was not found\n"}
+            return;
+         }
+         e.type.output(.ctx-func.file, .ctx-begin-row, .ctx-begin-col);
+         ok = true;
+      }
    }
 }
  
