@@ -659,40 +659,40 @@ enum At[#nil = -1, #root, #relative]:i32 {
                at.decl.enumm.output();
             }
          }
-         case #basic {
-            switch at.name.basic {
-               case #bool {
-                  .include-stdbool = true;
-               }
-               case #usz {
-                  .include-stddef = true;
-               }
-               case #i8 {
-                  .include-stdint = true;
-               }
-               case #u8 {
-                  .include-stdint = true;
-               }
-               case #i16 {
-                  .include-stdint = true;
-               }
-               case #u16 {
-                  .include-stdint = true;
-               }
-               case #i32 {
-                  .include-stdint = true;
-               }
-               case #u32 {
-                  .include-stdint = true;
-               }
-               case #i64 {
-                  .include-stdint = true;
-               }
-               case #u64 {
-                  .include-stdint = true;
-               }
-            }
-         }
+         // case #basic {
+         //    switch at.name.basic {
+         //       case #bool {
+         //          .include-stdbool = true;
+         //       }
+         //       case #usz {
+         //          .include-stddef = true;
+         //       }
+         //       case #i8 {
+         //          .include-stdint = true;
+         //       }
+         //       case #u8 {
+         //          .include-stdint = true;
+         //       }
+         //       case #i16 {
+         //          .include-stdint = true;
+         //       }
+         //       case #u16 {
+         //          .include-stdint = true;
+         //       }
+         //       case #i32 {
+         //          .include-stdint = true;
+         //       }
+         //       case #u32 {
+         //          .include-stdint = true;
+         //       }
+         //       case #i64 {
+         //          .include-stdint = true;
+         //       }
+         //       case #u64 {
+         //          .include-stdint = true;
+         //       }
+         //    }
+         // }
       }
    }
    write-type-info(td:this, ti:TypeInfo, add:i32):bool {

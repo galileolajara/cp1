@@ -9,9 +9,9 @@ using C1 = LibCp1;
 using X = Posix;
 using Cp1 {
 #BuildCommonCodes{compile:true}
-var include-stdint:bool;
-var include-stdbool:bool;
-var include-stddef:bool;
+// var include-stdint:bool;
+// var include-stdbool:bool;
+// var include-stddef:bool;
 var expr-is-processed:u8[];
 var func-head-outputted-c:i32;
 var func-head-outputted-v:Func[];
@@ -1596,15 +1596,15 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
          }
       }
    }
-   if .include-stdint {
+   // if .include-stdint {
       output{"#include <stdint.h>\n"}
-   }
-   if .include-stdbool {
+   // }
+   // if .include-stdbool {
       output{"#include <stdbool.h>\n"}
-   }
-   if .include-stddef {
+   // }
+   // if .include-stddef {
       output{"#include <stddef.h>\n"}
-   }
+   // }
    loop i = 0; .include-outputted-c; i++ {
       inc! = .include-outputted-v[i];
       if inc.str()[0] == ''[ {

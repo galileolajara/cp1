@@ -914,9 +914,6 @@ int32_t _Gcvar_outputted_c;
 int32_t _Genum_outputted_c;
 int32_t _Gstruct_outputted_c;
 int32_t _Ggvar_outputted_c;
-bool _Ginclude_stdint;
-bool _Ginclude_stdbool;
-bool _Ginclude_stddef;
 int32_t _Ginclude_outputted_c;
 int32_t _Gfunc_body_outputted_c;
 int32_t _Gnest_id;
@@ -1459,6 +1456,12 @@ char* _Labs_path_44 = {0};
 uint16_t _Labs_path_len_45 = {0};
 char* _Lslash1_58;
 char* _Lslash2_59;
+int _L_514 = {0};
+struct _NCp1_NOutput _L_515 = {0};
+int _L_516 = {0};
+struct _NCp1_NOutput _L_517 = {0};
+int _L_518 = {0};
+struct _NCp1_NOutput _L_519 = {0};
 #ifdef _WIN32
 if(true) {
 char* _Larg_2;
@@ -3591,33 +3594,21 @@ continue_28:;
 _Li_504++;
 }
 break_28:;
-if(_Ginclude_stdint) {
-int _L_514 = {0};
-struct _NCp1_NOutput _L_515 = {0};
 _NCp1_Poutput_1(&_L_515);
 _NCp1_NOutput_Poutput_reserve_cstr_4(&_L_515, "#include <stdint.h>\n", 20u, _L_514);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_515);
 _NCp1_NOutput_Poutput_cstr_4(&_L_515, "#include <stdint.h>\n", 20u, _L_514);
 _NCp1_NOutput_Poutput_end_1(&_L_515);
-}
-if(_Ginclude_stdbool) {
-int _L_516 = {0};
-struct _NCp1_NOutput _L_517 = {0};
 _NCp1_Poutput_1(&_L_517);
 _NCp1_NOutput_Poutput_reserve_cstr_4(&_L_517, "#include <stdbool.h>\n", 21u, _L_516);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_517);
 _NCp1_NOutput_Poutput_cstr_4(&_L_517, "#include <stdbool.h>\n", 21u, _L_516);
 _NCp1_NOutput_Poutput_end_1(&_L_517);
-}
-if(_Ginclude_stddef) {
-int _L_518 = {0};
-struct _NCp1_NOutput _L_519 = {0};
 _NCp1_Poutput_1(&_L_519);
 _NCp1_NOutput_Poutput_reserve_cstr_4(&_L_519, "#include <stddef.h>\n", 20u, _L_518);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_519);
 _NCp1_NOutput_Poutput_cstr_4(&_L_519, "#include <stddef.h>\n", 20u, _L_518);
 _NCp1_NOutput_Poutput_end_1(&_L_519);
-}
 int32_t _Li_520 = {0};
 _Li_520 = ((int32_t)(0));
 for(int i = _Ginclude_outputted_c; i > 0; ) {
@@ -6265,40 +6256,6 @@ _NLibCp1_NStdOut_Pstdout_end_1(&_L_22);
 exit(_NLibC_NExit_Cfailure);
 }
 _NCp1_NEnum_Poutput_1((*_Lat_4)._Fdecl._Fenumm);
-}
-break;
-case _NCp1_NNameType_Cbasic:;
-switch((*_Lat_4)._Fname._Fbasic) {
-case _NCp1_NBasicTypeId_Cbool:;
-_Ginclude_stdbool = true;
-break;
-case _NCp1_NBasicTypeId_Cusz:;
-_Ginclude_stddef = true;
-break;
-case _NCp1_NBasicTypeId_Ci8:;
-_Ginclude_stdint = true;
-break;
-case _NCp1_NBasicTypeId_Cu8:;
-_Ginclude_stdint = true;
-break;
-case _NCp1_NBasicTypeId_Ci16:;
-_Ginclude_stdint = true;
-break;
-case _NCp1_NBasicTypeId_Cu16:;
-_Ginclude_stdint = true;
-break;
-case _NCp1_NBasicTypeId_Ci32:;
-_Ginclude_stdint = true;
-break;
-case _NCp1_NBasicTypeId_Cu32:;
-_Ginclude_stdint = true;
-break;
-case _NCp1_NBasicTypeId_Ci64:;
-_Ginclude_stdint = true;
-break;
-case _NCp1_NBasicTypeId_Cu64:;
-_Ginclude_stdint = true;
-break;
 }
 break;
 }
@@ -10645,7 +10602,6 @@ _Lnv_4 = ((float*)((void*)(&_Ln_3)));
 (*_Le_2)._Fvalue._Fff32 = _Lnv_4[0];
 break;
 case _NCp1_NExprInt_Cu64:;
-_Ginclude_stdint = true;
 (*_Le_2)._Fvalue._Fuu64 = Fgetlnum(_Lr_1);
 break;
 default:;
@@ -12470,7 +12426,6 @@ return;
 (*_Lok_1) = true;
 }
 static inline void _NCp1_NExprI_Pprocess_bool_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
-_Ginclude_stdbool = true;
 (*_Lok_1) = true;
 }
 static inline void _NCp1_NExprI_Pprocess_char_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
@@ -14442,7 +14397,6 @@ _NCp1_NAt_Poutput_4((*_Le_2)._Ftype, (*_Gctx_func)._Ffile, _Gctx_begin_row, _Gct
 (*_Lok_1) = true;
 }
 static inline void _NCp1_NExprI_Pprocess_null_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {
-_Ginclude_stddef = true;
 (*_Lok_1) = true;
 }
 static inline void _NCp1_NExprI_Pprocess_index_2(struct _NCp1_NExpr* _Lexpr_0, bool* _Lok_1) {

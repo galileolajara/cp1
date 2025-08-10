@@ -19,7 +19,7 @@ using ExprI {
       output{"NULL"}
    }
    process-null(expr:Expr, ok:bool&) @case.process() @inline {
-      .include-stddef = true;
+      // .include-stddef = true;
       ok = true;
    }
    type-null(expr:Expr, at:At&) @case.type() @inline {

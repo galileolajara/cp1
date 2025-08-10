@@ -61,7 +61,7 @@ using ExprI {
             e.value.ff32 = nv[0];
          }
          case #u64 {
-            .include-stdint = true;
+            // .include-stdint = true;
             e.value.uu64 = r.N();
          }
          default {

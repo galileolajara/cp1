@@ -29,7 +29,7 @@ using ExprI {
       }
    }
    process-bool(expr:Expr, ok:bool&) @case.process() @inline {
-      .include-stdbool = true;
+      // .include-stdbool = true;
       ok = true;
    }
    type-bool(expr:Expr, at:At&) @case.type() @inline {
