@@ -72,7 +72,6 @@ meta #MetaReadWriteProcess {
          }
          j-begin! = j;
          // C1.stdout{"group-c " group-c ", carg-c " carg-c ''\n}
-# for (let i = 0; i < 2; i++) {
          j = j-begin;
          loop i = 1; group-c - 1; i++ {
             carg-c! = group-v[i];
@@ -119,7 +118,25 @@ meta #MetaReadWriteProcess {
             group-v[0] = 0;
             set-method(e-idx, lvar, #nil, 1, group-v, 0, null);
          }
-# }
+         j = j-begin;
+         loop i = 1; group-c - 1; i++ {
+            e-idx = ExprI.alloc();
+            e.expr-v[k++] = e-idx;
+
+            var group-v:u8[1];
+            var carg2-v:ExprI[1];
+            group-v[0] = 1;
+            carg2-v[0] = lvar;
+            set-method(e-idx, lvars[i - 1], #nil, 1, group-v, group-v[0], carg2-v);
+         }
+         // Create an expression for meta-method-end2
+         e-idx = ExprI.alloc();
+         e.expr-v[k++] = e-idx;
+         if true {
+            var group-v:u8[1];
+            group-v[0] = 0;
+            set-method(e-idx, lvar, #nil, 1, group-v, 0, null);
+         }
       }
       process-meta${arg.method ? 'method' : 'func'}(expr:Expr, ok:bool&) @case.process() @inline {
 # if (arg.method) {
@@ -153,7 +170,6 @@ meta #MetaReadWriteProcess {
                e-method.group-v[0]--;
                e-method.carg-c--;
             }
-# }
             var lvar:ExprLvar = e-method.thiss.ptr();
             if (lvar.base.type == #lvar) && (lvar.lvar.ptr().decl.name == .id-blank) {
                // C1.stdout{"constant string\n"}
@@ -172,6 +188,9 @@ meta #MetaReadWriteProcess {
                   e-method.func-name = f.meta-method-prefix${i};
                }
             }
+# } else {
+            e-method.func-name = f.meta-method-prefix${i};
+# }
             if !e-idx.process() {
                C1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-${arg.method ? 'method' : 'function'}\n"}
                return;
