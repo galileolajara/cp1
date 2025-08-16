@@ -1,8 +1,8 @@
 rule c
- command = clang -O0 -Werror=format -Wno-incompatible-pointer-types -I. -c $in -o $out $flags
+ command = clang -O3 -Werror=format -Wno-incompatible-pointer-types -I. -c $in -o $out $flags
 
 rule ld-c
- command = clang -O0 -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out $flags
+ command = clang -O3 -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out $flags
 
 build out/parse.cp1.c.obj: c parse.cp1.c
 build out/parse.c.obj: c parse.c | export.h lex.c cp1_parse.c
