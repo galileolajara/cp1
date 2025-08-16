@@ -81,7 +81,15 @@ decl-template-code(name:Id, row:u32, with-reflection:bool, no-cache:bool) {
    loop i = 0; .template-code-c; i++ {
       td! = .template-code-v[i];
       if (td.at == at) && (td.name == name) {
-         C1.stdout{.input-path '': .row '': .col ": Template name '" name "' was already used at line " td.row ''\n}
+         C1.stdout{
+            // .input-path
+            '':
+            // .row
+            '':
+            // .col
+            ": Template name '"
+            name
+            "' was already used at line " td.row ''\n}
          C.exit(#failure);
          return;
       }

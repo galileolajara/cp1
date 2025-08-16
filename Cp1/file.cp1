@@ -121,11 +121,8 @@ using Cp1 {
    var output-cap:u32;
    var output-len:u32 @real-name(output_len);
    struct Output[reserve:u32] {
-      output-reserve-cstr(o:this, str:char[], len:u32, unused:intc) {
-         o.reserve += len;
-      }
-      output-cstr(o:this, str:char[], len:u32, unused:intc) {
-         output-bytes-nr(str, len);
+      output-reserve-cstr(o:this, str:char[], len:u32, p:OutputStr) {
+         p.reserve(str, len, o);
       }
       output-reserve-end(o:this) {
          output-reserve(o.reserve);
@@ -343,76 +340,160 @@ using Cp1 {
       C.memcpy(&.output-data[.output-len], str, len);
       .output-len += len;
    }
+   struct OutputU32[val:u32] {
+      reserve(s:this, val:u32, so:Output) {
+         s.val = val;
+         so.reserve += 10;
+      }
+      output(s:this, so:Output) @inline {
+         output-u32-nr(s.val);
+      }
+   }
+   struct OutputU32Radix[val:u32, type:OutputIntType] {
+      reserve(s:this, val:u32, type:OutputIntType, so:Output) {
+         s.val = val;
+         s.type = type;
+         switch type {
+            case #oct {
+               so.reserve += 11;
+            }
+            case #hex {
+               so.reserve += 8;
+            }
+         }
+      }
+      output(s:this, so:Output) @inline {
+         switch s.type {
+            case #oct {
+               output-o32-nr(s.val);
+            }
+            case #hex {
+               output-x32-nr(s.val);
+            }
+         }
+      }
+   }
+   struct OutputU64[val:u64] {
+      reserve(s:this, val:u64, so:Output) {
+         s.val = val;
+         so.reserve += 20;
+      }
+      output(s:this, so:Output) @inline {
+         output-u64-nr(s.val);
+      }
+   }
+   struct OutputI32[val:i32] {
+      reserve(s:this, val:i32, so:Output) {
+         s.val = val;
+         so.reserve += 11;
+      }
+      output(s:this, so:Output) @inline {
+         output-i32-nr(s.val);
+      }
+   }
+   struct OutputStr[str:char @const[], len:u32] {
+      reserve(s:this, str:char @const[], len:u32, so:Output) {
+         s.str = str;
+         s.len = len;
+         so.reserve += len;
+      }
+      output(s:this, so:Output) @inline {
+         output-bytes-nr(s.str, s.len);
+      }
+   }
+   struct OutputBool[val:bool] {
+      reserve(s:this, val:bool, so:Output) {
+         s.val = val;
+         if val {
+            so.reserve += 4;
+         } else {
+            so.reserve += 5;
+         }
+      }
+      output(val:this, so:Output) @inline {
+         C1.output-bool-nr(val);
+      }
+   }
+   struct OutputChar[val:char] {
+      reserve(s:this, val:char, so:Output) {
+         s.val = val;
+         so.reserve++;
+      }
+      output(s:this, so:Output) @inline {
+         .output-data[.output-len++] = s.val;
+      }
+   }
+   struct OutputFloat[val:f32] {
+      reserve(s:this, val:f32, so:Output) @inline {
+         s.val = val;
+         so.reserve += 47;
+      }
+      output(s:this, so:Output) @inline {
+         .output-len += C.sprintf(&.output-data[.output-len], "%f", s.val);
+      }
+   }
+}
+using bool {
+   output-reserve(val:this, so:Cp1.Output, p:OutputBool) @inline {
+      p.reserve(val, so);
+   }
 }
 using f32 {
-   output-reserve(val:this, so:Cp1.Output, unused:intc) @inline {
-      so.reserve += 47;
-   }
-   output(val:this, so:Cp1.Output, unused:intc) @inline {
-      Cp1.output-f32-nr(val);
+   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputFloat) @inline {
+      p.reserve(val, so);
    }
 }
 using i32 {
-   output-reserve(val:this, so:Cp1.Output, unused:intc) @inline {
-      so.reserve += 11;
-   }
-   output(val:this, so:Cp1.Output, unused:intc) @inline {
-      Cp1.output-i32-nr(val);
+   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputI32) @inline {
+      p.reserve(val, so);
    }
 }
-using u32 {
-   output-reserve(val:this, so:Cp1.Output, unused:intc) @inline {
-      so.reserve += 10;
+using i16 {
+   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputI32) @inline {
+      p.reserve(val, so);
    }
-   output(val:this, so:Cp1.Output, unused:intc) @inline {
-      Cp1.output-u32-nr(val);
+}
+using i8 {
+   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputI32) @inline {
+      p.reserve(val, so);
    }
-   output-reserve(val:this, type:Cp1.OutputIntType, so:Cp1.Output, unused:intc) @inline {
-      switch type {
-         case #oct {
-            so.reserve += 11;
-         }
-         case #hex {
-            so.reserve += 8;
-         }
-      }
-   }
-   output(val:this, type:Cp1.OutputIntType, so:Cp1.Output, unused:intc) @inline {
-      switch type {
-         case #oct {
-            Cp1.output-o32-nr(val);
-         }
-         case #hex {
-            Cp1.output-x32-nr(val);
-         }
-      }
+}
+using usz {
+   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputU64) @inline {
+      p.reserve(val, so);
    }
 }
 using u64 {
-   output-reserve(val:this, so:Cp1.Output, unused:intc) @inline {
-      so.reserve += 20;
+   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputU64) @inline {
+      p.reserve(val, so);
    }
-   output(val:this, so:Cp1.Output, unused:intc) @inline {
-      Cp1.output-u64-nr(val);
+}
+using u32 {
+   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputU32) @inline {
+      p.reserve(val, so);
+   }
+   output-reserve(val:this, type:Cp1.OutputIntType, so:Cp1.Output, p:Cp1.OutputU32Radix) @inline {
+      p.reserve(val, type, so);
+   }
+}
+using u16 {
+   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputU32) @inline {
+      p.reserve(val, so);
+   }
+}
+using u8 {
+   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputU32) @inline {
+      p.reserve(val, so);
    }
 }
 using char {
-   output-reserve(val:this, o:Cp1.Output, unused:intc) {
-      o.reserve += 1;
+   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputChar) @inline {
+      p.reserve(val, so);
    }
-   output(val:this, o:Cp1.Output, unused:intc) {
-      Cp1.output-data[Cp1.output-len++] = val;
+   output-reserve-arr(str:this @const[], so:Cp1.Output, p:Cp1.OutputStr) @inline {
+      p.reserve(str, C.strlen(str), so);
    }
-   output-reserve-arr(val:this[], o:Cp1.Output, len:u32&) {
-      o.reserve += len := C.strlen(val);
-   }
-   output-arr(val:this[], o:Cp1.Output, len:u32) {
-      Cp1.output-bytes-nr(val, len);
-   }
-   output-reserve-arr(val:this[], len:usz, o:Cp1.Output, unused:intc) {
-      o.reserve += len;
-   }
-   output-arr(val:this[], len:usz, o:Cp1.Output, unused:intc) {
-      Cp1.output-bytes-nr(val, len);
+   output-reserve-arr(str:this @const[], len:u32, so:Cp1.Output, p:Cp1.OutputStr) @inline {
+      p.reserve(str, len, so);
    }
 }

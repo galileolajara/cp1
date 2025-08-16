@@ -1071,17 +1071,11 @@ enum Include[#nil = -1, #0]:i32 {
       .include-is-outputted[n3] |= n17;
       .include-outputted-v[.include-outputted-c++] = thiss;
    }
-   stdout-reserve(i:this, so:C1.StdOut, unused:intc) {
-      so.reserve += .include-len-v[i];
+   stdout-reserve(i:this, so:C1.StdOut, p:C1.StdOutStr) {
+      p.reserve(.include-str-v[i], .include-len-v[i], so);
    }
-   stdout(i:this, so:C1.StdOut, unused:intc) {
-      C1.stdout-bytes-nr(.include-str-v[i], .include-len-v[i]);
-   }
-   output-reserve(i:this, o:Output, unused:intc) {
-      o.reserve += .include-len-v[i];
-   }
-   output(i:this, o:Output, unused:intc) {
-      output-bytes-nr(.include-str-v[i], .include-len-v[i]);
+   output-reserve(i:this, o:Output, p:Cp1.OutputStr) {
+      p.reserve(.include-str-v[i], .include-len-v[i], o);
    }
 }
 
@@ -1096,20 +1090,14 @@ var include-str-v:char[][];
 var include-len-v:u8[];
 var func-main:Func;
 enum Id[#nil = -1, #0]:i32 {
-   stdout-reserve(id:this, so:C1.StdOut, unused:intc) @inline {
-      so.reserve += id.len();
-   }
-   stdout(id:this, so:C1.StdOut, unused:intc) @inline {
-      C1.stdout-bytes-nr(id.str(), id.len());
+   stdout-reserve(id:this, so:C1.StdOut, p:C1.StdOutStr) @inline {
+      p.reserve(id.str(), id.len(), so);
    }
    jscode(id:this, jc:JsCode) @inline {
       jscode-bytes(id.str(), id.len());
    }
-   output-reserve(id:this, o:Output, unused:intc) @inline {
-      o.reserve += id.len();
-   }
-   output(id:this, o:Output, unused:intc) @inline {
-      output-bytes-nr(id.str(), id.len());
+   output-reserve(id:this, o:Output, p:Cp1.OutputStr) @inline {
+      p.reserve(id.str(), id.len(), o);
    }
    c-name(id:this):char[] {
       var c-name:char[] = .id-c-name-v[id];
