@@ -257,8 +257,8 @@ using LibCp1 {
             so.reserve += 5;
          }
       }
-      stdout(val:this, so:StdOut) @inline {
-         C1.stdout-bool-nr(val);
+      stdout(s:this, so:StdOut) @inline {
+         C1.stdout-bool-nr(s.val);
       }
    }
    struct StdOutChar[val:char] {
@@ -281,7 +281,7 @@ using LibCp1 {
    }
 }
 using bool {
-   stdout-reserve(val:this, so:C1.StdOut, p:StdOutBool) @inline {
+   stdout-reserve(val:this, so:C1.StdOut, p:C1.StdOutBool) @inline {
       p.reserve(val, so);
    }
 }

@@ -623,19 +623,19 @@ enum At[#nil = -1, #root, #relative]:i32 {
       if at.def == #struct {
          if ti.built-in {
             if ti.ref-v[0] != 0 {
-               C1.stdout{.ctx-func.file '': row '': col ": Can't use plus symbol (+) because type '" at.name.id "' has reference\n"}
+               C1.stdout{.ctx-func.file '': row '': col ": Can't use dot symbol '.' because type '" at.name.id "' has reference\n"}
                return false;
             }
             ti.ref-v[0] = -1;
          // } else {
          //    if !ti.built-in {
-         //       C.err.printf("%s:%d:%d: Missing plus symbol (+) because type '/%s' is a value\n", .ctx-func.file.path(), row, col, at.name.id.str());
+         //       C.err.printf("%s:%d:%d: Missing dot symbol '.' because type '/%s' is a value\n", .ctx-func.file.path(), row, col, at.name.id.str());
          //       return false;
          //    }
          }
       } else {
          if ti.built-in {
-            C1.stdout{.ctx-func.file '': row '': col ": Can't use plus symbol (+) because type '" at.name.id "' is not a struct\n"}
+            C1.stdout{.ctx-func.file '': row '': col ": Can't use dot symbol '.' because type '" at.name.id "' is not a struct\n"}
             return false;
          }
       }
