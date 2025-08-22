@@ -317,6 +317,9 @@ using Cp1 {
             if last-char != -1 {
                if (||, start-line.p1[last-char] == ''{, start-line.p1[last-char] == ''}, start-line.p1[last-char] == ''[, start-line.p1[last-char] == ''(, start-line.p1[last-char] == '';, start-line.p1[last-char] == '',) {
                } else {
+                  loop w.p1[-1] == ''  {
+                     w.pos--;
+                  }
                   w.p1[0] = '';;
                   w.pos++;
                }
