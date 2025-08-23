@@ -1,1 +1,1 @@
-#define _NCp1_Pbuild_crc32c_0() 0xbedf9066
+#define _NCp1_Pbuild_crc32c_0() 0x14d52266

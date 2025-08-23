@@ -1976,6 +1976,7 @@ _Tchar_Pjscode_arr_3(_Gdefine_v[_Li_86], _Gdefine_len_v[_Li_86], &_L_91);
 _NCp1_NJsCode_Pjscode_cstr_3(&_L_91, ";\n", 2u);
 _NCp1_NJsCode_Pjscode_end_1(&_L_91);
 continue_13:;
+_Li_86++;
 }
 break_13:;
 if((*_Ltc_83)._Fwith_reflection) {
@@ -8307,7 +8308,7 @@ _Tchar_Pstdout_reserve_3(':', &_L_13, &_L_6);
 _Tu32_Pstdout_reserve_3(_Lrow_2, &_L_13, &_L_7);
 _Tchar_Pstdout_reserve_3(':', &_L_13, &_L_8);
 _Tu32_Pstdout_reserve_3(_Lcol_3, &_L_13, &_L_9);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_13, ": Can't use plus symbol (+) because type '", 42u, &_L_10);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_13, ": Can't use dot symbol '.' because type '", 41u, &_L_10);
 _NCp1_NId_Pstdout_reserve_3((*_Lat_4)._Fname._Fid, &_L_13, &_L_11);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_13, "' has reference\n", 16u, &_L_12);
 _NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_13);
@@ -8342,7 +8343,7 @@ _Tchar_Pstdout_reserve_3(':', &_L_22, &_L_15);
 _Tu32_Pstdout_reserve_3(_Lrow_2, &_L_22, &_L_16);
 _Tchar_Pstdout_reserve_3(':', &_L_22, &_L_17);
 _Tu32_Pstdout_reserve_3(_Lcol_3, &_L_22, &_L_18);
-_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_22, ": Can't use plus symbol (+) because type '", 42u, &_L_19);
+_NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_22, ": Can't use dot symbol '.' because type '", 41u, &_L_19);
 _NCp1_NId_Pstdout_reserve_3((*_Lat_4)._Fname._Fid, &_L_22, &_L_20);
 _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(&_L_22, "' is not a struct\n", 18u, &_L_21);
 _NLibCp1_NStdOut_Pstdout_reserve_end_1(&_L_22);
