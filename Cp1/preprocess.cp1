@@ -265,9 +265,30 @@ using Cp1 {
          if last-char != -1 {
             if (basic-mode-indent-c != 0) && (basic-mode-indent-v[basic-mode-indent-c - 1] >= indent) {
                // Currently in basic syntax mode
-               w.pos--;
-               w.p1[0] = '' ;
-               w.pos++;
+               w.pos--; // undo the previous new line
+               empty! = true; // is the previous line empty?
+               var w2:Rdr.;
+               w2.pos = w.pos;
+               loop {
+                  if w2.p1[-1] == ''\n {
+                     break;
+                  } elif w2.p1[-1] == ''  {
+                  } else {
+                     empty = false;
+                     break;
+                  }
+                  w2.pos--;
+               }
+               if empty {
+                  w.pos = w2.pos;
+                  loop basic-mode-indent-v[basic-mode-indent-c - 1] {
+                     w.p1[0] = '' ;
+                     w.pos++;
+                  }
+               } else {
+                  w.p1[0] = '' ;
+                  w.pos++;
+               }
                w.p1[0] = ''};
                w.pos++;
                basic-mode-indent-c--;
@@ -332,9 +353,30 @@ using Cp1 {
       }
       if basic-mode-indent-c != 0 {
          // Currently in basic syntax mode
-         w.pos--;
-         w.p1[0] = '' ;
-         w.pos++;
+         w.pos--; // undo the previous new line
+         empty! = true; // is the previous line empty?
+         var w2:Rdr.;
+         w2.pos = w.pos;
+         loop {
+            if w2.p1[-1] == ''\n {
+               break;
+            } elif w2.p1[-1] == ''  {
+            } else {
+               empty = false;
+               break;
+            }
+            w2.pos--;
+         }
+         if empty {
+            w.pos = w2.pos;
+            loop basic-mode-indent-v[basic-mode-indent-c - 1] {
+               w.p1[0] = '' ;
+               w.pos++;
+            }
+         } else {
+            w.p1[0] = '' ;
+            w.pos++;
+         }
          w.p1[0] = ''};
          w.pos++;
          // C1.stdout{"exit basic syntax mode\n"}
