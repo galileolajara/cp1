@@ -447,6 +447,11 @@ struct TokenDataF32[
    col:u32,
    ff32:f32,
 ];
+struct TokenDataF64[
+   row:u32,
+   col:u32,
+   ff64:f64,
+];
 struct TokenDataU64[
    row:u32,
    col:u32,
@@ -459,6 +464,7 @@ struct TokenDataIndex[
 union TokenData[
    ii32:TokenDataI32.,
    ff32:TokenDataF32.,
+   ff64:TokenDataF64.,
    uu64:TokenDataU64.,
    index:TokenDataIndex.,
    pointer:ref,
@@ -535,6 +541,16 @@ struct Lexer[
       length! = r-cursor.pos - r-start.pos - 1;
       var val:f32;
       C.sscanf(r-start.charr, "%f", &val);
+      return val;
+   }
+   get-f64(lex:this):f64 {
+      var r-start:Rdr.;
+      r-start.reff = lex.start;
+      var r-cursor:Rdr.;
+      r-cursor.reff = lex.cursor;
+      length! = r-cursor.pos - r-start.pos - 1;
+      var val:f64;
+      C.sscanf(r-start.charr, "%lf", &val);
       return val;
    }
    get-int(lex:this, len-minus:u8):u32 {
@@ -1154,6 +1170,11 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
             }
             case #num-f32 {
                tok.ff32.ff32 = lex.get-f32();
+               .last-token = t;
+               psr.parse(t, tok);
+            }
+            case #num-f64 {
+               tok.ff64.ff64 = lex.get-f64();
                .last-token = t;
                psr.parse(t, tok);
             }

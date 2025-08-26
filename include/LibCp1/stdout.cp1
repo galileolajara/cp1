@@ -270,13 +270,22 @@ using LibCp1 {
          C1.stdout-char-nr(s.val);
       }
    }
-   struct StdOutFloat[val:f32] {
+   struct StdOutFloat32[val:f32] {
       reserve(s:this, val:f32, so:StdOut) @inline {
          s.val = val;
-         so.reserve += 47;
+         so.reserve += 64;
       }
       stdout(s:this, so:StdOut) @inline {
-         C1.stdout-buf-len += C.sprintf(&C1.stdout-buf-data[C1.stdout-buf-len], "%f", s.val);
+         C1.stdout-buf-len += C.sprintf(&C1.stdout-buf-data[C1.stdout-buf-len], "%.9f", s.val);
+      }
+   }
+   struct StdOutFloat64[val:f64] {
+      reserve(s:this, val:f64, so:StdOut) @inline {
+         s.val = val;
+         so.reserve += 128;
+      }
+      stdout(s:this, so:StdOut) @inline {
+         C1.stdout-buf-len += C.sprintf(&C1.stdout-buf-data[C1.stdout-buf-len], "%.17f", s.val);
       }
    }
 }
@@ -286,7 +295,12 @@ using bool {
    }
 }
 using f32 {
-   stdout-reserve(val:this, so:C1.StdOut, p:C1.StdOutFloat) @inline {
+   stdout-reserve(val:this, so:C1.StdOut, p:C1.StdOutFloat32) @inline {
+      p.reserve(val, so);
+   }
+}
+using f64 {
+   stdout-reserve(val:this, so:C1.StdOut, p:C1.StdOutFloat64) @inline {
       p.reserve(val, so);
    }
 }

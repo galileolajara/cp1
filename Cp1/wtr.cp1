@@ -5,23 +5,31 @@ union Wtr[
    reff:ref,
    pos:usz,
    p1:u8[],
+   p2:u16[],
    p4:u32[],
+   p8:u64[],
+   f4:f32[],
+   f8:f64[],
    ] {
    n1(w:this, n:u8) @inline {
       w.p1[0] = n;
       w.pos++;
    }
    n2(w:this, n:u32) @inline {
-      w.p1[0] = n;
-      w.p1[1] = n >> 8;
+      w.p2[0] = n;
       w.pos += 2;
    }
    n4(w:this, n:u32) @inline {
-      w.p1[0] = n;
-      w.p1[1] = n >> 8;
-      w.p1[2] = n >> 16;
-      w.p1[3] = n >> 24;
+      w.p4[0] = n;
       w.pos += 4;
+   }
+   f4(w:this, n:f32) @inline {
+      w.f4[0] = n;
+      w.pos += 4;
+   }
+   f8(w:this, n:f64) @inline {
+      w.f8[0] = n;
+      w.pos += 8;
    }
    include "num.c" {
       n(w:this, n:u32) @real-name(Fputnum) @no-decl;

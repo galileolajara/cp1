@@ -426,10 +426,19 @@ using Cp1 {
    struct OutputFloat[val:f32] {
       reserve(s:this, val:f32, so:Output) @inline {
          s.val = val;
-         so.reserve += 47;
+         so.reserve += 64;
       }
       output(s:this, so:Output) @inline {
-         .output-len += C.sprintf(&.output-data[.output-len], "%f", s.val);
+         .output-len += C.sprintf(&.output-data[.output-len], "%.9f", s.val);
+      }
+   }
+   struct OutputFloat64[val:f64] {
+      reserve(s:this, val:f64, so:Output) @inline {
+         s.val = val;
+         so.reserve += 128;
+      }
+      output(s:this, so:Output) @inline {
+         .output-len += C.sprintf(&.output-data[.output-len], "%.17f", s.val);
       }
    }
 }
@@ -440,6 +449,11 @@ using bool {
 }
 using f32 {
    output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputFloat) @inline {
+      p.reserve(val, so);
+   }
+}
+using f64 {
+   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputFloat64) @inline {
       p.reserve(val, so);
    }
 }

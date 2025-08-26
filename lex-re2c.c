@@ -72,6 +72,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "0o" [0-7]+                       { return CP1_TOKEN_NUM_OCT; }
 	"0x" [0-9a-fA-F]+                 { return CP1_TOKEN_NUM_HEX; }
 	("0"|[1-9][0-9]*) "." [0-9]+ "f"? { return CP1_TOKEN_NUM_F32; }
+	("0"|[1-9][0-9]*) "." [0-9]+ "F"  { return CP1_TOKEN_NUM_F64; }
    // "meta" spaces "#" id spaces "{" {
       // goto lex_template_code;
    // }

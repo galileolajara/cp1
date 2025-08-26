@@ -5,26 +5,35 @@ union Rdr[
    reff:ref,
    pos:usz,
    p1:u8[],
+   p2:u16[],
    charr:char[],
    p4:u32[],
+   f4:f32[],
+   f8:f64[],
    ] {
    n1(r:this):u8 @inline {
       val! = r.p1[0];
       r.pos++;
       return val;
    }
-   n2(r:this):u32 @inline {
-      val! = r.p1[0]:u32;
-      val |= r.p1[1]:u32 << 8;
+   n2(r:this):u16 @inline {
+      val! = r.p2[0]:u16;
       r.pos += 2;
       return val;
    }
    n4(r:this):u32 @inline {
-      val! = r.p1[0]:u32;
-      val |= r.p1[1]:u32 << 8;
-      val |= r.p1[2]:u32 << 16;
-      val |= r.p1[3]:u32 << 24;
+      val! = r.p4[0];
       r.pos += 4;
+      return val;
+   }
+   f4(r:this):f32 @inline {
+      val! = r.f4[0];
+      r.pos += 4;
+      return val;
+   }
+   f8(r:this):f64 @inline {
+      val! = r.f8[0];
+      r.pos += 8;
       return val;
    }
    id(r:this):Id @inline {

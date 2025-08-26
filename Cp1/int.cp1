@@ -1,7 +1,7 @@
 using C = LibC;
 using C1 = LibCp1;
 using Cp1 {
-enum ExprInt[#i32, #u32, #f32, #oct, #hex, #u64]:u8;
+enum ExprInt[#i32, #u32, #f32, #oct, #hex, #u64, #f64]:u8;
 expr-int(value:i32, type:ExprInt):ExprI {
    var e:ExprIntData;
    quick-alloc-one(e);
@@ -26,6 +26,14 @@ expr-f32(value:f32):ExprI {
    e.type = #f32;
    return e-idx;
 }
+expr-f64(value:f64):ExprI {
+   var e:ExprIntData;
+   quick-alloc-one(e);
+   e-idx! = expr-push(e.base, #int);
+   e.value.ff64 = value;
+   e.type = #f64;
+   return e-idx;
+}
 using ExprI {
    wr-int(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
       var e:ExprIntData = expr;
@@ -35,8 +43,10 @@ using ExprI {
             w.i(e.value.ii32);
          }
          case #f32 {
-            var n:u32[] = &e.value.ff32;
-            w.n4(n[0]);
+            w.f4(e.value.ff32);
+         }
+         case #f64 {
+            w.f8(e.value.ff64);
          }
          case #u64 {
             w.N(e.value.uu64);
@@ -56,9 +66,10 @@ using ExprI {
             e.value.ii32 = r.i();
          }
          case #f32 {
-            n! = r.n4();
-            var nv:f32[] = &n;
-            e.value.ff32 = nv[0];
+            e.value.ff32 = r.f4();
+         }
+         case #f64 {
+            e.value.ff64 = r.f8();
          }
          case #u64 {
             // .include-stdint = true;
@@ -80,6 +91,9 @@ using ExprI {
          }
          case #f32 {
             output{e.value.ff32 ''f}
+         }
+         case #f64 {
+            output{e.value.ff64}
          }
          case #oct {
             output{''0 e.value.uu32, #oct}
@@ -108,6 +122,9 @@ using ExprI {
          case #f32 {
             at = basic-type(#f32);
          }
+         case #f64 {
+            at = basic-type(#f64);
+         }
          case #u64 {
             at = basic-type(#u64);
          }
@@ -124,6 +141,9 @@ using ExprI {
          }
          case #f32 {
             v.type = basic-type(#f32);
+         }
+         case #f64 {
+            v.type = basic-type(#f64);
          }
          case #u64 {
             v.type = basic-type(#u64);
