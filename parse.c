@@ -21,6 +21,11 @@ struct _NCp1_NTokenDataF32 {
    uint32_t col;
    float f32;
 };
+struct _NCp1_NTokenDataF64 {
+   uint32_t row;
+   uint32_t col;
+   double f64;
+};
 struct _NCp1_NTokenDataU64 {
    uint32_t row;
    uint32_t col;
@@ -33,6 +38,7 @@ struct _NCp1_NTokenDataIndex {
 union _NCp1_NTokenData {
    struct _NCp1_NTokenDataI32 basic;
    struct _NCp1_NTokenDataF32 f32;
+   struct _NCp1_NTokenDataF64 f64;
    struct _NCp1_NTokenDataU64 u64;
    struct _NCp1_NTokenDataIndex index;
    void* pointer;
