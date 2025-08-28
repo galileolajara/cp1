@@ -244,6 +244,11 @@ using LibCp1 {
          s.len = len;
          so.reserve += len;
       }
+      reserve(s:this, str:char @const[], so:StdOut) {
+         s.str = str;
+         s.len = C.strlen(str);
+         so.reserve += s.len;
+      }
       stdout(s:this, so:StdOut) @inline {
          C1.stdout-bytes-nr(s.str, s.len);
       }
@@ -349,7 +354,7 @@ using char {
       p.reserve(val, so);
    }
    stdout-reserve-arr(str:this @const[], so:C1.StdOut, p:C1.StdOutStr) @inline {
-      p.reserve(str, C.strlen(str), so);
+      p.reserve(str, so);
    }
    stdout-reserve-arr(str:this @const[], len:u32, so:C1.StdOut, p:C1.StdOutStr) @inline {
       p.reserve(str, len, so);

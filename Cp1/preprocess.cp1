@@ -37,6 +37,7 @@ using Cp1 {
             return r.pos - start.pos;
          }
       }
+      return 0; // code won't reach this but we want to make tcc happy
    }
    get-row-col(out-row:u32&, out-col:u32&, end:ref, begin:ref) {
       row! = 1;
