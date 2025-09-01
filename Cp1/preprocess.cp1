@@ -81,7 +81,7 @@ using Cp1 {
       var basic-mode-indent-v:u16[256];
       var basic-mode-row-begin = 0;
       var last-first-char:Rdr.;
-      last-first-char.charv = " ";
+      last-first-char.reff = " ";
       var row = 0;
       loop {
          row++;

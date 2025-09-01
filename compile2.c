@@ -69,7 +69,7 @@ extern uint16_t* _Ginclude_path_len_v;
 extern uint8_t _Ginclude_path_c;
 char cp1_tmp[1024];
 char cp1_tmp_js[1024];
-#define cp1_tmp_len 17
+#define cp1_tmp_len 17 // number of characters in cp1-tmp/XXXXXXXX/
 #define SPAWN_PARSE
 #ifdef SPAWN_PARSE
 char parser_path[1024];
@@ -278,6 +278,25 @@ void _NCp1_Pquickjs_end_3(char* js_data, uint32_t js_len, bool require) {
    _NCp1_Pread_4(cp1_tmp_js, i, true, require);
 }
 // int parse_main(int argc, char** argv);
+FILE* fdeps = NULL;
+void _NCp1_Pdeps_init_1(const char* path) {
+   fdeps = fopen(path, "w");
+   if (fdeps == NULL) {
+      printf("Cannot open file for writing: %s\n", path);
+      exit(EXIT_FAILURE);
+   }
+}
+void _NCp1_Pdeps_output_1(const char* path) {
+   if (fdeps != NULL) {
+      fprintf(fdeps, "%s:", path);
+   }
+}
+void _NCp1_Pdeps_close_0() {
+   if (fdeps != NULL) {
+      fprintf(fdeps, "\n");
+      fclose(fdeps);
+   }
+}
 char* _NCp1_Preq_parse_3(const char* path, uint8_t path_len, bool require) {
    // const char* path = *ppath;
    const char* fullpath;
@@ -303,6 +322,9 @@ char* _NCp1_Preq_parse_3(const char* path, uint8_t path_len, bool require) {
       if (stat(path, &s) == 0) {
          // printf("file '%s' was found\n", path);
          fullpath = path;
+         if (fdeps != NULL) {
+            fprintf(fdeps, " %s", fullpath);
+         }
       } else {
          for (uint8_t i = 0; i < _Ginclude_path_c; i++) {
             memcpy(_Ginclude_path_v[i] + _Ginclude_path_len_v[i], path, path_len);
@@ -311,6 +333,9 @@ char* _NCp1_Preq_parse_3(const char* path, uint8_t path_len, bool require) {
             if (stat(_Ginclude_path_v[i], &s) == 0) {
                // printf("file '%s' was found\n", _Ginclude_path_v[i]);
                fullpath = _Ginclude_path_v[i];
+               if (fdeps != NULL) {
+                  fprintf(fdeps, " %s", fullpath);
+               }
                goto found;
             }
          }
@@ -321,6 +346,9 @@ char* _NCp1_Preq_parse_3(const char* path, uint8_t path_len, bool require) {
          if (stat(_Ginclude_dir, &s) == 0) {
             // printf("file '%s' was found\n", _Ginclude_path_v[i]);
             fullpath = _Ginclude_dir;
+            if (fdeps != NULL) {
+               fprintf(fdeps, " %s", fullpath);
+            }
          } else {
             notfound:
             printf("Cannot find file '%s'\n", path);

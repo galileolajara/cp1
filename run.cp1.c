@@ -51,6 +51,7 @@ static inline void _NLibCp1_NStdOut_Pstdout_end_1(struct _NLibCp1_NStdOut* _Lso_
 void _Pget_compiler_2(char* _Lbin_0, char* _Lcompiler_1);
 int system2(char* _Lcmd_0);
 void _NLibCp1_NStdOutStr_Preserve_4(struct _NLibCp1_NStdOutStr* _Ls_0, const char* _Lstr_1, uint32_t _Llen_2, struct _NLibCp1_NStdOut* _Lso_3);
+void _NLibCp1_NStdOutStr_Preserve_3(struct _NLibCp1_NStdOutStr* _Ls_0, const char* _Lstr_1, struct _NLibCp1_NStdOut* _Lso_2);
 void _NLibCp1_NStdOutChar_Preserve_3(struct _NLibCp1_NStdOutChar* _Ls_0, char _Lval_1, struct _NLibCp1_NStdOut* _Lso_2);
 void _NLibCp1_Pstdout_reserve_1(uint32_t _Llen_0);
 static inline void _NLibCp1_Pstdout_bytes_nr_2(const void* _Ldata_0, size_t _Lsize_1);
@@ -354,7 +355,7 @@ static inline void _NLibCp1_NStdOut_Pstdout_reserve_cstr_4(struct _NLibCp1_NStdO
 _NLibCp1_NStdOutStr_Preserve_4(_Lp_3, _Lstr_1, _Llen_2, _Lso_0);
 }
 static inline void _Tchar_Pstdout_reserve_arr_3(const char* _Lstr_0, struct _NLibCp1_NStdOut* _Lso_1, struct _NLibCp1_NStdOutStr* _Lp_2) {
-_NLibCp1_NStdOutStr_Preserve_4(_Lp_2, _Lstr_0, strlen(_Lstr_0), _Lso_1);
+_NLibCp1_NStdOutStr_Preserve_3(_Lp_2, _Lstr_0, _Lso_1);
 }
 static inline void _Tchar_Pstdout_reserve_3(char _Lval_0, struct _NLibCp1_NStdOut* _Lso_1, struct _NLibCp1_NStdOutChar* _Lp_2) {
 _NLibCp1_NStdOutChar_Preserve_3(_Lp_2, _Lval_0, _Lso_1);
@@ -454,6 +455,11 @@ void _NLibCp1_NStdOutStr_Preserve_4(struct _NLibCp1_NStdOutStr* _Ls_0, const cha
 (*_Ls_0)._Fstr = _Lstr_1;
 (*_Ls_0)._Flen = _Llen_2;
 (*_Lso_3)._Freserve += _Llen_2;
+}
+void _NLibCp1_NStdOutStr_Preserve_3(struct _NLibCp1_NStdOutStr* _Ls_0, const char* _Lstr_1, struct _NLibCp1_NStdOut* _Lso_2) {
+(*_Ls_0)._Fstr = _Lstr_1;
+(*_Ls_0)._Flen = strlen(_Lstr_1);
+(*_Lso_2)._Freserve += (*_Ls_0)._Flen;
 }
 void _NLibCp1_NStdOutChar_Preserve_3(struct _NLibCp1_NStdOutChar* _Ls_0, char _Lval_1, struct _NLibCp1_NStdOut* _Lso_2) {
 (*_Ls_0)._Fval = _Lval_1;
