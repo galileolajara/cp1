@@ -10021,31 +10021,15 @@ struct _NCp1_NOutputStr _L_20 = {0};
 struct _NCp1_NOutputU64 _L_21 = {0};
 struct _NCp1_NOutputStr _L_22 = {0};
 struct _NCp1_NOutput _L_23 = {0};
-struct _NCp1_NOutputStr _L_24 = {0};
-struct _NCp1_NOutputU64 _L_25 = {0};
-struct _NCp1_NOutputStr _L_26 = {0};
-struct _NCp1_NOutput _L_27 = {0};
-#ifdef _LP64
 _NCp1_Poutput_1(&_L_23);
 _NCp1_NOutput_Poutput_reserve_cstr_4(&_L_23, "UINT64_C(", 9u, &_L_20);
 _Tu64_Poutput_reserve_3((*_Le_1)._Fvalue._Fuu64, &_L_23, &_L_21);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_23, "u)", 2u, &_L_22);
+_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_23, ")", 1u, &_L_22);
 _NCp1_NOutput_Poutput_reserve_end_1(&_L_23);
 _NCp1_NOutputStr_Poutput_2(&_L_20, &_L_23);
 _NCp1_NOutputU64_Poutput_2(&_L_21, &_L_23);
 _NCp1_NOutputStr_Poutput_2(&_L_22, &_L_23);
 _NCp1_NOutput_Poutput_end_1(&_L_23);
-#else
-_NCp1_Poutput_1(&_L_27);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_27, "UINT64_C(", 9u, &_L_24);
-_Tu64_Poutput_reserve_3((*_Le_1)._Fvalue._Fuu64, &_L_27, &_L_25);
-_NCp1_NOutput_Poutput_reserve_cstr_4(&_L_27, "lu)", 3u, &_L_26);
-_NCp1_NOutput_Poutput_reserve_end_1(&_L_27);
-_NCp1_NOutputStr_Poutput_2(&_L_24, &_L_27);
-_NCp1_NOutputU64_Poutput_2(&_L_25, &_L_27);
-_NCp1_NOutputStr_Poutput_2(&_L_26, &_L_27);
-_NCp1_NOutput_Poutput_end_1(&_L_27);
-#endif
 break;
 }
 }

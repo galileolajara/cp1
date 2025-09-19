@@ -102,11 +102,7 @@ using ExprI {
             output{"0x" e.value.uu32, #hex}
          }
          case #u64 {
-            "#ifdef _LP64";
-            output{"UINT64_C(" e.value.uu64 "u)"}
-            "#else";
-            output{"UINT64_C(" e.value.uu64 "lu)"}
-            "#endif";
+            output{"UINT64_C(" e.value.uu64 ")"}
          }
       }
    }
