@@ -477,9 +477,13 @@ expr_int(l) ::= NUM_U64(e).
    { l.basic.id = _NCp1_Pexpr_int64_2(e.u64.u64, 5); }
 
 expr_str(l) ::= STRING.
-   { l.basic.id = _NCp1_Pexpr_str_1(-1); }
+   { l.basic.id = _NCp1_Pexpr_str_2(-1, 0); }
+expr_str(l) ::= STRING_MACRO.
+   { l.basic.id = _NCp1_Pexpr_str_2(-1, 1); }
 expr_str(l) ::= expr_str(e) SPACE_THEN_STRING STRING.
-   { l.basic.id = _NCp1_Pexpr_str_1(e.basic.id); }
+   { l.basic.id = _NCp1_Pexpr_str_2(e.basic.id, 0); }
+expr_str(l) ::= expr_str(e) SPACE_THEN_STRING STRING_MACRO.
+   { l.basic.id = _NCp1_Pexpr_str_2(e.basic.id, 1); }
 
 /* expr_lvar_plus(l) ::= PLUS.
    { l.basic.id = 1; }

@@ -8,10 +8,11 @@ var str-ptr:ref[];
 var str-len:i32[];
 var string-buf:char[] @extern;
 var string-len:i32 @extern;
-expr-str(prev:ExprI):ExprI {
+expr-str(prev:ExprI, macro:bool):ExprI {
    len! = .string-len;
    var n:ExprStrNode;
    quick-alloc-plus(n, len + 1);
+   n.macro = macro;
    n.len = len;
    C.memcpy(n.buf, .string-buf, len);
    n.buf[len] = ''\0;
@@ -39,7 +40,11 @@ using ExprI {
       w.n(e.node-c);
       n! = e.first;
       loop {
-         w.n(n.len);
+         if n.macro {
+            w.n((n.len << 1) | 1);
+         } else {
+            w.n(n.len << 1);
+         }
          w.copy(n.buf, n.len);
          n = n.next;
          if n == null { break }
@@ -52,9 +57,11 @@ using ExprI {
       e-idx.set(e.base, #str);
       first! = true;
       loop node-c {
-         len! = r.n();
+         len-macro! = r.n();
+         len! = len-macro >> 1;
          var n:ExprStrNode;
          quick-alloc-plus(n, len + 1);
+         n.macro = (len-macro & 1) != 0;
          n.len = len;
          r.copy(n.buf, len);
          n.buf[len] = 0;
@@ -79,7 +86,11 @@ using ExprI {
       }
       n = e.first;
       loop {
-         write-str-node(n.len, n.buf);
+         if n.macro {
+            output{n.buf, n.len}
+         } else {
+            write-str-node(n.len, n.buf);
+         }
          n = n.next;
          if n == null { break }
          output{''\n}

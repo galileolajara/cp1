@@ -112,7 +112,7 @@ export() {
    struct-attr-aligned(0);
    struct-attr-union();
    struct-attr-no-decl();
-   expr-str(#nil);
+   expr-str(#nil, false);
    expr-unary(#nil, #neg);
    expr-ref(#nil);
    expr-cast-fast(#nil, #nil);

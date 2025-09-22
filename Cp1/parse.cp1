@@ -1448,7 +1448,7 @@ main(arg-c:intc, arg-v:char[][]):intc @main {
                ch! = lex.cursor[0];
                if ch == ''{ {
                   t = #space-then-open-curly-brace;
-               } elif .last-token == #string {
+               } elif (||, .last-token == #string, .last-token == #string-macro) {
                   if ch == ''" {
                      t = #space-then-string;
                   } elif ch == ''\' {

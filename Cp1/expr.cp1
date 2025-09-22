@@ -38,28 +38,32 @@ using Stmt {
    }
    process-expr(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtExpr = stmt;
-      if !s.expr.process() {
+      s-expr! = s.expr;
+      if !s-expr.process() {
          return;
       }
-      type! = s.expr.ptr().type;
+      type! = s-expr.ptr().type;
       if (type == #method) || (type == #func) {
-         left-type-ptr! = s.expr.type().ptr();
-         if left-type-ptr.def == #enum {
-            en! = left-type-ptr.decl.enumm.ptr();
-            f-idx! = en.overload-statement;
-            if f-idx != #nil {
-               f! = f-idx.ptr();
-               e-method! = ExprI.alloc();
-               var group-v:u8[1];
-               group-v[0] = 0;
-               ExprI.set-method(e-method, s.expr, f.decl.name, 1, group-v, 0, null);
-               s.expr = e-method;
-               if !s.expr.process() {
+         left-type! = s-expr.type();
+         if left-type != #nil {
+            left-type-ptr! = left-type.ptr();
+            if left-type-ptr.def == #enum {
+               en! = left-type-ptr.decl.enumm.ptr();
+               f-idx! = en.overload-statement;
+               if f-idx != #nil {
+                  f! = f-idx.ptr();
+                  e-method! = ExprI.alloc();
+                  var group-v:u8[1];
+                  group-v[0] = 0;
+                  ExprI.set-method(e-method, s.expr, f.decl.name, 1, group-v, 0, null);
+                  s.expr = e-method;
+                  if !s.expr.process() {
+                     return;
+                  }
+                  // C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": overload-statement used\n"}
+                  ok = true;
                   return;
                }
-               // C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": overload-statement used\n"}
-               ok = true;
-               return;
             }
          }
       }
@@ -302,6 +306,7 @@ struct ExprNull[
 ];
 struct ExprStrNode[
    next:ExprStrNode,
+   macro:bool,
    len:u32,
    buf:char[0],
 ];

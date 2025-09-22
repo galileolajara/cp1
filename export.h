@@ -107,7 +107,7 @@ void _NCp1_Pstruct_attr_real_name_1(_NCp1_NId _Lname_0);
 void _NCp1_Pstruct_attr_aligned_1(uint32_t _Laligned_0);
 void _NCp1_Pstruct_attr_union_0();
 void _NCp1_Pstruct_attr_no_decl_0();
-_NCp1_NExprI _NCp1_Pexpr_str_1(_NCp1_NExprI _Lprev_0);
+_NCp1_NExprI _NCp1_Pexpr_str_2(_NCp1_NExprI _Lprev_0, bool _Lmacro_1);
 _NCp1_NExprI _NCp1_Pexpr_unary_2(_NCp1_NExprI _Lexpr_0, _NCp1_NUnary _Ltype_1);
 _NCp1_NExprI _NCp1_Pexpr_ref_1(_NCp1_NExprI _Lexpr_0);
 _NCp1_NExprI _NCp1_Pexpr_cast_fast_2(_NCp1_NExprI _Lexpr_0, _NCp1_NAt _Ltype_1);
