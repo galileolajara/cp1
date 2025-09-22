@@ -905,7 +905,7 @@ const char* _Gdebug_func_prefix;
 uint8_t _Gdebug_func_prefix_len;
 uint8_t _Ginclude_path_c;
 uint16_t _Gdefine_c;
-char _Ginclude_dir[1024];
+char _Ginclude_dir[4096];
 uint16_t _Ginclude_dir_len;
 struct _NCp1_NMap _Gid_map;
 struct _NCp1_NMap _Ginclude_map;

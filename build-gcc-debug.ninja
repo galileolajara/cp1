@@ -1,11 +1,11 @@
 rule c
- command = gcc   $flags -fsanitize=undefined -ggdb -Werror=format -Wno-incompatible-pointer-types -I. -c $in -o $out
+ command = gcc   $flags -fsanitize=address -ggdb -Werror=format -Wno-incompatible-pointer-types -I. -c $in -o $out
 
 #rule objredef
 # command = objcopy --redefine-syms=$redefs $in $out
 
 rule ld-c
- command = gcc   -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out $flags -fsanitize=undefined -ggdb
+ command = gcc   -Werror=format -Wno-incompatible-pointer-types -I. $in -o $out $flags -fsanitize=address -ggdb
 
 rule crc32c
  command = bin/crc32c $in $out
@@ -38,10 +38,10 @@ build out/libregexp.c.o: cjs qjs/libregexp.c
 build out/libunicode.c.o: cjs qjs/libunicode.c
 
 rule c2
- command = gcc   $flags -fsanitize=undefined -ggdb -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
+ command = gcc   $flags -fsanitize=address -ggdb -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. -c $in -o $out
 
 rule ld-c2
- command = gcc   $flags -fsanitize=undefined -ggdb -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
+ command = gcc   $flags -fsanitize=address -ggdb -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out
 
 #rule ld-c2-redef
 # command = gcc $flags -ggdb -O0 -Werror=format -Wno-incompatible-pointer-types -DCP1_NEW -I. $in -o $out.tmp 2> redefs2.txt || true && node redefs.js redefs2.txt redefs2 && touch $out
