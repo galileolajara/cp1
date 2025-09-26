@@ -8,6 +8,7 @@ include <sys/stat.h> {
          mtim:C.Timespec. @real-name(st_mtim),
       ] @real-name(struct stat) @no-decl;
       mkdir(path:char[], mode:intc):intc @real-name @no-decl;
+      mkdir(path:char[]):intc @real-name @no-decl;
       fstat(file:intc, stat:Stat):intc @real-name @no-decl;
       stat(file:char[], stat:Stat):intc @real-name @no-decl;
    }
