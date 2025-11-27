@@ -12,6 +12,8 @@ include <string.h> {
       memset(dst:ref, c:intc, n:usz):ref @real-name @no-decl;
       memset(dst:ref):ref @decl('{# memset(dst, 0, sizeof(dst[0]))});
       memset-arr(dst:ref, c:intc):ref @decl('{# memset(dst, 0, (c) * sizeof(dst[0]))});
+      memmem(haystack:ref, hsize:usz, needle:ref, nsize:usz):ref @real-name @no-decl;
+      memchr(haystack:ref, needle:intc, hsize:usz):ref @real-name @no-decl;
 
       strerror(e:intc):char[] @real-name @no-decl;
    }
