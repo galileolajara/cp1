@@ -4,6 +4,9 @@ include <math.h> {
       sqrtf(val:f32):f32 @no-decl @real-name;
    }
    using f32 {
+      pow(x:this, y:f32):f32 @no-decl(powf);
+      log2(x:this):f32 @no-decl(log2f);
+      exp2(x:this):f32 @no-decl(exp2f);
       sqr(val:this):f32 @inline {
          return val * val;
       }
@@ -25,6 +28,33 @@ include <math.h> {
       }
       degree(f:this):f32 @inline {
          return f * (180.0f / #pi);
+      }
+   }
+   using f64 {
+      pow(x:this, y:f64):f64 @no-decl(pow);
+      log2(x:this):f64 @no-decl(log2);
+      exp2(x:this):f64 @no-decl(exp2);
+      sqr(val:this):f64 @inline {
+         return val * val;
+      }
+      sqrt(val:this):f64 @no-decl(sqrt);
+      abs(val:this):f64 @no-decl(fabs);
+      round(val:this):f64 @no-decl(round);
+      round-i32(val:this):i32 @no-decl(lround);
+      min(a:this, b:f64):f64 @no-decl(fmin);
+      max(a:this, b:f64):f64 @no-decl(fmax);
+      atan2(y:this, x:f64):f64 @no-decl(atan2);
+      cos(rad:this):f64 @no-decl(cos);
+      sin(rad:this):f64 @no-decl(sin);
+      floor(val:this):f64 @no-decl(floor);
+      ceil(val:this):f64 @no-decl(ceil);
+
+      #pi:f64 @no-decl(M_PI);
+      radian(f:this):f64 @inline {
+         return f * (#pi / 180.0F);
+      }
+      degree(f:this):f64 @inline {
+         return f * (180.0F / #pi);
       }
    }
 }
