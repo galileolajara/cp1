@@ -1,3 +1,4 @@
+using C1 = LibCp1;
 using Cp1 {
 stmt-return(e:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
    var s:StmtReturn;
@@ -38,9 +39,19 @@ using Stmt {
    }
    process-return(stmt:Stmt, ok:bool&) @case.process() @inline {
       var s:StmtReturn = stmt;
-      if s.expr != #nil {
-         s.expr.try-deduce(.ctx-func.decl.type);
-         if !s.expr.value(1 + .ctx-func.decl.type-info.ref-v[.ctx-func.decl.type-info.array-c], false, s.val) {
+      if .ctx-func.decl.type != #nil {
+         if s.expr != #nil {
+            s.expr.try-deduce(.ctx-func.decl.type);
+            if !s.expr.value(1 + .ctx-func.decl.type-info.ref-v[.ctx-func.decl.type-info.array-c], false, s.val) {
+               return;
+            }
+         } else {
+            C1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": return statement must have a value\n"}
+            return;
+         }
+      } else {
+         if s.expr != #nil {
+            C1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": return statement must not have a value\n"}
             return;
          }
       }
