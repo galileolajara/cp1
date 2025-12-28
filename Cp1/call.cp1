@@ -315,7 +315,7 @@ farg-process(e-in-out:ExprI&, ca-ref:i8, ca-value:Value, fd-arg:DeclVarData, bas
          C1.stdbuf{''# (arg-num + 1):u32}
       }
       C1.stdout{" of function '" f-name "', must be "}
-      at! = ca-value.type.ptr();
+      at! = fd-arg.type.ptr();
       if at.type == #basic {
          C1.stdout{at.name.basic.cp1-name() "\n"}
       } else {
