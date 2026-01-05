@@ -1005,7 +1005,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                   if tc.with-reflection {
                      jscode{
                      '= let cp1_refl = {
-                     '- "root"'
+                     '- "root":
                      }
                      'At#root.jscode-write();
                      jscode{",\n"}

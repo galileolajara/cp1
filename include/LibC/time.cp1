@@ -1,7 +1,7 @@
 using 'LibC {
    include <time.h> {
       enum 'ClockId[
-         #monotonic @no-decl @real-name('CLOCK_MONOTONIC),
+         #monotonic @no-decl @real-name(CLOCK_MONOTONIC),
       ]'intc;
       struct 'ITimerspec[
          interval'Timespec. @real-name(it_interval), 
