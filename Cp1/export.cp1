@@ -1,4 +1,4 @@
-using 'Cp1 {
+using 'cp1 {
 export() {
    quick-alloc-undo(0);
    decl-import(#nil, 0, 0, false);

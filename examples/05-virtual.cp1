@@ -1,11 +1,11 @@
 // This is to emulate the C++'s virtual functions
 require "LibCp1/stdout.cp1";
 
-using 'C1 = 'LibCp1;
+using 'c1 = 'libcp1;
 
-enum 'AnimalType[#cat, #dog]'u8; // 8-bit enum
+enum 'animal-type[#cat, #dog]'u8; // 8-bit enum
 
-struct 'Animal[type'AnimalType] { // a struct with a method
+struct 'animal[type'animal-type] { // a struct with a method
    make-sound(a'this) {
       // a switch statement that collects methods that
       // begins with "emit-sound-" then automatically
@@ -16,17 +16,17 @@ struct 'Animal[type'AnimalType] { // a struct with a method
 }
 
 // For example, in another file, you can:
-using 'Animal {
+using 'animal {
    emit-sound-cat(a'this) @case.emit-sound() {
-      'C1.stdout{"meow!\n"}
+      'c1.stdout{"meow!\n"}
    }
    emit-sound-dog(a'this) @case.emit-sound() {
-      'C1.stdout{"arf!\n"}
+      'c1.stdout{"arf!\n"}
    }
 }
 
 main(arg-c'intc, arg-v'char[][])'intc {
-   var animal'Animal.; // create an animal object, '.' symbol allocates on stack
+   var animal'animal.; // create an animal object, '.' symbol allocates on stack
    animal.type = #cat;
    animal.make-sound();
    animal.type = #dog;

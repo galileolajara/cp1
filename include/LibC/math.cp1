@@ -1,6 +1,6 @@
 include <math.h> {
-   using 'C = 'LibC;
-   using 'LibC {
+   using 'c = 'libc;
+   using 'libc {
       sqrtf(val'f32)'f32 @no-decl @real-name;
    }
    using 'f32 {
@@ -51,10 +51,10 @@ include <math.h> {
 
       #pi'f64 @no-decl(M_PI);
       radian(f'this)'f64 @inline {
-         return f * (#pi / 180.0'F);
+         return f * (#pi / 180.0'f);
       }
       degree(f'this)'f64 @inline {
-         return f * (180.0'F / #pi);
+         return f * (180.0'f / #pi);
       }
    }
 }

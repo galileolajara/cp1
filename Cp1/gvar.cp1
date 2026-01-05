@@ -1,8 +1,8 @@
-using 'C = 'LibC;
-using 'C1 = 'LibCp1;
-using 'Cp1 {
-enum 'GvarFlags[#0, #no-decl = 1]'u8;
-enum 'Gvar[#nil = -1, #0]'i32 {
+using 'c = 'libc;
+using 'c1 = 'libcp1;
+using 'cp1 {
+enum 'gvar-flags[#0, #no-decl = 1]'u8;
+enum 'gvar[#nil = -1, #0]'i32 {
    process(g'this)'bool {
       num! = g'u32;
       n3! = num >> 3;
@@ -34,25 +34,25 @@ enum 'Gvar[#nil = -1, #0]'i32 {
    //    gvar.at.write-space();
    //    output{"_G" gvar.decl.name.c-name}
    // }
-   ptr(g'this)'DeclGvar @inline {
+   ptr(g'this)'decl-gvar @inline {
       return .gvar-v[g];
    }
 }
-expr-gvar(at'At, name'Id, row'u32, col'u32)'ExprI {
+expr-gvar(at'at, name'id, row'u32, col'u32)'expr-i {
    if .decl-func-ctx-space == null {
-      'C1.stdout{.input-path '': row '': row ": Use of global variables are now allowed here\n"}
-      'C.exit(#failure);
+      'c1.stdout{.input-path '': row '': row ": Use of global variables are now allowed here\n"}
+      'c.exit(#failure);
    }
-   var e'ExprGvar;
+   var e'expr-gvar;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #gvar);
    e.at = at;
    e.name = name;
    return e-idx;
 }
-using 'ExprI {
-   value-gvar(g'this, reff'i32, paren'bool, v'Value, ok'bool&) @case.value() @inline {
-      var e'ExprGvar = g.ptr();
+using 'expr-i {
+   value-gvar(g'this, reff'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
+      var e'expr-gvar = g.ptr();
       gvar! = e.gvar.ptr();
       v.set(reff, paren, gvar.decl.type, gvar.decl.type-info);
       if v.reff == 1 {
@@ -60,23 +60,23 @@ using 'ExprI {
       }
       ok = true;
    }
-   type-gvar(expr'Expr, at'At&) @case.type() @inline {
-      var e'ExprGvar = expr;
+   type-gvar(expr'expr, at'at&) @case.type() @inline {
+      var e'expr-gvar = expr;
       gvar! = e.gvar.ptr();
       at = gvar.decl.type;
    }
-   wr-gvar(expr'Expr, w'Wtr, header'bool) @case.wr() @inline {
-      var e'ExprGvar = expr;
+   wr-gvar(expr'expr, w'wtr, header'bool) @case.wr() @inline {
+      var e'expr-gvar = expr;
       e.at.wr(w, header);
       e.name.wr(w, header);
    }
-   rd-gvar(e-idx'ExprI, r'Rdr) @case.rd() @inline {
-      'At.rd(at-idx!, r);
-      'Id.rd(name!, r);
+   rd-gvar(e-idx'expr-i, r'rdr) @case.rd() @inline {
+      'at.rd(at-idx!, r);
+      'id.rd(name!, r);
       e-idx.set-gvar(at-idx, name);
    }
-   set-gvar(e-idx'this, at-idx'At, name'Id) {
-      var e'ExprGvar;
+   set-gvar(e-idx'this, at-idx'at, name'id) {
+      var e'expr-gvar;
       quick-alloc-one(e);
       e-idx.set(e.base, #gvar);
       try-parent! = false;
@@ -99,15 +99,15 @@ using 'ExprI {
          if at-idx == #root { break }
          at-idx = at.parent;
       }
-      'C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find gvar '." name "'\n"}
-      'C.exit(#failure);
+      'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find gvar '." name "'\n"}
+      'c.exit(#failure);
    }
-   write-gvar(expr'Expr) @case.write() @inline {
-      var e'ExprGvar = expr;
+   write-gvar(expr'expr) @case.write() @inline {
+      var e'expr-gvar = expr;
       e.gvar.write();
    }
-   process-gvar(expr'Expr, ok'bool&) @case.process() @inline {
-      var e'ExprGvar = expr;
+   process-gvar(expr'expr, ok'bool&) @case.process() @inline {
+      var e'expr-gvar = expr;
       if !e.gvar.process() { return }
       ok = true;
    }

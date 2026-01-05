@@ -9,75 +9,75 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-struct _NCp1_NTokenDataI32 {
+struct _Ncp1_Ntoken_data_i32 {
    uint32_t row;
    uint32_t col;
    int32_t id;
    int32_t id2;
    int32_t id3;
 };
-struct _NCp1_NTokenDataF32 {
+struct _Ncp1_Ntoken_data_f32 {
    uint32_t row;
    uint32_t col;
    float f32;
 };
-struct _NCp1_NTokenDataF64 {
+struct _Ncp1_Ntoken_data_f64 {
    uint32_t row;
    uint32_t col;
    double f64;
 };
-struct _NCp1_NTokenDataU64 {
+struct _Ncp1_Ntoken_data_u64 {
    uint32_t row;
    uint32_t col;
    uint64_t u64;
 };
-struct _NCp1_NTokenDataIndex {
+struct _Ncp1_Ntoken_data_index {
    int v[15];
    int c;
 };
-union _NCp1_NTokenData {
-   struct _NCp1_NTokenDataI32 basic;
-   struct _NCp1_NTokenDataF32 f32;
-   struct _NCp1_NTokenDataF64 f64;
-   struct _NCp1_NTokenDataU64 u64;
-   struct _NCp1_NTokenDataIndex index;
+union _Ncp1_Ntoken_data {
+   struct _Ncp1_Ntoken_data_i32 basic;
+   struct _Ncp1_Ntoken_data_f32 f32;
+   struct _Ncp1_Ntoken_data_f64 f64;
+   struct _Ncp1_Ntoken_data_u64 u64;
+   struct _Ncp1_Ntoken_data_index index;
    void* pointer;
 };
 
 /*
-void _NCp1_Ppreprocess_init_0() {
+void _Ncp1_Ppreprocess_init_0() {
 #ifdef _WIN32
-   _NCp1_Ppreprocess_def_2("windows", 7);
+   _Ncp1_Ppreprocess_def_2("windows", 7);
 #endif
 #ifdef __APPLE__
-   _NCp1_Ppreprocess_def_2("apple", 5);
+   _Ncp1_Ppreprocess_def_2("apple", 5);
 	#ifdef TARGET_OS_MAC
-   _NCp1_Ppreprocess_def_2("macos", 5);
+   _Ncp1_Ppreprocess_def_2("macos", 5);
 	#endif
 #endif
 #ifdef __linux__
-   _NCp1_Ppreprocess_def_2("linux", 5);
+   _Ncp1_Ppreprocess_def_2("linux", 5);
 #endif
 #ifdef __unix__
-   _NCp1_Ppreprocess_def_2("unix", 4);
+   _Ncp1_Ppreprocess_def_2("unix", 4);
 #endif
 #ifdef BSD
-   _NCp1_Ppreprocess_def_2("bsd", 3);
+   _Ncp1_Ppreprocess_def_2("bsd", 3);
 #endif
 #ifdef __FreeBSD__
-   _NCp1_Ppreprocess_def_2("freebsd", 7);
+   _Ncp1_Ppreprocess_def_2("freebsd", 7);
 #endif
 #ifdef __OpenBSD__
-   _NCp1_Ppreprocess_def_2("openbsd", 7);
+   _Ncp1_Ppreprocess_def_2("openbsd", 7);
 #endif
 #ifdef __NetBSD__
-   _NCp1_Ppreprocess_def_2("netbsd", 6);
+   _Ncp1_Ppreprocess_def_2("netbsd", 6);
 #endif
 #ifdef __DragonFly__
-   _NCp1_Ppreprocess_def_2("dragonfly", 9);
+   _Ncp1_Ppreprocess_def_2("dragonfly", 9);
 #endif
 #if defined(_LP64) || defined(__LP64__)
-   _NCp1_Ppreprocess_def_2("cpu64", 5);
+   _Ncp1_Ppreprocess_def_2("cpu64", 5);
 #endif
 }
 */
@@ -85,24 +85,24 @@ void _NCp1_Ppreprocess_init_0() {
 extern int _Glast_token;
 extern int _Glast_last_token;
 
-typedef int _NCp1_NExprI;
-typedef int _NCp1_NId;
-typedef int _NCp1_NInclude;
-typedef int _NCp1_NAt;
-typedef int8_t _NCp1_NBasicTypeId;
-typedef int8_t _NCp1_NUnary;
-typedef int8_t _NCp1_NMath;
-typedef int8_t _NCp1_NExprType;
-typedef int8_t _NCp1_NExprInt;
-typedef int8_t _NCp1_NNameType;
-typedef int8_t _NCp1_NStmtType;
-typedef int8_t _NCp1_NCompare;
-typedef int8_t _NCp1_NAssign;
-typedef int8_t _NCp1_NBools;
-typedef int _NCp1_NToken;
-struct _NCp1_NStmtSpace;
-struct _NCp1_NStmt;
-struct _NCp1_NExprData;
+typedef int _Ncp1_Nexpr_i;
+typedef int _Ncp1_Nid;
+typedef int _Ncp1_Ninclude;
+typedef int _Ncp1_Nat;
+typedef int8_t _Ncp1_Nbasic_type_id;
+typedef int8_t _Ncp1_Nunary;
+typedef int8_t _Ncp1_Nmath;
+typedef int8_t _Ncp1_Nexpr_type;
+typedef int8_t _Ncp1_Nexpr_int;
+typedef int8_t _Ncp1_Nname_type;
+typedef int8_t _Ncp1_Nstmt_type;
+typedef int8_t _Ncp1_Ncompare;
+typedef int8_t _Ncp1_Nassign;
+typedef int8_t _Ncp1_Nbools;
+typedef int _Ncp1_Ntoken;
+struct _Ncp1_Nstmt_space;
+struct _Ncp1_Nstmt;
+struct _Ncp1_Nexpr_data;
 #ifdef CP1_NEW
 #include "out/export.h"
 #else
@@ -133,15 +133,15 @@ struct cp1_lexer {
    const char *marker;
 };
 
-void* _NCp1_NParser_Palloc_0() {
+void* _Ncp1_Nparser_Palloc_0() {
    return cp1ParseAlloc(malloc);
 }
 
-void _NCp1_NParser_Pfree_1(void* parser) {
+void _Ncp1_Nparser_Pfree_1(void* parser) {
    cp1ParseFree(parser, free);
 }
 
-int _NCp1_Pchar_escape_value_1(char c) {
+int _Ncp1_Pchar_escape_value_1(char c) {
    switch(c) {
       case 'a': return '\a';
       case 'b': return '\b';

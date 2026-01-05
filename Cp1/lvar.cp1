@@ -1,11 +1,11 @@
-using 'C = 'LibC;
-using 'C1 = 'LibCp1;
-using 'Cp1 {
-enum 'Lvar[#nil = -1, #0]'i32 {
-   rd(l'this&, r'Rdr) @inline {
-      l = (r.n() - 1)'Lvar;
+using 'c = 'libc;
+using 'c1 = 'libcp1;
+using 'cp1 {
+enum 'lvar[#nil = -1, #0]'i32 {
+   rd(l'this&, r'rdr) @inline {
+      l = (r.n() - 1)'lvar;
    }
-   wr(l'this, w'Wtr) @inline {
+   wr(l'this, w'wtr) @inline {
       w.n(l'base + 1);
    }
    process(l'this)'bool @inline {
@@ -24,7 +24,7 @@ enum 'Lvar[#nil = -1, #0]'i32 {
             // lvar.decl.type-info.init();
             // lvar.decl.type-info.copy-from(v.info);
          // } else {
-            'C1.stdout{.ctx-func.file '': lvar.row '': lvar.col ": local variable '" lvar.decl.name "' doesn't have a type or a value\n"}
+            'c1.stdout{.ctx-func.file '': lvar.row '': lvar.col ": local variable '" lvar.decl.name "' doesn't have a type or a value\n"}
             return false;
          // }
          // return true;
@@ -32,35 +32,35 @@ enum 'Lvar[#nil = -1, #0]'i32 {
       return lvar.decl.process(.ctx-func.file, lvar.row, lvar.col, .ctx-func.at);
    }
 }
-enum 'LvarFlags[
+enum 'lvar-flags[
    #0,
    #set-expr = 1,
    #processed = 2,
 ]'u8 {
-   rd(f'this&, r'Rdr) @inline {
-      f = r.n1()'LvarFlags;
+   rd(f'this&, r'rdr) @inline {
+      f = r.n1()'lvar-flags;
    }
-   wr(f'this, w'Wtr) @inline {
+   wr(f'this, w'wtr) @inline {
       w.n1(f'base);
    }
 }
-struct 'LvarData[
+struct 'lvar-data[
    row'u32,
    col'u32,
-   decl'DeclVarData.,
-   flags'LvarFlags,
+   decl'decl-var-data.,
+   flags'lvar-flags,
    // set-expr:ExprI,
 ];
-expr-lvar(name'Id, decl'u8, row'u32, col'u32)'ExprI {
+expr-lvar(name'id, decl'u8, row'u32, col'u32)'expr-i {
    if .decl-func-ctx-space == null {
-      'C1.stdout{.input-path '': row '': row ": Use of local variables are now allowed here\n"}
-      'C.exit(#failure);
+      'c1.stdout{.input-path '': row '': row ": Use of local variables are now allowed here\n"}
+      'c.exit(#failure);
    }
    if decl == 0 {
       space! = .decl-func-ctx-space;
       loop {
          v! = space.lvar-v;
-         found! = 'Lvar#nil;
+         found! = 'lvar#nil;
          loop i = 0; space.lvar-c; i++ {
             lvar! = v[i];
             if lvar.name() == name {
@@ -69,7 +69,7 @@ expr-lvar(name'Id, decl'u8, row'u32, col'u32)'ExprI {
             }
          }
          if found != #nil {
-            var e'ExprLvar;
+            var e'expr-lvar;
             quick-alloc-one(e);
             e-idx! = expr-push(e.base, #lvar);
             e.lvar = found;
@@ -78,12 +78,12 @@ expr-lvar(name'Id, decl'u8, row'u32, col'u32)'ExprI {
          space = space.parent;
          if space == null { break }
       }
-      'C1.stdout{.input-path '': row '': col ": local variable '" name "' was not found\n"}
-      'C.exit(#failure);
+      'c1.stdout{.input-path '': row '': col ": local variable '" name "' was not found\n"}
+      'c.exit(#failure);
       return #nil;
    } else {
       space! = .decl-func-ctx-space;
-      var e'ExprLvar;
+      var e'expr-lvar;
       quick-alloc-one(e);
       e-idx! = expr-push(e.base, #lvar);
       e.lvar = space.lvar-new(name, row, col);
@@ -97,18 +97,18 @@ expr-lvar(name'Id, decl'u8, row'u32, col'u32)'ExprI {
       return e-idx;
    }
 }
-using 'ExprI {
-   write-lvar(expr'Expr) @case.write() @inline {
-      var e'ExprLvar = expr;
+using 'expr-i {
+   write-lvar(expr'expr) @case.write() @inline {
+      var e'expr-lvar = expr;
       e.lvar.ptr().decl.write-lvar(e.lvar);
    }
-   type-lvar(expr'Expr, at'At&) @case.type() @inline {
-      var e'ExprLvar = expr;
+   type-lvar(expr'expr, at'at&) @case.type() @inline {
+      var e'expr-lvar = expr;
       lvar! = e.lvar.ptr();
       at = lvar.decl.type;
    }
-   value-lvar(e'this, reff'i8, paren'bool, v'Value, ok'bool&) @case.value() @inline {
-      var expr'ExprLvar = e.ptr();
+   value-lvar(e'this, reff'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
+      var expr'expr-lvar = e.ptr();
       lvar! = expr.lvar.ptr();
       v.set(reff, paren, lvar.decl.type, lvar.decl.type-info);
       if v.reff == 1 {
@@ -116,20 +116,20 @@ using 'ExprI {
       }
       ok = true;
    }
-   wr-lvar(expr'Expr, w'Wtr, header'bool) @case.wr() @inline {
-      var e'ExprLvar = expr;
+   wr-lvar(expr'expr, w'wtr, header'bool) @case.wr() @inline {
+      var e'expr-lvar = expr;
       e.lvar.wr(w);
       w.b(e.decl);
    }
-   rd-lvar(e-idx'ExprI, r'Rdr) @case.rd() @inline {
-      var e'ExprLvar;
+   rd-lvar(e-idx'expr-i, r'rdr) @case.rd() @inline {
+      var e'expr-lvar;
       quick-alloc-one(e);
       e-idx.set(e.base, #lvar);
       e.lvar.rd(r);
       e.decl = r.b();
    }
-   process-lvar(expr'Expr, ok'bool&) @case.process() @inline {
-      var e'ExprLvar = expr;
+   process-lvar(expr'expr, ok'bool&) @case.process() @inline {
+      var e'expr-lvar = expr;
       if !e.lvar.process() { return }
       ok = true;
    }

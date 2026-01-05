@@ -1,13 +1,13 @@
-using 'LibC {
+using 'libc {
    include <time.h> {
-      enum 'ClockId[
+      enum 'clock-id[
          #monotonic @no-decl @real-name(CLOCK_MONOTONIC),
       ]'intc;
-      struct 'ITimerspec[
-         interval'Timespec. @real-name(it_interval), 
-         value'Timespec. @real-name(it_value),
+      struct 'itimerspec[
+         interval'timespec. @real-name(it_interval), 
+         value'timespec. @real-name(it_value),
       ] @no-decl(struct itimerspec);
-      struct 'Timespec[
+      struct 'timespec[
          sec'u32 @real-name(tv_sec),
          nsec'u32 @real-name(tv_nsec),
       ] @no-decl(struct timespec);
@@ -15,6 +15,6 @@ using 'LibC {
       time()'usz @inline {
          return time(null);
       }
-      nanosleep(duration'Timespec, rem'Timespec)'intc @no-decl @real-name;
+      nanosleep(duration'timespec, rem'timespec)'intc @no-decl @real-name;
    }
 }

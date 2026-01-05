@@ -35,18 +35,18 @@ struct at_map_t {
 #include <stdio.h>
 int main(int argc, char** argv) {
    FILE* fp = fopen(argv[1], "w");
-   fprintf(fp, "using 'Cp1 {\n#hash-table-size'usz = %zu;\n}\n", sizeof(struct map_t));
+   fprintf(fp, "using 'cp1 {\n#hash-table-size'usz = %zu;\n}\n", sizeof(struct map_t));
    fclose(fp);
    return 0;
 }
 #else
-void _NCp1_NMap_Pinit_1(struct map_t* map) {
+void _Ncp1_Nmap_Pinit_1(struct map_t* map) {
    for (int i = 0; i < HASH_KEY_COUNT; i++) {
       map->keys[i] = NULL;
    }
 }
 void* qalloc(int32_t size);
-int32_t _NCp1_NMap_Pget_or_insert_4(struct map_t* map, uint8_t* str, uint8_t len, uint32_t val) {
+int32_t _Ncp1_Nmap_Pget_or_insert_4(struct map_t* map, uint8_t* str, uint8_t len, uint32_t val) {
    uint32_t sum = crc32c(0, str, len);
    uint8_t hk = sum & 0xff;
    struct key_t* last_key = map->keys[hk];
@@ -80,12 +80,12 @@ int32_t _NCp1_NMap_Pget_or_insert_4(struct map_t* map, uint8_t* str, uint8_t len
    key->valc = 1;
    return -1;
 }
-void _NCp1_NAtMap_Pinit_1(struct at_map_t* map) {
+void _Ncp1_Nat_map_Pinit_1(struct at_map_t* map) {
    for (int i = 0; i < HASH_KEY_COUNT; i++) {
       map->keys[i] = NULL;
    }
 }
-int32_t _NCp1_NAtMap_Pget_or_insert_4(struct at_map_t* map, uint32_t parent_and_type, uint32_t name, uint32_t val) {
+int32_t _Ncp1_Nat_map_Pget_or_insert_4(struct at_map_t* map, uint32_t parent_and_type, uint32_t name, uint32_t val) {
    uint32_t v[2];
    v[0] = name;
    v[1] = parent_and_type;

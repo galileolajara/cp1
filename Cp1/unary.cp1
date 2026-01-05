@@ -1,36 +1,36 @@
-using 'C1 = 'LibCp1;
-using 'Cp1 {
-enum 'Unary[#neg, #inc, #dec, #not]'u8 {
-   rd(u'this&, r'Rdr) @inline {
-      u = r.n1()'Unary;
+using 'c1 = 'libcp1;
+using 'cp1 {
+enum 'unary[#neg, #inc, #dec, #not]'u8 {
+   rd(u'this&, r'rdr) @inline {
+      u = r.n1()'unary;
    }
-   wr(u'this, w'Wtr) @inline {
+   wr(u'this, w'wtr) @inline {
       w.n1(u'base);
    }
 }
-expr-unary(expr'ExprI, type'Unary)'ExprI {
-   var e'ExprUnary;
+expr-unary(expr'expr-i, type'unary)'expr-i {
+   var e'expr-unary;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #unary);
    e.expr = expr;
    e.type = type;
    return e-idx;
 }
-using 'ExprI {
-   wr-unary(expr'Expr, w'Wtr, header'bool) @case.wr() @inline {
-      var e'ExprUnary = expr;
+using 'expr-i {
+   wr-unary(expr'expr, w'wtr, header'bool) @case.wr() @inline {
+      var e'expr-unary = expr;
       e.expr.wr(w, header);
       e.type.wr(w);
    }
-   rd-unary(e-idx'ExprI, r'Rdr) @case.rd() @inline {
-      var e'ExprUnary;
+   rd-unary(e-idx'expr-i, r'rdr) @case.rd() @inline {
+      var e'expr-unary;
       quick-alloc-one(e);
       e-idx.set(e.base, #unary);
       e.expr.rd(r);
       e.type.rd(r);
    }
-   write-unary(expr'Expr) @case.write() @inline {
-      var e'ExprUnary = expr;
+   write-unary(expr'expr) @case.write() @inline {
+      var e'expr-unary = expr;
       switch e.type {
          case #neg {
             output{''-}
@@ -50,8 +50,8 @@ using 'ExprI {
          }
       }
    }
-   value-unary(e'this, reff'i8, paren'bool, v'Value, ok'bool&) @case.value() @inline {
-      var expr'ExprUnary = e.ptr();
+   value-unary(e'this, reff'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
+      var expr'expr-unary = e.ptr();
       v.type = expr.expr.type();
       v.info.init();
       v.info.array-c = 0;
@@ -60,19 +60,19 @@ using 'ExprI {
       v.reff = 1;
       ok = true;
    }
-   type-unary(expr'Expr, at'At&) @case.type() @inline {
-      var e'ExprUnary = expr;
+   type-unary(expr'expr, at'at&) @case.type() @inline {
+      var e'expr-unary = expr;
       at = e.expr.type();
    }
-   process-unary(expr'Expr, ok'bool&) @case.process() @inline {
-      var e'ExprUnary = expr;
+   process-unary(expr'expr, ok'bool&) @case.process() @inline {
+      var e'expr-unary = expr;
       if !e.expr.value(1, true, e.val) {
          return;
       }
       switch e.type {
          case #not {
             if e.val.type != basic-type(#bool) {
-               'C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Error, the expression used for '!' operator is not a boolean type\n"}
+               'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Error, the expression used for '!' operator is not a boolean type\n"}
                return;
             }
          }

@@ -1,17 +1,17 @@
 require "LibCp1/stdout.cp1";
-using 'C1 = 'LibCp1;
+using 'c1 = 'libcp1;
 
 // Create a metaprogram with access to reflection data
 meta #CreateHelloFunction @reflection {
-   using 'C1 = 'LibCp1;
+   using 'c1 = 'libcp1;
    hello-${arg.suffix}() {
-      'C1.stdout{"Hello ${arg.suffix} from metaprogram!\n"}
+      'c1.stdout{"Hello ${arg.suffix} from metaprogram!\n"}
       loop i = 0; ${arg.count}; i++ {
-         'C1.stdout{"Counting... " i ''\n}
+         'c1.stdout{"Counting... " i ''\n}
       }
       // Do some reflection
-      'C1.stdout{"Have a struct called 'Cat'? ${'Cat' in cp1_refl.root.types}\n"}
-      'C1.stdout{"Have a struct called 'Dog'? ${'Dog' in cp1_refl.root.types}\n"}
+      'c1.stdout{"Have a struct called 'cat'? ${'cat' in cp1_refl.root.types}\n"}
+      'c1.stdout{"Have a struct called 'dog'? ${'dog' in cp1_refl.root.types}\n"}
 #     print("Another hello world, but in compile time! " + os.now());
    }
 }
@@ -20,27 +20,27 @@ meta #CreateHelloFunction @reflection {
 #CreateHelloFunction{suffix:"world",count:3}
 #CreateHelloFunction{suffix:"five",count:5,cp1_no_cache:true} // disable caching
 
-struct 'Dog[bark-times'i32] {
+struct 'dog[bark-times'i32] {
    init(dog'this) {
    }
    bark(dog'this) {
       dog.bark-times++;
-      'C1.stdout{"arf!! " dog.bark-times "x bark\n"}
+      'c1.stdout{"arf!! " dog.bark-times "x bark\n"}
    }
 }
 
 main()'intc { // intc is for C compatibility, use i32 elsewhere
-   'C1.stdout{"Hello world!\n"}
+   'c1.stdout{"Hello world!\n"}
    hello-world(); // This calls the function from metaprogram at line 20
    hello-five(); // This calls the function from metaprogram at line 21
 
    // Declare a variable via function argument's type using '!' syntax
    // The dog variable is allocated on the stack
-   'Dog.init(dog!);
+   'dog.init(dog!);
    dog.bark(); dog.bark(); dog.bark(); // Bark 3 times
 
    one! = 1; // '!' declares 'one' as a new variable
    seven! = 7;
-   'C1.stdout{one " + " seven " = " one + seven ''\n}
+   'c1.stdout{one " + " seven " = " one + seven ''\n}
    return 0;
 }

@@ -1,10 +1,10 @@
 require "LibC/string.cp1";
 require "LibC/stdlib.cp1";
 require "Posix/unistd.cp1";
-using 'C = 'LibC;
-using 'C1 = 'LibCp1;
-using 'X = 'Posix;
-using 'LibCp1 {
+using 'c = 'libc;
+using 'c1 = 'libcp1;
+using 'x = 'posix;
+using 'libcp1 {
    var stdout-buf-data'char[];
    var stdout-buf-cap'u32;
    var stdout-buf-len'u32;
@@ -27,7 +27,7 @@ using 'LibCp1 {
       stdout-bytes-nr(data, size);
    }
    stdout-bytes-nr(data'ref @const, size'usz) @inline { // nr = no-reserve
-      'C.memcpy(&.stdout-buf-data[.stdout-buf-len], data, size);
+      'c.memcpy(&.stdout-buf-data[.stdout-buf-len], data, size);
       .stdout-buf-len += size;
    }
    stdout-u32(val'u32) {
@@ -156,14 +156,14 @@ using 'LibCp1 {
             .stdout-buf-cap += .stdout-buf-cap;
             space = .stdout-buf-cap - .stdout-buf-len;
          }
-         'C.realloc-arr(.stdout-buf-data, .stdout-buf-cap);
+         'c.realloc-arr(.stdout-buf-data, .stdout-buf-cap);
       }
    }
    stdout-cstr(str'char @const[]) @inline {
-      stdout-bytes(str, 'C.strlen(str));
+      stdout-bytes(str, 'c.strlen(str));
    }
    stdout-cstr-nr(str'char @const[]) @inline {
-      stdout-bytes-nr(str, 'C.strlen(str));
+      stdout-bytes-nr(str, 'c.strlen(str));
    }
    stdout-char(val'char) @inline {
       stdout-reserve(1);
@@ -191,7 +191,7 @@ using 'LibCp1 {
       "#ifdef LIBCP1_ON_STDOUT";
       "LIBCP1_ON_STDOUT(_Gstdout_buf_data, _Gstdout_buf_len);";
       "#else";
-      1'X'Fd.write(.stdout-buf-data, .stdout-buf-len);
+      1'x'fd.write(.stdout-buf-data, .stdout-buf-len);
       "#endif";
       .stdout-buf-len = 0;
    }
@@ -217,7 +217,7 @@ using 'LibCp1 {
          so.reserve += 10;
       }
       stdout(s'this, so'StdOut) @inline {
-         'C1.stdout-u32-nr(s.val);
+         'c1.stdout-u32-nr(s.val);
       }
    }
    struct 'StdOutU64[val'u64] {
@@ -226,7 +226,7 @@ using 'LibCp1 {
          so.reserve += 20;
       }
       stdout(s'this, so'StdOut) @inline {
-         'C1.stdout-u64-nr(s.val);
+         'c1.stdout-u64-nr(s.val);
       }
    }
    struct 'StdOutI32[val'i32] {
@@ -235,7 +235,7 @@ using 'LibCp1 {
          so.reserve += 11;
       }
       stdout(s'this, so'StdOut) @inline {
-         'C1.stdout-i32-nr(s.val);
+         'c1.stdout-i32-nr(s.val);
       }
    }
    struct 'StdOutStr[str'char @const[], len'u32] {
@@ -246,11 +246,11 @@ using 'LibCp1 {
       }
       reserve(s'this, str'char @const[], so'StdOut) {
          s.str = str;
-         s.len = 'C.strlen(str);
+         s.len = 'c.strlen(str);
          so.reserve += s.len;
       }
       stdout(s'this, so'StdOut) @inline {
-         'C1.stdout-bytes-nr(s.str, s.len);
+         'c1.stdout-bytes-nr(s.str, s.len);
       }
    }
    struct 'StdOutBool[val'bool] {
@@ -263,7 +263,7 @@ using 'LibCp1 {
          }
       }
       stdout(s'this, so'StdOut) @inline {
-         'C1.stdout-bool-nr(s.val);
+         'c1.stdout-bool-nr(s.val);
       }
    }
    struct 'StdOutChar[val'char] {
@@ -272,7 +272,7 @@ using 'LibCp1 {
          so.reserve++;
       }
       stdout(s'this, so'StdOut) @inline {
-         'C1.stdout-char-nr(s.val);
+         'c1.stdout-char-nr(s.val);
       }
    }
    struct 'StdOutFloat32[val'f32] {
@@ -281,7 +281,7 @@ using 'LibCp1 {
          so.reserve += 64;
       }
       stdout(s'this, so'StdOut) @inline {
-         'C1.stdout-buf-len += 'C.sprintf(&'C1.stdout-buf-data['C1.stdout-buf-len], "%.9f", s.val);
+         'c1.stdout-buf-len += 'c.sprintf(&'c1.stdout-buf-data['c1.stdout-buf-len], "%.9f", s.val);
       }
    }
    struct 'StdOutFloat64[val'f64] {
@@ -290,73 +290,73 @@ using 'LibCp1 {
          so.reserve += 128;
       }
       stdout(s'this, so'StdOut) @inline {
-         'C1.stdout-buf-len += 'C.sprintf(&'C1.stdout-buf-data['C1.stdout-buf-len], "%.17f", s.val);
+         'c1.stdout-buf-len += 'c.sprintf(&'c1.stdout-buf-data['c1.stdout-buf-len], "%.17f", s.val);
       }
    }
 }
 using 'bool {
-   stdout-reserve(val'this, so'C1'StdOut, p'C1'StdOutBool) @inline {
+   stdout-reserve(val'this, so'c1'StdOut, p'c1'StdOutBool) @inline {
       p.reserve(val, so);
    }
 }
 using 'f32 {
-   stdout-reserve(val'this, so'C1'StdOut, p'C1'StdOutFloat32) @inline {
+   stdout-reserve(val'this, so'c1'StdOut, p'c1'StdOutFloat32) @inline {
       p.reserve(val, so);
    }
 }
 using 'f64 {
-   stdout-reserve(val'this, so'C1'StdOut, p'C1'StdOutFloat64) @inline {
+   stdout-reserve(val'this, so'c1'StdOut, p'c1'StdOutFloat64) @inline {
       p.reserve(val, so);
    }
 }
 using 'i32 {
-   stdout-reserve(val'this, so'C1'StdOut, p'C1'StdOutI32) @inline {
+   stdout-reserve(val'this, so'c1'StdOut, p'c1'StdOutI32) @inline {
       p.reserve(val, so);
    }
 }
 using 'i16 {
-   stdout-reserve(val'this, so'C1'StdOut, p'C1'StdOutI32) @inline {
+   stdout-reserve(val'this, so'c1'StdOut, p'c1'StdOutI32) @inline {
       p.reserve(val, so);
    }
 }
 using 'i8 {
-   stdout-reserve(val'this, so'C1'StdOut, p'C1'StdOutI32) @inline {
+   stdout-reserve(val'this, so'c1'StdOut, p'c1'StdOutI32) @inline {
       p.reserve(val, so);
    }
 }
 using 'usz {
-   stdout-reserve(val'this, so'C1'StdOut, p'C1'StdOutU64) @inline {
+   stdout-reserve(val'this, so'c1'StdOut, p'c1'StdOutU64) @inline {
       p.reserve(val, so);
    }
 }
 using 'u64 {
-   stdout-reserve(val'this, so'C1'StdOut, p'C1'StdOutU64) @inline {
+   stdout-reserve(val'this, so'c1'StdOut, p'c1'StdOutU64) @inline {
       p.reserve(val, so);
    }
 }
 using 'u32 {
-   stdout-reserve(val'this, so'C1'StdOut, p'C1'StdOutU32) @inline {
+   stdout-reserve(val'this, so'c1'StdOut, p'c1'StdOutU32) @inline {
       p.reserve(val, so);
    }
 }
 using 'u16 {
-   stdout-reserve(val'this, so'C1'StdOut, p'C1'StdOutU32) @inline {
+   stdout-reserve(val'this, so'c1'StdOut, p'c1'StdOutU32) @inline {
       p.reserve(val, so);
    }
 }
 using 'u8 {
-   stdout-reserve(val'this, so'C1'StdOut, p'C1'StdOutU32) @inline {
+   stdout-reserve(val'this, so'c1'StdOut, p'c1'StdOutU32) @inline {
       p.reserve(val, so);
    }
 }
 using 'char {
-   stdout-reserve(val'this, so'C1'StdOut, p'C1'StdOutChar) @inline {
+   stdout-reserve(val'this, so'c1'StdOut, p'c1'StdOutChar) @inline {
       p.reserve(val, so);
    }
-   stdout-reserve-arr(str'this @const[], so'C1'StdOut, p'C1'StdOutStr) @inline {
+   stdout-reserve-arr(str'this @const[], so'c1'StdOut, p'c1'StdOutStr) @inline {
       p.reserve(str, so);
    }
-   stdout-reserve-arr(str'this @const[], len'u32, so'C1'StdOut, p'C1'StdOutStr) @inline {
+   stdout-reserve-arr(str'this @const[], len'u32, so'c1'StdOut, p'c1'StdOutStr) @inline {
       p.reserve(str, len, so);
    }
 }

@@ -1,34 +1,34 @@
-using 'Cp1 {
-expr-char(value'i32)'ExprI {
-   var e'ExprChar;
+using 'cp1 {
+expr-char(value'i32)'expr-i {
+   var e'expr-char;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #char);
    e.value = value;
    return e-idx;
 }
 write-char(c'char);
-using 'ExprI {
-   wr-char(expr'Expr, w'Wtr, header'bool) @case.wr() @inline {
-      var e'ExprChar = expr;
+using 'expr-i {
+   wr-char(expr'expr, w'wtr, header'bool) @case.wr() @inline {
+      var e'expr-char = expr;
       w.n(e.value);
    }
-   rd-char(e-idx'ExprI, r'Rdr) @case.rd() @inline {
-      var e'ExprChar;
+   rd-char(e-idx'expr-i, r'rdr) @case.rd() @inline {
+      var e'expr-char;
       quick-alloc-one(e);
       e-idx.set(e.base, #char);
       e.value = r.n();
    }
-   write-char(expr'Expr) @case.write() @inline {
-      var e'ExprChar = expr;
-      'Cp1.write-char(e.value);
+   write-char(expr'expr) @case.write() @inline {
+      var e'expr-char = expr;
+      'cp1.write-char(e.value);
    }
-   process-char(expr'Expr, ok'bool&) @case.process() @inline {
+   process-char(expr'expr, ok'bool&) @case.process() @inline {
       ok = true;
    }
-   type-char(expr'Expr, at'At&) @case.type() @inline {
+   type-char(expr'expr, at'at&) @case.type() @inline {
       at = basic-type(#char);
    }
-   value-char(le'this, reff'i32, paren'bool, v'Value, ok'bool&) @case.value() @inline {
+   value-char(le'this, reff'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
       v.type = basic-type(#char);
       v.info.init();
       v.info.array-c = 0;

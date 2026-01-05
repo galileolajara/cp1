@@ -1,7 +1,7 @@
-using 'C = 'LibC;
-using 'C1 = 'LibCp1;
-using 'Cp1 {
-union 'Rdr[
+using 'c = 'libc;
+using 'c1 = 'libcp1;
+using 'cp1 {
+union 'rdr[
    reff'ref,
    pos'usz,
    p1'u8[],
@@ -36,7 +36,7 @@ union 'Rdr[
       r.pos += 8;
       return val;
    }
-   id(r'this)'Id @inline {
+   id(r'this)'id @inline {
       return r.n();
    }
    include "num.c" {
@@ -45,11 +45,11 @@ union 'Rdr[
       N(r'this)'u32 @real-name(Fgetlnum) @no-decl;
       I(r'this)'i32 @real-name(Fgetlint) @no-decl;
    }
-   tok(r'this)'Token @inline {
+   tok(r'this)'token @inline {
       return r.n1();
    }
    copy(r'this, data'ref, size'i32) @inline {
-      'C.memcpy(data, r.reff, size);
+      'c.memcpy(data, r.reff, size);
       r.pos += size;
    }
    b(r'this)'bool @inline {

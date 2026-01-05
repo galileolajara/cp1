@@ -1,7 +1,7 @@
-using 'C = 'LibC;
-using 'C1 = 'LibCp1;
-using 'Cp1 {
-union 'Wtr[
+using 'c = 'libc;
+using 'c1 = 'libcp1;
+using 'cp1 {
+union 'wtr[
    reff'ref,
    pos'usz,
    p1'u8[],
@@ -38,7 +38,7 @@ union 'Wtr[
       I(w'this, n'i64) @real-name(Fputlint) @no-decl;
    }
    copy(w'this, data'ref, size'i32) @inline {
-      'C.memcpy(w.reff, data, size);
+      'c.memcpy(w.reff, data, size);
       w.pos += size;
    }
    b(w'this, val'bool) @inline {

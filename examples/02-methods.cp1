@@ -1,13 +1,13 @@
 require "LibCp1/stdout.cp1";
 
-using 'C1 = 'LibCp1;
+using 'c1 = 'libcp1;
 
-struct 'Coord[x'i32, y'i32] { // a struct
+struct 'coord[x'i32, y'i32] { // a struct
    init(s'this) { // a method
       s.x = 0;
       s.y = 0;
    }
-   walk(s'this, dir'Dir) { // a method
+   walk(s'this, dir'dir) { // a method
       dir.print();
       switch dir {
          case #left {
@@ -26,20 +26,20 @@ struct 'Coord[x'i32, y'i32] { // a struct
    }
 }
 
-enum 'Dir[#left, #up, #right, #down]'u8 { // an 8-bit enum
+enum 'dir[#left, #up, #right, #down]'u8 { // an 8-bit enum
    print(d'this) { // a method
       switch d {
          case #left {
-            'C1.stdout{"Going left...\n"}
+            'c1.stdout{"Going left...\n"}
          }
          case #up {
-            'C1.stdout{"Going up...\n"}
+            'c1.stdout{"Going up...\n"}
          }
          case #right {
-            'C1.stdout{"Going right...\n"}
+            'c1.stdout{"Going right...\n"}
          }
          case #down {
-            'C1.stdout{"Going down...\n"}
+            'c1.stdout{"Going down...\n"}
          }
       }
    }
@@ -47,17 +47,17 @@ enum 'Dir[#left, #up, #right, #down]'u8 { // an 8-bit enum
 
 using 'i32 { // access the namespace of 32-bit int, then add a "print" and "increment" method
    print(i'this) {
-      'C1.stdout{"Int's value is " i "\n"}
+      'c1.stdout{"Int's value is " i "\n"}
    }
    inc(i'this&) {
       i++;
    }
 }
 main()'intc {
-   'Coord.init(s!); // s is automatically declared as a coord allocated in the stack
+   'coord.init(s!); // s is automatically declared as a coord allocated in the stack
    s.walk(#left);
    s.walk(#down);
-   'C1.stdout{"The location is at (" s.x ", " s.y ")\n"}
+   'c1.stdout{"The location is at (" s.x ", " s.y ")\n"}
    i! = 7'i32;
    i.print();
    i.inc();

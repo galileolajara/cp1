@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
       sum = crc32c(sum, mem, len);
    }
    FILE* f = fopen(argv[argc - 1], "wb");
-   fprintf(f, "#define _NCp1_Pbuild_crc32c_0() 0x%x\n", sum);
+   fprintf(f, "#define _Ncp1_Pbuild_crc32c_0() 0x%x\n", sum);
    fclose(f);
    return 0;
 }

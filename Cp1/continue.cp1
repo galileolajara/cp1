@@ -1,40 +1,40 @@
-using 'C = 'LibC;
-using 'C1 = 'LibCp1;
-using 'Cp1 {
-struct 'StmtContinue[
-   base'Stmt.,
+using 'c = 'libc;
+using 'c1 = 'libcp1;
+using 'cp1 {
+struct 'stmt-continue[
+   base'stmt.,
    nest'u8,
 ];
-stmt-continue(id'Id, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32) {
-   var s'StmtContinue;
+stmt-continue(id'id, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32) {
+   var s'stmt-continue;
    quick-alloc-one(s);
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #continue);
    // s.id = id;
    if .nest-stack-c <= 0 {
-      'C1.stdout{.input-path '': begin-row '': begin-col ": Cannot have a continue because it:S not inside a loop\n"}
-      'C.exit(#failure);
+      'c1.stdout{.input-path '': begin-row '': begin-col ": Cannot have a continue because it:S not inside a loop\n"}
+      'c.exit(#failure);
    }
    s.nest = .nest-stack-c - 1;
 }
-using 'StmtSpace {
-   wr-continue(stmt'Stmt, w'Wtr, header'bool) @case.wr() @inline {
-      var s'StmtContinue = stmt;
+using 'stmt-space {
+   wr-continue(stmt'stmt, w'wtr, header'bool) @case.wr() @inline {
+      var s'stmt-continue = stmt;
       w.n1(s.nest);
    }
-   rd-continue(space'StmtSpace, r'Rdr) @case.rd() @inline {
-      var s'StmtContinue;
+   rd-continue(space'stmt-space, r'rdr) @case.rd() @inline {
+      var s'stmt-continue;
       quick-alloc-one(s);
       s.nest = r.n1();
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #continue);
    }
 }
-using 'Stmt {
-   write-continue(stmt'Stmt) @case.write() @inline {
-      var s'StmtContinue = stmt;
+using 'stmt {
+   write-continue(stmt'stmt) @case.write() @inline {
+      var s'stmt-continue = stmt;
       output{"goto continue_" .nest-stack-id-v[s.nest] ";\n"}
    }
-   process-continue(stmt'Stmt, ok'bool&) @case.process() @inline {
-      var s'StmtContinue = stmt;
+   process-continue(stmt'stmt, ok'bool&) @case.process() @inline {
+      var s'stmt-continue = stmt;
       ok = true;
    }
 }

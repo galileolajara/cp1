@@ -1,16 +1,16 @@
-using 'C = 'LibC;
-using 'C1 = 'LibCp1;
-using 'Cp1 {
-enum 'Cvar[#nil = -1, #0]'i32 {
-   rd(c'this&, r'Rdr) @inline {
-      idx! = (r.n() - 1)'Cvar;
+using 'c = 'libc;
+using 'c1 = 'libcp1;
+using 'cp1 {
+enum 'cvar[#nil = -1, #0]'i32 {
+   rd(c'this&, r'rdr) @inline {
+      idx! = (r.n() - 1)'cvar;
       if idx == #nil {
          c = #nil;
       } else {
          c = .cvar-table[idx];
       }
    }
-   wr(g'this, w'Wtr) @inline {
+   wr(g'this, w'wtr) @inline {
       w.n(g'base + 1);
    }
    process(c'this)'bool {
@@ -34,7 +34,7 @@ enum 'Cvar[#nil = -1, #0]'i32 {
          cvar.decl.type = at-i;
          at! = at-i.ptr();
          if (&&, at.type != #basic, at.decl.structt == #nil) {
-            'C1.stdout{"Error, the type '" at.name.id "' used in cvar '." cvar.decl.name "' was not defined\n"}
+            'c1.stdout{"Error, the type '" at.name.id "' used in cvar '." cvar.decl.name "' was not defined\n"}
             return false;
          }
          at-i.output(cvar.file, cvar.row, cvar.col);
@@ -46,7 +46,7 @@ enum 'Cvar[#nil = -1, #0]'i32 {
       
       return true;
    }
-   ptr(c'this)'CvarData @inline {
+   ptr(c'this)'cvar-data @inline {
       return .cvar-v[c];
    }
    write(c'this) @inline {
@@ -63,7 +63,7 @@ enum 'Cvar[#nil = -1, #0]'i32 {
       }
    }
 }
-enum 'CvarFlags[
+enum 'cvar-flags[
    #0,
    #set-expr = 1,
    #as-enum = 2,
@@ -71,49 +71,49 @@ enum 'CvarFlags[
    #dont-count = 8 | 4,
    // #real-name = 2,
    ]'u8 {
-   wr(f'this, w'Wtr) @inline {
+   wr(f'this, w'wtr) @inline {
       w.n1(f'base);
    }
-   rd(f'this&, r'Rdr) @inline {
-      f = r.n1()'CvarFlags;
+   rd(f'this&, r'rdr) @inline {
+      f = r.n1()'cvar-flags;
    }
 }
-var cvar-c'Cvar;
-var cvar-cap'Cvar;
-var cvar-v'CvarData.[];
-expr-cvar(at'At, name'Id)'ExprI {
-   var e'ExprCvar;
+var cvar-c'cvar;
+var cvar-cap'cvar;
+var cvar-v'cvar-data.[];
+expr-cvar(at'at, name'id)'expr-i {
+   var e'expr-cvar;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #cvar);
    e.at = at;
    e.name = name;
    return e-idx;
 }
-using 'ExprI {
-   write-cvar(expr'Expr) @case.write() @inline {
-      var e'ExprCvar = expr;
+using 'expr-i {
+   write-cvar(expr'expr) @case.write() @inline {
+      var e'expr-cvar = expr;
       e.cvar.write();
    }
-   wr-cvar(expr'Expr, w'Wtr, header'bool) @case.wr() @inline {
-      var e'ExprCvar = expr;
+   wr-cvar(expr'expr, w'wtr, header'bool) @case.wr() @inline {
+      var e'expr-cvar = expr;
       e.at.wr(w, header);
       e.name.wr(w, header);
    }
-   rd-cvar(e-idx'ExprI, r'Rdr) @case.rd() @inline {
-      'At.rd(at!, r);
-      'Id.rd(name!, r);
+   rd-cvar(e-idx'expr-i, r'rdr) @case.rd() @inline {
+      'at.rd(at!, r);
+      'id.rd(name!, r);
       set-cvar(e-idx, at, name);
    }
-   set-cvar(e-idx'ExprI, at'At, name'Id) {
-      var e'ExprCvar;
+   set-cvar(e-idx'expr-i, at'at, name'id) {
+      var e'expr-cvar;
       quick-alloc-one(e);
       e-idx.set(e.base, #cvar);
       e.at = at;
       e.name = name;
       e.try = #nil;
    }
-   value-cvar(e'this, reff'i8, paren'bool, v'Value, ok'bool&) @case.value() @inline {
-      var expr'ExprCvar = e.ptr();
+   value-cvar(e'this, reff'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
+      var expr'expr-cvar = e.ptr();
       cvar! = expr.cvar.ptr();
       if (cvar.decl.type == #nil) && ((cvar.flags & #set-expr) != #0) {
          ok = cvar.expr-set.value(reff, paren, v);
@@ -125,8 +125,8 @@ using 'ExprI {
          ok = true;
       }
    }
-   type-cvar(expr'Expr, at'At&) @case.type() @inline {
-      var e'ExprCvar = expr;
+   type-cvar(expr'expr, at'at&) @case.type() @inline {
+      var e'expr-cvar = expr;
       cvar! = e.cvar.ptr();
       if (cvar.decl.type == #nil) && ((cvar.flags & #set-expr) != #0) {
          at = cvar.expr-set.type();
@@ -134,8 +134,8 @@ using 'ExprI {
          at = cvar.decl.type;
       }
    }
-   process-cvar(expr'Expr, ok'bool&) @case.process() @inline {
-      var e'ExprCvar = expr;
+   process-cvar(expr'expr, ok'bool&) @case.process() @inline {
+      var e'expr-cvar = expr;
       name! = e.name;
       var cvar-c, cvar-v;
       if e.try != #nil {
@@ -186,10 +186,10 @@ using 'ExprI {
          cvar-c = at.cvar-c;
          cvar-v = at.cvar-v;
       }
-      'C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find #" name ''\n}
+      'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find #" name ''\n}
    }
-   try-deduce-cvar(expr'Expr, at'At) @case.try-deduce() @inline {
-      var e'ExprCvar = expr;
+   try-deduce-cvar(expr'expr, at'at) @case.try-deduce() @inline {
+      var e'expr-cvar = expr;
       if e.at == #nil {
          e.try = at;
       }

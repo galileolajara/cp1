@@ -1,7 +1,7 @@
-using 'C1 = 'LibCp1;
-using 'Cp1 {
-expr-bools(left'ExprI, right'ExprI, type'Bools)'ExprI {
-   var e'ExprBools;
+using 'c1 = 'libcp1;
+using 'cp1 {
+expr-bools(left'expr-i, right'expr-i, type'bools)'expr-i {
+   var e'expr-bools;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #bools);
    e.left = left;
@@ -9,8 +9,8 @@ expr-bools(left'ExprI, right'ExprI, type'Bools)'ExprI {
    e.type = type;
    return e-idx;
 }
-expr-bools-add(bools'ExprI, right'ExprI)'ExprI {
-   var e'ExprBools = bools.ptr();
+expr-bools-add(bools'expr-i, right'expr-i)'expr-i {
+   var e'expr-bools = bools.ptr();
    i! = e.item-c++;
    if e.item-cap <= e.item-c {
       old-cap! = e.item-cap;
@@ -20,37 +20,37 @@ expr-bools-add(bools'ExprI, right'ExprI)'ExprI {
    e.item-v[i].expr = right;
    return bools;
 }
-enum 'Bools[#and, #or]'u8 {
-   wr(e'this, w'Wtr) @inline {
+enum 'bools[#and, #or]'u8 {
+   wr(e'this, w'wtr) @inline {
       w.n1(e'base);
    }
-   rd(e'this&, r'Rdr) @inline {
-      e = r.n1()'Bools;
+   rd(e'this&, r'rdr) @inline {
+      e = r.n1()'bools;
    }
 }
-ensure-bool(at'At, type'Bools)'bool {
+ensure-bool(at'at, type'bools)'bool {
    if at != basic-type(#bool) {
-      'C1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Error, the expression used for "}
+      'c1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Error, the expression used for "}
       switch type {
          case #and {
-            'C1.stdbuf{"&&"}
+            'c1.stdbuf{"&&"}
          }
          case #or {
-            'C1.stdbuf{"||"}
+            'c1.stdbuf{"||"}
          }
       }
-      'C1.stdout{" operator is not a boolean type\n"}
+      'c1.stdout{" operator is not a boolean type\n"}
       return false;
    }
    return true;
 }
-using 'ExprI {
-   type-bools(expr'Expr, at'At&) @case.type() @inline {
-      var e'ExprBools = expr;
+using 'expr-i {
+   type-bools(expr'expr, at'at&) @case.type() @inline {
+      var e'expr-bools = expr;
       at = e.left.type();
    }
-   value-bools(e'this, reff'i32, paren'bool, v'Value, ok'bool&) @case.value() @inline {
-      var expr'ExprBools = e.ptr();
+   value-bools(e'this, reff'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
+      var expr'expr-bools = e.ptr();
       if expr.is-overload {
          ok = expr.left.value(reff, paren, v);
          return;
@@ -64,8 +64,8 @@ using 'ExprI {
       v.paren = false;
       ok = true;
    }
-   process-bools(expr'Expr, ok'bool&) @case.process() @inline {
-      var e'ExprBools = expr;
+   process-bools(expr'expr, ok'bool&) @case.process() @inline {
+      var e'expr-bools = expr;
       "again:";
       left-type! = e.left.type();
       left-type-ptr! = left-type.ptr();
@@ -78,12 +78,12 @@ using 'ExprI {
             f! = f-idx.ptr();
             loop {
                if f.farg-v[1].decl.type == e-right-type {
-                  e-method! = 'ExprI.alloc();
+                  e-method! = 'expr-i.alloc();
                   var group-v'u8[1];
                   group-v[0] = 2;
-                  var carg-v'ExprI[2];
+                  var carg-v'expr-i[2];
                   carg-v[0] = e.right;
-                  e-cvar! = 'ExprI.alloc();
+                  e-cvar! = 'expr-i.alloc();
                   var id-op;
                   switch e.type {
                      case #and {
@@ -125,19 +125,19 @@ using 'ExprI {
                   f2! = f2-idx.ptr();
                   loop {
                      if f2.farg-v[0].decl.type == e-right-type {
-                        e-func! = 'ExprI.alloc();
+                        e-func! = 'expr-i.alloc();
                         var group-v'u8[1];
                         group-v[0] = 1;
-                        var carg-v'ExprI[1];
+                        var carg-v'expr-i[1];
                         carg-v[0] = e.right;
                         set-func(e-func, f2.at, f2.decl.name, 1, group-v, 1, carg-v);
                         if true {
-                           e-method! = 'ExprI.alloc();
+                           e-method! = 'expr-i.alloc();
                            var group-v'u8[1];
                            group-v[0] = 2;
-                           var carg-v'ExprI[2];
+                           var carg-v'expr-i[2];
                            carg-v[0] = e-func;
-                           e-cvar! = 'ExprI.alloc();
+                           e-cvar! = 'expr-i.alloc();
                            var id-op;
                            switch e.type {
                               case #and {
@@ -189,8 +189,8 @@ using 'ExprI {
       }
       ok = true;
    }
-   write-bools(expr'Expr) @case.write() @inline {
-      var e'ExprBools = expr;
+   write-bools(expr'expr) @case.write() @inline {
+      var e'expr-bools = expr;
       if e.is-overload {
          e.left.write-value(e.left-val);
          return;
@@ -222,8 +222,8 @@ using 'ExprI {
          }
       }
    }
-   wr-bools(expr'Expr, w'Wtr, header'bool) @case.wr() @inline {
-      var e'ExprBools = expr;
+   wr-bools(expr'expr, w'wtr, header'bool) @case.wr() @inline {
+      var e'expr-bools = expr;
       e.left.wr(w, header);
       e.right.wr(w, header);
       w.n1(e.item-c);
@@ -232,8 +232,8 @@ using 'ExprI {
       }
       e.type.wr(w);
    }
-   rd-bools(e-idx'ExprI, r'Rdr) @case.rd() @inline {
-      var e'ExprBools;
+   rd-bools(e-idx'expr-i, r'rdr) @case.rd() @inline {
+      var e'expr-bools;
       quick-alloc-one(e);
       e-idx.set(e.base, #bools);
       e.left.rd(r);

@@ -1,9 +1,9 @@
-using 'C = 'LibC;
-using 'X = 'Posix;
+using 'c = 'libc;
+using 'x = 'posix;
 require "Posix/fcntl.cp1"; // For Posix.Fd
 include <sys/timerfd.h> {
-   using 'Posix {
-      timerfd-create(clock-id'C'ClockId, flags'intc)'X'Fd @real-name(timerfd_create);
-      timerfd-settime(fd'X'Fd, flags'intc, timer'C'ITimerspec @const, old-timer'C'ITimerspec) @no-decl @real-name(timerfd_settime);
+   using 'posix {
+      timerfd-create(clock-id'c'clock-id, flags'intc)'x'fd @real-name(timerfd_create);
+      timerfd-settime(fd'x'fd, flags'intc, timer'c'itimerspec @const, old-timer'c'itimerspec) @no-decl @real-name(timerfd_settime);
    }
 }
