@@ -1,14 +1,14 @@
-using C1 = LibCp1;
-using Cp1 {
-using StmtSpace {
-   wr-if(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
-      var s:StmtIf = stmt;
+using 'C1 = 'LibCp1;
+using 'Cp1 {
+using 'StmtSpace {
+   wr-if(stmt'Stmt, w'Wtr, header'bool) @case.wr() @inline {
+      var s'StmtIf = stmt;
       s.expr.wr(w, header);
    }
-   var if-stack-v:StmtIf[256];
-   var if-stack-c:u8;
-   rd-if(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      var s:StmtIf;
+   var if-stack-v'StmtIf[256];
+   var if-stack-c'u8;
+   rd-if(space'StmtSpace, r'Rdr) @case.rd() @inline {
+      var s'StmtIf;
       quick-alloc-one(s);
       s.expr.rd(r);
       s.overload-type = #nil;
@@ -16,31 +16,31 @@ using StmtSpace {
       .if-stack-v[.if-stack-c] = s;
       .if-stack-c++;
    }
-   wr-if-elif(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
-      var s:StmtIfElif = stmt;
+   wr-if-elif(stmt'Stmt, w'Wtr, header'bool) @case.wr() @inline {
+      var s'StmtIfElif = stmt;
       s.expr.wr(w, header);
    }
-   rd-if-elif(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      var s:StmtIfElif;
+   rd-if-elif(space'StmtSpace, r'Rdr) @case.rd() @inline {
+      var s'StmtIfElif;
       quick-alloc-one(s);
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #if-elif);
       // s.if-begin = .if-stack-v[.if-stack-c - 1];
    }
-   wr-if-else(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
+   wr-if-else(stmt'Stmt, w'Wtr, header'bool) @case.wr() @inline {
    }
-   rd-if-else(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      var s:StmtIfElse;
+   rd-if-else(space'StmtSpace, r'Rdr) @case.rd() @inline {
+      var s'StmtIfElse;
       quick-alloc-one(s);
       space.stmt-push(s.base, 0, 0, 0, 0, #if-else);
       // s.overload = #nil;
       s.expr = #nil;
       s.if-begin = .if-stack-v[.if-stack-c - 1]; // .if-else = s;
    }
-   wr-if-end(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
+   wr-if-end(stmt'Stmt, w'Wtr, header'bool) @case.wr() @inline {
    }
-   rd-if-end(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      var s:StmtIfEnd;
+   rd-if-end(space'StmtSpace, r'Rdr) @case.rd() @inline {
+      var s'StmtIfEnd;
       quick-alloc-one(s);
       space.stmt-push(s.base, 0, 0, 0, 0, #if-end);
       // s.overload = #nil;
@@ -49,9 +49,9 @@ using StmtSpace {
       s.if-begin = .if-stack-v[.if-stack-c]; // .if-end = s;
    }
 }
-using Stmt {
-   write-if(stmt:Stmt) @case.write() @inline {
-      var s:StmtIf = stmt;
+using 'Stmt {
+   write-if(stmt'Stmt) @case.write() @inline {
+      var s'StmtIf = stmt;
       if s.is-overload {
          s.expr.write();
          output{"; {\n"}
@@ -61,8 +61,8 @@ using Stmt {
       s.expr.write-value(s.val);
       output{") {\n"}
    }
-   process-if(stmt:Stmt, ok:bool&) @case.process() @inline {
-      var s:StmtIf = stmt;
+   process-if(stmt'Stmt, ok'bool&) @case.process() @inline {
+      var s'StmtIf = stmt;
       if !s.expr.value(1, false, s.val) {
          return;
       }
@@ -72,14 +72,14 @@ using Stmt {
          f-idx! = en.overload-if-begin;
          if f-idx != #nil {
             f! = f-idx.ptr();
-            e-method! = ExprI.alloc();
-            var group-v:u8[1];
+            e-method! = 'ExprI.alloc();
+            var group-v'u8[1];
             group-v[0] = 1;
-            var carg-v:ExprI[1];
-            e-bool! = ExprI.alloc();
-            ExprI.set-bool(e-bool, false);
+            var carg-v'ExprI[1];
+            e-bool! = 'ExprI.alloc();
+            'ExprI.set-bool(e-bool, false);
             carg-v[0] = e-bool;
-            ExprI.set-method(e-method, s.expr, f.decl.name, 1, group-v, 1, carg-v);
+            'ExprI.set-method(e-method, s.expr, f.decl.name, 1, group-v, 1, carg-v);
             s.expr = e-method;
             s.is-overload = true;
             if !s.expr.process() {
@@ -91,13 +91,13 @@ using Stmt {
          }
       }
       if s.val.type != basic-type(#bool) {
-         C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": Error, the expression used for 'if' is not a boolean type\n"}
+         'C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": Error, the expression used for 'if' is not a boolean type\n"}
          return;
       }
       ok = true;
    }
-   write-if-elif(stmt:Stmt) @case.write() @inline {
-      var s:StmtIfElif = stmt;
+   write-if-elif(stmt'Stmt) @case.write() @inline {
+      var s'StmtIfElif = stmt;
       if s.is-overload {
          output{"} "}
          s.expr-else.write();
@@ -110,8 +110,8 @@ using Stmt {
       s.expr.write-value(s.val);
       output{") {\n"}
    }
-   process-if-elif(stmt:Stmt, ok:bool&) @case.process() @inline {
-      var s:StmtIfElif = stmt;
+   process-if-elif(stmt'Stmt, ok'bool&) @case.process() @inline {
+      var s'StmtIfElif = stmt;
       if !s.expr.value(1, false, s.val) {
          return;
       }
@@ -125,32 +125,32 @@ using Stmt {
                f-idx! = en.overload-if-else;
                if f-idx != #nil {
                   f! = f-idx.ptr();
-                  e-func! = ExprI.alloc();
-                  var group-v:u8[1];
+                  e-func! = 'ExprI.alloc();
+                  var group-v'u8[1];
                   group-v[0] = 1;
-                  var carg-v:ExprI[1];
-                  e-bool! = ExprI.alloc();
-                  ExprI.set-bool(e-bool, true);
+                  var carg-v'ExprI[1];
+                  e-bool! = 'ExprI.alloc();
+                  'ExprI.set-bool(e-bool, true);
                   carg-v[0] = e-bool;
-                  ExprI.set-func(e-func, type, f.decl.name, 1, group-v, 1, carg-v);
+                  'ExprI.set-func(e-func, type, f.decl.name, 1, group-v, 1, carg-v);
                   s.expr-else = e-func;
                   if !s.expr-else.process() {
                      return;
                   }
                } else {
-                  C1.stdout{"Error 2796\n"}
+                  'C1.stdout{"Error 2796\n"}
                   return;
                }
             }
             f! = f-idx.ptr();
-            e-method! = ExprI.alloc();
-            var group-v:u8[1];
+            e-method! = 'ExprI.alloc();
+            var group-v'u8[1];
             group-v[0] = 1;
-            var carg-v:ExprI[1];
-            e-bool! = ExprI.alloc();
-            ExprI.set-bool(e-bool, true);
+            var carg-v'ExprI[1];
+            e-bool! = 'ExprI.alloc();
+            'ExprI.set-bool(e-bool, true);
             carg-v[0] = e-bool;
-            ExprI.set-method(e-method, s.expr, f.decl.name, 1, group-v, 1, carg-v);
+            'ExprI.set-method(e-method, s.expr, f.decl.name, 1, group-v, 1, carg-v);
             s.expr = e-method;
             s.is-overload = true;
             if !s.expr.process() {
@@ -161,13 +161,13 @@ using Stmt {
          }
       }
       if s.val.type != basic-type(#bool) {
-         C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": Error, the expression used for 'if' is not a boolean type\n"}
+         'C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": Error, the expression used for 'if' is not a boolean type\n"}
          return;
       }
       ok = true;
    }
-   write-if-else(stmt:Stmt) @case.write() @inline {
-      var s:StmtIfElse = stmt;
+   write-if-else(stmt'Stmt) @case.write() @inline {
+      var s'StmtIfElse = stmt;
       if s.expr != #nil {
          output{"} "}
          s.expr.write();
@@ -176,22 +176,22 @@ using Stmt {
       }
       output{"} else {\n"}
    }
-   process-if-else(stmt:Stmt, ok:bool&) @case.process() @inline {
-      var s:StmtIfElse = stmt;
+   process-if-else(stmt'Stmt, ok'bool&) @case.process() @inline {
+      var s'StmtIfElse = stmt;
       overload-type! = s.if-begin.overload-type;
       if overload-type != #nil {
          en! = overload-type.ptr().decl.enumm.ptr();
          f-idx! = en.overload-if-else;
          if f-idx != #nil {
             f! = f-idx.ptr();
-            e-func! = ExprI.alloc();
-            var group-v:u8[1];
+            e-func! = 'ExprI.alloc();
+            var group-v'u8[1];
             group-v[0] = 1;
-            var carg-v:ExprI[1];
-            e-bool! = ExprI.alloc();
-            ExprI.set-bool(e-bool, false);
+            var carg-v'ExprI[1];
+            e-bool! = 'ExprI.alloc();
+            'ExprI.set-bool(e-bool, false);
             carg-v[0] = e-bool;
-            ExprI.set-func(e-func, overload-type, f.decl.name, 1, group-v, 1, carg-v);
+            'ExprI.set-func(e-func, overload-type, f.decl.name, 1, group-v, 1, carg-v);
             s.expr = e-func;
             if !s.expr.process() {
                return;
@@ -202,8 +202,8 @@ using Stmt {
       }
       ok = true;
    }
-   write-if-end(stmt:Stmt) @case.write() @inline {
-      var s:StmtIfEnd = stmt;
+   write-if-end(stmt'Stmt) @case.write() @inline {
+      var s'StmtIfEnd = stmt;
       if s.expr != #nil {
          output{"} "}
          s.expr.write();
@@ -212,18 +212,18 @@ using Stmt {
       }
       output{"}\n"}
    }
-   process-if-end(stmt:Stmt, ok:bool&) @case.process() @inline {
-      var s:StmtIfEnd = stmt;
+   process-if-end(stmt'Stmt, ok'bool&) @case.process() @inline {
+      var s'StmtIfEnd = stmt;
       overload-type! = s.if-begin.overload-type;
       if overload-type != #nil {
          en! = overload-type.ptr().decl.enumm.ptr();
          f-idx! = en.overload-if-end;
          if f-idx != #nil {
             f! = f-idx.ptr();
-            e-func! = ExprI.alloc();
-            var group-v:u8[1];
+            e-func! = 'ExprI.alloc();
+            var group-v'u8[1];
             group-v[0] = 0;
-            ExprI.set-func(e-func, overload-type, f.decl.name, 1, group-v, 0, null);
+            'ExprI.set-func(e-func, overload-type, f.decl.name, 1, group-v, 0, null);
             s.expr = e-func;
             if !s.expr.process() {
                return;
@@ -241,22 +241,22 @@ stmt-if-begin() {
 }
 stmt-elif-begin() {
 }
-stmt-if-set(expr:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
-   var s:StmtIf;
+stmt-if-set(expr'ExprI, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32) {
+   var s'StmtIf;
    quick-alloc-one(s);
    s.expr = expr;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #if);
    stmt-space-begin();
 }
-stmt-elif-set(expr:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
-   var s:StmtIfElif;
+stmt-elif-set(expr'ExprI, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32) {
+   var s'StmtIfElif;
    quick-alloc-one(s);
    s.expr = expr;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #if-elif);
    stmt-space-begin();
 }
 stmt-else-set() {
-   var s:StmtIfElse;
+   var s'StmtIfElse;
    quick-alloc-one(s);
    stmt-push(s.base, 0, 0, 0, 0, #if-else);
    stmt-space-begin();
@@ -271,7 +271,7 @@ stmt-else-end() {
    stmt-space-end();
 }
 stmt-if-end-ifs() {
-   var s:StmtIfEnd;
+   var s'StmtIfEnd;
    quick-alloc-one(s);
    stmt-push(s.base, 0, 0, 0, 0, #if-end);
    stmt-space-end();

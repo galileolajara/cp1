@@ -1,62 +1,62 @@
-using C = LibC;
-using C1 = LibCp1;
-using X = Posix;
-using W = Windows;
+using 'C = 'LibC;
+using 'C1 = 'LibCp1;
+using 'X = 'Posix;
+using 'W = 'Windows;
 include "file.cp1.h" {
-   using Windows {
-      enum Handle[#null, #invalid @no-decl(INVALID_HANDLE_VALUE)]:usz @no-decl(HANDLE);
-      CreateFileA(path:char[], access:W.CreateFileAccess, share-mode:W.CreateFileShareMode, security-attributes:ref, creation-disposition:W.CreateFileCreationDisposition, flags:W.CreateFileFlags, template-file:Handle):Handle @no-decl @real-name;
-      enum CreateFileAccess[#read @no-decl(GENERIC_READ), #write @no-decl(GENERIC_WRITE)]:u32;
-      enum CreateFileShareMode[#0, #read @no-decl(FILE_SHARE_READ)]:u32;
-      enum CreateFileCreationDisposition[#open-existing @no-decl(OPEN_EXISTING), #create-always @no-decl(CREATE_ALWAYS)]:u32;
-      enum CreateFileFlags[#normal @no-decl(FILE_ATTRIBUTE_NORMAL)]:u32;
-      GetFileSizeEx(h:Handle, i:W.LargeInteger):bool @no-decl @real-name;
-      union LargeInteger[
-         quadPart:u64 @real-name(QuadPart),
+   using 'Windows {
+      enum 'Handle[#null, #invalid @no-decl(INVALID_HANDLE_VALUE)]'usz @no-decl(HANDLE);
+      CreateFileA(path'char[], access'W'CreateFileAccess, share-mode'W'CreateFileShareMode, security-attributes'ref, creation-disposition'W'CreateFileCreationDisposition, flags'W'CreateFileFlags, template-file'Handle)'Handle @no-decl @real-name;
+      enum 'CreateFileAccess[#read @no-decl(GENERIC_READ), #write @no-decl(GENERIC_WRITE)]'u32;
+      enum 'CreateFileShareMode[#0, #read @no-decl(FILE_SHARE_READ)]'u32;
+      enum 'CreateFileCreationDisposition[#open-existing @no-decl(OPEN_EXISTING), #create-always @no-decl(CREATE_ALWAYS)]'u32;
+      enum 'CreateFileFlags[#normal @no-decl(FILE_ATTRIBUTE_NORMAL)]'u32;
+      GetFileSizeEx(h'Handle, i'W'LargeInteger)'bool @no-decl @real-name;
+      union 'LargeInteger[
+         quadPart'u64 @real-name('QuadPart),
       ] @no-decl(LARGE_INTEGER);
-      CloseHandle(h:Handle):bool @no-decl @real-name;
-      ReadFile(h:Handle, buf:ref, size:u32, bytes-read:u32&, overlapped:ref):bool @no-decl @real-name;
-      WriteFile(h:Handle, buf:ref, size:u32, bytes-read:u32&, overlapped:ref):bool @no-decl @real-name;
+      CloseHandle(h'Handle)'bool @no-decl @real-name;
+      ReadFile(h'Handle, buf'ref, size'u32, bytes-read'u32&, overlapped'ref)'bool @no-decl @real-name;
+      WriteFile(h'Handle, buf'ref, size'u32, bytes-read'u32&, overlapped'ref)'bool @no-decl @real-name;
    }
 }
-using Cp1 {
-   read-file(path:char[], out-size:usz&):ref @inline {
+using 'Cp1 {
+   read-file(path'char[], out-size'usz&)'ref @inline {
       return read-file(path, 0, 0, -1, out-size);
    }
-   read-file(path:char[], add-before:i32, add-after:i32, max-size:usz, out-size:usz&):ref {
+   read-file(path'char[], add-before'i32, add-after'i32, max-size'usz, out-size'usz&)'ref {
       "#ifdef _WIN32";
       if true {
-         h! = W.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null);
+         h! = 'W.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null);
          if h == #invalid {
             return null;
          }
          var f-size;
-         if !W.GetFileSizeEx(h, f-size) {
-            W.CloseHandle(h);
+         if !'W.GetFileSizeEx(h, f-size) {
+            'W.CloseHandle(h);
             return null;
          }
          size! = f-size.quadPart;
          if max-size != 0 {
-            if size:usz > max-size {
+            if size'usz > max-size {
                size =  max-size;
             }
          }
-         var buf:u8[];
-         C.malloc-arr(buf, add-before + size + add-after);
+         var buf'u8[];
+         'C.malloc-arr(buf, add-before + size + add-after);
          var bytes-read;
-         if !W.ReadFile(h, &buf[add-before], size, bytes-read, null) || (bytes-read != size) {
-            C.free(buf);
-            W.CloseHandle(h);
+         if !'W.ReadFile(h, &buf[add-before], size, bytes-read, null) || (bytes-read != size) {
+            'C.free(buf);
+            'W.CloseHandle(h);
             return null;
          }
-         W.CloseHandle(h);
+         'W.CloseHandle(h);
          out-size = size;
          return buf;
       }
       "#else";
       if true {
          var fd;
-         if !X.Fd.open(fd, path, #rdonly) {
+         if !'X'Fd.open(fd, path, #rdonly) {
             return null;
          }
          size! = fd.seek(0, #end);
@@ -65,7 +65,7 @@ using Cp1 {
             return null;
          }
          if max-size != 0 {
-            if size:usz > max-size {
+            if size'usz > max-size {
                size =  max-size;
             }
          }
@@ -73,11 +73,11 @@ using Cp1 {
             fd.close();
             return null;
          }
-         var buf:u8[];
+         var buf'u8[];
          // C1.stdout{"malloc " (add-before + size + add-after):u32 "\n"}
-         C.malloc-arr(buf, add-before + size + add-after);
+         'C.malloc-arr(buf, add-before + size + add-after);
          if fd.read(&buf[add-before], size) != size {
-            C.free(buf);
+            'C.free(buf);
             fd.close();
             return null;
          }
@@ -87,25 +87,25 @@ using Cp1 {
       }
       "#endif";
    }
-   write-file(path:char[], data:ref, size:usz):bool {
+   write-file(path'char[], data'ref, size'usz)'bool {
       "#ifdef _WIN32";
       if true {
-         h! = W.CreateFileA(path, #write, #0, null, #create-always, #normal, #null);
+         h! = 'W.CreateFileA(path, #write, #0, null, #create-always, #normal, #null);
          if h == #invalid {
             return false;
          }
          var bytes-written;
-         if !W.WriteFile(h, data, size, bytes-written, null) || (bytes-written != size) {
-            W.CloseHandle(h);
+         if !'W.WriteFile(h, data, size, bytes-written, null) || (bytes-written != size) {
+            'W.CloseHandle(h);
             return false;
          }
-         W.CloseHandle(h);
+         'W.CloseHandle(h);
          return true;
       }
       "#else";
       if true {
          var fd;
-         if !X.Fd.open(fd, path, #create | #truncate | #wronly, 0o644) {
+         if !'X'Fd.open(fd, path, #create | #truncate | #wronly, 0o644) {
             return false;
          }
          if fd.write(data, size) != size {
@@ -117,24 +117,24 @@ using Cp1 {
       }
       "#endif";
    }
-   var output-data:char[] @real-name(output_data);
-   var output-cap:u32;
-   var output-len:u32 @real-name(output_len);
-   struct Output[reserve:u32] {
-      output-reserve-cstr(o:this, str:char[], len:u32, p:OutputStr) {
+   var output-data'char[] @real-name(output_data);
+   var output-cap'u32;
+   var output-len'u32 @real-name(output_len);
+   struct 'Output[reserve'u32] {
+      output-reserve-cstr(o'this, str'char[], len'u32, p'OutputStr) {
          p.reserve(str, len, o);
       }
-      output-reserve-end(o:this) {
+      output-reserve-end(o'this) {
          output-reserve(o.reserve);
       }
-      output-end(o:this) {
+      output-end(o'this) {
       }
    }
-   enum OutputIntType[#oct, #hex]:u8;
-   output(o:Output) @meta(output-reserve output end) @inline {
+   enum 'OutputIntType[#oct, #hex]'u8;
+   output(o'Output) @meta(output-reserve output end) @inline {
       o.reserve = 0;
    }
-   output-reserve(len:u32) {
+   output-reserve(len'u32) {
       space! = .output-cap - .output-len;
       if space < len {
          .output-cap += .output-cap;
@@ -144,19 +144,19 @@ using Cp1 {
             space = .output-cap - .output-len;
          }
          .output-cap += .output-cap;
-         C.realloc-arr(.output-data, .output-cap);
+         'C.realloc-arr(.output-data, .output-cap);
       }
    }
-   output-u32(val:u32) {
+   output-u32(val'u32) {
       output-reserve(10);
       output-u32-nr(val);
    }
-   output-u32-nr(val:u32) {
+   output-u32-nr(val'u32) {
       if val == 0 {
          .output-data[.output-len++] = ''0;
       } else {
          // integer to string, count the digits
-         var data:char[];
+         var data'char[];
          data = &.output-data[.output-len];
          digits! = 0;
          loop {
@@ -177,16 +177,16 @@ using Cp1 {
          .output-len += digits;
       }
    }
-   output-o32(val:u32) {
+   output-o32(val'u32) {
       output-reserve(11);
-      output-o32-nr(val:u32);
+      output-o32-nr(val'u32);
    }
-   output-o32-nr(val:u32) {
+   output-o32-nr(val'u32) {
       if val == 0 {
          .output-data[.output-len++] = ''0;
       } else {
          // integer to string, count the digits
-         var data:char[];
+         var data'char[];
          data = &.output-data[.output-len];
          digits! = 0;
          loop {
@@ -207,16 +207,16 @@ using Cp1 {
          .output-len += digits;
       }
    }
-   output-x32(val:u32) {
+   output-x32(val'u32) {
       output-reserve(8);
       output-x32-nr(val);
    }
-   output-x32-nr(val:u32) {
+   output-x32-nr(val'u32) {
       if val == 0 {
          .output-data[.output-len++] = ''0;
       } else {
          // integer to string, count the digits
-         var data:char[];
+         var data'char[];
          data = &.output-data[.output-len];
          digits! = 0;
          loop {
@@ -242,25 +242,25 @@ using Cp1 {
          .output-len += digits;
       }
    }
-   output-f32(val:f32) {
+   output-f32(val'f32) {
       output-reserve(47);
       output-f32-nr(val);
    }
-   output-f32-nr(val:f32) {
-      .output-len += C.sprintf(&.output-data[.output-len], "%f", val);
+   output-f32-nr(val'f32) {
+      .output-len += 'C.sprintf(&.output-data[.output-len], "%f", val);
    }
-   output-i32(val:i32) {
+   output-i32(val'i32) {
       output-reserve(11);
       output-i32-nr(val);
    }
-   output-i32-nr(val:i32) {
+   output-i32-nr(val'i32) {
       if val == 0 {
          .output-data[.output-len++] = ''0;
       } elif val < 0 {
          val = -val;
          .output-data[.output-len++] = ''-;
          // integer to string, count the digits
-         var data:char[];
+         var data'char[];
          data = &.output-data[.output-len];
          digits! = 0;
          loop {
@@ -281,7 +281,7 @@ using Cp1 {
          .output-len += digits;
       } else {
          // integer to string, count the digits
-         var data:char[];
+         var data'char[];
          data = &.output-data[.output-len];
          digits! = 0;
          loop {
@@ -302,16 +302,16 @@ using Cp1 {
          .output-len += digits;
       }
    }
-   output-u64(val:i64) {
+   output-u64(val'i64) {
       output-reserve(20);
       output-u64-nr(val);
    }
-   output-u64-nr(val:i64) {
+   output-u64-nr(val'i64) {
       if val == 0 {
          .output-data[.output-len++] = ''0;
       } else {
          // integer to string, count the digits
-         var data:char[];
+         var data'char[];
          data = &.output-data[.output-len];
          digits! = 0;
          loop {
@@ -332,25 +332,25 @@ using Cp1 {
          .output-len += digits;
       }
    }
-   output-bytes(str:char[], len:u32) {
+   output-bytes(str'char[], len'u32) {
       output-reserve(len);
       output-bytes-nr(str, len);
    }
-   output-bytes-nr(str:char[], len:u32) {
-      C.memcpy(&.output-data[.output-len], str, len);
+   output-bytes-nr(str'char[], len'u32) {
+      'C.memcpy(&.output-data[.output-len], str, len);
       .output-len += len;
    }
-   struct OutputU32[val:u32] {
-      reserve(s:this, val:u32, so:Output) {
+   struct 'OutputU32[val'u32] {
+      reserve(s'this, val'u32, so'Output) {
          s.val = val;
          so.reserve += 10;
       }
-      output(s:this, so:Output) @inline {
+      output(s'this, so'Output) @inline {
          output-u32-nr(s.val);
       }
    }
-   struct OutputU32Radix[val:u32, type:OutputIntType] {
-      reserve(s:this, val:u32, type:OutputIntType, so:Output) {
+   struct 'OutputU32Radix[val'u32, type'OutputIntType] {
+      reserve(s'this, val'u32, type'OutputIntType, so'Output) {
          s.val = val;
          s.type = type;
          switch type {
@@ -362,7 +362,7 @@ using Cp1 {
             }
          }
       }
-      output(s:this, so:Output) @inline {
+      output(s'this, so'Output) @inline {
          switch s.type {
             case #oct {
                output-o32-nr(s.val);
@@ -373,36 +373,36 @@ using Cp1 {
          }
       }
    }
-   struct OutputU64[val:u64] {
-      reserve(s:this, val:u64, so:Output) {
+   struct 'OutputU64[val'u64] {
+      reserve(s'this, val'u64, so'Output) {
          s.val = val;
          so.reserve += 20;
       }
-      output(s:this, so:Output) @inline {
+      output(s'this, so'Output) @inline {
          output-u64-nr(s.val);
       }
    }
-   struct OutputI32[val:i32] {
-      reserve(s:this, val:i32, so:Output) {
+   struct 'OutputI32[val'i32] {
+      reserve(s'this, val'i32, so'Output) {
          s.val = val;
          so.reserve += 11;
       }
-      output(s:this, so:Output) @inline {
+      output(s'this, so'Output) @inline {
          output-i32-nr(s.val);
       }
    }
-   struct OutputStr[str:char @const[], len:u32] {
-      reserve(s:this, str:char @const[], len:u32, so:Output) {
+   struct 'OutputStr[str'char @const[], len'u32] {
+      reserve(s'this, str'char @const[], len'u32, so'Output) {
          s.str = str;
          s.len = len;
          so.reserve += len;
       }
-      output(s:this, so:Output) @inline {
+      output(s'this, so'Output) @inline {
          output-bytes-nr(s.str, s.len);
       }
    }
-   struct OutputBool[val:bool] {
-      reserve(s:this, val:bool, so:Output) {
+   struct 'OutputBool[val'bool] {
+      reserve(s'this, val'bool, so'Output) {
          s.val = val;
          if val {
             so.reserve += 4;
@@ -410,104 +410,104 @@ using Cp1 {
             so.reserve += 5;
          }
       }
-      output(val:this, so:Output) @inline {
-         C1.output-bool-nr(val);
+      output(val'this, so'Output) @inline {
+         'C1.output-bool-nr(val);
       }
    }
-   struct OutputChar[val:char] {
-      reserve(s:this, val:char, so:Output) {
+   struct 'OutputChar[val'char] {
+      reserve(s'this, val'char, so'Output) {
          s.val = val;
          so.reserve++;
       }
-      output(s:this, so:Output) @inline {
+      output(s'this, so'Output) @inline {
          .output-data[.output-len++] = s.val;
       }
    }
-   struct OutputFloat[val:f32] {
-      reserve(s:this, val:f32, so:Output) @inline {
+   struct 'OutputFloat[val'f32] {
+      reserve(s'this, val'f32, so'Output) @inline {
          s.val = val;
          so.reserve += 64;
       }
-      output(s:this, so:Output) @inline {
-         .output-len += C.sprintf(&.output-data[.output-len], "%.9f", s.val);
+      output(s'this, so'Output) @inline {
+         .output-len += 'C.sprintf(&.output-data[.output-len], "%.9f", s.val);
       }
    }
-   struct OutputFloat64[val:f64] {
-      reserve(s:this, val:f64, so:Output) @inline {
+   struct 'OutputFloat64[val'f64] {
+      reserve(s'this, val'f64, so'Output) @inline {
          s.val = val;
          so.reserve += 128;
       }
-      output(s:this, so:Output) @inline {
-         .output-len += C.sprintf(&.output-data[.output-len], "%.17f", s.val);
+      output(s'this, so'Output) @inline {
+         .output-len += 'C.sprintf(&.output-data[.output-len], "%.17f", s.val);
       }
    }
 }
-using bool {
-   output-reserve(val:this, so:Cp1.Output, p:OutputBool) @inline {
+using 'bool {
+   output-reserve(val'this, so'Cp1'Output, p'OutputBool) @inline {
       p.reserve(val, so);
    }
 }
-using f32 {
-   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputFloat) @inline {
+using 'f32 {
+   output-reserve(val'this, so'Cp1'Output, p'Cp1'OutputFloat) @inline {
       p.reserve(val, so);
    }
 }
-using f64 {
-   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputFloat64) @inline {
+using 'f64 {
+   output-reserve(val'this, so'Cp1'Output, p'Cp1'OutputFloat64) @inline {
       p.reserve(val, so);
    }
 }
-using i32 {
-   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputI32) @inline {
+using 'i32 {
+   output-reserve(val'this, so'Cp1'Output, p'Cp1'OutputI32) @inline {
       p.reserve(val, so);
    }
 }
-using i16 {
-   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputI32) @inline {
+using 'i16 {
+   output-reserve(val'this, so'Cp1'Output, p'Cp1'OutputI32) @inline {
       p.reserve(val, so);
    }
 }
-using i8 {
-   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputI32) @inline {
+using 'i8 {
+   output-reserve(val'this, so'Cp1'Output, p'Cp1'OutputI32) @inline {
       p.reserve(val, so);
    }
 }
-using usz {
-   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputU64) @inline {
+using 'usz {
+   output-reserve(val'this, so'Cp1'Output, p'Cp1'OutputU64) @inline {
       p.reserve(val, so);
    }
 }
-using u64 {
-   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputU64) @inline {
+using 'u64 {
+   output-reserve(val'this, so'Cp1'Output, p'Cp1'OutputU64) @inline {
       p.reserve(val, so);
    }
 }
-using u32 {
-   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputU32) @inline {
+using 'u32 {
+   output-reserve(val'this, so'Cp1'Output, p'Cp1'OutputU32) @inline {
       p.reserve(val, so);
    }
-   output-reserve(val:this, type:Cp1.OutputIntType, so:Cp1.Output, p:Cp1.OutputU32Radix) @inline {
+   output-reserve(val'this, type'Cp1'OutputIntType, so'Cp1'Output, p'Cp1'OutputU32Radix) @inline {
       p.reserve(val, type, so);
    }
 }
-using u16 {
-   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputU32) @inline {
+using 'u16 {
+   output-reserve(val'this, so'Cp1'Output, p'Cp1'OutputU32) @inline {
       p.reserve(val, so);
    }
 }
-using u8 {
-   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputU32) @inline {
+using 'u8 {
+   output-reserve(val'this, so'Cp1'Output, p'Cp1'OutputU32) @inline {
       p.reserve(val, so);
    }
 }
-using char {
-   output-reserve(val:this, so:Cp1.Output, p:Cp1.OutputChar) @inline {
+using 'char {
+   output-reserve(val'this, so'Cp1'Output, p'Cp1'OutputChar) @inline {
       p.reserve(val, so);
    }
-   output-reserve-arr(str:this @const[], so:Cp1.Output, p:Cp1.OutputStr) @inline {
-      p.reserve(str, C.strlen(str), so);
+   output-reserve-arr(str'this @const[], so'Cp1'Output, p'Cp1'OutputStr) @inline {
+      p.reserve(str, 'C.strlen(str), so);
    }
-   output-reserve-arr(str:this @const[], len:u32, so:Cp1.Output, p:Cp1.OutputStr) @inline {
+   output-reserve-arr(str'this @const[], len'u32, so'Cp1'Output, p'Cp1'OutputStr) @inline {
       p.reserve(str, len, so);
    }
 }

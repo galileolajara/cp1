@@ -1,33 +1,33 @@
-using C = LibC;
-using C1 = LibCp1;
-using Cp1 {
-var switch-stack-v:StmtSwitch[64];
-var switch-stack-c:u8;
-using StmtSpace {
-   wr-switch(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
-      var s:StmtSwitch = stmt;
+using 'C = 'LibC;
+using 'C1 = 'LibCp1;
+using 'Cp1 {
+var switch-stack-v'StmtSwitch[64];
+var switch-stack-c'u8;
+using 'StmtSpace {
+   wr-switch(stmt'Stmt, w'Wtr, header'bool) @case.wr() @inline {
+      var s'StmtSwitch = stmt;
       s.expr.wr(w, header);
       s.cases.wr(w, header);
    }
-   rd-switch(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      var s:StmtSwitch;
+   rd-switch(space'StmtSpace, r'Rdr) @case.rd() @inline {
+      var s'StmtSwitch;
       quick-alloc-one(s);
       s.expr.rd(r);
       s.cases.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #switch);
    }
-   wr-case(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
-      var s:StmtCase = stmt;
+   wr-case(stmt'Stmt, w'Wtr, header'bool) @case.wr() @inline {
+      var s'StmtCase = stmt;
       w.n(s.expr-c);
       loop i = 0; s.expr-c; i++ {
          s.expr-v[i].expr.wr(w, header);
       }
       w.b(s.fall-through);
    }
-   rd-case(space:StmtSpace, r:Rdr) @case.rd() @inline {
+   rd-case(space'StmtSpace, r'Rdr) @case.rd() @inline {
       expr-c! = r.n();
-      var s:StmtCase;
-      quick-alloc-plus(s, StmtCaseItem[usz] * expr-c);
+      var s'StmtCase;
+      quick-alloc-plus(s, 'StmtCaseItem['usz] * expr-c);
       s.expr-c = expr-c;
       loop i = 0; expr-c; i++ {
          s.expr-v[i].expr.rd(r);
@@ -35,83 +35,83 @@ using StmtSpace {
       s.fall-through = r.b();
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #case);
    }
-   wr-case-end(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
+   wr-case-end(stmt'Stmt, w'Wtr, header'bool) @case.wr() @inline {
    }
-   rd-case-end(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      var s:StmtCaseEnd;
+   rd-case-end(space'StmtSpace, r'Rdr) @case.rd() @inline {
+      var s'StmtCaseEnd;
       quick-alloc-one(s);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #case-end);
    }
-   wr-default(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
-      var s:StmtDefault = stmt;
+   wr-default(stmt'Stmt, w'Wtr, header'bool) @case.wr() @inline {
+      var s'StmtDefault = stmt;
       w.b(s.fall-through);
    }
-   rd-default(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      var s:StmtDefault;
+   rd-default(space'StmtSpace, r'Rdr) @case.rd() @inline {
+      var s'StmtDefault;
       quick-alloc-one(s);
       s.fall-through = r.b();
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #default);
    }
-   wr-default-end(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
+   wr-default-end(stmt'Stmt, w'Wtr, header'bool) @case.wr() @inline {
    }
-   rd-default-end(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      var s:StmtDefaultEnd;
+   rd-default-end(space'StmtSpace, r'Rdr) @case.rd() @inline {
+      var s'StmtDefaultEnd;
       quick-alloc-one(s);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #default-end);
    }
-   wr-switch-end(stmt:Stmt, w:Wtr, header:bool) @case.wr() @inline {
+   wr-switch-end(stmt'Stmt, w'Wtr, header'bool) @case.wr() @inline {
    }
-   rd-switch-end(space:StmtSpace, r:Rdr) @case.rd() @inline {
-      var s:StmtSwitchEnd;
+   rd-switch-end(space'StmtSpace, r'Rdr) @case.rd() @inline {
+      var s'StmtSwitchEnd;
       quick-alloc-one(s);
       space.stmt-push(s.base, 0, 0, 0, 0, #switch-end);
    }
 }
-union CaseStack[cas:StmtCase, defaul:StmtDefault];
-var case-stack-v:CaseStack.[64];
-var case-stack-c:u8;
-using Stmt {
-   write-switch(stmt:Stmt) @case.write() @inline {
-      var s:StmtSwitch = stmt;
+union 'CaseStack[cas'StmtCase, defaul'StmtDefault];
+var case-stack-v'CaseStack.[64];
+var case-stack-c'u8;
+using 'Stmt {
+   write-switch(stmt'Stmt) @case.write() @inline {
+      var s'StmtSwitch = stmt;
       output{"switch("}
       s.expr.write-value(s.val);
       output{") {\n"}
       if s.case-func-c > 0 {
-         var e:Expr = s.cases.ptr();
-         var func:ExprFunc = e;
+         var e'Expr = s.cases.ptr();
+         var func'ExprFunc = e;
          v! = s.case-func-v;
          loop i = 0; s.case-func-c; i++ {
             output{"case "}
             v[i].cvar.write();
             output{":;\n"}
             func.func-idx = v[i].func;
-            ExprI.write-func(e);
+            'ExprI.write-func(e);
             output{";\nbreak;\n"}
          }
       }
    }
-   process-switch(stmt:Stmt, ok:bool&) @case.process() @inline {
-      var s:StmtSwitch = stmt;
+   process-switch(stmt'Stmt, ok'bool&) @case.process() @inline {
+      var s'StmtSwitch = stmt;
       .switch-stack-v[.switch-stack-c++] = s;
       if !s.expr.value(1, false, s.val) {
          return;
       }
       if s.val.type == #nil {
-         C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": Error, the expression used for 'switch' doesn't have a type\n"}
+         'C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": Error, the expression used for 'switch' doesn't have a type\n"}
          return;
       }
       if s.cases != #nil {
          type! = s.val.type.ptr();
          if type.def != #enum {
-            C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": Error, the expression used for 'switch' must be an enum when using @case attribute\n"}
+            'C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": Error, the expression used for 'switch' must be an enum when using @case attribute\n"}
             return;
          }
-         var e:ExprFunc = s.cases.ptr();
+         var e'ExprFunc = s.cases.ptr();
          func-name! = e.func-name;
          f! = .ctx-func.at.ptr();
          case-c! = 0;
          case-cap! = 0;
-         var case-v:Func[] = null;
+         var case-v'Func[] = null;
          loop i = 0; f.func-c; i++ {
             func-i! = f.func-v[i];
             func! = func-i.ptr();
@@ -128,7 +128,7 @@ using Stmt {
             }
          }
          if case-c > 0 {
-            if !ExprI.process-case-func(s.cases.ptr(), case-v[0]) { return }
+            if !'ExprI.process-case-func(s.cases.ptr(), case-v[0]) { return }
             func-name-str! = func-name.str();
             func-name-len! = func-name.len();
             s.case-func-c = case-c;
@@ -138,20 +138,20 @@ using Stmt {
                func-i! = case-v[i];
                func! = func-i.ptr();
                func-name2! = func.decl.name;
-               var cvar-name-str:char[] = &func-name2.str()[func-name-len + 1];
+               var cvar-name-str'char[] = &func-name2.str()[func-name-len + 1];
                cvar-name-len! = func-name2.len() - (func-name-len + 1);
-               found-id! = Id#nil;
-               loop j = 0:Id; .id-c; j++ {
-                  if (&&, j.len() == cvar-name-len, C.memcmp(j.str(), cvar-name-str, cvar-name-len) == 0) {
+               found-id! = 'Id#nil;
+               loop j = 0'Id; .id-c; j++ {
+                  if (&&, j.len() == cvar-name-len, 'C.memcmp(j.str(), cvar-name-str, cvar-name-len) == 0) {
                      found-id = j;
                      break;
                   }
                }
                if found-id == #nil {
-                  C1.stdout{func.file '': func.begin-row '': func.begin-col ": Cannot find a case for cvar named '#" cvar-name-str "'\n"}
+                  'C1.stdout{func.file '': func.begin-row '': func.begin-col ": Cannot find a case for cvar named '#" cvar-name-str "'\n"}
                   return;
                }
-               found-cvar! = Cvar#nil;
+               found-cvar! = 'Cvar#nil;
                loop j = 0; type.cvar-c; j++ {
                   cvar-i! = type.cvar-v[j];
                   cvar! = cvar-i.ptr();
@@ -161,7 +161,7 @@ using Stmt {
                   }
                }
                if found-cvar == #nil {
-                  C1.stdout{func.file '': func.begin-row '': func.begin-col ": Cannot find a case for cvar named '#" cvar-name-str "'\n"}
+                  'C1.stdout{func.file '': func.begin-row '': func.begin-col ": Cannot find a case for cvar named '#" cvar-name-str "'\n"}
                   return;
                }
                if !found-cvar.process() { return }
@@ -169,13 +169,13 @@ using Stmt {
                func-v[i].cvar = found-cvar;
                func-v[i].func = func-i;
             }
-            C.free(case-v);
+            'C.free(case-v);
          }
       }
       ok = true;
    }
-   write-case(stmt:Stmt) @case.write() @inline {
-      var s:StmtCase = stmt;
+   write-case(stmt'Stmt) @case.write() @inline {
+      var s'StmtCase = stmt;
       loop i = 0; s.expr-c; i++ {
          output{"case "}
          s.expr-v[i].expr.write-value(s.expr-v[i].val);
@@ -183,8 +183,8 @@ using Stmt {
       }
       .case-stack-v[.case-stack-c++].cas = s;
    }
-   process-case(stmt:Stmt, ok:bool&) @case.process() @inline {
-      var s:StmtCase = stmt;
+   process-case(stmt'Stmt, ok'bool&) @case.process() @inline {
+      var s'StmtCase = stmt;
       switc! = .switch-stack-v[.switch-stack-c - 1];
       if switc.val.type != #nil {
          type-i! = switc.val.type;
@@ -194,7 +194,7 @@ using Stmt {
                e-i! = s.expr-v[i].expr;
                e! = e-i.ptr();
                if e.type == #cvar {
-                  var e2:ExprCvar = e;
+                  var e2'ExprCvar = e;
                   if e2.at == #nil {
                      e2.try = type-i;
                   }
@@ -210,57 +210,57 @@ using Stmt {
       }
       ok = true;
    }
-   write-case-end(stmt:Stmt) @case.write() @inline {
-      var s:StmtCaseEnd = stmt;
+   write-case-end(stmt'Stmt) @case.write() @inline {
+      var s'StmtCaseEnd = stmt;
       cas! = .case-stack-v[.case-stack-c -= 1].cas;
       if !cas.fall-through {
          output{"break;\n"}
       }
    }
-   process-case-end(stmt:Stmt, ok:bool&) @case.process() @inline {
-      var s:StmtCaseEnd = stmt;
+   process-case-end(stmt'Stmt, ok'bool&) @case.process() @inline {
+      var s'StmtCaseEnd = stmt;
       ok = true;
    }
-   write-default(stmt:Stmt) @case.write() @inline {
-      var s:StmtDefault = stmt;
+   write-default(stmt'Stmt) @case.write() @inline {
+      var s'StmtDefault = stmt;
       output{"default:;\n"}
       .case-stack-v[.case-stack-c++].defaul = s;
    }
-   process-default(stmt:Stmt, ok:bool&) @case.process() @inline {
+   process-default(stmt'Stmt, ok'bool&) @case.process() @inline {
       ok = true;
    }
-   write-default-end(stmt:Stmt) @case.write() @inline {
-      var s:StmtDefaultEnd = stmt;
+   write-default-end(stmt'Stmt) @case.write() @inline {
+      var s'StmtDefaultEnd = stmt;
       defaul! = .case-stack-v[.case-stack-c -= 1].defaul;
       if !defaul.fall-through {
          output{"break;\n"}
       }
    }
-   process-default-end(stmt:Stmt, ok:bool&) @case.process() @inline {
-      var s:StmtDefaultEnd = stmt;
+   process-default-end(stmt'Stmt, ok'bool&) @case.process() @inline {
+      var s'StmtDefaultEnd = stmt;
       ok = true;
    }
-   write-switch-end(stmt:Stmt) @case.write() @inline {
-      var s:StmtSwitchEnd = stmt;
+   write-switch-end(stmt'Stmt) @case.write() @inline {
+      var s'StmtSwitchEnd = stmt;
       output{"}\n"}
    }
-   process-switch-end(stmt:Stmt, ok:bool&) @case.process() @inline {
+   process-switch-end(stmt'Stmt, ok'bool&) @case.process() @inline {
       .switch-stack-c -= 1;
-      var s:StmtSwitchEnd = stmt;
+      var s'StmtSwitchEnd = stmt;
       ok = true;
    }
 }
-struct StmtSwitchCaseFunc[
-   cvar:Cvar,
-   func:Func,
+struct 'StmtSwitchCaseFunc[
+   cvar'Cvar,
+   func'Func,
 ];
-struct StmtSwitchEnd[
-   base:Stmt.,
+struct 'StmtSwitchEnd[
+   base'Stmt.,
 ];
-var switch-expr-c:u32;
-var switch-expr-cap:u32;
-var switch-expr-v:ExprI[];
-stmt-switch-expr-add(expr:ExprI) {
+var switch-expr-c'u32;
+var switch-expr-cap'u32;
+var switch-expr-v'ExprI[];
+stmt-switch-expr-add(expr'ExprI) {
    expr-i! = .switch-expr-c++;
    if .switch-expr-cap <= .switch-expr-c {
       old-cap! = .switch-expr-cap;
@@ -269,27 +269,27 @@ stmt-switch-expr-add(expr:ExprI) {
    }
    .switch-expr-v[expr-i] = expr;
 }
-struct StmtCase[
-   base:Stmt.,
-   fall-through:bool,
-   expr-c:u32,
-   expr-v:StmtCaseItem.[0],
+struct 'StmtCase[
+   base'Stmt.,
+   fall-through'bool,
+   expr-c'u32,
+   expr-v'StmtCaseItem.[0],
 ];
-struct StmtCaseEnd[
-   base:Stmt.,
+struct 'StmtCaseEnd[
+   base'Stmt.,
 ];
-struct StmtDefault[
-   base:Stmt.,
-   fall-through:bool,
+struct 'StmtDefault[
+   base'Stmt.,
+   fall-through'bool,
 ];
-struct StmtDefaultEnd[
-   base:Stmt.,
+struct 'StmtDefaultEnd[
+   base'Stmt.,
 ];
-stmt-switch-case-begin(begin-row:u32, begin-col:u32, end-row:u32, end-col:u32, fall-through:bool) {
+stmt-switch-case-begin(begin-row'u32, begin-col'u32, end-row'u32, end-col'u32, fall-through'bool) {
    expr-c! = .switch-expr-c;
    .switch-expr-c = 0;
-   var s:StmtCase;
-   quick-alloc-plus(s, StmtCaseItem[usz] * expr-c);
+   var s'StmtCase;
+   quick-alloc-plus(s, 'StmtCaseItem['usz] * expr-c);
    s.fall-through = fall-through;
    s.expr-c = expr-c;
    loop i = 0; expr-c; i++ {
@@ -300,12 +300,12 @@ stmt-switch-case-begin(begin-row:u32, begin-col:u32, end-row:u32, end-col:u32, f
 }
 stmt-switch-case-end() {
    stmt-space-end();
-   var s:StmtCaseEnd;
+   var s'StmtCaseEnd;
    quick-alloc-one(s);
    stmt-push(s.base, 0, 0, 0, 0, #case-end);
 }
-stmt-switch-default-begin(begin-row:u32, begin-col:u32, end-row:u32, end-col:u32, fall-through:bool) {
-   var s:StmtDefault;
+stmt-switch-default-begin(begin-row'u32, begin-col'u32, end-row'u32, end-col'u32, fall-through'bool) {
+   var s'StmtDefault;
    quick-alloc-one(s);
    s.fall-through = fall-through;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #default);
@@ -313,7 +313,7 @@ stmt-switch-default-begin(begin-row:u32, begin-col:u32, end-row:u32, end-col:u32
 }
 stmt-switch-default-end() {
    stmt-space-end();
-   var s:StmtDefaultEnd;
+   var s'StmtDefaultEnd;
    quick-alloc-one(s);
    stmt-push(s.base, 0, 0, 0, 0, #default-end);
 }
@@ -321,8 +321,8 @@ stmt-switch-begin() {
    stmt-space-begin();
    .decl-func-ctx-space.flags |= #skip-lvar-decl;
 }
-stmt-switch-set(expr:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32, cases:ExprI) {
-   var s:StmtSwitch;
+stmt-switch-set(expr'ExprI, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32, cases'ExprI) {
+   var s'StmtSwitch;
    quick-alloc-one(s);
    s.expr = expr;
    s.cases = cases;
@@ -330,7 +330,7 @@ stmt-switch-set(expr:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u
    .switch-expr-c = 0;
 }
 stmt-switch-end() {
-   var s:StmtSwitchEnd;
+   var s'StmtSwitchEnd;
    quick-alloc-one(s);
    stmt-push(s.base, 0, 0, 0, 0, #switch-end);
    stmt-space-end();

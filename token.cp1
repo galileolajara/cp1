@@ -3,32 +3,32 @@ import "LibC/stdlib.cp1";
 import "LibC/string.cp1";
 import "Posix/fcntl.cp1";
 import "Posix/unistd.cp1";
-using C = LibC;
-using X = Posix;
-main(arg-c:intc, arg-v:char[][]):intc {
+using 'C = 'LibC;
+using 'X = 'Posix;
+main(arg-c'intc, arg-v'char[][])'intc {
    if arg-c != 3 {
-      C.printf("Usage: %s [.h input file] [.cp1 output file]\n", arg-v[0]);
-      C.exit(#failure);
+      'C.printf("Usage: %s [.h input file] [.cp1 output file]\n", arg-v[0]);
+      'C.exit(#failure);
    }
    var in-fd;
-   if !X.Fd.open(in-fd, arg-v[1], #rdonly) {
-      C.printf("Cannot open file for reading: %s\n", arg-v[1]);
-      C.exit(#failure);
+   if !'X'Fd.open(in-fd, arg-v[1], #rdonly) {
+      'C.printf("Cannot open file for reading: %s\n", arg-v[1]);
+      'C.exit(#failure);
    }
    in-size! = in-fd.seek(0, #end);
    in-fd.seek(0, #set);
-   var in-data:char[] = C.malloc(in-size);
+   var in-data'char[] = 'C.malloc(in-size);
    in-fd.read(in-data, in-size);
    in-fd.close();
    if !(&&, in-size > 0, in-data[in-size - 1] == ''\n) {
-      C.printf("Error, file '%s' does not end with a new line\n", arg-v[1]);
-      C.exit(#failure);
+      'C.printf("Error, file '%s' does not end with a new line\n", arg-v[1]);
+      'C.exit(#failure);
    }
    pos! = 0;
-   out-f! = C.fopen(arg-v[2], "w");
+   out-f! = 'C.fopen(arg-v[2], "w");
    out-f.printf(
-      '= using Cp1 {
-      '= enum Token[
+      '= using 'Cp1 {
+      '= enum 'Token[
       '= #nil,
    );
    loop pos < in-size {
@@ -40,8 +40,8 @@ main(arg-c:intc, arg-v:char[][]):intc {
          pos++;
       }
       len! = pos - start;
-      var line:char[] = &in-data[start];
-      var push:char[64];
+      var line'char[] = &in-data[start];
+      var push'char[64];
       push-c! = 0;
       loop i = 18; len - 18; i++ {
          if (&&, line[i] >= ''0, line[i] <= ''9) {
@@ -60,8 +60,8 @@ main(arg-c:intc, arg-v:char[][]):intc {
       pos++;
    }
    out-f.printf(
-      '= ]:intc {
-      '= cp1-name(e:this):char[] @cp1-name;
+      '= ]'intc {
+      '= cp1-name(e'this)'char[] @cp1-name;
       '= }
       '= }
    );

@@ -1,428 +1,428 @@
-using C = LibC;
-using C1 = LibCp1;
-using Cp1 {
-struct AtMap[data:u64[(#hash-table-size + 7) >> 3]] {
-   init(m:this);
-   get-or-insert(m:this, parent:At, type:NameType, name:Id, val:i32):i32 {
-      return m.get-or-insert(parent:u32 | (type:u32 << 30), name, val);
+using 'C = 'LibC;
+using 'C1 = 'LibCp1;
+using 'Cp1 {
+struct 'AtMap[data'u64[(#hash-table-size + 7) >> 3]] {
+   init(m'this);
+   get-or-insert(m'this, parent'At, type'NameType, name'Id, val'i32)'i32 {
+      return m.get-or-insert(parent'u32 | (type'u32 << 30), name, val);
    }
-   get-or-insert(m:this, parent-and-type:u32, name:Id, val:i32):i32;
+   get-or-insert(m'this, parent-and-type'u32, name'Id, val'i32)'i32;
 }
-struct Map[data:u64[(#hash-table-size + 7) >> 3]] {
-   init(m:this);
-   get-or-insert(m:this, str:char[], len:u8, val:i32):i32;
+struct 'Map[data'u64[(#hash-table-size + 7) >> 3]] {
+   init(m'this);
+   get-or-insert(m'this, str'char[], len'u8, val'i32)'i32;
 }
-enum Overload[#nil, #get, #set, #assign, #math, #bools, #compare, #if-begin, #if-else, #if-end, #statement]:u8;
-crc32c(crc32c:u32, data:ref, size:u32):u32 @real-name;
-var id-map:Map.;
-var include-map:Map.;
-var at-map:AtMap.;
+enum 'Overload[#nil, #get, #set, #assign, #math, #bools, #compare, #if-begin, #if-else, #if-end, #statement]'u8;
+crc32c(crc32c'u32, data'ref, size'u32)'u32 @real-name;
+var id-map'Map.;
+var include-map'Map.;
+var at-map'AtMap.;
 meta #BuildCommonCodes {
-   using Cp1 {
-      struct StructData[
+   using 'Cp1 {
+      struct 'StructData[
 #  if (arg.compile) {
-         file:File,
+         file'File,
 #  }
-         begin-row:u32,
-         begin-col:u32,
-         end-row:u32,
-         end-col:u32,
-         include:Include,
-         at:At,
-         flags:StructFlags,
-         real-name:Id,
+         begin-row'u32,
+         begin-col'u32,
+         end-row'u32,
+         end-col'u32,
+         include'Include,
+         at'At,
+         flags'StructFlags,
+         real-name'Id,
 #  if (arg.compile) {
-         method-c:i32,
-         method-cap:i32,
-         method-v:Func[],
+         method-c'i32,
+         method-cap'i32,
+         method-v'Func[],
 #  }
-         aligned:u32,
-         fvar-c:u32,
-         fvar-v:FvarData.[0],
+         aligned'u32,
+         fvar-c'u32,
+         fvar-v'FvarData.[0],
       ];
-      struct StmtIf[
-         base:Stmt.,
-         expr:ExprI,
+      struct 'StmtIf[
+         base'Stmt.,
+         expr'ExprI,
 #  if (arg.compile) {
-         val:Value.,
-         is-overload:bool,
-         overload-type:At,
-#  }
-      ];
-      struct StmtIfElif[
-         base:Stmt.,
-         expr:ExprI,
-#  if (arg.compile) {
-         expr-else:ExprI,
-         val:Value.,
-         is-overload:bool,
+         val'Value.,
+         is-overload'bool,
+         overload-type'At,
 #  }
       ];
-      struct StmtIfElse[
-         base:Stmt.,
+      struct 'StmtIfElif[
+         base'Stmt.,
+         expr'ExprI,
 #  if (arg.compile) {
-         if-begin:StmtIf,
-         expr:ExprI,
+         expr-else'ExprI,
+         val'Value.,
+         is-overload'bool,
 #  }
       ];
-      struct StmtIfEnd[
-         base:Stmt.,
+      struct 'StmtIfElse[
+         base'Stmt.,
 #  if (arg.compile) {
-         if-begin:StmtIf,
-         expr:ExprI,
+         if-begin'StmtIf,
+         expr'ExprI,
 #  }
       ];
-      struct StmtSwitch[
-         base:Stmt.,
-         expr:ExprI,
+      struct 'StmtIfEnd[
+         base'Stmt.,
 #  if (arg.compile) {
-         val:Value.,
-#  }
-         cases:ExprI,
-#  if (arg.compile) {
-         case-func-c:u32,
-         case-func-v:StmtSwitchCaseFunc.[],
+         if-begin'StmtIf,
+         expr'ExprI,
 #  }
       ];
-      struct StmtCaseItem[
-         expr:ExprI,
+      struct 'StmtSwitch[
+         base'Stmt.,
+         expr'ExprI,
 #  if (arg.compile) {
-         val:Value.,
+         val'Value.,
+#  }
+         cases'ExprI,
+#  if (arg.compile) {
+         case-func-c'u32,
+         case-func-v'StmtSwitchCaseFunc.[],
 #  }
       ];
-      using Lvar {
+      struct 'StmtCaseItem[
+         expr'ExprI,
 #  if (arg.compile) {
-         ptr(l:this):LvarData @inline {
+         val'Value.,
+#  }
+      ];
+      using 'Lvar {
+#  if (arg.compile) {
+         ptr(l'this)'LvarData @inline {
             return .ctx-func.lvar-v[l];
          }
-         name(l:this):Id @inline {
+         name(l'this)'Id @inline {
             return l.ptr().decl.name;
          }
 #  }
 #  if (!arg.compile) {
-         ptr(l:this):LvarData @inline {
+         ptr(l'this)'LvarData @inline {
             return .ctx-func.lvar-v[l];
          }
-         name(l:this):Id @inline {
+         name(l'this)'Id @inline {
             return l.ptr().decl.name;
          }
 #  }
       }
-      struct EnumData[
+      struct 'EnumData[
 #  if (arg.compile) {
-         file:File,
+         file'File,
 #  }
-         begin-row:u32,
-         begin-col:u32,
-         end-row:u32,
-         end-col:u32,
-         include:Include,
-         at:At,
-         base-type:At,
-         flags:EnumFlags,
-         soa-field-gvar-at:At,
-         soa-field-gvar-id:Id,
-         real-name:Id,
+         begin-row'u32,
+         begin-col'u32,
+         end-row'u32,
+         end-col'u32,
+         include'Include,
+         at'At,
+         base-type'At,
+         flags'EnumFlags,
+         soa-field-gvar-at'At,
+         soa-field-gvar-id'Id,
+         real-name'Id,
 #  if (arg.compile) {
-         method-c:i32,
-         method-cap:i32,
-         method-v:Func[],
-         overload-get-last:Func,
-         overload-set-last:Func,
-         overload-math-last:Func,
-         overload-bools-last:Func,
-         overload-compare-last:Func,
-         overload-if-begin:Func,
-         overload-if-else:Func,
-         overload-if-end:Func,
-         overload-statement:Func,
-#  }
-      ];
-      struct ExprCompare[
-         base:Expr.,
-         left:ExprI,
-         right:ExprI,
-         type:Compare,
-#  if (arg.compile) {
-         left-val:Value.,
-         right-val:Value.,
-         is-overload:bool,
+         method-c'i32,
+         method-cap'i32,
+         method-v'Func[],
+         overload-get-last'Func,
+         overload-set-last'Func,
+         overload-math-last'Func,
+         overload-bools-last'Func,
+         overload-compare-last'Func,
+         overload-if-begin'Func,
+         overload-if-else'Func,
+         overload-if-end'Func,
+         overload-statement'Func,
 #  }
       ];
-      struct ExprAssign[
-         base:Expr.,
-         left:ExprI,
-         right:ExprI,
-         type:Assign,
+      struct 'ExprCompare[
+         base'Expr.,
+         left'ExprI,
+         right'ExprI,
+         type'Compare,
 #  if (arg.compile) {
-         left-val:Value.,
-         right-val:Value.,
-         is-overload:bool,
+         left-val'Value.,
+         right-val'Value.,
+         is-overload'bool,
 #  }
-         is-stmt:bool,
       ];
-      struct ExprLvar[
-         base:Expr.,
-         lvar:Lvar,
+      struct 'ExprAssign[
+         base'Expr.,
+         left'ExprI,
+         right'ExprI,
+         type'Assign,
+#  if (arg.compile) {
+         left-val'Value.,
+         right-val'Value.,
+         is-overload'bool,
+#  }
+         is-stmt'bool,
+      ];
+      struct 'ExprLvar[
+         base'Expr.,
+         lvar'Lvar,
 // #  if (!arg.compile) {
-         decl:bool,
+         decl'bool,
 // #  }
       ];
-      struct ExprIndex[
-         base:Expr.,
-         left:ExprI,
-         right:ExprI,
+      struct 'ExprIndex[
+         base'Expr.,
+         left'ExprI,
+         right'ExprI,
 #  if (arg.compile) {
-         left-val:Value.,
-         right-val:Value.,
+         left-val'Value.,
+         right-val'Value.,
 #  }
       ];
-      struct ExprMathItem[
-         expr:ExprI,
+      struct 'ExprMathItem[
+         expr'ExprI,
 #  if (arg.compile) {
-         val:Value.,
+         val'Value.,
 #  }
       ];
-      struct ExprMath[
-         base:Expr.,
-         left:ExprI,
-         right:ExprI,
-         type:Math,
+      struct 'ExprMath[
+         base'Expr.,
+         left'ExprI,
+         right'ExprI,
+         type'Math,
 #  if (arg.compile) {
-         left-val:Value.,
-         right-val:Value.,
-         is-overload:bool,
+         left-val'Value.,
+         right-val'Value.,
+         is-overload'bool,
 #  }
-         item-c:u8,
+         item-c'u8,
 #  if (!arg.compile) {
-         item-cap:u8,
+         item-cap'u8,
 #  }
-         item-v:ExprMathItem.[],
+         item-v'ExprMathItem.[],
       ];
-      struct ExprBoolsItem[
-         expr:ExprI,
+      struct 'ExprBoolsItem[
+         expr'ExprI,
 #  if (arg.compile) {
-         val:Value.,
+         val'Value.,
 #  }
       ];
-      struct ExprBools[
-         base:Expr.,
-         left:ExprI,
-         right:ExprI,
-         type:Bools,
+      struct 'ExprBools[
+         base'Expr.,
+         left'ExprI,
+         right'ExprI,
+         type'Bools,
 #  if (arg.compile) {
-         left-val:Value.,
-         right-val:Value.,
-         is-overload:bool,
+         left-val'Value.,
+         right-val'Value.,
+         is-overload'bool,
 #  }
-         item-c:u8,
+         item-c'u8,
 #  if (!arg.compile) {
-         item-cap:u8,
+         item-cap'u8,
 #  }
-         item-v:ExprBoolsItem.[],
+         item-v'ExprBoolsItem.[],
       ];
-      struct ExprFvar[
-         base:Expr.,
-         expr:ExprI,
-         member:Id,
+      struct 'ExprFvar[
+         base'Expr.,
+         expr'ExprI,
+         member'Id,
 #  if (arg.compile) {
-         fvar:Fvar,
-         val:Value.,
+         fvar'Fvar,
+         val'Value.,
 #  }
       ];
-      struct ExprSoaField[
-         base:Expr.,
-         expr:ExprI,
-         group:Id,
-         field:Id,
+      struct 'ExprSoaField[
+         base'Expr.,
+         expr'ExprI,
+         group'Id,
+         field'Id,
 #  if (arg.compile) {
-         expr2:ExprI,
-         val:Value.,
+         expr2'ExprI,
+         val'Value.,
 #  }
       ];
-      struct ExprCvar[
-         base:Expr.,
-         at:At,
-         name:Id,
+      struct 'ExprCvar[
+         base'Expr.,
+         at'At,
+         name'Id,
 #  if (arg.compile) {
-         cvar:Cvar,
-         try:At,
+         cvar'Cvar,
+         try'At,
 #  }
       ];
-      struct ExprRef[
-         base:Expr.,
-         expr:ExprI,
+      struct 'ExprRef[
+         base'Expr.,
+         expr'ExprI,
 #  if (arg.compile) {
-         val:Value.,
+         val'Value.,
 #  }
       ];
-      struct ExprUnary[
-         base:Expr.,
-         expr:ExprI,
-         type:Unary,
+      struct 'ExprUnary[
+         base'Expr.,
+         expr'ExprI,
+         type'Unary,
 #  if (arg.compile) {
-         val:Value.,
+         val'Value.,
 #  }
       ];
-      struct ExprCastFast[
-         base:Expr.,
-         expr:ExprI,
-         type:At,
+      struct 'ExprCastFast[
+         base'Expr.,
+         expr'ExprI,
+         type'At,
 #  if (arg.compile) {
-         val:Value.,
+         val'Value.,
 #  }
       ];
-      struct ExprGvar[
-         base:Expr.,
+      struct 'ExprGvar[
+         base'Expr.,
 #  if (!arg.compile) {
-         at:At,
-         name:Id,
+         at'At,
+         name'Id,
 #  }
 #  if (arg.compile) {
-         gvar:Gvar,
+         gvar'Gvar,
 #  }
       ];
-      struct DeclGvar[
+      struct 'DeclGvar[
 #  if (arg.compile) {
-         file:File,
+         file'File,
 #  }
-         row:u32,
-         col:u32,
-         include:Include,
-         at:At,
-         flags:GvarFlags,
-         decl:DeclVarData.,
+         row'u32,
+         col'u32,
+         include'Include,
+         at'At,
+         flags'GvarFlags,
+         decl'DeclVarData.,
       ];
-      struct CvarData[
+      struct 'CvarData[
 #  if (arg.compile) {
-         file:File,
+         file'File,
 #  }
-         row:u32,
-         col:u32,
-         include:Include,
-         at:At,
-         flags:CvarFlags,
+         row'u32,
+         col'u32,
+         include'Include,
+         at'At,
+         flags'CvarFlags,
          // real-name:Id,
-         decl:DeclVarData.,
-         expr-set:ExprI,
-         last-cvar:Cvar,
+         decl'DeclVarData.,
+         expr-set'ExprI,
+         last-cvar'Cvar,
       ];
-      struct DeclVarData[
-         name:Id,
-         type:At,
-         flags:VarFlags,
-         real-name:Id,
-         type-info:TypeInfo.,
-         size-c:u8,
-         size-expr-v:ExprI[],
+      struct 'DeclVarData[
+         name'Id,
+         type'At,
+         flags'VarFlags,
+         real-name'Id,
+         type-info'TypeInfo.,
+         size-c'u8,
+         size-expr-v'ExprI[],
 #  if (arg.compile) {
-         size-value-v:Value.[],
+         size-value-v'Value.[],
 #  }
       ];
-      struct Carg[
-         reff:i8,
-         expr:ExprI,
+      struct 'Carg[
+         reff'i8,
+         expr'ExprI,
 #  if (arg.compile) {
-         value:Value.,
+         value'Value.,
 #  }
       ];
-      struct ExprFunc[
-         base:Expr.,
-         at:At,
-         func-name:Id,
+      struct 'ExprFunc[
+         base'Expr.,
+         at'At,
+         func-name'Id,
 #  if (arg.compile) {
-         func-idx:Func,
+         func-idx'Func,
 #  }
-         group-c:u8,
-         group-v:u8[#expr-carg-group-limit],
-         carg-c:u8,
-         carg-v:Carg.[0],
+         group-c'u8,
+         group-v'u8[#expr-carg-group-limit],
+         carg-c'u8,
+         carg-v'Carg.[0],
       ];
-      struct ExprMetaFunc[
-         base:Expr.,
+      struct 'ExprMetaFunc[
+         base'Expr.,
 #  if (!arg.compile) {
-         at:At,
-         func-name:Id,
-         lvar:ExprI,
-         lvars:ExprI[],
-         group-c:u8,
-         group-v:u8[#expr-carg-group-limit],
-         carg-c:u8,
-         carg-v:Carg.[0],
+         at'At,
+         func-name'Id,
+         lvar'ExprI,
+         lvars'ExprI[],
+         group-c'u8,
+         group-v'u8[#expr-carg-group-limit],
+         carg-c'u8,
+         carg-v'Carg.[0],
 #  }
 #  if (arg.compile) {
-         expr-c:u8,
-         expr-v:ExprI[0],
+         expr-c'u8,
+         expr-v'ExprI[0],
 #  }
       ];
-      struct ExprMetaMethod[
-         base:Expr.,
+      struct 'ExprMetaMethod[
+         base'Expr.,
 #  if (!arg.compile) {
-         thiss:ExprI,
-         func-name:Id,
-         lvar:ExprI,
-         lvars:ExprI[],
-         group-c:u8,
-         group-v:u8[#expr-carg-group-limit],
-         carg-c:u8,
-         carg-v:Carg.[0],
+         thiss'ExprI,
+         func-name'Id,
+         lvar'ExprI,
+         lvars'ExprI[],
+         group-c'u8,
+         group-v'u8[#expr-carg-group-limit],
+         carg-c'u8,
+         carg-v'Carg.[0],
 #  }
 #  if (arg.compile) {
-         expr-c:u8,
-         expr-v:ExprI[0],
+         expr-c'u8,
+         expr-v'ExprI[0],
 #  }
       ];
-      struct ExprMethod[
-         base:Expr.,
-         thiss:ExprI,
-         func-name:Id,
+      struct 'ExprMethod[
+         base'Expr.,
+         thiss'ExprI,
+         func-name'Id,
 #  if (arg.compile) {
-         func-idx:Func,
-         this-value:Value.,
+         func-idx'Func,
+         this-value'Value.,
 #  }
-         group-c:u8,
-         group-v:u8[#expr-carg-group-limit],
-         carg-c:u8,
-         carg-v:Carg.[0],
+         group-c'u8,
+         group-v'u8[#expr-carg-group-limit],
+         carg-c'u8,
+         carg-v'Carg.[0],
       ];
-      struct DeclFunc[
+      struct 'DeclFunc[
 #  if (arg.compile) {
-         process-next:Func,
-         file:File,
+         process-next'Func,
+         file'File,
 #  }
-         begin-row:u32,
-         begin-col:u32,
-         end-row:u32,
-         end-col:u32,
-         include:Include,
-         at:At,
+         begin-row'u32,
+         begin-col'u32,
+         end-row'u32,
+         end-col'u32,
+         include'Include,
+         at'At,
          // name:Id,
-         flags:FuncFlags,
-         real-name:Id,
-         meta-method-prefix1:Id,
-         meta-method-prefix2:Id,
+         flags'FuncFlags,
+         real-name'Id,
+         meta-method-prefix1'Id,
+         meta-method-prefix2'Id,
 #  if (arg.compile) {
-         meta-method-arr1:Id,
-         meta-method-cstr1:Id,
-         meta-method-arr2:Id,
-         meta-method-cstr2:Id,
-         meta-method-end1:Id,
-         meta-method-end2:Id,
-         list1-prev:Func,
+         meta-method-arr1'Id,
+         meta-method-cstr1'Id,
+         meta-method-arr2'Id,
+         meta-method-cstr2'Id,
+         meta-method-end1'Id,
+         meta-method-end2'Id,
+         list1-prev'Func,
 #  } else {
-         meta-method-end:Id,
+         meta-method-end'Id,
 #  }
-         decl-str:char[],
-         decl-len:i32,
-         overload:Overload,
-         cas:Id,
+         decl-str'char[],
+         decl-len'i32,
+         overload'Overload,
+         cas'Id,
          // type:At,
-         decl:DeclVarData.,
+         decl'DeclVarData.,
 #  if (!arg.compile) {
-         stmt-space:StmtSpace,
+         stmt-space'StmtSpace,
 #  }
 #  if (arg.compile) {
-         stmt-space:StmtSpace.,
+         stmt-space'StmtSpace.,
 #  }
       //    stmt-c:u32,
       // #  if (arg.compile) {
@@ -430,83 +430,83 @@ meta #BuildCommonCodes {
       // #  }
       //    stmt-v:Stmt[],
 #  if (arg.compile) {
-         lvar-c:Lvar,
+         lvar-c'Lvar,
          // lvar-cap:Lvar,
-         lvar-v:LvarData.[],
+         lvar-v'LvarData.[],
          // lvar-name-v:Id[],
-         body-file-pos:u32,
+         body-file-pos'u32,
 #  }
 #  if (!arg.compile) {
-         lvar-c:Lvar,
-         lvar-cap:Lvar,
-         lvar-v:LvarData[],
+         lvar-c'Lvar,
+         lvar-cap'Lvar,
+         lvar-v'LvarData[],
 #  }
-         this-idx:i8,
-         this-group:i8,
-         group-c:i8,
-         group-v:i8[#expr-carg-group-limit],
-         farg-c:u8,
-         farg-v:Farg.[0],
+         this-idx'i8,
+         this-group'i8,
+         group-c'i8,
+         group-v'i8[#expr-carg-group-limit],
+         farg-c'u8,
+         farg-v'Farg.[0],
       ];
-      struct AtData[
-         type:NameType,
-         parent:At,
-         name:AtName.,
+      struct 'AtData[
+         type'NameType,
+         parent'At,
+         name'AtName.,
 #  if (arg.compile) {
-         func-c:i32,
-         func-cap:i32,
-         func-v:Func[],
-         gvar-c:i32,
-         gvar-cap:i32,
-         gvar-v:Gvar[],
-         cvar-c:i32,
-         cvar-cap:i32,
-         cvar-v:Cvar[],
-         decl:AtType.,
-         def:AtDef,
-#  }
-      ];
-      struct TemplateCodeData[
-         code:u8[],
-         code-len:u32,
-         code-crc32c:u32,
-         name:Id,
-         at:At,
-         row:u32,
-         line-c:u32,
-         with-reflection:bool,
-         no-cache:bool,
-#  if (arg.compile) {
-         file:File,
+         func-c'i32,
+         func-cap'i32,
+         func-v'Func[],
+         gvar-c'i32,
+         gvar-cap'i32,
+         gvar-v'Gvar[],
+         cvar-c'i32,
+         cvar-cap'i32,
+         cvar-v'Cvar[],
+         decl'AtType.,
+         def'AtDef,
 #  }
       ];
-      struct TemplateInstData[
-         arg:char[],
-         arg-len:u32,
-         arg-crc32c:u32,
-         name:Id,
-         at:At,
-         row:u32,
-         col:u32,
+      struct 'TemplateCodeData[
+         code'u8[],
+         code-len'u32,
+         code-crc32c'u32,
+         name'Id,
+         at'At,
+         row'u32,
+         line-c'u32,
+         with-reflection'bool,
+         no-cache'bool,
 #  if (arg.compile) {
-         file:File,
-         require:bool,
+         file'File,
+#  }
+      ];
+      struct 'TemplateInstData[
+         arg'char[],
+         arg-len'u32,
+         arg-crc32c'u32,
+         name'Id,
+         at'At,
+         row'u32,
+         col'u32,
+#  if (arg.compile) {
+         file'File,
+         require'bool,
 #  }
       ];
    }
 }
-var quick-alloc-c:i32;
-var quick-alloc-cap:i32;
-var quick-alloc-v:ref;
+var quick-alloc-c'i32;
+var quick-alloc-cap'i32;
+var quick-alloc-v'ref;
 quick-alloc-init() {
    .quick-alloc-cap = 4 * 1024;
-   .quick-alloc-v = C.malloc(.quick-alloc-cap);
-   C.memset(.quick-alloc-v, 0, .quick-alloc-cap);
+   .quick-alloc-v = 'C.malloc(.quick-alloc-cap);
+   'C.memset(.quick-alloc-v, 0, .quick-alloc-cap);
 }
-quick-alloc(size:i32):ref @real-name(qalloc) {
+quick-alloc(size'i32)'ref @real-name(qalloc) {
    if size > 1024 {
-      mem! = C.malloc(size);
-      C.memset(mem, 0, size);
+      mem! = 'C.malloc(size);
+      'C.memset(mem, 0, size);
       return mem;
    }
    // mem! = C.malloc(size);
@@ -519,7 +519,7 @@ quick-alloc(size:i32):ref @real-name(qalloc) {
       // size = (size + 3) & (-1 ^ 3);
    // }
    if size <= (.quick-alloc-cap - .quick-alloc-c) {
-      var r:Rdr.;
+      var r'Rdr.;
       r.reff = .quick-alloc-v;
       r.pos += .quick-alloc-c;
       .quick-alloc-c += size;
@@ -530,13 +530,13 @@ quick-alloc(size:i32):ref @real-name(qalloc) {
    if .quick-alloc-cap > (64 * 1024) {
       .quick-alloc-cap = 64 * 1024;
    }
-   .quick-alloc-v = C.malloc(.quick-alloc-cap);
-   C.memset(.quick-alloc-v, 0, .quick-alloc-cap);
+   .quick-alloc-v = 'C.malloc(.quick-alloc-cap);
+   'C.memset(.quick-alloc-v, 0, .quick-alloc-cap);
    // C1.stdout{"expanding to " .quick-alloc-cap ''\n}
    .quick-alloc-c = size;
    return .quick-alloc-v;
 }
-quick-alloc-undo(size:i32) @real-name(qalloc_undo) {
+quick-alloc-undo(size'i32) @real-name(qalloc_undo) {
    // if ref[usz] == 8 {
       size = (size + 7) & (-1 ^ 7);
    // } else {
@@ -544,54 +544,54 @@ quick-alloc-undo(size:i32) @real-name(qalloc_undo) {
    // }
    .quick-alloc-c -= size;
 }
-quick-alloc-one(r:ref)
+quick-alloc-one(r'ref)
    @no-body
    @decl('<# r = qalloc(sizeof(r[0]))>)
    @inline {
    quick-alloc(0);
 }
-quick-alloc-arr(r:ref, c:i32)
+quick-alloc-arr(r'ref, c'i32)
    @no-body
    @decl('<# r = qalloc(sizeof(r[0]) * (c))>)
    @inline {
    quick-alloc(0);
 }
-quick-alloc-plus(r:ref, plus:i32)
+quick-alloc-plus(r'ref, plus'i32)
    @no-body
    @decl('<# r = qalloc(sizeof(r[0]) + plus)>)
    @inline {
    quick-alloc(0);
 }
-malloc(r:ref)
+malloc(r'ref)
    @no-body
    @decl('<# r = malloc(sizeof(r[0])); memset(r, 0, sizeof(r[0]))>)
    @inline {
-   C.malloc(0);
+   'C.malloc(0);
 }
-malloc-arr(r:ref, c:i32)
+malloc-arr(r'ref, c'i32)
    @no-body
    @decl('<# r = malloc(sizeof(r[0]) * (c)); memset(r, 0, sizeof(r[0]) * (c))>)
    @inline {
-   C.malloc(0);
+   'C.malloc(0);
 }
-realloc(r:ref, c:i32, oldc:i32)
+realloc(r'ref, c'i32, oldc'i32)
    @no-body
    @decl('<# r = realloc(r, sizeof(r[0]) * (c)); memset(r + (oldc), 0, sizeof(r[0]) * ((c) - (oldc)))>)
    @inline {
-   C.realloc(null, 0);
+   'C.realloc(null, 0);
 }
 include "num.c" {
-   grow(cap:i32, c:i32)
+   grow(cap'i32, c'i32)
       @decl('<# cap = Fpow2gteq((c) + 8)>);
-   grow(c:i32):i32
+   grow(c'i32)'i32
       @decl('<# Fpow2gteq((c) + 8)>);
 }
-#decl-at-name-limit:i32 = 3;
-union AtName[id:Id, basic:BasicTypeId];
-union AtType[structt:Struct, enumm:Enum];
-enum AtDef[#undefined, #module, #struct, #enum, #basic]:u8;
-using AtData {
-   init(at:this, type:NameType, parent:At, name:Id) {
+#decl-at-name-limit'i32 = 3;
+union 'AtName[id'Id, basic'BasicTypeId];
+union 'AtType[structt'Struct, enumm'Enum];
+enum 'AtDef[#undefined, #module, #struct, #enum, #basic]'u8;
+using 'AtData {
+   init(at'this, type'NameType, parent'At, name'Id) {
       at.type = type;
       at.parent = parent;
       at.name.id = name;
@@ -605,25 +605,25 @@ using AtData {
       at.def = #undefined;
    }
 }
-enum NameType[#module, #struct-enum, #basic]:u8 {
-   rd(i:this&, r:Rdr) @inline {
-      i = r.n1():NameType;
+enum 'NameType[#module, #struct-enum, #basic]'u8 {
+   rd(i'this&, r'Rdr) @inline {
+      i = r.n1()'NameType;
    }
-   wr(i:this, w:Wtr) @inline {
-      w.n1(i:base);
+   wr(i'this, w'Wtr) @inline {
+      w.n1(i'base);
    }
-   cp1-name(e:this):char[] @cp1-name;
+   cp1-name(e'this)'char[] @cp1-name;
 }
-var at-c:At;
-var at-cap:At;
-var at-v:AtData.[];
-enum At[#nil = -1, #root, #relative]:i32 {
-   finalize(at-i:this, ti:TypeInfo, row:u32, col:u32):bool {
+var at-c'At;
+var at-cap'At;
+var at-v'AtData.[];
+enum 'At[#nil = -1, #root, #relative]'i32 {
+   finalize(at-i'this, ti'TypeInfo, row'u32, col'u32)'bool {
       at! = at-i.ptr();
       if at.def == #struct {
          if ti.built-in {
             if ti.ref-v[0] != 0 {
-               C1.stdout{.ctx-func.file '': row '': col ": Can't use dot symbol '.' because type '" at.name.id "' has reference\n"}
+               'C1.stdout{.ctx-func.file '': row '': col ": Can't use dot symbol '.' because type '" at.name.id "' has reference\n"}
                return false;
             }
             ti.ref-v[0] = -1;
@@ -635,26 +635,26 @@ enum At[#nil = -1, #root, #relative]:i32 {
          }
       } else {
          if ti.built-in {
-            C1.stdout{.ctx-func.file '': row '': col ": Can't use dot symbol '.' because type '" at.name.id "' is not a struct\n"}
+            'C1.stdout{.ctx-func.file '': row '': col ": Can't use dot symbol '.' because type '" at.name.id "' is not a struct\n"}
             return false;
          }
       }
       return true;
    }
-   output(at-i:this, file:File, row:u32, col:u32) {
+   output(at-i'this, file'File, row'u32, col'u32) {
       at! = at-i.ptr();
       switch at.type {
          case #struct-enum {
             if at.def == #struct {
                if at.decl.structt == #nil {
-                  C1.stdout{file '': row '': col ": Error, struct '/" at.name.id "' was not defined\n"}
-                  C.exit(#failure);
+                  'C1.stdout{file '': row '': col ": Error, struct '/" at.name.id "' was not defined\n"}
+                  'C.exit(#failure);
                }
                at.decl.structt.output();
             } elif at.def == #enum {
                if at.decl.enumm == #nil {
-                  C1.stdout{file '': row '': col ": Error, enum '\\" at.name.id "' was not defined\n"}
-                  C.exit(#failure);
+                  'C1.stdout{file '': row '': col ": Error, enum '\\" at.name.id "' was not defined\n"}
+                  'C.exit(#failure);
                }
                at.decl.enumm.output();
             }
@@ -695,7 +695,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
          // }
       }
    }
-   write-type-info(td:this, ti:TypeInfo, add:i32):bool {
+   write-type-info(td'this, ti'TypeInfo, add'i32)'bool {
       if ti.const {
          output{"const "}
       }
@@ -707,24 +707,24 @@ enum At[#nil = -1, #root, #relative]:i32 {
       }
       return true;
    }
-   count-stars(td:this, ti:TypeInfo):i32 {
+   count-stars(td'this, ti'TypeInfo)'i32 {
       if td == #root {
          return td.count-stars0(ti) + 1;
       } else {
          return td.count-stars0(ti);
       }
    }
-   pointer(td:this):i32 @inline {
+   pointer(td'this)'i32 @inline {
       if td.ptr().def == #struct {
          return 1;
       } else {
          return 0;
       }
    }
-   count-stars0(td:this, ti:TypeInfo):i32 {
+   count-stars0(td'this, ti'TypeInfo)'i32 {
       return ti.star-c + td.pointer();
    }
-   write-type(td:this):bool {
+   write-type(td'this)'bool {
       td.write();
 //    if td.typeType == #value {
 //       if td.real.baseDecl == null {
@@ -751,54 +751,54 @@ enum At[#nil = -1, #root, #relative]:i32 {
 //    }
       return true;
    }
-   ptr(i:this):AtData @inline {
+   ptr(i'this)'AtData @inline {
       return .at-v[i];
    }
-   rd(i:this&, r:Rdr) @inline {
-      idx! = (r.n() - 1):At;
+   rd(i'this&, r'Rdr) @inline {
+      idx! = (r.n() - 1)'At;
       if idx == #nil {
          i = #nil;
       } else {
          i = .at-table[idx];
       }
    }
-   put-to-header(at:this) {
-      if (.at-in-header-v[at:base >> 3] & (1 << (at:base & 7))) == 0 {
-         .at-in-header-v[at:base >> 3] |= 1 << (at:base & 7);
+   put-to-header(at'this) {
+      if (.at-in-header-v[at'base >> 3] & (1 << (at'base & 7))) == 0 {
+         .at-in-header-v[at'base >> 3] |= 1 << (at'base & 7);
          .at-in-header-idx-v[at] = .at-in-header-c;
-         .at-in-header-at-v[.at-in-header-c++] = at:base;
+         .at-in-header-at-v[.at-in-header-c++] = at'base;
          if (&&, at != #root, at != #relative) {
             at.ptr().parent.put-to-header();
          }
       }
    }
-   wr-header(id:this, w:Wtr) @inline {
+   wr-header(id'this, w'Wtr) @inline {
       if id == #nil {
          w.n(0);
       } else {
          w.n(1 + .at-in-header-idx-v[id]);
       }
    }
-   wr(at:this, w:Wtr) @inline {
+   wr(at'this, w'Wtr) @inline {
       if at == #nil {
          w.n(0);
       } else {
          w.n(1 + at);
       }
    }
-   wr(at:this, w:Wtr, header:bool) @inline {
+   wr(at'this, w'Wtr, header'bool) @inline {
       if at == #nil {
          w.n(0);
       } else {
          if header {
             w.n(1 + .at-in-header-idx-v[at]);
          } else {
-            w.n(1 + at:base);
+            w.n(1 + at'base);
             at.put-to-header();
          }
       }
    }
-   write(at-idx:this) {
+   write(at-idx'this) {
       at! = at-idx.ptr();
       switch at.type {
          case #module {
@@ -901,7 +901,7 @@ enum At[#nil = -1, #root, #relative]:i32 {
          }
       }
    }
-   write-space(at-idx:this) {
+   write-space(at-idx'this) {
       at! = at-idx.ptr();
       switch at.type {
          case #module {
@@ -973,35 +973,35 @@ enum At[#nil = -1, #root, #relative]:i32 {
    }
 }
 
-enum IncludeError[#none, #suffix, #absolute, #dot-slash, #slash, #double-slash, #cp1, #space]:u8 {
-   print(e:this, path:Include) {
+enum 'IncludeError[#none, #suffix, #absolute, #dot-slash, #slash, #double-slash, #cp1, #space]'u8 {
+   print(e'this, path'Include) {
       switch e {
          case #suffix {
-            C1.stdout{''\' path "' must end with .cp1\n"}
+            'C1.stdout{''\' path "' must end with .cp1\n"}
          }
          case #absolute {
-            C1.stdout{''\' path "' is an absolute path. Please use relative paths.\n"}
+            'C1.stdout{''\' path "' is an absolute path. Please use relative paths.\n"}
          }
          case #dot-slash {
-            C1.stdout{''\' path "' must not contain './' character sequence.\n"}
+            'C1.stdout{''\' path "' must not contain './' character sequence.\n"}
          }
          case #slash {
-            C1.stdout{''\' path "' must not contain '\\' character.\n"}
+            'C1.stdout{''\' path "' must not contain '\\' character.\n"}
          }
          case #double-slash {
-            C1.stdout{''\' path "' must not contain '//' character sequence.\n"}
+            'C1.stdout{''\' path "' must not contain '//' character sequence.\n"}
          }
          case #cp1 {
-            C1.stdout{''\' path "' must not contain '.cp1' character sequence except as a suffix.\n"}
+            'C1.stdout{''\' path "' must not contain '.cp1' character sequence except as a suffix.\n"}
          }
          case #space {
-            C1.stdout{''\' path "' must not contain a space character.\n"}
+            'C1.stdout{''\' path "' must not contain a space character.\n"}
          }
       }
    }
 }
-enum Include[#nil = -1, #0]:i32 {
-   validate(path:this, err:IncludeError&):bool {
+enum 'Include[#nil = -1, #0]'i32 {
+   validate(path'this, err'IncludeError&)'bool {
       str! = path.str();
       len! = path.len();
       if (len >= 4) && (str[len - 4] == ''.) && (str[len - 3] == ''c) && (str[len - 2] == ''p) && (str[len - 1] == ''1) {
@@ -1046,61 +1046,61 @@ enum Include[#nil = -1, #0]:i32 {
       }
       return true;
    }
-   str(i:this):char[] @inline {
+   str(i'this)'char[] @inline {
       return .include-str-v[i];
    }
-   len(i:this):u8 @inline {
+   len(i'this)'u8 @inline {
       return .include-len-v[i];
    }
-   wr(i:this, w:Wtr) @inline {
-      w.n(i:base + 1);
+   wr(i'this, w'Wtr) @inline {
+      w.n(i'base + 1);
    }
-   rd(i:this&, r:Rdr) @inline {
-      idx! = (r.n() - 1):Include;
+   rd(i'this&, r'Rdr) @inline {
+      idx! = (r.n() - 1)'Include;
       if idx == #nil {
          i = #nil;
       } else {
          i = .include-table[idx];
       }
    }
-   output(thiss:this) @inline {
-      num! = thiss:u32;
+   output(thiss'this) @inline {
+      num! = thiss'u32;
       n3! = num >> 3;
       n17! = 1 << (num & 7);
       if (.include-is-outputted[n3] & n17) != 0 { return }
       .include-is-outputted[n3] |= n17;
       .include-outputted-v[.include-outputted-c++] = thiss;
    }
-   stdout-reserve(i:this, so:C1.StdOut, p:C1.StdOutStr) {
+   stdout-reserve(i'this, so'C1'StdOut, p'C1'StdOutStr) {
       p.reserve(.include-str-v[i], .include-len-v[i], so);
    }
-   output-reserve(i:this, o:Output, p:Cp1.OutputStr) {
+   output-reserve(i'this, o'Output, p'Cp1'OutputStr) {
       p.reserve(.include-str-v[i], .include-len-v[i], o);
    }
 }
 
-var id-c:i32;
-var id-cap:i32;
-var id-str-v:char[][];
-var id-len-v:u8[];
-var id-c-name-v:char[][];
-var include-c:i32;
-var include-cap:i32;
-var include-str-v:char[][];
-var include-len-v:u8[];
-var func-main:Func;
-enum Id[#nil = -1, #0]:i32 {
-   stdout-reserve(id:this, so:C1.StdOut, p:C1.StdOutStr) @inline {
+var id-c'i32;
+var id-cap'i32;
+var id-str-v'char[][];
+var id-len-v'u8[];
+var id-c-name-v'char[][];
+var include-c'i32;
+var include-cap'i32;
+var include-str-v'char[][];
+var include-len-v'u8[];
+var func-main'Func;
+enum 'Id[#nil = -1, #0]'i32 {
+   stdout-reserve(id'this, so'C1'StdOut, p'C1'StdOutStr) @inline {
       p.reserve(id.str(), id.len(), so);
    }
-   jscode(id:this, jc:JsCode) @inline {
+   jscode(id'this, jc'JsCode) @inline {
       jscode-bytes(id.str(), id.len());
    }
-   output-reserve(id:this, o:Output, p:Cp1.OutputStr) @inline {
+   output-reserve(id'this, o'Output, p'Cp1'OutputStr) @inline {
       p.reserve(id.str(), id.len(), o);
    }
-   c-name(id:this):char[] {
-      var c-name:char[] = .id-c-name-v[id];
+   c-name(id'this)'char[] {
+      var c-name'char[] = .id-c-name-v[id];
       if c-name != null { return c-name }
       len! = .id-len-v[id];
       str! = .id-str-v[id];
@@ -1116,44 +1116,44 @@ enum Id[#nil = -1, #0]:i32 {
       c-name[len] = ''\0;
       return c-name;
    }
-   str(id:this):char[] @inline {
+   str(id'this)'char[] @inline {
       return .id-str-v[id];
    }
-   len(id:this):u8 @inline {
+   len(id'this)'u8 @inline {
       return .id-len-v[id];
    }
-   wr-header(id:this, w:Wtr) @inline {
+   wr-header(id'this, w'Wtr) @inline {
       if id == #nil {
          w.n(0);
       } else {
          w.n(1 + .id-in-header-idx-v[id]);
       }
    }
-   wr(id:this, w:Wtr) @inline {
+   wr(id'this, w'Wtr) @inline {
       if id == #nil {
          w.n(0);
       } else {
          w.n(1 + id);
       }
    }
-   wr(id:this, w:Wtr, header:bool) @inline {
+   wr(id'this, w'Wtr, header'bool) @inline {
       if id == #nil {
          w.n(0);
       } else {
          if header {
             w.n(1 + .id-in-header-idx-v[id]);
          } else {
-            w.n(1 + id:base);
-            if (.id-in-header-v[id:base >> 3] & (1 << (id:base & 7))) == 0 {
-               .id-in-header-v[id:base >> 3] |= 1 << (id:base & 7);
+            w.n(1 + id'base);
+            if (.id-in-header-v[id'base >> 3] & (1 << (id'base & 7))) == 0 {
+               .id-in-header-v[id'base >> 3] |= 1 << (id'base & 7);
                .id-in-header-idx-v[id] = .id-in-header-c;
-               .id-in-header-id-v[.id-in-header-c++] = id:base;
+               .id-in-header-id-v[.id-in-header-c++] = id'base;
             }
          }
       }
    }
-   rd(id:this&, r:Rdr) @inline {
-      idx! = (r.n() - 1):Id;
+   rd(id'this&, r'Rdr) @inline {
+      idx! = (r.n() - 1)'Id;
       if idx == #nil {
          id = #nil;
       } else {
@@ -1161,13 +1161,13 @@ enum Id[#nil = -1, #0]:i32 {
       }
    }
 }
-var template-code-v:TemplateCodeData.[];
-var template-code-cap:TemplateCode;
-var template-code-c:TemplateCode;
-enum TemplateCode[]:u32; 
-var template-inst-v:TemplateInstData.[];
-var template-inst-cap:TemplateInst;
-var template-inst-c:TemplateInst;
-enum TemplateInst[]:u32; 
+var template-code-v'TemplateCodeData.[];
+var template-code-cap'TemplateCode;
+var template-code-c'TemplateCode;
+enum 'TemplateCode[]'u32; 
+var template-inst-v'TemplateInstData.[];
+var template-inst-cap'TemplateInst;
+var template-inst-c'TemplateInst;
+enum 'TemplateInst[]'u32; 
 
 }

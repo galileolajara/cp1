@@ -1,41 +1,41 @@
-using C = LibC;
-using C1 = LibCp1;
-using Cp1 {
-enum StmtType[
+using 'C = 'LibC;
+using 'C1 = 'LibCp1;
+using 'Cp1 {
+enum 'StmtType[
    #space, #if, #if-elif, #if-else, #if-end,
    #loop, #loop-end, #while, #while-end,
    #expr, #return, #continue, #break,
    #switch, #case, #default, #case-end, #default-end, #switch-end,
    #nil = 255,
-   ]:u8 {
-   wr(s:this, w:Wtr) @inline {
-      w.n1(s:base);
+   ]'u8 {
+   wr(s'this, w'Wtr) @inline {
+      w.n1(s'base);
    }
-   rd(s:this&, r:Rdr) @inline {
-      s = r.n1():StmtType;
+   rd(s'this&, r'Rdr) @inline {
+      s = r.n1()'StmtType;
    }
-   cp1-name(e:this):char[] @cp1-name;
+   cp1-name(e'this)'char[] @cp1-name;
 }
-struct Stmt[
-   begin-row:u32,
-   begin-col:u32,
-   end-row:u32,
-   end-col:u32,
-   type:StmtType,
-   stmt-next:Stmt,
+struct 'Stmt[
+   begin-row'u32,
+   begin-col'u32,
+   end-row'u32,
+   end-col'u32,
+   type'StmtType,
+   stmt-next'Stmt,
    ] {
-   write(s:this) {
+   write(s'this) {
       // C1.stdout{
       //    '= printf("%s %d\n", __FILE__, __LINE__);
       // }
       switch.write(s) s.type {
          default {
-            C1.stdout{"write() not yet implemented in stmt #" s.type.cp1-name() ''\n}
-            C.exit(#failure);
+            'C1.stdout{"write() not yet implemented in stmt #" s.type.cp1-name() ''\n}
+            'C.exit(#failure);
          }
       }
    }
-   process(s:this):bool {
+   process(s'this)'bool {
       ok! = false;
       .ctx-begin-row = s.begin-row;
       .ctx-begin-col = s.begin-col;
@@ -43,25 +43,25 @@ struct Stmt[
       .ctx-end-col = s.end-col;
       switch.process(s, ok) s.type {
          default {
-            C1.stdout{.ctx-func.file '': s.begin-row '': s.begin-col " - " s.end-row '': s.end-col ": process() is not implemented in statement #" s.type.cp1-name() ''\n}
+            'C1.stdout{.ctx-func.file '': s.begin-row '': s.begin-col " - " s.end-row '': s.end-col ": process() is not implemented in statement #" s.type.cp1-name() ''\n}
          }
       }
       if !ok {
-         C1.stdout{.ctx-func.file '': s.begin-row '': s.begin-col " - " s.end-row '': s.end-col ": Processing of statement #" s.type.cp1-name() " failed\n"}
+         'C1.stdout{.ctx-func.file '': s.begin-row '': s.begin-col " - " s.end-row '': s.end-col ": Processing of statement #" s.type.cp1-name() " failed\n"}
       }
       return ok;
    }
 }
-struct StmtExpr[
-   base:Stmt.,
-   expr:ExprI,
+struct 'StmtExpr[
+   base'Stmt.,
+   expr'ExprI,
 ];
-struct StmtReturn[
-   base:Stmt.,
-   expr:ExprI,
-   val:Value.,
+struct 'StmtReturn[
+   base'Stmt.,
+   expr'ExprI,
+   val'Value.,
 ];
-stmt-push(s:Stmt, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32, type:StmtType) {
+stmt-push(s'Stmt, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32, type'StmtType) {
    s.begin-row = begin-row;
    s.begin-col = begin-col;
    s.end-row = end-row;
@@ -69,7 +69,7 @@ stmt-push(s:Stmt, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32, type:S
    s.type = type;
    func-stmt-add(s);
 }
-func-stmt-add(s:Stmt) {
+func-stmt-add(s'Stmt) {
    s.stmt-next = null;
    if .decl-func-ctx-space.stmt-last == null {
       .decl-func-ctx-space.stmt-first = s;
@@ -79,33 +79,33 @@ func-stmt-add(s:Stmt) {
       .decl-func-ctx-space.stmt-last = s;
    }
 }
-expr2stmt(e-idx:ExprI, begin-row:u32, begin-col:u32, end-row:u32, end-col:u32) {
-   var s:StmtExpr;
+expr2stmt(e-idx'ExprI, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32) {
+   var s'StmtExpr;
    quick-alloc-one(s);
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #expr);
    s.expr = e-idx;
    e! = e-idx.ptr();
    if e.type == #assign {
-      var assign:ExprAssign = e;
+      var assign'ExprAssign = e;
       assign.is-stmt = true;
    }
 }
-stmt-lvar-add(name:Id, set:ExprI, row:u32, col:u32) {
+stmt-lvar-add(name'Id, set'ExprI, row'u32, col'u32) {
    lvar-i! = .decl-func-ctx-space.lvar-new(name, row, col);
    lvar! = lvar-i.ptr();
    .decl-var.name = name;
    lvar.decl.copy-from(.decl-var);
-   if set == -2:ExprI {
+   if set == -2'ExprI {
       lvar.flags |= #set-expr;
    } elif set != #nil {
       e2! = expr-lvar(name, 0, row, col);
-      var expr2:ExprLvar = e2.ptr();
+      var expr2'ExprLvar = e2.ptr();
       expr2.decl = true;
       e! = expr-assign(e2, set, #eq);
       expr2stmt(e, row, col, row, col);
    }
 }
-stmt-lvar-end(end-row:u32, end-col:u32) {
+stmt-lvar-end(end-row'u32, end-col'u32) {
 }
  
 

@@ -1,31 +1,31 @@
-using Cp1 {
-expr-null():ExprI {
-   var e:ExprNull;
+using 'Cp1 {
+expr-null()'ExprI {
+   var e'ExprNull;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #null);
    return e-idx;
 }
-using ExprI {
-   wr-null(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
-      var e:ExprNull = expr;
+using 'ExprI {
+   wr-null(expr'Expr, w'Wtr, header'bool) @case.wr() @inline {
+      var e'ExprNull = expr;
    }
-   rd-null(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      var e:ExprNull;
+   rd-null(e-idx'ExprI, r'Rdr) @case.rd() @inline {
+      var e'ExprNull;
       quick-alloc-one(e);
       e-idx.set(e.base, #null);
    }
-   write-null(expr:Expr) @case.write() @inline {
-      var e:ExprNull = expr;
+   write-null(expr'Expr) @case.write() @inline {
+      var e'ExprNull = expr;
       output{"NULL"}
    }
-   process-null(expr:Expr, ok:bool&) @case.process() @inline {
+   process-null(expr'Expr, ok'bool&) @case.process() @inline {
       // .include-stddef = true;
       ok = true;
    }
-   type-null(expr:Expr, at:At&) @case.type() @inline {
+   type-null(expr'Expr, at'At&) @case.type() @inline {
       at = basic-type(#ref);
    }
-   value-null(le:this, reff:i32, paren:bool, v:Value, ok:bool&) @case.value() @inline {
+   value-null(le'this, reff'i32, paren'bool, v'Value, ok'bool&) @case.value() @inline {
       v.type = basic-type(#ref);
       v.info.init();
       v.info.array-c = 0;

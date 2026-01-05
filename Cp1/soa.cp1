@@ -1,12 +1,12 @@
-using C = LibC;
-using C1 = LibCp1;
-using Cp1 {
-expr-soa-field(expr:ExprI, group:Id, field:Id, row:u32, col:u32):ExprI {
+using 'C = 'LibC;
+using 'C1 = 'LibCp1;
+using 'Cp1 {
+expr-soa-field(expr'ExprI, group'Id, field'Id, row'u32, col'u32)'ExprI {
    if .decl-func-ctx-space == null {
-      C1.stdout{.input-path '': row '': row ": Use of SOA member variables are now allowed here\n"}
-      C.exit(#failure);
+      'C1.stdout{.input-path '': row '': row ": Use of SOA member variables are now allowed here\n"}
+      'C.exit(#failure);
    }
-   var e:ExprSoaField;
+   var e'ExprSoaField;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #soa-field);
    e.expr = expr;
@@ -14,58 +14,58 @@ expr-soa-field(expr:ExprI, group:Id, field:Id, row:u32, col:u32):ExprI {
    e.field = field;
    return e-idx;
 }
-using ExprI {
-   wr-soa-field(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
-      var e:ExprSoaField = expr;
+using 'ExprI {
+   wr-soa-field(expr'Expr, w'Wtr, header'bool) @case.wr() @inline {
+      var e'ExprSoaField = expr;
       e.expr.wr(w, header);
       e.group.wr(w, header);
       e.field.wr(w, header);
    }
-   rd-soa-field(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      var e:ExprSoaField;
+   rd-soa-field(e-idx'ExprI, r'Rdr) @case.rd() @inline {
+      var e'ExprSoaField;
       quick-alloc-one(e);
       e-idx.set(e.base, #soa-field);
       e.expr.rd(r);
       e.group.rd(r);
       e.field.rd(r);
    }
-   type-soa-field(expr:Expr, at:At&) @case.type() @inline {
-      var e:ExprSoaField = expr;
+   type-soa-field(expr'Expr, at'At&) @case.type() @inline {
+      var e'ExprSoaField = expr;
       type-index(e.expr2.ptr(), at);
    }
-   value-soa-field(expr:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
-      var e:ExprSoaField = expr.ptr();
+   value-soa-field(expr'this, reff'i8, paren'bool, v'Value, ok'bool&) @case.value() @inline {
+      var e'ExprSoaField = expr.ptr();
       value-index(e.expr2, reff, paren, v, ok);
    }
-   write-soa-field(expr:Expr) @case.write() @inline {
-      var e:ExprSoaField = expr;
+   write-soa-field(expr'Expr) @case.write() @inline {
+      var e'ExprSoaField = expr;
       write-index(e.expr2.ptr());
    }
-   process-soa-field(expr:Expr, ok:bool&) @case.process() @inline {
-      var e:ExprSoaField = expr;
+   process-soa-field(expr'Expr, ok'bool&) @case.process() @inline {
+      var e'ExprSoaField = expr;
       type-i! = e.expr.type();
       if type-i == #nil {
-         C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " from an expression of unknown type\n"}
+         'C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " from an expression of unknown type\n"}
          return;
       }
       type! = type-i.ptr();
       if type.def != #enum {
-         C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " because its type is not an enum\n"}
+         'C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " because its type is not an enum\n"}
          return;
       }
       enumm! = type.decl.enumm;
       enumd! = enumm.ptr();
       if (enumd.flags & #soa-field) != #0 {
-         gvar-e-idx! = ExprI.alloc();
+         gvar-e-idx! = 'ExprI.alloc();
          gvar-e-idx.set-gvar(enumd.soa-field-gvar-at, enumd.soa-field-gvar-id);
-         fvar-e-idx! = ExprI.alloc();
+         fvar-e-idx! = 'ExprI.alloc();
          fvar-e-idx.set-fvar(gvar-e-idx, e.field);
-         index-e-idx! = ExprI.alloc();
+         index-e-idx! = 'ExprI.alloc();
          index-e-idx.set-index(fvar-e-idx, e.expr);
          process-index(index-e-idx.ptr(), ok);
          e.expr2 = index-e-idx;
       } else {
-         C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " because the enum has no @soa-field attribute\n"}
+         'C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " because the enum has no @soa-field attribute\n"}
          return;
       }
    }

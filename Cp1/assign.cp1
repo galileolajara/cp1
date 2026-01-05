@@ -1,18 +1,18 @@
-using C1 = LibCp1;
-using C = LibC;
-using Cp1 {
-enum Assign[#eq, #colon-eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
+using 'C1 = 'LibCp1;
+using 'C = 'LibC;
+using 'Cp1 {
+enum 'Assign[#eq, #colon-eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
              #lshift-eq, #rshift-eq, #and-eq, #or-eq, #xor-eq,
-             ]:u8 {
-   wr(s:this, w:Wtr) @inline {
-      w.n1(s:base);
+             ]'u8 {
+   wr(s'this, w'Wtr) @inline {
+      w.n1(s'base);
    }
-   rd(s:this&, r:Rdr) @inline {
-      s = r.n1():Assign;
+   rd(s'this&, r'Rdr) @inline {
+      s = r.n1()'Assign;
    }
 }
-expr-assign(left:ExprI, right:ExprI, type:Assign):ExprI {
-   var e:ExprAssign;
+expr-assign(left'ExprI, right'ExprI, type'Assign)'ExprI {
+   var e'ExprAssign;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #assign);
    e.left = left;
@@ -21,7 +21,7 @@ expr-assign(left:ExprI, right:ExprI, type:Assign):ExprI {
    if e.type == #eq {
       e2! = left.ptr();
       if e2.type == #lvar {
-         var lvar:ExprLvar = e2;
+         var lvar'ExprLvar = e2;
          if lvar.decl {
             lvar.lvar.ptr().flags ^= #set-expr;
          }
@@ -29,33 +29,33 @@ expr-assign(left:ExprI, right:ExprI, type:Assign):ExprI {
    }
    return e-idx;
 }
-using ExprI {
-   wr-assign(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
-      var e:ExprAssign = expr;
+using 'ExprI {
+   wr-assign(expr'Expr, w'Wtr, header'bool) @case.wr() @inline {
+      var e'ExprAssign = expr;
       if e.is-stmt {
          if e.type == #colon-eq {
-            C1.stdout{.input-path '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Please use '=' instead of ':=' when using assignment operator in this instance.\n"}
-            C.exit(#failure);
+            'C1.stdout{.input-path '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Please use '=' instead of ':=' when using assignment operator in this instance.\n"}
+            'C.exit(#failure);
          }
       } else {
          if e.type == #eq {
-            C1.stdout{.input-path '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Please use ':=' instead of '=' when using assignment operator in this instance.\n"}
-            C.exit(#failure);
+            'C1.stdout{.input-path '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Please use ':=' instead of '=' when using assignment operator in this instance.\n"}
+            'C.exit(#failure);
          }
       }
       e.left.wr(w, header);
       e.right.wr(w, header);
       e.type.wr(w);
    }
-   write-assign(expr:Expr) @case.write() @inline {
-      var e:ExprAssign = expr;
+   write-assign(expr'Expr) @case.write() @inline {
+      var e'ExprAssign = expr;
       e.left.write-value(e.left-val);
       if e.is-overload { return }
       e-right! = e.right.ptr();
       if (e.type == #eq) && (e-right.type == #ref) {
          e-left! = e.left.ptr();
          if (e.type == #eq) && (e-left.type == #lvar) {
-            var lvar:ExprLvar = e-left;
+            var lvar'ExprLvar = e-left;
             if lvar.decl {
                output{" = (("}
                ld! = lvar.lvar.ptr().decl;
@@ -86,7 +86,7 @@ using ExprI {
       }
       e-left! = e.left.ptr();
       if (e.type == #eq) && (e-left.type == #lvar) {
-         var lvar:ExprLvar = e-left;
+         var lvar'ExprLvar = e-left;
          if lvar.decl {
             output{"(("}
             ld! = lvar.lvar.ptr().decl;
@@ -99,20 +99,20 @@ using ExprI {
       }
       e.right.write-value(e.right-val);
    }
-   rd-assign(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      var e:ExprAssign;
+   rd-assign(e-idx'ExprI, r'Rdr) @case.rd() @inline {
+      var e'ExprAssign;
       quick-alloc-one(e);
       e-idx.set(e.base, #assign);
       e.left.rd(r);
       e.right.rd(r);
       e.type.rd(r);
    }
-   type-assign(expr:Expr, at:At&) @case.type() @inline {
-      var e:ExprAssign = expr;
+   type-assign(expr'Expr, at'At&) @case.type() @inline {
+      var e'ExprAssign = expr;
       at = e.left.type();
    }
-   value-assign(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
-      var expr:ExprAssign = e.ptr();
+   value-assign(e'this, reff'i8, paren'bool, v'Value, ok'bool&) @case.value() @inline {
+      var expr'ExprAssign = e.ptr();
       if expr.left.value(1, paren, v) == false {
          return;
       }
@@ -120,11 +120,11 @@ using ExprI {
       v.reff = reff;
       ok = true;
    }
-   process-assign(expr:Expr, ok:bool&) @case.process() @inline {
-      var e:ExprAssign = expr;
+   process-assign(expr'Expr, ok'bool&) @case.process() @inline {
+      var e'ExprAssign = expr;
       left-e! = e.left.ptr();
       if left-e.type == #lvar {
-         var left:ExprLvar = left-e;
+         var left'ExprLvar = left-e;
          lvar! = left.lvar.ptr();
          if lvar.decl.type == #nil {
             if !e.right.value(1, true, e.right-val) {
@@ -150,12 +150,12 @@ using ExprI {
             f! = f-idx.ptr();
             loop {
                if f.farg-v[1].decl.type == e-right-type {
-                  e-method! = ExprI.alloc();
-                  var group-v:u8[1];
+                  e-method! = 'ExprI.alloc();
+                  var group-v'u8[1];
                   group-v[0] = 3;
-                  var carg-v:ExprI[3];
+                  var carg-v'ExprI[3];
                   carg-v[0] = e.right;
-                  e-cvar! = ExprI.alloc();
+                  e-cvar! = 'ExprI.alloc();
                   var id-set;
                   switch e.type {
                      case #eq { id-set = .id-eq }
@@ -166,7 +166,7 @@ using ExprI {
                   }
                   set-cvar(e-cvar, #nil, id-set);
                   carg-v[1] = e-cvar;
-                  e-bool! = ExprI.alloc();
+                  e-bool! = 'ExprI.alloc();
                   set-bool(e-bool, e.is-stmt);
                   carg-v[2] = e-bool;
                   set-method(e-method, e.left, f.decl.name, 1, group-v, 3, carg-v);
@@ -191,19 +191,19 @@ using ExprI {
                   f2! = f2-idx.ptr();
                   loop {
                      if f2.farg-v[0].decl.type == e-right-type {
-                        e-func! = ExprI.alloc();
-                        var group-v:u8[1];
+                        e-func! = 'ExprI.alloc();
+                        var group-v'u8[1];
                         group-v[0] = 1;
-                        var carg-v:ExprI[1];
+                        var carg-v'ExprI[1];
                         carg-v[0] = e.right;
                         set-func(e-func, f2.at, f2.decl.name, 1, group-v, 1, carg-v);
                         if true {
-                           e-method! = ExprI.alloc();
-                           var group-v:u8[1];
+                           e-method! = 'ExprI.alloc();
+                           var group-v'u8[1];
                            group-v[0] = 3;
-                           var carg-v:ExprI[3];
+                           var carg-v'ExprI[3];
                            carg-v[0] = e-func;
-                           e-cvar! = ExprI.alloc();
+                           e-cvar! = 'ExprI.alloc();
                            var id-set;
                            switch e.type {
                               case #eq { id-set = .id-eq }
@@ -214,7 +214,7 @@ using ExprI {
                            }
                            set-cvar(e-cvar, #nil, id-set);
                            carg-v[1] = e-cvar;
-                           e-bool! = ExprI.alloc();
+                           e-bool! = 'ExprI.alloc();
                            set-bool(e-bool, e.is-stmt);
                            carg-v[2] = e-bool;
                            set-method(e-method, e.left, f.decl.name, 1, group-v, 3, carg-v);
@@ -244,25 +244,25 @@ using ExprI {
       if !e.right.value(1, true, e.right-val) {
          return;
       }
-      var e-left:ExprLvar = e.left.ptr();
+      var e-left'ExprLvar = e.left.ptr();
       if (e-left.base.type == #lvar) && e-left.decl {
          // Bypass compatibility check on variable declaration assignment
       } elif !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), e.right-val.type, e.right-val.info.star-c + e.right-val.type.pointer()) {
-         C1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the assignment operator '"}
+         'C1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the assignment operator '"}
          switch e.type {
-            case #eq { C1.stdbuf{"="} }
-            case #colon-eq { C1.stdbuf{":="} }
-            case #plus-eq { C1.stdbuf{"+="} }
-            case #minus-eq { C1.stdbuf{"-="} }
-            case #mul-eq { C1.stdbuf{"*="} }
-            case #div-eq { C1.stdbuf{"/="} }
-            case #lshift-eq { C1.stdbuf{"<<="} }
-            case #rshift-eq { C1.stdbuf{">>="} }
-            case #and-eq { C1.stdbuf{"&="} }
-            case #or-eq { C1.stdbuf{"|="} }
-            case #xor-eq { C1.stdbuf{"^="} }
+            case #eq { 'C1.stdbuf{"="} }
+            case #colon-eq { 'C1.stdbuf{":="} }
+            case #plus-eq { 'C1.stdbuf{"+="} }
+            case #minus-eq { 'C1.stdbuf{"-="} }
+            case #mul-eq { 'C1.stdbuf{"*="} }
+            case #div-eq { 'C1.stdbuf{"/="} }
+            case #lshift-eq { 'C1.stdbuf{"<<="} }
+            case #rshift-eq { 'C1.stdbuf{">>="} }
+            case #and-eq { 'C1.stdbuf{"&="} }
+            case #or-eq { 'C1.stdbuf{"|="} }
+            case #xor-eq { 'C1.stdbuf{"^="} }
          }
-         C1.stdout{"'\n"}
+         'C1.stdout{"'\n"}
          return;
       }
       ok = true;

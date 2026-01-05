@@ -86,17 +86,15 @@ end_pos(t) ::= .
 
 func_decl_begin ::= ID_THEN_OPEN_PARENTHESIS(name).
    { _NCp1_Pdecl_func_begin_3(name.basic.id, name.basic.row, name.basic.col); }
-at_name ::= ID_UPPER(e).
-   { _NCp1_Pat_push_4(e.basic.id, 1, e.basic.row, e.basic.col); }
-at_name_dot ::= DOT_ID_UPPER(e).
+at_name ::= ID_TYPE(e).
    { _NCp1_Pat_push_4(e.basic.id, 1, e.basic.row, e.basic.col); }
 enum_cvar_begin ::= HASH_ID(e).
    { _NCp1_Penum_add_cvar_3(e.basic.id, e.basic.row, e.basic.col); }
 enum_cvar_begin_decl ::= HASH_ID(e) typeAndInfo_optional.
    { _NCp1_Pdecl_add_cvar_3(e.basic.id, e.basic.row, e.basic.col); }
-struct_decl_begin ::= STRUCT SPACE ID_UPPER(name).
+struct_decl_begin ::= STRUCT SPACE ID_TYPE(name).
    { _NCp1_Pdecl_at_begin_struct_3(name.basic.id, name.basic.row, name.basic.col); }
-struct_decl_begin ::= UNION SPACE ID_UPPER(name).
+struct_decl_begin ::= UNION SPACE ID_TYPE(name).
    { _NCp1_Pdecl_at_begin_struct_3(name.basic.id, name.basic.row, name.basic.col);
      _NCp1_Pstruct_attr_union_0(); }
 fvar_decl_name ::= ID(name).
@@ -126,7 +124,7 @@ enum_cvar ::= enum_cvar_begin cvar_attrs_optional SPACE_EQUAL SPACE expr(set).
 cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional.
 cvar_decl ::= enum_cvar_begin_decl cvar_attrs_optional SPACE_EQUAL SPACE expr(set).
    { _NCp1_Penum_set_cvar_expr_1(set.basic.id); }
-enum_decl_begin ::= ENUM SPACE ID_UPPER(name).
+enum_decl_begin ::= ENUM SPACE ID_TYPE(name).
    { _NCp1_Pdecl_at_begin_enum_3(name.basic.id, name.basic.row, name.basic.col); }
 
 decl_include ::= INCLUDE(e).
@@ -147,14 +145,11 @@ at_graves_count(l) ::= at_graves_count(r) GRAVE.
 at_graves ::= at_graves_count(e).
    { _NCp1_Pat_graves_3(e.basic.id, e.basic.row, e.basic.col); } */
 // at_names ::= at_alias.
-at_names ::= DOT_ID_UPPER(e).
-   { _NCp1_Pat_root_0();
-     _NCp1_Pat_push_4(e.basic.id, 1, e.basic.row, e.basic.col); }
 // at_names ::= at_graves at_name.
 at_begin ::= .
    { _NCp1_Pat_begin_relative_0(); }
 at_names ::= at_begin at_name.
-at_names ::= at_names at_name_dot.
+at_names ::= at_names at_name.
 at(l) ::= type_basic_id(r).
    { l.basic.id = _NCp1_Pat_basic_type_1(r.basic.id); }
 at(l) ::= at_names.
@@ -165,14 +160,12 @@ at(l) ::= at_root.
 */
 /* at(l) ::= at_graves.
    { l.basic.id = _NCp1_Pat_done_0(); } */
-decl_at_name ::= ID_UPPER(e).
-   { _NCp1_Pdecl_at_add_4(e.basic.id, 1, e.basic.row, e.basic.col); }
-decl_at_name2 ::= DOT_ID_UPPER(e).
+decl_at_name ::= ID_TYPE(e).
    { _NCp1_Pdecl_at_add_4(e.basic.id, 1, e.basic.row, e.basic.col); }
 decl_at_begin_at ::= .
    { _NCp1_Pat_begin_0(); }
 decl_at_names ::= decl_at_begin_at decl_at_name.
-decl_at_names ::= decl_at_names decl_at_name2.
+decl_at_names ::= decl_at_names decl_at_name.
 decl_at_namespace ::= decl_at_names.
 decl_at_namespace ::= type_basic_id(e).
    { _NCp1_Pdecl_at_basic_1(e.basic.id); }
@@ -230,7 +223,7 @@ decl_alias_begin ::= USING_WITH_SEMICOLON SPACE.
    { _NCp1_Pat_begin_relative_pause_0(); }
 decl_alias_end ::= SEMICOLON.
    { _NCp1_Pat_begin_relative_resume_0(); }
-decl ::= decl_alias_begin ID_UPPER(short) SPACE_EQUAL SPACE at(long) decl_alias_end.
+decl ::= decl_alias_begin ID_TYPE(short) SPACE_EQUAL SPACE at(long) decl_alias_end.
    { _NCp1_Pdecl_alias_4(short.basic.id, long.basic.id, short.basic.row, short.basic.col); }
 decls ::= decl.
 decls ::= decls SPACE decl.
@@ -274,7 +267,7 @@ lvar_decl(l) ::= lvar_decl_name(r).
    { _NCp1_Pdecl_var_end_0(); l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 farg ::= lvar_decl(e) typeAndInfo.
    { _NCp1_Pdecl_var_as_farg_2(e.basic.row, e.basic.col); }
-expr_type_this_apply ::= COLON THIS.
+expr_type_this_apply ::= THIS.
    { _NCp1_Pdecl_var_this_0(); }
 farg ::= lvar_decl expr_type_this_apply typeInfo_optional.
    { _NCp1_Pdecl_var_as_this_0(); }
@@ -675,23 +668,15 @@ funcExpr(l) ::= ID_THEN_OPEN_PARENTHESIS(func).
    { l.basic.id = -1; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 funcExpr(l) ::= at(at) DOT ID_THEN_OPEN_PARENTHESIS(func).
    { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
-funcExpr(l) ::= at(at) DOT_ID_UPPER_THEN_OPEN_PARENTHESIS(func).
-   { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 metaFuncExpr(l) ::= ID_THEN_OPEN_CURLY_BRACE(func).
    { l.basic.id = -1; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
-metaFuncExpr(l) ::= ID_UPPER_THEN_OPEN_CURLY_BRACE(func).
+metaFuncExpr(l) ::= ID_TYPE_THEN_OPEN_CURLY_BRACE(func).
    { l.basic.id = -1; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 metaFuncExpr(l) ::= at(at) DOT ID_THEN_OPEN_CURLY_BRACE(func).
    { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
-metaFuncExpr(l) ::= at(at) DOT_ID_UPPER_THEN_OPEN_CURLY_BRACE(func).
-   { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 methodExpr(l) ::= value4fix(e) DOT ID_THEN_OPEN_PARENTHESIS(func).
    { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
-methodExpr(l) ::= value4fix(e) DOT_ID_UPPER_THEN_OPEN_PARENTHESIS(func).
-   { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 metaMethodExpr(l) ::= value4fix(e) DOT ID_THEN_OPEN_CURLY_BRACE(func).
-   { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
-metaMethodExpr(l) ::= value4fix(e) DOT_ID_UPPER_THEN_OPEN_CURLY_BRACE(func).
    { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _NCp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 metaCall_args_optional ::= OPEN_CURLY_BRACE CLOSE_CURLY_BRACE.
 metaCall_args_optional ::= OPEN_CURLY_BRACE SPACE CLOSE_CURLY_BRACE.
@@ -813,9 +798,9 @@ exprs(l) ::= expr_or(r).
 sizeOfTypeExpr(l) ::= at(at) OPEN_BRACKET USZ CLOSE_BRACKET.
    { l.basic.id = _NCp1_Pexpr_size_of_type_1(at.basic.id); }
 
-fastCastExpr(l) ::= value4cast(e) COLON at(at).
+fastCastExpr(l) ::= value4cast(e) at(at).
    { l.basic.id = _NCp1_Pexpr_cast_fast_2(e.basic.id, at.basic.id); }
-fastCastExpr(l) ::= value4cast(e) COLON_BASE.
+fastCastExpr(l) ::= value4cast(e) BASE.
    { l.basic.id = _NCp1_Pexpr_cast_fast_2(e.basic.id, -1); }
 
 negVal(l) ::= MINUS value4fix(e).
@@ -957,7 +942,7 @@ stmt_return ::= begin_pos(begin) RETURN end_pos(end).
 stmt_return ::= begin_pos(begin) RETURN SPACE expr(e) end_pos(end).
    { _NCp1_Pstmt_return_5(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
 
-typeAndInfo ::= COLON expr_type_apply typeInfo_optional.
+typeAndInfo ::= expr_type_apply typeInfo_optional.
 typeAndInfo_optional ::= typeAndInfo.
 typeAndInfo_optional ::= expr_type_none typeInfo_none.
 
@@ -1072,7 +1057,7 @@ decl_enum_attrs ::= decl_enum_attr.
 decl_enum_attrs ::= decl_enum_attrs decl_enum_attr.
 decl_enum_attrs_optional ::= .
 decl_enum_attrs_optional ::= decl_enum_attrs.
-enum_base_end ::= COLON at(at) decl_enum_attrs_optional end_pos(end).
+enum_base_end ::= at(at) decl_enum_attrs_optional end_pos(end).
    { _NCp1_Pdecl_enum_end_3(at.basic.id, end.basic.row, end.basic.col); }
 decl_enum ::= enum_decl_begin OPEN_BRACKET CLOSE_BRACKET enum_base_begin enum_base_end
    decl_enum_close_or_at.
@@ -1080,7 +1065,7 @@ decl_enum ::= enum_decl_begin OPEN_BRACKET SPACE_CLOSE_BRACKET enum_base_begin e
    decl_enum_close_or_at.
 decl_enum ::= enum_decl_begin open_bracket_or_space enum_cvars close_bracket_or_comma enum_base_begin enum_base_end
    decl_enum_close_or_at.
-decl_gvar ::= fvar_decl COLON expr_type_apply typeInfo_optional decl_var_attrs_optional.
+decl_gvar ::= fvar_decl expr_type_apply typeInfo_optional decl_var_attrs_optional.
    { _NCp1_Pdecl_var_as_gvar_0(); }
 decl_gvar_list ::= decl_gvar.
 decl_gvar_list ::= decl_gvar_list decl_gvar.

@@ -5,21 +5,21 @@ require "LibC/string.cp1";
 require "Posix/fcntl.cp1";
 require "Posix/unistd.cp1";
 require "Posix/stat.cp1";
-using C = LibC;
-using C1 = LibCp1;
-using X = Posix;
-print-commands(bin:char[]) {
-   C1.stdout{
+using 'C = 'LibC;
+using 'C1 = 'LibCp1;
+using 'X = 'Posix;
+print-commands(bin'char[]) {
+   'C1.stdout{
    "Usage: " bin " [file.cp1]\n"
    }
 }
-validate-cp1-path(bin:char[], cp1-path:char[]) {
+validate-cp1-path(bin'char[], cp1-path'char[]) {
    if cp1-path[0] == ''/ {
       print-commands(bin);
-      C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must be a relative filepath (e.g. file.cp1), not an absolute path (/home/user/file.cp1)\n"}
-      C.exit(#failure);
+      'C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must be a relative filepath (e.g. file.cp1), not an absolute path (/home/user/file.cp1)\n"}
+      'C.exit(#failure);
    }
-   cp1-path-len! = C.strlen(cp1-path);
+   cp1-path-len! = 'C.strlen(cp1-path);
    if (&&, cp1-path[0] == ''., cp1-path[1] == ''/) {
       cp1-path = &cp1-path[2];
       cp1-path-len -= 2;
@@ -27,32 +27,32 @@ validate-cp1-path(bin:char[], cp1-path:char[]) {
    loop j = 0; cp1-path-len; j++ {
       if cp1-path[j] == ''\\ {
          print-commands(bin);
-         C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must not contain backslashes '\\', please use forward slashes '/' instead\n"}
-         C.exit(#failure);
+         'C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must not contain backslashes '\\', please use forward slashes '/' instead\n"}
+         'C.exit(#failure);
       }
    }
    loop j = 0; cp1-path-len; j++ {
       if cp1-path[j] == ''  {
          print-commands(bin);
-         C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must not contain a space\n"}
-         C.exit(#failure);
+         'C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must not contain a space\n"}
+         'C.exit(#failure);
       }
    }
    loop j = 0; cp1-path-len - 1; j++ {
       if (&&, cp1-path[j] == ''., cp1-path[j + 1] == ''/) {
          print-commands(bin);
-         C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must not contain './'\n"}
-         C.exit(#failure);
+         'C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must not contain './'\n"}
+         'C.exit(#failure);
       }
    }
    if !(&&, cp1-path-len > 4, cp1-path[cp1-path-len - 4] == ''., cp1-path[cp1-path-len - 3] == ''c, cp1-path[cp1-path-len - 2] == ''p, cp1-path[cp1-path-len - 1] == ''1) {
       print-commands(bin);
-      C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must be a filename that ends with '.cp1', for example: main.cp1\n"}
-      C.exit(#failure);
+      'C1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must be a filename that ends with '.cp1', for example: main.cp1\n"}
+      'C.exit(#failure);
    }
 }
-get-compiler(bin:char[], compiler:char[]) {
-   path! = C.strdup(C.getenv("PATH"));
+get-compiler(bin'char[], compiler'char[]) {
+   path! = 'C.strdup('C.getenv("PATH"));
    "#ifdef _WIN32";
    loop i = 0; ; i++ {
       if path[i] == ''\0 {
@@ -64,60 +64,60 @@ get-compiler(bin:char[], compiler:char[]) {
    "#endif";
    var found;
    "#ifdef _WIN32";
-   found = C.strtok(path, ";");
+   found = 'C.strtok(path, ";");
    "#else";
-   found = C.strtok(path, ":");
+   found = 'C.strtok(path, ":");
    "#endif";
    loop found != null {
       // C1.stdout{"- " found ''\n}
-      var fd, compile:char[512];
+      var fd, compile'char[512];
       "#ifdef _WIN32";
-      C.sprintf(compile, "%s/tcc.exe", found);
+      'C.sprintf(compile, "%s/tcc.exe", found);
       "#else";
-      C.sprintf(compile, "%s/tcc", found);
+      'C.sprintf(compile, "%s/tcc", found);
       "#endif";
-      fd = X.open(compile, #rdonly);
+      fd = 'X.open(compile, #rdonly);
       if fd != #nil {
-         C.strcpy(compiler, "tcc");
+         'C.strcpy(compiler, "tcc");
          return;
       }
       "#ifdef _WIN32";
-      C.sprintf(compile, "%s/clang.exe", found);
+      'C.sprintf(compile, "%s/clang.exe", found);
       "#else";
-      C.sprintf(compile, "%s/clang", found);
+      'C.sprintf(compile, "%s/clang", found);
       "#endif";
-      fd = X.open(compile, #rdonly);
+      fd = 'X.open(compile, #rdonly);
       if fd != #nil {
-         C.strcpy(compiler, "clang");
+         'C.strcpy(compiler, "clang");
          return;
       }
       "#ifdef _WIN32";
-      C.sprintf(compile, "%s/gcc.exe", found);
+      'C.sprintf(compile, "%s/gcc.exe", found);
       "#else";
-      C.sprintf(compile, "%s/gcc", found);
+      'C.sprintf(compile, "%s/gcc", found);
       "#endif";
-      fd = X.open(compile, #rdonly);
+      fd = 'X.open(compile, #rdonly);
       if fd != #nil {
-         C.strcpy(compiler, "gcc");
+         'C.strcpy(compiler, "gcc");
          return;
       }
       "#ifdef _WIN32";
-      found = C.strtok(null, ";");
+      found = 'C.strtok(null, ";");
       "#else";
-      found = C.strtok(null, ":");
+      found = 'C.strtok(null, ":");
       "#endif";
    }
-   C1.stdout{"Cannot execute '" bin " run' because the required compile was not found: tcc clang or gcc\n"}
-   C.exit(#failure);
+   'C1.stdout{"Cannot execute '" bin " run' because the required compile was not found: tcc clang or gcc\n"}
+   'C.exit(#failure);
 }
 include "system2.h" {
-   system2(cmd:char[]):intc @real-name;
+   system2(cmd'char[])'intc @real-name;
 }
-main(arg-c:intc, arg-v:char[][]):intc {
+main(arg-c'intc, arg-v'char[][])'intc {
    "#ifdef _WIN32";
    if true {
       arg! = arg-v[0];
-      len! = C.strlen(arg);
+      len! = 'C.strlen(arg);
       if (arg[len - 4] == ''.) && (arg[len - 3] == ''e) && (arg[len - 2] == ''x) && (arg[len - 1] == ''e) {
          arg[len - 4] = ''\0;
       }
@@ -136,34 +136,34 @@ main(arg-c:intc, arg-v:char[][]):intc {
    bin! = arg-v[0];
    if arg-c != 2 {
       print-commands(bin);
-      C.exit(#failure);
+      'C.exit(#failure);
    }
    validate-cp1-path(bin, arg-v[1]);
 
-   var c-path:char[15];
-   C.strcpy(c-path, "cp1-c-XXXXXX");
-   c-fd! = X.mkstemp(c-path);
+   var c-path'char[15];
+   'C.strcpy(c-path, "cp1-c-XXXXXX");
+   c-fd! = 'X.mkstemp(c-path);
    if c-fd == #nil {
       print-commands(bin);
-      C1.stdout{"Error, cannot open file for reading: " c-path ''\n}
-      C.exit(#failure);
+      'C1.stdout{"Error, cannot open file for reading: " c-path ''\n}
+      'C.exit(#failure);
    }
    c-fd.close();
-   X.unlink(c-path);
-   var exe-path:char[21];
-   C.strcpy(exe-path, "./cp1-exe-XXXXXX");
-   exe-fd! = X.mkstemp(exe-path);
+   'X.unlink(c-path);
+   var exe-path'char[21];
+   'C.strcpy(exe-path, "./cp1-exe-XXXXXX");
+   exe-fd! = 'X.mkstemp(exe-path);
    if exe-fd == #nil {
       print-commands(bin);
-      C1.stdout{"Error, cannot open file for reading: " exe-path ''\n}
-      C.exit(#failure);
+      'C1.stdout{"Error, cannot open file for reading: " exe-path ''\n}
+      'C.exit(#failure);
    }
    exe-fd.close();
-   X.unlink(exe-path);
+   'X.unlink(exe-path);
    c-path[12] = ''.;
    c-path[13] = ''c;
    c-path[14] = ''\0;
-   var compiler:char[8];
+   var compiler'char[8];
    get-compiler(bin, compiler);
    "#ifdef _WIN32";
    exe-path[16] = ''.;
@@ -179,20 +179,20 @@ main(arg-c:intc, arg-v:char[][]):intc {
       }
    }
    "#endif";
-   var command:char[1024];
-   C.sprintf(command, "\"%.*s-compile\" -c \"%s\" \"%s\"", (C.strlen(bin) - 4):intc, bin, c-path, arg-v[1]);
+   var command'char[1024];
+   'C.sprintf(command, "\"%.*s-compile\" -c \"%s\" \"%s\"", ('C.strlen(bin) - 4)'intc, bin, c-path, arg-v[1]);
    // C1.stdout{"run command: " command ''\n}
    c-ret! = system2(command);
    if c-ret != 0 {
-      X.unlink(c-path);
-      C.exit(#failure);
+      'X.unlink(c-path);
+      'C.exit(#failure);
    }
-   C.sprintf(command, "%s -o %s %s", compiler, exe-path, c-path);
+   'C.sprintf(command, "%s -o %s %s", compiler, exe-path, c-path);
    // C1.stdout{"run command: " command ''\n}
    compile-ret! = system2(command);
-   X.unlink(c-path);
+   'X.unlink(c-path);
    if compile-ret != 0 {
-      C.exit(#failure);
+      'C.exit(#failure);
    }
    "#ifdef _WIN32";
    loop i = 0; ; i++ {
@@ -205,9 +205,9 @@ main(arg-c:intc, arg-v:char[][]):intc {
    "#endif";
    // C1.stdout{"run command: " exe-path ''\n}
    exe-ret! = system2(exe-path);
-   X.unlink(exe-path);
+   'X.unlink(exe-path);
    if exe-ret != 0 {
-      C.exit(#failure);
+      'C.exit(#failure);
    }
    return 0;
 }

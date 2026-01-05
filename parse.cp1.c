@@ -34,9 +34,8 @@
 #define _NCp1_NToken_Cminus (_NCp1_NToken_Cplus + 1)
 #define _NCp1_NToken_Cspace (_NCp1_NToken_Cminus + 1)
 #define _NCp1_NToken_Cid_then_open_parenthesis (_NCp1_NToken_Cspace + 1)
-#define _NCp1_NToken_Cid_upper (_NCp1_NToken_Cid_then_open_parenthesis + 1)
-#define _NCp1_NToken_Cdot_id_upper (_NCp1_NToken_Cid_upper + 1)
-#define _NCp1_NToken_Chash_id (_NCp1_NToken_Cdot_id_upper + 1)
+#define _NCp1_NToken_Cid_type (_NCp1_NToken_Cid_then_open_parenthesis + 1)
+#define _NCp1_NToken_Chash_id (_NCp1_NToken_Cid_type + 1)
 #define _NCp1_NToken_Cstruct (_NCp1_NToken_Chash_id + 1)
 #define _NCp1_NToken_Cunion (_NCp1_NToken_Cstruct + 1)
 #define _NCp1_NToken_Cid (_NCp1_NToken_Cunion + 1)
@@ -72,8 +71,7 @@
 #define _NCp1_NToken_Cclose_bracket (_NCp1_NToken_Copen_bracket + 1)
 #define _NCp1_NToken_Cspace_close_bracket (_NCp1_NToken_Cclose_bracket + 1)
 #define _NCp1_NToken_Ccomma_space_close_bracket (_NCp1_NToken_Cspace_close_bracket + 1)
-#define _NCp1_NToken_Ccolon (_NCp1_NToken_Ccomma_space_close_bracket + 1)
-#define _NCp1_NToken_Cthis (_NCp1_NToken_Ccolon + 1)
+#define _NCp1_NToken_Cthis (_NCp1_NToken_Ccomma_space_close_bracket + 1)
 #define _NCp1_NToken_Ccomma_space (_NCp1_NToken_Cthis + 1)
 #define _NCp1_NToken_Cspace_at_main (_NCp1_NToken_Ccomma_space + 1)
 #define _NCp1_NToken_Cspace_at_case (_NCp1_NToken_Cspace_at_main + 1)
@@ -153,11 +151,9 @@
 #define _NCp1_NToken_Cspace_cmp_less_equal (_NCp1_NToken_Cspace_cmp_less_than + 1)
 #define _NCp1_NToken_Cspace_cmp_more_than (_NCp1_NToken_Cspace_cmp_less_equal + 1)
 #define _NCp1_NToken_Cspace_cmp_more_equal (_NCp1_NToken_Cspace_cmp_more_than + 1)
-#define _NCp1_NToken_Cdot_id_upper_then_open_parenthesis (_NCp1_NToken_Cspace_cmp_more_equal + 1)
-#define _NCp1_NToken_Cid_then_open_curly_brace (_NCp1_NToken_Cdot_id_upper_then_open_parenthesis + 1)
-#define _NCp1_NToken_Cid_upper_then_open_curly_brace (_NCp1_NToken_Cid_then_open_curly_brace + 1)
-#define _NCp1_NToken_Cdot_id_upper_then_open_curly_brace (_NCp1_NToken_Cid_upper_then_open_curly_brace + 1)
-#define _NCp1_NToken_Chash (_NCp1_NToken_Cdot_id_upper_then_open_curly_brace + 1)
+#define _NCp1_NToken_Cid_then_open_curly_brace (_NCp1_NToken_Cspace_cmp_more_equal + 1)
+#define _NCp1_NToken_Cid_type_then_open_curly_brace (_NCp1_NToken_Cid_then_open_curly_brace + 1)
+#define _NCp1_NToken_Chash (_NCp1_NToken_Cid_type_then_open_curly_brace + 1)
 #define _NCp1_NToken_Cspace_colon_equal (_NCp1_NToken_Chash + 1)
 #define _NCp1_NToken_Cspace_plus_equal (_NCp1_NToken_Cspace_colon_equal + 1)
 #define _NCp1_NToken_Cspace_minus_equal (_NCp1_NToken_Cspace_plus_equal + 1)
@@ -168,8 +164,8 @@
 #define _NCp1_NToken_Cspace_and_equal (_NCp1_NToken_Cspace_rshift_equal + 1)
 #define _NCp1_NToken_Cspace_or_equal (_NCp1_NToken_Cspace_and_equal + 1)
 #define _NCp1_NToken_Cspace_xor_equal (_NCp1_NToken_Cspace_or_equal + 1)
-#define _NCp1_NToken_Ccolon_base (_NCp1_NToken_Cspace_xor_equal + 1)
-#define _NCp1_NToken_Cloop (_NCp1_NToken_Ccolon_base + 1)
+#define _NCp1_NToken_Cbase (_NCp1_NToken_Cspace_xor_equal + 1)
+#define _NCp1_NToken_Cloop (_NCp1_NToken_Cbase + 1)
 #define _NCp1_NToken_Cloop_with_semicolon (_NCp1_NToken_Cloop + 1)
 #define _NCp1_NId_Cnil (-1)
 #define _NCp1_NId_C0 (_NCp1_NId_Cnil + 1)
@@ -1348,8 +1344,7 @@ case _NCp1_NToken_Cplus: return "plus";
 case _NCp1_NToken_Cminus: return "minus";
 case _NCp1_NToken_Cspace: return "space";
 case _NCp1_NToken_Cid_then_open_parenthesis: return "id-then-open-parenthesis";
-case _NCp1_NToken_Cid_upper: return "id-upper";
-case _NCp1_NToken_Cdot_id_upper: return "dot-id-upper";
+case _NCp1_NToken_Cid_type: return "id-type";
 case _NCp1_NToken_Chash_id: return "hash-id";
 case _NCp1_NToken_Cstruct: return "struct";
 case _NCp1_NToken_Cunion: return "union";
@@ -1386,7 +1381,6 @@ case _NCp1_NToken_Copen_bracket: return "open-bracket";
 case _NCp1_NToken_Cclose_bracket: return "close-bracket";
 case _NCp1_NToken_Cspace_close_bracket: return "space-close-bracket";
 case _NCp1_NToken_Ccomma_space_close_bracket: return "comma-space-close-bracket";
-case _NCp1_NToken_Ccolon: return "colon";
 case _NCp1_NToken_Cthis: return "this";
 case _NCp1_NToken_Ccomma_space: return "comma-space";
 case _NCp1_NToken_Cspace_at_main: return "space-at-main";
@@ -1467,10 +1461,8 @@ case _NCp1_NToken_Cspace_cmp_less_than: return "space-cmp-less-than";
 case _NCp1_NToken_Cspace_cmp_less_equal: return "space-cmp-less-equal";
 case _NCp1_NToken_Cspace_cmp_more_than: return "space-cmp-more-than";
 case _NCp1_NToken_Cspace_cmp_more_equal: return "space-cmp-more-equal";
-case _NCp1_NToken_Cdot_id_upper_then_open_parenthesis: return "dot-id-upper-then-open-parenthesis";
 case _NCp1_NToken_Cid_then_open_curly_brace: return "id-then-open-curly-brace";
-case _NCp1_NToken_Cid_upper_then_open_curly_brace: return "id-upper-then-open-curly-brace";
-case _NCp1_NToken_Cdot_id_upper_then_open_curly_brace: return "dot-id-upper-then-open-curly-brace";
+case _NCp1_NToken_Cid_type_then_open_curly_brace: return "id-type-then-open-curly-brace";
 case _NCp1_NToken_Chash: return "hash";
 case _NCp1_NToken_Cspace_colon_equal: return "space-colon-equal";
 case _NCp1_NToken_Cspace_plus_equal: return "space-plus-equal";
@@ -1482,7 +1474,7 @@ case _NCp1_NToken_Cspace_rshift_equal: return "space-rshift-equal";
 case _NCp1_NToken_Cspace_and_equal: return "space-and-equal";
 case _NCp1_NToken_Cspace_or_equal: return "space-or-equal";
 case _NCp1_NToken_Cspace_xor_equal: return "space-xor-equal";
-case _NCp1_NToken_Ccolon_base: return "colon-base";
+case _NCp1_NToken_Cbase: return "base";
 case _NCp1_NToken_Cloop: return "loop";
 case _NCp1_NToken_Cloop_with_semicolon: return "loop-with-semicolon";
 case _NCp1_NToken_Cif: return "if";
@@ -2204,18 +2196,8 @@ _Ltok_23._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_20, 1, 0);
 _Glast_token = _Lt_24;
 cp1Parse(_Lpsr_19, _Lt_24, _Ltok_23);
 break;
-case _NCp1_NToken_Cdot_id_upper:;
+case _NCp1_NToken_Cid_type:;
 _Ltok_23._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_20, 1, 0);
-if(_Llex_20._Fcursor[0] == '(') {
-_Lt_24 = _NCp1_NToken_Cdot_id_upper_then_open_parenthesis;
-} else if(_Llex_20._Fcursor[0] == '{') {
-_Lt_24 = _NCp1_NToken_Cdot_id_upper_then_open_curly_brace;
-}
-_Glast_token = _Lt_24;
-cp1Parse(_Lpsr_19, _Lt_24, _Ltok_23);
-break;
-case _NCp1_NToken_Cid_upper:;
-_Ltok_23._Fii32._Fid = _NCp1_NLexer_Pget_id_3(&_Llex_20, 0, 0);
 if(_Llex_20._Fcursor[0] == '(') {
 _Lt_24 = _NCp1_NToken_Cid_then_open_parenthesis;
 } else if(_Llex_20._Fcursor[0] == '{') {
@@ -2442,8 +2424,8 @@ _Gfunc_c = ((_NCp1_NFunc)(0));
 _Gimport_c = 0;
 _Gtemplate_inst_c = ((_NCp1_NTemplateInst)(0));
 _Gtemplate_code_c = ((_NCp1_NTemplateCode)(0));
-int32_t ret_1624_4 = 0;
-return ret_1624_4;
+int32_t ret_1614_4 = 0;
+return ret_1614_4;
 }
 void _NCp1_Pexport_0() {
 qalloc_undo(0);
@@ -2637,7 +2619,7 @@ CloseHandle(_Lh_5);
 void* ret_36_13 = NULL;
 return ret_36_13;
 }
-_Lsize_7 = ((uint64_t)(_Lf_size_6.QuadPart));
+_Lsize_7 = ((uint64_t)(_Lf_size_6.'QuadPart));
 if(_Lmax_size_3 != 0) {
 if(((size_t)(_Lsize_7)) > _Lmax_size_3) {
 _Lsize_7 = _Lmax_size_3;

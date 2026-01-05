@@ -1,16 +1,16 @@
-using C = LibC;
-using C1 = LibCp1;
-using Cp1 {
-expr-cast-fast(expr:ExprI, type:At):ExprI {
-   var e:ExprCastFast;
+using 'C = 'LibC;
+using 'C1 = 'LibCp1;
+using 'Cp1 {
+expr-cast-fast(expr'ExprI, type'At)'ExprI {
+   var e'ExprCastFast;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #cast-fast);
    e.expr = expr;
    e.type = type;
    return e-idx;
 }
-using ExprCastFast {
-   write-value(e:this, v:Value) @inline {
+using 'ExprCastFast {
+   write-value(e'this, v'Value) @inline {
       output{"(("}
       e.type.write-type-info(v.info, 0);
       output{")("}
@@ -18,38 +18,38 @@ using ExprCastFast {
       output{"))"}
    }
 }
-using ExprI {
-   wr-cast-fast(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
-      var e:ExprCastFast = expr;
+using 'ExprI {
+   wr-cast-fast(expr'Expr, w'Wtr, header'bool) @case.wr() @inline {
+      var e'ExprCastFast = expr;
       e.expr.wr(w, header);
       e.type.wr(w, header);
    }
-   rd-cast-fast(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      var e:ExprCastFast;
+   rd-cast-fast(e-idx'ExprI, r'Rdr) @case.rd() @inline {
+      var e'ExprCastFast;
       quick-alloc-one(e);
       e-idx.set(e.base, #cast-fast);
       e.expr.rd(r);
       e.type.rd(r);
    }
-   value-cast-fast(e:this, reff:i8, paren:bool, v:Value, ok:bool&) @case.value() @inline {
-      var expr:ExprCastFast = e.ptr();
+   value-cast-fast(e'this, reff'i8, paren'bool, v'Value, ok'bool&) @case.value() @inline {
+      var expr'ExprCastFast = e.ptr();
       expr.expr.value(reff, paren, v);
       v.type = expr.type;
       ok = true;
    }
-   type-cast-fast(expr:Expr, at:At&) @case.type() @inline {
-      var e:ExprCastFast = expr;
+   type-cast-fast(expr'Expr, at'At&) @case.type() @inline {
+      var e'ExprCastFast = expr;
       at = e.type;
    }
-   process-cast-fast(expr:Expr, ok:bool&) @case.process() @inline {
-      var e:ExprCastFast = expr;
+   process-cast-fast(expr'Expr, ok'bool&) @case.process() @inline {
+      var e'ExprCastFast = expr;
       if !e.expr.value(1, false, e.val) {
          return;
       }
       if e.type == #nil {
          at! = e.val.type.ptr();
          if at.def != #enum {
-            C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Operator ':base' was used but the type of expression was not an enum\n"}
+            'C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Operator ':base' was used but the type of expression was not an enum\n"}
             return;
          }
          e.type = at.decl.enumm.ptr().base-type;
@@ -62,7 +62,7 @@ using ExprI {
          at! = e.type.ptr();
          if at.type == #basic {
          } elif at.def == #undefined {
-            C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type '" at.name.id "' was not found\n"}
+            'C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type '" at.name.id "' was not found\n"}
             return;
          }
          e.type.output(.ctx-func.file, .ctx-begin-row, .ctx-begin-col);

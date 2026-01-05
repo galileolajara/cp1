@@ -1,43 +1,43 @@
-using C = LibC;
-using C1 = LibCp1;
-using Cp1 {
-enum ExprInt[#i32, #u32, #f32, #oct, #hex, #u64, #f64]:u8;
-expr-int(value:i32, type:ExprInt):ExprI {
-   var e:ExprIntData;
+using 'C = 'LibC;
+using 'C1 = 'LibCp1;
+using 'Cp1 {
+enum 'ExprInt[#i32, #u32, #f32, #oct, #hex, #u64, #f64]'u8;
+expr-int(value'i32, type'ExprInt)'ExprI {
+   var e'ExprIntData;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #int);
    e.value.ii32 = value;
    e.type = type;
    return e-idx;
 }
-expr-int64(value:i64, type:ExprInt):ExprI {
-   var e:ExprIntData;
+expr-int64(value'i64, type'ExprInt)'ExprI {
+   var e'ExprIntData;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #int);
    e.value.uu64 = value;
    e.type = type;
    return e-idx;
 }
-expr-f32(value:f32):ExprI {
-   var e:ExprIntData;
+expr-f32(value'f32)'ExprI {
+   var e'ExprIntData;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #int);
    e.value.ff32 = value;
    e.type = #f32;
    return e-idx;
 }
-expr-f64(value:f64):ExprI {
-   var e:ExprIntData;
+expr-f64(value'f64)'ExprI {
+   var e'ExprIntData;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #int);
    e.value.ff64 = value;
    e.type = #f64;
    return e-idx;
 }
-using ExprI {
-   wr-int(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
-      var e:ExprIntData = expr;
-      w.n1(e.type:base);
+using 'ExprI {
+   wr-int(expr'Expr, w'Wtr, header'bool) @case.wr() @inline {
+      var e'ExprIntData = expr;
+      w.n1(e.type'base);
       switch e.type {
          case #i32 {
             w.i(e.value.ii32);
@@ -56,11 +56,11 @@ using ExprI {
          }
       }
    }
-   rd-int(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      var e:ExprIntData;
+   rd-int(e-idx'ExprI, r'Rdr) @case.rd() @inline {
+      var e'ExprIntData;
       quick-alloc-one(e);
       e-idx.set(e.base, #int);
-      e.type = r.n1():ExprInt;
+      e.type = r.n1()'ExprInt;
       switch e.type {
          case #i32 {
             e.value.ii32 = r.i();
@@ -80,8 +80,8 @@ using ExprI {
          }
       }
    }
-   write-int(expr:Expr) @case.write() @inline {
-      var e:ExprIntData = expr;
+   write-int(expr'Expr) @case.write() @inline {
+      var e'ExprIntData = expr;
       switch e.type {
          case #i32 {
             output{e.value.ii32}
@@ -106,11 +106,11 @@ using ExprI {
          }
       }
    }
-   process-int(expr:Expr, ok:bool&) @case.process() @inline {
+   process-int(expr'Expr, ok'bool&) @case.process() @inline {
       ok = true;
    }
-   type-int(expr:Expr, at:At&) @case.type() @inline {
-      var e:ExprIntData = expr;
+   type-int(expr'Expr, at'At&) @case.type() @inline {
+      var e'ExprIntData = expr;
       switch e.type {
          case #i32 {
             at = basic-type(#i32);
@@ -129,8 +129,8 @@ using ExprI {
          }
       }
    }
-   value-int(le:this, reff:i32, paren:bool, v:Value, ok:bool&) @case.value() @inline {
-      var e:ExprIntData = le.ptr();
+   value-int(le'this, reff'i32, paren'bool, v'Value, ok'bool&) @case.value() @inline {
+      var e'ExprIntData = le.ptr();
       switch e.type {
          case #i32 {
             v.type = basic-type(#i32);

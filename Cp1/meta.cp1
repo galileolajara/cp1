@@ -1,24 +1,24 @@
-using C = LibC;
-using C1 = LibCp1;
-using u32 {
-   jscode(val:this, jc:Cp1.JsCode) @inline {
-      Cp1.jscode-u32(val);
+using 'C = 'LibC;
+using 'C1 = 'LibCp1;
+using 'u32 {
+   jscode(val'this, jc'Cp1'JsCode) @inline {
+      'Cp1.jscode-u32(val);
    }
 }
-using char {
-   jscode(val:this, jc:Cp1.JsCode) @inline {
-      Cp1.jscode-char(val);
+using 'char {
+   jscode(val'this, jc'Cp1'JsCode) @inline {
+      'Cp1.jscode-char(val);
    }
-   jscode-arr(str:this[], jc:Cp1.JsCode) @inline {
-      Cp1.jscode-bytes(str, C.strlen(str));
+   jscode-arr(str'this[], jc'Cp1'JsCode) @inline {
+      'Cp1.jscode-bytes(str, 'C.strlen(str));
    }
-   jscode-arr(str:this[], len:u32, jc:Cp1.JsCode) @inline {
-      Cp1.jscode-bytes(str, len);
+   jscode-arr(str'this[], len'u32, jc'Cp1'JsCode) @inline {
+      'Cp1.jscode-bytes(str, len);
    }
 }
-using Cp1 {
-using At {
-   jscode-write-name(at-idx:this) {
+using 'Cp1 {
+using 'At {
+   jscode-write-name(at-idx'this) {
       at! = at-idx.ptr();
       if at.type == #basic {
          jscode{at.name.basic.cp1-name()}
@@ -27,7 +27,7 @@ using At {
          jscode{at.name.id}
       }
    }
-   jscode-write-name-dot(at-idx:this) {
+   jscode-write-name-dot(at-idx'this) {
       if at-idx == #root {
       } elif at-idx == #relative {
          jscode{".."}
@@ -37,9 +37,9 @@ using At {
          jscode{at.name.id ''.}
       }
    }
-   jscode-write(at-idx:this) {
+   jscode-write(at-idx'this) {
       jscode{"{\n\ttypev:["}
-      loop at2-idx = 2:At; .at-c - 2:At; at2-idx++ {
+      loop at2-idx = 2'At; .at-c - 2'At; at2-idx++ {
          at2! = at2-idx.ptr();
          if at2.parent == at-idx {
             if at2.type == #basic {
@@ -94,16 +94,16 @@ using At {
          if f.this-idx == -1 {
             jscode{'<",this:-1},>}
          } else {
-            jscode{'<",this:> f.this-idx:u32 '<},>}
+            jscode{'<",this:> f.this-idx'u32 '<},>}
          }
       }
       jscode{"]}"}
    }
 }
-var jscode-buf-data:char[];
-var jscode-buf-cap:u32;
-var jscode-buf-len:u32;
-jscode-reserve(len:u32) {
+var jscode-buf-data'char[];
+var jscode-buf-cap'u32;
+var jscode-buf-len'u32;
+jscode-reserve(len'u32) {
    space! = .jscode-buf-cap - .jscode-buf-len;
    if space < len {
       .jscode-buf-cap += .jscode-buf-cap;
@@ -112,25 +112,25 @@ jscode-reserve(len:u32) {
          .jscode-buf-cap += .jscode-buf-cap;
          space = .jscode-buf-cap - .jscode-buf-len;
       }
-      C.realloc-arr(.jscode-buf-data, .jscode-buf-cap);
+      'C.realloc-arr(.jscode-buf-data, .jscode-buf-cap);
    }
 }
-jscode-char(val:char) @inline {
+jscode-char(val'char) @inline {
    jscode-reserve(1);
    .jscode-buf-data[.jscode-buf-len++] = val;
 }
-jscode-cstr(str:char[]) @inline {
-   jscode-bytes(str, C.strlen(str));
+jscode-cstr(str'char[]) @inline {
+   jscode-bytes(str, 'C.strlen(str));
 }
-jscode(jc:JsCode) @meta(jscode end) @inline {
+jscode(jc'JsCode) @meta(jscode end) @inline {
 }
-jscode-u32(val:u32) {
+jscode-u32(val'u32) {
    jscode-reserve(10);
    if val == 0 {
       .jscode-buf-data[.jscode-buf-len++] = ''0;
    } else {
       // integer to string, count the digits
-      var data:char[];
+      var data'char[];
       data = &.jscode-buf-data[.jscode-buf-len];
       digits! = 0;
       loop {
@@ -151,19 +151,19 @@ jscode-u32(val:u32) {
       .jscode-buf-len += digits;
    }
 }
-struct JsCode[] {
-   jscode-cstr(jc:this, str:char[], len:u32) @inline {
+struct 'JsCode[] {
+   jscode-cstr(jc'this, str'char[], len'u32) @inline {
       jscode-bytes(str, len);
    }
-   jscode-end(jc:this) @inline {
+   jscode-end(jc'this) @inline {
    }
 }
-jscode-bytes(data:ref, size:usz) @inline {
+jscode-bytes(data'ref, size'usz) @inline {
    jscode-reserve(size);
-   C.memcpy(&.jscode-buf-data[.jscode-buf-len], data, size);
+   'C.memcpy(&.jscode-buf-data[.jscode-buf-len], data, size);
    .jscode-buf-len += size;
 }
-include-add(include-len:u8, include-str:char[]):Include {
+include-add(include-len'u8, include-str'char[])'Include {
    found! = .include-map.get-or-insert(include-str, include-len, .include-c);
    // C1.stdout{"include-add " include-str " = " found ''\n}
    if found == -1 {
@@ -177,14 +177,14 @@ include-add(include-len:u8, include-str:char[]):Include {
       .include-len-v[include-idx] = include-len;
       .include-str-v[include-idx] = include-str;
       // C1.stdout{"include " include-str " is " include-idx ''\n}
-      return include-idx:Include;
+      return include-idx'Include;
    } else {
       // C1.stdout{"include " include-str " is " found ''\n}
-      return found:Include;
+      return found'Include;
    }
 }
-var template-inst-new-c:TemplateInst;
-template-inst(ti:TemplateInstData) {
+var template-inst-new-c'TemplateInst;
+template-inst(ti'TemplateInstData) {
    loop j = 0; .template-inst-c {
       ti2! = .template-inst-v[j++];
       if (ti2.name == ti.name) && (ti2.at == ti.at) && (ti2.arg-crc32c == ti.arg-crc32c) {
@@ -194,10 +194,10 @@ template-inst(ti:TemplateInstData) {
    if true {
       i! = .template-inst-c++;
       if .template-inst-cap < .template-inst-c {
-         .template-inst-cap = grow(.template-inst-c:base):TemplateInst;
-         C.realloc-arr(.template-inst-v, .template-inst-cap:base);
+         .template-inst-cap = grow(.template-inst-c'base)'TemplateInst;
+         'C.realloc-arr(.template-inst-v, .template-inst-cap'base);
       }
-      C.memcpy(.template-inst-v[i], ti, TemplateInstData[usz]);
+      'C.memcpy(.template-inst-v[i], ti, 'TemplateInstData['usz]);
    }
    if true {
       .template-inst-new-c++;

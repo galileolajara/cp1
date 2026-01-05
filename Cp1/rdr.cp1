@@ -1,61 +1,61 @@
-using C = LibC;
-using C1 = LibCp1;
-using Cp1 {
-union Rdr[
-   reff:ref,
-   pos:usz,
-   p1:u8[],
-   p2:u16[],
-   charr:char[],
-   p4:u32[],
-   f4:f32[],
-   f8:f64[],
+using 'C = 'LibC;
+using 'C1 = 'LibCp1;
+using 'Cp1 {
+union 'Rdr[
+   reff'ref,
+   pos'usz,
+   p1'u8[],
+   p2'u16[],
+   charr'char[],
+   p4'u32[],
+   f4'f32[],
+   f8'f64[],
    ] {
-   n1(r:this):u8 @inline {
+   n1(r'this)'u8 @inline {
       val! = r.p1[0];
       r.pos++;
       return val;
    }
-   n2(r:this):u16 @inline {
-      val! = r.p2[0]:u16;
+   n2(r'this)'u16 @inline {
+      val! = r.p2[0]'u16;
       r.pos += 2;
       return val;
    }
-   n4(r:this):u32 @inline {
+   n4(r'this)'u32 @inline {
       val! = r.p4[0];
       r.pos += 4;
       return val;
    }
-   f4(r:this):f32 @inline {
+   f4(r'this)'f32 @inline {
       val! = r.f4[0];
       r.pos += 4;
       return val;
    }
-   f8(r:this):f64 @inline {
+   f8(r'this)'f64 @inline {
       val! = r.f8[0];
       r.pos += 8;
       return val;
    }
-   id(r:this):Id @inline {
+   id(r'this)'Id @inline {
       return r.n();
    }
    include "num.c" {
-      n(r:this):u32 @real-name(Fgetnum) @no-decl;
-      i(r:this):i32 @real-name(Fgetint) @no-decl;
-      N(r:this):u32 @real-name(Fgetlnum) @no-decl;
-      I(r:this):i32 @real-name(Fgetlint) @no-decl;
+      n(r'this)'u32 @real-name(Fgetnum) @no-decl;
+      i(r'this)'i32 @real-name(Fgetint) @no-decl;
+      N(r'this)'u32 @real-name(Fgetlnum) @no-decl;
+      I(r'this)'i32 @real-name(Fgetlint) @no-decl;
    }
-   tok(r:this):Token @inline {
+   tok(r'this)'Token @inline {
       return r.n1();
    }
-   copy(r:this, data:ref, size:i32) @inline {
-      C.memcpy(data, r.reff, size);
+   copy(r'this, data'ref, size'i32) @inline {
+      'C.memcpy(data, r.reff, size);
       r.pos += size;
    }
-   b(r:this):bool @inline {
+   b(r'this)'bool @inline {
       return r.n1() != 0;
    }
-   set(r:this, reff:ref) @inline {
+   set(r'this, reff'ref) @inline {
       r.reff = reff;
    }
 }

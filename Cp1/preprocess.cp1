@@ -1,7 +1,7 @@
-using C1 = LibCp1;
-using C = LibC;
-using Cp1 {
-   parse-string(in-path:char @const[], r:Rdr, w:Wtr, ending:char, in-data:ref) {
+using 'C1 = 'LibCp1;
+using 'C = 'LibC;
+using 'Cp1 {
+   parse-string(in-path'char @const[], r'Rdr, w'Wtr, ending'char, in-data'ref) {
       w.p1[0] = ''\';
       w.p1[1] = r.p1[1];
       w.pos += 2;
@@ -10,8 +10,8 @@ using Cp1 {
          c! = r.p1[0];
          if c == ''\n {
             get-row-col(row!, col!, r.reff, in-data);
-            C1.stdout{in-path '': row '': col ": Unterminated string\n"}
-            C.exit(#failure);
+            'C1.stdout{in-path '': row '': col ": Unterminated string\n"}
+            'C.exit(#failure);
          }
          w.p1[0] = c;
          w.pos++;
@@ -21,16 +21,16 @@ using Cp1 {
          }
       }
    }
-   parse-string(in-path:char @const[], r:Rdr, ending:char, in-data:ref):intc {
-      var start:Rdr.;
+   parse-string(in-path'char @const[], r'Rdr, ending'char, in-data'ref)'intc {
+      var start'Rdr.;
       start.pos = r.pos;
       r.pos += 2;
       loop {
          c! = r.p1[0];
          if c == ''\n {
             get-row-col(row!, col!, r.reff, in-data);
-            C1.stdout{in-path '': row '': col ": Unterminated string\n"}
-            C.exit(#failure);
+            'C1.stdout{in-path '': row '': col ": Unterminated string\n"}
+            'C.exit(#failure);
          }
          r.pos++;
          if c == ending {
@@ -39,12 +39,12 @@ using Cp1 {
       }
       return 0; // code won't reach this but we want to make tcc happy
    }
-   get-row-col(out-row:u32&, out-col:u32&, end:ref, begin:ref) {
+   get-row-col(out-row'u32&, out-col'u32&, end'ref, begin'ref) {
       row! = 1;
       col! = 1;
-      var r:Rdr.;
+      var r'Rdr.;
       r.reff = begin;
-      var r-end:Rdr.;
+      var r-end'Rdr.;
       r-end.reff = end;
       loop r.pos < r-end.pos {
          if r.p1[0] == ''\n {
@@ -62,30 +62,30 @@ using Cp1 {
          out-col = col;
       }
    }
-   preprocess(in-path:char @const[], in-data:u8[], in-out-size:usz&):u8[] {
+   preprocess(in-path'char @const[], in-data'u8[], in-out-size'usz&)'u8[] {
       in-size! = in-out-size;
       if in-data[in-size - 1] != ''\n {
          in-data[in-size++] = ''\n;
       }
-      var r-end:Rdr.;
+      var r-end'Rdr.;
       r-end.reff = in-data;
       r-end.pos += in-size;
-      var r:Rdr.;
+      var r'Rdr.;
       r.reff = in-data;
-      var new-data = C.malloc((in-size << 1) + 4); // 2x because basic syntax mode adds { and }
-      var w:Wtr.;
+      var new-data = 'C.malloc((in-size << 1) + 4); // 2x because basic syntax mode adds { and }
+      var w'Wtr.;
       w.reff = new-data;
       // Ignore texts outside the top-level curly braces
       // indent! = 0:i32;
       var basic-mode-indent-c = 0;
-      var basic-mode-indent-v:u16[256];
+      var basic-mode-indent-v'u16[256];
       var basic-mode-row-begin = 0;
-      var last-first-char:Rdr.;
+      var last-first-char'Rdr.;
       last-first-char.reff = " ";
       var row = 0;
       loop {
          row++;
-         var start-line:Rdr.;
+         var start-line'Rdr.;
          start-line.pos = r.pos;
          loop {
             if r.p1[0] == ''\n {
@@ -93,14 +93,14 @@ using Cp1 {
             }
             r.pos++;
          }
-         var next-line:Rdr.;
+         var next-line'Rdr.;
          next-line.pos = r.pos + 1;
          if r.p1[-1] == ''\r {
             // C1.stdout{"windows line ending detected\n"}
             r.pos--;
          }
          // C1.stdout{"{{ " start-line.charr, r.pos - start-line.pos " }}2\n"}
-         var line:Rdr.;
+         var line'Rdr.;
          line.pos = start-line.pos;
          var col = 0;
          var last-char = -1;
@@ -111,7 +111,7 @@ using Cp1 {
          }
          var indent = col;
          line.pos += col;
-         var first-char:Rdr.;
+         var first-char'Rdr.;
          first-char.pos = line.pos;
          if (first-char.p1[0] == ''#) && (first-char.p1[1] == '' ) {
             if basic-mode-indent-c != 0 {
@@ -129,7 +129,7 @@ using Cp1 {
                   // Currently in basic syntax mode
                   w.pos--; // undo the previous new line
                   empty! = true; // is the previous line empty?
-                  var w2:Rdr.;
+                  var w2'Rdr.;
                   w2.pos = w.pos;
                   loop {
                      if w2.p1[-1] == ''\n {
@@ -177,18 +177,18 @@ using Cp1 {
             loop line.pos < r.pos {
                col++;
                if line.p1[0] == ''\t {
-                  C1.stdout{in-path '': row '': col ": Error, use of tabs is discouraged, please use spaces instead\n"}
-                  C.exit(#failure);
+                  'C1.stdout{in-path '': row '': col ": Error, use of tabs is discouraged, please use spaces instead\n"}
+                  'C.exit(#failure);
                } elif (line.p1[0] == ''/) && (line.p1[1] == ''/) {
                   if line.p1[2] != ''  {
-                     C1.stdout{in-path '': row '': col ": There must be a space after the '//' comment\n"}
-                     C.exit(#failure);
+                     'C1.stdout{in-path '': row '': col ": There must be a space after the '//' comment\n"}
+                     'C.exit(#failure);
                   }
                   if col == 1 {
                      col -= 1; // 2 to also remove the space
                   } elif line.p1[-1] != ''  {
-                     C1.stdout{in-path '': row '': col ": There must be a space before the '//' comment\n"}
-                     C.exit(#failure);
+                     'C1.stdout{in-path '': row '': col ": There must be a space before the '//' comment\n"}
+                     'C.exit(#failure);
                   } else {
                      col -= 2; // 2 to also remove the space
                   }
@@ -199,8 +199,8 @@ using Cp1 {
                   // C.out.printf("A\n"); C.out.flush();
                   loop {
                      if line.p1[0] == ''\n {
-                        C1.stdout{in-path '': row '': col ": Unterminated string\n"}
-                        C.exit(#failure);
+                        'C1.stdout{in-path '': row '': col ": Unterminated string\n"}
+                        'C.exit(#failure);
                      } elif line.p1[0] == ''" {
                         last-char = col - 1;
                         // C.out.printf("B\n"); C.out.flush();
@@ -221,11 +221,11 @@ using Cp1 {
                            case ''$ { }
                            default {
                               if line.p1[1] == ''\n {
-                                 C1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\(newline)'\n"}
+                                 'C1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\(newline)'\n"}
                               } else {
-                                 C1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" line.charr[1] "'\n"}
+                                 'C1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" line.charr[1] "'\n"}
                               }
-                              C.exit(#failure);
+                              'C.exit(#failure);
                            }
                         }
                         line.pos += 2;
@@ -242,44 +242,44 @@ using Cp1 {
                      c! = line.p1[2];
                      if c == ''\\ {
                         if line.p1[3] == ''" {
-                           C1.stdout{in-path '': row '': col ": char ''\\\" is invalid, please use ''\" instead\n"}
-                           C.exit(#failure);
+                           'C1.stdout{in-path '': row '': col ": char ''\\\" is invalid, please use ''\" instead\n"}
+                           'C.exit(#failure);
                         }
                         line.pos += 4;
                         col += 4;
                      } else {
                         switch c {
                            case ''\' {
-                              C1.stdout{in-path '': row '': col ": char ''' is invalid, please use ''\\' instead\n"}
-                              C.exit(#failure);
+                              'C1.stdout{in-path '': row '': col ": char ''' is invalid, please use ''\\' instead\n"}
+                              'C.exit(#failure);
                            }
                            case ''\a {
-                              C1.stdout{in-path '': row '': col ": char ''(\\a) is invalid, please use ''\\a instead\n"}
-                              C.exit(#failure);
+                              'C1.stdout{in-path '': row '': col ": char ''(\\a) is invalid, please use ''\\a instead\n"}
+                              'C.exit(#failure);
                            }
                            case ''\b {
-                              C1.stdout{in-path '': row '': col ": char ''(\\b) is invalid, please use ''\\b instead\n"}
-                              C.exit(#failure);
+                              'C1.stdout{in-path '': row '': col ": char ''(\\b) is invalid, please use ''\\b instead\n"}
+                              'C.exit(#failure);
                            }
                            case ''\f {
-                              C1.stdout{in-path '': row '': col ": char ''(\\f) is invalid, please use ''\\f instead\n"}
-                              C.exit(#failure);
+                              'C1.stdout{in-path '': row '': col ": char ''(\\f) is invalid, please use ''\\f instead\n"}
+                              'C.exit(#failure);
                            }
                            case ''\n {
-                              C1.stdout{in-path '': row '': col ": char ''(new line) is invalid, please use ''\\n instead\n"}
-                              C.exit(#failure);
+                              'C1.stdout{in-path '': row '': col ": char ''(new line) is invalid, please use ''\\n instead\n"}
+                              'C.exit(#failure);
                            }
                            case ''\r {
-                              C1.stdout{in-path '': row '': col ": char ''(\\r) is invalid, please use ''\\r instead\n"}
-                              C.exit(#failure);
+                              'C1.stdout{in-path '': row '': col ": char ''(\\r) is invalid, please use ''\\r instead\n"}
+                              'C.exit(#failure);
                            }
                            case ''\t {
-                              C1.stdout{in-path '': row '': col ": char ''(tab) is invalid, please use ''\\t instead\n"}
-                              C.exit(#failure);
+                              'C1.stdout{in-path '': row '': col ": char ''(tab) is invalid, please use ''\\t instead\n"}
+                              'C.exit(#failure);
                            }
                            case ''\v {
-                              C1.stdout{in-path '': row '': col ": char ''(\\v) is invalid, please use ''\\v instead\n"}
-                              C.exit(#failure);
+                              'C1.stdout{in-path '': row '': col ": char ''(\\v) is invalid, please use ''\\v instead\n"}
+                              'C.exit(#failure);
                            }
                         }
                         line.pos += 3;
@@ -331,7 +331,7 @@ using Cp1 {
                   // Currently in basic syntax mode
                   w.pos--; // undo the previous new line
                   empty! = true; // is the previous line empty?
-                  var w2:Rdr.;
+                  var w2'Rdr.;
                   w2.pos = w.pos;
                   loop {
                      if w2.p1[-1] == ''\n {
@@ -421,7 +421,7 @@ using Cp1 {
          // Currently in basic syntax mode
          w.pos--; // undo the previous new line
          empty! = true; // is the previous line empty?
-         var w2:Rdr.;
+         var w2'Rdr.;
          w2.pos = w.pos;
          loop {
             if w2.p1[-1] == ''\n {
@@ -463,8 +463,8 @@ using Cp1 {
             r.pos++;
          } elif r.p1[0] == ''\t {
             get-row-col(row!, col!, r.reff, in-data);
-            C1.stdout{in-path '': row '': col ": Error, use of tabs is discouraged, please use spaces instead\n"}
-            C.exit(#failure);
+            'C1.stdout{in-path '': row '': col ": Error, use of tabs is discouraged, please use spaces instead\n"}
+            'C.exit(#failure);
          } elif r.p1[0] == ''/ {
             if r.p1[1] == ''/ {
                if r.reff == in-data {
@@ -473,8 +473,8 @@ using Cp1 {
                   // ok
                } else {
                   get-row-col(row!, col!, r.reff, in-data);
-                  C1.stdout{in-path '': row '': col ": There must be a space before the // comment\n"}
-                  C.exit(#failure);
+                  'C1.stdout{in-path '': row '': col ": There must be a space before the // comment\n"}
+                  'C.exit(#failure);
                }
                // comment
                r.pos += 2;
@@ -493,8 +493,8 @@ using Cp1 {
                if c == ''\\ {
                   if r.p1[3] == ''" {
                      get-row-col(row!, col!, r.reff, in-data);
-                     C1.stdout{in-path '': row '': col ": char ''\\\" is invalid, please use ''\" instead\n"}
-                     C.exit(#failure);
+                     'C1.stdout{in-path '': row '': col ": char ''\\\" is invalid, please use ''\" instead\n"}
+                     'C.exit(#failure);
                   }
                   w.p1[0] = ''\';
                   w.p1[1] = ''\';
@@ -507,43 +507,43 @@ using Cp1 {
                   switch c {
                      case ''\' {
                         get-row-col(row!, col!, r.reff, in-data);
-                        C1.stdout{in-path '': row '': col ": char ''' is invalid, please use ''\\' instead\n"}
-                        C.exit(#failure);
+                        'C1.stdout{in-path '': row '': col ": char ''' is invalid, please use ''\\' instead\n"}
+                        'C.exit(#failure);
                      }
                      case ''\a {
                         get-row-col(row!, col!, r.reff, in-data);
-                        C1.stdout{in-path '': row '': col ": char ''(\\a) is invalid, please use ''\\a instead\n"}
-                        C.exit(#failure);
+                        'C1.stdout{in-path '': row '': col ": char ''(\\a) is invalid, please use ''\\a instead\n"}
+                        'C.exit(#failure);
                      }
                      case ''\b {
                         get-row-col(row!, col!, r.reff, in-data);
-                        C1.stdout{in-path '': row '': col ": char ''(\\b) is invalid, please use ''\\b instead\n"}
-                        C.exit(#failure);
+                        'C1.stdout{in-path '': row '': col ": char ''(\\b) is invalid, please use ''\\b instead\n"}
+                        'C.exit(#failure);
                      }
                      case ''\f {
                         get-row-col(row!, col!, r.reff, in-data);
-                        C1.stdout{in-path '': row '': col ": char ''(\\f) is invalid, please use ''\\f instead\n"}
-                        C.exit(#failure);
+                        'C1.stdout{in-path '': row '': col ": char ''(\\f) is invalid, please use ''\\f instead\n"}
+                        'C.exit(#failure);
                      }
                      case ''\n {
                         get-row-col(row!, col!, r.reff, in-data);
-                        C1.stdout{in-path '': row '': col ": char ''(new line) is invalid, please use ''\\n instead\n"}
-                        C.exit(#failure);
+                        'C1.stdout{in-path '': row '': col ": char ''(new line) is invalid, please use ''\\n instead\n"}
+                        'C.exit(#failure);
                      }
                      case ''\r {
                         get-row-col(row!, col!, r.reff, in-data);
-                        C1.stdout{in-path '': row '': col ": char ''(\\r) is invalid, please use ''\\r instead\n"}
-                        C.exit(#failure);
+                        'C1.stdout{in-path '': row '': col ": char ''(\\r) is invalid, please use ''\\r instead\n"}
+                        'C.exit(#failure);
                      }
                      case ''\t {
                         get-row-col(row!, col!, r.reff, in-data);
-                        C1.stdout{in-path '': row '': col ": char ''(tab) is invalid, please use ''\\t instead\n"}
-                        C.exit(#failure);
+                        'C1.stdout{in-path '': row '': col ": char ''(tab) is invalid, please use ''\\t instead\n"}
+                        'C.exit(#failure);
                      }
                      case ''\v {
                         get-row-col(row!, col!, r.reff, in-data);
-                        C1.stdout{in-path '': row '': col ": char ''(\\v) is invalid, please use ''\\v instead\n"}
-                        C.exit(#failure);
+                        'C1.stdout{in-path '': row '': col ": char ''(\\v) is invalid, please use ''\\v instead\n"}
+                        'C.exit(#failure);
                      }
                   }
                   w.p1[0] = ''\';
@@ -572,8 +572,8 @@ using Cp1 {
                   }
                   if r.pos >= r-end.pos {
                      get-row-col(row!, col!, r.reff, in-data);
-                     C1.stdout{in-path '': row '': col ": Error, string must end with a new line\n"}
-                     C.exit(#failure);
+                     'C1.stdout{in-path '': row '': col ": Error, string must end with a new line\n"}
+                     'C.exit(#failure);
                   }
                }
                continue;
@@ -608,8 +608,8 @@ using Cp1 {
             loop {
                if r.p1[0] == ''\n {
                   get-row-col(row!, col!, r.reff, in-data);
-                  C1.stdout{in-path '': row '': col ": Unterminated string\n"}
-                  C.exit(#failure);
+                  'C1.stdout{in-path '': row '': col ": Unterminated string\n"}
+                  'C.exit(#failure);
                } elif r.p1[0] == ''" {
                   w.p1[0] = ''";
                   w.pos++;
@@ -632,11 +632,11 @@ using Cp1 {
                      default {
                         get-row-col(row!, col!, r.reff, in-data);
                         if r.p1[1] == ''\n {
-                           C1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\(newline)'\n"}
+                           'C1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\(newline)'\n"}
                         } else {
-                           C1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" r.charr[1] "'\n"}
+                           'C1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" r.charr[1] "'\n"}
                         }
-                        C.exit(#failure);
+                        'C.exit(#failure);
                      }
                   }
                   w.p1[0] = ''\\;
@@ -650,8 +650,8 @@ using Cp1 {
                }
                if r.pos >= r-end.pos {
                   get-row-col(row!, col!, r.reff, in-data);
-                  C1.stdout{in-path '': row '': col ": Error, unterminated string\n"}
-                  C.exit(#failure);
+                  'C1.stdout{in-path '': row '': col ": Error, unterminated string\n"}
+                  'C.exit(#failure);
                }
             }
             continue;
@@ -663,7 +663,7 @@ using Cp1 {
       }
       w.p1[0] = ''\0;
       // "puts(_Lnew_data_6);";
-      var w-begin:Wtr.;
+      var w-begin'Wtr.;
       w-begin.reff = new-data;
       in-out-size = w.pos - w-begin.pos;
       return new-data;

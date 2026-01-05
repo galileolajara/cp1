@@ -1,48 +1,48 @@
-using C = LibC;
-using C1 = LibCp1;
-using Cp1 {
-expr-size-of-type(at:At):ExprI {
-   var e:ExprSizeOfType;
+using 'C = 'LibC;
+using 'C1 = 'LibCp1;
+using 'Cp1 {
+expr-size-of-type(at'At)'ExprI {
+   var e'ExprSizeOfType;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #size-of-type);
    e.type = at;
    return e-idx;
 }
-using ExprI {
-   wr-size-of-type(expr:Expr, w:Wtr, header:bool) @case.wr() @inline {
-      var e:ExprSizeOfType = expr;
+using 'ExprI {
+   wr-size-of-type(expr'Expr, w'Wtr, header'bool) @case.wr() @inline {
+      var e'ExprSizeOfType = expr;
       e.type.wr(w, header);
    }
-   rd-size-of-type(e-idx:ExprI, r:Rdr) @case.rd() @inline {
-      var e:ExprSizeOfType;
+   rd-size-of-type(e-idx'ExprI, r'Rdr) @case.rd() @inline {
+      var e'ExprSizeOfType;
       quick-alloc-one(e);
       e-idx.set(e.base, #size-of-type);
       e.type.rd(r);
    }
-   write-size-of-type(expr:Expr) @case.write() @inline {
-      var e:ExprSizeOfType = expr;
+   write-size-of-type(expr'Expr) @case.write() @inline {
+      var e'ExprSizeOfType = expr;
       output{"sizeof("}
       e.type.write();
       output{'')}
    }
-   process-size-of-type(expr:Expr, ok:bool&) @case.process() @inline {
-      var e:ExprSizeOfType = expr;
+   process-size-of-type(expr'Expr, ok'bool&) @case.process() @inline {
+      var e'ExprSizeOfType = expr;
       e.type = at-validate(e.type, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
       if e.type == #nil {
          return;
       }
       at! = e.type.ptr();
       if (&&, at.type != #basic, at.decl.structt == #nil) {
-         C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Error, the type '" at.name.id "' used in [usz] was not defined\n"}
+         'C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Error, the type '" at.name.id "' used in [usz] was not defined\n"}
          return;
       }
       e.type.output(.ctx-func.file, .ctx-begin-row, .ctx-begin-col);
       ok = true;
    }
-   type-size-of-type(expr:Expr, at:At&) @case.type() @inline {
+   type-size-of-type(expr'Expr, at'At&) @case.type() @inline {
       at = basic-type(#usz);
    }
-   value-size-of-type(le:this, reff:i32, paren:bool, v:Value, ok:bool&) @case.value() @inline {
+   value-size-of-type(le'this, reff'i32, paren'bool, v'Value, ok'bool&) @case.value() @inline {
       v.type = basic-type(#usz);
       v.info.init();
       v.info.array-c = 0;
