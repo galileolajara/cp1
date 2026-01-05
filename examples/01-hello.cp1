@@ -2,7 +2,7 @@ require "LibCp1/stdout.cp1";
 using 'c1 = 'libcp1;
 
 // Create a metaprogram with access to reflection data
-meta #CreateHelloFunction @reflection {
+meta #create-hello-function @reflection {
    using 'c1 = 'libcp1;
    hello-${arg.suffix}() {
       'c1.stdout{"Hello ${arg.suffix} from metaprogram!\n"}
@@ -17,8 +17,8 @@ meta #CreateHelloFunction @reflection {
 }
 
 // Use the metaprogram
-#CreateHelloFunction{suffix:"world",count:3}
-#CreateHelloFunction{suffix:"five",count:5,cp1_no_cache:true} // disable caching
+#create-hello-function{suffix:"world",count:3}
+#create-hello-function{suffix:"five",count:5,cp1_no_cache:true} // disable caching
 
 struct 'dog[bark-times'i32] {
    init(dog'this) {

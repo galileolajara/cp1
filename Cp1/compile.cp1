@@ -8,7 +8,7 @@ using 'c = 'libc;
 using 'c1 = 'libcp1;
 using 'x = 'posix;
 using 'cp1 {
-#BuildCommonCodes{compile:true}
+#build-common-codes{compile:true}
 // var include-stdint:bool;
 // var include-stdbool:bool;
 // var include-stddef:bool;
@@ -22,7 +22,7 @@ struct 'basic-type[
    method-cap'i32,
    method-v'func[],
 ];
-var basic-type'basic-type.['basic-type-id#COUNT];
+var basic-type'basic-type.['basic-type-id#count];
 basic-type(t'basic-type-id)'at @inline {
    return t;
 }
@@ -930,7 +930,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    quick-alloc-init();
    .func-main = #nil;
 
-   loop type = 0'basic-type-id; 'basic-type-id#COUNT; type++ {
+   loop type = 0'basic-type-id; 'basic-type-id#count; type++ {
       at-idx! = .at-c++;
       if .at-cap <= .at-c {
          old-cap! = .at-cap;

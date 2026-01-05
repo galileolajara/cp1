@@ -40,7 +40,7 @@
 #define _Ncp1_Nbasic_type_id_Cusz (_Ncp1_Nbasic_type_id_Cisz + 1)
 #define _Ncp1_Nbasic_type_id_Cf32 (_Ncp1_Nbasic_type_id_Cusz + 1)
 #define _Ncp1_Nbasic_type_id_Cf64 (_Ncp1_Nbasic_type_id_Cf32 + 1)
-#define _Ncp1_Nbasic_type_id_CCOUNT (_Ncp1_Nbasic_type_id_Cf64 + 1)
+#define _Ncp1_Nbasic_type_id_Ccount (_Ncp1_Nbasic_type_id_Cf64 + 1)
 #define _Ncp1_Nname_type_Cmodule 0
 #define _Ncp1_Nname_type_Cstruct_enum (_Ncp1_Nname_type_Cmodule + 1)
 #define _Ncp1_Nname_type_Cbasic (_Ncp1_Nname_type_Cstruct_enum + 1)
@@ -930,7 +930,7 @@ _Ncp1_Ntemplate_code _Gtemplate_code_c;
 struct _Ncp1_Ntemplate_code_data* _Gtemplate_code_v;
 uint32_t _Gjscode_buf_len;
 _Ncp1_Nfunc _Gfunc_c;
-struct _Ncp1_Nbasic_type _Gbasic_type[_Ncp1_Nbasic_type_id_CCOUNT];
+struct _Ncp1_Nbasic_type _Gbasic_type[_Ncp1_Nbasic_type_id_Ccount];
 _Ncp1_Nid _Gid_add;
 _Ncp1_Nid _Gid_sub;
 _Ncp1_Nid _Gid_mul;
@@ -1179,7 +1179,7 @@ case _Ncp1_Nbasic_type_id_Cisz: return "isz";
 case _Ncp1_Nbasic_type_id_Cusz: return "usz";
 case _Ncp1_Nbasic_type_id_Cf32: return "f32";
 case _Ncp1_Nbasic_type_id_Cf64: return "f64";
-case _Ncp1_Nbasic_type_id_CCOUNT: return "COUNT";
+case _Ncp1_Nbasic_type_id_Ccount: return "count";
 }
 return "(ERROR)";
 }
@@ -1887,7 +1887,7 @@ _Ncp1_Pquick_alloc_init_0();
 _Gfunc_main = _Ncp1_Nfunc_Cnil;
 _Ncp1_Nbasic_type_id _Ltype_67 = {0};
 _Ltype_67 = ((_Ncp1_Nbasic_type_id)(((_Ncp1_Nbasic_type_id)(0))));
-for(int i = _Ncp1_Nbasic_type_id_CCOUNT; i > 0; ) {
+for(int i = _Ncp1_Nbasic_type_id_Ccount; i > 0; ) {
 i --;
 _Ncp1_Nat _Lat_idx_68;
 struct _Ncp1_Nat_data* _Lat_70;

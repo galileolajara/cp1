@@ -265,7 +265,7 @@ enum 'basic-type-id[
    #i64, #u64,
    #isz, #usz,
    #f32, #f64,
-   #COUNT]'u8 {
+   #count]'u8 {
    wr(e'this, w'wtr) @inline {
       w.n1(e'base);
    }

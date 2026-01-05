@@ -17,7 +17,7 @@ crc32c(crc32c'u32, data'ref, size'u32)'u32 @real-name;
 var id-map'map.;
 var include-map'map.;
 var at-map'at-map.;
-meta #BuildCommonCodes {
+meta #build-common-codes {
    using 'cp1 {
       struct 'struct-data[
 #  if (arg.compile) {

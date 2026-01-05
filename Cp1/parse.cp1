@@ -13,7 +13,7 @@ var ctx-begin-row'u32;
 var ctx-begin-col'u32;
 var ctx-end-row'u32;
 var ctx-end-col'u32;
-#BuildCommonCodes{}
+#build-common-codes{}
 var import-v'include[];
 var import-require-v'u8[];
 var import-cap'u32;
