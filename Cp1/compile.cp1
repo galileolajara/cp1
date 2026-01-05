@@ -45,7 +45,7 @@ enum 'file[#nil = -1, #0]'i32 {
    path-len(f'this)'u16 @inline {
       return f.ptr().path-len;
    }
-   stdout-reserve(f'this, so'c1'StdOut, p'c1'StdOutStr) {
+   stdout-reserve(f'this, so'c1'stdout, p'c1'stdout-str) {
       ptr! = f.ptr();
       p.reserve(ptr.path, ptr.path-len, so);
    }

@@ -1071,7 +1071,7 @@ enum 'include[#nil = -1, #0]'i32 {
       .include-is-outputted[n3] |= n17;
       .include-outputted-v[.include-outputted-c++] = thiss;
    }
-   stdout-reserve(i'this, so'c1'StdOut, p'c1'StdOutStr) {
+   stdout-reserve(i'this, so'c1'stdout, p'c1'stdout-str) {
       p.reserve(.include-str-v[i], .include-len-v[i], so);
    }
    output-reserve(i'this, o'output, p'cp1'output-str) {
@@ -1090,7 +1090,7 @@ var include-str-v'char[][];
 var include-len-v'u8[];
 var func-main'func;
 enum 'id[#nil = -1, #0]'i32 {
-   stdout-reserve(id'this, so'c1'StdOut, p'c1'StdOutStr) @inline {
+   stdout-reserve(id'this, so'c1'stdout, p'c1'stdout-str) @inline {
       p.reserve(id.str(), id.len(), so);
    }
    jscode(id'this, jc'js-code) @inline {
