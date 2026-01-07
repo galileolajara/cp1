@@ -346,7 +346,7 @@ expr-push(e'expr, type'expr-type)'expr-i {
 union 'expr-int-value[
    i32'i32,
    u32'u32,
-   ff32'f32,
+   f32'f32,
    ff64'f64,
    u64'u64,
 ];

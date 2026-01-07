@@ -445,7 +445,7 @@ struct 'token-data-i32[
 struct 'token-data-f32[
    row'u32,
    col'u32,
-   ff32'f32,
+   f32'f32,
 ];
 struct 'token-data-f64[
    row'u32,
@@ -463,7 +463,7 @@ struct 'token-data-index[
 ];
 union 'token-data[
    i32'token-data-i32.,
-   ff32'token-data-f32.,
+   f32'token-data-f32.,
    ff64'token-data-f64.,
    u64'token-data-u64.,
    index'token-data-index.,
@@ -1169,7 +1169,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                psr.parse(t, tok);
             }
             case #num-f32 {
-               tok.ff32.ff32 = lex.get-f32();
+               tok.f32.f32 = lex.get-f32();
                .last-token = t;
                psr.parse(t, tok);
             }
