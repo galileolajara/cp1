@@ -6,7 +6,7 @@ expr-int(value'i32, type'expr-int)'expr-i {
    var e'expr-int-data;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #int);
-   e.value.ii32 = value;
+   e.value.i32 = value;
    e.type = type;
    return e-idx;
 }
@@ -14,7 +14,7 @@ expr-int64(value'i64, type'expr-int)'expr-i {
    var e'expr-int-data;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #int);
-   e.value.uu64 = value;
+   e.value.u64 = value;
    e.type = type;
    return e-idx;
 }
@@ -40,7 +40,7 @@ using 'expr-i {
       w.n1(e.type'base);
       switch e.type {
          case #i32 {
-            w.i(e.value.ii32);
+            w.i(e.value.i32);
          }
          case #f32 {
             w.f4(e.value.ff32);
@@ -49,10 +49,10 @@ using 'expr-i {
             w.f8(e.value.ff64);
          }
          case #u64 {
-            w.N(e.value.uu64);
+            w.N(e.value.u64);
          }
          default {
-            w.n(e.value.uu32);
+            w.n(e.value.u32);
          }
       }
    }
@@ -63,7 +63,7 @@ using 'expr-i {
       e.type = r.n1()'expr-int;
       switch e.type {
          case #i32 {
-            e.value.ii32 = r.i();
+            e.value.i32 = r.i();
          }
          case #f32 {
             e.value.ff32 = r.f4();
@@ -73,10 +73,10 @@ using 'expr-i {
          }
          case #u64 {
             // .include-stdint = true;
-            e.value.uu64 = r.N();
+            e.value.u64 = r.N();
          }
          default {
-            e.value.uu32 = r.n();
+            e.value.u32 = r.n();
          }
       }
    }
@@ -84,10 +84,10 @@ using 'expr-i {
       var e'expr-int-data = expr;
       switch e.type {
          case #i32 {
-            output{e.value.ii32}
+            output{e.value.i32}
          }
          case #u32 {
-            output{e.value.uu32 ''u}
+            output{e.value.u32 ''u}
          }
          case #f32 {
             output{e.value.ff32 ''f}
@@ -96,13 +96,13 @@ using 'expr-i {
             output{e.value.ff64}
          }
          case #oct {
-            output{''0 e.value.uu32, #oct}
+            output{''0 e.value.u32, #oct}
          }
          case #hex {
-            output{"0x" e.value.uu32, #hex}
+            output{"0x" e.value.u32, #hex}
          }
          case #u64 {
-            output{"UINT64_C(" e.value.uu64 ")"}
+            output{"UINT64_C(" e.value.u64 ")"}
          }
       }
    }
@@ -129,7 +129,7 @@ using 'expr-i {
          }
       }
    }
-   value-int(le'this, reff'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
+   value-int(le'this, ref'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
       var e'expr-int-data = le.ptr();
       switch e.type {
          case #i32 {
@@ -152,7 +152,7 @@ using 'expr-i {
       v.info.array-c = 0;
       v.info.ref-v[0] = ''\0;
       v.info.star-c = 0;
-      v.reff = 1;
+      v.ref = 1;
       v.paren = false;
       ok = true;
    }

@@ -35,13 +35,13 @@ using 'expr-i {
    type-bool(expr'expr, at'at&) @case.type() @inline {
       at = basic-type(#bool);
    }
-   value-bool(le'this, reff'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
+   value-bool(le'this, ref'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
       v.type = basic-type(#bool);
       v.info.init();
       v.info.array-c = 0;
       v.info.ref-v[0] = ''\0;
       v.info.star-c = 0;
-      v.reff = 1;
+      v.ref = 1;
       v.paren = false;
       ok = true;
    }

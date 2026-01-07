@@ -94,19 +94,19 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
    }
    write-value(e'this, v'value)'bool {
       expr! = e.ptr();
-      reff! = v.reff;
+      ref! = v.ref;
       // C1.stdout{"write-value v.ref = " ref ''\n}
       if v.paren {
-         if reff <= 0 {
+         if ref <= 0 {
             output-bytes("(&", 2);
          } else {
-            output-bytes("(*******************************", reff);
+            output-bytes("(*******************************", ref);
          }
       } else {
-         if reff <= 0 {
+         if ref <= 0 {
             output-bytes("&", 1);
-         } elif reff > 1 {
-            output-bytes("*******************************", reff - 1);
+         } elif ref > 1 {
+            output-bytes("*******************************", ref - 1);
          }
       }
 
@@ -122,11 +122,11 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
       }
       return true;
    }
-   value(e'this, reff'i32, paren'bool, v'value)'bool {
+   value(e'this, ref'i32, paren'bool, v'value)'bool {
       if !e.process() { return false }
       expr! = e.ptr();
       ok! = false;
-      switch.value(e, reff, paren, v, ok) expr.type {
+      switch.value(e, ref, paren, v, ok) expr.type {
          default {
             'c1.stdout{.ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": value() not implemented for #" expr.type.cp1-name() ''\n}
          }
@@ -344,11 +344,11 @@ expr-push(e'expr, type'expr-type)'expr-i {
    return e-idx;
 }
 union 'expr-int-value[
-   ii32'i32,
-   uu32'u32,
+   i32'i32,
+   u32'u32,
    ff32'f32,
    ff64'f64,
-   uu64'u64,
+   u64'u64,
 ];
 struct 'expr-int-data[
    base'expr.,

@@ -2,7 +2,7 @@ using 'c = 'libc;
 using 'c1 = 'libcp1;
 using 'cp1 {
 union 'wtr[
-   reff'ref,
+   ref'ref,
    pos'usz,
    p1'u8[],
    p2'u16[],
@@ -38,7 +38,7 @@ union 'wtr[
       I(w'this, n'i64) @real-name(Fputlint) @no-decl;
    }
    copy(w'this, data'ref, size'i32) @inline {
-      'c.memcpy(w.reff, data, size);
+      'c.memcpy(w.ref, data, size);
       w.pos += size;
    }
    b(w'this, val'bool) @inline {

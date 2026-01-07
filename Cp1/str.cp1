@@ -96,7 +96,7 @@ using 'expr-i {
          output{''\n}
       }
    }
-   value-str(s'this, reff'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
+   value-str(s'this, ref'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
       v.type = basic-type(#char);
       v.info.init();
       v.info.const = true;
@@ -104,7 +104,7 @@ using 'expr-i {
       v.info.ref-v[0] = ''\0;
       v.info.ref-v[1] = ''\0;
       v.info.star-c = 1;
-      v.reff = 1;
+      v.ref = 1;
       ok = true;
    }
    process-str(expr'expr, ok'bool&) @case.process() @inline {

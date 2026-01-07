@@ -2,7 +2,7 @@ using 'c = 'libc;
 using 'c1 = 'libcp1;
 using 'cp1 {
 union 'rdr[
-   reff'ref,
+   ref'ref,
    pos'usz,
    p1'u8[],
    p2'u16[],
@@ -49,14 +49,14 @@ union 'rdr[
       return r.n1();
    }
    copy(r'this, data'ref, size'i32) @inline {
-      'c.memcpy(data, r.reff, size);
+      'c.memcpy(data, r.ref, size);
       r.pos += size;
    }
    b(r'this)'bool @inline {
       return r.n1() != 0;
    }
-   set(r'this, reff'ref) @inline {
-      r.reff = reff;
+   set(r'this, ref'ref) @inline {
+      r.ref = ref;
    }
 }
  

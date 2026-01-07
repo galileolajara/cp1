@@ -112,14 +112,14 @@ using 'expr-i {
       e.name = name;
       e.try = #nil;
    }
-   value-cvar(e'this, reff'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
+   value-cvar(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
       var expr'expr-cvar = e.ptr();
       cvar! = expr.cvar.ptr();
       if (cvar.decl.type == #nil) && ((cvar.flags & #set-expr) != #0) {
-         ok = cvar.expr-set.value(reff, paren, v);
+         ok = cvar.expr-set.value(ref, paren, v);
       } else {
-         v.set(reff, paren, cvar.decl.type, cvar.decl.type-info);
-         if v.reff == 1 {
+         v.set(ref, paren, cvar.decl.type, cvar.decl.type-info);
+         if v.ref == 1 {
             v.paren = false;
          }
          ok = true;

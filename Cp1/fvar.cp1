@@ -36,11 +36,11 @@ using 'expr-i {
       var e'expr-fvar = expr;
       at = e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar].decl.type;
    }
-   value-fvar(expr'this, reff'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
+   value-fvar(expr'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
       var e'expr-fvar = expr.ptr();
       fvar! = e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar];
-      v.set(reff, paren, fvar.decl.type, fvar.decl.type-info);
-      if v.reff == 1 {
+      v.set(ref, paren, fvar.decl.type, fvar.decl.type-info);
+      if v.ref == 1 {
          v.paren = false;
       }
       ok = true;

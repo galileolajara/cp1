@@ -46,10 +46,10 @@ using 'expr-i {
       }
       e.right.write-value(e.right-val);
    }
-   value-compare(e'this, reff'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
+   value-compare(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
       var expr'expr-compare = e.ptr();
       if expr.is-overload {
-         ok = expr.left.value(reff, paren, v);
+         ok = expr.left.value(ref, paren, v);
          return;
       }
       v.type = basic-type(#bool);
@@ -57,7 +57,7 @@ using 'expr-i {
       v.info.array-c = 0;
       v.info.ref-v[0] = ''\0;
       v.info.star-c = 0;
-      v.reff = 1;
+      v.ref = 1;
       v.paren = paren;
       ok = true;
    }

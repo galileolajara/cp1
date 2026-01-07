@@ -31,9 +31,9 @@ using 'expr-i {
       e.expr.rd(r);
       e.type.rd(r);
    }
-   value-cast-fast(e'this, reff'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
+   value-cast-fast(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
       var expr'expr-cast-fast = e.ptr();
-      expr.expr.value(reff, paren, v);
+      expr.expr.value(ref, paren, v);
       v.type = expr.type;
       ok = true;
    }

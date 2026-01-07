@@ -1,7 +1,7 @@
 using 'c = 'libc;
 using 'c1 = 'libcp1;
 using 'cp1 {
-union 'nest[do'stmt-loop, reff'ref];
+union 'nest[do'stmt-loop, ref'ref];
 var nest-stack-ptr-v'nest.[64];
 var nest-stack-id-v'i32[64];
 var nest-stack-c'u8;

@@ -21,14 +21,14 @@ using 'expr-i {
       var e'expr-ref = expr;
       e.expr.write-value(e.val);
    }
-   value-ref(e'this, reff'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
+   value-ref(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
       var expr'expr-ref = e.ptr();
       v.type = basic-type(#ref);
       v.info.init();
       v.info.array-c = 0;
       v.info.ref-v[0] = 1;
       v.info.star-c = 1;
-      v.reff = 1;
+      v.ref = 1;
       ok = true;
    }
    type-ref(expr'expr, at'at&) @case.type() @inline {

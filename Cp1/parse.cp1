@@ -184,7 +184,7 @@ type-info-finalize() {
 }
 type-info-arr(expr-v'expr-i[], expr-c'u8) {
    var r'rdr.;
-   r.reff = expr-v;
+   r.ref = expr-v;
    if expr-v == null {
       ti! = .decl-var.type-info;
       ti.array-c += 1;
@@ -462,10 +462,10 @@ struct 'token-data-index[
    c'intc,
 ];
 union 'token-data[
-   ii32'token-data-i32.,
+   i32'token-data-i32.,
    ff32'token-data-f32.,
    ff64'token-data-f64.,
-   uu64'token-data-u64.,
+   u64'token-data-u64.,
    index'token-data-index.,
    pointer'ref,
 ];
@@ -486,9 +486,9 @@ struct 'lexer[
    scan(lex'this)'token @real-name(cp1_lexer_scan);
    get-oct(lex'this)'u32 {
       var r-start'rdr.;
-      r-start.reff = lex.start + 2;
+      r-start.ref = lex.start + 2;
       var r-cursor'rdr.;
-      r-cursor.reff = lex.cursor;
+      r-cursor.ref = lex.cursor;
       length! = r-cursor.pos - r-start.pos;
       if length > 11 {
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was too long\n"}
@@ -507,9 +507,9 @@ struct 'lexer[
    }
    get-hex(lex'this)'u32 {
       var r-start'rdr.;
-      r-start.reff = lex.start + 2;
+      r-start.ref = lex.start + 2;
       var r-cursor'rdr.;
-      r-cursor.reff = lex.cursor;
+      r-cursor.ref = lex.cursor;
       length! = r-cursor.pos - r-start.pos;
       if length > 8 {
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was too long\n"}
@@ -535,9 +535,9 @@ struct 'lexer[
    }
    get-f32(lex'this)'f32 {
       var r-start'rdr.;
-      r-start.reff = lex.start;
+      r-start.ref = lex.start;
       var r-cursor'rdr.;
-      r-cursor.reff = lex.cursor;
+      r-cursor.ref = lex.cursor;
       length! = r-cursor.pos - r-start.pos - 1;
       var val'f32;
       'c.sscanf(r-start.charr, "%f", &val);
@@ -545,9 +545,9 @@ struct 'lexer[
    }
    get-f64(lex'this)'f64 {
       var r-start'rdr.;
-      r-start.reff = lex.start;
+      r-start.ref = lex.start;
       var r-cursor'rdr.;
-      r-cursor.reff = lex.cursor;
+      r-cursor.ref = lex.cursor;
       length! = r-cursor.pos - r-start.pos - 1;
       var val'f64;
       'c.sscanf(r-start.charr, "%lf", &val);
@@ -555,9 +555,9 @@ struct 'lexer[
    }
    get-int(lex'this, len-minus'u8)'u32 {
       var r-start'rdr.;
-      r-start.reff = lex.start;
+      r-start.ref = lex.start;
       var r-cursor'rdr.;
-      r-cursor.reff = lex.cursor;
+      r-cursor.ref = lex.cursor;
       length! = r-cursor.pos - r-start.pos - len-minus;
       if length > 10 {
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was too long\n"}
@@ -596,9 +596,9 @@ struct 'lexer[
    }
    get-u64(lex'this)'u64 {
       var r-start'rdr.;
-      r-start.reff = lex.start;
+      r-start.ref = lex.start;
       var r-cursor'rdr.;
-      r-cursor.reff = lex.cursor;
+      r-cursor.ref = lex.cursor;
       length! = r-cursor.pos - r-start.pos - 3; // -3 to remove u64 suffix
       if length > 20 { // 18446744073709551615
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was too long\n"}
@@ -626,10 +626,10 @@ struct 'lexer[
    }
    get-id(lex'this, begin'u8, end'u8)'i32 {
       var r-start'rdr.;
-      r-start.reff = lex.start;
+      r-start.ref = lex.start;
       r-start.pos += begin;
       var r-cursor'rdr.;
-      r-cursor.reff = lex.cursor;
+      r-cursor.ref = lex.cursor;
       length! = r-cursor.pos - r-start.pos - end;
       if length > 255 {
          'c1.stdout{"too long id was detected\n"}
@@ -660,10 +660,10 @@ struct 'lexer[
    }
    get-include(lex'this)'i32 {
       var r-start'rdr.;
-      r-start.reff = lex.start;
+      r-start.ref = lex.start;
       r-start.pos += 8;
       var r-cursor'rdr.;
-      r-cursor.reff = lex.cursor;
+      r-cursor.ref = lex.cursor;
       length! = r-cursor.pos - r-start.pos;
       // loop (r-start.charr[length] != '' ) && (r-start.charr[length] != ''\n) {
       //   length++;
@@ -902,7 +902,7 @@ parse-comment(r'rdr, w'wtr, ending'char, in-data'ref) {
    loop {
       c! = r.p1[0];
       if c == ''\n {
-         get-row-col(row!, col!, r.reff, in-data);
+         get-row-col(row!, col!, r.ref, in-data);
          'c1.stdout{.input-path '': row '': col ": Unterminated comment\n"}
          'c.exit(#failure);
       }
@@ -1052,7 +1052,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    'c.free(in-data);
    in-data = new-data;
    var r-end'rdr.;
-   r-end.reff = in-data;
+   r-end.ref = in-data;
    r-end.pos += in-size;
    parse-str-init(in-size * 2); // multiply by two for the escape sequences
 
@@ -1087,18 +1087,18 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    .id-blank = id-add(0, "");
    var tok'token-data.;
    loop {
-      tok.ii32.row = next-row;
-      tok.ii32.col = next-col;
+      tok.i32.row = next-row;
+      tok.i32.col = next-col;
       t! = lex.scan();
       if true { // t != #space)
          // when reporting the row and column of tokens, skip the spaces
          pos! = lex.start;
          loop pos < r-end.p1 {
             if pos[0] == ''  {
-               tok.ii32.col++;
+               tok.i32.col++;
             } elif pos[0] == ''\n {
-               tok.ii32.row++;
-               tok.ii32.col = 1;
+               tok.i32.row++;
+               tok.i32.col = 1;
             } else {
                break;
             }
@@ -1107,9 +1107,9 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
       }
       .last-row = .row;
       .last-col = .col;
-      .row = tok.ii32.row;
-      .col = tok.ii32.col;
-      // C1.stdout{.input-path '': tok.ii32.row '': tok.ii32.col ": token " t.cp1-name() ''\n}
+      .row = tok.i32.row;
+      .col = tok.i32.col;
+      // C1.stdout{.input-path '': tok.i32.row '': tok.i32.col ": token " t.cp1-name() ''\n}
       // 'c.out.flush();
       // if (&&, t >= #id-quote, t < #id) {
       //    tok.id = lex.get-id(1, 0);
@@ -1124,22 +1124,22 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
             // }
             case #char1 {
                var r'rdr.;
-               r.reff = lex.start;
-               tok.ii32.id = r.p1[2];
+               r.ref = lex.start;
+               tok.i32.id = r.p1[2];
                .last-token = t;
                psr.parse(t, tok);
             }
             case #char2 {
                var r'rdr.;
-               r.reff = lex.start;
-               tok.ii32.id = char-escape-value(r.p1[3]);
+               r.ref = lex.start;
+               tok.i32.id = char-escape-value(r.p1[3]);
                .last-token = t;
                psr.parse(t, tok);
             }
             case #space-at-no-decl-str {
                // find the '@' character and start counting from there
                var r-start'rdr.;
-               r-start.reff = lex.start;
+               r-start.ref = lex.start;
                start! = 9;
                loop {
                   start++;
@@ -1148,14 +1148,14 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                      break;
                   }
                }
-               tok.ii32.id = lex.get-id(start, 1);
+               tok.i32.id = lex.get-id(start, 1);
                .last-token = t;
                psr.parse(t, tok);
             }
             case #space-at-real-name-str {
                // find the '@' character and start counting from there
                var r-start'rdr.;
-               r-start.reff = lex.start;
+               r-start.ref = lex.start;
                start! = 11;
                loop {
                   start++;
@@ -1164,7 +1164,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                      break;
                   }
                }
-               tok.ii32.id = lex.get-id(start, 1);
+               tok.i32.id = lex.get-id(start, 1);
                .last-token = t;
                psr.parse(t, tok);
             }
@@ -1179,27 +1179,27 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                psr.parse(t, tok);
             }
             case #num-u32 {
-               tok.ii32.id = lex.get-int(1);
+               tok.i32.id = lex.get-int(1);
                .last-token = t;
                psr.parse(t, tok);
             }
             case #num-u64 {
-               tok.uu64.id = lex.get-u64();
+               tok.u64.id = lex.get-u64();
                .last-token = t;
                psr.parse(t, tok);
             }
             case #num-i32 {
-               tok.ii32.id = lex.get-int(0);
+               tok.i32.id = lex.get-int(0);
                .last-token = t;
                psr.parse(t, tok);
             }
             case #num-oct {
-               tok.ii32.id = lex.get-oct();
+               tok.i32.id = lex.get-oct();
                .last-token = t;
                psr.parse(t, tok);
             }
             case #num-hex {
-               tok.ii32.id = lex.get-hex();
+               tok.i32.id = lex.get-hex();
                .last-token = t;
                psr.parse(t, tok);
             }
@@ -1207,16 +1207,16 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                loop i = 0; {
                   if lex.start[i++] == ''" {
                      var r-begin'rdr.;
-                     r-begin.reff = &lex.start[i];
+                     r-begin.ref = &lex.start[i];
                      var r-end'rdr.;
-                     r-end.reff = lex.cursor;
+                     r-end.ref = lex.cursor;
                      r-end.pos--;
                      len! = r-end.pos - r-begin.pos;
                      if len > 255 {
                         'c1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
                         'c.exit(#failure);
                      }
-                     tok.ii32.id = include-add(len, r-begin.charr)'base;
+                     tok.i32.id = include-add(len, r-begin.charr)'base;
                      // C1.stdout{"import '" r-begin.charr, len "'\n"}
                      break;
                   }
@@ -1228,16 +1228,16 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                loop i = 0; {
                   if lex.start[i++] == ''" {
                      var r-begin'rdr.;
-                     r-begin.reff = &lex.start[i];
+                     r-begin.ref = &lex.start[i];
                      var r-end'rdr.;
-                     r-end.reff = lex.cursor;
+                     r-end.ref = lex.cursor;
                      r-end.pos--;
                      len! = r-end.pos - r-begin.pos;
                      if len > 255 {
                         'c1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
                         'c.exit(#failure);
                      }
-                     tok.ii32.id = include-add(len, r-begin.charr)'base;
+                     tok.i32.id = include-add(len, r-begin.charr)'base;
                      // C1.stdout{"import '" r-begin.charr, len "'\n"}
                      break;
                   }
@@ -1246,7 +1246,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                psr.parse(t, tok);
             }
             case #include {
-               tok.ii32.id = lex.get-include();
+               tok.i32.id = lex.get-include();
                .last-token = t;
                psr.parse(t, tok);
             }
@@ -1376,7 +1376,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                psr.parse(t, tok);
             }
             case #id {
-               tok.ii32.id = lex.get-id(0, 0);
+               tok.i32.id = lex.get-id(0, 0);
                if lex.cursor[0] == ''( {
                   t = #id-then-open-parenthesis;
                } elif lex.cursor[0] == ''{ {
@@ -1386,7 +1386,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                psr.parse(t, tok);
             }
             case #soa-field {
-               // tok.ii32.id = 
+               // tok.i32.id = 
                // lex.get-id(2, 0);
                rbracket! = 1;
                loop lex.start[rbracket] != ''] {
@@ -1394,38 +1394,38 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                }
                if true {
                   var r-start'rdr.;
-                  r-start.reff = lex.start;
+                  r-start.ref = lex.start;
                   r-start.pos += 1;
                   var r-cursor'rdr.;
-                  r-cursor.reff = lex.cursor;
+                  r-cursor.ref = lex.cursor;
                   length! = rbracket - 1;
                   end! = r-cursor.pos - r-start.pos - length;
                   if length == 0 {
-                     tok.ii32.id = -1;
+                     tok.i32.id = -1;
                   } else {
-                     tok.ii32.id = lex.get-id(1, end);
+                     tok.i32.id = lex.get-id(1, end);
                   }
                }
                if true {
                   rbracket++;
                   var r-start'rdr.;
-                  r-start.reff = lex.start;
+                  r-start.ref = lex.start;
                   r-start.pos += rbracket;
                   var r-cursor'rdr.;
-                  r-cursor.reff = lex.cursor;
+                  r-cursor.ref = lex.cursor;
                   length! = r-cursor.pos - r-start.pos;
-                  tok.ii32.id2 = lex.get-id(rbracket, 0);
+                  tok.i32.id2 = lex.get-id(rbracket, 0);
                }
                .last-token = t;
                psr.parse(t, tok);
             }
             case #hash-id {
-               tok.ii32.id = lex.get-id(1, 0);
+               tok.i32.id = lex.get-id(1, 0);
                .last-token = t;
                psr.parse(t, tok);
             }
             case #id-type {
-               tok.ii32.id = lex.get-id(1, 0);
+               tok.i32.id = lex.get-id(1, 0);
                if lex.cursor[0] == ''( {
                   t = #id-then-open-parenthesis;
                } elif lex.cursor[0] == ''{ {
@@ -1484,9 +1484,9 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    psr.free();
    // C1.stdout{"parsing finished\n"}
    var w-begin'wtr.;
-   w-begin.reff = quick-alloc((in-size << 2) + 1024);
+   w-begin.ref = quick-alloc((in-size << 2) + 1024);
    var w'wtr.;
-   w.reff = w-begin.reff;
+   w.ref = w-begin.ref;
    w.n(.id-c);
    loop i = 0; .id-c; i++ {
       w.n1(.id-len-v[i]);
@@ -1531,7 +1531,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    write-import(w, false);
    write-template-code(w, false);
 
-   // if write-cp1(input-path-len, in-data, in-size, w-begin.reff, w.pos - w-begin.pos) { return 0 }
+   // if write-cp1(input-path-len, in-data, in-size, w-begin.ref, w.pos - w-begin.pos) { return 0 }
    // else { return 1 }
    
    // var out-path:char[] = C.malloc(C.strlen(lock-path) + 4 + 1);
@@ -1539,7 +1539,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    // out-path-len! = C.strlen(out-path);
    var tmp-path'char[256 + 16 + 10];
    'c.sprintf(tmp-path, "%s-%u", lock-path, 'x.getpid());
-   if !write-file(tmp-path, w-begin.reff, w.pos - w-begin.pos) {
+   if !write-file(tmp-path, w-begin.ref, w.pos - w-begin.pos) {
       'c1.stdout{"Cannot open file for writing: " tmp-path ''\n}
       'c.exit(#failure);
    }
@@ -1548,7 +1548,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    "#endif";
    'c.rename(tmp-path, lock-path);
 
-   w.reff = w-begin.reff;
+   w.ref = w-begin.ref;
    w.n(.id-in-header-c);
    loop j = 0; .id-in-header-c; j++ {
       i! = .id-in-header-id-v[j];
@@ -1583,7 +1583,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    write-template-code(w, true);
 
    tmp-path[lock-path-len - 1] = ''h;
-   if !write-file(tmp-path, w-begin.reff, w.pos - w-begin.pos) {
+   if !write-file(tmp-path, w-begin.ref, w.pos - w-begin.pos) {
       'c1.stdout{"Cannot open file for writing: " tmp-path ''\n}
       'c.exit(#failure);
    }

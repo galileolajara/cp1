@@ -501,7 +501,7 @@ expr-pop-func(at'at, func-name'id)'expr-i {
    e.func-name = func-name;
    e.carg-c = carg-c;
    loop i = 0; carg-c; i++ {
-      e.carg-v[i].reff = 0;
+      e.carg-v[i].ref = 0;
       e.carg-v[i].expr = .expr-call-carg-v[call-idx][i];
    }
    e.group-c = .expr-call-cgrp-c[call-idx];
@@ -553,7 +553,7 @@ expr-pop-metafunc(at'at, func-name'id)'expr-i {
    lvar-name! = .id-blank;
    e.carg-c = carg-c;
    loop i = 0; carg-c; i++ {
-      e.carg-v[i].reff = 0;
+      e.carg-v[i].ref = 0;
       e.carg-v[i].expr = .expr-call-carg-v[call-idx][i];
       var e2'expr-lvar;
       quick-alloc-one(e2);
@@ -598,7 +598,7 @@ expr-pop-metamethod(thiss'expr-i, func-name'id)'expr-i {
    lvar-name! = .id-blank;
    e.carg-c = carg-c;
    loop i = 0; carg-c; i++ {
-      e.carg-v[i].reff = 0;
+      e.carg-v[i].ref = 0;
       e.carg-v[i].expr = .expr-call-carg-v[call-idx][i];
       var e2'expr-lvar;
       quick-alloc-one(e2);

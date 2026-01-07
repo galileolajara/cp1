@@ -107,11 +107,11 @@ using 'expr-i {
       lvar! = e.lvar.ptr();
       at = lvar.decl.type;
    }
-   value-lvar(e'this, reff'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
+   value-lvar(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
       var expr'expr-lvar = e.ptr();
       lvar! = expr.lvar.ptr();
-      v.set(reff, paren, lvar.decl.type, lvar.decl.type-info);
-      if v.reff == 1 {
+      v.set(ref, paren, lvar.decl.type, lvar.decl.type-info);
+      if v.ref == 1 {
          v.paren = false;
       }
       ok = true;

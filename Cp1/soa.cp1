@@ -33,9 +33,9 @@ using 'expr-i {
       var e'expr-soa-field = expr;
       type-index(e.expr2.ptr(), at);
    }
-   value-soa-field(expr'this, reff'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
+   value-soa-field(expr'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
       var e'expr-soa-field = expr.ptr();
-      value-index(e.expr2, reff, paren, v, ok);
+      value-index(e.expr2, ref, paren, v, ok);
    }
    write-soa-field(expr'expr) @case.write() @inline {
       var e'expr-soa-field = expr;

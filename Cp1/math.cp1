@@ -156,7 +156,7 @@ using 'expr-i {
          }
       }
    }
-   value-math(e'this, reff'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
+   value-math(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
       var expr'expr-math = e.ptr();
       // if expr.left.value(1, paren, v) == false {
       //    return;
@@ -171,7 +171,7 @@ using 'expr-i {
       //    ]
       // }
       v.paren = paren;
-      v.reff = reff;
+      v.ref = ref;
       ok = true;
    }
    type-math(expr'expr, at'at&) @case.type() @inline {

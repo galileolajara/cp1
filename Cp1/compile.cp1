@@ -136,8 +136,8 @@ read(in-path-cp1'char[], in-path-cp1-len'u16, strdup'bool, require'bool) {
    in-path! = req-parse(in-path-cp1, in-path-cp1-len, require);
 
    var r-begin'rdr.;
-   r-begin.reff = read-file(in-path, in-size!);
-   if r-begin.reff == null {
+   r-begin.ref = read-file(in-path, in-size!);
+   if r-begin.ref == null {
       'c1.stdout{"Cannot open file for reading: " in-path-cp1 ''\n}
       // var i:u8[] = [];
       // i[0] = 0;
@@ -161,10 +161,10 @@ read(in-path-cp1'char[], in-path-cp1-len'u16, strdup'bool, require'bool) {
       file.path = in-path-cp1;
    }
    file.path-len = in-path-cp1-len;
-   file.data = r-begin.reff;
+   file.data = r-begin.ref;
 
    var r'rdr.;
-   r.reff = r-begin.reff;
+   r.ref = r-begin.ref;
    if true {
       id-c! = r.n();
       // C1.stdout{"There are " id-c " ids\n"}
@@ -187,7 +187,7 @@ read(in-path-cp1'char[], in-path-cp1-len'u16, strdup'bool, require'bool) {
       }
       loop i = 0; include-c; i++ {
          include-len! = r.n1();
-         include-str! = r.reff;
+         include-str! = r.ref;
          r.pos += include-len + 1;
          // found! = -1;
          // loop j = 0; .include-c; j++ {
@@ -492,7 +492,7 @@ read(in-path-cp1'char[], in-path-cp1-len'u16, strdup'bool, require'bool) {
       at-i! = f.at;
       f.decl.rd(r);
       var r0'rdr.;
-      r0.reff = f;
+      r0.ref = f;
       // C1.stdout{"func :" f.decl.name " was declared on an at:\n"}
       // if true {
       //    at-i! = f.at;
@@ -547,7 +547,7 @@ read(in-path-cp1'char[], in-path-cp1-len'u16, strdup'bool, require'bool) {
          len! = r.n();
          f.decl-len = len;
          f.decl-str = quick-alloc(len + 1);
-         'c.memcpy(f.decl-str, r.reff, len);
+         'c.memcpy(f.decl-str, r.ref, len);
          f.decl-str[len] = 0;
          r.pos += len;
       }
@@ -1940,7 +1940,7 @@ using 'func {
       // f.lvar-c = f.farg-c:Lvar;
       var r'rdr.;
       file! = f.file.ptr();
-      r.reff = file.data;
+      r.ref = file.data;
       .id-table = file.id-table;
       .at-table = file.at-table;
       .cvar-table = file.cvar-table;
