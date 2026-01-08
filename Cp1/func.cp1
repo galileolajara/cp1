@@ -491,7 +491,7 @@ carg-push-str(expr'expr-i) {
       .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
    }
 }
-expr-pop-func(at'at, func-name'id)'expr-i {
+expr-pop-func(at'at, func-name'id, angle'bool)'expr-i {
    call-idx! = .expr-call-c -= 1;
    carg-c! = .expr-call-carg-c[call-idx];
    var e'expr-func;
@@ -500,6 +500,7 @@ expr-pop-func(at'at, func-name'id)'expr-i {
    e.at = at;
    e.func-name = func-name;
    e.carg-c = carg-c;
+   e.angle = angle;
    loop i = 0; carg-c; i++ {
       e.carg-v[i].ref = 0;
       e.carg-v[i].expr = .expr-call-carg-v[call-idx][i];
@@ -510,7 +511,7 @@ expr-pop-func(at'at, func-name'id)'expr-i {
    }
    return e-idx;
 }
-expr-pop-method(thiss'expr-i, func-name'id)'expr-i {
+expr-pop-method(thiss'expr-i, func-name'id, angle'bool)'expr-i {
    call-idx! = .expr-call-c -= 1;
    carg-c! = .expr-call-carg-c[call-idx];
    var e'expr-method;
@@ -519,6 +520,7 @@ expr-pop-method(thiss'expr-i, func-name'id)'expr-i {
    e.thiss = thiss;
    e.func-name = func-name;
    e.carg-c = carg-c;
+   e.angle = angle;
    loop i = 0; carg-c; i++ {
       e.carg-v[i].expr = .expr-call-carg-v[call-idx][i];
    }

@@ -1378,7 +1378,9 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
             case #id {
                tok.i32.id = lex.get-id(0, 0);
                if lex.cursor[0] == ''( {
-                  t = #id-then-open-parenthesis;
+                  t = #func-id;
+               } elif lex.cursor[0] == ''< {
+                  t = #func-id-angle;
                } elif lex.cursor[0] == ''{ {
                   t = #id-then-open-curly-brace;
                }
@@ -1426,11 +1428,6 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
             }
             case #id-type {
                tok.i32.id = lex.get-id(1, 0);
-               if lex.cursor[0] == ''( {
-                  t = #id-then-open-parenthesis;
-               } elif lex.cursor[0] == ''{ {
-                  t = #id-then-open-curly-brace;
-               }
                .last-token = t;
                psr.parse(t, tok);
             }

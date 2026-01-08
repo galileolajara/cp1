@@ -19,10 +19,10 @@ export() {
    func-body-end();
    func-header-end();
    expr-push-call(0, 0);
-   expr-pop-func(#nil, #nil);
+   expr-pop-func(#nil, #nil, false);
    expr-pop-metafunc(#nil, #nil);
    expr-pop-metamethod(#nil, #nil);
-   expr-pop-method(#nil, #nil);
+   expr-pop-method(#nil, #nil, false);
    metacarg-push(#nil);
    metacarg-next-group();
    carg-push(#nil);

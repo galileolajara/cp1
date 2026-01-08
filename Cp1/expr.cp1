@@ -55,7 +55,7 @@ using 'stmt {
                   e-method! = 'expr-i.alloc();
                   var group-v'u8[1];
                   group-v[0] = 0;
-                  'expr-i.set-method(e-method, s.expr, f.decl.name, 1, group-v, 0, null);
+                  'expr-i.set-method(e-method, s.expr, f.decl.name, false, 1, group-v, 0, null);
                   s.expr = e-method;
                   if !s.expr.process() {
                      return;

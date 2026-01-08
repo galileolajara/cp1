@@ -79,7 +79,7 @@ using 'stmt {
             e-bool! = 'expr-i.alloc();
             'expr-i.set-bool(e-bool, false);
             carg-v[0] = e-bool;
-            'expr-i.set-method(e-method, s.expr, f.decl.name, 1, group-v, 1, carg-v);
+            'expr-i.set-method(e-method, s.expr, f.decl.name, false, 1, group-v, 1, carg-v);
             s.expr = e-method;
             s.is-overload = true;
             if !s.expr.process() {
@@ -132,7 +132,7 @@ using 'stmt {
                   e-bool! = 'expr-i.alloc();
                   'expr-i.set-bool(e-bool, true);
                   carg-v[0] = e-bool;
-                  'expr-i.set-func(e-func, type, f.decl.name, 1, group-v, 1, carg-v);
+                  'expr-i.set-func(e-func, type, f.decl.name, false, 1, group-v, 1, carg-v);
                   s.expr-else = e-func;
                   if !s.expr-else.process() {
                      return;
@@ -150,7 +150,7 @@ using 'stmt {
             e-bool! = 'expr-i.alloc();
             'expr-i.set-bool(e-bool, true);
             carg-v[0] = e-bool;
-            'expr-i.set-method(e-method, s.expr, f.decl.name, 1, group-v, 1, carg-v);
+            'expr-i.set-method(e-method, s.expr, f.decl.name, false, 1, group-v, 1, carg-v);
             s.expr = e-method;
             s.is-overload = true;
             if !s.expr.process() {
@@ -191,7 +191,7 @@ using 'stmt {
             e-bool! = 'expr-i.alloc();
             'expr-i.set-bool(e-bool, false);
             carg-v[0] = e-bool;
-            'expr-i.set-func(e-func, overload-type, f.decl.name, 1, group-v, 1, carg-v);
+            'expr-i.set-func(e-func, overload-type, f.decl.name, false, 1, group-v, 1, carg-v);
             s.expr = e-func;
             if !s.expr.process() {
                return;
@@ -223,7 +223,7 @@ using 'stmt {
             e-func! = 'expr-i.alloc();
             var group-v'u8[1];
             group-v[0] = 0;
-            'expr-i.set-func(e-func, overload-type, f.decl.name, 1, group-v, 0, null);
+            'expr-i.set-func(e-func, overload-type, f.decl.name, false, 1, group-v, 0, null);
             s.expr = e-func;
             if !s.expr.process() {
                return;

@@ -65,9 +65,9 @@ meta #meta-read-write-process {
             var carg-v'expr-i[1];
             carg-v[0] = lvar;
 # if (arg.method) {
-            set-method(e-idx, thiss, func-name, 1, group-v, 1, carg-v);
+            set-method(e-idx, thiss, func-name, false, 1, group-v, 1, carg-v);
 # } else {
-            set-func(e-idx, at-idx, func-name, 1, group-v, 1, carg-v);
+            set-func(e-idx, at-idx, func-name, false, 1, group-v, 1, carg-v);
 # }
          }
          j-begin! = j;
@@ -98,7 +98,7 @@ meta #meta-read-write-process {
                   carg2-v[k++] = carg-v[j++];
                }
                carg2-v[k] = lvars[i - 1];
-               set-method(e-idx, lvar, #nil, 1, group-v, group-v[0], carg2-v);
+               set-method(e-idx, lvar, #nil, false, 1, group-v, group-v[0], carg2-v);
             } else {
                group-v[0] = 1 + (carg-c - 1) + 1;
                k! = 0;
@@ -107,7 +107,7 @@ meta #meta-read-write-process {
                }
                carg2-v[k++] = lvar;
                carg2-v[k] = lvars[i - 1];
-               set-method(e-idx, carg, #nil, 1, group-v, group-v[0], carg2-v);
+               set-method(e-idx, carg, #nil, false, 1, group-v, group-v[0], carg2-v);
             }
          }
          // Create an expression for meta-method-end1
@@ -116,7 +116,7 @@ meta #meta-read-write-process {
          if true {
             var group-v'u8[1];
             group-v[0] = 0;
-            set-method(e-idx, lvar, #nil, 1, group-v, 0, null);
+            set-method(e-idx, lvar, #nil, false, 1, group-v, 0, null);
          }
          j = j-begin;
          loop i = 1; group-c - 1; i++ {
@@ -127,7 +127,7 @@ meta #meta-read-write-process {
             var carg2-v'expr-i[1];
             group-v[0] = 1;
             carg2-v[0] = lvar;
-            set-method(e-idx, lvars[i - 1], #nil, 1, group-v, group-v[0], carg2-v);
+            set-method(e-idx, lvars[i - 1], #nil, false, 1, group-v, group-v[0], carg2-v);
          }
          // Create an expression for meta-method-end2
          e-idx = 'expr-i.alloc();
@@ -135,7 +135,7 @@ meta #meta-read-write-process {
          if true {
             var group-v'u8[1];
             group-v[0] = 0;
-            set-method(e-idx, lvar, #nil, 1, group-v, 0, null);
+            set-method(e-idx, lvar, #nil, false, 1, group-v, 0, null);
          }
       }
       process-meta${arg.method ? "method" : "func"}(expr'expr, ok'bool&) @case.process() @inline {
@@ -293,7 +293,7 @@ farg-process(e-in-out'expr-i&, ca-ref'i8, ca-value'value, fd-arg'decl-var-data, 
                group-v[0] = 1;
                var carg-v'expr-i[1];
                carg-v[0] = e;
-               'expr-i.set-func(e-func, f.at, f.decl.name, 1, group-v, 1, carg-v);
+               'expr-i.set-func(e-func, f.at, f.decl.name, false, 1, group-v, 1, carg-v);
                e-in-out = e-func;
                if !e-func.value(1, false, ca-value) {
                   return false;
@@ -387,6 +387,7 @@ using 'expr-i {
       var e'expr-method = expr;
       e.thiss.wr(w, header);
       e.func-name.wr(w, header);
+      w.n1(e.angle'u8);
       w.n1(e.group-c);
       loop i = 0; e.group-c; i++ {
          w.n1(e.group-v[i]);
@@ -399,6 +400,7 @@ using 'expr-i {
    rd-method(e-idx'expr-i, r'rdr) @case.rd() @inline {
       'expr-i.rd(this-expr!, r);
       'id.rd(func-name!, r);
+      angle! = r.n1() != 0;
       group-c! = r.n1();
       var group-v'u8[#expr-carg-group-limit];
       loop i = 0; group-c; i++ {
@@ -409,14 +411,15 @@ using 'expr-i {
       loop i = 0; carg-c; i++ {
          carg-v[i].rd(r);
       }
-      set-method(e-idx, this-expr, func-name, group-c, group-v, carg-c, carg-v);
+      set-method(e-idx, this-expr, func-name, angle, group-c, group-v, carg-c, carg-v);
    }
-   set-method(e-idx'expr-i, this-expr'expr-i, func-name'id, group-c'u8, group-v'u8[], carg-c'u8, carg-v'expr-i[]) {
+   set-method(e-idx'expr-i, this-expr'expr-i, func-name'id, angle'bool, group-c'u8, group-v'u8[], carg-c'u8, carg-v'expr-i[]) {
       var e'expr-method;
       quick-alloc-plus(e, 'carg['usz] * carg-c);
       e-idx.set(e.base, #method);
       e.thiss = this-expr;
       e.func-name = func-name;
+      e.angle = angle;
       e.group-c = group-c;
       loop i = 0; group-c; i++ {
          e.group-v[i] = group-v[i];
@@ -428,9 +431,36 @@ using 'expr-i {
    }
    process-method(expr'expr, ok'bool&) @case.process() @inline {
       var e'expr-method = expr;
-      func-name! = e.func-name;
-      group-c! = e.group-c;
+      var func-name = ?;
       group-v! = e.group-v;
+      if e.angle {
+         var name'char[512];
+         name-len! = e.func-name.len();
+         'c.memcpy(name, e.func-name.str(), name-len);
+         loop i = 0; group-v[0]; i++ {
+            name[name-len++] = ''-;
+            ca! = e.carg-v[i];
+            type! = ca.expr.type();
+            if type == #nil {
+               return;
+            }
+            type-ptr! = type.ptr();
+            if type-ptr.type == #struct-enum {
+               len! = type-ptr.name.id.len();
+               'c.memcpy(&name[name-len], type-ptr.name.id.str(), len);
+               name-len += len;
+            } else {
+               str! = type-ptr.name.basic.cp1-name();
+               len! = 'c.strlen(str);
+               'c.memcpy(&name[name-len], str, len);
+               name-len += len;
+            }
+         }
+         func-name = id-add(name-len, name);
+      } else {
+         func-name = e.func-name;
+      }
+      group-c! = e.group-c;
       carg-c! = e.carg-c;
       carg-c1! = carg-c + 1;
       at-idx! = e.thiss.type();
@@ -612,6 +642,7 @@ using 'expr-i {
       var e'expr-func = expr;
       e.at.wr(w, header);
       e.func-name.wr(w, header);
+      w.n1(e.angle'u8);
       w.n1(e.group-c);
       loop i = 0; e.group-c; i++ {
          w.n1(e.group-v[i]);
@@ -624,6 +655,7 @@ using 'expr-i {
    rd-func(e-idx'expr-i, r'rdr) @case.rd() @inline {
       'at.rd(at-idx!, r);
       'id.rd(func-name!, r);
+      angle! = r.n1() != 0;
       group-c! = r.n1();
       var group-v'u8[#expr-carg-group-limit];
       loop i = 0; group-c; i++ {
@@ -634,14 +666,15 @@ using 'expr-i {
       loop i = 0; carg-c; i++ {
          carg-v[i].rd(r);
       }
-      set-func(e-idx, at-idx, func-name, group-c, group-v, carg-c, carg-v);
+      set-func(e-idx, at-idx, func-name, angle, group-c, group-v, carg-c, carg-v);
    }
-   set-func(e-idx'expr-i, at-idx'at, func-name'id, group-c'u8, group-v'u8[], carg-c'u8, carg-v'expr-i[]) {
+   set-func(e-idx'expr-i, at-idx'at, func-name'id, angle'bool, group-c'u8, group-v'u8[], carg-c'u8, carg-v'expr-i[]) {
       var e'expr-func;
       quick-alloc-plus(e, 'carg['usz] * carg-c);
       e-idx.set(e.base, #func);
       e.at = at-idx;
       e.func-name = func-name;
+      e.angle = angle;
       e.group-c = group-c;
       loop i = 0; group-c; i++ {
          e.group-v[i] = group-v[i];
@@ -653,10 +686,37 @@ using 'expr-i {
    }
    process-func(expr'expr, ok'bool&) @case.process() @inline {
       var e'expr-func = expr;
-      func-name! = e.func-name;
+      var func-name = ?;
+      group-v! = e.group-v;
+      if e.angle {
+         var name'char[512];
+         name-len! = e.func-name.len();
+         'c.memcpy(name, e.func-name.str(), name-len);
+         loop i = 0; group-v[0]; i++ {
+            name[name-len++] = ''-;
+            ca! = e.carg-v[i];
+            type! = ca.expr.type();
+            if type == #nil {
+               return;
+            }
+            type-ptr! = type.ptr();
+            if type-ptr.type == #struct-enum {
+               len! = type-ptr.name.id.len();
+               'c.memcpy(&name[name-len], type-ptr.name.id.str(), len);
+               name-len += len;
+            } else {
+               str! = type-ptr.name.basic.cp1-name();
+               len! = 'c.strlen(str);
+               'c.memcpy(&name[name-len], str, len);
+               name-len += len;
+            }
+         }
+         func-name = id-add(name-len, name);
+      } else {
+         func-name = e.func-name;
+      }
       carg-c! = e.carg-c;
       group-c! = e.group-c;
-      group-v! = e.group-v;
       at-idx! = e.at;
       try-parent! = false;
       if at-idx == #nil {

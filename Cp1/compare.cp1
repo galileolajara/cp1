@@ -99,7 +99,7 @@ using 'expr-i {
                   }
                   set-cvar(e-cvar, #nil, id-op);
                   carg-v[1] = e-cvar;
-                  set-method(e-method, e.left, f.decl.name, 1, group-v, 2, carg-v);
+                  set-method(e-method, e.left, f.decl.name, false, 1, group-v, 2, carg-v);
                   e.left = e-method;
                   e.is-overload = true;
                   if !e.left.value(1, true, e.left-val) {
@@ -126,7 +126,7 @@ using 'expr-i {
                         group-v[0] = 1;
                         var carg-v'expr-i[1];
                         carg-v[0] = e.right;
-                        set-func(e-func, f2.at, f2.decl.name, 1, group-v, 1, carg-v);
+                        set-func(e-func, f2.at, f2.decl.name, false, 1, group-v, 1, carg-v);
                         if true {
                            e-method! = 'expr-i.alloc();
                            var group-v'u8[1];
@@ -145,7 +145,7 @@ using 'expr-i {
                            }
                            set-cvar(e-cvar, #nil, id-op);
                            carg-v[1] = e-cvar;
-                           set-method(e-method, e.left, f.decl.name, 1, group-v, 2, carg-v);
+                           set-method(e-method, e.left, f.decl.name, false, 1, group-v, 2, carg-v);
                            e.left = e-method;
                            e.is-overload = true;
                         }

@@ -84,7 +84,7 @@ begin_pos(t) ::= .
 end_pos(t) ::= .
    { t.basic.row = _Grow; t.basic.col = _Gcol - 1; }
 
-func_decl_begin ::= ID_THEN_OPEN_PARENTHESIS(name).
+func_decl_begin ::= FUNC_ID(name).
    { _Ncp1_Pdecl_func_begin_3(name.basic.id, name.basic.row, name.basic.col); }
 at_name ::= ID_TYPE(e).
    { _Ncp1_Pat_push_4(e.basic.id, 1, e.basic.row, e.basic.col); }
@@ -232,6 +232,10 @@ open_parenthesis_or_space(l) ::= OPEN_PARENTHESIS(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 open_parenthesis_or_space(l) ::= OPEN_PARENTHESIS SPACE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
+open_angle_or_space(l) ::= OPEN_ANGLE(r).
+   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
+open_angle_or_space(l) ::= OPEN_ANGLE SPACE(r).
+   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 close_parenthesis_or_space(l) ::= CLOSE_PARENTHESIS(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 close_parenthesis_or_space(l) ::= SPACE_CLOSE_PARENTHESIS(r).
@@ -239,6 +243,14 @@ close_parenthesis_or_space(l) ::= SPACE_CLOSE_PARENTHESIS(r).
 close_parenthesis_or_comma(l) ::= close_parenthesis_or_space(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 close_parenthesis_or_comma(l) ::= COMMA_SPACE_CLOSE_PARENTHESIS(r).
+   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
+close_angle_or_space(l) ::= CLOSE_ANGLE(r).
+   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
+close_angle_or_space(l) ::= SPACE_CLOSE_ANGLE(r).
+   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
+close_angle_or_comma(l) ::= close_angle_or_space(r).
+   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
+close_angle_or_comma(l) ::= COMMA_SPACE_CLOSE_ANGLE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 
 close_curly_brace_or_scolon(l) ::= SPACE_CLOSE_CURLY_BRACE(r).
@@ -285,7 +297,7 @@ fargs ::= fargs farg_next_group farg_list close_parenthesis_or_comma.
 fargs ::= fargs farg_next_group CLOSE_PARENTHESIS.
 func_attr ::= SPACE_AT_MAIN.
    { _Ncp1_Pfunc_attr_main_0(); }
-func_attr ::= SPACE_AT_CASE DOT ID_THEN_OPEN_PARENTHESIS(e) OPEN_PARENTHESIS CLOSE_PARENTHESIS.
+func_attr ::= SPACE_AT_CASE DOT FUNC_ID(e) OPEN_PARENTHESIS CLOSE_PARENTHESIS.
    { _Ncp1_Pfunc_attr_case_1(e.basic.id); }
 func_attr ::= SPACE_AT_PROCESS.
    { _Ncp1_Pfunc_attr_process_0(); }
@@ -654,7 +666,7 @@ compare_type(l) ::= SPACE_CMP_LESS_THAN SPACE.
    { l.basic.id = 2; }
 compare_type(l) ::= SPACE_CMP_LESS_EQUAL SPACE.
    { l.basic.id = 3; }
-compare_type(l) ::= SPACE_CMP_MORE_THAN SPACE.
+compare_type(l) ::= SPACE_CMP_MORE_THAN_SPACE.
    { l.basic.id = 4; }
 compare_type(l) ::= SPACE_CMP_MORE_EQUAL SPACE.
    { l.basic.id = 5; }
@@ -664,9 +676,13 @@ expr_in_paren(l) ::= open_parenthesis_or_space opExpr(r) close_parenthesis_or_sp
    { l.basic.id = r.basic.id; }
 expr_in_paren(l) ::= exprs(r).
    { l.basic.id = r.basic.id; }
-funcExpr(l) ::= ID_THEN_OPEN_PARENTHESIS(func).
+funcExpr(l) ::= FUNC_ID(func).
    { l.basic.id = -1; l.basic.id2 = func.basic.id; _Ncp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
-funcExpr(l) ::= at(at) DOT ID_THEN_OPEN_PARENTHESIS(func).
+funcExpr(l) ::= at(at) DOT FUNC_ID(func).
+   { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _Ncp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
+funcExpr_angle(l) ::= FUNC_ID_ANGLE(func).
+   { l.basic.id = -1; l.basic.id2 = func.basic.id; _Ncp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
+funcExpr_angle(l) ::= at(at) DOT FUNC_ID_ANGLE(func).
    { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _Ncp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 metaFuncExpr(l) ::= ID_THEN_OPEN_CURLY_BRACE(func).
    { l.basic.id = -1; l.basic.id2 = func.basic.id; _Ncp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
@@ -674,7 +690,9 @@ metaFuncExpr(l) ::= ID_TYPE_THEN_OPEN_CURLY_BRACE(func).
    { l.basic.id = -1; l.basic.id2 = func.basic.id; _Ncp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 metaFuncExpr(l) ::= at(at) DOT ID_THEN_OPEN_CURLY_BRACE(func).
    { l.basic.id = at.basic.id; l.basic.id2 = func.basic.id; _Ncp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
-methodExpr(l) ::= value4fix(e) DOT ID_THEN_OPEN_PARENTHESIS(func).
+methodExpr(l) ::= value4fix(e) DOT FUNC_ID(func).
+   { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _Ncp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
+methodExpr_angle(l) ::= value4fix(e) DOT FUNC_ID_ANGLE(func).
    { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _Ncp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
 metaMethodExpr(l) ::= value4fix(e) DOT ID_THEN_OPEN_CURLY_BRACE(func).
    { l.basic.id = e.basic.id; l.basic.id2 = func.basic.id; _Ncp1_Pexpr_push_call_2(func.basic.row, func.basic.col); }
@@ -704,18 +722,26 @@ call_arg_list ::= call_arg.
 call_arg_list ::= call_arg_list COMMA_SPACE call_arg.
 call_args ::= open_parenthesis_or_space CLOSE_PARENTHESIS.
 call_args ::= open_parenthesis_or_space call_arg_list close_parenthesis_or_comma.
+call_args_angle ::= open_angle_or_space CLOSE_ANGLE.
+call_args_angle ::= open_angle_or_space call_arg_list close_angle_or_comma.
 call_args_next_group ::= open_parenthesis_or_space.
    { _Ncp1_Pcarg_next_group_0(); }
 call_args ::= call_args call_args_next_group call_arg_list close_parenthesis_or_comma.
 call_args ::= call_args call_args_next_group CLOSE_PARENTHESIS.
+call_args_angle ::= call_args_angle call_args_next_group call_arg_list close_parenthesis_or_comma.
+call_args_angle ::= call_args_angle call_args_next_group CLOSE_PARENTHESIS.
 callExpr(l) ::= callExpr_func(r).
    { l.basic.id = r.basic.id; }
 callExpr(l) ::= callExpr_method(r).
    { l.basic.id = r.basic.id; }
 callExpr_func(l) ::= funcExpr(e) call_args.
-   { l.basic.id = _Ncp1_Pexpr_pop_func_2(e.basic.id, e.basic.id2); }
+   { l.basic.id = _Ncp1_Pexpr_pop_func_3(e.basic.id, e.basic.id2, 0); }
+callExpr_func(l) ::= funcExpr_angle(e) call_args_angle.
+   { l.basic.id = _Ncp1_Pexpr_pop_func_3(e.basic.id, e.basic.id2, 1); }
 callExpr_method(l) ::= methodExpr(e) call_args.
-   { l.basic.id = _Ncp1_Pexpr_pop_method_2(e.basic.id, e.basic.id2); }
+   { l.basic.id = _Ncp1_Pexpr_pop_method_3(e.basic.id, e.basic.id2, 0); }
+callExpr_method(l) ::= methodExpr_angle(e) call_args_angle.
+   { l.basic.id = _Ncp1_Pexpr_pop_method_3(e.basic.id, e.basic.id2, 1); }
 expr2stmt_base(l) ::= callExpr(r).
    { l.basic.id = r.basic.id; }
 metaCallExpr_func(l) ::= metaFuncExpr(e) metaCall_args_optional.

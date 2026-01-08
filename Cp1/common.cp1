@@ -330,6 +330,7 @@ meta #build-common-codes {
          base'expr.,
          at'at,
          func-name'id,
+         angle'bool,
 #  if (arg.compile) {
          func-idx'func,
 #  }
@@ -376,6 +377,7 @@ meta #build-common-codes {
          base'expr.,
          thiss'expr-i,
          func-name'id,
+         angle'bool,
 #  if (arg.compile) {
          func-idx'func,
          this-value'value.,
