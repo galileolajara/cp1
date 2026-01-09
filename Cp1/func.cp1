@@ -43,7 +43,17 @@ using 'decl-func {
          output{f.real-name}
       } else {
          f.at.write-space();
-         output{"_P" f.decl.name.c-name()}
+         output{"_F" f.decl.name.c-name()}
+         if f.angle {
+            loop i = 0; f.group-v[0]; i++ {
+               type! = f.farg-v[i].decl.type.ptr();
+               if type.type == #basic {
+                  output{"_T" type.name.basic.cp1-name()}
+               } else {
+                  output{"_T" type.name.id.c-name()}
+               }
+            }
+         }
          loop i = 0; f.group-c; i++ {
             output{''_ f.group-v[i]'u32}
          }
@@ -189,7 +199,7 @@ decl-var-as-this() {
 // var lvar-cap:Lvar;
 // var lvar-v:LvarData[];
 // var lvar-name-v:Id[];
-decl-func-end(row'u32, col'u32) {
+decl-func-end(row'u32, col'u32, angle'bool) {
    f-idx! = (.func-c++)'func;
    if .func-cap <= .func-c {
       old-cap! = .func-cap;
@@ -207,6 +217,7 @@ decl-func-end(row'u32, col'u32) {
    f.end-col = col;
    f.include = .decl-include;
    f.at = .decl-at;
+   f.angle = angle;
    if (.decl-func-flags & #real-name) != #0 {
       if .decl-func-real-name == #nil {
          f.real-name = .decl-func-name;
@@ -511,13 +522,13 @@ expr-pop-func(at'at, func-name'id, angle'bool)'expr-i {
    }
    return e-idx;
 }
-expr-pop-method(thiss'expr-i, func-name'id, angle'bool)'expr-i {
+expr-pop-method(this'expr-i, func-name'id, angle'bool)'expr-i {
    call-idx! = .expr-call-c -= 1;
    carg-c! = .expr-call-carg-c[call-idx];
    var e'expr-method;
    quick-alloc-plus(e, 'carg['usz] * carg-c);
    e-idx! = expr-push(e.base, #method);
-   e.thiss = thiss;
+   e.this = this;
    e.func-name = func-name;
    e.carg-c = carg-c;
    e.angle = angle;
@@ -586,13 +597,13 @@ expr-pop-metafunc(at'at, func-name'id)'expr-i {
    }
    return e-idx;
 }
-expr-pop-metamethod(thiss'expr-i, func-name'id)'expr-i {
+expr-pop-metamethod(this'expr-i, func-name'id)'expr-i {
    call-idx! = .expr-call-c -= 1;
    carg-c! = .expr-call-carg-c[call-idx];
    var e'expr-meta-method;
    quick-alloc-plus(e, 'carg['usz] * carg-c);
    e-idx! = expr-push(e.base, #metamethod);
-   e.thiss = thiss;
+   e.this = this;
    e.func-name = func-name;
    quick-alloc-arr(e.lvars, carg-c);
    // C1.stdout{"parse func-name " func-name ''\n}

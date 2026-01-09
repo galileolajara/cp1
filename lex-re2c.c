@@ -55,6 +55,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces ")"                        { return CP1_TOKEN_SPACE_CLOSE_PARENTHESIS; }
    spaces ">"                        { return CP1_TOKEN_SPACE_CLOSE_ANGLE; }
    spaces? "," spaces ")"            { return CP1_TOKEN_COMMA_SPACE_CLOSE_PARENTHESIS; }
+   spaces? "," spaces ">"            { return CP1_TOKEN_COMMA_SPACE_CLOSE_ANGLE; }
    spaces? "," spaces                { return CP1_TOKEN_COMMA_SPACE; }
    spaces? "," spaces "]"            { return CP1_TOKEN_COMMA_SPACE_CLOSE_BRACKET; }
    spaces                            { return CP1_TOKEN_SPACE; }

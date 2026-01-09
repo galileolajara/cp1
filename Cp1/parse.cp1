@@ -717,6 +717,7 @@ write-func(w'wtr, header'bool) @inline {
       w.n(f.end-col);
       f.include.wr(w);
       f.at.wr(w, header);
+      w.n1(f.angle'u8);
       f.decl.wr(w, header);
       loop j = 0; f.farg-c; j++ {
          f.farg-v[j].wr(w, header);

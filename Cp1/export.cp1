@@ -5,7 +5,7 @@ export() {
    decl-template-inst(#nil, 0, 0);
    decl-template-code(#nil, 0, false, false);
    decl-func-begin(#0, 0, 0);
-   decl-func-end(0, 0);
+   decl-func-end(0, 0, false);
    decl-struct-end(0, 0);
    decl-var-begin(#0, 0, 0);
    decl-var-attr-real-name(#nil);
@@ -73,12 +73,12 @@ export() {
    decl-include-begin(#0, 0, 0);
    decl-include-end();
    decl-at-basic(#root);
-   decl-at-add(#0, #module, 0, 0);
+   decl-at-add(#0, #struct-enum, 0, 0);
    decl-at-begin(0, 0);
    decl-at-begin-struct(#nil, 0, 0);
    decl-at-end();
    decl-alias(#nil, #nil, 0, 0);
-   at-push(#0, #module, 0, 0);
+   at-push(#0, #struct-enum, 0, 0);
    at-done();
    at-begin();
    at-begin-relative();

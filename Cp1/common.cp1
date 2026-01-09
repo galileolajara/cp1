@@ -359,7 +359,7 @@ meta #build-common-codes {
       struct 'expr-meta-method[
          base'expr.,
 #  if (!arg.compile) {
-         thiss'expr-i,
+         this'expr-i,
          func-name'id,
          lvar'expr-i,
          lvars'expr-i[],
@@ -375,7 +375,7 @@ meta #build-common-codes {
       ];
       struct 'expr-method[
          base'expr.,
-         thiss'expr-i,
+         this'expr-i,
          func-name'id,
          angle'bool,
 #  if (arg.compile) {
@@ -398,6 +398,7 @@ meta #build-common-codes {
          end-col'u32,
          include'include,
          at'at,
+         angle'bool,
          // name:Id,
          flags'func-flags,
          real-name'id,
@@ -607,7 +608,7 @@ using 'at-data {
       at.def = #undefined;
    }
 }
-enum 'name-type[#module, #struct-enum, #basic]'u8 {
+enum 'name-type[#struct-enum, #basic]'u8 {
    rd(i'this&, r'rdr) @inline {
       i = r.n1()'name-type;
    }
@@ -803,10 +804,10 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
    write(at-idx'this) {
       at! = at-idx.ptr();
       switch at.type {
-         case #module {
-            if at.parent != #root { at.parent.write-space() }
-            output{"_M" at.name.id.c-name()}
-         }
+         // case #module {
+         //    if at.parent != #root { at.parent.write-space() }
+         //    output{"_M" at.name.id.c-name()}
+         // }
          case #struct-enum {
             if at.def == #struct {
                t-idx! = at.decl.structt;
@@ -835,7 +836,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
                   output{"struct "}
                }
                if at.parent != #root { at.parent.write-space() }
-               output{"_N" at.name.id.c-name()}
+               output{"_T" at.name.id.c-name()}
             } elif at.def == #enum {
                t-idx! = at.decl.enumm;
                if t-idx != #nil {
@@ -846,7 +847,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
                   }
                }
                if at.parent != #root { at.parent.write-space() }
-               output{"_N" at.name.id.c-name()}
+               output{"_T" at.name.id.c-name()}
             }
          }
          case #basic {
@@ -906,14 +907,14 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
    write-space(at-idx'this) {
       at! = at-idx.ptr();
       switch at.type {
-         case #module {
-            if at.parent != #root { at.parent.write-space() }
-            output{"_M" at.name.id.c-name()}
-         }
+         // case #module {
+         //    if at.parent != #root { at.parent.write-space() }
+         //    output{"_M" at.name.id.c-name()}
+         // }
          case #struct-enum {
             // if at.def == #struct {
                if at.parent != #root { at.parent.write-space() }
-               output{"_N" at.name.id.c-name()}
+               output{"_T" at.name.id.c-name()}
             // } elif at.def == #enum {
             //    if at.parent != #root { at.parent.write-space() }
             //    output{"_E" at.name.id.c-name}
@@ -1065,13 +1066,13 @@ enum 'include[#nil = -1, #0]'i32 {
          i = .include-table[idx];
       }
    }
-   output(thiss'this) @inline {
-      num! = thiss'u32;
+   output(this'this) @inline {
+      num! = this'u32;
       n3! = num >> 3;
       n17! = 1 << (num & 7);
       if (.include-is-outputted[n3] & n17) != 0 { return }
       .include-is-outputted[n3] |= n17;
-      .include-outputted-v[.include-outputted-c++] = thiss;
+      .include-outputted-v[.include-outputted-c++] = this;
    }
    stdout-reserve(i'this, so'c1'stdout, p'c1'stdout-str) {
       p.reserve(.include-str-v[i], .include-len-v[i], so);

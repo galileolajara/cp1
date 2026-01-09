@@ -177,7 +177,7 @@ using 'decl-var-data {
             output{"_G" vd.name.c-name()}
          }
          case #fvar {
-            output{"_F" vd.name.c-name()}
+            output{"_M" vd.name.c-name()}
          }
       }
    }

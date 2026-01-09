@@ -9,7 +9,7 @@ meta #meta-read-write-process {
       wr-meta${arg.method ? "method" : "func"}(expr'expr, w'wtr, header'bool) @case.wr() @inline {
 # if (arg.method) {
          var e'expr-meta-method = expr;
-         e.thiss.wr(w, header);
+         e.this.wr(w, header);
 # } else {
          var e'expr-meta-func = expr;
          e.at.wr(w, header);
@@ -28,7 +28,7 @@ meta #meta-read-write-process {
       }
       rd-meta${arg.method ? "method" : "func"}(e-idx'expr-i, r'rdr) @case.rd() @inline {
 # if (arg.method) {
-         'expr-i.rd(thiss!, r);
+         'expr-i.rd(this!, r);
 # } else {
          'at.rd(at-idx!, r);
 # }
@@ -65,7 +65,7 @@ meta #meta-read-write-process {
             var carg-v'expr-i[1];
             carg-v[0] = lvar;
 # if (arg.method) {
-            set-method(e-idx, thiss, func-name, false, 1, group-v, 1, carg-v);
+            set-method(e-idx, this, func-name, false, 1, group-v, 1, carg-v);
 # } else {
             set-func(e-idx, at-idx, func-name, false, 1, group-v, 1, carg-v);
 # }
@@ -170,12 +170,12 @@ meta #meta-read-write-process {
                e-method.group-v[0]--;
                e-method.carg-c--;
             }
-            var lvar'expr-lvar = e-method.thiss.ptr();
+            var lvar'expr-lvar = e-method.this.ptr();
             if (lvar.base.type == #lvar) && (lvar.lvar.ptr().decl.name == .id-blank) {
                // C1.stdout{"constant string\n"}
                e-method.func-name = f.meta-method-cstr${i};
             } else {
-               e-idx2! = e-method.thiss;
+               e-idx2! = e-method.this;
                e-data2! = e-idx2.ptr();
                var val;
                if !e-idx2.value(1, true, val) {
@@ -375,7 +375,7 @@ using 'expr-i {
       } else {
          output{", "}
       }
-      e.thiss.write-value(e.this-value);
+      e.this.write-value(e.this-value);
       loop ; e.carg-c - f.this-idx; i++ {
          output{", "}
          ca! = e.carg-v[i];
@@ -385,7 +385,7 @@ using 'expr-i {
    }
    wr-method(expr'expr, w'wtr, header'bool) @case.wr() @inline {
       var e'expr-method = expr;
-      e.thiss.wr(w, header);
+      e.this.wr(w, header);
       e.func-name.wr(w, header);
       w.n1(e.angle'u8);
       w.n1(e.group-c);
@@ -417,7 +417,7 @@ using 'expr-i {
       var e'expr-method;
       quick-alloc-plus(e, 'carg['usz] * carg-c);
       e-idx.set(e.base, #method);
-      e.thiss = this-expr;
+      e.this = this-expr;
       e.func-name = func-name;
       e.angle = angle;
       e.group-c = group-c;
@@ -431,39 +431,18 @@ using 'expr-i {
    }
    process-method(expr'expr, ok'bool&) @case.process() @inline {
       var e'expr-method = expr;
-      var func-name = ?;
-      group-v! = e.group-v;
-      if e.angle {
-         var name'char[512];
-         name-len! = e.func-name.len();
-         'c.memcpy(name, e.func-name.str(), name-len);
-         loop i = 0; group-v[0]; i++ {
-            name[name-len++] = ''-;
-            ca! = e.carg-v[i];
-            type! = ca.expr.type();
-            if type == #nil {
-               return;
-            }
-            type-ptr! = type.ptr();
-            if type-ptr.type == #struct-enum {
-               len! = type-ptr.name.id.len();
-               'c.memcpy(&name[name-len], type-ptr.name.id.str(), len);
-               name-len += len;
-            } else {
-               str! = type-ptr.name.basic.cp1-name();
-               len! = 'c.strlen(str);
-               'c.memcpy(&name[name-len], str, len);
-               name-len += len;
-            }
-         }
-         func-name = id-add(name-len, name);
-      } else {
-         func-name = e.func-name;
-      }
+      func-name! = e.func-name;
       group-c! = e.group-c;
+      group-v! = e.group-v;
       carg-c! = e.carg-c;
       carg-c1! = carg-c + 1;
-      at-idx! = e.thiss.type();
+      var type-v'at-data[16];
+      if e.angle {
+         loop i = 0; group-v[0]; i++ {
+            type-v[i] = e.carg-v[i].expr.type().ptr();
+         }
+      }
+      at-idx! = e.this.type();
       if at-idx == #nil {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot call method " func-name " on a value without a type\n"}
          return;
@@ -475,7 +454,7 @@ using 'expr-i {
          method-c = t.method-c;
          method-v = t.method-v;
       } else {
-         if (&&, at.decl.structt == #nil, at.type != #basic, at.type != #module) {
+         if (&&, at.decl.structt == #nil, at.type == #struct-enum) {
             'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot call method " func-name " because the type " at.name.id " is not defined\n"}
             return;
          }
@@ -514,16 +493,15 @@ using 'expr-i {
                   }
                }
             }
-            if match {
-               j! = group-c - 1;
-               if f.this-group == j {
-                  if f.group-v[j] > (group-v[j] + 1) {
-                     match = false;
-                  }
-               } else {
-                  if f.group-v[j] > group-v[j] {
-                     match = false;
-                  }
+            if !match { continue }
+            j! = group-c - 1;
+            if f.this-group == j {
+               if f.group-v[j] > (group-v[j] + 1) {
+                  match = false;
+               }
+            } else {
+               if f.group-v[j] > group-v[j] {
+                  match = false;
                }
             }
          } else {
@@ -543,6 +521,42 @@ using 'expr-i {
             }
          }
          if !match { continue }
+         if f.angle != e.angle {
+            continue;
+         } elif e.angle {
+            if f.this-group == 0 {
+               j! = 0;
+               k! = 0;
+               loop ; f.this-idx; j++; k++ {
+                  type1! = type-v[k];
+                  type2! = f.farg-v[j].decl.type.ptr();
+                  if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
+                     match = false;
+                     break;
+                  }
+               }
+               if !match { continue }
+               j++;
+               loop i = 0; (f.group-v[0] - 1) - f.this-idx; j++; k++ {
+                  type1! = type-v[k];
+                  type2! = f.farg-v[j].decl.type.ptr();
+                  if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
+                     match = false;
+                     break;
+                  }
+               }
+            } else {
+               loop i = 0; f.this-idx; i++ {
+                  type1! = type-v[i];
+                  type2! = f.farg-v[i].decl.type.ptr();
+                  if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
+                     match = false;
+                     break;
+                  }
+               }
+            }
+            if !match { continue }
+         }
          if !f-idx.process-later() {
             return;
          }
@@ -557,7 +571,7 @@ using 'expr-i {
                return;
             }
          }
-         if !farg-process(e.thiss, 0, e.this-value, f.farg-v[j++].decl, f-at, -1, f.decl.name) {
+         if !farg-process(e.this, 0, e.this-value, f.farg-v[j++].decl, f-at, -1, f.decl.name) {
             "goto error;";
          }
          loop ; (f.farg-c - 1) - f.this-idx; j++; k++ {
@@ -686,38 +700,17 @@ using 'expr-i {
    }
    process-func(expr'expr, ok'bool&) @case.process() @inline {
       var e'expr-func = expr;
-      var func-name = ?;
-      group-v! = e.group-v;
-      if e.angle {
-         var name'char[512];
-         name-len! = e.func-name.len();
-         'c.memcpy(name, e.func-name.str(), name-len);
-         loop i = 0; group-v[0]; i++ {
-            name[name-len++] = ''-;
-            ca! = e.carg-v[i];
-            type! = ca.expr.type();
-            if type == #nil {
-               return;
-            }
-            type-ptr! = type.ptr();
-            if type-ptr.type == #struct-enum {
-               len! = type-ptr.name.id.len();
-               'c.memcpy(&name[name-len], type-ptr.name.id.str(), len);
-               name-len += len;
-            } else {
-               str! = type-ptr.name.basic.cp1-name();
-               len! = 'c.strlen(str);
-               'c.memcpy(&name[name-len], str, len);
-               name-len += len;
-            }
-         }
-         func-name = id-add(name-len, name);
-      } else {
-         func-name = e.func-name;
-      }
+      func-name! = e.func-name;
       carg-c! = e.carg-c;
       group-c! = e.group-c;
+      group-v! = e.group-v;
       at-idx! = e.at;
+      var type-v'at-data[16];
+      if e.angle {
+         loop i = 0; group-v[0]; i++ {
+            type-v[i] = e.carg-v[i].expr.type().ptr();
+         }
+      }
       try-parent! = false;
       if at-idx == #nil {
          at-idx = .ctx-func.at;
@@ -751,11 +744,10 @@ using 'expr-i {
                      break;
                   }
                }
-               if match {
-                  j! = group-c - 1;
-                  if f.group-v[j] > group-v[j] {
-                     match = false;
-                  }
+               if !match { continue }
+               j! = group-c - 1;
+               if f.group-v[j] > group-v[j] {
+                  match = false;
                }
             } else {
                if f.farg-c != carg-c { continue }
@@ -767,6 +759,19 @@ using 'expr-i {
                }
             }
             if !match { continue }
+            if f.angle != e.angle {
+               continue;
+            } elif e.angle {
+               loop i = 0; group-v[0]; i++ {
+                  type1! = type-v[i];
+                  type2! = f.farg-v[i].decl.type.ptr();
+                  if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
+                     match = false;
+                     break;
+                  }
+               }
+               if !match { continue }
+            }
             if !f-idx.process-later() {
                return;
             }

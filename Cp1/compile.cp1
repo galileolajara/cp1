@@ -489,6 +489,7 @@ read(in-path-cp1'char[], in-path-cp1-len'u16, strdup'bool, require'bool) {
       f.end-col = r.n();
       f.include.rd(r);
       f.at.rd(r);
+      f.angle = r.n1() != 0;
       at-i! = f.at;
       f.decl.rd(r);
       var r0'rdr.;
@@ -558,8 +559,22 @@ read(in-path-cp1'char[], in-path-cp1-len'u16, strdup'bool, require'bool) {
       loop i = 0; at.func-c; i++ {
          func2! = func-v[i].ptr();
          if (func2.decl.name == name) && (func2.farg-c == farg-c) && (func2.group-c == group-c) && ('c.memcmp(func2.group-v, f.group-v, group-c) == 0) {
-            'c1.stdout{file-idx '': f.begin-row '': f.begin-col ": Cannot declare function '" name "' because it was already declared at " func2.file '': func2.begin-row '': func2.begin-col "\n"}
-            'c.exit(#failure);
+            same! = true;
+            if func2.angle != f.angle {
+            } elif f.angle {
+               loop i = 0; func2.group-v[0]; i++ {
+                  type1! = f.farg-v[0].decl.type.ptr();
+                  type2! = func2.farg-v[0].decl.type.ptr();
+                  if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
+                     same = false;
+                     break;
+                  }
+               }
+            }
+            if same {
+               'c1.stdout{file-idx '': f.begin-row '': f.begin-col ": Cannot declare function '" name "' because it was already declared at " func2.file '': func2.begin-row '': func2.begin-col "\n"}
+               'c.exit(#failure);
+            }
          }
       }
       at-func-idx! = at.func-c++;
