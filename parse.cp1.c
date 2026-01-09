@@ -400,7 +400,7 @@ void* _Mref;
 size_t _Mpos;
 uint8_t* _Mp1;
 uint16_t* _Mp2;
-char* _Mcharr;
+char* _Mchar;
 uint32_t* _Mp4;
 float* _Mf4;
 double* _Mf8;
@@ -544,7 +544,7 @@ struct _Tcp1_Ttoken_data_f64;
 struct _Tcp1_Ttoken_data_f64 {
 uint32_t _Mrow;
 uint32_t _Mcol;
-double _Mff64;
+double _Mf64;
 };
 struct _Tcp1_Ttoken_data_u64;
 struct _Tcp1_Ttoken_data_u64 {
@@ -561,7 +561,7 @@ union _Tcp1_Ttoken_data;
 union _Tcp1_Ttoken_data {
 struct _Tcp1_Ttoken_data_i32 _Mi32;
 struct _Tcp1_Ttoken_data_f32 _Mf32;
-struct _Tcp1_Ttoken_data_f64 _Mff64;
+struct _Tcp1_Ttoken_data_f64 _Mf64;
 struct _Tcp1_Ttoken_data_u64 _Mu64;
 struct _Tcp1_Ttoken_data_index _Mindex;
 void* _Mpointer;
@@ -810,7 +810,7 @@ union _Tcp1_Texpr_int_value {
 int32_t _Mi32;
 uint32_t _Mu32;
 float _Mf32;
-double _Mff64;
+double _Mf64;
 uint64_t _Mu64;
 };
 struct _Tcp1_Texpr_int_data;
@@ -1849,7 +1849,7 @@ _Glast_token = _Lt_24;
 cp1Parse(_Lpsr_19, _Lt_24, _Ltok_23);
 break;
 case _Tcp1_Ttoken_Cnum_f64:;
-_Ltok_23._Mff64._Mff64 = _Tcp1_Tlexer_Fget_f64_1(&_Llex_20);
+_Ltok_23._Mf64._Mf64 = _Tcp1_Tlexer_Fget_f64_1(&_Llex_20);
 _Glast_token = _Lt_24;
 cp1Parse(_Lpsr_19, _Lt_24, _Ltok_23);
 break;
@@ -1915,7 +1915,7 @@ _Tlibcp1_Tstdout_str_Fstdout_2(&_L_41, &_L_42);
 _Tlibcp1_Tstdout_Fstdout_end_1(&_L_42);
 exit(_Tlibc_Texit_Cfailure);
 }
-_Ltok_23._Mi32._Mid = ((int32_t)(_Tcp1_Finclude_add_2(_Llen_35, _Lr_begin_33._Mcharr)));
+_Ltok_23._Mi32._Mid = ((int32_t)(_Tcp1_Finclude_add_2(_Llen_35, _Lr_begin_33._Mchar)));
 goto break_4;
 }
 continue_4:;
@@ -1961,7 +1961,7 @@ _Tlibcp1_Tstdout_str_Fstdout_2(&_L_52, &_L_53);
 _Tlibcp1_Tstdout_Fstdout_end_1(&_L_53);
 exit(_Tlibc_Texit_Cfailure);
 }
-_Ltok_23._Mi32._Mid = ((int32_t)(_Tcp1_Finclude_add_2(_Llen_46, _Lr_begin_44._Mcharr)));
+_Ltok_23._Mi32._Mid = ((int32_t)(_Tcp1_Finclude_add_2(_Llen_46, _Lr_begin_44._Mchar)));
 goto break_5;
 }
 continue_5:;
@@ -3007,7 +3007,7 @@ _Ti32_Fstdout_reserve_3(_Lrow_12, &_L_65, &_L_59);
 _Tchar_Fstdout_reserve_3(':', &_L_65, &_L_60);
 _Ti32_Fstdout_reserve_3(_Lcol_16, &_L_65, &_L_61);
 _Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_65, ": Encountered invalid escape sequence in the string: '\\", 55u, &_L_62);
-_Tchar_Fstdout_reserve_3(_Lline_15._Mcharr[1], &_L_65, &_L_63);
+_Tchar_Fstdout_reserve_3(_Lline_15._Mchar[1], &_L_65, &_L_63);
 _Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_65, "'\n", 2u, &_L_64);
 _Tlibcp1_Tstdout_Fstdout_reserve_end_1(&_L_65);
 _Tlibcp1_Tstdout_str_Fstdout_2(&_L_57, &_L_65);
@@ -3276,7 +3276,7 @@ char* _Lr_begin_130;
 size_t _Lr_pos_131;
 _Lline_15._Mpos += 3;
 _Lcol_16 += 3;
-_Lr_begin_130 = ((char*)(_Lline_15._Mcharr));
+_Lr_begin_130 = ((char*)(_Lline_15._Mchar));
 _Lr_pos_131 = ((size_t)(_Lline_15._Mpos));
 while(1) {
 uint8_t _Lc_132;
@@ -3827,7 +3827,7 @@ _Lw_7._Mp1[1] = _Lr_5._Mp1[1];
 _Lw_7._Mp1[2] = ' ';
 _Lw_7._Mpos += 3;
 _Lr_5._Mpos += 3;
-_Lr_begin_237 = ((char*)(_Lr_5._Mcharr));
+_Lr_begin_237 = ((char*)(_Lr_5._Mchar));
 _Lr_pos_238 = ((size_t)(_Lr_5._Mpos));
 while(1) {
 uint8_t _Lc_239;
@@ -4000,7 +4000,7 @@ _Tu32_Fstdout_reserve_3(_Lrow_258, &_L_275, &_L_269);
 _Tchar_Fstdout_reserve_3(':', &_L_275, &_L_270);
 _Tu32_Fstdout_reserve_3(_Lcol_259, &_L_275, &_L_271);
 _Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_275, ": Encountered invalid escape sequence in the string: '\\", 55u, &_L_272);
-_Tchar_Fstdout_reserve_3(_Lr_5._Mcharr[1], &_L_275, &_L_273);
+_Tchar_Fstdout_reserve_3(_Lr_5._Mchar[1], &_L_275, &_L_273);
 _Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_275, "'\n", 2u, &_L_274);
 _Tlibcp1_Tstdout_Fstdout_reserve_end_1(&_L_275);
 _Tlibcp1_Tstdout_str_Fstdout_2(&_L_267, &_L_275);
@@ -4122,7 +4122,7 @@ _Tlibcp1_Tstdout_Fstdout_end_1(&_L_7);
 exit(_Tlibc_Texit_Cfailure);
 }
 _Llen_8 = ((uint8_t)(((uint8_t)(_Llength_5))));
-_Tcp1_Tid ret_641_7 = _Tcp1_Fid_add_2(((uint8_t)(_Llength_5)), _Lr_start_3._Mcharr);
+_Tcp1_Tid ret_641_7 = _Tcp1_Fid_add_2(((uint8_t)(_Llength_5)), _Lr_start_3._Mchar);
 return ret_641_7;
 }
 float _Tcp1_Tlexer_Fget_f32_1(struct _Tcp1_Tlexer* _Llex_0) {
@@ -4133,7 +4133,7 @@ float _Lval_4 = {0};
 _Lr_start_1._Mref = (*_Llex_0)._Mstart;
 _Lr_cursor_2._Mref = (*_Llex_0)._Mcursor;
 _Llength_3 = ((size_t)((_Lr_cursor_2._Mpos - _Lr_start_1._Mpos - 1)));
-sscanf(_Lr_start_1._Mcharr, "%f", &_Lval_4);
+sscanf(_Lr_start_1._Mchar, "%f", &_Lval_4);
 float ret_546_7 = _Lval_4;
 return ret_546_7;
 }
@@ -4145,7 +4145,7 @@ double _Lval_4 = {0};
 _Lr_start_1._Mref = (*_Llex_0)._Mstart;
 _Lr_cursor_2._Mref = (*_Llex_0)._Mcursor;
 _Llength_3 = ((size_t)((_Lr_cursor_2._Mpos - _Lr_start_1._Mpos - 1)));
-sscanf(_Lr_start_1._Mcharr, "%lf", &_Lval_4);
+sscanf(_Lr_start_1._Mchar, "%lf", &_Lval_4);
 double ret_556_7 = _Lval_4;
 return ret_556_7;
 }
@@ -4563,7 +4563,7 @@ _Tlibcp1_Tstdout_str_Fstdout_2(&_L_4, &_L_5);
 _Tlibcp1_Tstdout_Fstdout_end_1(&_L_5);
 exit(_Tlibc_Texit_Cfailure);
 }
-_Tcp1_Tinclude ret_677_7 = _Tcp1_Finclude_add_2(_Llength_3, _Lr_start_1._Mcharr);
+_Tcp1_Tinclude ret_677_7 = _Tcp1_Finclude_add_2(_Llength_3, _Lr_start_1._Mchar);
 return ret_677_7;
 }
 void* qalloc(int32_t _Lsize_0) {
@@ -7259,7 +7259,7 @@ struct _Tcp1_Texpr_int_data* _Le_1 = {0};
 _Tcp1_Texpr_i _Le_idx_2;
 _Tcp1_Fquick_alloc_one_1(_Le_1);
 _Le_idx_2 = ((_Tcp1_Texpr_i)(_Tcp1_Fexpr_push_2(&(*_Le_1)._Mbase, _Tcp1_Texpr_type_Cint)));
-(*_Le_1)._Mvalue._Mff64 = _Lvalue_0;
+(*_Le_1)._Mvalue._Mf64 = _Lvalue_0;
 (*_Le_1)._Mtype = _Tcp1_Texpr_int_Cf64;
 _Tcp1_Texpr_i ret_35_4 = _Le_idx_2;
 return ret_35_4;
@@ -9081,7 +9081,7 @@ case _Tcp1_Texpr_int_Cf32:;
 _Tcp1_Twtr_Ff4_2(_Lw_1, (*_Le_3)._Mvalue._Mf32);
 break;
 case _Tcp1_Texpr_int_Cf64:;
-_Tcp1_Twtr_Ff8_2(_Lw_1, (*_Le_3)._Mvalue._Mff64);
+_Tcp1_Twtr_Ff8_2(_Lw_1, (*_Le_3)._Mvalue._Mf64);
 break;
 case _Tcp1_Texpr_int_Cu64:;
 Fputlnum(_Lw_1, (*_Le_3)._Mvalue._Mu64);

@@ -172,7 +172,7 @@ read(in-path-cp1'char[], in-path-cp1-len'u16, strdup'bool, require'bool) {
       file.id-table = .id-table;
       loop i = 0; id-c; i++ {
          id-len! = r.n1();
-         id-str! = r.charr;
+         id-str! = r.char;
          r.pos += id-len + 1;
          .id-table[i] = id-add(id-len, id-str);
       }
@@ -648,7 +648,7 @@ read(in-path-cp1'char[], in-path-cp1-len'u16, strdup'bool, require'bool) {
       ti.col = r.n();
       ti.arg-len = r.n();
       ti.arg-crc32c = r.n4();
-      ti.arg = r.charr;
+      ti.arg = r.char;
       r.pos += ti.arg-len;
       ti.at.rd(r);
       ti.file = file-idx;

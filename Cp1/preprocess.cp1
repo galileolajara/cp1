@@ -99,7 +99,7 @@ using 'cp1 {
             // C1.stdout{"windows line ending detected\n"}
             r.pos--;
          }
-         // C1.stdout{"{{ " start-line.charr, r.pos - start-line.pos " }}2\n"}
+         // C1.stdout{"{{ " start-line.char, r.pos - start-line.pos " }}2\n"}
          var line'rdr.;
          line.pos = start-line.pos;
          var col = 0;
@@ -223,7 +223,7 @@ using 'cp1 {
                               if line.p1[1] == ''\n {
                                  'c1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\(newline)'\n"}
                               } else {
-                                 'c1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" line.charr[1] "'\n"}
+                                 'c1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" line.char[1] "'\n"}
                               }
                               'c.exit(#failure);
                            }
@@ -289,7 +289,7 @@ using 'cp1 {
                      // string
                      line.pos += 3;
                      col += 3;
-                     r-begin! = line.charr;
+                     r-begin! = line.char;
                      r-pos! = line.pos;
                      loop {
                         c! = line.p1[0];
@@ -370,7 +370,7 @@ using 'cp1 {
                }
             }
             if (last-char != -1) && (start-line.p1[last-char] == '':) {
-               // C1.stdout{"[[ " start-line.charr, col " ]] CONVERTING FROM BASIC TO CP1\n"}
+               // C1.stdout{"[[ " start-line.char, col " ]] CONVERTING FROM BASIC TO CP1\n"}
                line.pos = start-line.pos;
                loop last-char {
                   w.p1[0] = line.p1[0];
@@ -560,7 +560,7 @@ using 'cp1 {
                w.p1[2] = '' ;
                w.pos += 3;
                r.pos += 3;
-               r-begin! = r.charr;
+               r-begin! = r.char;
                r-pos! = r.pos;
                loop {
                   c! = r.p1[0];
@@ -634,7 +634,7 @@ using 'cp1 {
                         if r.p1[1] == ''\n {
                            'c1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\(newline)'\n"}
                         } else {
-                           'c1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" r.charr[1] "'\n"}
+                           'c1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" r.char[1] "'\n"}
                         }
                         'c.exit(#failure);
                      }

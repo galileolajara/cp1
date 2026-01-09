@@ -30,7 +30,7 @@ expr-f64(value'f64)'expr-i {
    var e'expr-int-data;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #int);
-   e.value.ff64 = value;
+   e.value.f64 = value;
    e.type = #f64;
    return e-idx;
 }
@@ -46,7 +46,7 @@ using 'expr-i {
             w.f4(e.value.f32);
          }
          case #f64 {
-            w.f8(e.value.ff64);
+            w.f8(e.value.f64);
          }
          case #u64 {
             w.N(e.value.u64);
@@ -69,7 +69,7 @@ using 'expr-i {
             e.value.f32 = r.f4();
          }
          case #f64 {
-            e.value.ff64 = r.f8();
+            e.value.f64 = r.f8();
          }
          case #u64 {
             // .include-stdint = true;
@@ -93,7 +93,7 @@ using 'expr-i {
             output{e.value.f32 ''f}
          }
          case #f64 {
-            output{e.value.ff64}
+            output{e.value.f64}
          }
          case #oct {
             output{''0 e.value.u32, #oct}

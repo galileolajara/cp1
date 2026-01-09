@@ -347,7 +347,7 @@ union 'expr-int-value[
    i32'i32,
    u32'u32,
    f32'f32,
-   ff64'f64,
+   f64'f64,
    u64'u64,
 ];
 struct 'expr-int-data[

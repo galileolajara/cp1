@@ -450,7 +450,7 @@ struct 'token-data-f32[
 struct 'token-data-f64[
    row'u32,
    col'u32,
-   ff64'f64,
+   f64'f64,
 ];
 struct 'token-data-u64[
    row'u32,
@@ -464,7 +464,7 @@ struct 'token-data-index[
 union 'token-data[
    i32'token-data-i32.,
    f32'token-data-f32.,
-   ff64'token-data-f64.,
+   f64'token-data-f64.,
    u64'token-data-u64.,
    index'token-data-index.,
    pointer'ref,
@@ -540,7 +540,7 @@ struct 'lexer[
       r-cursor.ref = lex.cursor;
       length! = r-cursor.pos - r-start.pos - 1;
       var val'f32;
-      'c.sscanf(r-start.charr, "%f", &val);
+      'c.sscanf(r-start.char, "%f", &val);
       return val;
    }
    get-f64(lex'this)'f64 {
@@ -550,7 +550,7 @@ struct 'lexer[
       r-cursor.ref = lex.cursor;
       length! = r-cursor.pos - r-start.pos - 1;
       var val'f64;
-      'c.sscanf(r-start.charr, "%lf", &val);
+      'c.sscanf(r-start.char, "%lf", &val);
       return val;
    }
    get-int(lex'this, len-minus'u8)'u32 {
@@ -636,7 +636,7 @@ struct 'lexer[
          'c.exit(#failure);
       }
       len! = length'u8;
-      return id-add(length'u8, r-start.charr);
+      return id-add(length'u8, r-start.char);
       // loop i = 0; .id-c; i++ {
       //    if .id-len-v[i] == len {
       //       if C.memcmp(.id-str-v[i], r-start.ref, len) == 0 {
@@ -665,14 +665,14 @@ struct 'lexer[
       var r-cursor'rdr.;
       r-cursor.ref = lex.cursor;
       length! = r-cursor.pos - r-start.pos;
-      // loop (r-start.charr[length] != '' ) && (r-start.charr[length] != ''\n) {
+      // loop (r-start.char[length] != '' ) && (r-start.char[length] != ''\n) {
       //   length++;
       // }
       if length > 255 {
          'c1.stdout{"too long include was detected\n"}
          'c.exit(#failure);
       }
-      return include-add(length, r-start.charr);
+      return include-add(length, r-start.char);
       // loop i = 0; .include-c; i++ {
       //    if .include-len-v[i] == len {
       //       if C.memcmp(.include-str-v[i], r-start.ref, len) == 0 {
@@ -1175,7 +1175,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                psr.parse(t, tok);
             }
             case #num-f64 {
-               tok.ff64.ff64 = lex.get-f64();
+               tok.f64.f64 = lex.get-f64();
                .last-token = t;
                psr.parse(t, tok);
             }
@@ -1217,8 +1217,8 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                         'c1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
                         'c.exit(#failure);
                      }
-                     tok.i32.id = include-add(len, r-begin.charr)'base;
-                     // C1.stdout{"import '" r-begin.charr, len "'\n"}
+                     tok.i32.id = include-add(len, r-begin.char)'base;
+                     // C1.stdout{"import '" r-begin.char, len "'\n"}
                      break;
                   }
                }
@@ -1238,8 +1238,8 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                         'c1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
                         'c.exit(#failure);
                      }
-                     tok.i32.id = include-add(len, r-begin.charr)'base;
-                     // C1.stdout{"import '" r-begin.charr, len "'\n"}
+                     tok.i32.id = include-add(len, r-begin.char)'base;
+                     // C1.stdout{"import '" r-begin.char, len "'\n"}
                      break;
                   }
                }

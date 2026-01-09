@@ -6,7 +6,7 @@ union 'rdr[
    pos'usz,
    p1'u8[],
    p2'u16[],
-   charr'char[],
+   char'char[],
    p4'u32[],
    f4'f32[],
    f8'f64[],

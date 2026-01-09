@@ -56,7 +56,7 @@ main(arg-c'intc, arg-v'char[][])'intc {
          func-name-v[func-c] = line;
          func-len-v[func-c] = lparen;
          func-c++;
-      } elif (&&, len == 24, 'c.memcmp("void _Ncp1_Pexport_0() {", line, 24) == 0) {
+      } elif (&&, len == 24, 'c.memcmp("void _Tcp1_Fexport_0() {", line, 24) == 0) {
          get = true;
       }
       pos++;
