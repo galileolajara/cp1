@@ -608,7 +608,7 @@ using 'at-data {
       at.def = #undefined;
    }
 }
-enum 'name-type[#struct-enum, #basic]'u8 {
+enum 'name-type[#module, #struct-enum, #basic]'u8 {
    rd(i'this&, r'rdr) @inline {
       i = r.n1()'name-type;
    }
