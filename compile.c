@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
-void _Ncp1_Poutput_reserve_1(uint32_t);
+void _Tcp1_Foutput_reserve_1(uint32_t);
 extern char* output_data;
 extern uint32_t output_len;
-void _Ncp1_Pwrite_str_node_2(uint32_t len, char* buf) {
+void _Tcp1_Fwrite_str_node_2(uint32_t len, char* buf) {
    // no need to call output-reserve because
    // it is called at write-str of Cp1/str.cp1
    // before calling this function
@@ -28,8 +28,8 @@ void _Ncp1_Pwrite_str_node_2(uint32_t len, char* buf) {
    output_data[output_len++] = '"';
 }
 
-void _Ncp1_Pwrite_char_1(char c) {
-   _Ncp1_Poutput_reserve_1(4);
+void _Tcp1_Fwrite_char_1(char c) {
+   _Tcp1_Foutput_reserve_1(4);
    output_data[output_len++] = '\'';
    switch(c) {
       case '\a': output_data[output_len++] = '\\'; output_data[output_len++] = 'a'; break;
@@ -97,7 +97,7 @@ void hex32(char* out, uint32_t hex) {
    out[i++] = n < 10 ? '0' + n : 'a' + n - 10;
 }
 #include "build-crc32c.c"
-void _Ncp1_Pc_init_1(uint32_t js_crc32c) {
+void _Tcp1_Fc_init_1(uint32_t js_crc32c) {
    #ifdef _WIN32
    mkdir("cp1-tmp");
    #else
@@ -105,7 +105,7 @@ void _Ncp1_Pc_init_1(uint32_t js_crc32c) {
    #endif
 
    memcpy(cp1_tmp, "cp1-tmp/", 8);
-   hex32(&cp1_tmp[8], _Ncp1_Pbuild_crc32c_0());
+   hex32(&cp1_tmp[8], _Tcp1_Fbuild_crc32c_0());
    cp1_tmp[cp1_tmp_len - 1] = '\0';
    #ifdef _WIN32
    mkdir(cp1_tmp);
@@ -136,11 +136,11 @@ void _Ncp1_Pc_init_1(uint32_t js_crc32c) {
    memcpy(qjs_path, _Ginclude_dir, _Ginclude_dir_len);
    memcpy(qjs_path + _Ginclude_dir_len, "/bin/cp1-qjs", 13);
 }
-bool _Ncp1_Pwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
-void _Ncp1_Pread_4(char* _Lin_path_cp1_0, uint16_t _Lin_path_cp1_len_1, bool strdup, bool require);
+bool _Tcp1_Fwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
+void _Tcp1_Fread_4(char* _Lin_path_cp1_0, uint16_t _Lin_path_cp1_len_1, bool strdup, bool require);
 int quickjs_path_len;
-void* _Ncp1_Pread_file_5(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_after_2, size_t _Lmax_size_3, size_t* _Lout_size_4);
-uint32_t _Ncp1_Pquickjs_hex_2(char* js_data, uint32_t code_crc32c) {
+void* _Tcp1_Fread_file_5(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_after_2, size_t _Lmax_size_3, size_t* _Lout_size_4);
+uint32_t _Tcp1_Fquickjs_hex_2(char* js_data, uint32_t code_crc32c) {
    int i = 0;
    js_data[i++] = '/';
    js_data[i++] = '/';
@@ -150,7 +150,7 @@ uint32_t _Ncp1_Pquickjs_hex_2(char* js_data, uint32_t code_crc32c) {
    js_data[i++] = ' ';
    return i;
 }
-bool _Ncp1_Pquickjs_begin_7(char* path, uint8_t path_len, char* tplt_name, uint8_t tplt_name_len, uint32_t code_crc32c, uint32_t arg_crc32c, bool require) {
+bool _Tcp1_Fquickjs_begin_7(char* path, uint8_t path_len, char* tplt_name, uint8_t tplt_name_len, uint32_t code_crc32c, uint32_t arg_crc32c, bool require) {
    int i;
    if (memcmp(path, "cp1-tmp-", 8) == 0) {
       i = 0;
@@ -175,16 +175,16 @@ bool _Ncp1_Pquickjs_begin_7(char* path, uint8_t path_len, char* tplt_name, uint8
    cp1_tmp_js[j++] = '1';
    cp1_tmp_js[j] = '\0';
    size_t cache_size;
-   char* cache = _Ncp1_Pread_file_5(cp1_tmp_js, 0, 0, 12, &cache_size);
+   char* cache = _Tcp1_Fread_file_5(cp1_tmp_js, 0, 0, 12, &cache_size);
    if (cache != NULL && cache_size == 12) {
       char scratch[12];
-      _Ncp1_Pquickjs_hex_2(scratch, code_crc32c);
+      _Tcp1_Fquickjs_hex_2(scratch, code_crc32c);
       if (memcmp(scratch, cache, 12) == 0) {
          // printf("%s did not change, using the cached copy\n", cp1_tmp_js);
          /* char* new_path = malloc(j + 1);
          memcpy(new_path, cp1_tmp_js, j + 1);
-         _Ncp1_Pread_2(new_path, j); */
-         _Ncp1_Pread_4(cp1_tmp_js, j, true, require);
+         _Tcp1_Fread_2(new_path, j); */
+         _Tcp1_Fread_4(cp1_tmp_js, j, true, require);
          return false;
       }
    }
@@ -239,11 +239,11 @@ void create_folders_recursively(const char *file_path) {
     }
 }
 #include "system2.h"
-void _Ncp1_Pquickjs_end_3(char* js_data, uint32_t js_len, bool require) {
+void _Tcp1_Fquickjs_end_3(char* js_data, uint32_t js_len, bool require) {
    create_folders_recursively(cp1_tmp_js);
    char tmp_path[1024 + 10];
    sprintf(tmp_path, "%s-%u", cp1_tmp_js, getpid());
-   _Ncp1_Pwrite_file_3(tmp_path, js_data, js_len);
+   _Tcp1_Fwrite_file_3(tmp_path, js_data, js_len);
    #ifdef _WIN32
    unlink(cp1_tmp_js);
    #endif
@@ -274,30 +274,30 @@ void _Ncp1_Pquickjs_end_3(char* js_data, uint32_t js_len, bool require) {
    cp1_tmp_js[i] = '\0';
    /* char* new_path = malloc(i + 1);
    memcpy(new_path, cp1_tmp_js, i + 1);
-   _Ncp1_Pread_2(new_path, i); */
-   _Ncp1_Pread_4(cp1_tmp_js, i, true, require);
+   _Tcp1_Fread_2(new_path, i); */
+   _Tcp1_Fread_4(cp1_tmp_js, i, true, require);
 }
 // int parse_main(int argc, char** argv);
 FILE* fdeps = NULL;
-void _Ncp1_Pdeps_init_1(const char* path) {
+void _Tcp1_Fdeps_init_1(const char* path) {
    fdeps = fopen(path, "w");
    if (fdeps == NULL) {
       printf("Cannot open file for writing: %s\n", path);
       exit(EXIT_FAILURE);
    }
 }
-void _Ncp1_Pdeps_output_1(const char* path) {
+void _Tcp1_Fdeps_output_1(const char* path) {
    if (fdeps != NULL) {
       fprintf(fdeps, "%s:", path);
    }
 }
-void _Ncp1_Pdeps_close_0() {
+void _Tcp1_Fdeps_close_0() {
    if (fdeps != NULL) {
       fprintf(fdeps, "\n");
       fclose(fdeps);
    }
 }
-char* _Ncp1_Preq_parse_3(const char* path, uint8_t path_len, bool require) {
+char* _Tcp1_Freq_parse_3(const char* path, uint8_t path_len, bool require) {
    // const char* path = *ppath;
    const char* fullpath;
    char cp1_tmp2[1024];

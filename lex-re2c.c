@@ -15,7 +15,7 @@ uint32_t _Gtemplate_code_indention;
 uint32_t _Gtemplate_code_line_c;
 const char* meta_start;
 int meta_col;
-void _Ncp1_Pparse_str_init_1(int maxsize) {
+void _Tcp1_Fparse_str_init_1(int maxsize) {
    string_mem = malloc(maxsize);
 }
 
