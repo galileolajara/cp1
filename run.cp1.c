@@ -18,51 +18,50 @@
 #define _Tlibc_Texit_Csuccess 0
 #define _Tlibc_Texit_Cfailure (_Tlibc_Texit_Csuccess + 1)
 #define _Tposix_Tfd_Cnil (-1)
+#define _Tlibcp1_Cstdout_buf_size (4096)
 typedef int _Tlibc_Texit;
 typedef int _Tposix_Tfd;
 typedef int _Tposix_Topen_flags;
-struct _Tlibcp1_Tstdout;
-struct _Tlibcp1_Tstdout {
-uint32_t _Mreserve;
+struct _Tlibcp1_Tfmt;
+struct _Tlibcp1_Tfmt {
+char* _Mptr;
+size_t _Mlen;
+size_t _Mcap;
 };
-struct _Tlibcp1_Tstdout_str;
-struct _Tlibcp1_Tstdout_str {
+struct _Tlibcp1_Tfmt_Tf_cstr;
+struct _Tlibcp1_Tfmt_Tf_cstr {
 const char* _Mstr;
-uint32_t _Mlen;
+size_t _Mlen;
 };
-struct _Tlibcp1_Tstdout_char;
-struct _Tlibcp1_Tstdout_char {
-char _Mval;
+struct _Tlibcp1_Tfmt_Tf_char;
+struct _Tlibcp1_Tfmt_Tf_char {
+char _Mchar;
 };
-uint32_t _Gstdout_buf_cap;
-uint32_t _Gstdout_buf_len;
-char* _Gstdout_buf_data;
+uint32_t _Goutput_cap;
+uint32_t output_len;
+char* output_data;
+char _Gstdout_buf_data[_Tlibcp1_Cstdout_buf_size];
 int main(int _Larg_c_0, char** _Larg_v_1);
+void _Tcp1_Foutput_reserve_1(uint32_t _Llen_0);
 void _Fprint_commands_1(char* _Lbin_0);
 void _Fvalidate_cp1_path_2(char* _Lbin_0, char* _Lcp1_path_1);
-static inline void _Tlibcp1_Fstdout_1(struct _Tlibcp1_Tstdout* _Lso_0);
-static inline void _Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(struct _Tlibcp1_Tstdout* _Lso_0, const char* _Lstr_1, uint32_t _Llen_2, struct _Tlibcp1_Tstdout_str* _Lp_3);
-static inline void _Tchar_Fstdout_reserve_arr_3(const char* _Lstr_0, struct _Tlibcp1_Tstdout* _Lso_1, struct _Tlibcp1_Tstdout_str* _Lp_2);
-static inline void _Tchar_Fstdout_reserve_3(char _Lval_0, struct _Tlibcp1_Tstdout* _Lso_1, struct _Tlibcp1_Tstdout_char* _Lp_2);
-static inline void _Tlibcp1_Tstdout_Fstdout_reserve_end_1(struct _Tlibcp1_Tstdout* _Lso_0);
-static inline void _Tlibcp1_Tstdout_str_Fstdout_2(struct _Tlibcp1_Tstdout_str* _Ls_0, struct _Tlibcp1_Tstdout* _Lso_1);
-static inline void _Tlibcp1_Tstdout_char_Fstdout_2(struct _Tlibcp1_Tstdout_char* _Ls_0, struct _Tlibcp1_Tstdout* _Lso_1);
-static inline void _Tlibcp1_Tstdout_Fstdout_end_1(struct _Tlibcp1_Tstdout* _Lso_0);
+void _Tlibcp1_Fstdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+void _Tlibcp1_Tfmt_Ff_reserve_cstr_4(struct _Tlibcp1_Tfmt* _Lfmt_0, const char* _Lstr_1, int32_t _Llen_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3);
+void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(char* _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_2);
+void _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(char _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_char* _Lf_2);
+void _Tlibcp1_Tfmt_Ff_reserve_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+void _Tlibcp1_Tfmt_Tf_cstr_Ff_2(struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
+void _Tlibcp1_Tfmt_Tf_char_Ff_2(struct _Tlibcp1_Tfmt_Tf_char* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
+void _Tlibcp1_Tfmt_Ff_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 void _Fget_compiler_2(char* _Lbin_0, char* _Lcompiler_1);
 int system2(char* _Lcmd_0);
-void _Tlibcp1_Tstdout_str_Freserve_4(struct _Tlibcp1_Tstdout_str* _Ls_0, const char* _Lstr_1, uint32_t _Llen_2, struct _Tlibcp1_Tstdout* _Lso_3);
-void _Tlibcp1_Tstdout_str_Freserve_3(struct _Tlibcp1_Tstdout_str* _Ls_0, const char* _Lstr_1, struct _Tlibcp1_Tstdout* _Lso_2);
-void _Tlibcp1_Tstdout_char_Freserve_3(struct _Tlibcp1_Tstdout_char* _Ls_0, char _Lval_1, struct _Tlibcp1_Tstdout* _Lso_2);
-void _Tlibcp1_Fstdout_reserve_1(uint32_t _Llen_0);
-static inline void _Tlibcp1_Fstdout_bytes_nr_2(const void* _Ldata_0, size_t _Lsize_1);
-static inline void _Tlibcp1_Fstdout_char_nr_1(char _Lval_0);
-static inline void _Tlibcp1_Fstdout_flush_0();
+#define _Tlibc_Frealloc_arr_2(var, c) var = realloc(var, sizeof(var[0]) * (c))
+void _Tlibcp1_Tfmt_Finit_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 #ifdef _WIN32
 #define _Tposix_Fopen_2(p, f) open(p, f | O_BINARY)
 #else
 #define _Tposix_Fopen_2(p, f) open(p, f)
 #endif
-#define _Tlibc_Frealloc_arr_2(var, c) var = realloc(var, sizeof(var[0]) * (c))
 int main(int _Larg_c_0, char** _Larg_v_1) {
 char* _Lbin_7;
 char _Lc_path_8[15] = {0};
@@ -116,20 +115,20 @@ _Fvalidate_cp1_path_2(_Lbin_7, _Larg_v_1[1]);
 strcpy(_Lc_path_8, "cp1-c-XXXXXX");
 _Lc_fd_9 = ((_Tposix_Tfd)(mkstemp(_Lc_path_8)));
 if(_Lc_fd_9 == _Tposix_Tfd_Cnil) {
-struct _Tlibcp1_Tstdout_str _L_10 = {0};
-struct _Tlibcp1_Tstdout_str _L_11 = {0};
-struct _Tlibcp1_Tstdout_char _L_12 = {0};
-struct _Tlibcp1_Tstdout _L_13 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_10 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_11 = {0};
+struct _Tlibcp1_Tfmt_Tf_char _L_12 = {0};
+struct _Tlibcp1_Tfmt _L_13 = {0};
 _Fprint_commands_1(_Lbin_7);
 _Tlibcp1_Fstdout_1(&_L_13);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_13, "Error, cannot open file for reading: ", 37u, &_L_10);
-_Tchar_Fstdout_reserve_arr_3(_Lc_path_8, &_L_13, &_L_11);
-_Tchar_Fstdout_reserve_3('\n', &_L_13, &_L_12);
-_Tlibcp1_Tstdout_Fstdout_reserve_end_1(&_L_13);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_10, &_L_13);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_11, &_L_13);
-_Tlibcp1_Tstdout_char_Fstdout_2(&_L_12, &_L_13);
-_Tlibcp1_Tstdout_Fstdout_end_1(&_L_13);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_13, "Error, cannot open file for reading: ", 37u, &_L_10);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lc_path_8, &_L_13, &_L_11);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\n', &_L_13, &_L_12);
+_Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_13);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_10, &_L_13);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_11, &_L_13);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_12, &_L_13);
+_Tlibcp1_Tfmt_Ff_stdout_1(&_L_13);
 exit(_Tlibc_Texit_Cfailure);
 }
 close(_Lc_fd_9);
@@ -137,20 +136,20 @@ unlink(_Lc_path_8);
 strcpy(_Lexe_path_14, "./cp1-exe-XXXXXX");
 _Lexe_fd_15 = ((_Tposix_Tfd)(mkstemp(_Lexe_path_14)));
 if(_Lexe_fd_15 == _Tposix_Tfd_Cnil) {
-struct _Tlibcp1_Tstdout_str _L_16 = {0};
-struct _Tlibcp1_Tstdout_str _L_17 = {0};
-struct _Tlibcp1_Tstdout_char _L_18 = {0};
-struct _Tlibcp1_Tstdout _L_19 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_16 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_17 = {0};
+struct _Tlibcp1_Tfmt_Tf_char _L_18 = {0};
+struct _Tlibcp1_Tfmt _L_19 = {0};
 _Fprint_commands_1(_Lbin_7);
 _Tlibcp1_Fstdout_1(&_L_19);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_19, "Error, cannot open file for reading: ", 37u, &_L_16);
-_Tchar_Fstdout_reserve_arr_3(_Lexe_path_14, &_L_19, &_L_17);
-_Tchar_Fstdout_reserve_3('\n', &_L_19, &_L_18);
-_Tlibcp1_Tstdout_Fstdout_reserve_end_1(&_L_19);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_16, &_L_19);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_17, &_L_19);
-_Tlibcp1_Tstdout_char_Fstdout_2(&_L_18, &_L_19);
-_Tlibcp1_Tstdout_Fstdout_end_1(&_L_19);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_19, "Error, cannot open file for reading: ", 37u, &_L_16);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lexe_path_14, &_L_19, &_L_17);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\n', &_L_19, &_L_18);
+_Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_19);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_16, &_L_19);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_17, &_L_19);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_18, &_L_19);
+_Tlibcp1_Tfmt_Ff_stdout_1(&_L_19);
 exit(_Tlibc_Texit_Cfailure);
 }
 close(_Lexe_fd_15);
@@ -212,38 +211,54 @@ exit(_Tlibc_Texit_Cfailure);
 int32_t ret_212_4 = 0;
 return ret_212_4;
 }
+void _Tcp1_Foutput_reserve_1(uint32_t _Llen_0) {
+uint32_t _Lspace_1;
+_Lspace_1 = ((uint32_t)((_Goutput_cap - output_len)));
+if(_Lspace_1 < _Llen_0) {
+_Goutput_cap += _Goutput_cap;
+_Lspace_1 = (_Goutput_cap - output_len);
+while(_Lspace_1 < _Llen_0) {
+_Goutput_cap += _Goutput_cap;
+_Lspace_1 = (_Goutput_cap - output_len);
+continue_0:;
+}
+break_0:;
+_Goutput_cap += _Goutput_cap;
+_Tlibc_Frealloc_arr_2(output_data, _Goutput_cap);
+}
+}
 void _Fprint_commands_1(char* _Lbin_0) {
-struct _Tlibcp1_Tstdout_str _L_1 = {0};
-struct _Tlibcp1_Tstdout_str _L_2 = {0};
-struct _Tlibcp1_Tstdout_str _L_3 = {0};
-struct _Tlibcp1_Tstdout _L_4 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_1 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_2 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_3 = {0};
+struct _Tlibcp1_Tfmt _L_4 = {0};
 _Tlibcp1_Fstdout_1(&_L_4);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_4, "Usage: ", 7u, &_L_1);
-_Tchar_Fstdout_reserve_arr_3(_Lbin_0, &_L_4, &_L_2);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_4, " [file.cp1]\n", 12u, &_L_3);
-_Tlibcp1_Tstdout_Fstdout_reserve_end_1(&_L_4);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_1, &_L_4);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_2, &_L_4);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_3, &_L_4);
-_Tlibcp1_Tstdout_Fstdout_end_1(&_L_4);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_4, "Usage: ", 7u, &_L_1);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lbin_0, &_L_4, &_L_2);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_4, " [file.cp1]\n", 12u, &_L_3);
+_Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_4);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_1, &_L_4);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_2, &_L_4);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_3, &_L_4);
+_Tlibcp1_Tfmt_Ff_stdout_1(&_L_4);
 }
 void _Fvalidate_cp1_path_2(char* _Lbin_0, char* _Lcp1_path_1) {
 size_t _Lcp1_path_len_6;
 if(_Lcp1_path_1[0] == '/') {
-struct _Tlibcp1_Tstdout_str _L_2 = {0};
-struct _Tlibcp1_Tstdout_str _L_3 = {0};
-struct _Tlibcp1_Tstdout_str _L_4 = {0};
-struct _Tlibcp1_Tstdout _L_5 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_2 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_3 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_4 = {0};
+struct _Tlibcp1_Tfmt _L_5 = {0};
 _Fprint_commands_1(_Lbin_0);
 _Tlibcp1_Fstdout_1(&_L_5);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_5, "Error, [cp1 file] (which is '", 29u, &_L_2);
-_Tchar_Fstdout_reserve_arr_3(_Lcp1_path_1, &_L_5, &_L_3);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_5, "') must be a relative filepath (e.g. file.cp1), not an absolute path (/home/user/file.cp1)\n", 91u, &_L_4);
-_Tlibcp1_Tstdout_Fstdout_reserve_end_1(&_L_5);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_2, &_L_5);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_3, &_L_5);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_4, &_L_5);
-_Tlibcp1_Tstdout_Fstdout_end_1(&_L_5);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_5, "Error, [cp1 file] (which is '", 29u, &_L_2);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lcp1_path_1, &_L_5, &_L_3);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_5, "') must be a relative filepath (e.g. file.cp1), not an absolute path (/home/user/file.cp1)\n", 91u, &_L_4);
+_Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_5);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_2, &_L_5);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_3, &_L_5);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_4, &_L_5);
+_Tlibcp1_Tfmt_Ff_stdout_1(&_L_5);
 exit(_Tlibc_Texit_Cfailure);
 }
 _Lcp1_path_len_6 = ((size_t)(strlen(_Lcp1_path_1)));
@@ -256,20 +271,20 @@ _Lj_7 = ((int32_t)(0));
 for(int i = _Lcp1_path_len_6; i > 0; ) {
 i --;
 if(_Lcp1_path_1[_Lj_7] == '\\') {
-struct _Tlibcp1_Tstdout_str _L_8 = {0};
-struct _Tlibcp1_Tstdout_str _L_9 = {0};
-struct _Tlibcp1_Tstdout_str _L_10 = {0};
-struct _Tlibcp1_Tstdout _L_11 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_8 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_9 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_10 = {0};
+struct _Tlibcp1_Tfmt _L_11 = {0};
 _Fprint_commands_1(_Lbin_0);
 _Tlibcp1_Fstdout_1(&_L_11);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_11, "Error, [cp1 file] (which is '", 29u, &_L_8);
-_Tchar_Fstdout_reserve_arr_3(_Lcp1_path_1, &_L_11, &_L_9);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_11, "') must not contain backslashes '\\', please use forward slashes '/' instead\n", 76u, &_L_10);
-_Tlibcp1_Tstdout_Fstdout_reserve_end_1(&_L_11);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_8, &_L_11);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_9, &_L_11);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_10, &_L_11);
-_Tlibcp1_Tstdout_Fstdout_end_1(&_L_11);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_11, "Error, [cp1 file] (which is '", 29u, &_L_8);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lcp1_path_1, &_L_11, &_L_9);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_11, "') must not contain backslashes '\\', please use forward slashes '/' instead\n", 76u, &_L_10);
+_Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_11);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_8, &_L_11);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_9, &_L_11);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_10, &_L_11);
+_Tlibcp1_Tfmt_Ff_stdout_1(&_L_11);
 exit(_Tlibc_Texit_Cfailure);
 }
 continue_0:;
@@ -281,20 +296,20 @@ _Lj_12 = ((int32_t)(0));
 for(int i = _Lcp1_path_len_6; i > 0; ) {
 i --;
 if(_Lcp1_path_1[_Lj_12] == ' ') {
-struct _Tlibcp1_Tstdout_str _L_13 = {0};
-struct _Tlibcp1_Tstdout_str _L_14 = {0};
-struct _Tlibcp1_Tstdout_str _L_15 = {0};
-struct _Tlibcp1_Tstdout _L_16 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_13 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_14 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_15 = {0};
+struct _Tlibcp1_Tfmt _L_16 = {0};
 _Fprint_commands_1(_Lbin_0);
 _Tlibcp1_Fstdout_1(&_L_16);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_16, "Error, [cp1 file] (which is '", 29u, &_L_13);
-_Tchar_Fstdout_reserve_arr_3(_Lcp1_path_1, &_L_16, &_L_14);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_16, "') must not contain a space\n", 28u, &_L_15);
-_Tlibcp1_Tstdout_Fstdout_reserve_end_1(&_L_16);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_13, &_L_16);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_14, &_L_16);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_15, &_L_16);
-_Tlibcp1_Tstdout_Fstdout_end_1(&_L_16);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_16, "Error, [cp1 file] (which is '", 29u, &_L_13);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lcp1_path_1, &_L_16, &_L_14);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_16, "') must not contain a space\n", 28u, &_L_15);
+_Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_16);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_13, &_L_16);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_14, &_L_16);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_15, &_L_16);
+_Tlibcp1_Tfmt_Ff_stdout_1(&_L_16);
 exit(_Tlibc_Texit_Cfailure);
 }
 continue_1:;
@@ -306,20 +321,20 @@ _Lj_17 = ((int32_t)(0));
 for(int i = _Lcp1_path_len_6 - 1; i > 0; ) {
 i --;
 if(((_Lcp1_path_1[_Lj_17] == '.') && (_Lcp1_path_1[(_Lj_17 + 1)] == '/'))) {
-struct _Tlibcp1_Tstdout_str _L_18 = {0};
-struct _Tlibcp1_Tstdout_str _L_19 = {0};
-struct _Tlibcp1_Tstdout_str _L_20 = {0};
-struct _Tlibcp1_Tstdout _L_21 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_18 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_19 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_20 = {0};
+struct _Tlibcp1_Tfmt _L_21 = {0};
 _Fprint_commands_1(_Lbin_0);
 _Tlibcp1_Fstdout_1(&_L_21);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_21, "Error, [cp1 file] (which is '", 29u, &_L_18);
-_Tchar_Fstdout_reserve_arr_3(_Lcp1_path_1, &_L_21, &_L_19);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_21, "') must not contain './'\n", 25u, &_L_20);
-_Tlibcp1_Tstdout_Fstdout_reserve_end_1(&_L_21);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_18, &_L_21);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_19, &_L_21);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_20, &_L_21);
-_Tlibcp1_Tstdout_Fstdout_end_1(&_L_21);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_21, "Error, [cp1 file] (which is '", 29u, &_L_18);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lcp1_path_1, &_L_21, &_L_19);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_21, "') must not contain './'\n", 25u, &_L_20);
+_Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_21);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_18, &_L_21);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_19, &_L_21);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_20, &_L_21);
+_Tlibcp1_Tfmt_Ff_stdout_1(&_L_21);
 exit(_Tlibc_Texit_Cfailure);
 }
 continue_2:;
@@ -327,58 +342,68 @@ _Lj_17++;
 }
 break_2:;
 if(!((_Lcp1_path_len_6 > 4) && (_Lcp1_path_1[(_Lcp1_path_len_6 - 4)] == '.') && (_Lcp1_path_1[(_Lcp1_path_len_6 - 3)] == 'c') && (_Lcp1_path_1[(_Lcp1_path_len_6 - 2)] == 'p') && (_Lcp1_path_1[(_Lcp1_path_len_6 - 1)] == '1'))) {
-struct _Tlibcp1_Tstdout_str _L_22 = {0};
-struct _Tlibcp1_Tstdout_str _L_23 = {0};
-struct _Tlibcp1_Tstdout_str _L_24 = {0};
-struct _Tlibcp1_Tstdout _L_25 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_22 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_23 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_24 = {0};
+struct _Tlibcp1_Tfmt _L_25 = {0};
 _Fprint_commands_1(_Lbin_0);
 _Tlibcp1_Fstdout_1(&_L_25);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_25, "Error, [cp1 file] (which is '", 29u, &_L_22);
-_Tchar_Fstdout_reserve_arr_3(_Lcp1_path_1, &_L_25, &_L_23);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_25, "') must be a filename that ends with '.cp1', for example: main.cp1\n", 67u, &_L_24);
-_Tlibcp1_Tstdout_Fstdout_reserve_end_1(&_L_25);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_22, &_L_25);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_23, &_L_25);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_24, &_L_25);
-_Tlibcp1_Tstdout_Fstdout_end_1(&_L_25);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_25, "Error, [cp1 file] (which is '", 29u, &_L_22);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lcp1_path_1, &_L_25, &_L_23);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_25, "') must be a filename that ends with '.cp1', for example: main.cp1\n", 67u, &_L_24);
+_Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_25);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_22, &_L_25);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_23, &_L_25);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_24, &_L_25);
+_Tlibcp1_Tfmt_Ff_stdout_1(&_L_25);
 exit(_Tlibc_Texit_Cfailure);
 }
 }
-static inline void _Tlibcp1_Fstdout_1(struct _Tlibcp1_Tstdout* _Lso_0) {
-#ifdef LIBCP1_ON_STDOUT
-(*_Lso_0)._Mreserve = 1;
-#else
-(*_Lso_0)._Mreserve = 0;
-#endif
+void _Tlibcp1_Fstdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+_Tlibcp1_Tfmt_Finit_1(_Lfmt_0);
 }
-static inline void _Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(struct _Tlibcp1_Tstdout* _Lso_0, const char* _Lstr_1, uint32_t _Llen_2, struct _Tlibcp1_Tstdout_str* _Lp_3) {
-_Tlibcp1_Tstdout_str_Freserve_4(_Lp_3, _Lstr_1, _Llen_2, _Lso_0);
+void _Tlibcp1_Tfmt_Ff_reserve_cstr_4(struct _Tlibcp1_Tfmt* _Lfmt_0, const char* _Lstr_1, int32_t _Llen_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3) {
+(*_Lfmt_0)._Mcap += _Llen_2;
+(*_Lf_3)._Mstr = _Lstr_1;
+(*_Lf_3)._Mlen = _Llen_2;
 }
-static inline void _Tchar_Fstdout_reserve_arr_3(const char* _Lstr_0, struct _Tlibcp1_Tstdout* _Lso_1, struct _Tlibcp1_Tstdout_str* _Lp_2) {
-_Tlibcp1_Tstdout_str_Freserve_3(_Lp_2, _Lstr_0, _Lso_1);
+void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(char* _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_2) {
+(*_Lf_2)._Mstr = _Lc_0;
+(*_Lf_2)._Mlen = strlen(_Lc_0);
+(*_Lfmt_1)._Mcap += (*_Lf_2)._Mlen;
 }
-static inline void _Tchar_Fstdout_reserve_3(char _Lval_0, struct _Tlibcp1_Tstdout* _Lso_1, struct _Tlibcp1_Tstdout_char* _Lp_2) {
-_Tlibcp1_Tstdout_char_Freserve_3(_Lp_2, _Lval_0, _Lso_1);
+void _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(char _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_char* _Lf_2) {
+(*_Lf_2)._Mchar = _Lc_0;
+(*_Lfmt_1)._Mcap += 1;
 }
-static inline void _Tlibcp1_Tstdout_Fstdout_reserve_end_1(struct _Tlibcp1_Tstdout* _Lso_0) {
-_Tlibcp1_Fstdout_reserve_1((*_Lso_0)._Mreserve);
+void _Tlibcp1_Tfmt_Ff_reserve_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+(*_Lfmt_0)._Mlen = 0;
+if((*_Lfmt_0)._Mcap < _Tlibcp1_Cstdout_buf_size) {
+(*_Lfmt_0)._Mptr = _Gstdout_buf_data;
+} else {
+(*_Lfmt_0)._Mptr = malloc((*_Lfmt_0)._Mlen);
 }
-static inline void _Tlibcp1_Tstdout_str_Fstdout_2(struct _Tlibcp1_Tstdout_str* _Ls_0, struct _Tlibcp1_Tstdout* _Lso_1) {
-_Tlibcp1_Fstdout_bytes_nr_2((*_Ls_0)._Mstr, (*_Ls_0)._Mlen);
 }
-static inline void _Tlibcp1_Tstdout_char_Fstdout_2(struct _Tlibcp1_Tstdout_char* _Ls_0, struct _Tlibcp1_Tstdout* _Lso_1) {
-_Tlibcp1_Fstdout_char_nr_1((*_Ls_0)._Mval);
+void _Tlibcp1_Tfmt_Tf_cstr_Ff_2(struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
+memcpy(&(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen], (*_Lf_0)._Mstr, (*_Lf_0)._Mlen);
+(*_Lfmt_1)._Mlen += (*_Lf_0)._Mlen;
 }
-static inline void _Tlibcp1_Tstdout_Fstdout_end_1(struct _Tlibcp1_Tstdout* _Lso_0) {
-_Tlibcp1_Fstdout_flush_0();
+void _Tlibcp1_Tfmt_Tf_char_Ff_2(struct _Tlibcp1_Tfmt_Tf_char* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
+(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen++] = (*_Lf_0)._Mchar;
+}
+void _Tlibcp1_Tfmt_Ff_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+write(((_Tposix_Tfd)(1)), (*_Lfmt_0)._Mptr, (*_Lfmt_0)._Mlen);
+if((*_Lfmt_0)._Mptr != _Gstdout_buf_data) {
+free((*_Lfmt_0)._Mptr);
+}
 }
 void _Fget_compiler_2(char* _Lbin_0, char* _Lcompiler_1) {
 char* _Lpath_2;
 char* _Lfound_4 = {0};
-struct _Tlibcp1_Tstdout_str _L_7 = {0};
-struct _Tlibcp1_Tstdout_str _L_8 = {0};
-struct _Tlibcp1_Tstdout_str _L_9 = {0};
-struct _Tlibcp1_Tstdout _L_10 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_7 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_8 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_9 = {0};
+struct _Tlibcp1_Tfmt _L_10 = {0};
 _Lpath_2 = ((char*)(strdup(getenv("PATH"))));
 #ifdef _WIN32
 int32_t _Li_3 = {0};
@@ -441,61 +466,18 @@ continue_1:;
 }
 break_1:;
 _Tlibcp1_Fstdout_1(&_L_10);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_10, "Cannot execute '", 16u, &_L_7);
-_Tchar_Fstdout_reserve_arr_3(_Lbin_0, &_L_10, &_L_8);
-_Tlibcp1_Tstdout_Fstdout_reserve_cstr_4(&_L_10, " run' because the required compile was not found: tcc clang or gcc\n", 67u, &_L_9);
-_Tlibcp1_Tstdout_Fstdout_reserve_end_1(&_L_10);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_7, &_L_10);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_8, &_L_10);
-_Tlibcp1_Tstdout_str_Fstdout_2(&_L_9, &_L_10);
-_Tlibcp1_Tstdout_Fstdout_end_1(&_L_10);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_10, "Cannot execute '", 16u, &_L_7);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lbin_0, &_L_10, &_L_8);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_10, " run' because the required compile was not found: tcc clang or gcc\n", 67u, &_L_9);
+_Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_10);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_7, &_L_10);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_8, &_L_10);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_9, &_L_10);
+_Tlibcp1_Tfmt_Ff_stdout_1(&_L_10);
 exit(_Tlibc_Texit_Cfailure);
 }
-void _Tlibcp1_Tstdout_str_Freserve_4(struct _Tlibcp1_Tstdout_str* _Ls_0, const char* _Lstr_1, uint32_t _Llen_2, struct _Tlibcp1_Tstdout* _Lso_3) {
-(*_Ls_0)._Mstr = _Lstr_1;
-(*_Ls_0)._Mlen = _Llen_2;
-(*_Lso_3)._Mreserve += _Llen_2;
-}
-void _Tlibcp1_Tstdout_str_Freserve_3(struct _Tlibcp1_Tstdout_str* _Ls_0, const char* _Lstr_1, struct _Tlibcp1_Tstdout* _Lso_2) {
-(*_Ls_0)._Mstr = _Lstr_1;
-(*_Ls_0)._Mlen = strlen(_Lstr_1);
-(*_Lso_2)._Mreserve += (*_Ls_0)._Mlen;
-}
-void _Tlibcp1_Tstdout_char_Freserve_3(struct _Tlibcp1_Tstdout_char* _Ls_0, char _Lval_1, struct _Tlibcp1_Tstdout* _Lso_2) {
-(*_Ls_0)._Mval = _Lval_1;
-(*_Lso_2)._Mreserve++;
-}
-void _Tlibcp1_Fstdout_reserve_1(uint32_t _Llen_0) {
-uint32_t _Lspace_1;
-_Lspace_1 = ((uint32_t)((_Gstdout_buf_cap - _Gstdout_buf_len)));
-if(_Lspace_1 < _Llen_0) {
-if(_Gstdout_buf_cap == 0) {
-_Gstdout_buf_cap = 256;
-} else {
-_Gstdout_buf_cap += _Gstdout_buf_cap;
-}
-_Lspace_1 = (_Gstdout_buf_cap - _Gstdout_buf_len);
-while(_Lspace_1 < _Llen_0) {
-_Gstdout_buf_cap += _Gstdout_buf_cap;
-_Lspace_1 = (_Gstdout_buf_cap - _Gstdout_buf_len);
-continue_0:;
-}
-break_0:;
-_Tlibc_Frealloc_arr_2(_Gstdout_buf_data, _Gstdout_buf_cap);
-}
-}
-static inline void _Tlibcp1_Fstdout_bytes_nr_2(const void* _Ldata_0, size_t _Lsize_1) {
-memcpy(&_Gstdout_buf_data[_Gstdout_buf_len], _Ldata_0, _Lsize_1);
-_Gstdout_buf_len += _Lsize_1;
-}
-static inline void _Tlibcp1_Fstdout_char_nr_1(char _Lval_0) {
-_Gstdout_buf_data[_Gstdout_buf_len++] = _Lval_0;
-}
-static inline void _Tlibcp1_Fstdout_flush_0() {
-#ifdef LIBCP1_ON_STDOUT
-LIBCP1_ON_STDOUT(_Gstdout_buf_data, _Gstdout_buf_len);
-#else
-write(((_Tposix_Tfd)(1)), _Gstdout_buf_data, _Gstdout_buf_len);
-#endif
-_Gstdout_buf_len = 0;
+void _Tlibcp1_Tfmt_Finit_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+(*_Lfmt_0)._Mlen = 0;
+(*_Lfmt_0)._Mcap = 0;
+(*_Lfmt_0)._Mptr = NULL;
 }
