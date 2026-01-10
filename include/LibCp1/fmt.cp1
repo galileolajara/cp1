@@ -286,4 +286,15 @@ using 'libcp1 {
          fmt.ptr = 'c.realloc(fmt.ptr, fmt.cap);
       }
    }
+   #fmt{}
+   meta #fmt {
+      using 'libcp1 {
+         using 'fmt {
+            f-reserve<u'usz>(fmt'this, f'f-u${D.cpubits}) {
+               fmt.cap += ${D.cpubits == 32 ? 10 : 20};
+               f.u${D.cpubits} = u;
+            }
+         }
+      }
+   }
 }
