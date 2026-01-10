@@ -2,7 +2,7 @@ require "LibC/stdlib.cp1";
 require "LibC/string.cp1";
 using 'c = 'libc;
 using 'libcp1 {
-   struct 'fmt[ptr'char[], len'usz, cap'usz] {
+   struct 'fmt[ptr'char[], len'usz, cap'usz, user-data'ref] {
       f(f'fmt) @meta(f-reserve f noop) {
          f.init();
       }
@@ -25,6 +25,10 @@ using 'libcp1 {
          f.f64 = i;
       }
       f-reserve<i'i32>(fmt'this, f'f-i32) {
+         fmt.cap += 11;
+         f.i32 = i;
+      }
+      f-reserve<i'intc>(fmt'this, f'f-i32) {
          fmt.cap += 11;
          f.i32 = i;
       }

@@ -5,32 +5,27 @@ using 'c1 = 'libcp1;
 using 'x = 'posix;
 using 'libcp1 {
    #stdout-buf-size = 4096;
+   var stdout-buf-len'u32;
    var stdout-buf-data'char[#stdout-buf-size];
    stdout(fmt'fmt) @meta(f-reserve f stdout) {
-      fmt.init();
    }
    stdbuf(fmt'fmt) @meta(f-reserve f stdbuf) {
       stdout(fmt);
    }
    using 'fmt {
       f-reserve-stdout(fmt'this) {
-         fmt.len = 0;
-         if fmt.cap < #stdout-buf-size {
-            fmt.ptr = .stdout-buf-data;
-         } else {
-            fmt.ptr = 'c.malloc(fmt.len);
-         }
+         fmt.len = .stdout-buf-len;
+         fmt.ptr = .stdout-buf-data;
       }
       f-stdout(fmt'this) {
          1'x'fd.write(fmt.ptr, fmt.len);
-         if fmt.ptr != .stdout-buf-data {
-            'c.free(fmt.ptr);
-         }
+         .stdout-buf-len = 0;
       }
       f-reserve-stdbuf(fmt'this) {
          fmt.f-reserve-stdout();
       }
       f-stdbuf(fmt'this) {
+         .stdout-buf-len = fmt.len;
       }
    }
 }

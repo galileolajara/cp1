@@ -1,4 +1,5 @@
 require "LibCp1/stdout.cp1";
+require "LibCp1/sprintf.cp1";
 require "LibC/stdio.cp1";
 require "LibC/stdlib.cp1";
 require "LibC/string.cp1";
@@ -71,10 +72,11 @@ get-compiler(bin'char[], compiler'char[]) {
    loop found != null {
       // C1.stdout{"- " found ''\n}
       var fd, compile'char[512];
+      'c1.sprintf(compile, f?);
       "#ifdef _WIN32";
-      'c.sprintf(compile, "%s/tcc.exe", found);
+      f.f{found "/tcc.exe"}
       "#else";
-      'c.sprintf(compile, "%s/tcc", found);
+      f.f{found "/tcc"}
       "#endif";
       fd = 'x.open(compile, #rdonly);
       if fd != #nil {
@@ -82,9 +84,9 @@ get-compiler(bin'char[], compiler'char[]) {
          return;
       }
       "#ifdef _WIN32";
-      'c.sprintf(compile, "%s/clang.exe", found);
+      f.f{found "/clang.exe"}
       "#else";
-      'c.sprintf(compile, "%s/clang", found);
+      f.f{found "/clang"}
       "#endif";
       fd = 'x.open(compile, #rdonly);
       if fd != #nil {
@@ -92,9 +94,9 @@ get-compiler(bin'char[], compiler'char[]) {
          return;
       }
       "#ifdef _WIN32";
-      'c.sprintf(compile, "%s/gcc.exe", found);
+      f.f{found "/gcc.exe"}
       "#else";
-      'c.sprintf(compile, "%s/gcc", found);
+      f.f{found "/gcc"}
       "#endif";
       fd = 'x.open(compile, #rdonly);
       if fd != #nil {
@@ -180,14 +182,15 @@ main(arg-c'intc, arg-v'char[][])'intc {
    }
    "#endif";
    var command'char[1024];
-   'c.sprintf(command, "\"%.*s-compile\" -c \"%s\" \"%s\"", ('c.strlen(bin) - 4)'intc, bin, c-path, arg-v[1]);
+   'c1.sprintf(command, f?);
+   f.f{''" bin, 'c.strlen(bin) - 4 "-compile\" -c \"" c-path "\" \"" arg-v[1] "\""}
    // C1.stdout{"run command: " command ''\n}
    c-ret! = system2(command);
    if c-ret != 0 {
       'x.unlink(c-path);
       'c.exit(#failure);
    }
-   'c.sprintf(command, "%s -o %s %s", compiler, exe-path, c-path);
+   f.f{compiler " -o " exe-path " " c-path}
    // C1.stdout{"run command: " command ''\n}
    compile-ret! = system2(command);
    'x.unlink(c-path);

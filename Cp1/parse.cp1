@@ -1,4 +1,5 @@
 require "LibCp1/stdout.cp1";
+require "LibCp1/sprintf.cp1";
 require "LibC/stdio.cp1";
 require "LibC/stdlib.cp1";
 require "LibC/string.cp1";
@@ -1536,7 +1537,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    // C.sprintf(out-path, "%s.tmp", lock-path);
    // out-path-len! = C.strlen(out-path);
    var tmp-path'char[256 + 16 + 10];
-   'c.sprintf(tmp-path, "%s-%u", lock-path, 'x.getpid());
+   'c1.sprintf(tmp-path, f?).f{lock-path ''- 'x.getpid()}
    if !write-file(tmp-path, w-begin.ref, w.pos - w-begin.pos) {
       'c1.stdout{"Cannot open file for writing: " tmp-path ''\n}
       'c.exit(#failure);

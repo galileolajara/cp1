@@ -1,4 +1,5 @@
 require "LibCp1/stdout.cp1";
+require "LibCp1/sprintf.cp1";
 require "LibC/stdio.cp1";
 require "LibC/stdlib.cp1";
 require "LibC/string.cp1";
@@ -881,10 +882,11 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
          "#endif";
          fd! = 'x'fd#nil;
          loop found != null {
+            'c1.sprintf(abs-path, f?);
             "#ifdef _WIN32";
-            'c.sprintf(abs-path, "%s/%s.exe", found, bin);
+            f.f{found ''/ bin ".exe"}
             "#else";
-            'c.sprintf(abs-path, "%s/%s", found, bin);
+            f.f{found ''/ bin}
             "#endif";
             fd = 'x.open(abs-path, #rdonly);
             if fd != #nil {
