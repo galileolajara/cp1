@@ -601,7 +601,7 @@ _Lsf_1 = ((struct _Tlibcp1_Tsprintf*)((*_Lfmt_0)._Muser_data));
 }
 void _Tlibcp1_Tfmt_Ff_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 struct _Tlibcp1_Tsprintf* _Lsf_1 = {0};
-(*_Lfmt_0)._Mptr[(*_Lfmt_0)._Mlen++] = 0;
+(*_Lfmt_0)._Mptr[(*_Lfmt_0)._Mlen] = 0;
 _Lsf_1 = ((struct _Tlibcp1_Tsprintf*)((*_Lfmt_0)._Muser_data));
 (*_Lsf_1)._Mlen = (*_Lfmt_0)._Mlen;
 }
