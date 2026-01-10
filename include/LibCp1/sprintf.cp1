@@ -1,6 +1,6 @@
 require "LibCp1/fmt.cp1";
 using 'libcp1 {
-   sprintf(buf'char[], sf'sprintf)'sprintf {
+   sprintf(buf'char[], sf'sprintf)'sprintf @inline {
       sf.mem = buf;
       sf.len = 0;
       return sf;
@@ -11,12 +11,12 @@ using 'libcp1 {
       }
    }
    using 'fmt {
-      f-reserve-sprintf-f(fmt'this) {
+      f-reserve-sprintf-f(fmt'this) @inline {
          var sf'sprintf = fmt.user-data;
          fmt.len = 0;
          fmt.ptr = sf.mem;
       }
-      f-sprintf-f(fmt'this) {
+      f-sprintf-f(fmt'this) @inline {
          fmt.ptr[fmt.len] = 0;
          var sf'sprintf = fmt.user-data;
          sf.len = fmt.len;

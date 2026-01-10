@@ -51,20 +51,20 @@ int main(int _Larg_c_0, char** _Larg_v_1);
 void _Tcp1_Foutput_reserve_1(uint32_t _Llen_0);
 void _Fprint_commands_1(char* _Lbin_0);
 void _Fvalidate_cp1_path_2(char* _Lbin_0, char* _Lcp1_path_1);
-void _Tlibcp1_Fstdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
-void _Tlibcp1_Tfmt_Ff_reserve_cstr_4(struct _Tlibcp1_Tfmt* _Lfmt_0, const char* _Lstr_1, int32_t _Llen_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3);
-void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(const char* _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_2);
-void _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(char _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_char* _Lf_2);
-void _Tlibcp1_Tfmt_Ff_reserve_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
-void _Tlibcp1_Tfmt_Tf_cstr_Ff_2(struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
-void _Tlibcp1_Tfmt_Tf_char_Ff_2(struct _Tlibcp1_Tfmt_Tf_char* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
-void _Tlibcp1_Tfmt_Ff_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+static inline void _Tlibcp1_Fstdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_cstr_4(struct _Tlibcp1_Tfmt* _Lfmt_0, const char* _Lstr_1, int32_t _Llen_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(const char* _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_2);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(char _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_char* _Lf_2);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+static inline void _Tlibcp1_Tfmt_Tf_cstr_Ff_2(struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
+static inline void _Tlibcp1_Tfmt_Tf_char_Ff_2(struct _Tlibcp1_Tfmt_Tf_char* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
+static inline void _Tlibcp1_Tfmt_Ff_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 void _Fget_compiler_2(char* _Lbin_0, char* _Lcompiler_1);
-struct _Tlibcp1_Tsprintf* _Tlibcp1_Fsprintf_2(char* _Lbuf_0, struct _Tlibcp1_Tsprintf* _Lsf_1);
+static inline struct _Tlibcp1_Tsprintf* _Tlibcp1_Fsprintf_2(char* _Lbuf_0, struct _Tlibcp1_Tsprintf* _Lsf_1);
 void _Tlibcp1_Tsprintf_Ff_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
-void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(const char* _Lc_0, int32_t _Llen_1, struct _Tlibcp1_Tfmt* _Lfmt_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3);
-void _Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
-void _Tlibcp1_Tfmt_Ff_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(const char* _Lc_0, int32_t _Llen_1, struct _Tlibcp1_Tfmt* _Lfmt_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+static inline void _Tlibcp1_Tfmt_Ff_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 int system2(char* _Lcmd_0);
 #define _Tlibc_Frealloc_arr_2(var, c) var = realloc(var, sizeof(var[0]) * (c))
 #ifdef _WIN32
@@ -413,34 +413,34 @@ _Tlibcp1_Tfmt_Ff_stdout_1(&_L_25);
 exit(_Tlibc_Texit_Cfailure);
 }
 }
-void _Tlibcp1_Fstdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+static inline void _Tlibcp1_Fstdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 }
-void _Tlibcp1_Tfmt_Ff_reserve_cstr_4(struct _Tlibcp1_Tfmt* _Lfmt_0, const char* _Lstr_1, int32_t _Llen_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_cstr_4(struct _Tlibcp1_Tfmt* _Lfmt_0, const char* _Lstr_1, int32_t _Llen_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3) {
 (*_Lfmt_0)._Mcap += _Llen_2;
 (*_Lf_3)._Mstr = _Lstr_1;
 (*_Lf_3)._Mlen = _Llen_2;
 }
-void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(const char* _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_2) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(const char* _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_2) {
 (*_Lf_2)._Mstr = _Lc_0;
 (*_Lf_2)._Mlen = strlen(_Lc_0);
 (*_Lfmt_1)._Mcap += (*_Lf_2)._Mlen;
 }
-void _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(char _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_char* _Lf_2) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(char _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_char* _Lf_2) {
 (*_Lf_2)._Mchar = _Lc_0;
 (*_Lfmt_1)._Mcap += 1;
 }
-void _Tlibcp1_Tfmt_Ff_reserve_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 (*_Lfmt_0)._Mlen = _Gstdout_buf_len;
 (*_Lfmt_0)._Mptr = _Gstdout_buf_data;
 }
-void _Tlibcp1_Tfmt_Tf_cstr_Ff_2(struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
+static inline void _Tlibcp1_Tfmt_Tf_cstr_Ff_2(struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
 memcpy(&(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen], (*_Lf_0)._Mstr, (*_Lf_0)._Mlen);
 (*_Lfmt_1)._Mlen += (*_Lf_0)._Mlen;
 }
-void _Tlibcp1_Tfmt_Tf_char_Ff_2(struct _Tlibcp1_Tfmt_Tf_char* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
+static inline void _Tlibcp1_Tfmt_Tf_char_Ff_2(struct _Tlibcp1_Tfmt_Tf_char* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
 (*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen++] = (*_Lf_0)._Mchar;
 }
-void _Tlibcp1_Tfmt_Ff_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+static inline void _Tlibcp1_Tfmt_Ff_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 write(((_Tposix_Tfd)(1)), (*_Lfmt_0)._Mptr, (*_Lfmt_0)._Mlen);
 _Gstdout_buf_len = 0;
 }
@@ -579,7 +579,7 @@ _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_28, &_L_29);
 _Tlibcp1_Tfmt_Ff_stdout_1(&_L_29);
 exit(_Tlibc_Texit_Cfailure);
 }
-struct _Tlibcp1_Tsprintf* _Tlibcp1_Fsprintf_2(char* _Lbuf_0, struct _Tlibcp1_Tsprintf* _Lsf_1) {
+static inline struct _Tlibcp1_Tsprintf* _Tlibcp1_Fsprintf_2(char* _Lbuf_0, struct _Tlibcp1_Tsprintf* _Lsf_1) {
 (*_Lsf_1)._Mmem = _Lbuf_0;
 (*_Lsf_1)._Mlen = 0;
 struct _Tlibcp1_Tsprintf* ret_6_7 = _Lsf_1;
@@ -588,18 +588,18 @@ return ret_6_7;
 void _Tlibcp1_Tsprintf_Ff_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
 (*_Lfmt_1)._Muser_data = _Lsf_0;
 }
-void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(const char* _Lc_0, int32_t _Llen_1, struct _Tlibcp1_Tfmt* _Lfmt_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(const char* _Lc_0, int32_t _Llen_1, struct _Tlibcp1_Tfmt* _Lfmt_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3) {
 (*_Lf_3)._Mstr = _Lc_0;
 (*_Lf_3)._Mlen = _Llen_1;
 (*_Lfmt_2)._Mcap += _Llen_1;
 }
-void _Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 struct _Tlibcp1_Tsprintf* _Lsf_1 = {0};
 _Lsf_1 = ((struct _Tlibcp1_Tsprintf*)((*_Lfmt_0)._Muser_data));
 (*_Lfmt_0)._Mlen = 0;
 (*_Lfmt_0)._Mptr = (*_Lsf_1)._Mmem;
 }
-void _Tlibcp1_Tfmt_Ff_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+static inline void _Tlibcp1_Tfmt_Ff_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 struct _Tlibcp1_Tsprintf* _Lsf_1 = {0};
 (*_Lfmt_0)._Mptr[(*_Lfmt_0)._Mlen] = 0;
 _Lsf_1 = ((struct _Tlibcp1_Tsprintf*)((*_Lfmt_0)._Muser_data));

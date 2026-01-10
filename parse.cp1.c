@@ -1104,17 +1104,17 @@ void _Tcp1_Foutput_reserve_1(uint32_t _Llen_0);
 void _Tcp1_Fexport_0();
 #define _Tlibc_Fmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))
 void _Tcp1_Fquick_alloc_init_0();
-void _Tlibcp1_Fstdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
-void _Tlibcp1_Tfmt_Ff_reserve_cstr_4(struct _Tlibcp1_Tfmt* _Lfmt_0, const char* _Lstr_1, int32_t _Llen_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3);
-void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(const char* _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_2);
-void _Tlibcp1_Tfmt_Ff_reserve_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
-void _Tlibcp1_Tfmt_Tf_cstr_Ff_2(struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
-void _Tlibcp1_Tfmt_Ff_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+static inline void _Tlibcp1_Fstdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_cstr_4(struct _Tlibcp1_Tfmt* _Lfmt_0, const char* _Lstr_1, int32_t _Llen_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(const char* _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_2);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+static inline void _Tlibcp1_Tfmt_Tf_cstr_Ff_2(struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
+static inline void _Tlibcp1_Tfmt_Ff_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 void _Tcp1_Tmap_Finit_1(struct _Tcp1_Tmap* _Lm_0);
 void _Tcp1_Tat_map_Finit_1(struct _Tcp1_Tat_map* _Lm_0);
 void* _Tcp1_Fread_file_5(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_after_2, size_t _Lmax_size_3, size_t* _Lout_size_4);
-void _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(char _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_char* _Lf_2);
-void _Tlibcp1_Tfmt_Tf_char_Ff_2(struct _Tlibcp1_Tfmt_Tf_char* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(char _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_char* _Lf_2);
+static inline void _Tlibcp1_Tfmt_Tf_char_Ff_2(struct _Tlibcp1_Tfmt_Tf_char* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
 uint8_t* _Tcp1_Fpreprocess_3(const char* _Lin_path_0, uint8_t* _Lin_data_1, size_t* _Lin_out_size_2);
 void _Tcp1_Fparse_str_init_1(int32_t _Lmax_size_0);
 #define _Tcp1_Fmalloc_arr_2(r, c) r = malloc(sizeof(r[0]) * (c)); memset(r, 0, sizeof(r[0]) * (c))
@@ -1131,8 +1131,8 @@ uint32_t _Tcp1_Tlexer_Fget_int_2(struct _Tcp1_Tlexer* _Llex_0, uint8_t _Llen_min
 uint64_t _Tcp1_Tlexer_Fget_u64_1(struct _Tcp1_Tlexer* _Llex_0);
 uint32_t _Tcp1_Tlexer_Fget_oct_1(struct _Tcp1_Tlexer* _Llex_0);
 uint32_t _Tcp1_Tlexer_Fget_hex_1(struct _Tcp1_Tlexer* _Llex_0);
-void _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(uint32_t _Lu_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_u32* _Lf_2);
-void _Tlibcp1_Tfmt_Tf_u32_Ff_2(struct _Tlibcp1_Tfmt_Tf_u32* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(uint32_t _Lu_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_u32* _Lf_2);
+static inline void _Tlibcp1_Tfmt_Tf_u32_Ff_2(struct _Tlibcp1_Tfmt_Tf_u32* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
 _Tcp1_Tinclude _Tcp1_Finclude_add_2(uint8_t _Llen_0, char* _Lstr_1);
 int32_t _Tcp1_Tlexer_Fget_include_1(struct _Tcp1_Tlexer* _Llex_0);
 void _Tcp1_Tparser_Ffree_1(struct _Tcp1_Tparser* _Lpsr_0);
@@ -1150,12 +1150,12 @@ void _Tcp1_Fwrite_struct_2(union _Tcp1_Twtr* _Lw_0, bool _Lheader_1);
 static inline void _Tcp1_Fwrite_func_2(union _Tcp1_Twtr* _Lw_0, bool _Lheader_1);
 static inline void _Tcp1_Fwrite_import_2(union _Tcp1_Twtr* _Lw_0, bool _Lheader_1);
 static inline void _Tcp1_Fwrite_template_code_2(union _Tcp1_Twtr* _Lw_0, bool _Lheader_1);
-struct _Tlibcp1_Tsprintf* _Tlibcp1_Fsprintf_2(char* _Lbuf_0, struct _Tlibcp1_Tsprintf* _Lsf_1);
+static inline struct _Tlibcp1_Tsprintf* _Tlibcp1_Fsprintf_2(char* _Lbuf_0, struct _Tlibcp1_Tsprintf* _Lsf_1);
 void _Tlibcp1_Tsprintf_Ff_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
-void _Tlibcp1_Tfmt_Ff_reserve_Tintc_1_2(int _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2);
-void _Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
-void _Tlibcp1_Tfmt_Tf_i32_Ff_2(struct _Tlibcp1_Tfmt_Tf_i32* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
-void _Tlibcp1_Tfmt_Ff_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_Tintc_1_2(int _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+static inline void _Tlibcp1_Tfmt_Tf_i32_Ff_2(struct _Tlibcp1_Tfmt_Tf_i32* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
+static inline void _Tlibcp1_Tfmt_Ff_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 bool _Tcp1_Fwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
 static inline void _Tcp1_Tat_Fwr_header_2(_Tcp1_Tat _Lid_0, union _Tcp1_Twtr* _Lw_1);
 static inline void _Tcp1_Tid_Fwr_header_2(_Tcp1_Tid _Lid_0, union _Tcp1_Twtr* _Lw_1);
@@ -1306,7 +1306,7 @@ void _Tcp1_Fcvar_attr_no_decl_0();
 void _Tcp1_Fcvar_attr_no_name_0();
 void _Tcp1_Fcvar_attr_dont_count_0();
 static inline bool _Tposix_Tfd_Fopen_3(_Tposix_Tfd* _Lfile_0, const char* _Lpath_1, _Tposix_Topen_flags _Lflags_2);
-void _Tlibcp1_Tfmt_Ff_reserve_Ti32_1_2(int32_t _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_Ti32_1_2(int32_t _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2);
 int _Tcp1_Fparse_string_4(const char* _Lin_path_0, union _Tcp1_Trdr* _Lr_1, char _Lending_2, void* _Lin_data_3);
 void _Tcp1_Fget_row_col_4(uint32_t* _Lout_row_0, uint32_t* _Lout_col_1, void* _Lend_2, void* _Lbegin_3);
 void _Tcp1_Fparse_string_5(const char* _Lin_path_0, union _Tcp1_Trdr* _Lr_1, union _Tcp1_Twtr* _Lw_2, char _Lending_3, void* _Lin_data_4);
@@ -1331,9 +1331,9 @@ static inline void _Tcp1_Twtr_Fn4_2(union _Tcp1_Twtr* _Lw_0, uint32_t _Ln_1);
 static inline void _Tcp1_Twtr_Fb_2(union _Tcp1_Twtr* _Lw_0, bool _Lval_1);
 static inline bool _Tposix_Tfd_Fopen_4(_Tposix_Tfd* _Lfile_0, const char* _Lpath_1, _Tposix_Topen_flags _Lflags_2, int _Lmode_3);
 bool _Tcp1_Tinclude_Fvalidate_2(_Tcp1_Tinclude _Lpath_0, _Tcp1_Tinclude_error* _Lerr_1);
-void _Tlibcp1_Fstdbuf_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
-void _Tlibcp1_Tfmt_Ff_reserve_stdbuf_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
-void _Tlibcp1_Tfmt_Ff_stdbuf_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+static inline void _Tlibcp1_Fstdbuf_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_stdbuf_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+static inline void _Tlibcp1_Tfmt_Ff_stdbuf_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 void _Tcp1_Tinclude_error_Fprint_2(_Tcp1_Tinclude_error _Le_0, _Tcp1_Tinclude _Lpath_1);
 #define _Tcp1_Fgrow_1(c) Fpow2gteq((c) + 8)
 uint32_t crc32c(uint32_t _Lcrc32c_0, void* _Ldata_1, uint32_t _Lsize_2);
@@ -2624,27 +2624,27 @@ _Gquick_alloc_cap = (4 * 1024);
 _Gquick_alloc_v = malloc(_Gquick_alloc_cap);
 memset(_Gquick_alloc_v, 0, _Gquick_alloc_cap);
 }
-void _Tlibcp1_Fstdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+static inline void _Tlibcp1_Fstdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 }
-void _Tlibcp1_Tfmt_Ff_reserve_cstr_4(struct _Tlibcp1_Tfmt* _Lfmt_0, const char* _Lstr_1, int32_t _Llen_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_cstr_4(struct _Tlibcp1_Tfmt* _Lfmt_0, const char* _Lstr_1, int32_t _Llen_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3) {
 (*_Lfmt_0)._Mcap += _Llen_2;
 (*_Lf_3)._Mstr = _Lstr_1;
 (*_Lf_3)._Mlen = _Llen_2;
 }
-void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(const char* _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_2) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(const char* _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_2) {
 (*_Lf_2)._Mstr = _Lc_0;
 (*_Lf_2)._Mlen = strlen(_Lc_0);
 (*_Lfmt_1)._Mcap += (*_Lf_2)._Mlen;
 }
-void _Tlibcp1_Tfmt_Ff_reserve_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 (*_Lfmt_0)._Mlen = _Gstdout_buf_len;
 (*_Lfmt_0)._Mptr = _Gstdout_buf_data;
 }
-void _Tlibcp1_Tfmt_Tf_cstr_Ff_2(struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
+static inline void _Tlibcp1_Tfmt_Tf_cstr_Ff_2(struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
 memcpy(&(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen], (*_Lf_0)._Mstr, (*_Lf_0)._Mlen);
 (*_Lfmt_1)._Mlen += (*_Lf_0)._Mlen;
 }
-void _Tlibcp1_Tfmt_Ff_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+static inline void _Tlibcp1_Tfmt_Ff_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 write(((_Tposix_Tfd)(1)), (*_Lfmt_0)._Mptr, (*_Lfmt_0)._Mlen);
 _Gstdout_buf_len = 0;
 }
@@ -2723,11 +2723,11 @@ return ret_86_10;
 }
 #endif
 }
-void _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(char _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_char* _Lf_2) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(char _Lc_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_char* _Lf_2) {
 (*_Lf_2)._Mchar = _Lc_0;
 (*_Lfmt_1)._Mcap += 1;
 }
-void _Tlibcp1_Tfmt_Tf_char_Ff_2(struct _Tlibcp1_Tfmt_Tf_char* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
+static inline void _Tlibcp1_Tfmt_Tf_char_Ff_2(struct _Tlibcp1_Tfmt_Tf_char* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
 (*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen++] = (*_Lf_0)._Mchar;
 }
 uint8_t* _Tcp1_Fpreprocess_3(const char* _Lin_path_0, uint8_t* _Lin_data_1, size_t* _Lin_out_size_2) {
@@ -4551,11 +4551,11 @@ exit(_Tlibc_Texit_Cfailure);
 uint32_t ret_537_7 = ((uint32_t)(_Lval_11));
 return ret_537_7;
 }
-void _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(uint32_t _Lu_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_u32* _Lf_2) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(uint32_t _Lu_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_u32* _Lf_2) {
 (*_Lfmt_1)._Mcap += 10;
 (*_Lf_2)._Mu32 = _Lu_0;
 }
-void _Tlibcp1_Tfmt_Tf_u32_Ff_2(struct _Tlibcp1_Tfmt_Tf_u32* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
+static inline void _Tlibcp1_Tfmt_Tf_u32_Ff_2(struct _Tlibcp1_Tfmt_Tf_u32* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
 uint32_t _Lval_2;
 _Lval_2 = ((uint32_t)((*_Lf_0)._Mu32));
 if(_Lval_2 == 0) {
@@ -4961,7 +4961,7 @@ continue_1:;
 }
 break_1:;
 }
-struct _Tlibcp1_Tsprintf* _Tlibcp1_Fsprintf_2(char* _Lbuf_0, struct _Tlibcp1_Tsprintf* _Lsf_1) {
+static inline struct _Tlibcp1_Tsprintf* _Tlibcp1_Fsprintf_2(char* _Lbuf_0, struct _Tlibcp1_Tsprintf* _Lsf_1) {
 (*_Lsf_1)._Mmem = _Lbuf_0;
 (*_Lsf_1)._Mlen = 0;
 struct _Tlibcp1_Tsprintf* ret_6_7 = _Lsf_1;
@@ -4970,17 +4970,17 @@ return ret_6_7;
 void _Tlibcp1_Tsprintf_Ff_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
 (*_Lfmt_1)._Muser_data = _Lsf_0;
 }
-void _Tlibcp1_Tfmt_Ff_reserve_Tintc_1_2(int _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_Tintc_1_2(int _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2) {
 (*_Lfmt_1)._Mcap += 11;
 (*_Lf_2)._Mi32 = _Li_0;
 }
-void _Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 struct _Tlibcp1_Tsprintf* _Lsf_1 = {0};
 _Lsf_1 = ((struct _Tlibcp1_Tsprintf*)((*_Lfmt_0)._Muser_data));
 (*_Lfmt_0)._Mlen = 0;
 (*_Lfmt_0)._Mptr = (*_Lsf_1)._Mmem;
 }
-void _Tlibcp1_Tfmt_Tf_i32_Ff_2(struct _Tlibcp1_Tfmt_Tf_i32* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
+static inline void _Tlibcp1_Tfmt_Tf_i32_Ff_2(struct _Tlibcp1_Tfmt_Tf_i32* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
 int32_t _Lval_2;
 _Lval_2 = ((int32_t)((*_Lf_0)._Mi32));
 if(_Lval_2 == 0) {
@@ -5047,7 +5047,7 @@ break_3:;
 (*_Lfmt_1)._Mlen += _Ldigits_9;
 }
 }
-void _Tlibcp1_Tfmt_Ff_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+static inline void _Tlibcp1_Tfmt_Ff_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 struct _Tlibcp1_Tsprintf* _Lsf_1 = {0};
 (*_Lfmt_0)._Mptr[(*_Lfmt_0)._Mlen] = 0;
 _Lsf_1 = ((struct _Tlibcp1_Tsprintf*)((*_Lfmt_0)._Muser_data));
@@ -7929,7 +7929,7 @@ bool ret_14_16 = false;
 return ret_14_16;
 }
 }
-void _Tlibcp1_Tfmt_Ff_reserve_Ti32_1_2(int32_t _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_Ti32_1_2(int32_t _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2) {
 (*_Lfmt_1)._Mcap += 11;
 (*_Lf_2)._Mi32 = _Li_0;
 }
@@ -8440,13 +8440,13 @@ break_4:;
 bool ret_1050_7 = true;
 return ret_1050_7;
 }
-void _Tlibcp1_Fstdbuf_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+static inline void _Tlibcp1_Fstdbuf_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 _Tlibcp1_Fstdout_1(_Lfmt_0);
 }
-void _Tlibcp1_Tfmt_Ff_reserve_stdbuf_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_stdbuf_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(_Lfmt_0);
 }
-void _Tlibcp1_Tfmt_Ff_stdbuf_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+static inline void _Tlibcp1_Tfmt_Ff_stdbuf_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 _Gstdout_buf_len = (*_Lfmt_0)._Mlen;
 }
 void _Tcp1_Tinclude_error_Fprint_2(_Tcp1_Tinclude_error _Le_0, _Tcp1_Tinclude _Lpath_1) {

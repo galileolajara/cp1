@@ -7,24 +7,24 @@ using 'libcp1 {
    #stdout-buf-size = 4096;
    var stdout-buf-len'u32;
    var stdout-buf-data'char[#stdout-buf-size];
-   stdout(fmt'fmt) @meta(f-reserve f stdout) {
+   stdout(fmt'fmt) @meta(f-reserve f stdout) @inline {
    }
-   stdbuf(fmt'fmt) @meta(f-reserve f stdbuf) {
+   stdbuf(fmt'fmt) @meta(f-reserve f stdbuf) @inline {
       stdout(fmt);
    }
    using 'fmt {
-      f-reserve-stdout(fmt'this) {
+      f-reserve-stdout(fmt'this) @inline {
          fmt.len = .stdout-buf-len;
          fmt.ptr = .stdout-buf-data;
       }
-      f-stdout(fmt'this) {
+      f-stdout(fmt'this) @inline {
          1'x'fd.write(fmt.ptr, fmt.len);
          .stdout-buf-len = 0;
       }
-      f-reserve-stdbuf(fmt'this) {
+      f-reserve-stdbuf(fmt'this) @inline {
          fmt.f-reserve-stdout();
       }
-      f-stdbuf(fmt'this) {
+      f-stdbuf(fmt'this) @inline {
          .stdout-buf-len = fmt.len;
       }
    }

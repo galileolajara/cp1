@@ -3,44 +3,44 @@ require "LibC/string.cp1";
 using 'c = 'libc;
 using 'libcp1 {
    struct 'fmt[ptr'char[], len'usz, cap'usz, user-data'ref] {
-      f(f'fmt) @meta(f-reserve f noop) {
+      f(f'fmt) @meta(f-reserve f noop) @inline {
          f.init();
       }
-      f-reserve-cstr(fmt'this, str'char @const[], len'i32, f'f-cstr) {
+      f-reserve-cstr(fmt'this, str'char @const[], len'i32, f'f-cstr) @inline {
          fmt.cap += len;
          f.str = str;
          f.len = len;
       }
-      f-reserve-cstr(fmt'this, str'char @const[], len-full'i32, len'i32, f'f-cstr) {
+      f-reserve-cstr(fmt'this, str'char @const[], len-full'i32, len'i32, f'f-cstr) @inline {
          fmt.cap += len;
          f.str = str;
          f.len = len;
       }
-      f-reserve<i'f32>(fmt'this, f'f-f32) {
+      f-reserve<i'f32>(fmt'this, f'f-f32) @inline {
          fmt.cap += 64;
          f.f32 = i;
       }
-      f-reserve<i'f64>(fmt'this, f'f-f64) {
+      f-reserve<i'f64>(fmt'this, f'f-f64) @inline {
          fmt.cap += 128;
          f.f64 = i;
       }
-      f-reserve<i'i8>(fmt'this, f'f-i32) {
+      f-reserve<i'i8>(fmt'this, f'f-i32) @inline {
          fmt.cap += 4;
          f.i32 = i;
       }
-      f-reserve<i'i16>(fmt'this, f'f-i32) {
+      f-reserve<i'i16>(fmt'this, f'f-i32) @inline {
          fmt.cap += 6;
          f.i32 = i;
       }
-      f-reserve<i'i32>(fmt'this, f'f-i32) {
+      f-reserve<i'i32>(fmt'this, f'f-i32) @inline {
          fmt.cap += 11;
          f.i32 = i;
       }
-      f-reserve<i'intc>(fmt'this, f'f-i32) {
+      f-reserve<i'intc>(fmt'this, f'f-i32) @inline {
          fmt.cap += 11;
          f.i32 = i;
       }
-      f-reserve<u'u32>(base'u32-base, fmt'this, f'f-u32-base) {
+      f-reserve<u'u32>(base'u32-base, fmt'this, f'f-u32-base) @inline {
          f.base = base;
          if base == #oct {
             fmt.cap += 11;
@@ -49,64 +49,64 @@ using 'libcp1 {
          }
          f.u32 = u;
       }
-      f-reserve<u'u8>(fmt'this, f'f-u32) {
+      f-reserve<u'u8>(fmt'this, f'f-u32) @inline {
          fmt.cap += 3;
          f.u32 = u;
       }
-      f-reserve<u'u16>(fmt'this, f'f-u32) {
+      f-reserve<u'u16>(fmt'this, f'f-u32) @inline {
          fmt.cap += 5;
          f.u32 = u;
       }
-      f-reserve<u'u32>(fmt'this, f'f-u32) {
+      f-reserve<u'u32>(fmt'this, f'f-u32) @inline {
          fmt.cap += 10;
          f.u32 = u;
       }
-      f-reserve<u'u64>(fmt'this, f'f-u64) {
+      f-reserve<u'u64>(fmt'this, f'f-u64) @inline {
          fmt.cap += 20;
          f.u64 = u;
       }
-      f-reserve<c'char>(fmt'this, f'f-char) {
+      f-reserve<c'char>(fmt'this, f'f-char) @inline {
          f.char = c;
          fmt.cap += 1;
       }
-      f-reserve-arr<c'char @const[]>(fmt'this, f'f-cstr) {
+      f-reserve-arr<c'char @const[]>(fmt'this, f'f-cstr) @inline {
          f.str = c;
          f.len = 'c.strlen(c);
          fmt.cap += f.len;
       }
-      f-reserve-arr<c'char @const[]>(len'i32, fmt'this, f'f-cstr) {
+      f-reserve-arr<c'char @const[]>(len'i32, fmt'this, f'f-cstr) @inline {
          f.str = c;
          f.len = len;
          fmt.cap += len;
       }
-      f-reserve-noop(fmt'this) {
+      f-reserve-noop(fmt'this) @inline {
          fmt.realloc();
       }
-      f-noop(fmt'this) {
+      f-noop(fmt'this) @inline {
       }
       struct 'f-char[char'char] {
-         f(f'this, fmt'fmt) {
+         f(f'this, fmt'fmt) @inline {
             fmt.ptr[fmt.len++] = f.char;
          }
       }
       struct 'f-cstr[str'char @const[], len'usz] {
-         f(f'this, fmt'fmt) {
+         f(f'this, fmt'fmt) @inline {
             'c.memcpy(&fmt.ptr[fmt.len], f.str, f.len);
             fmt.len += f.len;
          }
       }
       struct 'f-f32[f32'f32] {
-         f(f'this, fmt'fmt) {
+         f(f'this, fmt'fmt) @inline {
             fmt.len += 'c.sprintf(&fmt.ptr[fmt.len], "%.9f", f.f32);
          }
       }
       struct 'f-f64[f64'f64] {
-         f(f'this, fmt'fmt) {
+         f(f'this, fmt'fmt) @inline {
             fmt.len += 'c.sprintf(&fmt.ptr[fmt.len], "%.17f", f.f64);
          }
       }
       struct 'f-u32[u32'u32] {
-         f(f'this, fmt'fmt) {
+         f(f'this, fmt'fmt) @inline {
             val! = f.u32;
             if val == 0 {
                fmt.ptr[fmt.len++] = ''0;
@@ -135,7 +135,7 @@ using 'libcp1 {
          }
       }
       struct 'f-u64[u64'u64] {
-         f(f'this, fmt'fmt) {
+         f(f'this, fmt'fmt) @inline {
             val! = f.u64;
             if val == 0 {
                fmt.ptr[fmt.len++] = ''0;
@@ -165,7 +165,7 @@ using 'libcp1 {
       }
       enum 'u32-base[#oct, #hex]'u8;
       struct 'f-u32-base[base'u32-base, u32'u32] {
-         f(f'this, fmt'fmt) {
+         f(f'this, fmt'fmt) @inline {
             val! = f.u32;
             if f.base == #oct {
                if val == 0 {
@@ -226,7 +226,7 @@ using 'libcp1 {
          }
       }
       struct 'f-i32[i32'i32] {
-         f(f'this, fmt'fmt) {
+         f(f'this, fmt'fmt) @inline {
             val! = f.i32;
             if val == 0 {
                fmt.ptr[fmt.len++] = ''0;
@@ -277,20 +277,12 @@ using 'libcp1 {
             }
          }
       }
-      init(fmt'this) {
-         fmt.len = 0;
-         fmt.cap = 0;
-         fmt.ptr = null;
-      }
-      realloc(fmt'this) {
-         fmt.ptr = 'c.realloc(fmt.ptr, fmt.cap);
-      }
    }
    #fmt{}
    meta #fmt {
       using 'libcp1 {
          using 'fmt {
-            f-reserve<u'usz>(fmt'this, f'f-u${D.cpubits}) {
+            f-reserve<u'usz>(fmt'this, f'f-u${D.cpubits}) @inline {
                fmt.cap += ${D.cpubits == 32 ? 10 : 20};
                f.u${D.cpubits} = u;
             }
