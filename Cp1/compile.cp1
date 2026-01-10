@@ -45,13 +45,6 @@ enum 'file[#nil = -1, #0]'i32 {
    path-len(f'this)'u16 @inline {
       return f.ptr().path-len;
    }
-   stdout-reserve(f'this, so'c1'stdout, p'c1'stdout-str) {
-      ptr! = f.ptr();
-      p.reserve(ptr.path, ptr.path-len, so);
-   }
-   jscode(f'this, jc'js-code) {
-      jscode-cstr(f.ptr().path);
-   }
 }
 struct 'file-data[
    path'char[],
@@ -1735,9 +1728,12 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                output{f.farg-v[j].decl.name}
             }
             output{") "}
-            output-bytes(&f.decl-str[2], f.decl-len - 2);
+            var r'rdr. = ?;
+            r.ref = f.decl-str;
+            r.pos += 2;
+            output{r.char, f.decl-len - 2}
          } else {
-            output-bytes(f.decl-str, f.decl-len);
+            output{f.decl-str, f.decl-len}
          }
          output{''\n}
          continue;
@@ -2010,4 +2006,15 @@ using 'func {
       v[f-idx >> 3] |= 1 << (f-idx & 7);
    }
 }
+}
+using 'libcp1 {
+   using 'fmt {
+      f-reserve<id'cp1'file>(fmt'this, f'f-cstr) @inline {
+         ptr! = id.ptr();
+         fmt.f-reserve-cstr(ptr.path, ptr.path-len, f);
+      }
+      // jscode(f'this, jc'js-code) {
+      //    jscode-cstr(f.ptr().path);
+      // }
+   }
 }

@@ -1,21 +1,5 @@
 using 'c = 'libc;
 using 'c1 = 'libcp1;
-using 'u32 {
-   jscode(val'this, jc'cp1'js-code) @inline {
-      'cp1.jscode-u32(val);
-   }
-}
-using 'char {
-   jscode(val'this, jc'cp1'js-code) @inline {
-      'cp1.jscode-char(val);
-   }
-   jscode-arr(str'this[], jc'cp1'js-code) @inline {
-      'cp1.jscode-bytes(str, 'c.strlen(str));
-   }
-   jscode-arr(str'this[], len'u32, jc'cp1'js-code) @inline {
-      'cp1.jscode-bytes(str, len);
-   }
-}
 using 'cp1 {
 using 'at {
    jscode-write-name(at-idx'this) {
@@ -122,46 +106,8 @@ jscode-char(val'char) @inline {
 jscode-cstr(str'char[]) @inline {
    jscode-bytes(str, 'c.strlen(str));
 }
-jscode(jc'js-code) @meta(jscode end) @inline {
-}
-jscode-u32(val'u32) {
-   jscode-reserve(10);
-   if val == 0 {
-      .jscode-buf-data[.jscode-buf-len++] = ''0;
-   } else {
-      // integer to string, count the digits
-      var data'char[];
-      data = &.jscode-buf-data[.jscode-buf-len];
-      digits! = 0;
-      loop {
-         data[digits++] = (val % 10) + ''0;
-         val /= 10;
-         if val == 0 { break }
-      }
-      // reverse the string
-      start! = 0;
-      end! = digits - 1;
-      loop start < end {
-         tmp! = data[start];
-         data[start] = data[end];
-         data[end] = tmp;
-         start++;
-         end--;
-      }
-      .jscode-buf-len += digits;
-   }
-}
-struct 'js-code[] {
-   jscode-cstr(jc'this, str'char[], len'u32) @inline {
-      jscode-bytes(str, len);
-   }
-   jscode-end(jc'this) @inline {
-   }
-}
-jscode-bytes(data'ref, size'usz) @inline {
-   jscode-reserve(size);
-   'c.memcpy(&.jscode-buf-data[.jscode-buf-len], data, size);
-   .jscode-buf-len += size;
+jscode(fmt'c1'fmt) @meta(f-reserve f jscode) {
+   fmt.cap = 0;
 }
 include-add(include-len'u8, include-str'char[])'include {
    found! = .include-map.get-or-insert(include-str, include-len, .include-c);
@@ -203,4 +149,16 @@ template-inst(ti'template-inst-data) {
       .template-inst-new-c++;
    }
 }
+}
+using 'libcp1 {
+   using 'fmt {
+      f-reserve-jscode(fmt'this) {
+         'cp1.jscode-reserve(fmt.cap);
+         fmt.len = 'cp1.jscode-buf-len;
+         fmt.ptr = 'cp1.jscode-buf-data;
+      }
+      f-jscode(fmt'this) {
+         'cp1.jscode-buf-len = fmt.len;
+      }
+   }
 }

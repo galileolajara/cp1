@@ -1,0 +1,277 @@
+require "LibC/stdlib.cp1";
+require "LibC/string.cp1";
+using 'c = 'libc;
+using 'libcp1 {
+   struct 'fmt[ptr'char[], len'usz, cap'usz] {
+      f(f'fmt) @meta(f-reserve f noop) {
+         f.init();
+      }
+      f-reserve-cstr(fmt'this, str'char @const[], len'i32, f'f-cstr) {
+         fmt.cap += len;
+         f.str = str;
+         f.len = len;
+      }
+      f-reserve-cstr(fmt'this, str'char @const[], len-full'i32, len'i32, f'f-cstr) {
+         fmt.cap += len;
+         f.str = str;
+         f.len = len;
+      }
+      f-reserve<i'f32>(fmt'this, f'f-f32) {
+         fmt.cap += 64;
+         f.f32 = i;
+      }
+      f-reserve<i'f64>(fmt'this, f'f-f64) {
+         fmt.cap += 128;
+         f.f64 = i;
+      }
+      f-reserve<i'i32>(fmt'this, f'f-i32) {
+         fmt.cap += 11;
+         f.i32 = i;
+      }
+      f-reserve<u'u32>(base'u32-base, fmt'this, f'f-u32-base) {
+         f.base = base;
+         if base == #oct {
+            fmt.cap += 11;
+         } else {
+            fmt.cap += 8;
+         }
+         f.u32 = u;
+      }
+      f-reserve<u'u8>(fmt'this, f'f-u32) {
+         fmt.cap += 3;
+         f.u32 = u;
+      }
+      f-reserve<u'u16>(fmt'this, f'f-u32) {
+         fmt.cap += 5;
+         f.u32 = u;
+      }
+      f-reserve<u'u32>(fmt'this, f'f-u32) {
+         fmt.cap += 10;
+         f.u32 = u;
+      }
+      f-reserve<u'u64>(fmt'this, f'f-u64) {
+         fmt.cap += 20;
+         f.u64 = u;
+      }
+      f-reserve<c'char>(fmt'this, f'f-char) {
+         f.char = c;
+         fmt.cap += 1;
+      }
+      f-reserve-arr<c'char[]>(fmt'this, f'f-cstr) {
+         f.str = c;
+         f.len = 'c.strlen(c);
+         fmt.cap += f.len;
+      }
+      f-reserve-arr<c'char[]>(len'i32, fmt'this, f'f-cstr) {
+         f.str = c;
+         f.len = len;
+         fmt.cap += len;
+      }
+      f-reserve-noop(fmt'this) {
+         fmt.realloc();
+      }
+      f-noop(fmt'this) {
+      }
+      struct 'f-char[char'char] {
+         f(f'this, fmt'fmt) {
+            fmt.ptr[fmt.len++] = f.char;
+         }
+      }
+      struct 'f-cstr[str'char @const[], len'usz] {
+         f(f'this, fmt'fmt) {
+            'c.memcpy(&fmt.ptr[fmt.len], f.str, f.len);
+            fmt.len += f.len;
+         }
+      }
+      struct 'f-f32[f32'f32] {
+         f(f'this, fmt'fmt) {
+            fmt.len += 'c.sprintf(&fmt.ptr[fmt.len], "%.9f", f.f32);
+         }
+      }
+      struct 'f-f64[f64'f64] {
+         f(f'this, fmt'fmt) {
+            fmt.len += 'c.sprintf(&fmt.ptr[fmt.len], "%.17f", f.f64);
+         }
+      }
+      struct 'f-u32[u32'u32] {
+         f(f'this, fmt'fmt) {
+            val! = f.u32;
+            if val == 0 {
+               fmt.ptr[fmt.len++] = ''0;
+            } else {
+               // integer to string, count the digits
+               var data'char[];
+               data = &fmt.ptr[fmt.len];
+               digits! = 0;
+               loop {
+                  data[digits++] = (val % 10) + ''0;
+                  val /= 10;
+                  if val == 0 { break }
+               }
+               // reverse the string
+               start! = 0;
+               end! = digits - 1;
+               loop start < end {
+                  tmp! = data[start];
+                  data[start] = data[end];
+                  data[end] = tmp;
+                  start++;
+                  end--;
+               }
+               fmt.len += digits;
+            }
+         }
+      }
+      struct 'f-u64[u64'u64] {
+         f(f'this, fmt'fmt) {
+            val! = f.u64;
+            if val == 0 {
+               fmt.ptr[fmt.len++] = ''0;
+            } else {
+               // integer to string, count the digits
+               var data'char[];
+               data = &fmt.ptr[fmt.len];
+               digits! = 0;
+               loop {
+                  data[digits++] = (val % 10) + ''0;
+                  val /= 10;
+                  if val == 0 { break }
+               }
+               // reverse the string
+               start! = 0;
+               end! = digits - 1;
+               loop start < end {
+                  tmp! = data[start];
+                  data[start] = data[end];
+                  data[end] = tmp;
+                  start++;
+                  end--;
+               }
+               fmt.len += digits;
+            }
+         }
+      }
+      enum 'u32-base[#oct, #hex]'u8;
+      struct 'f-u32-base[base'u32-base, u32'i32] {
+         f(f'this, fmt'fmt) {
+            val! = f.u32;
+            if f.base == #oct {
+               if val == 0 {
+                  fmt.ptr[fmt.len++] = ''0;
+               } else {
+                  // integer to string, count the digits
+                  var data'char[];
+                  data = &fmt.ptr[fmt.len];
+                  digits! = 0;
+                  loop {
+                     data[digits++] = (val % 8) + ''0;
+                     val /= 8;
+                     if val == 0 { break }
+                  }
+                  // reverse the string
+                  start! = 0;
+                  end! = digits - 1;
+                  loop start < end {
+                     tmp! = data[start];
+                     data[start] = data[end];
+                     data[end] = tmp;
+                     start++;
+                     end--;
+                  }
+                  fmt.len += digits;
+               }
+            } else {
+               if val == 0 {
+                  fmt.ptr[fmt.len++] = ''0;
+               } else {
+                  // integer to string, count the digits
+                  var data'char[];
+                  data = &fmt.ptr[fmt.len];
+                  digits! = 0;
+                  loop {
+                     n! = val % 16;
+                     if n < 10 {
+                        data[digits++] = n + ''0;
+                     } else {
+                        data[digits++] = (n - 10) + ''a;
+                     }
+                     val /= 16;
+                     if val == 0 { break }
+                  }
+                  // reverse the string
+                  start! = 0;
+                  end! = digits - 1;
+                  loop start < end {
+                     tmp! = data[start];
+                     data[start] = data[end];
+                     data[end] = tmp;
+                     start++;
+                     end--;
+                  }
+                  fmt.len += digits;
+               }
+            }
+         }
+      }
+      struct 'f-i32[i32'i32] {
+         f(f'this, fmt'fmt) {
+            val! = f.i32;
+            if val == 0 {
+               fmt.ptr[fmt.len++] = ''0;
+            } elif val'i32 < 0 {
+               val = -val;
+               fmt.ptr[fmt.len++] = ''-;
+               // integer to string, count the digits
+               var data'char[];
+               data = &fmt.ptr[fmt.len];
+               digits! = 0;
+               loop {
+                  data[digits++] = (val % 10) + ''0;
+                  val /= 10;
+                  if val == 0 { break }
+               }
+               // reverse the string
+               start! = 0;
+               end! = digits - 1;
+               loop start < end {
+                  tmp! = data[start];
+                  data[start] = data[end];
+                  data[end] = tmp;
+                  start++;
+                  end--;
+               }
+               fmt.len += digits;
+            } else {
+               // integer to string, count the digits
+               var data'char[];
+               data = &fmt.ptr[fmt.len];
+               digits! = 0;
+               loop {
+                  data[digits++] = (val % 10) + ''0;
+                  val /= 10;
+                  if val == 0 { break }
+               }
+               // reverse the string
+               start! = 0;
+               end! = digits - 1;
+               loop start < end {
+                  tmp! = data[start];
+                  data[start] = data[end];
+                  data[end] = tmp;
+                  start++;
+                  end--;
+               }
+               fmt.len += digits;
+            }
+         }
+      }
+      init(fmt'this) {
+         fmt.len = 0;
+         fmt.cap = 0;
+         fmt.ptr = null;
+      }
+      realloc(fmt'this) {
+         fmt.ptr = 'c.realloc(fmt.ptr, fmt.cap);
+      }
+   }
+}

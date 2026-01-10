@@ -79,12 +79,12 @@ using 'expr-i {
    write-str(expr'expr) @case.write() @inline {
       var e'expr-str = expr;
       n! = e.first;
-      loop {
-         output-reserve(n.len << 1);
-         n = n.next;
-         if n == null { break }
-      }
-      n = e.first;
+      // loop {
+      //    output-reserve(n.len << 1);
+      //    n = n.next;
+      //    if n == null { break }
+      // }
+      // n = e.first;
       loop {
          if n.macro {
             output{n.buf, n.len}

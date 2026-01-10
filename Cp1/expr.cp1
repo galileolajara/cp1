@@ -26,7 +26,7 @@ using 'stmt {
          var e'expr-str = expr;
          n! = e.first;
          loop {
-            output-bytes(n.buf, n.len);
+            output{n.buf, n.len}
             n = n.next;
             if n == null { break }
          }
@@ -98,15 +98,15 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
       // C1.stdout{"write-value v.ref = " ref ''\n}
       if v.paren {
          if ref <= 0 {
-            output-bytes("(&", 2);
+            output{"(&", 2}
          } else {
-            output-bytes("(*******************************", ref);
+            output{"(*******************************", ref}
          }
       } else {
          if ref <= 0 {
-            output-bytes("&", 1);
+            output{"&", 1}
          } elif ref > 1 {
-            output-bytes("*******************************", ref - 1);
+            output{"*******************************", ref - 1}
          }
       }
 
@@ -118,7 +118,7 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
       }
 
       if v.paren {
-         output-bytes(")", 1);
+         output{")", 1}
       }
       return true;
    }
