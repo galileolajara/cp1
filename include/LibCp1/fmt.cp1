@@ -24,6 +24,14 @@ using 'libcp1 {
          fmt.cap += 128;
          f.f64 = i;
       }
+      f-reserve<i'i8>(fmt'this, f'f-i32) {
+         fmt.cap += 4;
+         f.i32 = i;
+      }
+      f-reserve<i'i16>(fmt'this, f'f-i32) {
+         fmt.cap += 6;
+         f.i32 = i;
+      }
       f-reserve<i'i32>(fmt'this, f'f-i32) {
          fmt.cap += 11;
          f.i32 = i;
@@ -61,12 +69,12 @@ using 'libcp1 {
          f.char = c;
          fmt.cap += 1;
       }
-      f-reserve-arr<c'char[]>(fmt'this, f'f-cstr) {
+      f-reserve-arr<c'char @const[]>(fmt'this, f'f-cstr) {
          f.str = c;
          f.len = 'c.strlen(c);
          fmt.cap += f.len;
       }
-      f-reserve-arr<c'char[]>(len'i32, fmt'this, f'f-cstr) {
+      f-reserve-arr<c'char @const[]>(len'i32, fmt'this, f'f-cstr) {
          f.str = c;
          f.len = len;
          fmt.cap += len;
