@@ -179,7 +179,7 @@ meta #meta-read-write-process {
             if !e-method.angle {
                e-method.func-name = f.meta-method-cstr${i};
             } else {
-               e-idx2! = e-method.this;
+               e-idx2! = e-method.carg-v[0].expr;
                e-data2! = e-idx2.ptr();
                var val;
                if !e-idx2.value(1, true, val) {
