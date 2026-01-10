@@ -80,7 +80,7 @@ meta #meta-read-write-process {
 
             carg! = carg-v[j++];
             e-carg! = carg.ptr();
-            var group-v'u8[1];
+            var group-v'u8[2];
             var carg2-v'expr-i[256];
             if e-carg.type == #str {
                var e-str'expr-str = e-carg;
@@ -100,14 +100,15 @@ meta #meta-read-write-process {
                carg2-v[k] = lvars[i - 1];
                set-method(e-idx, lvar, #nil, false, 1, group-v, group-v[0], carg2-v);
             } else {
-               group-v[0] = 1 + (carg-c - 1) + 1;
+               group-v[0] = 1;
+               group-v[1] = 1 + (carg-c - 1);
                k! = 0;
+               carg2-v[k++] = carg;
                loop ; carg-c - 1 {
                   carg2-v[k++] = carg-v[j++];
                }
-               carg2-v[k++] = lvar;
                carg2-v[k] = lvars[i - 1];
-               set-method(e-idx, carg, #nil, false, 1, group-v, group-v[0], carg2-v);
+               set-method(e-idx, lvar, #nil, true, 2, group-v, group-v[0] + group-v[1], carg2-v);
             }
          }
          // Create an expression for meta-method-end1
@@ -167,12 +168,15 @@ meta #meta-read-write-process {
             var e-method'expr-method = e-idx.ptr();
 # if (i == 1) {
             if f.meta-method-prefix2 == #nil {
-               e-method.group-v[0]--;
+               if !e-method.angle {
+                  e-method.group-v[0]--;
+               } else {
+                  e-method.group-v[1]--;
+               }
                e-method.carg-c--;
             }
             var lvar'expr-lvar = e-method.this.ptr();
-            if (lvar.base.type == #lvar) && (lvar.lvar.ptr().decl.name == .id-blank) {
-               // C1.stdout{"constant string\n"}
+            if !e-method.angle {
                e-method.func-name = f.meta-method-cstr${i};
             } else {
                e-idx2! = e-method.this;
@@ -546,7 +550,7 @@ using 'expr-i {
                   }
                }
             } else {
-               loop i = 0; f.this-idx; i++ {
+               loop i = 0; f.group-v[0]; i++ {
                   type1! = type-v[i];
                   type2! = f.farg-v[i].decl.type.ptr();
                   if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
