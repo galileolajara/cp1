@@ -156,7 +156,7 @@ using 'libcp1 {
          }
       }
       enum 'u32-base[#oct, #hex]'u8;
-      struct 'f-u32-base[base'u32-base, u32'i32] {
+      struct 'f-u32-base[base'u32-base, u32'u32] {
          f(f'this, fmt'fmt) {
             val! = f.u32;
             if f.base == #oct {

@@ -733,7 +733,7 @@ double _Mf64;
 struct _Tlibcp1_Tfmt_Tf_u32_base;
 struct _Tlibcp1_Tfmt_Tf_u32_base {
 _Tlibcp1_Tfmt_Tu32_base _Mbase;
-int32_t _Mu32;
+uint32_t _Mu32;
 };
 struct _Tlibcp1_Tfmt_Tf_u64;
 struct _Tlibcp1_Tfmt_Tf_u64 {
@@ -15473,8 +15473,8 @@ if(_Lbase_1 == _Tlibcp1_Tfmt_Tu32_base_Coct) {
 (*_Lf_3)._Mu32 = _Lu_0;
 }
 void _Tlibcp1_Tfmt_Tf_u32_base_Ff_2(struct _Tlibcp1_Tfmt_Tf_u32_base* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
-int32_t _Lval_2;
-_Lval_2 = ((int32_t)((*_Lf_0)._Mu32));
+uint32_t _Lval_2;
+_Lval_2 = ((uint32_t)((*_Lf_0)._Mu32));
 if((*_Lf_0)._Mbase == _Tlibcp1_Tfmt_Tu32_base_Coct) {
 if(_Lval_2 == 0) {
 (*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen++] = '0';
@@ -15519,8 +15519,8 @@ int32_t _Lend_12;
 _Ldata_8 = ((void*)&(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen]);
 _Ldigits_9 = ((int32_t)(0));
 while(1) {
-int32_t _Ln_10;
-_Ln_10 = ((int32_t)((_Lval_2 % 16)));
+uint32_t _Ln_10;
+_Ln_10 = ((uint32_t)((_Lval_2 % 16)));
 if(_Ln_10 < 10) {
 _Ldata_8[_Ldigits_9++] = (_Ln_10 + '0');
 } else {
