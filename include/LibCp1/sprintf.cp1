@@ -17,7 +17,7 @@ using 'libcp1 {
          fmt.ptr = sf.mem;
       }
       f-sprintf-f(fmt'this) {
-         fmt.ptr[fmt.len++] = 0;
+         fmt.ptr[fmt.len] = 0;
          var sf'sprintf = fmt.user-data;
          sf.len = fmt.len;
       }
