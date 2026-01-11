@@ -18,7 +18,11 @@ using 'libcp1 {
          fmt.ptr = .stdout-buf-data;
       }
       f-stdout(fmt'this) @inline {
+         "#ifdef LIBCP1_ON_STDOUT";
+         "LIBCP1_ON_STDOUT(_Lfmt_0->_Mptr, _Lfmt_0->_Mlen);";
+         "#else";
          1'x'fd.write(fmt.ptr, fmt.len);
+         "#endif";
          .stdout-buf-len = 0;
       }
       f-reserve-stdbuf(fmt'this) @inline {
