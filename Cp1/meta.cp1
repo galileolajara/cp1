@@ -56,7 +56,15 @@ using 'at {
             jscode{'<"">}
          }
       }
-      jscode{",\n\tfunctionv:["}
+      jscode{",\n\tgvarv:["}
+      gvar-v! = at.gvar-v;
+      loop i = 0; at.gvar-c; i++ {
+         gvar! = gvar-v[i].ptr();
+         jscode{"\n\t\t{name:\"" gvar.decl.name "\",type:\""}
+         gvar.decl.type.jscode-write-name();
+         jscode{"\"},"}
+      }
+      jscode{"],\n\tfunctionv:["}
       loop i = 0; at.func-c; i++ {
          f-idx! = at.func-v[i];
          f! = f-idx.ptr();
