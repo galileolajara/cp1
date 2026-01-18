@@ -1151,7 +1151,7 @@ static inline void _Tcp1_Fwrite_func_2(union _Tcp1_Twtr* _Lw_0, bool _Lheader_1)
 static inline void _Tcp1_Fwrite_import_2(union _Tcp1_Twtr* _Lw_0, bool _Lheader_1);
 static inline void _Tcp1_Fwrite_template_code_2(union _Tcp1_Twtr* _Lw_0, bool _Lheader_1);
 static inline struct _Tlibcp1_Tsprintf* _Tlibcp1_Fsprintf_2(char* _Lbuf_0, struct _Tlibcp1_Tsprintf* _Lsf_1);
-void _Tlibcp1_Tsprintf_Ff_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
+static inline void _Tlibcp1_Tsprintf_Ff_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
 static inline void _Tlibcp1_Tfmt_Ff_reserve_Tintc_1_2(int _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2);
 static inline void _Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 static inline void _Tlibcp1_Tfmt_Tf_i32_Ff_2(struct _Tlibcp1_Tfmt_Tf_i32* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
@@ -2645,7 +2645,11 @@ memcpy(&(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen], (*_Lf_0)._Mstr, (*_Lf_0)._Mlen);
 (*_Lfmt_1)._Mlen += (*_Lf_0)._Mlen;
 }
 static inline void _Tlibcp1_Tfmt_Ff_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+#ifdef LIBCP1_ON_STDOUT
+LIBCP1_ON_STDOUT(_Lfmt_0->_Mptr, _Lfmt_0->_Mlen);
+#else
 write(((_Tposix_Tfd)(1)), (*_Lfmt_0)._Mptr, (*_Lfmt_0)._Mlen);
+#endif
 _Gstdout_buf_len = 0;
 }
 void* _Tcp1_Fread_file_5(char* _Lpath_0, int32_t _Ladd_before_1, int32_t _Ladd_after_2, size_t _Lmax_size_3, size_t* _Lout_size_4) {
@@ -4967,7 +4971,7 @@ static inline struct _Tlibcp1_Tsprintf* _Tlibcp1_Fsprintf_2(char* _Lbuf_0, struc
 struct _Tlibcp1_Tsprintf* ret_6_7 = _Lsf_1;
 return ret_6_7;
 }
-void _Tlibcp1_Tsprintf_Ff_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
+static inline void _Tlibcp1_Tsprintf_Ff_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
 (*_Lfmt_1)._Muser_data = _Lsf_0;
 }
 static inline void _Tlibcp1_Tfmt_Ff_reserve_Tintc_1_2(int _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2) {

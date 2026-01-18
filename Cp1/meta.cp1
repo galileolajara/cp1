@@ -36,6 +36,7 @@ using 'at {
       jscode{"],\n\ttype:"}
       at! = at-idx.ptr();
       var method-c, method-v;
+      var t;
       if at.type == #basic {
          t! = .basic-type[at.name.basic];
          method-c = t.method-c;
@@ -43,7 +44,7 @@ using 'at {
          jscode{'<"basic">}
       } else {
          if at.def == #struct {
-            t! = at.decl.structt.ptr();
+            t = at.decl.structt.ptr();
             method-c = t.method-c;
             method-v = t.method-v;
             jscode{'<"struct">}
@@ -63,6 +64,16 @@ using 'at {
          jscode{"\n\t\t{name:\"" gvar.decl.name "\",type:\""}
          gvar.decl.type.jscode-write-name();
          jscode{"\"},"}
+      }
+      if t != null {
+         jscode{"],\n\tmvarv:["}
+         fvar-v! = t.fvar-v;
+         loop i = 0; t.fvar-c; i++ {
+            fvar! = fvar-v[i];
+            jscode{"\n\t\t{name:\"" fvar.decl.name "\",type:\""}
+            fvar.decl.type.jscode-write-name();
+            jscode{"\"},"}
+         }
       }
       jscode{"],\n\tfunctionv:["}
       loop i = 0; at.func-c; i++ {

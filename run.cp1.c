@@ -61,7 +61,7 @@ static inline void _Tlibcp1_Tfmt_Tf_char_Ff_2(struct _Tlibcp1_Tfmt_Tf_char* _Lf_
 static inline void _Tlibcp1_Tfmt_Ff_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 void _Fget_compiler_2(char* _Lbin_0, char* _Lcompiler_1);
 static inline struct _Tlibcp1_Tsprintf* _Tlibcp1_Fsprintf_2(char* _Lbuf_0, struct _Tlibcp1_Tsprintf* _Lsf_1);
-void _Tlibcp1_Tsprintf_Ff_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
+static inline void _Tlibcp1_Tsprintf_Ff_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
 static inline void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(const char* _Lc_0, int32_t _Llen_1, struct _Tlibcp1_Tfmt* _Lfmt_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3);
 static inline void _Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 static inline void _Tlibcp1_Tfmt_Ff_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
@@ -441,7 +441,11 @@ static inline void _Tlibcp1_Tfmt_Tf_char_Ff_2(struct _Tlibcp1_Tfmt_Tf_char* _Lf_
 (*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen++] = (*_Lf_0)._Mchar;
 }
 static inline void _Tlibcp1_Tfmt_Ff_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+#ifdef LIBCP1_ON_STDOUT
+LIBCP1_ON_STDOUT(_Lfmt_0->_Mptr, _Lfmt_0->_Mlen);
+#else
 write(((_Tposix_Tfd)(1)), (*_Lfmt_0)._Mptr, (*_Lfmt_0)._Mlen);
+#endif
 _Gstdout_buf_len = 0;
 }
 void _Fget_compiler_2(char* _Lbin_0, char* _Lcompiler_1) {
@@ -585,7 +589,7 @@ static inline struct _Tlibcp1_Tsprintf* _Tlibcp1_Fsprintf_2(char* _Lbuf_0, struc
 struct _Tlibcp1_Tsprintf* ret_6_7 = _Lsf_1;
 return ret_6_7;
 }
-void _Tlibcp1_Tsprintf_Ff_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
+static inline void _Tlibcp1_Tsprintf_Ff_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
 (*_Lfmt_1)._Muser_data = _Lsf_0;
 }
 static inline void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(const char* _Lc_0, int32_t _Llen_1, struct _Tlibcp1_Tfmt* _Lfmt_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3) {
