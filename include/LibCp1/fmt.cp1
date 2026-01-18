@@ -277,6 +277,58 @@ using 'libcp1 {
             }
          }
       }
+      struct 'f-i64[i64'i64] {
+         f(f'this, fmt'fmt) @inline {
+            val! = f.i64;
+            if val == 0 {
+               fmt.ptr[fmt.len++] = ''0;
+            } elif val'i64 < 0 {
+               val = -val;
+               fmt.ptr[fmt.len++] = ''-;
+               // integer to string, count the digits
+               var data'char[];
+               data = &fmt.ptr[fmt.len];
+               digits! = 0;
+               loop {
+                  data[digits++] = (val % 10) + ''0;
+                  val /= 10;
+                  if val == 0 { break }
+               }
+               // reverse the string
+               start! = 0;
+               end! = digits - 1;
+               loop start < end {
+                  tmp! = data[start];
+                  data[start] = data[end];
+                  data[end] = tmp;
+                  start++;
+                  end--;
+               }
+               fmt.len += digits;
+            } else {
+               // integer to string, count the digits
+               var data'char[];
+               data = &fmt.ptr[fmt.len];
+               digits! = 0;
+               loop {
+                  data[digits++] = (val % 10) + ''0;
+                  val /= 10;
+                  if val == 0 { break }
+               }
+               // reverse the string
+               start! = 0;
+               end! = digits - 1;
+               loop start < end {
+                  tmp! = data[start];
+                  data[start] = data[end];
+                  data[end] = tmp;
+                  start++;
+                  end--;
+               }
+               fmt.len += digits;
+            }
+         }
+      }
    }
    #fmt{}
    meta #fmt {
@@ -285,6 +337,10 @@ using 'libcp1 {
             f-reserve<u'usz>(fmt'this, f'f-u${D.cpubits}) @inline {
                fmt.cap += ${D.cpubits == 32 ? 10 : 20};
                f.u${D.cpubits} = u;
+            }
+            f-reserve<i'isz>(fmt'this, f'f-i${D.cpubits}) @inline {
+               fmt.cap += ${D.cpubits == 32 ? 11 : 21};
+               f.i${D.cpubits} = i;
             }
          }
       }
