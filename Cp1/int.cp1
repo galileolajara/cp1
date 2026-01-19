@@ -1,43 +1,43 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
-using 'cp1 {
-enum 'expr-int[#i32, #u32, #f32, #oct, #hex, #u64, #f64]'u8;
-expr-int(value'i32, type'expr-int)'expr-i {
-   var e'expr-int-data;
+using `c = `libc;
+using `c1 = `libcp1;
+using `cp1 {
+enum `expr-int[#i32, #u32, #f32, #oct, #hex, #u64, #f64]`u8;
+expr-int(value`i32, type`expr-int)`expr-i {
+   var e`expr-int-data;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #int);
    e.value.i32 = value;
    e.type = type;
    return e-idx;
 }
-expr-int64(value'i64, type'expr-int)'expr-i {
-   var e'expr-int-data;
+expr-int64(value`i64, type`expr-int)`expr-i {
+   var e`expr-int-data;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #int);
    e.value.u64 = value;
    e.type = type;
    return e-idx;
 }
-expr-f32(value'f32)'expr-i {
-   var e'expr-int-data;
+expr-f32(value`f32)`expr-i {
+   var e`expr-int-data;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #int);
    e.value.f32 = value;
    e.type = #f32;
    return e-idx;
 }
-expr-f64(value'f64)'expr-i {
-   var e'expr-int-data;
+expr-f64(value`f64)`expr-i {
+   var e`expr-int-data;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #int);
    e.value.f64 = value;
    e.type = #f64;
    return e-idx;
 }
-using 'expr-i {
-   wr-int(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      var e'expr-int-data = expr;
-      w.n1(e.type'base);
+using `expr-i {
+   wr-int(expr`expr, w`wtr, header`bool) @case.wr() @inline {
+      var e`expr-int-data = expr;
+      w.n1(e.type`base);
       switch e.type {
          case #i32 {
             w.i(e.value.i32);
@@ -56,11 +56,11 @@ using 'expr-i {
          }
       }
    }
-   rd-int(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      var e'expr-int-data;
+   rd-int(e-idx`expr-i, r`rdr) @case.rd() @inline {
+      var e`expr-int-data;
       quick-alloc-one(e);
       e-idx.set(e.base, #int);
-      e.type = r.n1()'expr-int;
+      e.type = r.n1()`expr-int;
       switch e.type {
          case #i32 {
             e.value.i32 = r.i();
@@ -80,8 +80,8 @@ using 'expr-i {
          }
       }
    }
-   write-int(expr'expr) @case.write() @inline {
-      var e'expr-int-data = expr;
+   write-int(expr`expr) @case.write() @inline {
+      var e`expr-int-data = expr;
       switch e.type {
          case #i32 {
             output{e.value.i32}
@@ -106,11 +106,11 @@ using 'expr-i {
          }
       }
    }
-   process-int(expr'expr, ok'bool&) @case.process() @inline {
+   process-int(expr`expr, ok`bool&) @case.process() @inline {
       ok = true;
    }
-   type-int(expr'expr, at'at&) @case.type() @inline {
-      var e'expr-int-data = expr;
+   type-int(expr`expr, at`at&) @case.type() @inline {
+      var e`expr-int-data = expr;
       switch e.type {
          case #i32 {
             at = basic-type(#i32);
@@ -129,8 +129,8 @@ using 'expr-i {
          }
       }
    }
-   value-int(le'this, ref'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      var e'expr-int-data = le.ptr();
+   value-int(le`this, ref`i32, paren`bool, v`value, ok`bool&) @case.value() @inline {
+      var e`expr-int-data = le.ptr();
       switch e.type {
          case #i32 {
             v.type = basic-type(#i32);

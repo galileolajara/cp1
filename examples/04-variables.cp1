@@ -1,38 +1,38 @@
 require "LibCp1/stdout.cp1";
 
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+using `c = `libc;
+using `c1 = `libcp1;
 
-struct 'struct[x'i32, y'i32] {
-   init(s'this) {
+struct `struct[x`i32, y`i32] {
+   init(s`this) {
       s.x = 0;
       s.y = 0;
    }
 }
 
-main()'intc {
+main()`intc {
    an-integer! = 1;
-   var also-an-integer'i32 = 8;
+   var also-an-integer`i32 = 8;
 
-   var pointer-to-struct'struct;
-   pointer-to-struct = 'c.malloc('struct['usz]); // allocate the struct on heap
+   var pointer-to-struct`struct;
+   pointer-to-struct = `c.malloc(`struct[`usz]); // allocate the struct on heap
 
-   var pointer-to-another-struct'struct;
-   'c.malloc-one(pointer-to-another-struct); // malloc-one automatically computes the size needed
+   var pointer-to-another-struct`struct;
+   `c.malloc-one(pointer-to-another-struct); // malloc-one automatically computes the size needed
 
-   var struct-in-the-stack'struct.; // notice the dot '.' symbol, means allocated on the stack
+   var struct-in-the-stack`struct.; // notice the dot '.' symbol, means allocated on the stack
    struct-in-the-stack.x = 7;
 
    // Array of structs, and NOT an array of pointer to structs
-   var structs'struct.[];
-   'c.malloc-arr(structs, 7); // allocates 7 structs
+   var structs`struct.[];
+   `c.malloc-arr(structs, 7); // allocates 7 structs
 
    // No '.' symbol after "Struct" means Array of POINTERs to structs
-   var pointer-to-structs'struct[];
-   'c.malloc-arr(pointer-to-structs, 7); // which means allocate 7 pointers to struct
-   'c.malloc-one(pointer-to-structs[0]); // allocate the first struct
+   var pointer-to-structs`struct[];
+   `c.malloc-arr(pointer-to-structs, 7); // which means allocate 7 pointers to struct
+   `c.malloc-one(pointer-to-structs[0]); // allocate the first struct
 
-   'struct.init(another-struct-in-the-stack!);
-   'c1.stdout{"This must be zero and zero: " another-struct-in-the-stack.x ", " another-struct-in-the-stack.y ''\n}
+   `struct.init(another-struct-in-the-stack!);
+   `c1.stdout{"This must be zero and zero: " another-struct-in-the-stack.x ", " another-struct-in-the-stack.y ''\n}
    return 0;
 }

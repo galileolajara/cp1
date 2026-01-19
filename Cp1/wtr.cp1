@@ -1,47 +1,47 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
-using 'cp1 {
-union 'wtr[
-   ref'ref,
-   pos'usz,
-   p1'u8[],
-   p2'u16[],
-   p4'u32[],
-   p8'u64[],
-   f4'f32[],
-   f8'f64[],
+using `c = `libc;
+using `c1 = `libcp1;
+using `cp1 {
+union `wtr[
+   ref`ref,
+   pos`usz,
+   p1`u8[],
+   p2`u16[],
+   p4`u32[],
+   p8`u64[],
+   f4`f32[],
+   f8`f64[],
    ] {
-   n1(w'this, n'u8) @inline {
+   n1(w`this, n`u8) @inline {
       w.p1[0] = n;
       w.pos++;
    }
-   n2(w'this, n'u32) @inline {
+   n2(w`this, n`u32) @inline {
       w.p2[0] = n;
       w.pos += 2;
    }
-   n4(w'this, n'u32) @inline {
+   n4(w`this, n`u32) @inline {
       w.p4[0] = n;
       w.pos += 4;
    }
-   f4(w'this, n'f32) @inline {
+   f4(w`this, n`f32) @inline {
       w.f4[0] = n;
       w.pos += 4;
    }
-   f8(w'this, n'f64) @inline {
+   f8(w`this, n`f64) @inline {
       w.f8[0] = n;
       w.pos += 8;
    }
    include "num.c" {
-      n(w'this, n'u32) @real-name(Fputnum) @no-decl;
-      i(w'this, n'i32) @real-name(Fputint) @no-decl;
-      N(w'this, n'u64) @real-name(Fputlnum) @no-decl;
-      I(w'this, n'i64) @real-name(Fputlint) @no-decl;
+      n(w`this, n`u32) @real-name(Fputnum) @no-decl;
+      i(w`this, n`i32) @real-name(Fputint) @no-decl;
+      N(w`this, n`u64) @real-name(Fputlnum) @no-decl;
+      I(w`this, n`i64) @real-name(Fputlint) @no-decl;
    }
-   copy(w'this, data'ref, size'i32) @inline {
-      'c.memcpy(w.ref, data, size);
+   copy(w`this, data`ref, size`i32) @inline {
+      `c.memcpy(w.ref, data, size);
       w.pos += size;
    }
-   b(w'this, val'bool) @inline {
+   b(w`this, val`bool) @inline {
       if val { w.n1(1) }
        else { w.n1(0) }
    }

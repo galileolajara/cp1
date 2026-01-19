@@ -1,15 +1,15 @@
-using 'c1 = 'libcp1;
-using 'cp1 {
-enum 'compare[#eq, #not-eq, #lt, #le, #gt, #ge]'u8 {
-   wr(e'this, w'wtr) @inline {
-      w.n1(e'base);
+using `c1 = `libcp1;
+using `cp1 {
+enum `compare[#eq, #not-eq, #lt, #le, #gt, #ge]`u8 {
+   wr(e`this, w`wtr) @inline {
+      w.n1(e`base);
    }
-   rd(e'this&, r'rdr) @inline {
-      e = r.n1()'compare;
+   rd(e`this&, r`rdr) @inline {
+      e = r.n1()`compare;
    }
 }
-expr-compare(left'expr-i, right'expr-i, type'compare)'expr-i {
-   var e'expr-compare;
+expr-compare(left`expr-i, right`expr-i, type`compare)`expr-i {
+   var e`expr-compare;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #compare);
    e.left = left;
@@ -17,23 +17,23 @@ expr-compare(left'expr-i, right'expr-i, type'compare)'expr-i {
    e.type = type;
    return e-idx;
 }
-using 'expr-i {
-   wr-compare(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      var e'expr-compare = expr;
+using `expr-i {
+   wr-compare(expr`expr, w`wtr, header`bool) @case.wr() @inline {
+      var e`expr-compare = expr;
       e.left.wr(w, header);
       e.right.wr(w, header);
       e.type.wr(w);
    }
-   rd-compare(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      var e'expr-compare;
+   rd-compare(e-idx`expr-i, r`rdr) @case.rd() @inline {
+      var e`expr-compare;
       quick-alloc-one(e);
       e-idx.set(e.base, #compare);
       e.left.rd(r);
       e.right.rd(r);
       e.type.rd(r);
    }
-   write-compare(expr'expr) @case.write() @inline {
-      var e'expr-compare = expr;
+   write-compare(expr`expr) @case.write() @inline {
+      var e`expr-compare = expr;
       e.left.write-value(e.left-val);
       if e.is-overload { return }
       switch e.type {
@@ -46,8 +46,8 @@ using 'expr-i {
       }
       e.right.write-value(e.right-val);
    }
-   value-compare(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      var expr'expr-compare = e.ptr();
+   value-compare(e`this, ref`i8, paren`bool, v`value, ok`bool&) @case.value() @inline {
+      var expr`expr-compare = e.ptr();
       if expr.is-overload {
          ok = expr.left.value(ref, paren, v);
          return;
@@ -61,16 +61,16 @@ using 'expr-i {
       v.paren = paren;
       ok = true;
    }
-   type-compare(expr'expr, at'at&) @case.type() @inline {
-      var e'expr-compare = expr;
+   type-compare(expr`expr, at`at&) @case.type() @inline {
+      var e`expr-compare = expr;
       if e.is-overload {
          at = e.left.type();
          return;
       }
       at = basic-type(#bool);
    }
-   process-compare(expr'expr, ok'bool&) @case.process() @inline {
-      var e'expr-compare = expr;
+   process-compare(expr`expr, ok`bool&) @case.process() @inline {
+      var e`expr-compare = expr;
       left-type! = e.left.type();
       left-type-ptr! = left-type.ptr();
       e.right.try-deduce(left-type);
@@ -82,12 +82,12 @@ using 'expr-i {
             f! = f-idx.ptr();
             loop {
                if f.farg-v[1].decl.type == e-right-type {
-                  e-method! = 'expr-i.alloc();
-                  var group-v'u8[1];
+                  e-method! = `expr-i.alloc();
+                  var group-v`u8[1];
                   group-v[0] = 2;
-                  var carg-v'expr-i[2];
+                  var carg-v`expr-i[2];
                   carg-v[0] = e.right;
-                  e-cvar! = 'expr-i.alloc();
+                  e-cvar! = `expr-i.alloc();
                   var id-op;
                   switch e.type {
                      case #eq { id-op = .id-eq }
@@ -121,19 +121,19 @@ using 'expr-i {
                   f2! = f2-idx.ptr();
                   loop {
                      if f2.farg-v[0].decl.type == e-right-type {
-                        e-func! = 'expr-i.alloc();
-                        var group-v'u8[1];
+                        e-func! = `expr-i.alloc();
+                        var group-v`u8[1];
                         group-v[0] = 1;
-                        var carg-v'expr-i[1];
+                        var carg-v`expr-i[1];
                         carg-v[0] = e.right;
                         set-func(e-func, f2.at, f2.decl.name, false, 1, group-v, 1, carg-v);
                         if true {
-                           e-method! = 'expr-i.alloc();
-                           var group-v'u8[1];
+                           e-method! = `expr-i.alloc();
+                           var group-v`u8[1];
                            group-v[0] = 2;
-                           var carg-v'expr-i[2];
+                           var carg-v`expr-i[2];
                            carg-v[0] = e-func;
-                           e-cvar! = 'expr-i.alloc();
+                           e-cvar! = `expr-i.alloc();
                            var id-op;
                            switch e.type {
                               case #eq { id-op = .id-eq }
@@ -173,16 +173,16 @@ using 'expr-i {
          return;
       }
       if !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), e.right-val.type, e.right-val.info.star-c + e.right-val.type.pointer()) {
-         'c1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the comparison operator '"}
+         `c1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the comparison operator '"}
          switch e.type {
-            case #eq { 'c1.stdbuf{"=="} }
-            case #not-eq { 'c1.stdbuf{"!="} }
-            case #lt { 'c1.stdbuf{"<"} }
-            case #le { 'c1.stdbuf{"<="} }
-            case #gt { 'c1.stdbuf{">"} }
-            case #ge { 'c1.stdbuf{">="} }
+            case #eq { `c1.stdbuf{"=="} }
+            case #not-eq { `c1.stdbuf{"!="} }
+            case #lt { `c1.stdbuf{"<"} }
+            case #le { `c1.stdbuf{"<="} }
+            case #gt { `c1.stdbuf{">"} }
+            case #ge { `c1.stdbuf{">="} }
          }
-         'c1.stdout{"'\n"}
+         `c1.stdout{"'\n"}
          return;
       }
       ok = true;

@@ -1,431 +1,431 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
-using 'cp1 {
-struct 'at-map[data'u64[(#hash-table-size + 7) >> 3]] {
-   init(m'this);
-   get-or-insert(m'this, parent'at, type'name-type, name'id, val'i32)'i32 {
-      return m.get-or-insert(parent'u32 | (type'u32 << 30), name, val);
+using `c = `libc;
+using `c1 = `libcp1;
+using `cp1 {
+struct `at-map[data`u64[(#hash-table-size + 7) >> 3]] {
+   init(m`this);
+   get-or-insert(m`this, parent`at, type`name-type, name`id, val`i32)`i32 {
+      return m.get-or-insert(parent`u32 | (type`u32 << 30), name, val);
    }
-   get-or-insert(m'this, parent-and-type'u32, name'id, val'i32)'i32;
+   get-or-insert(m`this, parent-and-type`u32, name`id, val`i32)`i32;
 }
-struct 'map[data'u64[(#hash-table-size + 7) >> 3]] {
-   init(m'this);
-   get-or-insert(m'this, str'char[], len'u8, val'i32)'i32;
+struct `map[data`u64[(#hash-table-size + 7) >> 3]] {
+   init(m`this);
+   get-or-insert(m`this, str`char[], len`u8, val`i32)`i32;
 }
-enum 'overload[#nil, #get, #set, #assign, #math, #bools, #compare, #if-begin, #if-else, #if-end, #statement]'u8;
-crc32c(crc32c'u32, data'ref, size'u32)'u32 @real-name;
-var id-map'map.;
-var include-map'map.;
-var at-map'at-map.;
+enum `overload[#nil, #get, #set, #assign, #math, #bools, #compare, #if-begin, #if-else, #if-end, #statement]`u8;
+crc32c(crc32c`u32, data`ref, size`u32)`u32 @real-name;
+var id-map`map.;
+var include-map`map.;
+var at-map`at-map.;
 meta #build-common-codes {
-   using 'cp1 {
-      struct 'struct-data[
+   using `cp1 {
+      struct `struct-data[
 #  if (arg.compile) {
-         file'file,
+         file`file,
 #  }
-         begin-row'u32,
-         begin-col'u32,
-         end-row'u32,
-         end-col'u32,
-         include'include,
-         at'at,
-         flags'struct-flags,
-         real-name'id,
+         begin-row`u32,
+         begin-col`u32,
+         end-row`u32,
+         end-col`u32,
+         include`include,
+         at`at,
+         flags`struct-flags,
+         real-name`id,
 #  if (arg.compile) {
-         method-c'i32,
-         method-cap'i32,
-         method-v'func[],
+         method-c`i32,
+         method-cap`i32,
+         method-v`func[],
 #  }
-         aligned'u32,
-         fvar-c'u32,
-         fvar-v'fvar-data.[0],
+         aligned`u32,
+         fvar-c`u32,
+         fvar-v`fvar-data.[0],
       ];
-      struct 'stmt-if[
-         base'stmt.,
-         expr'expr-i,
+      struct `stmt-if[
+         base`stmt.,
+         expr`expr-i,
 #  if (arg.compile) {
-         val'value.,
-         is-overload'bool,
-         overload-type'at,
-#  }
-      ];
-      struct 'stmt-if-elif[
-         base'stmt.,
-         expr'expr-i,
-#  if (arg.compile) {
-         expr-else'expr-i,
-         val'value.,
-         is-overload'bool,
+         val`value.,
+         is-overload`bool,
+         overload-type`at,
 #  }
       ];
-      struct 'stmt-if-else[
-         base'stmt.,
+      struct `stmt-if-elif[
+         base`stmt.,
+         expr`expr-i,
 #  if (arg.compile) {
-         if-begin'stmt-if,
-         expr'expr-i,
+         expr-else`expr-i,
+         val`value.,
+         is-overload`bool,
 #  }
       ];
-      struct 'stmt-if-end[
-         base'stmt.,
+      struct `stmt-if-else[
+         base`stmt.,
 #  if (arg.compile) {
-         if-begin'stmt-if,
-         expr'expr-i,
+         if-begin`stmt-if,
+         expr`expr-i,
 #  }
       ];
-      struct 'stmt-switch[
-         base'stmt.,
-         expr'expr-i,
+      struct `stmt-if-end[
+         base`stmt.,
 #  if (arg.compile) {
-         val'value.,
-#  }
-         cases'expr-i,
-#  if (arg.compile) {
-         case-func-c'u32,
-         case-func-v'stmt-switch-case-func.[],
+         if-begin`stmt-if,
+         expr`expr-i,
 #  }
       ];
-      struct 'stmt-case-item[
-         expr'expr-i,
+      struct `stmt-switch[
+         base`stmt.,
+         expr`expr-i,
 #  if (arg.compile) {
-         val'value.,
+         val`value.,
+#  }
+         cases`expr-i,
+#  if (arg.compile) {
+         case-func-c`u32,
+         case-func-v`stmt-switch-case-func.[],
 #  }
       ];
-      using 'lvar {
+      struct `stmt-case-item[
+         expr`expr-i,
 #  if (arg.compile) {
-         ptr(l'this)'lvar-data @inline {
+         val`value.,
+#  }
+      ];
+      using `lvar {
+#  if (arg.compile) {
+         ptr(l`this)`lvar-data @inline {
             return .ctx-func.lvar-v[l];
          }
-         name(l'this)'id @inline {
+         name(l`this)`id @inline {
             return l.ptr().decl.name;
          }
 #  }
 #  if (!arg.compile) {
-         ptr(l'this)'lvar-data @inline {
+         ptr(l`this)`lvar-data @inline {
             return .ctx-func.lvar-v[l];
          }
-         name(l'this)'id @inline {
+         name(l`this)`id @inline {
             return l.ptr().decl.name;
          }
 #  }
       }
-      struct 'enum-data[
+      struct `enum-data[
 #  if (arg.compile) {
-         file'file,
+         file`file,
 #  }
-         begin-row'u32,
-         begin-col'u32,
-         end-row'u32,
-         end-col'u32,
-         include'include,
-         at'at,
-         base-type'at,
-         flags'enum-flags,
-         soa-field-gvar-at'at,
-         soa-field-gvar-id'id,
-         real-name'id,
+         begin-row`u32,
+         begin-col`u32,
+         end-row`u32,
+         end-col`u32,
+         include`include,
+         at`at,
+         base-type`at,
+         flags`enum-flags,
+         soa-field-gvar-at`at,
+         soa-field-gvar-id`id,
+         real-name`id,
 #  if (arg.compile) {
-         method-c'i32,
-         method-cap'i32,
-         method-v'func[],
-         overload-get-last'func,
-         overload-set-last'func,
-         overload-math-last'func,
-         overload-bools-last'func,
-         overload-compare-last'func,
-         overload-if-begin'func,
-         overload-if-else'func,
-         overload-if-end'func,
-         overload-statement'func,
-#  }
-      ];
-      struct 'expr-compare[
-         base'expr.,
-         left'expr-i,
-         right'expr-i,
-         type'compare,
-#  if (arg.compile) {
-         left-val'value.,
-         right-val'value.,
-         is-overload'bool,
+         method-c`i32,
+         method-cap`i32,
+         method-v`func[],
+         overload-get-last`func,
+         overload-set-last`func,
+         overload-math-last`func,
+         overload-bools-last`func,
+         overload-compare-last`func,
+         overload-if-begin`func,
+         overload-if-else`func,
+         overload-if-end`func,
+         overload-statement`func,
 #  }
       ];
-      struct 'expr-assign[
-         base'expr.,
-         left'expr-i,
-         right'expr-i,
-         type'assign,
+      struct `expr-compare[
+         base`expr.,
+         left`expr-i,
+         right`expr-i,
+         type`compare,
 #  if (arg.compile) {
-         left-val'value.,
-         right-val'value.,
-         is-overload'bool,
+         left-val`value.,
+         right-val`value.,
+         is-overload`bool,
 #  }
-         is-stmt'bool,
       ];
-      struct 'expr-lvar[
-         base'expr.,
-         lvar'lvar,
+      struct `expr-assign[
+         base`expr.,
+         left`expr-i,
+         right`expr-i,
+         type`assign,
+#  if (arg.compile) {
+         left-val`value.,
+         right-val`value.,
+         is-overload`bool,
+#  }
+         is-stmt`bool,
+      ];
+      struct `expr-lvar[
+         base`expr.,
+         lvar`lvar,
 // #  if (!arg.compile) {
-         decl'bool,
+         decl`bool,
 // #  }
       ];
-      struct 'expr-index[
-         base'expr.,
-         left'expr-i,
-         right'expr-i,
+      struct `expr-index[
+         base`expr.,
+         left`expr-i,
+         right`expr-i,
 #  if (arg.compile) {
-         left-val'value.,
-         right-val'value.,
+         left-val`value.,
+         right-val`value.,
 #  }
       ];
-      struct 'expr-math-item[
-         expr'expr-i,
+      struct `expr-math-item[
+         expr`expr-i,
 #  if (arg.compile) {
-         val'value.,
+         val`value.,
 #  }
       ];
-      struct 'expr-math[
-         base'expr.,
-         left'expr-i,
-         right'expr-i,
-         type'math,
+      struct `expr-math[
+         base`expr.,
+         left`expr-i,
+         right`expr-i,
+         type`math,
 #  if (arg.compile) {
-         left-val'value.,
-         right-val'value.,
-         is-overload'bool,
+         left-val`value.,
+         right-val`value.,
+         is-overload`bool,
 #  }
-         item-c'u8,
+         item-c`u8,
 #  if (!arg.compile) {
-         item-cap'u8,
+         item-cap`u8,
 #  }
-         item-v'expr-math-item.[],
+         item-v`expr-math-item.[],
       ];
-      struct 'expr-bools-item[
-         expr'expr-i,
+      struct `expr-bools-item[
+         expr`expr-i,
 #  if (arg.compile) {
-         val'value.,
+         val`value.,
 #  }
       ];
-      struct 'expr-bools[
-         base'expr.,
-         left'expr-i,
-         right'expr-i,
-         type'bools,
+      struct `expr-bools[
+         base`expr.,
+         left`expr-i,
+         right`expr-i,
+         type`bools,
 #  if (arg.compile) {
-         left-val'value.,
-         right-val'value.,
-         is-overload'bool,
+         left-val`value.,
+         right-val`value.,
+         is-overload`bool,
 #  }
-         item-c'u8,
+         item-c`u8,
 #  if (!arg.compile) {
-         item-cap'u8,
+         item-cap`u8,
 #  }
-         item-v'expr-bools-item.[],
+         item-v`expr-bools-item.[],
       ];
-      struct 'expr-fvar[
-         base'expr.,
-         expr'expr-i,
-         member'id,
+      struct `expr-fvar[
+         base`expr.,
+         expr`expr-i,
+         member`id,
 #  if (arg.compile) {
-         fvar'fvar,
-         val'value.,
+         fvar`fvar,
+         val`value.,
 #  }
       ];
-      struct 'expr-soa-field[
-         base'expr.,
-         expr'expr-i,
-         group'id,
-         field'id,
+      struct `expr-soa-field[
+         base`expr.,
+         expr`expr-i,
+         group`id,
+         field`id,
 #  if (arg.compile) {
-         expr2'expr-i,
-         val'value.,
+         expr2`expr-i,
+         val`value.,
 #  }
       ];
-      struct 'expr-cvar[
-         base'expr.,
-         at'at,
-         name'id,
+      struct `expr-cvar[
+         base`expr.,
+         at`at,
+         name`id,
 #  if (arg.compile) {
-         cvar'cvar,
-         try'at,
+         cvar`cvar,
+         try`at,
 #  }
       ];
-      struct 'expr-ref[
-         base'expr.,
-         expr'expr-i,
+      struct `expr-ref[
+         base`expr.,
+         expr`expr-i,
 #  if (arg.compile) {
-         val'value.,
+         val`value.,
 #  }
       ];
-      struct 'expr-unary[
-         base'expr.,
-         expr'expr-i,
-         type'unary,
+      struct `expr-unary[
+         base`expr.,
+         expr`expr-i,
+         type`unary,
 #  if (arg.compile) {
-         val'value.,
+         val`value.,
 #  }
       ];
-      struct 'expr-cast-fast[
-         base'expr.,
-         expr'expr-i,
-         type'at,
+      struct `expr-cast-fast[
+         base`expr.,
+         expr`expr-i,
+         type`at,
 #  if (arg.compile) {
-         val'value.,
+         val`value.,
 #  }
       ];
-      struct 'expr-gvar[
-         base'expr.,
+      struct `expr-gvar[
+         base`expr.,
 #  if (!arg.compile) {
-         at'at,
-         name'id,
+         at`at,
+         name`id,
 #  }
 #  if (arg.compile) {
-         gvar'gvar,
+         gvar`gvar,
 #  }
       ];
-      struct 'decl-gvar[
+      struct `decl-gvar[
 #  if (arg.compile) {
-         file'file,
+         file`file,
 #  }
-         row'u32,
-         col'u32,
-         include'include,
-         at'at,
-         flags'gvar-flags,
-         decl'decl-var-data.,
+         row`u32,
+         col`u32,
+         include`include,
+         at`at,
+         flags`gvar-flags,
+         decl`decl-var-data.,
       ];
-      struct 'cvar-data[
+      struct `cvar-data[
 #  if (arg.compile) {
-         file'file,
+         file`file,
 #  }
-         row'u32,
-         col'u32,
-         include'include,
-         at'at,
-         flags'cvar-flags,
+         row`u32,
+         col`u32,
+         include`include,
+         at`at,
+         flags`cvar-flags,
          // real-name:Id,
-         decl'decl-var-data.,
-         expr-set'expr-i,
-         last-cvar'cvar,
+         decl`decl-var-data.,
+         expr-set`expr-i,
+         last-cvar`cvar,
       ];
-      struct 'decl-var-data[
-         name'id,
-         type'at,
-         flags'var-flags,
-         real-name'id,
-         type-info'type-info.,
-         size-c'u8,
-         size-expr-v'expr-i[],
+      struct `decl-var-data[
+         name`id,
+         type`at,
+         flags`var-flags,
+         real-name`id,
+         type-info`type-info.,
+         size-c`u8,
+         size-expr-v`expr-i[],
 #  if (arg.compile) {
-         size-value-v'value.[],
+         size-value-v`value.[],
 #  }
       ];
-      struct 'carg[
-         ref'i8,
-         expr'expr-i,
+      struct `carg[
+         ref`i8,
+         expr`expr-i,
 #  if (arg.compile) {
-         value'value.,
+         value`value.,
 #  }
       ];
-      struct 'expr-func[
-         base'expr.,
-         at'at,
-         func-name'id,
-         angle'bool,
+      struct `expr-func[
+         base`expr.,
+         at`at,
+         func-name`id,
+         angle`bool,
 #  if (arg.compile) {
-         func-idx'func,
+         func-idx`func,
 #  }
-         group-c'u8,
-         group-v'u8[#expr-carg-group-limit],
-         carg-c'u8,
-         carg-v'carg.[0],
+         group-c`u8,
+         group-v`u8[#expr-carg-group-limit],
+         carg-c`u8,
+         carg-v`carg.[0],
       ];
-      struct 'expr-meta-func[
-         base'expr.,
+      struct `expr-meta-func[
+         base`expr.,
 #  if (!arg.compile) {
-         at'at,
-         func-name'id,
-         lvar'expr-i,
-         lvars'expr-i[],
-         group-c'u8,
-         group-v'u8[#expr-carg-group-limit],
-         carg-c'u8,
-         carg-v'carg.[0],
+         at`at,
+         func-name`id,
+         lvar`expr-i,
+         lvars`expr-i[],
+         group-c`u8,
+         group-v`u8[#expr-carg-group-limit],
+         carg-c`u8,
+         carg-v`carg.[0],
 #  }
 #  if (arg.compile) {
-         expr-c'u8,
-         expr-v'expr-i[0],
+         expr-c`u8,
+         expr-v`expr-i[0],
 #  }
       ];
-      struct 'expr-meta-method[
-         base'expr.,
+      struct `expr-meta-method[
+         base`expr.,
 #  if (!arg.compile) {
-         this'expr-i,
-         func-name'id,
-         lvar'expr-i,
-         lvars'expr-i[],
-         group-c'u8,
-         group-v'u8[#expr-carg-group-limit],
-         carg-c'u8,
-         carg-v'carg.[0],
+         this`expr-i,
+         func-name`id,
+         lvar`expr-i,
+         lvars`expr-i[],
+         group-c`u8,
+         group-v`u8[#expr-carg-group-limit],
+         carg-c`u8,
+         carg-v`carg.[0],
 #  }
 #  if (arg.compile) {
-         expr-c'u8,
-         expr-v'expr-i[0],
+         expr-c`u8,
+         expr-v`expr-i[0],
 #  }
       ];
-      struct 'expr-method[
-         base'expr.,
-         this'expr-i,
-         func-name'id,
-         angle'bool,
+      struct `expr-method[
+         base`expr.,
+         this`expr-i,
+         func-name`id,
+         angle`bool,
 #  if (arg.compile) {
-         func-idx'func,
-         this-value'value.,
+         func-idx`func,
+         this-value`value.,
 #  }
-         group-c'u8,
-         group-v'u8[#expr-carg-group-limit],
-         carg-c'u8,
-         carg-v'carg.[0],
+         group-c`u8,
+         group-v`u8[#expr-carg-group-limit],
+         carg-c`u8,
+         carg-v`carg.[0],
       ];
-      struct 'decl-func[
+      struct `decl-func[
 #  if (arg.compile) {
-         process-next'func,
-         file'file,
+         process-next`func,
+         file`file,
 #  }
-         begin-row'u32,
-         begin-col'u32,
-         end-row'u32,
-         end-col'u32,
-         include'include,
-         at'at,
-         angle'bool,
+         begin-row`u32,
+         begin-col`u32,
+         end-row`u32,
+         end-col`u32,
+         include`include,
+         at`at,
+         angle`bool,
          // name:Id,
-         flags'func-flags,
-         real-name'id,
-         meta-method-prefix1'id,
-         meta-method-prefix2'id,
+         flags`func-flags,
+         real-name`id,
+         meta-method-prefix1`id,
+         meta-method-prefix2`id,
 #  if (arg.compile) {
-         meta-method-arr1'id,
-         meta-method-cstr1'id,
-         meta-method-arr2'id,
-         meta-method-cstr2'id,
-         meta-method-end1'id,
-         meta-method-end2'id,
-         list1-prev'func,
+         meta-method-arr1`id,
+         meta-method-cstr1`id,
+         meta-method-arr2`id,
+         meta-method-cstr2`id,
+         meta-method-end1`id,
+         meta-method-end2`id,
+         list1-prev`func,
 #  } else {
-         meta-method-end'id,
+         meta-method-end`id,
 #  }
-         decl-str'char[],
-         decl-len'i32,
-         overload'overload,
-         cas'id,
+         decl-str`char[],
+         decl-len`i32,
+         overload`overload,
+         cas`id,
          // type:At,
-         decl'decl-var-data.,
+         decl`decl-var-data.,
 #  if (!arg.compile) {
-         stmt-space'stmt-space,
+         stmt-space`stmt-space,
 #  }
 #  if (arg.compile) {
-         stmt-space'stmt-space.,
+         stmt-space`stmt-space.,
 #  }
       //    stmt-c:u32,
       // #  if (arg.compile) {
@@ -433,83 +433,83 @@ meta #build-common-codes {
       // #  }
       //    stmt-v:Stmt[],
 #  if (arg.compile) {
-         lvar-c'lvar,
+         lvar-c`lvar,
          // lvar-cap:Lvar,
-         lvar-v'lvar-data.[],
+         lvar-v`lvar-data.[],
          // lvar-name-v:Id[],
-         body-file-pos'u32,
+         body-file-pos`u32,
 #  }
 #  if (!arg.compile) {
-         lvar-c'lvar,
-         lvar-cap'lvar,
-         lvar-v'lvar-data[],
+         lvar-c`lvar,
+         lvar-cap`lvar,
+         lvar-v`lvar-data[],
 #  }
-         this-idx'i8,
-         this-group'i8,
-         group-c'i8,
-         group-v'i8[#expr-carg-group-limit],
-         farg-c'u8,
-         farg-v'farg.[0],
+         this-idx`i8,
+         this-group`i8,
+         group-c`i8,
+         group-v`i8[#expr-carg-group-limit],
+         farg-c`u8,
+         farg-v`farg.[0],
       ];
-      struct 'at-data[
-         type'name-type,
-         parent'at,
-         name'at-name.,
+      struct `at-data[
+         type`name-type,
+         parent`at,
+         name`at-name.,
 #  if (arg.compile) {
-         func-c'i32,
-         func-cap'i32,
-         func-v'func[],
-         gvar-c'i32,
-         gvar-cap'i32,
-         gvar-v'gvar[],
-         cvar-c'i32,
-         cvar-cap'i32,
-         cvar-v'cvar[],
-         decl'at-type.,
-         def'at-def,
-#  }
-      ];
-      struct 'template-code-data[
-         code'u8[],
-         code-len'u32,
-         code-crc32c'u32,
-         name'id,
-         at'at,
-         row'u32,
-         line-c'u32,
-         with-reflection'bool,
-         no-cache'bool,
-#  if (arg.compile) {
-         file'file,
+         func-c`i32,
+         func-cap`i32,
+         func-v`func[],
+         gvar-c`i32,
+         gvar-cap`i32,
+         gvar-v`gvar[],
+         cvar-c`i32,
+         cvar-cap`i32,
+         cvar-v`cvar[],
+         decl`at-type.,
+         def`at-def,
 #  }
       ];
-      struct 'template-inst-data[
-         arg'char[],
-         arg-len'u32,
-         arg-crc32c'u32,
-         name'id,
-         at'at,
-         row'u32,
-         col'u32,
+      struct `template-code-data[
+         code`u8[],
+         code-len`u32,
+         code-crc32c`u32,
+         name`id,
+         at`at,
+         row`u32,
+         line-c`u32,
+         with-reflection`bool,
+         no-cache`bool,
 #  if (arg.compile) {
-         file'file,
-         require'bool,
+         file`file,
+#  }
+      ];
+      struct `template-inst-data[
+         arg`char[],
+         arg-len`u32,
+         arg-crc32c`u32,
+         name`id,
+         at`at,
+         row`u32,
+         col`u32,
+#  if (arg.compile) {
+         file`file,
+         require`bool,
 #  }
       ];
    }
 }
-var quick-alloc-c'i32;
-var quick-alloc-cap'i32;
-var quick-alloc-v'ref;
+var quick-alloc-c`i32;
+var quick-alloc-cap`i32;
+var quick-alloc-v`ref;
 quick-alloc-init() {
    .quick-alloc-cap = 4 * 1024;
-   .quick-alloc-v = 'c.malloc(.quick-alloc-cap);
-   'c.memset(.quick-alloc-v, 0, .quick-alloc-cap);
+   .quick-alloc-v = `c.malloc(.quick-alloc-cap);
+   `c.memset(.quick-alloc-v, 0, .quick-alloc-cap);
 }
-quick-alloc(size'i32)'ref @real-name(qalloc) {
+quick-alloc(size`i32)`ref @real-name(qalloc) {
    if size > 1024 {
-      mem! = 'c.malloc(size);
-      'c.memset(mem, 0, size);
+      mem! = `c.malloc(size);
+      `c.memset(mem, 0, size);
       return mem;
    }
    // mem! = C.malloc(size);
@@ -522,7 +522,7 @@ quick-alloc(size'i32)'ref @real-name(qalloc) {
       // size = (size + 3) & (-1 ^ 3);
    // }
    if size <= (.quick-alloc-cap - .quick-alloc-c) {
-      var r'rdr.;
+      var r`rdr.;
       r.ref = .quick-alloc-v;
       r.pos += .quick-alloc-c;
       .quick-alloc-c += size;
@@ -533,13 +533,13 @@ quick-alloc(size'i32)'ref @real-name(qalloc) {
    if .quick-alloc-cap > (64 * 1024) {
       .quick-alloc-cap = 64 * 1024;
    }
-   .quick-alloc-v = 'c.malloc(.quick-alloc-cap);
-   'c.memset(.quick-alloc-v, 0, .quick-alloc-cap);
+   .quick-alloc-v = `c.malloc(.quick-alloc-cap);
+   `c.memset(.quick-alloc-v, 0, .quick-alloc-cap);
    // C1.stdout{"expanding to " .quick-alloc-cap ''\n}
    .quick-alloc-c = size;
    return .quick-alloc-v;
 }
-quick-alloc-undo(size'i32) @real-name(qalloc_undo) {
+quick-alloc-undo(size`i32) @real-name(qalloc_undo) {
    // if ref[usz] == 8 {
       size = (size + 7) & (-1 ^ 7);
    // } else {
@@ -547,54 +547,54 @@ quick-alloc-undo(size'i32) @real-name(qalloc_undo) {
    // }
    .quick-alloc-c -= size;
 }
-quick-alloc-one(r'ref)
+quick-alloc-one(r`ref)
    @no-body
    @decl('<# r = qalloc(sizeof(r[0]))>)
    @inline {
    quick-alloc(0);
 }
-quick-alloc-arr(r'ref, c'i32)
+quick-alloc-arr(r`ref, c`i32)
    @no-body
    @decl('<# r = qalloc(sizeof(r[0]) * (c))>)
    @inline {
    quick-alloc(0);
 }
-quick-alloc-plus(r'ref, plus'i32)
+quick-alloc-plus(r`ref, plus`i32)
    @no-body
    @decl('<# r = qalloc(sizeof(r[0]) + plus)>)
    @inline {
    quick-alloc(0);
 }
-malloc(r'ref)
+malloc(r`ref)
    @no-body
    @decl('<# r = malloc(sizeof(r[0])); memset(r, 0, sizeof(r[0]))>)
    @inline {
-   'c.malloc(0);
+   `c.malloc(0);
 }
-malloc-arr(r'ref, c'i32)
+malloc-arr(r`ref, c`i32)
    @no-body
    @decl('<# r = malloc(sizeof(r[0]) * (c)); memset(r, 0, sizeof(r[0]) * (c))>)
    @inline {
-   'c.malloc(0);
+   `c.malloc(0);
 }
-realloc(r'ref, c'i32, oldc'i32)
+realloc(r`ref, c`i32, oldc`i32)
    @no-body
    @decl('<# r = realloc(r, sizeof(r[0]) * (c)); memset(r + (oldc), 0, sizeof(r[0]) * ((c) - (oldc)))>)
    @inline {
-   'c.realloc(null, 0);
+   `c.realloc(null, 0);
 }
 include "num.c" {
-   grow(cap'i32, c'i32)
+   grow(cap`i32, c`i32)
       @decl('<# cap = Fpow2gteq((c) + 8)>);
-   grow(c'i32)'i32
+   grow(c`i32)`i32
       @decl('<# Fpow2gteq((c) + 8)>);
 }
-#decl-at-name-limit'i32 = 3;
-union 'at-name[id'id, basic'basic-type-id];
-union 'at-type[structt'struct, enumm'enum];
-enum 'at-def[#undefined, #module, #struct, #enum, #basic]'u8;
-using 'at-data {
-   init(at'this, type'name-type, parent'at, name'id) {
+#decl-at-name-limit`i32 = 3;
+union `at-name[id`id, basic`basic-type-id];
+union `at-type[structt`struct, enumm`enum];
+enum `at-def[#undefined, #module, #struct, #enum, #basic]`u8;
+using `at-data {
+   init(at`this, type`name-type, parent`at, name`id) {
       at.type = type;
       at.parent = parent;
       at.name.id = name;
@@ -608,25 +608,25 @@ using 'at-data {
       at.def = #undefined;
    }
 }
-enum 'name-type[#module, #struct-enum, #basic]'u8 {
-   rd(i'this&, r'rdr) @inline {
-      i = r.n1()'name-type;
+enum `name-type[#module, #struct-enum, #basic]`u8 {
+   rd(i`this&, r`rdr) @inline {
+      i = r.n1()`name-type;
    }
-   wr(i'this, w'wtr) @inline {
-      w.n1(i'base);
+   wr(i`this, w`wtr) @inline {
+      w.n1(i`base);
    }
-   cp1-name(e'this)'char[] @cp1-name;
+   cp1-name(e`this)`char[] @cp1-name;
 }
-var at-c'at;
-var at-cap'at;
-var at-v'at-data.[];
-enum 'at[#nil = -1, #root, #relative]'i32 {
-   finalize(at-i'this, ti'type-info, row'u32, col'u32)'bool {
+var at-c`at;
+var at-cap`at;
+var at-v`at-data.[];
+enum `at[#nil = -1, #root, #relative]`i32 {
+   finalize(at-i`this, ti`type-info, row`u32, col`u32)`bool {
       at! = at-i.ptr();
       if at.def == #struct {
          if ti.built-in {
             if ti.ref-v[0] != 0 {
-               'c1.stdout{.ctx-func.file '': row '': col ": Can't use dot symbol '.' because type '" at.name.id "' has reference\n"}
+               `c1.stdout{.ctx-func.file '': row '': col ": Can`t use dot symbol '.' because type '" at.name.id "' has reference\n"}
                return false;
             }
             ti.ref-v[0] = -1;
@@ -638,26 +638,26 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
          }
       } else {
          if ti.built-in {
-            'c1.stdout{.ctx-func.file '': row '': col ": Can't use dot symbol '.' because type '" at.name.id "' is not a struct\n"}
+            `c1.stdout{.ctx-func.file '': row '': col ": Can`t use dot symbol '.' because type '" at.name.id "' is not a struct\n"}
             return false;
          }
       }
       return true;
    }
-   output(at-i'this, file'file, row'u32, col'u32) {
+   output(at-i`this, file`file, row`u32, col`u32) {
       at! = at-i.ptr();
       switch at.type {
          case #struct-enum {
             if at.def == #struct {
                if at.decl.structt == #nil {
-                  'c1.stdout{file '': row '': col ": Error, struct '/" at.name.id "' was not defined\n"}
-                  'c.exit(#failure);
+                  `c1.stdout{file '': row '': col ": Error, struct '/" at.name.id "' was not defined\n"}
+                  `c.exit(#failure);
                }
                at.decl.structt.output();
             } elif at.def == #enum {
                if at.decl.enumm == #nil {
-                  'c1.stdout{file '': row '': col ": Error, enum '\\" at.name.id "' was not defined\n"}
-                  'c.exit(#failure);
+                  `c1.stdout{file '': row '': col ": Error, enum '\\" at.name.id "' was not defined\n"}
+                  `c.exit(#failure);
                }
                at.decl.enumm.output();
             }
@@ -698,7 +698,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
          // }
       }
    }
-   write-type-info(td'this, ti'type-info, add'i32)'bool {
+   write-type-info(td`this, ti`type-info, add`i32)`bool {
       if ti.const {
          output{"const "}
       }
@@ -710,24 +710,24 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
       }
       return true;
    }
-   count-stars(td'this, ti'type-info)'i32 {
+   count-stars(td`this, ti`type-info)`i32 {
       if td == #root {
          return td.count-stars0(ti) + 1;
       } else {
          return td.count-stars0(ti);
       }
    }
-   pointer(td'this)'i32 @inline {
+   pointer(td`this)`i32 @inline {
       if td.ptr().def == #struct {
          return 1;
       } else {
          return 0;
       }
    }
-   count-stars0(td'this, ti'type-info)'i32 {
+   count-stars0(td`this, ti`type-info)`i32 {
       return ti.star-c + td.pointer();
    }
-   write-type(td'this)'bool {
+   write-type(td`this)`bool {
       td.write();
 //    if td.typeType == #value {
 //       if td.real.baseDecl == null {
@@ -754,54 +754,54 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
 //    }
       return true;
    }
-   ptr(i'this)'at-data @inline {
+   ptr(i`this)`at-data @inline {
       return .at-v[i];
    }
-   rd(i'this&, r'rdr) @inline {
-      idx! = (r.n() - 1)'at;
+   rd(i`this&, r`rdr) @inline {
+      idx! = (r.n() - 1)`at;
       if idx == #nil {
          i = #nil;
       } else {
          i = .at-table[idx];
       }
    }
-   put-to-header(at'this) {
-      if (.at-in-header-v[at'base >> 3] & (1 << (at'base & 7))) == 0 {
-         .at-in-header-v[at'base >> 3] |= 1 << (at'base & 7);
+   put-to-header(at`this) {
+      if (.at-in-header-v[at`base >> 3] & (1 << (at`base & 7))) == 0 {
+         .at-in-header-v[at`base >> 3] |= 1 << (at`base & 7);
          .at-in-header-idx-v[at] = .at-in-header-c;
-         .at-in-header-at-v[.at-in-header-c++] = at'base;
+         .at-in-header-at-v[.at-in-header-c++] = at`base;
          if (&&, at != #root, at != #relative) {
             at.ptr().parent.put-to-header();
          }
       }
    }
-   wr-header(id'this, w'wtr) @inline {
+   wr-header(id`this, w`wtr) @inline {
       if id == #nil {
          w.n(0);
       } else {
          w.n(1 + .at-in-header-idx-v[id]);
       }
    }
-   wr(at'this, w'wtr) @inline {
+   wr(at`this, w`wtr) @inline {
       if at == #nil {
          w.n(0);
       } else {
          w.n(1 + at);
       }
    }
-   wr(at'this, w'wtr, header'bool) @inline {
+   wr(at`this, w`wtr, header`bool) @inline {
       if at == #nil {
          w.n(0);
       } else {
          if header {
             w.n(1 + .at-in-header-idx-v[at]);
          } else {
-            w.n(1 + at'base);
+            w.n(1 + at`base);
             at.put-to-header();
          }
       }
    }
-   write(at-idx'this) {
+   write(at-idx`this) {
       at! = at-idx.ptr();
       switch at.type {
          // case #module {
@@ -904,7 +904,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
          }
       }
    }
-   write-space(at-idx'this) {
+   write-space(at-idx`this) {
       at! = at-idx.ptr();
       switch at.type {
          // case #module {
@@ -976,35 +976,35 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
    }
 }
 
-enum 'include-error[#none, #suffix, #absolute, #dot-slash, #slash, #double-slash, #cp1, #space]'u8 {
-   print(e'this, path'include) {
+enum `include-error[#none, #suffix, #absolute, #dot-slash, #slash, #double-slash, #cp1, #space]`u8 {
+   print(e`this, path`include) {
       switch e {
          case #suffix {
-            'c1.stdout{''\' path "' must end with .cp1\n"}
+            `c1.stdout{''\' path "' must end with .cp1\n"}
          }
          case #absolute {
-            'c1.stdout{''\' path "' is an absolute path. Please use relative paths.\n"}
+            `c1.stdout{''\' path "' is an absolute path. Please use relative paths.\n"}
          }
          case #dot-slash {
-            'c1.stdout{''\' path "' must not contain './' character sequence.\n"}
+            `c1.stdout{''\' path "' must not contain './' character sequence.\n"}
          }
          case #slash {
-            'c1.stdout{''\' path "' must not contain '\\' character.\n"}
+            `c1.stdout{''\' path "' must not contain '\\' character.\n"}
          }
          case #double-slash {
-            'c1.stdout{''\' path "' must not contain '//' character sequence.\n"}
+            `c1.stdout{''\' path "' must not contain '//' character sequence.\n"}
          }
          case #cp1 {
-            'c1.stdout{''\' path "' must not contain '.cp1' character sequence except as a suffix.\n"}
+            `c1.stdout{''\' path "' must not contain '.cp1' character sequence except as a suffix.\n"}
          }
          case #space {
-            'c1.stdout{''\' path "' must not contain a space character.\n"}
+            `c1.stdout{''\' path "' must not contain a space character.\n"}
          }
       }
    }
 }
-enum 'include[#nil = -1, #0]'i32 {
-   validate(path'this, err'include-error&)'bool {
+enum `include[#nil = -1, #0]`i32 {
+   validate(path`this, err`include-error&)`bool {
       str! = path.str();
       len! = path.len();
       if (len >= 4) && (str[len - 4] == ''.) && (str[len - 3] == ''c) && (str[len - 2] == ''p) && (str[len - 1] == ''1) {
@@ -1049,25 +1049,25 @@ enum 'include[#nil = -1, #0]'i32 {
       }
       return true;
    }
-   str(i'this)'char[] @inline {
+   str(i`this)`char[] @inline {
       return .include-str-v[i];
    }
-   len(i'this)'u8 @inline {
+   len(i`this)`u8 @inline {
       return .include-len-v[i];
    }
-   wr(i'this, w'wtr) @inline {
-      w.n(i'base + 1);
+   wr(i`this, w`wtr) @inline {
+      w.n(i`base + 1);
    }
-   rd(i'this&, r'rdr) @inline {
-      idx! = (r.n() - 1)'include;
+   rd(i`this&, r`rdr) @inline {
+      idx! = (r.n() - 1)`include;
       if idx == #nil {
          i = #nil;
       } else {
          i = .include-table[idx];
       }
    }
-   output(this'this) @inline {
-      num! = this'u32;
+   output(this`this) @inline {
+      num! = this`u32;
       n3! = num >> 3;
       n17! = 1 << (num & 7);
       if (.include-is-outputted[n3] & n17) != 0 { return }
@@ -1075,22 +1075,22 @@ enum 'include[#nil = -1, #0]'i32 {
       .include-outputted-v[.include-outputted-c++] = this;
    }
 }
-var id-c'i32;
-var id-cap'i32;
-var id-str-v'char[][];
-var id-len-v'u8[];
-var id-c-name-v'char[][];
-var include-c'i32;
-var include-cap'i32;
-var include-str-v'char[][];
-var include-len-v'u8[];
-var func-main'func;
-enum 'id[#nil = -1, #0]'i32 {
-   jscode(id'this, jc'js-code) @inline {
+var id-c`i32;
+var id-cap`i32;
+var id-str-v`char[][];
+var id-len-v`u8[];
+var id-c-name-v`char[][];
+var include-c`i32;
+var include-cap`i32;
+var include-str-v`char[][];
+var include-len-v`u8[];
+var func-main`func;
+enum `id[#nil = -1, #0]`i32 {
+   jscode(id`this, jc`js-code) @inline {
       jscode-bytes(id.str(), id.len());
    }
-   c-name(id'this)'char[] {
-      var c-name'char[] = .id-c-name-v[id];
+   c-name(id`this)`char[] {
+      var c-name`char[] = .id-c-name-v[id];
       if c-name != null { return c-name }
       len! = .id-len-v[id];
       str! = .id-str-v[id];
@@ -1106,44 +1106,44 @@ enum 'id[#nil = -1, #0]'i32 {
       c-name[len] = ''\0;
       return c-name;
    }
-   str(id'this)'char[] @inline {
+   str(id`this)`char[] @inline {
       return .id-str-v[id];
    }
-   len(id'this)'u8 @inline {
+   len(id`this)`u8 @inline {
       return .id-len-v[id];
    }
-   wr-header(id'this, w'wtr) @inline {
+   wr-header(id`this, w`wtr) @inline {
       if id == #nil {
          w.n(0);
       } else {
          w.n(1 + .id-in-header-idx-v[id]);
       }
    }
-   wr(id'this, w'wtr) @inline {
+   wr(id`this, w`wtr) @inline {
       if id == #nil {
          w.n(0);
       } else {
          w.n(1 + id);
       }
    }
-   wr(id'this, w'wtr, header'bool) @inline {
+   wr(id`this, w`wtr, header`bool) @inline {
       if id == #nil {
          w.n(0);
       } else {
          if header {
             w.n(1 + .id-in-header-idx-v[id]);
          } else {
-            w.n(1 + id'base);
-            if (.id-in-header-v[id'base >> 3] & (1 << (id'base & 7))) == 0 {
-               .id-in-header-v[id'base >> 3] |= 1 << (id'base & 7);
+            w.n(1 + id`base);
+            if (.id-in-header-v[id`base >> 3] & (1 << (id`base & 7))) == 0 {
+               .id-in-header-v[id`base >> 3] |= 1 << (id`base & 7);
                .id-in-header-idx-v[id] = .id-in-header-c;
-               .id-in-header-id-v[.id-in-header-c++] = id'base;
+               .id-in-header-id-v[.id-in-header-c++] = id`base;
             }
          }
       }
    }
-   rd(id'this&, r'rdr) @inline {
-      idx! = (r.n() - 1)'id;
+   rd(id`this&, r`rdr) @inline {
+      idx! = (r.n() - 1)`id;
       if idx == #nil {
          id = #nil;
       } else {
@@ -1151,26 +1151,26 @@ enum 'id[#nil = -1, #0]'i32 {
       }
    }
 }
-var template-code-v'template-code-data.[];
-var template-code-cap'template-code;
-var template-code-c'template-code;
-enum 'template-code[]'u32; 
-var template-inst-v'template-inst-data.[];
-var template-inst-cap'template-inst;
-var template-inst-c'template-inst;
-enum 'template-inst[]'u32; 
+var template-code-v`template-code-data.[];
+var template-code-cap`template-code;
+var template-code-c`template-code;
+enum `template-code[]`u32; 
+var template-inst-v`template-inst-data.[];
+var template-inst-cap`template-inst;
+var template-inst-c`template-inst;
+enum `template-inst[]`u32; 
 
 }
-using 'libcp1 {
-   using 'fmt {
-      f-reserve<i'cp1'include>(fmt'this, f'f-cstr) {
-         fmt.f-reserve-cstr('cp1.include-str-v[i], 'cp1.include-len-v[i], f);
+using `libcp1 {
+   using `fmt {
+      f-reserve<i`cp1`include>(fmt`this, f`f-cstr) {
+         fmt.f-reserve-cstr(`cp1.include-str-v[i], `cp1.include-len-v[i], f);
       }
    }
 }
-using 'libcp1 {
-   using 'fmt {
-      f-reserve<id'cp1'id>(fmt'this, f'f-cstr) @inline {
+using `libcp1 {
+   using `fmt {
+      f-reserve<id`cp1`id>(fmt`this, f`f-cstr) @inline {
          fmt.f-reserve-cstr(id.str(), id.len(), f);
       }
    }

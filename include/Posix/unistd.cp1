@@ -8,23 +8,23 @@ include [
 #include <process.h>
 #endif
 ] {
-   using 'x = 'posix;
-   using 'posix {
-      using 'fd {
-         seek(fd'this, offset'usz, seek'seek)'isz @no-decl(lseek);
-         read(fd'this, buf'ref, size'usz)'isz @no-decl @real-name;
-         close(fd'this)'intc @no-decl @real-name;
-         write(fd'this, buf'ref, size'usz)'isz @no-decl @real-name;
+   using `x = `posix;
+   using `posix {
+      using `fd {
+         seek(fd`this, offset`usz, seek`seek)`isz @no-decl(lseek);
+         read(fd`this, buf`ref, size`usz)`isz @no-decl @real-name;
+         close(fd`this)`intc @no-decl @real-name;
+         write(fd`this, buf`ref, size`usz)`isz @no-decl @real-name;
       }
-      enum 'seek[
+      enum `seek[
          #set @no-decl(SEEK_SET),
          #end @no-decl(SEEK_END),
-      ]'intc;
-      seek(fd'intc, offset'usz, seek'seek)'usz @no-decl(lseek);
-      mkstemp(template'char[])'fd @no-decl @real-name;
-      getcwd(buf'char[], size'usz)'char[] @no-decl @real-name;
-      getpid()'intc @no-decl @real-name;
-      unlink(path'char[])'intc @no-decl @real-name;
-      sleep(seconds'u32)'u32 @no-decl @real-name;
+      ]`intc;
+      seek(fd`intc, offset`usz, seek`seek)`usz @no-decl(lseek);
+      mkstemp(template`char[])`fd @no-decl @real-name;
+      getcwd(buf`char[], size`usz)`char[] @no-decl @real-name;
+      getpid()`intc @no-decl @real-name;
+      unlink(path`char[])`intc @no-decl @real-name;
+      sleep(seconds`u32)`u32 @no-decl @real-name;
    }
 }

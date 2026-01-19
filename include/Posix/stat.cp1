@@ -1,15 +1,15 @@
 require "LibC/time.cp1";
 include <sys/stat.h> {
-   using 'c = 'libc;
-   using 'x = 'posix;
-   using 'posix {
-      struct 'stat[
-         mtimespec'c'timespec. @real-name(st_mtimespec),
-         mtim'c'timespec. @real-name(st_mtim),
+   using `c = `libc;
+   using `x = `posix;
+   using `posix {
+      struct `stat[
+         mtimespec`c`timespec. @real-name(st_mtimespec),
+         mtim`c`timespec. @real-name(st_mtim),
       ] @real-name(struct stat) @no-decl;
-      mkdir(path'char[], mode'intc)'intc @real-name @no-decl;
-      mkdir(path'char[])'intc @real-name @no-decl;
-      fstat(file'intc, stat'stat)'intc @real-name @no-decl;
-      stat(file'char[], stat'stat)'intc @real-name @no-decl;
+      mkdir(path`char[], mode`intc)`intc @real-name @no-decl;
+      mkdir(path`char[])`intc @real-name @no-decl;
+      fstat(file`intc, stat`stat)`intc @real-name @no-decl;
+      stat(file`char[], stat`stat)`intc @real-name @no-decl;
    }
 }

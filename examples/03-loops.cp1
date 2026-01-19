@@ -1,34 +1,34 @@
 require "LibCp1/stdout.cp1";
 
-using 'c1 = 'libcp1;
+using `c1 = `libcp1;
 
 do-after-continue() {
-   'c1.stdout{"This will run after the loop 'continue's or iteratates again\n"}
+   `c1.stdout{"This will run after the loop `continue`s or iteratates again\n"}
 }
 
-main()'intc {
+main()`intc {
    loop i = 0; {
-      'c1.stdout{"This is a forever loop unless you break;\n"}
+      `c1.stdout{"This is a forever loop unless you break;\n"}
       i++;
       if i == 5 { break; }
    }
    loop count = 1; 3; count++ {
-      'c1.stdout{"This is a loop that will run 3 times. " count "...\n"}
+      `c1.stdout{"This is a loop that will run 3 times. " count "...\n"}
    }
    loop i = 0; i < 4; i++ {
-      'c1.stdout{"This is a loop that will run 4 times\n"}
+      `c1.stdout{"This is a loop that will run 4 times\n"}
    }
    loop 2 {
-      'c1.stdout{"Declaring variables are optional. This will loop two times.\n"}
+      `c1.stdout{"Declaring variables are optional. This will loop two times.\n"}
    }
    loop i = 0; 3; i++; do-after-continue() {
-      'c1.stdout{"Hello\n"}
+      `c1.stdout{"Hello\n"}
       if i == 1 { continue }
-      'c1.stdout{"World\n"}
+      `c1.stdout{"World\n"}
    }
    var limit = 7;
    loop {
-      'c1.stdout{"parenthesis on loop statement is optional if you want to loop forever\n"}
+      `c1.stdout{"parenthesis on loop statement is optional if you want to loop forever\n"}
       limit--;
       if limit == 0 { break; }
    }

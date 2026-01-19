@@ -1,18 +1,18 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
-using 'cp1 {
-enum 'func[#nil = -1, #0, #1]'i32 {
-   wr(f'this, w'wtr) @inline {
-      w.n(f'base + 1);
+using `c = `libc;
+using `c1 = `libcp1;
+using `cp1 {
+enum `func[#nil = -1, #0, #1]`i32 {
+   wr(f`this, w`wtr) @inline {
+      w.n(f`base + 1);
    }
-   rd(f'this&, r'rdr) @inline {
-      f = (r.n() - 1)'func;
+   rd(f`this&, r`rdr) @inline {
+      f = (r.n() - 1)`func;
    }
-   ptr(f'this)'decl-func @inline {
+   ptr(f`this)`decl-func @inline {
       return .func-v[f];
    }
 }
-enum 'func-flags[
+enum `func-flags[
    #0,
    #has-body = 1,
    #inline = 2,
@@ -25,20 +25,20 @@ enum 'func-flags[
    #cp1-name = 256,
    #decl = 512,
    #meta-method = 1024,
-   ]'u32 {
-   wr(e'this, w'wtr) @inline {
-      w.n(e'base);
+   ]`u32 {
+   wr(e`this, w`wtr) @inline {
+      w.n(e`base);
    }
-   rd(e'this&, r'rdr) @inline {
-      e = r.n()'func-flags;
+   rd(e`this&, r`rdr) @inline {
+      e = r.n()`func-flags;
    }
 }
-enum 'func-flags2[
+enum `func-flags2[
    #0,
    #main = 1,
-]'u32;
-using 'decl-func {
-   write(f'this) {
+]`u32;
+using `decl-func {
+   write(f`this) {
       if (f.flags & #real-name) != #0 {
          output{f.real-name}
       } else {
@@ -55,14 +55,14 @@ using 'decl-func {
             }
          }
          loop i = 0; f.group-c; i++ {
-            output{''_ f.group-v[i]'u32}
+            output{''_ f.group-v[i]`u32}
          }
       }
    }
-   lvars-rd(f'this, r'rdr) {
-      lvar-c! = r.n()'lvar;
+   lvars-rd(f`this, r`rdr) {
+      lvar-c! = r.n()`lvar;
       f.lvar-c = lvar-c;
-      quick-alloc-arr(f.lvar-v, lvar-c'base);
+      quick-alloc-arr(f.lvar-v, lvar-c`base);
       loop i = 0; f.lvar-c; i++ {
          l! = f.lvar-v[i];
          l.row = r.n();
@@ -76,8 +76,8 @@ using 'decl-func {
          // C1.stdout{"lvar " l.decl.name " has type of " l.decl.type.ptr.name.basic.cp1-name ''\n}
       }
    }
-   lvars-wr(f'this, w'wtr, header'bool) {
-      w.n(f.lvar-c'base);
+   lvars-wr(f`this, w`wtr, header`bool) {
+      w.n(f.lvar-c`base);
       loop i = 0; f.lvar-c; i++ {
          l! = f.lvar-v[i];
          w.n(l.row);
@@ -91,58 +91,58 @@ using 'decl-func {
       }
    }
 }
-struct 'farg[
-   row'u32,
-   col'u32,
-   decl'decl-var-data.,
+struct `farg[
+   row`u32,
+   col`u32,
+   decl`decl-var-data.,
    ] {
-   rd(f'this, r'rdr) {
+   rd(f`this, r`rdr) {
       f.row = r.n();
       f.col = r.n();
       f.decl.rd(r);
    }
-   wr(f'this, w'wtr, header'bool) {
+   wr(f`this, w`wtr, header`bool) {
       w.n(f.row);
       w.n(f.col);
       f.decl.wr(w, header);
    }
-   copy-from(f'this, src'farg) {
+   copy-from(f`this, src`farg) {
       f.row = src.row;
       f.col = src.col;
       f.decl.copy-from(src.decl);
    }
 }
-var func-c'func;
-var func-cap'func;
-var func-v'decl-func[];
-var decl-func-name'id;
+var func-c`func;
+var func-cap`func;
+var func-v`decl-func[];
+var decl-func-name`id;
 // var decl-func:DeclVarData.;
-var decl-func-row'u32;
-var decl-func-col'u32;
-var decl-func-overload'overload;
-var decl-func-flags'func-flags;
-var decl-func-flags2'func-flags2;
-var decl-func-real-name'id;
-var decl-func-decl-str'char[];
-var decl-func-decl-len'i32;
-var decl-func-case'id;
+var decl-func-row`u32;
+var decl-func-col`u32;
+var decl-func-overload`overload;
+var decl-func-flags`func-flags;
+var decl-func-flags2`func-flags2;
+var decl-func-real-name`id;
+var decl-func-decl-str`char[];
+var decl-func-decl-len`i32;
+var decl-func-case`id;
 // #cp1-farg-limit = 1024;
-var decl-farg-v'farg.[];
-var decl-farg-group-c'i8;
-var decl-farg-group-v'i8[#expr-carg-group-limit];
-var decl-farg-c'i32;
-var decl-farg-cap'i32;
-var decl-func-this-idx'i8;
-var decl-func-this-group'i8;
-var decl-func-space'stmt-space;
-var decl-func-ctx-space'stmt-space;
-var decl-func-meta-method-prefix1'id;
-var decl-func-meta-method-prefix2'id;
-var decl-func-meta-method-end'id;
+var decl-farg-v`farg.[];
+var decl-farg-group-c`i8;
+var decl-farg-group-v`i8[#expr-carg-group-limit];
+var decl-farg-c`i32;
+var decl-farg-cap`i32;
+var decl-func-this-idx`i8;
+var decl-func-this-group`i8;
+var decl-func-space`stmt-space;
+var decl-func-ctx-space`stmt-space;
+var decl-func-meta-method-prefix1`id;
+var decl-func-meta-method-prefix2`id;
+var decl-func-meta-method-end`id;
 // var decl-stmt-c:u32;
 // var decl-stmt-cap:u32;
 // var decl-stmt-v:Stmt[];
-decl-func-begin(name'id, row'u32, col'u32) {
+decl-func-begin(name`id, row`u32, col`u32) {
    .decl-func-name = name;
    .decl-func-row = row;
    .decl-func-col = col;
@@ -169,7 +169,7 @@ farg-next-group() {
    .decl-farg-group-v[.decl-farg-group-c] = 0;
    .decl-farg-group-c++;
 }
-decl-var-as-farg(row'u32, col'u32) {
+decl-var-as-farg(row`u32, col`u32) {
    farg-idx! = .decl-farg-c++;
    if .decl-farg-cap <= .decl-farg-c {
       old-cap! = .decl-farg-cap;
@@ -199,15 +199,15 @@ decl-var-as-this() {
 // var lvar-cap:Lvar;
 // var lvar-v:LvarData[];
 // var lvar-name-v:Id[];
-decl-func-end(row'u32, col'u32, angle'bool) {
-   f-idx! = (.func-c++)'func;
+decl-func-end(row`u32, col`u32, angle`bool) {
+   f-idx! = (.func-c++)`func;
    if .func-cap <= .func-c {
       old-cap! = .func-cap;
-      .func-cap = grow(.func-c'base)'func;
-      realloc(.func-v, .func-cap'base, old-cap'base);
+      .func-cap = grow(.func-c`base)`func;
+      realloc(.func-v, .func-cap`base, old-cap`base);
    }
-   var f'decl-func;
-   quick-alloc-plus(f, 'farg['usz] * .decl-farg-c);
+   var f`decl-func;
+   quick-alloc-plus(f, `farg[`usz] * .decl-farg-c);
    .ctx-func = f;
    .nest-id = 0;
    .func-v[f-idx] = f;
@@ -251,11 +251,11 @@ decl-func-end(row'u32, col'u32, angle'bool) {
    f.overload = .decl-func-overload;
    if (.decl-func-flags2 & #main) != #0 {
       .func-main = f-idx;
-   } elif (&&, .decl-at == #root, f.decl.name.len() == 4, 'c.memcmp("main", f.decl.name.str(), 4) == 0) {
+   } elif (&&, .decl-at == #root, f.decl.name.len() == 4, `c.memcmp("main", f.decl.name.str(), 4) == 0) {
       if .func-main != #nil {
          main! = .func-main.ptr();
-         'c1.stdout{f.begin-row '': f.begin-col ": There's already a function with @main attribute at " main.begin-row '': main.begin-col ''\n}
-         'c.exit(#failure);
+         `c1.stdout{f.begin-row '': f.begin-col ": There`s already a function with @main attribute at " main.begin-row '': main.begin-col ''\n}
+         `c.exit(#failure);
       } else {
          .func-main = f-idx;
       }
@@ -273,133 +273,133 @@ decl-func-end(row'u32, col'u32, angle'bool) {
 }
 func-attr-main() {
    if (.decl-func-flags2 & #main) != #0 {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @main specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @main specified more than once\n"}
+      `c.exit(#failure);
    }
    if .func-main != #nil {
       first! = .func-main.ptr();
-      'c1.stdout{"There cannot be more than one function with @main attribute, first was " .input-path '': first.begin-row '': first.begin-col " and then " .decl-func-row '': .decl-func-col ''\n}
-      'c.exit(#failure);
+      `c1.stdout{"There cannot be more than one function with @main attribute, first was " .input-path '': first.begin-row '': first.begin-col " and then " .decl-func-row '': .decl-func-col ''\n}
+      `c.exit(#failure);
    }
    .decl-func-flags2 |= #main;
 }
 func-attr-process() {
    if (.decl-func-flags & #process) != #0 {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @process specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @process specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-flags |= #process;
 }
 func-attr-inline() {
    if (.decl-func-flags & #inline) != #0 {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @inline specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @inline specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-flags |= #inline
 }
 func-attr-cp1-name() {
    if (.decl-func-flags & #cp1-name) != #0 {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @cp1-name specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @cp1-name specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-flags |= #cp1-name;
 }
 func-attr-var-args() {
    if (.decl-func-flags & #var-args) != #0 {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @var-args specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @var-args specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-flags |= #var-args;
 }
 func-attr-no-decl() {
    if (.decl-func-flags & #no-decl) != #0 {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @no-decl specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @no-decl specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-flags |= #no-decl;
 }
 func-attr-no-body() {
    if (.decl-func-flags & #no-body) != #0 {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @no-body specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @no-body specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-flags |= #no-body;
 }
 func-attr-overload-get() {
    if .decl-func-overload != #nil {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-overload = #get;
 }
 func-attr-overload-set() {
    if .decl-func-overload != #nil {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-overload = #set;
 }
 func-attr-overload-math() {
    if .decl-func-overload != #nil {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-overload = #math;
 }
 func-attr-overload-bools() {
    if .decl-func-overload != #nil {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-overload = #bools;
 }
 func-attr-overload-compare() {
    if .decl-func-overload != #nil {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-overload = #compare;
 }
 func-attr-overload-if-begin() {
    if .decl-func-overload != #nil {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-overload = #if-begin;
 }
 func-attr-overload-if-else() {
    if .decl-func-overload != #nil {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-overload = #if-else;
 }
 func-attr-overload-if-end() {
    if .decl-func-overload != #nil {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-overload = #if-end;
 }
 func-attr-overload-statement() {
    if .decl-func-overload != #nil {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @overload specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-overload = #statement;
 }
-func-attr-real-name(name'id) {
+func-attr-real-name(name`id) {
    if (.decl-func-flags & #real-name) != #0 {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @real-name specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @real-name specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-flags |= #real-name;
    .decl-func-real-name = name;
 }
-func-attr-meta-method(prefix1'id, prefix2'id, end'id) {
+func-attr-meta-method(prefix1`id, prefix2`id, end`id) {
    if (.decl-func-flags & #meta-method) != #0 {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @meta-method specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @meta-method specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-flags |= #meta-method;
    .decl-func-meta-method-prefix1 = prefix1;
@@ -408,33 +408,33 @@ func-attr-meta-method(prefix1'id, prefix2'id, end'id) {
 }
 func-attr-decl() {
    if (.decl-func-flags & #decl) != #0 {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @decl specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @decl specified more than once\n"}
+      `c.exit(#failure);
    }
    .decl-func-flags |= #decl;
    .decl-func-decl-str = quick-alloc(.string-len + 1);
-   'c.memcpy(.decl-func-decl-str, .string-buf, .string-len);
+   `c.memcpy(.decl-func-decl-str, .string-buf, .string-len);
    .decl-func-decl-str[.string-len] = 0;
    .decl-func-decl-len = .string-len;
 }
-func-attr-case(name'id) {
+func-attr-case(name`id) {
    if (.decl-func-flags & #case) != #0 {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error @case specified more than once\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error @case specified more than once\n"}
+      `c.exit(#failure);
    }
    name-str! = name.str();
    name-len! = name.len();
    func-name-str! = .decl-func-name.str();
    func-name-len! = .decl-func-name.len();
-   if (||, name-len > func-name-len, func-name-str[name-len] != ''-, 'c.memcmp(name-str, func-name-str, name-len) != 0) {
-      'c1.stdout{.input-path '': .last-row '': .last-col ": Error, function name must begin with words used in @case followed by '-' (dash) then followed by the name of the cvar of case\n"}
-      'c.exit(#failure);
+   if (||, name-len > func-name-len, func-name-str[name-len] != ''-, `c.memcmp(name-str, func-name-str, name-len) != 0) {
+      `c1.stdout{.input-path '': .last-row '': .last-col ": Error, function name must begin with words used in @case followed by '-' (dash) then followed by the name of the cvar of case\n"}
+      `c.exit(#failure);
    }
    .decl-func-flags |= #case;
    .decl-func-case = name;
 }
 func-body-end() {
-   f! = .func-v[.func-c'base - 1];
+   f! = .func-v[.func-c`base - 1];
    f.flags |= #has-body;
    c! = 0;
    s! = f.stmt-space.stmt-first;
@@ -447,23 +447,23 @@ func-body-end() {
 func-header-end() {
    .decl-func-ctx-space = null;
 }
-#expr-call-nest-limit'i32 = 8;
-#expr-carg-group-limit'i32 = 256;
-var expr-call-c'i8;
-#cp1-carg-limit'i32 = 64;
-var expr-call-carg-c'u8[#expr-call-nest-limit];
-var expr-call-carg-v'expr-i[#expr-call-nest-limit][#cp1-carg-limit];
-var expr-call-cgrp-c'u8[#expr-call-nest-limit];
-var expr-call-cgrp-v'u8[#expr-call-nest-limit][#expr-carg-group-limit];
-expr-push-call(row'u32, col'u32) {
+#expr-call-nest-limit`i32 = 8;
+#expr-carg-group-limit`i32 = 256;
+var expr-call-c`i8;
+#cp1-carg-limit`i32 = 64;
+var expr-call-carg-c`u8[#expr-call-nest-limit];
+var expr-call-carg-v`expr-i[#expr-call-nest-limit][#cp1-carg-limit];
+var expr-call-cgrp-c`u8[#expr-call-nest-limit];
+var expr-call-cgrp-v`u8[#expr-call-nest-limit][#expr-carg-group-limit];
+expr-push-call(row`u32, col`u32) {
    if .decl-func-ctx-space == null {
-      'c1.stdout{.input-path '': row '': row ": Use of functions are now allowed here\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': row '': row ": Use of functions are now allowed here\n"}
+      `c.exit(#failure);
    }
    call-idx! = .expr-call-c++;
    if call-idx >= #expr-call-nest-limit {
-      'c1.stdout{.input-path '': row '': col ": Too much nested calls\n"}
-      'c.exit(#failure);
+      `c1.stdout{.input-path '': row '': col ": Too much nested calls\n"}
+      `c.exit(#failure);
    }
    .expr-call-carg-c[call-idx] = 0;
    .expr-call-cgrp-c[call-idx] = 1;
@@ -474,12 +474,12 @@ carg-next-group() {
    .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx]] = 0;
    .expr-call-cgrp-c[call-idx]++;
 }
-carg-push(expr'expr-i) {
+carg-push(expr`expr-i) {
    call-idx! = .expr-call-c - 1;
    .expr-call-carg-v[call-idx][.expr-call-carg-c[call-idx]++] = expr;
    .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
 }
-carg-push-str(expr'expr-i) {
+carg-push-str(expr`expr-i) {
    if true {
       // push the string
       call-idx! = .expr-call-c - 1;
@@ -488,7 +488,7 @@ carg-push-str(expr'expr-i) {
    }
    if true {
       // calculate the string length
-      var e'expr-str = expr.ptr();
+      var e`expr-str = expr.ptr();
       len! = 0;
       s! = e.first;
       loop {
@@ -502,11 +502,11 @@ carg-push-str(expr'expr-i) {
       .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
    }
 }
-expr-pop-func(at'at, func-name'id, angle'bool)'expr-i {
+expr-pop-func(at`at, func-name`id, angle`bool)`expr-i {
    call-idx! = .expr-call-c -= 1;
    carg-c! = .expr-call-carg-c[call-idx];
-   var e'expr-func;
-   quick-alloc-plus(e, 'carg['usz] * carg-c);
+   var e`expr-func;
+   quick-alloc-plus(e, `carg[`usz] * carg-c);
    e-idx! = expr-push(e.base, #func);
    e.at = at;
    e.func-name = func-name;
@@ -522,11 +522,11 @@ expr-pop-func(at'at, func-name'id, angle'bool)'expr-i {
    }
    return e-idx;
 }
-expr-pop-method(this'expr-i, func-name'id, angle'bool)'expr-i {
+expr-pop-method(this`expr-i, func-name`id, angle`bool)`expr-i {
    call-idx! = .expr-call-c -= 1;
    carg-c! = .expr-call-carg-c[call-idx];
-   var e'expr-method;
-   quick-alloc-plus(e, 'carg['usz] * carg-c);
+   var e`expr-method;
+   quick-alloc-plus(e, `carg[`usz] * carg-c);
    e-idx! = expr-push(e.base, #method);
    e.this = this;
    e.func-name = func-name;
@@ -546,17 +546,17 @@ metacarg-next-group() {
    .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx]] = 0;
    .expr-call-cgrp-c[call-idx]++;
 }
-metacarg-push(expr'expr-i) {
+metacarg-push(expr`expr-i) {
    call-idx! = .expr-call-c - 1;
    .expr-call-carg-v[call-idx][.expr-call-carg-c[call-idx]++] = expr;
    .expr-call-cgrp-v[call-idx][.expr-call-cgrp-c[call-idx] - 1]++;
 }
-var id-blank'id;
-expr-pop-metafunc(at'at, func-name'id)'expr-i {
+var id-blank`id;
+expr-pop-metafunc(at`at, func-name`id)`expr-i {
    call-idx! = .expr-call-c -= 1;
    carg-c! = .expr-call-carg-c[call-idx];
-   var e'expr-meta-func;
-   quick-alloc-plus(e, 'carg['usz] * carg-c);
+   var e`expr-meta-func;
+   quick-alloc-plus(e, `carg[`usz] * carg-c);
    e-idx! = expr-push(e.base, #metafunc);
    e.at = at;
    e.func-name = func-name;
@@ -568,7 +568,7 @@ expr-pop-metafunc(at'at, func-name'id)'expr-i {
    loop i = 0; carg-c; i++ {
       e.carg-v[i].ref = 0;
       e.carg-v[i].expr = .expr-call-carg-v[call-idx][i];
-      var e2'expr-lvar;
+      var e2`expr-lvar;
       quick-alloc-one(e2);
       e-idx! = expr-push(e2.base, #lvar);
       e2.lvar = space.lvar-new(lvar-name, .row, .col, false);
@@ -584,7 +584,7 @@ expr-pop-metafunc(at'at, func-name'id)'expr-i {
       e.group-v[i] = .expr-call-cgrp-v[call-idx][i];
    }
    if true {
-      var e2'expr-lvar;
+      var e2`expr-lvar;
       quick-alloc-one(e2);
       e-idx! = expr-push(e2.base, #lvar);
       e2.lvar = space.lvar-new(lvar-name, .row, .col, false);
@@ -597,11 +597,11 @@ expr-pop-metafunc(at'at, func-name'id)'expr-i {
    }
    return e-idx;
 }
-expr-pop-metamethod(this'expr-i, func-name'id)'expr-i {
+expr-pop-metamethod(this`expr-i, func-name`id)`expr-i {
    call-idx! = .expr-call-c -= 1;
    carg-c! = .expr-call-carg-c[call-idx];
-   var e'expr-meta-method;
-   quick-alloc-plus(e, 'carg['usz] * carg-c);
+   var e`expr-meta-method;
+   quick-alloc-plus(e, `carg[`usz] * carg-c);
    e-idx! = expr-push(e.base, #metamethod);
    e.this = this;
    e.func-name = func-name;
@@ -613,7 +613,7 @@ expr-pop-metamethod(this'expr-i, func-name'id)'expr-i {
    loop i = 0; carg-c; i++ {
       e.carg-v[i].ref = 0;
       e.carg-v[i].expr = .expr-call-carg-v[call-idx][i];
-      var e2'expr-lvar;
+      var e2`expr-lvar;
       quick-alloc-one(e2);
       e-idx! = expr-push(e2.base, #lvar);
       e2.lvar = space.lvar-new(lvar-name, .row, .col, false);
@@ -629,7 +629,7 @@ expr-pop-metamethod(this'expr-i, func-name'id)'expr-i {
       e.group-v[i] = .expr-call-cgrp-v[call-idx][i];
    }
    if true {
-      var e2'expr-lvar;
+      var e2`expr-lvar;
       quick-alloc-one(e2);
       e-idx! = expr-push(e2.base, #lvar);
       e2.lvar = space.lvar-new(lvar-name, .row, .col, false);

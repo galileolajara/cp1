@@ -1,12 +1,12 @@
-// This is to emulate the C++'s virtual functions
+// This is to emulate the C++`s virtual functions
 require "LibCp1/stdout.cp1";
 
-using 'c1 = 'libcp1;
+using `c1 = `libcp1;
 
-enum 'animal-type[#cat, #dog]'u8; // 8-bit enum
+enum `animal-type[#cat, #dog]`u8; // 8-bit enum
 
-struct 'animal[type'animal-type] { // a struct with a method
-   make-sound(a'this) {
+struct `animal[type`animal-type] { // a struct with a method
+   make-sound(a`this) {
       // a switch statement that collects methods that
       // begins with "emit-sound-" then automatically
       // puts a case below for each match
@@ -16,17 +16,17 @@ struct 'animal[type'animal-type] { // a struct with a method
 }
 
 // For example, in another file, you can:
-using 'animal {
-   emit-sound-cat(a'this) @case.emit-sound() {
-      'c1.stdout{"meow!\n"}
+using `animal {
+   emit-sound-cat(a`this) @case.emit-sound() {
+      `c1.stdout{"meow!\n"}
    }
-   emit-sound-dog(a'this) @case.emit-sound() {
-      'c1.stdout{"arf!\n"}
+   emit-sound-dog(a`this) @case.emit-sound() {
+      `c1.stdout{"arf!\n"}
    }
 }
 
-main(arg-c'intc, arg-v'char[][])'intc {
-   var animal'animal.; // create an animal object, '.' symbol allocates on stack
+main(arg-c`intc, arg-v`char[][])`intc {
+   var animal`animal.; // create an animal object, '.' symbol allocates on stack
    animal.type = #cat;
    animal.make-sound();
    animal.type = #dog;

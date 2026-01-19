@@ -1,16 +1,16 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
-using 'cp1 {
-enum 'math[#add, #sub, #mul, #div, #mod, #lshift, #rshift, #and, #or, #xor]'u8 {
-   wr(e'this, w'wtr) @inline {
-      w.n1(e'base);
+using `c = `libc;
+using `c1 = `libcp1;
+using `cp1 {
+enum `math[#add, #sub, #mul, #div, #mod, #lshift, #rshift, #and, #or, #xor]`u8 {
+   wr(e`this, w`wtr) @inline {
+      w.n1(e`base);
    }
-   rd(e'this&, r'rdr) @inline {
-      e = r.n1()'math;
+   rd(e`this&, r`rdr) @inline {
+      e = r.n1()`math;
    }
 }
-expr-math(left'expr-i, right'expr-i, type'math)'expr-i {
-   var e'expr-math;
+expr-math(left`expr-i, right`expr-i, type`math)`expr-i {
+   var e`expr-math;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #math);
    e.left = left;
@@ -18,8 +18,8 @@ expr-math(left'expr-i, right'expr-i, type'math)'expr-i {
    e.type = type;
    return e-idx;
 }
-expr-math-add(expr'expr-i, right'expr-i)'expr-i {
-   var e'expr-math = expr.ptr();
+expr-math-add(expr`expr-i, right`expr-i)`expr-i {
+   var e`expr-math = expr.ptr();
    i! = e.item-c++;
    if e.item-cap <= e.item-c {
       old-cap! = e.item-cap;
@@ -30,17 +30,17 @@ expr-math-add(expr'expr-i, right'expr-i)'expr-i {
    item.expr = right;
    return expr;
 }
-using 'expr-i {
-   try-deduce-math(expr'expr, at'at) @case.try-deduce() @inline {
-      var e'expr-math = expr;
+using `expr-i {
+   try-deduce-math(expr`expr, at`at) @case.try-deduce() @inline {
+      var e`expr-math = expr;
       e.left.try-deduce(at);
       e.right.try-deduce(at);
       loop i = 0; e.item-c; i++ {
          e.item-v[i].expr.try-deduce(at);
       }
    }
-   wr-math(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      var e'expr-math = expr;
+   wr-math(expr`expr, w`wtr, header`bool) @case.wr() @inline {
+      var e`expr-math = expr;
       e.left.wr(w, header);
       e.right.wr(w, header);
       e.type.wr(w);
@@ -49,8 +49,8 @@ using 'expr-i {
          e.item-v[i].expr.wr(w, header);
       }
    }
-   rd-math(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      var e'expr-math;
+   rd-math(e-idx`expr-i, r`rdr) @case.rd() @inline {
+      var e`expr-math;
       quick-alloc-one(e);
       e-idx.set(e.base, #math);
       e.left.rd(r);
@@ -65,8 +65,8 @@ using 'expr-i {
          }
       }
    }
-   write-math(expr'expr) @case.write() @inline {
-      var e'expr-math = expr;
+   write-math(expr`expr) @case.write() @inline {
+      var e`expr-math = expr;
       if e.is-overload {
          e.left.write-value(e.left-val);
          return;
@@ -156,8 +156,8 @@ using 'expr-i {
          }
       }
    }
-   value-math(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      var expr'expr-math = e.ptr();
+   value-math(e`this, ref`i8, paren`bool, v`value, ok`bool&) @case.value() @inline {
+      var expr`expr-math = e.ptr();
       // if expr.left.value(1, paren, v) == false {
       //    return;
       // }
@@ -174,12 +174,12 @@ using 'expr-i {
       v.ref = ref;
       ok = true;
    }
-   type-math(expr'expr, at'at&) @case.type() @inline {
-      var e'expr-math = expr;
+   type-math(expr`expr, at`at&) @case.type() @inline {
+      var e`expr-math = expr;
       at = e.left.type();
    }
-   process-math(expr'expr, ok'bool&) @case.process() @inline {
-      var e'expr-math = expr;
+   process-math(expr`expr, ok`bool&) @case.process() @inline {
+      var e`expr-math = expr;
       "again:";
       left-type! = e.left.type();
       left-type-ptr! = left-type.ptr();
@@ -192,12 +192,12 @@ using 'expr-i {
             f! = f-idx.ptr();
             loop {
                if f.farg-v[1].decl.type == e-right-type {
-                  e-method! = 'expr-i.alloc();
-                  var group-v'u8[1];
+                  e-method! = `expr-i.alloc();
+                  var group-v`u8[1];
                   group-v[0] = 2;
-                  var carg-v'expr-i[2];
+                  var carg-v`expr-i[2];
                   carg-v[0] = e.right;
-                  e-cvar! = 'expr-i.alloc();
+                  e-cvar! = `expr-i.alloc();
                   var id-op;
                   switch e.type {
                      case #add {
@@ -245,19 +245,19 @@ using 'expr-i {
                   f2! = f2-idx.ptr();
                   loop {
                      if f2.farg-v[0].decl.type == e-right-type {
-                        e-func! = 'expr-i.alloc();
-                        var group-v'u8[1];
+                        e-func! = `expr-i.alloc();
+                        var group-v`u8[1];
                         group-v[0] = 1;
-                        var carg-v'expr-i[1];
+                        var carg-v`expr-i[1];
                         carg-v[0] = e.right;
                         set-func(e-func, f2.at, f2.decl.name, false, 1, group-v, 1, carg-v);
                         if true {
-                           e-method! = 'expr-i.alloc();
-                           var group-v'u8[1];
+                           e-method! = `expr-i.alloc();
+                           var group-v`u8[1];
                            group-v[0] = 2;
-                           var carg-v'expr-i[2];
+                           var carg-v`expr-i[2];
                            carg-v[0] = e-func;
-                           e-cvar! = 'expr-i.alloc();
+                           e-cvar! = `expr-i.alloc();
                            var id-op;
                            switch e.type {
                               case #add {
@@ -311,22 +311,22 @@ using 'expr-i {
          return;
       }
       if !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), e.right-val.type, e.right-val.info.star-c + e.right-val.type.pointer()) {
-         'c1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the operator '"}
+         `c1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the operator '"}
 
          switch e.type {
-            case #add { 'c1.stdbuf{"+"} }
-            case #sub { 'c1.stdbuf{"-"} }
-            case #mul { 'c1.stdbuf{"*"} }
-            case #div { 'c1.stdbuf{"/"} }
-            case #mod { 'c1.stdbuf{"%"} }
-            case #lshift { 'c1.stdbuf{"<<"} }
-            case #rshift { 'c1.stdbuf{">>"} }
-            case #and { 'c1.stdbuf{"&"} }
-            case #or { 'c1.stdbuf{"|"} }
-            case #xor { 'c1.stdbuf{"^"} }
+            case #add { `c1.stdbuf{"+"} }
+            case #sub { `c1.stdbuf{"-"} }
+            case #mul { `c1.stdbuf{"*"} }
+            case #div { `c1.stdbuf{"/"} }
+            case #mod { `c1.stdbuf{"%"} }
+            case #lshift { `c1.stdbuf{"<<"} }
+            case #rshift { `c1.stdbuf{">>"} }
+            case #and { `c1.stdbuf{"&"} }
+            case #or { `c1.stdbuf{"|"} }
+            case #xor { `c1.stdbuf{"^"} }
          }
-         'c1.stdout{"'\n"}
-         'c.exit(#failure);
+         `c1.stdout{"'\n"}
+         `c.exit(#failure);
          return;
       }
       loop i = 0; e.item-c; i++ {
@@ -334,22 +334,22 @@ using 'expr-i {
          item.expr.try-deduce(e.left-val.type);
          if !item.expr.value(1, true, item.val) { return }
          if !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), item.val.type, item.val.info.star-c + item.val.type.pointer()) {
-            'c1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the operator '"}
+            `c1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the operator '"}
 
             switch e.type {
-               case #add { 'c1.stdbuf{"+"} }
-               case #sub { 'c1.stdbuf{"-"} }
-               case #mul { 'c1.stdbuf{"*"} }
-               case #div { 'c1.stdbuf{"/"} }
-               case #mod { 'c1.stdbuf{"%"} }
-               case #lshift { 'c1.stdbuf{"<<"} }
-               case #rshift { 'c1.stdbuf{">>"} }
-               case #and { 'c1.stdbuf{"&"} }
-               case #or { 'c1.stdbuf{"|"} }
-               case #xor { 'c1.stdbuf{"^"} }
+               case #add { `c1.stdbuf{"+"} }
+               case #sub { `c1.stdbuf{"-"} }
+               case #mul { `c1.stdbuf{"*"} }
+               case #div { `c1.stdbuf{"/"} }
+               case #mod { `c1.stdbuf{"%"} }
+               case #lshift { `c1.stdbuf{"<<"} }
+               case #rshift { `c1.stdbuf{">>"} }
+               case #and { `c1.stdbuf{"&"} }
+               case #or { `c1.stdbuf{"|"} }
+               case #xor { `c1.stdbuf{"^"} }
             }
-            'c1.stdout{"'\n"}
-            'c.exit(#failure);
+            `c1.stdout{"'\n"}
+            `c.exit(#failure);
             return;
          }
       }

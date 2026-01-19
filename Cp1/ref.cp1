@@ -1,28 +1,28 @@
-using 'cp1 {
-expr-ref(expr'expr-i)'expr-i {
-   var e'expr-ref;
+using `cp1 {
+expr-ref(expr`expr-i)`expr-i {
+   var e`expr-ref;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #ref);
    e.expr = expr;
    return e-idx;
 }
-using 'expr-i {
-   wr-ref(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      var e'expr-ref = expr;
+using `expr-i {
+   wr-ref(expr`expr, w`wtr, header`bool) @case.wr() @inline {
+      var e`expr-ref = expr;
       e.expr.wr(w, header);
    }
-   rd-ref(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      var e'expr-ref;
+   rd-ref(e-idx`expr-i, r`rdr) @case.rd() @inline {
+      var e`expr-ref;
       quick-alloc-one(e);
       e-idx.set(e.base, #ref);
       e.expr.rd(r);
    }
-   write-ref(expr'expr) @case.write() @inline {
-      var e'expr-ref = expr;
+   write-ref(expr`expr) @case.write() @inline {
+      var e`expr-ref = expr;
       e.expr.write-value(e.val);
    }
-   value-ref(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      var expr'expr-ref = e.ptr();
+   value-ref(e`this, ref`i8, paren`bool, v`value, ok`bool&) @case.value() @inline {
+      var expr`expr-ref = e.ptr();
       v.type = basic-type(#ref);
       v.info.init();
       v.info.array-c = 0;
@@ -31,11 +31,11 @@ using 'expr-i {
       v.ref = 1;
       ok = true;
    }
-   type-ref(expr'expr, at'at&) @case.type() @inline {
+   type-ref(expr`expr, at`at&) @case.type() @inline {
       at = basic-type(#ref);
    }
-   process-ref(expr'expr, ok'bool&) @case.process() @inline {
-      var e'expr-ref = expr;
+   process-ref(expr`expr, ok`bool&) @case.process() @inline {
+      var e`expr-ref = expr;
       if !e.expr.value(2, false, e.val) {
          return;
       }

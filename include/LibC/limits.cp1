@@ -1,8 +1,8 @@
 include <limits.h> {
-   using 'u32 {
-      #max'u32 @no-decl(UINT32_MAX);
+   using `u32 {
+      #max`u32 @no-decl(UINT32_MAX);
    }
-   using 'u64 {
-      #max'u64 @no-decl(UINT64_MAX);
+   using `u64 {
+      #max`u64 @no-decl(UINT64_MAX);
    }
 }

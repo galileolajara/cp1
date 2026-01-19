@@ -4,32 +4,32 @@ require "LibC/stdlib.cp1";
 require "LibC/string.cp1";
 require "Posix/fcntl.cp1";
 require "Posix/unistd.cp1";
-using 'c = 'libc;
-using 'c1 = 'libcp1;
-using 'x = 'posix;
-main(arg-c'intc, arg-v'char[][])'intc {
+using `c = `libc;
+using `c1 = `libcp1;
+using `x = `posix;
+main(arg-c`intc, arg-v`char[][])`intc {
    if arg-c != 3 {
-      'c.printf("Usage: %s [.c input file] [.h output file]\n", arg-v[0]);
-      'c.exit(#failure);
+      `c.printf("Usage: %s [.c input file] [.h output file]\n", arg-v[0]);
+      `c.exit(#failure);
    }
    var in-fd;
-   if !'x'fd.open(in-fd, arg-v[1], #rdonly) {
-      'c.printf("Cannot open file for reading: %s\n", arg-v[1]);
-      'c.exit(#failure);
+   if !`x`fd.open(in-fd, arg-v[1], #rdonly) {
+      `c.printf("Cannot open file for reading: %s\n", arg-v[1]);
+      `c.exit(#failure);
    }
    in-size! = in-fd.seek(0, #end);
    in-fd.seek(0, #set);
-   var in-data'char[] = 'c.malloc(in-size);
+   var in-data`char[] = `c.malloc(in-size);
    in-fd.read(in-data, in-size);
    in-fd.close();
    if !(&&, in-size > 0, in-data[in-size - 1] == ''\n) {
-      'c.printf("Error, file '%s' does not end with a new line\n", arg-v[1]);
-      'c.exit(#failure);
+      `c.printf("Error, file '%s' does not end with a new line\n", arg-v[1]);
+      `c.exit(#failure);
    }
    pos! = 0;
    get! = false;
-   var func-name-v'char[256][];
-   var func-len-v'u8[256];
+   var func-name-v`char[256][];
+   var func-len-v`u8[256];
    func-c! = 0;
    loop pos < in-size {
       start! = pos;
@@ -40,7 +40,7 @@ main(arg-c'intc, arg-v'char[][])'intc {
          pos++;
       }
       len! = pos - start;
-      var line'char[] = &in-data[start];
+      var line`char[] = &in-data[start];
       if get {
          if line[0] == ''} {
             break;
@@ -56,12 +56,12 @@ main(arg-c'intc, arg-v'char[][])'intc {
          func-name-v[func-c] = line;
          func-len-v[func-c] = lparen;
          func-c++;
-      } elif (&&, len == 24, 'c.memcmp("void _Tcp1_Fexport_0() {", line, 24) == 0) {
+      } elif (&&, len == 24, `c.memcmp("void _Tcp1_Fexport_0() {", line, 24) == 0) {
          get = true;
       }
       pos++;
    }
-   out-f! = 'c.fopen(arg-v[2], "w");
+   out-f! = `c.fopen(arg-v[2], "w");
    pos = 0;
    indent! = 0;
    loop pos < in-size {
@@ -73,7 +73,7 @@ main(arg-c'intc, arg-v'char[][])'intc {
          pos++;
       }
       len! = pos - start;
-      var line'char[] = &in-data[start];
+      var line`char[] = &in-data[start];
       if len > 0 {
          if line[len - 1] == ''{ {
             indent++;
@@ -93,9 +93,9 @@ main(arg-c'intc, arg-v'char[][])'intc {
                   name--;
                }
                func-len! = lparen - name;
-               var func'char[] = &line[name];
+               var func`char[] = &line[name];
                loop i = 0; func-c; i++ {
-                  if (&&, func-len == func-len-v[i], 'c.memcmp(func, func-name-v[i], func-len) == 0) {
+                  if (&&, func-len == func-len-v[i], `c.memcmp(func, func-name-v[i], func-len) == 0) {
                      out-f.printf("%.*s\n", len, line);
                      break;
                   }

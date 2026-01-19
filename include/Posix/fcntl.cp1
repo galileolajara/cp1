@@ -1,12 +1,12 @@
 require "LibC/stdio.cp1";
 require "Posix/stat.cp1";
 include <fcntl.h> {
-   using 'c = 'libc;
-   using 'x = 'posix;
-   using 'posix {
-      enum 'fd[#in, #out, #nil = -1]'intc {
-         open(file'this&, path'char @const[], flags'open-flags)'bool @inline {
-            fd! = 'x.open(path, flags);
+   using `c = `libc;
+   using `x = `posix;
+   using `posix {
+      enum `fd[#in, #out, #nil = -1]`intc {
+         open(file`this&, path`char @const[], flags`open-flags)`bool @inline {
+            fd! = `x.open(path, flags);
             if fd != #nil {
                file = fd;
                return true;
@@ -14,8 +14,8 @@ include <fcntl.h> {
                return false;
             }
          }
-         open(file'this&, path'char @const[], flags'open-flags, mode'intc)'bool @inline {
-            fd! = 'x.open(path, flags, mode);
+         open(file`this&, path`char @const[], flags`open-flags, mode`intc)`bool @inline {
+            fd! = `x.open(path, flags, mode);
             if fd != #nil {
                file = fd;
                return true;
@@ -23,14 +23,14 @@ include <fcntl.h> {
                return false;
             }
          }
-         fopen(file'this, mode'char @const[])'c'file @inline {
-            return 'c.fdopen(file, mode);
+         fopen(file`this, mode`char @const[])`c`file @inline {
+            return `c.fdopen(file, mode);
          }
-         stat(file'this, stat'x'stat)'intc @inline {
-            return 'x.fstat(file'base, stat);
+         stat(file`this, stat`x`stat)`intc @inline {
+            return `x.fstat(file`base, stat);
          }
       }
-      enum 'open-flags[
+      enum `open-flags[
          #rdonly @no-decl(O_RDONLY),
          #create @no-decl(O_CREAT),
          #wronly @no-decl(O_WRONLY),
@@ -38,18 +38,18 @@ include <fcntl.h> {
          #rdwr @no-decl(O_RDWR),
          #truncate @no-decl(O_TRUNC),
          #excl @no-decl(O_EXCL),
-      ]'intc;
-      open(path'char @const[], flags'open-flags)'fd @decl("#ifdef _WIN32\n#define _Tposix_Fopen_2(p, f) open(p, f | O_BINARY)\n#else\n#define _Tposix_Fopen_2(p, f) open(p, f)\n#endif");
-      open(path'char @const[], flags'open-flags, mode'intc)'fd @decl("#ifdef _WIN32\n#define _Tposix_Fopen_3(p, f, m) open(p, f | O_BINARY, m)\n#else\n#define _Tposix_Fopen_3(p, f, m) open(p, f, m)\n#endif");
-      close(fd'fd)'intc @real-name @no-decl;
-      enum 'fcntl-op[
+      ]`intc;
+      open(path`char @const[], flags`open-flags)`fd @decl("#ifdef _WIN32\n#define _Tposix_Fopen_2(p, f) open(p, f | O_BINARY)\n#else\n#define _Tposix_Fopen_2(p, f) open(p, f)\n#endif");
+      open(path`char @const[], flags`open-flags, mode`intc)`fd @decl("#ifdef _WIN32\n#define _Tposix_Fopen_3(p, f, m) open(p, f | O_BINARY, m)\n#else\n#define _Tposix_Fopen_3(p, f, m) open(p, f, m)\n#endif");
+      close(fd`fd)`intc @real-name @no-decl;
+      enum `fcntl-op[
          #getfl @no-decl(F_GETFL),
          #setfl @no-decl(F_SETFL),
-      ]'intc;
-      enum 'fcntl-val[
+      ]`intc;
+      enum `fcntl-val[
          #0,
          #nonblock @no-decl(O_NONBLOCK),
-      ]'intc;
-      fcntl(fd'fd, op'fcntl-op, val'fcntl-val)'intc @no-decl @real-name;
+      ]`intc;
+      fcntl(fd`fd, op`fcntl-op, val`fcntl-val)`intc @no-decl @real-name;
    }
 }
