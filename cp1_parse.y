@@ -341,9 +341,9 @@ func_attr ::= SPACE_AT_OVERLOAD_STATEMENT.
    { _Tcp1_Ffunc_attr_overload_statement_0(); }
 func_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _Tcp1_Ffunc_attr_real_name_1(e.basic.id); }
-func_attr ::= SPACE_AT_META OPEN_PARENTHESIS ID(id1) SPACE ID(id2) CLOSE_PARENTHESIS.
+func_attr ::= SPACE_AT_META OPEN_PARENTHESIS ID(id1) COMMA_SPACE ID(id2) CLOSE_PARENTHESIS.
    { _Tcp1_Ffunc_attr_meta_method_3(id1.basic.id, -1, id2.basic.id); }
-func_attr ::= SPACE_AT_META OPEN_PARENTHESIS ID(id1) SPACE ID(id2) SPACE ID(id3) CLOSE_PARENTHESIS.
+func_attr ::= SPACE_AT_META OPEN_PARENTHESIS ID(id1) COMMA_SPACE ID(id2) COMMA_SPACE ID(id3) CLOSE_PARENTHESIS.
    { _Tcp1_Ffunc_attr_meta_method_3(id1.basic.id, id2.basic.id, id3.basic.id); }
 func_attr ::= SPACE_AT_REAL_NAME.
    { _Tcp1_Ffunc_attr_real_name_1(-1); }
