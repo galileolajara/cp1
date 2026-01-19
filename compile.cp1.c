@@ -9206,7 +9206,7 @@ int32_t _Li_4 = {0};
 _Li_4 = ((int32_t)(0));
 for(int i = _Llen_2; i > 0; ) {
 i --;
-if(_Lstr_3[_Li_4] == '-') {
+if(((_Lstr_3[_Li_4] == '-') || (_Lstr_3[_Li_4] == ' '))) {
 _Lc_name_1[_Li_4] = '_';
 } else {
 _Lc_name_1[_Li_4] = _Lstr_3[_Li_4];

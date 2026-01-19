@@ -125,7 +125,7 @@ jscode-char(val'char) @inline {
 jscode-cstr(str'char[]) @inline {
    jscode-bytes(str, 'c.strlen(str));
 }
-jscode(fmt'c1'fmt) @meta(f-reserve f jscode) {
+jscode(fmt'c1'fmt) @meta(f-reserve, f, jscode) {
    fmt.cap = 0;
 }
 include-add(include-len'u8, include-str'char[])'include {

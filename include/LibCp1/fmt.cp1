@@ -3,7 +3,7 @@ require "LibC/string.cp1";
 using 'c = 'libc;
 using 'libcp1 {
    struct 'fmt[ptr'char[], len'usz, cap'usz, user-data'ref] {
-      f(f'fmt) @meta(f-reserve f noop) @inline {
+      f(f'fmt) @meta(f-reserve, f, noop) @inline {
          f.init();
       }
       f-reserve-cstr(fmt'this, str'char @const[], len'i32, f'f-cstr) @inline {

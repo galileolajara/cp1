@@ -120,7 +120,7 @@ using 'cp1 {
    var output-data'char[] @real-name(output_data);
    var output-cap'u32;
    var output-len'u32 @real-name(output_len);
-   output(fmt'c1'fmt) @meta(f-reserve f output) @inline {
+   output(fmt'c1'fmt) @meta(f-reserve, f, output) @inline {
       fmt.cap = 0;
    }
    output-reserve(len'u32) @process {

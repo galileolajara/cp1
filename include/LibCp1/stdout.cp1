@@ -7,9 +7,9 @@ using 'libcp1 {
    #stdout-buf-size = 4096;
    var stdout-buf-len'u32;
    var stdout-buf-data'char[#stdout-buf-size];
-   stdout(fmt'fmt) @meta(f-reserve f stdout) @inline {
+   stdout(fmt'fmt) @meta(f-reserve, f, stdout) @inline {
    }
-   stdbuf(fmt'fmt) @meta(f-reserve f stdbuf) @inline {
+   stdbuf(fmt'fmt) @meta(f-reserve, f, stdbuf) @inline {
       stdout(fmt);
    }
    using 'fmt {
