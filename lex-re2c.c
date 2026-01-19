@@ -246,7 +246,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "''\\" [^\n]                     { return CP1_TOKEN_CHAR2; }
 
    "."                              { return CP1_TOKEN_DOT; }
-   "'base"                          { return CP1_TOKEN_BASE; }
+   "`base"                          { return CP1_TOKEN_BASE; }
 
    "#" id                           { return CP1_TOKEN_HASH_ID; }
    id_one+ (['-] id_one+ ([ '-] id_one+)*)?           { return CP1_TOKEN_ID; }
