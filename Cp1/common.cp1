@@ -1097,7 +1097,7 @@ enum `id[#nil = -1, #0]`i32 {
       c-name = quick-alloc(len + 1);
       .id-c-name-v[id] = c-name;
       loop i = 0; len; i++ {
-         if (||, str[i] == ''-, str[i] == '' , str[i] == ''\') {
+         if (||, str[i] == ''-, str[i] == '' , str[i] == ''\', str[i] == ''/) {
             c-name[i] = ''_;
          } else {
             c-name[i] = str[i];
