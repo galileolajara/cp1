@@ -39,8 +39,9 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    re2c:yyfill:enable   = 0;
 
    spaces = [ \n]+;
-   id_one = [_0-9a-zA-Z]; // \u00c0-\U0010ffff];
-   id = id_one+ ([ '-] id_one+)*;
+   id_one = [_0-9a-zA-Z]"'"?;
+   id_first = [_0-9a-zA-Z];
+   id = id_first+ ([ /-] id_one+)*;
 
    *                                { string_mem[0] = l->start[0]; return CP1_TOKEN_END; }
    "{"                              {
@@ -249,8 +250,8 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "`base"                          { return CP1_TOKEN_BASE; }
 
    "#" id                           { return CP1_TOKEN_HASH_ID; }
-   id_one+ (['-] id_one+ ([ '-] id_one+)*)?           { return CP1_TOKEN_ID; }
-   @id_start id_one+ @id_space " " id_one+ ([ '-] id_one+)*     {
+   id_first+ (['-] id_one+ ([ '-] id_one+)*)?           { return CP1_TOKEN_ID; }
+   @id_start id_first+ @id_space " " id_one+ ([ '-] id_one+)*     {
       int len = id_space - id_start;
       if (len == 2) {
          if (id_start[0] == 'i' && id_start[1] == 'f') {
