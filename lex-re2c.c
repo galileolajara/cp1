@@ -250,6 +250,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "`base"                          { return CP1_TOKEN_BASE; }
 
    "#" id                           { return CP1_TOKEN_HASH_ID; }
+   "#`" .* "`"                      { return CP1_TOKEN_HASH_ID; }
    id_first+ (['-] id_one+ ([ '-] id_one+)*)?           { return CP1_TOKEN_ID; }
    @id_start id_first+ @id_space " " id_one+ ([ '-] id_one+)*     {
       int len = id_space - id_start;

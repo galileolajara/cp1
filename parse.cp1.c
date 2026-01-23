@@ -1102,7 +1102,7 @@ struct _Tcp1_Texpr** _Gexpr_v;
 int main(int _Larg_c_0, char** _Larg_v_1);
 void _Tcp1_Foutput_reserve_1(uint32_t _Llen_0);
 void _Tcp1_Fexport_0();
-#define _Tlibc_Fmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))
+#define _Tlibc_Fmalloc_arr_2(val, count) val = malloc(sizeof(val[0]) * (count))
 void _Tcp1_Fquick_alloc_init_0();
 static inline void _Tlibcp1_Fstdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 static inline void _Tlibcp1_Tfmt_Ff_reserve_cstr_4(struct _Tlibcp1_Tfmt* _Lfmt_0, const char* _Lstr_1, int32_t _Llen_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3);
@@ -1159,7 +1159,7 @@ static inline void _Tlibcp1_Tfmt_Ff_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 bool _Tcp1_Fwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
 static inline void _Tcp1_Tat_Fwr_header_2(_Tcp1_Tat _Lid_0, union _Tcp1_Twtr* _Lw_1);
 static inline void _Tcp1_Tid_Fwr_header_2(_Tcp1_Tid _Lid_0, union _Tcp1_Twtr* _Lw_1);
-#define _Tlibc_Frealloc_arr_2(var, c) var = realloc(var, sizeof(var[0]) * (c))
+#define _Tlibc_Frealloc_arr_2(val, count) val = realloc(val, sizeof(val[0]) * (count))
 void qalloc_undo(int32_t _Lsize_0);
 void _Tcp1_Fdecl_import_4(_Tcp1_Tinclude _Lpath_0, uint32_t _Lrow_1, uint32_t _Lcol_2, bool _Lrequire_3);
 void _Tcp1_Fdecl_template_inst_3(_Tcp1_Tid _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
@@ -8592,12 +8592,12 @@ void _Tcp1_Tfarg_Fcopy_from_2(struct _Tcp1_Tfarg* _Lf_0, struct _Tcp1_Tfarg* _Ls
 _Tcp1_Tdecl_var_data_Fcopy_from_2(&(*_Lf_0)._Mdecl, &(*_Lsrc_1)._Mdecl);
 }
 static inline uint8_t _Tcp1_Tid_Flen_1(_Tcp1_Tid _Lid_0) {
-uint8_t ret_1113_7 = _Gid_len_v[_Lid_0];
-return ret_1113_7;
+uint8_t ret_1114_7 = _Gid_len_v[_Lid_0];
+return ret_1114_7;
 }
 static inline char* _Tcp1_Tid_Fstr_1(_Tcp1_Tid _Lid_0) {
-char* ret_1110_7 = _Gid_str_v[_Lid_0];
-return ret_1110_7;
+char* ret_1111_7 = _Gid_str_v[_Lid_0];
+return ret_1111_7;
 }
 static inline struct _Tcp1_Tdecl_func* _Tcp1_Tfunc_Fptr_1(_Tcp1_Tfunc _Lf_0) {
 struct _Tcp1_Tdecl_func* ret_12_7 = _Gfunc_v[_Lf_0];

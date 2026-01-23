@@ -7,6 +7,7 @@ syntax match Default /[0-9][_a-zA-Z0-9]*\([ /-]\([_a-zA-Z0-9]'\?\)\+\)\+/
 syntax match Default /[_a-zA-Z][_a-zA-Z0-9]*\([ /-]\([_a-zA-Z0-9]'\?\)\+\)*/
 syntax match Default /\.[_a-zA-Z0-9]\+\([ /-]\([_a-zA-Z0-9]'\?\)\+\)*/
 syntax match Number /#[_a-zA-Z0-9]\+\([ /-]\([_a-zA-Z0-9]'\?\)\+\)*/
+syntax match Number /#`[^`]*`/
 "syntax match Default /[0-9]\+[_a-zA-Z0-9]*\(-[_a-zA-Z0-9]\+\)\+/
 syntax match Structure /`[_a-zA-Z0-9]\+\([ /-]\([_a-zA-Z0-9]'\?\)\+\)*/
 syntax match Function /\.\?[_a-zA-Z0-9]\+\([ /-]\([_a-zA-Z0-9]'\?\)\+\)*[({<]\@=/

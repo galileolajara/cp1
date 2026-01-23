@@ -2,11 +2,11 @@ include <stdlib.h> {
    using `c = `libc;
    using `libc {
       malloc(size`usz)`ref @no-decl(malloc);
-      malloc-one(val`ref) @decl('<#define _Tlibc_Fmalloc_one_1(var) var = malloc(sizeof(var[0]))>);
-      malloc-arr(val`ref, count`usz) @decl('<#define _Tlibc_Fmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))>);
+      malloc-one(val`ref) @decl('<# val = malloc(sizeof(val[0]))>);
+      malloc-arr(val`ref, count`usz) @decl('<# val = malloc(sizeof(val[0]) * (count))>);
       realloc(size`ref, new-usz`usz)`ref @real-name @no-decl;
-      realloc-arr(size`ref, count`usz) @decl('<#define _Tlibc_Frealloc_arr_2(var, c) var = realloc(var, sizeof(var[0]) * (c))>);
-      realloc-memset-arr(size`ref, old-count`usz, count`usz) @decl('<#define _Tlibc_Frealloc_memset_arr_3(var, oldc, c) var = realloc(var, sizeof(var[0]) * (c)); memset(var + oldc, 0, sizeof(var[0]) * (c - oldc));>);
+      realloc-arr(val`ref, count`usz) @decl('<# val = realloc(val, sizeof(val[0]) * (count))>);
+      realloc-memset-arr(val`ref, oldcount`usz, count`usz) @decl('<#d val = realloc(val, sizeof(val[0]) * (count)); memset(val + oldcount, 0, sizeof(val[0]) * (count - oldcount));>);
       free(ptr`ref) @no-decl(free);
       system(command`char[])`intc @no-decl @real-name;
       exit(code`exit) @real-name @no-decl;

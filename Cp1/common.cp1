@@ -1097,10 +1097,11 @@ enum `id[#nil = -1, #0]`i32 {
       c-name = quick-alloc(len + 1);
       .id-c-name-v[id] = c-name;
       loop i = 0; len; i++ {
-         if (||, str[i] == ''-, str[i] == '' , str[i] == ''\', str[i] == ''/) {
-            c-name[i] = ''_;
-         } else {
+         c! = str[i];
+         if (||, (&&, c >= ''a, c <= ''z), (&&, c >= ''A, c <= ''Z), (&&, c >= ''0, c <= ''9)) {
             c-name[i] = str[i];
+         } else {
+            c-name[i] = ''_;
          }
       }
       c-name[len] = ''\0;

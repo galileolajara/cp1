@@ -1015,7 +1015,7 @@ union _Tcp1_Tcase_stack _Gcase_stack_v[64];
 uint8_t _Gcase_stack_c;
 int main(int _Larg_c_0, char** _Larg_v_1);
 void _Tcp1_Foutput_reserve_1(uint32_t _Llen_0);
-#define _Tlibc_Fmalloc_arr_2(var, c) var = malloc(sizeof(var[0]) * (c))
+#define _Tlibc_Fmalloc_arr_2(val, count) val = malloc(sizeof(val[0]) * (count))
 static inline void _Tlibcp1_Fstdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 static inline void _Tlibcp1_Tfmt_Ff_reserve_cstr_4(struct _Tlibcp1_Tfmt* _Lfmt_0, const char* _Lstr_1, int32_t _Llen_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3);
 static inline void _Tlibcp1_Tfmt_Ff_reserve_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
@@ -1101,7 +1101,7 @@ void _Tcp1_Tdecl_var_data_Fwrite_lvar_type_2(struct _Tcp1_Tdecl_var_data* _Lvd_0
 void _Tcp1_Tstmt_space_Fwrite_1(struct _Tcp1_Tstmt_space* _Lspace_0);
 bool _Tcp1_Fwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
 void _Tcp1_Fdeps_close_0();
-#define _Tlibc_Frealloc_arr_2(var, c) var = realloc(var, sizeof(var[0]) * (c))
+#define _Tlibc_Frealloc_arr_2(val, count) val = realloc(val, sizeof(val[0]) * (count))
 int32_t _Tcp1_Tmap_Fget_or_insert_4(struct _Tcp1_Tmap* _Lm_0, char* _Lstr_1, uint8_t _Llen_2, int32_t _Lval_3);
 char* _Tcp1_Freq_parse_3(char* _Lin_path_cp1_0, uint8_t _Lin_path_cp1_len_1, bool _Lrequire_2);
 static inline void* _Tcp1_Fread_file_2(char* _Lpath_0, size_t* _Lout_size_1);
@@ -5880,12 +5880,12 @@ uint16_t ret_47_7 = (*_Tcp1_Tfile_Fptr_1(_Lf_0))._Mpath_len;
 return ret_47_7;
 }
 static inline char* _Tcp1_Tid_Fstr_1(_Tcp1_Tid _Lid_0) {
-char* ret_1110_7 = _Gid_str_v[_Lid_0];
-return ret_1110_7;
+char* ret_1111_7 = _Gid_str_v[_Lid_0];
+return ret_1111_7;
 }
 static inline uint8_t _Tcp1_Tid_Flen_1(_Tcp1_Tid _Lid_0) {
-uint8_t ret_1113_7 = _Gid_len_v[_Lid_0];
-return ret_1113_7;
+uint8_t ret_1114_7 = _Gid_len_v[_Lid_0];
+return ret_1114_7;
 }
 void _Tcp1_Fjscode_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 (*_Lfmt_0)._Mcap = 0;
@@ -9206,18 +9206,20 @@ int32_t _Li_4 = {0};
 _Li_4 = ((int32_t)(0));
 for(int i = _Llen_2; i > 0; ) {
 i --;
-if(((_Lstr_3[_Li_4] == '-') || (_Lstr_3[_Li_4] == ' ') || (_Lstr_3[_Li_4] == '\'') || (_Lstr_3[_Li_4] == '/'))) {
-_Lc_name_1[_Li_4] = '_';
-} else {
+char _Lc_5;
+_Lc_5 = ((char)(_Lstr_3[_Li_4]));
+if((((_Lc_5 >= 'a') && (_Lc_5 <= 'z')) || ((_Lc_5 >= 'A') && (_Lc_5 <= 'Z')) || ((_Lc_5 >= '0') && (_Lc_5 <= '9')))) {
 _Lc_name_1[_Li_4] = _Lstr_3[_Li_4];
+} else {
+_Lc_name_1[_Li_4] = '_';
 }
 continue_0:;
 _Li_4++;
 }
 break_0:;
 _Lc_name_1[_Llen_2] = '\0';
-char* ret_1107_7 = _Lc_name_1;
-return ret_1107_7;
+char* ret_1108_7 = _Lc_name_1;
+return ret_1108_7;
 }
 static inline struct _Tcp1_Texpr* _Tcp1_Texpr_i_Fptr_1(_Tcp1_Texpr_i _Le_0) {
 struct _Tcp1_Texpr* ret_93_7 = _Gexpr_v[_Le_0];
