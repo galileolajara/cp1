@@ -557,8 +557,8 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
             if func2.angle != f.angle {
             } elif f.angle {
                loop i = 0; func2.group-v[0]; i++ {
-                  type1! = f.farg-v[0].decl.type.ptr();
-                  type2! = func2.farg-v[0].decl.type.ptr();
+                  type1! = f.farg-v[i].decl.type.ptr();
+                  type2! = func2.farg-v[i].decl.type.ptr();
                   if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
                      same = false;
                      break;

@@ -5607,8 +5607,8 @@ for(int i = (*_Lfunc2_180)._Mgroup_v[0]; i > 0; ) {
 i --;
 struct _Tcp1_Tat_data* _Ltype1_183;
 struct _Tcp1_Tat_data* _Ltype2_184;
-_Ltype1_183 = ((struct _Tcp1_Tat_data*)(_Tcp1_Tat_Fptr_1((*_Lf_167)._Mfarg_v[0]._Mdecl._Mtype)));
-_Ltype2_184 = ((struct _Tcp1_Tat_data*)(_Tcp1_Tat_Fptr_1((*_Lfunc2_180)._Mfarg_v[0]._Mdecl._Mtype)));
+_Ltype1_183 = ((struct _Tcp1_Tat_data*)(_Tcp1_Tat_Fptr_1((*_Lf_167)._Mfarg_v[_Li_182]._Mdecl._Mtype)));
+_Ltype2_184 = ((struct _Tcp1_Tat_data*)(_Tcp1_Tat_Fptr_1((*_Lfunc2_180)._Mfarg_v[_Li_182]._Mdecl._Mtype)));
 if((((*_Ltype1_183)._Mtype != (*_Ltype2_184)._Mtype) || ((*_Ltype1_183)._Mname._Mid != (*_Ltype2_184)._Mname._Mid))) {
 _Lsame_181 = false;
 goto break_14;
