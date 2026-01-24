@@ -95,52 +95,52 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "\"" {
       goto lex_string;
    }
-   "'- " [^\n]* "\n"                  {
+   "'- " [^\n\000]* "\n"                  {
       l->cursor--;
       _Gstring_len = l->cursor - (l->start + 3);
       _Gstring_buf = l->start + 3;
       return CP1_TOKEN_STRING;
    }
-   "'= " [^\n]* "\n"                  {
+   "'= " [^\n\000]* "\n"                  {
       l->cursor--;
       _Gstring_len = (l->cursor + 1) - (l->start + 3);
       _Gstring_buf = l->start + 3;
       return CP1_TOKEN_STRING;
    }
-   "'\"" [^\n"]* "\""                   {
+   "'\"" [^\n\000"]* "\""                   {
       _Gstring_len = (l->cursor - 1) - (l->start + 2);
       _Gstring_buf = l->start + 2;
       return CP1_TOKEN_STRING;
    }
-   "'<" [^\n>]* ">"                   {
+   "'<" [^\n\000>]* ">"                   {
       _Gstring_len = (l->cursor - 1) - (l->start + 2);
       _Gstring_buf = l->start + 2;
       return CP1_TOKEN_STRING;
    }
-   "'[" [^\n\]]* "]"                   {
+   "'[" [^\n\000\]]* "]"                   {
       _Gstring_len = (l->cursor - 1) - (l->start + 2);
       _Gstring_buf = l->start + 2;
       return CP1_TOKEN_STRING;
    }
-   "'{" [^\n}]* "}"                   {
+   "'{" [^\n\000}]* "}"                   {
       _Gstring_len = (l->cursor - 1) - (l->start + 2);
       _Gstring_buf = l->start + 2;
       return CP1_TOKEN_STRING;
    }
-   "'(" [^\n)]* ")"                   {
+   "'(" [^\n\000)]* ")"                   {
       _Gstring_len = (l->cursor - 1) - (l->start + 2);
       _Gstring_buf = l->start + 2;
       return CP1_TOKEN_STRING;
    }
 
-   "include " '"' [^"\n]* '"'       { return CP1_TOKEN_INCLUDE; }
-   "include " '<' [^>\n]* '>'       { return CP1_TOKEN_INCLUDE; }
-   "include [" [^\]]* ']'           { return CP1_TOKEN_INCLUDE; }
+   "include " '"' [^"\n\000]* '"'       { return CP1_TOKEN_INCLUDE; }
+   "include " '<' [^>\n\000]* '>'       { return CP1_TOKEN_INCLUDE; }
+   "include [" [^\000\]]* ']'           { return CP1_TOKEN_INCLUDE; }
 
    spaces "@inline"                 { return CP1_TOKEN_SPACE_AT_INLINE; }
    spaces "@main"                   { return CP1_TOKEN_SPACE_AT_MAIN; }
    spaces "@process"                { return CP1_TOKEN_SPACE_AT_PROCESS; }
-   spaces "@real-name(" [^)]* ")"   { return CP1_TOKEN_SPACE_AT_REAL_NAME_STR; }
+   spaces "@real-name(" [^)\000]* ")"   { return CP1_TOKEN_SPACE_AT_REAL_NAME_STR; }
    spaces "@real-name"              { return CP1_TOKEN_SPACE_AT_REAL_NAME; }
    spaces "@aligned"                { return CP1_TOKEN_SPACE_AT_ALIGNED; }
    spaces "@meta"                   { return CP1_TOKEN_SPACE_AT_META; }
@@ -150,7 +150,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "@extern"                 { return CP1_TOKEN_SPACE_AT_EXTERN; }
    spaces "@fall-through"           { return CP1_TOKEN_SPACE_AT_FALL_THROUGH; }
    spaces "@var-args"               { return CP1_TOKEN_SPACE_AT_VAR_ARGS; }
-   spaces "@no-decl(" [^)]* ")"     { return CP1_TOKEN_SPACE_AT_NO_DECL_STR; }
+   spaces "@no-decl(" [^)\000]* ")"     { return CP1_TOKEN_SPACE_AT_NO_DECL_STR; }
    spaces "@no-decl"                { return CP1_TOKEN_SPACE_AT_NO_DECL; }
    spaces "@no-name"                { return CP1_TOKEN_SPACE_AT_NO_NAME; }
    spaces "@dont-count"             { return CP1_TOKEN_SPACE_AT_DONT_COUNT; }
@@ -250,7 +250,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "`base"                          { return CP1_TOKEN_BASE; }
 
    "#" id                           { return CP1_TOKEN_HASH_ID; }
-   "#`" .* "`"                      { return CP1_TOKEN_HASH_ID; }
+   "#`" [^\n\000`] "`"                      { return CP1_TOKEN_HASH_ID; }
    id_first+ (['-] id_one+ ([ '-] id_one+)*)?           { return CP1_TOKEN_ID; }
    @id_start id_first+ @id_space " " id_one+ ([ '-] id_one+)*     {
       int len = id_space - id_start;
@@ -285,8 +285,8 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    }
    "`" id                           { return CP1_TOKEN_ID_TYPE; }
    "[" id? "]" id                   { return CP1_TOKEN_SOA_FIELD; }
-   "import" spaces "\"" [^"]* "\""  { return CP1_TOKEN_IMPORT; }
-   "require" spaces "\"" [^"]* "\"" { return CP1_TOKEN_REQUIRE; }
+   "import" spaces "\"" [^"\n\000]* "\""  { return CP1_TOKEN_IMPORT; }
+   "require" spaces "\"" [^"\n\000]* "\"" { return CP1_TOKEN_REQUIRE; }
  
    */
 lex_string: {
