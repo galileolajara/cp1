@@ -5,7 +5,7 @@ syntax match Number /0o[0-7]\+/
 syntax match Number /0x[0-9a-fA-F]\+/
 syntax match Default /[0-9][_a-zA-Z0-9]*\([ /-][_a-zA-Z0-9]\+\)\+/
 syntax match Default /\.\?[_a-zA-Z][_a-zA-Z0-9]*\([ /-][_a-zA-Z0-9]\+\)*/
-syntax match Default /\.\?|[^|]\+|/
+syntax match Default /\.\?|[^ \t][^|]+|/
 syntax match Number /#[_a-zA-Z0-9]\+\([ /-][_a-zA-Z0-9]\+\)*/
 syntax match Number /#|[^|]*|/
 "syntax match Default /[0-9]\+[_a-zA-Z0-9]*\(-[_a-zA-Z0-9]\+\)\+/
