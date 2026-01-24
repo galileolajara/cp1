@@ -1,41 +1,41 @@
-using `cp1 {
-expr-bool(value`bool)`expr-i {
-   var e`expr-bool;
+using 'cp1 {
+expr-bool(value'bool)'expr-i {
+   var e'expr-bool;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #bool);
    e.value = value;
    return e-idx;
 }
-using `expr-i {
-   wr-bool(expr`expr, w`wtr, header`bool) @case.wr() @inline {
-      var e`expr-bool = expr;
+using 'expr-i {
+   wr-bool(expr'expr, w'wtr, header'bool) @case.wr() @inline {
+      var e'expr-bool = expr;
       w.b(e.value);
    }
-   rd-bool(e-idx`expr-i, r`rdr) @case.rd() @inline {
+   rd-bool(e-idx'expr-i, r'rdr) @case.rd() @inline {
       set-bool(e-idx, r.b());
    }
-   set-bool(e-idx`expr-i, val`bool) {
-      var e`expr-bool;
+   set-bool(e-idx'expr-i, val'bool) {
+      var e'expr-bool;
       quick-alloc-one(e);
       e-idx.set(e.base, #bool);
       e.value = val;
    }
-   write-bool(expr`expr) @case.write() @inline {
-      var e`expr-bool = expr;
+   write-bool(expr'expr) @case.write() @inline {
+      var e'expr-bool = expr;
       if e.value {
          output{"true"}
       } else {
          output{"false"}
       }
    }
-   process-bool(expr`expr, ok`bool&) @case.process() @inline {
+   process-bool(expr'expr, ok'bool&) @case.process() @inline {
       // .include-stdbool = true;
       ok = true;
    }
-   type-bool(expr`expr, at`at&) @case.type() @inline {
+   type-bool(expr'expr, at'at&) @case.type() @inline {
       at = basic-type(#bool);
    }
-   value-bool(le`this, ref`i32, paren`bool, v`value, ok`bool&) @case.value() @inline {
+   value-bool(le'this, ref'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
       v.type = basic-type(#bool);
       v.info.init();
       v.info.array-c = 0;

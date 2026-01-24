@@ -5,62 +5,62 @@ require "LibC/stdlib.cp1";
 require "LibC/string.cp1";
 require "Posix/unistd.cp1";
 require "Posix/fcntl.cp1";
-using `c = `libc;
-using `c1 = `libcp1;
-using `x = `posix;
-using `cp1 {
+using 'c = 'libc;
+using 'c1 = 'libcp1;
+using 'x = 'posix;
+using 'cp1 {
 #build-common-codes{compile:true}
 // var include-stdint:bool;
 // var include-stdbool:bool;
 // var include-stddef:bool;
-var expr-is-processed`u8[];
-var func-head-outputted-c`i32;
-var func-head-outputted-v`func[];
-var func-body-outputted-c`i32;
-var func-body-outputted-v`func[];
-struct `basic-type[
-   method-c`i32,
-   method-cap`i32,
-   method-v`func[],
+var expr-is-processed'u8[];
+var func-head-outputted-c'i32;
+var func-head-outputted-v'func[];
+var func-body-outputted-c'i32;
+var func-body-outputted-v'func[];
+struct 'basic-type[
+   method-c'i32,
+   method-cap'i32,
+   method-v'func[],
 ];
-var basic-type`basic-type.[`basic-type-id#count];
-basic-type(t`basic-type-id)`at @inline {
+var basic-type'basic-type.['basic-type-id#count];
+basic-type(t'basic-type-id)'at @inline {
    return t;
 }
-var ctx-begin-row`u32;
-var ctx-begin-col`u32;
-var ctx-end-row`u32;
-var ctx-end-col`u32;
-var ctx-func`decl-func;
-var ctx-func-id`func;
-var file-c`file;
-var file-cap`file;
-var file-v`file-data.[];
-enum `file[#nil = -1, #0]`i32 {
-   ptr(f`this)`file-data @inline {
+var ctx-begin-row'u32;
+var ctx-begin-col'u32;
+var ctx-end-row'u32;
+var ctx-end-col'u32;
+var ctx-func'decl-func;
+var ctx-func-id'func;
+var file-c'file;
+var file-cap'file;
+var file-v'file-data.[];
+enum 'file[#nil = -1, #0]'i32 {
+   ptr(f'this)'file-data @inline {
       return .file-v[f];
    }
-   path(f`this)`char[] @inline {
+   path(f'this)'char[] @inline {
       return f.ptr().path;
    }
-   path-len(f`this)`u16 @inline {
+   path-len(f'this)'u16 @inline {
       return f.ptr().path-len;
    }
 }
-struct `file-data[
-   path`char[],
-   path-len`u16,
-   data`ref,
-   id-table`id[],
-   at-table`at[],
-   cvar-table`cvar[],
+struct 'file-data[
+   path'char[],
+   path-len'u16,
+   data'ref,
+   id-table'id[],
+   at-table'at[],
+   cvar-table'cvar[],
 ];
-var id-table`id[];
-var include-table-cap`i32;
-var include-table`include[];
-var at-table`at[];
-var cvar-table`cvar[];
-id-add(id-len`u8, id-str`char[])`id {
+var id-table'id[];
+var include-table-cap'i32;
+var include-table'include[];
+var at-table'at[];
+var cvar-table'cvar[];
+id-add(id-len'u8, id-str'char[])'id {
    found! = .id-map.get-or-insert(id-str, id-len, .id-c);
    if found != -1 { return found }
    // loop j = 0; .id-c; j++ {
@@ -80,23 +80,23 @@ id-add(id-len`u8, id-str`char[])`id {
    .id-str-v[id-idx] = id-str;
    return id-idx;
 }
-var import-new-c`u32;
-var import-v`include[];
-var import-file-v`file[];
-var import-required-v`u8[];
-var import-cap`u32;
-var import-c`u32;
-import(path`include, require`bool, file`file) {
+var import-new-c'u32;
+var import-v'include[];
+var import-file-v'file[];
+var import-required-v'u8[];
+var import-cap'u32;
+var import-c'u32;
+import(path'include, require'bool, file'file) {
    loop i = 0; .import-c; i++ {
       // C1.stdout{"import " path " " path:base " checking if exists, " i:u32 " = " path ''\n}
       if .import-v[i] == path {
          // C1.stdout{"re-import " path ''\n}
          if require {
             if (.import-required-v[i >> 3] & (1 << (i & 7))) == 0 {
-               `c1.stdout{"Error, '" path "' was previously an import-only of '" .import-file-v[i] "' but is now required by '" file "'\n"}
-               `c1.stdout{"Consider requiring '" path "' instead of importing it on '" .import-file-v[i] "'.\n"}
-               `c1.stdout{"Or you may import '" path "' on '" file "' instead of requiring it.\n"}
-               `c.exit(#failure);
+               'c1.stdout{"Error, '" path "' was previously an import-only of '" .import-file-v[i] "' but is now required by '" file "'\n"}
+               'c1.stdout{"Consider requiring '" path "' instead of importing it on '" .import-file-v[i] "'.\n"}
+               'c1.stdout{"Or you may import '" path "' on '" file "' instead of requiring it.\n"}
+               'c.exit(#failure);
             }
          }
          return;
@@ -107,9 +107,9 @@ import(path`include, require`bool, file`file) {
       i! = .import-c++;
       if .import-cap < .import-c {
          grow(.import-cap, .import-c);
-         `c.realloc-arr(.import-v, .import-cap);
-         `c.realloc-arr(.import-file-v, .import-cap);
-         `c.realloc-arr(.import-required-v, (.import-cap + 7) >> 3);
+         'c.realloc-arr(.import-v, .import-cap);
+         'c.realloc-arr(.import-file-v, .import-cap);
+         'c.realloc-arr(.import-required-v, (.import-cap + 7) >> 3);
       }
       .import-v[i] = path;
       .import-file-v[i] = file;
@@ -123,32 +123,32 @@ import(path`include, require`bool, file`file) {
    .import-new-c++;
 }
 sqlite-init();
-read-cp1(path`char[], path-len`u32)`ref;
-req-parse(in-path-cp1`char[], in-path-cp1-len`u8, require`bool)`char[];
-read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
+read-cp1(path'char[], path-len'u32)'ref;
+req-parse(in-path-cp1'char[], in-path-cp1-len'u8, require'bool)'char[];
+read(in-path-cp1'char[], in-path-cp1-len'u16, strdup'bool, require'bool) {
    // C1.stdout{"read " in-path-cp1 "\n"}
    in-path! = req-parse(in-path-cp1, in-path-cp1-len, require);
 
-   var r-begin`rdr.;
+   var r-begin'rdr.;
    r-begin.ref = read-file(in-path, in-size!);
    if r-begin.ref == null {
-      `c1.stdout{"Cannot open file for reading: " in-path-cp1 ''\n}
+      'c1.stdout{"Cannot open file for reading: " in-path-cp1 ''\n}
       // var i:u8[] = [];
       // i[0] = 0;
-      `c.exit(#failure);
+      'c.exit(#failure);
    }
 
    file-idx! = .file-c++;
    if .file-cap <= .file-c {
       old-cap! = .file-cap;
-      .file-cap = grow(.file-c`base)`file;
-      realloc(.file-v, .file-cap`base, old-cap`base);
+      .file-cap = grow(.file-c'base)'file;
+      realloc(.file-v, .file-cap'base, old-cap'base);
    }
    file! = .file-v[file-idx];
    if strdup {
-      var path`char[];
+      var path'char[];
       quick-alloc-arr(path, in-path-cp1-len + 1);
-      `c.memcpy(path, in-path-cp1, in-path-cp1-len);
+      'c.memcpy(path, in-path-cp1, in-path-cp1-len);
       path[in-path-cp1-len] = ''\0;
       file.path = path;
    } else {
@@ -157,7 +157,7 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
    file.path-len = in-path-cp1-len;
    file.data = r-begin.ref;
 
-   var r`rdr.;
+   var r'rdr.;
    r.ref = r-begin.ref;
    if true {
       id-c! = r.n();
@@ -198,19 +198,19 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
       // C1.stdout{"There are " at-c " at\n"}
       quick-alloc-arr(.at-table, at-c);
       file.at-table = .at-table;
-      var at-type`name-type;
+      var at-type'name-type;
       loop i = 0; at-c; i++ {
          at-type.rd(r);
          if at-type == #basic {
-            `basic-type-id.rd(basic!, r);
+            'basic-type-id.rd(basic!, r);
             .at-table[i] = basic-type(basic);
          } else {
-            `at.rd(at-parent!, r);
-            `id.rd(at-name!, r);
+            'at.rd(at-parent!, r);
+            'id.rd(at-name!, r);
             // C1.stdout{"read at type " at-type ''  at-type.cp1-name() ''  at-name ''\n}
             // C1.stdout{"- parent " at-parent ''\n}
             // C1.stdout{"- name " at-name ''\n}
-            found! = .at-map.get-or-insert(at-parent, at-type, at-name, .at-c`base);
+            found! = .at-map.get-or-insert(at-parent, at-type, at-name, .at-c'base);
             // loop j = 0; .at-c; j++ {
             //    at! = .at-v[j];
             //    if (&&, at.parent == at-parent, at.type == at-type, at.name.id == at-name) {
@@ -225,22 +225,22 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
                // C1.stdout{"1 as " at-idx ''\n}
                if .at-cap <= .at-c {
                   old-cap! = .at-cap;
-                  .at-cap = grow(.at-c`base)`at;
-                  realloc(.at-v, .at-cap`base, old-cap`base);
+                  .at-cap = grow(.at-c'base)'at;
+                  realloc(.at-v, .at-cap'base, old-cap'base);
                }
                at! = .at-v[at-idx];
                at.init(at-type, at-parent, at-name);
-               .at-table[i] = at-idx`at;
+               .at-table[i] = at-idx'at;
             } else {
                // C1.stdout{"2 as " found ''\n}
-               .at-table[i] = found`at;
+               .at-table[i] = found'at;
             }
          }
       }
    }
    if true {
-      cvar-c! = r.n()`cvar;
-      quick-alloc-arr(.cvar-table, cvar-c`base);
+      cvar-c! = r.n()'cvar;
+      quick-alloc-arr(.cvar-table, cvar-c'base);
       file.cvar-table = .cvar-table;
       // C1.stdout{"There are " cvar-c " cvars\n"}
       // C.out.flush();
@@ -248,8 +248,8 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
       .cvar-c += cvar-c;
       if .cvar-cap <= .cvar-c {
          old-cap! = .cvar-cap;
-         .cvar-cap = grow(.cvar-c`base)`cvar;
-         realloc(.cvar-v, .cvar-cap`base, old-cap`base);
+         .cvar-cap = grow(.cvar-c'base)'cvar;
+         realloc(.cvar-v, .cvar-cap'base, old-cap'base);
       }
       // malloc(.cvar-table, .cvar-c);
       // file.cvar-table = .cvar-table;
@@ -270,8 +270,8 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
          loop i = 0; at.cvar-c; i++ {
             cvar2! = cvar-v[i].ptr();
             if cvar2.decl.name == name {
-               `c1.stdout{file-idx '': cvar.row '': cvar.col ": Cannot declare constant '" name "' because it was already declared at " cvar2.file '': cvar2.row '': cvar2.col "\n"}
-               `c.exit(#failure);
+               'c1.stdout{file-idx '': cvar.row '': cvar.col ": Cannot declare constant '" name "' because it was already declared at " cvar2.file '': cvar2.row '': cvar2.col "\n"}
+               'c.exit(#failure);
             }
          }
          at-cvar-idx! = at.cvar-c++;
@@ -291,15 +291,15 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
       }
    }
    if true {
-      gvar-c! = r.n()`gvar;
+      gvar-c! = r.n()'gvar;
       // C1.stdout{"There are " gvar-c " gvars\n"}
       // C.out.flush();
       gvar-begin! = .gvar-c;
       .gvar-c += gvar-c;
       if .gvar-cap <= .gvar-c {
          old-cap! = .gvar-cap;
-         .gvar-cap = grow(.gvar-c`base)`gvar;
-         realloc(.gvar-v, .gvar-cap`base, old-cap`base);
+         .gvar-cap = grow(.gvar-c'base)'gvar;
+         realloc(.gvar-v, .gvar-cap'base, old-cap'base);
       }
       // malloc(.gvar-table, .gvar-c);
       // file.gvar-table = .gvar-table;
@@ -319,8 +319,8 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
          loop i = 0; at.gvar-c; i++ {
             gvar2! = gvar-v[i].ptr();
             if gvar2.decl.name == name {
-               `c1.stdout{file-idx '': gvar.row '': gvar.col ": Cannot declare global variable '" name "' because it was already declared at " gvar2.file '': gvar2.row '': gvar2.col "\n"}
-               `c.exit(#failure);
+               'c1.stdout{file-idx '': gvar.row '': gvar.col ": Cannot declare global variable '" name "' because it was already declared at " gvar2.file '': gvar2.row '': gvar2.col "\n"}
+               'c.exit(#failure);
             }
          }
          at-gvar-idx! = at.gvar-c++;
@@ -333,18 +333,18 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
          gvar-v[at-gvar-idx] = gvar-idx;
       }
    }
-   enum-c! = r.n()`enum;
+   enum-c! = r.n()'enum;
    // C1.stdout{"There are " enum-c " enums\n"}
       // C.out.flush();
    e-idx-begin! = .enum-c;
    .enum-c += enum-c;
    if .enum-cap <= .enum-c {
       old-cap! = .enum-cap;
-      .enum-cap = grow(.enum-c`base)`enum;
-      realloc(.enum-v, .enum-cap`base, old-cap`base);
+      .enum-cap = grow(.enum-c'base)'enum;
+      realloc(.enum-v, .enum-cap'base, old-cap'base);
    }
    loop e-idx = e-idx-begin; enum-c; e-idx++ {
-      var e`enum-data;
+      var e'enum-data;
       quick-alloc-one(e);
       .enum-v[e-idx] = e;
       e.file = file-idx;
@@ -368,15 +368,15 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
       at-i! = e.at;
       at! = at-i.ptr();
       if at.def != #undefined {
-         `c1.stdbuf{file-idx '': e.begin-row '': e.begin-col ": Cannot define enum " at.name.id " because it was already defined as "}
+         'c1.stdbuf{file-idx '': e.begin-row '': e.begin-col ": Cannot define enum " at.name.id " because it was already defined as "}
          if at.def == #struct {
             s! = at.decl.structt.ptr();
-            `c1.stdout{"struct at " s.file '': s.begin-row '': s.begin-col "\n"}
+            'c1.stdout{"struct at " s.file '': s.begin-row '': s.begin-col "\n"}
          } else {
             s! = at.decl.enumm.ptr();
-            `c1.stdout{"enum at " s.file '': s.begin-row '': s.begin-col "\n"}
+            'c1.stdout{"enum at " s.file '': s.begin-row '': s.begin-col "\n"}
          }
-         `c.exit(#failure);
+         'c.exit(#failure);
       }
       at.decl.enumm = e-idx;
       at.def = #enum;
@@ -400,19 +400,19 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
       //    at = at.parent.ptr();
       // }
    }
-   struct-c! = r.n()`struct;
+   struct-c! = r.n()'struct;
    // C1.stdout{"There are " struct-c:base " structs\n"}
    s-idx-begin! = .struct-c;
    .struct-c += struct-c;
    if .struct-cap <= .struct-c {
       old-cap! = .struct-cap;
-      .struct-cap = grow(.struct-c`base)`struct;
-      realloc(.struct-v, .struct-cap`base, old-cap`base);
+      .struct-cap = grow(.struct-c'base)'struct;
+      realloc(.struct-v, .struct-cap'base, old-cap'base);
    }
    loop s-idx = s-idx-begin; struct-c; s-idx++ {
       fvar-c! = r.n1();
-      var s`struct-data;
-      quick-alloc-plus(s, `fvar-data[`usz] * fvar-c);
+      var s'struct-data;
+      quick-alloc-plus(s, 'fvar-data['usz] * fvar-c);
       .struct-v[s-idx] = s;
       s.file = file-idx;
       s.fvar-c = fvar-c;
@@ -426,15 +426,15 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
       at-i! = s.at;
       at! = at-i.ptr();
       if at.def != #undefined {
-         `c1.stdbuf{file-idx '': s.begin-row '': s.begin-col ": Cannot define struct " at.name.id " because it was already defined as "}
+         'c1.stdbuf{file-idx '': s.begin-row '': s.begin-col ": Cannot define struct " at.name.id " because it was already defined as "}
          if at.def == #enum {
             e! = at.decl.enumm.ptr();
-            `c1.stdout{"enum at " e.file '': e.begin-row '': e.begin-col ''\n}
+            'c1.stdout{"enum at " e.file '': e.begin-row '': e.begin-col ''\n}
          } else {
             s2! = at.decl.structt.ptr();
-            `c1.stdout{"struct at " s2.file '': s2.begin-row '': s2.begin-col ''\n}
+            'c1.stdout{"struct at " s2.file '': s2.begin-row '': s2.begin-col ''\n}
          }
-         `c.exit(#failure);
+         'c.exit(#failure);
       }
       // C1.stdout{"at(" at-i ") is a struct: " at.name.id ", parent is " at.parent ''\n}
       at.decl.structt = s-idx;
@@ -460,20 +460,20 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
          s.aligned = r.n();
       }
    }
-   func-c! = r.n()`func;
+   func-c! = r.n()'func;
    // C1.stdout{"There are " func-c " functions\n"}
       // C.out.flush();
    f-idx-begin! = .func-c;
    .func-c += func-c;
    if .func-cap <= .func-c {
       old-cap! = .func-cap;
-      .func-cap = grow(.func-c`base)`func;
-      realloc(.func-v, .func-cap`base, old-cap`base);
+      .func-cap = grow(.func-c'base)'func;
+      realloc(.func-v, .func-cap'base, old-cap'base);
    }
    loop f-idx = f-idx-begin; func-c; f-idx++ {
       farg-c! = r.n1();
-      var f`decl-func;
-      quick-alloc-plus(f, `farg[`usz] * farg-c);
+      var f'decl-func;
+      quick-alloc-plus(f, 'farg['usz] * farg-c);
       .func-v[f-idx] = f;
       f.farg-c = farg-c;
       f.file = file-idx;
@@ -486,7 +486,7 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
       f.angle = r.n1() != 0;
       at-i! = f.at;
       f.decl.rd(r);
-      var r0`rdr.;
+      var r0'rdr.;
       r0.ref = f;
       // C1.stdout{"func :" f.decl.name " was declared on an at:\n"}
       // if true {
@@ -513,7 +513,7 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
          // farg.decl.type.write(C.out);
          // C1.stdout{''  farg.decl.name ""}
       }
-      this-idx! = r.n1()`i8;
+      this-idx! = r.n1()'i8;
       f.this-idx = this-idx;
       if this-idx != -1 {
          f.this-group = r.n1();
@@ -542,17 +542,17 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
          len! = r.n();
          f.decl-len = len;
          f.decl-str = quick-alloc(len + 1);
-         `c.memcpy(f.decl-str, r.ref, len);
+         'c.memcpy(f.decl-str, r.ref, len);
          f.decl-str[len] = 0;
          r.pos += len;
       }
-      f.overload = r.n1()`overload;
+      f.overload = r.n1()'overload;
       at! = at-i.ptr();
       name! = f.decl.name;
       func-v! = at.func-v;
       loop i = 0; at.func-c; i++ {
          func2! = func-v[i].ptr();
-         if (func2.decl.name == name) && (func2.farg-c == farg-c) && (func2.group-c == group-c) && (`c.memcmp(func2.group-v, f.group-v, group-c) == 0) {
+         if (func2.decl.name == name) && (func2.farg-c == farg-c) && (func2.group-c == group-c) && ('c.memcmp(func2.group-v, f.group-v, group-c) == 0) {
             same! = true;
             if func2.angle != f.angle {
             } elif f.angle {
@@ -566,8 +566,8 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
                }
             }
             if same {
-               `c1.stdout{file-idx '': f.begin-row '': f.begin-col ": Cannot declare function '" name "' because it was already declared at " func2.file '': func2.begin-row '': func2.begin-col "\n"}
-               `c.exit(#failure);
+               'c1.stdout{file-idx '': f.begin-row '': f.begin-col ": Cannot declare function '" name "' because it was already declared at " func2.file '': func2.begin-row '': func2.begin-col "\n"}
+               'c.exit(#failure);
             }
          }
       }
@@ -580,14 +580,14 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
       }
       func-v[at-func-idx] = f-idx;
    }
-   `func.rd(func-main!, r);
+   'func.rd(func-main!, r);
    if func-main != #nil {
       func-main += f-idx-begin;
       if .func-main != #nil {
          first! = .func-main.ptr();
          second! = func-main.ptr();
-         `c1.stdout{"There are more than one function with @main attribute, first is " first.file '': first.begin-row '': first.begin-col " and second is " file-idx '': second.begin-row '': second.begin-col ''\n}
-         `c.exit(#failure);
+         'c1.stdout{"There are more than one function with @main attribute, first is " first.file '': first.begin-row '': first.begin-col " and second is " file-idx '': second.begin-row '': second.begin-col ''\n}
+         'c.exit(#failure);
       }
       .func-main = func-main;
    }
@@ -599,19 +599,19 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
       r.pos += size;
    }
    loop r.n() {
-      `include.rd(path!, r);
+      'include.rd(path!, r);
       require2! = r.b();
       import(path, require2 && require, file-idx);
    }
    template-code-idx-begin! = .template-code-c;
-   template-code-c! = r.n()`template-code;
+   template-code-c! = r.n()'template-code;
    // C1.stdout{"there are " template-code-c:base " template codes\n"}
    old-template-code-c! = .template-code-c;
    .template-code-c += template-code-c;
    if .template-code-cap <= .template-code-c {
       old-cap! = .template-code-cap;
-      .template-code-cap = grow(.template-code-c`base)`template-code;
-      realloc(.template-code-v, .template-code-cap`base, old-cap`base);
+      .template-code-cap = grow(.template-code-c'base)'template-code;
+      realloc(.template-code-v, .template-code-cap'base, old-cap'base);
    }
    loop i = template-code-idx-begin; template-code-c; i++ {
       td! = .template-code-v[i];
@@ -629,14 +629,14 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
       loop j = 0; old-template-code-c; j++ {
          td2! = .template-code-v[j];
          if (td2.name == td.name) && (td2.at == td.at) {
-            `c1.stdout{file-idx '': td.row ": Template code '" td.name "' was redeclared. Previously declared at " td2.file '': td2.row ''\n}
-            `c.exit(#failure);
+            'c1.stdout{file-idx '': td.row ": Template code '" td.name "' was redeclared. Previously declared at " td2.file '': td2.row ''\n}
+            'c.exit(#failure);
          }
       }
       // C1.stdout{"template " td.name "\n"}
    }
    loop r.n() {
-      var ti`template-inst-data. = ?;
+      var ti'template-inst-data. = ?;
       ti.name.rd(r);
       ti.row = r.n();
       ti.col = r.n();
@@ -651,67 +651,67 @@ read(in-path-cp1`char[], in-path-cp1-len`u16, strdup`bool, require`bool) {
    }
 }
 // var out:C.File;
-var process-first`func;
-var process-last`func;
-var func-in-process`u8[];
-var include-is-outputted`u8[];
-var include-outputted-c`i32;
-var include-outputted-v`include[];
-var cvar-is-outputted`u8[];
-var cvar-outputted-c`i32;
-var cvar-outputted-v`cvar[];
-var gvar-is-outputted`u8[];
-var gvar-outputted-c`i32;
-var gvar-outputted-v`gvar[];
-var enum-is-outputted`u8[];
-var enum-outputted-c`i32;
-var enum-outputted-v`enum[];
-var struct-is-outputted`u8[];
-var struct-outputted-c`i32;
-var struct-outputted-v`struct[];
+var process-first'func;
+var process-last'func;
+var func-in-process'u8[];
+var include-is-outputted'u8[];
+var include-outputted-c'i32;
+var include-outputted-v'include[];
+var cvar-is-outputted'u8[];
+var cvar-outputted-c'i32;
+var cvar-outputted-v'cvar[];
+var gvar-is-outputted'u8[];
+var gvar-outputted-c'i32;
+var gvar-outputted-v'gvar[];
+var enum-is-outputted'u8[];
+var enum-outputted-c'i32;
+var enum-outputted-v'enum[];
+var struct-is-outputted'u8[];
+var struct-outputted-c'i32;
+var struct-outputted-v'struct[];
 // var current-dir:char[1024];
 // var current-dir-len:u16;
-var include-dir`char[4096];
-var include-dir-len`u16;
-var define-v`char[][];
-var define-len-v`u16[];
-var define-c`u16;
-var include-path-v`char[][];
-var include-path-len-v`u16[];
-var include-path-c`u8;
+var include-dir'char[4096];
+var include-dir-len'u16;
+var define-v'char[][];
+var define-len-v'u16[];
+var define-c'u16;
+var include-path-v'char[][];
+var include-path-len-v'u16[];
+var include-path-c'u8;
 
-var id-add`id;
-var id-sub`id;
-var id-mul`id;
-var id-div`id;
-var id-eq`id;
-var id-ne`id;
-var id-gt`id;
-var id-ge`id;
-var id-lt`id;
-var id-le`id;
-var id-and`id;
-var id-or`id;
+var id-add'id;
+var id-sub'id;
+var id-mul'id;
+var id-div'id;
+var id-eq'id;
+var id-ne'id;
+var id-gt'id;
+var id-ge'id;
+var id-lt'id;
+var id-le'id;
+var id-and'id;
+var id-or'id;
 
-var debug-func-prefix`char @const[];
-var debug-func-prefix-len`u8;
+var debug-func-prefix'char @const[];
+var debug-func-prefix-len'u8;
 
-c-init(crc32c`u32);
-deps-init(path`char @const[]);
-deps-output(path`char @const[]);
+c-init(crc32c'u32);
+deps-init(path'char @const[]);
+deps-output(path'char @const[]);
 deps-close();
-quickjs-begin(file`char[], file-len`u8, tc-name`char[], tc-name-len`u8, code-crc32c`u32, arg-crc32c`u32, require`bool)`bool;
-quickjs-hex(data`char[], code-crc32c`u32)`u32;
-quickjs-end(js-data`char[], js-data-len`u32, require`bool);
+quickjs-begin(file'char[], file-len'u8, tc-name'char[], tc-name-len'u8, code-crc32c'u32, arg-crc32c'u32, require'bool)'bool;
+quickjs-hex(data'char[], code-crc32c'u32)'u32;
+quickjs-end(js-data'char[], js-data-len'u32, require'bool);
 include "build-crc32c.c" {
-   build-crc32c()`u32 @no-decl;
+   build-crc32c()'u32 @no-decl;
 }
-main(arg-c`intc, arg-v`char[][])`intc @main {
+main(arg-c'intc, arg-v'char[][])'intc @main {
    "#ifdef _WIN32";
    // Remove .exe from binary path
    if true {
       arg! = arg-v[0];
-      len! = `c.strlen(arg);
+      len! = 'c.strlen(arg);
       if (arg[len - 4] == ''.) && (arg[len - 3] == ''e) && (arg[len - 2] == ''x) && (arg[len - 1] == ''e) {
          arg[len - 4] = ''\0;
       }
@@ -729,19 +729,19 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
       }
    }
    "#endif";
-   input-file-c! = 0`u16;
-   var input-file-v`char[][];
-   var input-file-len-v`u8[];
-   `c.malloc-arr(input-file-v, arg-c * `ref[`usz]);
-   `c.malloc-arr(input-file-len-v, arg-c * `u8[`usz]);
-   `c.malloc-arr(.include-path-v, arg-c * `ref[`usz]);
-   `c.malloc-arr(.include-path-len-v, arg-c * `u16[`usz]);
-   `c.malloc-arr(.define-v, arg-c * `ref[`usz]);
-   `c.malloc-arr(.define-len-v, arg-c * `u8[`usz]);
-   var output-file`char[] = null;
+   input-file-c! = 0'u16;
+   var input-file-v'char[][];
+   var input-file-len-v'u8[];
+   'c.malloc-arr(input-file-v, arg-c * 'ref['usz]);
+   'c.malloc-arr(input-file-len-v, arg-c * 'u8['usz]);
+   'c.malloc-arr(.include-path-v, arg-c * 'ref['usz]);
+   'c.malloc-arr(.include-path-len-v, arg-c * 'u16['usz]);
+   'c.malloc-arr(.define-v, arg-c * 'ref['usz]);
+   'c.malloc-arr(.define-len-v, arg-c * 'u8['usz]);
+   var output-file'char[] = null;
    watermark! = false;
    process-all! = false;
-   var comment-for-func`char[] = null;
+   var comment-for-func'char[] = null;
    comment-for-func-len! = 0;
    var crc32c = build-crc32c();
    loop i = 1; i < arg-c {
@@ -753,20 +753,20 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
             } elif arg[1] == ''c {
                output-file = arg-v[i++];
                if output-file == null {
-                  `c1.stdout{"The option -c must be followed by a path\n"}
+                  'c1.stdout{"The option -c must be followed by a path\n"}
                   "goto usage;";
                }
             } elif arg[1] == ''d {
                .debug-func-prefix = arg-v[i++];
                if .debug-func-prefix == null {
-                  `c1.stdout{"The option -d must be followed by a function name prefix\n"}
+                  'c1.stdout{"The option -d must be followed by a function name prefix\n"}
                   "goto usage;";
                }
-               .debug-func-prefix-len = `c.strlen(.debug-func-prefix);
+               .debug-func-prefix-len = 'c.strlen(.debug-func-prefix);
             } elif arg[1] == ''g {
                path! = arg-v[i++];
                if path == null {
-                  `c1.stdout{"The option -g must be followed by a file path\n"}
+                  'c1.stdout{"The option -g must be followed by a file path\n"}
                   "goto usage;";
                }
                deps-init(path);
@@ -775,25 +775,25 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
                // to determine the beginning and end of function bodies
                comment-for-func = arg-v[i++];
                if comment-for-func == null {
-                  `c1.stdout{"The option -F must be followed by a path\n"}
+                  'c1.stdout{"The option -F must be followed by a path\n"}
                   "goto usage;";
                }
-               comment-for-func-len = `c.strlen(comment-for-func);
+               comment-for-func-len = 'c.strlen(comment-for-func);
             } elif arg[1] == ''I {
                arg = arg-v[i++];
                if arg == null {
-                  `c1.stdout{"The option -I must be followed by a path\n"}
+                  'c1.stdout{"The option -I must be followed by a path\n"}
                   "goto usage;";
                }
-               arg-len! = `c.strlen(arg);
+               arg-len! = 'c.strlen(arg);
                if arg[arg-len] != ''/ {
                   arg[arg-len++] = ''/;
                }
                // Allocate +256 of memory so we can use
                // include paths as scratch when checking for file existence
-               var mem`char[];
-               `c.malloc-arr(mem, arg-len + 256);
-               `c.memcpy(mem, arg, arg-len);
+               var mem'char[];
+               'c.malloc-arr(mem, arg-len + 256);
+               'c.memcpy(mem, arg, arg-len);
                .include-path-v[.include-path-c] = mem;
                .include-path-len-v[.include-path-c] = arg-len;
                .include-path-c++;
@@ -802,17 +802,17 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
             } else {
                "invalid_option:;";
                if arg[1] == ''\0 {
-                  `c1.stdout{"Invalid option '-'\n"}
+                  'c1.stdout{"Invalid option '-'\n"}
                } else {
-                  `c1.stdout{"Invalid option '-" arg[1] "'\n"}
+                  'c1.stdout{"Invalid option '-" arg[1] "'\n"}
                }
                "goto usage;";
             }
          } elif arg[1] == ''D {
-            var def`char[] = &arg[2];
-            def-len! = `c.strlen(def);
+            var def'char[] = &arg[2];
+            def-len! = 'c.strlen(def);
             if def-len == 0 {
-               `c1.stdout{"The option -D must follow the syntax -D[key=value] without space.\n"}
+               'c1.stdout{"The option -D must follow the syntax -D[key=value] without space.\n"}
                "goto usage;";
             }
             crc32c = crc32c(crc32c, def, def-len);
@@ -823,9 +823,9 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
             "goto invalid_option;";
          }
       } else {
-         arg-len! = `c.strlen(arg);
+         arg-len! = 'c.strlen(arg);
          if arg-len > 255 {
-            `c1.stdout{"The path '" arg "' exceeds 255 bytes, please use shorter paths\n"}
+            'c1.stdout{"The path '" arg "' exceeds 255 bytes, please use shorter paths\n"}
             "goto usage;";
          }
          input-file-v[input-file-c] = arg;
@@ -835,10 +835,10 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
    }
    bin! = arg-v[0];
    var abs-path = .include-dir; // :char[512];
-   var abs-path-len`u16 = 0;
+   var abs-path-len'u16 = 0;
    if bin[0] == ''/ {
-      abs-path-len = `c.strlen(bin);
-      `c.memcpy(abs-path, bin, abs-path-len);
+      abs-path-len = 'c.strlen(bin);
+      'c.memcpy(abs-path, bin, abs-path-len);
       abs-path[abs-path-len] = ''\0;
    } else {
       has-slash! = false;
@@ -851,9 +851,9 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
       }
       if has-slash {
          "#ifdef _WIN32";
-         var cwd`char[1024];
-         `x.getcwd(cwd, 1024);
-         `c.strcpy(abs-path, &cwd[2]);
+         var cwd'char[1024];
+         'x.getcwd(cwd, 1024);
+         'c.strcpy(abs-path, &cwd[2]);
          var i = 0;
          loop ; ; i++ {
             if abs-path[i] == ''\0 {
@@ -863,12 +863,12 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
             }
          }
          abs-path[i++] = ''/;
-         `c.strcpy(&abs-path[i], bin);
+         'c.strcpy(&abs-path[i], bin);
          "#else";
-         `c.realpath(bin, abs-path);
+         'c.realpath(bin, abs-path);
          "#endif";
       } else {
-         path! = `c.strdup(`c.getenv("PATH"));
+         path! = 'c.strdup('c.getenv("PATH"));
          var found;
          "#ifdef _WIN32";
          loop i = 0; path[i] != ''\0; i++ {
@@ -876,45 +876,45 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
                path[i] = ''/;
             }
          }
-         found = `c.strtok(path, ";");
+         found = 'c.strtok(path, ";");
          "#else";
-         found = `c.strtok(path, ":");
+         found = 'c.strtok(path, ":");
          "#endif";
-         fd! = `x`fd#nil;
+         fd! = 'x'fd#nil;
          loop found != null {
-            `c1.sprintf(abs-path, f?);
+            'c1.sprintf(abs-path, f?);
             "#ifdef _WIN32";
             f.f{found ''/ bin ".exe"}
             "#else";
             f.f{found ''/ bin}
             "#endif";
-            fd = `x.open(abs-path, #rdonly);
+            fd = 'x.open(abs-path, #rdonly);
             if fd != #nil {
                fd.close();
                break;
             }
             "#ifdef _WIN32";
-            found = `c.strtok(null, ";");
+            found = 'c.strtok(null, ";");
             "#else";
-            found = `c.strtok(null, ":");
+            found = 'c.strtok(null, ":");
             "#endif";
          }
          if fd == #nil {
-            `c1.stdout{"Cannot run " bin " because we can`t detect its absolute path\n"}
-            `c.exit(#failure);
+            'c1.stdout{"Cannot run " bin " because we can't detect its absolute path\n"}
+            'c.exit(#failure);
          }
-         `c.free(path);
+         'c.free(path);
       }
    }
-   slash1! = `c.strrchr(abs-path, ''/);
+   slash1! = 'c.strrchr(abs-path, ''/);
    slash1[0] = ''\0;
-   slash2! = `c.strrchr(abs-path, ''/);
+   slash2! = 'c.strrchr(abs-path, ''/);
    slash2[0] = ''\0;
-   .include-dir-len = `c.strlen(.include-dir);
+   .include-dir-len = 'c.strlen(.include-dir);
    c-init(crc32c);
    if (input-file-c == 0) || (output-file == null) {
       "usage:";
-      `c1.stdout{
+      'c1.stdout{
         "Usage: " arg-v[0] " [options] [file.cp1] [file2.cp1...]\n"
       '= options
       '=    -c [path]   Output C file to [path]
@@ -940,15 +940,15 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
    quick-alloc-init();
    .func-main = #nil;
 
-   loop type = 0`basic-type-id; `basic-type-id#count; type++ {
+   loop type = 0'basic-type-id; 'basic-type-id#count; type++ {
       at-idx! = .at-c++;
       if .at-cap <= .at-c {
          old-cap! = .at-cap;
-         .at-cap = grow(.at-c`base)`at;
-         realloc(.at-v, .at-cap`base, old-cap`base);
+         .at-cap = grow(.at-c'base)'at;
+         realloc(.at-v, .at-cap'base, old-cap'base);
       }
       at! = .at-v[at-idx];
-      at.init(#basic, #root, type`id);
+      at.init(#basic, #root, type'id);
    }
 
    // if true {
@@ -956,18 +956,18 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
    // }
 
    .import-cap = 32;
-   `c.malloc-arr(.import-v, .import-cap);
-   `c.malloc-arr(.import-file-v, .import-cap);
-   `c.malloc-arr(.import-required-v, (.import-cap + 7) >> 3);
-   .template-inst-cap = 32`template-inst;
-   `c.malloc-arr(.template-inst-v, .template-inst-cap`base);
+   'c.malloc-arr(.import-v, .import-cap);
+   'c.malloc-arr(.import-file-v, .import-cap);
+   'c.malloc-arr(.import-required-v, (.import-cap + 7) >> 3);
+   .template-inst-cap = 32'template-inst;
+   'c.malloc-arr(.template-inst-v, .template-inst-cap'base);
 
    loop i = 0; input-file-c; i++ {
       inc! = include-add(input-file-len-v[i], input-file-v[i]);
       if !inc.validate(err!) {
-         `c1.stdbuf{"Command line argument path "}
+         'c1.stdbuf{"Command line argument path "}
          err.print(inc);
-         `c.exit(#failure);
+         'c.exit(#failure);
       }
       import(inc, true, #nil);
    }
@@ -982,21 +982,21 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
       }
    }
 
-   if .template-inst-new-c`base != 0 {
+   if .template-inst-new-c'base != 0 {
       // process template instantiations
       if .jscode-buf-cap == 0 {
          .jscode-buf-cap = 4096;
-         `c.malloc-arr(.jscode-buf-data, .jscode-buf-cap);
+         'c.malloc-arr(.jscode-buf-data, .jscode-buf-cap);
       }
       new-c! = .template-inst-new-c;
-      .template-inst-new-c = 0`template-inst;
+      .template-inst-new-c = 0'template-inst;
       loop i = .template-inst-c - new-c; new-c; i++ {
          ti! = .template-inst-v[i];
          at! = ti.at;
          name! = ti.name;
          found! = false;
          // C1.stdout{"template instantiation of " ti.name "; " ti.arg, ti.arg-len " " ti.arg-len "\n"}
-         loop j = 0`template-code; .template-code-c; j++ {
+         loop j = 0'template-code; .template-code-c; j++ {
             tc! = .template-code-v[j];
             if (at == tc.at) && (name == tc.name) {
                if quickjs-begin(tc.file.path(), tc.file.path-len(), tc.name.str(), tc.name.len(), tc.code-crc32c, ti.arg-crc32c, ti.require) {
@@ -1022,9 +1022,9 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
                      '= let cp1_refl = {
                      '- "root":
                      }
-                     `at#root.jscode-write();
+                     'at#root.jscode-write();
                      jscode{",\n"}
-                     loop at-idx = 2`at; .at-c - 2`at; at-idx++ {
+                     loop at-idx = 2'at; .at-c - 2'at; at-idx++ {
                         at! = at-idx.ptr();
                         if at.parent == #relative { continue }
                         jscode{''"}
@@ -1103,7 +1103,7 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
                      }
                      .jscode-buf-len += quickjs-hex(&.jscode-buf-data[.jscode-buf-len], tc.code-crc32c);
                      jscode{
-                       "- `crc32c\\n\");\n"
+                       "- 'crc32c\\n\");\n"
                      }
                   }
                   code! = tc.code;
@@ -1111,13 +1111,13 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
                   line-num! = tc.row;
                   loop tc.line-c {
                      line-num++;
-                     line-len! = (code[i] | (code[i + 1] << 8))`u16;
+                     line-len! = (code[i] | (code[i + 1] << 8))'u16;
                      i += 2;
                      if line-len == 0 {
                         jscode{'= O("\n");
                         }
                      } else {
-                        var line`char[] = &code[i];
+                        var line'char[] = &code[i];
                         if (line-len & 0x8000) == 0 {
                            jscode{"O(`" line, line-len "\\n`);\n"}
                         } else {
@@ -1132,7 +1132,7 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
                   }
                   "#ifdef _WIN32";
                   jscode{
-                    "   let tmp_path = scriptArgs[0] + \".cp1-" `x.getpid()`u32 "\";\n"
+                    "   let tmp_path = scriptArgs[0] + \".cp1-" 'x.getpid()'u32 "\";\n"
                   }
                   "#else";
                   jscode{
@@ -1154,14 +1154,14 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
             }
          }
          if !found {
-            `c1.stdout{ti.file '': ti.row ": Error, cannot instantiate the template '" name "' because its code was not found.\n"}
-            `c.exit(#failure);
+            'c1.stdout{ti.file '': ti.row ": Error, cannot instantiate the template '" name "' because its code was not found.\n"}
+            'c.exit(#failure);
          }
       }
       "goto import_now;";
    }
 
-   loop f-idx = 0`func; .func-c; f-idx++ {
+   loop f-idx = 0'func; .func-c; f-idx++ {
       f! = f-idx.ptr();
       if f.this-idx != -1 {
          at! = f.at.ptr();
@@ -1169,8 +1169,8 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
          // C.out.flush();
          if at.type == #struct-enum {
             if at.decl.enumm == #nil {
-               `c1.stdout{f.file '': f.begin-row '': f.begin-col ": function using `this' was declared on " at.name.id " which is not defined\n"}
-               `c.exit(#failure);
+               'c1.stdout{f.file '': f.begin-row '': f.begin-col ": function using 'this' was declared on " at.name.id " which is not defined\n"}
+               'c.exit(#failure);
             }
             if at.def == #struct {
                t! = at.decl.structt.ptr();
@@ -1191,8 +1191,8 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
                }
                t.method-v[t-method-idx] = f-idx;
             } else {
-               `c1.stdout{f.file '': f.begin-row '': f.begin-col ": function using `this' was declared on " at.name.id " which is not a struct or enum\n"}
-               `c.exit(#failure);
+               'c1.stdout{f.file '': f.begin-row '': f.begin-col ": function using 'this' was declared on " at.name.id " which is not a struct or enum\n"}
+               'c.exit(#failure);
             }
          } elif at.type == #basic {
             t! = .basic-type[at.name.basic];
@@ -1204,8 +1204,8 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
             }
             t.method-v[t-method-idx] = f-idx;
          } else {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": function using `this' was declared on a type that`s not a struct or enum\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": function using 'this' was declared on a type that's not a struct or enum\n"}
+            'c.exit(#failure);
          }
       }
    }
@@ -1230,10 +1230,10 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
    .id-or = id-add(2, "or");
 
    if true {
-      func-c8! = (.func-c`base + 7) >> 3;
+      func-c8! = (.func-c'base + 7) >> 3;
       quick-alloc-arr(.func-in-process, func-c8);
-      quick-alloc-arr(.func-head-outputted-v, .func-c`base);
-      quick-alloc-arr(.func-body-outputted-v, .func-c`base);
+      quick-alloc-arr(.func-head-outputted-v, .func-c'base);
+      quick-alloc-arr(.func-body-outputted-v, .func-c'base);
    }
    if true {
       include-c8! = (.include-c + 7) >> 3;
@@ -1241,47 +1241,47 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
       quick-alloc-arr(.include-outputted-v, .include-c);
    }
    if true {
-      cvar-c8! = (.cvar-c`base + 7) >> 3;
+      cvar-c8! = (.cvar-c'base + 7) >> 3;
       quick-alloc-arr(.cvar-is-outputted, cvar-c8);
-      quick-alloc-arr(.cvar-outputted-v, .cvar-c`base);
+      quick-alloc-arr(.cvar-outputted-v, .cvar-c'base);
    }
    if true {
-      gvar-c8! = (.gvar-c`base + 7) >> 3;
+      gvar-c8! = (.gvar-c'base + 7) >> 3;
       quick-alloc-arr(.gvar-is-outputted, gvar-c8);
-      quick-alloc-arr(.gvar-outputted-v, .gvar-c`base);
+      quick-alloc-arr(.gvar-outputted-v, .gvar-c'base);
    }
    if true {
-      enum-c8! = (.enum-c`base + 7) >> 3;
+      enum-c8! = (.enum-c'base + 7) >> 3;
       quick-alloc-arr(.enum-is-outputted, enum-c8);
-      quick-alloc-arr(.enum-outputted-v, .enum-c`base);
+      quick-alloc-arr(.enum-outputted-v, .enum-c'base);
    }
    if true {
-      struct-c8! = (.struct-c`base + 7) >> 3;
+      struct-c8! = (.struct-c'base + 7) >> 3;
       quick-alloc-arr(.struct-is-outputted, struct-c8);
-      quick-alloc-arr(.struct-outputted-v, .struct-c`base);
+      quick-alloc-arr(.struct-outputted-v, .struct-c'base);
    }
 
    // process the main function
    .process-first = #nil;
    .process-last = #nil;
 
-   loop f-idx = 0`func; .func-c; f-idx++ {
+   loop f-idx = 0'func; .func-c; f-idx++ {
       f! = f-idx.ptr();
       if f.overload == #get {
          // C1.stdout{"overload-get\n"}
          at! = f.at.ptr();
          if at.def != #enum {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-get is only applicable to enum types\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-get is only applicable to enum types\n"}
+            'c.exit(#failure);
          }
          if (f.farg-c != 1) || (f.group-c != 1) {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-get must have exactly 1 argument only\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-get must have exactly 1 argument only\n"}
+            'c.exit(#failure);
          }
          if !f-idx.process-later() { return -1 }
          if f.decl.type != f.at {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-get must have a return type same as the namespace where it was declared\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-get must have a return type same as the namespace where it was declared\n"}
+            'c.exit(#failure);
          }
          e! = at.decl.enumm.ptr();
          // e.flags |= #overload-get;
@@ -1290,20 +1290,20 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
       } elif f.overload == #set {
          at! = f.at.ptr();
          if at.def != #enum {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-set is only applicable to enum types\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-set is only applicable to enum types\n"}
+            'c.exit(#failure);
          }
          if f.this-idx == -1 {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-set is only applicable to methods\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-set is only applicable to methods\n"}
+            'c.exit(#failure);
          }
          if f.this-idx != 0 {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-set must have `this' as the first argument\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-set must have 'this' as the first argument\n"}
+            'c.exit(#failure);
          }
          if (f.farg-c != 4) || (f.group-c != 1) {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-set must have exactly 3 arguments only\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-set must have exactly 3 arguments only\n"}
+            'c.exit(#failure);
          }
          if !f-idx.process-later() { return -1 }
          // if f.decl.type != f.at {
@@ -1317,20 +1317,20 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
       } elif f.overload == #math {
          at! = f.at.ptr();
          if at.def != #enum {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-math is only applicable to enum types\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-math is only applicable to enum types\n"}
+            'c.exit(#failure);
          }
          if f.this-idx == -1 {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-math is only applicable to methods\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-math is only applicable to methods\n"}
+            'c.exit(#failure);
          }
          if f.this-idx != 0 {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-math must have `this' as the first argument\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-math must have 'this' as the first argument\n"}
+            'c.exit(#failure);
          }
          if (f.farg-c != 3) || (f.group-c != 1) {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-math must have exactly 2 arguments only\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-math must have exactly 2 arguments only\n"}
+            'c.exit(#failure);
          }
          if !f-idx.process-later() { return -1 }
          // if f.decl.type != f.at {
@@ -1344,20 +1344,20 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
       } elif f.overload == #bools {
          at! = f.at.ptr();
          if at.def != #enum {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-bools is only applicable to enum types\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-bools is only applicable to enum types\n"}
+            'c.exit(#failure);
          }
          if f.this-idx == -1 {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-bools is only applicable to methods\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-bools is only applicable to methods\n"}
+            'c.exit(#failure);
          }
          if f.this-idx != 0 {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-bools must have `this' as the first argument\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-bools must have 'this' as the first argument\n"}
+            'c.exit(#failure);
          }
          if (f.farg-c != 3) || (f.group-c != 1) {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-bools must have exactly 2 arguments only\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-bools must have exactly 2 arguments only\n"}
+            'c.exit(#failure);
          }
          if !f-idx.process-later() { return -1 }
          // if f.decl.type != f.at {
@@ -1371,20 +1371,20 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
       } elif f.overload == #compare {
          at! = f.at.ptr();
          if at.def != #enum {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-compare is only applicable to enum types\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-compare is only applicable to enum types\n"}
+            'c.exit(#failure);
          }
          if f.this-idx == -1 {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-compare is only applicable to methods\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-compare is only applicable to methods\n"}
+            'c.exit(#failure);
          }
          if f.this-idx != 0 {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-compare must have `this' as the first argument\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-compare must have 'this' as the first argument\n"}
+            'c.exit(#failure);
          }
          if (f.farg-c != 3) || (f.group-c != 1) {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-compare must have exactly 2 arguments only\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-compare must have exactly 2 arguments only\n"}
+            'c.exit(#failure);
          }
          if !f-idx.process-later() { return -1 }
          // if f.decl.type != f.at {
@@ -1398,20 +1398,20 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
       } elif f.overload == #if-begin {
          at! = f.at.ptr();
          if at.def != #enum {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-begin is only applicable to enum types\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-begin is only applicable to enum types\n"}
+            'c.exit(#failure);
          }
          if f.this-idx == -1 {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-begin is only applicable to methods\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-begin is only applicable to methods\n"}
+            'c.exit(#failure);
          }
          if f.this-idx != 0 {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-begin must have `this' as the first argument\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-begin must have 'this' as the first argument\n"}
+            'c.exit(#failure);
          }
          if (f.farg-c != 2) || (f.group-c != 1) {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-begin must have exactly 1 argument\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-begin must have exactly 1 argument\n"}
+            'c.exit(#failure);
          }
          if !f-idx.process-later() { return -1 }
          // if f.decl.type != f.at {
@@ -1422,27 +1422,27 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
          // e.flags |= #overload-if-begin;
          if e.overload-if-begin != #nil {
             f2! = e.overload-if-begin.ptr();
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-if-begin because there`s already a function with @overload-if-begin at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-if-begin because there's already a function with @overload-if-begin at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
+            'c.exit(#failure);
          }
          e.overload-if-begin = f-idx;
       } elif f.overload == #if-else {
          at! = f.at.ptr();
          if at.def != #enum {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-else is only applicable to enum types\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-else is only applicable to enum types\n"}
+            'c.exit(#failure);
          }
          // if f.this-idx == -1 {
          //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-else is only applicable to methods\n"}
          //    C.exit(#failure);
          // }
          // if f.this-idx != 0 {
-         //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-else must have `this' as the first argument\n"}
+         //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-else must have 'this' as the first argument\n"}
          //    C.exit(#failure);
          // }
          if (f.farg-c != 1) || (f.group-c != 1) {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-else must have exactly 1 argument\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-else must have exactly 1 argument\n"}
+            'c.exit(#failure);
          }
          if !f-idx.process-later() { return -1 }
          // if f.decl.type != f.at {
@@ -1453,27 +1453,27 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
          // e.flags |= #overload-if-else;
          if e.overload-if-else != #nil {
             f2! = e.overload-if-else.ptr();
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-if-else because there`s already a function with @overload-if-else at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-if-else because there's already a function with @overload-if-else at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
+            'c.exit(#failure);
          }
          e.overload-if-else = f-idx;
       } elif f.overload == #if-end {
          at! = f.at.ptr();
          if at.def != #enum {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-end is only applicable to enum types\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-end is only applicable to enum types\n"}
+            'c.exit(#failure);
          }
          // if f.this-idx == -1 {
          //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-end is only applicable to methods\n"}
          //    C.exit(#failure);
          // }
          // if f.this-idx != 0 {
-         //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-end must have `this' as the first argument\n"}
+         //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-end must have 'this' as the first argument\n"}
          //    C.exit(#failure);
          // }
          if (f.farg-c != 0) || (f.group-c != 1) {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-end must have no arguments\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-end must have no arguments\n"}
+            'c.exit(#failure);
          }
          if !f-idx.process-later() { return -1 }
          // if f.decl.type != f.at {
@@ -1484,53 +1484,53 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
          // e.flags |= #overload-if-end;
          if e.overload-if-end != #nil {
             f2! = e.overload-if-end.ptr();
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-if-end because there`s already a function with @overload-if-end at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-if-end because there's already a function with @overload-if-end at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
+            'c.exit(#failure);
          }
          e.overload-if-end = f-idx;
       } elif f.overload == #statement {
          at! = f.at.ptr();
          if at.def != #enum {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-statement is only applicable to enum types\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-statement is only applicable to enum types\n"}
+            'c.exit(#failure);
          }
          if f.this-idx == -1 {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-statement is only applicable to methods\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-statement is only applicable to methods\n"}
+            'c.exit(#failure);
          }
          if (f.farg-c != 1) || (f.group-c != 1) {
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-statement must have no arguments\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-statement must have no arguments\n"}
+            'c.exit(#failure);
          }
          if !f-idx.process-later() { return -1 }
          e! = at.decl.enumm.ptr();
          if e.overload-statement != #nil {
             f2! = e.overload-statement.ptr();
-            `c1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-statement because there`s already a function with @overload-statement at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
-            `c.exit(#failure);
+            'c1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-statement because there's already a function with @overload-statement at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
+            'c.exit(#failure);
          }
          e.overload-statement = f-idx;
       }
    }
    if process-all {
-      loop f-i = 0`func; .func-c; f-i++ {
+      loop f-i = 0'func; .func-c; f-i++ {
          f! = f-i.ptr();
          if !f-i.process-later() {
-            `c.exit(#failure);
+            'c.exit(#failure);
          }
       }
    } else {
       if .func-main != #nil {
          if !.func-main.process-later() {
-            `c.exit(#failure);
+            'c.exit(#failure);
          }
       }
 
-      loop f-i = 0`func; .func-c; f-i++ {
+      loop f-i = 0'func; .func-c; f-i++ {
          f! = f-i.ptr();
          if (f.flags & #process) != #0 {
             if !f-i.process-later() {
-               `c.exit(#failure);
+               'c.exit(#failure);
             }
          }
       }
@@ -1556,9 +1556,9 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
          continue;
       }
       .ctx-func = f;
-      loop l = 0`lvar; f.lvar-c; l++ {
+      loop l = 0'lvar; f.lvar-c; l++ {
          if !l.process() {
-            `c.exit(#failure);
+            'c.exit(#failure);
          }
       }
    }
@@ -1566,7 +1566,7 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
    // C1.stdout{"finished processing, writing...\n"}
    // .out = C.fopen(arg-v[arg-c - 1], "wb");
    .output-cap = 4096;
-   `c.malloc-arr(.output-data, .output-cap);
+   'c.malloc-arr(.output-data, .output-cap);
    if watermark {
       output{"// Generated by Cp1\n"}
    }
@@ -1634,7 +1634,7 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
    loop i = 0; .include-outputted-c; i++ {
       inc! = .include-outputted-v[i];
       if inc.str()[0] == ''[ {
-         var str`char[] = &inc.str()[1];
+         var str'char[] = &inc.str()[1];
          output{str, inc.len() - 2}
       } else {
          output{"#include " inc ''\n}
@@ -1735,7 +1735,7 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
                output{f.farg-v[j].decl.name}
             }
             output{") "}
-            var r`rdr. = ?;
+            var r'rdr. = ?;
             r.ref = f.decl-str;
             r.pos += 2;
             output{r.char, f.decl-len - 2}
@@ -1766,7 +1766,7 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
          if j != 0 {
             output{", "}
          }
-         f.farg-v[j].decl.write-lvar-type(j`lvar);
+         f.farg-v[j].decl.write-lvar-type(j'lvar);
       }
       if (f.flags & #cp1-name) != #0 {
          output{") {\nswitch(_Le_0) {\n"}
@@ -1810,7 +1810,7 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
          if j != 0 {
             output{", "}
          }
-         f.farg-v[j].decl.write-lvar-type(j`lvar);
+         f.farg-v[j].decl.write-lvar-type(j'lvar);
       }
       if comment-for-func != null {
          output{") { // " comment-for-func, comment-for-func-len ''\n}
@@ -1839,15 +1839,15 @@ main(arg-c`intc, arg-v`char[][])`intc @main {
    deps-close();
    return 0;
 }
-using `func {
-   in-process(f-idx`this)`bool {
-      num! = f-idx`u32;
+using 'func {
+   in-process(f-idx'this)'bool {
+      num! = f-idx'u32;
       n3! = num >> 3;
       n17! = 1 << (num & 7);
       return (.func-in-process[n3] & n17) != 0;
    }
-   process-later(f-idx`this)`bool {
-      num! = f-idx`u32;
+   process-later(f-idx'this)'bool {
+      num! = f-idx'u32;
       n3! = num >> 3;
       n17! = 1 << (num & 7);
       if (.func-in-process[n3] & n17) != 0 { return true }
@@ -1871,8 +1871,8 @@ using `func {
          }
          at! = f.decl.type.ptr();
          if (&&, at.type != #basic, at.decl.structt == #nil) {
-            `c1.stdout{f-file '': f-row '': f-col ": Error, the type '" at.name.id "' used as return type for function '" f.decl.name "' was not defined\n"}
-            `c.exit(#failure);
+            'c1.stdout{f-file '': f-row '': f-col ": Error, the type '" at.name.id "' used as return type for function '" f.decl.name "' was not defined\n"}
+            'c.exit(#failure);
          }
          f.decl.type.finalize(f.decl.type-info, f-row, f-col);
       }
@@ -1895,51 +1895,51 @@ using `func {
          end! = f.meta-method-end1;
          end-str! = end.str();
          end-len! = end.len();
-         var name`char[];
-         `c.malloc-arr(name, prefix-len + 1 + 3 + 1);
-         `c.memcpy(name, prefix-str, prefix-len);
+         var name'char[];
+         'c.malloc-arr(name, prefix-len + 1 + 3 + 1);
+         'c.memcpy(name, prefix-str, prefix-len);
          name[prefix-len] = ''-;
-         `c.memcpy(&name[prefix-len + 1], "arr", 3 + 1);
+         'c.memcpy(&name[prefix-len + 1], "arr", 3 + 1);
          // C1.stdout{''\' name "'\n"}
          f.meta-method-arr1 = id-add(prefix-len + 1 + 3, name);
-         `c.malloc-arr(name, prefix-len + 1 + 4 + 1);
-         `c.memcpy(name, prefix-str, prefix-len);
+         'c.malloc-arr(name, prefix-len + 1 + 4 + 1);
+         'c.memcpy(name, prefix-str, prefix-len);
          name[prefix-len] = ''-;
-         `c.memcpy(&name[prefix-len + 1], "cstr", 4 + 1);
+         'c.memcpy(&name[prefix-len + 1], "cstr", 4 + 1);
          // C1.stdout{''\' name "'\n"}
          f.meta-method-cstr1 = id-add(prefix-len + 1 + 4, name);
-         `c.malloc-arr(name, prefix-len + 1 + end-len + 1);
-         `c.memcpy(name, prefix-str, prefix-len);
+         'c.malloc-arr(name, prefix-len + 1 + end-len + 1);
+         'c.memcpy(name, prefix-str, prefix-len);
          name[prefix-len] = ''-;
-         `c.memcpy(&name[prefix-len + 1], end-str, end-len + 1);
+         'c.memcpy(&name[prefix-len + 1], end-str, end-len + 1);
          f.meta-method-end1 = id-add(prefix-len + 1 + end-len, name);
          prefix = f.meta-method-prefix2;
          if prefix != #nil {
             prefix-str = prefix.str();
             prefix-len = prefix.len();
-            `c.malloc-arr(name, prefix-len + 1 + 3 + 1);
-            `c.memcpy(name, prefix-str, prefix-len);
+            'c.malloc-arr(name, prefix-len + 1 + 3 + 1);
+            'c.memcpy(name, prefix-str, prefix-len);
             name[prefix-len] = ''-;
-            `c.memcpy(&name[prefix-len + 1], "arr", 3 + 1);
+            'c.memcpy(&name[prefix-len + 1], "arr", 3 + 1);
             // C1.stdout{''\' name "'\n"}
             f.meta-method-arr2 = id-add(prefix-len + 1 + 3, name);
-            `c.malloc-arr(name, prefix-len + 1 + 4 + 1);
-            `c.memcpy(name, prefix-str, prefix-len);
+            'c.malloc-arr(name, prefix-len + 1 + 4 + 1);
+            'c.memcpy(name, prefix-str, prefix-len);
             name[prefix-len] = ''-;
-            `c.memcpy(&name[prefix-len + 1], "cstr", 4 + 1);
+            'c.memcpy(&name[prefix-len + 1], "cstr", 4 + 1);
             // C1.stdout{''\' name "'\n"}
             f.meta-method-cstr2 = id-add(prefix-len + 1 + 4, name);
-            `c.malloc-arr(name, prefix-len + 1 + end-len + 1);
-            `c.memcpy(name, prefix-str, prefix-len);
+            'c.malloc-arr(name, prefix-len + 1 + end-len + 1);
+            'c.memcpy(name, prefix-str, prefix-len);
             name[prefix-len] = ''-;
-            `c.memcpy(&name[prefix-len + 1], end-str, end-len + 1);
+            'c.memcpy(&name[prefix-len + 1], end-str, end-len + 1);
             f.meta-method-end2 = id-add(prefix-len + 1 + end-len, name);
          }
       }
       .ctx-func = old-ctx-func;
       return true;
    }
-   process-now(f-idx`this)`bool {
+   process-now(f-idx'this)'bool {
       f! = f-idx.ptr();
       .ctx-func = f;
       // C1.stdout{"func :" f.decl.name ''\n}
@@ -1956,7 +1956,7 @@ using `func {
       //    // C1.stdout{f.begin-row '': f.begin-col ": lvar '" f.lvar-v[i].decl.name "' has a type of " f.lvar-v[i].decl.type ''\n}
       // }
       // f.lvar-c = f.farg-c:Lvar;
-      var r`rdr.;
+      var r'rdr.;
       file! = f.file.ptr();
       r.ref = file.data;
       .id-table = file.id-table;
@@ -2006,21 +2006,21 @@ using `func {
       }
       return true;
    }
-   is-set(f-idx`this, v`u8[])`bool @inline {
+   is-set(f-idx'this, v'u8[])'bool @inline {
       return (v[f-idx >> 3] & (1 << (f-idx & 7))) != 0;
    }
-   set(f-idx`this, v`u8[]) @inline {
+   set(f-idx'this, v'u8[]) @inline {
       v[f-idx >> 3] |= 1 << (f-idx & 7);
    }
 }
 }
-using `libcp1 {
-   using `fmt {
-      f-reserve<id`cp1`file>(fmt`this, f`f-cstr) @inline {
+using 'libcp1 {
+   using 'fmt {
+      f-reserve<id'cp1'file>(fmt'this, f'f-cstr) @inline {
          ptr! = id.ptr();
          fmt.f-reserve-cstr(ptr.path, ptr.path-len, f);
       }
-      // jscode(f`this, jc`js-code) {
+      // jscode(f'this, jc'js-code) {
       //    jscode-cstr(f.ptr().path);
       // }
    }

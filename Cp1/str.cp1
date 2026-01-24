@@ -1,24 +1,24 @@
-using `c = `libc;
-using `c1 = `libcp1;
-using `cp1 {
-enum `str[#nil = -1, #0]`i32;
-var str-c`i32;
-var str-cap`i32;
-var str-ptr`ref[];
-var str-len`i32[];
-var string-buf`char[] @extern;
-var string-len`i32 @extern;
-expr-str(prev`expr-i, macro`bool)`expr-i {
+using 'c = 'libc;
+using 'c1 = 'libcp1;
+using 'cp1 {
+enum 'str[#nil = -1, #0]'i32;
+var str-c'i32;
+var str-cap'i32;
+var str-ptr'ref[];
+var str-len'i32[];
+var string-buf'char[] @extern;
+var string-len'i32 @extern;
+expr-str(prev'expr-i, macro'bool)'expr-i {
    len! = .string-len;
-   var n`expr-str-node;
+   var n'expr-str-node;
    quick-alloc-plus(n, len + 1);
    n.macro = macro;
    n.len = len;
-   `c.memcpy(n.buf, .string-buf, len);
+   'c.memcpy(n.buf, .string-buf, len);
    n.buf[len] = ''\0;
    n.next = null;
    if prev == #nil {
-      var e`expr-str;
+      var e'expr-str;
       quick-alloc-one(e);
       e-idx! = expr-push(e.base, #str);
       e.node-c = 1;
@@ -26,17 +26,17 @@ expr-str(prev`expr-i, macro`bool)`expr-i {
       e.last = n;
       return e-idx;
    } else {
-      var e`expr-str = prev.ptr();
+      var e'expr-str = prev.ptr();
       e.node-c++;
       e.last.next = n;
       e.last = n;
       return prev;
    }
 }
-write-str-node(len`i32, ptr`ref);
-using `expr-i {
-   wr-str(expr`expr, w`wtr, header`bool) @case.wr() @inline {
-      var e`expr-str = expr;
+write-str-node(len'i32, ptr'ref);
+using 'expr-i {
+   wr-str(expr'expr, w'wtr, header'bool) @case.wr() @inline {
+      var e'expr-str = expr;
       w.n(e.node-c);
       n! = e.first;
       loop {
@@ -50,16 +50,16 @@ using `expr-i {
          if n == null { break }
       }
    }
-   rd-str(e-idx`expr-i, r`rdr) @case.rd() @inline {
+   rd-str(e-idx'expr-i, r'rdr) @case.rd() @inline {
       node-c! = r.n();
-      var e`expr-str;
+      var e'expr-str;
       quick-alloc-one(e);
       e-idx.set(e.base, #str);
       first! = true;
       loop node-c {
          len-macro! = r.n();
          len! = len-macro >> 1;
-         var n`expr-str-node;
+         var n'expr-str-node;
          quick-alloc-plus(n, len + 1);
          n.macro = (len-macro & 1) != 0;
          n.len = len;
@@ -76,8 +76,8 @@ using `expr-i {
          }
       }
    }
-   write-str(expr`expr) @case.write() @inline {
-      var e`expr-str = expr;
+   write-str(expr'expr) @case.write() @inline {
+      var e'expr-str = expr;
       n! = e.first;
       loop {
          output-reserve(n.len << 1);
@@ -96,7 +96,7 @@ using `expr-i {
          output{''\n}
       }
    }
-   value-str(s`this, ref`i32, paren`bool, v`value, ok`bool&) @case.value() @inline {
+   value-str(s'this, ref'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
       v.type = basic-type(#char);
       v.info.init();
       v.info.const = true;
@@ -107,7 +107,7 @@ using `expr-i {
       v.ref = 1;
       ok = true;
    }
-   process-str(expr`expr, ok`bool&) @case.process() @inline {
+   process-str(expr'expr, ok'bool&) @case.process() @inline {
       ok = true;
    }
 }

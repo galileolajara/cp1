@@ -1,20 +1,20 @@
-using `libc {
+using 'libc {
    include <time.h> {
-      enum `clock-id[
+      enum 'clock-id[
          #monotonic @no-decl @real-name(CLOCK_MONOTONIC),
-      ]`intc;
-      struct `itimerspec[
-         interval`timespec. @real-name(it_interval), 
-         value`timespec. @real-name(it_value),
+      ]'intc;
+      struct 'itimerspec[
+         interval'timespec. @real-name(it_interval), 
+         value'timespec. @real-name(it_value),
       ] @no-decl(struct itimerspec);
-      struct `timespec[
-         sec`u32 @real-name(tv_sec),
-         nsec`u32 @real-name(tv_nsec),
+      struct 'timespec[
+         sec'u32 @real-name(tv_sec),
+         nsec'u32 @real-name(tv_nsec),
       ] @no-decl(struct timespec);
-      time(time`usz&)`usz @no-decl @real-name;
-      time()`usz @inline {
+      time(time'usz&)'usz @no-decl @real-name;
+      time()'usz @inline {
          return time(null);
       }
-      nanosleep(duration`timespec, rem`timespec)`intc @no-decl @real-name;
+      nanosleep(duration'timespec, rem'timespec)'intc @no-decl @real-name;
    }
 }

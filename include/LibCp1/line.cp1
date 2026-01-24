@@ -1,4 +1,4 @@
-using `libcp1 {
-   line()`u32 @decl("# __LINE__");
-   file()`char @const[] @decl("# __FILE__");
+using 'libcp1 {
+   line()'u32 @decl("# __LINE__");
+   file()'char @const[] @decl("# __FILE__");
 }

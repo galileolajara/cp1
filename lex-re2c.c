@@ -39,7 +39,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    re2c:yyfill:enable   = 0;
 
    spaces = [ \n]+;
-   id_one = [_0-9a-zA-Z]"'"?;
+   id_one = [_0-9a-zA-Z];
    id_first = [_0-9a-zA-Z];
    id = id_first+ ([ /-] id_one+)*;
 
@@ -192,24 +192,24 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "(&&,"                           { return CP1_TOKEN_OPEN_PARENTHESIS_AMP_AMP_COMMA; }
    "(||,"                           { return CP1_TOKEN_OPEN_PARENTHESIS_PIPE_PIPE_COMMA; }
 
-   "`ref"                            { return CP1_TOKEN_REF; }
-   "`bool"                           { return CP1_TOKEN_BOOL; }
-   "`char"                           { return CP1_TOKEN_CHAR; }
-   "`intc"                           { return CP1_TOKEN_INTC; }
-   "`i8"                             { return CP1_TOKEN_I8; }
-   "`u8"                             { return CP1_TOKEN_U8; }
-   "`i16"                            { return CP1_TOKEN_I16; }
-   "`u16"                            { return CP1_TOKEN_U16; }
-   "`i32"                            { return CP1_TOKEN_I32; }
-   "`u32"                            { return CP1_TOKEN_U32; }
-   "`i64"                            { return CP1_TOKEN_I64; }
-   "`u64"                            { return CP1_TOKEN_U64; }
-   "`isz"                            { return CP1_TOKEN_ISZ; }
-   "`usz"                            { return CP1_TOKEN_USZ; }
-   "`f32"                            { return CP1_TOKEN_F32; }
-   "`f64"                            { return CP1_TOKEN_F64; }
+   "'ref"                            { return CP1_TOKEN_REF; }
+   "'bool"                           { return CP1_TOKEN_BOOL; }
+   "'char"                           { return CP1_TOKEN_CHAR; }
+   "'intc"                           { return CP1_TOKEN_INTC; }
+   "'i8"                             { return CP1_TOKEN_I8; }
+   "'u8"                             { return CP1_TOKEN_U8; }
+   "'i16"                            { return CP1_TOKEN_I16; }
+   "'u16"                            { return CP1_TOKEN_U16; }
+   "'i32"                            { return CP1_TOKEN_I32; }
+   "'u32"                            { return CP1_TOKEN_U32; }
+   "'i64"                            { return CP1_TOKEN_I64; }
+   "'u64"                            { return CP1_TOKEN_U64; }
+   "'isz"                            { return CP1_TOKEN_ISZ; }
+   "'usz"                            { return CP1_TOKEN_USZ; }
+   "'f32"                            { return CP1_TOKEN_F32; }
+   "'f64"                            { return CP1_TOKEN_F64; }
 
-   "`this"                           { return CP1_TOKEN_THIS; }
+   "'this"                           { return CP1_TOKEN_THIS; }
    "true"                           { return CP1_TOKEN_TRUE; }
    "false"                          { return CP1_TOKEN_FALSE; }
    "null"                           { return CP1_TOKEN_NULL; }
@@ -247,12 +247,12 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "''\\" [^\n]                     { return CP1_TOKEN_CHAR2; }
 
    "."                              { return CP1_TOKEN_DOT; }
-   "`base"                          { return CP1_TOKEN_BASE; }
+   "'base"                          { return CP1_TOKEN_BASE; }
 
    "#" id                           { return CP1_TOKEN_HASH_ID; }
-   "#`" [^\n\000`] "`"                      { return CP1_TOKEN_HASH_ID; }
-   id_first+ (['-] id_one+ ([ '-] id_one+)*)?           { return CP1_TOKEN_ID; }
-   @id_start id_first+ @id_space " " id_one+ ([ '-] id_one+)*     {
+   "#|" [^\n\000'] "|"                      { return CP1_TOKEN_HASH_ID; }
+   id_first+ ("-" id_one+ ([ -] id_one+)*)?           { return CP1_TOKEN_ID; }
+   @id_start id_first+ @id_space " " id_one+ ([ -] id_one+)*     {
       int len = id_space - id_start;
       if (len == 2) {
          if (id_start[0] == 'i' && id_start[1] == 'f') {
@@ -283,7 +283,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
       }
       return CP1_TOKEN_ID;
    }
-   "`" id                           { return CP1_TOKEN_ID_TYPE; }
+   "'" id                           { return CP1_TOKEN_ID_TYPE; }
    "[" id? "]" id                   { return CP1_TOKEN_SOA_FIELD; }
    "import" spaces "\"" [^"\n\000]* "\""  { return CP1_TOKEN_IMPORT; }
    "require" spaces "\"" [^"\n\000]* "\"" { return CP1_TOKEN_REQUIRE; }

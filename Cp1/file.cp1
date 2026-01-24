@@ -1,62 +1,62 @@
-using `c = `libc;
-using `c1 = `libcp1;
-using `x = `posix;
-using `w = `windows;
+using 'c = 'libc;
+using 'c1 = 'libcp1;
+using 'x = 'posix;
+using 'w = 'windows;
 include "file.cp1.h" {
-   using `windows {
-      enum `handle[#null, #invalid @no-decl(INVALID_HANDLE_VALUE)]`usz @no-decl(HANDLE);
-      CreateFileA(path`char[], access`w`create-file-access, share-mode`w`create-file-share-mode, security-attributes`ref, creation-disposition`w`create-file-creation-disposition, flags`w`create-file-flags, template-file`handle)`handle @no-decl @real-name;
-      enum `create-file-access[#read @no-decl(GENERIC_READ), #write @no-decl(GENERIC_WRITE)]`u32;
-      enum `create-file-share-mode[#0, #read @no-decl(FILE_SHARE_READ)]`u32;
-      enum `create-file-creation-disposition[#open-existing @no-decl(OPEN_EXISTING), #create-always @no-decl(CREATE_ALWAYS)]`u32;
-      enum `create-file-flags[#normal @no-decl(FILE_ATTRIBUTE_NORMAL)]`u32;
-      GetFileSizeEx(h`handle, i`w`large-integer)`bool @no-decl @real-name;
-      union `large-integer[
-         quadPart`u64 @real-name(`quad-part),
+   using 'windows {
+      enum 'handle[#null, #invalid @no-decl(INVALID_HANDLE_VALUE)]'usz @no-decl(HANDLE);
+      CreateFileA(path'char[], access'w'create-file-access, share-mode'w'create-file-share-mode, security-attributes'ref, creation-disposition'w'create-file-creation-disposition, flags'w'create-file-flags, template-file'handle)'handle @no-decl @real-name;
+      enum 'create-file-access[#read @no-decl(GENERIC_READ), #write @no-decl(GENERIC_WRITE)]'u32;
+      enum 'create-file-share-mode[#0, #read @no-decl(FILE_SHARE_READ)]'u32;
+      enum 'create-file-creation-disposition[#open-existing @no-decl(OPEN_EXISTING), #create-always @no-decl(CREATE_ALWAYS)]'u32;
+      enum 'create-file-flags[#normal @no-decl(FILE_ATTRIBUTE_NORMAL)]'u32;
+      GetFileSizeEx(h'handle, i'w'large-integer)'bool @no-decl @real-name;
+      union 'large-integer[
+         quadPart'u64 @real-name('quad-part),
       ] @no-decl(LARGE_INTEGER);
-      CloseHandle(h`handle)`bool @no-decl @real-name;
-      ReadFile(h`handle, buf`ref, size`u32, bytes-read`u32&, overlapped`ref)`bool @no-decl @real-name;
-      WriteFile(h`handle, buf`ref, size`u32, bytes-read`u32&, overlapped`ref)`bool @no-decl @real-name;
+      CloseHandle(h'handle)'bool @no-decl @real-name;
+      ReadFile(h'handle, buf'ref, size'u32, bytes-read'u32&, overlapped'ref)'bool @no-decl @real-name;
+      WriteFile(h'handle, buf'ref, size'u32, bytes-read'u32&, overlapped'ref)'bool @no-decl @real-name;
    }
 }
-using `cp1 {
-   read-file(path`char[], out-size`usz&)`ref @inline {
+using 'cp1 {
+   read-file(path'char[], out-size'usz&)'ref @inline {
       return read-file(path, 0, 0, -1, out-size);
    }
-   read-file(path`char[], add-before`i32, add-after`i32, max-size`usz, out-size`usz&)`ref {
+   read-file(path'char[], add-before'i32, add-after'i32, max-size'usz, out-size'usz&)'ref {
       "#ifdef _WIN32";
       if true {
-         h! = `w.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null);
+         h! = 'w.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null);
          if h == #invalid {
             return null;
          }
          var f-size;
-         if !`w.GetFileSizeEx(h, f-size) {
-            `w.CloseHandle(h);
+         if !'w.GetFileSizeEx(h, f-size) {
+            'w.CloseHandle(h);
             return null;
          }
          size! = f-size.quadPart;
          if max-size != 0 {
-            if size`usz > max-size {
+            if size'usz > max-size {
                size =  max-size;
             }
          }
-         var buf`u8[];
-         `c.malloc-arr(buf, add-before + size + add-after);
+         var buf'u8[];
+         'c.malloc-arr(buf, add-before + size + add-after);
          var bytes-read;
-         if !`w.ReadFile(h, &buf[add-before], size, bytes-read, null) || (bytes-read != size) {
-            `c.free(buf);
-            `w.CloseHandle(h);
+         if !'w.ReadFile(h, &buf[add-before], size, bytes-read, null) || (bytes-read != size) {
+            'c.free(buf);
+            'w.CloseHandle(h);
             return null;
          }
-         `w.CloseHandle(h);
+         'w.CloseHandle(h);
          out-size = size;
          return buf;
       }
       "#else";
       if true {
          var fd;
-         if !`x`fd.open(fd, path, #rdonly) {
+         if !'x'fd.open(fd, path, #rdonly) {
             return null;
          }
          size! = fd.seek(0, #end);
@@ -65,7 +65,7 @@ using `cp1 {
             return null;
          }
          if max-size != 0 {
-            if size`usz > max-size {
+            if size'usz > max-size {
                size =  max-size;
             }
          }
@@ -73,11 +73,11 @@ using `cp1 {
             fd.close();
             return null;
          }
-         var buf`u8[];
+         var buf'u8[];
          // C1.stdout{"malloc " (add-before + size + add-after):u32 "\n"}
-         `c.malloc-arr(buf, add-before + size + add-after);
+         'c.malloc-arr(buf, add-before + size + add-after);
          if fd.read(&buf[add-before], size) != size {
-            `c.free(buf);
+            'c.free(buf);
             fd.close();
             return null;
          }
@@ -87,25 +87,25 @@ using `cp1 {
       }
       "#endif";
    }
-   write-file(path`char[], data`ref, size`usz)`bool {
+   write-file(path'char[], data'ref, size'usz)'bool {
       "#ifdef _WIN32";
       if true {
-         h! = `w.CreateFileA(path, #write, #0, null, #create-always, #normal, #null);
+         h! = 'w.CreateFileA(path, #write, #0, null, #create-always, #normal, #null);
          if h == #invalid {
             return false;
          }
          var bytes-written;
-         if !`w.WriteFile(h, data, size, bytes-written, null) || (bytes-written != size) {
-            `w.CloseHandle(h);
+         if !'w.WriteFile(h, data, size, bytes-written, null) || (bytes-written != size) {
+            'w.CloseHandle(h);
             return false;
          }
-         `w.CloseHandle(h);
+         'w.CloseHandle(h);
          return true;
       }
       "#else";
       if true {
          var fd;
-         if !`x`fd.open(fd, path, #create | #truncate | #wronly, 0o644) {
+         if !'x'fd.open(fd, path, #create | #truncate | #wronly, 0o644) {
             return false;
          }
          if fd.write(data, size) != size {
@@ -117,13 +117,13 @@ using `cp1 {
       }
       "#endif";
    }
-   var output-data`char[] @real-name(output_data);
-   var output-cap`u32;
-   var output-len`u32 @real-name(output_len);
-   output(fmt`c1`fmt) @meta(f-reserve, f, output) @inline {
+   var output-data'char[] @real-name(output_data);
+   var output-cap'u32;
+   var output-len'u32 @real-name(output_len);
+   output(fmt'c1'fmt) @meta(f-reserve, f, output) @inline {
       fmt.cap = 0;
    }
-   output-reserve(len`u32) @process {
+   output-reserve(len'u32) @process {
       space! = .output-cap - .output-len;
       if space < len {
          .output-cap += .output-cap;
@@ -133,19 +133,19 @@ using `cp1 {
             space = .output-cap - .output-len;
          }
          .output-cap += .output-cap;
-         `c.realloc-arr(.output-data, .output-cap);
+         'c.realloc-arr(.output-data, .output-cap);
       }
    }
 }
-using `libcp1 {
-   using `fmt {
-      f-reserve-output(fmt`this) {
-         `cp1.output-reserve(fmt.cap);
-         fmt.len = `cp1.output-len;
-         fmt.ptr = `cp1.output-data;
+using 'libcp1 {
+   using 'fmt {
+      f-reserve-output(fmt'this) {
+         'cp1.output-reserve(fmt.cap);
+         fmt.len = 'cp1.output-len;
+         fmt.ptr = 'cp1.output-data;
       }
-      f-output(fmt`this) {
-         `cp1.output-len = fmt.len;
+      f-output(fmt'this) {
+         'cp1.output-len = fmt.len;
       }
    }
 }

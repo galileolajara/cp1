@@ -1,26 +1,26 @@
-using `c1 = `libcp1;
-using `cp1 {
-stmt-return(e`expr-i, begin-row`u32, begin-col`u32, end-row`u32, end-col`u32) {
-   var s`stmt-return;
+using 'c1 = 'libcp1;
+using 'cp1 {
+stmt-return(e'expr-i, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32) {
+   var s'stmt-return;
    quick-alloc-one(s);
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #return);
    s.expr = e;
 }
-using `stmt-space {
-   wr-return(stmt`stmt, w`wtr, header`bool) @case.wr() @inline {
-      var s`stmt-return = stmt;
+using 'stmt-space {
+   wr-return(stmt'stmt, w'wtr, header'bool) @case.wr() @inline {
+      var s'stmt-return = stmt;
       s.expr.wr(w, header);
    }
-   rd-return(space`stmt-space, r`rdr) @case.rd() @inline {
-      var s`stmt-return;
+   rd-return(space'stmt-space, r'rdr) @case.rd() @inline {
+      var s'stmt-return;
       quick-alloc-one(s);
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #return);
    }
 }
-using `stmt {
-   write-return(stmt`stmt) @case.write() @inline {
-      var s`stmt-return = stmt;
+using 'stmt {
+   write-return(stmt'stmt) @case.write() @inline {
+      var s'stmt-return = stmt;
       if s.expr == #nil {
          if .debug-func-prefix != null {
             output{.debug-func-prefix "_end();\n"}
@@ -37,8 +37,8 @@ using `stmt {
          output{"return ret_" stmt.begin-row "_" stmt.begin-col ";\n"}
       }
    }
-   process-return(stmt`stmt, ok`bool&) @case.process() @inline {
-      var s`stmt-return = stmt;
+   process-return(stmt'stmt, ok'bool&) @case.process() @inline {
+      var s'stmt-return = stmt;
       if .ctx-func.decl.type != #nil {
          if s.expr != #nil {
             s.expr.try-deduce(.ctx-func.decl.type);
@@ -46,12 +46,12 @@ using `stmt {
                return;
             }
          } else {
-            `c1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": return statement must have a value\n"}
+            'c1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": return statement must have a value\n"}
             return;
          }
       } else {
          if s.expr != #nil {
-            `c1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": return statement must not have a value\n"}
+            'c1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": return statement must not have a value\n"}
             return;
          }
       }

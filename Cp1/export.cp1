@@ -1,4 +1,4 @@
-using `cp1 {
+using 'cp1 {
 export() {
    quick-alloc-undo(0);
    decl-import(#nil, 0, 0, false);
@@ -98,7 +98,7 @@ export() {
    expr-int(0, #i32);
    expr-int64(0, #u64);
    expr-f32(0.0f);
-   expr-f64(0.0f`f64);
+   expr-f64(0.0f'f64);
    expr-size-of-type(#nil);
    expr-null();
    decl-at-begin-enum(#nil, 0, 0);

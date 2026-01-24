@@ -1,48 +1,48 @@
-using `c = `libc;
-using `c1 = `libcp1;
-using `cp1 {
-expr-size-of-type(at`at)`expr-i {
-   var e`expr-size-of-type;
+using 'c = 'libc;
+using 'c1 = 'libcp1;
+using 'cp1 {
+expr-size-of-type(at'at)'expr-i {
+   var e'expr-size-of-type;
    quick-alloc-one(e);
    e-idx! = expr-push(e.base, #size-of-type);
    e.type = at;
    return e-idx;
 }
-using `expr-i {
-   wr-size-of-type(expr`expr, w`wtr, header`bool) @case.wr() @inline {
-      var e`expr-size-of-type = expr;
+using 'expr-i {
+   wr-size-of-type(expr'expr, w'wtr, header'bool) @case.wr() @inline {
+      var e'expr-size-of-type = expr;
       e.type.wr(w, header);
    }
-   rd-size-of-type(e-idx`expr-i, r`rdr) @case.rd() @inline {
-      var e`expr-size-of-type;
+   rd-size-of-type(e-idx'expr-i, r'rdr) @case.rd() @inline {
+      var e'expr-size-of-type;
       quick-alloc-one(e);
       e-idx.set(e.base, #size-of-type);
       e.type.rd(r);
    }
-   write-size-of-type(expr`expr) @case.write() @inline {
-      var e`expr-size-of-type = expr;
+   write-size-of-type(expr'expr) @case.write() @inline {
+      var e'expr-size-of-type = expr;
       output{"sizeof("}
       e.type.write();
       output{'')}
    }
-   process-size-of-type(expr`expr, ok`bool&) @case.process() @inline {
-      var e`expr-size-of-type = expr;
+   process-size-of-type(expr'expr, ok'bool&) @case.process() @inline {
+      var e'expr-size-of-type = expr;
       e.type = at-validate(e.type, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
       if e.type == #nil {
          return;
       }
       at! = e.type.ptr();
       if (&&, at.type != #basic, at.decl.structt == #nil) {
-         `c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Error, the type '" at.name.id "' used in [usz] was not defined\n"}
+         'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Error, the type '" at.name.id "' used in [usz] was not defined\n"}
          return;
       }
       e.type.output(.ctx-func.file, .ctx-begin-row, .ctx-begin-col);
       ok = true;
    }
-   type-size-of-type(expr`expr, at`at&) @case.type() @inline {
+   type-size-of-type(expr'expr, at'at&) @case.type() @inline {
       at = basic-type(#usz);
    }
-   value-size-of-type(le`this, ref`i32, paren`bool, v`value, ok`bool&) @case.value() @inline {
+   value-size-of-type(le'this, ref'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
       v.type = basic-type(#usz);
       v.info.init();
       v.info.array-c = 0;
