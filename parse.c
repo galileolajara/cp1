@@ -82,8 +82,8 @@ void _Tcp1_Fpreprocess_init_0() {
 }
 */
 
-extern int _Glast_token;
-extern int _Glast_last_token;
+extern int _Tcp1_Glast_token;
+extern int _Tcp1_Glast_last_token;
 
 typedef int _Tcp1_Texpr_i;
 typedef int _Tcp1_Tid;
@@ -109,14 +109,14 @@ struct _Tcp1_Texpr_data;
 #include "export.h"
 #endif
 
-extern int _Glast_row;
-extern int _Glast_col;
-extern int _Grow;
-extern int _Gcol;
-int _Glast_row;
-int _Glast_col;
-int _Grow;
-int _Gcol;
+extern int _Tcp1_Glast_row;
+extern int _Tcp1_Glast_col;
+extern int _Tcp1_Grow;
+extern int _Tcp1_Gcol;
+int _Tcp1_Glast_row;
+int _Tcp1_Glast_col;
+int _Tcp1_Grow;
+int _Tcp1_Gcol;
 
 extern char* input_path;
 
@@ -155,7 +155,7 @@ int _Tcp1_Fchar_escape_value_1(char c) {
       case '"': return '"';
       case '0': return '\0';
       default:
-         printf("%s:%u:%u: Invalid escape sequence '\\%c'\n", input_path, _Grow, _Gcol, c);
+         printf("%s:%u:%u: Invalid escape sequence '\\%c'\n", input_path, _Tcp1_Grow, _Tcp1_Gcol, c);
          exit(EXIT_FAILURE);
    }
 }

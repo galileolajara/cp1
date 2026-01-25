@@ -1,18 +1,18 @@
 /*!max:re2c */
 
 char* string_mem;
-extern const char* _Gstring_buf;
-extern int _Gstring_len;
-const char* _Gstring_buf;
-int _Gstring_len;
-extern const char* _Gtemplate_name_buf;
-extern uint8_t _Gtemplate_name_len;
-extern uint32_t _Gtemplate_code_indention;
-extern uint32_t _Gtemplate_code_line_c;
-const char* _Gtemplate_name_buf;
-uint8_t _Gtemplate_name_len;
-uint32_t _Gtemplate_code_indention;
-uint32_t _Gtemplate_code_line_c;
+extern const char* _Tcp1_Gstring_buf;
+extern int _Tcp1_Gstring_len;
+const char* _Tcp1_Gstring_buf;
+int _Tcp1_Gstring_len;
+extern const char* _Tcp1_Gtemplate_name_buf;
+extern uint8_t _Tcp1_Gtemplate_name_len;
+extern uint32_t _Tcp1_Gtemplate_code_indention;
+extern uint32_t _Tcp1_Gtemplate_code_line_c;
+const char* _Tcp1_Gtemplate_name_buf;
+uint8_t _Tcp1_Gtemplate_name_len;
+uint32_t _Tcp1_Gtemplate_code_indention;
+uint32_t _Tcp1_Gtemplate_code_line_c;
 const char* meta_start;
 int meta_col;
 void _Tcp1_Fparse_str_init_1(int maxsize) {
@@ -45,7 +45,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
 
    *                                { string_mem[0] = l->start[0]; return CP1_TOKEN_END; }
    "{"                              {
-      if (_Glast_token == CP1_TOKEN_HASH_ID) {
+      if (_Tcp1_Glast_token == CP1_TOKEN_HASH_ID) {
          goto lex_template_inst;
       } else if (meta_start != 0) {
          goto lex_template_code;
@@ -85,8 +85,8 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
 	("0"|[1-9][0-9]*) "." [0-9]+ "f"? { return CP1_TOKEN_NUM_F32; }
 	("0"|[1-9][0-9]*) "." [0-9]+ "F"  { return CP1_TOKEN_NUM_F64; }
    "\"\""[a-zA-Z_][_a-zA-Z0-9]*      {
-      _Gstring_len = l->cursor - (l->start + 2);
-      _Gstring_buf = l->start + 2;
+      _Tcp1_Gstring_len = l->cursor - (l->start + 2);
+      _Tcp1_Gstring_buf = l->start + 2;
       return CP1_TOKEN_STRING_MACRO;
    }
    // "meta" spaces "#" id spaces "{" {
@@ -97,39 +97,39 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    }
    "'- " [^\n\000]* "\n"                  {
       l->cursor--;
-      _Gstring_len = l->cursor - (l->start + 3);
-      _Gstring_buf = l->start + 3;
+      _Tcp1_Gstring_len = l->cursor - (l->start + 3);
+      _Tcp1_Gstring_buf = l->start + 3;
       return CP1_TOKEN_STRING;
    }
    "'= " [^\n\000]* "\n"                  {
       l->cursor--;
-      _Gstring_len = (l->cursor + 1) - (l->start + 3);
-      _Gstring_buf = l->start + 3;
+      _Tcp1_Gstring_len = (l->cursor + 1) - (l->start + 3);
+      _Tcp1_Gstring_buf = l->start + 3;
       return CP1_TOKEN_STRING;
    }
    "'\"" [^\n\000"]* "\""                   {
-      _Gstring_len = (l->cursor - 1) - (l->start + 2);
-      _Gstring_buf = l->start + 2;
+      _Tcp1_Gstring_len = (l->cursor - 1) - (l->start + 2);
+      _Tcp1_Gstring_buf = l->start + 2;
       return CP1_TOKEN_STRING;
    }
    "'<" [^\n\000>]* ">"                   {
-      _Gstring_len = (l->cursor - 1) - (l->start + 2);
-      _Gstring_buf = l->start + 2;
+      _Tcp1_Gstring_len = (l->cursor - 1) - (l->start + 2);
+      _Tcp1_Gstring_buf = l->start + 2;
       return CP1_TOKEN_STRING;
    }
    "'[" [^\n\000\]]* "]"                   {
-      _Gstring_len = (l->cursor - 1) - (l->start + 2);
-      _Gstring_buf = l->start + 2;
+      _Tcp1_Gstring_len = (l->cursor - 1) - (l->start + 2);
+      _Tcp1_Gstring_buf = l->start + 2;
       return CP1_TOKEN_STRING;
    }
    "'{" [^\n\000}]* "}"                   {
-      _Gstring_len = (l->cursor - 1) - (l->start + 2);
-      _Gstring_buf = l->start + 2;
+      _Tcp1_Gstring_len = (l->cursor - 1) - (l->start + 2);
+      _Tcp1_Gstring_buf = l->start + 2;
       return CP1_TOKEN_STRING;
    }
    "'(" [^\n\000)]* ")"                   {
-      _Gstring_len = (l->cursor - 1) - (l->start + 2);
-      _Gstring_buf = l->start + 2;
+      _Tcp1_Gstring_len = (l->cursor - 1) - (l->start + 2);
+      _Tcp1_Gstring_buf = l->start + 2;
       return CP1_TOKEN_STRING;
    }
 
@@ -155,7 +155,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "@no-name"                { return CP1_TOKEN_SPACE_AT_NO_NAME; }
    spaces "@dont-count"             { return CP1_TOKEN_SPACE_AT_DONT_COUNT; }
    spaces "@no-body"                { return CP1_TOKEN_SPACE_AT_NO_BODY; }
-   spaces "@overload-get"           { return CP1_TOKEN_SPACE_AT_OVERLOAD_GET; }
+   spaces "@overload-get"           { return CP1_TOKEN_SPACE_AT_OVERLOAD_Tcp1_GET; }
    spaces "@overload-set"           { return CP1_TOKEN_SPACE_AT_OVERLOAD_SET; }
    spaces "@overload-math"          { return CP1_TOKEN_SPACE_AT_OVERLOAD_MATH; }
    spaces "@overload-bools"         { return CP1_TOKEN_SPACE_AT_OVERLOAD_BOOLS; }
@@ -227,7 +227,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "or" spaces               { return CP1_TOKEN_SPACE_BOOL_OR_OR_SPACE; }
 
    "using"                          { return CP1_TOKEN_USING; }
-   "meta"                           { meta_start = l->start; meta_col = _Gcol; return CP1_TOKEN_META; }
+   "meta"                           { meta_start = l->start; meta_col = _Tcp1_Gcol; return CP1_TOKEN_META; }
    "enum"                           { return CP1_TOKEN_ENUM; }
    "struct"                         { return CP1_TOKEN_STRUCT; }
    "union"                          { return CP1_TOKEN_UNION; }
@@ -301,7 +301,7 @@ lex_string: {
          re2c:yyfill:enable = 0;
 
          * {
-            fprintf(stdout, "%s:%u:%u: Error reading the string\n", input_path, _Grow, _Gcol + 1);
+            fprintf(stdout, "%s:%u:%u: Error reading the string\n", input_path, _Tcp1_Grow, _Tcp1_Gcol + 1);
             exit(EXIT_FAILURE);
          }
          "\"" {
@@ -329,8 +329,8 @@ lex_string: {
          }
       }
       string_end: {
-         _Gstring_buf = string_mem;
-         _Gstring_len = string_ptr - string_mem;
+         _Tcp1_Gstring_buf = string_mem;
+         _Tcp1_Gstring_len = string_ptr - string_mem;
          return CP1_TOKEN_STRING;
       }
    }
@@ -338,10 +338,10 @@ lex_template_code: {
       const char* start = meta_start;
       meta_start = 0;
       const char* name = start + 4;
-      int col = _Gcol + 4;
+      int col = _Tcp1_Gcol + 4;
       for(;;) {
          if (name[0] == '\n') {
-            fprintf(stdout, "%s:%u:%u: Error, the syntax 'meta #NAME {' must not have a new line in between\n", input_path, _Grow, col);
+            fprintf(stdout, "%s:%u:%u: Error, the syntax 'meta #NAME {' must not have a new line in between\n", input_path, _Tcp1_Grow, col);
             exit(EXIT_FAILURE);
          }
          if (name[0] != ' ') {
@@ -355,7 +355,7 @@ lex_template_code: {
       col++;
       for(;;) {
          if (name_end[0] == '\n') {
-            fprintf(stdout, "%s:%u:%u: Error, the syntax 'meta #NAME {' must not have a new line in between\n", input_path, _Grow, col);
+            fprintf(stdout, "%s:%u:%u: Error, the syntax 'meta #NAME {' must not have a new line in between\n", input_path, _Tcp1_Grow, col);
             exit(EXIT_FAILURE);
          }
          if (name_end[0] == ' ') {
@@ -367,15 +367,15 @@ lex_template_code: {
       // printf("name [%.*s]\n", (int)(name_end - name), name);
       /* int name_len = name_end - name;
       if (name_len > 255) {
-         fprintf(stdout, "%s:%u:%u: Error, template name is too long\n", input_path, _Grow, _Gcol);
+         fprintf(stdout, "%s:%u:%u: Error, template name is too long\n", input_path, _Tcp1_Grow, _Tcp1_Gcol);
          exit(EXIT_FAILURE);
       }
-      _Gtemplate_name_buf = name;
-      _Gtemplate_name_len = name_len; */
+      _Tcp1_Gtemplate_name_buf = name;
+      _Tcp1_Gtemplate_name_len = name_len; */
       const char* curly_brace = name_end;
       for(;;) {
          if (curly_brace[0] == '\n') {
-            fprintf(stdout, "%s:%u:%u: Error, the syntax 'meta #NAME {' must not have a new line in between\n", input_path, _Grow, col);
+            fprintf(stdout, "%s:%u:%u: Error, the syntax 'meta #NAME {' must not have a new line in between\n", input_path, _Tcp1_Grow, col);
             exit(EXIT_FAILURE);
          }
          if (curly_brace[0] == '{') {
@@ -385,14 +385,14 @@ lex_template_code: {
          curly_brace++;
       }
       if (curly_brace[1] != '\n') {
-         fprintf(stdout, "%s:%u:%u: Error, the syntax 'meta #NAME {' must be followed by a new line\n", input_path, _Grow, col + 1);
+         fprintf(stdout, "%s:%u:%u: Error, the syntax 'meta #NAME {' must be followed by a new line\n", input_path, _Tcp1_Grow, col + 1);
          exit(EXIT_FAILURE);
       }
       col = meta_col;
       int32_t indention = 0;
       while (col > 1) {
          if (start[-1] != ' ') {
-            fprintf(stdout, "%s:%u:%u: Error, the line that contains 'meta #NAME {' must not have other character in it. Found a character '%c'.\n", input_path, _Grow, col - 1, start[-1]);
+            fprintf(stdout, "%s:%u:%u: Error, the line that contains 'meta #NAME {' must not have other character in it. Found a character '%c'.\n", input_path, _Tcp1_Grow, col - 1, start[-1]);
             exit(EXIT_FAILURE);
          }
          col--;
@@ -401,12 +401,12 @@ lex_template_code: {
       }
       const char* code = curly_brace + 2;
       int32_t i = 0;
-      int row = _Grow;
+      int row = _Tcp1_Grow;
       char* string_ptr = string_mem;
       int32_t first_indent = -1;
       for(;;) {
          if (code[i] == '\0') {
-            fprintf(stdout, "%s:%u:%u: Error, cannot find the matching '}' of the meta.\n", input_path, _Grow, _Gcol);
+            fprintf(stdout, "%s:%u:%u: Error, cannot find the matching '}' of the meta.\n", input_path, _Tcp1_Grow, _Tcp1_Gcol);
             exit(EXIT_FAILURE);
          }
          row++;
@@ -439,7 +439,7 @@ lex_template_code: {
             string_ptr += 2;
          } else if (first_char == indention) {
             if (line[first_char] == '}') {
-               _Gtemplate_code_line_c = row - _Grow - 1;
+               _Tcp1_Gtemplate_code_line_c = row - _Tcp1_Grow - 1;
                YYCURSOR = (const char*)(line + first_char + 1);
                break;
             } else if ((line[first_char] == '#') && (line[first_char + 1] == ' ')) {
@@ -562,21 +562,21 @@ lex_template_code: {
          }
          i++;
       }
-      _Gstring_buf = string_mem;
-      _Gstring_len = string_ptr - string_mem;
+      _Tcp1_Gstring_buf = string_mem;
+      _Tcp1_Gstring_len = string_ptr - string_mem;
       return CP1_TOKEN_TEMPLATE_CODE;
    }
 lex_template_inst: {
-      // _Gtemplate_name_buf = l->start + 1;
-      // _Gtemplate_name_len = (YYCURSOR - 1) - (l->start + 1);
-      // printf("meta [%.*s]\n", _Gtemplate_name_len, _Gtemplate_name_buf);
+      // _Tcp1_Gtemplate_name_buf = l->start + 1;
+      // _Tcp1_Gtemplate_name_len = (YYCURSOR - 1) - (l->start + 1);
+      // printf("meta [%.*s]\n", _Tcp1_Gtemplate_name_len, _Tcp1_Gtemplate_name_buf);
       const char* json = YYCURSOR;
       int32_t i = 0;
       uint8_t indent = 1;
       for(;;) {
          uint8_t c = json[i++];
          if (c == '\0') {
-            fprintf(stdout, "%s:%u:%u: Error, cannot find the closing '}' for the '#NAME{...}' syntax\n", input_path, _Grow, _Gcol);
+            fprintf(stdout, "%s:%u:%u: Error, cannot find the closing '}' for the '#NAME{...}' syntax\n", input_path, _Tcp1_Grow, _Tcp1_Gcol);
             exit(EXIT_FAILURE);
          }
          if (c == '"') {
@@ -615,8 +615,8 @@ lex_template_inst: {
             }
          }
       }
-      _Gstring_buf = (char*)&json[0];
-      _Gstring_len = i - 1;
+      _Tcp1_Gstring_buf = (char*)&json[0];
+      _Tcp1_Gstring_len = i - 1;
       YYCURSOR = (const char*)&json[i];
       return CP1_TOKEN_TEMPLATE_JSON;
    }

@@ -62,11 +62,11 @@ void _Tcp1_Fwrite_char_1(char c) {
 #include <sys/wait.h>
 extern char **environ;
 #endif
-extern char _Ginclude_dir[];
-extern uint16_t _Ginclude_dir_len;
-extern char** _Ginclude_path_v;
-extern uint16_t* _Ginclude_path_len_v;
-extern uint8_t _Ginclude_path_c;
+extern char _Tcp1_Ginclude_dir[];
+extern uint16_t _Tcp1_Ginclude_dir_len;
+extern char** _Tcp1_Ginclude_path_v;
+extern uint16_t* _Tcp1_Ginclude_path_len_v;
+extern uint8_t _Tcp1_Ginclude_path_c;
 char cp1_tmp[1024];
 char cp1_tmp_js[1024];
 #define cp1_tmp_len 17 // number of characters in cp1-tmp/XXXXXXXX/
@@ -125,16 +125,16 @@ void _Tcp1_Fc_init_1(uint32_t js_crc32c) {
    cp1_tmp_js[cp1_tmp_len - 1] = '/';
 
    #ifdef SPAWN_PARSE
-   memcpy(parser_path, _Ginclude_dir, _Ginclude_dir_len);
+   memcpy(parser_path, _Tcp1_Ginclude_dir, _Tcp1_Ginclude_dir_len);
    #ifdef CP1_NEW
-   memcpy(parser_path + _Ginclude_dir_len, "/out/cp1-parse", 15);
+   memcpy(parser_path + _Tcp1_Ginclude_dir_len, "/out/cp1-parse", 15);
    #else
-   memcpy(parser_path + _Ginclude_dir_len, "/bin/cp1-parse", 15);
+   memcpy(parser_path + _Tcp1_Ginclude_dir_len, "/bin/cp1-parse", 15);
    #endif
    #endif
 
-   memcpy(qjs_path, _Ginclude_dir, _Ginclude_dir_len);
-   memcpy(qjs_path + _Ginclude_dir_len, "/bin/cp1-qjs", 13);
+   memcpy(qjs_path, _Tcp1_Ginclude_dir, _Tcp1_Ginclude_dir_len);
+   memcpy(qjs_path + _Tcp1_Ginclude_dir_len, "/bin/cp1-qjs", 13);
 }
 bool _Tcp1_Fwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
 void _Tcp1_Fread_4(char* _Lin_path_cp1_0, uint16_t _Lin_path_cp1_len_1, bool strdup, bool require);
@@ -326,26 +326,26 @@ char* _Tcp1_Freq_parse_3(const char* path, uint8_t path_len, bool require) {
             fprintf(fdeps, " %s", fullpath);
          }
       } else {
-         for (uint8_t i = 0; i < _Ginclude_path_c; i++) {
-            memcpy(_Ginclude_path_v[i] + _Ginclude_path_len_v[i], path, path_len);
-            _Ginclude_path_v[i][_Ginclude_path_len_v[i] + path_len] = 0;
-            // printf("trying file '%.*s'\n", _Ginclude_path_len_v[i] + path_len, _Ginclude_path_v[i]);
-            if (stat(_Ginclude_path_v[i], &s) == 0) {
-               // printf("file '%s' was found\n", _Ginclude_path_v[i]);
-               fullpath = _Ginclude_path_v[i];
+         for (uint8_t i = 0; i < _Tcp1_Ginclude_path_c; i++) {
+            memcpy(_Tcp1_Ginclude_path_v[i] + _Tcp1_Ginclude_path_len_v[i], path, path_len);
+            _Tcp1_Ginclude_path_v[i][_Tcp1_Ginclude_path_len_v[i] + path_len] = 0;
+            // printf("trying file '%.*s'\n", _Tcp1_Ginclude_path_len_v[i] + path_len, _Tcp1_Ginclude_path_v[i]);
+            if (stat(_Tcp1_Ginclude_path_v[i], &s) == 0) {
+               // printf("file '%s' was found\n", _Tcp1_Ginclude_path_v[i]);
+               fullpath = _Tcp1_Ginclude_path_v[i];
                if (fdeps != NULL) {
                   fprintf(fdeps, " %s", fullpath);
                }
                goto found;
             }
          }
-         memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/include/", 9);
-         memcpy(&_Ginclude_dir[_Ginclude_dir_len + 9], path, path_len);
-         _Ginclude_dir[_Ginclude_dir_len + 9 + path_len] = 0;
-         // printf("trying file '%s'\n", _Ginclude_dir);
-         if (stat(_Ginclude_dir, &s) == 0) {
-            // printf("file '%s' was found\n", _Ginclude_path_v[i]);
-            fullpath = _Ginclude_dir;
+         memcpy(&_Tcp1_Ginclude_dir[_Tcp1_Ginclude_dir_len], "/include/", 9);
+         memcpy(&_Tcp1_Ginclude_dir[_Tcp1_Ginclude_dir_len + 9], path, path_len);
+         _Tcp1_Ginclude_dir[_Tcp1_Ginclude_dir_len + 9 + path_len] = 0;
+         // printf("trying file '%s'\n", _Tcp1_Ginclude_dir);
+         if (stat(_Tcp1_Ginclude_dir, &s) == 0) {
+            // printf("file '%s' was found\n", _Tcp1_Ginclude_path_v[i]);
+            fullpath = _Tcp1_Ginclude_dir;
             if (fdeps != NULL) {
                fprintf(fdeps, " %s", fullpath);
             }
@@ -400,7 +400,7 @@ char* _Tcp1_Freq_parse_3(const char* path, uint8_t path_len, bool require) {
    const char *argv[] = {"cp1-parse", fullpath, tmp, NULL};
 #ifdef SPAWN_PARSE
    pid_t pid;
-   // memcpy(&_Ginclude_dir[_Ginclude_dir_len], "/bin/cp1-parse", 15);
+   // memcpy(&_Tcp1_Ginclude_dir[_Tcp1_Ginclude_dir_len], "/bin/cp1-parse", 15);
    int spawn = posix_spawn(&pid, parser_path, NULL, NULL, argv, environ);
    // printf("%s %s %s\n", parser_path, fullpath, tmp);
    int status;

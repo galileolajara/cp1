@@ -23,14 +23,14 @@ void stdout_then_print_error(void*, int);
          if (first) {
             first = false;
             first_expect = i;
-            if (_Glast_token == CP1_TOKEN_END) {
+            if (_Tcp1_Glast_token == CP1_TOKEN_END) {
                if (string_mem[0] == 0) {
-                  ibuf = sprintf(errbuf, "%s:%u:%u: syntax error, got #end-of-file but expected tokens are: #%s", input_path, _Grow, _Gcol, _Tcp1_Ftoken_name_1(i));
+                  ibuf = sprintf(errbuf, "%s:%u:%u: syntax error, got #end-of-file but expected tokens are: #%s", input_path, _Tcp1_Grow, _Tcp1_Gcol, _Tcp1_Ftoken_name_1(i));
                } else {
-                  ibuf = sprintf(errbuf, "%s:%u:%u: syntax error, got token '%c' but expected tokens are: #%s", input_path, _Grow, _Gcol, string_mem[0], _Tcp1_Ftoken_name_1(i));
+                  ibuf = sprintf(errbuf, "%s:%u:%u: syntax error, got token '%c' but expected tokens are: #%s", input_path, _Tcp1_Grow, _Tcp1_Gcol, string_mem[0], _Tcp1_Ftoken_name_1(i));
                }
             } else {
-               ibuf = sprintf(errbuf, "%s:%u:%u: syntax error, got token #%s but expected tokens are: #%s", input_path, _Grow, _Gcol, _Tcp1_Ftoken_name_1(_Glast_token), _Tcp1_Ftoken_name_1(i));
+               ibuf = sprintf(errbuf, "%s:%u:%u: syntax error, got token #%s but expected tokens are: #%s", input_path, _Tcp1_Grow, _Tcp1_Gcol, _Tcp1_Ftoken_name_1(_Tcp1_Glast_token), _Tcp1_Ftoken_name_1(i));
             }
          } else {
             if (second_expect == 0) {
@@ -43,14 +43,14 @@ void stdout_then_print_error(void*, int);
    if (!first) {
       errbuf[ibuf++] = '\n';
       stdout_then_print_error(errbuf, ibuf);
-      if (_Glast_token == CP1_TOKEN_SPACE && (first_expect == CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE && second_expect == CP1_TOKEN_SEMICOLON)) {
-         stdout_then_print_error(errbuf, sprintf(errbuf, "%s:%u:%u: Maybe you forgot to put semicolon?\n", input_path, _Grow, _Gcol));
+      if (_Tcp1_Glast_token == CP1_TOKEN_SPACE && (first_expect == CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE && second_expect == CP1_TOKEN_SEMICOLON)) {
+         stdout_then_print_error(errbuf, sprintf(errbuf, "%s:%u:%u: Maybe you forgot to put semicolon?\n", input_path, _Tcp1_Grow, _Tcp1_Gcol));
       } else if (
          (
-         _Glast_token == CP1_TOKEN_SPACE_THEN_OPEN_CURLY_BRACE ||
-         _Glast_token == CP1_TOKEN_SPACE ||
-         _Glast_token == CP1_TOKEN_CLOSE_PARENTHESIS ||
-         _Glast_token == CP1_TOKEN_SPACE_CLOSE_PARENTHESIS
+         _Tcp1_Glast_token == CP1_TOKEN_SPACE_THEN_OPEN_CURLY_BRACE ||
+         _Tcp1_Glast_token == CP1_TOKEN_SPACE ||
+         _Tcp1_Glast_token == CP1_TOKEN_CLOSE_PARENTHESIS ||
+         _Tcp1_Glast_token == CP1_TOKEN_SPACE_CLOSE_PARENTHESIS
          ) &&
          // Extra parenthesis might be a common error, help them know
             (
@@ -58,9 +58,9 @@ void stdout_then_print_error(void*, int);
             second_expect == CP1_TOKEN_MINUS
             )) {
                // Detect when the parser is suggesting ++ and -- operators
-               stdout_then_print_error(errbuf, sprintf(errbuf, "%s:%u:%u: Maybe you have extra parenthesis that are not used?\n", input_path, _Grow, _Gcol));
+               stdout_then_print_error(errbuf, sprintf(errbuf, "%s:%u:%u: Maybe you have extra parenthesis that are not used?\n", input_path, _Tcp1_Grow, _Tcp1_Gcol));
       } else {
-         const char* tokname = _Tcp1_Ftoken_name_1(_Glast_token);
+         const char* tokname = _Tcp1_Ftoken_name_1(_Tcp1_Glast_token);
          if (
             memcmp(tokname, "space-op-", 9) == 0 ||
             memcmp(tokname, "space-cmp-", 10) == 0 ||
@@ -72,7 +72,7 @@ void stdout_then_print_error(void*, int);
                first_expect == CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE || // in: assign statements
                first_expect == CP1_TOKEN_CLOSE_PARENTHESIS || // in: function arguments
                first_expect == CP1_TOKEN_SPACE) { // in: meta function arguments
-               stdout_then_print_error(errbuf, sprintf(errbuf, "%s:%u:%u: Maybe you lack parenthesis when using different operators?\n", input_path, _Grow, _Gcol));
+               stdout_then_print_error(errbuf, sprintf(errbuf, "%s:%u:%u: Maybe you lack parenthesis when using different operators?\n", input_path, _Tcp1_Grow, _Tcp1_Gcol));
             }
          }
       }
@@ -86,9 +86,9 @@ cp1 ::= SPACE decls space_or_end.
 cp1 ::= space_or_end.
 
 begin_pos(t) ::= .
-   { t.basic.row = _Grow; t.basic.col = _Gcol; }
+   { t.basic.row = _Tcp1_Grow; t.basic.col = _Tcp1_Gcol; }
 end_pos(t) ::= .
-   { t.basic.row = _Grow; t.basic.col = _Gcol - 1; }
+   { t.basic.row = _Tcp1_Grow; t.basic.col = _Tcp1_Gcol - 1; }
 
 func_decl_begin ::= FUNC_ID(name).
    { _Tcp1_Fdecl_func_begin_3(name.basic.id, name.basic.row, name.basic.col); }
@@ -327,7 +327,7 @@ func_attr ::= SPACE_AT_NO_DECL_STR(e).
    { _Tcp1_Ffunc_attr_no_decl_0(); _Tcp1_Ffunc_attr_real_name_1(e.basic.id); }
 func_attr ::= SPACE_AT_NO_BODY.
    { _Tcp1_Ffunc_attr_no_body_0(); }
-func_attr ::= SPACE_AT_OVERLOAD_GET.
+func_attr ::= SPACE_AT_OVERLOAD_Tcp1_GET.
    { _Tcp1_Ffunc_attr_overload_get_0(); }
 func_attr ::= SPACE_AT_OVERLOAD_SET.
    { _Tcp1_Ffunc_attr_overload_set_0(); }
@@ -404,11 +404,11 @@ type_basic_id(l) ::= F64.
 // expr_type(l) ::= at(r). { l.basic.id = _Tcp1_Fexpr_type_1(r.basic.id); }
 func_type ::= typeAndInfo_optional.
 func_decl ::= func_decl_begin fargs func_type func_attrs_optional. // SPACE open_curly_brace_or_space.
-   { _Tcp1_Fdecl_func_end_3(_Grow, _Gcol, 0); }
+   { _Tcp1_Fdecl_func_end_3(_Tcp1_Grow, _Tcp1_Gcol, 0); }
 func_decl ::= func_decl_begin_angle fargs_angle func_type func_attrs_optional. // SPACE open_curly_brace_or_space.
-   { _Tcp1_Fdecl_func_end_3(_Grow, _Gcol, 1); }
+   { _Tcp1_Fdecl_func_end_3(_Tcp1_Grow, _Tcp1_Gcol, 1); }
 /* func_decl ::= OPEN_CURLY_BRACE func_decl_begin fargs func_type.
-   { _Tcp1_Fdecl_func_end_2(_Grow, _Gcol); } */
+   { _Tcp1_Fdecl_func_end_2(_Tcp1_Grow, _Tcp1_Gcol); } */
 /* func_attrs_inline(l) ::= SPACE_AT_INLINE_SEMICOLON(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 func_attrs_inline(l) ::= func_attr SPACE_AT_INLINE_SEMICOLON(r).
@@ -1000,9 +1000,9 @@ decl_lvar ::= ID(var) typeAndInfo_optional.
 decl_lvars ::= decl_lvar.
 decl_lvars ::= decl_lvars COMMA_SPACE decl_lvar.
 lvar_list(l) ::= .
-   { l.basic.row = _Grow; l.basic.col = _Gcol; }
+   { l.basic.row = _Tcp1_Grow; l.basic.col = _Tcp1_Gcol; }
 lvar_list(l) ::= decl_lvars.
-   { l.basic.row = _Grow; l.basic.col = _Gcol; }
+   { l.basic.row = _Tcp1_Grow; l.basic.col = _Tcp1_Gcol; }
 decl_lvar_begin ::= VAR SPACE. // OPEN_CURLY_BRACE_PLUS_OR_SPACE.
 
 decl_var_attr ::= SPACE_AT_REAL_NAME_STR(e).
@@ -1109,5 +1109,5 @@ decl_gvar ::= fvar_decl expr_type_apply typeInfo_optional decl_var_attrs_optiona
    { _Tcp1_Fdecl_var_as_gvar_0(); }
 decl_gvar_list ::= decl_gvar.
 decl_gvar_list ::= decl_gvar_list decl_gvar.
-//decl_gvars ::= OPEN_CURLY_BRACE_GVAR_SPACE CLOSE_CURLY_BRACE.
+//decl_gvars ::= OPEN_CURLY_BRACE_Tcp1_GVAR_SPACE CLOSE_CURLY_BRACE.
 decl_gvars ::= VAR SPACE decl_gvar_list SEMICOLON.

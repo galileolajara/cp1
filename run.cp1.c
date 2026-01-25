@@ -42,11 +42,11 @@ struct _Tlibcp1_Tsprintf {
 char* _Mmem;
 uint32_t _Mlen;
 };
-uint32_t _Goutput_cap;
+uint32_t _Tcp1_Goutput_cap;
 uint32_t output_len;
 char* output_data;
-uint32_t _Gstdout_buf_len;
-char _Gstdout_buf_data[_Tlibcp1_Cstdout_buf_size];
+uint32_t _Tlibcp1_Gstdout_buf_len;
+char _Tlibcp1_Gstdout_buf_data[_Tlibcp1_Cstdout_buf_size];
 int main(int _Larg_c_0, char** _Larg_v_1);
 void _Tcp1_Foutput_reserve_1(uint32_t _Llen_0);
 void _Fprint_commands_1(char* _Lbin_0);
@@ -267,18 +267,18 @@ return ret_215_4;
 }
 void _Tcp1_Foutput_reserve_1(uint32_t _Llen_0) {
 uint32_t _Lspace_1;
-_Lspace_1 = ((uint32_t)((_Goutput_cap - output_len)));
+_Lspace_1 = ((uint32_t)((_Tcp1_Goutput_cap - output_len)));
 if(_Lspace_1 < _Llen_0) {
-_Goutput_cap += _Goutput_cap;
-_Lspace_1 = (_Goutput_cap - output_len);
+_Tcp1_Goutput_cap += _Tcp1_Goutput_cap;
+_Lspace_1 = (_Tcp1_Goutput_cap - output_len);
 while(_Lspace_1 < _Llen_0) {
-_Goutput_cap += _Goutput_cap;
-_Lspace_1 = (_Goutput_cap - output_len);
+_Tcp1_Goutput_cap += _Tcp1_Goutput_cap;
+_Lspace_1 = (_Tcp1_Goutput_cap - output_len);
 continue_0:;
 }
 break_0:;
-_Goutput_cap += _Goutput_cap;
-_Tlibc_Frealloc_arr_2(output_data, _Goutput_cap);
+_Tcp1_Goutput_cap += _Tcp1_Goutput_cap;
+_Tlibc_Frealloc_arr_2(output_data, _Tcp1_Goutput_cap);
 }
 }
 void _Fprint_commands_1(char* _Lbin_0) {
@@ -430,8 +430,8 @@ static inline void _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(char _Lc_0, struct _Tlibcp
 (*_Lfmt_1)._Mcap += 1;
 }
 static inline void _Tlibcp1_Tfmt_Ff_reserve_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
-(*_Lfmt_0)._Mlen = _Gstdout_buf_len;
-(*_Lfmt_0)._Mptr = _Gstdout_buf_data;
+(*_Lfmt_0)._Mlen = _Tlibcp1_Gstdout_buf_len;
+(*_Lfmt_0)._Mptr = _Tlibcp1_Gstdout_buf_data;
 }
 static inline void _Tlibcp1_Tfmt_Tf_cstr_Ff_2(struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
 memcpy(&(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen], (*_Lf_0)._Mstr, (*_Lf_0)._Mlen);
@@ -446,7 +446,7 @@ LIBCP1_ON_STDOUT(_Lfmt_0->_Mptr, _Lfmt_0->_Mlen);
 #else
 write(((_Tposix_Tfd)(1)), (*_Lfmt_0)._Mptr, (*_Lfmt_0)._Mlen);
 #endif
-_Gstdout_buf_len = 0;
+_Tlibcp1_Gstdout_buf_len = 0;
 }
 void _Fget_compiler_2(char* _Lbin_0, char* _Lcompiler_1) {
 char* _Lpath_2;

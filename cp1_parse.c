@@ -91,7 +91,7 @@ void stdout_then_print_error(void*, int);
 #define CP1_TOKEN_STRING                         56
 #define CP1_TOKEN_SPACE_AT_VAR_ARGS              57
 #define CP1_TOKEN_SPACE_AT_NO_BODY               58
-#define CP1_TOKEN_SPACE_AT_OVERLOAD_GET          59
+#define CP1_TOKEN_SPACE_AT_OVERLOAD_Tcp1_GET     59
 #define CP1_TOKEN_SPACE_AT_OVERLOAD_SET          60
 #define CP1_TOKEN_SPACE_AT_OVERLOAD_MATH         61
 #define CP1_TOKEN_SPACE_AT_OVERLOAD_BOOLS        62
@@ -2317,7 +2317,7 @@ static const char *const yyTokenName[] = {
   /*   56 */ "STRING",
   /*   57 */ "SPACE_AT_VAR_ARGS",
   /*   58 */ "SPACE_AT_NO_BODY",
-  /*   59 */ "SPACE_AT_OVERLOAD_GET",
+  /*   59 */ "SPACE_AT_OVERLOAD_Tcp1_GET",
   /*   60 */ "SPACE_AT_OVERLOAD_SET",
   /*   61 */ "SPACE_AT_OVERLOAD_MATH",
   /*   62 */ "SPACE_AT_OVERLOAD_BOOLS",
@@ -2728,7 +2728,7 @@ static const char *const yyRuleName[] = {
  /*  79 */ "func_attr ::= SPACE_AT_NO_DECL",
  /*  80 */ "func_attr ::= SPACE_AT_NO_DECL_STR",
  /*  81 */ "func_attr ::= SPACE_AT_NO_BODY",
- /*  82 */ "func_attr ::= SPACE_AT_OVERLOAD_GET",
+ /*  82 */ "func_attr ::= SPACE_AT_OVERLOAD_Tcp1_GET",
  /*  83 */ "func_attr ::= SPACE_AT_OVERLOAD_SET",
  /*  84 */ "func_attr ::= SPACE_AT_OVERLOAD_MATH",
  /*  85 */ "func_attr ::= SPACE_AT_OVERLOAD_BOOLS",
@@ -3666,7 +3666,7 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    226,  /* (79) func_attr ::= SPACE_AT_NO_DECL */
    226,  /* (80) func_attr ::= SPACE_AT_NO_DECL_STR */
    226,  /* (81) func_attr ::= SPACE_AT_NO_BODY */
-   226,  /* (82) func_attr ::= SPACE_AT_OVERLOAD_GET */
+   226,  /* (82) func_attr ::= SPACE_AT_OVERLOAD_Tcp1_GET */
    226,  /* (83) func_attr ::= SPACE_AT_OVERLOAD_SET */
    226,  /* (84) func_attr ::= SPACE_AT_OVERLOAD_MATH */
    226,  /* (85) func_attr ::= SPACE_AT_OVERLOAD_BOOLS */
@@ -4189,7 +4189,7 @@ static const signed char yyRuleInfoNRhs[] = {
    -1,  /* (79) func_attr ::= SPACE_AT_NO_DECL */
    -1,  /* (80) func_attr ::= SPACE_AT_NO_DECL_STR */
    -1,  /* (81) func_attr ::= SPACE_AT_NO_BODY */
-   -1,  /* (82) func_attr ::= SPACE_AT_OVERLOAD_GET */
+   -1,  /* (82) func_attr ::= SPACE_AT_OVERLOAD_Tcp1_GET */
    -1,  /* (83) func_attr ::= SPACE_AT_OVERLOAD_SET */
    -1,  /* (84) func_attr ::= SPACE_AT_OVERLOAD_MATH */
    -1,  /* (85) func_attr ::= SPACE_AT_OVERLOAD_BOOLS */
@@ -4669,12 +4669,12 @@ static YYACTIONTYPE yy_reduce(
       case 0: /* begin_pos ::= */
       case 355: /* lvar_list ::= */ yytestcase(yyruleno==355);
 #line 89 "cp1_parse.y"
-{ yymsp[1].minor.yy0.basic.row = _Grow; yymsp[1].minor.yy0.basic.col = _Gcol; }
+{ yymsp[1].minor.yy0.basic.row = _Tcp1_Grow; yymsp[1].minor.yy0.basic.col = _Tcp1_Gcol; }
 #line 4673 "out/cp1_parse.c"
         break;
       case 1: /* end_pos ::= */
 #line 91 "cp1_parse.y"
-{ yymsp[1].minor.yy0.basic.row = _Grow; yymsp[1].minor.yy0.basic.col = _Gcol - 1; }
+{ yymsp[1].minor.yy0.basic.row = _Tcp1_Grow; yymsp[1].minor.yy0.basic.col = _Tcp1_Gcol - 1; }
 #line 4678 "out/cp1_parse.c"
         break;
       case 2: /* func_decl_begin ::= FUNC_ID */
@@ -4991,7 +4991,7 @@ static YYACTIONTYPE yy_reduce(
 { _Tcp1_Ffunc_attr_no_body_0(); }
 #line 4992 "out/cp1_parse.c"
         break;
-      case 82: /* func_attr ::= SPACE_AT_OVERLOAD_GET */
+      case 82: /* func_attr ::= SPACE_AT_OVERLOAD_Tcp1_GET */
 #line 331 "cp1_parse.y"
 { _Tcp1_Ffunc_attr_overload_get_0(); }
 #line 4997 "out/cp1_parse.c"
@@ -5139,12 +5139,12 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 111: /* func_decl ::= func_decl_begin fargs func_type func_attrs_optional */
 #line 407 "cp1_parse.y"
-{ _Tcp1_Fdecl_func_end_3(_Grow, _Gcol, 0); }
+{ _Tcp1_Fdecl_func_end_3(_Tcp1_Grow, _Tcp1_Gcol, 0); }
 #line 5143 "out/cp1_parse.c"
         break;
       case 112: /* func_decl ::= func_decl_begin_angle fargs_angle func_type func_attrs_optional */
 #line 409 "cp1_parse.y"
-{ _Tcp1_Fdecl_func_end_3(_Grow, _Gcol, 1); }
+{ _Tcp1_Fdecl_func_end_3(_Tcp1_Grow, _Tcp1_Gcol, 1); }
 #line 5148 "out/cp1_parse.c"
         break;
       case 113: /* fvar_decl ::= fvar_decl_name */
@@ -5984,7 +5984,7 @@ static YYACTIONTYPE yy_reduce(
         break;
       case 356: /* lvar_list ::= decl_lvars */
 #line 1005 "cp1_parse.y"
-{ yymsp[0].minor.yy0.basic.row = _Grow; yymsp[0].minor.yy0.basic.col = _Gcol; }
+{ yymsp[0].minor.yy0.basic.row = _Tcp1_Grow; yymsp[0].minor.yy0.basic.col = _Tcp1_Gcol; }
 #line 5988 "out/cp1_parse.c"
         break;
       case 359: /* decl_var_attr ::= SPACE_AT_EXTERN */
@@ -6294,14 +6294,14 @@ static void yy_syntax_error(
          if (first) {
             first = false;
             first_expect = i;
-            if (_Glast_token == CP1_TOKEN_END) {
+            if (_Tcp1_Glast_token == CP1_TOKEN_END) {
                if (string_mem[0] == 0) {
-                  ibuf = sprintf(errbuf, "%s:%u:%u: syntax error, got #end-of-file but expected tokens are: #%s", input_path, _Grow, _Gcol, _Tcp1_Ftoken_name_1(i));
+                  ibuf = sprintf(errbuf, "%s:%u:%u: syntax error, got #end-of-file but expected tokens are: #%s", input_path, _Tcp1_Grow, _Tcp1_Gcol, _Tcp1_Ftoken_name_1(i));
                } else {
-                  ibuf = sprintf(errbuf, "%s:%u:%u: syntax error, got token '%c' but expected tokens are: #%s", input_path, _Grow, _Gcol, string_mem[0], _Tcp1_Ftoken_name_1(i));
+                  ibuf = sprintf(errbuf, "%s:%u:%u: syntax error, got token '%c' but expected tokens are: #%s", input_path, _Tcp1_Grow, _Tcp1_Gcol, string_mem[0], _Tcp1_Ftoken_name_1(i));
                }
             } else {
-               ibuf = sprintf(errbuf, "%s:%u:%u: syntax error, got token #%s but expected tokens are: #%s", input_path, _Grow, _Gcol, _Tcp1_Ftoken_name_1(_Glast_token), _Tcp1_Ftoken_name_1(i));
+               ibuf = sprintf(errbuf, "%s:%u:%u: syntax error, got token #%s but expected tokens are: #%s", input_path, _Tcp1_Grow, _Tcp1_Gcol, _Tcp1_Ftoken_name_1(_Tcp1_Glast_token), _Tcp1_Ftoken_name_1(i));
             }
          } else {
             if (second_expect == 0) {
@@ -6314,14 +6314,14 @@ static void yy_syntax_error(
    if (!first) {
       errbuf[ibuf++] = '\n';
       stdout_then_print_error(errbuf, ibuf);
-      if (_Glast_token == CP1_TOKEN_SPACE && (first_expect == CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE && second_expect == CP1_TOKEN_SEMICOLON)) {
-         stdout_then_print_error(errbuf, sprintf(errbuf, "%s:%u:%u: Maybe you forgot to put semicolon?\n", input_path, _Grow, _Gcol));
+      if (_Tcp1_Glast_token == CP1_TOKEN_SPACE && (first_expect == CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE && second_expect == CP1_TOKEN_SEMICOLON)) {
+         stdout_then_print_error(errbuf, sprintf(errbuf, "%s:%u:%u: Maybe you forgot to put semicolon?\n", input_path, _Tcp1_Grow, _Tcp1_Gcol));
       } else if (
          (
-         _Glast_token == CP1_TOKEN_SPACE_THEN_OPEN_CURLY_BRACE ||
-         _Glast_token == CP1_TOKEN_SPACE ||
-         _Glast_token == CP1_TOKEN_CLOSE_PARENTHESIS ||
-         _Glast_token == CP1_TOKEN_SPACE_CLOSE_PARENTHESIS
+         _Tcp1_Glast_token == CP1_TOKEN_SPACE_THEN_OPEN_CURLY_BRACE ||
+         _Tcp1_Glast_token == CP1_TOKEN_SPACE ||
+         _Tcp1_Glast_token == CP1_TOKEN_CLOSE_PARENTHESIS ||
+         _Tcp1_Glast_token == CP1_TOKEN_SPACE_CLOSE_PARENTHESIS
          ) &&
          // Extra parenthesis might be a common error, help them know
             (
@@ -6329,9 +6329,9 @@ static void yy_syntax_error(
             second_expect == CP1_TOKEN_MINUS
             )) {
                // Detect when the parser is suggesting ++ and -- operators
-               stdout_then_print_error(errbuf, sprintf(errbuf, "%s:%u:%u: Maybe you have extra parenthesis that are not used?\n", input_path, _Grow, _Gcol));
+               stdout_then_print_error(errbuf, sprintf(errbuf, "%s:%u:%u: Maybe you have extra parenthesis that are not used?\n", input_path, _Tcp1_Grow, _Tcp1_Gcol));
       } else {
-         const char* tokname = _Tcp1_Ftoken_name_1(_Glast_token);
+         const char* tokname = _Tcp1_Ftoken_name_1(_Tcp1_Glast_token);
          if (
             memcmp(tokname, "space-op-", 9) == 0 ||
             memcmp(tokname, "space-cmp-", 10) == 0 ||
@@ -6343,7 +6343,7 @@ static void yy_syntax_error(
                first_expect == CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE || // in: assign statements
                first_expect == CP1_TOKEN_CLOSE_PARENTHESIS || // in: function arguments
                first_expect == CP1_TOKEN_SPACE) { // in: meta function arguments
-               stdout_then_print_error(errbuf, sprintf(errbuf, "%s:%u:%u: Maybe you lack parenthesis when using different operators?\n", input_path, _Grow, _Gcol));
+               stdout_then_print_error(errbuf, sprintf(errbuf, "%s:%u:%u: Maybe you lack parenthesis when using different operators?\n", input_path, _Tcp1_Grow, _Tcp1_Gcol));
             }
          }
       }
