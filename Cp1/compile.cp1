@@ -1699,7 +1699,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
          output{" {\n"}
          loop j = 0; s.fvar-c; j++ {
             fvar! = s.fvar-v[j];
-            fvar.decl.write-type(#fvar);
+            fvar.decl.write-type-fvar();
             output{";\n"}
          }
          output{"}"}
@@ -1716,7 +1716,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
       if (g.decl.flags & #extern) != #0 {
          output{"extern "}
       }
-      g.decl.write-type(#gvar);
+      g.decl.write-type-gvar(g.at);
       output{";\n"}
    }
    loop i = 0; .func-head-outputted-c; i++ {

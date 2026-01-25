@@ -49,7 +49,7 @@ using 'expr-i {
       var e'expr-fvar = expr;
       e.expr.write-value(e.val);
       output{''.}
-      e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar].decl.write(#fvar);
+      e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar].decl.write-fvar();
    }
    process-fvar(expr'expr, ok'bool&) @case.process() @inline {
       var e'expr-fvar = expr;

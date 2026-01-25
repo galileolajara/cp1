@@ -312,13 +312,13 @@ farg-process(e-in-out'expr-i&, ca-ref'i8, ca-value'value, fd-arg'decl-var-data, 
    }
    if !e.value(r, false, ca-value) { return false }
    if !compatible(ca-value.type, ca-value.info.star-c + ca-value.type.pointer(), fd-arg.type, fd-arg.type-info.star-c + fd-arg.type.pointer()) {
-      'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the argument "}
+      'c1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the argument "}
       if arg-num == -1 {
          'c1.stdbuf{"'this'"}
       } else {
          'c1.stdbuf{''# (arg-num + 1)'u32}
       }
-      'c1.stdout{" of function '" f-name "', must be "}
+      'c1.stdbuf{" of function '" f-name "', must be "}
       at! = fd-arg.type.ptr();
       if at.type == #basic {
          'c1.stdout{at.name.basic.cp1-name() "\n"}

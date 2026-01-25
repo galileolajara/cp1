@@ -6,7 +6,6 @@ enum 'decl-var[]'u32 {
       return .var-v[v];
    }
 }
-enum 'decl-var-type[#gvar, #fvar]'u8;
 #decl-var-size-limit'i32 = 8;
 at-validate(vd-type'at, at-i'at, file'file, row'u32, col'u32)'at {
    type! = vd-type.ptr();
@@ -163,7 +162,7 @@ using 'decl-var-data {
       }
       return true;
    }
-   write(vd'this, var-type'decl-var-type) {
+   write-fvar(vd'this) {
       if (vd.flags & #real-name) != #0 {
          if vd.real-name == #nil {
             output{vd.name.c-name()}
@@ -172,22 +171,54 @@ using 'decl-var-data {
          }
          return;
       }
-      switch var-type {
-         case #gvar {
-            output{"_G" vd.name.c-name()}
+      output{"_M" vd.name.c-name()}
+   }
+   write-gvar(vd'this, at'at) {
+      if (vd.flags & #real-name) != #0 {
+         if vd.real-name == #nil {
+            output{vd.name.c-name()}
+         } else {
+            output{vd.real-name}
          }
-         case #fvar {
-            output{"_M" vd.name.c-name()}
-         }
+      } else {
+         at.write-space();
+         output{"_G" vd.name.c-name()}
       }
    }
    write-lvar(vd'this, lvar'lvar) {
       output{"_L" vd.name.c-name() ''_ lvar'u32}
    }
-   write-type(vd'this, var-type'decl-var-type) {
+   write-type-fvar(vd'this) {
       vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
       output{'' }
-      vd.write(var-type);
+      if (vd.flags & #real-name) != #0 {
+         if vd.real-name == #nil {
+            output{vd.name.c-name()}
+         } else {
+            output{vd.real-name}
+         }
+      } else {
+         output{"_M" vd.name.c-name()}
+      }
+      loop i = 0; vd.size-c; i++ {
+         output{''[}
+         vd.size-expr-v[i].write-value(vd.size-value-v[i]);
+         output{'']}
+      }
+   }
+   write-type-gvar(vd'this, at'at) {
+      vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
+      output{'' }
+      if (vd.flags & #real-name) != #0 {
+         if vd.real-name == #nil {
+            output{vd.name.c-name()}
+         } else {
+            output{vd.real-name}
+         }
+      } else {
+         at.write-space();
+         output{"_G" vd.name.c-name()}
+      }
       loop i = 0; vd.size-c; i++ {
          output{''[}
          vd.size-expr-v[i].write-value(vd.size-value-v[i]);

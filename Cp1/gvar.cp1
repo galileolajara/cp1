@@ -23,7 +23,7 @@ enum 'gvar[#nil = -1, #0]'i32 {
    }
    write(g'this) {
       gvar! = g.ptr();
-      gvar.decl.write(#gvar);
+      gvar.decl.write-gvar(gvar.at);
    }
    // write(g:this) {
    //    gvar! = g.ptr();
