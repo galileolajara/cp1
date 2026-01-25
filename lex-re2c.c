@@ -250,11 +250,11 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "'base"                          { return CP1_TOKEN_BASE; }
 
    "#" id                           { return CP1_TOKEN_HASH_ID; }
-   "#|" [^ \n\000|]+ "|"             { return CP1_TOKEN_HASH_ID; }
+   "#|" [^ \n\000|] [^\n\000|]* "|"             { return CP1_TOKEN_HASH_ID; }
    "|" [^ \n\000|] [^\n\000|]* "|"              { return CP1_TOKEN_ID; }
    id_first+ ([-] id_one+)*         { return CP1_TOKEN_ID; }
    "'" id                           { return CP1_TOKEN_ID_TYPE; }
-   "'|" [^ \n\000|]+ "|"             { return CP1_TOKEN_ID_TYPE; }
+   "'|" [^ \n\000|] [^ \n\000|]* "|"             { return CP1_TOKEN_ID_TYPE; }
    "[" id? "]" id                   { return CP1_TOKEN_SOA_FIELD; }
    "import" spaces "\"" [^"\n\000]* "\""  { return CP1_TOKEN_IMPORT; }
    "require" spaces "\"" [^"\n\000]* "\"" { return CP1_TOKEN_REQUIRE; }
