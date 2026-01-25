@@ -52,7 +52,9 @@ struct 'stmt-space[
       loop s != null {
          if .debug-func-prefix != null {
             row! = s.begin-row;
-            output{.debug-func-prefix, .debug-func-prefix-len "_line(" row ");\n"}
+            if row != 0 {
+               output{.debug-func-prefix, .debug-func-prefix-len "_line(" row ");\n"}
+            }
          }
          s.write();
          s = s.stmt-next;

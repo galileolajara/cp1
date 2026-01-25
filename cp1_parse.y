@@ -1,4 +1,7 @@
-%include {char* string_mem;}
+%include {
+char* string_mem;
+void stdout_then_print_error(void*, int);
+}
 %name cp1Parse
 %token_prefix CP1_TOKEN_
 %stack_size 0 // let it grow
@@ -12,6 +15,8 @@
    bool first = true;
    uint8_t first_expect = 0;
    uint8_t second_expect = 0;
+   char errbuf[1024];
+   int ibuf;
    for (int i = 0; i < n; ++i) {
       int a = yy_find_shift_action((YYCODETYPE)i, yypParser->yytos->stateno);
       if (a != YY_ERROR_ACTION) {
@@ -20,25 +25,26 @@
             first_expect = i;
             if (_Glast_token == CP1_TOKEN_END) {
                if (string_mem[0] == 0) {
-                  printf("%s:%u:%u: syntax error, got #end-of-file but expected tokens are: #%s", input_path, _Grow, _Gcol, _Tcp1_Ftoken_name_1(i));
+                  ibuf = sprintf(errbuf, "%s:%u:%u: syntax error, got #end-of-file but expected tokens are: #%s", input_path, _Grow, _Gcol, _Tcp1_Ftoken_name_1(i));
                } else {
-                  printf("%s:%u:%u: syntax error, got token '%c' but expected tokens are: #%s", input_path, _Grow, _Gcol, string_mem[0], _Tcp1_Ftoken_name_1(i));
+                  ibuf = sprintf(errbuf, "%s:%u:%u: syntax error, got token '%c' but expected tokens are: #%s", input_path, _Grow, _Gcol, string_mem[0], _Tcp1_Ftoken_name_1(i));
                }
             } else {
-               printf("%s:%u:%u: syntax error, got token #%s but expected tokens are: #%s", input_path, _Grow, _Gcol, _Tcp1_Ftoken_name_1(_Glast_token), _Tcp1_Ftoken_name_1(i));
+               ibuf = sprintf(errbuf, "%s:%u:%u: syntax error, got token #%s but expected tokens are: #%s", input_path, _Grow, _Gcol, _Tcp1_Ftoken_name_1(_Glast_token), _Tcp1_Ftoken_name_1(i));
             }
          } else {
             if (second_expect == 0) {
                second_expect = i;
             }
-            printf(", #%s", _Tcp1_Ftoken_name_1(i));
+            ibuf += sprintf(errbuf + ibuf, ", #%s", _Tcp1_Ftoken_name_1(i));
          }
       }
    }
    if (!first) {
-      printf("\n");
+      errbuf[ibuf++] = '\n';
+      stdout_then_print_error(errbuf, ibuf);
       if (_Glast_token == CP1_TOKEN_SPACE && (first_expect == CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE && second_expect == CP1_TOKEN_SEMICOLON)) {
-         printf("%s:%u:%u: Maybe you forgot to put semicolon?\n", input_path, _Grow, _Gcol);
+         stdout_then_print_error(errbuf, sprintf(errbuf, "%s:%u:%u: Maybe you forgot to put semicolon?\n", input_path, _Grow, _Gcol));
       } else if (
          (
          _Glast_token == CP1_TOKEN_SPACE_THEN_OPEN_CURLY_BRACE ||
@@ -52,7 +58,7 @@
             second_expect == CP1_TOKEN_MINUS
             )) {
                // Detect when the parser is suggesting ++ and -- operators
-               printf("%s:%u:%u: Maybe you have extra parenthesis that are not used?\n", input_path, _Grow, _Gcol);
+               stdout_then_print_error(errbuf, sprintf(errbuf, "%s:%u:%u: Maybe you have extra parenthesis that are not used?\n", input_path, _Grow, _Gcol));
       } else {
          const char* tokname = _Tcp1_Ftoken_name_1(_Glast_token);
          if (
@@ -66,7 +72,7 @@
                first_expect == CP1_TOKEN_SPACE_CLOSE_CURLY_BRACE || // in: assign statements
                first_expect == CP1_TOKEN_CLOSE_PARENTHESIS || // in: function arguments
                first_expect == CP1_TOKEN_SPACE) { // in: meta function arguments
-               printf("%s:%u:%u: Maybe you lack parenthesis when using different operators?\n", input_path, _Grow, _Gcol);
+               stdout_then_print_error(errbuf, sprintf(errbuf, "%s:%u:%u: Maybe you lack parenthesis when using different operators?\n", input_path, _Grow, _Gcol));
             }
          }
       }

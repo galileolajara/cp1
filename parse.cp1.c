@@ -4,7 +4,6 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include "file.cp1.h"
 
 #ifdef __MINGW32__
 #include <unistd.h>
@@ -13,6 +12,7 @@
 #else
 #include <process.h>
 #endif
+#include "file.cp1.h"
 #include <string.h>
 #include "num.c"
 #include <stdio.h>
@@ -172,6 +172,7 @@
 #define _Tcp1_Ttoken_Cbase (_Tcp1_Ttoken_Cspace_xor_equal + 1)
 #define _Tcp1_Ttoken_Cloop (_Tcp1_Ttoken_Cbase + 1)
 #define _Tcp1_Ttoken_Cloop_with_semicolon (_Tcp1_Ttoken_Cloop + 1)
+#define _Tposix_Tfd_Cnil (-1)
 #define _Tcp1_Tid_Cnil (-1)
 #define _Tcp1_Tid_C0 (_Tcp1_Tid_Cnil + 1)
 #define _Tcp1_Texpr_i_Cnil (-1)
@@ -297,7 +298,6 @@
 #define _Tcp1_Tstmt_type_Cswitch_end (_Tcp1_Tstmt_type_Cdefault_end + 1)
 #define _Tcp1_Tcvar_flags_Cno_name (4)
 #define _Tcp1_Tcvar_flags_Cdont_count (8 | 4)
-#define _Tposix_Tfd_Cnil (-1)
 #define _Tcp1_Cdebug_rd_wr (true)
 #define _Tcp1_Tstmt_type_Cnil (255)
 #define _Tcp1_Tinclude_error_Cnone 0
@@ -349,19 +349,19 @@ typedef int32_t _Tcp1_Tgvar;
 typedef int32_t _Tcp1_Tenum;
 typedef uint32_t _Tcp1_Ttemplate_inst;
 typedef uint32_t _Tcp1_Ttemplate_code;
+typedef int _Tposix_Tfd;
+typedef int _Tposix_Topen_flags;
+typedef int _Tposix_Tseek;
 typedef uint8_t _Tcp1_Tassign;
 typedef uint8_t _Tcp1_Tmath;
 typedef uint8_t _Tcp1_Tbools;
 typedef uint8_t _Tcp1_Texpr_int;
 typedef uint8_t _Tcp1_Tunary;
 typedef uint8_t _Tcp1_Tcompare;
-typedef int _Tposix_Tfd;
 typedef uint32_t _Twindows_Tcreate_file_access;
 typedef uint32_t _Twindows_Tcreate_file_share_mode;
 typedef uint32_t _Twindows_Tcreate_file_creation_disposition;
 typedef uint32_t _Twindows_Tcreate_file_flags;
-typedef int _Tposix_Topen_flags;
-typedef int _Tposix_Tseek;
 typedef uint8_t _Tcp1_Tcvar_flags;
 typedef uint8_t _Tcp1_Tgvar_flags;
 typedef uint8_t _Tcp1_Tenum_flags;
@@ -1100,6 +1100,7 @@ uint32_t _Gctx_end_col;
 int32_t _Gexpr_cap;
 struct _Tcp1_Texpr** _Gexpr_v;
 int main(int _Larg_c_0, char** _Larg_v_1);
+void stdout_then_print_error(char* _Lbuf_0, uint32_t _Llen_1);
 void _Tcp1_Foutput_reserve_1(uint32_t _Llen_0);
 void _Tcp1_Fexport_0();
 #define _Tlibc_Fmalloc_arr_2(val, count) val = malloc(sizeof(val[0]) * (count))
@@ -1159,6 +1160,11 @@ static inline void _Tlibcp1_Tfmt_Ff_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 bool _Tcp1_Fwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
 static inline void _Tcp1_Tat_Fwr_header_2(_Tcp1_Tat _Lid_0, union _Tcp1_Twtr* _Lw_1);
 static inline void _Tcp1_Tid_Fwr_header_2(_Tcp1_Tid _Lid_0, union _Tcp1_Twtr* _Lw_1);
+#ifdef _WIN32
+#define _Tposix_Fopen_2(p, f) open(p, f | O_BINARY)
+#else
+#define _Tposix_Fopen_2(p, f) open(p, f)
+#endif
 #define _Tlibc_Frealloc_arr_2(val, count) val = realloc(val, sizeof(val[0]) * (count))
 void qalloc_undo(int32_t _Lsize_0);
 void _Tcp1_Fdecl_import_4(_Tcp1_Tinclude _Lpath_0, uint32_t _Lrow_1, uint32_t _Lcol_2, bool _Lrequire_3);
@@ -1525,11 +1531,6 @@ void _Tcp1_Ftype_info_arr_1(_Tcp1_Texpr_i _Lexpr_0);
 void _Tcp1_Ttype_info_Ffinalize_1(struct _Tcp1_Ttype_info* _Lti_0);
 static inline struct _Tcp1_Tcvar_data* _Tcp1_Tcvar_Fptr_1(_Tcp1_Tcvar _Lc_0);
 struct _Tcp1_Tstmt_space* _Tcp1_Fstmt_space_begin_1(bool _Lattach_0);
-#ifdef _WIN32
-#define _Tposix_Fopen_2(p, f) open(p, f | O_BINARY)
-#else
-#define _Tposix_Fopen_2(p, f) open(p, f)
-#endif
 static inline void _Tcp1_Tvar_flags_Fwr_2(_Tcp1_Tvar_flags _Lf_0, union _Tcp1_Twtr* _Lw_1);
 void _Tcp1_Ttype_info_Fwr_2(struct _Tcp1_Ttype_info* _Lti_0, union _Tcp1_Twtr* _Lw_1);
 static inline void _Tcp1_Texpr_type_Fwr_2(_Tcp1_Texpr_type _Le_0, union _Tcp1_Twtr* _Lw_1);
@@ -2455,6 +2456,66 @@ _Gtemplate_inst_c = ((_Tcp1_Ttemplate_inst)(0));
 _Gtemplate_code_c = ((_Tcp1_Ttemplate_code)(0));
 int32_t ret_1613_4 = 0;
 return ret_1613_4;
+}
+void stdout_then_print_error(char* _Lbuf_0, uint32_t _Llen_1) {
+write(((_Tposix_Tfd)(1)), _Lbuf_0, _Llen_1);
+int32_t _Li_2 = {0};
+_Li_2 = ((int32_t)(1));
+for(int i = (_Llen_1 - 6) - 1; i > 0; ) {
+i --;
+if(((_Lbuf_0[_Li_2] == '.') && (_Lbuf_0[(_Li_2 + 1)] == 'c') && (_Lbuf_0[(_Li_2 + 2)] == 'p') && (_Lbuf_0[(_Li_2 + 3)] == '1') && (_Lbuf_0[(_Li_2 + 4)] == ':') && ((_Lbuf_0[(_Li_2 + 5)] >= '0') && (_Lbuf_0[(_Li_2 + 5)] <= '9')))) {
+uint32_t _Lline_3 = {0};
+_Tposix_Tfd _Lfd_4;
+ssize_t _Lsize_5;
+char* _Ldata_6 = {0};
+int32_t _Lcur_line_7;
+int32_t _Li_8;
+sscanf(&_Lbuf_0[(_Li_2 + 5)], "%u", &_Lline_3);
+_Lbuf_0[(_Li_2 + 4)] = 0;
+_Lfd_4 = ((_Tposix_Tfd)(_Tposix_Fopen_2(_Lbuf_0, O_RDONLY)));
+if(_Lfd_4 == _Tposix_Tfd_Cnil) {
+return;
+}
+_Lsize_5 = ((ssize_t)(lseek(_Lfd_4, 0, SEEK_END)));
+lseek(_Lfd_4, 0, SEEK_SET);
+_Ldata_6 = ((char*)(malloc(_Lsize_5 + 1)));
+read(_Lfd_4, _Ldata_6, _Lsize_5);
+_Ldata_6[_Lsize_5] = 0;
+_Lcur_line_7 = ((int32_t)(1));
+_Li_8 = ((int32_t)(0));
+while(1) {
+int32_t _Lj_9;
+if(_Ldata_6[_Li_8] == 0) {
+goto break_1;
+}
+_Lj_9 = ((int32_t)(_Li_8));
+while(1) {
+char _Lc_10;
+_Lc_10 = ((char)(_Ldata_6[_Li_8++]));
+if(((_Lc_10 == 0) || (_Lc_10 == '\n'))) {
+goto break_2;
+}
+continue_2:;
+}
+break_2:;
+if(_Lline_3 == _Lcur_line_7) {
+_Llen_1 = ((_Li_8 - 1) - _Lj_9);
+_Ldata_6[_Llen_1] = '\n';
+write(((_Tposix_Tfd)(1)), &_Ldata_6[_Lj_9], _Llen_1);
+free(_Ldata_6);
+return;
+}
+_Lcur_line_7++;
+continue_1:;
+}
+break_1:;
+free(_Ldata_6);
+return;
+}
+continue_0:;
+_Li_2++;
+}
+break_0:;
 }
 void _Tcp1_Foutput_reserve_1(uint32_t _Llen_0) {
 uint32_t _Lspace_1;
@@ -7857,19 +7918,19 @@ _Tcp1_Fstmt_push_6(&(*_Ls_0)._Mbase, 0, 0, 0, 0, _Tcp1_Tstmt_type_Cif_end);
 _Tcp1_Fstmt_space_end_0();
 }
 struct _Tcp1_Tstmt_space* _Tcp1_Fstmt_space_begin_0() {
-struct _Tcp1_Tstmt_space* ret_226_4 = _Tcp1_Fstmt_space_begin_1(true);
-return ret_226_4;
+struct _Tcp1_Tstmt_space* ret_228_4 = _Tcp1_Fstmt_space_begin_1(true);
+return ret_228_4;
 }
 struct _Tcp1_Tstmt_space* _Tcp1_Fstmt_space_begin_detach_0() {
-struct _Tcp1_Tstmt_space* ret_245_4 = _Tcp1_Fstmt_space_begin_1(false);
-return ret_245_4;
+struct _Tcp1_Tstmt_space* ret_247_4 = _Tcp1_Fstmt_space_begin_1(false);
+return ret_247_4;
 }
 struct _Tcp1_Tstmt_space* _Tcp1_Fstmt_space_end_0() {
 struct _Tcp1_Tstmt_space* _Lret_0;
 _Lret_0 = ((struct _Tcp1_Tstmt_space*)(_Gdecl_func_ctx_space));
 _Gdecl_func_ctx_space = (*_Gdecl_func_ctx_space)._Mparent;
-struct _Tcp1_Tstmt_space* ret_250_4 = _Lret_0;
-return ret_250_4;
+struct _Tcp1_Tstmt_space* ret_252_4 = _Lret_0;
+return ret_252_4;
 }
 _Tcp1_Texpr_i _Tcp1_Fexpr_compare_3(_Tcp1_Texpr_i _Lleft_0, _Tcp1_Texpr_i _Lright_1, _Tcp1_Tcompare _Ltype_2) {
 struct _Tcp1_Texpr_compare* _Le_3 = {0};
@@ -8604,8 +8665,8 @@ struct _Tcp1_Tdecl_func* ret_12_7 = _Gfunc_v[_Lf_0];
 return ret_12_7;
 }
 _Tcp1_Tlvar _Tcp1_Tstmt_space_Flvar_new_4(struct _Tcp1_Tstmt_space* _Lspace_0, _Tcp1_Tid _Lname_1, uint32_t _Lrow_2, uint32_t _Lcol_3) {
-_Tcp1_Tlvar ret_63_7 = _Tcp1_Tstmt_space_Flvar_new_5(_Lspace_0, _Lname_1, _Lrow_2, _Lcol_3, true);
-return ret_63_7;
+_Tcp1_Tlvar ret_65_7 = _Tcp1_Tstmt_space_Flvar_new_5(_Lspace_0, _Lname_1, _Lrow_2, _Lcol_3, true);
+return ret_65_7;
 }
 static inline struct _Tcp1_Tlvar_data* _Tcp1_Tlvar_Fptr_1(_Tcp1_Tlvar _Ll_0) {
 struct _Tcp1_Tlvar_data* ret_40_10 = (*_Gctx_func)._Mlvar_v[_Ll_0];
@@ -8716,8 +8777,8 @@ _Tcp1_Fquick_alloc_one_1(_Litem_26);
 (*_Litem_26)._Mcol = _Lcol_3;
 (*_Litem_26)._Mdecl._Mname = _Lname_1;
 (*_Litem_26)._Mdecl._Mtype = _Tcp1_Tat_Cnil;
-_Tcp1_Tlvar ret_97_7 = _Llvar_24;
-return ret_97_7;
+_Tcp1_Tlvar ret_99_7 = _Llvar_24;
+return ret_99_7;
 }
 static inline struct _Tcp1_Texpr* _Tcp1_Texpr_i_Fptr_1(_Tcp1_Texpr_i _Le_0) {
 struct _Tcp1_Texpr* ret_93_7 = _Gexpr_v[_Le_0];
@@ -8882,8 +8943,8 @@ if((*_Lparent_1)._Mstmt_last == NULL) {
 (*_Lparent_1)._Mstmt_last = (&(*_Lspace_2)._Mbase);
 }
 }
-struct _Tcp1_Tstmt_space* ret_242_4 = _Lspace_2;
-return ret_242_4;
+struct _Tcp1_Tstmt_space* ret_244_4 = _Lspace_2;
+return ret_244_4;
 }
 static inline void _Tcp1_Tvar_flags_Fwr_2(_Tcp1_Tvar_flags _Lf_0, union _Tcp1_Twtr* _Lw_1) {
 Fputnum(_Lw_1, ((uint32_t)(_Lf_0)));

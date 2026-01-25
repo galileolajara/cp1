@@ -11,10 +11,12 @@ rule crc32c
  command = bin/crc32c $in $out
 
 build out/parse.cp1.c.o: c parse.cp1.c
+ flags = -DLIBCP1_ON_STDOUT=stdout_then_print_error
 #build out/parse-redef.cp1.c.o: objredef out/parse.cp1.c.o | redefs
 # redefs = redefs
 build out/parse.c.o: c parse.c | export.h lex.c cp1_parse.c
 build out/compile.cp1.c.o: c compile.cp1.c
+ flags = -DLIBCP1_ON_STDOUT=stdout_then_print_error
 build out/compile.c.o: c compile.c
 build bin/cp1-parse: ld-c out/parse.cp1.c.o out/parse.c.o out/hashtable.c.o | build-crc32c.h
 build bin/cp1-compile: ld-c out/compile.cp1.c.o out/compile.c.o out/hashtable.c.o
@@ -72,8 +74,8 @@ build out/token.cp1.c: compile token.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1
 build out/token: ld-c2 out/token.cp1.c
 build out/token.cp1: run out/token out/cp1_parse.h
 build out/run2.cp1.c: compile Cp1/run.cp1 Cp1/file.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-qjs
-build out/parse2.cp1.c: compile Cp1/parse.cp1 Cp1/preprocess.cp1 out/token.cp1 Cp1/break.cp1 Cp1/math.cp1 Cp1/bools.cp1 Cp1/str.cp1 Cp1/cvar.cp1 Cp1/unary.cp1 Cp1/ref.cp1 Cp1/cast.cp1 Cp1/index.cp1 Cp1/switch.cp1 Cp1/if.cp1 Cp1/loop.cp1 Cp1/compare.cp1 Cp1/bool.cp1 Cp1/char.cp1 Cp1/call.cp1 Cp1/null.cp1 Cp1/int.cp1 Cp1/size.cp1 Cp1/assign.cp1 Cp1/fvar.cp1 Cp1/soa.cp1 Cp1/gvar.cp1 Cp1/continue.cp1 Cp1/return.cp1 Cp1/space.cp1 Cp1/export.cp1 Cp1/rdr.cp1 Cp1/wtr.cp1 Cp1/var.cp1 Cp1/func.cp1 Cp1/lvar.cp1 Cp1/enum.cp1 Cp1/expr.cp1 Cp1/stmt.cp1 Cp1/common.cp1 Cp1/struct.cp1 Cp1/file.cp1 out/hash-table-size.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-qjs
-build out/compile2.cp1.c: compile Cp1/compile.cp1 Cp1/meta.cp1 Cp1/common.cp1 Cp1/rdr.cp1 Cp1/wtr.cp1 Cp1/func.cp1 Cp1/struct.cp1 Cp1/enum.cp1 Cp1/expr.cp1 Cp1/stmt.cp1 Cp1/var.cp1 Cp1/assign.cp1 Cp1/compare.cp1 Cp1/bool.cp1 Cp1/char.cp1 Cp1/math.cp1 Cp1/unary.cp1 Cp1/ref.cp1 Cp1/cast.cp1 Cp1/lvar.cp1 Cp1/fvar.cp1 Cp1/soa.cp1 Cp1/gvar.cp1 Cp1/cvar.cp1 Cp1/bools.cp1 Cp1/call.cp1 Cp1/str.cp1 Cp1/int.cp1 Cp1/size.cp1 Cp1/null.cp1 Cp1/index.cp1 Cp1/if.cp1 Cp1/switch.cp1 Cp1/loop.cp1 Cp1/continue.cp1 Cp1/break.cp1 Cp1/return.cp1 Cp1/space.cp1 Cp1/export.cp1 out/hash-table-size.cp1 Cp1/file.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-qjs
+build out/parse2.cp1.c: compile Cp1/parse.cp1 Cp1/print-error.cp1 Cp1/preprocess.cp1 out/token.cp1 Cp1/break.cp1 Cp1/math.cp1 Cp1/bools.cp1 Cp1/str.cp1 Cp1/cvar.cp1 Cp1/unary.cp1 Cp1/ref.cp1 Cp1/cast.cp1 Cp1/index.cp1 Cp1/switch.cp1 Cp1/if.cp1 Cp1/loop.cp1 Cp1/compare.cp1 Cp1/bool.cp1 Cp1/char.cp1 Cp1/call.cp1 Cp1/null.cp1 Cp1/int.cp1 Cp1/size.cp1 Cp1/assign.cp1 Cp1/fvar.cp1 Cp1/soa.cp1 Cp1/gvar.cp1 Cp1/continue.cp1 Cp1/return.cp1 Cp1/space.cp1 Cp1/export.cp1 Cp1/rdr.cp1 Cp1/wtr.cp1 Cp1/var.cp1 Cp1/func.cp1 Cp1/lvar.cp1 Cp1/enum.cp1 Cp1/expr.cp1 Cp1/stmt.cp1 Cp1/common.cp1 Cp1/struct.cp1 Cp1/file.cp1 out/hash-table-size.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-qjs
+build out/compile2.cp1.c: compile Cp1/compile.cp1 Cp1/print-error.cp1 Cp1/meta.cp1 Cp1/common.cp1 Cp1/rdr.cp1 Cp1/wtr.cp1 Cp1/func.cp1 Cp1/struct.cp1 Cp1/enum.cp1 Cp1/expr.cp1 Cp1/stmt.cp1 Cp1/var.cp1 Cp1/assign.cp1 Cp1/compare.cp1 Cp1/bool.cp1 Cp1/char.cp1 Cp1/math.cp1 Cp1/unary.cp1 Cp1/ref.cp1 Cp1/cast.cp1 Cp1/lvar.cp1 Cp1/fvar.cp1 Cp1/soa.cp1 Cp1/gvar.cp1 Cp1/cvar.cp1 Cp1/bools.cp1 Cp1/call.cp1 Cp1/str.cp1 Cp1/int.cp1 Cp1/size.cp1 Cp1/null.cp1 Cp1/index.cp1 Cp1/if.cp1 Cp1/switch.cp1 Cp1/loop.cp1 Cp1/continue.cp1 Cp1/break.cp1 Cp1/return.cp1 Cp1/space.cp1 Cp1/export.cp1 out/hash-table-size.cp1 Cp1/file.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-qjs
 build out/export.cp1.c: compile export.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-qjs
 build out/export: ld-c2 out/export.cp1.c
 build out/export.h: run out/export out/parse2.cp1.c
@@ -82,12 +84,14 @@ build out/lemon: ld-lemon lemon.c
 build out/cp1_parse.c out/cp1_parse.h: lemon cp1_parse.y | out/lemon
 build out/cp1-run: ld-c2 out/run2.cp1.c
 build out/parse2.cp1.c.o: c2 out/parse2.cp1.c
+ flags = -DLIBCP1_ON_STDOUT=stdout_then_print_error
 build out/parse2.c.o: c2 parse2.c | out/export.h out/lex.c out/cp1_parse.c
 #build out/parse2-redef.cp1.c.o: objredef out/parse2.cp1.c.o | redefs2
 # redefs = redefs2
 build out/hashtable2.c.o: c2 hashtable2.c
 build out/build-crc32c.h: crc32c out/compile2.cp1.c out/parse2.cp1.c compile2.c parse2.c lex-re2c.c | bin/crc32c
 build out/compile2.cp1.c.o: c2 out/compile2.cp1.c | out/build-crc32c.h
+ flags = -DLIBCP1_ON_STDOUT=stdout_then_print_error
 build out/compile2.c.o: c2 compile2.c | out/build-crc32c.h
 build out/cp1-parse: ld-c2 out/parse2.cp1.c.o out/parse2.c.o out/hashtable.c.o
 build out/cp1-compile: ld-c2 out/compile2.cp1.c.o out/compile2.c.o out/hashtable.c.o
