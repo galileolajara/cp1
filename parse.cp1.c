@@ -148,8 +148,8 @@
 #define _Tcp1_Ttoken_Cspace_op_lshift (_Tcp1_Ttoken_Cspace_op_mod + 1)
 #define _Tcp1_Ttoken_Cspace_op_rshift (_Tcp1_Ttoken_Cspace_op_lshift + 1)
 #define _Tcp1_Ttoken_Cspace_op_and_space (_Tcp1_Ttoken_Cspace_op_rshift + 1)
-#define _Tcp1_Ttoken_Cspace_op_or (_Tcp1_Ttoken_Cspace_op_and_space + 1)
-#define _Tcp1_Ttoken_Cspace_op_xor (_Tcp1_Ttoken_Cspace_op_or + 1)
+#define _Tcp1_Ttoken_Cspace_op_or_space (_Tcp1_Ttoken_Cspace_op_and_space + 1)
+#define _Tcp1_Ttoken_Cspace_op_xor (_Tcp1_Ttoken_Cspace_op_or_space + 1)
 #define _Tcp1_Ttoken_Cspace_cmp_equal_equal (_Tcp1_Ttoken_Cspace_op_xor + 1)
 #define _Tcp1_Ttoken_Cspace_cmp_not_equal (_Tcp1_Ttoken_Cspace_cmp_equal_equal + 1)
 #define _Tcp1_Ttoken_Cspace_cmp_less_than (_Tcp1_Ttoken_Cspace_cmp_not_equal + 1)
@@ -1482,7 +1482,7 @@ case _Tcp1_Ttoken_Cspace_op_mod: return "space-op-mod";
 case _Tcp1_Ttoken_Cspace_op_lshift: return "space-op-lshift";
 case _Tcp1_Ttoken_Cspace_op_rshift: return "space-op-rshift";
 case _Tcp1_Ttoken_Cspace_op_and_space: return "space-op-and-space";
-case _Tcp1_Ttoken_Cspace_op_or: return "space-op-or";
+case _Tcp1_Ttoken_Cspace_op_or_space: return "space-op-or-space";
 case _Tcp1_Ttoken_Cspace_op_xor: return "space-op-xor";
 case _Tcp1_Ttoken_Cspace_cmp_equal_equal: return "space-cmp-equal-equal";
 case _Tcp1_Ttoken_Cspace_cmp_not_equal: return "space-cmp-not-equal";

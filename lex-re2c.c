@@ -187,7 +187,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "<<"                      { return CP1_TOKEN_SPACE_OP_LSHIFT; }
    spaces ">>"                      { return CP1_TOKEN_SPACE_OP_RSHIFT; }
    spaces "&" spaces                { return CP1_TOKEN_SPACE_OP_AND_SPACE; }
-   spaces "|"                       { return CP1_TOKEN_SPACE_OP_OR; }
+   spaces "|" spaces                { return CP1_TOKEN_SPACE_OP_OR_SPACE; }
    spaces "^"                       { return CP1_TOKEN_SPACE_OP_XOR; }
    "(&&,"                           { return CP1_TOKEN_OPEN_PARENTHESIS_AMP_AMP_COMMA; }
    "(||,"                           { return CP1_TOKEN_OPEN_PARENTHESIS_PIPE_PIPE_COMMA; }
@@ -254,7 +254,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "|" [^ \n\000|] [^\n\000|]* "|"              { return CP1_TOKEN_ID; }
    id_first+ ([-] id_one+)*         { return CP1_TOKEN_ID; }
    "'" id                           { return CP1_TOKEN_ID_TYPE; }
-   "'|" [^ \n\000|] [^ \n\000|]* "|"             { return CP1_TOKEN_ID_TYPE; }
+   "'|" [^ \n\000|] [^\n\000|]* "|"             { return CP1_TOKEN_ID_TYPE; }
    "[" id? "]" id                   { return CP1_TOKEN_SOA_FIELD; }
    "import" spaces "\"" [^"\n\000]* "\""  { return CP1_TOKEN_IMPORT; }
    "require" spaces "\"" [^"\n\000]* "\"" { return CP1_TOKEN_REQUIRE; }
