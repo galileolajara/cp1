@@ -1,0 +1,49 @@
+using 'c = 'libc;
+using 'x = 'posix;
+using 'cp1 {
+   var printed-error'bool;
+   stdout-then-print-error(buf'char[], len'u32) @process @real-name(stdout_then_print_error) {
+      1'x'fd.write(buf, len);
+      if .printed-error { return }
+      .printed-error = true;
+      loop i = 1; (len - 6) - 1; i++ {
+         if (&&, buf[i] == ''., buf[i + 1] == ''c, buf[i + 2] == ''p, buf[i + 3] == ''1, buf[i + 4] == '':, (&&, buf[i + 5] >= ''0, buf[i + 5] <= ''9)) {
+            var line'u32;
+            'c.sscanf(&buf[i + 5], "%u", &line);
+            buf[i + 4] = 0;
+            fd! = 'x.open(buf, #rdonly);
+            if fd == #nil { return }
+            size! = fd.seek(0, #end);
+            fd.seek(0, #set);
+            var data'char[] = 'c.malloc(size + 1);
+            fd.read(data, size);
+            fd.close();
+            data[size] = 0;
+            cur-line! = 1;
+            i! = 0;
+            loop {
+               if data[i] == 0 {
+                  break;
+               }
+               j! = i;
+               loop {
+                  c! = data[i++];
+                  if (||, c == 0, c == ''\n) {
+                     break;
+                  }
+               }
+               if line == cur-line {
+                  len = (i - 1) - j;
+                  data[len++] = ''\n; // Make-the-last-byte-a-new-line-just-incase-the-line-terminated-with-null-character
+                  1'x'fd.write(&data[j], len);
+                  'c.free(data);
+                  return;
+               }
+               cur-line++;
+            }
+            'c.free(data);
+            return;
+         }
+      }
+   }
+}
