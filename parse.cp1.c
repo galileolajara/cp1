@@ -2480,6 +2480,7 @@ _Lsize_5 = ((ssize_t)(lseek(_Lfd_4, 0, SEEK_END)));
 lseek(_Lfd_4, 0, SEEK_SET);
 _Ldata_6 = ((char*)(malloc(_Lsize_5 + 1)));
 read(_Lfd_4, _Ldata_6, _Lsize_5);
+close(_Lfd_4);
 _Ldata_6[_Lsize_5] = 0;
 _Lcur_line_7 = ((int32_t)(1));
 _Li_8 = ((int32_t)(0));
@@ -2500,7 +2501,7 @@ continue_2:;
 break_2:;
 if(_Lline_3 == _Lcur_line_7) {
 _Llen_1 = ((_Li_8 - 1) - _Lj_9);
-_Ldata_6[_Llen_1] = '\n';
+_Ldata_6[_Llen_1++] = '\n';
 write(((_Tposix_Tfd)(1)), &_Ldata_6[_Lj_9], _Llen_1);
 free(_Ldata_6);
 return;
