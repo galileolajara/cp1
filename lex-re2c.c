@@ -41,7 +41,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces = [ \n]+;
    id_one = [_0-9a-zA-Z];
    id_first = [_0-9a-zA-Z];
-   id = id_first+ ([ /-] id_one+)*;
+   id = id_first+ ([-] id_one+)*;
 
    *                                { string_mem[0] = l->start[0]; return CP1_TOKEN_END; }
    "{"                              {
@@ -250,42 +250,11 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "'base"                          { return CP1_TOKEN_BASE; }
 
    "#" id                           { return CP1_TOKEN_HASH_ID; }
-   "#|" [^\n\000|]+ "|"             { return CP1_TOKEN_HASH_ID; }
+   "#|" [^ \n\000|]+ "|"             { return CP1_TOKEN_HASH_ID; }
    "|" [^ \n\000|] [^\n\000|]* "|"              { return CP1_TOKEN_ID; }
-   id_first+ ("-" id_one+ ([ -] id_one+)*)?           { return CP1_TOKEN_ID; }
-   @id_start id_first+ @id_space " " id_one+ ([ -] id_one+)*     {
-      int len = id_space - id_start;
-      if (len == 2) {
-         if (id_start[0] == 'i' && id_start[1] == 'f') {
-            l->cursor = id_space;
-            return CP1_TOKEN_IF;
-         }
-      } else if (len == 3) {
-         if (id_start[0] == 'v' && id_start[1] == 'a' && id_start[2] == 'r') {
-            l->cursor = id_space;
-            return CP1_TOKEN_VAR;
-         }
-      } else if (len == 4) {
-         if (id_start[0] == 'l' && id_start[1] == 'o' && id_start[2] == 'o' && id_start[3] == 'p') {
-            l->cursor = id_space;
-            return CP1_TOKEN_LOOP;
-         } else if (id_start[0] == 'c' && id_start[1] == 'a' && id_start[2] == 's' && id_start[3] == 'e') {
-            l->cursor = id_space;
-            return CP1_TOKEN_CASE;
-         }
-      } else if (len == 6) {
-         if (id_start[0] == 'r' && id_start[1] == 'e' && id_start[2] == 't' && id_start[3] == 'u' && id_start[4] == 'r' && id_start[5] == 'n') {
-            l->cursor = id_space;
-            return CP1_TOKEN_RETURN;
-         } else if (id_start[0] == 's' && id_start[1] == 'w' && id_start[2] == 'i' && id_start[3] == 't' && id_start[4] == 'c' && id_start[5] == 'h') {
-            l->cursor = id_space;
-            return CP1_TOKEN_SWITCH;
-         }
-      }
-      return CP1_TOKEN_ID;
-   }
+   id_first+ ([-] id_one+)*         { return CP1_TOKEN_ID; }
    "'" id                           { return CP1_TOKEN_ID_TYPE; }
-   "'|" [^\n\000|]+ "|"             { return CP1_TOKEN_ID_TYPE; }
+   "'|" [^ \n\000|]+ "|"             { return CP1_TOKEN_ID_TYPE; }
    "[" id? "]" id                   { return CP1_TOKEN_SOA_FIELD; }
    "import" spaces "\"" [^"\n\000]* "\""  { return CP1_TOKEN_IMPORT; }
    "require" spaces "\"" [^"\n\000]* "\"" { return CP1_TOKEN_REQUIRE; }
