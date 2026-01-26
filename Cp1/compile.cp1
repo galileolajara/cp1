@@ -743,6 +743,8 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    process-all! = false;
    var comment-for-func'char[] = null;
    comment-for-func-len! = 0;
+   var keyword-for-gvar'char[] = null;
+   keyword-for-gvar-len! = 0;
    var crc32c = build-crc32c();
    loop i = 1; i < arg-c {
       arg! = arg-v[i++];
@@ -775,10 +777,18 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                // to determine the beginning and end of function bodies
                comment-for-func = arg-v[i++];
                if comment-for-func == null {
-                  'c1.stdout{"The option -F must be followed by a path\n"}
+                  'c1.stdout{"The option -F must be followed by a comment\n"}
                   "goto usage;";
                }
                comment-for-func-len = 'c.strlen(comment-for-func);
+            } elif arg[1] == ''G {
+               // For hacking the output C code,
+               keyword-for-gvar = arg-v[i++];
+               if keyword-for-gvar == null {
+                  'c1.stdout{"The option -G must be followed by a keyword\n"}
+                  "goto usage;";
+               }
+               keyword-for-gvar-len = 'c.strlen(keyword-for-gvar);
             } elif arg[1] == ''I {
                arg = arg-v[i++];
                if arg == null {
@@ -1713,6 +1723,9 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
       g-i! = .gvar-outputted-v[i];
       g! = g-i.ptr();
       if (g.decl.flags & #no-decl) != #0 { continue }
+      if keyword-for-gvar != null {
+         output{keyword-for-gvar, keyword-for-gvar-len '' }
+      }
       if (g.decl.flags & #extern) != #0 {
          output{"extern "}
       }
