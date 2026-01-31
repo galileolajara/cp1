@@ -285,7 +285,7 @@ using 'cp1 {
                         line.pos += 3;
                         col += 3;
                      }
-                  } elif (&&, line.p1[2] == '' , (||, line.p1[1] == ''-, line.p1[1] == ''=)) {
+                  } elif (&&, (||, line.p1[1] == ''-, line.p1[1] == ''=), line.p1[2] == '' ) {
                      // string
                      line.pos += 3;
                      col += 3;

@@ -1782,7 +1782,11 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
          f.farg-v[j].decl.write-lvar-type(j'lvar);
       }
       if (f.flags & #cp1-name) != #0 {
-         output{") {\nswitch(_Le_0) {\n"}
+         if comment-for-func != null {
+            output{") { // " comment-for-func, comment-for-func-len "\nswitch(_Le_0) {\n"}
+         } else {
+            output{") {\nswitch(_Le_0) {\n"}
+         }
          at! = f.at.ptr();
          loop i = 0, v = at.cvar-v; at.cvar-c; i++ {
             cvar-i! = v[i];
@@ -1793,7 +1797,11 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
             cvar-i.write();
             output{": return \"" cvar.decl.name "\";\n"}
          }
-         output{"}\nreturn \"(ERROR)\";\n}\n"}
+         if comment-for-func != null {
+            output{"}\nreturn \"(ERROR)\";\n} // " comment-for-func, comment-for-func-len ''\n}
+         } else {
+            output{"}\nreturn \"(ERROR)\";\n}\n"}
+         }
       } else {
          output{");\n"}
       }

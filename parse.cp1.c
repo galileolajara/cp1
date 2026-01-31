@@ -3380,7 +3380,7 @@ break;
 _Lline_15._Mpos += 3;
 _Lcol_16 += 3;
 }
-} else if(((_Lline_15._Mp1[2] == ' ') && ((_Lline_15._Mp1[1] == '-') || (_Lline_15._Mp1[1] == '=')))) {
+} else if((((_Lline_15._Mp1[1] == '-') || (_Lline_15._Mp1[1] == '=')) && (_Lline_15._Mp1[2] == ' '))) {
 char* _Lr_begin_130;
 size_t _Lr_pos_131;
 _Lline_15._Mpos += 3;
