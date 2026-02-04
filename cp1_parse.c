@@ -1377,8 +1377,8 @@ static const YYCODETYPE yy_lookahead[] = {
  /*  1510 */   164,  184,  185,  186,  187,  164,  164,  164,  164,  163,
  /*  1520 */   325,  164,  336,  149,  164,  164,  193,  164,  164,  164,
  /*  1530 */   223,  223,    0,  166,  167,  208,    0,  170,    3,  172,
- /*  1540 */    18,    3,   22,   38,   52,    4,   38,  180,  181,  182,
- /*  1550 */   183,   52,    4,   52,   36,   22,   89,   38,   21,  192,
+ /*  1540 */    18,    3,   22,   38,   52,    5,   38,  180,  181,  182,
+ /*  1550 */   183,   52,    5,   52,   36,   22,   89,   38,   21,  192,
  /*  1560 */    36,  194,  195,  196,   21,  198,  199,  200,  201,  202,
  /*  1570 */   203,  204,  205,  206,   32,    3,    3,  250,  251,  252,
  /*  1580 */     3,  254,  255,  256,  257,  258,  259,  260,  261,  262,
@@ -2116,8 +2116,8 @@ static const unsigned short int yy_shift_ofst[] = {
  /*   250 */  1253, 1267, 1268, 1270, 1272, 1277, 1297,  186, 1046, 1284,
  /*   260 */   465, 1273, 1381, 1247, 1240,   66, 1382, 1385, 1399, 1380,
  /*   270 */  1191, 1334, 1282, 1301,  674, 1303, 1334, 1313, 1384, 1390,
- /*   280 */  1532, 1536, 1535, 1522, 1538, 1520, 1505, 1492, 1541, 1508,
- /*   290 */  1499, 1548, 1501, 1518, 1533, 1519, 1467, 1524, 1537, 1542,
+ /*   280 */  1532, 1536, 1535, 1522, 1538, 1520, 1505, 1492, 1540, 1508,
+ /*   290 */  1499, 1547, 1501, 1518, 1533, 1519, 1467, 1524, 1537, 1542,
  /*   300 */  1543, 1572, 1573, 1577, 1555, 1618, 1611, 1613, 1614, 1587,
  /*   310 */  1634, 1616, 1621, 1636, 1591, 1623, 1642, 1626, 1629, 1648,
  /*   320 */  1652, 1653, 1627, 1637, 1657, 1612, 1612, 1659, 1645, 1635,
@@ -3078,12 +3078,12 @@ static const char *const yyRuleName[] = {
  /* 376 */ "decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE",
  /* 377 */ "decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE",
  /* 378 */ "enum_base_begin ::=",
- /* 379 */ "decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID DOT CLOSE_PARENTHESIS",
+ /* 379 */ "decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID_NEW DOT CLOSE_PARENTHESIS",
  /* 380 */ "decl_enum_attr ::= SPACE_AT_NO_DECL",
  /* 381 */ "decl_enum_attr ::= SPACE_AT_NO_DECL_STR",
  /* 382 */ "decl_enum_attr ::= SPACE_AT_REAL_NAME",
  /* 383 */ "decl_enum_attr ::= SPACE_AT_REAL_NAME_STR",
- /* 384 */ "decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID DOT CLOSE_PARENTHESIS",
+ /* 384 */ "decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID_NEW DOT CLOSE_PARENTHESIS",
  /* 385 */ "enum_base_end ::= at decl_enum_attrs_optional end_pos",
  /* 386 */ "decl_gvar ::= fvar_decl expr_type_apply typeInfo_optional decl_var_attrs_optional",
  /* 387 */ "cp1 ::= decls space_or_end",
@@ -4019,12 +4019,12 @@ static const YYCODETYPE yyRuleInfoLhs[] = {
    377,  /* (376) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE */
    377,  /* (377) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE */
    378,  /* (378) enum_base_begin ::= */
-   379,  /* (379) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID DOT CLOSE_PARENTHESIS */
+   379,  /* (379) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID_NEW DOT CLOSE_PARENTHESIS */
    379,  /* (380) decl_enum_attr ::= SPACE_AT_NO_DECL */
    379,  /* (381) decl_enum_attr ::= SPACE_AT_NO_DECL_STR */
    379,  /* (382) decl_enum_attr ::= SPACE_AT_REAL_NAME */
    379,  /* (383) decl_enum_attr ::= SPACE_AT_REAL_NAME_STR */
-   379,  /* (384) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID DOT CLOSE_PARENTHESIS */
+   379,  /* (384) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID_NEW DOT CLOSE_PARENTHESIS */
    382,  /* (385) enum_base_end ::= at decl_enum_attrs_optional end_pos */
    383,  /* (386) decl_gvar ::= fvar_decl expr_type_apply typeInfo_optional decl_var_attrs_optional */
    160,  /* (387) cp1 ::= decls space_or_end */
@@ -4545,12 +4545,12 @@ static const signed char yyRuleInfoNRhs[] = {
    -5,  /* (376) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE */
    -3,  /* (377) decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE */
     0,  /* (378) enum_base_begin ::= */
-   -7,  /* (379) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID DOT CLOSE_PARENTHESIS */
+   -7,  /* (379) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID_NEW DOT CLOSE_PARENTHESIS */
    -1,  /* (380) decl_enum_attr ::= SPACE_AT_NO_DECL */
    -1,  /* (381) decl_enum_attr ::= SPACE_AT_NO_DECL_STR */
    -1,  /* (382) decl_enum_attr ::= SPACE_AT_REAL_NAME */
    -1,  /* (383) decl_enum_attr ::= SPACE_AT_REAL_NAME_STR */
-   -6,  /* (384) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID DOT CLOSE_PARENTHESIS */
+   -6,  /* (384) decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID_NEW DOT CLOSE_PARENTHESIS */
    -3,  /* (385) enum_base_end ::= at decl_enum_attrs_optional end_pos */
    -4,  /* (386) decl_gvar ::= fvar_decl expr_type_apply typeInfo_optional decl_var_attrs_optional */
    -2,  /* (387) cp1 ::= decls space_or_end */
@@ -6111,7 +6111,7 @@ static YYACTIONTYPE yy_reduce(
 { _Tcp1_Fenum_base_begin_0(); }
 #line 6112 "out/cp1_parse.c"
         break;
-      case 379: /* decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID DOT CLOSE_PARENTHESIS */
+      case 379: /* decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT DOT ID_NEW DOT CLOSE_PARENTHESIS */
 #line 1090 "cp1_parse.y"
 { _Tcp1_Fenum_attr_soa_field_2(yymsp[-4].minor.yy0.basic.id, yymsp[-2].minor.yy0.basic.id); }
 #line 6117 "out/cp1_parse.c"
@@ -6136,7 +6136,7 @@ static YYACTIONTYPE yy_reduce(
 { _Tcp1_Fenum_attr_real_name_1(yymsp[0].minor.yy0.basic.id); }
 #line 6137 "out/cp1_parse.c"
         break;
-      case 384: /* decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID DOT CLOSE_PARENTHESIS */
+      case 384: /* decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID_NEW DOT CLOSE_PARENTHESIS */
 #line 1100 "cp1_parse.y"
 { _Tcp1_Fenum_attr_soa_field_2(-1, yymsp[-2].minor.yy0.basic.id); }
 #line 6142 "out/cp1_parse.c"

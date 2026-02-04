@@ -1086,7 +1086,7 @@ decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE_CLO
    { _Tcp1_Fdecl_at_end_0(); }
 enum_base_begin ::= .
    { _Tcp1_Fenum_base_begin_0(); }
-decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT(a) DOT ID(i) DOT CLOSE_PARENTHESIS.
+decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS AT(a) DOT ID_NEW(i) DOT CLOSE_PARENTHESIS.
    { _Tcp1_Fenum_attr_soa_field_2(a.basic.id, i.basic.id); }
 decl_enum_attr ::= SPACE_AT_NO_DECL.
    { _Tcp1_Fenum_attr_no_decl_0(); }
@@ -1096,7 +1096,7 @@ decl_enum_attr ::= SPACE_AT_REAL_NAME.
    { _Tcp1_Fenum_attr_real_name_1(-1); }
 decl_enum_attr ::= SPACE_AT_REAL_NAME_STR(s).
    { _Tcp1_Fenum_attr_real_name_1(s.basic.id); }
-decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID(i) DOT CLOSE_PARENTHESIS.
+decl_enum_attr ::= SPACE_AT_SOA_FIELD OPEN_PARENTHESIS DOT ID_NEW(i) DOT CLOSE_PARENTHESIS.
    { _Tcp1_Fenum_attr_soa_field_2(-1, i.basic.id); }
 decl_enum_attrs ::= decl_enum_attr.
 decl_enum_attrs ::= decl_enum_attrs decl_enum_attr.
