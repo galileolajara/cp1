@@ -17,6 +17,7 @@ include <math.h> {
       min(a'this, b'f32)'f32 @no-decl(fminf);
       max(a'this, b'f32)'f32 @no-decl(fmaxf);
       atan2(y'this, x'f32)'f32 @no-decl(atan2f);
+      acos(rad'this)'f32 @no-decl(acosf);
       cos(rad'this)'f32 @no-decl(cosf);
       sin(rad'this)'f32 @no-decl(sinf);
       floor(val'this)'f32 @no-decl(floorf);
