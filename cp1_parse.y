@@ -90,6 +90,9 @@ begin_pos(t) ::= .
 end_pos(t) ::= .
    { t.basic.row = _Tcp1_Grow; t.basic.col = _Tcp1_Gcol - 1; }
 
+id_or_new ::= ID.
+id_or_new ::= ID_NEW.
+
 func_decl_begin ::= FUNC_ID(name).
    { _Tcp1_Fdecl_func_begin_3(name.basic.id, name.basic.row, name.basic.col); }
 func_decl_begin_angle ::= FUNC_ID_ANGLE(name).
@@ -105,9 +108,9 @@ struct_decl_begin ::= STRUCT SPACE ID_TYPE(name).
 struct_decl_begin ::= UNION SPACE ID_TYPE(name).
    { _Tcp1_Fdecl_at_begin_struct_3(name.basic.id, name.basic.row, name.basic.col);
      _Tcp1_Fstruct_attr_union_0(); }
-fvar_decl_name ::= ID(name).
+fvar_decl_name ::= ID_NEW(name).
    { _Tcp1_Fdecl_var_begin_3(name.basic.id, name.basic.row, name.basic.col); }
-lvar_decl_name ::= ID(name).
+lvar_decl_name ::= ID_NEW(name).
    { _Tcp1_Fdecl_var_begin_3(name.basic.id, name.basic.row, name.basic.col); }
 
 cvar_attr ::= SPACE_AT_REAL_NAME_STR(e).
@@ -347,9 +350,9 @@ func_attr ::= SPACE_AT_OVERLOAD_STATEMENT.
    { _Tcp1_Ffunc_attr_overload_statement_0(); }
 func_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _Tcp1_Ffunc_attr_real_name_1(e.basic.id); }
-func_attr ::= SPACE_AT_META OPEN_PARENTHESIS ID(id1) COMMA_SPACE ID(id2) CLOSE_PARENTHESIS.
+func_attr ::= SPACE_AT_META OPEN_PARENTHESIS id_or_new(id1) COMMA_SPACE id_or_new(id2) CLOSE_PARENTHESIS.
    { _Tcp1_Ffunc_attr_meta_method_3(id1.basic.id, -1, id2.basic.id); }
-func_attr ::= SPACE_AT_META OPEN_PARENTHESIS ID(id1) COMMA_SPACE ID(id2) COMMA_SPACE ID(id3) CLOSE_PARENTHESIS.
+func_attr ::= SPACE_AT_META OPEN_PARENTHESIS id_or_new(id1) COMMA_SPACE id_or_new(id2) COMMA_SPACE id_or_new(id3) CLOSE_PARENTHESIS.
    { _Tcp1_Ffunc_attr_meta_method_3(id1.basic.id, id2.basic.id, id3.basic.id); }
 func_attr ::= SPACE_AT_REAL_NAME.
    { _Tcp1_Ffunc_attr_real_name_1(-1); }
@@ -510,9 +513,9 @@ expr_lvar_plus(l) ::= expr_lvar_plus(r) PLUS.
    { l.basic.id = r.basic.id + 1; } */
 expr_lvar(e) ::= ID(var).
    { e.basic.id = _Tcp1_Fexpr_lvar_4(var.basic.id, 0, var.basic.row, var.basic.col); }
-expr_lvar(e) ::= ID(var) EXCLAMATION expr_type_none.
+expr_lvar_decl(e) ::= ID_NEW(var) QUOTE expr_type_none.
    { e.basic.id = _Tcp1_Fexpr_lvar_4(var.basic.id, 1, var.basic.row, var.basic.col); }
-expr_lvar(e) ::= ID(var) QUESTION expr_type_none.
+expr_lvar_decl(e) ::= ID_NEW(var) QUESTION expr_type_none.
    { e.basic.id = _Tcp1_Fexpr_lvar_4(var.basic.id, 2, var.basic.row, var.basic.col); }
 /* expr_lvar(e) ::= expr_lvar_plus(plus) open_parenthesis_or_space ID(var) typeAndInfo close_parenthesis_or_space.
    { e.basic.id = _Tcp1_Fexpr_lvar_4(var.basic.id, plus.basic.id, var.basic.row, var.basic.col); } */
@@ -729,6 +732,8 @@ metaCall_args_next_group_empty ::= OPEN_CURLY_BRACE SPACE.
    { _Tcp1_Fmetacarg_next_group_0(); }
 metaCall_args ::= metaCall_args metaCall_args_next_group metaCall_arg_list.
 call_arg ::= expr(e).
+   { _Tcp1_Fcarg_push_1(e.basic.id); }
+call_arg ::= expr_lvar_decl(e).
    { _Tcp1_Fcarg_push_1(e.basic.id); }
 call_arg ::= expr_str(e) HASH.
    { _Tcp1_Fcarg_push_str_1(e.basic.id); }
@@ -991,11 +996,11 @@ stmt_lvars ::= decl_lvar_begin lvar_list(end).
    { _Tcp1_Fstmt_lvar_end_2(end.basic.row, end.basic.col); }
 stmt_lvars_no_begin ::= lvar_list(end).
    { _Tcp1_Fstmt_lvar_end_2(end.basic.row, end.basic.col); }
-decl_lvar ::= ID(var) typeAndInfo_optional SPACE_EQUAL SPACE expr(e).
+decl_lvar ::= ID_NEW(var) typeAndInfo_optional SPACE_EQUAL SPACE expr(e).
    { _Tcp1_Fstmt_lvar_add_4(var.basic.id, e.basic.id, var.basic.row, var.basic.col); }
-decl_lvar ::= ID(var) typeAndInfo_optional SPACE_EQUAL SPACE QUESTION.
+decl_lvar ::= ID_NEW(var) typeAndInfo_optional SPACE_EQUAL SPACE QUESTION.
    { _Tcp1_Fstmt_lvar_add_4(var.basic.id, -1, var.basic.row, var.basic.col); }
-decl_lvar ::= ID(var) typeAndInfo_optional.
+decl_lvar ::= ID_NEW(var) typeAndInfo_optional.
    { _Tcp1_Fstmt_lvar_add_4(var.basic.id, -2, var.basic.row, var.basic.col); }
 decl_lvars ::= decl_lvar.
 decl_lvars ::= decl_lvars COMMA_SPACE decl_lvar.

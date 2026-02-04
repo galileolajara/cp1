@@ -12,12 +12,12 @@ enum 'enum[#nil = -1, #0, #1]'i32 {
       return .enum-v[f];
    }
    output(e-i'this) {
-      num! = e-i'u32;
-      n3! = num >> 3;
-      n17! = 1 << (num & 7);
+      var num = e-i'u32;
+      var n3 = num >> 3;
+      var n17 = 1 << (num & 7);
       if (.enum-is-outputted[n3] & n17) != 0 { return }
       .enum-is-outputted[n3] |= n17;
-      e! = e-i.ptr();
+      var e = e-i.ptr();
 
       e.base-type.output(e.file, e.begin-row, e.begin-col);
 
@@ -59,7 +59,7 @@ var decl-enum-last-cvar'cvar;
 var decl-enum-soa-field-gvar-at'at;
 var decl-enum-soa-field-gvar-id'id;
 decl-var-as-evar() {
-   evar! = .decl-evar-c++;
+   var evar = .decl-evar-c++;
    if .decl-evar-cap <= .decl-evar-c {
       grow(.decl-evar-cap, .decl-evar-c);
       realloc(.decl-evar-v, .decl-evar-cap);
@@ -104,9 +104,9 @@ enum-attr-real-name(id'id) {
    .decl-enum-real-name = id;
 }
 decl-enum-end(base-type'at, row'u32, col'u32) {
-   s-idx! = .enum-c++;
+   var s-idx = .enum-c++;
    if .enum-cap <= .enum-c {
-      old-cap! = .enum-cap;
+      var old-cap = .enum-cap;
       .enum-cap = grow(.enum-c'base)'enum;
       realloc(.enum-v, .enum-cap'base, old-cap'base);
    }
@@ -137,14 +137,14 @@ decl-enum-end(base-type'at, row'u32, col'u32) {
 }
 var last-cvar'cvar;
 enum-add-cvar(name'id, row'u32, col'u32) {
-   c-idx! = .cvar-c++;
+   var c-idx = .cvar-c++;
    .last-cvar = c-idx;
    if .cvar-cap <= .cvar-c {
-      old-cap! = .cvar-cap;
+      var old-cap = .cvar-cap;
       .cvar-cap = grow(.cvar-c'base)'cvar;
       realloc(.cvar-v, .cvar-cap'base, old-cap'base);
    }
-   c! = c-idx.ptr();
+   var c = c-idx.ptr();
    c.row = row;
    c.col = col;
    c.include = .decl-include;
@@ -157,14 +157,14 @@ enum-add-cvar(name'id, row'u32, col'u32) {
    .decl-enum-last-cvar = c-idx;
 }
 decl-add-cvar(name'id, row'u32, col'u32) {
-   c-idx! = .cvar-c++;
+   var c-idx = .cvar-c++;
    .last-cvar = c-idx;
    if .cvar-cap <= .cvar-c {
-      old-cap! = .cvar-cap;
+      var old-cap = .cvar-cap;
       .cvar-cap = grow(.cvar-c'base)'cvar;
       realloc(.cvar-v, .cvar-cap'base, old-cap'base);
    }
-   c! = c-idx.ptr();
+   var c = c-idx.ptr();
    c.row = row;
    c.col = col;
    c.include = .decl-include;
@@ -179,25 +179,25 @@ decl-add-cvar(name'id, row'u32, col'u32) {
    c.flags = #0;
 }
 enum-set-cvar-expr(set'expr-i) {
-   c! = .last-cvar.ptr();
+   var c = .last-cvar.ptr();
    c.flags |= #set-expr;
    c.expr-set = set;
 }
 cvar-attr-real-name(name'id) {
-   c! = .last-cvar.ptr();
+   var c = .last-cvar.ptr();
    c.decl.flags |= #real-name;
    c.decl.real-name = name;
 }
 cvar-attr-no-decl() {
-   c! = .last-cvar.ptr();
+   var c = .last-cvar.ptr();
    c.decl.flags |= #no-decl;
 }
 cvar-attr-no-name() {
-   c! = .last-cvar.ptr();
+   var c = .last-cvar.ptr();
    c.flags |= #no-name;
 }
 cvar-attr-dont-count() {
-   c! = .last-cvar.ptr();
+   var c = .last-cvar.ptr();
    c.flags |= #dont-count;
 }
  

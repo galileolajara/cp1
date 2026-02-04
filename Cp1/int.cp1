@@ -5,7 +5,7 @@ enum 'expr-int[#i32, #u32, #f32, #oct, #hex, #u64, #f64]'u8;
 expr-int(value'i32, type'expr-int)'expr-i {
    var e'expr-int-data;
    quick-alloc-one(e);
-   e-idx! = expr-push(e.base, #int);
+   var e-idx = expr-push(e.base, #int);
    e.value.i32 = value;
    e.type = type;
    return e-idx;
@@ -13,7 +13,7 @@ expr-int(value'i32, type'expr-int)'expr-i {
 expr-int64(value'i64, type'expr-int)'expr-i {
    var e'expr-int-data;
    quick-alloc-one(e);
-   e-idx! = expr-push(e.base, #int);
+   var e-idx = expr-push(e.base, #int);
    e.value.u64 = value;
    e.type = type;
    return e-idx;
@@ -21,7 +21,7 @@ expr-int64(value'i64, type'expr-int)'expr-i {
 expr-f32(value'f32)'expr-i {
    var e'expr-int-data;
    quick-alloc-one(e);
-   e-idx! = expr-push(e.base, #int);
+   var e-idx = expr-push(e.base, #int);
    e.value.f32 = value;
    e.type = #f32;
    return e-idx;
@@ -29,7 +29,7 @@ expr-f32(value'f32)'expr-i {
 expr-f64(value'f64)'expr-i {
    var e'expr-int-data;
    quick-alloc-one(e);
-   e-idx! = expr-push(e.base, #int);
+   var e-idx = expr-push(e.base, #int);
    e.value.f64 = value;
    e.type = #f64;
    return e-idx;

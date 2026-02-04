@@ -8,11 +8,11 @@ enum 'decl-var[]'u32 {
 }
 #decl-var-size-limit'i32 = 8;
 at-validate(vd-type'at, at-i'at, file'file, row'u32, col'u32)'at {
-   type! = vd-type.ptr();
-   parent-idx! = type.parent;
-   parent! = parent-idx.ptr();
+   var type = vd-type.ptr();
+   var parent-idx = type.parent;
+   var parent = parent-idx.ptr();
    if (&&, parent.type == #basic, parent.name.basic == #relative) {
-      name! = type.name;
+      var name = type.name;
       loop {
          loop i = 0'at; .at-c; i++ {
             if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
@@ -27,15 +27,15 @@ at-validate(vd-type'at, at-i'at, file'file, row'u32, col'u32)'at {
       'c1.stdout{file '': row '': col ": Type '" name.id "' was not found\n"}
       return #nil;
    } elif parent-idx != #root {
-      parent2-idx! = parent.parent;
-      parent2! = parent2-idx.ptr();
+      var parent2-idx = parent.parent;
+      var parent2 = parent2-idx.ptr();
       if (&&, parent2.type == #basic, parent2.name.basic == #relative) {
-         name! = parent.name;
+         var name = parent.name;
          loop {
             loop i = 0'at; .at-c; i++ {
                if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
                   if .at-v[i].name.id == name.id {
-                     name2! = type.name;
+                     var name2 = type.name;
                      loop j = 0'at; .at-c; j++ {
                         if (&&, .at-v[j].parent == i, .at-v[i].type != #basic) {
                            if .at-v[j].name.id == name2.id {
@@ -54,19 +54,19 @@ at-validate(vd-type'at, at-i'at, file'file, row'u32, col'u32)'at {
          'c1.stdout{file '': row '': col ": Type '" name.id "' was not found\n"}
          return #nil;
       } elif parent2-idx != #root {
-         parent3-idx! = parent2.parent;
-         parent3! = parent3-idx.ptr();
+         var parent3-idx = parent2.parent;
+         var parent3 = parent3-idx.ptr();
          if (&&, parent3.type == #basic, parent3.name.basic == #relative) {
-            name! = parent2.name;
+            var name = parent2.name;
             loop {
                loop i = 0'at; .at-c; i++ {
                   if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
                      if .at-v[i].name.id == name.id {
-                        name2! = parent.name;
+                        var name2 = parent.name;
                         loop j = 0'at; .at-c; j++ {
                            if (&&, .at-v[j].parent == i, .at-v[j].type != #basic) {
                               if .at-v[j].name.id == name2.id {
-                                 name3! = type.name;
+                                 var name3 = type.name;
                                  loop k = 0'at; .at-c; k++ {
                                     if (&&, .at-v[k].parent == j, .at-v[k].type != #basic) {
                                        if .at-v[k].name.id == name3.id {
@@ -90,23 +90,23 @@ at-validate(vd-type'at, at-i'at, file'file, row'u32, col'u32)'at {
             'c1.stdout{file '': row '': col ": Type '" name.id "' was not found\n"}
             return #nil;
          } elif parent3-idx != #root {
-            parent4-idx! = parent3.parent;
-            parent4! = parent4-idx.ptr();
+            var parent4-idx = parent3.parent;
+            var parent4 = parent4-idx.ptr();
             if (&&, parent4.type == #basic, parent4.name.basic == #relative) {
-               name! = parent3.name;
+               var name = parent3.name;
                loop {
                   loop i = 0'at; .at-c; i++ {
                      if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
                         if .at-v[i].name.id == name.id {
-                           name2! = parent2.name;
+                           var name2 = parent2.name;
                            loop j = 0'at; .at-c; j++ {
                               if (&&, .at-v[j].parent == i, .at-v[j].type != #basic) {
                                  if .at-v[j].name.id == name2.id {
-                                    name3! = parent.name;
+                                    var name3 = parent.name;
                                     loop k = 0'at; .at-c; k++ {
                                        if (&&, .at-v[k].parent == j, .at-v[k].type != #basic) {
                                           if .at-v[k].name.id == name3.id {
-                                             name4! = type.name;
+                                             var name4 = type.name;
                                              loop l = 0'at; .at-c; l++ {
                                                 if (&&, .at-v[l].parent == k, .at-v[l].type != #basic) {
                                                    if .at-v[l].name.id == name4.id {
@@ -147,10 +147,10 @@ using 'decl-var-data {
       return true;
    }
    process(vd'this, file'file, row'u32, col'u32, base-at'at)'bool {
-      at-i! = at-validate(vd.type, base-at, file, row, col);
+      var at-i = at-validate(vd.type, base-at, file, row, col);
       if at-i == #nil { return false }
       vd.type = at-i;
-      at! = at-i.ptr();
+      var at = at-i.ptr();
       if (&&, at.type != #basic, at.decl.structt == #nil) {
          'c1.stdout{file '': row '': col ": Error, the type '" at.name.id "' used in '" vd.name "' was not defined\n"}
          return false;
@@ -289,7 +289,7 @@ using 'decl-var-data {
 #type-info-star-limit'i32 = 8;
 struct 'value[ref'i8, paren'bool, type'at, info'type-info.] {
    set(v'this, ref'i8, paren'bool, type'at, info'type-info) {
-      c! = info.ref-v[info.array-c];
+      var c = info.ref-v[info.array-c];
       v.type = type;
       v.ref = (c + 2) - ref;
       v.info.init();
@@ -320,7 +320,7 @@ struct 'type-info[ref-v'i8[#type-info-star-limit], array-c'u8, star-c'i8, built-
       ti.const = false;
    }
    rd(ti'this, r'rdr) {
-      c! = r.n1();
+      var c = r.n1();
       loop i = 0; c; i++ {
          ti.ref-v[i] = r.n1();
       }
@@ -330,7 +330,7 @@ struct 'type-info[ref-v'i8[#type-info-star-limit], array-c'u8, star-c'i8, built-
       ti.const = r.n1() != 0;
    }
    wr(ti'this, w'wtr) {
-      c! = 0;
+      var c = 0;
       loop #type-info-star-limit {
          if ti.ref-v[c] == 0 {
             break;
@@ -355,8 +355,8 @@ struct 'type-info[ref-v'i8[#type-info-star-limit], array-c'u8, star-c'i8, built-
    }
    finalize(ti'this) {
       var ref-v'i8[#type-info-star-limit];
-      c! = ti.array-c;
-      star-c! = ti.array-c;
+      var c = ti.array-c;
+      var star-c = ti.array-c;
       loop i = 0; c + 1; {
          ref-v[i] = ti.ref-v[i];
          star-c += ref-v[i];
@@ -370,7 +370,7 @@ struct 'type-info[ref-v'i8[#type-info-star-limit], array-c'u8, star-c'i8, built-
       ti.star-c = star-c;
    }
    count(ti'this) {
-      star-c! = ti.array-c;
+      var star-c = ti.array-c;
       loop i = ti.array-c; i + 1; {
          star-c += ti.ref-v[i];
          i -= 1;
@@ -445,18 +445,18 @@ decl-var-type(type'at) {
    // .stack-type-info = .decl-var.type-info;
 }
 decl-var-this() {
-   type! = .decl-at;
+   var type = .decl-at;
    .decl-var.type = type;
    // .stack-type-info = .decl-var.type-info;
 }
 decl-var-as-gvar() {
-   gvar-idx! = .gvar-c++;
+   var gvar-idx = .gvar-c++;
    if .gvar-cap <= .gvar-c {
-      old-cap! = .gvar-cap;
+      var old-cap = .gvar-cap;
       .gvar-cap = grow(.gvar-c'base)'gvar;
       realloc(.gvar-v, .gvar-cap'base, old-cap'base);
    }
-   gvar! = .gvar-v[gvar-idx];
+   var gvar = .gvar-v[gvar-idx];
    gvar.include = .decl-include;
    gvar.at = .decl-at;
    gvar.decl.copy-from(.decl-var);

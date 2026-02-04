@@ -21,10 +21,10 @@ using 'stmt-space {
 using 'stmt {
    write-expr(stmt'stmt) @case.write() @inline {
       var s'stmt-expr = stmt;
-      expr! = s.expr.ptr();
+      var expr = s.expr.ptr();
       if expr.type == #str {
          var e'expr-str = expr;
-         n! = e.first;
+         var n = e.first;
          loop {
             output{n.buf, n.len}
             n = n.next;
@@ -38,21 +38,21 @@ using 'stmt {
    }
    process-expr(stmt'stmt, ok'bool&) @case.process() @inline {
       var s'stmt-expr = stmt;
-      s-expr! = s.expr;
+      var s-expr = s.expr;
       if !s-expr.process() {
          return;
       }
-      type! = s-expr.ptr().type;
+      var type = s-expr.ptr().type;
       if (type == #method) || (type == #func) {
-         left-type! = s-expr.type();
+         var left-type = s-expr.type();
          if left-type != #nil {
-            left-type-ptr! = left-type.ptr();
+            var left-type-ptr = left-type.ptr();
             if left-type-ptr.def == #enum {
-               en! = left-type-ptr.decl.enumm.ptr();
-               f-idx! = en.overload-statement;
+               var en = left-type-ptr.decl.enumm.ptr();
+               var f-idx = en.overload-statement;
                if f-idx != #nil {
-                  f! = f-idx.ptr();
-                  e-method! = 'expr-i.alloc();
+                  var f = f-idx.ptr();
+                  var e-method = 'expr-i.alloc();
                   var group-v'u8[1];
                   group-v[0] = 0;
                   'expr-i.set-method(e-method, s.expr, f.decl.name, false, 1, group-v, 0, null);
@@ -93,8 +93,8 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
       return .expr-v[e];
    }
    write-value(e'this, v'value)'bool {
-      expr! = e.ptr();
-      ref! = v.ref;
+      var expr = e.ptr();
+      var ref = v.ref;
       // C1.stdout{"write-value v.ref = " ref ''\n}
       if v.paren {
          if ref <= 0 {
@@ -111,8 +111,8 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
       }
 
       if expr.type == #cast-fast {
-         var e'expr-cast-fast = expr;
-         e.write-value(v);
+         var e2'expr-cast-fast = expr;
+         e2.write-value(v);
       } else {
          e.write();
       }
@@ -124,8 +124,8 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
    }
    value(e'this, ref'i32, paren'bool, v'value)'bool {
       if !e.process() { return false }
-      expr! = e.ptr();
-      ok! = false;
+      var expr = e.ptr();
+      var ok = false;
       switch.value(e, ref, paren, v, ok) expr.type {
          default {
             'c1.stdout{.ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": value() not implemented for #" expr.type.cp1-name() ''\n}
@@ -135,8 +135,8 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
    }
    type(e'this)'at {
       if !e.process() { return #nil }
-      expr! = e.ptr();
-      at! = 'at#nil;
+      var expr = e.ptr();
+      var at = 'at#nil;
       switch.type(expr, at) expr.type {
          default {
             'c1.stdout{.ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": type() not implemented for #" expr.type.cp1-name() ''\n}
@@ -145,7 +145,7 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
       return at;
    }
    try-deduce(e-idx'this, at'at) {
-      expr! = e-idx.ptr();
+      var expr = e-idx.ptr();
       switch.try-deduce(expr, at) expr.type {
       }
    }
@@ -156,7 +156,7 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
       if e == #nil {
          'expr-type#nil.wr(w);
       } else {
-         expr! = e.ptr();
+         var expr = e.ptr();
          expr.type.wr(w);
          switch.wr(expr, w, header) expr.type {
             default {
@@ -170,9 +170,9 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
       }
    }
    alloc()'expr-i {
-      e-idx! = (.expr-c++)'expr-i;
+      var e-idx = (.expr-c++)'expr-i;
       if .expr-cap <= .expr-c {
-         old-cap! = .expr-cap;
+         var old-cap = .expr-cap;
          grow(.expr-cap, .expr-c);
          realloc(.expr-v, .expr-cap, old-cap);
          realloc(.expr-is-processed, (.expr-cap + 7) >> 3, (old-cap + 7) >> 3);
@@ -187,11 +187,11 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
             'c.exit(#failure);
          }
       }
-      'expr-type.rd(type!, r);
+      'expr-type.rd(type?, r);
       if type == #nil {
          e = #nil;
       } else {
-         e-idx! = alloc();
+         var e-idx = alloc();
          e = e-idx;
          switch.rd(e-idx, r) type {
             default {
@@ -213,15 +213,15 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Processed a nil expression\n"}
          return false;
       }
-      num! = e'u32;
-      n3! = num >> 3;
-      n17! = 1 << (num & 7);
+      var num = e'u32;
+      var n3 = num >> 3;
+      var n17 = 1 << (num & 7);
       if (.expr-is-processed[n3] & n17) != 0 { return true }
       .expr-is-processed[n3] |= n17;
-      expr! = e.ptr();
+      var expr = e.ptr();
       // if expr.flags & #processed { return true }
       // expr.flags |= #processed;
-      ok! = false;
+      var ok = false;
       switch.process(expr, ok) expr.type {
          default {
             'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": process() not implemented for expression #" expr.type.cp1-name() ''\n}
@@ -234,7 +234,7 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
       return ok;
    }
    write(e'this) {
-      expr! = e.ptr();
+      var expr = e.ptr();
       switch.write(expr) expr.type {
          default {
             'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": write() not implemented in expression #" expr.type.cp1-name() ''\n}
@@ -317,8 +317,8 @@ struct 'expr-str[
    last'expr-str-node,
 ] {
    len(s'this)'u32 {
-      len! = 0'u32;
-      n! = s.first;
+      var len = 0'u32;
+      var n = s.first;
       loop {
          len += n.len;
          n = n.next;
@@ -334,9 +334,9 @@ var expr-cap'i32;
 var expr-v'expr[];
 expr-push(e'expr, type'expr-type)'expr-i {
    e.type = type;
-   e-idx! = .expr-c++;
+   var e-idx = .expr-c++;
    if .expr-cap <= .expr-c {
-      old-cap! = .expr-cap;
+      var old-cap = .expr-cap;
       grow(.expr-cap, .expr-c);
       realloc(.expr-v, .expr-cap, old-cap);
    }

@@ -36,7 +36,7 @@ struct 'stmt[
       }
    }
    process(s'this)'bool {
-      ok! = false;
+      var ok = false;
       .ctx-begin-row = s.begin-row;
       .ctx-begin-col = s.begin-col;
       .ctx-end-row = s.end-row;
@@ -84,24 +84,24 @@ expr2stmt(e-idx'expr-i, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32) 
    quick-alloc-one(s);
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #expr);
    s.expr = e-idx;
-   e! = e-idx.ptr();
+   var e = e-idx.ptr();
    if e.type == #assign {
       var assign'expr-assign = e;
       assign.is-stmt = true;
    }
 }
 stmt-lvar-add(name'id, set'expr-i, row'u32, col'u32) {
-   lvar-i! = .decl-func-ctx-space.lvar-new(name, row, col);
-   lvar! = lvar-i.ptr();
+   var lvar-i = .decl-func-ctx-space.lvar-new(name, row, col);
+   var lvar = lvar-i.ptr();
    .decl-var.name = name;
    lvar.decl.copy-from(.decl-var);
    if set == -2'expr-i {
       lvar.flags |= #set-expr;
    } elif set != #nil {
-      e2! = expr-lvar(name, 0, row, col);
+      var e2 = expr-lvar(name, 0, row, col);
       var expr2'expr-lvar = e2.ptr();
       expr2.decl = true;
-      e! = expr-assign(e2, set, #eq);
+      var e = expr-assign(e2, set, #eq);
       expr2stmt(e, row, col, row, col);
    }
 }

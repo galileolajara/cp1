@@ -15,7 +15,7 @@ main(arg-c'intc, arg-v'char[][])'intc {
       'c.printf("Cannot open file for reading: %s\n", arg-v[1]);
       'c.exit(#failure);
    }
-   in-size! = in-fd.seek(0, #end);
+   var in-size = in-fd.seek(0, #end);
    in-fd.seek(0, #set);
    var in-data'char[] = 'c.malloc(in-size);
    in-fd.read(in-data, in-size);
@@ -24,25 +24,25 @@ main(arg-c'intc, arg-v'char[][])'intc {
       'c.printf("Error, file '%s' does not end with a new line\n", arg-v[1]);
       'c.exit(#failure);
    }
-   pos! = 0;
-   out-f! = 'c.fopen(arg-v[2], "w");
+   var pos = 0;
+   var out-f = 'c.fopen(arg-v[2], "w");
    out-f.printf(
       '= using 'cp1 {
       '= enum 'token[
       '= #nil,
    );
    loop pos < in-size {
-      start! = pos;
+      var start = pos;
       loop {
          if in-data[pos] == ''\n {
             break;
          }
          pos++;
       }
-      len! = pos - start;
+      var len = pos - start;
       var line'char[] = &in-data[start];
       var push'char[64];
-      push-c! = 0;
+      var push-c = 0;
       loop i = 18; len - 18; i++ {
          if (&&, line[i] >= ''0, line[i] <= ''9) {
             push[push-c++] = line[i];

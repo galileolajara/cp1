@@ -66,17 +66,17 @@ using 'stmt {
       if !s.expr.value(1, false, s.val) {
          return;
       }
-      type-ptr! = s.val.type.ptr();
+      var type-ptr = s.val.type.ptr();
       if type-ptr.def == #enum {
-         en! = type-ptr.decl.enumm.ptr();
-         f-idx! = en.overload-if-begin;
+         var en = type-ptr.decl.enumm.ptr();
+         var f-idx = en.overload-if-begin;
          if f-idx != #nil {
-            f! = f-idx.ptr();
-            e-method! = 'expr-i.alloc();
+            var f = f-idx.ptr();
+            var e-method = 'expr-i.alloc();
             var group-v'u8[1];
             group-v[0] = 1;
             var carg-v'expr-i[1];
-            e-bool! = 'expr-i.alloc();
+            var e-bool = 'expr-i.alloc();
             'expr-i.set-bool(e-bool, false);
             carg-v[0] = e-bool;
             'expr-i.set-method(e-method, s.expr, f.decl.name, false, 1, group-v, 1, carg-v);
@@ -115,21 +115,21 @@ using 'stmt {
       if !s.expr.value(1, false, s.val) {
          return;
       }
-      type! = s.val.type;
-      type-ptr! = type.ptr();
+      var type = s.val.type;
+      var type-ptr = type.ptr();
       if type-ptr.def == #enum {
-         en! = type-ptr.decl.enumm.ptr();
-         f-idx! = en.overload-if-begin;
+         var en = type-ptr.decl.enumm.ptr();
+         var f-idx = en.overload-if-begin;
          if f-idx != #nil {
             if true {
-               f-idx! = en.overload-if-else;
-               if f-idx != #nil {
-                  f! = f-idx.ptr();
-                  e-func! = 'expr-i.alloc();
+               var f-idx2 = en.overload-if-else;
+               if f-idx2 != #nil {
+                  var f = f-idx2.ptr();
+                  var e-func = 'expr-i.alloc();
                   var group-v'u8[1];
                   group-v[0] = 1;
                   var carg-v'expr-i[1];
-                  e-bool! = 'expr-i.alloc();
+                  var e-bool = 'expr-i.alloc();
                   'expr-i.set-bool(e-bool, true);
                   carg-v[0] = e-bool;
                   'expr-i.set-func(e-func, type, f.decl.name, false, 1, group-v, 1, carg-v);
@@ -142,12 +142,12 @@ using 'stmt {
                   return;
                }
             }
-            f! = f-idx.ptr();
-            e-method! = 'expr-i.alloc();
+            var f = f-idx.ptr();
+            var e-method = 'expr-i.alloc();
             var group-v'u8[1];
             group-v[0] = 1;
             var carg-v'expr-i[1];
-            e-bool! = 'expr-i.alloc();
+            var e-bool = 'expr-i.alloc();
             'expr-i.set-bool(e-bool, true);
             carg-v[0] = e-bool;
             'expr-i.set-method(e-method, s.expr, f.decl.name, false, 1, group-v, 1, carg-v);
@@ -178,17 +178,17 @@ using 'stmt {
    }
    process-if-else(stmt'stmt, ok'bool&) @case.process() @inline {
       var s'stmt-if-else = stmt;
-      overload-type! = s.if-begin.overload-type;
+      var overload-type = s.if-begin.overload-type;
       if overload-type != #nil {
-         en! = overload-type.ptr().decl.enumm.ptr();
-         f-idx! = en.overload-if-else;
+         var en = overload-type.ptr().decl.enumm.ptr();
+         var f-idx = en.overload-if-else;
          if f-idx != #nil {
-            f! = f-idx.ptr();
-            e-func! = 'expr-i.alloc();
+            var f = f-idx.ptr();
+            var e-func = 'expr-i.alloc();
             var group-v'u8[1];
             group-v[0] = 1;
             var carg-v'expr-i[1];
-            e-bool! = 'expr-i.alloc();
+            var e-bool = 'expr-i.alloc();
             'expr-i.set-bool(e-bool, false);
             carg-v[0] = e-bool;
             'expr-i.set-func(e-func, overload-type, f.decl.name, false, 1, group-v, 1, carg-v);
@@ -214,13 +214,13 @@ using 'stmt {
    }
    process-if-end(stmt'stmt, ok'bool&) @case.process() @inline {
       var s'stmt-if-end = stmt;
-      overload-type! = s.if-begin.overload-type;
+      var overload-type = s.if-begin.overload-type;
       if overload-type != #nil {
-         en! = overload-type.ptr().decl.enumm.ptr();
-         f-idx! = en.overload-if-end;
+         var en = overload-type.ptr().decl.enumm.ptr();
+         var f-idx = en.overload-if-end;
          if f-idx != #nil {
-            f! = f-idx.ptr();
-            e-func! = 'expr-i.alloc();
+            var f = f-idx.ptr();
+            var e-func = 'expr-i.alloc();
             var group-v'u8[1];
             group-v[0] = 0;
             'expr-i.set-func(e-func, overload-type, f.decl.name, false, 1, group-v, 0, null);

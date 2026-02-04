@@ -2,7 +2,7 @@ using 'cp1 {
 expr-char(value'i32)'expr-i {
    var e'expr-char;
    quick-alloc-one(e);
-   e-idx! = expr-push(e.base, #char);
+   var e-idx = expr-push(e.base, #char);
    e.value = value;
    return e-idx;
 }

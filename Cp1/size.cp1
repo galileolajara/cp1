@@ -4,7 +4,7 @@ using 'cp1 {
 expr-size-of-type(at'at)'expr-i {
    var e'expr-size-of-type;
    quick-alloc-one(e);
-   e-idx! = expr-push(e.base, #size-of-type);
+   var e-idx = expr-push(e.base, #size-of-type);
    e.type = at;
    return e-idx;
 }
@@ -31,7 +31,7 @@ using 'expr-i {
       if e.type == #nil {
          return;
       }
-      at! = e.type.ptr();
+      var at = e.type.ptr();
       if (&&, at.type != #basic, at.decl.structt == #nil) {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Error, the type '" at.name.id "' used in [usz] was not defined\n"}
          return;

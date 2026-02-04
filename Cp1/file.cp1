@@ -26,7 +26,7 @@ using 'cp1 {
    read-file(path'char[], add-before'i32, add-after'i32, max-size'usz, out-size'usz&)'ref {
       "#ifdef _WIN32";
       if true {
-         h! = 'w.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null);
+         var h = 'w.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null);
          if h == #invalid {
             return null;
          }
@@ -35,7 +35,7 @@ using 'cp1 {
             'w.CloseHandle(h);
             return null;
          }
-         size! = f-size.quadPart;
+         var size = f-size.quadPart;
          if max-size != 0 {
             if size'usz > max-size {
                size =  max-size;
@@ -59,7 +59,7 @@ using 'cp1 {
          if !'x'fd.open(fd, path, #rdonly) {
             return null;
          }
-         size! = fd.seek(0, #end);
+         var size = fd.seek(0, #end);
          if size == -1 {
             fd.close();
             return null;
@@ -90,7 +90,7 @@ using 'cp1 {
    write-file(path'char[], data'ref, size'usz)'bool {
       "#ifdef _WIN32";
       if true {
-         h! = 'w.CreateFileA(path, #write, #0, null, #create-always, #normal, #null);
+         var h = 'w.CreateFileA(path, #write, #0, null, #create-always, #normal, #null);
          if h == #invalid {
             return false;
          }
@@ -124,7 +124,7 @@ using 'cp1 {
       fmt.cap = 0;
    }
    output-reserve(len'u32) @process {
-      space! = .output-cap - .output-len;
+      var space = .output-cap - .output-len;
       if space < len {
          .output-cap += .output-cap;
          space = .output-cap - .output-len;

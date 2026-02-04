@@ -4,7 +4,7 @@ using 'cp1 {
 expr-cast-fast(expr'expr-i, type'at)'expr-i {
    var e'expr-cast-fast;
    quick-alloc-one(e);
-   e-idx! = expr-push(e.base, #cast-fast);
+   var e-idx = expr-push(e.base, #cast-fast);
    e.expr = expr;
    e.type = type;
    return e-idx;
@@ -47,7 +47,7 @@ using 'expr-i {
          return;
       }
       if e.type == #nil {
-         at! = e.val.type.ptr();
+         var at = e.val.type.ptr();
          if at.def != #enum {
             'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Operator ':base' was used but the type of expression was not an enum\n"}
             return;
@@ -59,7 +59,7 @@ using 'expr-i {
       }
       e.type = at-validate(e.type, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
       if e.type != #nil {
-         at! = e.type.ptr();
+         var at = e.type.ptr();
          if at.type == #basic {
          } elif at.def == #undefined {
             'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type '" at.name.id "' was not found\n"}

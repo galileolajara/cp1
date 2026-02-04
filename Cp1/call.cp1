@@ -28,115 +28,115 @@ meta #meta-read-write-process {
       }
       rd-meta${arg.method ? "method" : "func"}(e-idx'expr-i, r'rdr) @case.rd() @inline {
 # if (arg.method) {
-         'expr-i.rd(this!, r);
+         'expr-i.rd(this?, r);
 # } else {
-         'at.rd(at-idx!, r);
+         'at.rd(at-idx?, r);
 # }
-         'id.rd(func-name!, r);
-         group-c! = r.n1();
+         'id.rd(func-name?, r);
+         var group-c = r.n1();
          var group-v'u8[#expr-carg-group-limit];
          loop i = 0; group-c; i++ {
             group-v[i] = r.n1();
          }
-         carg-c! = r.n1();
+         var carg-c = r.n1();
          var carg-v'expr-i[256];
          var lvars'expr-i[256];
          loop i = 0; carg-c; i++ {
             carg-v[i].rd(r);
             lvars[i].rd(r);
          }
-         'expr-i.rd(lvar!, r);
+         'expr-i.rd(lvar?, r);
 
-         expr-c! = (group-c << 1) + 1;
+         var expr-c = (group-c << 1) + 1;
          // C1.stdout{group-c " -> " expr-c ''\n}
          var e'expr-meta-func;
          quick-alloc-plus(e, 'expr-i['usz] * expr-c);
          e-idx.set(e.base, #metafunc);
 
          e.expr-c = expr-c;
-         k! = 0;
-         j! = 0;
+         var k = 0;
+         var j = 0;
          // Create expressions for meta-method-prefix1
          e-idx = 'expr-i.alloc();
          e.expr-v[k++] = e-idx;
          if true {
-            var group-v'u8[1];
-            group-v[0] = 1;
-            var carg-v'expr-i[1];
-            carg-v[0] = lvar;
+            var group-v2'u8[1] = ?;
+            group-v2[0] = 1;
+            var carg-v2'expr-i[1] = ?;
+            carg-v2[0] = lvar;
 # if (arg.method) {
-            set-method(e-idx, this, func-name, false, 1, group-v, 1, carg-v);
+            set-method(e-idx, this, func-name, false, 1, group-v2, 1, carg-v2);
 # } else {
-            set-func(e-idx, at-idx, func-name, false, 1, group-v, 1, carg-v);
+            set-func(e-idx, at-idx, func-name, false, 1, group-v2, 1, carg-v2);
 # }
          }
-         j-begin! = j;
+         var j-begin = j;
          // C1.stdout{"group-c " group-c ", carg-c " carg-c ''\n}
          j = j-begin;
          loop i = 1; group-c - 1; i++ {
-            carg-c! = group-v[i];
+            var carg-c2 = group-v[i];
             e-idx = 'expr-i.alloc();
             e.expr-v[k++] = e-idx;
 
-            carg! = carg-v[j++];
-            e-carg! = carg.ptr();
-            var group-v'u8[2];
+            var carg = carg-v[j++];
+            var e-carg = carg.ptr();
+            var group-v2'u8[2] = ?;
             var carg2-v'expr-i[256];
             if e-carg.type == #str {
                var e-str'expr-str = e-carg;
-               group-v[0] = 2 + (carg-c - 1) + 1;
+               group-v2[0] = 2 + (carg-c2 - 1) + 1;
                carg2-v[0] = carg;
-               e-idx2! = 'expr-i.alloc();
-               var e'expr-int-data;
-               quick-alloc-one(e);
-               e-idx2.set(e.base, #int);
-               e.value.i32 = e-str.len();
-               e.type = #u32;
+               var e-idx2 = 'expr-i.alloc();
+               var e2'expr-int-data = ?;
+               quick-alloc-one(e2);
+               e-idx2.set(e2.base, #int);
+               e2.value.i32 = e-str.len();
+               e2.type = #u32;
                carg2-v[1] = e-idx2;
-               k! = 2;
-               loop ; carg-c - 1 {
-                  carg2-v[k++] = carg-v[j++];
+               var l = 2;
+               loop ; carg-c2 - 1 {
+                  carg2-v[l++] = carg-v[j++];
                }
-               carg2-v[k] = lvars[i - 1];
-               set-method(e-idx, lvar, #nil, false, 1, group-v, group-v[0], carg2-v);
+               carg2-v[l] = lvars[i - 1];
+               set-method(e-idx, lvar, #nil, false, 1, group-v2, group-v2[0], carg2-v);
             } else {
-               group-v[0] = 1;
-               group-v[1] = 1 + (carg-c - 1);
-               k! = 0;
-               carg2-v[k++] = carg;
-               loop ; carg-c - 1 {
-                  carg2-v[k++] = carg-v[j++];
+               group-v2[0] = 1;
+               group-v2[1] = 1 + (carg-c2 - 1);
+               var l = 0;
+               carg2-v[l++] = carg;
+               loop ; carg-c2 - 1 {
+                  carg2-v[l++] = carg-v[j++];
                }
-               carg2-v[k] = lvars[i - 1];
-               set-method(e-idx, lvar, #nil, true, 2, group-v, group-v[0] + group-v[1], carg2-v);
+               carg2-v[l] = lvars[i - 1];
+               set-method(e-idx, lvar, #nil, true, 2, group-v2, group-v2[0] + group-v2[1], carg2-v);
             }
          }
          // Create an expression for meta-method-end1
          e-idx = 'expr-i.alloc();
          e.expr-v[k++] = e-idx;
          if true {
-            var group-v'u8[1];
-            group-v[0] = 0;
-            set-method(e-idx, lvar, #nil, false, 1, group-v, 0, null);
+            var group-v2'u8[1] = ?;
+            group-v2[0] = 0;
+            set-method(e-idx, lvar, #nil, false, 1, group-v2, 0, null);
          }
          j = j-begin;
          loop i = 1; group-c - 1; i++ {
             e-idx = 'expr-i.alloc();
             e.expr-v[k++] = e-idx;
 
-            var group-v'u8[1];
-            var carg2-v'expr-i[1];
-            group-v[0] = 1;
+            var group-v2'u8[1] = ?;
+            var carg2-v'expr-i[1] = ?;
+            group-v2[0] = 1;
             carg2-v[0] = lvar;
-            set-method(e-idx, lvars[i - 1], #nil, false, 1, group-v, group-v[0], carg2-v);
+            set-method(e-idx, lvars[i - 1], #nil, false, 1, group-v2, group-v2[0], carg2-v);
          }
          // Create an expression for meta-method-end2
          e-idx = 'expr-i.alloc();
          e.expr-v[k++] = e-idx;
          if true {
-            var group-v'u8[1];
-            group-v[0] = 0;
-            set-method(e-idx, lvar, #nil, false, 1, group-v, 0, null);
+            var group-v2'u8[1] = ?;
+            group-v2[0] = 0;
+            set-method(e-idx, lvar, #nil, false, 1, group-v2, 0, null);
          }
       }
       process-meta${arg.method ? "method" : "func"}(expr'expr, ok'bool&) @case.process() @inline {
@@ -145,26 +145,25 @@ meta #meta-read-write-process {
 # } else {
          var e'expr-meta-func = expr;
 # }
-         i! = 0;
+         var i = 0;
          if !e.expr-v[i].process() {
             'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the beginning of meta-${arg.method ? "method" : "function"}\n"}
             return;
          }
          var e-func'expr-func = e.expr-v[i].ptr();
-         f! = e-func.func-idx.ptr();
+         var f = e-func.func-idx.ptr();
          if (f.flags & #meta-method) == #0 {
             'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": When using " f.decl.name "{...}, there must be a @meta(NAME-PREFIX END-NAME) attribute in the function " f.decl.name ''\n}
             return;
          }
          i++;
-         arg-c! = ((e.expr-c - 1) >> 1) - 1;
+         var arg-c = ((e.expr-c - 1) >> 1) - 1;
 # for (let i = 1; i <= 2; i++) {
 # if (i == 2) {
          if f.meta-method-prefix2 != #nil {
 # }
-         arg-num! = 1;
-         loop ; arg-c; i++; arg-num++ {
-            e-idx! = e.expr-v[i];
+         loop arg-num = 1; arg-c; i++; arg-num++ {
+            var e-idx = e.expr-v[i];
             var e-method'expr-method = e-idx.ptr();
 # if (i == 1) {
             if f.meta-method-prefix2 == #nil {
@@ -179,8 +178,8 @@ meta #meta-read-write-process {
             if !e-method.angle {
                e-method.func-name = f.meta-method-cstr${i};
             } else {
-               e-idx2! = e-method.carg-v[0].expr;
-               e-data2! = e-idx2.ptr();
+               var e-idx2 = e-method.carg-v[0].expr;
+               var e-data2 = e-idx2.ptr();
                var val;
                if !e-idx2.value(1, true, val) {
                   'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-${arg.method ? "method" : "function"}\n"}
@@ -200,12 +199,14 @@ meta #meta-read-write-process {
                return;
             }
          }
-         e-last! = e.expr-v[i++];
-         var e-last-method'expr-method = e-last.ptr();
-         e-last-method.func-name = f.meta-method-end${i};
-         if !e-last.process() {
-            'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the end of meta-${arg.method ? "method" : "function"}\n"}
-            return;
+         if true {
+            var e-last = e.expr-v[i++];
+            var e-last-method'expr-method = e-last.ptr();
+            e-last-method.func-name = f.meta-method-end${i};
+            if !e-last.process() {
+               'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the end of meta-${arg.method ? "method" : "function"}\n"}
+               return;
+            }
          }
 # if (i == 2) {
          }
@@ -216,7 +217,7 @@ meta #meta-read-write-process {
    }
 }
 print-type(at-i'at, info'type-info) {
-   at! = at-i.ptr();
+   var at = at-i.ptr();
    if at.type == #basic {
       'c1.stdout{"basic type " at.name.basic.cp1-name() ", star-c " info.star-c ''\n}
    } else {
@@ -243,8 +244,8 @@ compatible(src'at, src-c'u8, des'at, des-c'u8)'bool {
    return false;
 }
 farg-process(e-in-out'expr-i&, ca-ref'i8, ca-value'value, fd-arg'decl-var-data, base-at'at, arg-num'i32, f-name'id)'bool {
-   e! = e-in-out;
-   ce! = e.ptr();
+   var e = e-in-out;
+   var ce = e.ptr();
    var r'i32;
    if ca-ref != 0 {
       r = 1 + ca-ref;
@@ -255,15 +256,15 @@ farg-process(e-in-out'expr-i&, ca-ref'i8, ca-value'value, fd-arg'decl-var-data, 
    // C1.stdout{"r " r ", " j ''  fd-arg.type-info.array-c ''  fd-arg.type-info.ref-v[fd-arg.type-info.array-c] ''\n}
    if ce.type == #lvar {
       var ve'expr-lvar = ce;
-      lvar! = ve.lvar.ptr();
-      vd! = lvar.decl;
+      var lvar = ve.lvar.ptr();
+      var vd = lvar.decl;
       if vd.type == #nil {
          // if (lvar.flags & #set-expr) == #0 {
             // if vd.type-info.array-c != fd-arg.type-info.array-c {
             //    C.err.printf("%s:%u:%u: Type deduction failed for lvar '%s', array dimension mismatch\n", .ctx-func.file.path(), lvar.row, lvar.col, vd.name.str());
             //    return false;
             // }
-            parent! = fd-arg.type.ptr().parent.ptr();
+            var parent = fd-arg.type.ptr().parent.ptr();
             if (parent.type == #basic) && (parent.name.basic == #relative) {
                'c1.stdout{"farg-process without processing farg first\n"}
                'c.exit(#failure);
@@ -282,17 +283,17 @@ farg-process(e-in-out'expr-i&, ca-ref'i8, ca-value'value, fd-arg'decl-var-data, 
       }
    }
    // fd-arg.validate(base-at);
-   left-type-ptr! = fd-arg.type.ptr();
+   var left-type-ptr = fd-arg.type.ptr();
    e.try-deduce(fd-arg.type);
    if left-type-ptr.def == #enum {
-      en! = left-type-ptr.decl.enumm.ptr();
-      f-idx! = en.overload-get-last;
+      var en = left-type-ptr.decl.enumm.ptr();
+      var f-idx = en.overload-get-last;
       if f-idx != #nil {
-         e-right-type! = e.type();
-         f! = f-idx.ptr();
+         var e-right-type = e.type();
+         var f = f-idx.ptr();
          loop {
             if f.farg-v[0].decl.type == e-right-type {
-               e-func! = 'expr-i.alloc();
+               var e-func = 'expr-i.alloc();
                var group-v'u8[1];
                group-v[0] = 1;
                var carg-v'expr-i[1];
@@ -319,7 +320,7 @@ farg-process(e-in-out'expr-i&, ca-ref'i8, ca-value'value, fd-arg'decl-var-data, 
          'c1.stdbuf{''# (arg-num + 1)'u32}
       }
       'c1.stdbuf{" of function '" f-name "', must be "}
-      at! = fd-arg.type.ptr();
+      var at = fd-arg.type.ptr();
       if at.type == #basic {
          'c1.stdout{at.name.basic.cp1-name() "\n"}
       } else {
@@ -334,7 +335,7 @@ farg-process(e-in-out'expr-i&, ca-ref'i8, ca-value'value, fd-arg'decl-var-data, 
 using 'expr-i {
    value-func(e'this, ref'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
       var expr'expr-func = e.ptr();
-      f! = expr.func-idx.ptr();
+      var f = expr.func-idx.ptr();
       v.set(ref, paren, f.decl.type, f.decl.type-info);
       if v.ref == 1 {
          v.paren = false;
@@ -347,7 +348,7 @@ using 'expr-i {
    }
    value-method(e'this, ref'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
       var expr'expr-method = e.ptr();
-      f! = expr.func-idx.ptr();
+      var f = expr.func-idx.ptr();
       v.set(ref, paren, f.decl.type, f.decl.type-info);
       if v.ref == 1 {
          v.paren = false;
@@ -360,18 +361,18 @@ using 'expr-i {
    }
    write-method(expr'expr) @case.write() @inline {
       var e'expr-method = expr;
-      f! = e.func-idx.ptr();
+      var f = e.func-idx.ptr();
       f.write();
       output{''(}
-      first! = true;
-      i! = 0;
+      var first = true;
+      var i = 0;
       loop ; f.this-idx; i++ {
          if first {
             first = false;
          } else {
             output{", "}
          }
-         ca! = e.carg-v[i];
+         var ca = e.carg-v[i];
          ca.expr.write-value(ca.value);
       }
       if first {
@@ -382,7 +383,7 @@ using 'expr-i {
       e.this.write-value(e.this-value);
       loop ; e.carg-c - f.this-idx; i++ {
          output{", "}
-         ca! = e.carg-v[i];
+         var ca = e.carg-v[i];
          ca.expr.write-value(ca.value);
       }
       output{'')}
@@ -402,15 +403,15 @@ using 'expr-i {
       }
    }
    rd-method(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      'expr-i.rd(this-expr!, r);
-      'id.rd(func-name!, r);
-      angle! = r.n1() != 0;
-      group-c! = r.n1();
+      'expr-i.rd(this-expr?, r);
+      'id.rd(func-name?, r);
+      var angle = r.n1() != 0;
+      var group-c = r.n1();
       var group-v'u8[#expr-carg-group-limit];
       loop i = 0; group-c; i++ {
          group-v[i] = r.n1();
       }
-      carg-c! = r.n1();
+      var carg-c = r.n1();
       var carg-v'expr-i[256];
       loop i = 0; carg-c; i++ {
          carg-v[i].rd(r);
@@ -435,26 +436,26 @@ using 'expr-i {
    }
    process-method(expr'expr, ok'bool&) @case.process() @inline {
       var e'expr-method = expr;
-      func-name! = e.func-name;
-      group-c! = e.group-c;
-      group-v! = e.group-v;
-      carg-c! = e.carg-c;
-      carg-c1! = carg-c + 1;
+      var func-name = e.func-name;
+      var group-c = e.group-c;
+      var group-v = e.group-v;
+      var carg-c = e.carg-c;
+      var carg-c1 = carg-c + 1;
       var type-v'at-data[16];
       if e.angle {
          loop i = 0; group-v[0]; i++ {
             type-v[i] = e.carg-v[i].expr.type().ptr();
          }
       }
-      at-idx! = e.this.type();
+      var at-idx = e.this.type();
       if at-idx == #nil {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot call method " func-name " on a value without a type\n"}
          return;
       }
-      at! = at-idx.ptr();
+      var at = at-idx.ptr();
       var method-c, method-v;
       if at.type == #basic {
-         t! = .basic-type[at.name.basic];
+         var t = .basic-type[at.name.basic];
          method-c = t.method-c;
          method-v = t.method-v;
       } else {
@@ -463,25 +464,25 @@ using 'expr-i {
             return;
          }
          if at.def == #struct {
-            t! = at.decl.structt.ptr();
+            var t = at.decl.structt.ptr();
             method-c = t.method-c;
             method-v = t.method-v;
          } elif at.def == #enum {
-            t! = at.decl.enumm.ptr();
+            var t = at.decl.enumm.ptr();
             method-c = t.method-c;
             method-v = t.method-v;
          }
       }
-      found! = -1;
-      similar-c! = 0'u32;
+      var found = -1;
+      var similar-c = 0'u32;
       loop i = 0; method-c; i++ {
-         f-idx! = method-v[i];
-         f! = f-idx.ptr();
+         var f-idx = method-v[i];
+         var f = f-idx.ptr();
          if f.decl.name != func-name { continue }
          found = i;
          similar-c++;
          if f.group-c != group-c { continue }
-         match! = true;
+         var match = true;
          if (f.flags & #var-args) != #0 {
             if f.farg-c > carg-c1 { continue }
             loop j = 0; group-c - 1; j++ {
@@ -498,7 +499,7 @@ using 'expr-i {
                }
             }
             if !match { continue }
-            j! = group-c - 1;
+            var j = group-c - 1;
             if f.this-group == j {
                if f.group-v[j] > (group-v[j] + 1) {
                   match = false;
@@ -529,11 +530,11 @@ using 'expr-i {
             continue;
          } elif e.angle {
             if f.this-group == 0 {
-               j! = 0;
-               k! = 0;
+               var j = 0;
+               var k = 0;
                loop ; f.this-idx; j++; k++ {
-                  type1! = type-v[k];
-                  type2! = f.farg-v[j].decl.type.ptr();
+                  var type1 = type-v[k];
+                  var type2 = f.farg-v[j].decl.type.ptr();
                   if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
                      match = false;
                      break;
@@ -541,18 +542,18 @@ using 'expr-i {
                }
                if !match { continue }
                j++;
-               loop i = 0; (f.group-v[0] - 1) - f.this-idx; j++; k++ {
-                  type1! = type-v[k];
-                  type2! = f.farg-v[j].decl.type.ptr();
+               loop ; (f.group-v[0] - 1) - f.this-idx; j++; k++ {
+                  var type1 = type-v[k];
+                  var type2 = f.farg-v[j].decl.type.ptr();
                   if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
                      match = false;
                      break;
                   }
                }
             } else {
-               loop i = 0; f.group-v[0]; i++ {
-                  type1! = type-v[i];
-                  type2! = f.farg-v[i].decl.type.ptr();
+               loop j = 0; f.group-v[0]; j++ {
+                  var type1 = type-v[j];
+                  var type2 = f.farg-v[j].decl.type.ptr();
                   if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
                      match = false;
                      break;
@@ -564,11 +565,11 @@ using 'expr-i {
          if !f-idx.process-later() {
             return;
          }
-         f-at! = f.at;
-         j! = 0;
-         k! = 0;
+         var f-at = f.at;
+         var j = 0;
+         var k = 0;
          loop ; f.this-idx; j++; k++ {
-            ca! = e.carg-v[k];
+            var ca = e.carg-v[k];
             if !farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl, f-at, k, f.decl.name) {
                "error:";
                'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Error in processing method '" func-name "'\n"}
@@ -579,7 +580,7 @@ using 'expr-i {
             "goto error;";
          }
          loop ; (f.farg-c - 1) - f.this-idx; j++; k++ {
-            ca! = e.carg-v[k];
+            var ca = e.carg-v[k];
             if !farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl, f-at, k, f.decl.name) {
                "goto error;";
             }
@@ -587,7 +588,7 @@ using 'expr-i {
          e.func-idx = f-idx;
          if (f.flags & #var-args) != #0 {
             loop ; e.carg-c - k; k++ {
-               ca! = e.carg-v[k];
+               var ca = e.carg-v[k];
                var r'i32;
                if ca.ref != 0 {
                   r = 1 + ca.ref;
@@ -612,8 +613,8 @@ using 'expr-i {
       if found != -1 {
          'c1.stdout{"But found " similar-c " functions with different no. of argument/s:\n"}
          loop i = 0; at.func-c; i++ {
-            f-idx! = at.func-v[i];
-            f! = .func-v[f-idx];
+            var f-idx = at.func-v[i];
+            var f = .func-v[f-idx];
             if f.decl.name == func-name {
                'c1.stdout{"- :" func-name " with " f.farg-c " args\n"}
             }
@@ -622,7 +623,7 @@ using 'expr-i {
    }
    write-func(expr'expr) @case.write() @inline {
       var e'expr-func = expr;
-      f! = e.func-idx.ptr();
+      var f = e.func-idx.ptr();
       f.write();
       output{''(}
       loop i = 0; e.carg-c; i++ {
@@ -634,13 +635,13 @@ using 'expr-i {
       output{'')}
    }
    write-metafunc(expr'expr) @case.write() @inline {
-      i! = 0;
+      var i = 0;
       var e'expr-meta-func = expr;
       e.expr-v[i].write();
       var e-func'expr-func = e.expr-v[i].ptr();
-      f! = e-func.func-idx.ptr();
+      var f = e-func.func-idx.ptr();
       i++;
-      arg-c! = ((e.expr-c - 1) >> 1) - 1;
+      var arg-c = ((e.expr-c - 1) >> 1) - 1;
       loop ; arg-c + 1; i++ {
          output{";\n"}
          e.expr-v[i].write();
@@ -671,15 +672,15 @@ using 'expr-i {
       }
    }
    rd-func(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      'at.rd(at-idx!, r);
-      'id.rd(func-name!, r);
-      angle! = r.n1() != 0;
-      group-c! = r.n1();
+      'at.rd(at-idx?, r);
+      'id.rd(func-name?, r);
+      var angle = r.n1() != 0;
+      var group-c = r.n1();
       var group-v'u8[#expr-carg-group-limit];
       loop i = 0; group-c; i++ {
          group-v[i] = r.n1();
       }
-      carg-c! = r.n1();
+      var carg-c = r.n1();
       var carg-v'expr-i[256];
       loop i = 0; carg-c; i++ {
          carg-v[i].rd(r);
@@ -704,18 +705,18 @@ using 'expr-i {
    }
    process-func(expr'expr, ok'bool&) @case.process() @inline {
       var e'expr-func = expr;
-      func-name! = e.func-name;
-      carg-c! = e.carg-c;
-      group-c! = e.group-c;
-      group-v! = e.group-v;
-      at-idx! = e.at;
+      var func-name = e.func-name;
+      var carg-c = e.carg-c;
+      var group-c = e.group-c;
+      var group-v = e.group-v;
+      var at-idx = e.at;
       var type-v'at-data[16];
       if e.angle {
          loop i = 0; group-v[0]; i++ {
             type-v[i] = e.carg-v[i].expr.type().ptr();
          }
       }
-      try-parent! = false;
+      var try-parent = false;
       if at-idx == #nil {
          at-idx = .ctx-func.at;
          try-parent = true;
@@ -724,7 +725,7 @@ using 'expr-i {
          e.at = at-idx;
       }
       loop {
-         at! = at-idx.ptr();
+         var at = at-idx.ptr();
          // if (&&, at.decl.struct == #nil, at.type != #basic, at.type != #module) {
          //    C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot call function " func-name " because the type :" at.name.id " is not defined\n"}
          //    return;
@@ -733,13 +734,13 @@ using 'expr-i {
          // similar-c! = 0;
          // C1.stdout{"searching from " at.func-c " functions\n"}
          loop i = 0; at.func-c; i++ {
-            f-idx! = at.func-v[i];
-            f! = f-idx.ptr();
+            var f-idx = at.func-v[i];
+            var f = f-idx.ptr();
             if f.decl.name != func-name { continue }
             // found = i;
             // similar-c++;
             if f.group-c != group-c { continue }
-            match! = true;
+            var match = true;
             if (f.flags & #var-args) != #0 {
                if f.farg-c > carg-c { continue }
                loop j = 0; group-c - 1; j++ {
@@ -749,7 +750,7 @@ using 'expr-i {
                   }
                }
                if !match { continue }
-               j! = group-c - 1;
+               var j = group-c - 1;
                if f.group-v[j] > group-v[j] {
                   match = false;
                }
@@ -766,9 +767,9 @@ using 'expr-i {
             if f.angle != e.angle {
                continue;
             } elif e.angle {
-               loop i = 0; group-v[0]; i++ {
-                  type1! = type-v[i];
-                  type2! = f.farg-v[i].decl.type.ptr();
+               loop j = 0; group-v[0]; j++ {
+                  var type1 = type-v[j];
+                  var type2 = f.farg-v[j].decl.type.ptr();
                   if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
                      match = false;
                      break;
@@ -779,16 +780,16 @@ using 'expr-i {
             if !f-idx.process-later() {
                return;
             }
-            f-at! = f.at;
-            j! = 0;
+            var f-at = f.at;
+            var j = 0;
             loop ; f.farg-c; j++ {
-               ca! = e.carg-v[j];
+               var ca = e.carg-v[j];
                if !farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl, f-at, j, f.decl.name) { return }
             }
             e.func-idx = f-idx;
             if (f.flags & #var-args) != #0 {
                loop ; e.carg-c - j; j++ {
-                  ca! = e.carg-v[j];
+                  var ca = e.carg-v[j];
                   var r'i32;
                   if ca.ref != 0 {
                      r = 1 + ca.ref;
@@ -820,25 +821,25 @@ using 'expr-i {
    }
    process-case-func(expr'expr, f-idx'func)'bool @inline {
       var e'expr-func = expr;
-      func-name! = e.func-name;
-      carg-c! = e.carg-c;
-      group-c! = e.group-c;
-      group-v! = e.group-v;
-      at! = .ctx-func.at.ptr();
+      var func-name = e.func-name;
+      var carg-c = e.carg-c;
+      var group-c = e.group-c;
+      var group-v = e.group-v;
+      var at = .ctx-func.at.ptr();
       if !f-idx.process-later() {
          return false;
       }
-      f! = f-idx.ptr();
-      f-at! = f.at;
-      j! = 0;
+      var f = f-idx.ptr();
+      var f-at = f.at;
+      var j = 0;
       loop ; f.farg-c; j++ {
-         ca! = e.carg-v[j];
+         var ca = e.carg-v[j];
          if !farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl, f-at, j, f.decl.name) { return false }
       }
       e.func-idx = f-idx;
       if (f.flags & #var-args) != #0 {
          loop ; e.carg-c - j; j++ {
-            ca! = e.carg-v[j];
+            var ca = e.carg-v[j];
             var r'i32;
             if ca.ref != 0 {
                r = 1 + ca.ref;

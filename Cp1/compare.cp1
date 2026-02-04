@@ -11,7 +11,7 @@ enum 'compare[#eq, #not-eq, #lt, #le, #gt, #ge]'u8 {
 expr-compare(left'expr-i, right'expr-i, type'compare)'expr-i {
    var e'expr-compare;
    quick-alloc-one(e);
-   e-idx! = expr-push(e.base, #compare);
+   var e-idx = expr-push(e.base, #compare);
    e.left = left;
    e.right = right;
    e.type = type;
@@ -71,23 +71,23 @@ using 'expr-i {
    }
    process-compare(expr'expr, ok'bool&) @case.process() @inline {
       var e'expr-compare = expr;
-      left-type! = e.left.type();
-      left-type-ptr! = left-type.ptr();
+      var left-type = e.left.type();
+      var left-type-ptr = left-type.ptr();
       e.right.try-deduce(left-type);
       if left-type-ptr.def == #enum {
-         en! = left-type-ptr.decl.enumm.ptr();
-         f-idx! = en.overload-compare-last;
+         var en = left-type-ptr.decl.enumm.ptr();
+         var f-idx = en.overload-compare-last;
          if f-idx != #nil {
-            e-right-type! = e.right.type();
-            f! = f-idx.ptr();
+            var e-right-type = e.right.type();
+            var f = f-idx.ptr();
             loop {
                if f.farg-v[1].decl.type == e-right-type {
-                  e-method! = 'expr-i.alloc();
+                  var e-method = 'expr-i.alloc();
                   var group-v'u8[1];
                   group-v[0] = 2;
                   var carg-v'expr-i[2];
                   carg-v[0] = e.right;
-                  e-cvar! = 'expr-i.alloc();
+                  var e-cvar = 'expr-i.alloc();
                   var id-op;
                   switch e.type {
                      case #eq { id-op = .id-eq }
@@ -115,25 +115,25 @@ using 'expr-i {
             f-idx = en.overload-compare-last;
             f = f-idx.ptr();
             loop {
-               en2! = f.farg-v[1].decl.type.ptr().decl.enumm.ptr();
-               f2-idx! = en2.overload-get-last;
+               var en2 = f.farg-v[1].decl.type.ptr().decl.enumm.ptr();
+               var f2-idx = en2.overload-get-last;
                if f2-idx != #nil {
-                  f2! = f2-idx.ptr();
+                  var f2 = f2-idx.ptr();
                   loop {
                      if f2.farg-v[0].decl.type == e-right-type {
-                        e-func! = 'expr-i.alloc();
+                        var e-func = 'expr-i.alloc();
                         var group-v'u8[1];
                         group-v[0] = 1;
                         var carg-v'expr-i[1];
                         carg-v[0] = e.right;
                         set-func(e-func, f2.at, f2.decl.name, false, 1, group-v, 1, carg-v);
                         if true {
-                           e-method! = 'expr-i.alloc();
-                           var group-v'u8[1];
-                           group-v[0] = 2;
-                           var carg-v'expr-i[2];
-                           carg-v[0] = e-func;
-                           e-cvar! = 'expr-i.alloc();
+                           var e-method = 'expr-i.alloc();
+                           var group-v2'u8[1];
+                           group-v2[0] = 2;
+                           var carg-v2'expr-i[2];
+                           carg-v2[0] = e-func;
+                           var e-cvar = 'expr-i.alloc();
                            var id-op;
                            switch e.type {
                               case #eq { id-op = .id-eq }
@@ -144,8 +144,8 @@ using 'expr-i {
                               case #le { id-op = .id-le }
                            }
                            set-cvar(e-cvar, #nil, id-op);
-                           carg-v[1] = e-cvar;
-                           set-method(e-method, e.left, f.decl.name, false, 1, group-v, 2, carg-v);
+                           carg-v2[1] = e-cvar;
+                           set-method(e-method, e.left, f.decl.name, false, 1, group-v2, 2, carg-v2);
                            e.left = e-method;
                            e.is-overload = true;
                         }

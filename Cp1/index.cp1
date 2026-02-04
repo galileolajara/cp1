@@ -26,8 +26,8 @@ using 'expr-i {
       output{'']}
    }
    rd-index(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      'expr-i.rd(left!, r);
-      'expr-i.rd(right!, r);
+      'expr-i.rd(left?, r);
+      'expr-i.rd(right?, r);
       e-idx.set-index(left, right);
    }
    set-index(e-idx'this, left'expr-i, right'expr-i) {
@@ -47,7 +47,7 @@ using 'expr-i {
       v.info.init();
       v.info.copy-from(expr.left-val.info);
       v.info.array-c -= 1;
-      c! = v.info.ref-v[v.info.array-c];
+      var c = v.info.ref-v[v.info.array-c];
       v.ref = (c + 2) - ref;
       v.info.ref-v[v.info.array-c] = ref - 1;
       v.info.count();

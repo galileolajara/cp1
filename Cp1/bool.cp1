@@ -2,7 +2,7 @@ using 'cp1 {
 expr-bool(value'bool)'expr-i {
    var e'expr-bool;
    quick-alloc-one(e);
-   e-idx! = expr-push(e.base, #bool);
+   var e-idx = expr-push(e.base, #bool);
    e.value = value;
    return e-idx;
 }

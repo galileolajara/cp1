@@ -2,7 +2,7 @@ using 'cp1 {
 expr-null()'expr-i {
    var e'expr-null;
    quick-alloc-one(e);
-   e-idx! = expr-push(e.base, #null);
+   var e-idx = expr-push(e.base, #null);
    return e-idx;
 }
 using 'expr-i {

@@ -11,7 +11,7 @@ enum 'unary[#neg, #inc, #dec, #not]'u8 {
 expr-unary(expr'expr-i, type'unary)'expr-i {
    var e'expr-unary;
    quick-alloc-one(e);
-   e-idx! = expr-push(e.base, #unary);
+   var e-idx = expr-push(e.base, #unary);
    e.expr = expr;
    e.type = type;
    return e-idx;

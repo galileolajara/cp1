@@ -14,16 +14,16 @@ enum 'assign[#eq, #colon-eq, #plus-eq, #minus-eq, #mul-eq, #div-eq,
 expr-assign(left'expr-i, right'expr-i, type'assign)'expr-i {
    var e'expr-assign;
    quick-alloc-one(e);
-   e-idx! = expr-push(e.base, #assign);
+   var e-idx = expr-push(e.base, #assign);
    e.left = left;
    e.right = right;
    e.type = type;
    if e.type == #eq {
-      e2! = left.ptr();
+      var e2 = left.ptr();
       if e2.type == #lvar {
          var lvar'expr-lvar = e2;
          if lvar.decl {
-            lvar.lvar.ptr().flags ^= #set-expr;
+            lvar.lvar.ptr().flags &= #all ^ #set-expr;
          }
       }
    }
@@ -51,14 +51,14 @@ using 'expr-i {
       var e'expr-assign = expr;
       e.left.write-value(e.left-val);
       if e.is-overload { return }
-      e-right! = e.right.ptr();
+      var e-right = e.right.ptr();
       if (e.type == #eq) && (e-right.type == #ref) {
-         e-left! = e.left.ptr();
+         var e-left = e.left.ptr();
          if (e.type == #eq) && (e-left.type == #lvar) {
             var lvar'expr-lvar = e-left;
             if lvar.decl {
                output{" = (("}
-               ld! = lvar.lvar.ptr().decl;
+               var ld = lvar.lvar.ptr().decl;
                ld.type.write-type-info(ld.type-info, 0 - ld.size-c);
                output{")((void*)("}
                e.right.write-value(e.right-val);
@@ -84,12 +84,12 @@ using 'expr-i {
          case #or-eq { output{" |= "} }
          case #xor-eq { output{" ^= "} }
       }
-      e-left! = e.left.ptr();
+      var e-left = e.left.ptr();
       if (e.type == #eq) && (e-left.type == #lvar) {
          var lvar'expr-lvar = e-left;
          if lvar.decl {
             output{"(("}
-            ld! = lvar.lvar.ptr().decl;
+            var ld = lvar.lvar.ptr().decl;
             ld.type.write-type-info(ld.type-info, 0 - ld.size-c);
             output{")("}
             e.right.write-value(e.right-val);
@@ -122,16 +122,16 @@ using 'expr-i {
    }
    process-assign(expr'expr, ok'bool&) @case.process() @inline {
       var e'expr-assign = expr;
-      left-e! = e.left.ptr();
+      var left-e = e.left.ptr();
       if left-e.type == #lvar {
          var left'expr-lvar = left-e;
-         lvar! = left.lvar.ptr();
+         var lvar = left.lvar.ptr();
          if lvar.decl.type == #nil {
             if !e.right.value(1, true, e.right-val) {
                return;
             }
             lvar.decl.type = e.right-val.type;
-            at! = lvar.decl.type.ptr();
+            var at = lvar.decl.type.ptr();
             lvar.decl.type-info.init();
             lvar.decl.type-info.copy-from(e.right-val.info);
             e.left.value(1, true, e.left-val);
@@ -139,23 +139,23 @@ using 'expr-i {
             return;
          }
       }
-      left-type! = e.left.type();
-      left-type-ptr! = left-type.ptr();
+      var left-type = e.left.type();
+      var left-type-ptr = left-type.ptr();
       e.right.try-deduce(left-type);
       if left-type-ptr.def == #enum {
-         en! = left-type-ptr.decl.enumm.ptr();
-         f-idx! = en.overload-set-last;
+         var en = left-type-ptr.decl.enumm.ptr();
+         var f-idx = en.overload-set-last;
          if f-idx != #nil {
-            e-right-type! = e.right.type();
-            f! = f-idx.ptr();
+            var e-right-type = e.right.type();
+            var f = f-idx.ptr();
             loop {
                if f.farg-v[1].decl.type == e-right-type {
-                  e-method! = 'expr-i.alloc();
+                  var e-method = 'expr-i.alloc();
                   var group-v'u8[1];
                   group-v[0] = 3;
                   var carg-v'expr-i[3];
                   carg-v[0] = e.right;
-                  e-cvar! = 'expr-i.alloc();
+                  var e-cvar = 'expr-i.alloc();
                   var id-set;
                   switch e.type {
                      case #eq { id-set = .id-eq }
@@ -166,7 +166,7 @@ using 'expr-i {
                   }
                   set-cvar(e-cvar, #nil, id-set);
                   carg-v[1] = e-cvar;
-                  e-bool! = 'expr-i.alloc();
+                  var e-bool = 'expr-i.alloc();
                   set-bool(e-bool, e.is-stmt);
                   carg-v[2] = e-bool;
                   set-method(e-method, e.left, f.decl.name, false, 1, group-v, 3, carg-v);
@@ -185,25 +185,25 @@ using 'expr-i {
             f-idx = en.overload-set-last;
             f = f-idx.ptr();
             loop {
-               en2! = f.farg-v[1].decl.type.ptr().decl.enumm.ptr();
-               f2-idx! = en2.overload-get-last;
+               var en2 = f.farg-v[1].decl.type.ptr().decl.enumm.ptr();
+               var f2-idx = en2.overload-get-last;
                if f2-idx != #nil {
-                  f2! = f2-idx.ptr();
+                  var f2 = f2-idx.ptr();
                   loop {
                      if f2.farg-v[0].decl.type == e-right-type {
-                        e-func! = 'expr-i.alloc();
+                        var e-func = 'expr-i.alloc();
                         var group-v'u8[1];
                         group-v[0] = 1;
                         var carg-v'expr-i[1];
                         carg-v[0] = e.right;
                         set-func(e-func, f2.at, f2.decl.name, false, 1, group-v, 1, carg-v);
                         if true {
-                           e-method! = 'expr-i.alloc();
-                           var group-v'u8[1];
-                           group-v[0] = 3;
-                           var carg-v'expr-i[3];
-                           carg-v[0] = e-func;
-                           e-cvar! = 'expr-i.alloc();
+                           var e-method = 'expr-i.alloc();
+                           var group-v2'u8[1];
+                           group-v2[0] = 3;
+                           var carg-v2'expr-i[3];
+                           carg-v2[0] = e-func;
+                           var e-cvar = 'expr-i.alloc();
                            var id-set;
                            switch e.type {
                               case #eq { id-set = .id-eq }
@@ -213,11 +213,11 @@ using 'expr-i {
                               case #div-eq { id-set = .id-div }
                            }
                            set-cvar(e-cvar, #nil, id-set);
-                           carg-v[1] = e-cvar;
-                           e-bool! = 'expr-i.alloc();
+                           carg-v2[1] = e-cvar;
+                           var e-bool = 'expr-i.alloc();
                            set-bool(e-bool, e.is-stmt);
-                           carg-v[2] = e-bool;
-                           set-method(e-method, e.left, f.decl.name, false, 1, group-v, 3, carg-v);
+                           carg-v2[2] = e-bool;
+                           set-method(e-method, e.left, f.decl.name, false, 1, group-v2, 3, carg-v2);
                            e.left = e-method;
                            e.is-overload = true;
                         }

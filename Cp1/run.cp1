@@ -20,7 +20,7 @@ validate-cp1-path(bin'char[], cp1-path'char[]) {
       'c1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must be a relative filepath (e.g. file.cp1), not an absolute path (/home/user/file.cp1)\n"}
       'c.exit(#failure);
    }
-   cp1-path-len! = 'c.strlen(cp1-path);
+   var cp1-path-len = 'c.strlen(cp1-path);
    if (&&, cp1-path[0] == ''., cp1-path[1] == ''/) {
       cp1-path = &cp1-path[2];
       cp1-path-len -= 2;
@@ -53,7 +53,7 @@ validate-cp1-path(bin'char[], cp1-path'char[]) {
    }
 }
 get-compiler(bin'char[], compiler'char[]) {
-   path! = 'c.strdup('c.getenv("PATH"));
+   var path = 'c.strdup('c.getenv("PATH"));
    "#ifdef _WIN32";
    loop i = 0; ; i++ {
       if path[i] == ''\0 {
@@ -118,14 +118,14 @@ include "system2.h" {
 main(arg-c'intc, arg-v'char[][])'intc {
    "#ifdef _WIN32";
    if true {
-      arg! = arg-v[0];
-      len! = 'c.strlen(arg);
+      var arg = arg-v[0];
+      var len = 'c.strlen(arg);
       if (arg[len - 4] == ''.) && (arg[len - 3] == ''e) && (arg[len - 2] == ''x) && (arg[len - 1] == ''e) {
          arg[len - 4] = ''\0;
       }
    }
    loop i = 0; arg-c; i++ {
-      arg! = arg-v[i];
+      var arg = arg-v[i];
       loop j = 0; ; j++ {
          if arg[j] == ''\0 {
             break;
@@ -135,7 +135,7 @@ main(arg-c'intc, arg-v'char[][])'intc {
       }
    }
    "#endif";
-   bin! = arg-v[0];
+   var bin = arg-v[0];
    if arg-c != 2 {
       print-commands(bin);
       'c.exit(#failure);
@@ -144,7 +144,7 @@ main(arg-c'intc, arg-v'char[][])'intc {
 
    var c-path'char[15];
    'c.strcpy(c-path, "cp1-c-XXXXXX");
-   c-fd! = 'x.mkstemp(c-path);
+   var c-fd = 'x.mkstemp(c-path);
    if c-fd == #nil {
       print-commands(bin);
       'c1.stdout{"Error, cannot open file for reading: " c-path ''\n}
@@ -154,7 +154,7 @@ main(arg-c'intc, arg-v'char[][])'intc {
    'x.unlink(c-path);
    var exe-path'char[21];
    'c.strcpy(exe-path, "./cp1-exe-XXXXXX");
-   exe-fd! = 'x.mkstemp(exe-path);
+   var exe-fd = 'x.mkstemp(exe-path);
    if exe-fd == #nil {
       print-commands(bin);
       'c1.stdout{"Error, cannot open file for reading: " exe-path ''\n}
@@ -185,14 +185,14 @@ main(arg-c'intc, arg-v'char[][])'intc {
    'c1.sprintf(command, f?);
    f.f{''" bin, 'c.strlen(bin) - 4 "-compile\" -c \"" c-path "\" \"" arg-v[1] "\""}
    // C1.stdout{"run command: " command ''\n}
-   c-ret! = system2(command);
+   var c-ret = system2(command);
    if c-ret != 0 {
       'x.unlink(c-path);
       'c.exit(#failure);
    }
    f.f{compiler " -o " exe-path " " c-path}
    // C1.stdout{"run command: " command ''\n}
-   compile-ret! = system2(command);
+   var compile-ret = system2(command);
    'x.unlink(c-path);
    if compile-ret != 0 {
       'c.exit(#failure);
@@ -207,7 +207,7 @@ main(arg-c'intc, arg-v'char[][])'intc {
    }
    "#endif";
    // C1.stdout{"run command: " exe-path ''\n}
-   exe-ret! = system2(exe-path);
+   var exe-ret = system2(exe-path);
    'x.unlink(exe-path);
    if exe-ret != 0 {
       'c.exit(#failure);

@@ -108,13 +108,13 @@ if(((_Larg_2[(_Llen_3 - 4)] == '.') && (_Larg_2[(_Llen_3 - 3)] == 'e') && (_Larg
 _Larg_2[(_Llen_3 - 4)] = '\0';
 }
 }
-int32_t _Li_4 = {0};
+int32_t _Li_4;
 _Li_4 = ((int32_t)(0));
 for(int i = _Larg_c_0; i > 0; ) {
 i --;
 char* _Larg_5;
 _Larg_5 = ((char*)(_Larg_v_1[_Li_4]));
-int32_t _Lj_6 = {0};
+int32_t _Lj_6;
 _Lj_6 = ((int32_t)(0));
 while(1) {
 if(_Larg_5[_Lj_6] == '\0') {
@@ -190,7 +190,7 @@ _Lexe_path_14[18] = 'x';
 _Lexe_path_14[19] = 'e';
 _Lexe_path_14[20] = '\0';
 if(_Lbin_7[0] != '/') {
-int32_t _Li_21 = {0};
+int32_t _Li_21;
 _Li_21 = ((int32_t)(0));
 while(_Lbin_7[_Li_21] != '\0') {
 if(_Lbin_7[_Li_21] == '/') {
@@ -244,7 +244,7 @@ if(_Lcompile_ret_40 != 0) {
 exit(_Tlibc_Texit_Cfailure);
 }
 #ifdef _WIN32
-int32_t _Li_41 = {0};
+int32_t _Li_41;
 _Li_41 = ((int32_t)(0));
 while(1) {
 if(_Lexe_path_14[_Li_41] == '\0') {
@@ -320,7 +320,7 @@ if(((_Lcp1_path_1[0] == '.') && (_Lcp1_path_1[1] == '/'))) {
 _Lcp1_path_1 = ((void*)&_Lcp1_path_1[2]);
 _Lcp1_path_len_6 -= 2;
 }
-int32_t _Lj_7 = {0};
+int32_t _Lj_7;
 _Lj_7 = ((int32_t)(0));
 for(int i = _Lcp1_path_len_6; i > 0; ) {
 i --;
@@ -345,7 +345,7 @@ continue_0:;
 _Lj_7++;
 }
 break_0:;
-int32_t _Lj_12 = {0};
+int32_t _Lj_12;
 _Lj_12 = ((int32_t)(0));
 for(int i = _Lcp1_path_len_6; i > 0; ) {
 i --;
@@ -370,7 +370,7 @@ continue_1:;
 _Lj_12++;
 }
 break_1:;
-int32_t _Lj_17 = {0};
+int32_t _Lj_17;
 _Lj_17 = ((int32_t)(0));
 for(int i = _Lcp1_path_len_6 - 1; i > 0; ) {
 i --;
@@ -457,7 +457,7 @@ struct _Tlibcp1_Tfmt_Tf_cstr _L_28 = {0};
 struct _Tlibcp1_Tfmt _L_29 = {0};
 _Lpath_2 = ((char*)(strdup(getenv("PATH"))));
 #ifdef _WIN32
-int32_t _Li_3 = {0};
+int32_t _Li_3;
 _Li_3 = ((int32_t)(0));
 while(1) {
 if(_Lpath_2[_Li_3] == '\0') {
@@ -598,13 +598,13 @@ static inline void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(const char* _Lc_0, int
 (*_Lfmt_2)._Mcap += _Llen_1;
 }
 static inline void _Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
-struct _Tlibcp1_Tsprintf* _Lsf_1 = {0};
+struct _Tlibcp1_Tsprintf* _Lsf_1;
 _Lsf_1 = ((struct _Tlibcp1_Tsprintf*)((*_Lfmt_0)._Muser_data));
 (*_Lfmt_0)._Mlen = 0;
 (*_Lfmt_0)._Mptr = (*_Lsf_1)._Mmem;
 }
 static inline void _Tlibcp1_Tfmt_Ff_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
-struct _Tlibcp1_Tsprintf* _Lsf_1 = {0};
+struct _Tlibcp1_Tsprintf* _Lsf_1;
 (*_Lfmt_0)._Mptr[(*_Lfmt_0)._Mlen] = 0;
 _Lsf_1 = ((struct _Tlibcp1_Tsprintf*)((*_Lfmt_0)._Muser_data));
 (*_Lsf_1)._Mlen = (*_Lfmt_0)._Mlen;

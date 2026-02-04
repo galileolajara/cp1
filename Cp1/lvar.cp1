@@ -9,10 +9,10 @@ enum 'lvar[#nil = -1, #0]'i32 {
       w.n(l'base + 1);
    }
    process(l'this)'bool @inline {
-      lvar! = l.ptr();
+      var lvar = l.ptr();
       if (lvar.flags & #processed) != #0 { return true }
       lvar.flags |= #processed;
-      at-i! = lvar.decl.type;
+      var at-i = lvar.decl.type;
       if at-i == #nil {
          if lvar.decl.name == .id-blank {
             // let it be, it is a compile-time generated variable that wasn't used
@@ -36,6 +36,7 @@ enum 'lvar-flags[
    #0,
    #set-expr = 1,
    #processed = 2,
+   #all = 0xff,
 ]'u8 {
    rd(f'this&, r'rdr) @inline {
       f = r.n1()'lvar-flags;
@@ -57,12 +58,12 @@ expr-lvar(name'id, decl'u8, row'u32, col'u32)'expr-i {
       'c.exit(#failure);
    }
    if decl == 0 {
-      space! = .decl-func-ctx-space;
+      var space = .decl-func-ctx-space;
       loop {
-         v! = space.lvar-v;
-         found! = 'lvar#nil;
+         var v = space.lvar-v;
+         var found = 'lvar#nil;
          loop i = 0; space.lvar-c; i++ {
-            lvar! = v[i];
+            var lvar = v[i];
             if lvar.name() == name {
                found = lvar;
                break;
@@ -71,7 +72,7 @@ expr-lvar(name'id, decl'u8, row'u32, col'u32)'expr-i {
          if found != #nil {
             var e'expr-lvar;
             quick-alloc-one(e);
-            e-idx! = expr-push(e.base, #lvar);
+            var e-idx = expr-push(e.base, #lvar);
             e.lvar = found;
             return e-idx;
          }
@@ -82,12 +83,12 @@ expr-lvar(name'id, decl'u8, row'u32, col'u32)'expr-i {
       'c.exit(#failure);
       return #nil;
    } else {
-      space! = .decl-func-ctx-space;
+      var space = .decl-func-ctx-space;
       var e'expr-lvar;
       quick-alloc-one(e);
-      e-idx! = expr-push(e.base, #lvar);
+      var e-idx = expr-push(e.base, #lvar);
       e.lvar = space.lvar-new(name, row, col);
-      lvar! = e.lvar.ptr();
+      var lvar = e.lvar.ptr();
       .decl-var.name = name;
       if decl == 1 {
          lvar.flags |= #set-expr;
@@ -104,12 +105,12 @@ using 'expr-i {
    }
    type-lvar(expr'expr, at'at&) @case.type() @inline {
       var e'expr-lvar = expr;
-      lvar! = e.lvar.ptr();
+      var lvar = e.lvar.ptr();
       at = lvar.decl.type;
    }
    value-lvar(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
       var expr'expr-lvar = e.ptr();
-      lvar! = expr.lvar.ptr();
+      var lvar = expr.lvar.ptr();
       v.set(ref, paren, lvar.decl.type, lvar.decl.type-info);
       if v.ref == 1 {
          v.paren = false;

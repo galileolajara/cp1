@@ -9,7 +9,7 @@ var str-len'i32[];
 var string-buf'char[] @extern;
 var string-len'i32 @extern;
 expr-str(prev'expr-i, macro'bool)'expr-i {
-   len! = .string-len;
+   var len = .string-len;
    var n'expr-str-node;
    quick-alloc-plus(n, len + 1);
    n.macro = macro;
@@ -20,7 +20,7 @@ expr-str(prev'expr-i, macro'bool)'expr-i {
    if prev == #nil {
       var e'expr-str;
       quick-alloc-one(e);
-      e-idx! = expr-push(e.base, #str);
+      var e-idx = expr-push(e.base, #str);
       e.node-c = 1;
       e.first = n;
       e.last = n;
@@ -38,7 +38,7 @@ using 'expr-i {
    wr-str(expr'expr, w'wtr, header'bool) @case.wr() @inline {
       var e'expr-str = expr;
       w.n(e.node-c);
-      n! = e.first;
+      var n = e.first;
       loop {
          if n.macro {
             w.n((n.len << 1) | 1);
@@ -51,14 +51,14 @@ using 'expr-i {
       }
    }
    rd-str(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      node-c! = r.n();
+      var node-c = r.n();
       var e'expr-str;
       quick-alloc-one(e);
       e-idx.set(e.base, #str);
-      first! = true;
+      var first = true;
       loop node-c {
-         len-macro! = r.n();
-         len! = len-macro >> 1;
+         var len-macro = r.n();
+         var len = len-macro >> 1;
          var n'expr-str-node;
          quick-alloc-plus(n, len + 1);
          n.macro = (len-macro & 1) != 0;
@@ -78,7 +78,7 @@ using 'expr-i {
    }
    write-str(expr'expr) @case.write() @inline {
       var e'expr-str = expr;
-      n! = e.first;
+      var n = e.first;
       loop {
          output-reserve(n.len << 1);
          n = n.next;

@@ -2,7 +2,7 @@ using 'cp1 {
 expr-ref(expr'expr-i)'expr-i {
    var e'expr-ref;
    quick-alloc-one(e);
-   e-idx! = expr-push(e.base, #ref);
+   var e-idx = expr-push(e.base, #ref);
    e.expr = expr;
    return e-idx;
 }

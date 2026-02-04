@@ -12,16 +12,16 @@ enum 'struct[#nil = -1, #0, #1]'i32 {
       return .struct-v[s];
    }
    output(s-i'this) {
-      num! = s-i'u32;
-      n3! = num >> 3;
-      n17! = 1 << (num & 7);
+      var num = s-i'u32;
+      var n3 = num >> 3;
+      var n17 = 1 << (num & 7);
       if (.struct-is-outputted[n3] & n17) != 0 { return }
       .struct-is-outputted[n3] |= n17;
-      s! = s-i.ptr();
-      s-at! = s.at;
-      s-file! = s.file;
-      s-row! = s.begin-row;
-      s-col! = s.begin-col;
+      var s = s-i.ptr();
+      var s-at = s.at;
+      var s-file = s.file;
+      var s-row = s.begin-row;
+      var s-col = s.begin-col;
       loop i = 0; s.fvar-c; i++ {
          // s.fvar-v[i].decl.type.output(s.file, row, col);
          // if !s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col) { return }
@@ -78,9 +78,9 @@ var decl-fvar-c'u32;
 var decl-fvar-cap'u32;
 var decl-fvar-v'decl-var-data.[];
 decl-var-as-fvar() {
-   fvar! = .decl-fvar-c++;
+   var fvar = .decl-fvar-c++;
    if .decl-fvar-cap <= .decl-fvar-c {
-      old-cap! = .decl-fvar-cap;
+      var old-cap = .decl-fvar-cap;
       grow(.decl-fvar-cap, .decl-fvar-c);
       realloc(.decl-fvar-v, .decl-fvar-cap, old-cap);
    }
@@ -90,7 +90,7 @@ decl-at-begin-struct(name'id, row'u32, col'u32) {
    .decl-struct-row = row;
    .decl-struct-col = col;
    .build-at = .decl-at;
-   old-at-c! = .at-c;
+   var old-at-c = .at-c;
    decl-at-add(name, #struct-enum, row, col);
    .decl-at-v[.decl-at-c++] = .decl-at;
    .decl-at = .build-at;
@@ -100,9 +100,9 @@ decl-at-begin-struct(name'id, row'u32, col'u32) {
    .decl-struct-flags = #0;
 }
 decl-struct-end(row'u32, col'u32) {
-   s-idx! = .struct-c++;
+   var s-idx = .struct-c++;
    if .struct-cap <= .struct-c {
-      old-cap! = .struct-cap;
+      var old-cap = .struct-cap;
       .struct-cap = grow(.struct-c'base)'struct;
       realloc(.struct-v, .struct-cap'base, old-cap'base);
    }
@@ -119,7 +119,7 @@ decl-struct-end(row'u32, col'u32) {
    // s.name = .decl-struct-name;
    s.fvar-c = .decl-fvar-c;
    loop i = 0; .decl-fvar-c; i++ {
-      a! = s.fvar-v[i];
+      var a = s.fvar-v[i];
       a.decl.copy-from(.decl-fvar-v[i]);
    }
    s.real-name = .decl-struct-real-name;

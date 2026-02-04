@@ -8,7 +8,7 @@ expr-soa-field(expr'expr-i, group'id, field'id, row'u32, col'u32)'expr-i {
    }
    var e'expr-soa-field;
    quick-alloc-one(e);
-   e-idx! = expr-push(e.base, #soa-field);
+   var e-idx = expr-push(e.base, #soa-field);
    e.expr = expr;
    e.group = group;
    e.field = field;
@@ -43,24 +43,24 @@ using 'expr-i {
    }
    process-soa-field(expr'expr, ok'bool&) @case.process() @inline {
       var e'expr-soa-field = expr;
-      type-i! = e.expr.type();
+      var type-i = e.expr.type();
       if type-i == #nil {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " from an expression of unknown type\n"}
          return;
       }
-      type! = type-i.ptr();
+      var type = type-i.ptr();
       if type.def != #enum {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " because its type is not an enum\n"}
          return;
       }
-      enumm! = type.decl.enumm;
-      enumd! = enumm.ptr();
+      var enumm = type.decl.enumm;
+      var enumd = enumm.ptr();
       if (enumd.flags & #soa-field) != #0 {
-         gvar-e-idx! = 'expr-i.alloc();
+         var gvar-e-idx = 'expr-i.alloc();
          gvar-e-idx.set-gvar(enumd.soa-field-gvar-at, enumd.soa-field-gvar-id);
-         fvar-e-idx! = 'expr-i.alloc();
+         var fvar-e-idx = 'expr-i.alloc();
          fvar-e-idx.set-fvar(gvar-e-idx, e.field);
-         index-e-idx! = 'expr-i.alloc();
+         var index-e-idx = 'expr-i.alloc();
          index-e-idx.set-index(fvar-e-idx, e.expr);
          process-index(index-e-idx.ptr(), ok);
          e.expr2 = index-e-idx;

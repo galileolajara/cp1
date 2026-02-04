@@ -34,8 +34,8 @@ struct 'stmt-space[
          lvar-c = space.lvar-c'lvar;
       }
       loop ; lvar-c; i++ {
-         lvar-i! = space.lvar-v[i];
-         lvar! = lvar-i.ptr();
+         var lvar-i = space.lvar-v[i];
+         var lvar = lvar-i.ptr();
          // C1.stdout{lvar.decl.name "'s lvar.decl.type = " lvar.decl.type:u32 ''\n}
          if (lvar.decl.type == #nil) && (lvar.decl.name == .id-blank) {
             // Don't output a parser-generated lvar if it was not used
@@ -48,10 +48,10 @@ struct 'stmt-space[
             output{";\n"}
          }
       }
-      s! = space.stmt-first;
+      var s = space.stmt-first;
       loop s != null {
          if .debug-func-prefix != null {
-            row! = s.begin-row;
+            var row = s.begin-row;
             if row != 0 {
                output{.debug-func-prefix, .debug-func-prefix-len "_line(" row ");\n"}
             }
@@ -66,26 +66,26 @@ struct 'stmt-space[
    }
    lvar-new(space'this, name'id, row'u32, col'u32, check-duplicate'bool)'lvar {
       if check-duplicate {
-         v! = space.lvar-v;
+         var v = space.lvar-v;
          loop i = 0; space.lvar-c; i++ {
-            lvar! = v[i].ptr();
+            var lvar = v[i].ptr();
             if lvar.decl.name == name {
                'c1.stdout{.input-path '': row '': col ": lvar '" name.str() "' was already declared at " lvar.row '': lvar.col ''\n}
                'c.exit(#failure);
             }
          }
       }
-      i! = space.lvar-c++;
+      var i = space.lvar-c++;
       if space.lvar-cap <= space.lvar-c {
-         old-cap! = space.lvar-cap;
+         var old-cap = space.lvar-cap;
          grow(space.lvar-cap, space.lvar-c);
          realloc(space.lvar-v, space.lvar-cap, old-cap);
       }
-      f! = .ctx-func;
-      lvar! = f.lvar-c++;
+      var f = .ctx-func;
+      var lvar = f.lvar-c++;
       space.lvar-v[i] = lvar;
       if f.lvar-cap <= f.lvar-c {
-         old-cap! = f.lvar-cap;
+         var old-cap = f.lvar-cap;
          f.lvar-cap = grow(f.lvar-c'base)'lvar;
          realloc(f.lvar-v, f.lvar-cap'base, old-cap'base);
       }
@@ -107,7 +107,7 @@ struct 'stmt-space[
       loop i = 0; space.lvar-c; i++ {
          space.lvar-v[i].wr(w);
       }
-      stmt! = space.stmt-first;
+      var stmt = space.stmt-first;
       loop stmt != null {
          stmt.type.wr(w);
          if #debug-rd-wr {
@@ -154,7 +154,7 @@ struct 'stmt-space[
       space.stmt-first = null;
       space.stmt-last = null;
 
-      lvar-c! = r.n();
+      var lvar-c = r.n();
       space.lvar-c = lvar-c;
       quick-alloc-arr(space.lvar-v, lvar-c);
       loop i = 0; lvar-c; i++ {
@@ -162,7 +162,7 @@ struct 'stmt-space[
       }
 
       loop {
-         'stmt-type.rd(type!, r);
+         'stmt-type.rd(type?, r);
          if type == #nil { break }
          if #debug-rd-wr {
             if r.n1() != 255 {
@@ -170,10 +170,10 @@ struct 'stmt-space[
                'c.exit(#failure);
             }
          }
-         begin-row! = r.n();
-         begin-col! = r.n();
-         end-row! = r.n();
-         end-col! = r.n();
+         var begin-row = r.n();
+         var begin-col = r.n();
+         var end-row = r.n();
+         var end-col = r.n();
          .ctx-begin-row = begin-row;
          .ctx-begin-col = begin-col;
          .ctx-end-row = end-row;
@@ -193,7 +193,7 @@ struct 'stmt-space[
       }
    }
    process(space'this)'bool {
-      s! = space.stmt-first;
+      var s = space.stmt-first;
       loop s != null {
          if !s.process() { return false }
          s = s.stmt-next;
@@ -228,9 +228,9 @@ stmt-space-begin()'stmt-space {
    return stmt-space-begin(true);
 }
 stmt-space-begin(attach'bool)'stmt-space {
-   parent! = .decl-func-ctx-space;
+   var parent = .decl-func-ctx-space;
    quick-alloc-one(.decl-func-ctx-space);
-   space! = .decl-func-ctx-space;
+   var space = .decl-func-ctx-space;
    space.parent = parent;
    if attach {
       if parent.stmt-last == null {
@@ -247,7 +247,7 @@ stmt-space-begin-detach()'stmt-space {
    return stmt-space-begin(false);
 }
 stmt-space-end()'stmt-space {
-   ret! = .decl-func-ctx-space;
+   var ret = .decl-func-ctx-space;
    .decl-func-ctx-space = .decl-func-ctx-space.parent;
    return ret;
 }

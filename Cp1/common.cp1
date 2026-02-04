@@ -508,7 +508,7 @@ quick-alloc-init() {
 }
 quick-alloc(size'i32)'ref @real-name(qalloc) {
    if size > 1024 {
-      mem! = 'c.malloc(size);
+      var mem = 'c.malloc(size);
       'c.memset(mem, 0, size);
       return mem;
    }
@@ -622,7 +622,7 @@ var at-cap'at;
 var at-v'at-data.[];
 enum 'at[#nil = -1, #root, #relative]'i32 {
    finalize(at-i'this, ti'type-info, row'u32, col'u32)'bool {
-      at! = at-i.ptr();
+      var at = at-i.ptr();
       if at.def == #struct {
          if ti.built-in {
             if ti.ref-v[0] != 0 {
@@ -645,7 +645,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
       return true;
    }
    output(at-i'this, file'file, row'u32, col'u32) {
-      at! = at-i.ptr();
+      var at = at-i.ptr();
       switch at.type {
          case #struct-enum {
             if at.def == #struct {
@@ -704,7 +704,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
       }
       ti.count();
       td.write-type();
-      s! = td.count-stars0(ti) + add;
+      var s = td.count-stars0(ti) + add;
       if s > 0 {
          output{"********************************", s}
       }
@@ -758,7 +758,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
       return .at-v[i];
    }
    rd(i'this&, r'rdr) @inline {
-      idx! = (r.n() - 1)'at;
+      var idx = (r.n() - 1)'at;
       if idx == #nil {
          i = #nil;
       } else {
@@ -802,7 +802,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
       }
    }
    write(at-idx'this) {
-      at! = at-idx.ptr();
+      var at = at-idx.ptr();
       switch at.type {
          // case #module {
          //    if at.parent != #root { at.parent.write-space() }
@@ -810,8 +810,8 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
          // }
          case #struct-enum {
             if at.def == #struct {
-               t-idx! = at.decl.structt;
-               t! = t-idx.ptr();
+               var t-idx = at.decl.structt;
+               var t = t-idx.ptr();
                if t-idx != #nil {
                   if (t.flags & #real-name) != #0 {
                      if t.real-name == #nil {
@@ -838,9 +838,9 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
                if at.parent != #root { at.parent.write-space() }
                output{"_T" at.name.id.c-name()}
             } elif at.def == #enum {
-               t-idx! = at.decl.enumm;
+               var t-idx = at.decl.enumm;
                if t-idx != #nil {
-                  t! = t-idx.ptr();
+                  var t = t-idx.ptr();
                   if (t.flags & #real-name) != #0 {
                      output{t.real-name}
                      return;
@@ -905,7 +905,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
       }
    }
    write-space(at-idx'this) {
-      at! = at-idx.ptr();
+      var at = at-idx.ptr();
       switch at.type {
          // case #module {
          //    if at.parent != #root { at.parent.write-space() }
@@ -1005,8 +1005,8 @@ enum 'include-error[#none, #suffix, #absolute, #dot-slash, #slash, #double-slash
 }
 enum 'include[#nil = -1, #0]'i32 {
    validate(path'this, err'include-error&)'bool {
-      str! = path.str();
-      len! = path.len();
+      var str = path.str();
+      var len = path.len();
       if (len >= 4) && (str[len - 4] == ''.) && (str[len - 3] == ''c) && (str[len - 2] == ''p) && (str[len - 1] == ''1) {
          // ok
       } else {
@@ -1059,7 +1059,7 @@ enum 'include[#nil = -1, #0]'i32 {
       w.n(i'base + 1);
    }
    rd(i'this&, r'rdr) @inline {
-      idx! = (r.n() - 1)'include;
+      var idx = (r.n() - 1)'include;
       if idx == #nil {
          i = #nil;
       } else {
@@ -1067,9 +1067,9 @@ enum 'include[#nil = -1, #0]'i32 {
       }
    }
    output(this'this) @inline {
-      num! = this'u32;
-      n3! = num >> 3;
-      n17! = 1 << (num & 7);
+      var num = this'u32;
+      var n3 = num >> 3;
+      var n17 = 1 << (num & 7);
       if (.include-is-outputted[n3] & n17) != 0 { return }
       .include-is-outputted[n3] |= n17;
       .include-outputted-v[.include-outputted-c++] = this;
@@ -1092,12 +1092,12 @@ enum 'id[#nil = -1, #0]'i32 {
    c-name(id'this)'char[] {
       var c-name'char[] = .id-c-name-v[id];
       if c-name != null { return c-name }
-      len! = .id-len-v[id];
-      str! = .id-str-v[id];
+      var len = .id-len-v[id];
+      var str = .id-str-v[id];
       c-name = quick-alloc(len + 1);
       .id-c-name-v[id] = c-name;
       loop i = 0; len; i++ {
-         c! = str[i];
+         var c = str[i];
          if (||, (&&, c >= ''a, c <= ''z), (&&, c >= ''A, c <= ''Z), (&&, c >= ''0, c <= ''9)) {
             c-name[i] = str[i];
          } else {
@@ -1144,7 +1144,7 @@ enum 'id[#nil = -1, #0]'i32 {
       }
    }
    rd(id'this&, r'rdr) @inline {
-      idx! = (r.n() - 1)'id;
+      var idx = (r.n() - 1)'id;
       if idx == #nil {
          id = #nil;
       } else {
