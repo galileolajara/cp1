@@ -323,8 +323,7 @@
 #define _Tcp1_Ttoken_Ccontinue (_Tcp1_Ttoken_Cdefault + 1)
 #define _Tcp1_Ttoken_Cbreak (_Tcp1_Ttoken_Ccontinue + 1)
 #define _Tcp1_Ttoken_Creturn (_Tcp1_Ttoken_Cbreak + 1)
-#define _Tcp1_Ttoken_Cvar (_Tcp1_Ttoken_Creturn + 1)
-#define _Tcp1_Ttoken_Cspace_at_extern (_Tcp1_Ttoken_Cvar + 1)
+#define _Tcp1_Ttoken_Cspace_at_extern (_Tcp1_Ttoken_Creturn + 1)
 #define _Tcp1_Ttoken_Cspace_at_aligned (_Tcp1_Ttoken_Cspace_at_extern + 1)
 #define _Tcp1_Ttoken_Cspace_at_soa_field (_Tcp1_Ttoken_Cspace_at_aligned + 1)
 #define _Tcp1_Ttoken_Cat (_Tcp1_Ttoken_Cspace_at_soa_field + 1)
@@ -1521,7 +1520,6 @@ case _Tcp1_Ttoken_Cdefault: return "default";
 case _Tcp1_Ttoken_Ccontinue: return "continue";
 case _Tcp1_Ttoken_Cbreak: return "break";
 case _Tcp1_Ttoken_Creturn: return "return";
-case _Tcp1_Ttoken_Cvar: return "var";
 case _Tcp1_Ttoken_Cspace_at_extern: return "space-at-extern";
 case _Tcp1_Ttoken_Cspace_at_aligned: return "space-at-aligned";
 case _Tcp1_Ttoken_Cspace_at_soa_field: return "space-at-soa-field";
@@ -5087,7 +5085,7 @@ int32_t _Lval_2;
 _Lval_2 = ((int32_t)((*_Lf_0)._Mi32));
 if(_Lval_2 == 0) {
 (*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen++] = '0';
-} else if(((int32_t)(_Lval_2)) < 0) {
+} else if(_Lval_2 < 0) {
 char* _Ldata_3 = {0};
 int32_t _Ldigits_4;
 int32_t _Lstart_5;
@@ -6738,7 +6736,7 @@ _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(':', &_L_18, &_L_13);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Glast_row, &_L_18, &_L_14);
 _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(':', &_L_18, &_L_15);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Glast_col, &_L_18, &_L_16);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_18, ": Error, function name must begin with words used in @case followed by '-' (dash) then followed by the name of the cvar of case\n", 128u, &_L_17);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_18, ": Error, function name must begin with words used in @case followed by '-' (dash) then followed by the name of the cof case\n", 124u, &_L_17);
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_18);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_12, &_L_18);
 _Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_13, &_L_18);
@@ -7083,7 +7081,7 @@ _Llvar_i_4 = ((_Tcp1_Tlvar)(_Tcp1_Tstmt_space_Flvar_new_4(_Tcp1_Gdecl_func_ctx_s
 _Llvar_5 = ((struct _Tcp1_Tlvar_data*)(_Tcp1_Tlvar_Fptr_1(_Llvar_i_4)));
 _Tcp1_Gdecl_var._Mname = _Lname_0;
 _Tcp1_Tdecl_var_data_Fcopy_from_2(&(*_Llvar_5)._Mdecl, &_Tcp1_Gdecl_var);
-if(_Lset_1 == -((_Tcp1_Texpr_i)(2))) {
+if(_Lset_1 == ((_Tcp1_Texpr_i)(-2))) {
 (*_Llvar_5)._Mflags |= _Tcp1_Tlvar_flags_Cset_expr;
 } else if(_Lset_1 != _Tcp1_Texpr_i_Cnil) {
 _Tcp1_Texpr_i _Le2_6;
@@ -7955,19 +7953,19 @@ _Tcp1_Fstmt_push_6(&(*_Ls_0)._Mbase, 0, 0, 0, 0, _Tcp1_Tstmt_type_Cif_end);
 _Tcp1_Fstmt_space_end_0();
 }
 struct _Tcp1_Tstmt_space* _Tcp1_Fstmt_space_begin_0() {
-struct _Tcp1_Tstmt_space* ret_228_4 = _Tcp1_Fstmt_space_begin_1(true);
-return ret_228_4;
+struct _Tcp1_Tstmt_space* ret_229_4 = _Tcp1_Fstmt_space_begin_1(true);
+return ret_229_4;
 }
 struct _Tcp1_Tstmt_space* _Tcp1_Fstmt_space_begin_detach_0() {
-struct _Tcp1_Tstmt_space* ret_247_4 = _Tcp1_Fstmt_space_begin_1(false);
-return ret_247_4;
+struct _Tcp1_Tstmt_space* ret_248_4 = _Tcp1_Fstmt_space_begin_1(false);
+return ret_248_4;
 }
 struct _Tcp1_Tstmt_space* _Tcp1_Fstmt_space_end_0() {
 struct _Tcp1_Tstmt_space* _Lret_0;
 _Lret_0 = ((struct _Tcp1_Tstmt_space*)(_Tcp1_Gdecl_func_ctx_space));
 _Tcp1_Gdecl_func_ctx_space = (*_Tcp1_Gdecl_func_ctx_space)._Mparent;
-struct _Tcp1_Tstmt_space* ret_252_4 = _Lret_0;
-return ret_252_4;
+struct _Tcp1_Tstmt_space* ret_253_4 = _Lret_0;
+return ret_253_4;
 }
 _Tcp1_Texpr_i _Tcp1_Fexpr_compare_3(_Tcp1_Texpr_i _Lleft_0, _Tcp1_Texpr_i _Lright_1, _Tcp1_Tcompare _Ltype_2) {
 struct _Tcp1_Texpr_compare* _Le_3 = {0};
@@ -8976,8 +8974,8 @@ if((*_Lparent_1)._Mstmt_last == NULL) {
 (*_Lparent_1)._Mstmt_last = (&(*_Lspace_2)._Mbase);
 }
 }
-struct _Tcp1_Tstmt_space* ret_244_4 = _Lspace_2;
-return ret_244_4;
+struct _Tcp1_Tstmt_space* ret_245_4 = _Lspace_2;
+return ret_245_4;
 }
 static inline void _Tcp1_Tvar_flags_Fwr_2(_Tcp1_Tvar_flags _Lf_0, union _Tcp1_Twtr* _Lw_1) {
 Fputnum(_Lw_1, ((uint32_t)(_Lf_0)));

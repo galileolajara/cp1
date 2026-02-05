@@ -3,70 +3,70 @@ using 'c1 = 'libcp1;
 using 'cp1 {
 enum 'math[#add, #sub, #mul, #div, #mod, #lshift, #rshift, #and, #or, #xor]'u8 {
    wr(e'this, w'wtr) @inline {
-      w.n1(e'base);
+      w.n1('base(e));
    }
    rd(e'this&, r'rdr) @inline {
-      e = r.n1()'math;
+      e = 'math(r.n1());
    }
 }
 expr-math(left'expr-i, right'expr-i, type'math)'expr-i {
-   var e'expr-math;
+   e'expr-math;
    quick-alloc-one(e);
-   var e-idx = expr-push(e.base, #math);
+   e-idx' = expr-push(e.base, #math);
    e.left = left;
    e.right = right;
    e.type = type;
    return e-idx;
 }
 expr-math-add(expr'expr-i, right'expr-i)'expr-i {
-   var e'expr-math = expr.ptr();
-   var i = e.item-c++;
+   e'expr-math = expr.ptr();
+   i' = e.item-c++;
    if e.item-cap <= e.item-c {
-      var old-cap = e.item-cap;
+      old-cap' = e.item-cap;
       grow(e.item-cap, e.item-c);
       realloc(e.item-v, e.item-cap, old-cap);
    }
-   var item = e.item-v[i];
+   item' = e.item-v[i];
    item.expr = right;
    return expr;
 }
 using 'expr-i {
    try-deduce-math(expr'expr, at'at) @case.try-deduce() @inline {
-      var e'expr-math = expr;
+      e'expr-math = expr;
       e.left.try-deduce(at);
       e.right.try-deduce(at);
-      loop i = 0; e.item-c; i++ {
+      loop i' = 0; e.item-c; i++ {
          e.item-v[i].expr.try-deduce(at);
       }
    }
    wr-math(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      var e'expr-math = expr;
+      e'expr-math = expr;
       e.left.wr(w, header);
       e.right.wr(w, header);
       e.type.wr(w);
       w.n1(e.item-c);
-      loop i = 0; e.item-c; i++ {
+      loop i' = 0; e.item-c; i++ {
          e.item-v[i].expr.wr(w, header);
       }
    }
    rd-math(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      var e'expr-math;
+      e'expr-math;
       quick-alloc-one(e);
       e-idx.set(e.base, #math);
       e.left.rd(r);
       e.right.rd(r);
       e.type.rd(r);
-      var item-c = r.n1();
+      item-c' = r.n1();
       if item-c > 0 {
          e.item-c = item-c;
          quick-alloc-arr(e.item-v, item-c);
-         loop i = 0; e.item-c; i++ {
+         loop i' = 0; e.item-c; i++ {
             e.item-v[i].expr.rd(r);
          }
       }
    }
    write-math(expr'expr) @case.write() @inline {
-      var e'expr-math = expr;
+      e'expr-math = expr;
       if e.is-overload {
          e.left.write-value(e.left-val);
          return;
@@ -76,7 +76,7 @@ using 'expr-i {
             e.left.write-value(e.left-val);
             output{" + "}
             e.right.write-value(e.right-val);
-            loop i = 0; e.item-c; i++ {
+            loop i' = 0; e.item-c; i++ {
                output{" + "}
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
@@ -85,7 +85,7 @@ using 'expr-i {
             e.left.write-value(e.left-val);
             output{" - "}
             e.right.write-value(e.right-val);
-            loop i = 0; e.item-c; i++ {
+            loop i' = 0; e.item-c; i++ {
                output{" - "}
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
@@ -94,7 +94,7 @@ using 'expr-i {
             e.left.write-value(e.left-val);
             output{" * "}
             e.right.write-value(e.right-val);
-            loop i = 0; e.item-c; i++ {
+            loop i' = 0; e.item-c; i++ {
                output{" * "}
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
@@ -103,7 +103,7 @@ using 'expr-i {
             e.left.write-value(e.left-val);
             output{" / "}
             e.right.write-value(e.right-val);
-            loop i = 0; e.item-c; i++ {
+            loop i' = 0; e.item-c; i++ {
                output{" / "}
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
@@ -112,7 +112,7 @@ using 'expr-i {
             e.left.write-value(e.left-val);
             output{" % "}
             e.right.write-value(e.right-val);
-            loop i = 0; e.item-c; i++ {
+            loop i' = 0; e.item-c; i++ {
                output{" % "}
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
@@ -131,7 +131,7 @@ using 'expr-i {
             e.left.write-value(e.left-val);
             output{" & "}
             e.right.write-value(e.right-val);
-            loop i = 0; e.item-c; i++ {
+            loop i' = 0; e.item-c; i++ {
                output{" & "}
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
@@ -140,7 +140,7 @@ using 'expr-i {
             e.left.write-value(e.left-val);
             output{" | "}
             e.right.write-value(e.right-val);
-            loop i = 0; e.item-c; i++ {
+            loop i' = 0; e.item-c; i++ {
                output{" | "}
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
@@ -149,7 +149,7 @@ using 'expr-i {
             e.left.write-value(e.left-val);
             output{" ^ "}
             e.right.write-value(e.right-val);
-            loop i = 0; e.item-c; i++ {
+            loop i' = 0; e.item-c; i++ {
                output{" ^ "}
                e.item-v[i].expr.write-value(e.item-v[i].val);
             }
@@ -157,7 +157,7 @@ using 'expr-i {
       }
    }
    value-math(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      var expr'expr-math = e.ptr();
+      expr'expr-math = e.ptr();
       // if expr.left.value(1, paren, v) == false {
       //    return;
       // }
@@ -175,30 +175,30 @@ using 'expr-i {
       ok = true;
    }
    type-math(expr'expr, at'at&) @case.type() @inline {
-      var e'expr-math = expr;
+      e'expr-math = expr;
       at = e.left.type();
    }
    process-math(expr'expr, ok'bool&) @case.process() @inline {
-      var e'expr-math = expr;
+      e'expr-math = expr;
       "again:";
-      var left-type = e.left.type();
-      var left-type-ptr = left-type.ptr();
+      left-type' = e.left.type();
+      left-type-ptr' = left-type.ptr();
       e.right.try-deduce(left-type);
       if left-type-ptr.def == #enum {
-         var en = left-type-ptr.decl.enumm.ptr();
-         var f-idx = en.overload-math-last;
+         en' = left-type-ptr.decl.enumm.ptr();
+         f-idx' = en.overload-math-last;
          if f-idx != #nil {
-            var e-right-type = e.right.type();
-            var f = f-idx.ptr();
+            e-right-type' = e.right.type();
+            f' = f-idx.ptr();
             loop {
                if f.farg-v[1].decl.type == e-right-type {
-                  var e-method = 'expr-i.alloc();
-                  var group-v'u8[1];
+                  e-method' = 'expr-i.alloc();
+                  group-v'u8[1];
                   group-v[0] = 2;
-                  var carg-v2'expr-i[2];
+                  carg-v2'expr-i[2];
                   carg-v2[0] = e.right;
-                  var e-cvar = 'expr-i.alloc();
-                  var id-op;
+                  e-cvar' = 'expr-i.alloc();
+                  id-op';
                   switch e.type {
                      case #add {
                         id-op = .id-add;
@@ -224,7 +224,7 @@ using 'expr-i {
                   if e.item-c != 0 {
                      e.right = e.item-v[0].expr;
                      e.item-c--;
-                     loop i = 0; e.item-c; i++ {
+                     loop i' = 0; e.item-c; i++ {
                         e.item-v[i].expr = e.item-v[i + 1].expr;
                      }
                      "goto again;";
@@ -239,26 +239,26 @@ using 'expr-i {
             f-idx = en.overload-math-last;
             f = f-idx.ptr();
             loop {
-               var en2 = f.farg-v[1].decl.type.ptr().decl.enumm.ptr();
-               var f2-idx = en2.overload-get-last;
+               en2' = f.farg-v[1].decl.type.ptr().decl.enumm.ptr();
+               f2-idx' = en2.overload-get-last;
                if f2-idx != #nil {
-                  var f2 = f2-idx.ptr();
+                  f2' = f2-idx.ptr();
                   loop {
                      if f2.farg-v[0].decl.type == e-right-type {
-                        var e-func = 'expr-i.alloc();
-                        var group-v'u8[1];
+                        e-func' = 'expr-i.alloc();
+                        group-v'u8[1];
                         group-v[0] = 1;
-                        var carg-v'expr-i[1];
+                        carg-v'expr-i[1];
                         carg-v[0] = e.right;
                         set-func(e-func, f2.at, f2.decl.name, false, 1, group-v, 1, carg-v);
                         if true {
-                           var e-method = 'expr-i.alloc();
-                           var group-v2'u8[1];
+                           e-method' = 'expr-i.alloc();
+                           group-v2'u8[1];
                            group-v2[0] = 2;
-                           var carg-v2'expr-i[2];
+                           carg-v2'expr-i[2];
                            carg-v2[0] = e-func;
-                           var e-cvar = 'expr-i.alloc();
-                           var id-op;
+                           e-cvar' = 'expr-i.alloc();
+                           id-op';
                            switch e.type {
                               case #add {
                                  id-op = .id-add;
@@ -285,7 +285,7 @@ using 'expr-i {
                         if e.item-c != 0 {
                            e.right = e.item-v[0].expr;
                            e.item-c--;
-                           loop i = 0; e.item-c; i++ {
+                           loop i' = 0; e.item-c; i++ {
                               e.item-v[i].expr = e.item-v[i + 1].expr;
                            }
                            "goto again;";
@@ -329,8 +329,8 @@ using 'expr-i {
          'c.exit(#failure);
          return;
       }
-      loop i = 0; e.item-c; i++ {
-         var item = e.item-v[i];
+      loop i' = 0; e.item-c; i++ {
+         item' = e.item-v[i];
          item.expr.try-deduce(e.left-val.type);
          if !item.expr.value(1, true, item.val) { return }
          if !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), item.val.type, item.val.info.star-c + item.val.type.pointer()) {

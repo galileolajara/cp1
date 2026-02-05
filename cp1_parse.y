@@ -843,9 +843,9 @@ exprs(l) ::= expr_or(r).
 sizeOfTypeExpr(l) ::= at(at) OPEN_BRACKET USZ CLOSE_BRACKET.
    { l.basic.id = _Tcp1_Fexpr_size_of_type_1(at.basic.id); }
 
-fastCastExpr(l) ::= value4cast(e) at(at).
+fastCastExpr(l) ::= at(at) open_parenthesis_or_space expr(e) close_parenthesis_or_space.
    { l.basic.id = _Tcp1_Fexpr_cast_fast_2(e.basic.id, at.basic.id); }
-fastCastExpr(l) ::= value4cast(e) BASE.
+fastCastExpr(l) ::= BASE open_parenthesis_or_space expr(e) close_parenthesis_or_space.
    { l.basic.id = _Tcp1_Fexpr_cast_fast_2(e.basic.id, -1); }
 
 negVal(l) ::= MINUS value4fix(e).
@@ -916,7 +916,7 @@ stmt_loop ::= stmt_loop_begin SPACE loop_expr0 SPACE_THEN_OPEN_CURLY_BRACE stmts
    { _Tcp1_Fstmt_loop_end_0(); } */
 stmt_loop ::= stmt_loop_begin2 SEMICOLON loop_expr2 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2.
    { _Tcp1_Fstmt_loop_end_0(); }
-stmt_loop ::= stmt_loop_begin2 SPACE stmt_lvars_no_begin SEMICOLON loop_expr2 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2.
+stmt_loop ::= stmt_loop_begin2 SPACE stmt_lvars SEMICOLON loop_expr2 SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2.
    { _Tcp1_Fstmt_loop_end_0(); }
 
 stmt ::= stmt_if_chain.
@@ -990,17 +990,17 @@ stmt_return ::= begin_pos(begin) RETURN SPACE expr(e) end_pos(end).
 typeAndInfo ::= expr_type_apply typeInfo_optional.
 typeAndInfo_optional ::= typeAndInfo.
 typeAndInfo_optional ::= expr_type_none typeInfo_none.
+typeAndInfo_quote ::= typeAndInfo.
+typeAndInfo_quote ::= QUOTE expr_type_none typeInfo_none.
 
 stmt_expr ::= stmt_lvars.
-stmt_lvars ::= decl_lvar_begin lvar_list(end).
+stmt_lvars ::= lvar_list(end).
    { _Tcp1_Fstmt_lvar_end_2(end.basic.row, end.basic.col); }
-stmt_lvars_no_begin ::= lvar_list(end).
-   { _Tcp1_Fstmt_lvar_end_2(end.basic.row, end.basic.col); }
-decl_lvar ::= ID_NEW(var) typeAndInfo_optional SPACE_EQUAL SPACE expr(e).
+decl_lvar ::= ID_NEW(var) typeAndInfo_quote SPACE_EQUAL SPACE expr(e).
    { _Tcp1_Fstmt_lvar_add_4(var.basic.id, e.basic.id, var.basic.row, var.basic.col); }
-decl_lvar ::= ID_NEW(var) typeAndInfo_optional SPACE_EQUAL SPACE QUESTION.
+decl_lvar ::= ID_NEW(var) typeAndInfo_quote SPACE_EQUAL SPACE QUESTION.
    { _Tcp1_Fstmt_lvar_add_4(var.basic.id, -1, var.basic.row, var.basic.col); }
-decl_lvar ::= ID_NEW(var) typeAndInfo_optional.
+decl_lvar ::= ID_NEW(var) typeAndInfo_quote.
    { _Tcp1_Fstmt_lvar_add_4(var.basic.id, -2, var.basic.row, var.basic.col); }
 decl_lvars ::= decl_lvar.
 decl_lvars ::= decl_lvars COMMA_SPACE decl_lvar.
@@ -1008,7 +1008,6 @@ lvar_list(l) ::= .
    { l.basic.row = _Tcp1_Grow; l.basic.col = _Tcp1_Gcol; }
 lvar_list(l) ::= decl_lvars.
    { l.basic.row = _Tcp1_Grow; l.basic.col = _Tcp1_Gcol; }
-decl_lvar_begin ::= VAR SPACE. // OPEN_CURLY_BRACE_PLUS_OR_SPACE.
 
 decl_var_attr ::= SPACE_AT_REAL_NAME_STR(e).
    { _Tcp1_Fdecl_var_attr_real_name_1(e.basic.id); }
@@ -1115,4 +1114,4 @@ decl_gvar ::= fvar_decl expr_type_apply typeInfo_optional decl_var_attrs_optiona
 decl_gvar_list ::= decl_gvar.
 decl_gvar_list ::= decl_gvar_list decl_gvar.
 //decl_gvars ::= OPEN_CURLY_BRACE_Tcp1_GVAR_SPACE CLOSE_CURLY_BRACE.
-decl_gvars ::= VAR SPACE decl_gvar_list SEMICOLON.
+decl_gvars ::= decl_gvar_list SEMICOLON.

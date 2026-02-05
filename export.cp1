@@ -12,41 +12,41 @@ main(arg-c'intc, arg-v'char[][])'intc {
       'c.printf("Usage: %s [.c input file] [.h output file]\n", arg-v[0]);
       'c.exit(#failure);
    }
-   var in-fd;
+   in-fd';
    if !'x'fd.open(in-fd, arg-v[1], #rdonly) {
       'c.printf("Cannot open file for reading: %s\n", arg-v[1]);
       'c.exit(#failure);
    }
-   var in-size = in-fd.seek(0, #end);
+   in-size' = in-fd.seek(0, #end);
    in-fd.seek(0, #set);
-   var in-data'char[] = 'c.malloc(in-size);
+   in-data'char[] = 'c.malloc(in-size);
    in-fd.read(in-data, in-size);
    in-fd.close();
    if !(&&, in-size > 0, in-data[in-size - 1] == ''\n) {
       'c.printf("Error, file '%s' does not end with a new line\n", arg-v[1]);
       'c.exit(#failure);
    }
-   var pos = 0;
-   var get = false;
-   var func-name-v'char[256][];
-   var func-len-v'u8[256];
-   var func-c = 0;
+   pos' = 0;
+   get' = false;
+   func-name-v'char[256][];
+   func-len-v'u8[256];
+   func-c' = 0;
    loop pos < in-size {
-      var start = pos;
+      start' = pos;
       loop {
          if in-data[pos] == ''\n {
             break;
          }
          pos++;
       }
-      var len = pos - start;
-      var line'char[] = &in-data[start];
+      len' = pos - start;
+      line'char[] = &in-data[start];
       if get {
          if line[0] == ''} {
             break;
          }
-         var lparen = -1;
-         loop i = 0; len; i++ {
+         lparen' = -1;
+         loop i' = 0; len; i++ {
             if line[i] == ''( {
                lparen = i;
                break;
@@ -61,19 +61,19 @@ main(arg-c'intc, arg-v'char[][])'intc {
       }
       pos++;
    }
-   var out-f = 'c.fopen(arg-v[2], "w");
+   out-f' = 'c.fopen(arg-v[2], "w");
    pos = 0;
-   var indent = 0;
+   indent' = 0;
    loop pos < in-size {
-      var start = pos;
+      start' = pos;
       loop {
          if in-data[pos] == ''\n {
             break;
          }
          pos++;
       }
-      var len = pos - start;
-      var line'char[] = &in-data[start];
+      len' = pos - start;
+      line'char[] = &in-data[start];
       if len > 0 {
          if line[len - 1] == ''{ {
             indent++;
@@ -81,20 +81,20 @@ main(arg-c'intc, arg-v'char[][])'intc {
             indent--;
          } elif indent == 0 {
             if (&&, line[len - 2] == ''), line[len - 1] == '';) {
-               var lparen = -1;
-               loop i = 0; len; i++ {
+               lparen' = -1;
+               loop i' = 0; len; i++ {
                   if line[i] == ''( {
                      lparen = i;
                      break;
                   }
                }
-               var name = lparen;
+               name' = lparen;
                loop line[name - 1] != ''  {
                   name--;
                }
-               var func-len = lparen - name;
-               var func'char[] = &line[name];
-               loop i = 0; func-c; i++ {
+               func-len' = lparen - name;
+               func'char[] = &line[name];
+               loop i' = 0; func-c; i++ {
                   if (&&, func-len == func-len-v[i], 'c.memcmp(func, func-name-v[i], func-len) == 0) {
                      out-f.printf("%.*s\n", len, line);
                      break;

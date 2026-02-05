@@ -17,19 +17,19 @@ using 'libcp1 {
    }
    using 'fmt {
       f-reserve-sprintf-f(fmt'this) @inline {
-         var sf'sprintf = fmt.user-data;
+         sf'sprintf = fmt.user-data;
          fmt.len = 0;
          fmt.ptr = sf.mem;
       }
       f-sprintf-f(fmt'this) @inline {
          fmt.ptr[fmt.len] = 0;
-         var sf'sprintf = fmt.user-data;
+         sf'sprintf = fmt.user-data;
          sf.len = fmt.len;
       }
       f-reserve-sprintf-add(fmt'this) @inline {
       }
       f-sprintf-add(fmt'this) @inline {
-         var sf'sprintf = fmt.user-data;
+         sf'sprintf = fmt.user-data;
          sf.len += fmt.len;
       }
    }

@@ -7,16 +7,16 @@ expr-fvar(expr'expr-i, member'id, row'u32, col'u32)'expr-i {
       'c1.stdout{.input-path '': row '': row ": Use of member variables are now allowed here\n"}
       'c.exit(#failure);
    }
-   var e'expr-fvar;
+   e'expr-fvar;
    quick-alloc-one(e);
-   var e-idx = expr-push(e.base, #fvar);
+   e-idx' = expr-push(e.base, #fvar);
    e.expr = expr;
    e.member = member;
    return e-idx;
 }
 using 'expr-i {
    wr-fvar(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      var e'expr-fvar = expr;
+      e'expr-fvar = expr;
       e.expr.wr(w, header);
       e.member.wr(w, header);
    }
@@ -26,19 +26,19 @@ using 'expr-i {
       e-idx.set-fvar(expr, member);
    }
    set-fvar(e-idx'this, expr'expr-i, member'id) {
-      var e'expr-fvar;
+      e'expr-fvar;
       quick-alloc-one(e);
       e-idx.set(e.base, #fvar);
       e.expr = expr;
       e.member = member;
    }
    type-fvar(expr'expr, at'at&) @case.type() @inline {
-      var e'expr-fvar = expr;
+      e'expr-fvar = expr;
       at = e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar].decl.type;
    }
    value-fvar(expr'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      var e'expr-fvar = expr.ptr();
-      var fvar = e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar];
+      e'expr-fvar = expr.ptr();
+      fvar' = e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar];
       v.set(ref, paren, fvar.decl.type, fvar.decl.type-info);
       if v.ref == 1 {
          v.paren = false;
@@ -46,19 +46,19 @@ using 'expr-i {
       ok = true;
    }
    write-fvar(expr'expr) @case.write() @inline {
-      var e'expr-fvar = expr;
+      e'expr-fvar = expr;
       e.expr.write-value(e.val);
       output{''.}
       e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar].decl.write-fvar();
    }
    process-fvar(expr'expr, ok'bool&) @case.process() @inline {
-      var e'expr-fvar = expr;
-      var type-i = e.expr.type();
+      e'expr-fvar = expr;
+      type-i' = e.expr.type();
       if type-i == #nil {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col " Cannot get member '." e.member "' from an expression of unknown type\n"}
          return;
       }
-      var type = type-i.ptr();
+      type' = type-i.ptr();
       if type.def != #struct {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col " Cannot get member '." e.member "' because the type is not a struct or union\n"}
          return;
@@ -72,11 +72,11 @@ using 'expr-i {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col " Cannot get member '." e.member "' because the type '/" type.name.id "' was not defined\n"}
          return;
       }
-      var struct-i = type.decl.structt;
+      struct-i' = type.decl.structt;
       struct-i.output();
-      var structt = struct-i.ptr();
-      var member = e.member;
-      loop i = 0'fvar; structt.fvar-c; i++ {
+      structt' = struct-i.ptr();
+      member' = e.member;
+      loop i' = 'fvar(0); structt.fvar-c; i++ {
          if structt.fvar-v[i].decl.name == member {
             e.fvar = i;
             ok = true;

@@ -10,30 +10,30 @@ using 'c = 'libc;
 using 'c1 = 'libcp1;
 using 'x = 'posix;
 using 'cp1 {
-var ctx-begin-row'u32;
-var ctx-begin-col'u32;
-var ctx-end-row'u32;
-var ctx-end-col'u32;
+ctx-begin-row'u32;
+ctx-begin-col'u32;
+ctx-end-row'u32;
+ctx-end-col'u32;
 #build-common-codes{}
-var import-v'include[];
-var import-require-v'u8[];
-var import-cap'u32;
-var import-c'u32;
+import-v'include[];
+import-require-v'u8[];
+import-cap'u32;
+import-c'u32;
 decl-import(path'include, row'u32, col'u32, require'bool) {
    if !path.validate(err?) {
       'c1.stdbuf{.input-path '': row '': col ": Import path "}
       err.print(path);
       'c.exit(#failure);
    }
-   loop i = 0; .import-c; i++ {
+   loop i' = 0; .import-c; i++ {
       if .import-v[i] == path {
          // C1.stdout{"already import '" path "' with the same arguments, silently ignoring...\n"}
          return;
       }
    }
-   var i = .import-c++;
+   i' = .import-c++;
    if .import-cap <= .import-c {
-      var old-cap = .import-cap;
+      old-cap' = .import-cap;
       .import-cap = grow(.import-c);
       realloc(.import-v, .import-cap, old-cap);
       realloc(.import-require-v, (.import-cap + 7) >> 3, (old-cap + 7) >> 3);
@@ -43,31 +43,31 @@ decl-import(path'include, row'u32, col'u32, require'bool) {
       .import-require-v[i >> 3] |= 1 << (i & 7);
    }
 }
-var template-name-buf'char[] @extern;
-var template-name-len'u8 @extern;
-var template-code-indention'u32 @extern;
-var template-code-line-c'u32 @extern;
+template-name-buf'char[] @extern;
+template-name-len'u8 @extern;
+template-code-indention'u32 @extern;
+template-code-line-c'u32 @extern;
 decl-template-inst(name'id, row'u32, col'u32) {
-   var at = .decl-at;
-   var arg-buf = .string-buf;
-   var arg-len = .string-len;
-   var arg-crc32c = crc32c(0, arg-buf, arg-len);
-   loop i = 0; .template-inst-c; i++ {
-      var ti = .template-inst-v[i];
+   at' = .decl-at;
+   arg-buf' = .string-buf;
+   arg-len' = .string-len;
+   arg-crc32c' = crc32c(0, arg-buf, arg-len);
+   loop i' = 0; .template-inst-c; i++ {
+      ti' = .template-inst-v[i];
       if (ti.name == name) && (ti.arg-crc32c == arg-crc32c) && (ti.at == at) {
          // C1.stdout{"already found instantiation of template " name " with the same arguments, silently ignoring...\n"}
          return;
       }
    }
-   var i = .template-inst-c++;
+   i' = .template-inst-c++;
    if .template-inst-cap <= .template-inst-c {
-      var old-cap = .template-inst-cap;
-      .template-inst-cap = grow(.template-inst-c'base)'template-inst;
-      realloc(.template-inst-v, .template-inst-cap'base, old-cap'base);
+      old-cap' = .template-inst-cap;
+      .template-inst-cap = 'template-inst(grow('base(.template-inst-c)));
+      realloc(.template-inst-v, 'base(.template-inst-cap), 'base(old-cap));
    }
-   var ti = .template-inst-v[i];
+   ti' = .template-inst-v[i];
    ti.name = name;
-   var arg'char[];
+   arg'char[];
    quick-alloc-arr(arg, arg-len);
    'c.memcpy(arg, arg-buf, arg-len);
    ti.arg = arg;
@@ -78,9 +78,9 @@ decl-template-inst(name'id, row'u32, col'u32) {
    ti.col = col;
 }
 decl-template-code(name'id, row'u32, with-reflection'bool, no-cache'bool) {
-   var at = .decl-at;
-   loop i = 0; .template-code-c; i++ {
-      var td = .template-code-v[i];
+   at' = .decl-at;
+   loop i' = 0; .template-code-c; i++ {
+      td' = .template-code-v[i];
       if (td.at == at) && (td.name == name) {
          'c1.stdout{
             // .input-path
@@ -95,16 +95,16 @@ decl-template-code(name'id, row'u32, with-reflection'bool, no-cache'bool) {
          return;
       }
    }
-   var i = .template-code-c++;
+   i' = .template-code-c++;
    if .template-code-cap <= .template-code-c {
-      var old-cap = .template-code-cap;
-      .template-code-cap = grow(.template-code-c'base)'template-code;
-      realloc(.template-code-v, .template-code-cap'base, old-cap'base);
+      old-cap' = .template-code-cap;
+      .template-code-cap = 'template-code(grow('base(.template-code-c)));
+      realloc(.template-code-v, 'base(.template-code-cap), 'base(old-cap));
    }
-   var td = .template-code-v[i];
+   td' = .template-code-v[i];
    td.name = name;
-   var code-len = .string-len;
-   var code'u8[];
+   code-len' = .string-len;
+   code'u8[];
    quick-alloc-arr(code, code-len);
    'c.memcpy(code, .string-buf, code-len);
    td.code = code;
@@ -117,17 +117,17 @@ decl-template-code(name'id, row'u32, with-reflection'bool, no-cache'bool) {
    td.no-cache = no-cache;
 }
 include-add(len'u8, str'char[])'include {
-   var found = .include-map.get-or-insert(str, len, .include-c);
+   found' = .include-map.get-or-insert(str, len, .include-c);
    if found == -1 {
       // inserted
-      var include = .include-c++;
+      include' = .include-c++;
       if .include-cap <= .include-c {
-         var old-cap = .include-cap;
+         old-cap' = .include-cap;
          grow(.include-cap, .include-c);
          realloc(.include-str-v, .include-cap, old-cap);
          realloc(.include-len-v, .include-cap, old-cap);
       }
-      var text'char[] = quick-alloc(len + 1);
+      text'char[] = quick-alloc(len + 1);
       'c.memcpy(text, str, len);
       text[len] = 0;
       .include-str-v[include] = text;
@@ -138,32 +138,32 @@ include-add(len'u8, str'char[])'include {
       return found;
    }
 }
-var ctx-func'decl-func;
-var id-in-header-v'u8[];
-var id-in-header-idx-v'u32[];
-var id-in-header-id-v'u32[];
-var id-in-header-c'i32;
+ctx-func'decl-func;
+id-in-header-v'u8[];
+id-in-header-idx-v'u32[];
+id-in-header-id-v'u32[];
+id-in-header-c'i32;
 
-var at-in-header-v'u8[];
-var at-in-header-idx-v'u32[];
-var at-in-header-at-v'u32[];
-var at-in-header-c'i32;
+at-in-header-v'u8[];
+at-in-header-idx-v'u32[];
+at-in-header-at-v'u32[];
+at-in-header-c'i32;
 
-var decl-include'include;
-var decl-include-row'u32;
-var decl-include-col'u32;
+decl-include'include;
+decl-include-row'u32;
+decl-include-col'u32;
 id-add(len'u8, str'char[])'id {
-   var found = .id-map.get-or-insert(str, len, .id-c);
+   found' = .id-map.get-or-insert(str, len, .id-c);
    if found == -1 {
       // inserted
-      var id = .id-c++;
+      id' = .id-c++;
       if .id-cap <= .id-c {
-         var old-cap = .id-cap;
+         old-cap' = .id-cap;
          grow(.id-cap, .id-c);
          realloc(.id-str-v, .id-cap, old-cap);
          realloc(.id-len-v, .id-cap, old-cap);
       }
-      var text'char[] = quick-alloc(len + 1);
+      text'char[] = quick-alloc(len + 1);
       'c.memcpy(text, str, len);
       text[len] = 0;
       .id-str-v[id] = text;
@@ -184,24 +184,24 @@ type-info-finalize() {
    .decl-var.type-info.finalize();
 }
 type-info-arr(expr-v'expr-i[], expr-c'u8) {
-   var r'rdr.;
+   r'rdr.;
    r.ref = expr-v;
    if expr-v == null {
-      var ti = .decl-var.type-info;
+      ti' = .decl-var.type-info;
       ti.array-c += 1;
       ti.ref-v[ti.array-c] = 0;
       return;
    }
-   loop i = expr-c; expr-c; {
+   loop i' = expr-c; expr-c; {
       type-info-arr(expr-v[i -= 1]);
    }
 }
 type-info-arr(expr'expr-i) {
-   var ti = .decl-var.type-info;
+   ti' = .decl-var.type-info;
    ti.array-c += 1;
    ti.ref-v[ti.array-c] = 0;
    if expr != #nil {
-      var vd = .decl-var;
+      vd' = .decl-var;
       if vd.size-c == 0 {
          quick-alloc-arr(vd.size-expr-v, #decl-var-size-limit);
       }
@@ -210,7 +210,7 @@ type-info-arr(expr'expr-i) {
    }
 }
 type-info-ref(c'i8) {
-   var ti = .decl-var.type-info;
+   ti' = .decl-var.type-info;
    ti.ref-v[ti.array-c] += c;
 }
 type-info-static() {
@@ -231,19 +231,19 @@ decl-include-end() {
    .decl-include = #nil;
 }
 at-basic-type(type'basic-type-id)'at {
-   loop i = 0'at; .at-c; i++ {
-      var at = .at-v[i];
+   loop i' = 'at(0); .at-c; i++ {
+      at' = .at-v[i];
       if (&&, at.type == #basic, at.name.basic == type) {
          return i;
       }
    }
-   var build-idx = .at-c++;
+   build-idx' = .at-c++;
    if .at-cap <= .at-c {
-      var old-cap = .at-cap;
-      .at-cap = grow(.at-c'base)'at;
-      realloc(.at-v, .at-cap'base, old-cap'base);
+      old-cap' = .at-cap;
+      .at-cap = 'at(grow('base(.at-c)));
+      realloc(.at-v, 'base(.at-cap), 'base(old-cap));
    }
-   var at = .at-v[build-idx];
+   at' = .at-v[build-idx];
    at.parent = #root;
    at.type = #basic;
    at.name.basic = type;
@@ -252,7 +252,7 @@ at-basic-type(type'basic-type-id)'at {
 at-begin() {
    .build-at = .decl-at;
 }
-var at-begin-relative-pause'bool;
+at-begin-relative-pause'bool;
 at-begin-relative-pause() {
    .at-begin-relative-pause = true;
 }
@@ -267,14 +267,14 @@ at-begin-relative() {
    }
 }
 enum 'alias[#nil = -1, #0]'i32;
-var at-alias-c'alias;
-var at-alias-cap'alias;
-var at-alias-name-v'id[];
-var at-alias-at-v'at[];
-var at-alias-pos-v'row-col.[];
+at-alias-c'alias;
+at-alias-cap'alias;
+at-alias-name-v'id[];
+at-alias-at-v'at[];
+at-alias-pos-v'row-col.[];
 struct 'row-col[row'u32, col'u32];
 at-alias(name'id, row'u32, col'u32) {
-   loop i = 0; .at-alias-c; i++ {
+   loop i' = 0; .at-alias-c; i++ {
       if .at-alias-name-v[i] == name {
          .build-at = .at-alias-at-v[i];
          return;
@@ -283,7 +283,7 @@ at-alias(name'id, row'u32, col'u32) {
    'c1.stdout{.input-path '': row '': col ": Cannot recognize the '" name ", did you forgot to put using '" name " = ...?\n"}
    'c.exit(#failure);
 }
-var build-at'at;
+build-at'at;
 at-push(name'id, type'name-type, row'u32, col'u32) {
    // if .build-at == #root {
    //    'c.printf(".build-at is #root for %s\n", name.str());
@@ -293,7 +293,7 @@ at-push(name'id, type'name-type, row'u32, col'u32) {
    //    'c.printf(".build-at is %u for %s\n", .build-at, name.str());
    // }
    if .build-at == #relative {
-      loop i = 0; .at-alias-c; i++ {
+      loop i' = 0; .at-alias-c; i++ {
          if .at-alias-name-v[i] == name {
             .build-at = .at-alias-at-v[i];
             return;
@@ -309,7 +309,7 @@ decl-alias(name'id, at'at, row'u32, col'u32) {
    //    C.exit(#failure);
    //    return;
    // }
-   loop i = 0; .at-alias-c; i++ {
+   loop i' = 0; .at-alias-c; i++ {
       if .at-alias-name-v[i] == name {
          // if .at-alias-at-v[i] == at {
             // Ok, because templates might emit duplicate aliases
@@ -320,13 +320,13 @@ decl-alias(name'id, at'at, row'u32, col'u32) {
          return;
       }
    }
-   var alias-idx = .at-alias-c++;
+   alias-idx' = .at-alias-c++;
    if .at-alias-cap <= .at-alias-c {
-      var old-cap = .at-alias-cap;
-      .at-alias-cap = grow(.at-alias-c'base)'alias;
-      realloc(.at-alias-name-v, .at-alias-cap'base, old-cap'base);
-      realloc(.at-alias-at-v, .at-alias-cap'base, old-cap'base);
-      realloc(.at-alias-pos-v, .at-alias-cap'base, old-cap'base);
+      old-cap' = .at-alias-cap;
+      .at-alias-cap = 'alias(grow('base(.at-alias-c)));
+      realloc(.at-alias-name-v, 'base(.at-alias-cap), 'base(old-cap));
+      realloc(.at-alias-at-v, 'base(.at-alias-cap), 'base(old-cap));
+      realloc(.at-alias-pos-v, 'base(.at-alias-cap), 'base(old-cap));
    }
    .at-alias-name-v[alias-idx] = name;
    .at-alias-at-v[alias-idx] = at;
@@ -344,7 +344,7 @@ at-graves(graves'i8, row'u32, col'u32) {
          'c1.stdout{.input-path '': row '': col ": Too many graves in the namespace, going beyond the root namespace\n"}
          'c.exit(#failure);
       }
-      var at = .build-at.ptr();
+      at' = .build-at.ptr();
       .build-at = at.parent;
    }
 }
@@ -352,9 +352,9 @@ at-done()'at {
    return .build-at;
 }
 at-create(parent'at, type'name-type, name'id)'at {
-   var found = .at-map.get-or-insert(parent, type, name, .at-c'base);
+   found' = .at-map.get-or-insert(parent, type, name, 'base(.at-c));
    if found != -1 { return found }
-   // loop i = 0:At; .at-c; i++ {
+   // loop i' = 0:At; .at-c; i++ {
    //    at! = .at-v[i];
    //    if (&&,
    //       at.parent == parent,
@@ -363,52 +363,52 @@ at-create(parent'at, type'name-type, name'id)'at {
    //       return i;
    //    }
    // }
-   var build-idx = .at-c++;
+   build-idx' = .at-c++;
    if .at-cap <= .at-c {
-      var old-cap = .at-cap;
-      .at-cap = grow(.at-c'base)'at;
-      realloc(.at-v, .at-cap'base, old-cap'base);
+      old-cap' = .at-cap;
+      .at-cap = 'at(grow('base(.at-c)));
+      realloc(.at-v, 'base(.at-cap), 'base(old-cap));
    }
-   var at = .at-v[build-idx];
+   at' = .at-v[build-idx];
    at.parent = parent;
    at.type = type;
    at.name.id = name;
    return build-idx;
 }
 at-create-basic(basic'basic-type-id)'at {
-   loop i = 0'at; .at-c; i++ {
-      var at = .at-v[i];
+   loop i' = 'at(0); .at-c; i++ {
+      at' = .at-v[i];
       if (&&,
          at.type == #basic,
          at.name.basic == basic) {
          return i;
       }
    }
-   var build-idx = .at-c++;
+   build-idx' = .at-c++;
    if .at-cap <= .at-c {
-      var old-cap = .at-cap;
-      .at-cap = grow(.at-c'base)'at;
-      realloc(.at-v, .at-cap'base, old-cap'base);
+      old-cap' = .at-cap;
+      .at-cap = 'at(grow('base(.at-c)));
+      realloc(.at-v, 'base(.at-cap), 'base(old-cap));
    }
-   var at = .at-v[build-idx];
+   at' = .at-v[build-idx];
    at.parent = #root;
    at.type = #basic;
    at.name.basic = basic;
    return build-idx;
 }
 
-var decl-at'at;
+decl-at'at;
 #decl-at-nest-limit'i32 = 4;
-var decl-at-v'at[#decl-at-nest-limit];
-var decl-at-c'u8;
+decl-at-v'at[#decl-at-nest-limit];
+decl-at-c'u8;
 err-msg-namespace-limit(row'u32, col'u32) {
    'c1.stdout{.input-path '': row '': col ": Max number of names in namespace reached.\n"}
    'c.exit(#failure);
 }
 decl-at-add(name'id, type'name-type, row'u32, col'u32) {
-   var parent = .build-at;
+   parent' = .build-at;
    .build-at = at-create(.build-at, type, name);
-   var parent-c = 0;
+   parent-c' = 0;
    loop (parent != #relative) && (parent != #root) {
       parent-c++;
       parent = parent.ptr().parent;
@@ -486,45 +486,45 @@ struct 'lexer[
    }
    scan(lex'this)'token @real-name(cp1_lexer_scan);
    get-oct(lex'this)'u32 {
-      var r-start'rdr.;
+      r-start'rdr.;
       r-start.ref = lex.start + 2;
-      var r-cursor'rdr.;
+      r-cursor'rdr.;
       r-cursor.ref = lex.cursor;
-      var length = r-cursor.pos - r-start.pos;
+      length' = r-cursor.pos - r-start.pos;
       if length > 11 {
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was too long\n"}
          'c.exit(#failure);
       }
-      var val = 0'u64;
+      val' = 'u64(0);
       loop length {
-         val = (val * 8'u64) + (r-start.p1[0] - ''0);
+         val = (val * 'u64(8)) + (r-start.p1[0] - ''0);
          r-start.pos++;
       }
       if val > 4294967295u {
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was out of bounds\n"}
          'c.exit(#failure);
       }
-      return val'u32;
+      return 'u32(val);
    }
    get-hex(lex'this)'u32 {
-      var r-start'rdr.;
+      r-start'rdr.;
       r-start.ref = lex.start + 2;
-      var r-cursor'rdr.;
+      r-cursor'rdr.;
       r-cursor.ref = lex.cursor;
-      var length = r-cursor.pos - r-start.pos;
+      length' = r-cursor.pos - r-start.pos;
       if length > 8 {
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was too long\n"}
          'c.exit(#failure);
       }
-      var val = 0'u64;
+      val' = 'u64(0);
       loop length {
-         var c = r-start.p1[0];
+         c' = r-start.p1[0];
          if c >= ''a {
-            val = (val * 16'u64) + ((r-start.p1[0] - ''a) + 10);
+            val = (val * 'u64(16)) + ((r-start.p1[0] - ''a) + 10);
          } elif c >= ''A {
-            val = (val * 16'u64) + ((r-start.p1[0] - ''A) + 10);
+            val = (val * 'u64(16)) + ((r-start.p1[0] - ''A) + 10);
          } else {
-            val = (val * 16'u64) + (r-start.p1[0] - ''0);
+            val = (val * 'u64(16)) + (r-start.p1[0] - ''0);
          }
          r-start.pos++;
       }
@@ -532,54 +532,54 @@ struct 'lexer[
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was out of bounds\n"}
          'c.exit(#failure);
       }
-      return val'u32;
+      return 'u32(val);
    }
    get-f32(lex'this)'f32 {
-      var r-start'rdr.;
+      r-start'rdr.;
       r-start.ref = lex.start;
-      var r-cursor'rdr.;
+      r-cursor'rdr.;
       r-cursor.ref = lex.cursor;
-      var length = r-cursor.pos - r-start.pos - 1;
-      var val'f32;
+      length' = r-cursor.pos - r-start.pos - 1;
+      val'f32;
       'c.sscanf(r-start.char, "%f", &val);
       return val;
    }
    get-f64(lex'this)'f64 {
-      var r-start'rdr.;
+      r-start'rdr.;
       r-start.ref = lex.start;
-      var r-cursor'rdr.;
+      r-cursor'rdr.;
       r-cursor.ref = lex.cursor;
-      var length = r-cursor.pos - r-start.pos - 1;
-      var val'f64;
+      length' = r-cursor.pos - r-start.pos - 1;
+      val'f64;
       'c.sscanf(r-start.char, "%lf", &val);
       return val;
    }
    get-int(lex'this, len-minus'u8)'u32 {
-      var r-start'rdr.;
+      r-start'rdr.;
       r-start.ref = lex.start;
-      var r-cursor'rdr.;
+      r-cursor'rdr.;
       r-cursor.ref = lex.cursor;
-      var length = r-cursor.pos - r-start.pos - len-minus;
+      length' = r-cursor.pos - r-start.pos - len-minus;
       if length > 10 {
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was too long\n"}
          'c.exit(#failure);
       }
-      var val = 0'u32;
+      val' = 'u32(0);
       if length == 10 {
          loop 9 {
-            val = (val * 10'u32) + (r-start.p1[0] - ''0);
+            val = (val * 'u32(10)) + (r-start.p1[0] - ''0);
             r-start.pos++;
          }
-         var old-val = val;
-         val = (val * 10'u32) + (r-start.p1[0] - ''0);
+         old-val' = val;
+         val = (val * 'u32(10)) + (r-start.p1[0] - ''0);
          if (val / 10) < old-val {
             'c1.stdout{.input-path '': .row '': .col ": Integer literal was out of bounds\n"}
             'c.exit(#failure);
          }
       } else {
          loop length {
-            var old-val = val;
-            val = (val * 10'u32) + (r-start.p1[0] - ''0);
+            old-val' = val;
+            val = (val * 'u32(10)) + (r-start.p1[0] - ''0);
             if (val / 10) < old-val {
                'c1.stdout{.input-path '': .row '': .col ": Integer literal was out of bounds\n"}
                'c.exit(#failure);
@@ -596,49 +596,49 @@ struct 'lexer[
       return val;
    }
    get-u64(lex'this)'u64 {
-      var r-start'rdr.;
+      r-start'rdr.;
       r-start.ref = lex.start;
-      var r-cursor'rdr.;
+      r-cursor'rdr.;
       r-cursor.ref = lex.cursor;
-      var length = r-cursor.pos - r-start.pos - 3; // -3 to remove u64 suffix
+      length' = r-cursor.pos - r-start.pos - 3; // -3 to remove u64 suffix
       if length > 20 { // 18446744073709551615
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was too long\n"}
          'c.exit(#failure);
       }
-      var val = 0'u64;
+      val' = 'u64(0);
       if length == 20 {
          loop 19 {
-            val = (val * 10'u64) + (r-start.p1[0] - ''0);
+            val = (val * 'u64(10)) + (r-start.p1[0] - ''0);
             r-start.pos++;
          }
-         var old-val = val;
-         val = (val * 10'u64) + (r-start.p1[0] - ''0);
+         old-val' = val;
+         val = (val * 'u64(10)) + (r-start.p1[0] - ''0);
          if (val / 10) < old-val {
             'c1.stdout{.input-path '': .row '': .col ": Integer literal was out of bounds\n"}
             'c.exit(#failure);
          }
       } else {
          loop length {
-            val = (val * 10'u64) + (r-start.p1[0] - ''0);
+            val = (val * 'u64(10)) + (r-start.p1[0] - ''0);
             r-start.pos++;
          }
       }
       return val;
    }
    get-id(lex'this, begin'u8, end'u8)'i32 {
-      var r-start'rdr.;
+      r-start'rdr.;
       r-start.ref = lex.start;
       r-start.pos += begin;
-      var r-cursor'rdr.;
+      r-cursor'rdr.;
       r-cursor.ref = lex.cursor;
-      var length = r-cursor.pos - r-start.pos - end;
+      length' = r-cursor.pos - r-start.pos - end;
       if length > 255 {
          'c1.stdout{"too long id was detected\n"}
          'c.exit(#failure);
       }
-      var len = length'u8;
-      return id-add(length'u8, r-start.char);
-      // loop i = 0; .id-c; i++ {
+      len' = 'u8(length);
+      return id-add('u8(length), r-start.char);
+      // loop i' = 0; .id-c; i++ {
       //    if .id-len-v[i] == len {
       //       if C.memcmp(.id-str-v[i], r-start.ref, len) == 0 {
       //          return i;
@@ -652,7 +652,7 @@ struct 'lexer[
       //    realloc(.id-str-v, .id-cap, old-cap);
       //    realloc(.id-len-v, .id-cap, old-cap);
       // }
-      // var text:char[] = quick-alloc(len + 1);
+      // text:char[] = quick-alloc(len + 1);
       // C.memcpy(text, r-start.ref, len);
       // text[len] = 0;
       // .id-str-v[id] = text;
@@ -660,12 +660,12 @@ struct 'lexer[
       // return id;
    }
    get-include(lex'this)'i32 {
-      var r-start'rdr.;
+      r-start'rdr.;
       r-start.ref = lex.start;
       r-start.pos += 8;
-      var r-cursor'rdr.;
+      r-cursor'rdr.;
       r-cursor.ref = lex.cursor;
-      var length = r-cursor.pos - r-start.pos;
+      length' = r-cursor.pos - r-start.pos;
       // loop (r-start.char[length] != '' ) && (r-start.char[length] != ''\n) {
       //   length++;
       // }
@@ -674,7 +674,7 @@ struct 'lexer[
          'c.exit(#failure);
       }
       return include-add(length, r-start.char);
-      // loop i = 0; .include-c; i++ {
+      // loop i' = 0; .include-c; i++ {
       //    if .include-len-v[i] == len {
       //       if C.memcmp(.include-str-v[i], r-start.ref, len) == 0 {
       //          return i;
@@ -688,7 +688,7 @@ struct 'lexer[
       //    realloc(.include-str-v, .include-cap, old-cap);
       //    realloc(.include-len-v, .include-cap, old-cap);
       // }
-      // var text:char[] = quick-alloc(len + 1);
+      // text:char[] = quick-alloc(len + 1);
       // C.memcpy(text, r-start.ref, len);
       // text[len] = 0;
       // .include-str-v[include] = text;
@@ -696,21 +696,21 @@ struct 'lexer[
       // return include;
    }
 }
-var last-token'token;
-var last-last-token'token;
+last-token'token;
+last-last-token'token;
 struct 'parser[] {
    alloc()'parser;
    free(psr'this);
    parse(psr'this, t'token, tok'token-data.) @real-name(cp1Parse);
 }
-var last-row'u32 @extern;
-var last-col'u32 @extern;
-var row'u32 @extern;
-var col'u32 @extern;
+last-row'u32 @extern;
+last-col'u32 @extern;
+row'u32 @extern;
+col'u32 @extern;
 write-func(w'wtr, header'bool) @inline {
-   w.n(.func-c'base);
-   loop i = 0; .func-c; {
-      var f = .func-v[i++];
+   w.n('base(.func-c));
+   loop i' = 0; .func-c; {
+      f' = .func-v[i++];
       w.n1(f.farg-c);
       w.n(f.begin-row);
       w.n(f.begin-col);
@@ -718,9 +718,9 @@ write-func(w'wtr, header'bool) @inline {
       w.n(f.end-col);
       f.include.wr(w);
       f.at.wr(w, header);
-      w.n1(f.angle'u8);
+      w.n1('u8(f.angle));
       f.decl.wr(w, header);
-      loop j = 0; f.farg-c; j++ {
+      loop j' = 0; f.farg-c; j++ {
          f.farg-v[j].wr(w, header);
       }
       w.n1(f.this-idx);
@@ -728,7 +728,7 @@ write-func(w'wtr, header'bool) @inline {
          w.n1(f.this-group);
       }
       w.n1(f.group-c);
-      loop j = 0; f.group-c; j++ {
+      loop j' = 0; f.group-c; j++ {
          w.n1(f.group-v[j]);
       }
       if header {
@@ -737,7 +737,7 @@ write-func(w'wtr, header'bool) @inline {
             f.flags.wr(w);
          } else {
             // remove #has-body flag
-            (f.flags'base & (-1 ^ 'func-flags#has-body'base))'func-flags.wr(w);
+            'func-flags('base(f.flags) & (-1 ^ 'base('func-flags#has-body))).wr(w);
          }
       } else {
          f.flags.wr(w);
@@ -757,11 +757,11 @@ write-func(w'wtr, header'bool) @inline {
          w.n(f.decl-len);
          w.copy(f.decl-str, f.decl-len);
       }
-      w.n1(f.overload'base);
+      w.n1('base(f.overload));
    }
    .func-main.wr(w);
-   loop i = 0; .func-c; {
-      var f = .func-v[i++];
+   loop i' = 0; .func-c; {
+      f' = .func-v[i++];
       if (f.flags & #has-body) == #0 { continue }
       if header {
          if (f.flags & #inline) != #0 {
@@ -771,10 +771,10 @@ write-func(w'wtr, header'bool) @inline {
             continue;
          }
       }
-      var pos-4'wtr.;
+      pos-4'wtr.;
       pos-4.p1 = w.p1;
       w.pos += 4;
-      var pos-4-next = w.pos;
+      pos-4-next' = w.pos;
       f.lvars-wr(w, header);
       f.stmt-space.wr(w, header);
       pos-4.n4(w.pos - pos-4-next);
@@ -782,16 +782,16 @@ write-func(w'wtr, header'bool) @inline {
 }
 write-import(w'wtr, header'bool) @inline {
    w.n(.import-c);
-   loop i = 0; .import-c; i++ {
+   loop i' = 0; .import-c; i++ {
       .import-v[i].wr(w);
       w.b((.import-require-v[i >> 3] & (1 << (i & 7))) != 0);
    }
 }
 write-template-code(w'wtr, header'bool) @inline {
-   w.n(.template-code-c'base);
+   w.n('base(.template-code-c));
    // C1.stdout{"there are " .template-code-c:base " templates in parse stage\n"}
-   loop i = 0; .template-code-c {
-      var td = .template-code-v[i++];
+   loop i' = 0; .template-code-c {
+      td' = .template-code-v[i++];
       td.name.wr(w, header);
       w.n(td.row);
       w.n(td.line-c);
@@ -803,10 +803,10 @@ write-template-code(w'wtr, header'bool) @inline {
       td.at.wr(w, header);
       // C1.stdout{"template code " td.name " at line " td.row " have " td.line-c " lines\n"}
    }
-   w.n(.template-inst-c'base);
+   w.n('base(.template-inst-c));
    // C1.stdout{"there are " .template-inst-c:base " templates in parse stage\n"}
-   loop i = 0; .template-inst-c {
-      var td = .template-inst-v[i++];
+   loop i' = 0; .template-inst-c {
+      td' = .template-inst-v[i++];
       td.name.wr(w, header);
       w.n(td.row);
       w.n(td.col);
@@ -817,9 +817,9 @@ write-template-code(w'wtr, header'bool) @inline {
    }
 }
 write-cvar(w'wtr, header'bool) {
-   w.n(.cvar-c'base);
-   loop i = 0; .cvar-c; i++ {
-      var cvar = .cvar-v[i];
+   w.n('base(.cvar-c));
+   loop i' = 0; .cvar-c; i++ {
+      cvar' = .cvar-v[i];
       cvar.include.wr(w);
       cvar.at.wr(w, header);
       cvar.decl.wr(w, header);
@@ -834,9 +834,9 @@ write-cvar(w'wtr, header'bool) {
    }
 }
 write-gvar(w'wtr, header'bool) {
-   w.n(.gvar-c'base);
-   loop i = 0; .gvar-c; i++ {
-      var gvar = .gvar-v[i];
+   w.n('base(.gvar-c));
+   loop i' = 0; .gvar-c; i++ {
+      gvar' = .gvar-v[i];
       gvar.include.wr(w);
       gvar.at.wr(w, header);
       if header {
@@ -848,9 +848,9 @@ write-gvar(w'wtr, header'bool) {
    }
 }
 write-enum(w'wtr, header'bool) {
-   w.n(.enum-c'base);
-   loop i = 0; .enum-c; {
-      var e = .enum-v[i++];
+   w.n('base(.enum-c));
+   loop i' = 0; .enum-c; {
+      e' = .enum-v[i++];
       w.n(e.begin-row);
       w.n(e.begin-col);
       w.n(e.end-row);
@@ -869,9 +869,9 @@ write-enum(w'wtr, header'bool) {
    }
 }
 write-struct(w'wtr, header'bool) {
-   w.n(.struct-c'base);
-   loop i = 0; .struct-c; {
-      var s = .struct-v[i++];
+   w.n('base(.struct-c));
+   loop i' = 0; .struct-c; {
+      s' = .struct-v[i++];
       w.n1(s.fvar-c);
       w.n(s.begin-row);
       w.n(s.begin-col);
@@ -882,7 +882,7 @@ write-struct(w'wtr, header'bool) {
       s.flags.wr(w);
       // C1.stdout{"write-struct " s.at.ptr.name.id ''\n}
       // s.name.wr(w, header);
-      loop j = 0; s.fvar-c; j++ {
+      loop j' = 0; s.fvar-c; j++ {
          s.fvar-v[j].wr(w, header);
       }
       if (s.flags & #real-name) != #0 {
@@ -898,11 +898,11 @@ token-name(tok'token)'char[] {
 }
 parse-str-init(max-size'i32);
 parse-comment(r'rdr, w'wtr, ending'char, in-data'ref) {
-   var r-begin'rdr.;
+   r-begin'rdr.;
    r-begin.pos = r.pos;
    r.pos += 2;
    loop {
-      var c = r.p1[0];
+      c' = r.p1[0];
       if c == ''\n {
          get-row-col(row?, col?, r.ref, in-data);
          'c1.stdout{.input-path '': row '': col ": Unterminated comment\n"}
@@ -910,7 +910,7 @@ parse-comment(r'rdr, w'wtr, ending'char, in-data'ref) {
       }
       r.pos++;
       if c == ending {
-         var len = r.pos - r-begin.pos;
+         len' = r.pos - r-begin.pos;
          loop len {
             w.p1[0] = '' ;
             w.pos++;
@@ -919,13 +919,13 @@ parse-comment(r'rdr, w'wtr, ending'char, in-data'ref) {
       }
    }
 }
-var input-path'char[] @real-name(input_path);
+input-path'char[] @real-name(input_path);
 char-escape-value(c'char)'i32;
 struct 'include-path[len'u32, str'char[256]];
-var include-path-v'include-path[];
-var include-path-cap'u8;
-var include-path-c'u8;
-// var lock-path:char[];
+include-path-v'include-path[];
+include-path-cap'u8;
+include-path-c'u8;
+// lock-path:char[];
 // parser-at-exit();
 write-cp1(input-path-len'u32, text-data'ref, text-size'usz, bin-data'ref, bin-size'usz)'bool;
 file-mtime(path'char[])'u64;
@@ -939,7 +939,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    .include-path-cap = 8;
    'c.malloc-arr(.include-path-v, .include-path-cap);
    quick-alloc-init();
-   // loop i = 1; i < arg-c {
+   // loop i' = 1; i < arg-c {
    //    arg! = arg-v[i++];
    //    if arg[0] == ''- {
    //       if arg[1] == ''I {
@@ -957,7 +957,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    //             .include-path-cap = grow(.include-path-c);
    //             C.realloc-arr(.include-path-v, .include-path-cap);
    //          }
-   //          var inc:IncludePath;
+   //          inc:IncludePath;
    //          quick-alloc-plus(inc, arg-len);
    //          C.memcpy(inc.str, arg, arg-len);
    //          inc.len = arg-len;
@@ -994,7 +994,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    .func-main = #nil;
    .input-path = arg-v[1];
    // C1.stdout{"reading " .input-path ''\n}
-   var in-data'u8[];
+   in-data'u8[];
    in-data = read-file(.input-path, 0, 2, 0, in-size?);
    // input-path-len! = C.strlen(.input-path);
    // mtime! = file-mtime(.input-path);
@@ -1004,9 +1004,9 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    }
    // in-data[0] = ''\n;
    // in-data = &in-data[1];
-   var lock-path = arg-v[2];
-   var lock-path-len = 'c.strlen(lock-path);
-   var ok = false;
+   lock-path' = arg-v[2];
+   lock-path-len' = 'c.strlen(lock-path);
+   ok' = false;
    if (lock-path-len > 6) && (lock-path[lock-path-len - 6] == ''.) && (lock-path[lock-path-len - 5] == ''c) && (lock-path[lock-path-len - 4] == ''p) && (lock-path[lock-path-len - 3] == ''1) && (lock-path[lock-path-len - 2] == ''-) {
       if lock-path[lock-path-len - 1] == ''h {
          lock-path[lock-path-len - 1] = ''b;
@@ -1025,7 +1025,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    //       // Can:T create output file
    //       Sys.stat(lock-path, out-stat!);
    //       in-fd.stat(in-stat!);
-   //       var skip;
+   //       skip';
    //       "#ifdef __APPLE__";
    //          skip = (||, out-stat.mtimespec.sec > in-stat.mtimespec.sec, (&&, out-stat.mtimespec.sec == in-stat.mtimespec.sec, out-stat.mtimespec.nsec > in-stat.mtimespec.nsec));
    //       "#elif defined(__unix__)";
@@ -1050,10 +1050,10 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    //    "Please convert the line endings to Unix-style line endings\n"}
    //    C.exit(#failure);
    // }
-   var new-data = preprocess(.input-path, in-data, in-size);
+   new-data' = preprocess(.input-path, in-data, in-size);
    'c.free(in-data);
    in-data = new-data;
-   var r-end'rdr.;
+   r-end'rdr.;
    r-end.ref = in-data;
    r-end.pos += in-size;
    parse-str-init(in-size * 2); // multiply by two for the escape sequences
@@ -1064,37 +1064,37 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    .include-cap = 64;
    malloc-arr(.include-str-v, .include-cap);
    malloc-arr(.include-len-v, .include-cap);
-   .at-cap = 64'at;
-   malloc-arr(.at-v, .at-cap'base);
-   .at-c = 2'at;
+   .at-cap = 'at(64);
+   malloc-arr(.at-v, 'base(.at-cap));
+   .at-c = 'at(2);
    .at-v[0].type = #basic;
    .at-v[0].parent = #nil;
    .at-v[0].name.basic = #root;
    .at-v[1].type = #basic;
    .at-v[1].parent = #nil;
    .at-v[1].name.basic = #relative;
-   .func-cap = 32'func;
-   malloc-arr(.func-v, .func-cap'base);
-   .struct-cap = 32'struct;
-   malloc-arr(.struct-v, .struct-cap'base);
+   .func-cap = 'func(32);
+   malloc-arr(.func-v, 'base(.func-cap));
+   .struct-cap = 'struct(32);
+   malloc-arr(.struct-v, 'base(.struct-cap));
    .decl-fvar-cap = 32;
    malloc-arr(.decl-fvar-v, .decl-fvar-cap);
 
-   var psr = 'parser.alloc();
+   psr' = 'parser.alloc();
    'lexer.init(lex?, in-data, in-size);
-   var next-row = 1;
-   var next-col = 1;
+   next-row' = 1;
+   next-col' = 1;
    .row = 1;
    .col = 1;
    .id-blank = id-add(0, "");
-   var tok'token-data.;
+   tok'token-data.;
    loop {
       tok.i32.row = next-row;
       tok.i32.col = next-col;
-      var t = lex.scan();
+      t' = lex.scan();
       if true { // t != #space)
          // when reporting the row and column of tokens, skip the spaces
-         var pos = lex.start;
+         pos' = lex.start;
          loop pos < r-end.p1 {
             if pos[0] == ''  {
                tok.i32.col++;
@@ -1125,14 +1125,14 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
             //    psr.parse(t, tok);
             // }
             case #char1 {
-               var r'rdr.;
+               r'rdr.;
                r.ref = lex.start;
                tok.i32.id = r.p1[2];
                .last-token = t;
                psr.parse(t, tok);
             }
             case #char2 {
-               var r'rdr.;
+               r'rdr.;
                r.ref = lex.start;
                tok.i32.id = char-escape-value(r.p1[3]);
                .last-token = t;
@@ -1140,9 +1140,9 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
             }
             case #space-at-no-decl-str {
                // find the '@' character and start counting from there
-               var r-start'rdr.;
+               r-start'rdr.;
                r-start.ref = lex.start;
-               var start = 9;
+               start' = 9;
                loop {
                   start++;
                   r-start.pos++;
@@ -1156,9 +1156,9 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
             }
             case #space-at-real-name-str {
                // find the '@' character and start counting from there
-               var r-start'rdr.;
+               r-start'rdr.;
                r-start.ref = lex.start;
-               var start = 11;
+               start' = 11;
                loop {
                   start++;
                   r-start.pos++;
@@ -1206,19 +1206,19 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                psr.parse(t, tok);
             }
             case #import {
-               loop i = 0; {
+               loop i' = 0; {
                   if lex.start[i++] == ''" {
-                     var r-begin'rdr.;
+                     r-begin'rdr.;
                      r-begin.ref = &lex.start[i];
-                     var r-end2'rdr.;
+                     r-end2'rdr.;
                      r-end2.ref = lex.cursor;
                      r-end2.pos--;
-                     var len = r-end2.pos - r-begin.pos;
+                     len' = r-end2.pos - r-begin.pos;
                      if len > 255 {
                         'c1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
                         'c.exit(#failure);
                      }
-                     tok.i32.id = include-add(len, r-begin.char)'base;
+                     tok.i32.id = 'base(include-add(len, r-begin.char));
                      // C1.stdout{"import '" r-begin.char, len "'\n"}
                      break;
                   }
@@ -1227,19 +1227,19 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                psr.parse(t, tok);
             }
             case #require {
-               loop i = 0; {
+               loop i' = 0; {
                   if lex.start[i++] == ''" {
-                     var r-begin'rdr.;
+                     r-begin'rdr.;
                      r-begin.ref = &lex.start[i];
-                     var r-end2'rdr.;
+                     r-end2'rdr.;
                      r-end2.ref = lex.cursor;
                      r-end2.pos--;
-                     var len = r-end2.pos - r-begin.pos;
+                     len' = r-end2.pos - r-begin.pos;
                      if len > 255 {
                         'c1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
                         'c.exit(#failure);
                      }
-                     tok.i32.id = include-add(len, r-begin.char)'base;
+                     tok.i32.id = 'base(include-add(len, r-begin.char));
                      // C1.stdout{"import '" r-begin.char, len "'\n"}
                      break;
                   }
@@ -1253,9 +1253,9 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                psr.parse(t, tok);
             }
             case #using {
-               var found-semicolon = false;
-               loop i = 0; {
-                  var c = lex.cursor[i];
+               found-semicolon' = false;
+               loop i' = 0; {
+                  c' = lex.cursor[i];
                   if c == ''{ {
                      break;
                   } elif c == ''; {
@@ -1271,16 +1271,16 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                psr.parse(t, tok);
             }
             case #loop {
-               var found-semicolon = false;
+               found-semicolon' = false;
                if (&&, lex.cursor[0] != '' , lex.cursor[0] != ''\n)  {
                   'c1.stdout{.input-path '': .row '': .col ": There must be a space or new line after the keyword 'loop'\n"}
                   'c.exit(#failure);
                }
-               loop i = 0; {
-                  // var str:char[];
+               loop i' = 0; {
+                  // str:char[];
                   // str = &lex.cursor[i];
-                  // var start = i;
-                  var c = lex.cursor[i];
+                  // start' = i;
+                  c' = lex.cursor[i];
                   if c == ''\0 {
                      'c1.stdout{.input-path '': .row '': .col ": Keyword 'loop' was found but was not followed by '{'\n"}
                      'c.exit(#failure);
@@ -1388,13 +1388,13 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                } elif .decl-func-ctx-space == null {
                   t = #id-new;
                } elif (&&, .last-token != #dot, .decl-func-ctx-space != null) {
-                  var space = .decl-func-ctx-space;
-                  var found = 'lvar#nil;
+                  space' = .decl-func-ctx-space;
+                  found' = 'lvar#nil;
                   loop {
-                     var v = space.lvar-v;
-                     loop i = 0; space.lvar-c; i++ {
-                        var lvar = v[i];
-                        if lvar.name() == tok.i32.id'id {
+                     v' = space.lvar-v;
+                     loop i' = 0; space.lvar-c; i++ {
+                        lvar' = v[i];
+                        if lvar.name() == 'id(tok.i32.id) {
                            found = lvar;
                            break;
                         }
@@ -1415,18 +1415,18 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
             case #soa-field {
                // tok.i32.id = 
                // lex.get-id(2, 0);
-               var rbracket = 1;
+               rbracket' = 1;
                loop lex.start[rbracket] != ''] {
                   rbracket++;
                }
                if true {
-                  var r-start'rdr.;
+                  r-start'rdr.;
                   r-start.ref = lex.start;
                   r-start.pos += 1;
-                  var r-cursor'rdr.;
+                  r-cursor'rdr.;
                   r-cursor.ref = lex.cursor;
-                  var length = rbracket - 1;
-                  var end = r-cursor.pos - r-start.pos - length;
+                  length' = rbracket - 1;
+                  end' = r-cursor.pos - r-start.pos - length;
                   if length == 0 {
                      tok.i32.id = -1;
                   } else {
@@ -1435,12 +1435,12 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                }
                if true {
                   rbracket++;
-                  var r-start'rdr.;
+                  r-start'rdr.;
                   r-start.ref = lex.start;
                   r-start.pos += rbracket;
-                  var r-cursor'rdr.;
+                  r-cursor'rdr.;
                   r-cursor.ref = lex.cursor;
-                  var length = r-cursor.pos - r-start.pos;
+                  length' = r-cursor.pos - r-start.pos;
                   tok.i32.id2 = lex.get-id(rbracket, 0);
                }
                .last-token = t;
@@ -1457,7 +1457,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                psr.parse(t, tok);
             }
             case #space {
-               var ch = lex.cursor[0];
+               ch' = lex.cursor[0];
                if ch == ''{ {
                   t = #space-then-open-curly-brace;
                } elif (||, .last-token == #string, .last-token == #string-macro) {
@@ -1488,7 +1488,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
          }
       // }
       if t == #end { break }
-      var pos = lex.start;
+      pos' = lex.start;
       loop pos < lex.cursor {
          if (pos[0] & 128) == 0 {
             if pos[0] == ''\n {
@@ -1505,37 +1505,37 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    psr.parse(#nil, tok);
    psr.free();
    // C1.stdout{"parsing finished\n"}
-   var w-begin'wtr.;
+   w-begin'wtr.;
    w-begin.ref = quick-alloc((in-size << 2) + 1024);
-   var w'wtr.;
+   w'wtr.;
    w.ref = w-begin.ref;
    w.n(.id-c);
-   loop i = 0; .id-c; i++ {
+   loop i' = 0; .id-c; i++ {
       w.n1(.id-len-v[i]);
       w.copy(.id-str-v[i], .id-len-v[i]);
       w.n1(0);
    }
-   var id-bit8-c = (.id-c + 7) >> 3;
+   id-bit8-c' = (.id-c + 7) >> 3;
    malloc-arr(.id-in-header-v, id-bit8-c);
    malloc-arr(.id-in-header-idx-v, .id-c);
    malloc-arr(.id-in-header-id-v, .id-c);
 
    w.n(.include-c);
    // C1.stdout{"There are " .include-c " includes\n"}
-   loop i = 0; .include-c; i++ {
+   loop i' = 0; .include-c; i++ {
       w.n1(.include-len-v[i]);
       w.copy(.include-str-v[i], .include-len-v[i]);
       w.n1(0);
    }
 
-   var at-bit8-c = (.at-c'base + 7) >> 3;
+   at-bit8-c' = ('base(.at-c) + 7) >> 3;
    malloc-arr(.at-in-header-v, at-bit8-c);
-   malloc-arr(.at-in-header-idx-v, .at-c'base);
-   malloc-arr(.at-in-header-at-v, .at-c'base);
+   malloc-arr(.at-in-header-idx-v, 'base(.at-c));
+   malloc-arr(.at-in-header-at-v, 'base(.at-c));
 
-   w.n(.at-c'base);
-   loop i = 0; .at-c; i++ {
-      var at = .at-v[i];
+   w.n('base(.at-c));
+   loop i' = 0; .at-c; i++ {
+      at' = .at-v[i];
       at.type.wr(w);
       if at.type == #basic {
          at.name.basic.wr(w);
@@ -1556,10 +1556,10 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    // if write-cp1(input-path-len, in-data, in-size, w-begin.ref, w.pos - w-begin.pos) { return 0 }
    // else { return 1 }
    
-   // var out-path:char[] = C.malloc(C.strlen(lock-path) + 4 + 1);
+   // out-path:char[] = C.malloc(C.strlen(lock-path) + 4 + 1);
    // C.sprintf(out-path, "%s.tmp", lock-path);
    // out-path-len! = C.strlen(out-path);
-   var tmp-path'char[256 + 16 + 10];
+   tmp-path'char[256 + 16 + 10];
    'c1.sprintf(tmp-path, f?).f{lock-path ''- 'x.getpid()}
    if !write-file(tmp-path, w-begin.ref, w.pos - w-begin.pos) {
       'c1.stdout{"Cannot open file for writing: " tmp-path ''\n}
@@ -1572,22 +1572,22 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
 
    w.ref = w-begin.ref;
    w.n(.id-in-header-c);
-   loop j = 0; .id-in-header-c; j++ {
-      var i = .id-in-header-id-v[j];
+   loop j' = 0; .id-in-header-c; j++ {
+      i' = .id-in-header-id-v[j];
       w.n1(.id-len-v[i]);
       w.copy(.id-str-v[i], .id-len-v[i]);
       w.n1(0);
    }
    w.n(.include-c);
-   loop i = 0; .include-c; i++ {
+   loop i' = 0; .include-c; i++ {
       w.n1(.include-len-v[i]);
       w.copy(.include-str-v[i], .include-len-v[i]);
       w.n1(0);
    }
    w.n(.at-in-header-c);
-   loop j = 0; .at-in-header-c; j++ {
-      var i = .at-in-header-at-v[j];
-      var at = .at-v[i];
+   loop j' = 0; .at-in-header-c; j++ {
+      i' = .at-in-header-at-v[j];
+      at' = .at-v[i];
       at.type.wr(w);
       if at.type == #basic {
          at.name.basic.wr(w);
@@ -1618,19 +1618,19 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
    .id-c = 0;
    .id-in-header-c = 0;
    .include-c = 0;
-   .at-c = 0'at;
+   .at-c = 'at(0);
    .at-in-header-c = 0;
-   .at-alias-c = 0'alias;
-   .cvar-c = 0'cvar;
-   .gvar-c = 0'gvar;
-   .enum-c = 0'enum;
+   .at-alias-c = 'alias(0);
+   .cvar-c = 'cvar(0);
+   .gvar-c = 'gvar(0);
+   .enum-c = 'enum(0);
    .str-c = 0;
    .expr-c = 0;
-   .struct-c = 0'struct;
-   .func-c = 0'func;
+   .struct-c = 'struct(0);
+   .func-c = 'func(0);
    .import-c = 0;
-   .template-inst-c = 0'template-inst;
-   .template-code-c = 0'template-code;
+   .template-inst-c = 'template-inst(0);
+   .template-code-c = 'template-code(0);
    return 0;
 }
  

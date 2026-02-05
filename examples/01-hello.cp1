@@ -6,7 +6,7 @@ meta #create-hello-function @reflection {
    using 'c1 = 'libcp1;
    hello-${arg.suffix}() {
       'c1.stdout{"Hello ${arg.suffix} from metaprogram!\n"}
-      loop i = 0; ${arg.count}; i++ {
+      loop i' = 0; ${arg.count}; i++ {
          'c1.stdout{"Counting... " i ''\n}
       }
       // Do some reflection
@@ -34,13 +34,13 @@ main()'intc { // intc is for C compatibility, use i32 elsewhere
    hello-world(); // This calls the function from metaprogram at line 20
    hello-five(); // This calls the function from metaprogram at line 21
 
-   // Declare a variable via function argument's type using '!' syntax
+   // Declare a variable via function argument's type using "'" symbol
    // The dog variable is allocated on the stack
-   'dog.init(dog!);
+   'dog.init(dog');
    dog.bark(); dog.bark(); dog.bark(); // Bark 3 times
 
-   one! = 1; // '!' declares 'one' as a new variable
-   seven! = 7;
+   one' = 1; // "'" declares 'one' as a new variable
+   seven' = 7;
    'c1.stdout{one " + " seven " = " one + seven ''\n}
    return 0;
 }

@@ -2,13 +2,13 @@ using 'c1 = 'libcp1;
 using 'cp1 {
 using 'stmt-space {
    wr-if(stmt'stmt, w'wtr, header'bool) @case.wr() @inline {
-      var s'stmt-if = stmt;
+      s'stmt-if = stmt;
       s.expr.wr(w, header);
    }
-   var if-stack-v'stmt-if[256];
-   var if-stack-c'u8;
+   if-stack-v'stmt-if[256];
+   if-stack-c'u8;
    rd-if(space'stmt-space, r'rdr) @case.rd() @inline {
-      var s'stmt-if;
+      s'stmt-if;
       quick-alloc-one(s);
       s.expr.rd(r);
       s.overload-type = #nil;
@@ -17,11 +17,11 @@ using 'stmt-space {
       .if-stack-c++;
    }
    wr-if-elif(stmt'stmt, w'wtr, header'bool) @case.wr() @inline {
-      var s'stmt-if-elif = stmt;
+      s'stmt-if-elif = stmt;
       s.expr.wr(w, header);
    }
    rd-if-elif(space'stmt-space, r'rdr) @case.rd() @inline {
-      var s'stmt-if-elif;
+      s'stmt-if-elif;
       quick-alloc-one(s);
       s.expr.rd(r);
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #if-elif);
@@ -30,7 +30,7 @@ using 'stmt-space {
    wr-if-else(stmt'stmt, w'wtr, header'bool) @case.wr() @inline {
    }
    rd-if-else(space'stmt-space, r'rdr) @case.rd() @inline {
-      var s'stmt-if-else;
+      s'stmt-if-else;
       quick-alloc-one(s);
       space.stmt-push(s.base, 0, 0, 0, 0, #if-else);
       // s.overload = #nil;
@@ -40,7 +40,7 @@ using 'stmt-space {
    wr-if-end(stmt'stmt, w'wtr, header'bool) @case.wr() @inline {
    }
    rd-if-end(space'stmt-space, r'rdr) @case.rd() @inline {
-      var s'stmt-if-end;
+      s'stmt-if-end;
       quick-alloc-one(s);
       space.stmt-push(s.base, 0, 0, 0, 0, #if-end);
       // s.overload = #nil;
@@ -51,7 +51,7 @@ using 'stmt-space {
 }
 using 'stmt {
    write-if(stmt'stmt) @case.write() @inline {
-      var s'stmt-if = stmt;
+      s'stmt-if = stmt;
       if s.is-overload {
          s.expr.write();
          output{"; {\n"}
@@ -62,21 +62,21 @@ using 'stmt {
       output{") {\n"}
    }
    process-if(stmt'stmt, ok'bool&) @case.process() @inline {
-      var s'stmt-if = stmt;
+      s'stmt-if = stmt;
       if !s.expr.value(1, false, s.val) {
          return;
       }
-      var type-ptr = s.val.type.ptr();
+      type-ptr' = s.val.type.ptr();
       if type-ptr.def == #enum {
-         var en = type-ptr.decl.enumm.ptr();
-         var f-idx = en.overload-if-begin;
+         en' = type-ptr.decl.enumm.ptr();
+         f-idx' = en.overload-if-begin;
          if f-idx != #nil {
-            var f = f-idx.ptr();
-            var e-method = 'expr-i.alloc();
-            var group-v'u8[1];
+            f' = f-idx.ptr();
+            e-method' = 'expr-i.alloc();
+            group-v'u8[1];
             group-v[0] = 1;
-            var carg-v'expr-i[1];
-            var e-bool = 'expr-i.alloc();
+            carg-v'expr-i[1];
+            e-bool' = 'expr-i.alloc();
             'expr-i.set-bool(e-bool, false);
             carg-v[0] = e-bool;
             'expr-i.set-method(e-method, s.expr, f.decl.name, false, 1, group-v, 1, carg-v);
@@ -97,7 +97,7 @@ using 'stmt {
       ok = true;
    }
    write-if-elif(stmt'stmt) @case.write() @inline {
-      var s'stmt-if-elif = stmt;
+      s'stmt-if-elif = stmt;
       if s.is-overload {
          output{"} "}
          s.expr-else.write();
@@ -111,25 +111,25 @@ using 'stmt {
       output{") {\n"}
    }
    process-if-elif(stmt'stmt, ok'bool&) @case.process() @inline {
-      var s'stmt-if-elif = stmt;
+      s'stmt-if-elif = stmt;
       if !s.expr.value(1, false, s.val) {
          return;
       }
-      var type = s.val.type;
-      var type-ptr = type.ptr();
+      type' = s.val.type;
+      type-ptr' = type.ptr();
       if type-ptr.def == #enum {
-         var en = type-ptr.decl.enumm.ptr();
-         var f-idx = en.overload-if-begin;
+         en' = type-ptr.decl.enumm.ptr();
+         f-idx' = en.overload-if-begin;
          if f-idx != #nil {
             if true {
-               var f-idx2 = en.overload-if-else;
+               f-idx2' = en.overload-if-else;
                if f-idx2 != #nil {
-                  var f = f-idx2.ptr();
-                  var e-func = 'expr-i.alloc();
-                  var group-v'u8[1];
+                  f' = f-idx2.ptr();
+                  e-func' = 'expr-i.alloc();
+                  group-v'u8[1];
                   group-v[0] = 1;
-                  var carg-v'expr-i[1];
-                  var e-bool = 'expr-i.alloc();
+                  carg-v'expr-i[1];
+                  e-bool' = 'expr-i.alloc();
                   'expr-i.set-bool(e-bool, true);
                   carg-v[0] = e-bool;
                   'expr-i.set-func(e-func, type, f.decl.name, false, 1, group-v, 1, carg-v);
@@ -142,12 +142,12 @@ using 'stmt {
                   return;
                }
             }
-            var f = f-idx.ptr();
-            var e-method = 'expr-i.alloc();
-            var group-v'u8[1];
+            f' = f-idx.ptr();
+            e-method' = 'expr-i.alloc();
+            group-v'u8[1];
             group-v[0] = 1;
-            var carg-v'expr-i[1];
-            var e-bool = 'expr-i.alloc();
+            carg-v'expr-i[1];
+            e-bool' = 'expr-i.alloc();
             'expr-i.set-bool(e-bool, true);
             carg-v[0] = e-bool;
             'expr-i.set-method(e-method, s.expr, f.decl.name, false, 1, group-v, 1, carg-v);
@@ -167,7 +167,7 @@ using 'stmt {
       ok = true;
    }
    write-if-else(stmt'stmt) @case.write() @inline {
-      var s'stmt-if-else = stmt;
+      s'stmt-if-else = stmt;
       if s.expr != #nil {
          output{"} "}
          s.expr.write();
@@ -177,18 +177,18 @@ using 'stmt {
       output{"} else {\n"}
    }
    process-if-else(stmt'stmt, ok'bool&) @case.process() @inline {
-      var s'stmt-if-else = stmt;
-      var overload-type = s.if-begin.overload-type;
+      s'stmt-if-else = stmt;
+      overload-type' = s.if-begin.overload-type;
       if overload-type != #nil {
-         var en = overload-type.ptr().decl.enumm.ptr();
-         var f-idx = en.overload-if-else;
+         en' = overload-type.ptr().decl.enumm.ptr();
+         f-idx' = en.overload-if-else;
          if f-idx != #nil {
-            var f = f-idx.ptr();
-            var e-func = 'expr-i.alloc();
-            var group-v'u8[1];
+            f' = f-idx.ptr();
+            e-func' = 'expr-i.alloc();
+            group-v'u8[1];
             group-v[0] = 1;
-            var carg-v'expr-i[1];
-            var e-bool = 'expr-i.alloc();
+            carg-v'expr-i[1];
+            e-bool' = 'expr-i.alloc();
             'expr-i.set-bool(e-bool, false);
             carg-v[0] = e-bool;
             'expr-i.set-func(e-func, overload-type, f.decl.name, false, 1, group-v, 1, carg-v);
@@ -203,7 +203,7 @@ using 'stmt {
       ok = true;
    }
    write-if-end(stmt'stmt) @case.write() @inline {
-      var s'stmt-if-end = stmt;
+      s'stmt-if-end = stmt;
       if s.expr != #nil {
          output{"} "}
          s.expr.write();
@@ -213,15 +213,15 @@ using 'stmt {
       output{"}\n"}
    }
    process-if-end(stmt'stmt, ok'bool&) @case.process() @inline {
-      var s'stmt-if-end = stmt;
-      var overload-type = s.if-begin.overload-type;
+      s'stmt-if-end = stmt;
+      overload-type' = s.if-begin.overload-type;
       if overload-type != #nil {
-         var en = overload-type.ptr().decl.enumm.ptr();
-         var f-idx = en.overload-if-end;
+         en' = overload-type.ptr().decl.enumm.ptr();
+         f-idx' = en.overload-if-end;
          if f-idx != #nil {
-            var f = f-idx.ptr();
-            var e-func = 'expr-i.alloc();
-            var group-v'u8[1];
+            f' = f-idx.ptr();
+            e-func' = 'expr-i.alloc();
+            group-v'u8[1];
             group-v[0] = 0;
             'expr-i.set-func(e-func, overload-type, f.decl.name, false, 1, group-v, 0, null);
             s.expr = e-func;
@@ -242,21 +242,21 @@ stmt-if-begin() {
 stmt-elif-begin() {
 }
 stmt-if-set(expr'expr-i, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32) {
-   var s'stmt-if;
+   s'stmt-if;
    quick-alloc-one(s);
    s.expr = expr;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #if);
    stmt-space-begin();
 }
 stmt-elif-set(expr'expr-i, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32) {
-   var s'stmt-if-elif;
+   s'stmt-if-elif;
    quick-alloc-one(s);
    s.expr = expr;
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #if-elif);
    stmt-space-begin();
 }
 stmt-else-set() {
-   var s'stmt-if-else;
+   s'stmt-if-else;
    quick-alloc-one(s);
    stmt-push(s.base, 0, 0, 0, 0, #if-else);
    stmt-space-begin();
@@ -271,7 +271,7 @@ stmt-else-end() {
    stmt-space-end();
 }
 stmt-if-end-ifs() {
-   var s'stmt-if-end;
+   s'stmt-if-end;
    quick-alloc-one(s);
    stmt-push(s.base, 0, 0, 0, 0, #if-end);
    stmt-space-end();

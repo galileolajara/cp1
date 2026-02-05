@@ -2,16 +2,16 @@ using 'c1 = 'libcp1;
 using 'cp1 {
 enum 'compare[#eq, #not-eq, #lt, #le, #gt, #ge]'u8 {
    wr(e'this, w'wtr) @inline {
-      w.n1(e'base);
+      w.n1('base(e));
    }
    rd(e'this&, r'rdr) @inline {
-      e = r.n1()'compare;
+      e = 'compare(r.n1());
    }
 }
 expr-compare(left'expr-i, right'expr-i, type'compare)'expr-i {
-   var e'expr-compare;
+   e'expr-compare;
    quick-alloc-one(e);
-   var e-idx = expr-push(e.base, #compare);
+   e-idx' = expr-push(e.base, #compare);
    e.left = left;
    e.right = right;
    e.type = type;
@@ -19,13 +19,13 @@ expr-compare(left'expr-i, right'expr-i, type'compare)'expr-i {
 }
 using 'expr-i {
    wr-compare(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      var e'expr-compare = expr;
+      e'expr-compare = expr;
       e.left.wr(w, header);
       e.right.wr(w, header);
       e.type.wr(w);
    }
    rd-compare(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      var e'expr-compare;
+      e'expr-compare;
       quick-alloc-one(e);
       e-idx.set(e.base, #compare);
       e.left.rd(r);
@@ -33,7 +33,7 @@ using 'expr-i {
       e.type.rd(r);
    }
    write-compare(expr'expr) @case.write() @inline {
-      var e'expr-compare = expr;
+      e'expr-compare = expr;
       e.left.write-value(e.left-val);
       if e.is-overload { return }
       switch e.type {
@@ -47,7 +47,7 @@ using 'expr-i {
       e.right.write-value(e.right-val);
    }
    value-compare(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      var expr'expr-compare = e.ptr();
+      expr'expr-compare = e.ptr();
       if expr.is-overload {
          ok = expr.left.value(ref, paren, v);
          return;
@@ -62,7 +62,7 @@ using 'expr-i {
       ok = true;
    }
    type-compare(expr'expr, at'at&) @case.type() @inline {
-      var e'expr-compare = expr;
+      e'expr-compare = expr;
       if e.is-overload {
          at = e.left.type();
          return;
@@ -70,25 +70,25 @@ using 'expr-i {
       at = basic-type(#bool);
    }
    process-compare(expr'expr, ok'bool&) @case.process() @inline {
-      var e'expr-compare = expr;
-      var left-type = e.left.type();
-      var left-type-ptr = left-type.ptr();
+      e'expr-compare = expr;
+      left-type' = e.left.type();
+      left-type-ptr' = left-type.ptr();
       e.right.try-deduce(left-type);
       if left-type-ptr.def == #enum {
-         var en = left-type-ptr.decl.enumm.ptr();
-         var f-idx = en.overload-compare-last;
+         en' = left-type-ptr.decl.enumm.ptr();
+         f-idx' = en.overload-compare-last;
          if f-idx != #nil {
-            var e-right-type = e.right.type();
-            var f = f-idx.ptr();
+            e-right-type' = e.right.type();
+            f' = f-idx.ptr();
             loop {
                if f.farg-v[1].decl.type == e-right-type {
-                  var e-method = 'expr-i.alloc();
-                  var group-v'u8[1];
+                  e-method' = 'expr-i.alloc();
+                  group-v'u8[1];
                   group-v[0] = 2;
-                  var carg-v'expr-i[2];
+                  carg-v'expr-i[2];
                   carg-v[0] = e.right;
-                  var e-cvar = 'expr-i.alloc();
-                  var id-op;
+                  e-cvar' = 'expr-i.alloc();
+                  id-op';
                   switch e.type {
                      case #eq { id-op = .id-eq }
                      case #not-eq { id-op = .id-ne }
@@ -115,26 +115,26 @@ using 'expr-i {
             f-idx = en.overload-compare-last;
             f = f-idx.ptr();
             loop {
-               var en2 = f.farg-v[1].decl.type.ptr().decl.enumm.ptr();
-               var f2-idx = en2.overload-get-last;
+               en2' = f.farg-v[1].decl.type.ptr().decl.enumm.ptr();
+               f2-idx' = en2.overload-get-last;
                if f2-idx != #nil {
-                  var f2 = f2-idx.ptr();
+                  f2' = f2-idx.ptr();
                   loop {
                      if f2.farg-v[0].decl.type == e-right-type {
-                        var e-func = 'expr-i.alloc();
-                        var group-v'u8[1];
+                        e-func' = 'expr-i.alloc();
+                        group-v'u8[1];
                         group-v[0] = 1;
-                        var carg-v'expr-i[1];
+                        carg-v'expr-i[1];
                         carg-v[0] = e.right;
                         set-func(e-func, f2.at, f2.decl.name, false, 1, group-v, 1, carg-v);
                         if true {
-                           var e-method = 'expr-i.alloc();
-                           var group-v2'u8[1];
+                           e-method' = 'expr-i.alloc();
+                           group-v2'u8[1];
                            group-v2[0] = 2;
-                           var carg-v2'expr-i[2];
+                           carg-v2'expr-i[2];
                            carg-v2[0] = e-func;
-                           var e-cvar = 'expr-i.alloc();
-                           var id-op;
+                           e-cvar' = 'expr-i.alloc();
+                           id-op';
                            switch e.type {
                               case #eq { id-op = .id-eq }
                               case #not-eq { id-op = .id-ne }

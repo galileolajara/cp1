@@ -107,24 +107,24 @@ using 'libcp1 {
       }
       struct 'f-u32[u32'u32] {
          f(f'this, fmt'fmt) @inline {
-            var val = f.u32;
+            val' = f.u32;
             if val == 0 {
                fmt.ptr[fmt.len++] = ''0;
             } else {
                // integer to string, count the digits
-               var data'char[];
+               data'char[];
                data = &fmt.ptr[fmt.len];
-               var digits = 0;
+               digits' = 0;
                loop {
                   data[digits++] = (val % 10) + ''0;
                   val /= 10;
                   if val == 0 { break }
                }
                // reverse the string
-               var start = 0;
-               var end = digits - 1;
+               start' = 0;
+               end' = digits - 1;
                loop start < end {
-                  var tmp = data[start];
+                  tmp' = data[start];
                   data[start] = data[end];
                   data[end] = tmp;
                   start++;
@@ -136,24 +136,24 @@ using 'libcp1 {
       }
       struct 'f-u64[u64'u64] {
          f(f'this, fmt'fmt) @inline {
-            var val = f.u64;
+            val' = f.u64;
             if val == 0 {
                fmt.ptr[fmt.len++] = ''0;
             } else {
                // integer to string, count the digits
-               var data'char[];
+               data'char[];
                data = &fmt.ptr[fmt.len];
-               var digits = 0;
+               digits' = 0;
                loop {
                   data[digits++] = (val % 10) + ''0;
                   val /= 10;
                   if val == 0 { break }
                }
                // reverse the string
-               var start = 0;
-               var end = digits - 1;
+               start' = 0;
+               end' = digits - 1;
                loop start < end {
-                  var tmp = data[start];
+                  tmp' = data[start];
                   data[start] = data[end];
                   data[end] = tmp;
                   start++;
@@ -166,25 +166,25 @@ using 'libcp1 {
       enum 'u32-base[#oct, #hex]'u8;
       struct 'f-u32-base[base'u32-base, u32'u32] {
          f(f'this, fmt'fmt) @inline {
-            var val = f.u32;
+            val' = f.u32;
             if f.base == #oct {
                if val == 0 {
                   fmt.ptr[fmt.len++] = ''0;
                } else {
                   // integer to string, count the digits
-                  var data'char[];
+                  data'char[];
                   data = &fmt.ptr[fmt.len];
-                  var digits = 0;
+                  digits' = 0;
                   loop {
                      data[digits++] = (val % 8) + ''0;
                      val /= 8;
                      if val == 0 { break }
                   }
                   // reverse the string
-                  var start = 0;
-                  var end = digits - 1;
+                  start' = 0;
+                  end' = digits - 1;
                   loop start < end {
-                     var tmp = data[start];
+                     tmp' = data[start];
                      data[start] = data[end];
                      data[end] = tmp;
                      start++;
@@ -197,11 +197,11 @@ using 'libcp1 {
                   fmt.ptr[fmt.len++] = ''0;
                } else {
                   // integer to string, count the digits
-                  var data'char[];
+                  data'char[];
                   data = &fmt.ptr[fmt.len];
-                  var digits = 0;
+                  digits' = 0;
                   loop {
-                     var n = val % 16;
+                     n' = val % 16;
                      if n < 10 {
                         data[digits++] = n + ''0;
                      } else {
@@ -211,10 +211,10 @@ using 'libcp1 {
                      if val == 0 { break }
                   }
                   // reverse the string
-                  var start = 0;
-                  var end = digits - 1;
+                  start' = 0;
+                  end' = digits - 1;
                   loop start < end {
-                     var tmp = data[start];
+                     tmp' = data[start];
                      data[start] = data[end];
                      data[end] = tmp;
                      start++;
@@ -227,26 +227,26 @@ using 'libcp1 {
       }
       struct 'f-i32[i32'i32] {
          f(f'this, fmt'fmt) @inline {
-            var val = f.i32;
+            val' = f.i32;
             if val == 0 {
                fmt.ptr[fmt.len++] = ''0;
-            } elif val'i32 < 0 {
+            } elif val < 0 {
                val = -val;
                fmt.ptr[fmt.len++] = ''-;
                // integer to string, count the digits
-               var data'char[];
+               data'char[];
                data = &fmt.ptr[fmt.len];
-               var digits = 0;
+               digits' = 0;
                loop {
                   data[digits++] = (val % 10) + ''0;
                   val /= 10;
                   if val == 0 { break }
                }
                // reverse the string
-               var start = 0;
-               var end = digits - 1;
+               start' = 0;
+               end' = digits - 1;
                loop start < end {
-                  var tmp = data[start];
+                  tmp' = data[start];
                   data[start] = data[end];
                   data[end] = tmp;
                   start++;
@@ -255,19 +255,19 @@ using 'libcp1 {
                fmt.len += digits;
             } else {
                // integer to string, count the digits
-               var data'char[];
+               data'char[];
                data = &fmt.ptr[fmt.len];
-               var digits = 0;
+               digits' = 0;
                loop {
                   data[digits++] = (val % 10) + ''0;
                   val /= 10;
                   if val == 0 { break }
                }
                // reverse the string
-               var start = 0;
-               var end = digits - 1;
+               start' = 0;
+               end' = digits - 1;
                loop start < end {
-                  var tmp = data[start];
+                  tmp' = data[start];
                   data[start] = data[end];
                   data[end] = tmp;
                   start++;
@@ -279,26 +279,26 @@ using 'libcp1 {
       }
       struct 'f-i64[i64'i64] {
          f(f'this, fmt'fmt) @inline {
-            var val = f.i64;
+            val' = f.i64;
             if val == 0 {
                fmt.ptr[fmt.len++] = ''0;
-            } elif val'i64 < 0 {
+            } elif val < 0 {
                val = -val;
                fmt.ptr[fmt.len++] = ''-;
                // integer to string, count the digits
-               var data'char[];
+               data'char[];
                data = &fmt.ptr[fmt.len];
-               var digits = 0;
+               digits' = 0;
                loop {
                   data[digits++] = (val % 10) + ''0;
                   val /= 10;
                   if val == 0 { break }
                }
                // reverse the string
-               var start = 0;
-               var end = digits - 1;
+               start' = 0;
+               end' = digits - 1;
                loop start < end {
-                  var tmp = data[start];
+                  tmp' = data[start];
                   data[start] = data[end];
                   data[end] = tmp;
                   start++;
@@ -307,19 +307,19 @@ using 'libcp1 {
                fmt.len += digits;
             } else {
                // integer to string, count the digits
-               var data'char[];
+               data'char[];
                data = &fmt.ptr[fmt.len];
-               var digits = 0;
+               digits' = 0;
                loop {
                   data[digits++] = (val % 10) + ''0;
                   val /= 10;
                   if val == 0 { break }
                }
                // reverse the string
-               var start = 0;
-               var end = digits - 1;
+               start' = 0;
+               end' = digits - 1;
                loop start < end {
-                  var tmp = data[start];
+                  tmp' = data[start];
                   data[start] = data[end];
                   data[end] = tmp;
                   start++;

@@ -54,11 +54,11 @@ using 'i32 { // access the namespace of 32-bit int, then add a "print" and "incr
    }
 }
 main()'intc {
-   'coord.init(s!); // s is automatically declared as a coord allocated in the stack
+   'coord.init(s'); // s is automatically declared as a coord allocated in the stack
    s.walk(#left);
    s.walk(#down);
    'c1.stdout{"The location is at (" s.x ", " s.y ")\n"}
-   i! = 7'i32;
+   i' = 'i32(7);
    i.print();
    i.inc();
    i.print();

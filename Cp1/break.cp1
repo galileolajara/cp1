@@ -6,7 +6,7 @@ struct 'stmt-break[
    nest'u8,
 ];
 stmt-break(id'id, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32) {
-   var s'stmt-break;
+   s'stmt-break;
    quick-alloc-one(s);
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #break);
    // s.id = id;
@@ -18,11 +18,11 @@ stmt-break(id'id, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32) {
 }
 using 'stmt-space {
    wr-break(stmt'stmt, w'wtr, header'bool) @case.wr() @inline {
-      var s'stmt-break = stmt;
+      s'stmt-break = stmt;
       w.n1(s.nest);
    }
    rd-break(space'stmt-space, r'rdr) @case.rd() @inline {
-      var s'stmt-break;
+      s'stmt-break;
       quick-alloc-one(s);
       s.nest = r.n1();
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #break);
@@ -30,11 +30,11 @@ using 'stmt-space {
 }
 using 'stmt {
    write-break(stmt'stmt) @case.write() @inline {
-      var s'stmt-break = stmt;
+      s'stmt-break = stmt;
       output{"goto break_" .nest-stack-id-v[s.nest] ";\n"}
    }
    process-break(stmt'stmt, ok'bool&) @case.process() @inline {
-      var s'stmt-break = stmt;
+      s'stmt-break = stmt;
       ok = true;
    }
 }

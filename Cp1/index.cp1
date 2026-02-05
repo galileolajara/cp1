@@ -2,9 +2,9 @@ using 'c = 'libc;
 using 'c1 = 'libcp1;
 using 'cp1 {
 expr-index(left'expr-i, right-v'expr-i[], right-c'i32)'expr-i {
-   var e-idx;
-   loop i = right-c; right-c; {
-      var e'expr-index;
+   e-idx';
+   loop i' = right-c; right-c; {
+      e'expr-index;
       quick-alloc-one(e);
       e-idx = expr-push(e.base, #index);
       e.left = left;
@@ -14,12 +14,12 @@ expr-index(left'expr-i, right-v'expr-i[], right-c'i32)'expr-i {
 }
 using 'expr-i {
    wr-index(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      var e'expr-index = expr;
+      e'expr-index = expr;
       e.left.wr(w, header);
       e.right.wr(w, header);
    }
    write-index(expr'expr) @case.write() @inline {
-      var e'expr-index = expr;
+      e'expr-index = expr;
       e.left.write-value(e.left-val);
       output{''[}
       e.right.write-value(e.right-val);
@@ -31,23 +31,23 @@ using 'expr-i {
       e-idx.set-index(left, right);
    }
    set-index(e-idx'this, left'expr-i, right'expr-i) {
-      var e'expr-index;
+      e'expr-index;
       quick-alloc-one(e);
       e-idx.set(e.base, #index);
       e.left = left;
       e.right = right;
    }
    type-index(expr'expr, at'at&) @case.type() @inline {
-      var e'expr-index = expr;
+      e'expr-index = expr;
       at = e.left.type();
    }
    value-index(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      var expr'expr-index = e.ptr();
+      expr'expr-index = e.ptr();
       v.type = expr.left-val.type;
       v.info.init();
       v.info.copy-from(expr.left-val.info);
       v.info.array-c -= 1;
-      var c = v.info.ref-v[v.info.array-c];
+      c' = v.info.ref-v[v.info.array-c];
       v.ref = (c + 2) - ref;
       v.info.ref-v[v.info.array-c] = ref - 1;
       v.info.count();
@@ -59,7 +59,7 @@ using 'expr-i {
       ok = true;
    }
    process-index(expr'expr, ok'bool&) @case.process() @inline {
-      var e'expr-index = expr;
+      e'expr-index = expr;
       if !e.left.value(1, true, e.left-val) {
          return;
       }

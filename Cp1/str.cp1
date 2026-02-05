@@ -2,15 +2,15 @@ using 'c = 'libc;
 using 'c1 = 'libcp1;
 using 'cp1 {
 enum 'str[#nil = -1, #0]'i32;
-var str-c'i32;
-var str-cap'i32;
-var str-ptr'ref[];
-var str-len'i32[];
-var string-buf'char[] @extern;
-var string-len'i32 @extern;
+str-c'i32;
+str-cap'i32;
+str-ptr'ref[];
+str-len'i32[];
+string-buf'char[] @extern;
+string-len'i32 @extern;
 expr-str(prev'expr-i, macro'bool)'expr-i {
-   var len = .string-len;
-   var n'expr-str-node;
+   len' = .string-len;
+   n'expr-str-node;
    quick-alloc-plus(n, len + 1);
    n.macro = macro;
    n.len = len;
@@ -18,15 +18,15 @@ expr-str(prev'expr-i, macro'bool)'expr-i {
    n.buf[len] = ''\0;
    n.next = null;
    if prev == #nil {
-      var e'expr-str;
+      e'expr-str;
       quick-alloc-one(e);
-      var e-idx = expr-push(e.base, #str);
+      e-idx' = expr-push(e.base, #str);
       e.node-c = 1;
       e.first = n;
       e.last = n;
       return e-idx;
    } else {
-      var e'expr-str = prev.ptr();
+      e'expr-str = prev.ptr();
       e.node-c++;
       e.last.next = n;
       e.last = n;
@@ -36,9 +36,9 @@ expr-str(prev'expr-i, macro'bool)'expr-i {
 write-str-node(len'i32, ptr'ref);
 using 'expr-i {
    wr-str(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      var e'expr-str = expr;
+      e'expr-str = expr;
       w.n(e.node-c);
-      var n = e.first;
+      n' = e.first;
       loop {
          if n.macro {
             w.n((n.len << 1) | 1);
@@ -51,15 +51,15 @@ using 'expr-i {
       }
    }
    rd-str(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      var node-c = r.n();
-      var e'expr-str;
+      node-c' = r.n();
+      e'expr-str;
       quick-alloc-one(e);
       e-idx.set(e.base, #str);
-      var first = true;
+      first' = true;
       loop node-c {
-         var len-macro = r.n();
-         var len = len-macro >> 1;
-         var n'expr-str-node;
+         len-macro' = r.n();
+         len' = len-macro >> 1;
+         n'expr-str-node;
          quick-alloc-plus(n, len + 1);
          n.macro = (len-macro & 1) != 0;
          n.len = len;
@@ -77,8 +77,8 @@ using 'expr-i {
       }
    }
    write-str(expr'expr) @case.write() @inline {
-      var e'expr-str = expr;
-      var n = e.first;
+      e'expr-str = expr;
+      n' = e.first;
       loop {
          output-reserve(n.len << 1);
          n = n.next;

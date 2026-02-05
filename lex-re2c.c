@@ -234,7 +234,6 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "union"                          { return CP1_TOKEN_UNION; }
    "return"                         { return CP1_TOKEN_RETURN; }
    "loop"                           { return CP1_TOKEN_LOOP; }
-   "var"                            { return CP1_TOKEN_VAR; }
    "continue"                       { return CP1_TOKEN_CONTINUE; }
    "break"                          { return CP1_TOKEN_BREAK; }
    "default"                        { return CP1_TOKEN_DEFAULT; }

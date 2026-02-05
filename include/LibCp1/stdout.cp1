@@ -5,8 +5,8 @@ using 'c1 = 'libcp1;
 using 'x = 'posix;
 using 'libcp1 {
    #stdout-buf-size = 4096;
-   var stdout-buf-len'u32;
-   var stdout-buf-data'char[#stdout-buf-size];
+   stdout-buf-len'u32;
+   stdout-buf-data'char[#stdout-buf-size];
    stdout(fmt'fmt) @meta(f-reserve, f, stdout) @inline {
    }
    stdbuf(fmt'fmt) @meta(f-reserve, f, stdbuf) @inline {
@@ -21,7 +21,7 @@ using 'libcp1 {
          "#ifdef LIBCP1_ON_STDOUT";
          "LIBCP1_ON_STDOUT(_Lfmt_0->_Mptr, _Lfmt_0->_Mlen);";
          "#else";
-         1'x'fd.write(fmt.ptr, fmt.len);
+         'x'fd(1).write(fmt.ptr, fmt.len);
          "#endif";
          .stdout-buf-len = 0;
       }

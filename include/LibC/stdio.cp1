@@ -7,8 +7,8 @@ include <stdio.h> {
       scanf(fmt'char @const[])'intc @var-args @no-decl @real-name;
       sscanf(str'char[], fmt'char @const[])'intc @var-args @no-decl @real-name;
 
-      var in'file @no-decl(stdin);
-      var out'file @no-decl(stdout);
+      in'file @no-decl(stdin);
+      out'file @no-decl(stdout);
       struct 'file[] @no-decl(FILE) {
          printf(f'this, str'char @const[])'intc @var-args @no-decl(fprintf);
          flush(f'this)'intc @no-decl(fflush);

@@ -20,26 +20,26 @@ validate-cp1-path(bin'char[], cp1-path'char[]) {
       'c1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must be a relative filepath (e.g. file.cp1), not an absolute path (/home/user/file.cp1)\n"}
       'c.exit(#failure);
    }
-   var cp1-path-len = 'c.strlen(cp1-path);
+   cp1-path-len' = 'c.strlen(cp1-path);
    if (&&, cp1-path[0] == ''., cp1-path[1] == ''/) {
       cp1-path = &cp1-path[2];
       cp1-path-len -= 2;
    }
-   loop j = 0; cp1-path-len; j++ {
+   loop j' = 0; cp1-path-len; j++ {
       if cp1-path[j] == ''\\ {
          print-commands(bin);
          'c1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must not contain backslashes '\\', please use forward slashes '/' instead\n"}
          'c.exit(#failure);
       }
    }
-   loop j = 0; cp1-path-len; j++ {
+   loop j' = 0; cp1-path-len; j++ {
       if cp1-path[j] == ''  {
          print-commands(bin);
          'c1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must not contain a space\n"}
          'c.exit(#failure);
       }
    }
-   loop j = 0; cp1-path-len - 1; j++ {
+   loop j' = 0; cp1-path-len - 1; j++ {
       if (&&, cp1-path[j] == ''., cp1-path[j + 1] == ''/) {
          print-commands(bin);
          'c1.stdout{"Error, [cp1 file] (which is '" cp1-path "') must not contain './'\n"}
@@ -53,9 +53,9 @@ validate-cp1-path(bin'char[], cp1-path'char[]) {
    }
 }
 get-compiler(bin'char[], compiler'char[]) {
-   var path = 'c.strdup('c.getenv("PATH"));
+   path' = 'c.strdup('c.getenv("PATH"));
    "#ifdef _WIN32";
-   loop i = 0; ; i++ {
+   loop i' = 0; ; i++ {
       if path[i] == ''\0 {
          break;
       } elif path[i] == ''\\ {
@@ -63,7 +63,7 @@ get-compiler(bin'char[], compiler'char[]) {
       }
    }
    "#endif";
-   var found;
+   found';
    "#ifdef _WIN32";
    found = 'c.strtok(path, ";");
    "#else";
@@ -71,7 +71,8 @@ get-compiler(bin'char[], compiler'char[]) {
    "#endif";
    loop found != null {
       // C1.stdout{"- " found ''\n}
-      var fd, compile'char[512];
+      fd';
+      compile'char[512];
       'c1.sprintf(compile, f?);
       "#ifdef _WIN32";
       f.f{found "/tcc.exe"}
@@ -118,15 +119,15 @@ include "system2.h" {
 main(arg-c'intc, arg-v'char[][])'intc {
    "#ifdef _WIN32";
    if true {
-      var arg = arg-v[0];
-      var len = 'c.strlen(arg);
+      arg' = arg-v[0];
+      len' = 'c.strlen(arg);
       if (arg[len - 4] == ''.) && (arg[len - 3] == ''e) && (arg[len - 2] == ''x) && (arg[len - 1] == ''e) {
          arg[len - 4] = ''\0;
       }
    }
-   loop i = 0; arg-c; i++ {
-      var arg = arg-v[i];
-      loop j = 0; ; j++ {
+   loop i' = 0; arg-c; i++ {
+      arg' = arg-v[i];
+      loop j' = 0; ; j++ {
          if arg[j] == ''\0 {
             break;
          } elif arg[j] == ''\\ {
@@ -135,16 +136,16 @@ main(arg-c'intc, arg-v'char[][])'intc {
       }
    }
    "#endif";
-   var bin = arg-v[0];
+   bin' = arg-v[0];
    if arg-c != 2 {
       print-commands(bin);
       'c.exit(#failure);
    }
    validate-cp1-path(bin, arg-v[1]);
 
-   var c-path'char[15];
+   c-path'char[15];
    'c.strcpy(c-path, "cp1-c-XXXXXX");
-   var c-fd = 'x.mkstemp(c-path);
+   c-fd' = 'x.mkstemp(c-path);
    if c-fd == #nil {
       print-commands(bin);
       'c1.stdout{"Error, cannot open file for reading: " c-path ''\n}
@@ -152,9 +153,9 @@ main(arg-c'intc, arg-v'char[][])'intc {
    }
    c-fd.close();
    'x.unlink(c-path);
-   var exe-path'char[21];
+   exe-path'char[21];
    'c.strcpy(exe-path, "./cp1-exe-XXXXXX");
-   var exe-fd = 'x.mkstemp(exe-path);
+   exe-fd' = 'x.mkstemp(exe-path);
    if exe-fd == #nil {
       print-commands(bin);
       'c1.stdout{"Error, cannot open file for reading: " exe-path ''\n}
@@ -165,7 +166,7 @@ main(arg-c'intc, arg-v'char[][])'intc {
    c-path[12] = ''.;
    c-path[13] = ''c;
    c-path[14] = ''\0;
-   var compiler'char[8];
+   compiler'char[8];
    get-compiler(bin, compiler);
    "#ifdef _WIN32";
    exe-path[16] = ''.;
@@ -174,31 +175,31 @@ main(arg-c'intc, arg-v'char[][])'intc {
    exe-path[19] = ''e;
    exe-path[20] = ''\0;
    if bin[0] != ''/ {
-      loop i = 0; bin[i] != ''\0; i++ {
+      loop i' = 0; bin[i] != ''\0; i++ {
          if bin[i] == ''/ {
             bin[i] = ''\\;
          }
       }
    }
    "#endif";
-   var command'char[1024];
+   command'char[1024];
    'c1.sprintf(command, f?);
    f.f{''" bin, 'c.strlen(bin) - 4 "-compile\" -c \"" c-path "\" \"" arg-v[1] "\""}
    // C1.stdout{"run command: " command ''\n}
-   var c-ret = system2(command);
+   c-ret' = system2(command);
    if c-ret != 0 {
       'x.unlink(c-path);
       'c.exit(#failure);
    }
    f.f{compiler " -o " exe-path " " c-path}
    // C1.stdout{"run command: " command ''\n}
-   var compile-ret = system2(command);
+   compile-ret' = system2(command);
    'x.unlink(c-path);
    if compile-ret != 0 {
       'c.exit(#failure);
    }
    "#ifdef _WIN32";
-   loop i = 0; ; i++ {
+   loop i' = 0; ; i++ {
       if exe-path[i] == ''\0 {
          break;
       } elif exe-path[i] == ''/ {
@@ -207,7 +208,7 @@ main(arg-c'intc, arg-v'char[][])'intc {
    }
    "#endif";
    // C1.stdout{"run command: " exe-path ''\n}
-   var exe-ret = system2(exe-path);
+   exe-ret' = system2(exe-path);
    'x.unlink(exe-path);
    if exe-ret != 0 {
       'c.exit(#failure);

@@ -4,7 +4,7 @@ using 'cp1 {
 struct 'at-map[data'u64[(#hash-table-size + 7) >> 3]] {
    init(m'this);
    get-or-insert(m'this, parent'at, type'name-type, name'id, val'i32)'i32 {
-      return m.get-or-insert(parent'u32 | (type'u32 << 30), name, val);
+      return m.get-or-insert('u32(parent) | ('u32(type) << 30), name, val);
    }
    get-or-insert(m'this, parent-and-type'u32, name'id, val'i32)'i32;
 }
@@ -14,9 +14,9 @@ struct 'map[data'u64[(#hash-table-size + 7) >> 3]] {
 }
 enum 'overload[#nil, #get, #set, #assign, #math, #bools, #compare, #if-begin, #if-else, #if-end, #statement]'u8;
 crc32c(crc32c'u32, data'ref, size'u32)'u32 @real-name;
-var id-map'map.;
-var include-map'map.;
-var at-map'at-map.;
+id-map'map.;
+include-map'map.;
+at-map'at-map.;
 meta #build-common-codes {
    using 'cp1 {
       struct 'struct-data[
@@ -498,9 +498,9 @@ meta #build-common-codes {
       ];
    }
 }
-var quick-alloc-c'i32;
-var quick-alloc-cap'i32;
-var quick-alloc-v'ref;
+quick-alloc-c'i32;
+quick-alloc-cap'i32;
+quick-alloc-v'ref;
 quick-alloc-init() {
    .quick-alloc-cap = 4 * 1024;
    .quick-alloc-v = 'c.malloc(.quick-alloc-cap);
@@ -508,7 +508,7 @@ quick-alloc-init() {
 }
 quick-alloc(size'i32)'ref @real-name(qalloc) {
    if size > 1024 {
-      var mem = 'c.malloc(size);
+      mem' = 'c.malloc(size);
       'c.memset(mem, 0, size);
       return mem;
    }
@@ -522,7 +522,7 @@ quick-alloc(size'i32)'ref @real-name(qalloc) {
       // size = (size + 3) & (-1 ^ 3);
    // }
    if size <= (.quick-alloc-cap - .quick-alloc-c) {
-      var r'rdr.;
+      r'rdr.;
       r.ref = .quick-alloc-v;
       r.pos += .quick-alloc-c;
       .quick-alloc-c += size;
@@ -610,19 +610,19 @@ using 'at-data {
 }
 enum 'name-type[#module, #struct-enum, #basic]'u8 {
    rd(i'this&, r'rdr) @inline {
-      i = r.n1()'name-type;
+      i = 'name-type(r.n1());
    }
    wr(i'this, w'wtr) @inline {
-      w.n1(i'base);
+      w.n1('base(i));
    }
    cp1-name(e'this)'char[] @cp1-name;
 }
-var at-c'at;
-var at-cap'at;
-var at-v'at-data.[];
+at-c'at;
+at-cap'at;
+at-v'at-data.[];
 enum 'at[#nil = -1, #root, #relative]'i32 {
    finalize(at-i'this, ti'type-info, row'u32, col'u32)'bool {
-      var at = at-i.ptr();
+      at' = at-i.ptr();
       if at.def == #struct {
          if ti.built-in {
             if ti.ref-v[0] != 0 {
@@ -645,7 +645,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
       return true;
    }
    output(at-i'this, file'file, row'u32, col'u32) {
-      var at = at-i.ptr();
+      at' = at-i.ptr();
       switch at.type {
          case #struct-enum {
             if at.def == #struct {
@@ -704,7 +704,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
       }
       ti.count();
       td.write-type();
-      var s = td.count-stars0(ti) + add;
+      s' = td.count-stars0(ti) + add;
       if s > 0 {
          output{"********************************", s}
       }
@@ -758,7 +758,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
       return .at-v[i];
    }
    rd(i'this&, r'rdr) @inline {
-      var idx = (r.n() - 1)'at;
+      idx' = 'at(r.n() - 1);
       if idx == #nil {
          i = #nil;
       } else {
@@ -766,10 +766,10 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
       }
    }
    put-to-header(at'this) {
-      if (.at-in-header-v[at'base >> 3] & (1 << (at'base & 7))) == 0 {
-         .at-in-header-v[at'base >> 3] |= 1 << (at'base & 7);
+      if (.at-in-header-v['base(at) >> 3] & (1 << ('base(at) & 7))) == 0 {
+         .at-in-header-v['base(at) >> 3] |= 1 << ('base(at) & 7);
          .at-in-header-idx-v[at] = .at-in-header-c;
-         .at-in-header-at-v[.at-in-header-c++] = at'base;
+         .at-in-header-at-v[.at-in-header-c++] = 'base(at);
          if (&&, at != #root, at != #relative) {
             at.ptr().parent.put-to-header();
          }
@@ -796,13 +796,13 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
          if header {
             w.n(1 + .at-in-header-idx-v[at]);
          } else {
-            w.n(1 + at'base);
+            w.n(1 + 'base(at));
             at.put-to-header();
          }
       }
    }
    write(at-idx'this) {
-      var at = at-idx.ptr();
+      at' = at-idx.ptr();
       switch at.type {
          // case #module {
          //    if at.parent != #root { at.parent.write-space() }
@@ -810,8 +810,8 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
          // }
          case #struct-enum {
             if at.def == #struct {
-               var t-idx = at.decl.structt;
-               var t = t-idx.ptr();
+               t-idx' = at.decl.structt;
+               t' = t-idx.ptr();
                if t-idx != #nil {
                   if (t.flags & #real-name) != #0 {
                      if t.real-name == #nil {
@@ -838,9 +838,9 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
                if at.parent != #root { at.parent.write-space() }
                output{"_T" at.name.id.c-name()}
             } elif at.def == #enum {
-               var t-idx = at.decl.enumm;
+               t-idx' = at.decl.enumm;
                if t-idx != #nil {
-                  var t = t-idx.ptr();
+                  t' = t-idx.ptr();
                   if (t.flags & #real-name) != #0 {
                      output{t.real-name}
                      return;
@@ -905,7 +905,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
       }
    }
    write-space(at-idx'this) {
-      var at = at-idx.ptr();
+      at' = at-idx.ptr();
       switch at.type {
          // case #module {
          //    if at.parent != #root { at.parent.write-space() }
@@ -1005,8 +1005,8 @@ enum 'include-error[#none, #suffix, #absolute, #dot-slash, #slash, #double-slash
 }
 enum 'include[#nil = -1, #0]'i32 {
    validate(path'this, err'include-error&)'bool {
-      var str = path.str();
-      var len = path.len();
+      str' = path.str();
+      len' = path.len();
       if (len >= 4) && (str[len - 4] == ''.) && (str[len - 3] == ''c) && (str[len - 2] == ''p) && (str[len - 1] == ''1) {
          // ok
       } else {
@@ -1017,31 +1017,31 @@ enum 'include[#nil = -1, #0]'i32 {
          err = #absolute;
          return false;
       }
-      loop i = 0; len; i++ {
+      loop i' = 0; len; i++ {
          if str[i] == ''\\ {
             err = #slash;
             return false;
          }
       }
-      loop i = 0; len; i++ {
+      loop i' = 0; len; i++ {
          if str[i] == ''  {
             err = #space;
             return false;
          }
       }
-      loop i = 0; len - 4; i++ {
+      loop i' = 0; len - 4; i++ {
          if (str[i] == ''.) && (str[i + 1] == ''c) && (str[i + 2] == ''p) && (str[i + 3] == ''1) {
             err = #cp1;
             return false;
          }
       }
-      loop i = 0; len - 1; i++ {
+      loop i' = 0; len - 1; i++ {
          if (str[i] == ''.) && (str[i + 1] == ''/) {
             err = #dot-slash;
             return false;
          }
       }
-      loop i = 0; len - 1; i++ {
+      loop i' = 0; len - 1; i++ {
          if (str[i] == ''/) && (str[i + 1] == ''/) {
             err = #double-slash;
             return false;
@@ -1056,10 +1056,10 @@ enum 'include[#nil = -1, #0]'i32 {
       return .include-len-v[i];
    }
    wr(i'this, w'wtr) @inline {
-      w.n(i'base + 1);
+      w.n('base(i) + 1);
    }
    rd(i'this&, r'rdr) @inline {
-      var idx = (r.n() - 1)'include;
+      idx' = 'include(r.n() - 1);
       if idx == #nil {
          i = #nil;
       } else {
@@ -1067,37 +1067,37 @@ enum 'include[#nil = -1, #0]'i32 {
       }
    }
    output(this'this) @inline {
-      var num = this'u32;
-      var n3 = num >> 3;
-      var n17 = 1 << (num & 7);
+      num' = 'u32(this);
+      n3' = num >> 3;
+      n17' = 1 << (num & 7);
       if (.include-is-outputted[n3] & n17) != 0 { return }
       .include-is-outputted[n3] |= n17;
       .include-outputted-v[.include-outputted-c++] = this;
    }
 }
-var id-c'i32;
-var id-cap'i32;
-var id-str-v'char[][];
-var id-len-v'u8[];
-var id-c-name-v'char[][];
-var include-c'i32;
-var include-cap'i32;
-var include-str-v'char[][];
-var include-len-v'u8[];
-var func-main'func;
+id-c'i32;
+id-cap'i32;
+id-str-v'char[][];
+id-len-v'u8[];
+id-c-name-v'char[][];
+include-c'i32;
+include-cap'i32;
+include-str-v'char[][];
+include-len-v'u8[];
+func-main'func;
 enum 'id[#nil = -1, #0]'i32 {
    jscode(id'this, jc'js-code) @inline {
       jscode-bytes(id.str(), id.len());
    }
    c-name(id'this)'char[] {
-      var c-name'char[] = .id-c-name-v[id];
+      c-name'char[] = .id-c-name-v[id];
       if c-name != null { return c-name }
-      var len = .id-len-v[id];
-      var str = .id-str-v[id];
+      len' = .id-len-v[id];
+      str' = .id-str-v[id];
       c-name = quick-alloc(len + 1);
       .id-c-name-v[id] = c-name;
-      loop i = 0; len; i++ {
-         var c = str[i];
+      loop i' = 0; len; i++ {
+         c' = str[i];
          if (||, (&&, c >= ''a, c <= ''z), (&&, c >= ''A, c <= ''Z), (&&, c >= ''0, c <= ''9)) {
             c-name[i] = str[i];
          } else {
@@ -1134,17 +1134,17 @@ enum 'id[#nil = -1, #0]'i32 {
          if header {
             w.n(1 + .id-in-header-idx-v[id]);
          } else {
-            w.n(1 + id'base);
-            if (.id-in-header-v[id'base >> 3] & (1 << (id'base & 7))) == 0 {
-               .id-in-header-v[id'base >> 3] |= 1 << (id'base & 7);
+            w.n(1 + 'base(id));
+            if (.id-in-header-v['base(id) >> 3] & (1 << ('base(id) & 7))) == 0 {
+               .id-in-header-v['base(id) >> 3] |= 1 << ('base(id) & 7);
                .id-in-header-idx-v[id] = .id-in-header-c;
-               .id-in-header-id-v[.id-in-header-c++] = id'base;
+               .id-in-header-id-v[.id-in-header-c++] = 'base(id);
             }
          }
       }
    }
    rd(id'this&, r'rdr) @inline {
-      var idx = (r.n() - 1)'id;
+      idx' = 'id(r.n() - 1);
       if idx == #nil {
          id = #nil;
       } else {
@@ -1152,13 +1152,13 @@ enum 'id[#nil = -1, #0]'i32 {
       }
    }
 }
-var template-code-v'template-code-data.[];
-var template-code-cap'template-code;
-var template-code-c'template-code;
+template-code-v'template-code-data.[];
+template-code-cap'template-code;
+template-code-c'template-code;
 enum 'template-code[]'u32; 
-var template-inst-v'template-inst-data.[];
-var template-inst-cap'template-inst;
-var template-inst-c'template-inst;
+template-inst-v'template-inst-data.[];
+template-inst-cap'template-inst;
+template-inst-c'template-inst;
 enum 'template-inst[]'u32; 
 
 }

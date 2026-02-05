@@ -6,7 +6,7 @@ include <fcntl.h> {
    using 'posix {
       enum 'fd[#in, #out, #nil = -1]'intc {
          open(file'this&, path'char @const[], flags'open-flags)'bool @inline {
-            var fd = 'x.open(path, flags);
+            fd' = 'x.open(path, flags);
             if fd != #nil {
                file = fd;
                return true;
@@ -15,7 +15,7 @@ include <fcntl.h> {
             }
          }
          open(file'this&, path'char @const[], flags'open-flags, mode'intc)'bool @inline {
-            var fd = 'x.open(path, flags, mode);
+            fd' = 'x.open(path, flags, mode);
             if fd != #nil {
                file = fd;
                return true;
@@ -27,7 +27,7 @@ include <fcntl.h> {
             return 'c.fdopen(file, mode);
          }
          stat(file'this, stat'x'stat)'intc @inline {
-            return 'x.fstat(file'base, stat);
+            return 'x.fstat('base(file), stat);
          }
       }
       enum 'open-flags[

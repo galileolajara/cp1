@@ -7,7 +7,7 @@ using 'cp1 {
       w.pos += 2;
       r.pos += 2;
       loop {
-         var c = r.p1[0];
+         c' = r.p1[0];
          if c == ''\n {
             get-row-col(row?, col?, r.ref, in-data);
             'c1.stdout{in-path '': row '': col ": Unterminated string\n"}
@@ -22,11 +22,11 @@ using 'cp1 {
       }
    }
    parse-string(in-path'char @const[], r'rdr, ending'char, in-data'ref)'intc {
-      var start'rdr.;
+      start'rdr.;
       start.pos = r.pos;
       r.pos += 2;
       loop {
-         var c = r.p1[0];
+         c' = r.p1[0];
          if c == ''\n {
             get-row-col(row?, col?, r.ref, in-data);
             'c1.stdout{in-path '': row '': col ": Unterminated string\n"}
@@ -40,11 +40,11 @@ using 'cp1 {
       return 0; // code won't reach this but we want to make tcc happy
    }
    get-row-col(out-row'u32&, out-col'u32&, end'ref, begin'ref) {
-      var row = 1;
-      var col = 1;
-      var r'rdr.;
+      row' = 1;
+      col' = 1;
+      r'rdr.;
       r.ref = begin;
-      var r-end'rdr.;
+      r-end'rdr.;
       r-end.ref = end;
       loop r.pos < r-end.pos {
          if r.p1[0] == ''\n {
@@ -63,29 +63,29 @@ using 'cp1 {
       }
    }
    preprocess(in-path'char @const[], in-data'u8[], in-out-size'usz&)'u8[] {
-      var in-size = in-out-size;
+      in-size' = in-out-size;
       if in-data[in-size - 1] != ''\n {
          in-data[in-size++] = ''\n;
       }
-      var r-end'rdr.;
+      r-end'rdr.;
       r-end.ref = in-data;
       r-end.pos += in-size;
-      var r'rdr.;
+      r'rdr.;
       r.ref = in-data;
-      var new-data = 'c.malloc((in-size << 1) + 4); // 2x because basic syntax mode adds { and }
-      var w'wtr.;
+      new-data' = 'c.malloc((in-size << 1) + 4); // 2x because basic syntax mode adds { and }
+      w'wtr.;
       w.ref = new-data;
       // Ignore texts outside the top-level curly braces
       // indent! = 0:i32;
-      var basic-mode-indent-c = 0;
-      var basic-mode-indent-v'u16[256];
-      var basic-mode-row-begin = 0;
-      var last-first-char'rdr.;
+      basic-mode-indent-c' = 0;
+      basic-mode-indent-v'u16[256];
+      basic-mode-row-begin' = 0;
+      last-first-char'rdr.;
       last-first-char.ref = " ";
-      var row = 0;
+      row' = 0;
       loop {
          row++;
-         var start-line'rdr.;
+         start-line'rdr.;
          start-line.pos = r.pos;
          loop {
             if r.p1[0] == ''\n {
@@ -93,25 +93,25 @@ using 'cp1 {
             }
             r.pos++;
          }
-         var next-line'rdr.;
+         next-line'rdr.;
          next-line.pos = r.pos + 1;
          if r.p1[-1] == ''\r {
             // C1.stdout{"windows line ending detected\n"}
             r.pos--;
          }
          // C1.stdout{"{{ " start-line.char, r.pos - start-line.pos " }}2\n"}
-         var line'rdr.;
+         line'rdr.;
          line.pos = start-line.pos;
-         var col = 0;
-         var last-char = -1;
+         col' = 0;
+         last-char' = -1;
          loop r.pos - start-line.pos {
             if start-line.p1[col] == ''  {
             } else { break }
             col++;
          }
-         var indent = col;
+         indent' = col;
          line.pos += col;
-         var first-char'rdr.;
+         first-char'rdr.;
          first-char.pos = line.pos;
          if (first-char.p1[0] == ''#) && (first-char.p1[1] == '' ) {
             if basic-mode-indent-c != 0 {
@@ -128,8 +128,8 @@ using 'cp1 {
                if (basic-mode-indent-v[basic-mode-indent-c - 1] >= indent) && (||, last-first-char.p1[0] != ''#, last-first-char.p1[1] != '' ) {
                   // Currently in basic syntax mode
                   w.pos--; // undo the previous new line
-                  var empty = true; // is the previous line empty?
-                  var w2'rdr.;
+                  empty' = true; // is the previous line empty?
+                  w2'rdr.;
                   w2.pos = w.pos;
                   loop {
                      if w2.p1[-1] == ''\n {
@@ -239,7 +239,7 @@ using 'cp1 {
                } elif line.p1[0] == ''\' {
                   if line.p1[1] == ''\' {
                      // char
-                     var c = line.p1[2];
+                     c' = line.p1[2];
                      if c == ''\\ {
                         if line.p1[3] == ''" {
                            'c1.stdout{in-path '': row '': col ": char ''\\\" is invalid, please use ''\" instead\n"}
@@ -289,10 +289,10 @@ using 'cp1 {
                      // string
                      line.pos += 3;
                      col += 3;
-                     var r-begin = line.char;
-                     var r-pos = line.pos;
+                     r-begin' = line.char;
+                     r-pos' = line.pos;
                      loop {
-                        var c = line.p1[0];
+                        c' = line.p1[0];
                         line.pos++;
                         col++;
                         if c == ''\n {
@@ -330,8 +330,8 @@ using 'cp1 {
                if (basic-mode-indent-c != 0) && (basic-mode-indent-v[basic-mode-indent-c - 1] >= indent) && (||, last-first-char.p1[0] != ''#, last-first-char.p1[1] != '' ) {
                   // Currently in basic syntax mode
                   w.pos--; // undo the previous new line
-                  var empty = true; // is the previous line empty?
-                  var w2'rdr.;
+                  empty' = true; // is the previous line empty?
+                  w2'rdr.;
                   w2.pos = w.pos;
                   loop {
                      if w2.p1[-1] == ''\n {
@@ -420,8 +420,8 @@ using 'cp1 {
       if (basic-mode-indent-c != 0) && (||, last-first-char.p1[0] != ''#, last-first-char.p1[1] != '' ) {
          // Currently in basic syntax mode
          w.pos--; // undo the previous new line
-         var empty = true; // is the previous line empty?
-         var w2'rdr.;
+         empty' = true; // is the previous line empty?
+         w2'rdr.;
          w2.pos = w.pos;
          loop {
             if w2.p1[-1] == ''\n {
@@ -489,7 +489,7 @@ using 'cp1 {
          } elif r.p1[0] == ''\' {
             if r.p1[1] == ''\' {
                // char
-               var c = r.p1[2];
+               c' = r.p1[2];
                if c == ''\\ {
                   if r.p1[3] == ''" {
                      get-row-col(row, col?, r.ref, in-data);
@@ -560,10 +560,10 @@ using 'cp1 {
                w.p1[2] = '' ;
                w.pos += 3;
                r.pos += 3;
-               var r-begin = r.char;
-               var r-pos = r.pos;
+               r-begin' = r.char;
+               r-pos' = r.pos;
                loop {
-                  var c = r.p1[0];
+                  c' = r.p1[0];
                   w.p1[0] = c;
                   w.pos++;
                   r.pos++;
@@ -663,7 +663,7 @@ using 'cp1 {
       }
       w.p1[0] = ''\0;
       // "puts(_Lnew_data_6);";
-      var w-begin'wtr.;
+      w-begin'wtr.;
       w-begin.ref = new-data;
       in-out-size = w.pos - w-begin.pos;
       return new-data;

@@ -4663,11 +4663,11 @@ _Tcp1_Frealloc_3(_Tcp1_Ginclude_str_v, _Tcp1_Ginclude_cap, _Lold_cap_4);
 }
 _Tcp1_Ginclude_len_v[_Linclude_idx_3] = _Linclude_len_0;
 _Tcp1_Ginclude_str_v[_Linclude_idx_3] = _Linclude_str_1;
-_Tcp1_Tinclude ret_145_7 = ((_Tcp1_Tinclude)(_Linclude_idx_3));
-return ret_145_7;
+_Tcp1_Tinclude ret_146_7 = ((_Tcp1_Tinclude)(_Linclude_idx_3));
+return ret_146_7;
 } else {
-_Tcp1_Tinclude ret_148_7 = ((_Tcp1_Tinclude)(_Lfound_2));
-return ret_148_7;
+_Tcp1_Tinclude ret_149_7 = ((_Tcp1_Tinclude)(_Lfound_2));
+return ret_149_7;
 }
 }
 bool _Tcp1_Tinclude_Fvalidate_2(_Tcp1_Tinclude _Lpath_0, _Tcp1_Tinclude_error* _Lerr_1) {
@@ -12024,7 +12024,7 @@ _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(':', &_L_48, &_L_41);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2((*_Lfunc_34)._Mbegin_row, &_L_48, &_L_42);
 _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(':', &_L_48, &_L_43);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2((*_Lfunc_34)._Mbegin_col, &_L_48, &_L_44);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_48, ": Cannot find a case for cvar named '#", 38u, &_L_45);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_48, ": Cannot find a case for cnamed '#", 34u, &_L_45);
 _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lcvar_name_str_36, &_L_48, &_L_46);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_48, "'\n", 2u, &_L_47);
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_48);
@@ -12072,7 +12072,7 @@ _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(':', &_L_61, &_L_54);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2((*_Lfunc_34)._Mbegin_row, &_L_61, &_L_55);
 _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(':', &_L_61, &_L_56);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2((*_Lfunc_34)._Mbegin_col, &_L_61, &_L_57);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_61, ": Cannot find a case for cvar named '#", 38u, &_L_58);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_61, ": Cannot find a case for cnamed '#", 34u, &_L_58);
 _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lcvar_name_str_36, &_L_61, &_L_59);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_61, "'\n", 2u, &_L_60);
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_61);
@@ -15714,7 +15714,7 @@ int32_t _Lval_2;
 _Lval_2 = ((int32_t)((*_Lf_0)._Mi32));
 if(_Lval_2 == 0) {
 (*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen++] = '0';
-} else if(((int32_t)(_Lval_2)) < 0) {
+} else if(_Lval_2 < 0) {
 char* _Ldata_3 = {0};
 int32_t _Ldigits_4;
 int32_t _Lstart_5;
@@ -17104,8 +17104,8 @@ _Lgroup_c_5 = ((uint8_t)((*_Le_2)._Mgroup_c));
 _Lgroup_v_6 = ((uint8_t*)((*_Le_2)._Mgroup_v));
 _Lat_7 = ((struct _Tcp1_Tat_data*)(_Tcp1_Tat_Fptr_1((*_Tcp1_Gctx_func)._Mat)));
 if(!_Tcp1_Tfunc_Fprocess_later_1(_Lf_idx_1)) {
-bool ret_830_10 = false;
-return ret_830_10;
+bool ret_831_10 = false;
+return ret_831_10;
 }
 _Lf_8 = ((struct _Tcp1_Tdecl_func*)(_Tcp1_Tfunc_Fptr_1(_Lf_idx_1)));
 _Lf_at_9 = ((_Tcp1_Tat)((*_Lf_8)._Mat));
@@ -17115,8 +17115,8 @@ i --;
 struct _Tcp1_Tcarg* _Lca_11;
 _Lca_11 = ((struct _Tcp1_Tcarg*)((&(*_Le_2)._Mcarg_v[_Lj_10])));
 if(!_Tcp1_Ffarg_process_7(&(*_Lca_11)._Mexpr, (*_Lca_11)._Mref, &(*_Lca_11)._Mvalue, &(*_Lf_8)._Mfarg_v[_Lj_10]._Mdecl, _Lf_at_9, _Lj_10, (*_Lf_8)._Mdecl._Mname)) {
-bool ret_837_96 = false;
-return ret_837_96;
+bool ret_838_96 = false;
+return ret_838_96;
 }
 continue_0:;
 _Lj_10++;
@@ -17135,8 +17135,8 @@ _Lr_13 = (1 + (*_Lca_12)._Mref);
 _Lr_13 = 1;
 }
 if(!_Tcp1_Texpr_i_Fvalue_4((*_Lca_12)._Mexpr, _Lr_13, false, &(*_Lca_12)._Mvalue)) {
-bool ret_849_53 = false;
-return ret_849_53;
+bool ret_850_53 = false;
+return ret_850_53;
 }
 continue_1:;
 _Lj_10++;
@@ -17144,8 +17144,8 @@ _Lj_10++;
 break_1:;
 }
 (*_Le_2)._Mfunc_idx = _Lf_idx_1;
-bool ret_853_7 = true;
-return ret_853_7;
+bool ret_854_7 = true;
+return ret_854_7;
 }
 bool _Tcp1_Tstmt_space_Fprocess_1(struct _Tcp1_Tstmt_space* _Lspace_0) {
 struct _Tcp1_Tstmt* _Ls_1;
@@ -17171,15 +17171,15 @@ _Llvar_c_3 = (*_Lspace_0)._Mlvar_c;
 for(int i = _Llvar_c_3; i > 0; ) {
 i --;
 if(!_Tcp1_Tlvar_Fprocess_1((*_Lspace_0)._Mlvar_v[_Li_2])) {
-bool ret_211_42 = false;
-return ret_211_42;
+bool ret_212_42 = false;
+return ret_212_42;
 }
 continue_1:;
 _Li_2++;
 }
 break_1:;
-bool ret_213_7 = true;
-return ret_213_7;
+bool ret_214_7 = true;
+return ret_214_7;
 }
 void _Tcp1_Texpr_i_Ftry_deduce_2(_Tcp1_Texpr_i _Le_idx_0, _Tcp1_Tat _Lat_1) {
 struct _Tcp1_Texpr* _Lexpr_2;

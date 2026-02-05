@@ -26,24 +26,24 @@ using 'cp1 {
    read-file(path'char[], add-before'i32, add-after'i32, max-size'usz, out-size'usz&)'ref {
       "#ifdef _WIN32";
       if true {
-         var h = 'w.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null);
+         h' = 'w.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null);
          if h == #invalid {
             return null;
          }
-         var f-size;
+         f-size';
          if !'w.GetFileSizeEx(h, f-size) {
             'w.CloseHandle(h);
             return null;
          }
-         var size = f-size.quadPart;
+         size' = f-size.quadPart;
          if max-size != 0 {
-            if size'usz > max-size {
+            if 'usz(size) > max-size {
                size =  max-size;
             }
          }
-         var buf'u8[];
+         buf'u8[];
          'c.malloc-arr(buf, add-before + size + add-after);
-         var bytes-read;
+         bytes-read';
          if !'w.ReadFile(h, &buf[add-before], size, bytes-read, null) || (bytes-read != size) {
             'c.free(buf);
             'w.CloseHandle(h);
@@ -55,17 +55,17 @@ using 'cp1 {
       }
       "#else";
       if true {
-         var fd;
+         fd';
          if !'x'fd.open(fd, path, #rdonly) {
             return null;
          }
-         var size = fd.seek(0, #end);
+         size' = fd.seek(0, #end);
          if size == -1 {
             fd.close();
             return null;
          }
          if max-size != 0 {
-            if size'usz > max-size {
+            if 'usz(size) > max-size {
                size =  max-size;
             }
          }
@@ -73,7 +73,7 @@ using 'cp1 {
             fd.close();
             return null;
          }
-         var buf'u8[];
+         buf'u8[];
          // C1.stdout{"malloc " (add-before + size + add-after):u32 "\n"}
          'c.malloc-arr(buf, add-before + size + add-after);
          if fd.read(&buf[add-before], size) != size {
@@ -90,11 +90,11 @@ using 'cp1 {
    write-file(path'char[], data'ref, size'usz)'bool {
       "#ifdef _WIN32";
       if true {
-         var h = 'w.CreateFileA(path, #write, #0, null, #create-always, #normal, #null);
+         h' = 'w.CreateFileA(path, #write, #0, null, #create-always, #normal, #null);
          if h == #invalid {
             return false;
          }
-         var bytes-written;
+         bytes-written';
          if !'w.WriteFile(h, data, size, bytes-written, null) || (bytes-written != size) {
             'w.CloseHandle(h);
             return false;
@@ -104,7 +104,7 @@ using 'cp1 {
       }
       "#else";
       if true {
-         var fd;
+         fd';
          if !'x'fd.open(fd, path, #create | #truncate | #wronly, 0o644) {
             return false;
          }
@@ -117,14 +117,14 @@ using 'cp1 {
       }
       "#endif";
    }
-   var output-data'char[] @real-name(output_data);
-   var output-cap'u32;
-   var output-len'u32 @real-name(output_len);
+   output-data'char[] @real-name(output_data);
+   output-cap'u32;
+   output-len'u32 @real-name(output_len);
    output(fmt'c1'fmt) @meta(f-reserve, f, output) @inline {
       fmt.cap = 0;
    }
    output-reserve(len'u32) @process {
-      var space = .output-cap - .output-len;
+      space' = .output-cap - .output-len;
       if space < len {
          .output-cap += .output-cap;
          space = .output-cap - .output-len;

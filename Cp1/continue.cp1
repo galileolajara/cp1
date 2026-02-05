@@ -6,7 +6,7 @@ struct 'stmt-continue[
    nest'u8,
 ];
 stmt-continue(id'id, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32) {
-   var s'stmt-continue;
+   s'stmt-continue;
    quick-alloc-one(s);
    stmt-push(s.base, begin-row, begin-col, end-row, end-col, #continue);
    // s.id = id;
@@ -18,11 +18,11 @@ stmt-continue(id'id, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32) {
 }
 using 'stmt-space {
    wr-continue(stmt'stmt, w'wtr, header'bool) @case.wr() @inline {
-      var s'stmt-continue = stmt;
+      s'stmt-continue = stmt;
       w.n1(s.nest);
    }
    rd-continue(space'stmt-space, r'rdr) @case.rd() @inline {
-      var s'stmt-continue;
+      s'stmt-continue;
       quick-alloc-one(s);
       s.nest = r.n1();
       space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #continue);
@@ -30,11 +30,11 @@ using 'stmt-space {
 }
 using 'stmt {
    write-continue(stmt'stmt) @case.write() @inline {
-      var s'stmt-continue = stmt;
+      s'stmt-continue = stmt;
       output{"goto continue_" .nest-stack-id-v[s.nest] ";\n"}
    }
    process-continue(stmt'stmt, ok'bool&) @case.process() @inline {
-      var s'stmt-continue = stmt;
+      s'stmt-continue = stmt;
       ok = true;
    }
 }

@@ -12,27 +12,27 @@ union 'rdr[
    f8'f64[],
    ] {
    n1(r'this)'u8 @inline {
-      var val = r.p1[0];
+      val' = r.p1[0];
       r.pos++;
       return val;
    }
    n2(r'this)'u16 @inline {
-      var val = r.p2[0]'u16;
+      val' = 'u16(r.p2[0]);
       r.pos += 2;
       return val;
    }
    n4(r'this)'u32 @inline {
-      var val = r.p4[0];
+      val' = r.p4[0];
       r.pos += 4;
       return val;
    }
    f4(r'this)'f32 @inline {
-      var val = r.f4[0];
+      val' = r.f4[0];
       r.pos += 4;
       return val;
    }
    f8(r'this)'f64 @inline {
-      var val = r.f8[0];
+      val' = r.f8[0];
       r.pos += 8;
       return val;
    }
