@@ -2098,55 +2098,65 @@ continue_8:;
 }
 break_8:;
 goto continue_7;
-} else if(_Lc_66 == '<') {
+} else if(_Lc_66 == '|') {
 _Li_65 += 2;
 while(1) {
-if(_Llex_20._Mcursor[_Li_65++] == '>') {
+if(_Llex_20._Mcursor[_Li_65++] == '|') {
 goto break_9;
 }
 continue_9:;
 }
 break_9:;
 goto continue_7;
-} else if(_Lc_66 == '[') {
+} else if(_Lc_66 == '<') {
 _Li_65 += 2;
 while(1) {
-if(_Llex_20._Mcursor[_Li_65++] == ']') {
+if(_Llex_20._Mcursor[_Li_65++] == '>') {
 goto break_10;
 }
 continue_10:;
 }
 break_10:;
 goto continue_7;
-} else if(_Lc_66 == '{') {
+} else if(_Lc_66 == '[') {
 _Li_65 += 2;
 while(1) {
-if(_Llex_20._Mcursor[_Li_65++] == '}') {
+if(_Llex_20._Mcursor[_Li_65++] == ']') {
 goto break_11;
 }
 continue_11:;
 }
 break_11:;
 goto continue_7;
-} else if(_Lc_66 == '(') {
+} else if(_Lc_66 == '{') {
 _Li_65 += 2;
 while(1) {
-if(_Llex_20._Mcursor[_Li_65++] == ')') {
+if(_Llex_20._Mcursor[_Li_65++] == '}') {
 goto break_12;
 }
 continue_12:;
 }
 break_12:;
 goto continue_7;
-} else if(((_Llex_20._Mcursor[(_Li_65 + 2)] == ' ') && ((_Lc_66 == '-') || (_Lc_66 == '=')))) {
-_Li_65 += 3;
+} else if(_Lc_66 == '(') {
+_Li_65 += 2;
 while(1) {
-if(_Llex_20._Mcursor[_Li_65++] == '\n') {
+if(_Llex_20._Mcursor[_Li_65++] == ')') {
 goto break_13;
 }
 continue_13:;
 }
 break_13:;
+goto continue_7;
+} else if(((_Llex_20._Mcursor[(_Li_65 + 2)] == ' ') && ((_Lc_66 == '-') || (_Lc_66 == '=')))) {
+_Li_65 += 3;
+while(1) {
+if(_Llex_20._Mcursor[_Li_65++] == '\n') {
+goto break_14;
+}
+continue_14:;
+}
+break_14:;
 goto continue_7;
 }
 } else if(_Lc_66 == '\"') {
@@ -2154,13 +2164,13 @@ _Li_65 += 1;
 while(1) {
 _Lc_66 = _Llex_20._Mcursor[_Li_65++];
 if(_Lc_66 == '\"') {
-goto break_14;
+goto break_15;
 } else if(_Lc_66 == '\\') {
 _Li_65++;
 }
-continue_14:;
+continue_15:;
 }
-break_14:;
+break_15:;
 goto continue_7;
 } else if(_Lc_66 == '{') {
 goto break_7;
@@ -2204,22 +2214,22 @@ _Tcp1_Tlvar _Llvar_78;
 _Llvar_78 = ((_Tcp1_Tlvar)(_Lv_76[_Li_77]));
 if(_Tcp1_Tlvar_Fname_1(_Llvar_78) == ((_Tcp1_Tid)(_Ltok_23._Mi32._Mid))) {
 _Lfound_75 = _Llvar_78;
-goto break_16;
+goto break_17;
 }
-continue_16:;
+continue_17:;
 _Li_77++;
 }
-break_16:;
+break_17:;
 if(_Lfound_75 != _Tcp1_Tlvar_Cnil) {
-goto break_15;
+goto break_16;
 }
 _Lspace_74 = (*_Lspace_74)._Mparent;
 if(_Lspace_74 == NULL) {
-goto break_15;
+goto break_16;
 }
-continue_15:;
+continue_16:;
 }
-break_15:;
+break_16:;
 if(_Lfound_75 == _Tcp1_Tlvar_Cnil) {
 _Lt_24 = _Tcp1_Ttoken_Cid_new;
 }
@@ -2232,9 +2242,9 @@ int32_t _Lrbracket_79;
 _Lrbracket_79 = ((int32_t)(1));
 while(_Llex_20._Mstart[_Lrbracket_79] != ']') {
 _Lrbracket_79++;
-continue_17:;
+continue_18:;
 }
-break_17:;
+break_18:;
 if(true) {
 union _Tcp1_Trdr _Lr_start_80 = {0};
 union _Tcp1_Trdr _Lr_cursor_81 = {0};
@@ -2312,9 +2322,9 @@ _Lnext_col_22++;
 }
 }
 _Lpos_88++;
-continue_18:;
+continue_19:;
 }
-break_18:;
+break_19:;
 continue_0:;
 }
 break_0:;
@@ -2331,10 +2341,10 @@ i --;
 _Tcp1_Twtr_Fn1_2(&_Lw_90, _Tcp1_Gid_len_v[_Li_91]);
 _Tcp1_Twtr_Fcopy_3(&_Lw_90, _Tcp1_Gid_str_v[_Li_91], _Tcp1_Gid_len_v[_Li_91]);
 _Tcp1_Twtr_Fn1_2(&_Lw_90, 0);
-continue_19:;
+continue_20:;
 _Li_91++;
 }
-break_19:;
+break_20:;
 _Lid_bit8_c_92 = ((int32_t)(((_Tcp1_Gid_c + 7) >> 3)));
 _Tcp1_Fmalloc_arr_2(_Tcp1_Gid_in_header_v, _Lid_bit8_c_92);
 _Tcp1_Fmalloc_arr_2(_Tcp1_Gid_in_header_idx_v, _Tcp1_Gid_c);
@@ -2347,10 +2357,10 @@ i --;
 _Tcp1_Twtr_Fn1_2(&_Lw_90, _Tcp1_Ginclude_len_v[_Li_93]);
 _Tcp1_Twtr_Fcopy_3(&_Lw_90, _Tcp1_Ginclude_str_v[_Li_93], _Tcp1_Ginclude_len_v[_Li_93]);
 _Tcp1_Twtr_Fn1_2(&_Lw_90, 0);
-continue_20:;
+continue_21:;
 _Li_93++;
 }
-break_20:;
+break_21:;
 _Lat_bit8_c_94 = ((int32_t)(((((int32_t)(_Tcp1_Gat_c)) + 7) >> 3)));
 _Tcp1_Fmalloc_arr_2(_Tcp1_Gat_in_header_v, _Lat_bit8_c_94);
 _Tcp1_Fmalloc_arr_2(_Tcp1_Gat_in_header_idx_v, ((int32_t)(_Tcp1_Gat_c)));
@@ -2369,10 +2379,10 @@ _Tcp1_Tbasic_type_id_Fwr_2((*_Lat_96)._Mname._Mbasic, &_Lw_90);
 _Tcp1_Tat_Fwr_3((*_Lat_96)._Mparent, &_Lw_90, false);
 _Tcp1_Tid_Fwr_3((*_Lat_96)._Mname._Mid, &_Lw_90, false);
 }
-continue_21:;
+continue_22:;
 _Li_95++;
 }
-break_21:;
+break_22:;
 _Tcp1_Fwrite_cvar_2(&_Lw_90, false);
 _Tcp1_Fwrite_gvar_2(&_Lw_90, false);
 _Tcp1_Fwrite_enum_2(&_Lw_90, false);
@@ -2420,10 +2430,10 @@ _Li_108 = ((uint32_t)(_Tcp1_Gid_in_header_id_v[_Lj_107]));
 _Tcp1_Twtr_Fn1_2(&_Lw_90, _Tcp1_Gid_len_v[_Li_108]);
 _Tcp1_Twtr_Fcopy_3(&_Lw_90, _Tcp1_Gid_str_v[_Li_108], _Tcp1_Gid_len_v[_Li_108]);
 _Tcp1_Twtr_Fn1_2(&_Lw_90, 0);
-continue_22:;
+continue_23:;
 _Lj_107++;
 }
-break_22:;
+break_23:;
 Fputnum(&_Lw_90, _Tcp1_Ginclude_c);
 int32_t _Li_109;
 _Li_109 = ((int32_t)(0));
@@ -2432,10 +2442,10 @@ i --;
 _Tcp1_Twtr_Fn1_2(&_Lw_90, _Tcp1_Ginclude_len_v[_Li_109]);
 _Tcp1_Twtr_Fcopy_3(&_Lw_90, _Tcp1_Ginclude_str_v[_Li_109], _Tcp1_Ginclude_len_v[_Li_109]);
 _Tcp1_Twtr_Fn1_2(&_Lw_90, 0);
-continue_23:;
+continue_24:;
 _Li_109++;
 }
-break_23:;
+break_24:;
 Fputnum(&_Lw_90, _Tcp1_Gat_in_header_c);
 int32_t _Lj_110;
 _Lj_110 = ((int32_t)(0));
@@ -2452,10 +2462,10 @@ _Tcp1_Tbasic_type_id_Fwr_2((*_Lat_112)._Mname._Mbasic, &_Lw_90);
 _Tcp1_Tat_Fwr_header_2((*_Lat_112)._Mparent, &_Lw_90);
 _Tcp1_Tid_Fwr_header_2((*_Lat_112)._Mname._Mid, &_Lw_90);
 }
-continue_24:;
+continue_25:;
 _Lj_110++;
 }
-break_24:;
+break_25:;
 _Tcp1_Fwrite_cvar_2(&_Lw_90, true);
 _Tcp1_Fwrite_gvar_2(&_Lw_90, true);
 _Tcp1_Fwrite_enum_2(&_Lw_90, true);
@@ -2501,8 +2511,8 @@ _Tcp1_Gfunc_c = ((_Tcp1_Tfunc)(0));
 _Tcp1_Gimport_c = 0;
 _Tcp1_Gtemplate_inst_c = ((_Tcp1_Ttemplate_inst)(0));
 _Tcp1_Gtemplate_code_c = ((_Tcp1_Ttemplate_code)(0));
-int32_t ret_1634_4 = 0;
-return ret_1634_4;
+int32_t ret_1643_4 = 0;
+return ret_1643_4;
 }
 void stdout_then_print_error(char* _Lbuf_0, uint32_t _Llen_1) {
 write(((_Tposix_Tfd)(1)), _Lbuf_0, _Llen_1);

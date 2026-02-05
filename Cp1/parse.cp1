@@ -10,6 +10,7 @@ using 'c = 'libc;
 using 'c1 = 'libcp1;
 using 'x = 'posix;
 using 'cp1 {
+lex-part-1'char @const[] @real-name(lex_part_1);
 ctx-begin-row'u32;
 ctx-begin-col'u32;
 ctx-end-row'u32;
@@ -1206,44 +1207,34 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                psr.parse(t, tok);
             }
             case #import {
-               loop i' = 0; {
-                  if lex.start[i++] == ''" {
-                     r-begin'rdr.;
-                     r-begin.ref = &lex.start[i];
-                     r-end2'rdr.;
-                     r-end2.ref = lex.cursor;
-                     r-end2.pos--;
-                     len' = r-end2.pos - r-begin.pos;
-                     if len > 255 {
-                        'c1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
-                        'c.exit(#failure);
-                     }
-                     tok.i32.id = 'base(include-add(len, r-begin.char));
-                     // C1.stdout{"import '" r-begin.char, len "'\n"}
-                     break;
-                  }
+               r-begin'rdr.;
+               r-begin.ref = .lex-part-1;
+               r-end2'rdr.;
+               r-end2.ref = lex.cursor;
+               r-end2.pos--;
+               len' = r-end2.pos - r-begin.pos;
+               if len > 255 {
+                  'c1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
+                  'c.exit(#failure);
                }
+               tok.i32.id = 'base(include-add(len, r-begin.char));
+               // C1.stdout{"import '" r-begin.char, len "'\n"}
                .last-token = t;
                psr.parse(t, tok);
             }
             case #require {
-               loop i' = 0; {
-                  if lex.start[i++] == ''" {
-                     r-begin'rdr.;
-                     r-begin.ref = &lex.start[i];
-                     r-end2'rdr.;
-                     r-end2.ref = lex.cursor;
-                     r-end2.pos--;
-                     len' = r-end2.pos - r-begin.pos;
-                     if len > 255 {
-                        'c1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
-                        'c.exit(#failure);
-                     }
-                     tok.i32.id = 'base(include-add(len, r-begin.char));
-                     // C1.stdout{"import '" r-begin.char, len "'\n"}
-                     break;
-                  }
+               r-begin'rdr.;
+               r-begin.ref = .lex-part-1;
+               r-end2'rdr.;
+               r-end2.ref = lex.cursor;
+               r-end2.pos--;
+               len' = r-end2.pos - r-begin.pos;
+               if len > 255 {
+                  'c1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
+                  'c.exit(#failure);
                }
+               tok.i32.id = 'base(include-add(len, r-begin.char));
+               // C1.stdout{"import '" r-begin.char, len "'\n"}
                .last-token = t;
                psr.parse(t, tok);
             }
@@ -1300,6 +1291,15 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                         i += 2;
                         loop {
                            if lex.cursor[i++] == ''" {
+                              // C1.stdout{str, i - start ''\n}
+                              break;
+                           }
+                        }
+                        continue;
+                     } elif c == ''| {
+                        i += 2;
+                        loop {
+                           if lex.cursor[i++] == ''| {
                               // C1.stdout{str, i - start ''\n}
                               break;
                            }
@@ -1415,15 +1415,19 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
             case #soa-field {
                // tok.i32.id = 
                // lex.get-id(2, 0);
-               rbracket' = 1;
-               loop lex.start[rbracket] != ''] {
-                  rbracket++;
+               rbracket' = ?;
+               if true {
+                  r-start'rdr. = ?;
+                  r-start.ref = lex.start;
+                  r-bracket'rdr. = ?;
+                  r-bracket.ref = .lex-part-1;
+                  rbracket = r-bracket.pos - r-start.pos;
                }
                if true {
-                  r-start'rdr.;
+                  r-start'rdr. = ?;
                   r-start.ref = lex.start;
                   r-start.pos += 1;
-                  r-cursor'rdr.;
+                  r-cursor'rdr. = ?;
                   r-cursor.ref = lex.cursor;
                   length' = rbracket - 1;
                   end' = r-cursor.pos - r-start.pos - length;
@@ -1435,10 +1439,10 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                }
                if true {
                   rbracket++;
-                  r-start'rdr.;
+                  r-start'rdr. = ?;
                   r-start.ref = lex.start;
                   r-start.pos += rbracket;
-                  r-cursor'rdr.;
+                  r-cursor'rdr. = ?;
                   r-cursor.ref = lex.cursor;
                   length' = r-cursor.pos - r-start.pos;
                   tok.i32.id2 = lex.get-id(rbracket, 0);

@@ -15,6 +15,7 @@ uint32_t _Tcp1_Gtemplate_code_indention;
 uint32_t _Tcp1_Gtemplate_code_line_c;
 const char* meta_start;
 int meta_col;
+const char* lex_part_1;
 void _Tcp1_Fparse_str_init_1(int maxsize) {
    string_mem = malloc(maxsize);
 }
@@ -255,14 +256,14 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "'base"                          { return CP1_TOKEN_BASE; }
 
    "#" id                           { return CP1_TOKEN_HASH_ID; }
-   "#|" [^ \n\000|] [^\n\000|]* "|"             { return CP1_TOKEN_HASH_ID; }
+   "#|" [^ \n\000] [^\n\000|]* "|"             { return CP1_TOKEN_HASH_ID; }
    "|" [^ \n\000|] [^\n\000|]* "|"              { return CP1_TOKEN_ID; }
    id_first+ ([-] id_one+)*         { return CP1_TOKEN_ID; }
    "'" id                           { return CP1_TOKEN_ID_TYPE; }
-   "'|" [^ \n\000|] [^\n\000|]* "|"             { return CP1_TOKEN_ID_TYPE; }
-   "[" id? "]" id                   { return CP1_TOKEN_SOA_FIELD; }
-   "import" spaces "\"" [^"\n\000]* "\""  { return CP1_TOKEN_IMPORT; }
-   "require" spaces "\"" [^"\n\000]* "\"" { return CP1_TOKEN_REQUIRE; }
+   "'|" [^ \n\000] [^\n\000|]* "|"             { return CP1_TOKEN_ID_TYPE; }
+   "[" id? @lex_part_1 "]" id                   { return CP1_TOKEN_SOA_FIELD; }
+   "import" [ ]+ "\"" @lex_part_1 [^"\n\000]* "\""  { return CP1_TOKEN_IMPORT; }
+   "require" [ ]+ "\"" @lex_part_1 [^"\n\000]* "\"" { return CP1_TOKEN_REQUIRE; }
  
    */
 lex_string: {
