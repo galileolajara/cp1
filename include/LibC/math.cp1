@@ -52,10 +52,10 @@ include <math.h> {
 
       #pi'f64 @no-decl(M_PI);
       radian(f'this)'f64 @inline {
-         return f * (#pi / 180.0'f);
+         return f * (#pi / 180.0F);
       }
       degree(f'this)'f64 @inline {
-         return f * (180.0'f / #pi);
+         return f * (180.0F / #pi);
       }
    }
 }
