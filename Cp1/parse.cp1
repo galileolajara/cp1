@@ -10,7 +10,7 @@ using 'c = 'libc;
 using 'c1 = 'libcp1;
 using 'x = 'posix;
 using 'cp1 {
-lex-part-1'char @const[] @real-name(lex_part_1);
+lex-part-1'char @const[] @extern @real-name(lex_part_1);
 ctx-begin-row'u32;
 ctx-begin-col'u32;
 ctx-end-row'u32;

@@ -989,7 +989,7 @@ extern uint32_t _Tcp1_Glast_row;
 extern uint32_t _Tcp1_Glast_col;
 _Tcp1_Ttoken _Tcp1_Glast_last_token;
 _Tcp1_Ttoken _Tcp1_Glast_token;
-const char* lex_part_1;
+extern const char* lex_part_1;
 struct _Tcp1_Tstmt_space* _Tcp1_Gdecl_func_ctx_space;
 int32_t _Tcp1_Gid_c;
 uint8_t* _Tcp1_Gid_in_header_v;
