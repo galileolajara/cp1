@@ -1129,7 +1129,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                      } else {
                         line'char[] = &code[k];
                         if (line-len & 0x8000) == 0 {
-                           jscode{"O(`" line, line-len "\\n`);\n"}
+                           jscode{"O(`" line, line-len " // line " line-num "\\n`);\n"}
                         } else {
                            line-len &= 0x7fff;
                            jscode{"     " line, line-len}
