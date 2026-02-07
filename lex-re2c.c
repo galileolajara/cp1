@@ -109,11 +109,6 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
       _Tcp1_Gstring_buf = l->start + 3;
       return CP1_TOKEN_STRING;
    }
-   "'|" [^\n\000|]* "|"                   {
-      _Tcp1_Gstring_len = (l->cursor - 1) - (l->start + 2);
-      _Tcp1_Gstring_buf = l->start + 2;
-      return CP1_TOKEN_STRING;
-   }
    "'\"" [^\n\000"]* "\""                   {
       _Tcp1_Gstring_len = (l->cursor - 1) - (l->start + 2);
       _Tcp1_Gstring_buf = l->start + 2;

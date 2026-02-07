@@ -1296,15 +1296,6 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                            }
                         }
                         continue;
-                     } elif c == ''| {
-                        i += 2;
-                        loop {
-                           if lex.cursor[i++] == ''| {
-                              // C1.stdout{str, i - start ''\n}
-                              break;
-                           }
-                        }
-                        continue;
                      } elif c == ''< {
                         i += 2;
                         loop {

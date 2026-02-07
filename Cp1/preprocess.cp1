@@ -304,7 +304,6 @@ using 'cp1 {
                         // Codes to check if syntax highlighting for strings are working
                         "#if 0";
                            '"hello";
-                           // '|hello|;
                            '<hello>;
                            '[hello];
                            '{hello};
@@ -313,8 +312,6 @@ using 'cp1 {
                      }
                   } elif line.p1[1] == ''" {
                      col += parse-string(in-path, line, ''", in-data);
-                  } elif line.p1[1] == ''| {
-                     col += parse-string(in-path, line, ''|, in-data);
                   } elif line.p1[1] == ''< {
                      col += parse-string(in-path, line, ''>, in-data);
                   } elif line.p1[1] == ''[ {
