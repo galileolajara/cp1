@@ -1172,7 +1172,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                            } else {
                               line-len &= 0x3fff;
                               jscode{
-                              "R('= " line, line-len "\n , " line-len + 1 ");\n"}
+                              "R('= " line, line-len " , " line-len ");\n"}
                            }
                         } else {
                            line-len &= 0x7fff;
