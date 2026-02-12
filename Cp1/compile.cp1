@@ -9,7 +9,9 @@ using 'c = 'libc;
 using 'c1 = 'libcp1;
 using 'x = 'posix;
 using 'cp1 {
-#build-common-codes{compile:true}
+#build-common-codes{
+.compile = true;
+}
 // include-stdint:bool;
 // include-stdbool:bool;
 // include-stddef:bool;

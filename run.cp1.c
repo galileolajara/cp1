@@ -66,6 +66,9 @@ static inline void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(const char* _Lc_0, int
 static inline void _Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 static inline void _Tlibcp1_Tfmt_Ff_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 int system2(char* _Lcmd_0);
+static inline void _Tlibcp1_Tsprintf_Fadd_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_sprintf_add_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
+static inline void _Tlibcp1_Tfmt_Ff_sprintf_add_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 #define _Tlibc_Frealloc_arr_2(val, count) val = realloc(val, sizeof(val[0]) * (count))
 #ifdef _WIN32
 #define _Tposix_Fopen_2(p, f) open(p, f | O_BINARY)
@@ -97,7 +100,9 @@ struct _Tlibcp1_Tfmt_Tf_cstr _L_37 = {0};
 struct _Tlibcp1_Tfmt_Tf_cstr _L_38 = {0};
 struct _Tlibcp1_Tfmt _L_39 = {0};
 int _Lcompile_ret_40;
-int _Lexe_ret_42;
+struct _Tlibcp1_Tfmt_Tf_cstr _L_42 = {0};
+struct _Tlibcp1_Tfmt _L_43 = {0};
+int _Lexe_ret_49;
 #ifdef _WIN32
 if(true) {
 char* _Larg_2;
@@ -132,7 +137,7 @@ _Li_4++;
 break_0:;
 #endif
 _Lbin_7 = ((char*)(_Larg_v_1[0]));
-if(_Larg_c_0 != 2) {
+if(_Larg_c_0 < 2) {
 _Fprint_commands_1(_Lbin_7);
 exit(_Tlibc_Texit_Cfailure);
 }
@@ -257,13 +262,40 @@ _Li_41++;
 }
 break_3:;
 #endif
-_Lexe_ret_42 = ((int)(system2(_Lexe_path_14)));
+_Tlibcp1_Tsprintf_Fadd_2(_Tlibcp1_Fsprintf_2(_Lcommand_22, &_Lf_23), &_L_43);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lexe_path_14, &_L_43, &_L_42);
+_Tlibcp1_Tfmt_Ff_reserve_sprintf_add_1(&_L_43);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_42, &_L_43);
+_Tlibcp1_Tfmt_Ff_sprintf_add_1(&_L_43);
+int32_t _Li_44;
+_Li_44 = ((int32_t)(2));
+for(int i = _Larg_c_0 - 2; i > 0; ) {
+i --;
+struct _Tlibcp1_Tfmt_Tf_cstr _L_45 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_46 = {0};
+struct _Tlibcp1_Tfmt_Tf_char _L_47 = {0};
+struct _Tlibcp1_Tfmt _L_48 = {0};
+_Tlibcp1_Tsprintf_Fadd_2(&_Lf_23, &_L_48);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_48, " \"", 2u, &_L_45);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Larg_v_1[_Li_44], &_L_48, &_L_46);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\"', &_L_48, &_L_47);
+_Tlibcp1_Tfmt_Ff_reserve_sprintf_add_1(&_L_48);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_45, &_L_48);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_46, &_L_48);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_47, &_L_48);
+_Tlibcp1_Tfmt_Ff_sprintf_add_1(&_L_48);
+continue_4:;
+_Li_44++;
+}
+break_4:;
+_Lcommand_22[_Lf_23._Mlen] = 0;
+_Lexe_ret_49 = ((int)(system2(_Lcommand_22)));
 unlink(_Lexe_path_14);
-if(_Lexe_ret_42 != 0) {
+if(_Lexe_ret_49 != 0) {
 exit(_Tlibc_Texit_Cfailure);
 }
-int32_t ret_216_4 = 0;
-return ret_216_4;
+int32_t ret_221_4 = 0;
+return ret_221_4;
 }
 void _Tcp1_Foutput_reserve_1(uint32_t _Llen_0) {
 uint32_t _Lspace_1;
@@ -608,4 +640,16 @@ struct _Tlibcp1_Tsprintf* _Lsf_1;
 (*_Lfmt_0)._Mptr[(*_Lfmt_0)._Mlen] = 0;
 _Lsf_1 = ((struct _Tlibcp1_Tsprintf*)((*_Lfmt_0)._Muser_data));
 (*_Lsf_1)._Mlen = (*_Lfmt_0)._Mlen;
+}
+static inline void _Tlibcp1_Tsprintf_Fadd_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
+(*_Lfmt_1)._Mptr = ((void*)&(*_Lsf_0)._Mmem[(*_Lsf_0)._Mlen]);
+(*_Lfmt_1)._Mlen = 0;
+(*_Lfmt_1)._Muser_data = _Lsf_0;
+}
+static inline void _Tlibcp1_Tfmt_Ff_reserve_sprintf_add_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+}
+static inline void _Tlibcp1_Tfmt_Ff_sprintf_add_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
+struct _Tlibcp1_Tsprintf* _Lsf_1;
+_Lsf_1 = ((struct _Tlibcp1_Tsprintf*)((*_Lfmt_0)._Muser_data));
+(*_Lsf_1)._Mlen += (*_Lfmt_0)._Mlen;
 }

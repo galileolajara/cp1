@@ -18,9 +18,10 @@ id-map'map.;
 include-map'map.;
 at-map'at-map.;
 meta #build-common-codes {
+^  compile'bool;
    using 'cp1 {
       struct 'struct-data[
-#  if (arg.compile) {
+#  if .compile {
          file'file,
 #  }
          begin-row'u32,
@@ -31,7 +32,7 @@ meta #build-common-codes {
          at'at,
          flags'struct-flags,
          real-name'id,
-#  if (arg.compile) {
+#  if .compile {
          method-c'i32,
          method-cap'i32,
          method-v'func[],
@@ -43,7 +44,7 @@ meta #build-common-codes {
       struct 'stmt-if[
          base'stmt.,
          expr'expr-i,
-#  if (arg.compile) {
+#  if .compile {
          val'value.,
          is-overload'bool,
          overload-type'at,
@@ -52,7 +53,7 @@ meta #build-common-codes {
       struct 'stmt-if-elif[
          base'stmt.,
          expr'expr-i,
-#  if (arg.compile) {
+#  if .compile {
          expr-else'expr-i,
          val'value.,
          is-overload'bool,
@@ -60,14 +61,14 @@ meta #build-common-codes {
       ];
       struct 'stmt-if-else[
          base'stmt.,
-#  if (arg.compile) {
+#  if .compile {
          if-begin'stmt-if,
          expr'expr-i,
 #  }
       ];
       struct 'stmt-if-end[
          base'stmt.,
-#  if (arg.compile) {
+#  if .compile {
          if-begin'stmt-if,
          expr'expr-i,
 #  }
@@ -75,23 +76,23 @@ meta #build-common-codes {
       struct 'stmt-switch[
          base'stmt.,
          expr'expr-i,
-#  if (arg.compile) {
+#  if .compile {
          val'value.,
 #  }
          cases'expr-i,
-#  if (arg.compile) {
+#  if .compile {
          case-func-c'u32,
          case-func-v'stmt-switch-case-func.[],
 #  }
       ];
       struct 'stmt-case-item[
          expr'expr-i,
-#  if (arg.compile) {
+#  if .compile {
          val'value.,
 #  }
       ];
       using 'lvar {
-#  if (arg.compile) {
+#  if .compile {
          ptr(l'this)'lvar-data @inline {
             return .ctx-func.lvar-v[l];
          }
@@ -99,7 +100,7 @@ meta #build-common-codes {
             return l.ptr().decl.name;
          }
 #  }
-#  if (!arg.compile) {
+#  if !.compile {
          ptr(l'this)'lvar-data @inline {
             return .ctx-func.lvar-v[l];
          }
@@ -109,7 +110,7 @@ meta #build-common-codes {
 #  }
       }
       struct 'enum-data[
-#  if (arg.compile) {
+#  if .compile {
          file'file,
 #  }
          begin-row'u32,
@@ -123,7 +124,7 @@ meta #build-common-codes {
          soa-field-gvar-at'at,
          soa-field-gvar-id'id,
          real-name'id,
-#  if (arg.compile) {
+#  if .compile {
          method-c'i32,
          method-cap'i32,
          method-v'func[],
@@ -143,7 +144,7 @@ meta #build-common-codes {
          left'expr-i,
          right'expr-i,
          type'compare,
-#  if (arg.compile) {
+#  if .compile {
          left-val'value.,
          right-val'value.,
          is-overload'bool,
@@ -154,7 +155,7 @@ meta #build-common-codes {
          left'expr-i,
          right'expr-i,
          type'assign,
-#  if (arg.compile) {
+#  if .compile {
          left-val'value.,
          right-val'value.,
          is-overload'bool,
@@ -164,7 +165,7 @@ meta #build-common-codes {
       struct 'expr-lvar[
          base'expr.,
          lvar'lvar,
-// #  if (!arg.compile) {
+// #  if !.compile {
          decl'bool,
 // #  }
       ];
@@ -172,14 +173,14 @@ meta #build-common-codes {
          base'expr.,
          left'expr-i,
          right'expr-i,
-#  if (arg.compile) {
+#  if .compile {
          left-val'value.,
          right-val'value.,
 #  }
       ];
       struct 'expr-math-item[
          expr'expr-i,
-#  if (arg.compile) {
+#  if .compile {
          val'value.,
 #  }
       ];
@@ -188,20 +189,20 @@ meta #build-common-codes {
          left'expr-i,
          right'expr-i,
          type'math,
-#  if (arg.compile) {
+#  if .compile {
          left-val'value.,
          right-val'value.,
          is-overload'bool,
 #  }
          item-c'u8,
-#  if (!arg.compile) {
+#  if !.compile {
          item-cap'u8,
 #  }
          item-v'expr-math-item.[],
       ];
       struct 'expr-bools-item[
          expr'expr-i,
-#  if (arg.compile) {
+#  if .compile {
          val'value.,
 #  }
       ];
@@ -210,13 +211,13 @@ meta #build-common-codes {
          left'expr-i,
          right'expr-i,
          type'bools,
-#  if (arg.compile) {
+#  if .compile {
          left-val'value.,
          right-val'value.,
          is-overload'bool,
 #  }
          item-c'u8,
-#  if (!arg.compile) {
+#  if !.compile {
          item-cap'u8,
 #  }
          item-v'expr-bools-item.[],
@@ -225,7 +226,7 @@ meta #build-common-codes {
          base'expr.,
          expr'expr-i,
          member'id,
-#  if (arg.compile) {
+#  if .compile {
          fvar'fvar,
          val'value.,
 #  }
@@ -235,7 +236,7 @@ meta #build-common-codes {
          expr'expr-i,
          group'id,
          field'id,
-#  if (arg.compile) {
+#  if .compile {
          expr2'expr-i,
          val'value.,
 #  }
@@ -244,7 +245,7 @@ meta #build-common-codes {
          base'expr.,
          at'at,
          name'id,
-#  if (arg.compile) {
+#  if .compile {
          cvar'cvar,
          try'at,
 #  }
@@ -252,7 +253,7 @@ meta #build-common-codes {
       struct 'expr-ref[
          base'expr.,
          expr'expr-i,
-#  if (arg.compile) {
+#  if .compile {
          val'value.,
 #  }
       ];
@@ -260,7 +261,7 @@ meta #build-common-codes {
          base'expr.,
          expr'expr-i,
          type'unary,
-#  if (arg.compile) {
+#  if .compile {
          val'value.,
 #  }
       ];
@@ -268,22 +269,22 @@ meta #build-common-codes {
          base'expr.,
          expr'expr-i,
          type'at,
-#  if (arg.compile) {
+#  if .compile {
          val'value.,
 #  }
       ];
       struct 'expr-gvar[
          base'expr.,
-#  if (!arg.compile) {
+#  if !.compile {
          at'at,
          name'id,
 #  }
-#  if (arg.compile) {
+#  if .compile {
          gvar'gvar,
 #  }
       ];
       struct 'decl-gvar[
-#  if (arg.compile) {
+#  if .compile {
          file'file,
 #  }
          row'u32,
@@ -294,7 +295,7 @@ meta #build-common-codes {
          decl'decl-var-data.,
       ];
       struct 'cvar-data[
-#  if (arg.compile) {
+#  if .compile {
          file'file,
 #  }
          row'u32,
@@ -315,14 +316,14 @@ meta #build-common-codes {
          type-info'type-info.,
          size-c'u8,
          size-expr-v'expr-i[],
-#  if (arg.compile) {
+#  if .compile {
          size-value-v'value.[],
 #  }
       ];
       struct 'carg[
          ref'i8,
          expr'expr-i,
-#  if (arg.compile) {
+#  if .compile {
          value'value.,
 #  }
       ];
@@ -331,7 +332,7 @@ meta #build-common-codes {
          at'at,
          func-name'id,
          angle'bool,
-#  if (arg.compile) {
+#  if .compile {
          func-idx'func,
 #  }
          group-c'u8,
@@ -341,7 +342,7 @@ meta #build-common-codes {
       ];
       struct 'expr-meta-func[
          base'expr.,
-#  if (!arg.compile) {
+#  if !.compile {
          at'at,
          func-name'id,
          lvar'expr-i,
@@ -351,14 +352,14 @@ meta #build-common-codes {
          carg-c'u8,
          carg-v'carg.[0],
 #  }
-#  if (arg.compile) {
+#  if .compile {
          expr-c'u8,
          expr-v'expr-i[0],
 #  }
       ];
       struct 'expr-meta-method[
          base'expr.,
-#  if (!arg.compile) {
+#  if !.compile {
          this'expr-i,
          func-name'id,
          lvar'expr-i,
@@ -368,7 +369,7 @@ meta #build-common-codes {
          carg-c'u8,
          carg-v'carg.[0],
 #  }
-#  if (arg.compile) {
+#  if .compile {
          expr-c'u8,
          expr-v'expr-i[0],
 #  }
@@ -378,7 +379,7 @@ meta #build-common-codes {
          this'expr-i,
          func-name'id,
          angle'bool,
-#  if (arg.compile) {
+#  if .compile {
          func-idx'func,
          this-value'value.,
 #  }
@@ -388,7 +389,7 @@ meta #build-common-codes {
          carg-v'carg.[0],
       ];
       struct 'decl-func[
-#  if (arg.compile) {
+#  if .compile {
          process-next'func,
          file'file,
 #  }
@@ -404,7 +405,7 @@ meta #build-common-codes {
          real-name'id,
          meta-method-prefix1'id,
          meta-method-prefix2'id,
-#  if (arg.compile) {
+#  if .compile {
          meta-method-arr1'id,
          meta-method-cstr1'id,
          meta-method-arr2'id,
@@ -421,25 +422,25 @@ meta #build-common-codes {
          cas'id,
          // type:At,
          decl'decl-var-data.,
-#  if (!arg.compile) {
+#  if !.compile {
          stmt-space'stmt-space,
 #  }
-#  if (arg.compile) {
+#  if .compile {
          stmt-space'stmt-space.,
 #  }
       //    stmt-c:u32,
-      // #  if (arg.compile) {
+      // #  if .compile {
       //    stmt-cap:u32,
       // #  }
       //    stmt-v:Stmt[],
-#  if (arg.compile) {
+#  if .compile {
          lvar-c'lvar,
          // lvar-cap:Lvar,
          lvar-v'lvar-data.[],
          // lvar-name-v:Id[],
          body-file-pos'u32,
 #  }
-#  if (!arg.compile) {
+#  if !.compile {
          lvar-c'lvar,
          lvar-cap'lvar,
          lvar-v'lvar-data[],
@@ -455,7 +456,7 @@ meta #build-common-codes {
          type'name-type,
          parent'at,
          name'at-name.,
-#  if (arg.compile) {
+#  if .compile {
          func-c'i32,
          func-cap'i32,
          func-v'func[],
@@ -479,7 +480,7 @@ meta #build-common-codes {
          line-c'u32,
          with-reflection'bool,
          no-cache'bool,
-#  if (arg.compile) {
+#  if .compile {
          file'file,
 #  }
       ];
@@ -491,7 +492,7 @@ meta #build-common-codes {
          at'at,
          row'u32,
          col'u32,
-#  if (arg.compile) {
+#  if .compile {
          file'file,
          require'bool,
 #  }

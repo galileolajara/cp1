@@ -1,16 +1,24 @@
 using 'c = 'libc;
 using 'c1 = 'libcp1;
 using 'cp1 {
-#meta-read-write-process{method:true}
-#meta-read-write-process{method:false}
+#meta-read-write-process{
+.method = true;
+}
+#meta-read-write-process{
+.method = false;
+}
 meta #meta-read-write-process {
+^  method'bool;
+#  procname';
+#  if .method { procname = "method" } else { procname = "func" }
    using 'c1 = 'libcp1;
    using 'cp1'expr-i {
-      wr-meta${arg.method ? "method" : "func"}(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-# if (arg.method) {
+# if .method {
+      wr-metamethod(expr'expr, w'wtr, header'bool) @case.wr() @inline {
          e'expr-meta-method = expr;
          e.this.wr(w, header);
 # } else {
+      wr-metafunc(expr'expr, w'wtr, header'bool) @case.wr() @inline {
          e'expr-meta-func = expr;
          e.at.wr(w, header);
 # }
@@ -26,10 +34,11 @@ meta #meta-read-write-process {
          }
          e.lvar.wr(w, header);
       }
-      rd-meta${arg.method ? "method" : "func"}(e-idx'expr-i, r'rdr) @case.rd() @inline {
-# if (arg.method) {
+# if .method {
+      rd-metamethod(e-idx'expr-i, r'rdr) @case.rd() @inline {
          'expr-i.rd(this?, r);
 # } else {
+      rd-metafunc(e-idx'expr-i, r'rdr) @case.rd() @inline {
          'at.rd(at-idx?, r);
 # }
          'id.rd(func-name?, r);
@@ -64,7 +73,7 @@ meta #meta-read-write-process {
             group-v2[0] = 1;
             carg-v2'expr-i[1] = ?;
             carg-v2[0] = lvar;
-# if (arg.method) {
+# if .method {
             set-method(e-idx, this, func-name, false, 1, group-v2, 1, carg-v2);
 # } else {
             set-func(e-idx, at-idx, func-name, false, 1, group-v2, 1, carg-v2);
@@ -139,15 +148,22 @@ meta #meta-read-write-process {
             set-method(e-idx, lvar, #nil, false, 1, group-v2, 0, null);
          }
       }
-      process-meta${arg.method ? "method" : "func"}(expr'expr, ok'bool&) @case.process() @inline {
-# if (arg.method) {
+# if .method {
+      process-metamethod(expr'expr, ok'bool&) @case.process() @inline {
          e'expr-meta-method = expr;
 # } else {
+      process-metafunc(expr'expr, ok'bool&) @case.process() @inline {
          e'expr-meta-func = expr;
 # }
          i' = 0;
          if !e.expr-v[i].process() {
-            'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the beginning of meta-${arg.method ? "method" : "function"}\n"}
+            'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the beginning of meta-"
+# if .method {
+            "method"
+# } else {
+            "function"
+# }
+            "\n"}
             return;
          }
          e-func'expr-func = e.expr-v[i].ptr();
@@ -158,14 +174,14 @@ meta #meta-read-write-process {
          }
          i++;
          arg-c' = ((e.expr-c - 1) >> 1) - 1;
-# for (let i = 1; i <= 2; i++) {
-# if (i == 2) {
+# loop i' = 1; 2; i++ {
+# if i == 2 {
          if f.meta-method-prefix2 != #nil {
 # }
          loop arg-num' = 1; arg-c; i++; arg-num++ {
             e-idx' = e.expr-v[i];
             e-method'expr-method = e-idx.ptr();
-# if (i == 1) {
+# if i == 1 {
             if f.meta-method-prefix2 == #nil {
                if !e-method.angle {
                   e-method.group-v[0]--;
@@ -176,39 +192,57 @@ meta #meta-read-write-process {
             }
             lvar'expr-lvar = e-method.this.ptr();
             if !e-method.angle {
-               e-method.func-name = f.meta-method-cstr${i};
+#              F("e-method.func-name = f.meta-method-cstr%u;\n", i);
             } else {
                e-idx2' = e-method.carg-v[0].expr;
                e-data2' = e-idx2.ptr();
                val';
                if !e-idx2.value(1, true, val) {
-                  'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-${arg.method ? "method" : "function"}\n"}
+                  'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-"
+# if .method {
+            "method"
+# } else {
+            "function"
+# }
+                  "\n"}
                   return;
                }
                if val.info.array-c > 0 {
-                  e-method.func-name = f.meta-method-arr${i};
+#                 F("e-method.func-name = f.meta-method-arr%u;\n", i);
                } else {
-                  e-method.func-name = f.meta-method-prefix${i};
+#                 F("e-method.func-name = f.meta-method-prefix%u;\n", i);
                }
             }
 # } else {
-            e-method.func-name = f.meta-method-prefix${i};
+#           F("e-method.func-name = f.meta-method-prefix%u;\n", i);
 # }
             if !e-idx.process() {
-               'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-${arg.method ? "method" : "function"}\n"}
+               'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-"
+# if .method {
+            "method"
+# } else {
+            "function"
+# }
+               "\n"}
                return;
             }
          }
          if true {
             e-last' = e.expr-v[i++];
             e-last-method'expr-method = e-last.ptr();
-            e-last-method.func-name = f.meta-method-end${i};
+#           F("e-last-method.func-name = f.meta-method-end%u;\n", i);
             if !e-last.process() {
-               'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the end of meta-${arg.method ? "method" : "function"}\n"}
+               'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the end of meta-"
+# if .method {
+            "method"
+# } else {
+            "function"
+# }
+               "\n"}
                return;
             }
          }
-# if (i == 2) {
+# if i == 2 {
          }
 # }
 # }
