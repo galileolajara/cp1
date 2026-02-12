@@ -1025,6 +1025,10 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                         } else {
                            line'char[] = &code[k];
                            if (line-len & 0x8000) == 0 {
+                              if (line-len & 0x4000) == 0 {
+                              } else {
+                                 line-len &= 0x3fff;
+                              }
                            } else {
                               line-len &= 0x7fff;
                               if (line-len & 0x4000) == 0 {
@@ -1040,6 +1044,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                   jscode{
                   '= require "LibCp1/codegen.cp1";
                   '= using 'c = 'libc;
+                  '= using 'c1 = 'libcp1;
                   '= using 'x = 'posix;
                   '= main(arg-c'intc, arg-v'char[][])'intc {
                   // '= 'c.printf("arg-v[1]: %s\n", arg-v[1]);
@@ -1161,8 +1166,14 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                      } else {
                         line'char[] = &code[k];
                         if (line-len & 0x8000) == 0 {
-                           jscode{
-                           "O('= " line, line-len "\n , " line-len + 1 ");\n"}
+                           if (line-len & 0x4000) == 0 {
+                              jscode{
+                              "O('= " line, line-len "\n , " line-len + 1 ");\n"}
+                           } else {
+                              line-len &= 0x3fff;
+                              jscode{
+                              "R('= " line, line-len "\n , " line-len + 1 ");\n"}
+                           }
                         } else {
                            line-len &= 0x7fff;
                            if (line-len & 0x4000) == 0 {
