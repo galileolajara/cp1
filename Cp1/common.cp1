@@ -1029,10 +1029,13 @@ enum 'include[#nil = -1, #0]'i32 {
             return false;
          }
       }
-      loop i' = 0; len - 4; i++ {
-         if (str[i] == ''.) && (str[i + 1] == ''c) && (str[i + 2] == ''p) && (str[i + 3] == ''1) {
-            err = #cp1;
-            return false;
+      if (&&, str[0] == ''c, str[1] == ''p, str[2] == ''1, str[3] == ''-, str[4] == ''t, str[5] == ''m, str[6] == ''p, str[7] == ''/) {
+      } else {
+         loop i' = 0; len - 4; i++ {
+            if (str[i] == ''.) && (str[i + 1] == ''c) && (str[i + 2] == ''p) && (str[i + 3] == ''1) {
+               err = #cp1;
+               return false;
+            }
          }
       }
       loop i' = 0; len - 1; i++ {

@@ -1011,21 +1011,51 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
             if (at == tc.at) && (name == tc.name) {
                if quickjs-begin(tc.file.path(), tc.file.path-len(), tc.name.str(), tc.name.len(), tc.code-crc32c, ti.arg-crc32c, ti.require) {
                   .jscode-buf-len = 0;
+                  if true {
+                     code' = tc.code;
+                     k' = 0;
+                     line-num' = tc.row;
+                     loop tc.line-c {
+                        line-num++;
+                        line-len' = 'u16(code[k] | (code[k + 1] << 8));
+                        k += 2;
+                        if line-len == 0 {
+                        } else {
+                           line'char[] = &code[k];
+                           if (line-len & 0x8000) == 0 {
+                           } else {
+                              line-len &= 0x7fff;
+                              if (line-len & 0x4000) == 0 {
+                              } else {
+                                 line-len &= 0x3fff;
+                                 jscode{line, line-len}
+                              }
+                           }
+                           k += line-len;
+                        }
+                     }
+                  }
                   jscode{
-                  '= let cp1_out = [];
-                  '= function O(line) {
-                  '=    cp1_out.push(line);
-                  '= }
-                  '= let cp1_path = scriptArgs[0] + ".cp1";
-                  '= let D = {};
+                  '= require "LibCp1/codegen.cp1";
+                  '= using 'c = 'libc;
+                  '= using 'x = 'posix;
+                  '= main(arg-c'intc, arg-v'char[][])'intc {
+                  // '= 'c.printf("arg-v[1]: %s\n", arg-v[1]);
                   }
                   "#if INTPTR_MAX == INT64_MAX";
-                  jscode{"D.cpubits = 64;\n"}
-                  "#else";
-                  jscode{"D.cpubits = 32;\n"}
+                  jscode{
+                  '= .is-64bit = true;
+                  }
                   "#endif";
                   loop k' = 0; .define-c; k++ {
-                     jscode{"D." .define-v[k], .define-len-v[k] ";\n"}
+                     if .define-v[k][.define-len-v[k] - 1] == ''} {
+                        jscode{.define-v[k], .define-len-v[k] "\n"}
+                     } else {
+                        jscode{.define-v[k], .define-len-v[k] ";\n"}
+                     }
+                  }
+                  jscode{
+                  '= if true {
                   }
                   if tc.with-reflection {
                      jscode{
@@ -1100,20 +1130,20 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                      }
                   }
                   jscode{
-                    "let arg = {" ti.arg, ti.arg-len "};\n"
+                     ti.arg, ti.arg-len ''\n
                   }
                   if tc.no-cache {
                      jscode{
-                     '= O("// XXXXXXXX - CRC32C\n");
+                     '= O("// XXXXXXXX - CRC32C\n"#);
                      }
                   } else {
                      jscode{
-                     '= if ("cp1_no_cache" in arg) O("// XXXXXXXX - CRC32C\n");
-                     '- else O("
+                     '= if .no-cache { O("// XXXXXXXX - CRC32C\n"#) }
+                     '- else { O("
                      }
                      .jscode-buf-len += quickjs-hex(&.jscode-buf-data[.jscode-buf-len], tc.code-crc32c);
                      jscode{
-                       "- 'crc32c\\n\");\n"
+                     '= CRC32C\n"#) }
                      }
                   }
                   code' = tc.code;
@@ -1124,37 +1154,51 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                      line-len' = 'u16(code[k] | (code[k + 1] << 8));
                      k += 2;
                      if line-len == 0 {
-                        jscode{'= O("\n");
+                        jscode{'= L();
                         }
                      } else {
                         line'char[] = &code[k];
                         if (line-len & 0x8000) == 0 {
-                           jscode{"O(`" line, line-len " // line " line-num "\\n`);\n"}
+                           jscode{
+                           "O('= " line, line-len "\n , " line-len + 1 ");\n"}
                         } else {
                            line-len &= 0x7fff;
-                           jscode{"     " line, line-len}
+                           if (line-len & 0x4000) == 0 {
+                              jscode{"    " line, line-len}
+                           } else {
+                              line-len &= 0x3fff;
+                           }
                         }
                         k += line-len;
                      }
                   }
                   jscode{
-                  '= {
+                  '= }
+                  '= cp1-path'char[1024];
+                  // '= 'c1.sprintf(cp1-path, f?).f{arg-v[1] ".cp1"}
+                  '= 'c.sprintf(cp1-path, "%s.cp1", arg-v[1]);
                   }
                   "#ifdef _WIN32";
                   jscode{
-                    "   let tmp_path = scriptArgs[0] + \".cp1-" 'u32('x.getpid()) "\";\n"
+                    "tmp-path'char[1024];\n'c1.sprintf(tmp-path, f).f{arg-v[1] \".cp1-" 'u32('x.getpid()) "\"}\n"
                   }
                   "#else";
                   jscode{
-                  '=    let tmp_path = scriptArgs[0] + ".cp1-" + os.getpid();
+                  '= tmp-path'char[1024];
+                  // '= 'c1.sprintf(tmp-path, f).f{arg-v[1] ".cp1-" 'u32('x.getpid())}
+                  '= 'c.sprintf(tmp-path, "%s.cp1-%u", arg-v[1], 'x.getpid());
                   }
                   "#endif";
                   jscode{
-                  '=    let file = std.open(tmp_path, "wb");
-                  '=    file.puts(cp1_out.join(""));
-                  '=    file.close();
-                  '=    if (os.platform == "win32") os.remove(cp1_path);
-                  '=    os.rename(tmp_path, cp1_path);
+                  // '= 'c.printf("%s -> %s\n", tmp-path, cp1-path);
+                  '= file' = 'x.open(tmp-path, #create | #truncate | #wronly, 0o644);
+                  '= file.write(.cp1-buf, .cp1-len);
+                  '= file.close();
+                  '= "#ifdef _WIN32";
+                  '= 'x.unlink(cp1-path);
+                  '= "#endif";
+                  '= 'c.rename(tmp-path, cp1-path);
+                  '= return 0;
                   '= }
                   }
                   quickjs-end(.jscode-buf-data, .jscode-buf-len, ti.require);

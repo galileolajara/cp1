@@ -137,7 +137,7 @@ main(arg-c'intc, arg-v'char[][])'intc {
    }
    "#endif";
    bin' = arg-v[0];
-   if arg-c != 2 {
+   if arg-c < 2 {
       print-commands(bin);
       'c.exit(#failure);
    }
@@ -208,7 +208,12 @@ main(arg-c'intc, arg-v'char[][])'intc {
    }
    "#endif";
    // C1.stdout{"run command: " exe-path ''\n}
-   exe-ret' = system2(exe-path);
+   'c1.sprintf(command, f).add{exe-path}
+   loop i' = 2; arg-c - 2; i++ {
+      f.add{'< "> arg-v[i] ''"}
+   }
+   command[f.len] = 0;
+   exe-ret' = system2(command);
    'x.unlink(exe-path);
    if exe-ret != 0 {
       'c.exit(#failure);

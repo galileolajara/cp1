@@ -420,6 +420,14 @@ lex_template_code: {
                string_ptr += 2;
                memcpy(string_ptr, line + indention + 2, copy_len);
                string_ptr += copy_len;
+            } else if ((line[first_char] == '^') && (line[first_char + 1] == ' ')) {
+               // indention is still ok
+               int16_t copy_len = (line_len - 1) - indention;
+               *((uint8_t*)pcode_len) = copy_len;
+               *((uint8_t*)pcode_len + 1) = (copy_len >> 8) | 0xc0;
+               string_ptr += 2;
+               memcpy(string_ptr, line + indention + 2, copy_len);
+               string_ptr += copy_len;
             } else {
                goto indent_more;
             }
@@ -449,7 +457,7 @@ lex_template_code: {
                uint8_t c = line[i++];
                switch (code_type) {
                   case 0: {
-                     if ((c == '$') && line[i] == '{') {
+                     /* if ((c == '$') && line[i] == '{') {
                         code_start = indention + i;
                         i++;
                         code_type = 1;
@@ -468,9 +476,9 @@ lex_template_code: {
                            *(string_ptr++) = '\\';
                            *(string_ptr++) = line[i++];
                         }
-                     } else {
+                     } else { */
                         *(string_ptr++) = c;
-                     }
+                     // }
                      break;
                   }
                   case 1: {
