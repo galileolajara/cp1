@@ -3653,8 +3653,8 @@ _Lw_7._Mpos++;
 _Lw_7._Mp1[0] = '\0';
 _Lw_begin_145._Mref = _Lnew_data_6;
 (*_Lin_out_size_2) = (_Lw_7._Mpos - _Lw_begin_145._Mpos);
-void* ret_481_7 = _Lnew_data_6;
-return ret_481_7;
+void* ret_482_7 = _Lnew_data_6;
+return ret_482_7;
 }
 void _Tcp1_Tlexer_Finit_3(struct _Tcp1_Tlexer* _Llex_0, uint8_t* _Ldata_1, size_t _Lsize_2) {
 (*_Llex_0)._Mstart = _Ldata_1;
@@ -7521,14 +7521,14 @@ exit(_Tlibc_Texit_Cfailure);
 }
 (*_Lr_1)._Mpos++;
 if(_Lc_5 == _Lending_2) {
-size_t ret_37_13 = (*_Lr_1)._Mpos - _Lstart_4._Mpos;
-return ret_37_13;
+size_t ret_38_13 = (*_Lr_1)._Mpos - _Lstart_4._Mpos;
+return ret_38_13;
 }
 continue_0:;
 }
 break_0:;
-int32_t ret_40_7 = 0;
-return ret_40_7;
+int32_t ret_41_7 = 0;
+return ret_41_7;
 }
 static inline void _Tlibcp1_Tfmt_Ff_reserve_Tusz_1_2(size_t _Lu_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_u64* _Lf_2) {
 (*_Lfmt_1)._Mcap += 20;

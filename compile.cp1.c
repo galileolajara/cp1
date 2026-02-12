@@ -2328,7 +2328,7 @@ break_16:;
 _Tcp1_Fjscode_1(&_L_174);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_174, "}\n"
 "cp1-path'char[1024];\n"
-"'c.sprintf(cp1-path, \"%s.cp1\", arg-v[1]);\n", 65u, &_L_173);
+"'c1.sprintf(cp1-path, f?).f{arg-v[1] \".cp1\"}\n", 68u, &_L_173);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_174);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_173, &_L_174);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_174);
@@ -2345,7 +2345,7 @@ _Tlibcp1_Tfmt_Ff_jscode_1(&_L_178);
 #else
 _Tcp1_Fjscode_1(&_L_180);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_180, "tmp-path'char[1024];\n"
-"'c.sprintf(tmp-path, \"%s.cp1-%u\", arg-v[1], 'x.getpid());\n", 79u, &_L_179);
+"'c1.sprintf(tmp-path, f).f{arg-v[1] \".cp1-\" 'u32('x.getpid())}\n", 84u, &_L_179);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_180);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_179, &_L_180);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_180);

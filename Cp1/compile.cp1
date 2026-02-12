@@ -1188,8 +1188,8 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                   jscode{
                   '= }
                   '= cp1-path'char[1024];
-                  // '= 'c1.sprintf(cp1-path, f?).f{arg-v[1] ".cp1"}
-                  '= 'c.sprintf(cp1-path, "%s.cp1", arg-v[1]);
+                  '= 'c1.sprintf(cp1-path, f?).f{arg-v[1] ".cp1"}
+                  // '= 'c.sprintf(cp1-path, "%s.cp1", arg-v[1]);
                   }
                   "#ifdef _WIN32";
                   jscode{
@@ -1198,8 +1198,8 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                   "#else";
                   jscode{
                   '= tmp-path'char[1024];
-                  // '= 'c1.sprintf(tmp-path, f).f{arg-v[1] ".cp1-" 'u32('x.getpid())}
-                  '= 'c.sprintf(tmp-path, "%s.cp1-%u", arg-v[1], 'x.getpid());
+                  '= 'c1.sprintf(tmp-path, f).f{arg-v[1] ".cp1-" 'u32('x.getpid())}
+                  // '= 'c.sprintf(tmp-path, "%s.cp1-%u", arg-v[1], 'x.getpid());
                   }
                   "#endif";
                   jscode{

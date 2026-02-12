@@ -1,3 +1,4 @@
+require "LibCp1/fmtsz.cp1";
 using 'c1 = 'libcp1;
 using 'c = 'libc;
 using 'cp1 {
