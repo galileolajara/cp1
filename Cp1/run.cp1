@@ -52,7 +52,7 @@ validate-cp1-path(bin'char[], cp1-path'char[]) {
       'c.exit(#failure);
    }
 }
-get-compiler(bin'char[], compiler'char[]) {
+get-compiler(bin'char[], compiler'char[], tcc'bool&) {
    path' = 'c.strdup('c.getenv("PATH"));
    "#ifdef _WIN32";
    loop i' = 0; ; i++ {
@@ -82,6 +82,7 @@ get-compiler(bin'char[], compiler'char[]) {
       fd = 'x.open(compile, #rdonly);
       if fd != #nil {
          'c.strcpy(compiler, "tcc");
+         tcc = true;
          return;
       }
       "#ifdef _WIN32";
@@ -167,7 +168,7 @@ main(arg-c'intc, arg-v'char[][])'intc {
    c-path[13] = ''c;
    c-path[14] = ''\0;
    compiler'char[8];
-   get-compiler(bin, compiler);
+   get-compiler(bin, compiler, tcc');
    "#ifdef _WIN32";
    exe-path[16] = ''.;
    exe-path[17] = ''e;
@@ -185,14 +186,28 @@ main(arg-c'intc, arg-v'char[][])'intc {
    command'char[1024];
    'c1.sprintf(command, f?);
    f.f{''" bin, 'c.strlen(bin) - 4 "-compile\" -c \"" c-path "\" \"" arg-v[1] "\""}
-   // C1.stdout{"run command: " command ''\n}
+   // 'c1.stdout{"run command: " command ''\n}
    c-ret' = system2(command);
    if c-ret != 0 {
       'x.unlink(c-path);
       'c.exit(#failure);
    }
+   if tcc {
+      'c1.sprintf(command, f).add{"tcc -run " c-path}
+      loop i' = 2; arg-c - 2; i++ {
+         f.add{'< "> arg-v[i] ''"}
+      }
+      command[f.len] = 0;
+      // 'c1.stdout{"run command: " command ''\n}
+      exe-ret' = system2(command);
+      'x.unlink(c-path);
+      if exe-ret != 0 {
+         'c.exit(#failure);
+      }
+      return 0;
+   }
    f.f{compiler " -o " exe-path " " c-path}
-   // C1.stdout{"run command: " command ''\n}
+   // 'c1.stdout{"run command: " command ''\n}
    compile-ret' = system2(command);
    'x.unlink(c-path);
    if compile-ret != 0 {
@@ -207,8 +222,8 @@ main(arg-c'intc, arg-v'char[][])'intc {
       }
    }
    "#endif";
-   // C1.stdout{"run command: " exe-path ''\n}
    'c1.sprintf(command, f).add{exe-path}
+   // 'c1.stdout{"run command: " command ''\n}
    loop i' = 2; arg-c - 2; i++ {
       f.add{'< "> arg-v[i] ''"}
    }

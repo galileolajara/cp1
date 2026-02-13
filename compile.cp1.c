@@ -15052,9 +15052,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_14, " - ", 3u, &_L_9);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_row, &_L_14, &_L_10);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_14, ":", 1u, &_L_11);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_col, &_L_14, &_L_12);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_14, ": Error in processing the beginning of meta-"
-"method"
-"\n", 51u, &_L_13);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_14, ": Error in processing the beginning of meta-method\n", 51u, &_L_13);
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_14);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_4, &_L_14);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_5, &_L_14);
@@ -15174,9 +15172,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_52, ":", 1u, &_L_47);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_col, &_L_52, &_L_48);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_52, ": Error in processing the argument group #", 42u, &_L_49);
 _Tlibcp1_Tfmt_Ff_reserve_Ti32_1_2(_Larg_num_33, &_L_52, &_L_50);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_52, " of meta-"
-"method"
-"\n", 16u, &_L_51);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_52, " of meta-method\n", 16u, &_L_51);
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_52);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_40, &_L_52);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_41, &_L_52);
@@ -15225,9 +15221,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_65, ":", 1u, &_L_60);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_col, &_L_65, &_L_61);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_65, ": Error in processing the argument group #", 42u, &_L_62);
 _Tlibcp1_Tfmt_Ff_reserve_Ti32_1_2(_Larg_num_33, &_L_65, &_L_63);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_65, " of meta-"
-"method"
-"\n", 16u, &_L_64);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_65, " of meta-method\n", 16u, &_L_64);
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_65);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_53, &_L_65);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_54, &_L_65);
@@ -15277,9 +15271,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_78, " - ", 3u, &_L_73);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_row, &_L_78, &_L_74);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_78, ":", 1u, &_L_75);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_col, &_L_78, &_L_76);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_78, ": Error in processing the end of meta-"
-"method"
-"\n", 45u, &_L_77);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_78, ": Error in processing the end of meta-method\n", 45u, &_L_77);
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_78);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_68, &_L_78);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_69, &_L_78);
@@ -15331,9 +15323,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_94, ":", 1u, &_L_89);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_col, &_L_94, &_L_90);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_94, ": Error in processing the argument group #", 42u, &_L_91);
 _Tlibcp1_Tfmt_Ff_reserve_Ti32_1_2(_Larg_num_79, &_L_94, &_L_92);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_94, " of meta-"
-"method"
-"\n", 16u, &_L_93);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_94, " of meta-method\n", 16u, &_L_93);
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_94);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_82, &_L_94);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_83, &_L_94);
@@ -15383,9 +15373,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_107, " - ", 3u, &_L_102);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_row, &_L_107, &_L_103);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_107, ":", 1u, &_L_104);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_col, &_L_107, &_L_105);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_107, ": Error in processing the end of meta-"
-"method"
-"\n", 45u, &_L_106);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_107, ": Error in processing the end of meta-method\n", 45u, &_L_106);
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_107);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_97, &_L_107);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_98, &_L_107);
@@ -15434,9 +15422,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_14, " - ", 3u, &_L_9);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_row, &_L_14, &_L_10);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_14, ":", 1u, &_L_11);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_col, &_L_14, &_L_12);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_14, ": Error in processing the beginning of meta-"
-"function"
-"\n", 53u, &_L_13);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_14, ": Error in processing the beginning of meta-func\n", 49u, &_L_13);
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_14);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_4, &_L_14);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_5, &_L_14);
@@ -15556,9 +15542,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_52, ":", 1u, &_L_47);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_col, &_L_52, &_L_48);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_52, ": Error in processing the argument group #", 42u, &_L_49);
 _Tlibcp1_Tfmt_Ff_reserve_Ti32_1_2(_Larg_num_33, &_L_52, &_L_50);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_52, " of meta-"
-"function"
-"\n", 18u, &_L_51);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_52, " of meta-func\n", 14u, &_L_51);
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_52);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_40, &_L_52);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_41, &_L_52);
@@ -15607,9 +15591,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_65, ":", 1u, &_L_60);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_col, &_L_65, &_L_61);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_65, ": Error in processing the argument group #", 42u, &_L_62);
 _Tlibcp1_Tfmt_Ff_reserve_Ti32_1_2(_Larg_num_33, &_L_65, &_L_63);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_65, " of meta-"
-"function"
-"\n", 18u, &_L_64);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_65, " of meta-func\n", 14u, &_L_64);
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_65);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_53, &_L_65);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_54, &_L_65);
@@ -15659,9 +15641,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_78, " - ", 3u, &_L_73);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_row, &_L_78, &_L_74);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_78, ":", 1u, &_L_75);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_col, &_L_78, &_L_76);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_78, ": Error in processing the end of meta-"
-"function"
-"\n", 47u, &_L_77);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_78, ": Error in processing the end of meta-func\n", 43u, &_L_77);
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_78);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_68, &_L_78);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_69, &_L_78);
@@ -15713,9 +15693,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_94, ":", 1u, &_L_89);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_col, &_L_94, &_L_90);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_94, ": Error in processing the argument group #", 42u, &_L_91);
 _Tlibcp1_Tfmt_Ff_reserve_Ti32_1_2(_Larg_num_79, &_L_94, &_L_92);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_94, " of meta-"
-"function"
-"\n", 18u, &_L_93);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_94, " of meta-func\n", 14u, &_L_93);
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_94);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_82, &_L_94);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_83, &_L_94);
@@ -15765,9 +15743,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_107, " - ", 3u, &_L_102);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_row, &_L_107, &_L_103);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_107, ":", 1u, &_L_104);
 _Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Tcp1_Gctx_end_col, &_L_107, &_L_105);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_107, ": Error in processing the end of meta-"
-"function"
-"\n", 47u, &_L_106);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_107, ": Error in processing the end of meta-func\n", 43u, &_L_106);
 _Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_107);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_97, &_L_107);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_98, &_L_107);
@@ -17222,8 +17198,8 @@ _Lgroup_c_5 = ((uint8_t)((*_Le_2)._Mgroup_c));
 _Lgroup_v_6 = ((uint8_t*)((*_Le_2)._Mgroup_v));
 _Lat_7 = ((struct _Tcp1_Tat_data*)(_Tcp1_Tat_Fptr_1((*_Tcp1_Gctx_func)._Mat)));
 if(!_Tcp1_Tfunc_Fprocess_later_1(_Lf_idx_1)) {
-bool ret_865_10 = false;
-return ret_865_10;
+bool ret_840_10 = false;
+return ret_840_10;
 }
 _Lf_8 = ((struct _Tcp1_Tdecl_func*)(_Tcp1_Tfunc_Fptr_1(_Lf_idx_1)));
 _Lf_at_9 = ((_Tcp1_Tat)((*_Lf_8)._Mat));
@@ -17233,8 +17209,8 @@ i --;
 struct _Tcp1_Tcarg* _Lca_11;
 _Lca_11 = ((struct _Tcp1_Tcarg*)((&(*_Le_2)._Mcarg_v[_Lj_10])));
 if(!_Tcp1_Ffarg_process_7(&(*_Lca_11)._Mexpr, (*_Lca_11)._Mref, &(*_Lca_11)._Mvalue, &(*_Lf_8)._Mfarg_v[_Lj_10]._Mdecl, _Lf_at_9, _Lj_10, (*_Lf_8)._Mdecl._Mname)) {
-bool ret_872_96 = false;
-return ret_872_96;
+bool ret_847_96 = false;
+return ret_847_96;
 }
 continue_0:;
 _Lj_10++;
@@ -17253,8 +17229,8 @@ _Lr_13 = (1 + (*_Lca_12)._Mref);
 _Lr_13 = 1;
 }
 if(!_Tcp1_Texpr_i_Fvalue_4((*_Lca_12)._Mexpr, _Lr_13, false, &(*_Lca_12)._Mvalue)) {
-bool ret_884_53 = false;
-return ret_884_53;
+bool ret_859_53 = false;
+return ret_859_53;
 }
 continue_1:;
 _Lj_10++;
@@ -17262,8 +17238,8 @@ _Lj_10++;
 break_1:;
 }
 (*_Le_2)._Mfunc_idx = _Lf_idx_1;
-bool ret_888_7 = true;
-return ret_888_7;
+bool ret_863_7 = true;
+return ret_863_7;
 }
 bool _Tcp1_Tstmt_space_Fprocess_1(struct _Tcp1_Tstmt_space* _Lspace_0) {
 struct _Tcp1_Tstmt* _Ls_1;
@@ -17326,29 +17302,29 @@ memcpy((*_Lti_0)._Mref_v, (*_Lti2_1)._Mref_v, _Tcp1_Ctype_info_star_limit);
 }
 bool _Tcp1_Fcompatible_4(_Tcp1_Tat _Lsrc_0, uint8_t _Lsrc_c_1, _Tcp1_Tat _Ldes_2, uint8_t _Ldes_c_3) {
 if(_Lsrc_0 == _Ldes_2) {
-bool ret_262_20 = true;
-return ret_262_20;
+bool ret_237_20 = true;
+return ret_237_20;
 }
 if(((_Lsrc_0 >= _Tcp1_Fbasic_type_1(_Tcp1_Tbasic_type_id_Cchar)) && (_Lsrc_0 <= _Tcp1_Fbasic_type_1(_Tcp1_Tbasic_type_id_Cusz)))) {
 if(((_Ldes_2 >= _Tcp1_Fbasic_type_1(_Tcp1_Tbasic_type_id_Cchar)) && (_Ldes_2 <= _Tcp1_Fbasic_type_1(_Tcp1_Tbasic_type_id_Cusz)))) {
-bool ret_265_10 = true;
-return ret_265_10;
+bool ret_240_10 = true;
+return ret_240_10;
 }
 }
 if(_Ldes_2 == _Tcp1_Fbasic_type_1(_Tcp1_Tbasic_type_id_Cref)) {
 if(_Lsrc_c_1 > 0) {
-bool ret_270_10 = true;
-return ret_270_10;
+bool ret_245_10 = true;
+return ret_245_10;
 }
 }
 if(_Lsrc_0 == _Tcp1_Fbasic_type_1(_Tcp1_Tbasic_type_id_Cref)) {
 if(_Ldes_c_3 > 0) {
-bool ret_275_10 = true;
-return ret_275_10;
+bool ret_250_10 = true;
+return ret_250_10;
 }
 }
-bool ret_278_4 = false;
-return ret_278_4;
+bool ret_253_4 = false;
+return ret_253_4;
 }
 static inline void _Tlibcp1_Tfmt_Ff_reserve_Tu8_1_2(uint8_t _Lu_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_u32* _Lf_2) {
 (*_Lfmt_1)._Mcap += 3;
@@ -17507,11 +17483,11 @@ _Lcarg_v_23[0] = _Le_7;
 _Tcp1_Texpr_i_Fset_func_8(_Le_func_21, (*_Lf_20)._Mat, (*_Lf_20)._Mdecl._Mname, false, 1, _Lgroup_v_22, 1, _Lcarg_v_23);
 (*_Le_in_out_0) = _Le_func_21;
 if(!_Tcp1_Texpr_i_Fvalue_4(_Le_func_21, 1, false, _Lca_value_2)) {
-bool ret_338_19 = false;
-return ret_338_19;
+bool ret_313_19 = false;
+return ret_313_19;
 }
-bool ret_340_16 = true;
-return ret_340_16;
+bool ret_315_16 = true;
+return ret_315_16;
 }
 _Lf_idx_18 = (*_Lf_20)._Mlist1_prev;
 if(_Lf_idx_18 == _Tcp1_Tfunc_Cnil) {
@@ -17524,8 +17500,8 @@ break_0:;
 }
 }
 if(!_Tcp1_Texpr_i_Fvalue_4(_Le_7, _Lr_9, false, _Lca_value_2)) {
-bool ret_348_38 = false;
-return ret_348_38;
+bool ret_323_38 = false;
+return ret_323_38;
 }
 if(!_Tcp1_Fcompatible_4((*_Lca_value_2)._Mtype, (*_Lca_value_2)._Minfo._Mstar_c + _Tcp1_Tat_Fpointer_1((*_Lca_value_2)._Mtype), (*_Lfd_arg_3)._Mtype, (*_Lfd_arg_3)._Mtype_info._Mstar_c + _Tcp1_Tat_Fpointer_1((*_Lfd_arg_3)._Mtype))) {
 struct _Tlibcp1_Tfmt_Tf_cstr _L_24 = {0};
@@ -17608,11 +17584,11 @@ _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_44, &_L_46);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_45, &_L_46);
 _Tlibcp1_Tfmt_Ff_stdout_1(&_L_46);
 }
-bool ret_365_7 = false;
-return ret_365_7;
+bool ret_340_7 = false;
+return ret_340_7;
 }
-bool ret_367_4 = true;
-return ret_367_4;
+bool ret_342_4 = true;
+return ret_342_4;
 }
 void _Tcp1_Tdecl_var_data_Fwrite_gvar_2(struct _Tcp1_Tdecl_var_data* _Lvd_0, _Tcp1_Tat _Lat_1) {
 if(((*_Lvd_0)._Mflags & _Tcp1_Tvar_flags_Creal_name) != _Tcp1_Tvar_flags_C0) {
