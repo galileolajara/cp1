@@ -6,7 +6,7 @@ do-after-continue() {
    'c1.stdout{"This will run after the loop 'continue's or iteratates again\n"}
 }
 
-main()'intc {
+main()'cint {
    loop i' = 0; {
       'c1.stdout{"This is a forever loop unless you break;\n"}
       i++;

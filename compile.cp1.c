@@ -27,8 +27,8 @@
 #define _Tcp1_Tbasic_type_id_Cref (_Tcp1_Tbasic_type_id_Crelative + 1)
 #define _Tcp1_Tbasic_type_id_Cbool (_Tcp1_Tbasic_type_id_Cref + 1)
 #define _Tcp1_Tbasic_type_id_Cchar (_Tcp1_Tbasic_type_id_Cbool + 1)
-#define _Tcp1_Tbasic_type_id_Cintc (_Tcp1_Tbasic_type_id_Cchar + 1)
-#define _Tcp1_Tbasic_type_id_Ci8 (_Tcp1_Tbasic_type_id_Cintc + 1)
+#define _Tcp1_Tbasic_type_id_Ccint (_Tcp1_Tbasic_type_id_Cchar + 1)
+#define _Tcp1_Tbasic_type_id_Ci8 (_Tcp1_Tbasic_type_id_Ccint + 1)
 #define _Tcp1_Tbasic_type_id_Cu8 (_Tcp1_Tbasic_type_id_Ci8 + 1)
 #define _Tcp1_Tbasic_type_id_Ci16 (_Tcp1_Tbasic_type_id_Cu8 + 1)
 #define _Tcp1_Tbasic_type_id_Cu16 (_Tcp1_Tbasic_type_id_Ci16 + 1)
@@ -1138,7 +1138,7 @@ case _Tcp1_Tbasic_type_id_Crelative: return "relative";
 case _Tcp1_Tbasic_type_id_Cref: return "ref";
 case _Tcp1_Tbasic_type_id_Cbool: return "bool";
 case _Tcp1_Tbasic_type_id_Cchar: return "char";
-case _Tcp1_Tbasic_type_id_Cintc: return "intc";
+case _Tcp1_Tbasic_type_id_Ccint: return "cint";
 case _Tcp1_Tbasic_type_id_Ci8: return "i8";
 case _Tcp1_Tbasic_type_id_Cu8: return "u8";
 case _Tcp1_Tbasic_type_id_Ci16: return "i16";
@@ -2047,7 +2047,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_110, "require \"LibCp1/codegen.cp1\";\n"
 "using 'c = 'libc;\n"
 "using 'c1 = 'libcp1;\n"
 "using 'x = 'posix;\n"
-"main(arg-c'intc, arg-v'char[][])'intc {\n", 128u, &_L_109);
+"main(arg-c'cint, arg-v'char[][])'cint {\n", 128u, &_L_109);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_110);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_109, &_L_110);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_110);
@@ -7237,7 +7237,7 @@ _Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_33);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_32, &_L_33);
 _Tlibcp1_Tfmt_Ff_output_1(&_L_33);
 break;
-case _Tcp1_Tbasic_type_id_Cintc:;
+case _Tcp1_Tbasic_type_id_Ccint:;
 struct _Tlibcp1_Tfmt_Tf_cstr _L_34 = {0};
 struct _Tlibcp1_Tfmt _L_35 = {0};
 _Tcp1_Foutput_1(&_L_35);
@@ -7406,11 +7406,11 @@ _Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_10);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_9, &_L_10);
 _Tlibcp1_Tfmt_Ff_output_1(&_L_10);
 break;
-case _Tcp1_Tbasic_type_id_Cintc:;
+case _Tcp1_Tbasic_type_id_Ccint:;
 struct _Tlibcp1_Tfmt_Tf_cstr _L_11 = {0};
 struct _Tlibcp1_Tfmt _L_12 = {0};
 _Tcp1_Foutput_1(&_L_12);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_12, "_Tintc", 6u, &_L_11);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_12, "_Tcint", 6u, &_L_11);
 _Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_12);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_11, &_L_12);
 _Tlibcp1_Tfmt_Ff_output_1(&_L_12);

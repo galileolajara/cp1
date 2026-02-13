@@ -460,8 +460,8 @@ struct 'token-data-u64[
    id'u64,
 ];
 struct 'token-data-index[
-   v'intc[15],
-   c'intc,
+   v'cint[15],
+   c'cint,
 ];
 union 'token-data[
    i32'token-data-i32.,
@@ -931,7 +931,7 @@ include-path-c'u8;
 write-cp1(input-path-len'u32, text-data'ref, text-size'usz, bin-data'ref, bin-size'usz)'bool;
 file-mtime(path'char[])'u64;
 file-should-parse(path'char[], path-len'u32, mtime'u64)'bool;
-main(arg-c'intc, arg-v'char[][])'intc @main {
+main(arg-c'cint, arg-v'char[][])'cint @main {
    // C1.stdout{"hello world " arg-c:u32 " " arg-v[0] " " arg-v[1] "\n"}
    if false {
       // preprocess-def("", 0);

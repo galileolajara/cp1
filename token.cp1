@@ -5,7 +5,7 @@ import "Posix/fcntl.cp1";
 import "Posix/unistd.cp1";
 using 'c = 'libc;
 using 'x = 'posix;
-main(arg-c'intc, arg-v'char[][])'intc {
+main(arg-c'cint, arg-v'char[][])'cint {
    if arg-c != 3 {
       'c.printf("Usage: %s [.h input file] [.cp1 output file]\n", arg-v[0]);
       'c.exit(#failure);
@@ -60,7 +60,7 @@ main(arg-c'intc, arg-v'char[][])'intc {
       pos++;
    }
    out-f.printf(
-      '= ]'intc {
+      '= ]'cint {
       '= cp1-name(e'this)'char[] @cp1-name;
       '= }
       '= }

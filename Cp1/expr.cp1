@@ -258,7 +258,7 @@ struct 'expr[
 }
 enum 'basic-type-id[
    #root, #relative,
-   #ref, #bool, #char, #intc,
+   #ref, #bool, #char, #cint,
    #i8, #u8,
    #i16, #u16,
    #i32, #u32,

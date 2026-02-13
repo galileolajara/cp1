@@ -7,9 +7,9 @@ include <sys/stat.h> {
          mtimespec'c'timespec. @real-name(st_mtimespec),
          mtim'c'timespec. @real-name(st_mtim),
       ] @real-name(struct stat) @no-decl;
-      mkdir(path'char[], mode'intc)'intc @real-name @no-decl;
-      mkdir(path'char[])'intc @real-name @no-decl;
-      fstat(file'intc, stat'stat)'intc @real-name @no-decl;
-      stat(file'char[], stat'stat)'intc @real-name @no-decl;
+      mkdir(path'char[], mode'cint)'cint @real-name @no-decl;
+      mkdir(path'char[])'cint @real-name @no-decl;
+      fstat(file'cint, stat'stat)'cint @real-name @no-decl;
+      stat(file'char[], stat'stat)'cint @real-name @no-decl;
    }
 }

@@ -10,7 +10,7 @@ struct 'struct[x'i32, y'i32] {
    }
 }
 
-main()'intc {
+main()'cint {
    an-integer' = 1;
    also-an-integer'i32 = 8;
 

@@ -862,7 +862,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
                case #char {
                   output{"char"}
                }
-               case #intc {
+               case #cint {
                   output{"int"}
                }
                case #i8 {
@@ -932,8 +932,8 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
                case #char {
                   output{"_Tchar"}
                }
-               case #intc {
-                  output{"_Tintc"}
+               case #cint {
+                  output{"_Tcint"}
                }
                case #i8 {
                   output{"_Ti8"}

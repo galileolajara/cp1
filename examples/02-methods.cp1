@@ -53,7 +53,7 @@ using 'i32 { // access the namespace of 32-bit int, then add a "print" and "incr
       i++;
    }
 }
-main()'intc {
+main()'cint {
    'coord.init(s'); // s is automatically declared as a coord allocated in the stack
    s.walk(#left);
    s.walk(#down);

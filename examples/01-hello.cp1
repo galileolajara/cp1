@@ -29,7 +29,7 @@ struct 'dog[bark-times'i32] {
    }
 }
 
-main()'intc { // intc is for C compatibility, use i32 elsewhere
+main()'cint { // cint is for C compatibility, use i32 elsewhere
    'c1.stdout{"Hello world!\n"}
    hello-world(); // This calls the function from metaprogram at line 20
    hello-five(); // This calls the function from metaprogram at line 21

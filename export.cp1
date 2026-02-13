@@ -7,7 +7,7 @@ require "Posix/unistd.cp1";
 using 'c = 'libc;
 using 'c1 = 'libcp1;
 using 'x = 'posix;
-main(arg-c'intc, arg-v'char[][])'intc {
+main(arg-c'cint, arg-v'char[][])'cint {
    if arg-c != 3 {
       'c.printf("Usage: %s [.c input file] [.h output file]\n", arg-v[0]);
       'c.exit(#failure);

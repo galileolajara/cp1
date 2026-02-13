@@ -4,7 +4,7 @@ include <fcntl.h> {
    using 'c = 'libc;
    using 'x = 'posix;
    using 'posix {
-      enum 'fd[#in, #out, #nil = -1]'intc {
+      enum 'fd[#in, #out, #nil = -1]'cint {
          open(file'this&, path'char @const[], flags'open-flags)'bool @inline {
             fd' = 'x.open(path, flags);
             if fd != #nil {
@@ -14,7 +14,7 @@ include <fcntl.h> {
                return false;
             }
          }
-         open(file'this&, path'char @const[], flags'open-flags, mode'intc)'bool @inline {
+         open(file'this&, path'char @const[], flags'open-flags, mode'cint)'bool @inline {
             fd' = 'x.open(path, flags, mode);
             if fd != #nil {
                file = fd;
@@ -26,7 +26,7 @@ include <fcntl.h> {
          fopen(file'this, mode'char @const[])'c'file @inline {
             return 'c.fdopen(file, mode);
          }
-         stat(file'this, stat'x'stat)'intc @inline {
+         stat(file'this, stat'x'stat)'cint @inline {
             return 'x.fstat('base(file), stat);
          }
       }
@@ -38,18 +38,18 @@ include <fcntl.h> {
          #rdwr @no-decl(O_RDWR),
          #truncate @no-decl(O_TRUNC),
          #excl @no-decl(O_EXCL),
-      ]'intc;
+      ]'cint;
       open(path'char @const[], flags'open-flags)'fd @decl("#ifdef _WIN32\n#define _Tposix_Fopen_2(p, f) open(p, f | O_BINARY)\n#else\n#define _Tposix_Fopen_2(p, f) open(p, f)\n#endif");
-      open(path'char @const[], flags'open-flags, mode'intc)'fd @decl("#ifdef _WIN32\n#define _Tposix_Fopen_3(p, f, m) open(p, f | O_BINARY, m)\n#else\n#define _Tposix_Fopen_3(p, f, m) open(p, f, m)\n#endif");
-      close(fd'fd)'intc @real-name @no-decl;
+      open(path'char @const[], flags'open-flags, mode'cint)'fd @decl("#ifdef _WIN32\n#define _Tposix_Fopen_3(p, f, m) open(p, f | O_BINARY, m)\n#else\n#define _Tposix_Fopen_3(p, f, m) open(p, f, m)\n#endif");
+      close(fd'fd)'cint @real-name @no-decl;
       enum 'fcntl-op[
          #getfl @no-decl(F_GETFL),
          #setfl @no-decl(F_SETFL),
-      ]'intc;
+      ]'cint;
       enum 'fcntl-val[
          #0,
          #nonblock @no-decl(O_NONBLOCK),
-      ]'intc;
-      fcntl(fd'fd, op'fcntl-op, val'fcntl-val)'intc @no-decl @real-name;
+      ]'cint;
+      fcntl(fd'fd, op'fcntl-op, val'fcntl-val)'cint @no-decl @real-name;
    }
 }

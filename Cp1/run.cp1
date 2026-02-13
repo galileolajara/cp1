@@ -115,9 +115,9 @@ get-compiler(bin'char[], compiler'char[], tcc'bool&) {
    'c.exit(#failure);
 }
 include "system2.h" {
-   system2(cmd'char[])'intc @real-name;
+   system2(cmd'char[])'cint @real-name;
 }
-main(arg-c'intc, arg-v'char[][])'intc {
+main(arg-c'cint, arg-v'char[][])'cint {
    "#ifdef _WIN32";
    if true {
       arg' = arg-v[0];

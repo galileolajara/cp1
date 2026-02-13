@@ -25,7 +25,7 @@ using 'animal {
    }
 }
 
-main(arg-c'intc, arg-v'char[][])'intc {
+main(arg-c'cint, arg-v'char[][])'cint {
    animal'animal.; // create an animal object, '.' symbol allocates on stack
    animal.type = #cat;
    animal.make-sound();

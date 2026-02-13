@@ -36,7 +36,7 @@ using 'libcp1 {
          fmt.cap += 11;
          f.i32 = i;
       }
-      f-reserve<i'intc>(fmt'this, f'f-i32) @inline {
+      f-reserve<i'cint>(fmt'this, f'f-i32) @inline {
          fmt.cap += 11;
          f.i32 = i;
       }

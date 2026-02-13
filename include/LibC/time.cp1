@@ -2,7 +2,7 @@ using 'libc {
    include <time.h> {
       enum 'clock-id[
          #monotonic @no-decl @real-name(CLOCK_MONOTONIC),
-      ]'intc;
+      ]'cint;
       struct 'itimerspec[
          interval'timespec. @real-name(it_interval), 
          value'timespec. @real-name(it_value),
@@ -15,6 +15,6 @@ using 'libc {
       time()'usz @inline {
          return time(null);
       }
-      nanosleep(duration'timespec, rem'timespec)'intc @no-decl @real-name;
+      nanosleep(duration'timespec, rem'timespec)'cint @no-decl @real-name;
    }
 }

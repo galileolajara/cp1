@@ -22,7 +22,7 @@ using 'cp1 {
          }
       }
    }
-   parse-string(in-path'char @const[], r'rdr, ending'char, in-data'ref)'intc {
+   parse-string(in-path'char @const[], r'rdr, ending'char, in-data'ref)'cint {
       start'rdr.;
       start.pos = r.pos;
       r.pos += 2;

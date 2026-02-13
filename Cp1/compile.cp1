@@ -708,7 +708,7 @@ quickjs-end(js-data'char[], js-data-len'u32, require'bool);
 include "build-crc32c.c" {
    build-crc32c()'u32 @no-decl;
 }
-main(arg-c'intc, arg-v'char[][])'intc @main {
+main(arg-c'cint, arg-v'char[][])'cint @main {
    "#ifdef _WIN32";
    // Remove .exe from binary path
    if true {
@@ -1046,7 +1046,7 @@ main(arg-c'intc, arg-v'char[][])'intc @main {
                   '= using 'c = 'libc;
                   '= using 'c1 = 'libcp1;
                   '= using 'x = 'posix;
-                  '= main(arg-c'intc, arg-v'char[][])'intc {
+                  '= main(arg-c'cint, arg-v'char[][])'cint {
                   // '= 'c.printf("arg-v[1]: %s\n", arg-v[1]);
                   }
                   "#if INTPTR_MAX == INT64_MAX";

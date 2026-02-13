@@ -197,7 +197,7 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    "'ref"                            { return CP1_TOKEN_REF; }
    "'bool"                           { return CP1_TOKEN_BOOL; }
    "'char"                           { return CP1_TOKEN_CHAR; }
-   "'intc"                           { return CP1_TOKEN_INTC; }
+   "'cint"                           { return CP1_TOKEN_INTC; }
    "'i8"                             { return CP1_TOKEN_I8; }
    "'u8"                             { return CP1_TOKEN_U8; }
    "'i16"                            { return CP1_TOKEN_I16; }
