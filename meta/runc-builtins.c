@@ -1,6 +1,14 @@
-func_arg(type_char, c_lexer_id("str", 3), 0, 0);
-func_arg(type_u16, c_lexer_id("len", 3), 0, 0);
+id_t id_str = c_lexer_id("str", 3);
+id_t id_len = c_lexer_id("len", 3);
+func_arg(type_char, id_str, 0, 0);
+func_arg(type_u16, id_len, 0, 0);
 func_sig(type_void, c_lexer_id("_FO_2", 5), 0, 0);
 func_bytecode_v[func_now] = -1;
+
 func_sig(type_void, c_lexer_id("_FL_0", 5), 0, 0);
 func_bytecode_v[func_now] = -2;
+
+func_arg(type_char, id_str, 0, 0);
+func_arg(type_u16, id_len, 0, 0);
+func_sig(type_void, c_lexer_id("_FR_2", 5), 0, 0);
+func_bytecode_v[func_now] = -3;

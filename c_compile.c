@@ -73,8 +73,10 @@ struct c_lexer {
 #define type_t decl_t
 #define type_void 0
 #define type_u16 1
-#define type_bool 2
-#define type_char 3
+#define type_u32 2
+#define type_i32 3
+#define type_bool 4
+#define type_char 5
 #define exprtype_i32 0
 #define exprtype_call 1
 #define exprtype_math 2
@@ -82,6 +84,7 @@ struct c_lexer {
 #define exprtype_gvar 4
 #define exprtype_str 5
 #define exprtype_unary 6
+#define exprtype_cast 7
 #define lvar_t uint16_t
 #define lvar_limit 0x8000
 #define stmt_t uint16_t
@@ -167,6 +170,11 @@ struct exprdata_math_t {
    expr_t b;
 };
 
+struct exprdata_cast_t {
+   type_t type;
+   expr_t expr;
+};
+
 struct exprdata_unary_t {
    unarytype_t type;
    expr_t expr;
@@ -184,6 +192,7 @@ union exprdata_t {
    struct exprdata_i32_t i32;
    struct exprdata_call_t call;
    struct exprdata_math_t math;
+   struct exprdata_cast_t cast;
    struct exprdata_unary_t unary;
    struct exprdata_lvar_t lvar;
    struct exprdata_gvar_t gvar;
@@ -462,6 +471,17 @@ void func_body_begin(uint32_t row, uint32_t col) {
    scope_now = scope;
 }
 
+int32_t expr_cast(type_t t, expr_t a, uint32_t row, uint32_t col) {
+   expr_t e = expr_c++;
+   expr_type_v[e] = exprtype_cast;
+   expr_row_v[e] = row;
+   expr_col_v[e] = col;
+   struct exprdata_cast_t* data = &expr_data_v[e].cast;
+   data->type = t;
+   data->expr = a;
+   return e;
+}
+
 int32_t expr_call(id_t name, uint32_t row, uint32_t col) {
    call_c--;
    uint8_t arg_c = call_arg_c[call_c];
@@ -690,6 +710,7 @@ stmt_t stmt_new(stmttype_t type) {
    stmt_next_v[stmt] = stmt_limit;
    stmt_row_v[stmt] = row_now;
    stmt_col_v[stmt] = col_now;
+   printf("stmt %u @ %u:%u\n", type, row_now, col_now);
    return stmt;
 }
 

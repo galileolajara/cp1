@@ -15,6 +15,8 @@ int c_lexer_scan(struct c_lexer* l) {
     
    *                                            { string_mem[0] = l->start[0]; return C_TOKEN_END; }
    ("unsigned short"|"uint16_t")                { return C_TOKEN_U16; }
+   ("unsigned int"|"uint32_t")                  { return C_TOKEN_U32; }
+   ("int"|"int32_t")                            { return C_TOKEN_I32; }
    "void"                                       { return C_TOKEN_VOID; }
    "bool"                                       { return C_TOKEN_BOOL; }
    "char"                                       { return C_TOKEN_CHAR; }

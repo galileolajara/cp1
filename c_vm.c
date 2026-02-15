@@ -74,7 +74,7 @@ void func_run(func_t f, struct vm_locals* vml) {
             func_t f2 = getnum(&vml->r);
             int32_t bc_offset = func_bytecode_v[f2];
             if (bc_offset < 0) {
-               bc_offset = 1 + bc_offset;
+               bc_offset = -bc_offset - 1;
                // printf("call built-in function #%u\n", bc_offset);
                #include "runc-functions.c"
             } else {

@@ -121,6 +121,10 @@ stmt_return ::= RETURN expr(e) SEMICOLON.
 stmt_return ::= RETURN SEMICOLON.
 { stmt_return(); }
 
+cast(out) ::= OPEN_PAREN type(t) CLOSE_PAREN value(e).
+{ out.i32.id = expr_cast(t.i32.id, e.i32.id, e.i32.row, e.i32.col); }
+
+expr ::= cast.
 expr ::= value.
 expr ::= math.
 expr(out) ::= EXPOINT value(e).
@@ -174,7 +178,7 @@ num_int(out) ::= INT(i).
 num_int(out) ::= UINT(i).
 { out.i32.id = expr_i32(i.i32.id, i.i32.row, i.i32.col); }
 
-type ::= id.
+// type ::= id.
 type(out) ::= type_builtin(in).
 { out.i32.id = in.i32.id; }
 
@@ -182,6 +186,10 @@ type_builtin(out) ::= VOID.
 { out.i32.id = type_void; }
 type_builtin(out) ::= U16.
 { out.i32.id = type_u16; }
+type_builtin(out) ::= U32.
+{ out.i32.id = type_u32; }
+type_builtin(out) ::= I32.
+{ out.i32.id = type_i32; }
 type_builtin(out) ::= BOOL.
 { out.i32.id = type_bool; }
 type_builtin(out) ::= CHAR.

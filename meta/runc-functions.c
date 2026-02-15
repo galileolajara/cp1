@@ -10,4 +10,7 @@ switch (bc_offset) {
       output_buf[output_len++] = '\n';
       break;
    }
+   default:
+      printf("built in function #%u not yet implemented\n", bc_offset);
+      exit(EXIT_FAILURE);
 }
