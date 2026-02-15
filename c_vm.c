@@ -160,6 +160,11 @@ void func_run(func_t f, struct vm_locals* vml) {
             vml->r += *(uint32_t*)vml->r;
             break;
          }
+         case bc_not: {
+            int32_t a = vml_pop_i32(vml);
+            vml_push_i32(vml, !a);
+            break;
+         }
          default: {
             printf("unrecognized op: %u\n", op);
             exit(EXIT_FAILURE);

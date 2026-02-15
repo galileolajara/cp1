@@ -123,7 +123,8 @@ stmt_return ::= RETURN SEMICOLON.
 
 expr ::= value.
 expr ::= math.
-expr ::= EXPOINT value.
+expr(out) ::= EXPOINT value(e).
+{ out.i32.id = expr_unary(unarytype_expoint, e.i32.id, e.i32.row, e.i32.col); }
 
 value(out) ::= OPEN_PAREN expr(in) CLOSE_PAREN.
 { out = in; }

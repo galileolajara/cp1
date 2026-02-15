@@ -81,6 +81,7 @@ struct c_lexer {
 #define exprtype_lvar 3
 #define exprtype_gvar 4
 #define exprtype_str 5
+#define exprtype_unary 6
 #define lvar_t uint16_t
 #define lvar_limit 0x8000
 #define stmt_t uint16_t
@@ -107,6 +108,8 @@ struct c_lexer {
 #define gvar_limit 0x8000
 #define str_t uint16_t
 #define str_limit 0x8000
+#define unarytype_t uint8_t
+#define unarytype_expoint 0
 
 #define mem_t uint32_t
 #define mem_max 0xffffffff
@@ -130,6 +133,7 @@ struct c_lexer {
 #define bc_if 12
 #define bc_jump 13
 #define bc_push_addr 14
+#define bc_not 15
 
 #define id_limit 0x8000
 #define decl_limit 0x8000
@@ -163,6 +167,11 @@ struct exprdata_math_t {
    expr_t b;
 };
 
+struct exprdata_unary_t {
+   unarytype_t type;
+   expr_t expr;
+};
+
 struct exprdata_lvar_t {
    lvar_t lvar;
 };
@@ -175,6 +184,7 @@ union exprdata_t {
    struct exprdata_i32_t i32;
    struct exprdata_call_t call;
    struct exprdata_math_t math;
+   struct exprdata_unary_t unary;
    struct exprdata_lvar_t lvar;
    struct exprdata_gvar_t gvar;
    struct exprdata_str_t str;
@@ -468,6 +478,15 @@ int32_t expr_call(id_t name, uint32_t row, uint32_t col) {
    return e;
 }
 
+expr_t expr_unary(unarytype_t type, expr_t a, uint32_t row, uint32_t col) {
+   expr_t e = expr_c++;
+   expr_type_v[e] = exprtype_unary;
+   struct exprdata_unary_t* data = &expr_data_v[e].unary;
+   data->type = type;
+   data->expr = a;
+   return e;
+}
+
 expr_t expr_math(mathtype_t type, expr_t a, expr_t b, uint32_t row, uint32_t col) {
    expr_t e = expr_c++;
    expr_type_v[e] = exprtype_math;
@@ -566,6 +585,14 @@ void expr_write(expr_t e) {
       case exprtype_str: {
          bc_write(push_addr);
          putmem(&bytecode_ptr, gvar_mem + str_mem_v[expr_data_v[e].str.str]);
+         break;
+      }
+      case exprtype_unary: {
+         struct exprdata_unary_t* data = &expr_data_v[e].unary;
+         expr_write(data->expr);
+         switch (data->type) {
+            case unarytype_expoint: bc_write(not); break;
+         }
          break;
       }
       default: {
