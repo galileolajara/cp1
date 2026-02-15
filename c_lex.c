@@ -33,7 +33,7 @@ int c_lexer_scan(struct c_lexer* l) {
    "true"                                       { return C_TOKEN_TRUE; }
    "false"                                      { return C_TOKEN_FALSE; }
    "else" [ \n\t]+ "if"                         { return C_TOKEN_ELSE_IF; }
-   "!" .                                        { return C_TOKEN_EXPOINT; }
+   "!"                                          { return C_TOKEN_EXPOINT; }
    "0"                                          { return C_TOKEN_INT; }
    [1-9][0-9]*                                  { return C_TOKEN_INT; }
    "0u"                                         { return C_TOKEN_UINT; }
