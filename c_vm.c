@@ -2,7 +2,7 @@
 #define layer_limit 0x80
 #define value_limit 0x800
 #define local_limit 0x800
-#define memory_limit 0x800
+#define memory_limit 0x80000
 
 union vm64 {
    int32_t i32;
@@ -37,7 +37,7 @@ void func_run(func_t f, struct vm_locals* vml) {
    uint8_t* layer_code_pos[layer_limit];
    while (1) {
       uint8_t op = *(vml->r++);
-      printf("op: %u\n", op);
+      // printf("op: %u\n", op);
       switch (op) {
          case bc_return: {
             if (layer_c == 0) {

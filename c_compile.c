@@ -950,7 +950,6 @@ int main(int argc, char** argv) {
       exit(EXIT_FAILURE);
    }
 
-printf("%u\n", __LINE__);
    yyParser psr;
    if (1) {
       yyParser *yypParser = &psr;
@@ -984,7 +983,7 @@ printf("%u\n", __LINE__);
 
    for (;;) {
       int t = c_lexer_scan2(&lex, &tok);
-      printf("%u:%u\n", tok.i32.row, tok.i32.col);
+      // printf("%u:%u\n", tok.i32.row, tok.i32.col);
       token_last = t;
       row_now = tok.i32.row;
       col_now = tok.i32.col;
@@ -1016,7 +1015,6 @@ printf("%u\n", __LINE__);
       printf("There's no main() function.\n");
       exit(EXIT_FAILURE);
    }
-printf("%u\n", __LINE__);
 
    for (func_t f = 0; f < func_c; f++) {
       scope_t scope = func_scope_v[f];
@@ -1032,7 +1030,6 @@ printf("%u\n", __LINE__);
          stmt = stmt_write(stmt);
       }
    }
-printf("%u\n", __LINE__);
 
    static struct vm_locals vml;
    mem_t mem = gvar_mem;
@@ -1041,13 +1038,10 @@ printf("%u\n", __LINE__);
       mem += str_len_v[s];
       vml.memory[mem++] = 0; // add null terminator
    }
-printf("%u\n", __LINE__);
 
    #include "runc-boot.c"
 
-printf("%u\n", __LINE__);
    func_run(func_main, &vml);
-printf("%u\n", __LINE__);
 
    #include "runc-exit.c"
    return 0;

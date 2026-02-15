@@ -167,7 +167,7 @@ meta #main {
 #     } else {
          f.f{''" bin, 'c.strlen(bin) - 4 "-compile\" -c \"" c-path "\" \"" arg-v[1] "\""}
 #     }
-      'c1.stdout{"run command: " command ''\n}
+      // 'c1.stdout{"run command: " command ''\n}
       c-ret' = system2(command);
       if c-ret != 0 {
          'x.unlink(c-path);
@@ -178,7 +178,7 @@ meta #main {
          f.add{'< "> arg-v[i] ''"}
       }
       command[f.len] = 0;
-      'c1.stdout{"run command: " command ''\n}
+      // 'c1.stdout{"run command: " command ''\n}
       exe-ret' = system2(command);
       'x.unlink(c-path);
       if exe-ret != 0 {
