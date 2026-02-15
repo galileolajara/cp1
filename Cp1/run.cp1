@@ -117,88 +117,68 @@ get-compiler(bin'char[], compiler'char[], tcc'bool&) {
 include "system2.h" {
    system2(cmd'char[])'cint @real-name;
 }
-main(arg-c'cint, arg-v'char[][])'cint {
-   "#ifdef _WIN32";
-   if true {
-      arg' = arg-v[0];
-      len' = 'c.strlen(arg);
-      if (arg[len - 4] == ''.) && (arg[len - 3] == ''e) && (arg[len - 2] == ''x) && (arg[len - 1] == ''e) {
-         arg[len - 4] = ''\0;
-      }
-   }
-   loop i' = 0; arg-c; i++ {
-      arg' = arg-v[i];
-      loop j' = 0; ; j++ {
-         if arg[j] == ''\0 {
-            break;
-         } elif arg[j] == ''\\ {
-            arg[j] = ''/;
+#main{}
+meta #main {
+^  cp1-c'bool;
+   using 'c = 'libc;
+   using 'c1 = 'libcp1;
+   using 'x = 'posix;
+   main(arg-c'cint, arg-v'char[][])'cint {
+      "#ifdef _WIN32";
+      if true {
+         arg' = arg-v[0];
+         len' = 'c.strlen(arg);
+         if (arg[len - 4] == ''.) && (arg[len - 3] == ''e) && (arg[len - 2] == ''x) && (arg[len - 1] == ''e) {
+            arg[len - 4] = ''\0;
          }
       }
-   }
-   "#endif";
-   bin' = arg-v[0];
-   if arg-c < 2 {
-      print-commands(bin);
-      'c.exit(#failure);
-   }
-   validate-cp1-path(bin, arg-v[1]);
+      loop i' = 0; arg-c; i++ {
+         arg' = arg-v[i];
+         loop j' = 0; ; j++ {
+            if arg[j] == ''\0 {
+               break;
+            } elif arg[j] == ''\\ {
+               arg[j] = ''/;
+            }
+         }
+      }
+      "#endif";
+      bin' = arg-v[0];
+      if arg-c < 2 {
+         print-commands(bin);
+         'c.exit(#failure);
+      }
+      validate-cp1-path(bin, arg-v[1]);
 
-   c-path'char[15];
-   'c.strcpy(c-path, "cp1-c-XXXXXX");
-   c-fd' = 'x.mkstemp(c-path);
-   if c-fd == #nil {
-      print-commands(bin);
-      'c1.stdout{"Error, cannot open file for reading: " c-path ''\n}
-      'c.exit(#failure);
-   }
-   c-fd.close();
-   'x.unlink(c-path);
-   exe-path'char[21];
-   'c.strcpy(exe-path, "./cp1-exe-XXXXXX");
-   exe-fd' = 'x.mkstemp(exe-path);
-   if exe-fd == #nil {
-      print-commands(bin);
-      'c1.stdout{"Error, cannot open file for reading: " exe-path ''\n}
-      'c.exit(#failure);
-   }
-   exe-fd.close();
-   'x.unlink(exe-path);
-   c-path[12] = ''.;
-   c-path[13] = ''c;
-   c-path[14] = ''\0;
-   compiler'char[8];
-   get-compiler(bin, compiler, tcc');
-   "#ifdef _WIN32";
-   exe-path[16] = ''.;
-   exe-path[17] = ''e;
-   exe-path[18] = ''x;
-   exe-path[19] = ''e;
-   exe-path[20] = ''\0;
-   if bin[0] != ''/ {
-      loop i' = 0; bin[i] != ''\0; i++ {
-         if bin[i] == ''/ {
-            bin[i] = ''\\;
-         }
+      c-path'char[15];
+      'c.strcpy(c-path, "cp1-c-XXXXXX");
+      c-fd' = 'x.mkstemp(c-path);
+      if c-fd == #nil {
+         print-commands(bin);
+         'c1.stdout{"Error, cannot open file for reading: " c-path ''\n}
+         'c.exit(#failure);
       }
-   }
-   "#endif";
-   command'char[1024];
-   'c1.sprintf(command, f?);
-   f.f{''" bin, 'c.strlen(bin) - 4 "-compile\" -c \"" c-path "\" \"" arg-v[1] "\""}
-   // 'c1.stdout{"run command: " command ''\n}
-   c-ret' = system2(command);
-   if c-ret != 0 {
+      c-fd.close();
       'x.unlink(c-path);
-      'c.exit(#failure);
-   }
-   if tcc {
-      'c1.sprintf(command, f).add{"tcc -run " c-path}
+      command'char[1024];
+      'c1.sprintf(command, f?);
+#     if .cp1-c {
+         f.f{''" bin, 'c.strlen(bin) - 5 "-compile\" -c \"" c-path "\" \"" arg-v[1] "\""}
+#     } else {
+         f.f{''" bin, 'c.strlen(bin) - 4 "-compile\" -c \"" c-path "\" \"" arg-v[1] "\""}
+#     }
+      'c1.stdout{"run command: " command ''\n}
+      c-ret' = system2(command);
+      if c-ret != 0 {
+         'x.unlink(c-path);
+         'c.exit(#failure);
+      }
+      'c1.sprintf(command, f).add{"cp1-c " c-path}
       loop i' = 2; arg-c - 2; i++ {
          f.add{'< "> arg-v[i] ''"}
       }
       command[f.len] = 0;
-      // 'c1.stdout{"run command: " command ''\n}
+      'c1.stdout{"run command: " command ''\n}
       exe-ret' = system2(command);
       'x.unlink(c-path);
       if exe-ret != 0 {
@@ -206,32 +186,4 @@ main(arg-c'cint, arg-v'char[][])'cint {
       }
       return 0;
    }
-   f.f{compiler " -o " exe-path " " c-path}
-   // 'c1.stdout{"run command: " command ''\n}
-   compile-ret' = system2(command);
-   'x.unlink(c-path);
-   if compile-ret != 0 {
-      'c.exit(#failure);
-   }
-   "#ifdef _WIN32";
-   loop i' = 0; ; i++ {
-      if exe-path[i] == ''\0 {
-         break;
-      } elif exe-path[i] == ''/ {
-         exe-path[i] = ''\\;
-      }
-   }
-   "#endif";
-   'c1.sprintf(command, f).add{exe-path}
-   // 'c1.stdout{"run command: " command ''\n}
-   loop i' = 2; arg-c - 2; i++ {
-      f.add{'< "> arg-v[i] ''"}
-   }
-   command[f.len] = 0;
-   exe-ret' = system2(command);
-   'x.unlink(exe-path);
-   if exe-ret != 0 {
-      'c.exit(#failure);
-   }
-   return 0;
 }
