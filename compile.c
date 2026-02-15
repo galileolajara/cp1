@@ -135,9 +135,9 @@ void _Tcp1_Fc_init_1(uint32_t js_crc32c) {
 
    memcpy(qjs_path, _Tcp1_Ginclude_dir, _Tcp1_Ginclude_dir_len);
    #ifdef CP1_NEW
-   memcpy(qjs_path + _Tcp1_Ginclude_dir_len, "/out/cp1-run", 13);
+   memcpy(qjs_path + _Tcp1_Ginclude_dir_len, "/out/cp1-meta", 14);
    #else
-   memcpy(qjs_path + _Tcp1_Ginclude_dir_len, "/bin/cp1-run", 13);
+   memcpy(qjs_path + _Tcp1_Ginclude_dir_len, "/bin/cp1-meta", 14);
    #endif
 }
 bool _Tcp1_Fwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
@@ -261,7 +261,7 @@ void _Tcp1_Fquickjs_end_3(char* js_data, uint32_t js_len, bool require) {
       exit(EXIT_FAILURE);
    }
    #else
-   const char *argv[] = {"cp1-run", cp1_tmp_js, cp1_tmp_js, NULL};
+   const char *argv[] = {"cp1-meta", cp1_tmp_js, cp1_tmp_js, NULL};
    // int status = qjs_main(2, argv);
    pid_t pid;
    int spawn = posix_spawn(&pid, qjs_path, NULL, NULL, argv, environ);

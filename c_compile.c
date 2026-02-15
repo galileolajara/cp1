@@ -66,6 +66,8 @@ struct c_lexer {
 #define decl_nil 0xffff
 #define decltype_t uint8_t
 #define declidx_t uint16_t
+#define typedef_t decl_t
+#define typedef_limit 0x8000
 #define expr_t uint32_t
 #define expr_limit 0xffff
 #define exprtype_t uint8_t
@@ -325,6 +327,10 @@ uint32_t decl_row_v[decl_limit];
 uint32_t decl_col_v[decl_limit];
 decl_t decl_c;
 
+type_t typedef_type_v[typedef_limit];
+id_t typedef_id_v[typedef_limit];
+typedef_t typedef_c;
+
 decl_t func_decl_v[func_limit];
 type_t func_type_v[func_limit];
 star_t func_star_v[func_limit];
@@ -479,6 +485,12 @@ uint8_t type_size(type_t t) {
       case type_u8: return 1;
    }
    return 0;
+}
+
+void decl_typedef(type_t t, id_t id, uint32_t row, uint32_t col) {
+   typedef_t td = typedef_c++;
+   typedef_type_v[td] = t;
+   typedef_id_v[td] = id;
 }
 
 void decl_gvar(type_t t, id_t id, uint32_t row, uint32_t col) {
@@ -1515,6 +1527,512 @@ int c_lexer_scan2(struct c_lexer* lex, union c_token_data* tok) {
    }
 }
 
+struct pp_buf_t {
+   uint8_t* v;
+   uint32_t len;
+   uint32_t cap;
+};
+
+#define pp_macro_limit 1024
+#define pp_macro_param_limit 32
+#define pp_expand_depth_limit 64
+
+struct pp_arg_t {
+   uint8_t* buf;
+   uint32_t len;
+};
+
+struct pp_macro_t {
+   uint8_t* name;
+   uint32_t name_len;
+   bool function_like;
+   uint8_t* param_v[pp_macro_param_limit];
+   uint32_t param_len_v[pp_macro_param_limit];
+   uint32_t param_c;
+   uint8_t* body;
+   uint32_t body_len;
+};
+
+bool pp_is_ident_start(uint8_t c) {
+   return ((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z')) || (c == '_');
+}
+
+bool pp_is_ident_char(uint8_t c) {
+   return pp_is_ident_start(c) || ((c >= '0') && (c <= '9'));
+}
+
+void pp_buf_reserve(struct pp_buf_t* out, uint32_t add_len) {
+   uint32_t need = out->len + add_len;
+   if (need <= out->cap) {
+      return;
+   }
+   uint32_t cap = out->cap == 0 ? 256 : out->cap;
+   while (cap < need) {
+      cap *= 2;
+   }
+   uint8_t* v = realloc(out->v, cap);
+   if (v == NULL) {
+      printf("Out of memory while preprocessing input\n");
+      exit(EXIT_FAILURE);
+   }
+   out->v = v;
+   out->cap = cap;
+}
+
+void pp_buf_push(struct pp_buf_t* out, uint8_t c) {
+   pp_buf_reserve(out, 1);
+   out->v[out->len++] = c;
+}
+
+void pp_buf_append(struct pp_buf_t* out, uint8_t* src, uint32_t len) {
+   if (len == 0) {
+      return;
+   }
+   pp_buf_reserve(out, len);
+   memcpy(out->v + out->len, src, len);
+   out->len += len;
+}
+
+uint8_t* pp_copy(uint8_t* src, uint32_t len) {
+   uint8_t* dst = malloc(len + 1);
+   if (dst == NULL) {
+      printf("Out of memory while preprocessing input\n");
+      exit(EXIT_FAILURE);
+   }
+   if (len != 0) {
+      memcpy(dst, src, len);
+   }
+   dst[len] = 0;
+   return dst;
+}
+
+void pp_trim_bounds(uint8_t* src, uint32_t len, uint32_t* begin, uint32_t* end) {
+   uint32_t b = 0;
+   uint32_t e = len;
+   while ((b < e) && ((src[b] == ' ') || (src[b] == '\t'))) {
+      b++;
+   }
+   while ((e > b) && ((src[e - 1] == ' ') || (src[e - 1] == '\t'))) {
+      e--;
+   }
+   *begin = b;
+   *end = e;
+}
+
+int32_t pp_macro_find(struct pp_macro_t* macro_v, uint32_t macro_c, uint8_t* name, uint32_t name_len) {
+   for (int32_t i = (int32_t)macro_c - 1; i >= 0; i--) {
+      if ((macro_v[i].name_len == name_len) && (memcmp(macro_v[i].name, name, name_len) == 0)) {
+         return i;
+      }
+   }
+   return -1;
+}
+
+int32_t pp_param_find(struct pp_macro_t* macro, uint8_t* name, uint32_t name_len) {
+   for (uint32_t i = 0; i < macro->param_c; i++) {
+      if ((macro->param_len_v[i] == name_len) && (memcmp(macro->param_v[i], name, name_len) == 0)) {
+         return i;
+      }
+   }
+   return -1;
+}
+
+uint32_t pp_skip_quote(uint8_t* src, uint32_t len, uint32_t i, uint8_t quote) {
+   i++;
+   while (i < len) {
+      if ((src[i] == '\\') && ((i + 1) < len)) {
+         i += 2;
+         continue;
+      }
+      if (src[i] == quote) {
+         i++;
+         break;
+      }
+      i++;
+   }
+   return i;
+}
+
+uint32_t pp_skip_block_comment(uint8_t* src, uint32_t len, uint32_t i) {
+   i += 2;
+   while (i + 1 < len) {
+      if ((src[i] == '*') && (src[i + 1] == '/')) {
+         i += 2;
+         return i;
+      }
+      i++;
+   }
+   return len;
+}
+
+void pp_args_free(struct pp_arg_t* arg_v, uint32_t arg_c) {
+   for (uint32_t i = 0; i < arg_c; i++) {
+      free(arg_v[i].buf);
+   }
+}
+
+bool pp_parse_call_args(uint8_t* src, uint32_t len, uint32_t open_paren_i, struct pp_arg_t* arg_v, uint32_t* arg_c, uint32_t* end_i) {
+   if ((open_paren_i >= len) || (src[open_paren_i] != '(')) {
+      return false;
+   }
+   uint32_t depth = 1;
+   uint32_t start = open_paren_i + 1;
+   uint32_t c = 0;
+   uint32_t i = start;
+   while (i < len) {
+      uint8_t ch = src[i];
+      if ((ch == '"') || (ch == '\'')) {
+         i = pp_skip_quote(src, len, i, ch);
+         continue;
+      }
+      if ((ch == '/') && ((i + 1) < len)) {
+         if (src[i + 1] == '/') {
+            i = len;
+            break;
+         }
+         if (src[i + 1] == '*') {
+            i = pp_skip_block_comment(src, len, i);
+            continue;
+         }
+      }
+      if (ch == '(') {
+         depth++;
+         i++;
+         continue;
+      }
+      if (ch == ')') {
+         if (depth == 1) {
+            uint32_t b = 0;
+            uint32_t e = 0;
+            pp_trim_bounds(src + start, i - start, &b, &e);
+            if ((c != 0) || (e != b)) {
+               if (c >= pp_macro_param_limit) {
+                  pp_args_free(arg_v, c);
+                  return false;
+               }
+               arg_v[c].buf = pp_copy(src + start + b, e - b);
+               arg_v[c].len = e - b;
+               c++;
+            }
+            *arg_c = c;
+            *end_i = i + 1;
+            return true;
+         }
+         depth--;
+         i++;
+         continue;
+      }
+      if ((ch == ',') && (depth == 1)) {
+         if (c >= pp_macro_param_limit) {
+            pp_args_free(arg_v, c);
+            return false;
+         }
+         uint32_t b = 0;
+         uint32_t e = 0;
+         pp_trim_bounds(src + start, i - start, &b, &e);
+         arg_v[c].buf = pp_copy(src + start + b, e - b);
+         arg_v[c].len = e - b;
+         c++;
+         start = i + 1;
+         i++;
+         continue;
+      }
+      i++;
+   }
+   pp_args_free(arg_v, c);
+   return false;
+}
+
+bool pp_parse_define_line(uint8_t* line, uint32_t len, struct pp_macro_t* macro_v, uint32_t* macro_c, uint32_t row) {
+   uint32_t i = 0;
+   while ((i < len) && ((line[i] == ' ') || (line[i] == '\t'))) {
+      i++;
+   }
+   if ((i >= len) || (line[i] != '#')) {
+      return false;
+   }
+   i++;
+   while ((i < len) && ((line[i] == ' ') || (line[i] == '\t'))) {
+      i++;
+   }
+   static const uint8_t define_str[] = "define";
+   if (((len - i) < 6) || (memcmp(line + i, define_str, 6) != 0)) {
+      return false;
+   }
+   i += 6;
+   if ((i < len) && pp_is_ident_char(line[i])) {
+      return false;
+   }
+   while ((i < len) && ((line[i] == ' ') || (line[i] == '\t'))) {
+      i++;
+   }
+   if ((i >= len) || !pp_is_ident_start(line[i])) {
+      printf("%s:%u:1: invalid #define, expected macro name\n", input_path, row);
+      exit(EXIT_FAILURE);
+   }
+   uint32_t name_begin = i;
+   i++;
+   while ((i < len) && pp_is_ident_char(line[i])) {
+      i++;
+   }
+   uint32_t name_len = i - name_begin;
+   bool function_like = false;
+   uint8_t* param_v[pp_macro_param_limit];
+   uint32_t param_len_v[pp_macro_param_limit];
+   uint32_t param_c = 0;
+   if ((i < len) && (line[i] == '(')) {
+      function_like = true;
+      i++;
+      while ((i < len) && ((line[i] == ' ') || (line[i] == '\t'))) {
+         i++;
+      }
+      if ((i < len) && (line[i] == ')')) {
+         i++;
+      } else {
+         while (1) {
+            if ((i >= len) || !pp_is_ident_start(line[i])) {
+               printf("%s:%u:1: invalid #define parameter list\n", input_path, row);
+               exit(EXIT_FAILURE);
+            }
+            if (param_c >= pp_macro_param_limit) {
+               printf("%s:%u:1: too many macro parameters (limit %u)\n", input_path, row, pp_macro_param_limit);
+               exit(EXIT_FAILURE);
+            }
+            uint32_t p_begin = i;
+            i++;
+            while ((i < len) && pp_is_ident_char(line[i])) {
+               i++;
+            }
+            param_v[param_c] = pp_copy(line + p_begin, i - p_begin);
+            param_len_v[param_c] = i - p_begin;
+            param_c++;
+            while ((i < len) && ((line[i] == ' ') || (line[i] == '\t'))) {
+               i++;
+            }
+            if ((i < len) && (line[i] == ',')) {
+               i++;
+               while ((i < len) && ((line[i] == ' ') || (line[i] == '\t'))) {
+                  i++;
+               }
+               continue;
+            }
+            if ((i < len) && (line[i] == ')')) {
+               i++;
+               break;
+            }
+            printf("%s:%u:1: invalid #define parameter list\n", input_path, row);
+            exit(EXIT_FAILURE);
+         }
+      }
+   }
+   while ((i < len) && ((line[i] == ' ') || (line[i] == '\t'))) {
+      i++;
+   }
+   uint8_t* body = pp_copy(line + i, len - i);
+   uint32_t body_len = len - i;
+   int32_t idx = pp_macro_find(macro_v, *macro_c, line + name_begin, name_len);
+   if (idx < 0) {
+      if (*macro_c >= pp_macro_limit) {
+         printf("%s:%u:1: too many macros (limit %u)\n", input_path, row, pp_macro_limit);
+         exit(EXIT_FAILURE);
+      }
+      idx = (*macro_c)++;
+   }
+   struct pp_macro_t* macro = &macro_v[idx];
+   macro->name = pp_copy(line + name_begin, name_len);
+   macro->name_len = name_len;
+   macro->function_like = function_like;
+   macro->param_c = param_c;
+   for (uint32_t p = 0; p < param_c; p++) {
+      macro->param_v[p] = param_v[p];
+      macro->param_len_v[p] = param_len_v[p];
+   }
+   macro->body = body;
+   macro->body_len = body_len;
+   return true;
+}
+
+bool pp_macro_disabled(const struct pp_macro_t* macro, const struct pp_macro_t** stack_v, uint32_t stack_c) {
+   for (uint32_t i = 0; i < stack_c; i++) {
+      if (stack_v[i] == macro) {
+         return true;
+      }
+   }
+   return false;
+}
+
+void pp_substitute_body(struct pp_macro_t* macro, struct pp_arg_t* arg_v, uint32_t arg_c, struct pp_buf_t* out) {
+   uint32_t i = 0;
+   uint8_t* src = macro->body;
+   uint32_t len = macro->body_len;
+   while (i < len) {
+      uint8_t ch = src[i];
+      if ((ch == '"') || (ch == '\'')) {
+         uint32_t j = pp_skip_quote(src, len, i, ch);
+         pp_buf_append(out, src + i, j - i);
+         i = j;
+         continue;
+      }
+      if ((ch == '/') && ((i + 1) < len)) {
+         if (src[i + 1] == '/') {
+            pp_buf_append(out, src + i, len - i);
+            return;
+         }
+         if (src[i + 1] == '*') {
+            uint32_t j = pp_skip_block_comment(src, len, i);
+            pp_buf_append(out, src + i, j - i);
+            i = j;
+            continue;
+         }
+      }
+      if (pp_is_ident_start(ch)) {
+         uint32_t j = i + 1;
+         while ((j < len) && pp_is_ident_char(src[j])) {
+            j++;
+         }
+         int32_t p = pp_param_find(macro, src + i, j - i);
+         if (p >= 0) {
+            if ((uint32_t)p >= arg_c) {
+               printf("Internal preprocessor error while substituting macro arguments\n");
+               exit(EXIT_FAILURE);
+            }
+            pp_buf_append(out, arg_v[p].buf, arg_v[p].len);
+         } else {
+            pp_buf_append(out, src + i, j - i);
+         }
+         i = j;
+         continue;
+      }
+      pp_buf_push(out, ch);
+      i++;
+   }
+}
+
+void pp_expand_text(struct pp_macro_t* macro_v, uint32_t macro_c, uint8_t* src, uint32_t len, struct pp_buf_t* out, const struct pp_macro_t** stack_v, uint32_t stack_c, uint32_t row) {
+   if (stack_c >= pp_expand_depth_limit) {
+      printf("%s:%u:1: macro expansion depth exceeded limit (%u)\n", input_path, row, pp_expand_depth_limit);
+      exit(EXIT_FAILURE);
+   }
+   uint32_t i = 0;
+   while (i < len) {
+      uint8_t ch = src[i];
+      if ((ch == '"') || (ch == '\'')) {
+         uint32_t j = pp_skip_quote(src, len, i, ch);
+         pp_buf_append(out, src + i, j - i);
+         i = j;
+         continue;
+      }
+      if ((ch == '/') && ((i + 1) < len)) {
+         if (src[i + 1] == '/') {
+            pp_buf_append(out, src + i, len - i);
+            return;
+         }
+         if (src[i + 1] == '*') {
+            uint32_t j = pp_skip_block_comment(src, len, i);
+            pp_buf_append(out, src + i, j - i);
+            i = j;
+            continue;
+         }
+      }
+      if (pp_is_ident_start(ch)) {
+         uint32_t j = i + 1;
+         while ((j < len) && pp_is_ident_char(src[j])) {
+            j++;
+         }
+         int32_t m = pp_macro_find(macro_v, macro_c, src + i, j - i);
+         if (m >= 0) {
+            struct pp_macro_t* macro = &macro_v[m];
+            if (!pp_macro_disabled(macro, stack_v, stack_c)) {
+               const struct pp_macro_t* stack2[pp_expand_depth_limit];
+               memcpy(stack2, stack_v, stack_c * sizeof(stack_v[0]));
+               stack2[stack_c] = macro;
+               if (!macro->function_like) {
+                  pp_expand_text(macro_v, macro_c, macro->body, macro->body_len, out, stack2, stack_c + 1, row);
+                  i = j;
+                  continue;
+               }
+               uint32_t k = j;
+               while ((k < len) && ((src[k] == ' ') || (src[k] == '\t'))) {
+                  k++;
+               }
+               if ((k < len) && (src[k] == '(')) {
+                  struct pp_arg_t raw_arg_v[pp_macro_param_limit];
+                  uint32_t raw_arg_c = 0;
+                  uint32_t call_end = 0;
+                  if (!pp_parse_call_args(src, len, k, raw_arg_v, &raw_arg_c, &call_end)) {
+                     printf("%s:%u:%u: invalid macro call for '%.*s'\n", input_path, row, i + 1, macro->name_len, macro->name);
+                     exit(EXIT_FAILURE);
+                  }
+                  if (raw_arg_c != macro->param_c) {
+                     printf("%s:%u:%u: macro '%.*s' expects %u arguments but got %u\n", input_path, row, i + 1, macro->name_len, macro->name, macro->param_c, raw_arg_c);
+                     exit(EXIT_FAILURE);
+                  }
+                  struct pp_arg_t exp_arg_v[pp_macro_param_limit];
+                  for (uint32_t a = 0; a < raw_arg_c; a++) {
+                     struct pp_buf_t arg_out = {0};
+                     pp_expand_text(macro_v, macro_c, raw_arg_v[a].buf, raw_arg_v[a].len, &arg_out, stack_v, stack_c, row);
+                     pp_buf_push(&arg_out, 0);
+                     exp_arg_v[a].buf = arg_out.v;
+                     exp_arg_v[a].len = arg_out.len - 1;
+                  }
+                  struct pp_buf_t body_out = {0};
+                  pp_substitute_body(macro, exp_arg_v, raw_arg_c, &body_out);
+                  pp_expand_text(macro_v, macro_c, body_out.v, body_out.len, out, stack2, stack_c + 1, row);
+                  pp_args_free(raw_arg_v, raw_arg_c);
+                  pp_args_free(exp_arg_v, raw_arg_c);
+                  free(body_out.v);
+                  i = call_end;
+                  continue;
+               }
+            }
+         }
+         pp_buf_append(out, src + i, j - i);
+         i = j;
+         continue;
+      }
+      pp_buf_push(out, ch);
+      i++;
+   }
+}
+
+uint8_t* preprocess(uint8_t* data, uint32_t size) {
+   struct pp_macro_t macro_v[pp_macro_limit];
+   uint32_t macro_c = 0;
+   struct pp_buf_t out = {0};
+   uint32_t i = 0;
+   uint32_t row = 1;
+   while (i < size) {
+      uint32_t line_begin = i;
+      while ((i < size) && (data[i] != '\n')) {
+         i++;
+      }
+      uint32_t line_end = i;
+      bool has_newline = (i < size) && (data[i] == '\n');
+
+      uint32_t trim_b = 0;
+      while ((line_begin + trim_b < line_end) && ((data[line_begin + trim_b] == ' ') || (data[line_begin + trim_b] == '\t'))) {
+         trim_b++;
+      }
+      bool is_pp_line = ((line_begin + trim_b) < line_end) && (data[line_begin + trim_b] == '#');
+      if (is_pp_line) {
+         if (!pp_parse_define_line(data + line_begin, line_end - line_begin, macro_v, &macro_c, row)) {
+            pp_buf_append(&out, data + line_begin, line_end - line_begin);
+         }
+      } else {
+         const struct pp_macro_t* stack_v[pp_expand_depth_limit];
+         pp_expand_text(macro_v, macro_c, data + line_begin, line_end - line_begin, &out, stack_v, 0, row);
+      }
+
+      if (has_newline) {
+         pp_buf_push(&out, '\n');
+         i++;
+         row++;
+      }
+   }
+   pp_buf_push(&out, 0);
+   return out.v;
+}
+
 int main(int argc, char** argv) {
    if (argc < 2) {
       printf("Usage: %s [file.c]\n", argv[0]);
@@ -1537,11 +2055,15 @@ int main(int argc, char** argv) {
    }
    size_t size = lseek(fd, 0, SEEK_END);
    lseek(fd, 0, SEEK_SET);
-   uint8_t* data = malloc(size + 1);
-   string_mem = malloc(size);
-   read(fd, data, size);
+   uint8_t* data_raw = malloc(size + 1);
+   read(fd, data_raw, size);
    close(fd);
-   data[size] = 0;
+   data_raw[size] = 0;
+
+   uint8_t* data = preprocess(data_raw, size);
+   free(data_raw);
+   size = strlen((char*)data);
+   string_mem = malloc(size + 1);
 
    func_arg_first_v[0] = lvar_limit;
    func_arg_last_v[0] = lvar_limit;
@@ -1561,6 +2083,13 @@ int main(int argc, char** argv) {
       switch (t) {
          case C_TOKEN_ID: {
             tok.i32.id = c_lexer_id(lex.start, lex.cursor - lex.start);
+            for (typedef_t td = 0; td < typedef_c; td++) {
+               if (typedef_id_v[td] == tok.i32.id) {
+                  t = C_TOKEN_TYPE;
+                  tok.i32.id = typedef_type_v[td];
+                  break;
+               }
+            }
             cParse(&psr, t, tok);
             break;
          }

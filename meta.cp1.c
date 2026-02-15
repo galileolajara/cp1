@@ -146,7 +146,6 @@ _Tlibcp1_Tfmt_Ff_stdout_1(&_L_13);
 exit(_Tlibc_Texit_Cfailure);
 }
 close(_Lc_fd_9);
-unlink(_Lc_path_8);
 _Tlibcp1_Fsprintf_2(_Lcommand_14, &_Lf_15);
 _Tlibcp1_Tsprintf_Ff_2(&_Lf_15, &_L_24);
 _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\"', &_L_24, &_L_16);
@@ -167,7 +166,6 @@ _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_22, &_L_24);
 _Tlibcp1_Tfmt_Ff_sprintf_f_1(&_L_24);
 _Lc_ret_25 = ((int)(system2(_Lcommand_14)));
 if(_Lc_ret_25 != 0) {
-unlink(_Lc_path_8);
 exit(_Tlibc_Texit_Cfailure);
 }
 _Tlibcp1_Tsprintf_Fadd_2(_Tlibcp1_Fsprintf_2(_Lcommand_14, &_Lf_15), &_L_28);
@@ -200,7 +198,6 @@ _Li_29++;
 break_2:;
 _Lcommand_14[_Lf_15._Mlen] = 0;
 _Lexe_ret_34 = ((int)(system2(_Lcommand_14)));
-unlink(_Lc_path_8);
 if(_Lexe_ret_34 != 0) {
 exit(_Tlibc_Texit_Cfailure);
 }

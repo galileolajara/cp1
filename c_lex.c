@@ -14,6 +14,7 @@ int c_lexer_scan(struct c_lexer* l) {
    re2c:yyfill:enable   = 0;
     
    *                                            { string_mem[0] = l->start[0]; return C_TOKEN_END; }
+   ("unsigned char"|"uint8_t")                  { return C_TOKEN_U8; }
    ("unsigned short"|"uint16_t")                { return C_TOKEN_U16; }
    ("unsigned int"|"uint32_t")                  { return C_TOKEN_U32; }
    ("int"|"int32_t")                            { return C_TOKEN_I32; }
@@ -39,6 +40,7 @@ int c_lexer_scan(struct c_lexer* l) {
    "for"                                        { return C_TOKEN_FOR; }
    "while"                                      { return C_TOKEN_WHILE; }
    "break"                                      { return C_TOKEN_BREAK; }
+   "typedef"                                    { return C_TOKEN_TYPEDEF; }
    "continue"                                   { return C_TOKEN_CONTINUE; }
    "else"                                       { return C_TOKEN_ELSE; }
    "true"                                       { return C_TOKEN_TRUE; }

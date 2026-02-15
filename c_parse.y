@@ -52,6 +52,11 @@ decl ::= decl_func.
 decl ::= decl_gvar.
 decl ::= PREPROCESS.
 
+decl ::= decl_typedef.
+
+decl_typedef ::= TYPEDEF type(t) id(name) SEMICOLON.
+{ decl_typedef(t.i32.id, name.i32.id, name.i32.row, name.i32.col); }
+
 decl_gvar ::= type(t) id(name) SEMICOLON.
 { decl_gvar(t.i32.id, name.i32.id, name.i32.row, name.i32.col); }
 
@@ -262,11 +267,13 @@ num_int(out) ::= INT(i).
 num_int(out) ::= UINT(i).
 { out.i32.id = expr_i32(i.i32.id, i.i32.row, i.i32.col); }
 
-type(out) ::= type_builtin(in).
-{ out.i32.id = in.i32.id; }
+type ::= type_builtin.
+type ::= TYPE.
 
 type_builtin(out) ::= VOID.
 { out.i32.id = type_void; }
+type_builtin(out) ::= U8.
+{ out.i32.id = type_u8; }
 type_builtin(out) ::= U16.
 { out.i32.id = type_u16; }
 type_builtin(out) ::= U32.
