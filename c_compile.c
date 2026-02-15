@@ -311,7 +311,7 @@ void c_lexer_init(struct c_lexer* lex, void* data) {
 }
 
 id_t c_lexer_id(uint8_t* str, uint32_t len) {
-   printf("%.*s %u\n", len, str, len);
+   // printf("%.*s %u\n", len, str, len);
    if (len > 255) {
       printf("Identifier is too long (more than 255 bytes): %.*s\n", len, str);
       return 0;
