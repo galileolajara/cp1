@@ -49,6 +49,7 @@ build bin/cp1-compile: ld out/compile.cp1.c.o out/compile.c.o out/hashtable.c.o
 # out/parse-redef.cp1.c.o out/parse.c.o
 #build bin/cp1-compile-redef-output: ld out/compile.cp1.c.o out/compile.c.o out/hashtable.c.o out/parse.cp1.c.o out/parse.c.o
 build bin/cp1-run: ld run.cp1.c
+build bin/cp1-meta: ld meta.cp1.c
 build bin/cp1-c: ld c_compile.c | out/c_parse.c out/c_parse.h out/c_lex.c out/c_token_name.h meta/runc-boot.c meta/runc-builtins.c meta/runc-exit.c meta/runc-header.h c_vm.c
  flags = -I meta
 build bin/crc32c: ld crc32c.c | crc32c.h
@@ -76,15 +77,15 @@ build out/hash-table-size: ld2 hashtable2.c
  flags = -DCP1_GET_SIZE
 build out/hash-table-size.cp1: run out/hash-table-size
 
-build out/token.cp1.c: compile token.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-run
+build out/token.cp1.c: compile token.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-meta
 build out/token: ld2 out/token.cp1.c
 build out/token.cp1: run out/token out/cp1_parse.h
-build out/run2.cp1.c: compile Cp1/run.cp1 Cp1/file.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-run
-build out/meta2.cp1.c: compile Cp1/run.cp1 Cp1/file.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-run
+build out/run2.cp1.c: compile Cp1/run.cp1 Cp1/file.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-meta
+build out/meta2.cp1.c: compile Cp1/run.cp1 Cp1/file.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-meta
  flags = -D".cp1-c = true"
-build out/parse2.cp1.c: compile Cp1/parse.cp1 Cp1/print-error.cp1 Cp1/preprocess.cp1 out/token.cp1 Cp1/break.cp1 Cp1/math.cp1 Cp1/bools.cp1 Cp1/str.cp1 Cp1/cvar.cp1 Cp1/unary.cp1 Cp1/ref.cp1 Cp1/cast.cp1 Cp1/index.cp1 Cp1/switch.cp1 Cp1/if.cp1 Cp1/loop.cp1 Cp1/compare.cp1 Cp1/bool.cp1 Cp1/char.cp1 Cp1/call.cp1 Cp1/null.cp1 Cp1/int.cp1 Cp1/size.cp1 Cp1/assign.cp1 Cp1/fvar.cp1 Cp1/soa.cp1 Cp1/gvar.cp1 Cp1/continue.cp1 Cp1/return.cp1 Cp1/space.cp1 Cp1/export.cp1 Cp1/rdr.cp1 Cp1/wtr.cp1 Cp1/var.cp1 Cp1/func.cp1 Cp1/lvar.cp1 Cp1/enum.cp1 Cp1/expr.cp1 Cp1/stmt.cp1 Cp1/common.cp1 Cp1/struct.cp1 Cp1/file.cp1 out/hash-table-size.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-run
-build out/compile2.cp1.c: compile Cp1/compile.cp1 Cp1/print-error.cp1 Cp1/meta.cp1 Cp1/common.cp1 Cp1/rdr.cp1 Cp1/wtr.cp1 Cp1/func.cp1 Cp1/struct.cp1 Cp1/enum.cp1 Cp1/expr.cp1 Cp1/stmt.cp1 Cp1/var.cp1 Cp1/assign.cp1 Cp1/compare.cp1 Cp1/bool.cp1 Cp1/char.cp1 Cp1/math.cp1 Cp1/unary.cp1 Cp1/ref.cp1 Cp1/cast.cp1 Cp1/lvar.cp1 Cp1/fvar.cp1 Cp1/soa.cp1 Cp1/gvar.cp1 Cp1/cvar.cp1 Cp1/bools.cp1 Cp1/call.cp1 Cp1/str.cp1 Cp1/int.cp1 Cp1/size.cp1 Cp1/null.cp1 Cp1/index.cp1 Cp1/if.cp1 Cp1/switch.cp1 Cp1/loop.cp1 Cp1/continue.cp1 Cp1/break.cp1 Cp1/return.cp1 Cp1/space.cp1 Cp1/export.cp1 out/hash-table-size.cp1 Cp1/file.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-run
-build out/export.cp1.c: compile export.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-run
+build out/parse2.cp1.c: compile Cp1/parse.cp1 Cp1/print-error.cp1 Cp1/preprocess.cp1 out/token.cp1 Cp1/break.cp1 Cp1/math.cp1 Cp1/bools.cp1 Cp1/str.cp1 Cp1/cvar.cp1 Cp1/unary.cp1 Cp1/ref.cp1 Cp1/cast.cp1 Cp1/index.cp1 Cp1/switch.cp1 Cp1/if.cp1 Cp1/loop.cp1 Cp1/compare.cp1 Cp1/bool.cp1 Cp1/char.cp1 Cp1/call.cp1 Cp1/null.cp1 Cp1/int.cp1 Cp1/size.cp1 Cp1/assign.cp1 Cp1/fvar.cp1 Cp1/soa.cp1 Cp1/gvar.cp1 Cp1/continue.cp1 Cp1/return.cp1 Cp1/space.cp1 Cp1/export.cp1 Cp1/rdr.cp1 Cp1/wtr.cp1 Cp1/var.cp1 Cp1/func.cp1 Cp1/lvar.cp1 Cp1/enum.cp1 Cp1/expr.cp1 Cp1/stmt.cp1 Cp1/common.cp1 Cp1/struct.cp1 Cp1/file.cp1 out/hash-table-size.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-meta
+build out/compile2.cp1.c: compile Cp1/compile.cp1 Cp1/print-error.cp1 Cp1/meta.cp1 Cp1/common.cp1 Cp1/rdr.cp1 Cp1/wtr.cp1 Cp1/func.cp1 Cp1/struct.cp1 Cp1/enum.cp1 Cp1/expr.cp1 Cp1/stmt.cp1 Cp1/var.cp1 Cp1/assign.cp1 Cp1/compare.cp1 Cp1/bool.cp1 Cp1/char.cp1 Cp1/math.cp1 Cp1/unary.cp1 Cp1/ref.cp1 Cp1/cast.cp1 Cp1/lvar.cp1 Cp1/fvar.cp1 Cp1/soa.cp1 Cp1/gvar.cp1 Cp1/cvar.cp1 Cp1/bools.cp1 Cp1/call.cp1 Cp1/str.cp1 Cp1/int.cp1 Cp1/size.cp1 Cp1/null.cp1 Cp1/index.cp1 Cp1/if.cp1 Cp1/switch.cp1 Cp1/loop.cp1 Cp1/continue.cp1 Cp1/break.cp1 Cp1/return.cp1 Cp1/space.cp1 Cp1/export.cp1 out/hash-table-size.cp1 Cp1/file.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-meta
+build out/export.cp1.c: compile export.cp1 | bin/cp1-compile bin/cp1-parse bin/cp1-meta
 build out/export: ld2 out/export.cp1.c
 build out/export.h: run out/export out/parse2.cp1.c
 build out/lex.c: re2c lex-re2c.c
