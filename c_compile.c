@@ -592,6 +592,7 @@ void expr_write(expr_t e) {
          expr_write(data->expr);
          switch (data->type) {
             case unarytype_expoint: bc_write(not); break;
+            default: printf("unarytype not yet implemented: %u\n", data->type);
          }
          break;
       }
