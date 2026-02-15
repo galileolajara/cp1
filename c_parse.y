@@ -164,6 +164,10 @@ call_args_begin ::= OPEN_PAREN.
 call(out) ::= id(name) call_args_begin call_args_or_empty CLOSE_PAREN.
 { out.i32.id = expr_call(name.i32.id, name.i32.row, name.i32.col); }
 
+num_int(out) ::= TRUE(i).
+{ out.i32.id = expr_i32(1, i.i32.row, i.i32.col); }
+num_int(out) ::= FALSE(i).
+{ out.i32.id = expr_i32(1, i.i32.row, i.i32.col); }
 num_int(out) ::= INT(i).
 { out.i32.id = expr_i32(i.i32.id, i.i32.row, i.i32.col); }
 num_int(out) ::= UINT(i).

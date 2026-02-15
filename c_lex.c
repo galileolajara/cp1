@@ -30,6 +30,8 @@ int c_lexer_scan(struct c_lexer* l) {
    "return"                                     { return C_TOKEN_RETURN; }
    "if"                                         { return C_TOKEN_IF; }
    "else"                                       { return C_TOKEN_ELSE; }
+   "true"                                       { return C_TOKEN_TRUE; }
+   "false"                                      { return C_TOKEN_FALSE; }
    "else" [ \n\t]+ "if"                         { return C_TOKEN_ELSE_IF; }
    "!" .                                        { return C_TOKEN_EXPOINT; }
    "0"                                          { return C_TOKEN_INT; }
