@@ -190,6 +190,7 @@ expr ::= cast.
 expr ::= value.
 expr ::= math.
 expr ::= compare.
+expr ::= bools.
 expr ::= unaryop.
 expr(out) ::= EXPOINT value(e).
 { out.i32.id = expr_unary(unarytype_expoint, e.i32.id, e.i32.row, e.i32.col); }
@@ -230,6 +231,18 @@ math_mul(out) ::= value(a) STAR(op) value(b).
 { out.i32.id = expr_math(mathtype_mul, a.i32.id, b.i32.id, op.i32.row, op.i32.col); }
 math_mul(out) ::= math_mul(a) STAR(op) value(b).
 { out.i32.id = expr_math(mathtype_mul, a.i32.id, b.i32.id, op.i32.row, op.i32.col); }
+
+bools ::= bools_and.
+bools ::= bools_or.
+bools_and(out) ::= value(a) AMP(op) AMP value(b).
+{ out.i32.id = expr_bools(boolstype_and, a.i32.id, b.i32.id, op.i32.row, op.i32.col); }
+bools_and(out) ::= bools_and(a) AMP(op) AMP value(b).
+{ out.i32.id = expr_bools(boolstype_and, a.i32.id, b.i32.id, op.i32.row, op.i32.col); }
+
+bools_or(out) ::= value(a) PIPE(op) PIPE value(b).
+{ out.i32.id = expr_bools(boolstype_or, a.i32.id, b.i32.id, op.i32.row, op.i32.col); }
+bools_or(out) ::= bools_or(a) PIPE(op) PIPE value(b).
+{ out.i32.id = expr_bools(boolstype_or, a.i32.id, b.i32.id, op.i32.row, op.i32.col); }
 
 compare(out) ::= value(a) LT(op) value (b).
 { out.i32.id = expr_compare(comparetype_lt, a.i32.id, b.i32.id, op.i32.row, op.i32.col); }

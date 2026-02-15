@@ -19,5 +19,12 @@ func_arg(type_char, id_str, 0, 0);
 func_arg(type_u32, id_len, 0, 0);
 func_arg(type_char, id_str2, 0, 0);
 func_arg(type_u32, id_len2, 0, 0);
-func_sig(type_void, c_lexer_id("_FR_4", 5), 0, 0);
+func_sig(type_void, c_lexer_id("_FD_4", 5), 0, 0);
 func_bytecode_v[func_now] = -4;
+
+func_arg(type_char, id_str, 0, 0);
+func_arg(type_u32, id_len, 0, 0);
+func_arg(type_char, id_str2, 0, 0);
+func_arg(type_u32, id_len2, 0, 0);
+func_sig(type_u8, c_lexer_id("_FD_is_4", 8), 0, 0);
+func_bytecode_v[func_now] = -5;

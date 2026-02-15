@@ -31,6 +31,8 @@ int c_lexer_scan(struct c_lexer* l) {
    "<"                                          { return C_TOKEN_LT; }
    ">"                                          { return C_TOKEN_GT; }
    ":"                                          { return C_TOKEN_COLON; }
+   "&"                                          { return C_TOKEN_AMP; }
+   "|"                                          { return C_TOKEN_PIPE; }
    "="                                          { return C_TOKEN_EQUAL; }
    ","                                          { return C_TOKEN_COMMA; }
    "return"                                     { return C_TOKEN_RETURN; }

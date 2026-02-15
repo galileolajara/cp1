@@ -257,6 +257,20 @@ void func_run(func_t f, struct vm_locals* vml) {
             vml_push_i32(vml, --vml->memory[mem]);
             break;
          }
+         case bc_and: {
+            int32_t b = vml_pop_i32(vml);
+            int32_t a = vml_pop_i32(vml);
+            // printf("%d && %d = %d\n", a, b, a && b);
+            vml_push_i32(vml, a && b);
+            break;
+         }
+         case bc_or: {
+            int32_t b = vml_pop_i32(vml);
+            int32_t a = vml_pop_i32(vml);
+            // printf("%d || %d = %d\n", a, b, a || b);
+            vml_push_i32(vml, a || b);
+            break;
+         }
          default: {
             printf("unrecognized op: %u\n", op);
             exit(EXIT_FAILURE);

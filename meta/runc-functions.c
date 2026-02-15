@@ -17,9 +17,9 @@ switch (bc_offset) {
       for (uint32_t i = 0; i < len; ) {
          if ((buf[i] == '$') && (buf[i + 1] == '{')) {
             i += 2;
-            struct replacer_t* r = replacer_first;
+            struct D_t* r = D_first;
             while (r != 0) {
-               if (memcmp(r->srcbuf, buf + i, r->srclen) == 0) {
+               if (memcmp(r->keybuf, buf + i, r->keylen) == 0) {
                   break;
                }
                r = r->next;
@@ -28,10 +28,10 @@ switch (bc_offset) {
                output_buf[output_len++] = '$';
                output_buf[output_len++] = '{';
             } else {
-               uint16_t deslen = r->deslen;
-               memcpy(output_buf + output_len, r->desbuf, deslen);
-               output_len += deslen;
-               i += r->srclen + 1;
+               uint16_t vallen = r->vallen;
+               memcpy(output_buf + output_len, r->valbuf, vallen);
+               output_len += vallen;
+               i += r->keylen + 1;
             }
          } else {
             output_buf[output_len++] = buf[i++];
@@ -40,18 +40,18 @@ switch (bc_offset) {
       break;
    }
    case 3: {
-      uint32_t deslen = vml_pop_i32(vml);
-      mem_t desmem = vml_pop_mem(vml);
-      char* desbuf = vml->memory + desmem;
-      uint32_t srclen = vml_pop_i32(vml);
-      mem_t srcmem = vml_pop_mem(vml);
-      char* srcbuf = vml->memory + srcmem;
+      uint32_t vallen = vml_pop_i32(vml);
+      mem_t valmem = vml_pop_mem(vml);
+      char* valbuf = vml->memory + valmem;
+      uint32_t keylen = vml_pop_i32(vml);
+      mem_t keymem = vml_pop_mem(vml);
+      char* keybuf = vml->memory + keymem;
       
-      // check if srcmem/srclen already exists
-      struct replacer_t* r = replacer_first;
+      // check if keymem/keylen already exists
+      struct D_t* r = D_first;
       bool allocate = true;
       while (r != 0) {
-         if ((r->srclen == srclen) && (memcmp(r->srcbuf, srcbuf, srclen) == 0)) {
+         if ((r->keylen == keylen) && (memcmp(r->keybuf, keybuf, keylen) == 0)) {
             allocate = false;
             break;
          }
@@ -59,22 +59,43 @@ switch (bc_offset) {
       }
 
       if (allocate) {
-         r = malloc(sizeof(struct replacer_t));
-         memcpy(r->srcbuf, srcbuf, srclen);
-         r->srclen = srclen;
+         r = malloc(sizeof(struct D_t));
+         memcpy(r->keybuf, keybuf, keylen);
+         r->keylen = keylen;
       }
-      memcpy(r->desbuf, desbuf, deslen);
-      r->deslen = deslen;
+      memcpy(r->valbuf, valbuf, vallen);
+      r->vallen = vallen;
       
       if (allocate) {
-         if (replacer_last == 0) {
-            replacer_last = replacer_first = r;
+         if (D_last == 0) {
+            D_last = D_first = r;
          } else {
-            replacer_last->next = r;
-            replacer_last = r;
+            D_last->next = r;
+            D_last = r;
          }
          r->next = 0;
       }
+      break;
+   }
+   case 4: {
+      uint32_t vallen = vml_pop_i32(vml);
+      mem_t valmem = vml_pop_mem(vml);
+      char* valbuf = vml->memory + valmem;
+      uint32_t keylen = vml_pop_i32(vml);
+      mem_t keymem = vml_pop_mem(vml);
+      char* keybuf = vml->memory + keymem;
+      
+      struct D_t* r = D_first;
+      bool found = false;
+      while (r != 0) {
+         if ((r->keylen == keylen) && (memcmp(r->keybuf, keybuf, keylen) == 0)) {
+            found = true;
+            break;
+         }
+         r = r->next;
+      }
+
+      vml_push_i32(vml, found && (vallen == r->vallen) && (memcmp(r->valbuf, valbuf, vallen) == 0) ? 1 : 0);
       break;
    }
    default:
