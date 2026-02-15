@@ -165,9 +165,7 @@ $           'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - 
          i++;
          arg-c' = ((e.expr-c - 1) >> 1) - 1;
 # loop i' = 1; 2; i++ {
-#        i-to-str'char[1];
-#        i-to-str[0] = ''0 + i;
-#        R("i"#, i-to-str, 1);
+# if i == 1 { R("i"#, "1"#) } else { R("i"#, "2"#); }
 # if i == 2 {
          if f.meta-method-prefix2 != #nil {
 # }

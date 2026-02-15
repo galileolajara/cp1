@@ -1050,6 +1050,8 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
                   '= using 'x = 'posix;
                   '= O(str'char @const[], len'u32) @no-decl;
                   '= L() @no-decl;
+                  '= R(src'char[], src-len'u8, des'char[], des-len'u16) @no-decl;
+                  '= R(str'char[], len'u32) @no-decl;
                   '= main() {
                   // '= 'c.printf("arg-v[1]: %s\n", arg-v[1]);
                   }
