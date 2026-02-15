@@ -1046,7 +1046,7 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
                   '= using 'c = 'libc;
                   '= using 'c1 = 'libcp1;
                   '= using 'x = 'posix;
-                  '= main(arg-c'cint, arg-v'char[][])'cint {
+                  '= main() {
                   // '= 'c.printf("arg-v[1]: %s\n", arg-v[1]);
                   }
                   "#if INTPTR_MAX == INT64_MAX";
@@ -1060,9 +1060,6 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
                      } else {
                         jscode{.define-v[k], .define-len-v[k] ";\n"}
                      }
-                  }
-                  jscode{
-                  '= if true {
                   }
                   if tc.with-reflection {
                      jscode{
@@ -1186,32 +1183,7 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
                      }
                   }
                   jscode{
-                  '= }
-                  '= cp1-path'char[1024];
-                  '= 'c1.sprintf(cp1-path, f?).f{arg-v[1] ".cp1"}
-                  // '= 'c.sprintf(cp1-path, "%s.cp1", arg-v[1]);
-                  }
-                  "#ifdef _WIN32";
-                  jscode{
-                    "tmp-path'char[1024];\n'c1.sprintf(tmp-path, f).f{arg-v[1] \".cp1-" 'u32('x.getpid()) "\"}\n"
-                  }
-                  "#else";
-                  jscode{
-                  '= tmp-path'char[1024];
-                  '= 'c1.sprintf(tmp-path, f).f{arg-v[1] ".cp1-" 'u32('x.getpid())}
-                  // '= 'c.sprintf(tmp-path, "%s.cp1-%u", arg-v[1], 'x.getpid());
-                  }
-                  "#endif";
-                  jscode{
-                  // '= 'c.printf("%s -> %s\n", tmp-path, cp1-path);
-                  '= file' = 'x.open(tmp-path, #create | #truncate | #wronly, 0o644);
-                  '= file.write(.cp1-buf, .cp1-len);
-                  '= file.close();
-                  '= "#ifdef _WIN32";
-                  '= 'x.unlink(cp1-path);
-                  '= "#endif";
-                  '= 'c.rename(tmp-path, cp1-path);
-                  '= return 0;
+                  '= return;
                   '= }
                   }
                   quickjs-end(.jscode-buf-data, .jscode-buf-len, ti.require);

@@ -14,14 +14,7 @@ replace-src-len'u8[4096];
 replace-des'char[4096][1024];
 replace-des-len'u16[4096];
 replace-c'u16;
-F() @var-args @decl('<#define _FF_0(...) _Gcp1_len += sprintf(_Gcp1_buf + _Gcp1_len, __VA_ARGS__)>) @no-body {
-   a' = .cp1-buf[0];
-   b' = .cp1-len;
-}
-O(str'char[], len'u32) {
-   'c.memcpy(&.cp1-buf[.cp1-len], str, len);
-   .cp1-len += len;
-}
+O(str'char[], len'u32) @no-decl;
 R(src'char[], src-len'u8, des'char[], des-len'u16) {
    loop i' = 0; .replace-c; i++ {
       if (&&, src-len == .replace-src-len[i], 'c.memcmp(src, .replace-src[i], src-len) == 0) {
@@ -62,9 +55,7 @@ R(str'char[], len'u32) {
       }
    }
 }
-L() {
-   .cp1-buf[.cp1-len++] = ''\n;
-}
+L() @no-decl;
 O(fmt'c1'fmt) @meta(f-reserve, f, O) @inline {
 }
 using 'libcp1 {
