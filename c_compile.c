@@ -71,11 +71,12 @@ struct c_lexer {
 #define exprtype_t uint8_t
 #define func_t declidx_t
 #define type_t decl_t
+#define star_t uint8_t // how many '*' in the type
 #define type_void 0
 #define type_u16 1
 #define type_u32 2
 #define type_i32 3
-#define type_bool 4
+#define type_u8 4
 #define type_char 5
 #define exprtype_i32 0
 #define exprtype_call 1
@@ -85,6 +86,7 @@ struct c_lexer {
 #define exprtype_str 5
 #define exprtype_unary 6
 #define exprtype_cast 7
+#define exprtype_compare 8
 #define lvar_t uint16_t
 #define lvar_limit 0x8000
 #define stmt_t uint16_t
@@ -96,6 +98,15 @@ struct c_lexer {
 #define stmttype_expr 3
 #define stmttype_if 4
 #define stmttype_scope 5
+#define stmttype_else 6
+#define stmttype_for 7
+#define stmttype_break 8
+#define stmttype_continue 9
+#define stmttype_while 10
+#define stmttype_do 11
+#define stmttype_do_end 12
+#define stmttype_label 13
+#define stmttype_goto 14
 #define mathtype_t uint8_t
 #define mathtype_add 0
 #define mathtype_sub 1
@@ -112,7 +123,23 @@ struct c_lexer {
 #define str_t uint16_t
 #define str_limit 0x8000
 #define unarytype_t uint8_t
-#define unarytype_expoint 0
+#define unarytype_postinc 0
+#define unarytype_preinc 1
+#define unarytype_expoint 2
+#define unarytype_postdec 3
+#define unarytype_predec 4
+#define unaryop_t uint8_t
+#define unaryop_postinc 0
+#define unaryop_preinc 1
+#define unaryop_postdec 0
+#define unaryop_predec 1
+#define comparetype_t uint8_t
+#define comparetype_lt 0
+#define comparetype_gt 1
+#define comparetype_eq 2
+#define comparetype_lteq 3
+#define comparetype_gteq 4
+#define comparetype_noteq 5
 
 #define mem_t uint32_t
 #define mem_max 0xffffffff
@@ -137,6 +164,21 @@ struct c_lexer {
 #define bc_jump 13
 #define bc_push_addr 14
 #define bc_not 15
+#define bc_lt_i32 16
+#define bc_gt_i32 17
+#define bc_eq_i32 18
+#define bc_lteq_i32 19
+#define bc_gteq_i32 20
+#define bc_noteq_i32 21
+#define bc_unaryop_lvar_32_postinc 22
+#define bc_unaryop_lvar_32_preinc 23
+#define bc_unaryop_lvar_32_postdec 24
+#define bc_unaryop_lvar_32_predec 25
+#define bc_mem_postinc_8 26
+#define bc_mem_preinc_8 27
+#define bc_mem_postdec_8 28
+#define bc_mem_predec_8 29
+#define bc_pop_32 30
 
 #define id_limit 0x8000
 #define decl_limit 0x8000
@@ -160,12 +202,19 @@ struct exprdata_str_t {
 
 struct exprdata_call_t {
    id_t func_id;
+   func_t func;
    expr_t arg_v[call_arg_limit];
    uint8_t arg_c;
 };
 
 struct exprdata_math_t {
    mathtype_t type;
+   expr_t a;
+   expr_t b;
+};
+
+struct exprdata_compare_t {
+   comparetype_t type;
    expr_t a;
    expr_t b;
 };
@@ -192,6 +241,7 @@ union exprdata_t {
    struct exprdata_i32_t i32;
    struct exprdata_call_t call;
    struct exprdata_math_t math;
+   struct exprdata_compare_t compare;
    struct exprdata_cast_t cast;
    struct exprdata_unary_t unary;
    struct exprdata_lvar_t lvar;
@@ -226,6 +276,28 @@ struct stmtdata_if_t {
    bool is_elif;
 };
 
+struct stmtdata_label_t {
+   id_t id;
+};
+
+struct stmtdata_goto_t {
+   id_t id;
+};
+
+struct stmtdata_for_t {
+   expr_t expr;
+   scope_t scope;
+};
+
+struct stmtdata_while_t {
+   expr_t expr;
+   scope_t scope;
+};
+
+struct stmtdata_do_end_t {
+   expr_t expr;
+};
+
 union stmtdata_t {
    struct stmtdata_lvar_t lvar;
    struct stmtdata_return_t return_;
@@ -233,6 +305,11 @@ union stmtdata_t {
    struct stmtdata_scope_t scope;
    struct stmtdata_expr_t expr;
    struct stmtdata_if_t if_;
+   struct stmtdata_label_t label;
+   struct stmtdata_goto_t goto_;
+   struct stmtdata_for_t for_;
+   struct stmtdata_while_t while_;
+   struct stmtdata_do_end_t do_end;
 };
 
 const char* input_path;
@@ -250,6 +327,7 @@ decl_t decl_c;
 
 decl_t func_decl_v[func_limit];
 type_t func_type_v[func_limit];
+star_t func_star_v[func_limit];
 lvar_t func_arg_first_v[func_limit];
 lvar_t func_arg_last_v[func_limit];
 lvar_t func_arg_limit_v[func_limit];
@@ -287,6 +365,8 @@ lvar_t scope_lvar_first_v[scope_limit];
 lvar_t scope_lvar_last_v[scope_limit];
 stmt_t scope_stmt_first_v[scope_limit];
 stmt_t scope_stmt_last_v[scope_limit];
+expr_t scope_for_continue_expr_v[scope_limit][call_arg_limit];
+uint8_t scope_for_continue_c[scope_limit];
 scope_t scope_c;
 scope_t scope_now;
 
@@ -396,7 +476,7 @@ void func_sig_undo() {
 
 uint8_t type_size(type_t t) {
    switch (t) {
-      case type_bool: return 1;
+      case type_u8: return 1;
    }
    return 0;
 }
@@ -467,6 +547,7 @@ void func_body_begin(uint32_t row, uint32_t col) {
    scope_lvar_last_v[scope] = func_arg_last_v[f];
    scope_stmt_first_v[scope] = stmt_limit;
    scope_stmt_last_v[scope] = stmt_limit;
+   scope_for_continue_c[scope] = 0;
    func_scope_v[f] = scope;
    scope_now = scope;
 }
@@ -507,6 +588,16 @@ expr_t expr_unary(unarytype_t type, expr_t a, uint32_t row, uint32_t col) {
    return e;
 }
 
+expr_t expr_compare(comparetype_t type, expr_t a, expr_t b, uint32_t row, uint32_t col) {
+   expr_t e = expr_c++;
+   expr_type_v[e] = exprtype_compare;
+   struct exprdata_compare_t* data = &expr_data_v[e].compare;
+   data->type = type;
+   data->a = a;
+   data->b = b;
+   return e;
+}
+
 expr_t expr_math(mathtype_t type, expr_t a, expr_t b, uint32_t row, uint32_t col) {
    expr_t e = expr_c++;
    expr_type_v[e] = exprtype_math;
@@ -517,33 +608,66 @@ expr_t expr_math(mathtype_t type, expr_t a, expr_t b, uint32_t row, uint32_t col
    return e;
 }
 
-void expr_gvar_do(expr_t e, bool assign) {
+gvar_t gvar_get(expr_t e) {
    struct exprdata_gvar_t* data = &expr_data_v[e].gvar;
    id_t id = data->name;
    gvar_t v = gvar_limit;
    for (decl_t d = 0; d < decl_c; d++) {
       if (decl_id_v[d] == id) {
          if (decl_type_v[d] == decltype_gvar) {
-            gvar_t g = decl_idx_v[d];
-            switch (gvar_type_v[g]) {
-               case type_bool: {
-                  if (assign) {
-                     bc_write(mem_set_8);
-                     putmem(&bytecode_ptr, gvar_mem_v[g]);
-                  } else {
-                     bc_write(mem_push_8);
-                     putmem(&bytecode_ptr, gvar_mem_v[g]);
-                  }
-                  break;
-               }
-            }
-            return;
+            return decl_idx_v[d];
          }
          break;
       }
    }
    printf("%s:%u:%u: Variable '%.*s' was not found\n", input_path, expr_row_v[e], expr_col_v[e], id_len_v[id], id_str_v[id]);
    exit(EXIT_FAILURE);
+}
+
+void expr_unaryop(expr_t e, unaryop_t op) {
+   exprtype_t et = expr_type_v[e];
+   switch (et) {
+      case exprtype_lvar: {
+         bc_write(unaryop_lvar_32_postinc + op);
+         *(bytecode_ptr++) = lvar_idx_v[expr_data_v[e].lvar.lvar];
+         break;
+      }
+      case exprtype_gvar: {
+         gvar_t g = gvar_get(e);
+         type_t t = gvar_type_v[g];
+         switch (t) {
+            case type_u8: {
+               bc_write(mem_postinc_8 + op);
+               putmem(&bytecode_ptr, gvar_mem_v[g]);
+               break;
+            }
+         }
+         break;
+      }
+      default:
+         printf("expr_unaryop on an expr type %u is not yet implemented\n", et);
+         exit(EXIT_FAILURE);
+   }
+}
+
+void expr_gvar_do(expr_t e, bool assign) {
+   gvar_t g = gvar_get(e);
+   type_t t = gvar_type_v[g];
+   switch (t) {
+      case type_u8: {
+         if (assign) {
+            bc_write(mem_set_8);
+            putmem(&bytecode_ptr, gvar_mem_v[g]);
+         } else {
+            bc_write(mem_push_8);
+            putmem(&bytecode_ptr, gvar_mem_v[g]);
+         }
+         break;
+      }
+      default:
+         printf("expr_gvar_do on type %u is not yet implemented\n", t);
+         exit(EXIT_FAILURE);
+   }
 }
 
 void expr_write(expr_t e) {
@@ -569,6 +693,7 @@ void expr_write(expr_t e) {
             printf("%s:%u:%u: Function '%.*s' not found\n", input_path, expr_row_v[e], expr_col_v[e], id_len_v[name], id_str_v[name]);
             exit(EXIT_FAILURE);
          }
+         data->func = f;
          uint8_t arg_c = data->arg_c;
          if (func_arg_limit_v[f] != arg_c) {
             printf("%s:%u:%u: Function '%.*s' requires %u arguments\n", input_path, expr_row_v[e], expr_col_v[e], id_len_v[name], id_str_v[name], func_arg_limit_v[f]);
@@ -581,6 +706,11 @@ void expr_write(expr_t e) {
          putnum(&bytecode_ptr, f);
          break;
       }
+      case exprtype_cast: {
+         struct exprdata_cast_t* data = &expr_data_v[e].cast;
+         expr_write(data->expr);
+         break;
+      }
       case exprtype_math: {
          struct exprdata_math_t* data = &expr_data_v[e].math;
          expr_write(data->a);
@@ -590,6 +720,23 @@ void expr_write(expr_t e) {
             case mathtype_sub: bc_write(sub_i32); break;
             case mathtype_mul: bc_write(mul_i32); break;
             case mathtype_div: bc_write(div_i32); break;
+         }
+         break;
+      }
+      case exprtype_compare: {
+         struct exprdata_compare_t* data = &expr_data_v[e].compare;
+         expr_write(data->a);
+         expr_write(data->b);
+         switch (data->type) {
+            case comparetype_lt: bc_write(lt_i32); break;
+            case comparetype_gt: bc_write(gt_i32); break;
+            case comparetype_eq: bc_write(eq_i32); break;
+            case comparetype_lteq: bc_write(lteq_i32); break;
+            case comparetype_gteq: bc_write(gteq_i32); break;
+            case comparetype_noteq: bc_write(noteq_i32); break;
+            default:
+               printf("expr_write on a comparetype %u is not yet implemented\n", data->type);
+               exit(EXIT_FAILURE);
          }
          break;
       }
@@ -609,10 +756,21 @@ void expr_write(expr_t e) {
       }
       case exprtype_unary: {
          struct exprdata_unary_t* data = &expr_data_v[e].unary;
-         expr_write(data->expr);
-         switch (data->type) {
-            case unarytype_expoint: bc_write(not); break;
-            default: printf("unarytype not yet implemented: %u\n", data->type);
+         unarytype_t type = data->type;
+         switch (type) {
+            case unarytype_postinc:
+            case unarytype_preinc:
+            case unarytype_postdec:
+            case unarytype_predec:
+               expr_unaryop(data->expr, type);
+               break;
+            case unarytype_expoint:
+               expr_write(data->expr);
+               bc_write(not);
+               break;
+            default:
+               printf("unarytype not yet implemented: %u\n", data->type);
+               exit(EXIT_FAILURE);
          }
          break;
       }
@@ -625,26 +783,18 @@ void expr_write(expr_t e) {
 expr_t expr_var(id_t id, uint32_t row, uint32_t col) {
    scope_t scope = scope_now;
    lvar_t v = lvar_limit;
-   lvar_t v2 = scope_lvar_first_v[scope];
-   if (v2 != lvar_limit) {
-      while (1) {
+   while (scope != scope_limit) {
+      lvar_t v2 = scope_lvar_first_v[scope];
+      while (v2 != lvar_limit) {
          if (lvar_id_v[v2] == id) {
             v = v2;
-            break;
+            goto done;
          }
-         lvar_t v3 = lvar_next_v[v2];
-         again:
-         if (v3 == lvar_limit) {
-            scope = scope_parent_v[scope];
-            if (scope == scope_limit) {
-               break;
-            }
-            v3 = scope_lvar_first_v[scope];
-            goto again;
-         }
-         v2 = v3;
+         v2 = lvar_next_v[v2];
       }
+      scope = scope_parent_v[scope];
    }
+done:
    expr_t e = expr_c++;
    expr_row_v[e] = row;
    expr_col_v[e] = col;
@@ -710,7 +860,7 @@ stmt_t stmt_new(stmttype_t type) {
    stmt_next_v[stmt] = stmt_limit;
    stmt_row_v[stmt] = row_now;
    stmt_col_v[stmt] = col_now;
-   printf("stmt %u @ %u:%u\n", type, row_now, col_now);
+   // printf("stmt %u @ %u:%u\n", type, row_now, col_now);
    return stmt;
 }
 
@@ -724,6 +874,7 @@ void scope_push(uint32_t row, uint32_t col) {
    scope_lvar_last_v[scope] = lvar_limit;
    scope_stmt_first_v[scope] = stmt_limit;
    scope_stmt_last_v[scope] = stmt_limit;
+   scope_for_continue_c[scope] = 0;
    scope_now = scope;
 }
 
@@ -745,6 +896,58 @@ void stmt_expr(expr_t e) {
    data->expr = e;
 }
 
+void stmt_do_begin() {
+   stmt_new(stmttype_do);
+}
+
+void stmt_do_end(expr_t e) {
+   stmt_t stmt = stmt_new(stmttype_do_end);
+   stmt_data_v[stmt].do_end.expr = e;
+}
+
+void stmt_while(expr_t e) {
+   stmt_t stmt = stmt_new(stmttype_while);
+   struct stmtdata_while_t* data = &stmt_data_v[stmt].while_;
+   data->expr = e;
+   data->scope = scope_c; // while_begin pushes this scope immediately after
+}
+
+void stmt_label(id_t id) {
+   stmt_t stmt = stmt_new(stmttype_label);
+   stmt_data_v[stmt].label.id = id;
+}
+
+void stmt_goto(id_t id) {
+   stmt_t stmt = stmt_new(stmttype_goto);
+   stmt_data_v[stmt].goto_.id = id;
+}
+
+void stmt_for(expr_t e) {
+   stmt_t stmt = stmt_new(stmttype_for);
+   struct stmtdata_for_t* data = &stmt_data_v[stmt].for_;
+   data->expr = e;
+   data->scope = scope_now;
+}
+
+void stmt_for_on_continue(expr_t e) {
+   scope_t scope = scope_now;
+   uint8_t c = scope_for_continue_c[scope];
+   if (c >= call_arg_limit) {
+      printf("%s:%u:%u: for loop update supports up to %u expressions\n", input_path, row_now, col_now, call_arg_limit);
+      exit(EXIT_FAILURE);
+   }
+   scope_for_continue_expr_v[scope][c] = e;
+   scope_for_continue_c[scope] = c + 1;
+}
+
+void stmt_continue() {
+   stmt_new(stmttype_continue);
+}
+
+void stmt_break() {
+   stmt_new(stmttype_break);
+}
+
 void stmt_if_begin(expr_t e, bool is_elif) {
    stmt_t stmt = stmt_new(stmttype_if);
    struct stmtdata_if_t* data = &stmt_data_v[stmt].if_;
@@ -752,34 +955,33 @@ void stmt_if_begin(expr_t e, bool is_elif) {
    data->is_elif = is_elif;
 }
 
+void stmt_else_begin() {
+   stmt_new(stmttype_else);
+}
+
 void stmt_lvar(type_t t, id_t id, uint32_t row, uint32_t col, expr_t e) {
    lvar_t v = lvar_c++;
    scope_t scope = scope_now;
-   lvar_t v2 = scope_lvar_first_v[scope];
-   lvaridx_t idx = 0;
-   if (v2 == lvar_limit) {
-      scope_lvar_first_v[scope] = v;
-   } else {
-      while (1) {
+   while (scope != scope_limit) {
+      lvar_t v2 = scope_lvar_first_v[scope];
+      while (v2 != lvar_limit) {
          if (lvar_id_v[v2] == id) {
             printf("%s:%u:%u: Cannot declare %.*s because it was already declared at %u:%u\n", input_path, row, col, id_len_v[id], id_str_v[id], lvar_row_v[v2], lvar_col_v[v2]);
             exit(EXIT_FAILURE);
             return;
          }
-         lvar_t v3 = lvar_next_v[v2];
-         again:
-         if (v3 == lvar_limit) {
-            scope = scope_parent_v[scope];
-            if (scope == scope_limit) {
-               lvar_next_v[v2] = v;
-               idx = lvar_idx_v[v2] + 1;
-               break;
-            }
-            v3 = scope_lvar_first_v[scope];
-            goto again;
-         }
-         v2 = v3;
+         v2 = lvar_next_v[v2];
       }
+      scope = scope_parent_v[scope];
+   }
+   lvaridx_t idx = func_lvar_limit_v[func_now];
+   if (scope_lvar_first_v[scope_now] == lvar_limit) {
+      scope_lvar_first_v[scope_now] = v;
+      scope_lvar_last_v[scope_now] = v;
+   } else {
+      lvar_t last = scope_lvar_last_v[scope_now];
+      lvar_next_v[last] = v;
+      scope_lvar_last_v[scope_now] = v;
    }
    lvar_id_v[v] = id;
    lvar_idx_v[v] = idx;
@@ -789,13 +991,11 @@ void stmt_lvar(type_t t, id_t id, uint32_t row, uint32_t col, expr_t e) {
    lvar_next_v[v] = lvar_limit;
 
    stmt_t stmt = stmt_new(stmttype_lvar);
-   stmt_data_v[stmt].lvar.lvar = v;
-   stmt_data_v[stmt].lvar.expr = e;
+   struct stmtdata_lvar_t* data = &stmt_data_v[stmt].lvar;
+   data->lvar = v;
+   data->expr = e;
 
-   idx++;
-   if (func_lvar_limit_v[func_now] < idx) {
-      func_lvar_limit_v[func_now] = idx;
-   }
+   func_lvar_limit_v[func_now] = idx + 1;
 }
 
 void stmt_return_expr(expr_t e) {
@@ -811,8 +1011,160 @@ void stmt_return() {
 void scope_write(scope_t scope);
 
 void jump_patch(uint8_t* ptr, uint8_t* target) {
-   uint32_t offset = target - ptr;
+   int32_t offset = target - ptr;
    memcpy(ptr, &offset, sizeof(offset));
+}
+
+struct jump_patch_list_t {
+   uint8_t** ptr_v;
+   uint32_t ptr_c;
+   uint32_t ptr_cap;
+};
+
+struct loop_write_ctx_t {
+   struct jump_patch_list_t break_jumps;
+   struct jump_patch_list_t continue_jumps;
+};
+
+struct loop_write_ctx_t loop_write_ctx_v[nest_limit];
+nest_t loop_write_ctx_c;
+
+struct jump_patch_list_t goto_jump_v[id_limit];
+uint8_t goto_touched_bits[(id_limit + 7) >> 3];
+id_t goto_touched_v[id_limit];
+uint32_t goto_touched_c;
+uint8_t* label_target_v[id_limit];
+bool label_defined_v[id_limit];
+uint32_t label_row_v[id_limit];
+uint32_t label_col_v[id_limit];
+uint32_t goto_row_v[id_limit];
+uint32_t goto_col_v[id_limit];
+
+void jump_patch_list_add(struct jump_patch_list_t* list, uint8_t* ptr) {
+   if (list->ptr_c == list->ptr_cap) {
+      uint32_t cap = list->ptr_cap == 0 ? 8 : list->ptr_cap * 2;
+      uint8_t** ptr_v = realloc(list->ptr_v, cap * sizeof(uint8_t*));
+      if (ptr_v == NULL) {
+         printf("Out of memory while compiling loop jumps\n");
+         exit(EXIT_FAILURE);
+      }
+      list->ptr_v = ptr_v;
+      list->ptr_cap = cap;
+   }
+   list->ptr_v[list->ptr_c++] = ptr;
+}
+
+void jump_patch_list_apply(struct jump_patch_list_t* list, uint8_t* target) {
+   for (uint32_t i = 0; i < list->ptr_c; i++) {
+      jump_patch(list->ptr_v[i], target);
+   }
+}
+
+void jump_patch_list_free(struct jump_patch_list_t* list) {
+   free(list->ptr_v);
+   list->ptr_v = NULL;
+   list->ptr_c = 0;
+   list->ptr_cap = 0;
+}
+
+void goto_ctx_begin() {
+   memset(goto_touched_bits, 0, sizeof(goto_touched_bits));
+   goto_touched_c = 0;
+}
+
+void goto_ctx_touch(id_t id) {
+   if (BIT8_NOT(goto_touched_bits, id)) {
+      BIT8_SET(goto_touched_bits, id);
+      goto_touched_v[goto_touched_c++] = id;
+      label_target_v[id] = NULL;
+      label_defined_v[id] = false;
+      label_row_v[id] = 0;
+      label_col_v[id] = 0;
+      goto_row_v[id] = 0;
+      goto_col_v[id] = 0;
+      goto_jump_v[id].ptr_v = NULL;
+      goto_jump_v[id].ptr_c = 0;
+      goto_jump_v[id].ptr_cap = 0;
+   }
+}
+
+void goto_ctx_label_define(id_t id, stmt_t stmt) {
+   goto_ctx_touch(id);
+   if (label_defined_v[id]) {
+      printf("%s:%u:%u: Duplicate label '%.*s' first declared at %u:%u\n", input_path, stmt_row_v[stmt], stmt_col_v[stmt], id_len_v[id], id_str_v[id], label_row_v[id], label_col_v[id]);
+      exit(EXIT_FAILURE);
+   }
+   label_defined_v[id] = true;
+   label_target_v[id] = bytecode_ptr;
+   label_row_v[id] = stmt_row_v[stmt];
+   label_col_v[id] = stmt_col_v[stmt];
+   jump_patch_list_apply(&goto_jump_v[id], label_target_v[id]);
+}
+
+void goto_ctx_goto_write(id_t id, stmt_t stmt, uint8_t* patch_ptr) {
+   goto_ctx_touch(id);
+   if (label_defined_v[id]) {
+      jump_patch(patch_ptr, label_target_v[id]);
+      return;
+   }
+   if (goto_row_v[id] == 0) {
+      goto_row_v[id] = stmt_row_v[stmt];
+      goto_col_v[id] = stmt_col_v[stmt];
+   }
+   jump_patch_list_add(&goto_jump_v[id], patch_ptr);
+}
+
+void goto_ctx_end() {
+   for (uint32_t i = 0; i < goto_touched_c; i++) {
+      id_t id = goto_touched_v[i];
+      if (!label_defined_v[id] && (goto_jump_v[id].ptr_c != 0)) {
+         printf("%s:%u:%u: goto target label '%.*s' was not found\n", input_path, goto_row_v[id], goto_col_v[id], id_len_v[id], id_str_v[id]);
+         exit(EXIT_FAILURE);
+      }
+      jump_patch_list_free(&goto_jump_v[id]);
+   }
+}
+
+void loop_write_push() {
+   if (loop_write_ctx_c >= nest_limit) {
+      printf("Too many nested loops (limit is %u)\n", nest_limit);
+      exit(EXIT_FAILURE);
+   }
+   struct loop_write_ctx_t* loop = &loop_write_ctx_v[loop_write_ctx_c++];
+   loop->break_jumps.ptr_v = NULL;
+   loop->break_jumps.ptr_c = 0;
+   loop->break_jumps.ptr_cap = 0;
+   loop->continue_jumps.ptr_v = NULL;
+   loop->continue_jumps.ptr_c = 0;
+   loop->continue_jumps.ptr_cap = 0;
+}
+
+struct loop_write_ctx_t* loop_write_top(stmt_t stmt, const char* keyword) {
+   if (loop_write_ctx_c == 0) {
+      printf("%s:%u:%u: Cannot use %s outside a loop\n", input_path, stmt_row_v[stmt], stmt_col_v[stmt], keyword);
+      exit(EXIT_FAILURE);
+   }
+   return &loop_write_ctx_v[loop_write_ctx_c - 1];
+}
+
+void loop_write_pop() {
+   struct loop_write_ctx_t* loop = &loop_write_ctx_v[--loop_write_ctx_c];
+   jump_patch_list_free(&loop->break_jumps);
+   jump_patch_list_free(&loop->continue_jumps);
+}
+
+void expr_write_stmt(expr_t e, const char* context) {
+   expr_write(e);
+   if (expr_type_v[e] == exprtype_call) {
+      struct exprdata_call_t* data = &expr_data_v[e].call;
+      func_t f = data->func;
+      if ((func_type_v[f] != type_void) || (func_star_v[f] != 0)) {
+         printf("%s:%u:%u: %s call expression must return void\n", input_path, expr_row_v[e], expr_col_v[e], context);
+         exit(EXIT_FAILURE);
+      }
+   } else {
+      bc_write(pop_32);
+   }
 }
 
 stmt_t stmt_write(stmt_t stmt) {
@@ -854,8 +1206,144 @@ stmt_t stmt_write(stmt_t stmt) {
          return stmt_next_v[stmt];
       }
       case stmttype_expr: {
-         expr_write(stmt_data_v[stmt].expr.expr);
+         expr_t e = stmt_data_v[stmt].expr.expr;
+         expr_write_stmt(e, "statement");
          return stmt_next_v[stmt];
+      }
+      case stmttype_label: {
+         goto_ctx_label_define(stmt_data_v[stmt].label.id, stmt);
+         return stmt_next_v[stmt];
+      }
+      case stmttype_goto: {
+         bc_write(jump);
+         uint8_t* goto_jump = bytecode_ptr;
+         bytecode_ptr += 4;
+         goto_ctx_goto_write(stmt_data_v[stmt].goto_.id, stmt, goto_jump);
+         return stmt_next_v[stmt];
+      }
+      case stmttype_for: {
+         struct stmtdata_for_t* data = &stmt_data_v[stmt].for_;
+         stmt_t body_stmt = stmt_next_v[stmt];
+         if ((body_stmt == stmt_limit) || (stmt_type_v[body_stmt] != stmttype_scope)) {
+            printf("%s:%u:%u: for statement body scope was not found\n", input_path, stmt_row_v[stmt], stmt_col_v[stmt]);
+            exit(EXIT_FAILURE);
+         }
+
+         uint8_t* loop_begin = bytecode_ptr;
+         uint8_t* cond_false_jump = NULL;
+         if (data->expr != expr_limit) {
+            expr_write(data->expr);
+            bc_write(if);
+            cond_false_jump = bytecode_ptr;
+            bytecode_ptr += 4;
+         }
+
+         loop_write_push();
+         struct loop_write_ctx_t* loop = &loop_write_ctx_v[loop_write_ctx_c - 1];
+
+         scope_write(stmt_data_v[body_stmt].scope.scope);
+
+         uint8_t* continue_target = bytecode_ptr;
+         jump_patch_list_apply(&loop->continue_jumps, continue_target);
+
+         uint8_t continue_expr_c = scope_for_continue_c[data->scope];
+         for (uint8_t i = 0; i < continue_expr_c; i++) {
+            expr_write_stmt(scope_for_continue_expr_v[data->scope][i], "for-loop update");
+         }
+
+         bc_write(jump);
+         uint8_t* loop_back_jump = bytecode_ptr;
+         bytecode_ptr += 4;
+         jump_patch(loop_back_jump, loop_begin);
+
+         uint8_t* loop_end = bytecode_ptr;
+         if (cond_false_jump != NULL) {
+            jump_patch(cond_false_jump, loop_end);
+         }
+         jump_patch_list_apply(&loop->break_jumps, loop_end);
+         loop_write_pop();
+         return stmt_next_v[body_stmt];
+      }
+      case stmttype_while: {
+         struct stmtdata_while_t* data = &stmt_data_v[stmt].while_;
+         stmt_t loop_scope_stmt = stmt_next_v[stmt];
+         if ((loop_scope_stmt == stmt_limit) || (stmt_type_v[loop_scope_stmt] != stmttype_scope)) {
+            printf("%s:%u:%u: while statement scope was not found\n", input_path, stmt_row_v[stmt], stmt_col_v[stmt]);
+            exit(EXIT_FAILURE);
+         }
+         scope_t loop_scope = stmt_data_v[loop_scope_stmt].scope.scope;
+         if (data->scope != loop_scope) {
+            printf("%s:%u:%u: internal error while resolving while-loop scope\n", input_path, stmt_row_v[stmt], stmt_col_v[stmt]);
+            exit(EXIT_FAILURE);
+         }
+         stmt_t body_stmt = scope_stmt_first_v[loop_scope];
+         if ((body_stmt == stmt_limit) || (stmt_type_v[body_stmt] != stmttype_scope)) {
+            printf("%s:%u:%u: while statement body scope was not found\n", input_path, stmt_row_v[stmt], stmt_col_v[stmt]);
+            exit(EXIT_FAILURE);
+         }
+
+         uint8_t* loop_begin = bytecode_ptr;
+         expr_write(data->expr);
+         bc_write(if);
+         uint8_t* cond_false_jump = bytecode_ptr;
+         bytecode_ptr += 4;
+
+         loop_write_push();
+         struct loop_write_ctx_t* loop = &loop_write_ctx_v[loop_write_ctx_c - 1];
+
+         scope_write(stmt_data_v[body_stmt].scope.scope);
+
+         uint8_t* continue_target = bytecode_ptr;
+         jump_patch_list_apply(&loop->continue_jumps, continue_target);
+
+         bc_write(jump);
+         uint8_t* loop_back_jump = bytecode_ptr;
+         bytecode_ptr += 4;
+         jump_patch(loop_back_jump, loop_begin);
+
+         uint8_t* loop_end = bytecode_ptr;
+         jump_patch(cond_false_jump, loop_end);
+         jump_patch_list_apply(&loop->break_jumps, loop_end);
+         loop_write_pop();
+         return stmt_next_v[loop_scope_stmt];
+      }
+      case stmttype_do: {
+         stmt_t body_stmt = stmt_next_v[stmt];
+         if ((body_stmt == stmt_limit) || (stmt_type_v[body_stmt] != stmttype_scope)) {
+            printf("%s:%u:%u: do statement body scope was not found\n", input_path, stmt_row_v[stmt], stmt_col_v[stmt]);
+            exit(EXIT_FAILURE);
+         }
+         stmt_t end_stmt = stmt_next_v[body_stmt];
+         if ((end_stmt == stmt_limit) || (stmt_type_v[end_stmt] != stmttype_do_end)) {
+            printf("%s:%u:%u: do statement end condition was not found\n", input_path, stmt_row_v[stmt], stmt_col_v[stmt]);
+            exit(EXIT_FAILURE);
+         }
+
+         uint8_t* loop_begin = bytecode_ptr;
+
+         loop_write_push();
+         struct loop_write_ctx_t* loop = &loop_write_ctx_v[loop_write_ctx_c - 1];
+
+         scope_write(stmt_data_v[body_stmt].scope.scope);
+
+         uint8_t* continue_target = bytecode_ptr;
+         jump_patch_list_apply(&loop->continue_jumps, continue_target);
+
+         expr_write(stmt_data_v[end_stmt].do_end.expr);
+         bc_write(if);
+         uint8_t* cond_false_jump = bytecode_ptr;
+         bytecode_ptr += 4;
+
+         bc_write(jump);
+         uint8_t* loop_back_jump = bytecode_ptr;
+         bytecode_ptr += 4;
+         jump_patch(loop_back_jump, loop_begin);
+
+         uint8_t* loop_end = bytecode_ptr;
+         jump_patch(cond_false_jump, loop_end);
+         jump_patch_list_apply(&loop->break_jumps, loop_end);
+         loop_write_pop();
+         return stmt_next_v[end_stmt];
       }
       case stmttype_if: {
          stmt_t cur_if = stmt;
@@ -867,6 +1355,7 @@ stmt_t stmt_write(stmt_t stmt) {
 
          uint32_t cond_c = 1;
          bool has_else = false;
+         stmt_t else_stmt = stmt_limit;
          stmt_t next = stmt_next_v[cur_scope];
          while (next != stmt_limit) {
             if ((stmt_type_v[next] == stmttype_if) && stmt_data_v[next].if_.is_elif) {
@@ -879,9 +1368,15 @@ stmt_t stmt_write(stmt_t stmt) {
                next = stmt_next_v[elif_scope];
                continue;
             }
-            if (stmt_type_v[next] == stmttype_scope) {
+            if (stmt_type_v[next] == stmttype_else) {
+               stmt_t maybe_else_scope = stmt_next_v[next];
+               if ((maybe_else_scope == stmt_limit) || (stmt_type_v[maybe_else_scope] != stmttype_scope)) {
+                  printf("%s:%u:%u: else statement body scope was not found\n", input_path, stmt_row_v[next], stmt_col_v[next]);
+                  exit(EXIT_FAILURE);
+               }
                has_else = true;
-               next = stmt_next_v[next];
+               else_stmt = next;
+               next = stmt_next_v[maybe_else_scope];
             }
             break;
          }
@@ -916,8 +1411,13 @@ stmt_t stmt_write(stmt_t stmt) {
          }
 
          if (has_else) {
-            scope_write(stmt_data_v[cur_if].scope.scope);
-            cur_if = stmt_next_v[cur_if];
+            if (cur_if != else_stmt) {
+               printf("%s:%u:%u: internal error while compiling else statement\n", input_path, stmt_row_v[cur_if], stmt_col_v[cur_if]);
+               exit(EXIT_FAILURE);
+            }
+            stmt_t else_scope = stmt_next_v[cur_if];
+            scope_write(stmt_data_v[else_scope].scope.scope);
+            cur_if = stmt_next_v[else_scope];
          }
 
          for (uint32_t i = 0; i < end_jump_c; i++) {
@@ -928,6 +1428,28 @@ stmt_t stmt_write(stmt_t stmt) {
       }
       case stmttype_scope: {
          scope_write(stmt_data_v[stmt].scope.scope);
+         return stmt_next_v[stmt];
+      }
+      case stmttype_else: {
+         printf("%s:%u:%u: internal error, unexpected else statement marker\n", input_path, stmt_row_v[stmt], stmt_col_v[stmt]);
+         exit(EXIT_FAILURE);
+      }
+      case stmttype_do_end: {
+         printf("%s:%u:%u: internal error, unexpected do-end statement marker\n", input_path, stmt_row_v[stmt], stmt_col_v[stmt]);
+         exit(EXIT_FAILURE);
+      }
+      case stmttype_break: {
+         struct loop_write_ctx_t* loop = loop_write_top(stmt, "break");
+         bc_write(jump);
+         jump_patch_list_add(&loop->break_jumps, bytecode_ptr);
+         bytecode_ptr += 4;
+         return stmt_next_v[stmt];
+      }
+      case stmttype_continue: {
+         struct loop_write_ctx_t* loop = loop_write_top(stmt, "continue");
+         bc_write(jump);
+         jump_patch_list_add(&loop->continue_jumps, bytecode_ptr);
+         bytecode_ptr += 4;
          return stmt_next_v[stmt];
       }
       default:
@@ -1074,10 +1596,12 @@ int main(int argc, char** argv) {
       func_bytecode_v[f] = bytecode_ptr - bytecode_v;
       *(bytecode_ptr++) = func_arg_limit_v[f]; // write the number of arguments
       *(bytecode_ptr++) = func_lvar_limit_v[f] - func_arg_limit_v[f]; // write the number of local variables (including the arguments)
+      goto_ctx_begin();
       stmt_t stmt = scope_stmt_first_v[scope];
       while (stmt != stmt_limit) {
          stmt = stmt_write(stmt);
       }
+      goto_ctx_end();
    }
 
    static struct vm_locals vml;

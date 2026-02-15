@@ -11,5 +11,5 @@ if (true) {
    unlink(cp1_path);
    #endif
    rename(tmp_path, cp1_path);
-   printf("%s -> %s\n", tmp_path, cp1_path);
+   // printf("%s -> %s\n", tmp_path, cp1_path);
 }

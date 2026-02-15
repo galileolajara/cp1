@@ -20,7 +20,6 @@
 #define _Tlibcp1_Cstdout_buf_size (4096)
 typedef int _Tlibc_Texit;
 typedef int _Tposix_Tfd;
-typedef int _Tposix_Topen_flags;
 struct _Tlibcp1_Tfmt;
 struct _Tlibcp1_Tfmt {
 char* _Mptr;
@@ -59,7 +58,6 @@ static inline void _Tlibcp1_Tfmt_Ff_reserve_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt
 static inline void _Tlibcp1_Tfmt_Tf_cstr_Ff_2(struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
 static inline void _Tlibcp1_Tfmt_Tf_char_Ff_2(struct _Tlibcp1_Tfmt_Tf_char* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
 static inline void _Tlibcp1_Tfmt_Ff_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
-void _Fget_compiler_3(char* _Lbin_0, char* _Lcompiler_1, bool* _Ltcc_2);
 static inline struct _Tlibcp1_Tsprintf* _Tlibcp1_Fsprintf_2(char* _Lbuf_0, struct _Tlibcp1_Tsprintf* _Lsf_1);
 static inline void _Tlibcp1_Tsprintf_Ff_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
 static inline void _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(const char* _Lc_0, int32_t _Llen_1, struct _Tlibcp1_Tfmt* _Lfmt_2, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_3);
@@ -70,40 +68,25 @@ static inline void _Tlibcp1_Tsprintf_Fadd_2(struct _Tlibcp1_Tsprintf* _Lsf_0, st
 static inline void _Tlibcp1_Tfmt_Ff_reserve_sprintf_add_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 static inline void _Tlibcp1_Tfmt_Ff_sprintf_add_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 #define _Tlibc_Frealloc_arr_2(val, count) val = realloc(val, sizeof(val[0]) * (count))
-#ifdef _WIN32
-#define _Tposix_Fopen_2(p, f) open(p, f | O_BINARY)
-#else
-#define _Tposix_Fopen_2(p, f) open(p, f)
-#endif
 int main(int _Larg_c_0, char** _Larg_v_1) {
 char* _Lbin_7;
 char _Lc_path_8[15] = {0};
 _Tposix_Tfd _Lc_fd_9;
-char _Lexe_path_14[21] = {0};
-_Tposix_Tfd _Lexe_fd_15;
-char _Lcompiler_20[8] = {0};
-bool _Ltcc_21 = {0};
-char _Lcommand_23[1024] = {0};
-struct _Tlibcp1_Tsprintf _Lf_24;
-struct _Tlibcp1_Tfmt_Tf_char _L_25 = {0};
+char _Lcommand_14[1024] = {0};
+struct _Tlibcp1_Tsprintf _Lf_15;
+struct _Tlibcp1_Tfmt_Tf_char _L_16 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_17 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_18 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_19 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_20 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_21 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_22 = {0};
+struct _Tlibcp1_Tfmt _L_24 = {0};
+int _Lc_ret_25;
 struct _Tlibcp1_Tfmt_Tf_cstr _L_26 = {0};
 struct _Tlibcp1_Tfmt_Tf_cstr _L_27 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_28 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_29 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_30 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_31 = {0};
-struct _Tlibcp1_Tfmt _L_33 = {0};
-int _Lc_ret_34;
-struct _Tlibcp1_Tfmt_Tf_cstr _L_44 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_45 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_46 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_47 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_48 = {0};
-struct _Tlibcp1_Tfmt _L_49 = {0};
-int _Lcompile_ret_50;
-struct _Tlibcp1_Tfmt_Tf_cstr _L_52 = {0};
-struct _Tlibcp1_Tfmt _L_53 = {0};
-int _Lexe_ret_59;
+struct _Tlibcp1_Tfmt _L_28 = {0};
+int _Lexe_ret_34;
 #ifdef _WIN32
 if(true) {
 char* _Larg_2;
@@ -163,182 +146,63 @@ _Tlibcp1_Tfmt_Ff_stdout_1(&_L_13);
 exit(_Tlibc_Texit_Cfailure);
 }
 close(_Lc_fd_9);
-unlink(_Lc_path_8);
-strcpy(_Lexe_path_14, "./cp1-exe-XXXXXX");
-_Lexe_fd_15 = ((_Tposix_Tfd)(mkstemp(_Lexe_path_14)));
-if(_Lexe_fd_15 == _Tposix_Tfd_Cnil) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_16 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_17 = {0};
-struct _Tlibcp1_Tfmt_Tf_char _L_18 = {0};
-struct _Tlibcp1_Tfmt _L_19 = {0};
-_Fprint_commands_1(_Lbin_7);
-_Tlibcp1_Fstdout_1(&_L_19);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_19, "Error, cannot open file for reading: ", 37u, &_L_16);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lexe_path_14, &_L_19, &_L_17);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\n', &_L_19, &_L_18);
-_Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_19);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_16, &_L_19);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_17, &_L_19);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_18, &_L_19);
-_Tlibcp1_Tfmt_Ff_stdout_1(&_L_19);
+_Tlibcp1_Fsprintf_2(_Lcommand_14, &_Lf_15);
+_Tlibcp1_Tsprintf_Ff_2(&_Lf_15, &_L_24);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\"', &_L_24, &_L_16);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lbin_7, strlen(_Lbin_7) - 4, &_L_24, &_L_17);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_24, "-compile\" -c \"", 14u, &_L_18);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lc_path_8, &_L_24, &_L_19);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_24, "\" \"", 3u, &_L_20);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Larg_v_1[1], &_L_24, &_L_21);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_24, "\"", 1u, &_L_22);
+_Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(&_L_24);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_16, &_L_24);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_17, &_L_24);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_18, &_L_24);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_19, &_L_24);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_20, &_L_24);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_21, &_L_24);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_22, &_L_24);
+_Tlibcp1_Tfmt_Ff_sprintf_f_1(&_L_24);
+_Lc_ret_25 = ((int)(system2(_Lcommand_14)));
+if(_Lc_ret_25 != 0) {
 exit(_Tlibc_Texit_Cfailure);
 }
-close(_Lexe_fd_15);
-unlink(_Lexe_path_14);
-_Lc_path_8[12] = '.';
-_Lc_path_8[13] = 'c';
-_Lc_path_8[14] = '\0';
-_Fget_compiler_3(_Lbin_7, _Lcompiler_20, &_Ltcc_21);
-#ifdef _WIN32
-_Lexe_path_14[16] = '.';
-_Lexe_path_14[17] = 'e';
-_Lexe_path_14[18] = 'x';
-_Lexe_path_14[19] = 'e';
-_Lexe_path_14[20] = '\0';
-if(_Lbin_7[0] != '/') {
-int32_t _Li_22;
-_Li_22 = ((int32_t)(0));
-while(_Lbin_7[_Li_22] != '\0') {
-if(_Lbin_7[_Li_22] == '/') {
-_Lbin_7[_Li_22] = '\\';
-}
-continue_2:;
-_Li_22++;
-}
-break_2:;
-}
-#endif
-_Tlibcp1_Fsprintf_2(_Lcommand_23, &_Lf_24);
-_Tlibcp1_Tsprintf_Ff_2(&_Lf_24, &_L_33);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\"', &_L_33, &_L_25);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lbin_7, strlen(_Lbin_7) - 4, &_L_33, &_L_26);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_33, "-compile\" -c \"", 14u, &_L_27);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lc_path_8, &_L_33, &_L_28);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_33, "\" \"", 3u, &_L_29);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Larg_v_1[1], &_L_33, &_L_30);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_33, "\"", 1u, &_L_31);
-_Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(&_L_33);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_25, &_L_33);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_26, &_L_33);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_27, &_L_33);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_28, &_L_33);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_29, &_L_33);
+_Tlibcp1_Tsprintf_Fadd_2(_Tlibcp1_Fsprintf_2(_Lcommand_14, &_Lf_15), &_L_28);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_28, "cp1-c ", 6u, &_L_26);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lc_path_8, &_L_28, &_L_27);
+_Tlibcp1_Tfmt_Ff_reserve_sprintf_add_1(&_L_28);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_26, &_L_28);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_27, &_L_28);
+_Tlibcp1_Tfmt_Ff_sprintf_add_1(&_L_28);
+int32_t _Li_29;
+_Li_29 = ((int32_t)(2));
+for(int i = _Larg_c_0 - 2; i > 0; ) {
+i --;
+struct _Tlibcp1_Tfmt_Tf_cstr _L_30 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_31 = {0};
+struct _Tlibcp1_Tfmt_Tf_char _L_32 = {0};
+struct _Tlibcp1_Tfmt _L_33 = {0};
+_Tlibcp1_Tsprintf_Fadd_2(&_Lf_15, &_L_33);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_33, " \"", 2u, &_L_30);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Larg_v_1[_Li_29], &_L_33, &_L_31);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\"', &_L_33, &_L_32);
+_Tlibcp1_Tfmt_Ff_reserve_sprintf_add_1(&_L_33);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_30, &_L_33);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_31, &_L_33);
-_Tlibcp1_Tfmt_Ff_sprintf_f_1(&_L_33);
-_Lc_ret_34 = ((int)(system2(_Lcommand_23)));
-if(_Lc_ret_34 != 0) {
-unlink(_Lc_path_8);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_32, &_L_33);
+_Tlibcp1_Tfmt_Ff_sprintf_add_1(&_L_33);
+continue_2:;
+_Li_29++;
+}
+break_2:;
+_Lcommand_14[_Lf_15._Mlen] = 0;
+_Lexe_ret_34 = ((int)(system2(_Lcommand_14)));
+if(_Lexe_ret_34 != 0) {
 exit(_Tlibc_Texit_Cfailure);
 }
-if(_Ltcc_21) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_35 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_36 = {0};
-struct _Tlibcp1_Tfmt _L_37 = {0};
-int _Lexe_ret_43;
-_Tlibcp1_Tsprintf_Fadd_2(_Tlibcp1_Fsprintf_2(_Lcommand_23, &_Lf_24), &_L_37);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_37, "tcc -run ", 9u, &_L_35);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lc_path_8, &_L_37, &_L_36);
-_Tlibcp1_Tfmt_Ff_reserve_sprintf_add_1(&_L_37);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_35, &_L_37);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_36, &_L_37);
-_Tlibcp1_Tfmt_Ff_sprintf_add_1(&_L_37);
-int32_t _Li_38;
-_Li_38 = ((int32_t)(2));
-for(int i = _Larg_c_0 - 2; i > 0; ) {
-i --;
-struct _Tlibcp1_Tfmt_Tf_cstr _L_39 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_40 = {0};
-struct _Tlibcp1_Tfmt_Tf_char _L_41 = {0};
-struct _Tlibcp1_Tfmt _L_42 = {0};
-_Tlibcp1_Tsprintf_Fadd_2(&_Lf_24, &_L_42);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_42, " \"", 2u, &_L_39);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Larg_v_1[_Li_38], &_L_42, &_L_40);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\"', &_L_42, &_L_41);
-_Tlibcp1_Tfmt_Ff_reserve_sprintf_add_1(&_L_42);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_39, &_L_42);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_40, &_L_42);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_41, &_L_42);
-_Tlibcp1_Tfmt_Ff_sprintf_add_1(&_L_42);
-continue_3:;
-_Li_38++;
-}
-break_3:;
-_Lcommand_23[_Lf_24._Mlen] = 0;
-_Lexe_ret_43 = ((int)(system2(_Lcommand_23)));
-unlink(_Lc_path_8);
-if(_Lexe_ret_43 != 0) {
-exit(_Tlibc_Texit_Cfailure);
-}
-int32_t ret_207_7 = 0;
-return ret_207_7;
-}
-_Tlibcp1_Tsprintf_Ff_2(&_Lf_24, &_L_49);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lcompiler_20, &_L_49, &_L_44);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_49, " -o ", 4u, &_L_45);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lexe_path_14, &_L_49, &_L_46);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_49, " ", 1u, &_L_47);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lc_path_8, &_L_49, &_L_48);
-_Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(&_L_49);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_44, &_L_49);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_45, &_L_49);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_46, &_L_49);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_47, &_L_49);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_48, &_L_49);
-_Tlibcp1_Tfmt_Ff_sprintf_f_1(&_L_49);
-_Lcompile_ret_50 = ((int)(system2(_Lcommand_23)));
-unlink(_Lc_path_8);
-if(_Lcompile_ret_50 != 0) {
-exit(_Tlibc_Texit_Cfailure);
-}
-#ifdef _WIN32
-int32_t _Li_51;
-_Li_51 = ((int32_t)(0));
-while(1) {
-if(_Lexe_path_14[_Li_51] == '\0') {
-goto break_4;
-} else if(_Lexe_path_14[_Li_51] == '/') {
-_Lexe_path_14[_Li_51] = '\\';
-}
-continue_4:;
-_Li_51++;
-}
-break_4:;
-#endif
-_Tlibcp1_Tsprintf_Fadd_2(_Tlibcp1_Fsprintf_2(_Lcommand_23, &_Lf_24), &_L_53);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lexe_path_14, &_L_53, &_L_52);
-_Tlibcp1_Tfmt_Ff_reserve_sprintf_add_1(&_L_53);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_52, &_L_53);
-_Tlibcp1_Tfmt_Ff_sprintf_add_1(&_L_53);
-int32_t _Li_54;
-_Li_54 = ((int32_t)(2));
-for(int i = _Larg_c_0 - 2; i > 0; ) {
-i --;
-struct _Tlibcp1_Tfmt_Tf_cstr _L_55 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_56 = {0};
-struct _Tlibcp1_Tfmt_Tf_char _L_57 = {0};
-struct _Tlibcp1_Tfmt _L_58 = {0};
-_Tlibcp1_Tsprintf_Fadd_2(&_Lf_24, &_L_58);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_58, " \"", 2u, &_L_55);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Larg_v_1[_Li_54], &_L_58, &_L_56);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\"', &_L_58, &_L_57);
-_Tlibcp1_Tfmt_Ff_reserve_sprintf_add_1(&_L_58);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_55, &_L_58);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_56, &_L_58);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_57, &_L_58);
-_Tlibcp1_Tfmt_Ff_sprintf_add_1(&_L_58);
-continue_5:;
-_Li_54++;
-}
-break_5:;
-_Lcommand_23[_Lf_24._Mlen] = 0;
-_Lexe_ret_59 = ((int)(system2(_Lcommand_23)));
-unlink(_Lexe_path_14);
-if(_Lexe_ret_59 != 0) {
-exit(_Tlibc_Texit_Cfailure);
-}
-int32_t ret_236_4 = 0;
-return ret_236_4;
+int32_t ret_62_4 = 0;
+return ret_62_4;
 }
 void _Tcp1_Foutput_reserve_1(uint32_t _Llen_0) {
 uint32_t _Lspace_1;
@@ -522,142 +386,6 @@ LIBCP1_ON_STDOUT(_Lfmt_0->_Mptr, _Lfmt_0->_Mlen);
 write(((_Tposix_Tfd)(1)), (*_Lfmt_0)._Mptr, (*_Lfmt_0)._Mlen);
 #endif
 _Tlibcp1_Gstdout_buf_len = 0;
-}
-void _Fget_compiler_3(char* _Lbin_0, char* _Lcompiler_1, bool* _Ltcc_2) {
-char* _Lpath_3;
-char* _Lfound_5 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_27 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_28 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_29 = {0};
-struct _Tlibcp1_Tfmt _L_30 = {0};
-_Lpath_3 = ((char*)(strdup(getenv("PATH"))));
-#ifdef _WIN32
-int32_t _Li_4;
-_Li_4 = ((int32_t)(0));
-while(1) {
-if(_Lpath_3[_Li_4] == '\0') {
-goto break_0;
-} else if(_Lpath_3[_Li_4] == '\\') {
-_Lpath_3[_Li_4] = '/';
-}
-continue_0:;
-_Li_4++;
-}
-break_0:;
-#endif
-#ifdef _WIN32
-_Lfound_5 = strtok(_Lpath_3, ";");
-#else
-_Lfound_5 = strtok(_Lpath_3, ":");
-#endif
-while(_Lfound_5 != NULL) {
-_Tposix_Tfd _Lfd_6 = {0};
-char _Lcompile_7[512] = {0};
-struct _Tlibcp1_Tsprintf _Lf_8;
-struct _Tlibcp1_Tfmt_Tf_cstr _L_9 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_10 = {0};
-struct _Tlibcp1_Tfmt _L_11 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_12 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_13 = {0};
-struct _Tlibcp1_Tfmt _L_14 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_15 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_16 = {0};
-struct _Tlibcp1_Tfmt _L_17 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_18 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_19 = {0};
-struct _Tlibcp1_Tfmt _L_20 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_21 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_22 = {0};
-struct _Tlibcp1_Tfmt _L_23 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_24 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_25 = {0};
-struct _Tlibcp1_Tfmt _L_26 = {0};
-_Tlibcp1_Fsprintf_2(_Lcompile_7, &_Lf_8);
-#ifdef _WIN32
-_Tlibcp1_Tsprintf_Ff_2(&_Lf_8, &_L_11);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lfound_5, &_L_11, &_L_9);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_11, "/tcc.exe", 8u, &_L_10);
-_Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(&_L_11);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_9, &_L_11);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_10, &_L_11);
-_Tlibcp1_Tfmt_Ff_sprintf_f_1(&_L_11);
-#else
-_Tlibcp1_Tsprintf_Ff_2(&_Lf_8, &_L_14);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lfound_5, &_L_14, &_L_12);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_14, "/tcc", 4u, &_L_13);
-_Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(&_L_14);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_12, &_L_14);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_13, &_L_14);
-_Tlibcp1_Tfmt_Ff_sprintf_f_1(&_L_14);
-#endif
-_Lfd_6 = _Tposix_Fopen_2(_Lcompile_7, O_RDONLY);
-if(_Lfd_6 != _Tposix_Tfd_Cnil) {
-strcpy(_Lcompiler_1, "tcc");
-(*_Ltcc_2) = true;
-return;
-}
-#ifdef _WIN32
-_Tlibcp1_Tsprintf_Ff_2(&_Lf_8, &_L_17);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lfound_5, &_L_17, &_L_15);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_17, "/clang.exe", 10u, &_L_16);
-_Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(&_L_17);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_15, &_L_17);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_16, &_L_17);
-_Tlibcp1_Tfmt_Ff_sprintf_f_1(&_L_17);
-#else
-_Tlibcp1_Tsprintf_Ff_2(&_Lf_8, &_L_20);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lfound_5, &_L_20, &_L_18);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_20, "/clang", 6u, &_L_19);
-_Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(&_L_20);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_18, &_L_20);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_19, &_L_20);
-_Tlibcp1_Tfmt_Ff_sprintf_f_1(&_L_20);
-#endif
-_Lfd_6 = _Tposix_Fopen_2(_Lcompile_7, O_RDONLY);
-if(_Lfd_6 != _Tposix_Tfd_Cnil) {
-strcpy(_Lcompiler_1, "clang");
-return;
-}
-#ifdef _WIN32
-_Tlibcp1_Tsprintf_Ff_2(&_Lf_8, &_L_23);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lfound_5, &_L_23, &_L_21);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_23, "/gcc.exe", 8u, &_L_22);
-_Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(&_L_23);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_21, &_L_23);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_22, &_L_23);
-_Tlibcp1_Tfmt_Ff_sprintf_f_1(&_L_23);
-#else
-_Tlibcp1_Tsprintf_Ff_2(&_Lf_8, &_L_26);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lfound_5, &_L_26, &_L_24);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_26, "/gcc", 4u, &_L_25);
-_Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(&_L_26);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_24, &_L_26);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_25, &_L_26);
-_Tlibcp1_Tfmt_Ff_sprintf_f_1(&_L_26);
-#endif
-_Lfd_6 = _Tposix_Fopen_2(_Lcompile_7, O_RDONLY);
-if(_Lfd_6 != _Tposix_Tfd_Cnil) {
-strcpy(_Lcompiler_1, "gcc");
-return;
-}
-#ifdef _WIN32
-_Lfound_5 = strtok(NULL, ";");
-#else
-_Lfound_5 = strtok(NULL, ":");
-#endif
-continue_1:;
-}
-break_1:;
-_Tlibcp1_Fstdout_1(&_L_30);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_30, "Cannot execute '", 16u, &_L_27);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Lbin_0, &_L_30, &_L_28);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_30, " run' because the required compile was not found: tcc clang or gcc\n", 67u, &_L_29);
-_Tlibcp1_Tfmt_Ff_reserve_stdout_1(&_L_30);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_27, &_L_30);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_28, &_L_30);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_29, &_L_30);
-_Tlibcp1_Tfmt_Ff_stdout_1(&_L_30);
-exit(_Tlibc_Texit_Cfailure);
 }
 static inline struct _Tlibcp1_Tsprintf* _Tlibcp1_Fsprintf_2(char* _Lbuf_0, struct _Tlibcp1_Tsprintf* _Lsf_1) {
 (*_Lsf_1)._Mmem = _Lbuf_0;

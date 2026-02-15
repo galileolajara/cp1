@@ -27,10 +27,19 @@ int c_lexer_scan(struct c_lexer* l) {
    "}"                                          { return C_TOKEN_CLOSE_CURLY; }
    "("                                          { return C_TOKEN_OPEN_PAREN; }
    ")"                                          { return C_TOKEN_CLOSE_PAREN; }
+   "<"                                          { return C_TOKEN_LT; }
+   ">"                                          { return C_TOKEN_GT; }
+   ":"                                          { return C_TOKEN_COLON; }
    "="                                          { return C_TOKEN_EQUAL; }
    ","                                          { return C_TOKEN_COMMA; }
    "return"                                     { return C_TOKEN_RETURN; }
+   "goto"                                       { return C_TOKEN_GOTO; }
    "if"                                         { return C_TOKEN_IF; }
+   "do"                                         { return C_TOKEN_DO; }
+   "for"                                        { return C_TOKEN_FOR; }
+   "while"                                      { return C_TOKEN_WHILE; }
+   "break"                                      { return C_TOKEN_BREAK; }
+   "continue"                                   { return C_TOKEN_CONTINUE; }
    "else"                                       { return C_TOKEN_ELSE; }
    "true"                                       { return C_TOKEN_TRUE; }
    "false"                                      { return C_TOKEN_FALSE; }
@@ -42,6 +51,7 @@ int c_lexer_scan(struct c_lexer* l) {
    [1-9][0-9]*"u"                               { return C_TOKEN_UINT; }
 
    "+"                                          { return C_TOKEN_PLUS; }
+   "-"                                          { return C_TOKEN_MINUS; }
    "*"                                          { return C_TOKEN_STAR; }
 
    "#"[^\n\000]+                                { return C_TOKEN_PREPROCESS; }

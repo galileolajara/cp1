@@ -1162,7 +1162,7 @@ static inline void _Tcp1_Fwrite_import_2(union _Tcp1_Twtr* _Lw_0, bool _Lheader_
 static inline void _Tcp1_Fwrite_template_code_2(union _Tcp1_Twtr* _Lw_0, bool _Lheader_1);
 static inline struct _Tlibcp1_Tsprintf* _Tlibcp1_Fsprintf_2(char* _Lbuf_0, struct _Tlibcp1_Tsprintf* _Lsf_1);
 static inline void _Tlibcp1_Tsprintf_Ff_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
-static inline void _Tlibcp1_Tfmt_Ff_reserve_Tintc_1_2(int _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_Tcint_1_2(int _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2);
 static inline void _Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
 static inline void _Tlibcp1_Tfmt_Tf_i32_Ff_2(struct _Tlibcp1_Tfmt_Tf_i32* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
 static inline void _Tlibcp1_Tfmt_Ff_sprintf_f_1(struct _Tlibcp1_Tfmt* _Lfmt_0);
@@ -2367,7 +2367,7 @@ _Tcp1_Fwrite_template_code_2(&_Lw_90, false);
 _Tlibcp1_Tsprintf_Ff_2(_Tlibcp1_Fsprintf_2(_Ltmp_path_97, &_Lf_98), &_L_102);
 _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Llock_path_12, &_L_102, &_L_99);
 _Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('-', &_L_102, &_L_100);
-_Tlibcp1_Tfmt_Ff_reserve_Tintc_1_2(getpid(), &_L_102, &_L_101);
+_Tlibcp1_Tfmt_Ff_reserve_Tcint_1_2(getpid(), &_L_102, &_L_101);
 _Tlibcp1_Tfmt_Ff_reserve_sprintf_f_1(&_L_102);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_99, &_L_102);
 _Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_100, &_L_102);
@@ -4521,7 +4521,7 @@ return ret_6_7;
 static inline void _Tlibcp1_Tsprintf_Ff_2(struct _Tlibcp1_Tsprintf* _Lsf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
 (*_Lfmt_1)._Muser_data = _Lsf_0;
 }
-static inline void _Tlibcp1_Tfmt_Ff_reserve_Tintc_1_2(int _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2) {
+static inline void _Tlibcp1_Tfmt_Ff_reserve_Tcint_1_2(int _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2) {
 (*_Lfmt_1)._Mcap += 11;
 (*_Lf_2)._Mi32 = _Li_0;
 }

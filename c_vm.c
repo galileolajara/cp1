@@ -100,28 +100,28 @@ void func_run(func_t f, struct vm_locals* vml) {
          case bc_add_i32: {
             int32_t b = vml_pop_i32(vml);
             int32_t a = vml_pop_i32(vml);
-            printf("%d + %d = %d\n", a, b, a + b);
+            // printf("%d + %d = %d\n", a, b, a + b);
             vml_push_i32(vml, a + b);
             break;
          }
          case bc_sub_i32: {
             int32_t b = vml_pop_i32(vml);
             int32_t a = vml_pop_i32(vml);
-            printf("%d - %d = %d\n", a, b, a - b);
+            // printf("%d - %d = %d\n", a, b, a - b);
             vml_push_i32(vml, a - b);
             break;
          }
          case bc_mul_i32: {
             int32_t b = vml_pop_i32(vml);
             int32_t a = vml_pop_i32(vml);
-            printf("%d * %d = %d\n", a, b, a * b);
+            // printf("%d * %d = %d\n", a, b, a * b);
             vml_push_i32(vml, a * b);
             break;
          }
          case bc_div_i32: {
             int32_t b = vml_pop_i32(vml);
             int32_t a = vml_pop_i32(vml);
-            printf("%d / %d = %d\n", a, b, a / b);
+            // printf("%d / %d = %d\n", a, b, a / b);
             vml_push_i32(vml, a / b);
             break;
          }
@@ -130,6 +130,32 @@ void func_run(func_t f, struct vm_locals* vml) {
             int32_t a = vml_pop_i32(vml);
             // printf("lvar_set_32: %d -> %u\n", a, idx);
             vml->value[vml->lvar + idx].i32 = a;
+            break;
+         }
+         case bc_unaryop_lvar_32_postinc: {
+            lvaridx_t idx = *(vml->r++);
+            int32_t a = vml->value[vml->lvar + idx].i32;
+            vml->value[vml->lvar + idx].i32 = a + 1;
+            vml_push_i32(vml, a);
+            break;
+         }
+         case bc_unaryop_lvar_32_preinc: {
+            lvaridx_t idx = *(vml->r++);
+            int32_t a = ++vml->value[vml->lvar + idx].i32;
+            vml_push_i32(vml, a);
+            break;
+         }
+         case bc_unaryop_lvar_32_postdec: {
+            lvaridx_t idx = *(vml->r++);
+            int32_t a = vml->value[vml->lvar + idx].i32;
+            vml->value[vml->lvar + idx].i32 = a - 1;
+            vml_push_i32(vml, a);
+            break;
+         }
+         case bc_unaryop_lvar_32_predec: {
+            lvaridx_t idx = *(vml->r++);
+            int32_t a = --vml->value[vml->lvar + idx].i32;
+            vml_push_i32(vml, a);
             break;
          }
          case bc_mem_set_8: {
@@ -152,17 +178,83 @@ void func_run(func_t f, struct vm_locals* vml) {
             if (a != 0) {
                vml->r += 4;
             } else {
-               vml->r += *(uint32_t*)vml->r;
+               vml->r += *(int32_t*)vml->r;
             }
             break;
          }
          case bc_jump: {
-            vml->r += *(uint32_t*)vml->r;
+            vml->r += *(int32_t*)vml->r;
             break;
          }
          case bc_not: {
             int32_t a = vml_pop_i32(vml);
             vml_push_i32(vml, !a);
+            break;
+         }
+         case bc_lt_i32: {
+            int32_t b = vml_pop_i32(vml);
+            int32_t a = vml_pop_i32(vml);
+            // printf("%d < %d = %d\n", a, b, a < b);
+            vml_push_i32(vml, a < b);
+            break;
+         }
+         case bc_gt_i32: {
+            int32_t b = vml_pop_i32(vml);
+            int32_t a = vml_pop_i32(vml);
+            // printf("%d > %d = %d\n", a, b, a > b);
+            vml_push_i32(vml, a > b);
+            break;
+         }
+         case bc_eq_i32: {
+            int32_t b = vml_pop_i32(vml);
+            int32_t a = vml_pop_i32(vml);
+            // printf("%d == %d = %d\n", a, b, a == b);
+            vml_push_i32(vml, a == b);
+            break;
+         }
+         case bc_lteq_i32: {
+            int32_t b = vml_pop_i32(vml);
+            int32_t a = vml_pop_i32(vml);
+            // printf("%d <= %d = %d\n", a, b, a <= b);
+            vml_push_i32(vml, a <= b);
+            break;
+         }
+         case bc_gteq_i32: {
+            int32_t b = vml_pop_i32(vml);
+            int32_t a = vml_pop_i32(vml);
+            // printf("%d >= %d = %d\n", a, b, a >= b);
+            vml_push_i32(vml, a >= b);
+            break;
+         }
+         case bc_noteq_i32: {
+            int32_t b = vml_pop_i32(vml);
+            int32_t a = vml_pop_i32(vml);
+            // printf("%d != %d = %d\n", a, b, a != b);
+            vml_push_i32(vml, a != b);
+            break;
+         }
+         case bc_mem_postinc_8: {
+            mem_t mem = getmem(&vml->r);
+            vml_push_i32(vml, vml->memory[mem]++);
+            break;
+         }
+         case bc_mem_preinc_8: {
+            mem_t mem = getmem(&vml->r);
+            vml_push_i32(vml, ++vml->memory[mem]);
+            break;
+         }
+         case bc_pop_32: {
+            (void)vml_pop_i32(vml);
+            break;
+         }
+         case bc_mem_postdec_8: {
+            mem_t mem = getmem(&vml->r);
+            vml_push_i32(vml, vml->memory[mem]--);
+            break;
+         }
+         case bc_mem_predec_8: {
+            mem_t mem = getmem(&vml->r);
+            vml_push_i32(vml, --vml->memory[mem]);
             break;
          }
          default: {
