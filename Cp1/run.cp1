@@ -159,7 +159,7 @@ meta #main {
          'c.exit(#failure);
       }
       c-fd.close();
-      // 'x.unlink(c-path);
+      'x.unlink(c-path);
       command'char[1024];
       'c1.sprintf(command, f?);
 #     if D-is("type"#, "meta"#) {
@@ -170,7 +170,7 @@ meta #main {
       // 'c1.stdout{"run command: " command ''\n}
       c-ret' = system2(command);
       if c-ret != 0 {
-         // 'x.unlink(c-path);
+         'x.unlink(c-path);
          'c.exit(#failure);
       }
       'c1.sprintf(command, f).add{"cp1-c " c-path}
@@ -180,7 +180,7 @@ meta #main {
       command[f.len] = 0;
       // 'c1.stdout{"run command: " command ''\n}
       exe-ret' = system2(command);
-      // 'x.unlink(c-path);
+      'x.unlink(c-path);
       if exe-ret != 0 {
          'c.exit(#failure);
       }

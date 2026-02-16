@@ -1177,7 +1177,7 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
                         } else {
                            line'char[] = &code[k];
                            if (line-len & 0x8000) == 0 {
-                              jscode{"O(`" line, line-len " // line " line-num "\\n`);\n"}
+                              jscode{"O(String.raw`" line, line-len " // line " line-num "\n`);\n"}
                            } else {
                               line-len &= 0x7fff;
                               jscode{"     " line, line-len}
