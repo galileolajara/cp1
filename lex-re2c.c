@@ -166,8 +166,9 @@ int cp1_lexer_scan(struct cp1_lexer* l) {
    spaces "@overload-if-else"       { return CP1_TOKEN_SPACE_AT_OVERLOAD_IF_ELSE; }
    spaces "@overload-if-end"        { return CP1_TOKEN_SPACE_AT_OVERLOAD_IF_END; }
    spaces "@overload-statement"     { return CP1_TOKEN_SPACE_AT_OVERLOAD_STATEMENT; }
-   spaces "@reflection"             { return CP1_TOKEN_SPACE_AT_REFLECTION; }
    spaces "@no-cache"               { return CP1_TOKEN_SPACE_AT_NO_CACHE; }
+   spaces "@js"                     { return CP1_TOKEN_SPACE_AT_JS; }
+   spaces "@reflection"             { return CP1_TOKEN_SPACE_AT_REFLECTION; }
    spaces "@soa-field"              { return CP1_TOKEN_SPACE_AT_SOA_FIELD; }
    spaces "@const"                  { return CP1_TOKEN_SPACE_AT_CONST; }
    spaces "="                       { return CP1_TOKEN_SPACE_EQUAL; }

@@ -620,8 +620,9 @@ read(in-path-cp1'char[], in-path-cp1-len'u16, strdup'bool, require'bool) {
       td.name.rd(r);
       td.row = r.n();
       td.line-c = r.n();
-      td.with-reflection = r.b();
       td.no-cache = r.b();
+      td.js = r.b();
+      td.with-reflection = r.b();
       td.code-len = r.n();
       td.code-crc32c = r.n4();
       td.code = r.p1;
@@ -702,9 +703,10 @@ c-init(crc32c'u32);
 deps-init(path'char @const[]);
 deps-output(path'char @const[]);
 deps-close();
-quickjs-begin(file'char[], file-len'u8, tc-name'char[], tc-name-len'u8, code-crc32c'u32, arg-crc32c'u32, require'bool)'bool;
+meta-begin(file'char[], file-len'u8, tc-name'char[], tc-name-len'u8, code-crc32c'u32, arg-crc32c'u32, require'bool, js'bool)'bool;
 quickjs-hex(data'char[], code-crc32c'u32)'u32;
-quickjs-end(js-data'char[], js-data-len'u32, require'bool);
+js-end(js-data'char[], js-data-len'u32, require'bool);
+meta-end(js-data'char[], js-data-len'u32, require'bool);
 include "build-crc32c.c" {
    build-crc32c()'u32 @no-decl;
 }
@@ -1011,7 +1013,7 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
          loop j' = 'template-code(0); .template-code-c; j++ {
             tc' = .template-code-v[j];
             if (at == tc.at) && (name == tc.name) {
-               if quickjs-begin(tc.file.path(), tc.file.path-len(), tc.name.str(), tc.name.len(), tc.code-crc32c, ti.arg-crc32c, ti.require) {
+               if meta-begin(tc.file.path(), tc.file.path-len(), tc.name.str(), tc.name.len(), tc.code-crc32c, ti.arg-crc32c, ti.require, tc.js) {
                   .jscode-buf-len = 0;
                   if true {
                      code' = tc.code;
@@ -1041,159 +1043,237 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
                         }
                      }
                   }
-                  jscode{
-                  // '= require "LibCp1/codegen.cp1";
-                  '= is-64bit'bool;
-                  '= no-cache'bool;
-                  '= using 'c = 'libc;
-                  '= using 'c1 = 'libcp1;
-                  '= using 'x = 'posix;
-                  '= O(str'char @const[], len'u32) @no-decl;
-                  '= D-is(key'char[], key-len'u8, val'char[], val-len'u8)'bool @no-decl;
-                  '= L() @no-decl;
-                  '= D(key'char[], key-len'u8, val'char[], val-len'u8) @no-decl;
-                  '= R(str'char[], len'u32) @no-decl;
-                  '= main() {
-                  // '= 'c.printf("arg-v[1]: %s\n", arg-v[1]);
-                  }
-                  "#if INTPTR_MAX == INT64_MAX";
-                  jscode{
-                  '= .is-64bit = true;
-                  }
-                  "#endif";
-                  loop k' = 0; .define-c; k++ {
-                     if .define-v[k][.define-len-v[k] - 1] == ''} {
-                        jscode{.define-v[k], .define-len-v[k] "\n"}
-                     } else {
-                        jscode{.define-v[k], .define-len-v[k] ";\n"}
-                     }
-                  }
-                  if tc.with-reflection {
+                  if tc.js {
                      jscode{
-                     '= let cp1_refl = {
-                     '- "root":
+                     '= let cp1_out = [];
+                     '= function O(line) {
+                     '=    cp1_out.push(line);
+                     '= }
+                     '= let cp1_path = scriptArgs[0] + ".cp1";
+                     '= let D = {};
                      }
-                     'at#root.jscode-write();
-                     jscode{",\n"}
-                     loop at-idx' = 'at(2); .at-c - 'at(2); at-idx++ {
-                        at2' = at-idx.ptr();
-                        if at2.parent == #relative { continue }
-                        jscode{''"}
-                        at-idx.jscode-write-name();
-                        jscode{'<":>}
-                        at-idx.jscode-write();
+                     "#if INTPTR_MAX == INT64_MAX";
+                     jscode{"D.cpubits = 64;\n"}
+                     "#else";
+                     jscode{"D.cpubits = 32;\n"}
+                     "#endif";
+                     loop k' = 0; .define-c; k++ {
+                        jscode{"D." .define-v[k], .define-len-v[k] ";\n"}
+                     }
+                     if tc.with-reflection {
+                        jscode{
+                        '= let cp1_refl = {
+                        '- "root":
+                        }
+                        'at#root.jscode-write();
                         jscode{",\n"}
+                        loop at-idx' = 'at(2); .at-c - 'at(2); at-idx++ {
+                           at2' = at-idx.ptr();
+                           if at2.parent == #relative { continue }
+                           jscode{''"}
+                           at-idx.jscode-write-name();
+                           jscode{'<":>}
+                           at-idx.jscode-write();
+                           jscode{",\n"}
+                        }
+                        jscode{
+                        '= };
+                        '= for (let key in cp1_refl) {
+                        '=    let type = cp1_refl[key];
+                        '=    let types = type.types = {};
+                        '=    if (key == "root") {
+                        '=       for (let type2 of type.typev) {
+                        '=          let child = cp1_refl[type2];
+                        '=          types[type2] = child;
+                        '=          child.parent = key;
+                        '=       }
+                        '=    } else {
+                        '=       for (let type2 of type.typev) {
+                        '=          let child = cp1_refl[key + "." + type2];
+                        '=          types[type2] = child;
+                        '=          child.parent = key;
+                        '=       }
+                        '=    }
+                        '=    let functions = type.functions = {};
+                        '=    for (let func of type.functionv) {
+                        '=       functions[func.name] = func;
+                        '=    }
+                        '= }
+                        '= function cp1_resolve_type(type, name) {
+                        '=    if (!type.startsWith("..")) return type;
+                        '=    let key = name + type.substr(1);
+                        '=    if (key in cp1_refl) {
+                        '=       return key;
+                        '=    }
+                        '=    let parent = cp1_refl[name].parent;
+                        '=    key = parent + type.substr(1);
+                        '=    if (key in cp1_refl) {
+                        '=       return key;
+                        '=    }
+                        '=    while (parent in cp1_refl) {
+                        '=       parent = cp1_refl[parent].parent;
+                        '=       key = parent + type.substr(1);
+                        '=       if (key in cp1_refl) {
+                        '=          return key;
+                        '=       }
+                        '=    }
+                        '=    return type;
+                        '= }
+                        '= for (let key in cp1_refl) {
+                        '=    let type = cp1_refl[key];
+                        '=    for (let func of type.functionv) {
+                        '=       for (let argv of func.argvv) {
+                        '=          for (let arg of argv) {
+                        '=             arg.type = cp1_resolve_type(arg.type, key);
+                        '=          }
+                        '=       }
+                        '=       func.type = cp1_resolve_type(func.type, key);
+                        '=    }
+                        '= }
+                        }
                      }
                      jscode{
-                     '= };
-                     '= for (let key in cp1_refl) {
-                     '=    let type = cp1_refl[key];
-                     '=    let types = type.types = {};
-                     '=    if (key == "root") {
-                     '=       for (let type2 of type.typev) {
-                     '=          let child = cp1_refl[type2];
-                     '=          types[type2] = child;
-                     '=          child.parent = key;
-                     '=       }
-                     '=    } else {
-                     '=       for (let type2 of type.typev) {
-                     '=          let child = cp1_refl[key + "." + type2];
-                     '=          types[type2] = child;
-                     '=          child.parent = key;
-                     '=       }
-                     '=    }
-                     '=    let functions = type.functions = {};
-                     '=    for (let func of type.functionv) {
-                     '=       functions[func.name] = func;
-                     '=    }
-                     '= }
-                     '= function cp1_resolve_type(type, name) {
-                     '=    if (!type.startsWith("..")) return type;
-                     '=    let key = name + type.substr(1);
-                     '=    if (key in cp1_refl) {
-                     '=       return key;
-                     '=    }
-                     '=    let parent = cp1_refl[name].parent;
-                     '=    key = parent + type.substr(1);
-                     '=    if (key in cp1_refl) {
-                     '=       return key;
-                     '=    }
-                     '=    while (parent in cp1_refl) {
-                     '=       parent = cp1_refl[parent].parent;
-                     '=       key = parent + type.substr(1);
-                     '=       if (key in cp1_refl) {
-                     '=          return key;
-                     '=       }
-                     '=    }
-                     '=    return type;
-                     '= }
-                     '= for (let key in cp1_refl) {
-                     '=    let type = cp1_refl[key];
-                     '=    for (let func of type.functionv) {
-                     '=       for (let argv of func.argvv) {
-                     '=          for (let arg of argv) {
-                     '=             arg.type = cp1_resolve_type(arg.type, key);
-                     '=          }
-                     '=       }
-                     '=       func.type = cp1_resolve_type(func.type, key);
-                     '=    }
-                     '= }
+                       "let arg = {" ti.arg, ti.arg-len "};\n"
                      }
-                  }
-                  jscode{
-                     ti.arg, ti.arg-len ''\n
-                  }
-                  if tc.no-cache {
-                     jscode{
-                     '= O("// XXXXXXXX - CRC32C\n"#);
-                     }
-                  } else {
-                     jscode{
-                     '= if .no-cache { O("// XXXXXXXX - CRC32C\n"#) }
-                     '- else { O("
-                     }
-                     .jscode-buf-len += quickjs-hex(&.jscode-buf-data[.jscode-buf-len], tc.code-crc32c);
-                     jscode{
-                     '= CRC32C\n"#) }
-                     }
-                  }
-                  code' = tc.code;
-                  k' = 0;
-                  line-num' = tc.row;
-                  loop tc.line-c {
-                     line-num++;
-                     line-len' = 'u16(code[k] | (code[k + 1] << 8));
-                     k += 2;
-                     if line-len == 0 {
-                        jscode{'= L();
+                     if tc.no-cache {
+                        jscode{
+                        '= O("// XXXXXXXX - CRC32C\n");
                         }
                      } else {
-                        line'char[] = &code[k];
-                        if (line-len & 0x8000) == 0 {
-                           if (line-len & 0x4000) == 0 {
-                              jscode{
-                              "O('= " line, line-len "\n , " line-len + 1 ");\n"}
-                           } else {
-                              line-len &= 0x3fff;
-                              jscode{
-                              "R('= " line, line-len " , " line-len ");\n"}
+                        jscode{
+                        '= if ("cp1_no_cache" in arg) O("// XXXXXXXX - CRC32C\n");
+                        '- else O("
+                        }
+                        .jscode-buf-len += quickjs-hex(&.jscode-buf-data[.jscode-buf-len], tc.code-crc32c);
+                        jscode{
+                          "- 'crc32c\\n\");\n"
+                        }
+                     }
+                     code' = tc.code;
+                     k' = 0;
+                     line-num' = tc.row;
+                     loop tc.line-c {
+                        line-num++;
+                        line-len' = 'u16(code[k] | (code[k + 1] << 8));
+                        k += 2;
+                        if line-len == 0 {
+                           jscode{'= O("\n");
                            }
                         } else {
-                           line-len &= 0x7fff;
-                           if (line-len & 0x4000) == 0 {
-                              jscode{"    " line, line-len}
+                           line'char[] = &code[k];
+                           if (line-len & 0x8000) == 0 {
+                              jscode{"O(`" line, line-len " // line " line-num "\\n`);\n"}
                            } else {
-                              line-len &= 0x3fff;
+                              line-len &= 0x7fff;
+                              jscode{"     " line, line-len}
                            }
+                           k += line-len;
                         }
-                        k += line-len;
                      }
+                     jscode{
+                     '= {
+                     }
+                     "#ifdef _WIN32";
+                     jscode{
+                       "   let tmp_path = scriptArgs[0] + \".cp1-" 'u32('x.getpid()) "\";\n"
+                     }
+                     "#else";
+                     jscode{
+                     '=    let tmp_path = scriptArgs[0] + ".cp1-" + os.getpid();
+                     }
+                     "#endif";
+                     jscode{
+                     '=    let file = std.open(tmp_path, "wb");
+                     '=    file.puts(cp1_out.join(""));
+                     '=    file.close();
+                     '=    if (os.platform == "win32") os.remove(cp1_path);
+                     '=    os.rename(tmp_path, cp1_path);
+                     '= }
+                     }
+                     js-end(.jscode-buf-data, .jscode-buf-len, ti.require);
+                  } else {
+                     jscode{
+                     // '= require "LibCp1/codegen.cp1";
+                     '= is-64bit'bool;
+                     '= no-cache'bool;
+                     '= using 'c = 'libc;
+                     '= using 'c1 = 'libcp1;
+                     '= using 'x = 'posix;
+                     '= O(str'char @const[], len'u32) @no-decl;
+                     '= D-is(key'char[], key-len'u8, val'char[], val-len'u8)'bool @no-decl;
+                     '= L() @no-decl;
+                     '= D(key'char[], key-len'u8, val'char[], val-len'u8) @no-decl;
+                     '= R(str'char[], len'u32) @no-decl;
+                     '= main() {
+                     // '= 'c.printf("arg-v[1]: %s\n", arg-v[1]);
+                     }
+                     "#if INTPTR_MAX == INT64_MAX";
+                     jscode{
+                     '= .is-64bit = true;
+                     }
+                     "#endif";
+                     loop k' = 0; .define-c; k++ {
+                        if .define-v[k][.define-len-v[k] - 1] == ''} {
+                           jscode{.define-v[k], .define-len-v[k] "\n"}
+                        } else {
+                           jscode{.define-v[k], .define-len-v[k] ";\n"}
+                        }
+                     }
+                     jscode{
+                        ti.arg, ti.arg-len ''\n
+                     }
+                     if tc.no-cache {
+                        jscode{
+                        '= O("// XXXXXXXX - CRC32C\n"#);
+                        }
+                     } else {
+                        jscode{
+                        '= if .no-cache { O("// XXXXXXXX - CRC32C\n"#) }
+                        '- else { O("
+                        }
+                        .jscode-buf-len += quickjs-hex(&.jscode-buf-data[.jscode-buf-len], tc.code-crc32c);
+                        jscode{
+                        '= CRC32C\n"#) }
+                        }
+                     }
+                     code' = tc.code;
+                     k' = 0;
+                     line-num' = tc.row;
+                     loop tc.line-c {
+                        line-num++;
+                        line-len' = 'u16(code[k] | (code[k + 1] << 8));
+                        k += 2;
+                        if line-len == 0 {
+                           jscode{'= L();
+                           }
+                        } else {
+                           line'char[] = &code[k];
+                           if (line-len & 0x8000) == 0 {
+                              if (line-len & 0x4000) == 0 {
+                                 jscode{
+                                 "O('= " line, line-len "\n , " line-len + 1 ");\n"}
+                              } else {
+                                 line-len &= 0x3fff;
+                                 jscode{
+                                 "R('= " line, line-len " , " line-len ");\n"}
+                              }
+                           } else {
+                              line-len &= 0x7fff;
+                              if (line-len & 0x4000) == 0 {
+                                 jscode{"    " line, line-len}
+                              } else {
+                                 line-len &= 0x3fff;
+                              }
+                           }
+                           k += line-len;
+                        }
+                     }
+                     jscode{
+                     '= return;
+                     '= }
+                     }
+                     meta-end(.jscode-buf-data, .jscode-buf-len, ti.require);
                   }
-                  jscode{
-                  '= return;
-                  '= }
-                  }
-                  quickjs-end(.jscode-buf-data, .jscode-buf-len, ti.require);
                }
                found = true;
                break;

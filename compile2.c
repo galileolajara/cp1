@@ -74,6 +74,7 @@ char cp1_tmp_js[1024];
 #ifdef SPAWN_PARSE
 char parser_path[1024];
 #endif
+char meta_path[1024];
 char qjs_path[1024];
 #include <sys/stat.h>
 void hex32(char* out, uint32_t hex) {
@@ -133,12 +134,15 @@ void _Tcp1_Fc_init_1(uint32_t js_crc32c) {
    #endif
    #endif
 
-   memcpy(qjs_path, _Tcp1_Ginclude_dir, _Tcp1_Ginclude_dir_len);
+   memcpy(meta_path, _Tcp1_Ginclude_dir, _Tcp1_Ginclude_dir_len);
    #ifdef CP1_NEW
-   memcpy(qjs_path + _Tcp1_Ginclude_dir_len, "/out/cp1-meta", 14);
+   memcpy(meta_path + _Tcp1_Ginclude_dir_len, "/out/cp1-meta", 14);
    #else
-   memcpy(qjs_path + _Tcp1_Ginclude_dir_len, "/bin/cp1-meta", 14);
+   memcpy(meta_path + _Tcp1_Ginclude_dir_len, "/bin/cp1-meta", 14);
    #endif
+
+   memcpy(qjs_path, _Tcp1_Ginclude_dir, _Tcp1_Ginclude_dir_len);
+   memcpy(qjs_path + _Tcp1_Ginclude_dir_len, "/bin/cp1-qjs", 13);
 }
 bool _Tcp1_Fwrite_file_3(char* _Lpath_0, void* _Ldata_1, size_t _Lsize_2);
 void _Tcp1_Fread_4(char* _Lin_path_cp1_0, uint16_t _Lin_path_cp1_len_1, bool strdup, bool require);
@@ -154,7 +158,7 @@ uint32_t _Tcp1_Fquickjs_hex_2(char* js_data, uint32_t code_crc32c) {
    js_data[i++] = ' ';
    return i;
 }
-bool _Tcp1_Fquickjs_begin_7(char* path, uint8_t path_len, char* tplt_name, uint8_t tplt_name_len, uint32_t code_crc32c, uint32_t arg_crc32c, bool require) {
+bool _Tcp1_Fmeta_begin_8(char* path, uint8_t path_len, char* tplt_name, uint8_t tplt_name_len, uint32_t code_crc32c, uint32_t arg_crc32c, bool require, bool js) {
    int i;
    if (memcmp(path, "cp1-tmp-", 8) == 0) {
       i = 0;
@@ -170,9 +174,14 @@ bool _Tcp1_Fquickjs_begin_7(char* path, uint8_t path_len, char* tplt_name, uint8
    hex32(&cp1_tmp_js[i], arg_crc32c);
    i += 8;
    cp1_tmp_js[i++] = '.';
-   cp1_tmp_js[i++] = 'c';
-   cp1_tmp_js[i++] = 'p';
-   cp1_tmp_js[i++] = '1';
+   if (js) {
+      cp1_tmp_js[i++] = 'j';
+      cp1_tmp_js[i++] = 's';
+   } else {
+      cp1_tmp_js[i++] = 'c';
+      cp1_tmp_js[i++] = 'p';
+      cp1_tmp_js[i++] = '1';
+   }
    int j = i;
    cp1_tmp_js[j++] = '.';
    cp1_tmp_js[j++] = 'c';
@@ -244,7 +253,7 @@ void create_folders_recursively(const char *file_path) {
     }
 }
 #include "system2.h"
-void _Tcp1_Fquickjs_end_3(char* js_data, uint32_t js_len, bool require) {
+void _Tcp1_Fjs_end_3(char* js_data, uint32_t js_len, bool require) {
    create_folders_recursively(cp1_tmp_js);
    char tmp_path[1024 + 10];
    sprintf(tmp_path, "%s-%u", cp1_tmp_js, getpid());
@@ -261,10 +270,48 @@ void _Tcp1_Fquickjs_end_3(char* js_data, uint32_t js_len, bool require) {
       exit(EXIT_FAILURE);
    }
    #else
-   const char *argv[] = {"cp1-meta", cp1_tmp_js, cp1_tmp_js, NULL};
+   const char *argv[] = {"cp1-qjs", cp1_tmp_js, cp1_tmp_js, NULL};
    // int status = qjs_main(2, argv);
    pid_t pid;
    int spawn = posix_spawn(&pid, qjs_path, NULL, NULL, argv, environ);
+   int status;
+   waitpid(pid, &status, 0);
+   if (status != 0) {
+      exit(EXIT_FAILURE);
+   }
+   #endif
+   int i = quickjs_path_len;
+   cp1_tmp_js[i++] = '.';
+   cp1_tmp_js[i++] = 'c';
+   cp1_tmp_js[i++] = 'p';
+   cp1_tmp_js[i++] = '1';
+   cp1_tmp_js[i] = '\0';
+   /* char* new_path = malloc(i + 1);
+   memcpy(new_path, cp1_tmp_js, i + 1);
+   _Tcp1_Fread_2(new_path, i); */
+   _Tcp1_Fread_4(cp1_tmp_js, i, true, require);
+}
+void _Tcp1_Fmeta_end_3(char* js_data, uint32_t js_len, bool require) {
+   create_folders_recursively(cp1_tmp_js);
+   char tmp_path[1024 + 10];
+   sprintf(tmp_path, "%s-%u", cp1_tmp_js, getpid());
+   _Tcp1_Fwrite_file_3(tmp_path, js_data, js_len);
+   #ifdef _WIN32
+   unlink(cp1_tmp_js);
+   #endif
+   rename(tmp_path, cp1_tmp_js);
+   #ifdef _WIN32
+   char command[1024 + 512];
+   sprintf(command, "\"%s\" \"%s\"", meta_path, cp1_tmp_js);
+   // printf("command: %s\n", command);
+   if (system2(command) != 0) {
+      exit(EXIT_FAILURE);
+   }
+   #else
+   const char *argv[] = {"cp1-meta", cp1_tmp_js, cp1_tmp_js, NULL};
+   // int status = qjs_main(2, argv);
+   pid_t pid;
+   int spawn = posix_spawn(&pid, meta_path, NULL, NULL, argv, environ);
    int status;
    waitpid(pid, &status, 0);
    if (status != 0) {

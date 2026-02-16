@@ -480,6 +480,7 @@ meta #build-common-codes {
          line-c'u32,
          with-reflection'bool,
          no-cache'bool,
+         js'bool,
 #  if .compile {
          file'file,
 #  }

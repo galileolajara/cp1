@@ -201,17 +201,25 @@ decl_template_inst ::= HASH_ID(name) TEMPLATE_JSON(json).
    { _Tcp1_Fdecl_template_inst_2(name.basic.id, at); } */
 decl ::= decl_template_inst.
 meta_reflection(l) ::= .
-   { l.basic.id = 0; l.basic.id2 = 0; }
-meta_reflection(l) ::= SPACE_AT_REFLECTION.
-   { l.basic.id = 1; l.basic.id2 = 0; }
+   { l.basic.id = 0; l.basic.id2 = 0; l.basic.id2 = 0; }
 meta_reflection(l) ::= SPACE_AT_NO_CACHE.
-   { l.basic.id = 0; l.basic.id2 = 1; }
-meta_reflection(l) ::= SPACE_AT_REFLECTION SPACE_AT_NO_CACHE.
-   { l.basic.id = 1; l.basic.id2 = 1; }
-meta_reflection(l) ::= SPACE_AT_NO_CACHE SPACE_AT_REFLECTION.
-   { l.basic.id = 1; l.basic.id2 = 1; }
+   { l.basic.id = 1; l.basic.id2 = 0; l.basic.id2 = 0; }
+meta_reflection(l) ::= SPACE_AT_JS.
+   { l.basic.id = 0; l.basic.id2 = 1; l.basic.id3 = 0; }
+meta_reflection(l) ::= SPACE_AT_JS SPACE_AT_NO_CACHE.
+   { l.basic.id = 1; l.basic.id2 = 1; l.basic.id3 = 0; }
+meta_reflection(l) ::= SPACE_AT_NO_CACHE SPACE_AT_JS.
+   { l.basic.id = 1; l.basic.id2 = 1; l.basic.id3 = 0; }
+meta_reflection(l) ::= SPACE_AT_JS SPACE_AT_REFLECTION.
+   { l.basic.id = 0; l.basic.id2 = 1; l.basic.id3 = 1; }
+meta_reflection(l) ::= SPACE_AT_JS SPACE_AT_REFLECTION SPACE_AT_NO_CACHE.
+   { l.basic.id = 1; l.basic.id2 = 1; l.basic.id3 = 1; }
+meta_reflection(l) ::= SPACE_AT_JS SPACE_AT_NO_CACHE SPACE_AT_REFLECTION.
+   { l.basic.id = 1; l.basic.id2 = 1; l.basic.id3 = 1; }
+meta_reflection(l) ::= SPACE_AT_NO_CACHE SPACE_AT_JS SPACE_AT_REFLECTION.
+   { l.basic.id = 1; l.basic.id2 = 1; l.basic.id3 = 1; }
 decl_template_code ::= META SPACE HASH_ID(name) meta_reflection(r) SPACE_THEN_OPEN_CURLY_BRACE TEMPLATE_CODE(code).
-   { _Tcp1_Fdecl_template_code_4(name.basic.id, code.basic.row, r.basic.id, r.basic.id2); }
+   { _Tcp1_Fdecl_template_code_5(name.basic.id, code.basic.row, r.basic.id, r.basic.id2, r.basic.id3); }
 decl ::= decl_template_code.
 decl_import ::= IMPORT(path) SEMICOLON.
    { _Tcp1_Fdecl_import_4(path.basic.id, path.basic.row, path.basic.col, false); }

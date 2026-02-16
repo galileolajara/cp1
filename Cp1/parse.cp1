@@ -78,7 +78,7 @@ decl-template-inst(name'id, row'u32, col'u32) {
    ti.row = row;
    ti.col = col;
 }
-decl-template-code(name'id, row'u32, with-reflection'bool, no-cache'bool) {
+decl-template-code(name'id, row'u32, no-cache'bool, js'bool, with-reflection'bool) {
    at' = .decl-at;
    loop i' = 0; .template-code-c; i++ {
       td' = .template-code-v[i];
@@ -114,8 +114,9 @@ decl-template-code(name'id, row'u32, with-reflection'bool, no-cache'bool) {
    td.at = at;
    td.row = row;
    td.line-c = .template-code-line-c;
-   td.with-reflection = with-reflection;
    td.no-cache = no-cache;
+   td.js = js;
+   td.with-reflection = with-reflection;
 }
 include-add(len'u8, str'char[])'include {
    found' = .include-map.get-or-insert(str, len, .include-c);
@@ -796,8 +797,9 @@ write-template-code(w'wtr, header'bool) @inline {
       td.name.wr(w, header);
       w.n(td.row);
       w.n(td.line-c);
-      w.b(td.with-reflection);
       w.b(td.no-cache);
+      w.b(td.js);
+      w.b(td.with-reflection);
       w.n(td.code-len);
       w.n4(td.code-crc32c);
       w.copy(td.code, td.code-len);
