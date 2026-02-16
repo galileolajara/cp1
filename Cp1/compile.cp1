@@ -1213,11 +1213,23 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
                      }
                      "#endif";
                      loop k' = 0; .define-c; k++ {
-                        if .define-v[k][.define-len-v[k] - 1] == ''} {
-                           jscode{.define-v[k], .define-len-v[k] "\n"}
-                        } else {
-                           jscode{.define-v[k], .define-len-v[k] ";\n"}
+                        def' = .define-v[k];
+                        deflen' = .define-len-v[k];
+                        eq' = 'c.memchr(def, ''=, deflen);
+                        if eq != null {
+                           r-def'rdr. = ?;
+                           r-def.ref = def;
+                           r-eq'rdr. = ?;
+                           r-eq.ref = eq;
+                           r-val'rdr. = ?;
+                           r-val.ref = eq;
+                           r-val.pos++;
+                           r-end'rdr. = ?;
+                           r-end.ref = def;
+                           r-end.pos += deflen;
+                           jscode{"D(\"" def, r-eq.pos - r-def.pos "\"#, \"" r-val.char, r-end.pos - r-val.pos "\"#);\n"}
                         }
+                        // jscode{"D." .define-v[k], .define-len-v[k] ";\n"}
                      }
                      jscode{
                         ti.arg, ti.arg-len ''\n
