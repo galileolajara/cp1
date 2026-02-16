@@ -10,4 +10,4 @@ cp out/run2.cp1.c run.cp1.c
 cp out/meta2.cp1.c meta.cp1.c
 cp out/build-crc32c.h build-crc32c.h
 cp hashtable2.c hashtable.c
-rm -rf cp1-tmp-* out bin/cp1-parse bin/cp1-run bin/cp1-compile bin/cp1-qjs
+rm -rf cp1-tmp-* out bin/cp1-parse bin/cp1-run bin/cp1-compile bin/cp1-qjs bin/cp1-meta

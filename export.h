@@ -1,7 +1,7 @@
 void qalloc_undo(int32_t _Lsize_0);
 void _Tcp1_Fdecl_import_4(_Tcp1_Tinclude _Lpath_0, uint32_t _Lrow_1, uint32_t _Lcol_2, bool _Lrequire_3);
 void _Tcp1_Fdecl_template_inst_3(_Tcp1_Tid _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
-void _Tcp1_Fdecl_template_code_4(_Tcp1_Tid _Lname_0, uint32_t _Lrow_1, bool _Lwith_reflection_2, bool _Lno_cache_3);
+void _Tcp1_Fdecl_template_code_5(_Tcp1_Tid _Lname_0, uint32_t _Lrow_1, bool _Lno_cache_2, bool _Ljs_3, bool _Lwith_reflection_4);
 void _Tcp1_Fdecl_func_begin_3(_Tcp1_Tid _Lname_0, uint32_t _Lrow_1, uint32_t _Lcol_2);
 void _Tcp1_Fdecl_func_end_3(uint32_t _Lrow_0, uint32_t _Lcol_1, bool _Langle_2);
 void _Tcp1_Fdecl_struct_end_2(uint32_t _Lrow_0, uint32_t _Lcol_1);
