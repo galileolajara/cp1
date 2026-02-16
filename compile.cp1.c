@@ -2040,7 +2040,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_110, "is-64bit'bool;\n"
 "using 'x = 'posix;\n"
 "O(str'char @const[], len'u32) @no-decl;\n"
 "L() @no-decl;\n"
-"R(src'char[], src-len'u8, des'char[], des-len'u16) @no-decl;\n"
+"D(src'char[], src-len'u8, des'char[], des-len'u16) @no-decl;\n"
 "R(str'char[], len'u32) @no-decl;\n"
 "main() {\n", 245u, &_L_109);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_110);

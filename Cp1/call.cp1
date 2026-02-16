@@ -9,7 +9,7 @@ using 'cp1 {
 }
 meta #meta-read-write-process {
 ^  method'bool;
-#  if .method { R("proc"#, "method"#) } else { R("proc"#, "func"#) }
+#  if .method { D("proc"#, "method"#) } else { D("proc"#, "func"#) }
    using 'c1 = 'libcp1;
    using 'cp1'expr-i {
 $     wr-meta${proc}(expr'expr, w'wtr, header'bool) @case.wr() @inline {
@@ -165,7 +165,7 @@ $           'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - 
          i++;
          arg-c' = ((e.expr-c - 1) >> 1) - 1;
 # loop i' = 1; 2; i++ {
-# if i == 1 { R("i"#, "1"#) } else { R("i"#, "2"#); }
+# if i == 1 { D("i"#, "1"#) } else { D("i"#, "2"#); }
 # if i == 2 {
          if f.meta-method-prefix2 != #nil {
 # }
