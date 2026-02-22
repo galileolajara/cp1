@@ -1,6 +1,7 @@
 /*!max:re2c */
 
-char* string_mem;
+uint8_t meta_is_js;
+extern char* string_mem;
 extern const char* _Tcp1_Gstring_buf;
 extern int _Tcp1_Gstring_len;
 const char* _Tcp1_Gstring_buf;
@@ -466,6 +467,12 @@ lex_template_code: {
                uint8_t c = line[i++];
                switch (code_type) {
                   case 0: {
+                     if (meta_is_js && c == '`') {
+                        *(string_ptr++) = '\\';
+                        *(string_ptr++) = '`';
+                     } else {
+                        *(string_ptr++) = c;
+                     }
                      /* if ((c == '$') && line[i] == '{') {
                         code_start = indention + i;
                         i++;
@@ -485,9 +492,9 @@ lex_template_code: {
                            *(string_ptr++) = '\\';
                            *(string_ptr++) = line[i++];
                         }
-                     } else { */
+                     } else {
                         *(string_ptr++) = c;
-                     // }
+                     } */
                      break;
                   }
                   case 1: {

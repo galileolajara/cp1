@@ -1246,7 +1246,9 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
                         }
                      }
                      jscode{
+                     '= if true {
                         ti.arg, ti.arg-len ''\n
+                     '= }
                      }
                      if tc.no-cache {
                         jscode{
