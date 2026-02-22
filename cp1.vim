@@ -1,3 +1,4 @@
+syntax match Operator /|/
 syntax match Number /0u\?/
 syntax match Number /[1-9][0-9]*u\?/
 syntax match Number /[0-9]\+\.[0-9]\+[fF]\?/
@@ -18,7 +19,6 @@ syntax match Operator /@\(const\|inline\|main\|case\|process\|real-name\|meta\|g
 syntax match Operator /\(import\|require\)[ ]\+"\@=/
 syntax match Operator /||/
 syntax match Operator /&&/
-syntax match Operator /|/
 syntax match Operator /&/
 syntax match Operator /+/
 syntax match Operator /-/
