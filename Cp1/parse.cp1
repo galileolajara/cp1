@@ -1245,24 +1245,6 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
                .last-token = t;
                psr.parse(t, tok);
             }
-            case #using {
-               found-semicolon' = false;
-               loop i' = 0; {
-                  c' = lex.cursor[i];
-                  if c == ''{ {
-                     break;
-                  } elif c == ''; {
-                     found-semicolon = true;
-                     break;
-                  }
-                  i++;
-               }
-               if found-semicolon {
-                  t = #using-with-semicolon;
-               }
-               .last-token = t;
-               psr.parse(t, tok);
-            }
             case #loop {
                found-semicolon' = false;
                if (&&, lex.cursor[0] != '' , lex.cursor[0] != ''\n)  {

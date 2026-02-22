@@ -221,13 +221,13 @@ meta_reflection(l) ::= SPACE_AT_NO_CACHE SPACE_AT_JS SPACE_AT_REFLECTION.
 decl_template_code ::= META SPACE HASH_ID(name) meta_reflection(r) SPACE_THEN_OPEN_CURLY_BRACE TEMPLATE_CODE(code).
    { _Tcp1_Fdecl_template_code_5(name.basic.id, code.basic.row, r.basic.id, r.basic.id2, r.basic.id3); }
 decl ::= decl_template_code.
-decl_import ::= IMPORT(path) SEMICOLON.
+decl_import ::= IMPORT(path).
    { _Tcp1_Fdecl_import_4(path.basic.id, path.basic.row, path.basic.col, false); }
-decl_import ::= REQUIRE(path) SEMICOLON.
+decl_import ::= REQUIRE(path).
    { _Tcp1_Fdecl_import_4(path.basic.id, path.basic.row, path.basic.col, true); }
 decl ::= decl_import.
 
-decl_cvar ::= cvars_decl SEMICOLON.
+decl_cvar ::= cvars_decl.
 // decl_cvar ::= OPEN_CURLY_BRACE_CVAR_SPACE CLOSE_CURLY_BRACE.
 decl ::= decl_cvar.
 
@@ -238,9 +238,9 @@ decl ::= decl_func.
 decl ::= decl_struct.
 decl ::= decl_enum.
 decl ::= decl_gvars.
-decl_alias_begin ::= USING_WITH_SEMICOLON SPACE.
+decl_alias_begin ::= .
    { _Tcp1_Fat_begin_relative_pause_0(); }
-decl_alias_end ::= SEMICOLON.
+decl_alias_end ::= .
    { _Tcp1_Fat_begin_relative_resume_0(); }
 decl ::= decl_alias_begin ID_TYPE(short) SPACE_EQUAL SPACE at(long) decl_alias_end.
    { _Tcp1_Fdecl_alias_4(short.basic.id, long.basic.id, short.basic.row, short.basic.col); }
@@ -272,11 +272,6 @@ close_angle_or_comma(l) ::= close_angle_or_space(r).
 close_angle_or_comma(l) ::= COMMA_SPACE_CLOSE_ANGLE(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 
-close_curly_brace_or_scolon(l) ::= SPACE_CLOSE_CURLY_BRACE(r).
-   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-close_curly_brace_or_scolon(l) ::= SEMICOLON SPACE_CLOSE_CURLY_BRACE(r).
-   { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-
 open_bracket_or_space(l) ::= OPEN_BRACKET(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 open_bracket_or_space(l) ::= OPEN_BRACKET SPACE(r).
@@ -291,8 +286,6 @@ close_bracket_or_comma(l) ::= SPACE_CLOSE_BRACKET(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
 close_bracket_or_comma(l) ::= COMMA_SPACE_CLOSE_BRACKET(r).
    { l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
-
-scolon_space ::= SEMICOLON SPACE.
 
 lvar_decl(l) ::= lvar_decl_name(r).
    { _Tcp1_Fdecl_var_end_0(); l.basic.row = r.basic.row; l.basic.col = r.basic.col; }
@@ -901,9 +894,7 @@ loop_continue_begin(l) ::= .
    { l.pointer = _Tcp1_Fstmt_space_begin_detach_0(); } 
 loop_continue_end ::= .
    { _Tcp1_Fstmt_space_end_0(); }
-loop_continue_stmts ::= stmts_brace.
-loop_continue_stmts ::= stmts_expr SEMICOLON.
-loop_continue_stmts ::= stmts_expr.
+loop_continue_stmts ::= stmts_any.
 loop_forever ::= .
    { _Tcp1_Fstmt_loop_set_6(-1, 0, 0, 0, 0, 0); }
 
@@ -989,10 +980,10 @@ stmt_expr ::= stmt_break.
 stmt_break ::= begin_pos(begin) BREAK end_pos(end).
    { _Tcp1_Fstmt_break_5(-1, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
 
-stmt_expr ::= stmt_return.
+// stmt_expr ::= stmt_return.
 stmt_return ::= begin_pos(begin) RETURN end_pos(end).
    { _Tcp1_Fstmt_return_5(-1, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
-stmt_return ::= begin_pos(begin) RETURN SPACE expr(e) end_pos(end).
+stmt_return ::= begin_pos(begin) RETURN open_parenthesis_or_space expr(e) close_parenthesis_or_space end_pos(end).
    { _Tcp1_Fstmt_return_5(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
 
 typeAndInfo ::= expr_type_apply typeInfo_optional.
@@ -1032,22 +1023,21 @@ decl_var_attrs_list ::= decl_var_attrs_list decl_var_attr.
 decl_var_attrs_optional ::= .
 decl_var_attrs_optional ::= decl_var_attrs_list.
 
-decl_func ::= func_decl SEMICOLON. // CLOSE_CURLY_BRACE.
+decl_func ::= func_decl. // CLOSE_CURLY_BRACE.
     { _Tcp1_Ffunc_header_end_0(); }
 stmt_brace ::= stmt.
 stmt_expr ::= expr2stmt.
-stmts_brace ::= stmt_brace.
-stmts_brace ::= stmts_expr scolon_space stmt_brace.
-stmts_brace ::= stmts_brace SPACE stmt_brace.
-stmts_expr ::= stmt_expr.
-stmts_expr ::= stmts_expr scolon_space stmt_expr.
-stmts_expr ::= stmts_brace SPACE stmt_expr.
+stmt_any ::= stmt_brace.
+stmt_any ::= stmt_expr.
+stmts_any ::= stmt_any.
+stmts_any ::= stmts_any SPACE stmt.
 /* stmts_optional ::= SPACE_CLOSE_CURLY_BRACE.
 stmts_optional ::= SPACE stmts_brace close_curly_brace_or_space.
 stmts_optional ::= SPACE stmts_expr close_curly_brace_or_scolon. */
 stmts_optional2 ::= OPEN_CURLY_BRACE SPACE_CLOSE_CURLY_BRACE.
-stmts_optional2 ::= OPEN_CURLY_BRACE SPACE stmts_brace SPACE_CLOSE_CURLY_BRACE.
-stmts_optional2 ::= OPEN_CURLY_BRACE SPACE stmts_expr close_curly_brace_or_scolon.
+stmts_optional2 ::= OPEN_CURLY_BRACE SPACE stmts_any SPACE stmt_return SPACE_CLOSE_CURLY_BRACE.
+stmts_optional2 ::= OPEN_CURLY_BRACE SPACE stmts_any SPACE_CLOSE_CURLY_BRACE.
+stmts_optional2 ::= OPEN_CURLY_BRACE SPACE stmt_return SPACE_CLOSE_CURLY_BRACE.
 /* stmts_optional3 ::= CLOSE_CURLY_BRACE.
 stmts_optional3 ::= stmts_brace close_curly_brace_or_space.
 stmts_optional3 ::= stmts_expr close_curly_brace_or_scolon. */
@@ -1073,7 +1063,7 @@ decl_func ::= func_decl SPACE_THEN_OPEN_CURLY_BRACE stmts_optional2.
    { _Tcp1_Ffunc_body_end_0(); }
 /* decl_func ::= func_decl_inline stmts_optional.
    { _Tcp1_Ffunc_body_end_1(true); } */
-decl_struct_close_or_at ::= SEMICOLON.
+decl_struct_close_or_at ::= .
    { _Tcp1_Fdecl_at_end_0(); }
 decl_struct_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE.
    { _Tcp1_Fdecl_at_end_0(); }
@@ -1085,7 +1075,7 @@ decl_struct ::= struct_decl_begin OPEN_BRACKET SPACE_CLOSE_BRACKET
    decl_struct_attrs_optional decl_struct_close_or_at.
 decl_struct ::= struct_decl_begin open_bracket_or_space struct_fvars close_bracket_or_comma
    decl_struct_attrs_optional decl_struct_close_or_at.
-decl_enum_close_or_at ::= SEMICOLON.
+decl_enum_close_or_at ::= .
    { _Tcp1_Fdecl_at_end_0(); }
 decl_enum_close_or_at ::= SPACE_THEN_OPEN_CURLY_BRACE OPEN_CURLY_BRACE SPACE decls SPACE_CLOSE_CURLY_BRACE.
    { _Tcp1_Fdecl_at_end_0(); }
@@ -1122,4 +1112,4 @@ decl_gvar ::= fvar_decl expr_type_apply typeInfo_optional decl_var_attrs_optiona
 decl_gvar_list ::= decl_gvar.
 decl_gvar_list ::= decl_gvar_list decl_gvar.
 //decl_gvars ::= OPEN_CURLY_BRACE_Tcp1_GVAR_SPACE CLOSE_CURLY_BRACE.
-decl_gvars ::= decl_gvar_list SEMICOLON.
+decl_gvars ::= decl_gvar_list.
