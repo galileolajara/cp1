@@ -1,35 +1,37 @@
-require "LibCp1/fmt.cp1";
-require "Posix/unistd.cp1";
-using 'c = 'libc;
-using 'c1 = 'libcp1;
-using 'x = 'posix;
+require "LibCp1/fmt.cp1"
+require "Posix/unistd.cp1"
+'c = 'libc
+'c1 = 'libcp1
+'x = 'posix
 using 'libcp1 {
-   #stdout-buf-size = 4096;
-   stdout-buf-len'u32;
-   stdout-buf-data'char[#stdout-buf-size];
+   #stdout-buf-size = 4096
+   stdout-buf-len'u32
+   stdout-buf-data'char[#stdout-buf-size]
    stdout(fmt'fmt) @meta(f-reserve, f, stdout) @inline {
    }
    stdbuf(fmt'fmt) @meta(f-reserve, f, stdbuf) @inline {
-      stdout(fmt);
+      stdout(fmt)
    }
    using 'fmt {
       f-reserve-stdout(fmt'this) @inline {
-         fmt.len = .stdout-buf-len;
-         fmt.ptr = .stdout-buf-data;
+         fmt.len = .stdout-buf-len
+         fmt.ptr = .stdout-buf-data
       }
       f-stdout(fmt'this) @inline {
-         "#ifdef LIBCP1_ON_STDOUT";
-         "LIBCP1_ON_STDOUT(_Lfmt_0->_Mptr, _Lfmt_0->_Mlen);";
-         "#else";
-         'x'fd(1).write(fmt.ptr, fmt.len);
-         "#endif";
-         .stdout-buf-len = 0;
+         "#ifdef LIBCP1_ON_STDOUT"
+         if true {
+         "LIBCP1_ON_STDOUT(_Lfmt_0->_Mptr, _Lfmt_0->_Mlen);"
+         }
+         "#else"
+         'x'fd(1).write(fmt.ptr, fmt.len)
+         "#endif"
+         .stdout-buf-len = 0
       }
       f-reserve-stdbuf(fmt'this) @inline {
-         fmt.f-reserve-stdout();
+         fmt.f-reserve-stdout()
       }
       f-stdbuf(fmt'this) @inline {
-         .stdout-buf-len = fmt.len;
+         .stdout-buf-len = fmt.len
       }
    }
 }

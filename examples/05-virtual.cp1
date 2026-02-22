@@ -1,7 +1,7 @@
 // This is to emulate the C++'s virtual functions
-require "LibCp1/stdout.cp1";
+require "LibCp1/stdout.cp1"
 
-using 'c1 = 'libcp1;
+'c1 = 'libcp1
 
 enum 'animal-type[#cat, #dog]'u8; // 8-bit enum
 
@@ -27,9 +27,9 @@ using 'animal {
 
 main(arg-c'cint, arg-v'char[][])'cint {
    animal'animal.; // create an animal object, '.' symbol allocates on stack
-   animal.type = #cat;
-   animal.make-sound();
-   animal.type = #dog;
-   animal.make-sound();
-   return 0;
+   animal.type = #cat
+   animal.make-sound()
+   animal.type = #dog
+   animal.make-sound()
+   return 0
 }

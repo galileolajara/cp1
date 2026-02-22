@@ -1,72 +1,72 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
 expr-soa-field(expr'expr-i, group'id, field'id, row'u32, col'u32)'expr-i {
    if .decl-func-ctx-space == null {
       'c1.stdout{.input-path '': row '': row ": Use of SOA member variables are now allowed here\n"}
-      'c.exit(#failure);
+      'c.exit(#failure)
    }
-   e'expr-soa-field;
-   quick-alloc-one(e);
-   e-idx' = expr-push(e.base, #soa-field);
-   e.expr = expr;
-   e.group = group;
-   e.field = field;
-   return e-idx;
+   e'expr-soa-field
+   quick-alloc-one(e)
+   e-idx' = expr-push(e.base, #soa-field)
+   e.expr = expr
+   e.group = group
+   e.field = field
+   return e-idx
 }
 using 'expr-i {
    wr-soa-field(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      e'expr-soa-field = expr;
-      e.expr.wr(w, header);
-      e.group.wr(w, header);
-      e.field.wr(w, header);
+      e'expr-soa-field = expr
+      e.expr.wr(w, header)
+      e.group.wr(w, header)
+      e.field.wr(w, header)
    }
    rd-soa-field(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      e'expr-soa-field;
-      quick-alloc-one(e);
-      e-idx.set(e.base, #soa-field);
-      e.expr.rd(r);
-      e.group.rd(r);
-      e.field.rd(r);
+      e'expr-soa-field
+      quick-alloc-one(e)
+      e-idx.set(e.base, #soa-field)
+      e.expr.rd(r)
+      e.group.rd(r)
+      e.field.rd(r)
    }
    type-soa-field(expr'expr, at'at&) @case.type() @inline {
-      e'expr-soa-field = expr;
-      type-index(e.expr2.ptr(), at);
+      e'expr-soa-field = expr
+      type-index(e.expr2.ptr(), at)
    }
    value-soa-field(expr'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      e'expr-soa-field = expr.ptr();
-      value-index(e.expr2, ref, paren, v, ok);
+      e'expr-soa-field = expr.ptr()
+      value-index(e.expr2, ref, paren, v, ok)
    }
    write-soa-field(expr'expr) @case.write() @inline {
-      e'expr-soa-field = expr;
-      write-index(e.expr2.ptr());
+      e'expr-soa-field = expr
+      write-index(e.expr2.ptr())
    }
    process-soa-field(expr'expr, ok'bool&) @case.process() @inline {
-      e'expr-soa-field = expr;
-      type-i' = e.expr.type();
+      e'expr-soa-field = expr
+      type-i' = e.expr.type()
       if type-i == #nil {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " from an expression of unknown type\n"}
-         return;
+         return
       }
-      type' = type-i.ptr();
+      type' = type-i.ptr()
       if type.def != #enum {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " because its type is not an enum\n"}
-         return;
+         return
       }
-      enumm' = type.decl.enumm;
-      enumd' = enumm.ptr();
+      enumm' = type.decl.enumm
+      enumd' = enumm.ptr()
       if (enumd.flags & #soa-field) != #0 {
-         gvar-e-idx' = 'expr-i.alloc();
-         gvar-e-idx.set-gvar(enumd.soa-field-gvar-at, enumd.soa-field-gvar-id);
-         fvar-e-idx' = 'expr-i.alloc();
-         fvar-e-idx.set-fvar(gvar-e-idx, e.field);
-         index-e-idx' = 'expr-i.alloc();
-         index-e-idx.set-index(fvar-e-idx, e.expr);
-         process-index(index-e-idx.ptr(), ok);
-         e.expr2 = index-e-idx;
+         gvar-e-idx' = 'expr-i.alloc()
+         gvar-e-idx.set-gvar(enumd.soa-field-gvar-at, enumd.soa-field-gvar-id)
+         fvar-e-idx' = 'expr-i.alloc()
+         fvar-e-idx.set-fvar(gvar-e-idx, e.field)
+         index-e-idx' = 'expr-i.alloc()
+         index-e-idx.set-index(fvar-e-idx, e.expr)
+         process-index(index-e-idx.ptr(), ok)
+         e.expr2 = index-e-idx
       } else {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot get structure-of-array field member ." e.field.str() " because the enum has no @soa-field attribute\n"}
-         return;
+         return
       }
    }
 }

@@ -1,230 +1,230 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
 #meta-read-write-process{
-.method = true;
+.method = true
 }
 #meta-read-write-process{
-.method = false;
+.method = false
 }
 meta #meta-read-write-process {
-^  method'bool;
+^  method'bool
 #  if .method { D("proc"#, "method"#) } else { D("proc"#, "func"#) }
-   using 'c1 = 'libcp1;
+   'c1 = 'libcp1
    using 'cp1'expr-i {
 $     wr-meta${proc}(expr'expr, w'wtr, header'bool) @case.wr() @inline {
 # if .method {
-         e'expr-meta-method = expr;
-         e.this.wr(w, header);
+         e'expr-meta-method = expr
+         e.this.wr(w, header)
 # } else {
-         e'expr-meta-func = expr;
-         e.at.wr(w, header);
+         e'expr-meta-func = expr
+         e.at.wr(w, header)
 # }
-         e.func-name.wr(w, header);
-         w.n1(e.group-c);
+         e.func-name.wr(w, header)
+         w.n1(e.group-c)
          loop i' = 0; e.group-c; i++ {
-            w.n1(e.group-v[i]);
+            w.n1(e.group-v[i])
          }
-         w.n1(e.carg-c);
+         w.n1(e.carg-c)
          loop i' = 0; e.carg-c; i++ {
-            e.carg-v[i].expr.wr(w, header);
-            e.lvars[i].wr(w, header);
+            e.carg-v[i].expr.wr(w, header)
+            e.lvars[i].wr(w, header)
          }
-         e.lvar.wr(w, header);
+         e.lvar.wr(w, header)
       }
 $     rd-meta${proc}(e-idx'expr-i, r'rdr) @case.rd() @inline {
 # if .method {
-         'expr-i.rd(this?, r);
+         'expr-i.rd(this?, r)
 # } else {
-         'at.rd(at-idx?, r);
+         'at.rd(at-idx?, r)
 # }
-         'id.rd(func-name?, r);
-         group-c' = r.n1();
-         group-v'u8[#expr-carg-group-limit];
+         'id.rd(func-name?, r)
+         group-c' = r.n1()
+         group-v'u8[#expr-carg-group-limit]
          loop i' = 0; group-c; i++ {
-            group-v[i] = r.n1();
+            group-v[i] = r.n1()
          }
-         carg-c' = r.n1();
-         carg-v'expr-i[256];
-         lvars'expr-i[256];
+         carg-c' = r.n1()
+         carg-v'expr-i[256]
+         lvars'expr-i[256]
          loop i' = 0; carg-c; i++ {
-            carg-v[i].rd(r);
-            lvars[i].rd(r);
+            carg-v[i].rd(r)
+            lvars[i].rd(r)
          }
-         'expr-i.rd(lvar?, r);
+         'expr-i.rd(lvar?, r)
 
-         expr-c' = (group-c << 1) + 1;
+         expr-c' = (group-c << 1) + 1
          // C1.stdout{group-c " -> " expr-c ''\n}
-         e'expr-meta-func;
-         quick-alloc-plus(e, 'expr-i['usz] * expr-c);
-         e-idx.set(e.base, #metafunc);
+         e'expr-meta-func
+         quick-alloc-plus(e, 'expr-i['usz] * expr-c)
+         e-idx.set(e.base, #metafunc)
 
-         e.expr-c = expr-c;
-         k' = 0;
-         j' = 0;
+         e.expr-c = expr-c
+         k' = 0
+         j' = 0
          // Create expressions for meta-method-prefix1
-         e-idx = 'expr-i.alloc();
-         e.expr-v[k++] = e-idx;
+         e-idx = 'expr-i.alloc()
+         e.expr-v[k++] = e-idx
          if true {
-            group-v2'u8[1] = ?;
-            group-v2[0] = 1;
-            carg-v2'expr-i[1] = ?;
-            carg-v2[0] = lvar;
+            group-v2'u8[1] = ?
+            group-v2[0] = 1
+            carg-v2'expr-i[1] = ?
+            carg-v2[0] = lvar
 # if .method {
-            set-method(e-idx, this, func-name, false, 1, group-v2, 1, carg-v2);
+            set-method(e-idx, this, func-name, false, 1, group-v2, 1, carg-v2)
 # } else {
-            set-func(e-idx, at-idx, func-name, false, 1, group-v2, 1, carg-v2);
+            set-func(e-idx, at-idx, func-name, false, 1, group-v2, 1, carg-v2)
 # }
          }
-         j-begin' = j;
+         j-begin' = j
          // C1.stdout{"group-c " group-c ", carg-c " carg-c ''\n}
-         j = j-begin;
+         j = j-begin
          loop i' = 1; group-c - 1; i++ {
-            carg-c2' = group-v[i];
-            e-idx = 'expr-i.alloc();
-            e.expr-v[k++] = e-idx;
+            carg-c2' = group-v[i]
+            e-idx = 'expr-i.alloc()
+            e.expr-v[k++] = e-idx
 
-            carg' = carg-v[j++];
-            e-carg' = carg.ptr();
-            group-v2'u8[2] = ?;
-            carg2-v'expr-i[256];
+            carg' = carg-v[j++]
+            e-carg' = carg.ptr()
+            group-v2'u8[2] = ?
+            carg2-v'expr-i[256]
             if e-carg.type == #str {
-               e-str'expr-str = e-carg;
-               group-v2[0] = 2 + (carg-c2 - 1) + 1;
-               carg2-v[0] = carg;
-               e-idx2' = 'expr-i.alloc();
-               e2'expr-int-data = ?;
-               quick-alloc-one(e2);
-               e-idx2.set(e2.base, #int);
-               e2.value.i32 = e-str.len();
-               e2.type = #u32;
-               carg2-v[1] = e-idx2;
-               l' = 2;
+               e-str'expr-str = e-carg
+               group-v2[0] = 2 + (carg-c2 - 1) + 1
+               carg2-v[0] = carg
+               e-idx2' = 'expr-i.alloc()
+               e2'expr-int-data = ?
+               quick-alloc-one(e2)
+               e-idx2.set(e2.base, #int)
+               e2.value.i32 = e-str.len()
+               e2.type = #u32
+               carg2-v[1] = e-idx2
+               l' = 2
                loop ; carg-c2 - 1 {
-                  carg2-v[l++] = carg-v[j++];
+                  carg2-v[l++] = carg-v[j++]
                }
-               carg2-v[l] = lvars[i - 1];
-               set-method(e-idx, lvar, #nil, false, 1, group-v2, group-v2[0], carg2-v);
+               carg2-v[l] = lvars[i - 1]
+               set-method(e-idx, lvar, #nil, false, 1, group-v2, group-v2[0], carg2-v)
             } else {
-               group-v2[0] = 1;
-               group-v2[1] = 1 + (carg-c2 - 1);
-               l' = 0;
-               carg2-v[l++] = carg;
+               group-v2[0] = 1
+               group-v2[1] = 1 + (carg-c2 - 1)
+               l' = 0
+               carg2-v[l++] = carg
                loop ; carg-c2 - 1 {
-                  carg2-v[l++] = carg-v[j++];
+                  carg2-v[l++] = carg-v[j++]
                }
-               carg2-v[l] = lvars[i - 1];
-               set-method(e-idx, lvar, #nil, true, 2, group-v2, group-v2[0] + group-v2[1], carg2-v);
+               carg2-v[l] = lvars[i - 1]
+               set-method(e-idx, lvar, #nil, true, 2, group-v2, group-v2[0] + group-v2[1], carg2-v)
             }
          }
          // Create an expression for meta-method-end1
-         e-idx = 'expr-i.alloc();
-         e.expr-v[k++] = e-idx;
+         e-idx = 'expr-i.alloc()
+         e.expr-v[k++] = e-idx
          if true {
-            group-v2'u8[1] = ?;
-            group-v2[0] = 0;
-            set-method(e-idx, lvar, #nil, false, 1, group-v2, 0, null);
+            group-v2'u8[1] = ?
+            group-v2[0] = 0
+            set-method(e-idx, lvar, #nil, false, 1, group-v2, 0, null)
          }
-         j = j-begin;
+         j = j-begin
          loop i' = 1; group-c - 1; i++ {
-            e-idx = 'expr-i.alloc();
-            e.expr-v[k++] = e-idx;
+            e-idx = 'expr-i.alloc()
+            e.expr-v[k++] = e-idx
 
-            group-v2'u8[1] = ?;
-            carg2-v'expr-i[1] = ?;
-            group-v2[0] = 1;
-            carg2-v[0] = lvar;
-            set-method(e-idx, lvars[i - 1], #nil, false, 1, group-v2, group-v2[0], carg2-v);
+            group-v2'u8[1] = ?
+            carg2-v'expr-i[1] = ?
+            group-v2[0] = 1
+            carg2-v[0] = lvar
+            set-method(e-idx, lvars[i - 1], #nil, false, 1, group-v2, group-v2[0], carg2-v)
          }
          // Create an expression for meta-method-end2
-         e-idx = 'expr-i.alloc();
-         e.expr-v[k++] = e-idx;
+         e-idx = 'expr-i.alloc()
+         e.expr-v[k++] = e-idx
          if true {
-            group-v2'u8[1] = ?;
-            group-v2[0] = 0;
-            set-method(e-idx, lvar, #nil, false, 1, group-v2, 0, null);
+            group-v2'u8[1] = ?
+            group-v2[0] = 0
+            set-method(e-idx, lvar, #nil, false, 1, group-v2, 0, null)
          }
       }
 $     process-meta${proc}(expr'expr, ok'bool&) @case.process() @inline {
 # if .method {
-         e'expr-meta-method = expr;
+         e'expr-meta-method = expr
 # } else {
-         e'expr-meta-func = expr;
+         e'expr-meta-func = expr
 # }
-         i' = 0;
+         i' = 0
          if !e.expr-v[i].process() {
 $           'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the beginning of meta-${proc}\n"}
-            return;
+            return
          }
-         e-func'expr-func = e.expr-v[i].ptr();
-         f' = e-func.func-idx.ptr();
+         e-func'expr-func = e.expr-v[i].ptr()
+         f' = e-func.func-idx.ptr()
          if (f.flags & #meta-method) == #0 {
             'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": When using " f.decl.name "{...}, there must be a @meta(NAME-PREFIX END-NAME) attribute in the function " f.decl.name ''\n}
-            return;
+            return
          }
-         i++;
-         arg-c' = ((e.expr-c - 1) >> 1) - 1;
+         i++
+         arg-c' = ((e.expr-c - 1) >> 1) - 1
 # loop i' = 1; 2; i++ {
-# if i == 1 { D("i"#, "1"#) } else { D("i"#, "2"#); }
+# if i == 1 { D("i"#, "1"#) } else { D("i"#, "2"#) }
 # if i == 2 {
          if f.meta-method-prefix2 != #nil {
 # }
-         loop arg-num' = 1; arg-c; i++; arg-num++ {
-            e-idx' = e.expr-v[i];
-            e-method'expr-method = e-idx.ptr();
+         loop arg-num' = 1; arg-c; i++ arg-num++ {
+            e-idx' = e.expr-v[i]
+            e-method'expr-method = e-idx.ptr()
 # if i == 1 {
             if f.meta-method-prefix2 == #nil {
                if !e-method.angle {
-                  e-method.group-v[0]--;
+                  e-method.group-v[0]--
                } else {
-                  e-method.group-v[1]--;
+                  e-method.group-v[1]--
                }
-               e-method.carg-c--;
+               e-method.carg-c--
             }
-            lvar'expr-lvar = e-method.this.ptr();
+            lvar'expr-lvar = e-method.this.ptr()
             if !e-method.angle {
-$              e-method.func-name = f.meta-method-cstr${i};
+$              e-method.func-name = f.meta-method-cstr${i}
             } else {
-               e-idx2' = e-method.carg-v[0].expr;
-               e-data2' = e-idx2.ptr();
-               val';
+               e-idx2' = e-method.carg-v[0].expr
+               e-data2' = e-idx2.ptr()
+               val'
                if !e-idx2.value(1, true, val) {
 $                 'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-${proc}\n"}
-                  return;
+                  return
                }
                if val.info.array-c > 0 {
-$                 e-method.func-name = f.meta-method-arr${i};
+$                 e-method.func-name = f.meta-method-arr${i}
                } else {
-$                 e-method.func-name = f.meta-method-prefix${i};
+$                 e-method.func-name = f.meta-method-prefix${i}
                }
             }
 # } else {
-$           e-method.func-name = f.meta-method-prefix${i};
+$           e-method.func-name = f.meta-method-prefix${i}
 # }
             if !e-idx.process() {
 $              'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the argument group #" arg-num " of meta-${proc}\n"}
-               return;
+               return
             }
          }
          if true {
-            e-last' = e.expr-v[i++];
-            e-last-method'expr-method = e-last.ptr();
-$           e-last-method.func-name = f.meta-method-end${i};
+            e-last' = e.expr-v[i++]
+            e-last-method'expr-method = e-last.ptr()
+$           e-last-method.func-name = f.meta-method-end${i}
             if !e-last.process() {
 $              'c1.stdout{.ctx-func.file ":" .ctx-begin-row ":" .ctx-begin-col " - " .ctx-end-row ":" .ctx-end-col ": Error in processing the end of meta-${proc}\n"}
-               return;
+               return
             }
          }
 # if i == 2 {
          }
 # }
 # }
-         ok = true;
+         ok = true
       }
    }
 }
 print-type(at-i'at, info'type-info) {
-   at' = at-i.ptr();
+   at' = at-i.ptr()
    if at.type == #basic {
       'c1.stdout{"basic type " at.name.basic.cp1-name() ", star-c " info.star-c ''\n}
    } else {
@@ -235,86 +235,86 @@ compatible(src'at, src-c'u8, des'at, des-c'u8)'bool {
    if src == des { return true }
    if (src >= basic-type(#char)) && (src <= basic-type(#usz)) {
       if (des >= basic-type(#char)) && (des <= basic-type(#usz)) {
-         return true;
+         return true
       }
    }
    if des == basic-type(#ref) {
       if src-c > 0 {
-         return true;
+         return true
       }
    }
    if src == basic-type(#ref) {
       if des-c > 0 {
-         return true;
+         return true
       }
    }
-   return false;
+   return false
 }
 farg-process(e-in-out'expr-i&, ca-ref'i8, ca-value'value, fd-arg'decl-var-data, base-at'at, arg-num'i32, f-name'id)'bool {
-   e' = e-in-out;
-   ce' = e.ptr();
-   r'i32;
+   e' = e-in-out
+   ce' = e.ptr()
+   r'i32
    if ca-ref != 0 {
-      r = 1 + ca-ref;
+      r = 1 + ca-ref
    } else {
-      r = 1;
-      r += 'i32(fd-arg.type-info.ref-v[fd-arg.type-info.array-c]);
+      r = 1
+      r += 'i32(fd-arg.type-info.ref-v[fd-arg.type-info.array-c])
    }
    // C1.stdout{"r " r ", " j ''  fd-arg.type-info.array-c ''  fd-arg.type-info.ref-v[fd-arg.type-info.array-c] ''\n}
    if ce.type == #lvar {
-      ve'expr-lvar = ce;
-      lvar' = ve.lvar.ptr();
-      vd' = lvar.decl;
+      ve'expr-lvar = ce
+      lvar' = ve.lvar.ptr()
+      vd' = lvar.decl
       if vd.type == #nil {
          // if (lvar.flags & #set-expr) == #0 {
             // if vd.type-info.array-c != fd-arg.type-info.array-c {
-            //    C.err.printf("%s:%u:%u: Type deduction failed for lvar '%s', array dimension mismatch\n", .ctx-func.file.path(), lvar.row, lvar.col, vd.name.str());
-            //    return false;
+            //    C.err.printf("%s:%u:%u: Type deduction failed for lvar '%s', array dimension mismatch\n", .ctx-func.file.path(), lvar.row, lvar.col, vd.name.str())
+            //    return false
             // }
-            parent' = fd-arg.type.ptr().parent.ptr();
+            parent' = fd-arg.type.ptr().parent.ptr()
             if (parent.type == #basic) && (parent.name.basic == #relative) {
                'c1.stdout{"farg-process without processing farg first\n"}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
-            vd.type = fd-arg.type;
-            vd.type-info.init();
-            vd.type-info.copy-from(fd-arg.type-info);
+            vd.type = fd-arg.type
+            vd.type-info.init()
+            vd.type-info.copy-from(fd-arg.type-info)
             if fd-arg.type-info.built-in {
-               vd.type-info.built-in = true;
-               vd.type-info.ref-v[0] = ''\0;
+               vd.type-info.built-in = true
+               vd.type-info.ref-v[0] = ''\0
             } elif (vd.type-info.ref-v[0] + vd.type.pointer()) != 0 {
-               vd.type-info.ref-v[vd.type-info.array-c] -= 'char(1);
-               vd.type-info.star-c -= 1;
+               vd.type-info.ref-v[vd.type-info.array-c] -= 'char(1)
+               vd.type-info.star-c -= 1
             }
          // }
       }
    }
-   // fd-arg.validate(base-at);
-   left-type-ptr' = fd-arg.type.ptr();
-   e.try-deduce(fd-arg.type);
+   // fd-arg.validate(base-at)
+   left-type-ptr' = fd-arg.type.ptr()
+   e.try-deduce(fd-arg.type)
    if left-type-ptr.def == #enum {
-      en' = left-type-ptr.decl.enumm.ptr();
-      f-idx' = en.overload-get-last;
+      en' = left-type-ptr.decl.enumm.ptr()
+      f-idx' = en.overload-get-last
       if f-idx != #nil {
-         e-right-type' = e.type();
-         f' = f-idx.ptr();
+         e-right-type' = e.type()
+         f' = f-idx.ptr()
          loop {
             if f.farg-v[0].decl.type == e-right-type {
-               e-func' = 'expr-i.alloc();
-               group-v'u8[1];
-               group-v[0] = 1;
-               carg-v'expr-i[1];
-               carg-v[0] = e;
-               'expr-i.set-func(e-func, f.at, f.decl.name, false, 1, group-v, 1, carg-v);
-               e-in-out = e-func;
+               e-func' = 'expr-i.alloc()
+               group-v'u8[1]
+               group-v[0] = 1
+               carg-v'expr-i[1]
+               carg-v[0] = e
+               'expr-i.set-func(e-func, f.at, f.decl.name, false, 1, group-v, 1, carg-v)
+               e-in-out = e-func
                if !e-func.value(1, false, ca-value) {
-                  return false;
+                  return false
                }
-               return true;
+               return true
             }
-            f-idx = f.list1-prev;
+            f-idx = f.list1-prev
             if f-idx == #nil { break }
-            f = f-idx.ptr();
+            f = f-idx.ptr()
          }
       }
    }
@@ -327,194 +327,194 @@ farg-process(e-in-out'expr-i&, ca-ref'i8, ca-value'value, fd-arg'decl-var-data, 
          'c1.stdbuf{''# 'u32(arg-num + 1)}
       }
       'c1.stdbuf{" of function '" f-name "', must be "}
-      at' = fd-arg.type.ptr();
+      at' = fd-arg.type.ptr()
       if at.type == #basic {
          'c1.stdout{at.name.basic.cp1-name() "\n"}
       } else {
          'c1.stdout{at.name.id "\n"}
       }
-      // print-type(ca-value.type, ca-value.info);
-      // print-type(fd-arg.type, fd-arg.type-info);
-      return false;
+      // print-type(ca-value.type, ca-value.info)
+      // print-type(fd-arg.type, fd-arg.type-info)
+      return false
    }
-   return true;
+   return true
 }
 using 'expr-i {
    value-func(e'this, ref'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      expr'expr-func = e.ptr();
-      f' = expr.func-idx.ptr();
-      v.set(ref, paren, f.decl.type, f.decl.type-info);
+      expr'expr-func = e.ptr()
+      f' = expr.func-idx.ptr()
+      v.set(ref, paren, f.decl.type, f.decl.type-info)
       if v.ref == 1 {
-         v.paren = false;
+         v.paren = false
       }
-      ok = true;
+      ok = true
    }
    type-func(expr'expr, at'at&) @case.type() @inline {
-      e'expr-func = expr;
-      at = e.func-idx.ptr().decl.type;
+      e'expr-func = expr
+      at = e.func-idx.ptr().decl.type
    }
    value-method(e'this, ref'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      expr'expr-method = e.ptr();
-      f' = expr.func-idx.ptr();
-      v.set(ref, paren, f.decl.type, f.decl.type-info);
+      expr'expr-method = e.ptr()
+      f' = expr.func-idx.ptr()
+      v.set(ref, paren, f.decl.type, f.decl.type-info)
       if v.ref == 1 {
-         v.paren = false;
+         v.paren = false
       }
-      ok = true;
+      ok = true
    }
    type-method(expr'expr, at'at&) @case.type() @inline {
-      e'expr-method = expr;
-      at = e.func-idx.ptr().decl.type;
+      e'expr-method = expr
+      at = e.func-idx.ptr().decl.type
    }
    write-method(expr'expr) @case.write() @inline {
-      e'expr-method = expr;
-      f' = e.func-idx.ptr();
-      f.write();
+      e'expr-method = expr
+      f' = e.func-idx.ptr()
+      f.write()
       output{''(}
-      first' = true;
-      i' = 0;
+      first' = true
+      i' = 0
       loop ; f.this-idx; i++ {
          if first {
-            first = false;
+            first = false
          } else {
             output{", "}
          }
-         ca' = e.carg-v[i];
-         ca.expr.write-value(ca.value);
+         ca' = e.carg-v[i]
+         ca.expr.write-value(ca.value)
       }
       if first {
-         first = false;
+         first = false
       } else {
          output{", "}
       }
-      e.this.write-value(e.this-value);
+      e.this.write-value(e.this-value)
       loop ; e.carg-c - f.this-idx; i++ {
          output{", "}
-         ca' = e.carg-v[i];
-         ca.expr.write-value(ca.value);
+         ca' = e.carg-v[i]
+         ca.expr.write-value(ca.value)
       }
       output{'')}
    }
    wr-method(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      e'expr-method = expr;
-      e.this.wr(w, header);
-      e.func-name.wr(w, header);
-      w.n1('u8(e.angle));
-      w.n1(e.group-c);
+      e'expr-method = expr
+      e.this.wr(w, header)
+      e.func-name.wr(w, header)
+      w.n1('u8(e.angle))
+      w.n1(e.group-c)
       loop i' = 0; e.group-c; i++ {
-         w.n1(e.group-v[i]);
+         w.n1(e.group-v[i])
       }
-      w.n1(e.carg-c);
+      w.n1(e.carg-c)
       loop i' = 0; e.carg-c; i++ {
-         e.carg-v[i].expr.wr(w, header);
+         e.carg-v[i].expr.wr(w, header)
       }
    }
    rd-method(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      'expr-i.rd(this-expr?, r);
-      'id.rd(func-name?, r);
-      angle' = r.n1() != 0;
-      group-c' = r.n1();
-      group-v'u8[#expr-carg-group-limit];
+      'expr-i.rd(this-expr?, r)
+      'id.rd(func-name?, r)
+      angle' = r.n1() != 0
+      group-c' = r.n1()
+      group-v'u8[#expr-carg-group-limit]
       loop i' = 0; group-c; i++ {
-         group-v[i] = r.n1();
+         group-v[i] = r.n1()
       }
-      carg-c' = r.n1();
-      carg-v'expr-i[256];
+      carg-c' = r.n1()
+      carg-v'expr-i[256]
       loop i' = 0; carg-c; i++ {
-         carg-v[i].rd(r);
+         carg-v[i].rd(r)
       }
-      set-method(e-idx, this-expr, func-name, angle, group-c, group-v, carg-c, carg-v);
+      set-method(e-idx, this-expr, func-name, angle, group-c, group-v, carg-c, carg-v)
    }
    set-method(e-idx'expr-i, this-expr'expr-i, func-name'id, angle'bool, group-c'u8, group-v'u8[], carg-c'u8, carg-v'expr-i[]) {
-      e'expr-method;
-      quick-alloc-plus(e, 'carg['usz] * carg-c);
-      e-idx.set(e.base, #method);
-      e.this = this-expr;
-      e.func-name = func-name;
-      e.angle = angle;
-      e.group-c = group-c;
+      e'expr-method
+      quick-alloc-plus(e, 'carg['usz] * carg-c)
+      e-idx.set(e.base, #method)
+      e.this = this-expr
+      e.func-name = func-name
+      e.angle = angle
+      e.group-c = group-c
       loop i' = 0; group-c; i++ {
-         e.group-v[i] = group-v[i];
+         e.group-v[i] = group-v[i]
       }
-      e.carg-c = carg-c;
+      e.carg-c = carg-c
       loop i' = 0; carg-c; i++ {
-         e.carg-v[i].expr = carg-v[i];
+         e.carg-v[i].expr = carg-v[i]
       }
    }
    process-method(expr'expr, ok'bool&) @case.process() @inline {
-      e'expr-method = expr;
-      func-name' = e.func-name;
-      group-c' = e.group-c;
-      group-v' = e.group-v;
-      carg-c' = e.carg-c;
-      carg-c1' = carg-c + 1;
-      type-v'at-data[16];
+      e'expr-method = expr
+      func-name' = e.func-name
+      group-c' = e.group-c
+      group-v' = e.group-v
+      carg-c' = e.carg-c
+      carg-c1' = carg-c + 1
+      type-v'at-data[16]
       if e.angle {
          loop i' = 0; group-v[0]; i++ {
-            type-v[i] = e.carg-v[i].expr.type().ptr();
+            type-v[i] = e.carg-v[i].expr.type().ptr()
          }
       }
-      at-idx' = e.this.type();
+      at-idx' = e.this.type()
       if at-idx == #nil {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot call method " func-name " on a value without a type\n"}
-         return;
+         return
       }
-      at' = at-idx.ptr();
-      method-c';
-      method-v';
+      at' = at-idx.ptr()
+      method-c'
+      method-v'
       if at.type == #basic {
-         t' = .basic-type[at.name.basic];
-         method-c = t.method-c;
-         method-v = t.method-v;
+         t' = .basic-type[at.name.basic]
+         method-c = t.method-c
+         method-v = t.method-v
       } else {
          if (&&, at.decl.structt == #nil, at.type == #struct-enum) {
             'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot call method " func-name " because the type " at.name.id " is not defined\n"}
-            return;
+            return
          }
          if at.def == #struct {
-            t' = at.decl.structt.ptr();
-            method-c = t.method-c;
-            method-v = t.method-v;
+            t' = at.decl.structt.ptr()
+            method-c = t.method-c
+            method-v = t.method-v
          } elif at.def == #enum {
-            t' = at.decl.enumm.ptr();
-            method-c = t.method-c;
-            method-v = t.method-v;
+            t' = at.decl.enumm.ptr()
+            method-c = t.method-c
+            method-v = t.method-v
          }
       }
-      found' = -1;
-      similar-c' = 'u32(0);
+      found' = -1
+      similar-c' = 'u32(0)
       loop i' = 0; method-c; i++ {
-         f-idx' = method-v[i];
-         f' = f-idx.ptr();
+         f-idx' = method-v[i]
+         f' = f-idx.ptr()
          if f.decl.name != func-name { continue }
-         found = i;
-         similar-c++;
+         found = i
+         similar-c++
          if f.group-c != group-c { continue }
-         match' = true;
+         match' = true
          if (f.flags & #var-args) != #0 {
             if f.farg-c > carg-c1 { continue }
             loop j' = 0; group-c - 1; j++ {
                if f.this-group == j {
                   if f.group-v[j] != (group-v[j] + 1) {
-                     match = false;
-                     break;
+                     match = false
+                     break
                   }
                } else {
                   if f.group-v[j] != group-v[j] {
-                     match = false;
-                     break;
+                     match = false
+                     break
                   }
                }
             }
             if !match { continue }
-            j' = group-c - 1;
+            j' = group-c - 1
             if f.this-group == j {
                if f.group-v[j] > (group-v[j] + 1) {
-                  match = false;
+                  match = false
                }
             } else {
                if f.group-v[j] > group-v[j] {
-                  match = false;
+                  match = false
                }
             }
          } else {
@@ -522,94 +522,94 @@ using 'expr-i {
             loop j' = 0; group-c; j++ {
                if f.this-group == j {
                   if f.group-v[j] != (group-v[j] + 1) {
-                     match = false;
-                     break;
+                     match = false
+                     break
                   }
                } else {
                   if f.group-v[j] != group-v[j] {
-                     match = false;
-                     break;
+                     match = false
+                     break
                   }
                }
             }
          }
          if !match { continue }
          if f.angle != e.angle {
-            continue;
+            continue
          } elif e.angle {
             if f.this-group == 0 {
-               j' = 0;
-               k' = 0;
-               loop ; f.this-idx; j++; k++ {
-                  type1' = type-v[k];
-                  type2' = f.farg-v[j].decl.type.ptr();
+               j' = 0
+               k' = 0
+               loop ; f.this-idx; j++ k++ {
+                  type1' = type-v[k]
+                  type2' = f.farg-v[j].decl.type.ptr()
                   if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
-                     match = false;
-                     break;
+                     match = false
+                     break
                   }
                }
                if !match { continue }
-               j++;
-               loop ; (f.group-v[0] - 1) - f.this-idx; j++; k++ {
-                  type1' = type-v[k];
-                  type2' = f.farg-v[j].decl.type.ptr();
+               j++
+               loop ; (f.group-v[0] - 1) - f.this-idx; j++ k++ {
+                  type1' = type-v[k]
+                  type2' = f.farg-v[j].decl.type.ptr()
                   if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
-                     match = false;
-                     break;
+                     match = false
+                     break
                   }
                }
             } else {
                loop j' = 0; f.group-v[0]; j++ {
-                  type1' = type-v[j];
-                  type2' = f.farg-v[j].decl.type.ptr();
+                  type1' = type-v[j]
+                  type2' = f.farg-v[j].decl.type.ptr()
                   if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
-                     match = false;
-                     break;
+                     match = false
+                     break
                   }
                }
             }
             if !match { continue }
          }
          if !f-idx.process-later() {
-            return;
+            return
          }
-         f-at' = f.at;
-         j' = 0;
-         k' = 0;
-         loop ; f.this-idx; j++; k++ {
-            ca' = e.carg-v[k];
+         f-at' = f.at
+         j' = 0
+         k' = 0
+         loop ; f.this-idx; j++ k++ {
+            ca' = e.carg-v[k]
             if !farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl, f-at, k, f.decl.name) {
-               "error:";
+               "error:"
                'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Error in processing method '" func-name "'\n"}
-               return;
+               return
             }
          }
          if !farg-process(e.this, 0, e.this-value, f.farg-v[j++].decl, f-at, -1, f.decl.name) {
-            "goto error;";
+            "goto error;"
          }
-         loop ; (f.farg-c - 1) - f.this-idx; j++; k++ {
-            ca' = e.carg-v[k];
+         loop ; (f.farg-c - 1) - f.this-idx; j++ k++ {
+            ca' = e.carg-v[k]
             if !farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl, f-at, k, f.decl.name) {
-               "goto error;";
+               "goto error;"
             }
          }
-         e.func-idx = f-idx;
+         e.func-idx = f-idx
          if (f.flags & #var-args) != #0 {
             loop ; e.carg-c - k; k++ {
-               ca' = e.carg-v[k];
-               r'i32;
+               ca' = e.carg-v[k]
+               r'i32
                if ca.ref != 0 {
-                  r = 1 + ca.ref;
+                  r = 1 + ca.ref
                } else {
-                  r = 1;
+                  r = 1
                }
                if !ca.expr.value(r, false, ca.value) {
-                  "goto error;";
+                  "goto error;"
                }
             }
          }
-         ok = true;
-         return;
+         ok = true
+         return
       }
       'c1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find method " func-name " from type "}
       if at.type == #basic {
@@ -621,8 +621,8 @@ using 'expr-i {
       if found != -1 {
          'c1.stdout{"But found " similar-c " functions with different no. of argument/s:\n"}
          loop i' = 0; at.func-c; i++ {
-            f-idx' = at.func-v[i];
-            f' = .func-v[f-idx];
+            f-idx' = at.func-v[i]
+            f' = .func-v[f-idx]
             if f.decl.name == func-name {
                'c1.stdout{"- :" func-name " with " f.farg-c " args\n"}
             }
@@ -630,197 +630,197 @@ using 'expr-i {
       }
    }
    write-func(expr'expr) @case.write() @inline {
-      e'expr-func = expr;
-      f' = e.func-idx.ptr();
-      f.write();
+      e'expr-func = expr
+      f' = e.func-idx.ptr()
+      f.write()
       output{''(}
       loop i' = 0; e.carg-c; i++ {
          if i != 0 {
             output{", "}
          }
-         e.carg-v[i].expr.write-value(e.carg-v[i].value);
+         e.carg-v[i].expr.write-value(e.carg-v[i].value)
       }
       output{'')}
    }
    write-metafunc(expr'expr) @case.write() @inline {
-      i' = 0;
-      e'expr-meta-func = expr;
-      e.expr-v[i].write();
-      e-func'expr-func = e.expr-v[i].ptr();
-      f' = e-func.func-idx.ptr();
-      i++;
-      arg-c' = ((e.expr-c - 1) >> 1) - 1;
+      i' = 0
+      e'expr-meta-func = expr
+      e.expr-v[i].write()
+      e-func'expr-func = e.expr-v[i].ptr()
+      f' = e-func.func-idx.ptr()
+      i++
+      arg-c' = ((e.expr-c - 1) >> 1) - 1
       loop ; arg-c + 1; i++ {
          output{";\n"}
-         e.expr-v[i].write();
+         e.expr-v[i].write()
       }
       if f.meta-method-prefix2 != #nil {
          // C1.stdout{f.decl.name ", e.expr-c = " e.expr-c ''\n}
          loop ; arg-c + 1; i++ {
             output{";\n"}
-            e.expr-v[i].write();
+            e.expr-v[i].write()
          }
       }
    }
-   // id-end:Id;
-   // id-str:Id;
-   // id-cstr:Id;
+   // id-end:Id
+   // id-str:Id
+   // id-cstr:Id
    wr-func(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      e'expr-func = expr;
-      e.at.wr(w, header);
-      e.func-name.wr(w, header);
-      w.n1('u8(e.angle));
-      w.n1(e.group-c);
+      e'expr-func = expr
+      e.at.wr(w, header)
+      e.func-name.wr(w, header)
+      w.n1('u8(e.angle))
+      w.n1(e.group-c)
       loop i' = 0; e.group-c; i++ {
-         w.n1(e.group-v[i]);
+         w.n1(e.group-v[i])
       }
-      w.n1(e.carg-c);
+      w.n1(e.carg-c)
       loop i' = 0; e.carg-c; i++ {
-         e.carg-v[i].expr.wr(w, header);
+         e.carg-v[i].expr.wr(w, header)
       }
    }
    rd-func(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      'at.rd(at-idx?, r);
-      'id.rd(func-name?, r);
-      angle' = r.n1() != 0;
-      group-c' = r.n1();
-      group-v'u8[#expr-carg-group-limit];
+      'at.rd(at-idx?, r)
+      'id.rd(func-name?, r)
+      angle' = r.n1() != 0
+      group-c' = r.n1()
+      group-v'u8[#expr-carg-group-limit]
       loop i' = 0; group-c; i++ {
-         group-v[i] = r.n1();
+         group-v[i] = r.n1()
       }
-      carg-c' = r.n1();
-      carg-v'expr-i[256];
+      carg-c' = r.n1()
+      carg-v'expr-i[256]
       loop i' = 0; carg-c; i++ {
-         carg-v[i].rd(r);
+         carg-v[i].rd(r)
       }
-      set-func(e-idx, at-idx, func-name, angle, group-c, group-v, carg-c, carg-v);
+      set-func(e-idx, at-idx, func-name, angle, group-c, group-v, carg-c, carg-v)
    }
    set-func(e-idx'expr-i, at-idx'at, func-name'id, angle'bool, group-c'u8, group-v'u8[], carg-c'u8, carg-v'expr-i[]) {
-      e'expr-func;
-      quick-alloc-plus(e, 'carg['usz] * carg-c);
-      e-idx.set(e.base, #func);
-      e.at = at-idx;
-      e.func-name = func-name;
-      e.angle = angle;
-      e.group-c = group-c;
+      e'expr-func
+      quick-alloc-plus(e, 'carg['usz] * carg-c)
+      e-idx.set(e.base, #func)
+      e.at = at-idx
+      e.func-name = func-name
+      e.angle = angle
+      e.group-c = group-c
       loop i' = 0; group-c; i++ {
-         e.group-v[i] = group-v[i];
+         e.group-v[i] = group-v[i]
       }
-      e.carg-c = carg-c;
+      e.carg-c = carg-c
       loop i' = 0; carg-c; i++ {
-         e.carg-v[i].expr = carg-v[i];
+         e.carg-v[i].expr = carg-v[i]
       }
    }
    process-func(expr'expr, ok'bool&) @case.process() @inline {
-      e'expr-func = expr;
-      func-name' = e.func-name;
-      carg-c' = e.carg-c;
-      group-c' = e.group-c;
-      group-v' = e.group-v;
-      at-idx' = e.at;
-      type-v'at-data[16];
+      e'expr-func = expr
+      func-name' = e.func-name
+      carg-c' = e.carg-c
+      group-c' = e.group-c
+      group-v' = e.group-v
+      at-idx' = e.at
+      type-v'at-data[16]
       if e.angle {
          loop i' = 0; group-v[0]; i++ {
-            type-v[i] = e.carg-v[i].expr.type().ptr();
+            type-v[i] = e.carg-v[i].expr.type().ptr()
          }
       }
-      try-parent' = false;
+      try-parent' = false
       if at-idx == #nil {
-         at-idx = .ctx-func.at;
-         try-parent = true;
+         at-idx = .ctx-func.at
+         try-parent = true
       } else {
-         at-idx = at-validate(at-idx, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
-         e.at = at-idx;
+         at-idx = at-validate(at-idx, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col)
+         e.at = at-idx
       }
       loop {
-         at' = at-idx.ptr();
+         at' = at-idx.ptr()
          // if (&&, at.decl.struct == #nil, at.type != #basic, at.type != #module) {
          //    C1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot call function " func-name " because the type :" at.name.id " is not defined\n"}
-         //    return;
+         //    return
          // }
-         // found! = -1;
-         // similar-c! = 0;
+         // found! = -1
+         // similar-c! = 0
          // C1.stdout{"searching from " at.func-c " functions\n"}
          loop i' = 0; at.func-c; i++ {
-            f-idx' = at.func-v[i];
-            f' = f-idx.ptr();
+            f-idx' = at.func-v[i]
+            f' = f-idx.ptr()
             if f.decl.name != func-name { continue }
-            // found = i;
-            // similar-c++;
+            // found = i
+            // similar-c++
             if f.group-c != group-c { continue }
-            match' = true;
+            match' = true
             if (f.flags & #var-args) != #0 {
                if f.farg-c > carg-c { continue }
                loop j' = 0; group-c - 1; j++ {
                   if f.group-v[j] != group-v[j] {
-                     match = false;
-                     break;
+                     match = false
+                     break
                   }
                }
                if !match { continue }
-               j' = group-c - 1;
+               j' = group-c - 1
                if f.group-v[j] > group-v[j] {
-                  match = false;
+                  match = false
                }
             } else {
                if f.farg-c != carg-c { continue }
                loop j' = 0; group-c; j++ {
                   if f.group-v[j] != group-v[j] {
-                     match = false;
-                     break;
+                     match = false
+                     break
                   }
                }
             }
             if !match { continue }
             if f.angle != e.angle {
-               continue;
+               continue
             } elif e.angle {
                loop j' = 0; group-v[0]; j++ {
-                  type1' = type-v[j];
-                  type2' = f.farg-v[j].decl.type.ptr();
+                  type1' = type-v[j]
+                  type2' = f.farg-v[j].decl.type.ptr()
                   if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
-                     match = false;
-                     break;
+                     match = false
+                     break
                   }
                }
                if !match { continue }
             }
             if !f-idx.process-later() {
-               return;
+               return
             }
-            f-at' = f.at;
-            j' = 0;
+            f-at' = f.at
+            j' = 0
             loop ; f.farg-c; j++ {
-               ca' = e.carg-v[j];
+               ca' = e.carg-v[j]
                if !farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl, f-at, j, f.decl.name) { return }
             }
-            e.func-idx = f-idx;
+            e.func-idx = f-idx
             if (f.flags & #var-args) != #0 {
                loop ; e.carg-c - j; j++ {
-                  ca' = e.carg-v[j];
-                  r'i32;
+                  ca' = e.carg-v[j]
+                  r'i32
                   if ca.ref != 0 {
-                     r = 1 + ca.ref;
+                     r = 1 + ca.ref
                   } else {
-                     r = 1;
+                     r = 1
                   }
                   if !ca.expr.value(r, false, ca.value) { return }
                }
             }
-            e.func-idx = f-idx;
-            ok = true;
-            return;
+            e.func-idx = f-idx
+            ok = true
+            return
          }
          if !try-parent { break }
          if at-idx == #root { break }
-         at-idx = at.parent;
+         at-idx = at.parent
       }
       'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find function " func-name " with " carg-c " argument/s\n"}
       // if found != -1 {
       //    C1.stdout{"But found " similar-c " functions with different no. of argument/s:\n"}
       //    loop i' = 0; at.func-c; i++ {
-      //       f-idx! = at.func-v[i];
-      //       f! = .func-v[f-idx];
+      //       f-idx! = at.func-v[i]
+      //       f! = .func-v[f-idx]
       //       if f.decl.name == func-name {
       //          C1.stdout{"- :" func-name " with " f.farg-c " args\n"}
       //       }
@@ -828,37 +828,37 @@ using 'expr-i {
       // }
    }
    process-case-func(expr'expr, f-idx'func)'bool @inline {
-      e'expr-func = expr;
-      func-name' = e.func-name;
-      carg-c' = e.carg-c;
-      group-c' = e.group-c;
-      group-v' = e.group-v;
-      at' = .ctx-func.at.ptr();
+      e'expr-func = expr
+      func-name' = e.func-name
+      carg-c' = e.carg-c
+      group-c' = e.group-c
+      group-v' = e.group-v
+      at' = .ctx-func.at.ptr()
       if !f-idx.process-later() {
-         return false;
+         return false
       }
-      f' = f-idx.ptr();
-      f-at' = f.at;
-      j' = 0;
+      f' = f-idx.ptr()
+      f-at' = f.at
+      j' = 0
       loop ; f.farg-c; j++ {
-         ca' = e.carg-v[j];
+         ca' = e.carg-v[j]
          if !farg-process(ca.expr, ca.ref, ca.value, f.farg-v[j].decl, f-at, j, f.decl.name) { return false }
       }
-      e.func-idx = f-idx;
+      e.func-idx = f-idx
       if (f.flags & #var-args) != #0 {
          loop ; e.carg-c - j; j++ {
-            ca' = e.carg-v[j];
-            r'i32;
+            ca' = e.carg-v[j]
+            r'i32
             if ca.ref != 0 {
-               r = 1 + ca.ref;
+               r = 1 + ca.ref
             } else {
-               r = 1;
+               r = 1
             }
             if !ca.expr.value(r, false, ca.value) { return false }
          }
       }
-      e.func-idx = f-idx;
-      return true;
+      e.func-idx = f-idx
+      return true
    }
 }
  

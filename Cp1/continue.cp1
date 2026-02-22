@@ -1,41 +1,41 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
 struct 'stmt-continue[
    base'stmt.,
    nest'u8,
-];
+]
 stmt-continue(id'id, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32) {
-   s'stmt-continue;
-   quick-alloc-one(s);
-   stmt-push(s.base, begin-row, begin-col, end-row, end-col, #continue);
-   // s.id = id;
+   s'stmt-continue
+   quick-alloc-one(s)
+   stmt-push(s.base, begin-row, begin-col, end-row, end-col, #continue)
+   // s.id = id
    if .nest-stack-c <= 0 {
       'c1.stdout{.input-path '': begin-row '': begin-col ": Cannot have a continue because it:S not inside a loop\n"}
-      'c.exit(#failure);
+      'c.exit(#failure)
    }
-   s.nest = .nest-stack-c - 1;
+   s.nest = .nest-stack-c - 1
 }
 using 'stmt-space {
    wr-continue(stmt'stmt, w'wtr, header'bool) @case.wr() @inline {
-      s'stmt-continue = stmt;
-      w.n1(s.nest);
+      s'stmt-continue = stmt
+      w.n1(s.nest)
    }
    rd-continue(space'stmt-space, r'rdr) @case.rd() @inline {
-      s'stmt-continue;
-      quick-alloc-one(s);
-      s.nest = r.n1();
-      space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #continue);
+      s'stmt-continue
+      quick-alloc-one(s)
+      s.nest = r.n1()
+      space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #continue)
    }
 }
 using 'stmt {
    write-continue(stmt'stmt) @case.write() @inline {
-      s'stmt-continue = stmt;
+      s'stmt-continue = stmt
       output{"goto continue_" .nest-stack-id-v[s.nest] ";\n"}
    }
    process-continue(stmt'stmt, ok'bool&) @case.process() @inline {
-      s'stmt-continue = stmt;
-      ok = true;
+      s'stmt-continue = stmt
+      ok = true
    }
 }
  

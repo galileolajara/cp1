@@ -5,21 +5,21 @@ using 'libcp1 {
          using 'fmt {
    #  if .is-64bit {
             f-reserve<u'usz>(fmt'this, f'f-u64) @inline {
-               fmt.cap += 20;
-               f.u64 = u;
+               fmt.cap += 20
+               f.u64 = u
             }
             f-reserve<i'isz>(fmt'this, f'f-i64) @inline {
-               fmt.cap += 21;
-               f.i64 = i;
+               fmt.cap += 21
+               f.i64 = i
             }
    #  } else {
             f-reserve<u'usz>(fmt'this, f'f-u32) @inline {
-               fmt.cap += 10;
-               f.u32 = u;
+               fmt.cap += 10
+               f.u32 = u
             }
             f-reserve<i'isz>(fmt'this, f'f-i32) @inline {
-               fmt.cap += 11;
-               f.i32 = i;
+               fmt.cap += 11
+               f.i32 = i
             }
    #  }
          }

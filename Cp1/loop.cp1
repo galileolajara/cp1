@@ -1,99 +1,99 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
-union 'nest[do'stmt-loop, ref'ref];
-nest-stack-ptr-v'nest.[64];
-nest-stack-id-v'i32[64];
-nest-stack-c'u8;
-nest-id'i32;
+union 'nest[do'stmt-loop, ref'ref]
+nest-stack-ptr-v'nest.[64]
+nest-stack-id-v'i32[64]
+nest-stack-c'u8
+nest-id'i32
 using 'stmt-space {
    wr-loop(stmt'stmt, w'wtr, header'bool) @case.wr() @inline {
-      s'stmt-loop = stmt;
-      s.expr.wr(w, header);
+      s'stmt-loop = stmt
+      s.expr.wr(w, header)
       if s.continu != null {
-         w.b(true);
-         s.continu.wr(w, header);
+         w.b(true)
+         s.continu.wr(w, header)
       } else {
-         w.b(false);
+         w.b(false)
       }
    }
    rd-loop(space'stmt-space, r'rdr) @case.rd() @inline {
-      s'stmt-loop;
-      quick-alloc-one(s);
-      s.expr.rd(r);
-      space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #loop);
+      s'stmt-loop
+      quick-alloc-one(s)
+      s.expr.rd(r)
+      space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #loop)
       if r.b() {
-         space2'stmt-space;
-         quick-alloc-one(space2);
-         s.continu = space2;
-         space2.rd(r, space);
+         space2'stmt-space
+         quick-alloc-one(space2)
+         s.continu = space2
+         space2.rd(r, space)
       }
-      .nest-stack-id-v[.nest-stack-c] = .nest-id++;
-      .nest-stack-ptr-v[.nest-stack-c].do = s;
-      .nest-stack-c++;
+      .nest-stack-id-v[.nest-stack-c] = .nest-id++
+      .nest-stack-ptr-v[.nest-stack-c].do = s
+      .nest-stack-c++
    }
    wr-loop-end(stmt'stmt, w'wtr, header'bool) @case.wr() @inline {
    }
    rd-loop-end(space'stmt-space, r'rdr) @case.rd() @inline {
-      do' = .nest-stack-ptr-v[.nest-stack-c -= 1].do;
-      s'stmt-loop-end;
-      quick-alloc-one(s);
-      s.do = do;
-      do.end = s;
-      space.stmt-push(s.base, 0, 0, 0, 0, #loop-end);
+      do' = .nest-stack-ptr-v[.nest-stack-c -= 1].do
+      s'stmt-loop-end
+      quick-alloc-one(s)
+      s.do = do
+      do.end = s
+      space.stmt-push(s.base, 0, 0, 0, 0, #loop-end)
    }
 }
 using 'stmt {
    write-loop(stmt'stmt) @case.write() @inline {
-      s'stmt-loop = stmt;
-      .nest-stack-id-v[.nest-stack-c] = .nest-id++;
-      .nest-stack-ptr-v[.nest-stack-c].do = s;
-      .nest-stack-c++;
+      s'stmt-loop = stmt
+      .nest-stack-id-v[.nest-stack-c] = .nest-id++
+      .nest-stack-ptr-v[.nest-stack-c].do = s
+      .nest-stack-c++
       if s.expr == #nil {
          output{"while(1) {\n"}
       } else {
          if (&&, s.val.type == basic-type(#bool), s.val.info.star-c == 0) {
             output{"while("}
-            s.expr.write-value(s.val);
+            s.expr.write-value(s.val)
             output{") {\n"}
          } else {
             output{"for(int i = "}
-            s.expr.write-value(s.val);
+            s.expr.write-value(s.val)
             output{"; i > 0; ) {\ni --;\n"}
          }
       }
    }
    process-loop(stmt'stmt, ok'bool&) @case.process() @inline {
-      s'stmt-loop = stmt;
+      s'stmt-loop = stmt
       if s.expr != #nil {
          if !s.expr.value(1, false, s.val) {
-            return;
+            return
          }
       }
-      ok = true;
+      ok = true
    }
    write-loop-end(stmt'stmt) @case.write() @inline {
-      id' = .nest-stack-id-v[.nest-stack-c -= 1];
-      s'stmt-loop-end = stmt;
+      id' = .nest-stack-id-v[.nest-stack-c -= 1]
+      s'stmt-loop-end = stmt
       output{"continue_" id ":;\n"}
-      continu' = s.do.continu;
+      continu' = s.do.continu
       if continu != null {
-         continu.write();
+         continu.write()
       }
       output{"}\nbreak_" id ":;\n"}
    }
    process-loop-end(stmt'stmt, ok'bool&) @case.process() @inline {
-      s'stmt-loop-end = stmt;
-      continu' = s.do.continu;
+      s'stmt-loop-end = stmt
+      continu' = s.do.continu
       if continu != null {
          if !continu.process() { return }
       }
-      ok = true;
+      ok = true
    }
 }
 stmt-loop-begin() {
-   stmt-space-begin();
-   .decl-func-ctx-space.flags |= #skip-lvar-decl;
+   stmt-space-begin()
+   .decl-func-ctx-space.flags |= #skip-lvar-decl
 }
 struct 'stmt-loop[
    base'stmt.,
@@ -101,29 +101,29 @@ struct 'stmt-loop[
    val'value.,
    continu'stmt-space,
    end'stmt-loop-end,
-];
+]
 struct 'stmt-loop-end[
    base'stmt.,
    do'stmt-loop,
-];
+]
 stmt-loop-set(expr'expr-i, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32, continu'stmt-space) {
-   s'stmt-loop;
-   quick-alloc-one(s);
-   .nest-stack-id-v[.nest-stack-c] = .nest-id++;
-   .nest-stack-ptr-v[.nest-stack-c].do = s;
-   .nest-stack-c++;
-   s.expr = expr;
-   s.continu = continu;
-   stmt-push(s.base, begin-row, begin-col, end-row, end-col, #loop);
-   stmt-space-begin();
+   s'stmt-loop
+   quick-alloc-one(s)
+   .nest-stack-id-v[.nest-stack-c] = .nest-id++
+   .nest-stack-ptr-v[.nest-stack-c].do = s
+   .nest-stack-c++
+   s.expr = expr
+   s.continu = continu
+   stmt-push(s.base, begin-row, begin-col, end-row, end-col, #loop)
+   stmt-space-begin()
 }
 stmt-loop-end() {
-   .nest-stack-c -= 1;
-   stmt-space-end();
-   s'stmt-loop-end;
-   quick-alloc-one(s);
-   stmt-push(s.base, 0, 0, 0, 0, #loop-end);
-   stmt-space-end();
+   .nest-stack-c -= 1
+   stmt-space-end()
+   s'stmt-loop-end
+   quick-alloc-one(s)
+   stmt-push(s.base, 0, 0, 0, 0, #loop-end)
+   stmt-space-end()
 }
  
 

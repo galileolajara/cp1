@@ -1,26 +1,26 @@
-require "LibCp1/stdout.cp1";
+require "LibCp1/stdout.cp1"
 
-using 'c1 = 'libcp1;
+'c1 = 'libcp1
 
 struct 'coord[x'i32, y'i32] { // a struct
    init(s'this) { // a method
-      s.x = 0;
-      s.y = 0;
+      s.x = 0
+      s.y = 0
    }
    walk(s'this, dir'dir) { // a method
-      dir.print();
+      dir.print()
       switch dir {
          case #left {
-            s.x++;
+            s.x++
          }
          case #up {
-            s.y++;
+            s.y++
          }
          case #right {
-            s.x--;
+            s.x--
          }
          case #down {
-            s.y--;
+            s.y--
          }
       }
    }
@@ -50,17 +50,17 @@ using 'i32 { // access the namespace of 32-bit int, then add a "print" and "incr
       'c1.stdout{"Int's value is " i "\n"}
    }
    inc(i'this&) {
-      i++;
+      i++
    }
 }
 main()'cint {
    'coord.init(s'); // s is automatically declared as a coord allocated in the stack
-   s.walk(#left);
-   s.walk(#down);
+   s.walk(#left)
+   s.walk(#down)
    'c1.stdout{"The location is at (" s.x ", " s.y ")\n"}
-   i' = 'i32(7);
-   i.print();
-   i.inc();
-   i.print();
-   return 0;
+   i' = 'i32(7)
+   i.print()
+   i.inc()
+   i.print()
+   return 0
 }

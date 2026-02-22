@@ -2047,12 +2047,12 @@ struct _Tlibcp1_Tfmt _L_181 = {0};
 struct _Tlibcp1_Tfmt_Tf_cstr _L_182 = {0};
 struct _Tlibcp1_Tfmt _L_183 = {0};
 _Tcp1_Fjscode_1(&_L_110);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_110, "let cp1_out = [];\n"
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_110, "let cp1_out = []\n"
 "function O(line) {\n"
-"   cp1_out.push(line);\n"
+"   cp1_out.push(line)\n"
 "}\n"
-"let cp1_path = scriptArgs[0] + \".cp1\";\n"
-"let D = {};\n", 113u, &_L_109);
+"let cp1_path = scriptArgs[0] + \".cp1\"\n"
+"let D = {}\n", 109u, &_L_109);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_110);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_109, &_L_110);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_110);
@@ -2170,59 +2170,59 @@ _Lat_idx_135++;
 }
 break_15:;
 _Tcp1_Fjscode_1(&_L_144);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_144, "};\n"
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_144, "}\n"
 "for (let key in cp1_refl) {\n"
-"   let type = cp1_refl[key];\n"
-"   let types = type.types = {};\n"
+"   let type = cp1_refl[key]\n"
+"   let types = type.types = {}\n"
 "   if (key == \"root\") {\n"
 "      for (let type2 of type.typev) {\n"
-"         let child = cp1_refl[type2];\n"
-"         types[type2] = child;\n"
-"         child.parent = key;\n"
+"         let child = cp1_refl[type2]\n"
+"         types[type2] = child\n"
+"         child.parent = key\n"
 "      }\n"
 "   } else {\n"
 "      for (let type2 of type.typev) {\n"
-"         let child = cp1_refl[key + \".\" + type2];\n"
-"         types[type2] = child;\n"
-"         child.parent = key;\n"
+"         let child = cp1_refl[key + \".\" + type2]\n"
+"         types[type2] = child\n"
+"         child.parent = key\n"
 "      }\n"
 "   }\n"
-"   let functions = type.functions = {};\n"
+"   let functions = type.functions = {}\n"
 "   for (let func of type.functionv) {\n"
-"      functions[func.name] = func;\n"
+"      functions[func.name] = func\n"
 "   }\n"
 "}\n"
 "function cp1_resolve_type(type, name) {\n"
-"   if (!type.startsWith(\"..\")) return type;\n"
-"   let key = name + type.substr(1);\n"
+"   if (!type.startsWith(\"..\")) return type\n"
+"   let key = name + type.substr(1)\n"
 "   if (key in cp1_refl) {\n"
-"      return key;\n"
+"      return key\n"
 "   }\n"
-"   let parent = cp1_refl[name].parent;\n"
-"   key = parent + type.substr(1);\n"
+"   let parent = cp1_refl[name].parent\n"
+"   key = parent + type.substr(1)\n"
 "   if (key in cp1_refl) {\n"
-"      return key;\n"
+"      return key\n"
 "   }\n"
 "   while (parent in cp1_refl) {\n"
-"      parent = cp1_refl[parent].parent;\n"
-"      key = parent + type.substr(1);\n"
+"      parent = cp1_refl[parent].parent\n"
+"      key = parent + type.substr(1)\n"
 "      if (key in cp1_refl) {\n"
-"         return key;\n"
+"         return key\n"
 "      }\n"
 "   }\n"
-"   return type;\n"
+"   return type\n"
 "}\n"
 "for (let key in cp1_refl) {\n"
-"   let type = cp1_refl[key];\n"
+"   let type = cp1_refl[key]\n"
 "   for (let func of type.functionv) {\n"
 "      for (let argv of func.argvv) {\n"
 "         for (let arg of argv) {\n"
-"            arg.type = cp1_resolve_type(arg.type, key);\n"
+"            arg.type = cp1_resolve_type(arg.type, key)\n"
 "         }\n"
 "      }\n"
-"      func.type = cp1_resolve_type(func.type, key);\n"
+"      func.type = cp1_resolve_type(func.type, key)\n"
 "   }\n"
-"}\n", 1333u, &_L_143);
+"}\n", 1309u, &_L_143);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_144);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_143, &_L_144);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_144);
@@ -2240,7 +2240,7 @@ if((*_Ltc_100)._Mno_cache) {
 struct _Tlibcp1_Tfmt_Tf_cstr _L_150 = {0};
 struct _Tlibcp1_Tfmt _L_151 = {0};
 _Tcp1_Fjscode_1(&_L_151);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_151, "O(\"// XXXXXXXX - CRC32C\\n\");\n", 29u, &_L_150);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_151, "O(\"// XXXXXXXX - CRC32C\\n\")\n", 28u, &_L_150);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_151);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_150, &_L_151);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_151);
@@ -2250,8 +2250,8 @@ struct _Tlibcp1_Tfmt _L_153 = {0};
 struct _Tlibcp1_Tfmt_Tf_cstr _L_154 = {0};
 struct _Tlibcp1_Tfmt _L_155 = {0};
 _Tcp1_Fjscode_1(&_L_153);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_153, "if (\"cp1_no_cache\" in arg) O(\"// XXXXXXXX - CRC32C\\n\");\n"
-"else O(\"", 64u, &_L_152);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_153, "if (\"cp1_no_cache\" in arg) O(\"// XXXXXXXX - CRC32C\\n\")\n"
+"else O(\"", 63u, &_L_152);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_153);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_152, &_L_153);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_153);
@@ -2275,7 +2275,7 @@ if(_Lline_len_159 == 0) {
 struct _Tlibcp1_Tfmt_Tf_cstr _L_160 = {0};
 struct _Tlibcp1_Tfmt _L_161 = {0};
 _Tcp1_Fjscode_1(&_L_161);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_161, "O(\"\\n\");\n", 9u, &_L_160);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_161, "O(\"\\n\")\n", 8u, &_L_160);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_161);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_160, &_L_161);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_161);
@@ -2337,18 +2337,18 @@ _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_178, &_L_179);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_179);
 #else
 _Tcp1_Fjscode_1(&_L_181);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_181, "   let tmp_path = scriptArgs[0] + \".cp1-\" + os.getpid();\n", 57u, &_L_180);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_181, "   let tmp_path = scriptArgs[0] + \".cp1-\" + os.getpid()\n", 56u, &_L_180);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_181);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_180, &_L_181);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_181);
 #endif
 _Tcp1_Fjscode_1(&_L_183);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_183, "   let file = std.open(tmp_path, \"wb\");\n"
-"   file.puts(cp1_out.join(\"\"));\n"
-"   file.close();\n"
-"   if (os.platform == \"win32\") os.remove(cp1_path);\n"
-"   os.rename(tmp_path, cp1_path);\n"
-"}\n", 177u, &_L_182);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_183, "   let file = std.open(tmp_path, \"wb\")\n"
+"   file.puts(cp1_out.join(\"\"))\n"
+"   file.close()\n"
+"   if (os.platform == \"win32\") os.remove(cp1_path)\n"
+"   os.rename(tmp_path, cp1_path)\n"
+"}\n", 172u, &_L_182);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_183);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_182, &_L_183);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_183);
@@ -2367,23 +2367,23 @@ uint32_t _Lline_num_216;
 struct _Tlibcp1_Tfmt_Tf_cstr _L_239 = {0};
 struct _Tlibcp1_Tfmt _L_240 = {0};
 _Tcp1_Fjscode_1(&_L_185);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_185, "is-64bit'bool;\n"
-"no-cache'bool;\n"
-"using 'c = 'libc;\n"
-"using 'c1 = 'libcp1;\n"
-"using 'x = 'posix;\n"
-"O(str'char @const[], len'u32) @no-decl;\n"
-"D-is(key'char[], key-len'u8, val'char[], val-len'u8)'bool @no-decl;\n"
-"L() @no-decl;\n"
-"D(key'char[], key-len'u8, val'char[], val-len'u8) @no-decl;\n"
-"R(str'char[], len'u32) @no-decl;\n"
-"main() {\n", 312u, &_L_184);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_185, "is-64bit'bool\n"
+"no-cache'bool\n"
+"'c = 'libc\n"
+"'c1 = 'libcp1\n"
+"'x = 'posix\n"
+"O(str'char @const[], len'u32) @no-decl\n"
+"D-is(key'char[], key-len'u8, val'char[], val-len'u8)'bool @no-decl\n"
+"L() @no-decl\n"
+"D(key'char[], key-len'u8, val'char[], val-len'u8) @no-decl\n"
+"R(str'char[], len'u32) @no-decl\n"
+"main() {\n", 284u, &_L_184);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_185);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_184, &_L_185);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_185);
 #if INTPTR_MAX == INT64_MAX
 _Tcp1_Fjscode_1(&_L_187);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_187, ".is-64bit = true;\n", 18u, &_L_186);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_187, ".is-64bit = true\n", 17u, &_L_186);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_187);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_186, &_L_187);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_187);
@@ -2420,7 +2420,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_203, "D(\"", 3u, &_L_196);
 _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Ldef_189, _Lr_eq_193._Mpos - _Lr_def_192._Mpos, &_L_203, &_L_197);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_203, "\"#, \"", 5u, &_L_198);
 _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lr_val_194._Mchar, _Lr_end_195._Mpos - _Lr_val_194._Mpos, &_L_203, &_L_199);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_203, "\"#);\n", 5u, &_L_200);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_203, "\"#)\n", 4u, &_L_200);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_203);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_196, &_L_203);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_197, &_L_203);
@@ -2444,7 +2444,7 @@ if((*_Ltc_100)._Mno_cache) {
 struct _Tlibcp1_Tfmt_Tf_cstr _L_208 = {0};
 struct _Tlibcp1_Tfmt _L_209 = {0};
 _Tcp1_Fjscode_1(&_L_209);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_209, "O(\"// XXXXXXXX - CRC32C\\n\"#);\n", 30u, &_L_208);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_209, "O(\"// XXXXXXXX - CRC32C\\n\"#)\n", 29u, &_L_208);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_209);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_208, &_L_209);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_209);
@@ -2479,7 +2479,7 @@ if(_Lline_len_217 == 0) {
 struct _Tlibcp1_Tfmt_Tf_cstr _L_218 = {0};
 struct _Tlibcp1_Tfmt _L_219 = {0};
 _Tcp1_Fjscode_1(&_L_219);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_219, "L();\n", 5u, &_L_218);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_219, "L()\n", 4u, &_L_218);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_219);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_218, &_L_219);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_219);
@@ -2499,7 +2499,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_227, "O('= ", 5u, &_L_221);
 _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lline_220, _Lline_len_217, &_L_227, &_L_222);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_227, "\n , ", 4u, &_L_223);
 _Tlibcp1_Tfmt_Ff_reserve_Tu16_1_2(_Lline_len_217 + 1, &_L_227, &_L_224);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_227, ");\n", 3u, &_L_225);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_227, ")\n", 2u, &_L_225);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_227);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_221, &_L_227);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_222, &_L_227);
@@ -2520,7 +2520,7 @@ _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_234, "R('= ", 5u, &_L_228);
 _Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lline_220, _Lline_len_217, &_L_234, &_L_229);
 _Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_234, " , ", 3u, &_L_230);
 _Tlibcp1_Tfmt_Ff_reserve_Tu16_1_2(_Lline_len_217, &_L_234, &_L_231);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_234, ");\n", 3u, &_L_232);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_234, ")\n", 2u, &_L_232);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_234);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_228, &_L_234);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_229, &_L_234);
@@ -2552,8 +2552,8 @@ continue_18:;
 }
 break_18:;
 _Tcp1_Fjscode_1(&_L_240);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_240, "return;\n"
-"}\n", 10u, &_L_239);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_240, "return\n"
+"}\n", 9u, &_L_239);
 _Tlibcp1_Tfmt_Ff_reserve_jscode_1(&_L_240);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_239, &_L_240);
 _Tlibcp1_Tfmt_Ff_jscode_1(&_L_240);
@@ -4869,7 +4869,9 @@ memcpy(&(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen], (*_Lf_0)._Mstr, (*_Lf_0)._Mlen);
 }
 static inline void _Tlibcp1_Tfmt_Ff_stdout_1(struct _Tlibcp1_Tfmt* _Lfmt_0) {
 #ifdef LIBCP1_ON_STDOUT
+if(true) {
 LIBCP1_ON_STDOUT(_Lfmt_0->_Mptr, _Lfmt_0->_Mlen);
+}
 #else
 write(((_Tposix_Tfd)(1)), (*_Lfmt_0)._Mptr, (*_Lfmt_0)._Mlen);
 #endif

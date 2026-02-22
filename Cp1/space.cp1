@@ -1,5 +1,5 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
 enum 'stmt-space-flags[
    #0,
@@ -17,240 +17,240 @@ struct 'stmt-space[
    lvar-v'lvar[],
    ] {
    rd-space(space'stmt-space, r'rdr) @case.rd() @inline {
-      s'stmt-space;
-      quick-alloc-one(s);
-      s.rd(r, space);
-      space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #space);
+      s'stmt-space
+      quick-alloc-one(s)
+      s.rd(r, space)
+      space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #space)
    }
    write(space'this) {
       // output{"{ // space begin \n"}
-      i'lvar, lvar-c'lvar;
+      i'lvar, lvar-c'lvar
       if space.parent == null {
          // dont write arguments
-         i = 'lvar(.ctx-func.farg-c);
-         lvar-c = 'lvar(space.lvar-c - .ctx-func.farg-c);
+         i = 'lvar(.ctx-func.farg-c)
+         lvar-c = 'lvar(space.lvar-c - .ctx-func.farg-c)
       } else {
-         i = 'lvar(0);
-         lvar-c = 'lvar(space.lvar-c);
+         i = 'lvar(0)
+         lvar-c = 'lvar(space.lvar-c)
       }
       loop ; lvar-c; i++ {
-         lvar-i' = space.lvar-v[i];
-         lvar' = lvar-i.ptr();
+         lvar-i' = space.lvar-v[i]
+         lvar' = lvar-i.ptr()
          // C1.stdout{lvar.decl.name "'s lvar.decl.type = " lvar.decl.type:u32 ''\n}
          if (lvar.decl.type == #nil) && (lvar.decl.name == .id-blank) {
             // Don't output a parser-generated lif it was not used
          } else {
-            lvar.decl.write-lvar-type(lvar-i);
+            lvar.decl.write-lvar-type(lvar-i)
             if (lvar.flags & #set-expr) != #0 {
                output{" = {0}"}
-               // lvar.set-expr.write();
+               // lvar.set-expr.write()
             }
             output{";\n"}
          }
       }
-      s' = space.stmt-first;
+      s' = space.stmt-first
       loop s != null {
          if .debug-func-prefix != null {
-            row' = s.begin-row;
+            row' = s.begin-row
             if row != 0 {
                output{.debug-func-prefix, .debug-func-prefix-len "_line(" row ");\n"}
             }
          }
-         s.write();
-         s = s.stmt-next;
+         s.write()
+         s = s.stmt-next
       }
       // output{"} // space end\n"}
    }
    lvar-new(space'this, name'id, row'u32, col'u32)'lvar {
-      return space.lvar-new(name, row, col, true);
+      return space.lvar-new(name, row, col, true)
    }
    lvar-new(space'this, name'id, row'u32, col'u32, check-duplicate'bool)'lvar {
       if check-duplicate {
-         v' = space.lvar-v;
+         v' = space.lvar-v
          loop i' = 0; space.lvar-c; i++ {
-            lvar' = v[i].ptr();
+            lvar' = v[i].ptr()
             if lvar.decl.name == name {
                'c1.stdout{.input-path '': row '': col ": lvar '" name.str() "' was already declared at " lvar.row '': lvar.col ''\n}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
          }
       }
-      i' = space.lvar-c++;
+      i' = space.lvar-c++
       if space.lvar-cap <= space.lvar-c {
-         old-cap' = space.lvar-cap;
-         grow(space.lvar-cap, space.lvar-c);
-         realloc(space.lvar-v, space.lvar-cap, old-cap);
+         old-cap' = space.lvar-cap
+         grow(space.lvar-cap, space.lvar-c)
+         realloc(space.lvar-v, space.lvar-cap, old-cap)
       }
-      f' = .ctx-func;
-      lvar' = f.lvar-c++;
-      space.lvar-v[i] = lvar;
+      f' = .ctx-func
+      lvar' = f.lvar-c++
+      space.lvar-v[i] = lvar
       if f.lvar-cap <= f.lvar-c {
-         old-cap' = f.lvar-cap;
-         f.lvar-cap = 'lvar(grow('base(f.lvar-c)));
-         realloc(f.lvar-v, 'base(f.lvar-cap), 'base(old-cap));
+         old-cap' = f.lvar-cap
+         f.lvar-cap = 'lvar(grow('base(f.lvar-c)))
+         realloc(f.lvar-v, 'base(f.lvar-cap), 'base(old-cap))
       }
-      item'lvar-data;
-      quick-alloc-one(item);
-      f.lvar-v[lvar] = item;
-      item.row = row;
-      item.col = col;
-      item.decl.name = name;
-      item.decl.type = #nil;
-      return lvar;
+      item'lvar-data
+      quick-alloc-one(item)
+      f.lvar-v[lvar] = item
+      item.row = row
+      item.col = col
+      item.decl.name = name
+      item.decl.type = #nil
+      return lvar
    }
    wr-space(stmt'stmt, w'wtr, header'bool) @case.wr() @inline {
-      s'stmt-space = stmt;
-      s.wr(w, header);
+      s'stmt-space = stmt
+      s.wr(w, header)
    }
    wr(space'this, w'wtr, header'bool) {
-      w.n(space.lvar-c);
+      w.n(space.lvar-c)
       loop i' = 0; space.lvar-c; i++ {
-         space.lvar-v[i].wr(w);
+         space.lvar-v[i].wr(w)
       }
-      stmt' = space.stmt-first;
+      stmt' = space.stmt-first
       loop stmt != null {
-         stmt.type.wr(w);
+         stmt.type.wr(w)
          if #debug-rd-wr {
-            w.n1(255);
+            w.n1(255)
          }
-         w.n(stmt.begin-row);
-         w.n(stmt.begin-col);
-         w.n(stmt.end-row);
-         w.n(stmt.end-col);
-         .ctx-begin-row = stmt.begin-row;
-         .ctx-begin-col = stmt.begin-col;
-         .ctx-end-row = stmt.end-row;
-         .ctx-end-col = stmt.end-col;
+         w.n(stmt.begin-row)
+         w.n(stmt.begin-col)
+         w.n(stmt.end-row)
+         w.n(stmt.end-col)
+         .ctx-begin-row = stmt.begin-row
+         .ctx-begin-col = stmt.begin-col
+         .ctx-end-row = stmt.end-row
+         .ctx-end-col = stmt.end-col
          switch.wr(stmt, w, header) stmt.type {
             default {
                'c1.stdout{"wr() not yet implemented in stmt #" stmt.type.cp1-name() ''\n}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
          }
          if #debug-rd-wr {
-            w.n1(255);
+            w.n1(255)
          }
-         stmt = stmt.stmt-next;
+         stmt = stmt.stmt-next
       }
-      'stmt-type#nil.wr(w);
+      'stmt-type#nil.wr(w)
    }
    stmt-push(s'this, s2'stmt, begin-row'u32, begin-col'u32, end-row'u32, end-col'u32, type'stmt-type) @inline {
-      s2.begin-row = begin-row;
-      s2.begin-col = begin-col;
-      s2.end-row = end-row;
-      s2.end-col = end-col;
-      s2.type = type;
-      s2.stmt-next = null;
+      s2.begin-row = begin-row
+      s2.begin-col = begin-col
+      s2.end-row = end-row
+      s2.end-col = end-col
+      s2.type = type
+      s2.stmt-next = null
       if s.stmt-last == null {
-         s.stmt-first = s2;
-         s.stmt-last = s2;
+         s.stmt-first = s2
+         s.stmt-last = s2
       } else {
-         s.stmt-last.stmt-next = s2;
-         s.stmt-last = s2;
+         s.stmt-last.stmt-next = s2
+         s.stmt-last = s2
       }
    }
    rd(space'this, r'rdr, parent'stmt-space) {
-      space.parent = parent;
-      space.stmt-first = null;
-      space.stmt-last = null;
+      space.parent = parent
+      space.stmt-first = null
+      space.stmt-last = null
 
-      lvar-c' = r.n();
-      space.lvar-c = lvar-c;
-      quick-alloc-arr(space.lvar-v, lvar-c);
+      lvar-c' = r.n()
+      space.lvar-c = lvar-c
+      quick-alloc-arr(space.lvar-v, lvar-c)
       loop i' = 0; lvar-c; i++ {
-         space.lvar-v[i].rd(r);
+         space.lvar-v[i].rd(r)
       }
 
       loop {
-         'stmt-type.rd(type?, r);
+         'stmt-type.rd(type?, r)
          if type == #nil { break }
          if #debug-rd-wr {
             if r.n1() != 255 {
                'c1.stdout{"Error reading stmt\n"}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
          }
-         begin-row' = r.n();
-         begin-col' = r.n();
-         end-row' = r.n();
-         end-col' = r.n();
-         .ctx-begin-row = begin-row;
-         .ctx-begin-col = begin-col;
-         .ctx-end-row = end-row;
-         .ctx-end-col = end-col;
+         begin-row' = r.n()
+         begin-col' = r.n()
+         end-row' = r.n()
+         end-col' = r.n()
+         .ctx-begin-row = begin-row
+         .ctx-begin-col = begin-col
+         .ctx-end-row = end-row
+         .ctx-end-col = end-col
          switch.rd(space, r) type {
             default {
                'c1.stdout{"rd() not yet implemented in stmt #" type.cp1-name() ''\n}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
          }
          if #debug-rd-wr {
             if r.n1() != 255 {
                'c1.stdout{"Error reading stmt\n"}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
          }
       }
    }
    process(space'this)'bool {
-      s' = space.stmt-first;
+      s' = space.stmt-first
       loop s != null {
          if !s.process() { return false }
-         s = s.stmt-next;
+         s = s.stmt-next
       }
-      i';
-      lvar-c';
+      i'
+      lvar-c'
       if space.parent == null {
          // don:T process arguments
-         i = .ctx-func.farg-c;
-         lvar-c = space.lvar-c - .ctx-func.farg-c;
+         i = .ctx-func.farg-c
+         lvar-c = space.lvar-c - .ctx-func.farg-c
       } else {
-         i = 0;
-         lvar-c = space.lvar-c;
+         i = 0
+         lvar-c = space.lvar-c
       }
       loop ; lvar-c; i++ {
          if !space.lvar-v[i].process() { return false }
       }
-      return true;
+      return true
    }
 }
 using 'stmt {
    process-space(stmt'stmt, ok'bool&) @case.process() @inline {
-      space'stmt-space = stmt;
+      space'stmt-space = stmt
       if !space.process() { return }
-      ok = true;
+      ok = true
    }
    write-space(stmt'stmt) @case.write() @inline {
-      space'stmt-space = stmt;
-      space.write();
+      space'stmt-space = stmt
+      space.write()
    }
 }
 stmt-space-begin()'stmt-space {
-   return stmt-space-begin(true);
+   return stmt-space-begin(true)
 }
 stmt-space-begin(attach'bool)'stmt-space {
-   parent' = .decl-func-ctx-space;
-   quick-alloc-one(.decl-func-ctx-space);
-   space' = .decl-func-ctx-space;
-   space.parent = parent;
+   parent' = .decl-func-ctx-space
+   quick-alloc-one(.decl-func-ctx-space)
+   space' = .decl-func-ctx-space
+   space.parent = parent
    if attach {
       if parent.stmt-last == null {
-         parent.stmt-first = space.base;
-         parent.stmt-last = space.base;
+         parent.stmt-first = space.base
+         parent.stmt-last = space.base
       } else {
-         parent.stmt-last.stmt-next = space.base;
-         parent.stmt-last = space.base;
+         parent.stmt-last.stmt-next = space.base
+         parent.stmt-last = space.base
       }
    }
-   return space;
+   return space
 }
 stmt-space-begin-detach()'stmt-space {
-   return stmt-space-begin(false);
+   return stmt-space-begin(false)
 }
 stmt-space-end()'stmt-space {
-   ret' = .decl-func-ctx-space;
-   .decl-func-ctx-space = .decl-func-ctx-space.parent;
-   return ret;
+   ret' = .decl-func-ctx-space
+   .decl-func-ctx-space = .decl-func-ctx-space.parent
+   return ret
 }
  
 

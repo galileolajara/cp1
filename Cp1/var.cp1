@@ -1,166 +1,166 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
 enum 'decl-var[]'u32 {
    ptr(v'this)'decl-var-data @inline {
-      return .var-v[v];
+      return .var-v[v]
    }
 }
-#decl-var-size-limit'i32 = 8;
+#decl-var-size-limit'i32 = 8
 at-validate(vd-type'at, at-i'at, file'file, row'u32, col'u32)'at {
-   type' = vd-type.ptr();
-   parent-idx' = type.parent;
-   parent' = parent-idx.ptr();
+   type' = vd-type.ptr()
+   parent-idx' = type.parent
+   parent' = parent-idx.ptr()
    if (&&, parent.type == #basic, parent.name.basic == #relative) {
-      name' = type.name;
+      name' = type.name
       loop {
          loop i' = 'at(0); .at-c; i++ {
             if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
                if .at-v[i].name.id == name.id {
-                  return i;
+                  return i
                }
             }
          }
          if at-i == #root { break }
-         at-i = at-i.ptr().parent;
+         at-i = at-i.ptr().parent
       }
       'c1.stdout{file '': row '': col ": Type '" name.id "' was not found\n"}
-      return #nil;
+      return #nil
    } elif parent-idx != #root {
-      parent2-idx' = parent.parent;
-      parent2' = parent2-idx.ptr();
+      parent2-idx' = parent.parent
+      parent2' = parent2-idx.ptr()
       if (&&, parent2.type == #basic, parent2.name.basic == #relative) {
-         name' = parent.name;
+         name' = parent.name
          loop {
             loop i' = 'at(0); .at-c; i++ {
                if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
                   if .at-v[i].name.id == name.id {
-                     name2' = type.name;
+                     name2' = type.name
                      loop j' = 'at(0); .at-c; j++ {
                         if (&&, .at-v[j].parent == i, .at-v[i].type != #basic) {
                            if .at-v[j].name.id == name2.id {
-                              return j;
+                              return j
                            }
                         }
                      }
                      'c1.stdout{file '': row '': col ": Type '" name2.id "' was not found in '" name.id "'\n"}
-                     return #nil;
+                     return #nil
                   }
                }
             }
             if at-i == #root { break }
-            at-i = at-i.ptr().parent;
+            at-i = at-i.ptr().parent
          }
          'c1.stdout{file '': row '': col ": Type '" name.id "' was not found\n"}
-         return #nil;
+         return #nil
       } elif parent2-idx != #root {
-         parent3-idx' = parent2.parent;
-         parent3' = parent3-idx.ptr();
+         parent3-idx' = parent2.parent
+         parent3' = parent3-idx.ptr()
          if (&&, parent3.type == #basic, parent3.name.basic == #relative) {
-            name' = parent2.name;
+            name' = parent2.name
             loop {
                loop i' = 'at(0); .at-c; i++ {
                   if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
                      if .at-v[i].name.id == name.id {
-                        name2' = parent.name;
+                        name2' = parent.name
                         loop j' = 'at(0); .at-c; j++ {
                            if (&&, .at-v[j].parent == i, .at-v[j].type != #basic) {
                               if .at-v[j].name.id == name2.id {
-                                 name3' = type.name;
+                                 name3' = type.name
                                  loop k' = 'at(0); .at-c; k++ {
                                     if (&&, .at-v[k].parent == j, .at-v[k].type != #basic) {
                                        if .at-v[k].name.id == name3.id {
-                                          return k;
+                                          return k
                                        }
                                     }
                                  }
                                  'c1.stdout{file '': row '': col ": Type '" name3.id "' was not found in '" name2.id "'\n"}
-                                 return #nil;
+                                 return #nil
                               }
                            }
                         }
                         'c1.stdout{file '': row '': col ": Type '" name2.id "' was not found in '" name.id "'\n"}
-                        return #nil;
+                        return #nil
                      }
                   }
                }
                if at-i == #root { break }
-               at-i = at-i.ptr().parent;
+               at-i = at-i.ptr().parent
             }
             'c1.stdout{file '': row '': col ": Type '" name.id "' was not found\n"}
-            return #nil;
+            return #nil
          } elif parent3-idx != #root {
-            parent4-idx' = parent3.parent;
-            parent4' = parent4-idx.ptr();
+            parent4-idx' = parent3.parent
+            parent4' = parent4-idx.ptr()
             if (&&, parent4.type == #basic, parent4.name.basic == #relative) {
-               name' = parent3.name;
+               name' = parent3.name
                loop {
                   loop i' = 'at(0); .at-c; i++ {
                      if (&&, .at-v[i].parent == at-i, .at-v[i].type != #basic) {
                         if .at-v[i].name.id == name.id {
-                           name2' = parent2.name;
+                           name2' = parent2.name
                            loop j' = 'at(0); .at-c; j++ {
                               if (&&, .at-v[j].parent == i, .at-v[j].type != #basic) {
                                  if .at-v[j].name.id == name2.id {
-                                    name3' = parent.name;
+                                    name3' = parent.name
                                     loop k' = 'at(0); .at-c; k++ {
                                        if (&&, .at-v[k].parent == j, .at-v[k].type != #basic) {
                                           if .at-v[k].name.id == name3.id {
-                                             name4' = type.name;
+                                             name4' = type.name
                                              loop l' = 'at(0); .at-c; l++ {
                                                 if (&&, .at-v[l].parent == k, .at-v[l].type != #basic) {
                                                    if .at-v[l].name.id == name4.id {
-                                                      return l;
+                                                      return l
                                                    }
                                                 }
                                              }
                                              'c1.stdout{file '': row '': col ": Type '" name4.id "' was not found in '" name3.id "'\n"}
-                                             return #nil;
+                                             return #nil
                                           }
                                        }
                                     }
                                     'c1.stdout{file '': row '': col ": Type '" name3.id "' was not found in '" name2.id "'\n"}
-                                    return #nil;
+                                    return #nil
                                  }
                               }
                            }
                            'c1.stdout{file '': row '': col ": Type '" name2.id "' was not found in '" name.id "'\n"}
-                           return #nil;
+                           return #nil
                         }
                      }
                   }
                   if at-i == #root { break }
-                  at-i = at-i.ptr().parent;
+                  at-i = at-i.ptr().parent
                }
                'c1.stdout{file '': row '': col ": Type '" name.id "' was not found\n"}
-               return #nil;
+               return #nil
             }
          }
       }
    }
-   return vd-type;
+   return vd-type
 }
 using 'decl-var-data {
    validate(vd'this, base-at'at)'bool {
-      vd.type = at-validate(vd.type, base-at);
+      vd.type = at-validate(vd.type, base-at)
       if vd.type == #nil { return false }
-      return true;
+      return true
    }
    process(vd'this, file'file, row'u32, col'u32, base-at'at)'bool {
-      at-i' = at-validate(vd.type, base-at, file, row, col);
+      at-i' = at-validate(vd.type, base-at, file, row, col)
       if at-i == #nil { return false }
-      vd.type = at-i;
-      at' = at-i.ptr();
+      vd.type = at-i
+      at' = at-i.ptr()
       if (&&, at.type != #basic, at.decl.structt == #nil) {
          'c1.stdout{file '': row '': col ": Error, the type '" at.name.id "' used in '" vd.name "' was not defined\n"}
-         return false;
+         return false
       }
-      at-i.output(.ctx-func.file, row, col);
+      at-i.output(.ctx-func.file, row, col)
       if !at-i.finalize(vd.type-info, row, col) { return false }
       loop i' = 0; vd.size-c; i++ {
          if !vd.size-expr-v[i].value(1, false, vd.size-value-v[i]) { return false }
       }
-      return true;
+      return true
    }
    write-fvar(vd'this) {
       if (vd.flags & #real-name) != #0 {
@@ -169,7 +169,7 @@ using 'decl-var-data {
          } else {
             output{vd.real-name}
          }
-         return;
+         return
       }
       output{"_M" vd.name.c-name()}
    }
@@ -181,7 +181,7 @@ using 'decl-var-data {
             output{vd.real-name}
          }
       } else {
-         at.write-space();
+         at.write-space()
          output{"_G" vd.name.c-name()}
       }
    }
@@ -189,7 +189,7 @@ using 'decl-var-data {
       output{"_L" vd.name.c-name() ''_ 'u32(lvar)}
    }
    write-type-fvar(vd'this) {
-      vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
+      vd.type.write-type-info(vd.type-info, 0 - vd.size-c)
       output{'' }
       if (vd.flags & #real-name) != #0 {
          if vd.real-name == #nil {
@@ -202,12 +202,12 @@ using 'decl-var-data {
       }
       loop i' = 0; vd.size-c; i++ {
          output{''[}
-         vd.size-expr-v[i].write-value(vd.size-value-v[i]);
+         vd.size-expr-v[i].write-value(vd.size-value-v[i])
          output{'']}
       }
    }
    write-type-gvar(vd'this, at'at) {
-      vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
+      vd.type.write-type-info(vd.type-info, 0 - vd.size-c)
       output{'' }
       if (vd.flags & #real-name) != #0 {
          if vd.real-name == #nil {
@@ -216,181 +216,181 @@ using 'decl-var-data {
             output{vd.real-name}
          }
       } else {
-         at.write-space();
+         at.write-space()
          output{"_G" vd.name.c-name()}
       }
       loop i' = 0; vd.size-c; i++ {
          output{''[}
-         vd.size-expr-v[i].write-value(vd.size-value-v[i]);
+         vd.size-expr-v[i].write-value(vd.size-value-v[i])
          output{'']}
       }
    }
    write-lvar-type(vd'this, lvar'lvar) {
-      vd.type.write-type-info(vd.type-info, 0 - vd.size-c);
+      vd.type.write-type-info(vd.type-info, 0 - vd.size-c)
       output{'' }
-      vd.write-lvar(lvar);
+      vd.write-lvar(lvar)
       loop i' = 0; vd.size-c; i++ {
          output{''[}
-         vd.size-expr-v[i].write-value(vd.size-value-v[i]);
+         vd.size-expr-v[i].write-value(vd.size-value-v[i])
          output{'']}
       }
    }
    wr(vd'this, w'wtr, header'bool) {
-      vd.name.wr(w, header);
-      vd.type.wr(w, header);
-      vd.flags.wr(w);
+      vd.name.wr(w, header)
+      vd.type.wr(w, header)
+      vd.flags.wr(w)
       if (vd.flags & #real-name) != #0 {
          // if (vd.name.len() == 7) && (C.memcmp(vd.name.str(), "failure", 7) == 0) {
             // C1.stdout{"failure has a real-name\n"}
          // }
-         vd.real-name.wr(w, header);
+         vd.real-name.wr(w, header)
       }
-      vd.type-info.wr(w);
-      w.n1(vd.size-c);
+      vd.type-info.wr(w)
+      w.n1(vd.size-c)
       loop i' = 0; vd.size-c; i++ {
-         vd.size-expr-v[i].wr(w, header);
+         vd.size-expr-v[i].wr(w, header)
       }
    }
    rd(vd'this, r'rdr) {
-      vd.name.rd(r);
-      vd.type.rd(r);
-      // At.rd(vd-type!, r);
-      // vd.type = validate(vd-type, default-at, vd.name);
-      vd.flags.rd(r);
+      vd.name.rd(r)
+      vd.type.rd(r)
+      // At.rd(vd-type!, r)
+      // vd.type = validate(vd-type, default-at, vd.name)
+      vd.flags.rd(r)
       if (vd.flags & #real-name) != #0 {
-         vd.real-name.rd(r);
+         vd.real-name.rd(r)
       }
-      vd.type-info.rd(r);
-      vd.size-c = r.n1();
+      vd.type-info.rd(r)
+      vd.size-c = r.n1()
       if vd.size-c > 0 {
-         quick-alloc-arr(vd.size-expr-v, vd.size-c);
-         quick-alloc-arr(vd.size-value-v, vd.size-c);
+         quick-alloc-arr(vd.size-expr-v, vd.size-c)
+         quick-alloc-arr(vd.size-value-v, vd.size-c)
          loop i' = 0; vd.size-c; i++ {
-            vd.size-expr-v[i].rd(r);
+            vd.size-expr-v[i].rd(r)
          }
       }
    }
    copy-from(vd'this, src'decl-var-data) {
-      vd.name = src.name;
-      vd.type = src.type;
-      vd.flags = src.flags;
-      vd.real-name = src.real-name;
-      vd.type-info.copy-from(src.type-info);
-      vd.type-info.built-in = src.type-info.built-in;
-      vd.size-c = src.size-c;
+      vd.name = src.name
+      vd.type = src.type
+      vd.flags = src.flags
+      vd.real-name = src.real-name
+      vd.type-info.copy-from(src.type-info)
+      vd.type-info.built-in = src.type-info.built-in
+      vd.size-c = src.size-c
       if vd.size-c > 0 {
-         quick-alloc-arr(vd.size-expr-v, vd.size-c);
+         quick-alloc-arr(vd.size-expr-v, vd.size-c)
          loop i' = 0; vd.size-c; i++ {
-            vd.size-expr-v[i] = src.size-expr-v[i];
+            vd.size-expr-v[i] = src.size-expr-v[i]
          }
       }
    }
 }
-#type-info-star-limit'i32 = 8;
+#type-info-star-limit'i32 = 8
 struct 'value[ref'i8, paren'bool, type'at, info'type-info.] {
    set(v'this, ref'i8, paren'bool, type'at, info'type-info) {
-      c' = info.ref-v[info.array-c];
-      v.type = type;
-      v.ref = (c + 2) - ref;
-      v.info.init();
-      v.info.copy-from(info);
-      v.info.ref-v[v.info.array-c] = ref - 1;
-      v.info.count();
-      v.paren = paren;
+      c' = info.ref-v[info.array-c]
+      v.type = type
+      v.ref = (c + 2) - ref
+      v.info.init()
+      v.info.copy-from(info)
+      v.info.ref-v[v.info.array-c] = ref - 1
+      v.info.count()
+      v.paren = paren
    }
    rd(v'this, r'rdr) {
-      v.ref = r.n1();
-      v.paren = r.n1() != 0;
-      v.type.rd(r);
-      v.info.rd(r);
+      v.ref = r.n1()
+      v.paren = r.n1() != 0
+      v.type.rd(r)
+      v.info.rd(r)
    }
    wr(v'this, w'wtr, header'bool) {
-      w.n1(v.ref);
-      w.b(v.paren);
-      v.type.wr(w, header);
-      v.info.wr(w);
+      w.n1(v.ref)
+      w.b(v.paren)
+      v.type.wr(w, header)
+      v.info.wr(w)
    }
 }
 struct 'type-info[ref-v'i8[#type-info-star-limit], array-c'u8, star-c'i8, built-in'bool, const'bool] {
    init(ti'this) {
-      ti.ref-v[0] = 0;
-      ti.array-c = 0;
-      ti.star-c = 0;
-      ti.built-in = false;
-      ti.const = false;
+      ti.ref-v[0] = 0
+      ti.array-c = 0
+      ti.star-c = 0
+      ti.built-in = false
+      ti.const = false
    }
    rd(ti'this, r'rdr) {
-      c' = r.n1();
+      c' = r.n1()
       loop i' = 0; c; i++ {
-         ti.ref-v[i] = r.n1();
+         ti.ref-v[i] = r.n1()
       }
-      ti.array-c = r.n1();
-      ti.star-c = r.n1();
-      ti.built-in = r.n1() != 0;
-      ti.const = r.n1() != 0;
+      ti.array-c = r.n1()
+      ti.star-c = r.n1()
+      ti.built-in = r.n1() != 0
+      ti.const = r.n1() != 0
    }
    wr(ti'this, w'wtr) {
-      c' = 0;
+      c' = 0
       loop #type-info-star-limit {
          if ti.ref-v[c] == 0 {
-            break;
+            break
          }
-         c++;
+         c++
       }
-      w.n1(c);
+      w.n1(c)
       loop i' = 0; c; i++ {
-         w.n1(ti.ref-v[i]);
+         w.n1(ti.ref-v[i])
       }
-      w.n1(ti.array-c);
-      w.n1(ti.star-c);
-      w.b(ti.built-in);
-      w.b(ti.const);
+      w.n1(ti.array-c)
+      w.n1(ti.star-c)
+      w.b(ti.built-in)
+      w.b(ti.const)
    }
    copy-from(ti'this, ti2'type-info) {
-      'c.memcpy(ti.ref-v, ti2.ref-v, #type-info-star-limit);
-      ti.array-c = ti2.array-c;
-      ti.star-c = ti2.star-c;
-      ti.const = ti2.const;
+      'c.memcpy(ti.ref-v, ti2.ref-v, #type-info-star-limit)
+      ti.array-c = ti2.array-c
+      ti.star-c = ti2.star-c
+      ti.const = ti2.const
       // intentionally did not copy .built-in
    }
    finalize(ti'this) {
-      ref-v'i8[#type-info-star-limit];
-      c' = ti.array-c;
-      star-c' = ti.array-c;
+      ref-v'i8[#type-info-star-limit]
+      c' = ti.array-c
+      star-c' = ti.array-c
       loop i' = 0; c + 1; {
-         ref-v[i] = ti.ref-v[i];
-         star-c += ref-v[i];
-         i += 1;
+         ref-v[i] = ti.ref-v[i]
+         star-c += ref-v[i]
+         i += 1
       }
       loop i' = 0, j' = c; c + 1; {
-         ti.ref-v[i] = ref-v[j];
-         i += 1;
-         j -= 1;
+         ti.ref-v[i] = ref-v[j]
+         i += 1
+         j -= 1
       }
-      ti.star-c = star-c;
+      ti.star-c = star-c
    }
    count(ti'this) {
-      star-c' = ti.array-c;
+      star-c' = ti.array-c
       loop i' = ti.array-c; i + 1; {
-         star-c += ti.ref-v[i];
-         i -= 1;
+         star-c += ti.ref-v[i]
+         i -= 1
       }
-      ti.star-c = star-c;
+      ti.star-c = star-c
    }
 }
-gvar-c'gvar;
-gvar-cap'gvar;
-gvar-v'decl-gvar.[];
+gvar-c'gvar
+gvar-cap'gvar
+gvar-v'decl-gvar.[]
 
-decl-var-row'u32;
-decl-var-col'u32;
-// decl-var-name:Id;
-// decl-var-type:At;
-// decl-var-type-info:TypeInfo.;
-#type-info-stack-limit'i32 = 8;
+decl-var-row'u32
+decl-var-col'u32
+// decl-var-name:Id
+// decl-var-type:At
+// decl-var-type-info:TypeInfo.
+#type-info-stack-limit'i32 = 8
 // stack-type-info:TypeInfo.; // [#type-info-stack-limit]}
-// stack-type-info-c:i8;
-decl-var'decl-var-data.;
+// stack-type-info-c:i8
+decl-var'decl-var-data.
 enum 'var-flags[
    #0,
    #real-name = 1,
@@ -398,70 +398,70 @@ enum 'var-flags[
    #no-decl = 4,
    ]'u32 {
    rd(f'this&, r'rdr) @inline {
-      f = 'var-flags(r.n());
+      f = 'var-flags(r.n())
    }
    wr(f'this, w'wtr) @inline {
-      w.n('base(f));
+      w.n('base(f))
    }
 }
 decl-var-begin(name'id, row'u32, col'u32) {
-   .decl-var.name = name;
-   .decl-var-row = row;
-   .decl-var-col = col;
-   .decl-var.type-info.init();
-   .decl-var.flags = #0;
-   .decl-var.real-name = #nil;
-   .decl-var.size-c = 0;
+   .decl-var.name = name
+   .decl-var-row = row
+   .decl-var-col = col
+   .decl-var.type-info.init()
+   .decl-var.flags = #0
+   .decl-var.real-name = #nil
+   .decl-var.size-c = 0
 }
 decl-var-end() {
 }
 decl-var-attr-real-name(name'id) {
    if (.decl-var.flags & #real-name) != #0 {
       'c1.stdout{.input-path '': .last-row '': .last-col ": error @real-name specified more than once\n"}
-      'c.exit(#failure);
+      'c.exit(#failure)
    }
-   .decl-var.flags |= #real-name;
-   .decl-var.real-name = name;
+   .decl-var.flags |= #real-name
+   .decl-var.real-name = name
 }
 decl-var-attr-extern() {
    if (.decl-var.flags & #extern) != #0 {
       'c1.stdout{.input-path '': .last-row '': .last-col ": error @extern specified more than once\n"}
-      'c.exit(#failure);
+      'c.exit(#failure)
    }
-   .decl-var.flags |= #extern;
+   .decl-var.flags |= #extern
 }
 decl-var-attr-no-decl() {
    if (.decl-var.flags & #no-decl) != #0 {
       'c1.stdout{.input-path '': .last-row '': .last-col ": error @no-decl specified more than once\n"}
-      'c.exit(#failure);
+      'c.exit(#failure)
    }
-   .decl-var.flags |= #no-decl;
+   .decl-var.flags |= #no-decl
 }
 decl-var-type(type'at) {
-   .decl-var.type = type;
-   .decl-var.size-c = 0;
-   .decl-var.type-info.init();
-   .decl-var.flags = #0;
-   // .stack-type-info = .decl-var.type-info;
+   .decl-var.type = type
+   .decl-var.size-c = 0
+   .decl-var.type-info.init()
+   .decl-var.flags = #0
+   // .stack-type-info = .decl-var.type-info
 }
 decl-var-this() {
-   type' = .decl-at;
-   .decl-var.type = type;
-   // .stack-type-info = .decl-var.type-info;
+   type' = .decl-at
+   .decl-var.type = type
+   // .stack-type-info = .decl-var.type-info
 }
 decl-var-as-gvar() {
-   gvar-idx' = .gvar-c++;
+   gvar-idx' = .gvar-c++
    if .gvar-cap <= .gvar-c {
-      old-cap' = .gvar-cap;
-      .gvar-cap = 'gvar(grow('base(.gvar-c)));
-      realloc(.gvar-v, 'base(.gvar-cap), 'base(old-cap));
+      old-cap' = .gvar-cap
+      .gvar-cap = 'gvar(grow('base(.gvar-c)))
+      realloc(.gvar-v, 'base(.gvar-cap), 'base(old-cap))
    }
-   gvar' = .gvar-v[gvar-idx];
-   gvar.include = .decl-include;
-   gvar.at = .decl-at;
-   gvar.decl.copy-from(.decl-var);
-   gvar.row = .decl-var-row;
-   gvar.col = .decl-var-col;
+   gvar' = .gvar-v[gvar-idx]
+   gvar.include = .decl-include
+   gvar.at = .decl-at
+   gvar.decl.copy-from(.decl-var)
+   gvar.row = .decl-var-row
+   gvar.col = .decl-var-col
 }
  
 

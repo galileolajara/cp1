@@ -1,4 +1,4 @@
-require "Posix/fcntl.cp1";
+require "Posix/fcntl.cp1"
 include [
 #ifdef __MINGW32__
 #include <unistd.h>
@@ -8,23 +8,23 @@ include [
 #include <process.h>
 #endif
 ] {
-   using 'x = 'posix;
+   'x = 'posix
    using 'posix {
       using 'fd {
-         seek(fd'this, offset'usz, seek'seek)'isz @no-decl(lseek);
-         read(fd'this, buf'ref, size'usz)'isz @no-decl @real-name;
-         close(fd'this)'cint @no-decl @real-name;
-         write(fd'this, buf'ref, size'usz)'isz @no-decl @real-name;
+         seek(fd'this, offset'usz, seek'seek)'isz @no-decl(lseek)
+         read(fd'this, buf'ref, size'usz)'isz @no-decl @real-name
+         close(fd'this)'cint @no-decl @real-name
+         write(fd'this, buf'ref, size'usz)'isz @no-decl @real-name
       }
       enum 'seek[
          #set @no-decl(SEEK_SET),
          #end @no-decl(SEEK_END),
-      ]'cint;
-      seek(fd'cint, offset'usz, seek'seek)'usz @no-decl(lseek);
-      mkstemp(template'char[])'fd @no-decl @real-name;
-      getcwd(buf'char[], size'usz)'char[] @no-decl @real-name;
-      getpid()'cint @no-decl @real-name;
-      unlink(path'char[])'cint @no-decl @real-name;
-      sleep(seconds'u32)'u32 @no-decl @real-name;
+      ]'cint
+      seek(fd'cint, offset'usz, seek'seek)'usz @no-decl(lseek)
+      mkstemp(template'char[])'fd @no-decl @real-name
+      getcwd(buf'char[], size'usz)'char[] @no-decl @real-name
+      getpid()'cint @no-decl @real-name
+      unlink(path'char[])'cint @no-decl @real-name
+      sleep(seconds'u32)'u32 @no-decl @real-name
    }
 }

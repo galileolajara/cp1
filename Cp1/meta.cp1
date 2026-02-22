@@ -1,13 +1,13 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
 using 'at {
    jscode-write-name(at-idx'this) {
-      at' = at-idx.ptr();
+      at' = at-idx.ptr()
       if at.type == #basic {
          jscode{at.name.basic.cp1-name()}
       } else {
-         at.parent.jscode-write-name-dot();
+         at.parent.jscode-write-name-dot()
          jscode{at.name.id}
       }
    }
@@ -16,15 +16,15 @@ using 'at {
       } elif at-idx == #relative {
          jscode{".."}
       } else {
-         at' = at-idx.ptr();
-         at.parent.jscode-write-name-dot();
+         at' = at-idx.ptr()
+         at.parent.jscode-write-name-dot()
          jscode{at.name.id ''.}
       }
    }
    jscode-write(at-idx'this) {
       jscode{"{\n\ttypev:["}
       loop at2-idx' = 'at(2); .at-c - 'at(2); at2-idx++ {
-         at2' = at2-idx.ptr();
+         at2' = at2-idx.ptr()
          if at2.parent == at-idx {
             if at2.type == #basic {
                jscode{''" at2.name.basic.cp1-name() '<",>}
@@ -34,66 +34,66 @@ using 'at {
          }
       }
       jscode{"],\n\ttype:"}
-      at' = at-idx.ptr();
-      method-c';
-      method-v';
-      t';
+      at' = at-idx.ptr()
+      method-c'
+      method-v'
+      t'
       if at.type == #basic {
-         t2' = .basic-type[at.name.basic];
-         method-c = t2.method-c;
-         method-v = t2.method-v;
+         t2' = .basic-type[at.name.basic]
+         method-c = t2.method-c
+         method-v = t2.method-v
          jscode{'<"basic">}
       } else {
          if at.def == #struct {
-            t = at.decl.structt.ptr();
-            method-c = t.method-c;
-            method-v = t.method-v;
+            t = at.decl.structt.ptr()
+            method-c = t.method-c
+            method-v = t.method-v
             jscode{'<"struct">}
          } elif at.def == #enum {
-            t2' = at.decl.enumm.ptr();
-            method-c = t2.method-c;
-            method-v = t2.method-v;
+            t2' = at.decl.enumm.ptr()
+            method-c = t2.method-c
+            method-v = t2.method-v
             jscode{'<"struct">}
          } else {
             jscode{'<"">}
          }
       }
       jscode{",\n\tgvarv:["}
-      gvar-v' = at.gvar-v;
+      gvar-v' = at.gvar-v
       loop i' = 0; at.gvar-c; i++ {
-         gvar' = gvar-v[i].ptr();
+         gvar' = gvar-v[i].ptr()
          jscode{"\n\t\t{name:\"" gvar.decl.name "\",type:\""}
-         gvar.decl.type.jscode-write-name();
+         gvar.decl.type.jscode-write-name()
          jscode{"\"},"}
       }
       if t != null {
          jscode{"],\n\tmvarv:["}
-         fvar-v' = t.fvar-v;
+         fvar-v' = t.fvar-v
          loop i' = 0; t.fvar-c; i++ {
-            fvar' = fvar-v[i];
+            fvar' = fvar-v[i]
             jscode{"\n\t\t{name:\"" fvar.decl.name "\",type:\""}
-            fvar.decl.type.jscode-write-name();
+            fvar.decl.type.jscode-write-name()
             jscode{"\"},"}
          }
       }
       jscode{"],\n\tfunctionv:["}
       loop i' = 0; at.func-c; i++ {
-         f-idx' = at.func-v[i];
-         f' = f-idx.ptr();
+         f-idx' = at.func-v[i]
+         f' = f-idx.ptr()
          jscode{"\n\t\t{name:\"" f.decl.name '<",argvv:[>}
          loop j' = 0, k' = 0; f.group-c; j++ {
             jscode{''[}
             loop f.group-v[j] {
-               fa' = f.farg-v[k++];
+               fa' = f.farg-v[k++]
                jscode{"{name:\"" fa.decl.name "\",type:\""}
-               fa.decl.type.jscode-write-name();
+               fa.decl.type.jscode-write-name()
                jscode{"\"},"}
             }
             jscode{"],"}
          }
          jscode{'<],type:">}
          if f.decl.type != #nil {
-            f.decl.type.jscode-write-name();
+            f.decl.type.jscode-write-name()
          }
          if f.this-idx == -1 {
             jscode{'<",this:-1},>}
@@ -104,81 +104,81 @@ using 'at {
       jscode{"]}"}
    }
 }
-jscode-buf-data'char[];
-jscode-buf-cap'u32;
-jscode-buf-len'u32;
+jscode-buf-data'char[]
+jscode-buf-cap'u32
+jscode-buf-len'u32
 jscode-reserve(len'u32) {
-   space' = .jscode-buf-cap - .jscode-buf-len;
+   space' = .jscode-buf-cap - .jscode-buf-len
    if space < len {
-      .jscode-buf-cap += .jscode-buf-cap;
-      space = .jscode-buf-cap - .jscode-buf-len;
+      .jscode-buf-cap += .jscode-buf-cap
+      space = .jscode-buf-cap - .jscode-buf-len
       loop space < len {
-         .jscode-buf-cap += .jscode-buf-cap;
-         space = .jscode-buf-cap - .jscode-buf-len;
+         .jscode-buf-cap += .jscode-buf-cap
+         space = .jscode-buf-cap - .jscode-buf-len
       }
-      'c.realloc-arr(.jscode-buf-data, .jscode-buf-cap);
+      'c.realloc-arr(.jscode-buf-data, .jscode-buf-cap)
    }
 }
 jscode-char(val'char) @inline {
-   jscode-reserve(1);
-   .jscode-buf-data[.jscode-buf-len++] = val;
+   jscode-reserve(1)
+   .jscode-buf-data[.jscode-buf-len++] = val
 }
 jscode-cstr(str'char[]) @inline {
-   jscode-bytes(str, 'c.strlen(str));
+   jscode-bytes(str, 'c.strlen(str))
 }
 jscode(fmt'c1'fmt) @meta(f-reserve, f, jscode) {
-   fmt.cap = 0;
+   fmt.cap = 0
 }
 include-add(include-len'u8, include-str'char[])'include {
-   found' = .include-map.get-or-insert(include-str, include-len, .include-c);
+   found' = .include-map.get-or-insert(include-str, include-len, .include-c)
    // C1.stdout{"include-add " include-str " = " found ''\n}
    if found == -1 {
-      include-idx' = .include-c++;
+      include-idx' = .include-c++
       if .include-cap <= .include-c {
-         old-cap' = .include-cap;
-         grow(.include-cap, .include-c);
-         realloc(.include-len-v, .include-cap, old-cap);
-         realloc(.include-str-v, .include-cap, old-cap);
+         old-cap' = .include-cap
+         grow(.include-cap, .include-c)
+         realloc(.include-len-v, .include-cap, old-cap)
+         realloc(.include-str-v, .include-cap, old-cap)
       }
-      .include-len-v[include-idx] = include-len;
-      .include-str-v[include-idx] = include-str;
+      .include-len-v[include-idx] = include-len
+      .include-str-v[include-idx] = include-str
       // C1.stdout{"include " include-str " is " include-idx ''\n}
-      return 'include(include-idx);
+      return 'include(include-idx)
    } else {
       // C1.stdout{"include " include-str " is " found ''\n}
-      return 'include(found);
+      return 'include(found)
    }
 }
-template-inst-new-c'template-inst;
+template-inst-new-c'template-inst
 template-inst(ti'template-inst-data) {
    loop j' = 0; .template-inst-c {
-      ti2' = .template-inst-v[j++];
+      ti2' = .template-inst-v[j++]
       if (ti2.name == ti.name) && (ti2.at == ti.at) && (ti2.arg-crc32c == ti.arg-crc32c) {
-         return;
+         return
       }
    }
    if true {
-      i' = .template-inst-c++;
+      i' = .template-inst-c++
       if .template-inst-cap < .template-inst-c {
-         .template-inst-cap = 'template-inst(grow('base(.template-inst-c)));
-         'c.realloc-arr(.template-inst-v, 'base(.template-inst-cap));
+         .template-inst-cap = 'template-inst(grow('base(.template-inst-c)))
+         'c.realloc-arr(.template-inst-v, 'base(.template-inst-cap))
       }
-      'c.memcpy(.template-inst-v[i], ti, 'template-inst-data['usz]);
+      'c.memcpy(.template-inst-v[i], ti, 'template-inst-data['usz])
    }
    if true {
-      .template-inst-new-c++;
+      .template-inst-new-c++
    }
 }
 }
 using 'libcp1 {
    using 'fmt {
       f-reserve-jscode(fmt'this) {
-         'cp1.jscode-reserve(fmt.cap);
-         fmt.len = 'cp1.jscode-buf-len;
-         fmt.ptr = 'cp1.jscode-buf-data;
+         'cp1.jscode-reserve(fmt.cap)
+         fmt.len = 'cp1.jscode-buf-len
+         fmt.ptr = 'cp1.jscode-buf-data
       }
       f-jscode(fmt'this) {
-         'cp1.jscode-buf-len = fmt.len;
+         'cp1.jscode-buf-len = fmt.len
       }
    }
 }

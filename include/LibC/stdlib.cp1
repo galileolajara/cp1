@@ -1,20 +1,20 @@
 include <stdlib.h> {
-   using 'c = 'libc;
+   'c = 'libc
    using 'libc {
-      malloc(size'usz)'ref @no-decl(malloc);
-      malloc-one(val'ref) @decl('<# val = malloc(sizeof(val[0]))>);
-      malloc-arr(val'ref, count'usz) @decl('<# val = malloc(sizeof(val[0]) * (count))>);
-      realloc(size'ref, new-usz'usz)'ref @real-name @no-decl;
-      realloc-arr(val'ref, count'usz) @decl('<# val = realloc(val, sizeof(val[0]) * (count))>);
-      realloc-memset-arr(val'ref, oldcount'usz, count'usz) @decl('<#d val = realloc(val, sizeof(val[0]) * (count)); memset(val + oldcount, 0, sizeof(val[0]) * (count - oldcount));>);
-      free(ptr'ref) @no-decl(free);
-      system(command'char[])'cint @no-decl @real-name;
-      exit(code'exit) @real-name @no-decl;
-      getenv(name'char[])'char[] @real-name @no-decl;
-      realpath(pathname'char[], resolved'char[])'char[] @real-name @no-decl;
-      atoi(str'char[])'cint @real-name @no-decl;
-      rand()'cint @real-name @no-decl;
-      srand(seed'u32) @real-name @no-decl;
-      enum 'exit[#success, #failure]'cint;
+      malloc(size'usz)'ref @no-decl(malloc)
+      malloc-one(val'ref) @decl('<# val = malloc(sizeof(val[0]))>)
+      malloc-arr(val'ref, count'usz) @decl('<# val = malloc(sizeof(val[0]) * (count))>)
+      realloc(size'ref, new-usz'usz)'ref @real-name @no-decl
+      realloc-arr(val'ref, count'usz) @decl('<# val = realloc(val, sizeof(val[0]) * (count))>)
+      realloc-memset-arr(val'ref, oldcount'usz, count'usz) @decl('<#d val = realloc(val, sizeof(val[0]) * (count)); memset(val + oldcount, 0, sizeof(val[0]) * (count - oldcount));>)
+      free(ptr'ref) @no-decl(free)
+      system(command'char[])'cint @no-decl @real-name
+      exit(code'exit) @real-name @no-decl
+      getenv(name'char[])'char[] @real-name @no-decl
+      realpath(pathname'char[], resolved'char[])'char[] @real-name @no-decl
+      atoi(str'char[])'cint @real-name @no-decl
+      rand()'cint @real-name @no-decl
+      srand(seed'u32) @real-name @no-decl
+      enum 'exit[#success, #failure]'cint
    }
 }

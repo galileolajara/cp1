@@ -1,9 +1,9 @@
-require "LibCp1/stdout.cp1";
-using 'c1 = 'libcp1;
+require "LibCp1/stdout.cp1"
+'c1 = 'libcp1
 
 // Create a metaprogram with access to reflection data
 meta #create-hello-function @reflection {
-   using 'c1 = 'libcp1;
+   'c1 = 'libcp1
    hello-${arg.suffix}() {
       'c1.stdout{"Hello ${arg.suffix} from metaprogram!\n"}
       loop i' = 0; ${arg.count}; i++ {
@@ -12,7 +12,7 @@ meta #create-hello-function @reflection {
       // Do some reflection
       'c1.stdout{"Have a struct called 'cat'? ${'cat' in cp1_refl.root.types}\n"}
       'c1.stdout{"Have a struct called 'dog'? ${'dog' in cp1_refl.root.types}\n"}
-#     print("Another hello world, but in compile time! " + os.now());
+#     print("Another hello world, but in compile time! " + os.now())
    }
 }
 
@@ -24,7 +24,7 @@ struct 'dog[bark-times'i32] {
    init(dog'this) {
    }
    bark(dog'this) {
-      dog.bark-times++;
+      dog.bark-times++
       'c1.stdout{"arf!! " dog.bark-times "x bark\n"}
    }
 }
@@ -36,11 +36,11 @@ main()'cint { // cint is for C compatibility, use i32 elsewhere
 
    // Declare a variable via function argument's type using "'" symbol
    // The dog variable is allocated on the stack
-   'dog.init(dog');
+   'dog.init(dog')
    dog.bark(); dog.bark(); dog.bark(); // Bark 3 times
 
    one' = 1; // "'" declares 'one' as a new variable
-   seven' = 7;
+   seven' = 7
    'c1.stdout{one " + " seven " = " one + seven ''\n}
-   return 0;
+   return 0
 }

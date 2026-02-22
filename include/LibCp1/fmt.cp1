@@ -1,331 +1,331 @@
-require "LibC/stdlib.cp1";
-require "LibC/string.cp1";
-using 'c = 'libc;
+require "LibC/stdlib.cp1"
+require "LibC/string.cp1"
+'c = 'libc
 using 'libcp1 {
    struct 'fmt[ptr'char[], len'usz, cap'usz, user-data'ref] {
       f(f'fmt) @meta(f-reserve, f, noop) @inline {
-         f.init();
+         f.init()
       }
       f-reserve-cstr(fmt'this, str'char @const[], len'i32, f'f-cstr) @inline {
-         fmt.cap += len;
-         f.str = str;
-         f.len = len;
+         fmt.cap += len
+         f.str = str
+         f.len = len
       }
       f-reserve-cstr(fmt'this, str'char @const[], len-full'i32, len'i32, f'f-cstr) @inline {
-         fmt.cap += len;
-         f.str = str;
-         f.len = len;
+         fmt.cap += len
+         f.str = str
+         f.len = len
       }
       f-reserve<i'f32>(fmt'this, f'f-f32) @inline {
-         fmt.cap += 64;
-         f.f32 = i;
+         fmt.cap += 64
+         f.f32 = i
       }
       f-reserve<i'f64>(fmt'this, f'f-f64) @inline {
-         fmt.cap += 128;
-         f.f64 = i;
+         fmt.cap += 128
+         f.f64 = i
       }
       f-reserve<i'i8>(fmt'this, f'f-i32) @inline {
-         fmt.cap += 4;
-         f.i32 = i;
+         fmt.cap += 4
+         f.i32 = i
       }
       f-reserve<i'i16>(fmt'this, f'f-i32) @inline {
-         fmt.cap += 6;
-         f.i32 = i;
+         fmt.cap += 6
+         f.i32 = i
       }
       f-reserve<i'i32>(fmt'this, f'f-i32) @inline {
-         fmt.cap += 11;
-         f.i32 = i;
+         fmt.cap += 11
+         f.i32 = i
       }
       f-reserve<i'cint>(fmt'this, f'f-i32) @inline {
-         fmt.cap += 11;
-         f.i32 = i;
+         fmt.cap += 11
+         f.i32 = i
       }
       f-reserve<u'u32>(base'u32-base, fmt'this, f'f-u32-base) @inline {
-         f.base = base;
+         f.base = base
          if base == #oct {
-            fmt.cap += 11;
+            fmt.cap += 11
          } else {
-            fmt.cap += 8;
+            fmt.cap += 8
          }
-         f.u32 = u;
+         f.u32 = u
       }
       f-reserve<u'u8>(fmt'this, f'f-u32) @inline {
-         fmt.cap += 3;
-         f.u32 = u;
+         fmt.cap += 3
+         f.u32 = u
       }
       f-reserve<u'u16>(fmt'this, f'f-u32) @inline {
-         fmt.cap += 5;
-         f.u32 = u;
+         fmt.cap += 5
+         f.u32 = u
       }
       f-reserve<u'u32>(fmt'this, f'f-u32) @inline {
-         fmt.cap += 10;
-         f.u32 = u;
+         fmt.cap += 10
+         f.u32 = u
       }
       f-reserve<u'u64>(fmt'this, f'f-u64) @inline {
-         fmt.cap += 20;
-         f.u64 = u;
+         fmt.cap += 20
+         f.u64 = u
       }
       f-reserve<c'char>(fmt'this, f'f-char) @inline {
-         f.char = c;
-         fmt.cap += 1;
+         f.char = c
+         fmt.cap += 1
       }
       f-reserve-arr<c'char @const[]>(fmt'this, f'f-cstr) @inline {
-         f.str = c;
-         f.len = 'c.strlen(c);
-         fmt.cap += f.len;
+         f.str = c
+         f.len = 'c.strlen(c)
+         fmt.cap += f.len
       }
       f-reserve-arr<c'char @const[]>(len'i32, fmt'this, f'f-cstr) @inline {
-         f.str = c;
-         f.len = len;
-         fmt.cap += len;
+         f.str = c
+         f.len = len
+         fmt.cap += len
       }
       f-reserve-noop(fmt'this) @inline {
-         fmt.realloc();
+         fmt.realloc()
       }
       f-noop(fmt'this) @inline {
       }
       struct 'f-char[char'char] {
          f(f'this, fmt'fmt) @inline {
-            fmt.ptr[fmt.len++] = f.char;
+            fmt.ptr[fmt.len++] = f.char
          }
       }
       struct 'f-cstr[str'char @const[], len'usz] {
          f(f'this, fmt'fmt) @inline {
-            'c.memcpy(&fmt.ptr[fmt.len], f.str, f.len);
-            fmt.len += f.len;
+            'c.memcpy(&fmt.ptr[fmt.len], f.str, f.len)
+            fmt.len += f.len
          }
       }
       struct 'f-f32[f32'f32] {
          f(f'this, fmt'fmt) @inline {
-            fmt.len += 'c.sprintf(&fmt.ptr[fmt.len], "%.9f", f.f32);
+            fmt.len += 'c.sprintf(&fmt.ptr[fmt.len], "%.9f", f.f32)
          }
       }
       struct 'f-f64[f64'f64] {
          f(f'this, fmt'fmt) @inline {
-            fmt.len += 'c.sprintf(&fmt.ptr[fmt.len], "%.17f", f.f64);
+            fmt.len += 'c.sprintf(&fmt.ptr[fmt.len], "%.17f", f.f64)
          }
       }
       struct 'f-u32[u32'u32] {
          f(f'this, fmt'fmt) @inline {
-            val' = f.u32;
+            val' = f.u32
             if val == 0 {
-               fmt.ptr[fmt.len++] = ''0;
+               fmt.ptr[fmt.len++] = ''0
             } else {
                // integer to string, count the digits
-               data'char[];
-               data = &fmt.ptr[fmt.len];
-               digits' = 0;
+               data'char[]
+               data = &fmt.ptr[fmt.len]
+               digits' = 0
                loop {
-                  data[digits++] = (val % 10) + ''0;
-                  val /= 10;
+                  data[digits++] = (val % 10) + ''0
+                  val /= 10
                   if val == 0 { break }
                }
                // reverse the string
-               start' = 0;
-               end' = digits - 1;
+               start' = 0
+               end' = digits - 1
                loop start < end {
-                  tmp' = data[start];
-                  data[start] = data[end];
-                  data[end] = tmp;
-                  start++;
-                  end--;
+                  tmp' = data[start]
+                  data[start] = data[end]
+                  data[end] = tmp
+                  start++
+                  end--
                }
-               fmt.len += digits;
+               fmt.len += digits
             }
          }
       }
       struct 'f-u64[u64'u64] {
          f(f'this, fmt'fmt) @inline {
-            val' = f.u64;
+            val' = f.u64
             if val == 0 {
-               fmt.ptr[fmt.len++] = ''0;
+               fmt.ptr[fmt.len++] = ''0
             } else {
                // integer to string, count the digits
-               data'char[];
-               data = &fmt.ptr[fmt.len];
-               digits' = 0;
+               data'char[]
+               data = &fmt.ptr[fmt.len]
+               digits' = 0
                loop {
-                  data[digits++] = (val % 10) + ''0;
-                  val /= 10;
+                  data[digits++] = (val % 10) + ''0
+                  val /= 10
                   if val == 0 { break }
                }
                // reverse the string
-               start' = 0;
-               end' = digits - 1;
+               start' = 0
+               end' = digits - 1
                loop start < end {
-                  tmp' = data[start];
-                  data[start] = data[end];
-                  data[end] = tmp;
-                  start++;
-                  end--;
+                  tmp' = data[start]
+                  data[start] = data[end]
+                  data[end] = tmp
+                  start++
+                  end--
                }
-               fmt.len += digits;
+               fmt.len += digits
             }
          }
       }
-      enum 'u32-base[#oct, #hex]'u8;
+      enum 'u32-base[#oct, #hex]'u8
       struct 'f-u32-base[base'u32-base, u32'u32] {
          f(f'this, fmt'fmt) @inline {
-            val' = f.u32;
+            val' = f.u32
             if f.base == #oct {
                if val == 0 {
-                  fmt.ptr[fmt.len++] = ''0;
+                  fmt.ptr[fmt.len++] = ''0
                } else {
                   // integer to string, count the digits
-                  data'char[];
-                  data = &fmt.ptr[fmt.len];
-                  digits' = 0;
+                  data'char[]
+                  data = &fmt.ptr[fmt.len]
+                  digits' = 0
                   loop {
-                     data[digits++] = (val % 8) + ''0;
-                     val /= 8;
+                     data[digits++] = (val % 8) + ''0
+                     val /= 8
                      if val == 0 { break }
                   }
                   // reverse the string
-                  start' = 0;
-                  end' = digits - 1;
+                  start' = 0
+                  end' = digits - 1
                   loop start < end {
-                     tmp' = data[start];
-                     data[start] = data[end];
-                     data[end] = tmp;
-                     start++;
-                     end--;
+                     tmp' = data[start]
+                     data[start] = data[end]
+                     data[end] = tmp
+                     start++
+                     end--
                   }
-                  fmt.len += digits;
+                  fmt.len += digits
                }
             } else {
                if val == 0 {
-                  fmt.ptr[fmt.len++] = ''0;
+                  fmt.ptr[fmt.len++] = ''0
                } else {
                   // integer to string, count the digits
-                  data'char[];
-                  data = &fmt.ptr[fmt.len];
-                  digits' = 0;
+                  data'char[]
+                  data = &fmt.ptr[fmt.len]
+                  digits' = 0
                   loop {
-                     n' = val % 16;
+                     n' = val % 16
                      if n < 10 {
-                        data[digits++] = n + ''0;
+                        data[digits++] = n + ''0
                      } else {
-                        data[digits++] = (n - 10) + ''a;
+                        data[digits++] = (n - 10) + ''a
                      }
-                     val /= 16;
+                     val /= 16
                      if val == 0 { break }
                   }
                   // reverse the string
-                  start' = 0;
-                  end' = digits - 1;
+                  start' = 0
+                  end' = digits - 1
                   loop start < end {
-                     tmp' = data[start];
-                     data[start] = data[end];
-                     data[end] = tmp;
-                     start++;
-                     end--;
+                     tmp' = data[start]
+                     data[start] = data[end]
+                     data[end] = tmp
+                     start++
+                     end--
                   }
-                  fmt.len += digits;
+                  fmt.len += digits
                }
             }
          }
       }
       struct 'f-i32[i32'i32] {
          f(f'this, fmt'fmt) @inline {
-            val' = f.i32;
+            val' = f.i32
             if val == 0 {
-               fmt.ptr[fmt.len++] = ''0;
+               fmt.ptr[fmt.len++] = ''0
             } elif val < 0 {
-               val = -val;
-               fmt.ptr[fmt.len++] = ''-;
+               val = -val
+               fmt.ptr[fmt.len++] = ''-
                // integer to string, count the digits
-               data'char[];
-               data = &fmt.ptr[fmt.len];
-               digits' = 0;
+               data'char[]
+               data = &fmt.ptr[fmt.len]
+               digits' = 0
                loop {
-                  data[digits++] = (val % 10) + ''0;
-                  val /= 10;
+                  data[digits++] = (val % 10) + ''0
+                  val /= 10
                   if val == 0 { break }
                }
                // reverse the string
-               start' = 0;
-               end' = digits - 1;
+               start' = 0
+               end' = digits - 1
                loop start < end {
-                  tmp' = data[start];
-                  data[start] = data[end];
-                  data[end] = tmp;
-                  start++;
-                  end--;
+                  tmp' = data[start]
+                  data[start] = data[end]
+                  data[end] = tmp
+                  start++
+                  end--
                }
-               fmt.len += digits;
+               fmt.len += digits
             } else {
                // integer to string, count the digits
-               data'char[];
-               data = &fmt.ptr[fmt.len];
-               digits' = 0;
+               data'char[]
+               data = &fmt.ptr[fmt.len]
+               digits' = 0
                loop {
-                  data[digits++] = (val % 10) + ''0;
-                  val /= 10;
+                  data[digits++] = (val % 10) + ''0
+                  val /= 10
                   if val == 0 { break }
                }
                // reverse the string
-               start' = 0;
-               end' = digits - 1;
+               start' = 0
+               end' = digits - 1
                loop start < end {
-                  tmp' = data[start];
-                  data[start] = data[end];
-                  data[end] = tmp;
-                  start++;
-                  end--;
+                  tmp' = data[start]
+                  data[start] = data[end]
+                  data[end] = tmp
+                  start++
+                  end--
                }
-               fmt.len += digits;
+               fmt.len += digits
             }
          }
       }
       struct 'f-i64[i64'i64] {
          f(f'this, fmt'fmt) @inline {
-            val' = f.i64;
+            val' = f.i64
             if val == 0 {
-               fmt.ptr[fmt.len++] = ''0;
+               fmt.ptr[fmt.len++] = ''0
             } elif val < 0 {
-               val = -val;
-               fmt.ptr[fmt.len++] = ''-;
+               val = -val
+               fmt.ptr[fmt.len++] = ''-
                // integer to string, count the digits
-               data'char[];
-               data = &fmt.ptr[fmt.len];
-               digits' = 0;
+               data'char[]
+               data = &fmt.ptr[fmt.len]
+               digits' = 0
                loop {
-                  data[digits++] = (val % 10) + ''0;
-                  val /= 10;
+                  data[digits++] = (val % 10) + ''0
+                  val /= 10
                   if val == 0 { break }
                }
                // reverse the string
-               start' = 0;
-               end' = digits - 1;
+               start' = 0
+               end' = digits - 1
                loop start < end {
-                  tmp' = data[start];
-                  data[start] = data[end];
-                  data[end] = tmp;
-                  start++;
-                  end--;
+                  tmp' = data[start]
+                  data[start] = data[end]
+                  data[end] = tmp
+                  start++
+                  end--
                }
-               fmt.len += digits;
+               fmt.len += digits
             } else {
                // integer to string, count the digits
-               data'char[];
-               data = &fmt.ptr[fmt.len];
-               digits' = 0;
+               data'char[]
+               data = &fmt.ptr[fmt.len]
+               digits' = 0
                loop {
-                  data[digits++] = (val % 10) + ''0;
-                  val /= 10;
+                  data[digits++] = (val % 10) + ''0
+                  val /= 10
                   if val == 0 { break }
                }
                // reverse the string
-               start' = 0;
-               end' = digits - 1;
+               start' = 0
+               end' = digits - 1
                loop start < end {
-                  tmp' = data[start];
-                  data[start] = data[end];
-                  data[end] = tmp;
-                  start++;
-                  end--;
+                  tmp' = data[start]
+                  data[start] = data[end]
+                  data[end] = tmp
+                  start++
+                  end--
                }
-               fmt.len += digits;
+               fmt.len += digits
             }
          }
       }

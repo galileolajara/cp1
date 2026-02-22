@@ -1,35 +1,35 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
 enum 'lvar[#nil = -1, #0]'i32 {
    rd(l'this&, r'rdr) @inline {
-      l = 'lvar(r.n() - 1);
+      l = 'lvar(r.n() - 1)
    }
    wr(l'this, w'wtr) @inline {
-      w.n('base(l) + 1);
+      w.n('base(l) + 1)
    }
    process(l'this)'bool @inline {
-      lvar' = l.ptr();
+      lvar' = l.ptr()
       if (lvar.flags & #processed) != #0 { return true }
-      lvar.flags |= #processed;
-      at-i' = lvar.decl.type;
+      lvar.flags |= #processed
+      at-i' = lvar.decl.type
       if at-i == #nil {
          if lvar.decl.name == .id-blank {
             // let it be, it is a compile-time generated variable that wasn't used
-            return true;
+            return true
          }
          // if (lvar.flags & #set-expr) != #0 {
             // if !lvar.set-expr.value(1, false, v!!) { return false }
-            // lvar.decl.type = v.type;
-            // lvar.decl.type-info.init();
-            // lvar.decl.type-info.copy-from(v.info);
+            // lvar.decl.type = v.type
+            // lvar.decl.type-info.init()
+            // lvar.decl.type-info.copy-from(v.info)
          // } else {
             'c1.stdout{.ctx-func.file '': lvar.row '': lvar.col ": local variable '" lvar.decl.name "' doesn't have a type or a value\n"}
-            return false;
+            return false
          // }
-         // return true;
+         // return true
       }
-      return lvar.decl.process(.ctx-func.file, lvar.row, lvar.col, .ctx-func.at);
+      return lvar.decl.process(.ctx-func.file, lvar.row, lvar.col, .ctx-func.at)
    }
 }
 enum 'lvar-flags[
@@ -39,10 +39,10 @@ enum 'lvar-flags[
    #all = 0xff,
 ]'u8 {
    rd(f'this&, r'rdr) @inline {
-      f = 'lvar-flags(r.n1());
+      f = 'lvar-flags(r.n1())
    }
    wr(f'this, w'wtr) @inline {
-      w.n1('base(f));
+      w.n1('base(f))
    }
 }
 struct 'lvar-data[
@@ -51,88 +51,88 @@ struct 'lvar-data[
    decl'decl-var-data.,
    flags'lvar-flags,
    // set-expr:ExprI,
-];
+]
 expr-lvar(name'id, decl'u8, row'u32, col'u32)'expr-i {
    if .decl-func-ctx-space == null {
       'c1.stdout{.input-path '': row '': row ": Use of local variables are now allowed here\n"}
-      'c.exit(#failure);
+      'c.exit(#failure)
    }
    if decl == 0 {
-      space' = .decl-func-ctx-space;
+      space' = .decl-func-ctx-space
       loop {
-         v' = space.lvar-v;
-         found' = 'lvar#nil;
+         v' = space.lvar-v
+         found' = 'lvar#nil
          loop i' = 0; space.lvar-c; i++ {
-            lvar' = v[i];
+            lvar' = v[i]
             if lvar.name() == name {
-               found = lvar;
-               break;
+               found = lvar
+               break
             }
          }
          if found != #nil {
-            e'expr-lvar;
-            quick-alloc-one(e);
-            e-idx' = expr-push(e.base, #lvar);
-            e.lvar = found;
-            return e-idx;
+            e'expr-lvar
+            quick-alloc-one(e)
+            e-idx' = expr-push(e.base, #lvar)
+            e.lvar = found
+            return e-idx
          }
-         space = space.parent;
+         space = space.parent
          if space == null { break }
       }
       'c1.stdout{.input-path '': row '': col ": local variable '" name "' was not found\n"}
-      'c.exit(#failure);
-      return #nil;
+      'c.exit(#failure)
+      return #nil
    } else {
-      space' = .decl-func-ctx-space;
-      e'expr-lvar;
-      quick-alloc-one(e);
-      e-idx' = expr-push(e.base, #lvar);
-      e.lvar = space.lvar-new(name, row, col);
-      lvar' = e.lvar.ptr();
-      .decl-var.name = name;
+      space' = .decl-func-ctx-space
+      e'expr-lvar
+      quick-alloc-one(e)
+      e-idx' = expr-push(e.base, #lvar)
+      e.lvar = space.lvar-new(name, row, col)
+      lvar' = e.lvar.ptr()
+      .decl-var.name = name
       if decl == 1 {
-         lvar.flags |= #set-expr;
-         e.decl = true;
+         lvar.flags |= #set-expr
+         e.decl = true
       }
-      lvar.decl.copy-from(.decl-var);
-      return e-idx;
+      lvar.decl.copy-from(.decl-var)
+      return e-idx
    }
 }
 using 'expr-i {
    write-lvar(expr'expr) @case.write() @inline {
-      e'expr-lvar = expr;
-      e.lvar.ptr().decl.write-lvar(e.lvar);
+      e'expr-lvar = expr
+      e.lvar.ptr().decl.write-lvar(e.lvar)
    }
    type-lvar(expr'expr, at'at&) @case.type() @inline {
-      e'expr-lvar = expr;
-      lvar' = e.lvar.ptr();
-      at = lvar.decl.type;
+      e'expr-lvar = expr
+      lvar' = e.lvar.ptr()
+      at = lvar.decl.type
    }
    value-lvar(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      expr'expr-lvar = e.ptr();
-      lvar' = expr.lvar.ptr();
-      v.set(ref, paren, lvar.decl.type, lvar.decl.type-info);
+      expr'expr-lvar = e.ptr()
+      lvar' = expr.lvar.ptr()
+      v.set(ref, paren, lvar.decl.type, lvar.decl.type-info)
       if v.ref == 1 {
-         v.paren = false;
+         v.paren = false
       }
-      ok = true;
+      ok = true
    }
    wr-lvar(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      e'expr-lvar = expr;
-      e.lvar.wr(w);
-      w.b(e.decl);
+      e'expr-lvar = expr
+      e.lvar.wr(w)
+      w.b(e.decl)
    }
    rd-lvar(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      e'expr-lvar;
-      quick-alloc-one(e);
-      e-idx.set(e.base, #lvar);
-      e.lvar.rd(r);
-      e.decl = r.b();
+      e'expr-lvar
+      quick-alloc-one(e)
+      e-idx.set(e.base, #lvar)
+      e.lvar.rd(r)
+      e.decl = r.b()
    }
    process-lvar(expr'expr, ok'bool&) @case.process() @inline {
-      e'expr-lvar = expr;
+      e'expr-lvar = expr
       if !e.lvar.process() { return }
-      ok = true;
+      ok = true
    }
 }
  

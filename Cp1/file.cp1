@@ -1,151 +1,151 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
-using 'x = 'posix;
-using 'w = 'windows;
+'c = 'libc
+'c1 = 'libcp1
+'x = 'posix
+'w = 'windows
 include "file.cp1.h" {
    using 'windows {
-      enum 'handle[#null, #invalid @no-decl(INVALID_HANDLE_VALUE)]'usz @no-decl(HANDLE);
-      CreateFileA(path'char[], access'w'create-file-access, share-mode'w'create-file-share-mode, security-attributes'ref, creation-disposition'w'create-file-creation-disposition, flags'w'create-file-flags, template-file'handle)'handle @no-decl @real-name;
-      enum 'create-file-access[#read @no-decl(GENERIC_READ), #write @no-decl(GENERIC_WRITE)]'u32;
-      enum 'create-file-share-mode[#0, #read @no-decl(FILE_SHARE_READ)]'u32;
-      enum 'create-file-creation-disposition[#open-existing @no-decl(OPEN_EXISTING), #create-always @no-decl(CREATE_ALWAYS)]'u32;
-      enum 'create-file-flags[#normal @no-decl(FILE_ATTRIBUTE_NORMAL)]'u32;
-      GetFileSizeEx(h'handle, i'w'large-integer)'bool @no-decl @real-name;
+      enum 'handle[#null, #invalid @no-decl(INVALID_HANDLE_VALUE)]'usz @no-decl(HANDLE)
+      CreateFileA(path'char[], access'w'create-file-access, share-mode'w'create-file-share-mode, security-attributes'ref, creation-disposition'w'create-file-creation-disposition, flags'w'create-file-flags, template-file'handle)'handle @no-decl @real-name
+      enum 'create-file-access[#read @no-decl(GENERIC_READ), #write @no-decl(GENERIC_WRITE)]'u32
+      enum 'create-file-share-mode[#0, #read @no-decl(FILE_SHARE_READ)]'u32
+      enum 'create-file-creation-disposition[#open-existing @no-decl(OPEN_EXISTING), #create-always @no-decl(CREATE_ALWAYS)]'u32
+      enum 'create-file-flags[#normal @no-decl(FILE_ATTRIBUTE_NORMAL)]'u32
+      GetFileSizeEx(h'handle, i'w'large-integer)'bool @no-decl @real-name
       union 'large-integer[
          quadPart'u64 @real-name('quad-part),
-      ] @no-decl(LARGE_INTEGER);
-      CloseHandle(h'handle)'bool @no-decl @real-name;
-      ReadFile(h'handle, buf'ref, size'u32, bytes-read'u32&, overlapped'ref)'bool @no-decl @real-name;
-      WriteFile(h'handle, buf'ref, size'u32, bytes-read'u32&, overlapped'ref)'bool @no-decl @real-name;
+      ] @no-decl(LARGE_INTEGER)
+      CloseHandle(h'handle)'bool @no-decl @real-name
+      ReadFile(h'handle, buf'ref, size'u32, bytes-read'u32&, overlapped'ref)'bool @no-decl @real-name
+      WriteFile(h'handle, buf'ref, size'u32, bytes-read'u32&, overlapped'ref)'bool @no-decl @real-name
    }
 }
 using 'cp1 {
    read-file(path'char[], out-size'usz&)'ref @inline {
-      return read-file(path, 0, 0, -1, out-size);
+      return read-file(path, 0, 0, -1, out-size)
    }
    read-file(path'char[], add-before'i32, add-after'i32, max-size'usz, out-size'usz&)'ref {
-      "#ifdef _WIN32";
+      "#ifdef _WIN32"
       if true {
-         h' = 'w.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null);
+         h' = 'w.CreateFileA(path, #read, #read, null, #open-existing, #normal, #null)
          if h == #invalid {
-            return null;
+            return null
          }
-         f-size';
+         f-size'
          if !'w.GetFileSizeEx(h, f-size) {
-            'w.CloseHandle(h);
-            return null;
+            'w.CloseHandle(h)
+            return null
          }
-         size' = f-size.quadPart;
+         size' = f-size.quadPart
          if max-size != 0 {
             if 'usz(size) > max-size {
-               size =  max-size;
+               size =  max-size
             }
          }
-         buf'u8[];
-         'c.malloc-arr(buf, add-before + size + add-after);
-         bytes-read';
+         buf'u8[]
+         'c.malloc-arr(buf, add-before + size + add-after)
+         bytes-read'
          if !'w.ReadFile(h, &buf[add-before], size, bytes-read, null) || (bytes-read != size) {
-            'c.free(buf);
-            'w.CloseHandle(h);
-            return null;
+            'c.free(buf)
+            'w.CloseHandle(h)
+            return null
          }
-         'w.CloseHandle(h);
-         out-size = size;
-         return buf;
+         'w.CloseHandle(h)
+         out-size = size
+         return buf
       }
-      "#else";
+      "#else"
       if true {
-         fd';
+         fd'
          if !'x'fd.open(fd, path, #rdonly) {
-            return null;
+            return null
          }
-         size' = fd.seek(0, #end);
+         size' = fd.seek(0, #end)
          if size == -1 {
-            fd.close();
-            return null;
+            fd.close()
+            return null
          }
          if max-size != 0 {
             if 'usz(size) > max-size {
-               size =  max-size;
+               size =  max-size
             }
          }
          if fd.seek(0, #set) == -1 {
-            fd.close();
-            return null;
+            fd.close()
+            return null
          }
-         buf'u8[];
+         buf'u8[]
          // C1.stdout{"malloc " (add-before + size + add-after):u32 "\n"}
-         'c.malloc-arr(buf, add-before + size + add-after);
+         'c.malloc-arr(buf, add-before + size + add-after)
          if fd.read(&buf[add-before], size) != size {
-            'c.free(buf);
-            fd.close();
-            return null;
+            'c.free(buf)
+            fd.close()
+            return null
          }
-         fd.close();
-         out-size = size;
-         return buf;
+         fd.close()
+         out-size = size
+         return buf
       }
-      "#endif";
+      "#endif"
    }
    write-file(path'char[], data'ref, size'usz)'bool {
-      "#ifdef _WIN32";
+      "#ifdef _WIN32"
       if true {
-         h' = 'w.CreateFileA(path, #write, #0, null, #create-always, #normal, #null);
+         h' = 'w.CreateFileA(path, #write, #0, null, #create-always, #normal, #null)
          if h == #invalid {
-            return false;
+            return false
          }
-         bytes-written';
+         bytes-written'
          if !'w.WriteFile(h, data, size, bytes-written, null) || (bytes-written != size) {
-            'w.CloseHandle(h);
-            return false;
+            'w.CloseHandle(h)
+            return false
          }
-         'w.CloseHandle(h);
-         return true;
+         'w.CloseHandle(h)
+         return true
       }
-      "#else";
+      "#else"
       if true {
-         fd';
+         fd'
          if !'x'fd.open(fd, path, #create | #truncate | #wronly, 0o644) {
-            return false;
+            return false
          }
          if fd.write(data, size) != size {
-            fd.close();
-            return false;
+            fd.close()
+            return false
          }
-         fd.close();
-         return true;
+         fd.close()
+         return true
       }
-      "#endif";
+      "#endif"
    }
-   output-data'char[] @real-name(output_data);
-   output-cap'u32;
-   output-len'u32 @real-name(output_len);
+   output-data'char[] @real-name(output_data)
+   output-cap'u32
+   output-len'u32 @real-name(output_len)
    output(fmt'c1'fmt) @meta(f-reserve, f, output) @inline {
-      fmt.cap = 0;
+      fmt.cap = 0
    }
    output-reserve(len'u32) @process {
-      space' = .output-cap - .output-len;
+      space' = .output-cap - .output-len
       if space < len {
-         .output-cap += .output-cap;
-         space = .output-cap - .output-len;
+         .output-cap += .output-cap
+         space = .output-cap - .output-len
          loop space < len {
-            .output-cap += .output-cap;
-            space = .output-cap - .output-len;
+            .output-cap += .output-cap
+            space = .output-cap - .output-len
          }
-         .output-cap += .output-cap;
-         'c.realloc-arr(.output-data, .output-cap);
+         .output-cap += .output-cap
+         'c.realloc-arr(.output-data, .output-cap)
       }
    }
 }
 using 'libcp1 {
    using 'fmt {
       f-reserve-output(fmt'this) {
-         'cp1.output-reserve(fmt.cap);
-         fmt.len = 'cp1.output-len;
-         fmt.ptr = 'cp1.output-data;
+         'cp1.output-reserve(fmt.cap)
+         fmt.len = 'cp1.output-len
+         fmt.ptr = 'cp1.output-data
       }
       f-output(fmt'this) {
-         'cp1.output-len = fmt.len;
+         'cp1.output-len = fmt.len
       }
    }
 }

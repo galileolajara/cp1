@@ -983,7 +983,7 @@ stmt_break ::= begin_pos(begin) BREAK end_pos(end).
 // stmt_expr ::= stmt_return.
 stmt_return ::= begin_pos(begin) RETURN end_pos(end).
    { _Tcp1_Fstmt_return_5(-1, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
-stmt_return ::= begin_pos(begin) RETURN open_parenthesis_or_space expr(e) close_parenthesis_or_space end_pos(end).
+stmt_return ::= begin_pos(begin) RETURN SPACE expr(e) end_pos(end).
    { _Tcp1_Fstmt_return_5(e.basic.id, begin.basic.row, begin.basic.col, end.basic.row, end.basic.col); }
 
 typeAndInfo ::= expr_type_apply typeInfo_optional.
@@ -1030,7 +1030,7 @@ stmt_expr ::= expr2stmt.
 stmt_any ::= stmt_brace.
 stmt_any ::= stmt_expr.
 stmts_any ::= stmt_any.
-stmts_any ::= stmts_any SPACE stmt.
+stmts_any ::= stmts_any SPACE stmt_any.
 /* stmts_optional ::= SPACE_CLOSE_CURLY_BRACE.
 stmts_optional ::= SPACE stmts_brace close_curly_brace_or_space.
 stmts_optional ::= SPACE stmts_expr close_curly_brace_or_scolon. */

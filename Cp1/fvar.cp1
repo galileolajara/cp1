@@ -1,86 +1,86 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
-enum 'fvar[#nil = -1, #0]'i32;
+enum 'fvar[#nil = -1, #0]'i32
 expr-fvar(expr'expr-i, member'id, row'u32, col'u32)'expr-i {
    if .decl-func-ctx-space == null {
       'c1.stdout{.input-path '': row '': row ": Use of member variables are now allowed here\n"}
-      'c.exit(#failure);
+      'c.exit(#failure)
    }
-   e'expr-fvar;
-   quick-alloc-one(e);
-   e-idx' = expr-push(e.base, #fvar);
-   e.expr = expr;
-   e.member = member;
-   return e-idx;
+   e'expr-fvar
+   quick-alloc-one(e)
+   e-idx' = expr-push(e.base, #fvar)
+   e.expr = expr
+   e.member = member
+   return e-idx
 }
 using 'expr-i {
    wr-fvar(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      e'expr-fvar = expr;
-      e.expr.wr(w, header);
-      e.member.wr(w, header);
+      e'expr-fvar = expr
+      e.expr.wr(w, header)
+      e.member.wr(w, header)
    }
    rd-fvar(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      'expr-i.rd(expr?, r);
-      'id.rd(member?, r);
-      e-idx.set-fvar(expr, member);
+      'expr-i.rd(expr?, r)
+      'id.rd(member?, r)
+      e-idx.set-fvar(expr, member)
    }
    set-fvar(e-idx'this, expr'expr-i, member'id) {
-      e'expr-fvar;
-      quick-alloc-one(e);
-      e-idx.set(e.base, #fvar);
-      e.expr = expr;
-      e.member = member;
+      e'expr-fvar
+      quick-alloc-one(e)
+      e-idx.set(e.base, #fvar)
+      e.expr = expr
+      e.member = member
    }
    type-fvar(expr'expr, at'at&) @case.type() @inline {
-      e'expr-fvar = expr;
-      at = e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar].decl.type;
+      e'expr-fvar = expr
+      at = e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar].decl.type
    }
    value-fvar(expr'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      e'expr-fvar = expr.ptr();
-      fvar' = e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar];
-      v.set(ref, paren, fvar.decl.type, fvar.decl.type-info);
+      e'expr-fvar = expr.ptr()
+      fvar' = e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar]
+      v.set(ref, paren, fvar.decl.type, fvar.decl.type-info)
       if v.ref == 1 {
-         v.paren = false;
+         v.paren = false
       }
-      ok = true;
+      ok = true
    }
    write-fvar(expr'expr) @case.write() @inline {
-      e'expr-fvar = expr;
-      e.expr.write-value(e.val);
+      e'expr-fvar = expr
+      e.expr.write-value(e.val)
       output{''.}
-      e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar].decl.write-fvar();
+      e.val.type.ptr().decl.structt.ptr().fvar-v[e.fvar].decl.write-fvar()
    }
    process-fvar(expr'expr, ok'bool&) @case.process() @inline {
-      e'expr-fvar = expr;
-      type-i' = e.expr.type();
+      e'expr-fvar = expr
+      type-i' = e.expr.type()
       if type-i == #nil {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col " Cannot get member '." e.member "' from an expression of unknown type\n"}
-         return;
+         return
       }
-      type' = type-i.ptr();
+      type' = type-i.ptr()
       if type.def != #struct {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col " Cannot get member '." e.member "' because the type is not a struct or union\n"}
-         return;
+         return
       }
       if !e.expr.value(1 - type-i.pointer(), true, e.val) { return }
       if e.val.info.array-c > 0 {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col " Cannot get member '." e.member "' because the expression is an array(" e.val.info.array-c ")\n"}
-         return;
+         return
       }
       if type.decl.structt == #nil {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col " Cannot get member '." e.member "' because the type '/" type.name.id "' was not defined\n"}
-         return;
+         return
       }
-      struct-i' = type.decl.structt;
-      struct-i.output();
-      structt' = struct-i.ptr();
-      member' = e.member;
+      struct-i' = type.decl.structt
+      struct-i.output()
+      structt' = struct-i.ptr()
+      member' = e.member
       loop i' = 'fvar(0); structt.fvar-c; i++ {
          if structt.fvar-v[i].decl.name == member {
-            e.fvar = i;
-            ok = true;
-            return;
+            e.fvar = i
+            ok = true
+            return
          }
       }
       'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col " Cannot find member named '." e.member "' from type '/" type.name.id "'\n"}

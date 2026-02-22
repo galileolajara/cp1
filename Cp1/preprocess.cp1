@@ -1,212 +1,212 @@
-require "LibCp1/fmtsz.cp1";
-using 'c1 = 'libcp1;
-using 'c = 'libc;
+require "LibCp1/fmtsz.cp1"
+'c1 = 'libcp1
+'c = 'libc
 using 'cp1 {
    parse-string(in-path'char @const[], r'rdr, w'wtr, ending'char, in-data'ref) {
-      w.p1[0] = ''\';
-      w.p1[1] = r.p1[1];
-      w.pos += 2;
-      r.pos += 2;
+      w.p1[0] = ''\'
+      w.p1[1] = r.p1[1]
+      w.pos += 2
+      r.pos += 2
       loop {
-         c' = r.p1[0];
+         c' = r.p1[0]
          if c == ''\n {
-            get-row-col(row?, col?, r.ref, in-data);
+            get-row-col(row?, col?, r.ref, in-data)
             'c1.stdout{in-path '': row '': col ": Unterminated string\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
-         w.p1[0] = c;
-         w.pos++;
-         r.pos++;
+         w.p1[0] = c
+         w.pos++
+         r.pos++
          if c == ending {
-            return;
+            return
          }
       }
    }
    parse-string(in-path'char @const[], r'rdr, ending'char, in-data'ref)'cint {
-      start'rdr.;
-      start.pos = r.pos;
-      r.pos += 2;
+      start'rdr.
+      start.pos = r.pos
+      r.pos += 2
       loop {
-         c' = r.p1[0];
+         c' = r.p1[0]
          if c == ''\n {
-            get-row-col(row?, col?, r.ref, in-data);
+            get-row-col(row?, col?, r.ref, in-data)
             'c1.stdout{in-path '': row '': col ": Unterminated string\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
-         r.pos++;
+         r.pos++
          if c == ending {
-            return r.pos - start.pos;
+            return r.pos - start.pos
          }
       }
-      return 0; // code won't reach this but we want to make tcc happy
+      return 0 // code won't reach this but we want to make tcc happy
    }
    get-row-col(out-row'u32&, out-col'u32&, end'ref, begin'ref) {
-      row' = 1;
-      col' = 1;
-      r'rdr.;
-      r.ref = begin;
-      r-end'rdr.;
-      r-end.ref = end;
+      row' = 1
+      col' = 1
+      r'rdr.
+      r.ref = begin
+      r-end'rdr.
+      r-end.ref = end
       loop r.pos < r-end.pos {
          if r.p1[0] == ''\n {
-            row++;
-            col = 1;
+            row++
+            col = 1
          } else {
-            col++;
+            col++
          }
-         r.pos++;
+         r.pos++
       }
-      out-row = row;
+      out-row = row
       if r.p1[0] == ''\n {
-         out-col = col - 1;
+         out-col = col - 1
       } else {
-         out-col = col;
+         out-col = col
       }
    }
    preprocess(in-path'char @const[], in-data'u8[], in-out-size'usz&)'u8[] {
-      in-size' = in-out-size;
+      in-size' = in-out-size
       if in-data[in-size - 1] != ''\n {
-         in-data[in-size++] = ''\n;
+         in-data[in-size++] = ''\n
       }
-      r-end'rdr.;
-      r-end.ref = in-data;
-      r-end.pos += in-size;
-      r'rdr.;
-      r.ref = in-data;
-      new-data' = 'c.malloc((in-size << 1) + 4); // 2x because basic syntax mode adds { and }
-      w'wtr.;
-      w.ref = new-data;
+      r-end'rdr.
+      r-end.ref = in-data
+      r-end.pos += in-size
+      r'rdr.
+      r.ref = in-data
+      new-data' = 'c.malloc((in-size << 1) + 4) // 2x because basic syntax mode adds { and }
+      w'wtr.
+      w.ref = new-data
       // Ignore texts outside the top-level curly braces
-      // indent! = 0:i32;
-      basic-mode-indent-c' = 0;
-      basic-mode-indent-v'u16[256];
-      basic-mode-row-begin' = 0;
-      last-first-char'rdr.;
-      last-first-char.ref = " ";
-      row' = 0;
+      // indent! = 0:i32
+      basic-mode-indent-c' = 0
+      basic-mode-indent-v'u16[256]
+      basic-mode-row-begin' = 0
+      last-first-char'rdr.
+      last-first-char.ref = " "
+      row' = 0
       loop {
-         row++;
-         start-line'rdr.;
-         start-line.pos = r.pos;
+         row++
+         start-line'rdr.
+         start-line.pos = r.pos
          loop {
             if r.p1[0] == ''\n {
-               break;
+               break
             }
-            r.pos++;
+            r.pos++
          }
-         next-line'rdr.;
-         next-line.pos = r.pos + 1;
+         next-line'rdr.
+         next-line.pos = r.pos + 1
          if r.p1[-1] == ''\r {
             // C1.stdout{"windows line ending detected\n"}
-            r.pos--;
+            r.pos--
          }
          // C1.stdout{"{{ " start-line.char, r.pos - start-line.pos " }}2\n"}
-         line'rdr.;
-         line.pos = start-line.pos;
-         col' = 0;
-         last-char' = -1;
+         line'rdr.
+         line.pos = start-line.pos
+         col' = 0
+         last-char' = -1
          loop r.pos - start-line.pos {
             if start-line.p1[col] == ''  {
             } else { break }
-            col++;
+            col++
          }
-         indent' = col;
-         line.pos += col;
-         first-char'rdr.;
-         first-char.pos = line.pos;
+         indent' = col
+         line.pos += col
+         first-char'rdr.
+         first-char.pos = line.pos
          if (first-char.p1[0] == ''#) && (first-char.p1[1] == '' ) {
             if basic-mode-indent-c != 0 {
-               // indent += 2;
-               line.ref = first-char.ref;
-               line.pos += 2;
+               // indent += 2
+               line.ref = first-char.ref
+               line.pos += 2
                loop r.pos - line.pos {
                   if line.p1[0] == ''  {
                   } else { break }
-                  // indent++;
-                  line.p1++;
+                  // indent++
+                  line.p1++
                }
-               indent = line.pos - start-line.pos;
+               indent = line.pos - start-line.pos
                if (basic-mode-indent-v[basic-mode-indent-c - 1] >= indent) && (||, last-first-char.p1[0] != ''#, last-first-char.p1[1] != '' ) {
                   // Currently in basic syntax mode
-                  w.pos--; // undo the previous new line
-                  empty' = true; // is the previous line empty?
-                  w2'rdr.;
-                  w2.pos = w.pos;
+                  w.pos-- // undo the previous new line
+                  empty' = true // is the previous line empty?
+                  w2'rdr.
+                  w2.pos = w.pos
                   loop {
                      if w2.p1[-1] == ''\n {
-                        break;
+                        break
                      } elif w2.p1[-1] == ''  {
                      } else {
-                        empty = false;
-                        break;
+                        empty = false
+                        break
                      }
-                     w2.pos--;
+                     w2.pos--
                   }
                   if empty {
-                     w.pos = w2.pos;
+                     w.pos = w2.pos
                      loop basic-mode-indent-v[basic-mode-indent-c - 1] {
-                        w.p1[0] = '' ;
-                        w.pos++;
+                        w.p1[0] = '' 
+                        w.pos++
                      }
                   } else {
-                     w.p1[0] = '' ;
-                     w.pos++;
+                     w.p1[0] = '' 
+                     w.pos++
                   }
-                  w.p1[0] = ''};
-                  w.pos++;
-                  basic-mode-indent-c--;
+                  w.p1[0] = ''}
+                  w.pos++
+                  basic-mode-indent-c--
                   // C1.stdout{"exit basic syntax mode\n"}
                   loop (basic-mode-indent-c != 0) && (basic-mode-indent-v[basic-mode-indent-c - 1] >= indent) {
-                     w.p1[0] = '' ;
-                     w.pos++;
-                     w.p1[0] = ''};
-                     w.pos++;
-                     basic-mode-indent-c--;
+                     w.p1[0] = '' 
+                     w.pos++
+                     w.p1[0] = ''}
+                     w.pos++
+                     basic-mode-indent-c--
                      // C1.stdout{"exit basic syntax mode\n"}
                   }
-                  w.p1[0] = ''\n;
-                  w.pos++;
+                  w.p1[0] = ''\n
+                  w.pos++
                }
             }
-            line.pos = start-line.pos;
+            line.pos = start-line.pos
             loop r.pos - line.pos {
-               w.p1[0] = line.p1[0];
-               w.pos++;
-               line.pos++;
+               w.p1[0] = line.p1[0]
+               w.pos++
+               line.pos++
             }
          } else {
             loop line.pos < r.pos {
                if line.p1[0] == ''\t {
                   'c1.stdout{in-path '': row '': col ": Error, use of tabs is discouraged, please use spaces instead\n"}
-                  'c.exit(#failure);
+                  'c.exit(#failure)
                } elif (line.p1[0] == ''/) && (line.p1[1] == ''/) {
                   if line.p1[2] != ''  {
                      'c1.stdout{in-path '': row '': col ": There must be a space after the '//' comment\n"}
-                     'c.exit(#failure);
+                     'c.exit(#failure)
                   }
                   if col == 0 {
                   } elif line.p1[-1] != ''  {
                      'c1.stdout{in-path '': row '': col ": There must be a space before the '//' comment\n"}
-                     'c.exit(#failure);
+                     'c.exit(#failure)
                   } else {
-                     col -= 1; // -1 to also remove the space
+                     col -= 1 // -1 to also remove the space
                   }
-                  "goto proceed;";
-                  break;
+                  "goto proceed;"
+                  break
                } elif line.p1[0] == ''" { // C-string
-                  line.pos++;
-                  col++;
-                  // C.out.printf("A\n"); C.out.flush();
+                  line.pos++
+                  col++
+                  // C.out.printf("A\n"); C.out.flush()
                   loop {
                      if line.p1[0] == ''\n {
                         'c1.stdout{in-path '': row '': col ": Unterminated string\n"}
-                        'c.exit(#failure);
+                        'c.exit(#failure)
                      } elif line.p1[0] == ''" {
-                        last-char = col;
-                        line.pos++;
-                        col++;
-                        // C.out.printf("B\n"); C.out.flush();
-                        break;
+                        last-char = col
+                        line.pos++
+                        col++
+                        // C.out.printf("B\n"); C.out.flush()
+                        break
                      } elif line.p1[0] == ''\\ {
                         switch line.p1[1] {
                            case ''0 { }
@@ -227,258 +227,250 @@ using 'cp1 {
                               } else {
                                  'c1.stdout{in-path '': row '': col ": Encountered invalid escape sequence in the string: '\\" line.char[1] "'\n"}
                               }
-                              'c.exit(#failure);
+                              'c.exit(#failure)
                            }
                         }
-                        line.pos += 2;
-                        col += 2;
+                        line.pos += 2
+                        col += 2
                      } else {
-                        line.pos++;
-                        col++;
+                        line.pos++
+                        col++
                      }
                   }
                } elif line.p1[0] == ''  {
-                  line.pos++;
-                  col++;
+                  line.pos++
+                  col++
                } elif line.p1[0] == ''\' {
                   if line.p1[1] == ''\' {
                      // char
-                     c' = line.p1[2];
+                     c' = line.p1[2]
                      if c == ''\\ {
                         if line.p1[3] == ''" {
                            'c1.stdout{in-path '': row '': col ": char ''\\\" is invalid, please use ''\" instead\n"}
-                           'c.exit(#failure);
+                           'c.exit(#failure)
                         }
-                        line.pos += 4;
-                        col += 4;
+                        line.pos += 4
+                        col += 4
                      } else {
                         switch c {
                            case ''\' {
                               'c1.stdout{in-path '': row '': col ": char ''' is invalid, please use ''\\' instead\n"}
-                              'c.exit(#failure);
+                              'c.exit(#failure)
                            }
                            case ''\a {
                               'c1.stdout{in-path '': row '': col ": char ''(\\a) is invalid, please use ''\\a instead\n"}
-                              'c.exit(#failure);
+                              'c.exit(#failure)
                            }
                            case ''\b {
                               'c1.stdout{in-path '': row '': col ": char ''(\\b) is invalid, please use ''\\b instead\n"}
-                              'c.exit(#failure);
+                              'c.exit(#failure)
                            }
                            case ''\f {
                               'c1.stdout{in-path '': row '': col ": char ''(\\f) is invalid, please use ''\\f instead\n"}
-                              'c.exit(#failure);
+                              'c.exit(#failure)
                            }
                            case ''\n {
                               'c1.stdout{in-path '': row '': col ": char ''(new line) is invalid, please use ''\\n instead\n"}
-                              'c.exit(#failure);
+                              'c.exit(#failure)
                            }
                            case ''\r {
                               'c1.stdout{in-path '': row '': col ": char ''(\\r) is invalid, please use ''\\r instead\n"}
-                              'c.exit(#failure);
+                              'c.exit(#failure)
                            }
                            case ''\t {
                               'c1.stdout{in-path '': row '': col ": char ''(tab) is invalid, please use ''\\t instead\n"}
-                              'c.exit(#failure);
+                              'c.exit(#failure)
                            }
                            case ''\v {
                               'c1.stdout{in-path '': row '': col ": char ''(\\v) is invalid, please use ''\\v instead\n"}
-                              'c.exit(#failure);
+                              'c.exit(#failure)
                            }
                         }
-                        line.pos += 3;
-                        col += 3;
+                        line.pos += 3
+                        col += 3
                      }
                   } elif (&&, (||, line.p1[1] == ''-, line.p1[1] == ''=), line.p1[2] == '' ) {
                      // string
-                     line.pos += 2;
-                     col += 2; // -1 to exclude new line
+                     line.pos += 2
+                     col += 2 // -1 to exclude new line
                      loop {
-                        c' = line.p1[0];
+                        c' = line.p1[0]
                         if c == ''\n {
-                           break;
+                           break
                         }
-                        line.pos++;
-                        col++;
+                        line.pos++
+                        col++
                      }
                      if false {
                         // Codes to check if syntax highlighting for strings are working
-                        "#if 0";
-                           '"hello";
-                           '<hello>;
-                           '[hello];
-                           '{hello};
-                           '(hello);
-                        "#endif";
+                        "#if 0"
+                           if true {
+                              '"hello"
+                              '<hello>
+                              '[hello]
+                              '{hello}
+                              '(hello)
+                           }
+                        "#endif"
                      }
                   } elif line.p1[1] == ''" {
-                     col += parse-string(in-path, line, ''", in-data);
+                     col += parse-string(in-path, line, ''", in-data)
                   } elif line.p1[1] == ''< {
-                     col += parse-string(in-path, line, ''>, in-data);
+                     col += parse-string(in-path, line, ''>, in-data)
                   } elif line.p1[1] == ''[ {
-                     col += parse-string(in-path, line, ''], in-data);
+                     col += parse-string(in-path, line, ''], in-data)
                   } elif line.p1[1] == ''{ {
-                     col += parse-string(in-path, line, ''}, in-data);
+                     col += parse-string(in-path, line, ''}, in-data)
                   } elif line.p1[1] == ''( {
-                     col += parse-string(in-path, line, ''), in-data);
+                     col += parse-string(in-path, line, ''), in-data)
                   } else {
-                     line.pos++;
-                     col++;
+                     line.pos++
+                     col++
                   }
-                  last-char = -col;
+                  last-char = -col
                } else {
-                  last-char = col;
-                  line.pos++;
-                  col++;
+                  last-char = col
+                  line.pos++
+                  col++
                }
             }
 
             if line.pos != r.pos {
                'c1.stdout{row ": line.pos(" line.pos ") != r.pos(" r.pos "): " start-line.char, r.pos - start-line.pos "\n"}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
-            "proceed:";
+            "proceed:"
             if last-char < -1 {
-               last-char = 1 - last-char;
-               start-line.p1[last-char] = '' ;
+               last-char = 1 - last-char
+               start-line.p1[last-char] = '' 
             }
 
             // C1.stdout{"last-char " last-char ", indent " indent "\n"}
             if last-char != -1 {
                if (basic-mode-indent-c != 0) && (basic-mode-indent-v[basic-mode-indent-c - 1] >= indent) && (||, last-first-char.p1[0] != ''#, last-first-char.p1[1] != '' ) {
                   // Currently in basic syntax mode
-                  w.pos--; // undo the previous new line
-                  empty' = true; // is the previous line empty?
-                  w2'rdr.;
-                  w2.pos = w.pos;
+                  w.pos-- // undo the previous new line
+                  empty' = true // is the previous line empty?
+                  w2'rdr.
+                  w2.pos = w.pos
                   loop {
                      if w2.p1[-1] == ''\n {
-                        break;
+                        break
                      } elif w2.p1[-1] == ''  {
                      } else {
-                        empty = false;
-                        break;
+                        empty = false
+                        break
                      }
-                     w2.pos--;
+                     w2.pos--
                   }
                   if empty {
-                     w.pos = w2.pos;
+                     w.pos = w2.pos
                      loop basic-mode-indent-v[basic-mode-indent-c - 1] {
-                        w.p1[0] = '' ;
-                        w.pos++;
+                        w.p1[0] = '' 
+                        w.pos++
                      }
                   } else {
-                     w.p1[0] = '' ;
-                     w.pos++;
+                     w.p1[0] = '' 
+                     w.pos++
                   }
-                  w.p1[0] = ''};
-                  w.pos++;
-                  basic-mode-indent-c--;
+                  w.p1[0] = ''}
+                  w.pos++
+                  basic-mode-indent-c--
                   // C1.stdout{"exit basic syntax mode\n"}
                   loop (basic-mode-indent-c != 0) && (basic-mode-indent-v[basic-mode-indent-c - 1] >= indent) {
-                     w.p1[0] = '' ;
-                     w.pos++;
-                     w.p1[0] = ''};
-                     w.pos++;
-                     basic-mode-indent-c--;
+                     w.p1[0] = '' 
+                     w.pos++
+                     w.p1[0] = ''}
+                     w.pos++
+                     basic-mode-indent-c--
                      // C1.stdout{"exit basic syntax mode\n"}
                   }
-                  w.p1[0] = ''\n;
-                  w.pos++;
+                  w.p1[0] = ''\n
+                  w.pos++
                }
             }
             if (last-char != -1) && (start-line.p1[last-char] == '':) {
                // C1.stdout{"[[ " start-line.char, col " ]] CONVERTING FROM BASIC TO CP1\n"}
-               line.pos = start-line.pos;
+               line.pos = start-line.pos
                loop last-char {
-                  w.p1[0] = line.p1[0];
-                  w.pos++;
-                  line.pos++;
+                  w.p1[0] = line.p1[0]
+                  w.pos++
+                  line.pos++
                }
-               w.p1[0] = '' ;
-               w.pos++;
-               w.p1[0] = ''{;
-               w.pos++;
+               w.p1[0] = '' 
+               w.pos++
+               w.p1[0] = ''{
+               w.pos++
                if basic-mode-indent-c == 0 {
-                  basic-mode-row-begin = row;
+                  basic-mode-row-begin = row
                }
-               basic-mode-indent-v[basic-mode-indent-c++] = indent;
+               basic-mode-indent-v[basic-mode-indent-c++] = indent
             } elif basic-mode-indent-c == 0 {
-               line.pos = start-line.pos;
+               line.pos = start-line.pos
                loop col {
-                  w.p1[0] = line.p1[0];
-                  w.pos++;
-                  line.pos++;
+                  w.p1[0] = line.p1[0]
+                  w.pos++
+                  line.pos++
                }
             } else {
-               line.pos = start-line.pos;
+               line.pos = start-line.pos
                loop col {
-                  w.p1[0] = line.p1[0];
-                  w.pos++;
-                  line.pos++;
-               }
-               if last-char != -1 {
-                  if (||, start-line.p1[last-char] == ''{, start-line.p1[last-char] == ''}, start-line.p1[last-char] == ''[, start-line.p1[last-char] == ''(, start-line.p1[last-char] == '';, start-line.p1[last-char] == '',) {
-                  } else {
-                     loop w.p1[-1] == ''  {
-                        w.pos--;
-                     }
-                     w.p1[0] = '';;
-                     w.pos++;
-                  }
+                  w.p1[0] = line.p1[0]
+                  w.pos++
+                  line.pos++
                }
             }
          }
-         w.p1[0] = ''\n;
-         w.pos++;
+         w.p1[0] = ''\n
+         w.pos++
          if next-line.pos == r-end.pos { break }
-         r.pos = next-line.pos;
-         last-first-char.ref = first-char.ref;
+         r.pos = next-line.pos
+         last-first-char.ref = first-char.ref
       }
       if (basic-mode-indent-c != 0) && (||, last-first-char.p1[0] != ''#, last-first-char.p1[1] != '' ) {
          // Currently in basic syntax mode
-         w.pos--; // undo the previous new line
-         empty' = true; // is the previous line empty?
-         w2'rdr.;
-         w2.pos = w.pos;
+         w.pos-- // undo the previous new line
+         empty' = true // is the previous line empty?
+         w2'rdr.
+         w2.pos = w.pos
          loop {
             if w2.p1[-1] == ''\n {
-               break;
+               break
             } elif w2.p1[-1] == ''  {
             } else {
-               empty = false;
-               break;
+               empty = false
+               break
             }
-            w2.pos--;
+            w2.pos--
          }
          if empty {
-            w.pos = w2.pos;
+            w.pos = w2.pos
             loop basic-mode-indent-v[basic-mode-indent-c - 1] {
-               w.p1[0] = '' ;
-               w.pos++;
+               w.p1[0] = '' 
+               w.pos++
             }
          } else {
-            w.p1[0] = '' ;
-            w.pos++;
+            w.p1[0] = '' 
+            w.pos++
          }
-         w.p1[0] = ''};
-         w.pos++;
+         w.p1[0] = ''}
+         w.pos++
          // C1.stdout{"exit basic syntax mode\n"}
          loop basic-mode-indent-c - 1 {
-            w.p1[0] = '' ;
-            w.pos++;
-            w.p1[0] = ''};
-            w.pos++;
+            w.p1[0] = '' 
+            w.pos++
+            w.p1[0] = ''}
+            w.pos++
             // C1.stdout{"exit basic syntax mode\n"}
          }
-         w.p1[0] = ''\n;
-         w.pos++;
+         w.p1[0] = ''\n
+         w.pos++
       }
-      w.p1[0] = ''\0;
-      // "puts(_Lnew_data_6);";
-      w-begin'wtr.;
-      w-begin.ref = new-data;
-      in-out-size = w.pos - w-begin.pos;
-      return new-data;
+      w.p1[0] = ''\0
+      // "puts(_Lnew_data_6);"
+      w-begin'wtr.
+      w-begin.ref = new-data
+      in-out-size = w.pos - w-begin.pos
+      return new-data
    }
 }

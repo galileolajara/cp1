@@ -1,32 +1,32 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
 enum 'enum[#nil = -1, #0, #1]'i32 {
    wr(f'this, w'wtr) @inline {
-      w.n(f + #1);
+      w.n(f + #1)
    }
    rd(f'this&, r'rdr) @inline {
-      f = 'func(r.n() - #1);
+      f = 'func(r.n() - #1)
    }
    ptr(f'this)'enum-data @inline {
-      return .enum-v[f];
+      return .enum-v[f]
    }
    output(e-i'this) {
-      num' = 'u32(e-i);
-      n3' = num >> 3;
-      n17' = 1 << (num & 7);
+      num' = 'u32(e-i)
+      n3' = num >> 3
+      n17' = 1 << (num & 7)
       if (.enum-is-outputted[n3] & n17) != 0 { return }
-      .enum-is-outputted[n3] |= n17;
-      e' = e-i.ptr();
+      .enum-is-outputted[n3] |= n17
+      e' = e-i.ptr()
 
-      e.base-type.output(e.file, e.begin-row, e.begin-col);
+      e.base-type.output(e.file, e.begin-row, e.begin-col)
 
       if e.include != #nil {
-         e.include.output();
+         e.include.output()
       }
 
       // if (e.flags & #no-decl) == #0 {
-         .enum-outputted-v[.enum-outputted-c++] = e-i;
+         .enum-outputted-v[.enum-outputted-c++] = e-i
       // }
    }
 }
@@ -41,164 +41,164 @@ enum 'enum-flags[
    // #overload-compare = 64,
    ]'u8 {
    wr(e'this, w'wtr) @inline {
-      w.n1('base(e));
+      w.n1('base(e))
    }
    rd(e'this&, r'rdr) @inline {
-      e = 'enum-flags(r.n1());
+      e = 'enum-flags(r.n1())
    }
 }
-enum-c'enum;
-enum-cap'enum;
-enum-v'enum-data[];
-decl-enum-row'u32;
-decl-enum-col'u32;
-decl-enum-at'at;
-decl-enum-real-name'id;
-decl-enum-flags'enum-flags;
-decl-enum-last-cvar'cvar;
-decl-enum-soa-field-gvar-at'at;
-decl-enum-soa-field-gvar-id'id;
+enum-c'enum
+enum-cap'enum
+enum-v'enum-data[]
+decl-enum-row'u32
+decl-enum-col'u32
+decl-enum-at'at
+decl-enum-real-name'id
+decl-enum-flags'enum-flags
+decl-enum-last-cvar'cvar
+decl-enum-soa-field-gvar-at'at
+decl-enum-soa-field-gvar-id'id
 decl-var-as-evar() {
-   evar' = .decl-evar-c++;
+   evar' = .decl-evar-c++
    if .decl-evar-cap <= .decl-evar-c {
-      grow(.decl-evar-cap, .decl-evar-c);
-      realloc(.decl-evar-v, .decl-evar-cap);
+      grow(.decl-evar-cap, .decl-evar-c)
+      realloc(.decl-evar-v, .decl-evar-cap)
    }
-   .decl-evar-v[evar].copy-from(.decl-var);
+   .decl-evar-v[evar].copy-from(.decl-var)
 }
 decl-at-begin-enum(name'id, row'u32, col'u32) {
-   .decl-enum-row = row;
-   .decl-enum-col = col;
-   .build-at = .decl-at;
-   decl-at-add(name, #struct-enum, row, col);
-   .decl-at-v[.decl-at-c++] = .decl-at;
-   .decl-at = .build-at;
-   .decl-enum-at = .build-at;
-   .decl-enum-flags = #0;
-   .decl-enum-last-cvar = #nil;
+   .decl-enum-row = row
+   .decl-enum-col = col
+   .build-at = .decl-at
+   decl-at-add(name, #struct-enum, row, col)
+   .decl-at-v[.decl-at-c++] = .decl-at
+   .decl-at = .build-at
+   .decl-enum-at = .build-at
+   .decl-enum-flags = #0
+   .decl-enum-last-cvar = #nil
    // C1.stdout{"began enum at:\n"}
-   // at-i! = .build-at;
+   // at-i! = .build-at
    // loop {
-   //    at! = at-i.ptr();
+   //    at! = at-i.ptr()
    //    C1.stdout{"- " at.name.id ''\n}
-   //    at-i = at.parent;
+   //    at-i = at.parent
    //    if at-i == #root { break }
    // }
 }
 enum-base-begin() {
-   .decl-at = .decl-at.ptr().parent;
+   .decl-at = .decl-at.ptr().parent
 }
 // enum-base-end() {
-//    .decl-at = .decl-enum-at;
+//    .decl-at = .decl-enum-at
 // }
 enum-attr-soa-field(at'at, id'id) {
-   .decl-enum-flags |= #soa-field;
-   .decl-enum-soa-field-gvar-at = at;
-   .decl-enum-soa-field-gvar-id = id;
+   .decl-enum-flags |= #soa-field
+   .decl-enum-soa-field-gvar-at = at
+   .decl-enum-soa-field-gvar-id = id
 }
 enum-attr-no-decl() {
-   .decl-enum-flags |= #no-decl;
+   .decl-enum-flags |= #no-decl
 }
 enum-attr-real-name(id'id) {
-   .decl-enum-flags |= #real-name;
-   .decl-enum-real-name = id;
+   .decl-enum-flags |= #real-name
+   .decl-enum-real-name = id
 }
 decl-enum-end(base-type'at, row'u32, col'u32) {
-   s-idx' = .enum-c++;
+   s-idx' = .enum-c++
    if .enum-cap <= .enum-c {
-      old-cap' = .enum-cap;
-      .enum-cap = 'enum(grow('base(.enum-c)));
-      realloc(.enum-v, 'base(.enum-cap), 'base(old-cap));
+      old-cap' = .enum-cap
+      .enum-cap = 'enum(grow('base(.enum-c)))
+      realloc(.enum-v, 'base(.enum-cap), 'base(old-cap))
    }
-   s'enum-data;
-   quick-alloc-one(s);
-   .enum-v[s-idx] = s;
-   s.begin-row = .decl-enum-row;
-   s.begin-col = .decl-enum-col;
-   s.end-row = row;
-   s.end-col = col;
-   s.include = .decl-include;
-   s.at = .decl-enum-at;
-   s.base-type = base-type;
-   .decl-at = .decl-enum-at;
-   s.flags = .decl-enum-flags;
-   s.soa-field-gvar-at = .decl-enum-soa-field-gvar-at;
-   s.soa-field-gvar-id = .decl-enum-soa-field-gvar-id;
-   s.real-name = .decl-enum-real-name;
-   .decl-enum-last-cvar = #nil;
-   // s.name = .decl-enum-name;
-   // s.evar-c = .decl-evar-c;
+   s'enum-data
+   quick-alloc-one(s)
+   .enum-v[s-idx] = s
+   s.begin-row = .decl-enum-row
+   s.begin-col = .decl-enum-col
+   s.end-row = row
+   s.end-col = col
+   s.include = .decl-include
+   s.at = .decl-enum-at
+   s.base-type = base-type
+   .decl-at = .decl-enum-at
+   s.flags = .decl-enum-flags
+   s.soa-field-gvar-at = .decl-enum-soa-field-gvar-at
+   s.soa-field-gvar-id = .decl-enum-soa-field-gvar-id
+   s.real-name = .decl-enum-real-name
+   .decl-enum-last-cvar = #nil
+   // s.name = .decl-enum-name
+   // s.evar-c = .decl-evar-c
    // C1.stdout{"There are " s.evar-c " evars\n"}
    // loop i' = 0; .decl-evar-c; i ++ {
-   //    a! = s.evar-v[i];
-   //    a.decl.copy-from(.decl-evar-v[i]);
+   //    a! = s.evar-v[i]
+   //    a.decl.copy-from(.decl-evar-v[i])
    //    // C1.stdout{"- " a.name ''\n}
    // }
 }
-last-cvar'cvar;
+last-cvar'cvar
 enum-add-cvar(name'id, row'u32, col'u32) {
-   c-idx' = .cvar-c++;
-   .last-cvar = c-idx;
+   c-idx' = .cvar-c++
+   .last-cvar = c-idx
    if .cvar-cap <= .cvar-c {
-      old-cap' = .cvar-cap;
-      .cvar-cap = 'cvar(grow('base(.cvar-c)));
-      realloc(.cvar-v, 'base(.cvar-cap), 'base(old-cap));
+      old-cap' = .cvar-cap
+      .cvar-cap = 'cvar(grow('base(.cvar-c)))
+      realloc(.cvar-v, 'base(.cvar-cap), 'base(old-cap))
    }
-   c' = c-idx.ptr();
-   c.row = row;
-   c.col = col;
-   c.include = .decl-include;
-   c.at = .decl-at;
-   c.decl.name = name;
-   c.decl.type = .decl-enum-at;
-   c.decl.type-info.init();
-   c.flags = #as-enum;
-   c.last-cvar = .decl-enum-last-cvar;
-   .decl-enum-last-cvar = c-idx;
+   c' = c-idx.ptr()
+   c.row = row
+   c.col = col
+   c.include = .decl-include
+   c.at = .decl-at
+   c.decl.name = name
+   c.decl.type = .decl-enum-at
+   c.decl.type-info.init()
+   c.flags = #as-enum
+   c.last-cvar = .decl-enum-last-cvar
+   .decl-enum-last-cvar = c-idx
 }
 decl-add-cvar(name'id, row'u32, col'u32) {
-   c-idx' = .cvar-c++;
-   .last-cvar = c-idx;
+   c-idx' = .cvar-c++
+   .last-cvar = c-idx
    if .cvar-cap <= .cvar-c {
-      old-cap' = .cvar-cap;
-      .cvar-cap = 'cvar(grow('base(.cvar-c)));
-      realloc(.cvar-v, 'base(.cvar-cap), 'base(old-cap));
+      old-cap' = .cvar-cap
+      .cvar-cap = 'cvar(grow('base(.cvar-c)))
+      realloc(.cvar-v, 'base(.cvar-cap), 'base(old-cap))
    }
-   c' = c-idx.ptr();
-   c.row = row;
-   c.col = col;
-   c.include = .decl-include;
-   c.at = .decl-at;
-   .decl-var.name = name;
-   c.decl.copy-from(.decl-var);
+   c' = c-idx.ptr()
+   c.row = row
+   c.col = col
+   c.include = .decl-include
+   c.at = .decl-at
+   .decl-var.name = name
+   c.decl.copy-from(.decl-var)
    if (c.decl.flags & #real-name) != #0 {
       if (c.decl.name.len() == 7) && ('c.memcmp(c.decl.name.str(), "failure", 7) == 0) {
          'c1.stdout{"failure has a real-name at decl-add-cvar\n"}
       }
    }
-   c.flags = #0;
+   c.flags = #0
 }
 enum-set-cvar-expr(set'expr-i) {
-   c' = .last-cvar.ptr();
-   c.flags |= #set-expr;
-   c.expr-set = set;
+   c' = .last-cvar.ptr()
+   c.flags |= #set-expr
+   c.expr-set = set
 }
 cvar-attr-real-name(name'id) {
-   c' = .last-cvar.ptr();
-   c.decl.flags |= #real-name;
-   c.decl.real-name = name;
+   c' = .last-cvar.ptr()
+   c.decl.flags |= #real-name
+   c.decl.real-name = name
 }
 cvar-attr-no-decl() {
-   c' = .last-cvar.ptr();
-   c.decl.flags |= #no-decl;
+   c' = .last-cvar.ptr()
+   c.decl.flags |= #no-decl
 }
 cvar-attr-no-name() {
-   c' = .last-cvar.ptr();
-   c.flags |= #no-name;
+   c' = .last-cvar.ptr()
+   c.flags |= #no-name
 }
 cvar-attr-dont-count() {
-   c' = .last-cvar.ptr();
-   c.flags |= #dont-count;
+   c' = .last-cvar.ptr()
+   c.flags |= #dont-count
 }
  
 

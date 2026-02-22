@@ -1,27 +1,27 @@
 using 'cp1 {
 expr-bool(value'bool)'expr-i {
-   e'expr-bool;
-   quick-alloc-one(e);
-   e-idx' = expr-push(e.base, #bool);
-   e.value = value;
-   return e-idx;
+   e'expr-bool
+   quick-alloc-one(e)
+   e-idx' = expr-push(e.base, #bool)
+   e.value = value
+   return e-idx
 }
 using 'expr-i {
    wr-bool(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      e'expr-bool = expr;
-      w.b(e.value);
+      e'expr-bool = expr
+      w.b(e.value)
    }
    rd-bool(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      set-bool(e-idx, r.b());
+      set-bool(e-idx, r.b())
    }
    set-bool(e-idx'expr-i, val'bool) {
-      e'expr-bool;
-      quick-alloc-one(e);
-      e-idx.set(e.base, #bool);
-      e.value = val;
+      e'expr-bool
+      quick-alloc-one(e)
+      e-idx.set(e.base, #bool)
+      e.value = val
    }
    write-bool(expr'expr) @case.write() @inline {
-      e'expr-bool = expr;
+      e'expr-bool = expr
       if e.value {
          output{"true"}
       } else {
@@ -29,21 +29,21 @@ using 'expr-i {
       }
    }
    process-bool(expr'expr, ok'bool&) @case.process() @inline {
-      // .include-stdbool = true;
-      ok = true;
+      // .include-stdbool = true
+      ok = true
    }
    type-bool(expr'expr, at'at&) @case.type() @inline {
-      at = basic-type(#bool);
+      at = basic-type(#bool)
    }
    value-bool(le'this, ref'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      v.type = basic-type(#bool);
-      v.info.init();
-      v.info.array-c = 0;
-      v.info.ref-v[0] = ''\0;
-      v.info.star-c = 0;
-      v.ref = 1;
-      v.paren = false;
-      ok = true;
+      v.type = basic-type(#bool)
+      v.info.init()
+      v.info.array-c = 0
+      v.info.ref-v[0] = ''\0
+      v.info.star-c = 0
+      v.ref = 1
+      v.paren = false
+      ok = true
    }
 }
  

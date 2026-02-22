@@ -1,26 +1,26 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
 enum 'cvar[#nil = -1, #0]'i32 {
    rd(c'this&, r'rdr) @inline {
-      idx' = 'cvar(r.n() - 1);
+      idx' = 'cvar(r.n() - 1)
       if idx == #nil {
-         c = #nil;
+         c = #nil
       } else {
-         c = .cvar-table[idx];
+         c = .cvar-table[idx]
       }
    }
    wr(g'this, w'wtr) @inline {
-      w.n('base(g) + 1);
+      w.n('base(g) + 1)
    }
    process(c'this)'bool {
-      num' = 'u32(c);
-      n3' = num >> 3;
-      n17' = 1 << (num & 7);
+      num' = 'u32(c)
+      n3' = num >> 3
+      n17' = 1 << (num & 7)
       if (.cvar-is-outputted[n3] & n17) != 0 { return true }
-      .cvar-is-outputted[n3] |= n17;
+      .cvar-is-outputted[n3] |= n17
 
-      cvar' = c.ptr();
+      cvar' = c.ptr()
 
       if (cvar.flags & #set-expr) != #0 {
          if !cvar.expr-set.process() { return false }
@@ -28,29 +28,29 @@ enum 'cvar[#nil = -1, #0]'i32 {
          if !cvar.last-cvar.process() { return false }
       }
 
-      at-i' = cvar.decl.type;
+      at-i' = cvar.decl.type
       if at-i != #nil {
-         at-i = at-validate(at-i, cvar.at, cvar.file, cvar.row, cvar.col);
-         cvar.decl.type = at-i;
-         at' = at-i.ptr();
+         at-i = at-validate(at-i, cvar.at, cvar.file, cvar.row, cvar.col)
+         cvar.decl.type = at-i
+         at' = at-i.ptr()
          if (&&, at.type != #basic, at.decl.structt == #nil) {
             'c1.stdout{"Error, the type '" at.name.id "' used in cvar '." cvar.decl.name "' was not defined\n"}
-            return false;
+            return false
          }
-         at-i.output(cvar.file, cvar.row, cvar.col);
+         at-i.output(cvar.file, cvar.row, cvar.col)
       }
 
       // if (gvar.flags & #no-decl) == #0 {
-         .cvar-outputted-v[.cvar-outputted-c++] = c;
+         .cvar-outputted-v[.cvar-outputted-c++] = c
       // }
       
-      return true;
+      return true
    }
    ptr(c'this)'cvar-data @inline {
-      return .cvar-v[c];
+      return .cvar-v[c]
    }
    write(c'this) @inline {
-      cvar' = c.ptr();
+      cvar' = c.ptr()
       if (cvar.decl.flags & #real-name) != #0 {
          // if (cvar.decl.name.len() == 7) && (C.memcmp(cvar.decl.name.str(), "failure", 7) == 0) {
             // output{"EXIT_FAILURE"}
@@ -58,7 +58,7 @@ enum 'cvar[#nil = -1, #0]'i32 {
             output{cvar.decl.real-name}
          // }
       } else {
-         cvar.at.write-space();
+         cvar.at.write-space()
          output{"_C" cvar.decl.name.c-name()}
       }
    }
@@ -72,128 +72,128 @@ enum 'cvar-flags[
    // #real-name = 2,
    ]'u8 {
    wr(f'this, w'wtr) @inline {
-      w.n1('base(f));
+      w.n1('base(f))
    }
    rd(f'this&, r'rdr) @inline {
-      f = 'cvar-flags(r.n1());
+      f = 'cvar-flags(r.n1())
    }
 }
-cvar-c'cvar;
-cvar-cap'cvar;
-cvar-v'cvar-data.[];
+cvar-c'cvar
+cvar-cap'cvar
+cvar-v'cvar-data.[]
 expr-cvar(at'at, name'id)'expr-i {
-   e'expr-cvar;
-   quick-alloc-one(e);
-   e-idx' = expr-push(e.base, #cvar);
-   e.at = at;
-   e.name = name;
-   return e-idx;
+   e'expr-cvar
+   quick-alloc-one(e)
+   e-idx' = expr-push(e.base, #cvar)
+   e.at = at
+   e.name = name
+   return e-idx
 }
 using 'expr-i {
    write-cvar(expr'expr) @case.write() @inline {
-      e'expr-cvar = expr;
-      e.cvar.write();
+      e'expr-cvar = expr
+      e.cvar.write()
    }
    wr-cvar(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      e'expr-cvar = expr;
-      e.at.wr(w, header);
-      e.name.wr(w, header);
+      e'expr-cvar = expr
+      e.at.wr(w, header)
+      e.name.wr(w, header)
    }
    rd-cvar(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      'at.rd(at?, r);
-      'id.rd(name?, r);
-      set-cvar(e-idx, at, name);
+      'at.rd(at?, r)
+      'id.rd(name?, r)
+      set-cvar(e-idx, at, name)
    }
    set-cvar(e-idx'expr-i, at'at, name'id) {
-      e'expr-cvar;
-      quick-alloc-one(e);
-      e-idx.set(e.base, #cvar);
-      e.at = at;
-      e.name = name;
-      e.try = #nil;
+      e'expr-cvar
+      quick-alloc-one(e)
+      e-idx.set(e.base, #cvar)
+      e.at = at
+      e.name = name
+      e.try = #nil
    }
    value-cvar(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      expr'expr-cvar = e.ptr();
-      cvar' = expr.cvar.ptr();
+      expr'expr-cvar = e.ptr()
+      cvar' = expr.cvar.ptr()
       if (cvar.decl.type == #nil) && ((cvar.flags & #set-expr) != #0) {
-         ok = cvar.expr-set.value(ref, paren, v);
+         ok = cvar.expr-set.value(ref, paren, v)
       } else {
-         v.set(ref, paren, cvar.decl.type, cvar.decl.type-info);
+         v.set(ref, paren, cvar.decl.type, cvar.decl.type-info)
          if v.ref == 1 {
-            v.paren = false;
+            v.paren = false
          }
-         ok = true;
+         ok = true
       }
    }
    type-cvar(expr'expr, at'at&) @case.type() @inline {
-      e'expr-cvar = expr;
-      cvar' = e.cvar.ptr();
+      e'expr-cvar = expr
+      cvar' = e.cvar.ptr()
       if (cvar.decl.type == #nil) && ((cvar.flags & #set-expr) != #0) {
-         at = cvar.expr-set.type();
+         at = cvar.expr-set.type()
       } else {
-         at = cvar.decl.type;
+         at = cvar.decl.type
       }
    }
    process-cvar(expr'expr, ok'bool&) @case.process() @inline {
-      e'expr-cvar = expr;
-      name' = e.name;
-      cvar-c';
-      cvar-v';
+      e'expr-cvar = expr
+      name' = e.name
+      cvar-c'
+      cvar-v'
       if e.try != #nil {
-         at' = e.try.ptr();
-         cvar-c = at.cvar-c;
-         cvar-v = at.cvar-v;
+         at' = e.try.ptr()
+         cvar-c = at.cvar-c
+         cvar-v = at.cvar-v
          // C1.stdout{"e.try = " e.try ", " at.name.id ", " name ", cvar-c " cvar-c ''\n}
          loop i' = 0; cvar-c; i++ {
-            cvar' = cvar-v[i];
+            cvar' = cvar-v[i]
             // C1.stdout{"- " cvar.ptr.decl.name ''\n}
             if cvar.ptr().decl.name == name {
                if !cvar.process() { return }
-               e.cvar = cvar;
-               ok = true;
-               return;
+               e.cvar = cvar
+               ok = true
+               return
             }
          }
       }
-      at-idx';
-      at';
-      try-parent' = false;
+      at-idx'
+      at'
+      try-parent' = false
       if e.at != #nil {
-         e.at = at-validate(e.at, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col);
-         at-idx = e.at;
-         at = at-idx.ptr();
-         cvar-c = at.cvar-c;
-         cvar-v = at.cvar-v;
+         e.at = at-validate(e.at, .ctx-func.at, .ctx-func.file, .ctx-begin-row, .ctx-begin-col)
+         at-idx = e.at
+         at = at-idx.ptr()
+         cvar-c = at.cvar-c
+         cvar-v = at.cvar-v
       } else {
-         at-idx = .ctx-func.at;
-         at = at-idx.ptr();
-         cvar-c = at.cvar-c;
-         cvar-v = at.cvar-v;
-         try-parent = true;
+         at-idx = .ctx-func.at
+         at = at-idx.ptr()
+         cvar-c = at.cvar-c
+         cvar-v = at.cvar-v
+         try-parent = true
       }
       loop {
          loop i' = 0; cvar-c; i++ {
-            cvar' = cvar-v[i];
+            cvar' = cvar-v[i]
             if cvar.ptr().decl.name == name {
                if !cvar.process() { return }
-               e.cvar = cvar;
-               ok = true;
-               return;
+               e.cvar = cvar
+               ok = true
+               return
             }
          }
          if !try-parent { break }
          if at-idx == #root { break }
-         at-idx = at.parent;
-         at = at-idx.ptr();
-         cvar-c = at.cvar-c;
-         cvar-v = at.cvar-v;
+         at-idx = at.parent
+         at = at-idx.ptr()
+         cvar-c = at.cvar-c
+         cvar-v = at.cvar-v
       }
       'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Cannot find #" name ''\n}
    }
    try-deduce-cvar(expr'expr, at'at) @case.try-deduce() @inline {
-      e'expr-cvar = expr;
+      e'expr-cvar = expr
       if e.at == #nil {
-         e.try = at;
+         e.try = at
       }
    }
 }

@@ -1,30 +1,30 @@
 include <stdio.h> {
-   using 'c = 'libc;
-   using 'x = 'posix;
+   'c = 'libc
+   'x = 'posix
    using 'libc {
-      printf(fmt'char @const[])'cint @var-args @no-decl @real-name;
-      sprintf(str'char[], fmt'char @const[])'cint @var-args @no-decl @real-name;
-      scanf(fmt'char @const[])'cint @var-args @no-decl @real-name;
-      sscanf(str'char[], fmt'char @const[])'cint @var-args @no-decl @real-name;
+      printf(fmt'char @const[])'cint @var-args @no-decl @real-name
+      sprintf(str'char[], fmt'char @const[])'cint @var-args @no-decl @real-name
+      scanf(fmt'char @const[])'cint @var-args @no-decl @real-name
+      sscanf(str'char[], fmt'char @const[])'cint @var-args @no-decl @real-name
 
-      in'file @no-decl(stdin);
-      out'file @no-decl(stdout);
+      in'file @no-decl(stdin)
+      out'file @no-decl(stdout)
       struct 'file[] @no-decl(FILE) {
-         printf(f'this, str'char @const[])'cint @var-args @no-decl(fprintf);
-         flush(f'this)'cint @no-decl(fflush);
+         printf(f'this, str'char @const[])'cint @var-args @no-decl(fprintf)
+         flush(f'this)'cint @no-decl(fflush)
          write(f'this, buf'ref, size'usz)'usz @inline {
-            return fwrite(buf, 1, size, f);
+            return fwrite(buf, 1, size, f)
          }
-         putc(c'cint, f'this)'cint @no-decl(fputc);
-         gets(line'char[], size'cint, f'this)'char[] @no-decl(fgets);
-         close(f'this)'cint @no-decl(fclose);
+         putc(c'cint, f'this)'cint @no-decl(fputc)
+         gets(line'char[], size'cint, f'this)'char[] @no-decl(fgets)
+         close(f'this)'cint @no-decl(fclose)
       }
-      rename(old'char[], new'char[])'cint @no-decl @real-name;
-      fopen(path'char[], mode'char[])'file @no-decl @real-name;
-      fdopen(fd'x'fd, mode'char[])'file @no-decl @real-name;
-      fclose(f'file)'cint @no-decl @real-name;
-      fwrite(buf'ref, size1'usz, size2'usz, f'file)'usz @no-decl @real-name;
-      tempnam(dir'char[], pfx'char[])'char[] @no-decl @real-name;
-      perror(str'char @const[]) @no-decl @real-name;
+      rename(old'char[], new'char[])'cint @no-decl @real-name
+      fopen(path'char[], mode'char[])'file @no-decl @real-name
+      fdopen(fd'x'fd, mode'char[])'file @no-decl @real-name
+      fclose(f'file)'cint @no-decl @real-name
+      fwrite(buf'ref, size1'usz, size2'usz, f'file)'usz @no-decl @real-name
+      tempnam(dir'char[], pfx'char[])'char[] @no-decl @real-name
+      perror(str'char @const[]) @no-decl @real-name
    }
 }

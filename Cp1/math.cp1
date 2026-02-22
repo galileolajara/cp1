@@ -1,314 +1,314 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
 enum 'math[#add, #sub, #mul, #div, #mod, #lshift, #rshift, #and, #or, #xor]'u8 {
    wr(e'this, w'wtr) @inline {
-      w.n1('base(e));
+      w.n1('base(e))
    }
    rd(e'this&, r'rdr) @inline {
-      e = 'math(r.n1());
+      e = 'math(r.n1())
    }
 }
 expr-math(left'expr-i, right'expr-i, type'math)'expr-i {
-   e'expr-math;
-   quick-alloc-one(e);
-   e-idx' = expr-push(e.base, #math);
-   e.left = left;
-   e.right = right;
-   e.type = type;
-   return e-idx;
+   e'expr-math
+   quick-alloc-one(e)
+   e-idx' = expr-push(e.base, #math)
+   e.left = left
+   e.right = right
+   e.type = type
+   return e-idx
 }
 expr-math-add(expr'expr-i, right'expr-i)'expr-i {
-   e'expr-math = expr.ptr();
-   i' = e.item-c++;
+   e'expr-math = expr.ptr()
+   i' = e.item-c++
    if e.item-cap <= e.item-c {
-      old-cap' = e.item-cap;
-      grow(e.item-cap, e.item-c);
-      realloc(e.item-v, e.item-cap, old-cap);
+      old-cap' = e.item-cap
+      grow(e.item-cap, e.item-c)
+      realloc(e.item-v, e.item-cap, old-cap)
    }
-   item' = e.item-v[i];
-   item.expr = right;
-   return expr;
+   item' = e.item-v[i]
+   item.expr = right
+   return expr
 }
 using 'expr-i {
    try-deduce-math(expr'expr, at'at) @case.try-deduce() @inline {
-      e'expr-math = expr;
-      e.left.try-deduce(at);
-      e.right.try-deduce(at);
+      e'expr-math = expr
+      e.left.try-deduce(at)
+      e.right.try-deduce(at)
       loop i' = 0; e.item-c; i++ {
-         e.item-v[i].expr.try-deduce(at);
+         e.item-v[i].expr.try-deduce(at)
       }
    }
    wr-math(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      e'expr-math = expr;
-      e.left.wr(w, header);
-      e.right.wr(w, header);
-      e.type.wr(w);
-      w.n1(e.item-c);
+      e'expr-math = expr
+      e.left.wr(w, header)
+      e.right.wr(w, header)
+      e.type.wr(w)
+      w.n1(e.item-c)
       loop i' = 0; e.item-c; i++ {
-         e.item-v[i].expr.wr(w, header);
+         e.item-v[i].expr.wr(w, header)
       }
    }
    rd-math(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      e'expr-math;
-      quick-alloc-one(e);
-      e-idx.set(e.base, #math);
-      e.left.rd(r);
-      e.right.rd(r);
-      e.type.rd(r);
-      item-c' = r.n1();
+      e'expr-math
+      quick-alloc-one(e)
+      e-idx.set(e.base, #math)
+      e.left.rd(r)
+      e.right.rd(r)
+      e.type.rd(r)
+      item-c' = r.n1()
       if item-c > 0 {
-         e.item-c = item-c;
-         quick-alloc-arr(e.item-v, item-c);
+         e.item-c = item-c
+         quick-alloc-arr(e.item-v, item-c)
          loop i' = 0; e.item-c; i++ {
-            e.item-v[i].expr.rd(r);
+            e.item-v[i].expr.rd(r)
          }
       }
    }
    write-math(expr'expr) @case.write() @inline {
-      e'expr-math = expr;
+      e'expr-math = expr
       if e.is-overload {
-         e.left.write-value(e.left-val);
-         return;
+         e.left.write-value(e.left-val)
+         return
       }
       switch e.type {
          case #add {
-            e.left.write-value(e.left-val);
+            e.left.write-value(e.left-val)
             output{" + "}
-            e.right.write-value(e.right-val);
+            e.right.write-value(e.right-val)
             loop i' = 0; e.item-c; i++ {
                output{" + "}
-               e.item-v[i].expr.write-value(e.item-v[i].val);
+               e.item-v[i].expr.write-value(e.item-v[i].val)
             }
          }
          case #sub {
-            e.left.write-value(e.left-val);
+            e.left.write-value(e.left-val)
             output{" - "}
-            e.right.write-value(e.right-val);
+            e.right.write-value(e.right-val)
             loop i' = 0; e.item-c; i++ {
                output{" - "}
-               e.item-v[i].expr.write-value(e.item-v[i].val);
+               e.item-v[i].expr.write-value(e.item-v[i].val)
             }
          }
          case #mul {
-            e.left.write-value(e.left-val);
+            e.left.write-value(e.left-val)
             output{" * "}
-            e.right.write-value(e.right-val);
+            e.right.write-value(e.right-val)
             loop i' = 0; e.item-c; i++ {
                output{" * "}
-               e.item-v[i].expr.write-value(e.item-v[i].val);
+               e.item-v[i].expr.write-value(e.item-v[i].val)
             }
          }
          case #div {
-            e.left.write-value(e.left-val);
+            e.left.write-value(e.left-val)
             output{" / "}
-            e.right.write-value(e.right-val);
+            e.right.write-value(e.right-val)
             loop i' = 0; e.item-c; i++ {
                output{" / "}
-               e.item-v[i].expr.write-value(e.item-v[i].val);
+               e.item-v[i].expr.write-value(e.item-v[i].val)
             }
          }
          case #mod {
-            e.left.write-value(e.left-val);
+            e.left.write-value(e.left-val)
             output{" % "}
-            e.right.write-value(e.right-val);
+            e.right.write-value(e.right-val)
             loop i' = 0; e.item-c; i++ {
                output{" % "}
-               e.item-v[i].expr.write-value(e.item-v[i].val);
+               e.item-v[i].expr.write-value(e.item-v[i].val)
             }
          }
          case #lshift {
-            e.left.write-value(e.left-val);
+            e.left.write-value(e.left-val)
             output{" << "}
-            e.right.write-value(e.right-val);
+            e.right.write-value(e.right-val)
          }
          case #rshift {
-            e.left.write-value(e.left-val);
+            e.left.write-value(e.left-val)
             output{" >> "}
-            e.right.write-value(e.right-val);
+            e.right.write-value(e.right-val)
          }
          case #and {
-            e.left.write-value(e.left-val);
+            e.left.write-value(e.left-val)
             output{" & "}
-            e.right.write-value(e.right-val);
+            e.right.write-value(e.right-val)
             loop i' = 0; e.item-c; i++ {
                output{" & "}
-               e.item-v[i].expr.write-value(e.item-v[i].val);
+               e.item-v[i].expr.write-value(e.item-v[i].val)
             }
          }
          case #or {
-            e.left.write-value(e.left-val);
+            e.left.write-value(e.left-val)
             output{" | "}
-            e.right.write-value(e.right-val);
+            e.right.write-value(e.right-val)
             loop i' = 0; e.item-c; i++ {
                output{" | "}
-               e.item-v[i].expr.write-value(e.item-v[i].val);
+               e.item-v[i].expr.write-value(e.item-v[i].val)
             }
          }
          case #xor {
-            e.left.write-value(e.left-val);
+            e.left.write-value(e.left-val)
             output{" ^ "}
-            e.right.write-value(e.right-val);
+            e.right.write-value(e.right-val)
             loop i' = 0; e.item-c; i++ {
                output{" ^ "}
-               e.item-v[i].expr.write-value(e.item-v[i].val);
+               e.item-v[i].expr.write-value(e.item-v[i].val)
             }
          }
       }
    }
    value-math(e'this, ref'i8, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      expr'expr-math = e.ptr();
+      expr'expr-math = e.ptr()
       // if expr.left.value(1, paren, v) == false {
-      //    return;
+      //    return
       // }
       if !expr.left.value(1, paren, v) { return }
-      // left! = e.left.type();
-      // right! = e.right.type();
-      // left-size! = left.real.basicType.to()Size;
+      // left! = e.left.type()
+      // right! = e.right.type()
+      // left-size! = left.real.basicType.to()Size
       // if left-size > 0 {
       //    if left-size > right.real.basicType.to()struct Size[ 
       //       v.decl = left,
       //    ]
       // }
-      v.paren = paren;
-      v.ref = ref;
-      ok = true;
+      v.paren = paren
+      v.ref = ref
+      ok = true
    }
    type-math(expr'expr, at'at&) @case.type() @inline {
-      e'expr-math = expr;
-      at = e.left.type();
+      e'expr-math = expr
+      at = e.left.type()
    }
    process-math(expr'expr, ok'bool&) @case.process() @inline {
-      e'expr-math = expr;
-      "again:";
-      left-type' = e.left.type();
-      left-type-ptr' = left-type.ptr();
-      e.right.try-deduce(left-type);
+      e'expr-math = expr
+      "again:"
+      left-type' = e.left.type()
+      left-type-ptr' = left-type.ptr()
+      e.right.try-deduce(left-type)
       if left-type-ptr.def == #enum {
-         en' = left-type-ptr.decl.enumm.ptr();
-         f-idx' = en.overload-math-last;
+         en' = left-type-ptr.decl.enumm.ptr()
+         f-idx' = en.overload-math-last
          if f-idx != #nil {
-            e-right-type' = e.right.type();
-            f' = f-idx.ptr();
+            e-right-type' = e.right.type()
+            f' = f-idx.ptr()
             loop {
                if f.farg-v[1].decl.type == e-right-type {
-                  e-method' = 'expr-i.alloc();
-                  group-v'u8[1];
-                  group-v[0] = 2;
-                  carg-v2'expr-i[2];
-                  carg-v2[0] = e.right;
-                  e-cvar' = 'expr-i.alloc();
-                  id-op';
+                  e-method' = 'expr-i.alloc()
+                  group-v'u8[1]
+                  group-v[0] = 2
+                  carg-v2'expr-i[2]
+                  carg-v2[0] = e.right
+                  e-cvar' = 'expr-i.alloc()
+                  id-op'
                   switch e.type {
                      case #add {
-                        id-op = .id-add;
+                        id-op = .id-add
                      }
                      case #sub {
-                        id-op = .id-sub;
+                        id-op = .id-sub
                      }
                      case #mul {
-                        id-op = .id-mul;
+                        id-op = .id-mul
                      }
                      case #div {
-                        id-op = .id-div;
+                        id-op = .id-div
                      }
                   }
-                  set-cvar(e-cvar, #nil, id-op);
-                  carg-v2[1] = e-cvar;
-                  set-method(e-method, e.left, f.decl.name, false, 1, group-v, 2, carg-v2);
-                  e.left = e-method;
-                  e.is-overload = true;
+                  set-cvar(e-cvar, #nil, id-op)
+                  carg-v2[1] = e-cvar
+                  set-method(e-method, e.left, f.decl.name, false, 1, group-v, 2, carg-v2)
+                  e.left = e-method
+                  e.is-overload = true
                   if !e.left.value(1, true, e.left-val) {
-                     return;
+                     return
                   }
                   if e.item-c != 0 {
-                     e.right = e.item-v[0].expr;
-                     e.item-c--;
+                     e.right = e.item-v[0].expr
+                     e.item-c--
                      loop i' = 0; e.item-c; i++ {
-                        e.item-v[i].expr = e.item-v[i + 1].expr;
+                        e.item-v[i].expr = e.item-v[i + 1].expr
                      }
-                     "goto again;";
+                     "goto again;"
                   }
-                  ok = true;
-                  return;
+                  ok = true
+                  return
                }
-               f-idx = f.list1-prev;
+               f-idx = f.list1-prev
                if f-idx == #nil { break }
-               f = f-idx.ptr();
+               f = f-idx.ptr()
             }
-            f-idx = en.overload-math-last;
-            f = f-idx.ptr();
+            f-idx = en.overload-math-last
+            f = f-idx.ptr()
             loop {
-               en2' = f.farg-v[1].decl.type.ptr().decl.enumm.ptr();
-               f2-idx' = en2.overload-get-last;
+               en2' = f.farg-v[1].decl.type.ptr().decl.enumm.ptr()
+               f2-idx' = en2.overload-get-last
                if f2-idx != #nil {
-                  f2' = f2-idx.ptr();
+                  f2' = f2-idx.ptr()
                   loop {
                      if f2.farg-v[0].decl.type == e-right-type {
-                        e-func' = 'expr-i.alloc();
-                        group-v'u8[1];
-                        group-v[0] = 1;
-                        carg-v'expr-i[1];
-                        carg-v[0] = e.right;
-                        set-func(e-func, f2.at, f2.decl.name, false, 1, group-v, 1, carg-v);
+                        e-func' = 'expr-i.alloc()
+                        group-v'u8[1]
+                        group-v[0] = 1
+                        carg-v'expr-i[1]
+                        carg-v[0] = e.right
+                        set-func(e-func, f2.at, f2.decl.name, false, 1, group-v, 1, carg-v)
                         if true {
-                           e-method' = 'expr-i.alloc();
-                           group-v2'u8[1];
-                           group-v2[0] = 2;
-                           carg-v2'expr-i[2];
-                           carg-v2[0] = e-func;
-                           e-cvar' = 'expr-i.alloc();
-                           id-op';
+                           e-method' = 'expr-i.alloc()
+                           group-v2'u8[1]
+                           group-v2[0] = 2
+                           carg-v2'expr-i[2]
+                           carg-v2[0] = e-func
+                           e-cvar' = 'expr-i.alloc()
+                           id-op'
                            switch e.type {
                               case #add {
-                                 id-op = .id-add;
+                                 id-op = .id-add
                               }
                               case #sub {
-                                 id-op = .id-sub;
+                                 id-op = .id-sub
                               }
                               case #mul {
-                                 id-op = .id-mul;
+                                 id-op = .id-mul
                               }
                               case #div {
-                                 id-op = .id-div;
+                                 id-op = .id-div
                               }
                            }
-                           set-cvar(e-cvar, #nil, id-op);
-                           carg-v2[1] = e-cvar;
-                           set-method(e-method, e.left, f.decl.name, false, 1, group-v2, 2, carg-v2);
-                           e.left = e-method;
-                           e.is-overload = true;
+                           set-cvar(e-cvar, #nil, id-op)
+                           carg-v2[1] = e-cvar
+                           set-method(e-method, e.left, f.decl.name, false, 1, group-v2, 2, carg-v2)
+                           e.left = e-method
+                           e.is-overload = true
                         }
                         if !e.left.value(1, true, e.left-val) {
-                           return;
+                           return
                         }
                         if e.item-c != 0 {
-                           e.right = e.item-v[0].expr;
-                           e.item-c--;
+                           e.right = e.item-v[0].expr
+                           e.item-c--
                            loop i' = 0; e.item-c; i++ {
-                              e.item-v[i].expr = e.item-v[i + 1].expr;
+                              e.item-v[i].expr = e.item-v[i + 1].expr
                            }
-                           "goto again;";
+                           "goto again;"
                         }
-                        ok = true;
-                        return;
+                        ok = true
+                        return
                      }
-                     f2-idx = f2.list1-prev;
+                     f2-idx = f2.list1-prev
                      if f2-idx == #nil { break }
-                     f2 = f2-idx.ptr();
+                     f2 = f2-idx.ptr()
                   }
                }
-               f-idx = f.list1-prev;
+               f-idx = f.list1-prev
                if f-idx == #nil { break }
-               f = f-idx.ptr();
+               f = f-idx.ptr()
             }
          }
       }
       if !e.left.value(1, true, e.left-val) {
-         return;
+         return
       }
       if !e.right.value(1, true, e.right-val) {
-         return;
+         return
       }
       if !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), e.right-val.type, e.right-val.info.star-c + e.right-val.type.pointer()) {
          'c1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the operator '"}
@@ -326,12 +326,12 @@ using 'expr-i {
             case #xor { 'c1.stdbuf{"^"} }
          }
          'c1.stdout{"'\n"}
-         'c.exit(#failure);
-         return;
+         'c.exit(#failure)
+         return
       }
       loop i' = 0; e.item-c; i++ {
-         item' = e.item-v[i];
-         item.expr.try-deduce(e.left-val.type);
+         item' = e.item-v[i]
+         item.expr.try-deduce(e.left-val.type)
          if !item.expr.value(1, true, item.val) { return }
          if !compatible(e.left-val.type, e.left-val.info.star-c + e.left-val.type.pointer(), item.val.type, item.val.info.star-c + item.val.type.pointer()) {
             'c1.stdbuf{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col ": Type mismatch for the left and right operands of the operator '"}
@@ -349,11 +349,11 @@ using 'expr-i {
                case #xor { 'c1.stdbuf{"^"} }
             }
             'c1.stdout{"'\n"}
-            'c.exit(#failure);
-            return;
+            'c.exit(#failure)
+            return
          }
       }
-      ok = true;
+      ok = true
    }
 }
  

@@ -1,33 +1,33 @@
-require "LibC/stdio.cp1";
-require "Posix/stat.cp1";
+require "LibC/stdio.cp1"
+require "Posix/stat.cp1"
 include <fcntl.h> {
-   using 'c = 'libc;
-   using 'x = 'posix;
+   'c = 'libc
+   'x = 'posix
    using 'posix {
       enum 'fd[#in, #out, #nil = -1]'cint {
          open(file'this&, path'char @const[], flags'open-flags)'bool @inline {
-            fd' = 'x.open(path, flags);
+            fd' = 'x.open(path, flags)
             if fd != #nil {
-               file = fd;
-               return true;
+               file = fd
+               return true
             } else {
-               return false;
+               return false
             }
          }
          open(file'this&, path'char @const[], flags'open-flags, mode'cint)'bool @inline {
-            fd' = 'x.open(path, flags, mode);
+            fd' = 'x.open(path, flags, mode)
             if fd != #nil {
-               file = fd;
-               return true;
+               file = fd
+               return true
             } else {
-               return false;
+               return false
             }
          }
          fopen(file'this, mode'char @const[])'c'file @inline {
-            return 'c.fdopen(file, mode);
+            return 'c.fdopen(file, mode)
          }
          stat(file'this, stat'x'stat)'cint @inline {
-            return 'x.fstat('base(file), stat);
+            return 'x.fstat('base(file), stat)
          }
       }
       enum 'open-flags[
@@ -38,18 +38,18 @@ include <fcntl.h> {
          #rdwr @no-decl(O_RDWR),
          #truncate @no-decl(O_TRUNC),
          #excl @no-decl(O_EXCL),
-      ]'cint;
-      open(path'char @const[], flags'open-flags)'fd @decl("#ifdef _WIN32\n#define _Tposix_Fopen_2(p, f) open(p, f | O_BINARY)\n#else\n#define _Tposix_Fopen_2(p, f) open(p, f)\n#endif");
-      open(path'char @const[], flags'open-flags, mode'cint)'fd @decl("#ifdef _WIN32\n#define _Tposix_Fopen_3(p, f, m) open(p, f | O_BINARY, m)\n#else\n#define _Tposix_Fopen_3(p, f, m) open(p, f, m)\n#endif");
-      close(fd'fd)'cint @real-name @no-decl;
+      ]'cint
+      open(path'char @const[], flags'open-flags)'fd @decl("#ifdef _WIN32\n#define _Tposix_Fopen_2(p, f) open(p, f | O_BINARY)\n#else\n#define _Tposix_Fopen_2(p, f) open(p, f)\n#endif")
+      open(path'char @const[], flags'open-flags, mode'cint)'fd @decl("#ifdef _WIN32\n#define _Tposix_Fopen_3(p, f, m) open(p, f | O_BINARY, m)\n#else\n#define _Tposix_Fopen_3(p, f, m) open(p, f, m)\n#endif")
+      close(fd'fd)'cint @real-name @no-decl
       enum 'fcntl-op[
          #getfl @no-decl(F_GETFL),
          #setfl @no-decl(F_SETFL),
-      ]'cint;
+      ]'cint
       enum 'fcntl-val[
          #0,
          #nonblock @no-decl(O_NONBLOCK),
-      ]'cint;
-      fcntl(fd'fd, op'fcntl-op, val'fcntl-val)'cint @no-decl @real-name;
+      ]'cint
+      fcntl(fd'fd, op'fcntl-op, val'fcntl-val)'cint @no-decl @real-name
    }
 }

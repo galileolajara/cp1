@@ -1,48 +1,48 @@
-using 'c = 'libc;
-using 'x = 'posix;
+'c = 'libc
+'x = 'posix
 using 'cp1 {
-   printed-error'bool;
+   printed-error'bool
    stdout-then-print-error(buf'char[], len'u32) @process @real-name(stdout_then_print_error) {
-      'x'fd(1).write(buf, len);
+      'x'fd(1).write(buf, len)
       if .printed-error { return }
-      .printed-error = true;
+      .printed-error = true
       loop i' = 1; (len - 6) - 1; i++ {
          if (&&, buf[i] == ''., buf[i + 1] == ''c, buf[i + 2] == ''p, buf[i + 3] == ''1, buf[i + 4] == '':, (&&, buf[i + 5] >= ''0, buf[i + 5] <= ''9)) {
-            line'u32;
-            'c.sscanf(&buf[i + 5], "%u", &line);
-            buf[i + 4] = 0;
-            fd' = 'x.open(buf, #rdonly);
+            line'u32
+            'c.sscanf(&buf[i + 5], "%u", &line)
+            buf[i + 4] = 0
+            fd' = 'x.open(buf, #rdonly)
             if fd == #nil { return }
-            size' = fd.seek(0, #end);
-            fd.seek(0, #set);
-            data'char[] = 'c.malloc(size + 1);
-            fd.read(data, size);
-            fd.close();
-            data[size] = 0;
-            cur-line' = 1;
-            k' = 0;
+            size' = fd.seek(0, #end)
+            fd.seek(0, #set)
+            data'char[] = 'c.malloc(size + 1)
+            fd.read(data, size)
+            fd.close()
+            data[size] = 0
+            cur-line' = 1
+            k' = 0
             loop {
                if data[k] == 0 {
-                  break;
+                  break
                }
-               j' = k;
+               j' = k
                loop {
-                  c' = data[k++];
+                  c' = data[k++]
                   if (||, c == 0, c == ''\n) {
-                     break;
+                     break
                   }
                }
                if line == cur-line {
-                  len = (k - 1) - j;
-                  data[len++] = ''\n; // Make-the-last-byte-a-new-line-just-incase-the-line-terminated-with-null-character
-                  'x'fd(1).write(&data[j], len);
-                  'c.free(data);
-                  return;
+                  len = (k - 1) - j
+                  data[len++] = ''\n // Make-the-last-byte-a-new-line-just-incase-the-line-terminated-with-null-character
+                  'x'fd(1).write(&data[j], len)
+                  'c.free(data)
+                  return
                }
-               cur-line++;
+               cur-line++
             }
-            'c.free(data);
-            return;
+            'c.free(data)
+            return
          }
       }
    }

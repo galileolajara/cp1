@@ -1,87 +1,87 @@
-require "LibCp1/stdout.cp1";
-require "LibCp1/sprintf.cp1";
-require "LibC/stdio.cp1";
-require "LibC/stdlib.cp1";
-require "LibC/string.cp1";
-require "Posix/fcntl.cp1";
-require "Posix/unistd.cp1";
-require "Posix/stat.cp1";
-using 'c = 'libc;
-using 'c1 = 'libcp1;
-using 'x = 'posix;
+require "LibCp1/stdout.cp1"
+require "LibCp1/sprintf.cp1"
+require "LibC/stdio.cp1"
+require "LibC/stdlib.cp1"
+require "LibC/string.cp1"
+require "Posix/fcntl.cp1"
+require "Posix/unistd.cp1"
+require "Posix/stat.cp1"
+'c = 'libc
+'c1 = 'libcp1
+'x = 'posix
 using 'cp1 {
-lex-part-1'char @const[] @extern @real-name(lex_part_1);
-ctx-begin-row'u32;
-ctx-begin-col'u32;
-ctx-end-row'u32;
-ctx-end-col'u32;
+lex-part-1'char @const[] @extern @real-name(lex_part_1)
+ctx-begin-row'u32
+ctx-begin-col'u32
+ctx-end-row'u32
+ctx-end-col'u32
 #build-common-codes{}
-import-v'include[];
-import-require-v'u8[];
-import-cap'u32;
-import-c'u32;
+import-v'include[]
+import-require-v'u8[]
+import-cap'u32
+import-c'u32
 decl-import(path'include, row'u32, col'u32, require'bool) {
    if !path.validate(err?) {
       'c1.stdbuf{.input-path '': row '': col ": Import path "}
-      err.print(path);
-      'c.exit(#failure);
+      err.print(path)
+      'c.exit(#failure)
    }
    loop i' = 0; .import-c; i++ {
       if .import-v[i] == path {
          // C1.stdout{"already import '" path "' with the same arguments, silently ignoring...\n"}
-         return;
+         return
       }
    }
-   i' = .import-c++;
+   i' = .import-c++
    if .import-cap <= .import-c {
-      old-cap' = .import-cap;
-      .import-cap = grow(.import-c);
-      realloc(.import-v, .import-cap, old-cap);
-      realloc(.import-require-v, (.import-cap + 7) >> 3, (old-cap + 7) >> 3);
+      old-cap' = .import-cap
+      .import-cap = grow(.import-c)
+      realloc(.import-v, .import-cap, old-cap)
+      realloc(.import-require-v, (.import-cap + 7) >> 3, (old-cap + 7) >> 3)
    }
-   .import-v[i] = path;
+   .import-v[i] = path
    if require {
-      .import-require-v[i >> 3] |= 1 << (i & 7);
+      .import-require-v[i >> 3] |= 1 << (i & 7)
    }
 }
-template-name-buf'char[] @extern;
-template-name-len'u8 @extern;
-template-code-indention'u32 @extern;
-template-code-line-c'u32 @extern;
+template-name-buf'char[] @extern
+template-name-len'u8 @extern
+template-code-indention'u32 @extern
+template-code-line-c'u32 @extern
 decl-template-inst(name'id, row'u32, col'u32) {
-   at' = .decl-at;
-   arg-buf' = .string-buf;
-   arg-len' = .string-len;
-   arg-crc32c' = crc32c(0, arg-buf, arg-len);
+   at' = .decl-at
+   arg-buf' = .string-buf
+   arg-len' = .string-len
+   arg-crc32c' = crc32c(0, arg-buf, arg-len)
    loop i' = 0; .template-inst-c; i++ {
-      ti' = .template-inst-v[i];
+      ti' = .template-inst-v[i]
       if (ti.name == name) && (ti.arg-crc32c == arg-crc32c) && (ti.at == at) {
          // C1.stdout{"already found instantiation of template " name " with the same arguments, silently ignoring...\n"}
-         return;
+         return
       }
    }
-   i' = .template-inst-c++;
+   i' = .template-inst-c++
    if .template-inst-cap <= .template-inst-c {
-      old-cap' = .template-inst-cap;
-      .template-inst-cap = 'template-inst(grow('base(.template-inst-c)));
-      realloc(.template-inst-v, 'base(.template-inst-cap), 'base(old-cap));
+      old-cap' = .template-inst-cap
+      .template-inst-cap = 'template-inst(grow('base(.template-inst-c)))
+      realloc(.template-inst-v, 'base(.template-inst-cap), 'base(old-cap))
    }
-   ti' = .template-inst-v[i];
-   ti.name = name;
-   arg'char[];
-   quick-alloc-arr(arg, arg-len);
-   'c.memcpy(arg, arg-buf, arg-len);
-   ti.arg = arg;
-   ti.arg-len = arg-len;
-   ti.arg-crc32c = arg-crc32c;
-   ti.at = at;
-   ti.row = row;
-   ti.col = col;
+   ti' = .template-inst-v[i]
+   ti.name = name
+   arg'char[]
+   quick-alloc-arr(arg, arg-len)
+   'c.memcpy(arg, arg-buf, arg-len)
+   ti.arg = arg
+   ti.arg-len = arg-len
+   ti.arg-crc32c = arg-crc32c
+   ti.at = at
+   ti.row = row
+   ti.col = col
 }
 decl-template-code(name'id, row'u32, no-cache'bool, js'bool, with-reflection'bool) {
-   at' = .decl-at;
+   at' = .decl-at
    loop i' = 0; .template-code-c; i++ {
-      td' = .template-code-v[i];
+      td' = .template-code-v[i]
       if (td.at == at) && (td.name == name) {
          'c1.stdout{
             // .input-path
@@ -92,224 +92,224 @@ decl-template-code(name'id, row'u32, no-cache'bool, js'bool, with-reflection'boo
             ": Template name '"
             name
             "' was already used at line " td.row ''\n}
-         'c.exit(#failure);
-         return;
+         'c.exit(#failure)
+         return
       }
    }
-   i' = .template-code-c++;
+   i' = .template-code-c++
    if .template-code-cap <= .template-code-c {
-      old-cap' = .template-code-cap;
-      .template-code-cap = 'template-code(grow('base(.template-code-c)));
-      realloc(.template-code-v, 'base(.template-code-cap), 'base(old-cap));
+      old-cap' = .template-code-cap
+      .template-code-cap = 'template-code(grow('base(.template-code-c)))
+      realloc(.template-code-v, 'base(.template-code-cap), 'base(old-cap))
    }
-   td' = .template-code-v[i];
-   td.name = name;
-   code-len' = .string-len;
-   code'u8[];
-   quick-alloc-arr(code, code-len);
-   'c.memcpy(code, .string-buf, code-len);
-   td.code = code;
-   td.code-len = code-len;
-   td.code-crc32c = crc32c(0, code, code-len);
-   td.at = at;
-   td.row = row;
-   td.line-c = .template-code-line-c;
-   td.no-cache = no-cache;
-   td.js = js;
-   td.with-reflection = with-reflection;
+   td' = .template-code-v[i]
+   td.name = name
+   code-len' = .string-len
+   code'u8[]
+   quick-alloc-arr(code, code-len)
+   'c.memcpy(code, .string-buf, code-len)
+   td.code = code
+   td.code-len = code-len
+   td.code-crc32c = crc32c(0, code, code-len)
+   td.at = at
+   td.row = row
+   td.line-c = .template-code-line-c
+   td.no-cache = no-cache
+   td.js = js
+   td.with-reflection = with-reflection
 }
 include-add(len'u8, str'char[])'include {
-   found' = .include-map.get-or-insert(str, len, .include-c);
+   found' = .include-map.get-or-insert(str, len, .include-c)
    if found == -1 {
       // inserted
-      include' = .include-c++;
+      include' = .include-c++
       if .include-cap <= .include-c {
-         old-cap' = .include-cap;
-         grow(.include-cap, .include-c);
-         realloc(.include-str-v, .include-cap, old-cap);
-         realloc(.include-len-v, .include-cap, old-cap);
+         old-cap' = .include-cap
+         grow(.include-cap, .include-c)
+         realloc(.include-str-v, .include-cap, old-cap)
+         realloc(.include-len-v, .include-cap, old-cap)
       }
-      text'char[] = quick-alloc(len + 1);
-      'c.memcpy(text, str, len);
-      text[len] = 0;
-      .include-str-v[include] = text;
-      .include-len-v[include] = len;
-      return include;
+      text'char[] = quick-alloc(len + 1)
+      'c.memcpy(text, str, len)
+      text[len] = 0
+      .include-str-v[include] = text
+      .include-len-v[include] = len
+      return include
    } else {
       // found
-      return found;
+      return found
    }
 }
-ctx-func'decl-func;
-id-in-header-v'u8[];
-id-in-header-idx-v'u32[];
-id-in-header-id-v'u32[];
-id-in-header-c'i32;
+ctx-func'decl-func
+id-in-header-v'u8[]
+id-in-header-idx-v'u32[]
+id-in-header-id-v'u32[]
+id-in-header-c'i32
 
-at-in-header-v'u8[];
-at-in-header-idx-v'u32[];
-at-in-header-at-v'u32[];
-at-in-header-c'i32;
+at-in-header-v'u8[]
+at-in-header-idx-v'u32[]
+at-in-header-at-v'u32[]
+at-in-header-c'i32
 
-decl-include'include;
-decl-include-row'u32;
-decl-include-col'u32;
+decl-include'include
+decl-include-row'u32
+decl-include-col'u32
 id-add(len'u8, str'char[])'id {
-   found' = .id-map.get-or-insert(str, len, .id-c);
+   found' = .id-map.get-or-insert(str, len, .id-c)
    if found == -1 {
       // inserted
-      id' = .id-c++;
+      id' = .id-c++
       if .id-cap <= .id-c {
-         old-cap' = .id-cap;
-         grow(.id-cap, .id-c);
-         realloc(.id-str-v, .id-cap, old-cap);
-         realloc(.id-len-v, .id-cap, old-cap);
+         old-cap' = .id-cap
+         grow(.id-cap, .id-c)
+         realloc(.id-str-v, .id-cap, old-cap)
+         realloc(.id-len-v, .id-cap, old-cap)
       }
-      text'char[] = quick-alloc(len + 1);
-      'c.memcpy(text, str, len);
-      text[len] = 0;
-      .id-str-v[id] = text;
-      .id-len-v[id] = len;
-      return id;
+      text'char[] = quick-alloc(len + 1)
+      'c.memcpy(text, str, len)
+      text[len] = 0
+      .id-str-v[id] = text
+      .id-len-v[id] = len
+      return id
    } else {
       // found
-      return found;
+      return found
    }
 }
 type-info-begin(const'bool) {
-   .decl-var.size-c = 0;
-   .decl-var.type-info.init();
-   .decl-var.type-info.const = const;
-   .decl-var.flags = #0;
+   .decl-var.size-c = 0
+   .decl-var.type-info.init()
+   .decl-var.type-info.const = const
+   .decl-var.flags = #0
 }
 type-info-finalize() {
-   .decl-var.type-info.finalize();
+   .decl-var.type-info.finalize()
 }
 type-info-arr(expr-v'expr-i[], expr-c'u8) {
-   r'rdr.;
-   r.ref = expr-v;
+   r'rdr.
+   r.ref = expr-v
    if expr-v == null {
-      ti' = .decl-var.type-info;
-      ti.array-c += 1;
-      ti.ref-v[ti.array-c] = 0;
-      return;
+      ti' = .decl-var.type-info
+      ti.array-c += 1
+      ti.ref-v[ti.array-c] = 0
+      return
    }
    loop i' = expr-c; expr-c; {
-      type-info-arr(expr-v[i -= 1]);
+      type-info-arr(expr-v[i -= 1])
    }
 }
 type-info-arr(expr'expr-i) {
-   ti' = .decl-var.type-info;
-   ti.array-c += 1;
-   ti.ref-v[ti.array-c] = 0;
+   ti' = .decl-var.type-info
+   ti.array-c += 1
+   ti.ref-v[ti.array-c] = 0
    if expr != #nil {
-      vd' = .decl-var;
+      vd' = .decl-var
       if vd.size-c == 0 {
-         quick-alloc-arr(vd.size-expr-v, #decl-var-size-limit);
+         quick-alloc-arr(vd.size-expr-v, #decl-var-size-limit)
       }
-      vd.size-expr-v[vd.size-c++] = expr;
+      vd.size-expr-v[vd.size-c++] = expr
       // C1.stdout{vd.name ", vd.size-c = " vd.size-c ''\n}
    }
 }
 type-info-ref(c'i8) {
-   ti' = .decl-var.type-info;
-   ti.ref-v[ti.array-c] += c;
+   ti' = .decl-var.type-info
+   ti.ref-v[ti.array-c] += c
 }
 type-info-static() {
    // C1.stdout{"built-in\n"}
-   .decl-var.type-info.built-in = true;
+   .decl-var.type-info.built-in = true
 }
 decl-include-begin(inc'include, row'u32, col'u32) {
    if .decl-include != #nil {
       'c1.stdout{.input-path '': row '': col ": Cannot include inside another include of " .decl-include-row '': .decl-include-col ''\n}
-      'c.exit(#failure);
-      return;
+      'c.exit(#failure)
+      return
    }
-   .decl-include = inc;
-   .decl-include-row = row;
-   .decl-include-col = col;
+   .decl-include = inc
+   .decl-include-row = row
+   .decl-include-col = col
 }
 decl-include-end() {
-   .decl-include = #nil;
+   .decl-include = #nil
 }
 at-basic-type(type'basic-type-id)'at {
    loop i' = 'at(0); .at-c; i++ {
-      at' = .at-v[i];
+      at' = .at-v[i]
       if (&&, at.type == #basic, at.name.basic == type) {
-         return i;
+         return i
       }
    }
-   build-idx' = .at-c++;
+   build-idx' = .at-c++
    if .at-cap <= .at-c {
-      old-cap' = .at-cap;
-      .at-cap = 'at(grow('base(.at-c)));
-      realloc(.at-v, 'base(.at-cap), 'base(old-cap));
+      old-cap' = .at-cap
+      .at-cap = 'at(grow('base(.at-c)))
+      realloc(.at-v, 'base(.at-cap), 'base(old-cap))
    }
-   at' = .at-v[build-idx];
-   at.parent = #root;
-   at.type = #basic;
-   at.name.basic = type;
-   return build-idx;
+   at' = .at-v[build-idx]
+   at.parent = #root
+   at.type = #basic
+   at.name.basic = type
+   return build-idx
 }
 at-begin() {
-   .build-at = .decl-at;
+   .build-at = .decl-at
 }
-at-begin-relative-pause'bool;
+at-begin-relative-pause'bool
 at-begin-relative-pause() {
-   .at-begin-relative-pause = true;
+   .at-begin-relative-pause = true
 }
 at-begin-relative-resume() {
-   .at-begin-relative-pause = false;
+   .at-begin-relative-pause = false
 }
 at-begin-relative() {
    if .at-begin-relative-pause {
-      .build-at = .decl-at;
+      .build-at = .decl-at
    } else {
-      .build-at = #relative;
+      .build-at = #relative
    }
 }
-enum 'alias[#nil = -1, #0]'i32;
-at-alias-c'alias;
-at-alias-cap'alias;
-at-alias-name-v'id[];
-at-alias-at-v'at[];
-at-alias-pos-v'row-col.[];
-struct 'row-col[row'u32, col'u32];
+enum 'alias[#nil = -1, #0]'i32
+at-alias-c'alias
+at-alias-cap'alias
+at-alias-name-v'id[]
+at-alias-at-v'at[]
+at-alias-pos-v'row-col.[]
+struct 'row-col[row'u32, col'u32]
 at-alias(name'id, row'u32, col'u32) {
    loop i' = 0; .at-alias-c; i++ {
       if .at-alias-name-v[i] == name {
-         .build-at = .at-alias-at-v[i];
-         return;
+         .build-at = .at-alias-at-v[i]
+         return
       }
    }
-   'c1.stdout{.input-path '': row '': col ": Cannot recognize the '" name ", did you forgot to put using '" name " = ...?\n"}
-   'c.exit(#failure);
+   'c1.stdout{.input-path '': row '': col ": Cannot recognize the '" name ", did you forgot to put '" name " = ...?\n"}
+   'c.exit(#failure)
 }
-build-at'at;
+build-at'at
 at-push(name'id, type'name-type, row'u32, col'u32) {
    // if .build-at == #root {
-   //    'c.printf(".build-at is #root for %s\n", name.str());
+   //    'c.printf(".build-at is #root for %s\n", name.str())
    // } elif .build-at == #relative {
-   //    'c.printf(".build-at is #relative for %s\n", name.str());
+   //    'c.printf(".build-at is #relative for %s\n", name.str())
    // } else {
-   //    'c.printf(".build-at is %u for %s\n", .build-at, name.str());
+   //    'c.printf(".build-at is %u for %s\n", .build-at, name.str())
    // }
    if .build-at == #relative {
       loop i' = 0; .at-alias-c; i++ {
          if .at-alias-name-v[i] == name {
-            .build-at = .at-alias-at-v[i];
-            return;
+            .build-at = .at-alias-at-v[i]
+            return
          }
       }
    }
-   // .build-at = at-create(.build-at, type, name);
-   decl-at-add(name, type, row, col);
+   // .build-at = at-create(.build-at, type, name)
+   decl-at-add(name, type, row, col)
 }
 decl-alias(name'id, at'at, row'u32, col'u32) {
    // if at.ptr().type != #module {
    //    C1.stdout{.input-path '': row '': col ": Alias can only work on namespaces that ends with '%'\n"}
-   //    C.exit(#failure);
-   //    return;
+   //    C.exit(#failure)
+   //    return
    // }
    loop i' = 0; .at-alias-c; i++ {
       if .at-alias-name-v[i] == name {
@@ -317,126 +317,126 @@ decl-alias(name'id, at'at, row'u32, col'u32) {
             // Ok, because templates might emit duplicate aliases
          // } else {
             'c1.stdout{.input-path '': row '': col ": Alias '" name " was already declared at " .at-alias-pos-v[i].row '': .at-alias-pos-v[i].col ''\n}
-            'c.exit(#failure);
+            'c.exit(#failure)
          // }
-         return;
+         return
       }
    }
-   alias-idx' = .at-alias-c++;
+   alias-idx' = .at-alias-c++
    if .at-alias-cap <= .at-alias-c {
-      old-cap' = .at-alias-cap;
-      .at-alias-cap = 'alias(grow('base(.at-alias-c)));
-      realloc(.at-alias-name-v, 'base(.at-alias-cap), 'base(old-cap));
-      realloc(.at-alias-at-v, 'base(.at-alias-cap), 'base(old-cap));
-      realloc(.at-alias-pos-v, 'base(.at-alias-cap), 'base(old-cap));
+      old-cap' = .at-alias-cap
+      .at-alias-cap = 'alias(grow('base(.at-alias-c)))
+      realloc(.at-alias-name-v, 'base(.at-alias-cap), 'base(old-cap))
+      realloc(.at-alias-at-v, 'base(.at-alias-cap), 'base(old-cap))
+      realloc(.at-alias-pos-v, 'base(.at-alias-cap), 'base(old-cap))
    }
-   .at-alias-name-v[alias-idx] = name;
-   .at-alias-at-v[alias-idx] = at;
-   .at-alias-pos-v[alias-idx].row = row;
-   .at-alias-pos-v[alias-idx].col = col;
+   .at-alias-name-v[alias-idx] = name
+   .at-alias-at-v[alias-idx] = at
+   .at-alias-pos-v[alias-idx].row = row
+   .at-alias-pos-v[alias-idx].col = col
 }
 at-root() {
-   .build-at = #root;
+   .build-at = #root
 }
 at-graves(graves'i8, row'u32, col'u32) {
-   .build-at = .decl-at;
+   .build-at = .decl-at
    loop graves > 0 {
-      graves--;
+      graves--
       if .build-at == #root {
          'c1.stdout{.input-path '': row '': col ": Too many graves in the namespace, going beyond the root namespace\n"}
-         'c.exit(#failure);
+         'c.exit(#failure)
       }
-      at' = .build-at.ptr();
-      .build-at = at.parent;
+      at' = .build-at.ptr()
+      .build-at = at.parent
    }
 }
 at-done()'at {
-   return .build-at;
+   return .build-at
 }
 at-create(parent'at, type'name-type, name'id)'at {
-   found' = .at-map.get-or-insert(parent, type, name, 'base(.at-c));
+   found' = .at-map.get-or-insert(parent, type, name, 'base(.at-c))
    if found != -1 { return found }
    // loop i' = 0:At; .at-c; i++ {
-   //    at! = .at-v[i];
+   //    at! = .at-v[i]
    //    if (&&,
    //       at.parent == parent,
    //       at.type == type,
    //       at.name.id == name) {
-   //       return i;
+   //       return i
    //    }
    // }
-   build-idx' = .at-c++;
+   build-idx' = .at-c++
    if .at-cap <= .at-c {
-      old-cap' = .at-cap;
-      .at-cap = 'at(grow('base(.at-c)));
-      realloc(.at-v, 'base(.at-cap), 'base(old-cap));
+      old-cap' = .at-cap
+      .at-cap = 'at(grow('base(.at-c)))
+      realloc(.at-v, 'base(.at-cap), 'base(old-cap))
    }
-   at' = .at-v[build-idx];
-   at.parent = parent;
-   at.type = type;
-   at.name.id = name;
-   return build-idx;
+   at' = .at-v[build-idx]
+   at.parent = parent
+   at.type = type
+   at.name.id = name
+   return build-idx
 }
 at-create-basic(basic'basic-type-id)'at {
    loop i' = 'at(0); .at-c; i++ {
-      at' = .at-v[i];
+      at' = .at-v[i]
       if (&&,
          at.type == #basic,
          at.name.basic == basic) {
-         return i;
+         return i
       }
    }
-   build-idx' = .at-c++;
+   build-idx' = .at-c++
    if .at-cap <= .at-c {
-      old-cap' = .at-cap;
-      .at-cap = 'at(grow('base(.at-c)));
-      realloc(.at-v, 'base(.at-cap), 'base(old-cap));
+      old-cap' = .at-cap
+      .at-cap = 'at(grow('base(.at-c)))
+      realloc(.at-v, 'base(.at-cap), 'base(old-cap))
    }
-   at' = .at-v[build-idx];
-   at.parent = #root;
-   at.type = #basic;
-   at.name.basic = basic;
-   return build-idx;
+   at' = .at-v[build-idx]
+   at.parent = #root
+   at.type = #basic
+   at.name.basic = basic
+   return build-idx
 }
 
-decl-at'at;
-#decl-at-nest-limit'i32 = 4;
-decl-at-v'at[#decl-at-nest-limit];
-decl-at-c'u8;
+decl-at'at
+#decl-at-nest-limit'i32 = 4
+decl-at-v'at[#decl-at-nest-limit]
+decl-at-c'u8
 err-msg-namespace-limit(row'u32, col'u32) {
    'c1.stdout{.input-path '': row '': col ": Max number of names in namespace reached.\n"}
-   'c.exit(#failure);
+   'c.exit(#failure)
 }
 decl-at-add(name'id, type'name-type, row'u32, col'u32) {
-   parent' = .build-at;
-   .build-at = at-create(.build-at, type, name);
-   parent-c' = 0;
+   parent' = .build-at
+   .build-at = at-create(.build-at, type, name)
+   parent-c' = 0
    loop (parent != #relative) && (parent != #root) {
-      parent-c++;
-      parent = parent.ptr().parent;
+      parent-c++
+      parent = parent.ptr().parent
    }
    if parent-c >= #decl-at-nest-limit {
-      err-msg-namespace-limit(row, col);
+      err-msg-namespace-limit(row, col)
    }
    // C1.stdout{"Parents of " name " are " parent-c ''\n}
 }
 decl-at-basic(type'basic-type-id) {
    if .decl-at != #root {
       'c1.stdout{.input-path '': .row '': .col ": Error, you cannot use 'using' on primitive types while inside another 'using'\n"}
-      'c.exit(#failure);
+      'c.exit(#failure)
    }
-   .build-at = at-create-basic(type);
+   .build-at = at-create-basic(type)
 }
 decl-at-begin(row'u32, col'u32) {
    if .decl-at-c == #decl-at-nest-limit {
-      err-msg-namespace-limit(row, col);
+      err-msg-namespace-limit(row, col)
    }
-   .decl-at-v[.decl-at-c++] = .decl-at;
-   .decl-at = .build-at;
+   .decl-at-v[.decl-at-c++] = .decl-at
+   .decl-at = .build-at
 }
 decl-at-end() {
-   .decl-at-c--;
-   .decl-at = .decl-at-v[.decl-at-c];
+   .decl-at-c--
+   .decl-at = .decl-at-v[.decl-at-c]
 }
 struct 'token-data-i32[
    row'u32,
@@ -444,26 +444,26 @@ struct 'token-data-i32[
    id'i32,
    id2'i32,
    id3'i32,
-];
+]
 struct 'token-data-f32[
    row'u32,
    col'u32,
    f32'f32,
-];
+]
 struct 'token-data-f64[
    row'u32,
    col'u32,
    f64'f64,
-];
+]
 struct 'token-data-u64[
    row'u32,
    col'u32,
    id'u64,
-];
+]
 struct 'token-data-index[
    v'cint[15],
    c'cint,
-];
+]
 union 'token-data[
    i32'token-data-i32.,
    f32'token-data-f32.,
@@ -471,7 +471,7 @@ union 'token-data[
    u64'token-data-u64.,
    index'token-data-index.,
    pointer'ref,
-];
+]
 struct 'lexer[
    content'u8[],
    start'u8[],
@@ -481,969 +481,969 @@ struct 'lexer[
    // ctx-marker:u8[],
 ] {
    init(lex'this, data'u8[], size'usz) {
-      lex.start = data;
-      lex.cursor = data;
-      lex.content = data;
-      // lex.limit = & data[size];
+      lex.start = data
+      lex.cursor = data
+      lex.content = data
+      // lex.limit = & data[size]
    }
-   scan(lex'this)'token @real-name(cp1_lexer_scan);
+   scan(lex'this)'token @real-name(cp1_lexer_scan)
    get-oct(lex'this)'u32 {
-      r-start'rdr.;
-      r-start.ref = lex.start + 2;
-      r-cursor'rdr.;
-      r-cursor.ref = lex.cursor;
-      length' = r-cursor.pos - r-start.pos;
+      r-start'rdr.
+      r-start.ref = lex.start + 2
+      r-cursor'rdr.
+      r-cursor.ref = lex.cursor
+      length' = r-cursor.pos - r-start.pos
       if length > 11 {
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was too long\n"}
-         'c.exit(#failure);
+         'c.exit(#failure)
       }
-      val' = 'u64(0);
+      val' = 'u64(0)
       loop length {
-         val = (val * 'u64(8)) + (r-start.p1[0] - ''0);
-         r-start.pos++;
+         val = (val * 'u64(8)) + (r-start.p1[0] - ''0)
+         r-start.pos++
       }
       if val > 4294967295u {
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was out of bounds\n"}
-         'c.exit(#failure);
+         'c.exit(#failure)
       }
-      return 'u32(val);
+      return 'u32(val)
    }
    get-hex(lex'this)'u32 {
-      r-start'rdr.;
-      r-start.ref = lex.start + 2;
-      r-cursor'rdr.;
-      r-cursor.ref = lex.cursor;
-      length' = r-cursor.pos - r-start.pos;
+      r-start'rdr.
+      r-start.ref = lex.start + 2
+      r-cursor'rdr.
+      r-cursor.ref = lex.cursor
+      length' = r-cursor.pos - r-start.pos
       if length > 8 {
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was too long\n"}
-         'c.exit(#failure);
+         'c.exit(#failure)
       }
-      val' = 'u64(0);
+      val' = 'u64(0)
       loop length {
-         c' = r-start.p1[0];
+         c' = r-start.p1[0]
          if c >= ''a {
-            val = (val * 'u64(16)) + ((r-start.p1[0] - ''a) + 10);
+            val = (val * 'u64(16)) + ((r-start.p1[0] - ''a) + 10)
          } elif c >= ''A {
-            val = (val * 'u64(16)) + ((r-start.p1[0] - ''A) + 10);
+            val = (val * 'u64(16)) + ((r-start.p1[0] - ''A) + 10)
          } else {
-            val = (val * 'u64(16)) + (r-start.p1[0] - ''0);
+            val = (val * 'u64(16)) + (r-start.p1[0] - ''0)
          }
-         r-start.pos++;
+         r-start.pos++
       }
       if val > 4294967295u {
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was out of bounds\n"}
-         'c.exit(#failure);
+         'c.exit(#failure)
       }
-      return 'u32(val);
+      return 'u32(val)
    }
    get-f32(lex'this)'f32 {
-      r-start'rdr.;
-      r-start.ref = lex.start;
-      r-cursor'rdr.;
-      r-cursor.ref = lex.cursor;
-      length' = r-cursor.pos - r-start.pos - 1;
-      val'f32;
-      'c.sscanf(r-start.char, "%f", &val);
-      return val;
+      r-start'rdr.
+      r-start.ref = lex.start
+      r-cursor'rdr.
+      r-cursor.ref = lex.cursor
+      length' = r-cursor.pos - r-start.pos - 1
+      val'f32
+      'c.sscanf(r-start.char, "%f", &val)
+      return val
    }
    get-f64(lex'this)'f64 {
-      r-start'rdr.;
-      r-start.ref = lex.start;
-      r-cursor'rdr.;
-      r-cursor.ref = lex.cursor;
-      length' = r-cursor.pos - r-start.pos - 1;
-      val'f64;
-      'c.sscanf(r-start.char, "%lf", &val);
-      return val;
+      r-start'rdr.
+      r-start.ref = lex.start
+      r-cursor'rdr.
+      r-cursor.ref = lex.cursor
+      length' = r-cursor.pos - r-start.pos - 1
+      val'f64
+      'c.sscanf(r-start.char, "%lf", &val)
+      return val
    }
    get-int(lex'this, len-minus'u8)'u32 {
-      r-start'rdr.;
-      r-start.ref = lex.start;
-      r-cursor'rdr.;
-      r-cursor.ref = lex.cursor;
-      length' = r-cursor.pos - r-start.pos - len-minus;
+      r-start'rdr.
+      r-start.ref = lex.start
+      r-cursor'rdr.
+      r-cursor.ref = lex.cursor
+      length' = r-cursor.pos - r-start.pos - len-minus
       if length > 10 {
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was too long\n"}
-         'c.exit(#failure);
+         'c.exit(#failure)
       }
-      val' = 'u32(0);
+      val' = 'u32(0)
       if length == 10 {
          loop 9 {
-            val = (val * 'u32(10)) + (r-start.p1[0] - ''0);
-            r-start.pos++;
+            val = (val * 'u32(10)) + (r-start.p1[0] - ''0)
+            r-start.pos++
          }
-         old-val' = val;
-         val = (val * 'u32(10)) + (r-start.p1[0] - ''0);
+         old-val' = val
+         val = (val * 'u32(10)) + (r-start.p1[0] - ''0)
          if (val / 10) < old-val {
             'c1.stdout{.input-path '': .row '': .col ": Integer literal was out of bounds\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
       } else {
          loop length {
-            old-val' = val;
-            val = (val * 'u32(10)) + (r-start.p1[0] - ''0);
+            old-val' = val
+            val = (val * 'u32(10)) + (r-start.p1[0] - ''0)
             if (val / 10) < old-val {
                'c1.stdout{.input-path '': .row '': .col ": Integer literal was out of bounds\n"}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
-            r-start.pos++;
+            r-start.pos++
          }
       }
       if len-minus == 0 { // no suffix, meaning its a signed integer
          if val > 2147483647 {
             'c1.stdout{.input-path '': .row '': .col ": Integer literal was out of bounds\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
       }
-      return val;
+      return val
    }
    get-u64(lex'this)'u64 {
-      r-start'rdr.;
-      r-start.ref = lex.start;
-      r-cursor'rdr.;
-      r-cursor.ref = lex.cursor;
-      length' = r-cursor.pos - r-start.pos - 3; // -3 to remove u64 suffix
+      r-start'rdr.
+      r-start.ref = lex.start
+      r-cursor'rdr.
+      r-cursor.ref = lex.cursor
+      length' = r-cursor.pos - r-start.pos - 3 // -3 to remove u64 suffix
       if length > 20 { // 18446744073709551615
          'c1.stdout{.input-path '': .row '': .col ": Integer literal was too long\n"}
-         'c.exit(#failure);
+         'c.exit(#failure)
       }
-      val' = 'u64(0);
+      val' = 'u64(0)
       if length == 20 {
          loop 19 {
-            val = (val * 'u64(10)) + (r-start.p1[0] - ''0);
-            r-start.pos++;
+            val = (val * 'u64(10)) + (r-start.p1[0] - ''0)
+            r-start.pos++
          }
-         old-val' = val;
-         val = (val * 'u64(10)) + (r-start.p1[0] - ''0);
+         old-val' = val
+         val = (val * 'u64(10)) + (r-start.p1[0] - ''0)
          if (val / 10) < old-val {
             'c1.stdout{.input-path '': .row '': .col ": Integer literal was out of bounds\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
       } else {
          loop length {
-            val = (val * 'u64(10)) + (r-start.p1[0] - ''0);
-            r-start.pos++;
+            val = (val * 'u64(10)) + (r-start.p1[0] - ''0)
+            r-start.pos++
          }
       }
-      return val;
+      return val
    }
    get-id(lex'this, begin'u8, end'u8)'i32 {
-      r-start'rdr.;
-      r-start.ref = lex.start;
-      r-start.pos += begin;
-      r-cursor'rdr.;
-      r-cursor.ref = lex.cursor;
-      length' = r-cursor.pos - r-start.pos - end;
+      r-start'rdr.
+      r-start.ref = lex.start
+      r-start.pos += begin
+      r-cursor'rdr.
+      r-cursor.ref = lex.cursor
+      length' = r-cursor.pos - r-start.pos - end
       if length > 255 {
          'c1.stdout{"too long id was detected\n"}
-         'c.exit(#failure);
+         'c.exit(#failure)
       }
-      len' = 'u8(length);
-      return id-add('u8(length), r-start.char);
+      len' = 'u8(length)
+      return id-add('u8(length), r-start.char)
       // loop i' = 0; .id-c; i++ {
       //    if .id-len-v[i] == len {
       //       if C.memcmp(.id-str-v[i], r-start.ref, len) == 0 {
-      //          return i;
+      //          return i
       //       }
       //    }
       // }
-      // id! = .id-c++;
+      // id! = .id-c++
       // if .id-cap <= .id-c {
-      //    old-cap! = .id-cap;
-      //    grow(.id-cap, .id-c);
-      //    realloc(.id-str-v, .id-cap, old-cap);
-      //    realloc(.id-len-v, .id-cap, old-cap);
+      //    old-cap! = .id-cap
+      //    grow(.id-cap, .id-c)
+      //    realloc(.id-str-v, .id-cap, old-cap)
+      //    realloc(.id-len-v, .id-cap, old-cap)
       // }
-      // text:char[] = quick-alloc(len + 1);
-      // C.memcpy(text, r-start.ref, len);
-      // text[len] = 0;
-      // .id-str-v[id] = text;
-      // .id-len-v[id] = len;
-      // return id;
+      // text:char[] = quick-alloc(len + 1)
+      // C.memcpy(text, r-start.ref, len)
+      // text[len] = 0
+      // .id-str-v[id] = text
+      // .id-len-v[id] = len
+      // return id
    }
    get-include(lex'this)'i32 {
-      r-start'rdr.;
-      r-start.ref = lex.start;
-      r-start.pos += 8;
-      r-cursor'rdr.;
-      r-cursor.ref = lex.cursor;
-      length' = r-cursor.pos - r-start.pos;
+      r-start'rdr.
+      r-start.ref = lex.start
+      r-start.pos += 8
+      r-cursor'rdr.
+      r-cursor.ref = lex.cursor
+      length' = r-cursor.pos - r-start.pos
       // loop (r-start.char[length] != '' ) && (r-start.char[length] != ''\n) {
-      //   length++;
+      //   length++
       // }
       if length > 255 {
          'c1.stdout{"too long include was detected\n"}
-         'c.exit(#failure);
+         'c.exit(#failure)
       }
-      return include-add(length, r-start.char);
+      return include-add(length, r-start.char)
       // loop i' = 0; .include-c; i++ {
       //    if .include-len-v[i] == len {
       //       if C.memcmp(.include-str-v[i], r-start.ref, len) == 0 {
-      //          return i;
+      //          return i
       //       }
       //    }
       // }
-      // include! = .include-c++;
+      // include! = .include-c++
       // if .include-cap <= .include-c {
-      //    old-cap! = .include-cap;
-      //    grow(.include-cap, .include-c);
-      //    realloc(.include-str-v, .include-cap, old-cap);
-      //    realloc(.include-len-v, .include-cap, old-cap);
+      //    old-cap! = .include-cap
+      //    grow(.include-cap, .include-c)
+      //    realloc(.include-str-v, .include-cap, old-cap)
+      //    realloc(.include-len-v, .include-cap, old-cap)
       // }
-      // text:char[] = quick-alloc(len + 1);
-      // C.memcpy(text, r-start.ref, len);
-      // text[len] = 0;
-      // .include-str-v[include] = text;
-      // .include-len-v[include] = len;
-      // return include;
+      // text:char[] = quick-alloc(len + 1)
+      // C.memcpy(text, r-start.ref, len)
+      // text[len] = 0
+      // .include-str-v[include] = text
+      // .include-len-v[include] = len
+      // return include
    }
 }
-last-token'token;
-last-last-token'token;
+last-token'token
+last-last-token'token
 struct 'parser[] {
-   alloc()'parser;
-   free(psr'this);
-   parse(psr'this, t'token, tok'token-data.) @real-name(cp1Parse);
+   alloc()'parser
+   free(psr'this)
+   parse(psr'this, t'token, tok'token-data.) @real-name(cp1Parse)
 }
-last-row'u32 @extern;
-last-col'u32 @extern;
-row'u32 @extern;
-col'u32 @extern;
+last-row'u32 @extern
+last-col'u32 @extern
+row'u32 @extern
+col'u32 @extern
 write-func(w'wtr, header'bool) @inline {
-   w.n('base(.func-c));
+   w.n('base(.func-c))
    loop i' = 0; .func-c; {
-      f' = .func-v[i++];
-      w.n1(f.farg-c);
-      w.n(f.begin-row);
-      w.n(f.begin-col);
-      w.n(f.end-row);
-      w.n(f.end-col);
-      f.include.wr(w);
-      f.at.wr(w, header);
-      w.n1('u8(f.angle));
-      f.decl.wr(w, header);
+      f' = .func-v[i++]
+      w.n1(f.farg-c)
+      w.n(f.begin-row)
+      w.n(f.begin-col)
+      w.n(f.end-row)
+      w.n(f.end-col)
+      f.include.wr(w)
+      f.at.wr(w, header)
+      w.n1('u8(f.angle))
+      f.decl.wr(w, header)
       loop j' = 0; f.farg-c; j++ {
-         f.farg-v[j].wr(w, header);
+         f.farg-v[j].wr(w, header)
       }
-      w.n1(f.this-idx);
+      w.n1(f.this-idx)
       if f.this-idx != -1 {
-         w.n1(f.this-group);
+         w.n1(f.this-group)
       }
-      w.n1(f.group-c);
+      w.n1(f.group-c)
       loop j' = 0; f.group-c; j++ {
-         w.n1(f.group-v[j]);
+         w.n1(f.group-v[j])
       }
       if header {
          if (f.flags & #inline) != #0 {
             // proceed
-            f.flags.wr(w);
+            f.flags.wr(w)
          } else {
             // remove #has-body flag
-            'func-flags('base(f.flags) & (-1 ^ 'base('func-flags#has-body))).wr(w);
+            'func-flags('base(f.flags) & (-1 ^ 'base('func-flags#has-body))).wr(w)
          }
       } else {
-         f.flags.wr(w);
+         f.flags.wr(w)
       }
       if (f.flags & #real-name) != #0 {
-         f.real-name.wr(w, header);
+         f.real-name.wr(w, header)
       }
       if (f.flags & #meta-method) != #0 {
-         f.meta-method-prefix1.wr(w, header);
-         f.meta-method-prefix2.wr(w, header);
-         f.meta-method-end.wr(w, header);
+         f.meta-method-prefix1.wr(w, header)
+         f.meta-method-prefix2.wr(w, header)
+         f.meta-method-end.wr(w, header)
       }
       if (f.flags & #case) != #0 {
-         f.cas.wr(w, header);
+         f.cas.wr(w, header)
       }
       if (f.flags & #decl) != #0 {
-         w.n(f.decl-len);
-         w.copy(f.decl-str, f.decl-len);
+         w.n(f.decl-len)
+         w.copy(f.decl-str, f.decl-len)
       }
-      w.n1('base(f.overload));
+      w.n1('base(f.overload))
    }
-   .func-main.wr(w);
+   .func-main.wr(w)
    loop i' = 0; .func-c; {
-      f' = .func-v[i++];
+      f' = .func-v[i++]
       if (f.flags & #has-body) == #0 { continue }
       if header {
          if (f.flags & #inline) != #0 {
             // proceed
          } else {
             // remove #has-body flag
-            continue;
+            continue
          }
       }
-      pos-4'wtr.;
-      pos-4.p1 = w.p1;
-      w.pos += 4;
-      pos-4-next' = w.pos;
-      f.lvars-wr(w, header);
-      f.stmt-space.wr(w, header);
-      pos-4.n4(w.pos - pos-4-next);
+      pos-4'wtr.
+      pos-4.p1 = w.p1
+      w.pos += 4
+      pos-4-next' = w.pos
+      f.lvars-wr(w, header)
+      f.stmt-space.wr(w, header)
+      pos-4.n4(w.pos - pos-4-next)
    }
 }
 write-import(w'wtr, header'bool) @inline {
-   w.n(.import-c);
+   w.n(.import-c)
    loop i' = 0; .import-c; i++ {
-      .import-v[i].wr(w);
-      w.b((.import-require-v[i >> 3] & (1 << (i & 7))) != 0);
+      .import-v[i].wr(w)
+      w.b((.import-require-v[i >> 3] & (1 << (i & 7))) != 0)
    }
 }
 write-template-code(w'wtr, header'bool) @inline {
-   w.n('base(.template-code-c));
+   w.n('base(.template-code-c))
    // C1.stdout{"there are " .template-code-c:base " templates in parse stage\n"}
    loop i' = 0; .template-code-c {
-      td' = .template-code-v[i++];
-      td.name.wr(w, header);
-      w.n(td.row);
-      w.n(td.line-c);
-      w.b(td.no-cache);
-      w.b(td.js);
-      w.b(td.with-reflection);
-      w.n(td.code-len);
-      w.n4(td.code-crc32c);
-      w.copy(td.code, td.code-len);
-      td.at.wr(w, header);
+      td' = .template-code-v[i++]
+      td.name.wr(w, header)
+      w.n(td.row)
+      w.n(td.line-c)
+      w.b(td.no-cache)
+      w.b(td.js)
+      w.b(td.with-reflection)
+      w.n(td.code-len)
+      w.n4(td.code-crc32c)
+      w.copy(td.code, td.code-len)
+      td.at.wr(w, header)
       // C1.stdout{"template code " td.name " at line " td.row " have " td.line-c " lines\n"}
    }
-   w.n('base(.template-inst-c));
+   w.n('base(.template-inst-c))
    // C1.stdout{"there are " .template-inst-c:base " templates in parse stage\n"}
    loop i' = 0; .template-inst-c {
-      td' = .template-inst-v[i++];
-      td.name.wr(w, header);
-      w.n(td.row);
-      w.n(td.col);
-      w.n(td.arg-len);
-      w.n4(td.arg-crc32c);
-      w.copy(td.arg, td.arg-len);
-      td.at.wr(w, header);
+      td' = .template-inst-v[i++]
+      td.name.wr(w, header)
+      w.n(td.row)
+      w.n(td.col)
+      w.n(td.arg-len)
+      w.n4(td.arg-crc32c)
+      w.copy(td.arg, td.arg-len)
+      td.at.wr(w, header)
    }
 }
 write-cvar(w'wtr, header'bool) {
-   w.n('base(.cvar-c));
+   w.n('base(.cvar-c))
    loop i' = 0; .cvar-c; i++ {
-      cvar' = .cvar-v[i];
-      cvar.include.wr(w);
-      cvar.at.wr(w, header);
-      cvar.decl.wr(w, header);
-      cvar.flags.wr(w);
-      w.n(cvar.row);
-      w.n(cvar.col);
+      cvar' = .cvar-v[i]
+      cvar.include.wr(w)
+      cvar.at.wr(w, header)
+      cvar.decl.wr(w, header)
+      cvar.flags.wr(w)
+      w.n(cvar.row)
+      w.n(cvar.col)
       if (cvar.flags & #set-expr) != #0 {
-         cvar.expr-set.wr(w, header);
+         cvar.expr-set.wr(w, header)
       } else {
-         cvar.last-cvar.wr(w);
+         cvar.last-cvar.wr(w)
       }
    }
 }
 write-gvar(w'wtr, header'bool) {
-   w.n('base(.gvar-c));
+   w.n('base(.gvar-c))
    loop i' = 0; .gvar-c; i++ {
-      gvar' = .gvar-v[i];
-      gvar.include.wr(w);
-      gvar.at.wr(w, header);
+      gvar' = .gvar-v[i]
+      gvar.include.wr(w)
+      gvar.at.wr(w, header)
       if header {
-         gvar.decl.flags |= #extern;
+         gvar.decl.flags |= #extern
       }
-      gvar.decl.wr(w, header);
-      w.n(gvar.row);
-      w.n(gvar.col);
+      gvar.decl.wr(w, header)
+      w.n(gvar.row)
+      w.n(gvar.col)
    }
 }
 write-enum(w'wtr, header'bool) {
-   w.n('base(.enum-c));
+   w.n('base(.enum-c))
    loop i' = 0; .enum-c; {
-      e' = .enum-v[i++];
-      w.n(e.begin-row);
-      w.n(e.begin-col);
-      w.n(e.end-row);
-      w.n(e.end-col);
-      e.include.wr(w);
-      e.at.wr(w, header);
-      e.base-type.wr(w, header);
-      e.flags.wr(w);
+      e' = .enum-v[i++]
+      w.n(e.begin-row)
+      w.n(e.begin-col)
+      w.n(e.end-row)
+      w.n(e.end-col)
+      e.include.wr(w)
+      e.at.wr(w, header)
+      e.base-type.wr(w, header)
+      e.flags.wr(w)
       if (e.flags & #real-name) != #0 {
-         e.real-name.wr(w, header);
+         e.real-name.wr(w, header)
       }
       if (e.flags & #soa-field) != #0 {
-         e.soa-field-gvar-at.wr(w, header);
-         e.soa-field-gvar-id.wr(w, header);
+         e.soa-field-gvar-at.wr(w, header)
+         e.soa-field-gvar-id.wr(w, header)
       }
    }
 }
 write-struct(w'wtr, header'bool) {
-   w.n('base(.struct-c));
+   w.n('base(.struct-c))
    loop i' = 0; .struct-c; {
-      s' = .struct-v[i++];
-      w.n1(s.fvar-c);
-      w.n(s.begin-row);
-      w.n(s.begin-col);
-      w.n(s.end-row);
-      w.n(s.end-col);
-      s.include.wr(w);
-      s.at.wr(w, header);
-      s.flags.wr(w);
+      s' = .struct-v[i++]
+      w.n1(s.fvar-c)
+      w.n(s.begin-row)
+      w.n(s.begin-col)
+      w.n(s.end-row)
+      w.n(s.end-col)
+      s.include.wr(w)
+      s.at.wr(w, header)
+      s.flags.wr(w)
       // C1.stdout{"write-struct " s.at.ptr.name.id ''\n}
-      // s.name.wr(w, header);
+      // s.name.wr(w, header)
       loop j' = 0; s.fvar-c; j++ {
-         s.fvar-v[j].wr(w, header);
+         s.fvar-v[j].wr(w, header)
       }
       if (s.flags & #real-name) != #0 {
-         s.real-name.wr(w, header);
+         s.real-name.wr(w, header)
       }
       if (s.flags & #aligned) != #0 {
-         w.n(s.aligned);
+         w.n(s.aligned)
       }
    }
 }
 token-name(tok'token)'char[] {
-   return tok.cp1-name();
+   return tok.cp1-name()
 }
-parse-str-init(max-size'i32);
+parse-str-init(max-size'i32)
 parse-comment(r'rdr, w'wtr, ending'char, in-data'ref) {
-   r-begin'rdr.;
-   r-begin.pos = r.pos;
-   r.pos += 2;
+   r-begin'rdr.
+   r-begin.pos = r.pos
+   r.pos += 2
    loop {
-      c' = r.p1[0];
+      c' = r.p1[0]
       if c == ''\n {
-         get-row-col(row?, col?, r.ref, in-data);
+         get-row-col(row?, col?, r.ref, in-data)
          'c1.stdout{.input-path '': row '': col ": Unterminated comment\n"}
-         'c.exit(#failure);
+         'c.exit(#failure)
       }
-      r.pos++;
+      r.pos++
       if c == ending {
-         len' = r.pos - r-begin.pos;
+         len' = r.pos - r-begin.pos
          loop len {
-            w.p1[0] = '' ;
-            w.pos++;
+            w.p1[0] = '' 
+            w.pos++
          }
-         return;
+         return
       }
    }
 }
-input-path'char[] @real-name(input_path);
-char-escape-value(c'char)'i32;
-struct 'include-path[len'u32, str'char[256]];
-include-path-v'include-path[];
-include-path-cap'u8;
-include-path-c'u8;
-// lock-path:char[];
-// parser-at-exit();
-write-cp1(input-path-len'u32, text-data'ref, text-size'usz, bin-data'ref, bin-size'usz)'bool;
-file-mtime(path'char[])'u64;
-file-should-parse(path'char[], path-len'u32, mtime'u64)'bool;
+input-path'char[] @real-name(input_path)
+char-escape-value(c'char)'i32
+struct 'include-path[len'u32, str'char[256]]
+include-path-v'include-path[]
+include-path-cap'u8
+include-path-c'u8
+// lock-path:char[]
+// parser-at-exit()
+write-cp1(input-path-len'u32, text-data'ref, text-size'usz, bin-data'ref, bin-size'usz)'bool
+file-mtime(path'char[])'u64
+file-should-parse(path'char[], path-len'u32, mtime'u64)'bool
 main(arg-c'cint, arg-v'char[][])'cint @main {
    // C1.stdout{"hello world " arg-c:u32 " " arg-v[0] " " arg-v[1] "\n"}
    if false {
-      // preprocess-def("", 0);
-      export();
+      // preprocess-def("", 0)
+      export()
    }
-   .include-path-cap = 8;
-   'c.malloc-arr(.include-path-v, .include-path-cap);
-   quick-alloc-init();
+   .include-path-cap = 8
+   'c.malloc-arr(.include-path-v, .include-path-cap)
+   quick-alloc-init()
    // loop i' = 1; i < arg-c {
-   //    arg! = arg-v[i++];
+   //    arg! = arg-v[i++]
    //    if arg[0] == ''- {
    //       if arg[1] == ''I {
-   //          arg = arg-v[i++];
+   //          arg = arg-v[i++]
    //          if arg == null {
    //             C1.stdout{arg-v[0] ": Error, '-I' must be followed by a path to a directory"}
-   //             "goto usage;";
+   //             "goto usage;"
    //          }
-   //          arg-len! = C.strlen(arg);
+   //          arg-len! = C.strlen(arg)
    //          if arg[arg-len - 1] != ''/ {
-   //             arg[arg-len++] = ''/;
+   //             arg[arg-len++] = ''/
    //          }
-   //          j! = .include-path-c++;
+   //          j! = .include-path-c++
    //          if .include-path-cap < .include-path-c {
-   //             .include-path-cap = grow(.include-path-c);
-   //             C.realloc-arr(.include-path-v, .include-path-cap);
+   //             .include-path-cap = grow(.include-path-c)
+   //             C.realloc-arr(.include-path-v, .include-path-cap)
    //          }
-   //          inc:IncludePath;
-   //          quick-alloc-plus(inc, arg-len);
-   //          C.memcpy(inc.str, arg, arg-len);
-   //          inc.len = arg-len;
-   //          .include-path-v[j] = inc;
+   //          inc:IncludePath
+   //          quick-alloc-plus(inc, arg-len)
+   //          C.memcpy(inc.str, arg, arg-len)
+   //          inc.len = arg-len
+   //          .include-path-v[j] = inc
    //       }
    //    } else {
    //       if .input-path != null {
    //          C1.stdout{arg-v[0] ": Error, there should be only one file path\n"}
-   //          "goto usage;";
+   //          "goto usage;"
    //       }
-   //       .input-path = arg;
+   //       .input-path = arg
    //    }
    // }
    // if .input-path == null {
-   //    "usage:";
+   //    "usage:"
    //    C1.stdout{
    //      "Usage: " arg-v[0] " [file.cp1]\n"
    //    '= Options:
    //    '=   -I [directory]     Adds [directory] to the search path
    //    }
-   //    return 1;
+   //    return 1
    // }
    if arg-c != 3 {
-      "usage:";
+      "usage:"
       'c1.stdout{
          "Usage: " arg-v[0] " input.cp1 output.cp1-b\n"
       }
-      return 1;
+      return 1
    }
-   .decl-include = #nil;
-   .id-map.init();
-   .include-map.init();
-   .at-map.init();
-   .func-main = #nil;
-   .input-path = arg-v[1];
+   .decl-include = #nil
+   .id-map.init()
+   .include-map.init()
+   .at-map.init()
+   .func-main = #nil
+   .input-path = arg-v[1]
    // C1.stdout{"reading " .input-path ''\n}
-   in-data'u8[];
-   in-data = read-file(.input-path, 0, 2, 0, in-size?);
-   // input-path-len! = C.strlen(.input-path);
-   // mtime! = file-mtime(.input-path);
+   in-data'u8[]
+   in-data = read-file(.input-path, 0, 2, 0, in-size?)
+   // input-path-len! = C.strlen(.input-path)
+   // mtime! = file-mtime(.input-path)
    if in-data == null {
       'c1.stdout{"Cannot open file for reading: " .input-path ''\n}
-      'c.exit(#failure);
+      'c.exit(#failure)
    }
-   // in-data[0] = ''\n;
-   // in-data = &in-data[1];
-   lock-path' = arg-v[2];
-   lock-path-len' = 'c.strlen(lock-path);
-   ok' = false;
+   // in-data[0] = ''\n
+   // in-data = &in-data[1]
+   lock-path' = arg-v[2]
+   lock-path-len' = 'c.strlen(lock-path)
+   ok' = false
    if (lock-path-len > 6) && (lock-path[lock-path-len - 6] == ''.) && (lock-path[lock-path-len - 5] == ''c) && (lock-path[lock-path-len - 4] == ''p) && (lock-path[lock-path-len - 3] == ''1) && (lock-path[lock-path-len - 2] == ''-) {
       if lock-path[lock-path-len - 1] == ''h {
-         lock-path[lock-path-len - 1] = ''b;
-         ok = true;
+         lock-path[lock-path-len - 1] = ''b
+         ok = true
       } elif lock-path[lock-path-len - 1] == ''b {
-         ok = true;
+         ok = true
       }
    }
    if !ok {
       'c1.stdout{"Error, output file must either end with .cp1-b or .cp1-h\n"}
-      "goto usage;";
+      "goto usage;"
    }
-   // .lock-path = lock-path;
+   // .lock-path = lock-path
    // if true {
    //    if !C.Fd.open(fd!!, lock-path, #create | #excl) {
    //       // Can:T create output file
-   //       Sys.stat(lock-path, out-stat!);
-   //       in-fd.stat(in-stat!);
-   //       skip';
-   //       "#ifdef __APPLE__";
-   //          skip = (||, out-stat.mtimespec.sec > in-stat.mtimespec.sec, (&&, out-stat.mtimespec.sec == in-stat.mtimespec.sec, out-stat.mtimespec.nsec > in-stat.mtimespec.nsec));
-   //       "#elif defined(__unix__)";
-   //          skip = (||, out-stat.mtim.sec > in-stat.mtim.sec, (&&, out-stat.mtim.sec == in-stat.mtim.sec, out-stat.mtim.nsec > in-stat.mtim.nsec));
-   //       "#endif";
+   //       Sys.stat(lock-path, out-stat!)
+   //       in-fd.stat(in-stat!)
+   //       skip'
+   //       "#ifdef __APPLE__"
+   //          skip = (||, out-stat.mtimespec.sec > in-stat.mtimespec.sec, (&&, out-stat.mtimespec.sec == in-stat.mtimespec.sec, out-stat.mtimespec.nsec > in-stat.mtimespec.nsec))
+   //       "#elif defined(__unix__)"
+   //          skip = (||, out-stat.mtim.sec > in-stat.mtim.sec, (&&, out-stat.mtim.sec == in-stat.mtim.sec, out-stat.mtim.nsec > in-stat.mtim.nsec))
+   //       "#endif"
    //       if skip {
    //          // Skip parsing
    //          C1.stdout{"Skipping parsing of " .input-path " because the output file is newer than the input file\n"}
-   //          return 0;
+   //          return 0
    //       }
    //    } else {
    //       // We created the output file, make sure to unlink it when
    //       // the parser gets parsing error
-   //       parser-at-exit();
+   //       parser-at-exit()
    //    }
-   //    fd.close();
+   //    fd.close()
    // }
 
    // if (&&, in-data[in-size - 2] == ''\r, in-data[in-size - 1] == ''\n) {
    //    C1.stdout{
    //    "Error reading file '" .input-path "' because it uses Windows-style line endings\n"
    //    "Please convert the line endings to Unix-style line endings\n"}
-   //    C.exit(#failure);
+   //    C.exit(#failure)
    // }
-   new-data' = preprocess(.input-path, in-data, in-size);
-   'c.free(in-data);
-   in-data = new-data;
-   r-end'rdr.;
-   r-end.ref = in-data;
-   r-end.pos += in-size;
-   parse-str-init(in-size * 2); // multiply by two for the escape sequences
+   new-data' = preprocess(.input-path, in-data, in-size)
+   'c.free(in-data)
+   in-data = new-data
+   r-end'rdr.
+   r-end.ref = in-data
+   r-end.pos += in-size
+   parse-str-init(in-size * 2) // multiply by two for the escape sequences
 
-   .id-cap = 64;
-   malloc-arr(.id-str-v, .id-cap);
-   malloc-arr(.id-len-v, .id-cap);
-   .include-cap = 64;
-   malloc-arr(.include-str-v, .include-cap);
-   malloc-arr(.include-len-v, .include-cap);
-   .at-cap = 'at(64);
-   malloc-arr(.at-v, 'base(.at-cap));
-   .at-c = 'at(2);
-   .at-v[0].type = #basic;
-   .at-v[0].parent = #nil;
-   .at-v[0].name.basic = #root;
-   .at-v[1].type = #basic;
-   .at-v[1].parent = #nil;
-   .at-v[1].name.basic = #relative;
-   .func-cap = 'func(32);
-   malloc-arr(.func-v, 'base(.func-cap));
-   .struct-cap = 'struct(32);
-   malloc-arr(.struct-v, 'base(.struct-cap));
-   .decl-fvar-cap = 32;
-   malloc-arr(.decl-fvar-v, .decl-fvar-cap);
+   .id-cap = 64
+   malloc-arr(.id-str-v, .id-cap)
+   malloc-arr(.id-len-v, .id-cap)
+   .include-cap = 64
+   malloc-arr(.include-str-v, .include-cap)
+   malloc-arr(.include-len-v, .include-cap)
+   .at-cap = 'at(64)
+   malloc-arr(.at-v, 'base(.at-cap))
+   .at-c = 'at(2)
+   .at-v[0].type = #basic
+   .at-v[0].parent = #nil
+   .at-v[0].name.basic = #root
+   .at-v[1].type = #basic
+   .at-v[1].parent = #nil
+   .at-v[1].name.basic = #relative
+   .func-cap = 'func(32)
+   malloc-arr(.func-v, 'base(.func-cap))
+   .struct-cap = 'struct(32)
+   malloc-arr(.struct-v, 'base(.struct-cap))
+   .decl-fvar-cap = 32
+   malloc-arr(.decl-fvar-v, .decl-fvar-cap)
 
-   psr' = 'parser.alloc();
-   'lexer.init(lex?, in-data, in-size);
-   next-row' = 1;
-   next-col' = 1;
-   .row = 1;
-   .col = 1;
-   .id-blank = id-add(0, "");
-   tok'token-data.;
+   psr' = 'parser.alloc()
+   'lexer.init(lex?, in-data, in-size)
+   next-row' = 1
+   next-col' = 1
+   .row = 1
+   .col = 1
+   .id-blank = id-add(0, "")
+   tok'token-data.
    loop {
-      tok.i32.row = next-row;
-      tok.i32.col = next-col;
-      t' = lex.scan();
+      tok.i32.row = next-row
+      tok.i32.col = next-col
+      t' = lex.scan()
       if true { // t != #space)
          // when reporting the row and column of tokens, skip the spaces
-         pos' = lex.start;
+         pos' = lex.start
          loop pos < r-end.p1 {
             if pos[0] == ''  {
-               tok.i32.col++;
+               tok.i32.col++
             } elif pos[0] == ''\n {
-               tok.i32.row++;
-               tok.i32.col = 1;
+               tok.i32.row++
+               tok.i32.col = 1
             } else {
-               break;
+               break
             }
-            pos++;
+            pos++
          }
       }
-      .last-row = .row;
-      .last-col = .col;
-      .row = tok.i32.row;
-      .col = tok.i32.col;
+      .last-row = .row
+      .last-col = .col
+      .row = tok.i32.row
+      .col = tok.i32.col
       // C1.stdout{.input-path '': tok.i32.row '': tok.i32.col ": token " t.cp1-name() ''\n}
-      // 'c.out.flush();
+      // 'c.out.flush()
       // if (&&, t >= #id-quote, t < #id) {
-      //    tok.id = lex.get-id(1, 0);
-      //    .last-token = t;
-      //    psr.parse(t, tok);
+      //    tok.id = lex.get-id(1, 0)
+      //    .last-token = t
+      //    psr.parse(t, tok)
       // } else {
-         .last-last-token = .last-token;
+         .last-last-token = .last-token
          switch t {
             // case #id-lparen {
-            //    tok.id = lex.get-id(0, 1);
-            //    psr.parse(t, tok);
+            //    tok.id = lex.get-id(0, 1)
+            //    psr.parse(t, tok)
             // }
             case #char1 {
-               r'rdr.;
-               r.ref = lex.start;
-               tok.i32.id = r.p1[2];
-               .last-token = t;
-               psr.parse(t, tok);
+               r'rdr.
+               r.ref = lex.start
+               tok.i32.id = r.p1[2]
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #char2 {
-               r'rdr.;
-               r.ref = lex.start;
-               tok.i32.id = char-escape-value(r.p1[3]);
-               .last-token = t;
-               psr.parse(t, tok);
+               r'rdr.
+               r.ref = lex.start
+               tok.i32.id = char-escape-value(r.p1[3])
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #space-at-no-decl-str {
                // find the '@' character and start counting from there
-               r-start'rdr.;
-               r-start.ref = lex.start;
-               start' = 9;
+               r-start'rdr.
+               r-start.ref = lex.start
+               start' = 9
                loop {
-                  start++;
-                  r-start.pos++;
+                  start++
+                  r-start.pos++
                   if r-start.p1[0] == ''@ {
-                     break;
+                     break
                   }
                }
-               tok.i32.id = lex.get-id(start, 1);
-               .last-token = t;
-               psr.parse(t, tok);
+               tok.i32.id = lex.get-id(start, 1)
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #space-at-real-name-str {
                // find the '@' character and start counting from there
-               r-start'rdr.;
-               r-start.ref = lex.start;
-               start' = 11;
+               r-start'rdr.
+               r-start.ref = lex.start
+               start' = 11
                loop {
-                  start++;
-                  r-start.pos++;
+                  start++
+                  r-start.pos++
                   if r-start.p1[0] == ''@ {
-                     break;
+                     break
                   }
                }
-               tok.i32.id = lex.get-id(start, 1);
-               .last-token = t;
-               psr.parse(t, tok);
+               tok.i32.id = lex.get-id(start, 1)
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #num-f32 {
-               tok.f32.f32 = lex.get-f32();
-               .last-token = t;
-               psr.parse(t, tok);
+               tok.f32.f32 = lex.get-f32()
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #num-f64 {
-               tok.f64.f64 = lex.get-f64();
-               .last-token = t;
-               psr.parse(t, tok);
+               tok.f64.f64 = lex.get-f64()
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #num-u32 {
-               tok.i32.id = lex.get-int(1);
-               .last-token = t;
-               psr.parse(t, tok);
+               tok.i32.id = lex.get-int(1)
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #num-u64 {
-               tok.u64.id = lex.get-u64();
-               .last-token = t;
-               psr.parse(t, tok);
+               tok.u64.id = lex.get-u64()
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #num-i32 {
-               tok.i32.id = lex.get-int(0);
-               .last-token = t;
-               psr.parse(t, tok);
+               tok.i32.id = lex.get-int(0)
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #num-oct {
-               tok.i32.id = lex.get-oct();
-               .last-token = t;
-               psr.parse(t, tok);
+               tok.i32.id = lex.get-oct()
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #num-hex {
-               tok.i32.id = lex.get-hex();
-               .last-token = t;
-               psr.parse(t, tok);
+               tok.i32.id = lex.get-hex()
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #import {
-               r-begin'rdr.;
-               r-begin.ref = .lex-part-1;
-               r-end2'rdr.;
-               r-end2.ref = lex.cursor;
-               r-end2.pos--;
-               len' = r-end2.pos - r-begin.pos;
+               r-begin'rdr.
+               r-begin.ref = .lex-part-1
+               r-end2'rdr.
+               r-end2.ref = lex.cursor
+               r-end2.pos--
+               len' = r-end2.pos - r-begin.pos
                if len > 255 {
                   'c1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
-                  'c.exit(#failure);
+                  'c.exit(#failure)
                }
-               tok.i32.id = 'base(include-add(len, r-begin.char));
+               tok.i32.id = 'base(include-add(len, r-begin.char))
                // C1.stdout{"import '" r-begin.char, len "'\n"}
-               .last-token = t;
-               psr.parse(t, tok);
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #require {
-               r-begin'rdr.;
-               r-begin.ref = .lex-part-1;
-               r-end2'rdr.;
-               r-end2.ref = lex.cursor;
-               r-end2.pos--;
-               len' = r-end2.pos - r-begin.pos;
+               r-begin'rdr.
+               r-begin.ref = .lex-part-1
+               r-end2'rdr.
+               r-end2.ref = lex.cursor
+               r-end2.pos--
+               len' = r-end2.pos - r-begin.pos
                if len > 255 {
                   'c1.stdout{.input-path '': .row '': .col ": Error, import path exceeded 255 bytes\n"}
-                  'c.exit(#failure);
+                  'c.exit(#failure)
                }
-               tok.i32.id = 'base(include-add(len, r-begin.char));
+               tok.i32.id = 'base(include-add(len, r-begin.char))
                // C1.stdout{"import '" r-begin.char, len "'\n"}
-               .last-token = t;
-               psr.parse(t, tok);
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #include {
-               tok.i32.id = lex.get-include();
-               .last-token = t;
-               psr.parse(t, tok);
+               tok.i32.id = lex.get-include()
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #loop {
-               found-semicolon' = false;
+               found-semicolon' = false
                if (&&, lex.cursor[0] != '' , lex.cursor[0] != ''\n)  {
                   'c1.stdout{.input-path '': .row '': .col ": There must be a space or new line after the keyword 'loop'\n"}
-                  'c.exit(#failure);
+                  'c.exit(#failure)
                }
                loop i' = 0; {
-                  // str:char[];
-                  // str = &lex.cursor[i];
-                  // start' = i;
-                  c' = lex.cursor[i];
+                  // str:char[]
+                  // str = &lex.cursor[i]
+                  // start' = i
+                  c' = lex.cursor[i]
                   if c == ''\0 {
                      'c1.stdout{.input-path '': .row '': .col ": Keyword 'loop' was found but was not followed by '{'\n"}
-                     'c.exit(#failure);
+                     'c.exit(#failure)
                   } elif c == ''\' {
-                     c = lex.cursor[i + 1];
+                     c = lex.cursor[i + 1]
                      if c == ''\' {
                         if lex.cursor[i + 2] == ''\\ {
                            // C1.stdout{str, 4 ''\n}
-                           i += 4;
-                           continue;
+                           i += 4
+                           continue
                         } else {
                            // C1.stdout{str, 3 ''\n}
-                           i += 3;
-                           continue;
+                           i += 3
+                           continue
                         }
                      } elif c == ''" {
-                        i += 2;
+                        i += 2
                         loop {
                            if lex.cursor[i++] == ''" {
                               // C1.stdout{str, i - start ''\n}
-                              break;
+                              break
                            }
                         }
-                        continue;
+                        continue
                      } elif c == ''< {
-                        i += 2;
+                        i += 2
                         loop {
                            if lex.cursor[i++] == ''> {
                               // C1.stdout{str, i - start ''\n}
-                              break;
+                              break
                            }
                         }
-                        continue;
+                        continue
                      } elif c == ''[ {
-                        i += 2;
+                        i += 2
                         loop {
                            if lex.cursor[i++] == ''] {
                               // C1.stdout{str, i - start ''\n}
-                              break;
+                              break
                            }
                         }
-                        continue;
+                        continue
                      } elif c == ''{ {
-                        i += 2;
+                        i += 2
                         loop {
                            if lex.cursor[i++] == ''} {
                               // C1.stdout{str, i - start ''\n}
-                              break;
+                              break
                            }
                         }
-                        continue;
+                        continue
                      } elif c == ''( {
-                        i += 2;
+                        i += 2
                         loop {
                            if lex.cursor[i++] == '') {
                               // C1.stdout{str, i - start ''\n}
-                              break;
+                              break
                            }
                         }
-                        continue;
+                        continue
                      } elif (&&, lex.cursor[i + 2] == '' , (||, c == ''-, c == ''=)) {
-                        i += 3;
+                        i += 3
                         loop {
                            if lex.cursor[i++] == ''\n {
                               // C1.stdout{str, (i - 1) - start ''\n}
-                              break;
+                              break
                            }
                         }
-                        continue;
+                        continue
                      }
                   } elif c == ''" {
-                     i += 1;
+                     i += 1
                      loop {
-                        c = lex.cursor[i++];
+                        c = lex.cursor[i++]
                         if c == ''" {
                            // C1.stdout{str, i - start ''\n}
-                           break;
+                           break
                         } elif c == ''\\ {
-                           i++;
+                           i++
                         }
                      }
-                     continue;
+                     continue
                   } elif c == ''{ {
-                     break;
+                     break
                   } elif c == ''; {
-                     found-semicolon = true;
-                     break;
+                     found-semicolon = true
+                     break
                   }
-                  i++;
+                  i++
                }
                if found-semicolon {
-                  t = #loop-with-semicolon;
+                  t = #loop-with-semicolon
                }
-               .last-token = t;
-               psr.parse(t, tok);
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #id {
-               tok.i32.id = lex.get-id(0, 0);
+               tok.i32.id = lex.get-id(0, 0)
                if lex.cursor[0] == ''( {
-                  t = #func-id;
+                  t = #func-id
                } elif lex.cursor[0] == ''< {
-                  t = #func-id-angle;
+                  t = #func-id-angle
                } elif lex.cursor[0] == ''{ {
-                  t = #id-then-open-curly-brace;
+                  t = #id-then-open-curly-brace
                } elif .decl-func-ctx-space == null {
-                  t = #id-new;
+                  t = #id-new
                } elif (&&, .last-token != #dot, .decl-func-ctx-space != null) {
-                  space' = .decl-func-ctx-space;
-                  found' = 'lvar#nil;
+                  space' = .decl-func-ctx-space
+                  found' = 'lvar#nil
                   loop {
-                     v' = space.lvar-v;
+                     v' = space.lvar-v
                      loop i' = 0; space.lvar-c; i++ {
-                        lvar' = v[i];
+                        lvar' = v[i]
                         if lvar.name() == 'id(tok.i32.id) {
-                           found = lvar;
-                           break;
+                           found = lvar
+                           break
                         }
                      }
                      if found != #nil {
-                        break;
+                        break
                      }
-                     space = space.parent;
+                     space = space.parent
                      if space == null { break }
                   }
                   if found == #nil {
-                     t = #id-new;
+                     t = #id-new
                   }
                }
-               .last-token = t;
-               psr.parse(t, tok);
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #soa-field {
                // tok.i32.id = 
-               // lex.get-id(2, 0);
-               rbracket' = ?;
+               // lex.get-id(2, 0)
+               rbracket' = ?
                if true {
-                  r-start'rdr. = ?;
-                  r-start.ref = lex.start;
-                  r-bracket'rdr. = ?;
-                  r-bracket.ref = .lex-part-1;
-                  rbracket = r-bracket.pos - r-start.pos;
+                  r-start'rdr. = ?
+                  r-start.ref = lex.start
+                  r-bracket'rdr. = ?
+                  r-bracket.ref = .lex-part-1
+                  rbracket = r-bracket.pos - r-start.pos
                }
                if true {
-                  r-start'rdr. = ?;
-                  r-start.ref = lex.start;
-                  r-start.pos += 1;
-                  r-cursor'rdr. = ?;
-                  r-cursor.ref = lex.cursor;
-                  length' = rbracket - 1;
-                  end' = r-cursor.pos - r-start.pos - length;
+                  r-start'rdr. = ?
+                  r-start.ref = lex.start
+                  r-start.pos += 1
+                  r-cursor'rdr. = ?
+                  r-cursor.ref = lex.cursor
+                  length' = rbracket - 1
+                  end' = r-cursor.pos - r-start.pos - length
                   if length == 0 {
-                     tok.i32.id = -1;
+                     tok.i32.id = -1
                   } else {
-                     tok.i32.id = lex.get-id(1, end);
+                     tok.i32.id = lex.get-id(1, end)
                   }
                }
                if true {
-                  rbracket++;
-                  r-start'rdr. = ?;
-                  r-start.ref = lex.start;
-                  r-start.pos += rbracket;
-                  r-cursor'rdr. = ?;
-                  r-cursor.ref = lex.cursor;
-                  length' = r-cursor.pos - r-start.pos;
-                  tok.i32.id2 = lex.get-id(rbracket, 0);
+                  rbracket++
+                  r-start'rdr. = ?
+                  r-start.ref = lex.start
+                  r-start.pos += rbracket
+                  r-cursor'rdr. = ?
+                  r-cursor.ref = lex.cursor
+                  length' = r-cursor.pos - r-start.pos
+                  tok.i32.id2 = lex.get-id(rbracket, 0)
                }
-               .last-token = t;
-               psr.parse(t, tok);
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #hash-id {
-               tok.i32.id = lex.get-id(1, 0);
-               .last-token = t;
-               psr.parse(t, tok);
+               tok.i32.id = lex.get-id(1, 0)
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #id-type {
-               tok.i32.id = lex.get-id(1, 0);
-               .last-token = t;
-               psr.parse(t, tok);
+               tok.i32.id = lex.get-id(1, 0)
+               .last-token = t
+               psr.parse(t, tok)
             }
             case #space {
-               ch' = lex.cursor[0];
+               ch' = lex.cursor[0]
                if ch == ''{ {
-                  t = #space-then-open-curly-brace;
+                  t = #space-then-open-curly-brace
                } elif (||, .last-token == #string, .last-token == #string-macro) {
                   if ch == ''" {
-                     t = #space-then-string;
+                     t = #space-then-string
                   } elif ch == ''\' {
-                     ch = lex.cursor[1];
+                     ch = lex.cursor[1]
                      if (||,
                         ch == ''",
                         ch == ''<,
@@ -1453,164 +1453,164 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
                         (&&, lex.cursor[2] == '' ,
                            (||, ch == ''-, ch == ''=)
                         )) {
-                        t = #space-then-string;
+                        t = #space-then-string
                      }
                   }
                }
-               .last-token = t;
-               psr.parse(t, tok);
+               .last-token = t
+               psr.parse(t, tok)
             }
             default {
-               .last-token = t;
-               psr.parse(t, tok);
+               .last-token = t
+               psr.parse(t, tok)
             }
          }
       // }
       if t == #end { break }
-      pos' = lex.start;
+      pos' = lex.start
       loop pos < lex.cursor {
          if (pos[0] & 128) == 0 {
             if pos[0] == ''\n {
-               next-row++;
-               next-col = 1;
+               next-row++
+               next-col = 1
             } else {
-               next-col++;
+               next-col++
             }
          }
-         pos++;
+         pos++
       }
    }
-   .last-token = #nil;
-   psr.parse(#nil, tok);
-   psr.free();
+   .last-token = #nil
+   psr.parse(#nil, tok)
+   psr.free()
    // C1.stdout{"parsing finished\n"}
-   w-begin'wtr.;
-   w-begin.ref = quick-alloc((in-size << 2) + 1024);
-   w'wtr.;
-   w.ref = w-begin.ref;
-   w.n(.id-c);
+   w-begin'wtr.
+   w-begin.ref = quick-alloc((in-size << 2) + 1024)
+   w'wtr.
+   w.ref = w-begin.ref
+   w.n(.id-c)
    loop i' = 0; .id-c; i++ {
-      w.n1(.id-len-v[i]);
-      w.copy(.id-str-v[i], .id-len-v[i]);
-      w.n1(0);
+      w.n1(.id-len-v[i])
+      w.copy(.id-str-v[i], .id-len-v[i])
+      w.n1(0)
    }
-   id-bit8-c' = (.id-c + 7) >> 3;
-   malloc-arr(.id-in-header-v, id-bit8-c);
-   malloc-arr(.id-in-header-idx-v, .id-c);
-   malloc-arr(.id-in-header-id-v, .id-c);
+   id-bit8-c' = (.id-c + 7) >> 3
+   malloc-arr(.id-in-header-v, id-bit8-c)
+   malloc-arr(.id-in-header-idx-v, .id-c)
+   malloc-arr(.id-in-header-id-v, .id-c)
 
-   w.n(.include-c);
+   w.n(.include-c)
    // C1.stdout{"There are " .include-c " includes\n"}
    loop i' = 0; .include-c; i++ {
-      w.n1(.include-len-v[i]);
-      w.copy(.include-str-v[i], .include-len-v[i]);
-      w.n1(0);
+      w.n1(.include-len-v[i])
+      w.copy(.include-str-v[i], .include-len-v[i])
+      w.n1(0)
    }
 
-   at-bit8-c' = ('base(.at-c) + 7) >> 3;
-   malloc-arr(.at-in-header-v, at-bit8-c);
-   malloc-arr(.at-in-header-idx-v, 'base(.at-c));
-   malloc-arr(.at-in-header-at-v, 'base(.at-c));
+   at-bit8-c' = ('base(.at-c) + 7) >> 3
+   malloc-arr(.at-in-header-v, at-bit8-c)
+   malloc-arr(.at-in-header-idx-v, 'base(.at-c))
+   malloc-arr(.at-in-header-at-v, 'base(.at-c))
 
-   w.n('base(.at-c));
+   w.n('base(.at-c))
    loop i' = 0; .at-c; i++ {
-      at' = .at-v[i];
-      at.type.wr(w);
+      at' = .at-v[i]
+      at.type.wr(w)
       if at.type == #basic {
-         at.name.basic.wr(w);
+         at.name.basic.wr(w)
       } else {
-         at.parent.wr(w, false);
-         at.name.id.wr(w, false);
+         at.parent.wr(w, false)
+         at.name.id.wr(w, false)
       }
    }
 
-   write-cvar(w, false);
-   write-gvar(w, false);
-   write-enum(w, false);
-   write-struct(w, false);
-   write-func(w, false);
-   write-import(w, false);
-   write-template-code(w, false);
+   write-cvar(w, false)
+   write-gvar(w, false)
+   write-enum(w, false)
+   write-struct(w, false)
+   write-func(w, false)
+   write-import(w, false)
+   write-template-code(w, false)
 
    // if write-cp1(input-path-len, in-data, in-size, w-begin.ref, w.pos - w-begin.pos) { return 0 }
    // else { return 1 }
    
-   // out-path:char[] = C.malloc(C.strlen(lock-path) + 4 + 1);
-   // C.sprintf(out-path, "%s.tmp", lock-path);
-   // out-path-len! = C.strlen(out-path);
-   tmp-path'char[256 + 16 + 10];
+   // out-path:char[] = C.malloc(C.strlen(lock-path) + 4 + 1)
+   // C.sprintf(out-path, "%s.tmp", lock-path)
+   // out-path-len! = C.strlen(out-path)
+   tmp-path'char[256 + 16 + 10]
    'c1.sprintf(tmp-path, f?).f{lock-path ''- 'x.getpid()}
    if !write-file(tmp-path, w-begin.ref, w.pos - w-begin.pos) {
       'c1.stdout{"Cannot open file for writing: " tmp-path ''\n}
-      'c.exit(#failure);
+      'c.exit(#failure)
    }
-   "#ifdef _WIN32";
-   'x.unlink(lock-path);
-   "#endif";
-   'c.rename(tmp-path, lock-path);
+   "#ifdef _WIN32"
+   'x.unlink(lock-path)
+   "#endif"
+   'c.rename(tmp-path, lock-path)
 
-   w.ref = w-begin.ref;
-   w.n(.id-in-header-c);
+   w.ref = w-begin.ref
+   w.n(.id-in-header-c)
    loop j' = 0; .id-in-header-c; j++ {
-      i' = .id-in-header-id-v[j];
-      w.n1(.id-len-v[i]);
-      w.copy(.id-str-v[i], .id-len-v[i]);
-      w.n1(0);
+      i' = .id-in-header-id-v[j]
+      w.n1(.id-len-v[i])
+      w.copy(.id-str-v[i], .id-len-v[i])
+      w.n1(0)
    }
-   w.n(.include-c);
+   w.n(.include-c)
    loop i' = 0; .include-c; i++ {
-      w.n1(.include-len-v[i]);
-      w.copy(.include-str-v[i], .include-len-v[i]);
-      w.n1(0);
+      w.n1(.include-len-v[i])
+      w.copy(.include-str-v[i], .include-len-v[i])
+      w.n1(0)
    }
-   w.n(.at-in-header-c);
+   w.n(.at-in-header-c)
    loop j' = 0; .at-in-header-c; j++ {
-      i' = .at-in-header-at-v[j];
-      at' = .at-v[i];
-      at.type.wr(w);
+      i' = .at-in-header-at-v[j]
+      at' = .at-v[i]
+      at.type.wr(w)
       if at.type == #basic {
-         at.name.basic.wr(w);
+         at.name.basic.wr(w)
       } else {
-         at.parent.wr-header(w);
-         at.name.id.wr-header(w);
+         at.parent.wr-header(w)
+         at.name.id.wr-header(w)
       }
    }
-   write-cvar(w, true);
-   write-gvar(w, true);
-   write-enum(w, true);
-   write-struct(w, true);
-   write-func(w, true);
-   write-import(w, true);
-   write-template-code(w, true);
+   write-cvar(w, true)
+   write-gvar(w, true)
+   write-enum(w, true)
+   write-struct(w, true)
+   write-func(w, true)
+   write-import(w, true)
+   write-template-code(w, true)
 
-   tmp-path[lock-path-len - 1] = ''h;
+   tmp-path[lock-path-len - 1] = ''h
    if !write-file(tmp-path, w-begin.ref, w.pos - w-begin.pos) {
       'c1.stdout{"Cannot open file for writing: " tmp-path ''\n}
-      'c.exit(#failure);
+      'c.exit(#failure)
    }
-   lock-path[lock-path-len - 1] = ''h;
-   "#ifdef _WIN32";
-   'x.unlink(lock-path);
-   "#endif";
-   'c.rename(tmp-path, lock-path);
+   lock-path[lock-path-len - 1] = ''h
+   "#ifdef _WIN32"
+   'x.unlink(lock-path)
+   "#endif"
+   'c.rename(tmp-path, lock-path)
 
-   .id-c = 0;
-   .id-in-header-c = 0;
-   .include-c = 0;
-   .at-c = 'at(0);
-   .at-in-header-c = 0;
-   .at-alias-c = 'alias(0);
-   .cvar-c = 'cvar(0);
-   .gvar-c = 'gvar(0);
-   .enum-c = 'enum(0);
-   .str-c = 0;
-   .expr-c = 0;
-   .struct-c = 'struct(0);
-   .func-c = 'func(0);
-   .import-c = 0;
-   .template-inst-c = 'template-inst(0);
-   .template-code-c = 'template-code(0);
-   return 0;
+   .id-c = 0
+   .id-in-header-c = 0
+   .include-c = 0
+   .at-c = 'at(0)
+   .at-in-header-c = 0
+   .at-alias-c = 'alias(0)
+   .cvar-c = 'cvar(0)
+   .gvar-c = 'gvar(0)
+   .enum-c = 'enum(0)
+   .str-c = 0
+   .expr-c = 0
+   .struct-c = 'struct(0)
+   .func-c = 'func(0)
+   .import-c = 0
+   .template-inst-c = 'template-inst(0)
+   .template-code-c = 'template-code(0)
+   return 0
 }
  
 

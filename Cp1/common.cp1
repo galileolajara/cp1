@@ -1,24 +1,24 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
 struct 'at-map[data'u64[(#hash-table-size + 7) >> 3]] {
-   init(m'this);
+   init(m'this)
    get-or-insert(m'this, parent'at, type'name-type, name'id, val'i32)'i32 {
-      return m.get-or-insert('u32(parent) | ('u32(type) << 30), name, val);
+      return m.get-or-insert('u32(parent) | ('u32(type) << 30), name, val)
    }
-   get-or-insert(m'this, parent-and-type'u32, name'id, val'i32)'i32;
+   get-or-insert(m'this, parent-and-type'u32, name'id, val'i32)'i32
 }
 struct 'map[data'u64[(#hash-table-size + 7) >> 3]] {
-   init(m'this);
-   get-or-insert(m'this, str'char[], len'u8, val'i32)'i32;
+   init(m'this)
+   get-or-insert(m'this, str'char[], len'u8, val'i32)'i32
 }
-enum 'overload[#nil, #get, #set, #assign, #math, #bools, #compare, #if-begin, #if-else, #if-end, #statement]'u8;
-crc32c(crc32c'u32, data'ref, size'u32)'u32 @real-name;
-id-map'map.;
-include-map'map.;
-at-map'at-map.;
+enum 'overload[#nil, #get, #set, #assign, #math, #bools, #compare, #if-begin, #if-else, #if-end, #statement]'u8
+crc32c(crc32c'u32, data'ref, size'u32)'u32 @real-name
+id-map'map.
+include-map'map.
+at-map'at-map.
 meta #build-common-codes {
-^  compile'bool;
+^  compile'bool
    using 'cp1 {
       struct 'struct-data[
 #  if .compile {
@@ -40,7 +40,7 @@ meta #build-common-codes {
          aligned'u32,
          fvar-c'u32,
          fvar-v'fvar-data.[0],
-      ];
+      ]
       struct 'stmt-if[
          base'stmt.,
          expr'expr-i,
@@ -49,7 +49,7 @@ meta #build-common-codes {
          is-overload'bool,
          overload-type'at,
 #  }
-      ];
+      ]
       struct 'stmt-if-elif[
          base'stmt.,
          expr'expr-i,
@@ -58,21 +58,21 @@ meta #build-common-codes {
          val'value.,
          is-overload'bool,
 #  }
-      ];
+      ]
       struct 'stmt-if-else[
          base'stmt.,
 #  if .compile {
          if-begin'stmt-if,
          expr'expr-i,
 #  }
-      ];
+      ]
       struct 'stmt-if-end[
          base'stmt.,
 #  if .compile {
          if-begin'stmt-if,
          expr'expr-i,
 #  }
-      ];
+      ]
       struct 'stmt-switch[
          base'stmt.,
          expr'expr-i,
@@ -84,28 +84,28 @@ meta #build-common-codes {
          case-func-c'u32,
          case-func-v'stmt-switch-case-func.[],
 #  }
-      ];
+      ]
       struct 'stmt-case-item[
          expr'expr-i,
 #  if .compile {
          val'value.,
 #  }
-      ];
+      ]
       using 'lvar {
 #  if .compile {
          ptr(l'this)'lvar-data @inline {
-            return .ctx-func.lvar-v[l];
+            return .ctx-func.lvar-v[l]
          }
          name(l'this)'id @inline {
-            return l.ptr().decl.name;
+            return l.ptr().decl.name
          }
 #  }
 #  if !.compile {
          ptr(l'this)'lvar-data @inline {
-            return .ctx-func.lvar-v[l];
+            return .ctx-func.lvar-v[l]
          }
          name(l'this)'id @inline {
-            return l.ptr().decl.name;
+            return l.ptr().decl.name
          }
 #  }
       }
@@ -138,7 +138,7 @@ meta #build-common-codes {
          overload-if-end'func,
          overload-statement'func,
 #  }
-      ];
+      ]
       struct 'expr-compare[
          base'expr.,
          left'expr-i,
@@ -149,7 +149,7 @@ meta #build-common-codes {
          right-val'value.,
          is-overload'bool,
 #  }
-      ];
+      ]
       struct 'expr-assign[
          base'expr.,
          left'expr-i,
@@ -161,14 +161,14 @@ meta #build-common-codes {
          is-overload'bool,
 #  }
          is-stmt'bool,
-      ];
+      ]
       struct 'expr-lvar[
          base'expr.,
          lvar'lvar,
 // #  if !.compile {
          decl'bool,
 // #  }
-      ];
+      ]
       struct 'expr-index[
          base'expr.,
          left'expr-i,
@@ -177,13 +177,13 @@ meta #build-common-codes {
          left-val'value.,
          right-val'value.,
 #  }
-      ];
+      ]
       struct 'expr-math-item[
          expr'expr-i,
 #  if .compile {
          val'value.,
 #  }
-      ];
+      ]
       struct 'expr-math[
          base'expr.,
          left'expr-i,
@@ -199,13 +199,13 @@ meta #build-common-codes {
          item-cap'u8,
 #  }
          item-v'expr-math-item.[],
-      ];
+      ]
       struct 'expr-bools-item[
          expr'expr-i,
 #  if .compile {
          val'value.,
 #  }
-      ];
+      ]
       struct 'expr-bools[
          base'expr.,
          left'expr-i,
@@ -221,7 +221,7 @@ meta #build-common-codes {
          item-cap'u8,
 #  }
          item-v'expr-bools-item.[],
-      ];
+      ]
       struct 'expr-fvar[
          base'expr.,
          expr'expr-i,
@@ -230,7 +230,7 @@ meta #build-common-codes {
          fvar'fvar,
          val'value.,
 #  }
-      ];
+      ]
       struct 'expr-soa-field[
          base'expr.,
          expr'expr-i,
@@ -240,7 +240,7 @@ meta #build-common-codes {
          expr2'expr-i,
          val'value.,
 #  }
-      ];
+      ]
       struct 'expr-cvar[
          base'expr.,
          at'at,
@@ -249,14 +249,14 @@ meta #build-common-codes {
          cvar'cvar,
          try'at,
 #  }
-      ];
+      ]
       struct 'expr-ref[
          base'expr.,
          expr'expr-i,
 #  if .compile {
          val'value.,
 #  }
-      ];
+      ]
       struct 'expr-unary[
          base'expr.,
          expr'expr-i,
@@ -264,7 +264,7 @@ meta #build-common-codes {
 #  if .compile {
          val'value.,
 #  }
-      ];
+      ]
       struct 'expr-cast-fast[
          base'expr.,
          expr'expr-i,
@@ -272,7 +272,7 @@ meta #build-common-codes {
 #  if .compile {
          val'value.,
 #  }
-      ];
+      ]
       struct 'expr-gvar[
          base'expr.,
 #  if !.compile {
@@ -282,7 +282,7 @@ meta #build-common-codes {
 #  if .compile {
          gvar'gvar,
 #  }
-      ];
+      ]
       struct 'decl-gvar[
 #  if .compile {
          file'file,
@@ -293,7 +293,7 @@ meta #build-common-codes {
          at'at,
          flags'gvar-flags,
          decl'decl-var-data.,
-      ];
+      ]
       struct 'cvar-data[
 #  if .compile {
          file'file,
@@ -307,7 +307,7 @@ meta #build-common-codes {
          decl'decl-var-data.,
          expr-set'expr-i,
          last-cvar'cvar,
-      ];
+      ]
       struct 'decl-var-data[
          name'id,
          type'at,
@@ -319,14 +319,14 @@ meta #build-common-codes {
 #  if .compile {
          size-value-v'value.[],
 #  }
-      ];
+      ]
       struct 'carg[
          ref'i8,
          expr'expr-i,
 #  if .compile {
          value'value.,
 #  }
-      ];
+      ]
       struct 'expr-func[
          base'expr.,
          at'at,
@@ -339,7 +339,7 @@ meta #build-common-codes {
          group-v'u8[#expr-carg-group-limit],
          carg-c'u8,
          carg-v'carg.[0],
-      ];
+      ]
       struct 'expr-meta-func[
          base'expr.,
 #  if !.compile {
@@ -356,7 +356,7 @@ meta #build-common-codes {
          expr-c'u8,
          expr-v'expr-i[0],
 #  }
-      ];
+      ]
       struct 'expr-meta-method[
          base'expr.,
 #  if !.compile {
@@ -373,7 +373,7 @@ meta #build-common-codes {
          expr-c'u8,
          expr-v'expr-i[0],
 #  }
-      ];
+      ]
       struct 'expr-method[
          base'expr.,
          this'expr-i,
@@ -387,7 +387,7 @@ meta #build-common-codes {
          group-v'u8[#expr-carg-group-limit],
          carg-c'u8,
          carg-v'carg.[0],
-      ];
+      ]
       struct 'decl-func[
 #  if .compile {
          process-next'func,
@@ -451,7 +451,7 @@ meta #build-common-codes {
          group-v'i8[#expr-carg-group-limit],
          farg-c'u8,
          farg-v'farg.[0],
-      ];
+      ]
       struct 'at-data[
          type'name-type,
          parent'at,
@@ -469,7 +469,7 @@ meta #build-common-codes {
          decl'at-type.,
          def'at-def,
 #  }
-      ];
+      ]
       struct 'template-code-data[
          code'u8[],
          code-len'u32,
@@ -484,7 +484,7 @@ meta #build-common-codes {
 #  if .compile {
          file'file,
 #  }
-      ];
+      ]
       struct 'template-inst-data[
          arg'char[],
          arg-len'u32,
@@ -497,204 +497,204 @@ meta #build-common-codes {
          file'file,
          require'bool,
 #  }
-      ];
+      ]
    }
 }
-quick-alloc-c'i32;
-quick-alloc-cap'i32;
-quick-alloc-v'ref;
+quick-alloc-c'i32
+quick-alloc-cap'i32
+quick-alloc-v'ref
 quick-alloc-init() {
-   .quick-alloc-cap = 4 * 1024;
-   .quick-alloc-v = 'c.malloc(.quick-alloc-cap);
-   'c.memset(.quick-alloc-v, 0, .quick-alloc-cap);
+   .quick-alloc-cap = 4 * 1024
+   .quick-alloc-v = 'c.malloc(.quick-alloc-cap)
+   'c.memset(.quick-alloc-v, 0, .quick-alloc-cap)
 }
 quick-alloc(size'i32)'ref @real-name(qalloc) {
    if size > 1024 {
-      mem' = 'c.malloc(size);
-      'c.memset(mem, 0, size);
-      return mem;
+      mem' = 'c.malloc(size)
+      'c.memset(mem, 0, size)
+      return mem
    }
-   // mem! = C.malloc(size);
-   // C.memset(mem, 0, size);
-   // return mem;
+   // mem! = C.malloc(size)
+   // C.memset(mem, 0, size)
+   // return mem
    // snap to usz
    // if ref[usz] == 8 {
-      size = (size + 7) & (-1 ^ 7); // align to u64
+      size = (size + 7) & (-1 ^ 7) // align to u64
    // } else {
-      // size = (size + 3) & (-1 ^ 3);
+      // size = (size + 3) & (-1 ^ 3)
    // }
    if size <= (.quick-alloc-cap - .quick-alloc-c) {
-      r'rdr.;
-      r.ref = .quick-alloc-v;
-      r.pos += .quick-alloc-c;
-      .quick-alloc-c += size;
-      return r.ref;
+      r'rdr.
+      r.ref = .quick-alloc-v
+      r.pos += .quick-alloc-c
+      .quick-alloc-c += size
+      return r.ref
    }
    // expand
-   grow(.quick-alloc-cap, .quick-alloc-c + size);
+   grow(.quick-alloc-cap, .quick-alloc-c + size)
    if .quick-alloc-cap > (64 * 1024) {
-      .quick-alloc-cap = 64 * 1024;
+      .quick-alloc-cap = 64 * 1024
    }
-   .quick-alloc-v = 'c.malloc(.quick-alloc-cap);
-   'c.memset(.quick-alloc-v, 0, .quick-alloc-cap);
+   .quick-alloc-v = 'c.malloc(.quick-alloc-cap)
+   'c.memset(.quick-alloc-v, 0, .quick-alloc-cap)
    // C1.stdout{"expanding to " .quick-alloc-cap ''\n}
-   .quick-alloc-c = size;
-   return .quick-alloc-v;
+   .quick-alloc-c = size
+   return .quick-alloc-v
 }
 quick-alloc-undo(size'i32) @real-name(qalloc_undo) {
    // if ref[usz] == 8 {
-      size = (size + 7) & (-1 ^ 7);
+      size = (size + 7) & (-1 ^ 7)
    // } else {
-      // size = (size + 3) & (-1 ^ 3);
+      // size = (size + 3) & (-1 ^ 3)
    // }
-   .quick-alloc-c -= size;
+   .quick-alloc-c -= size
 }
 quick-alloc-one(r'ref)
    @no-body
    @decl('<# r = qalloc(sizeof(r[0]))>)
    @inline {
-   quick-alloc(0);
+   quick-alloc(0)
 }
 quick-alloc-arr(r'ref, c'i32)
    @no-body
    @decl('<# r = qalloc(sizeof(r[0]) * (c))>)
    @inline {
-   quick-alloc(0);
+   quick-alloc(0)
 }
 quick-alloc-plus(r'ref, plus'i32)
    @no-body
    @decl('<# r = qalloc(sizeof(r[0]) + plus)>)
    @inline {
-   quick-alloc(0);
+   quick-alloc(0)
 }
 malloc(r'ref)
    @no-body
    @decl('<# r = malloc(sizeof(r[0])); memset(r, 0, sizeof(r[0]))>)
    @inline {
-   'c.malloc(0);
+   'c.malloc(0)
 }
 malloc-arr(r'ref, c'i32)
    @no-body
    @decl('<# r = malloc(sizeof(r[0]) * (c)); memset(r, 0, sizeof(r[0]) * (c))>)
    @inline {
-   'c.malloc(0);
+   'c.malloc(0)
 }
 realloc(r'ref, c'i32, oldc'i32)
    @no-body
    @decl('<# r = realloc(r, sizeof(r[0]) * (c)); memset(r + (oldc), 0, sizeof(r[0]) * ((c) - (oldc)))>)
    @inline {
-   'c.realloc(null, 0);
+   'c.realloc(null, 0)
 }
 include "num.c" {
    grow(cap'i32, c'i32)
-      @decl('<# cap = Fpow2gteq((c) + 8)>);
+      @decl('<# cap = Fpow2gteq((c) + 8)>)
    grow(c'i32)'i32
-      @decl('<# Fpow2gteq((c) + 8)>);
+      @decl('<# Fpow2gteq((c) + 8)>)
 }
-#decl-at-name-limit'i32 = 3;
-union 'at-name[id'id, basic'basic-type-id];
-union 'at-type[structt'struct, enumm'enum];
-enum 'at-def[#undefined, #module, #struct, #enum, #basic]'u8;
+#decl-at-name-limit'i32 = 3
+union 'at-name[id'id, basic'basic-type-id]
+union 'at-type[structt'struct, enumm'enum]
+enum 'at-def[#undefined, #module, #struct, #enum, #basic]'u8
 using 'at-data {
    init(at'this, type'name-type, parent'at, name'id) {
-      at.type = type;
-      at.parent = parent;
-      at.name.id = name;
-      at.func-c = 0;
-      at.func-cap = 0;
-      at.func-v = null;
-      at.gvar-c = 0;
-      at.gvar-cap = 0;
-      at.gvar-v = null;
-      at.decl.structt = #nil;
-      at.def = #undefined;
+      at.type = type
+      at.parent = parent
+      at.name.id = name
+      at.func-c = 0
+      at.func-cap = 0
+      at.func-v = null
+      at.gvar-c = 0
+      at.gvar-cap = 0
+      at.gvar-v = null
+      at.decl.structt = #nil
+      at.def = #undefined
    }
 }
 enum 'name-type[#module, #struct-enum, #basic]'u8 {
    rd(i'this&, r'rdr) @inline {
-      i = 'name-type(r.n1());
+      i = 'name-type(r.n1())
    }
    wr(i'this, w'wtr) @inline {
-      w.n1('base(i));
+      w.n1('base(i))
    }
-   cp1-name(e'this)'char[] @cp1-name;
+   cp1-name(e'this)'char[] @cp1-name
 }
-at-c'at;
-at-cap'at;
-at-v'at-data.[];
+at-c'at
+at-cap'at
+at-v'at-data.[]
 enum 'at[#nil = -1, #root, #relative]'i32 {
    finalize(at-i'this, ti'type-info, row'u32, col'u32)'bool {
-      at' = at-i.ptr();
+      at' = at-i.ptr()
       if at.def == #struct {
          if ti.built-in {
             if ti.ref-v[0] != 0 {
                'c1.stdout{.ctx-func.file '': row '': col ": Can't use dot symbol '.' because type '" at.name.id "' has reference\n"}
-               return false;
+               return false
             }
-            ti.ref-v[0] = -1;
+            ti.ref-v[0] = -1
          // } else {
          //    if !ti.built-in {
-         //       C.err.printf("%s:%d:%d: Missing dot symbol '.' because type '/%s' is a value\n", .ctx-func.file.path(), row, col, at.name.id.str());
-         //       return false;
+         //       C.err.printf("%s:%d:%d: Missing dot symbol '.' because type '/%s' is a value\n", .ctx-func.file.path(), row, col, at.name.id.str())
+         //       return false
          //    }
          }
       } else {
          if ti.built-in {
             'c1.stdout{.ctx-func.file '': row '': col ": Can't use dot symbol '.' because type '" at.name.id "' is not a struct\n"}
-            return false;
+            return false
          }
       }
-      return true;
+      return true
    }
    output(at-i'this, file'file, row'u32, col'u32) {
-      at' = at-i.ptr();
+      at' = at-i.ptr()
       switch at.type {
          case #struct-enum {
             if at.def == #struct {
                if at.decl.structt == #nil {
                   'c1.stdout{file '': row '': col ": Error, struct '/" at.name.id "' was not defined\n"}
-                  'c.exit(#failure);
+                  'c.exit(#failure)
                }
-               at.decl.structt.output();
+               at.decl.structt.output()
             } elif at.def == #enum {
                if at.decl.enumm == #nil {
                   'c1.stdout{file '': row '': col ": Error, enum '\\" at.name.id "' was not defined\n"}
-                  'c.exit(#failure);
+                  'c.exit(#failure)
                }
-               at.decl.enumm.output();
+               at.decl.enumm.output()
             }
          }
          // case #basic {
          //    switch at.name.basic {
          //       case #bool {
-         //          .include-stdbool = true;
+         //          .include-stdbool = true
          //       }
          //       case #usz {
-         //          .include-stddef = true;
+         //          .include-stddef = true
          //       }
          //       case #i8 {
-         //          .include-stdint = true;
+         //          .include-stdint = true
          //       }
          //       case #u8 {
-         //          .include-stdint = true;
+         //          .include-stdint = true
          //       }
          //       case #i16 {
-         //          .include-stdint = true;
+         //          .include-stdint = true
          //       }
          //       case #u16 {
-         //          .include-stdint = true;
+         //          .include-stdint = true
          //       }
          //       case #i32 {
-         //          .include-stdint = true;
+         //          .include-stdint = true
          //       }
          //       case #u32 {
-         //          .include-stdint = true;
+         //          .include-stdint = true
          //       }
          //       case #i64 {
-         //          .include-stdint = true;
+         //          .include-stdint = true
          //       }
          //       case #u64 {
-         //          .include-stdint = true;
+         //          .include-stdint = true
          //       }
          //    }
          // }
@@ -704,107 +704,107 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
       if ti.const {
          output{"const "}
       }
-      ti.count();
-      td.write-type();
-      s' = td.count-stars0(ti) + add;
+      ti.count()
+      td.write-type()
+      s' = td.count-stars0(ti) + add
       if s > 0 {
          output{"********************************", s}
       }
-      return true;
+      return true
    }
    count-stars(td'this, ti'type-info)'i32 {
       if td == #root {
-         return td.count-stars0(ti) + 1;
+         return td.count-stars0(ti) + 1
       } else {
-         return td.count-stars0(ti);
+         return td.count-stars0(ti)
       }
    }
    pointer(td'this)'i32 @inline {
       if td.ptr().def == #struct {
-         return 1;
+         return 1
       } else {
-         return 0;
+         return 0
       }
    }
    count-stars0(td'this, ti'type-info)'i32 {
-      return ti.star-c + td.pointer();
+      return ti.star-c + td.pointer()
    }
    write-type(td'this)'bool {
-      td.write();
+      td.write()
 //    if td.typeType == #value {
 //       if td.real.baseDecl == null {
-//          loc! = td.location;
-//          C.err.printf("%s:%d:%d: base type was null\n", loc.path, loc.row, loc.col);
-//          return false;
+//          loc! = td.location
+//          C.err.printf("%s:%d:%d: base type was null\n", loc.path, loc.row, loc.col)
+//          return false
 //       }
-//       return td.real.baseDecl.write()struct Type[t];
+//       return td.real.baseDecl.write()struct Type[t]
 //    }
 //    if td.real.basicType == #none {
 //       if td.real.typestruct Def[
 //       ] else {
 //          if :Config.target == #c {
 //             if td.real.is-union() {
-//                t.write("union "#);
+//                t.write("union "#)
 //             } else {
-//                t.write("struct "#);
+//                t.write("struct "#)
 //             }
 //          }
 //       }
-//       td.write(t);
+//       td.write(t)
 //    } else {
-//       td.write(t);
+//       td.write(t)
 //    }
-      return true;
+      return true
    }
    ptr(i'this)'at-data @inline {
-      return .at-v[i];
+      return .at-v[i]
    }
    rd(i'this&, r'rdr) @inline {
-      idx' = 'at(r.n() - 1);
+      idx' = 'at(r.n() - 1)
       if idx == #nil {
-         i = #nil;
+         i = #nil
       } else {
-         i = .at-table[idx];
+         i = .at-table[idx]
       }
    }
    put-to-header(at'this) {
       if (.at-in-header-v['base(at) >> 3] & (1 << ('base(at) & 7))) == 0 {
-         .at-in-header-v['base(at) >> 3] |= 1 << ('base(at) & 7);
-         .at-in-header-idx-v[at] = .at-in-header-c;
-         .at-in-header-at-v[.at-in-header-c++] = 'base(at);
+         .at-in-header-v['base(at) >> 3] |= 1 << ('base(at) & 7)
+         .at-in-header-idx-v[at] = .at-in-header-c
+         .at-in-header-at-v[.at-in-header-c++] = 'base(at)
          if (&&, at != #root, at != #relative) {
-            at.ptr().parent.put-to-header();
+            at.ptr().parent.put-to-header()
          }
       }
    }
    wr-header(id'this, w'wtr) @inline {
       if id == #nil {
-         w.n(0);
+         w.n(0)
       } else {
-         w.n(1 + .at-in-header-idx-v[id]);
+         w.n(1 + .at-in-header-idx-v[id])
       }
    }
    wr(at'this, w'wtr) @inline {
       if at == #nil {
-         w.n(0);
+         w.n(0)
       } else {
-         w.n(1 + at);
+         w.n(1 + at)
       }
    }
    wr(at'this, w'wtr, header'bool) @inline {
       if at == #nil {
-         w.n(0);
+         w.n(0)
       } else {
          if header {
-            w.n(1 + .at-in-header-idx-v[at]);
+            w.n(1 + .at-in-header-idx-v[at])
          } else {
-            w.n(1 + 'base(at));
-            at.put-to-header();
+            w.n(1 + 'base(at))
+            at.put-to-header()
          }
       }
    }
    write(at-idx'this) {
-      at' = at-idx.ptr();
+      at' = at-idx.ptr()
       switch at.type {
          // case #module {
          //    if at.parent != #root { at.parent.write-space() }
@@ -812,8 +812,8 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
          // }
          case #struct-enum {
             if at.def == #struct {
-               t-idx' = at.decl.structt;
-               t' = t-idx.ptr();
+               t-idx' = at.decl.structt
+               t' = t-idx.ptr()
                if t-idx != #nil {
                   if (t.flags & #real-name) != #0 {
                      if t.real-name == #nil {
@@ -829,7 +829,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
                            output{t.real-name}
                         }
                      }
-                     return;
+                     return
                   }
                }
                if (t.flags & #union) != #0 {
@@ -840,12 +840,12 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
                if at.parent != #root { at.parent.write-space() }
                output{"_T" at.name.id.c-name()}
             } elif at.def == #enum {
-               t-idx' = at.decl.enumm;
+               t-idx' = at.decl.enumm
                if t-idx != #nil {
-                  t' = t-idx.ptr();
+                  t' = t-idx.ptr()
                   if (t.flags & #real-name) != #0 {
                      output{t.real-name}
-                     return;
+                     return
                   }
                }
                if at.parent != #root { at.parent.write-space() }
@@ -907,7 +907,7 @@ enum 'at[#nil = -1, #root, #relative]'i32 {
       }
    }
    write-space(at-idx'this) {
-      at' = at-idx.ptr();
+      at' = at-idx.ptr()
       switch at.type {
          // case #module {
          //    if at.parent != #root { at.parent.write-space() }
@@ -1007,177 +1007,177 @@ enum 'include-error[#none, #suffix, #absolute, #dot-slash, #slash, #double-slash
 }
 enum 'include[#nil = -1, #0]'i32 {
    validate(path'this, err'include-error&)'bool {
-      str' = path.str();
-      len' = path.len();
+      str' = path.str()
+      len' = path.len()
       if (len >= 4) && (str[len - 4] == ''.) && (str[len - 3] == ''c) && (str[len - 2] == ''p) && (str[len - 1] == ''1) {
          // ok
       } else {
-         err = #suffix;
-         return false;
+         err = #suffix
+         return false
       }
       if str[0] == ''/ {
-         err = #absolute;
-         return false;
+         err = #absolute
+         return false
       }
       loop i' = 0; len; i++ {
          if str[i] == ''\\ {
-            err = #slash;
-            return false;
+            err = #slash
+            return false
          }
       }
       loop i' = 0; len; i++ {
          if str[i] == ''  {
-            err = #space;
-            return false;
+            err = #space
+            return false
          }
       }
       if (&&, str[0] == ''c, str[1] == ''p, str[2] == ''1, str[3] == ''-, str[4] == ''t, str[5] == ''m, str[6] == ''p, str[7] == ''/) {
       } else {
          loop i' = 0; len - 4; i++ {
             if (str[i] == ''.) && (str[i + 1] == ''c) && (str[i + 2] == ''p) && (str[i + 3] == ''1) {
-               err = #cp1;
-               return false;
+               err = #cp1
+               return false
             }
          }
       }
       loop i' = 0; len - 1; i++ {
          if (str[i] == ''.) && (str[i + 1] == ''/) {
-            err = #dot-slash;
-            return false;
+            err = #dot-slash
+            return false
          }
       }
       loop i' = 0; len - 1; i++ {
          if (str[i] == ''/) && (str[i + 1] == ''/) {
-            err = #double-slash;
-            return false;
+            err = #double-slash
+            return false
          }
       }
-      return true;
+      return true
    }
    str(i'this)'char[] @inline {
-      return .include-str-v[i];
+      return .include-str-v[i]
    }
    len(i'this)'u8 @inline {
-      return .include-len-v[i];
+      return .include-len-v[i]
    }
    wr(i'this, w'wtr) @inline {
-      w.n('base(i) + 1);
+      w.n('base(i) + 1)
    }
    rd(i'this&, r'rdr) @inline {
-      idx' = 'include(r.n() - 1);
+      idx' = 'include(r.n() - 1)
       if idx == #nil {
-         i = #nil;
+         i = #nil
       } else {
-         i = .include-table[idx];
+         i = .include-table[idx]
       }
    }
    output(this'this) @inline {
-      num' = 'u32(this);
-      n3' = num >> 3;
-      n17' = 1 << (num & 7);
+      num' = 'u32(this)
+      n3' = num >> 3
+      n17' = 1 << (num & 7)
       if (.include-is-outputted[n3] & n17) != 0 { return }
-      .include-is-outputted[n3] |= n17;
-      .include-outputted-v[.include-outputted-c++] = this;
+      .include-is-outputted[n3] |= n17
+      .include-outputted-v[.include-outputted-c++] = this
    }
 }
-id-c'i32;
-id-cap'i32;
-id-str-v'char[][];
-id-len-v'u8[];
-id-c-name-v'char[][];
-include-c'i32;
-include-cap'i32;
-include-str-v'char[][];
-include-len-v'u8[];
-func-main'func;
+id-c'i32
+id-cap'i32
+id-str-v'char[][]
+id-len-v'u8[]
+id-c-name-v'char[][]
+include-c'i32
+include-cap'i32
+include-str-v'char[][]
+include-len-v'u8[]
+func-main'func
 enum 'id[#nil = -1, #0]'i32 {
    jscode(id'this, jc'js-code) @inline {
-      jscode-bytes(id.str(), id.len());
+      jscode-bytes(id.str(), id.len())
    }
    c-name(id'this)'char[] {
-      c-name'char[] = .id-c-name-v[id];
+      c-name'char[] = .id-c-name-v[id]
       if c-name != null { return c-name }
-      len' = .id-len-v[id];
-      str' = .id-str-v[id];
-      c-name = quick-alloc(len + 1);
-      .id-c-name-v[id] = c-name;
+      len' = .id-len-v[id]
+      str' = .id-str-v[id]
+      c-name = quick-alloc(len + 1)
+      .id-c-name-v[id] = c-name
       loop i' = 0; len; i++ {
-         c' = str[i];
+         c' = str[i]
          if (||, (&&, c >= ''a, c <= ''z), (&&, c >= ''A, c <= ''Z), (&&, c >= ''0, c <= ''9)) {
-            c-name[i] = str[i];
+            c-name[i] = str[i]
          } else {
-            c-name[i] = ''_;
+            c-name[i] = ''_
          }
       }
-      c-name[len] = ''\0;
-      return c-name;
+      c-name[len] = ''\0
+      return c-name
    }
    str(id'this)'char[] @inline {
-      return .id-str-v[id];
+      return .id-str-v[id]
    }
    len(id'this)'u8 @inline {
-      return .id-len-v[id];
+      return .id-len-v[id]
    }
    wr-header(id'this, w'wtr) @inline {
       if id == #nil {
-         w.n(0);
+         w.n(0)
       } else {
-         w.n(1 + .id-in-header-idx-v[id]);
+         w.n(1 + .id-in-header-idx-v[id])
       }
    }
    wr(id'this, w'wtr) @inline {
       if id == #nil {
-         w.n(0);
+         w.n(0)
       } else {
-         w.n(1 + id);
+         w.n(1 + id)
       }
    }
    wr(id'this, w'wtr, header'bool) @inline {
       if id == #nil {
-         w.n(0);
+         w.n(0)
       } else {
          if header {
-            w.n(1 + .id-in-header-idx-v[id]);
+            w.n(1 + .id-in-header-idx-v[id])
          } else {
-            w.n(1 + 'base(id));
+            w.n(1 + 'base(id))
             if (.id-in-header-v['base(id) >> 3] & (1 << ('base(id) & 7))) == 0 {
-               .id-in-header-v['base(id) >> 3] |= 1 << ('base(id) & 7);
-               .id-in-header-idx-v[id] = .id-in-header-c;
-               .id-in-header-id-v[.id-in-header-c++] = 'base(id);
+               .id-in-header-v['base(id) >> 3] |= 1 << ('base(id) & 7)
+               .id-in-header-idx-v[id] = .id-in-header-c
+               .id-in-header-id-v[.id-in-header-c++] = 'base(id)
             }
          }
       }
    }
    rd(id'this&, r'rdr) @inline {
-      idx' = 'id(r.n() - 1);
+      idx' = 'id(r.n() - 1)
       if idx == #nil {
-         id = #nil;
+         id = #nil
       } else {
-         id = .id-table[idx];
+         id = .id-table[idx]
       }
    }
 }
-template-code-v'template-code-data.[];
-template-code-cap'template-code;
-template-code-c'template-code;
-enum 'template-code[]'u32; 
-template-inst-v'template-inst-data.[];
-template-inst-cap'template-inst;
-template-inst-c'template-inst;
-enum 'template-inst[]'u32; 
+template-code-v'template-code-data.[]
+template-code-cap'template-code
+template-code-c'template-code
+enum 'template-code[]'u32
+template-inst-v'template-inst-data.[]
+template-inst-cap'template-inst
+template-inst-c'template-inst
+enum 'template-inst[]'u32
 
 }
 using 'libcp1 {
    using 'fmt {
       f-reserve<i'cp1'include>(fmt'this, f'f-cstr) {
-         fmt.f-reserve-cstr('cp1.include-str-v[i], 'cp1.include-len-v[i], f);
+         fmt.f-reserve-cstr('cp1.include-str-v[i], 'cp1.include-len-v[i], f)
       }
    }
 }
 using 'libcp1 {
    using 'fmt {
       f-reserve<id'cp1'id>(fmt'this, f'f-cstr) @inline {
-         fmt.f-reserve-cstr(id.str(), id.len(), f);
+         fmt.f-reserve-cstr(id.str(), id.len(), f)
       }
    }
 }

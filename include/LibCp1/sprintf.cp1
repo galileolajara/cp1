@@ -1,36 +1,36 @@
-require "LibCp1/fmt.cp1";
+require "LibCp1/fmt.cp1"
 using 'libcp1 {
    sprintf(buf'char[], sf'sprintf)'sprintf @inline {
-      sf.mem = buf;
-      sf.len = 0;
-      return sf;
+      sf.mem = buf
+      sf.len = 0
+      return sf
    }
    struct 'sprintf[mem'char[], len'u32] {
       f(sf'this, fmt'fmt) @meta(f-reserve, f, sprintf-f) @inline {
-         fmt.user-data = sf;
+         fmt.user-data = sf
       }
       add(sf'this, fmt'fmt) @meta(f-reserve, f, sprintf-add) @inline {
-         fmt.ptr = &sf.mem[sf.len];
-         fmt.len = 0;
-         fmt.user-data = sf;
+         fmt.ptr = &sf.mem[sf.len]
+         fmt.len = 0
+         fmt.user-data = sf
       }
    }
    using 'fmt {
       f-reserve-sprintf-f(fmt'this) @inline {
-         sf'sprintf = fmt.user-data;
-         fmt.len = 0;
-         fmt.ptr = sf.mem;
+         sf'sprintf = fmt.user-data
+         fmt.len = 0
+         fmt.ptr = sf.mem
       }
       f-sprintf-f(fmt'this) @inline {
-         fmt.ptr[fmt.len] = 0;
-         sf'sprintf = fmt.user-data;
-         sf.len = fmt.len;
+         fmt.ptr[fmt.len] = 0
+         sf'sprintf = fmt.user-data
+         sf.len = fmt.len
       }
       f-reserve-sprintf-add(fmt'this) @inline {
       }
       f-sprintf-add(fmt'this) @inline {
-         sf'sprintf = fmt.user-data;
-         sf.len += fmt.len;
+         sf'sprintf = fmt.user-data
+         sf.len += fmt.len
       }
    }
 }

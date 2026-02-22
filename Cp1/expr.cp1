@@ -1,73 +1,73 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
 using 'stmt-space {
    wr-expr(stmt'stmt, w'wtr, header'bool) @case.wr() @inline {
-      s'stmt-expr = stmt;
-      s.expr.wr(w, header);
+      s'stmt-expr = stmt
+      s.expr.wr(w, header)
    }
    rd-expr(space'stmt-space, r'rdr) @case.rd() @inline {
-      s'stmt-expr;
-      quick-alloc-one(s);
-      s.expr.rd(r);
-      e' = s.expr.ptr();
+      s'stmt-expr
+      quick-alloc-one(s)
+      s.expr.rd(r)
+      e' = s.expr.ptr()
       if e.type == #assign {
-         assign'expr-assign = e;
-         assign.is-stmt = true;
+         assign'expr-assign = e
+         assign.is-stmt = true
       }
-      space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #expr);
+      space.stmt-push(s.base, .ctx-begin-row, .ctx-begin-col, .ctx-end-row, .ctx-end-col, #expr)
    }
 }
 using 'stmt {
    write-expr(stmt'stmt) @case.write() @inline {
-      s'stmt-expr = stmt;
-      expr' = s.expr.ptr();
+      s'stmt-expr = stmt
+      expr' = s.expr.ptr()
       if expr.type == #str {
-         e'expr-str = expr;
-         n' = e.first;
+         e'expr-str = expr
+         n' = e.first
          loop {
             output{n.buf, n.len}
-            n = n.next;
+            n = n.next
             if n == null { break }
          }
          output{''\n}
-         return;
+         return
       }
-      s.expr.write();
+      s.expr.write()
       output{";\n"}
    }
    process-expr(stmt'stmt, ok'bool&) @case.process() @inline {
-      s'stmt-expr = stmt;
-      s-expr' = s.expr;
+      s'stmt-expr = stmt
+      s-expr' = s.expr
       if !s-expr.process() {
-         return;
+         return
       }
-      type' = s-expr.ptr().type;
+      type' = s-expr.ptr().type
       if (type == #method) || (type == #func) {
-         left-type' = s-expr.type();
+         left-type' = s-expr.type()
          if left-type != #nil {
-            left-type-ptr' = left-type.ptr();
+            left-type-ptr' = left-type.ptr()
             if left-type-ptr.def == #enum {
-               en' = left-type-ptr.decl.enumm.ptr();
-               f-idx' = en.overload-statement;
+               en' = left-type-ptr.decl.enumm.ptr()
+               f-idx' = en.overload-statement
                if f-idx != #nil {
-                  f' = f-idx.ptr();
-                  e-method' = 'expr-i.alloc();
-                  group-v'u8[1];
-                  group-v[0] = 0;
-                  'expr-i.set-method(e-method, s.expr, f.decl.name, false, 1, group-v, 0, null);
-                  s.expr = e-method;
+                  f' = f-idx.ptr()
+                  e-method' = 'expr-i.alloc()
+                  group-v'u8[1]
+                  group-v[0] = 0
+                  'expr-i.set-method(e-method, s.expr, f.decl.name, false, 1, group-v, 0, null)
+                  s.expr = e-method
                   if !s.expr.process() {
-                     return;
+                     return
                   }
                   // C1.stdout{.ctx-func.file '': s.base.begin-row '': s.base.begin-col ": overload-statement used\n"}
-                  ok = true;
-                  return;
+                  ok = true
+                  return
                }
             }
          }
       }
-      ok = true;
+      ok = true
    }
 }
 enum 'expr-type[
@@ -76,25 +76,25 @@ enum 'expr-type[
    #compare, #bool, #null, #cast-fast, #ref, #char, #size-of-type,
    ]'u8 {
    wr(e'this, w'wtr) @inline {
-      w.n1('base(e));
+      w.n1('base(e))
    }
    rd(e'this&, r'rdr) @inline {
-      e = 'expr-type(r.n1());
+      e = 'expr-type(r.n1())
    }
-   cp1-name(e'this)'char[] @cp1-name;
+   cp1-name(e'this)'char[] @cp1-name
 }
-#debug-rd-wr'bool = true;
+#debug-rd-wr'bool = true
 enum 'expr-i[#nil = -1, #0, #1]'i32 {
    set(e'this, expr'expr, type'expr-type) @inline {
-      .expr-v[e] = expr;
-      expr.type = type;
+      .expr-v[e] = expr
+      expr.type = type
    }
    ptr(e'this)'expr @inline {
-      return .expr-v[e];
+      return .expr-v[e]
    }
    write-value(e'this, v'value)'bool {
-      expr' = e.ptr();
-      ref' = v.ref;
+      expr' = e.ptr()
+      ref' = v.ref
       // C1.stdout{"write-value v.ref = " ref ''\n}
       if v.paren {
          if ref <= 0 {
@@ -111,130 +111,130 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
       }
 
       if expr.type == #cast-fast {
-         e2'expr-cast-fast = expr;
-         e2.write-value(v);
+         e2'expr-cast-fast = expr
+         e2.write-value(v)
       } else {
-         e.write();
+         e.write()
       }
 
       if v.paren {
          output{")", 1}
       }
-      return true;
+      return true
    }
    value(e'this, ref'i32, paren'bool, v'value)'bool {
       if !e.process() { return false }
-      expr' = e.ptr();
-      ok' = false;
+      expr' = e.ptr()
+      ok' = false
       switch.value(e, ref, paren, v, ok) expr.type {
          default {
             'c1.stdout{.ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": value() not implemented for #" expr.type.cp1-name() ''\n}
          }
       }
-      return ok;
+      return ok
    }
    type(e'this)'at {
       if !e.process() { return #nil }
-      expr' = e.ptr();
-      at' = 'at#nil;
+      expr' = e.ptr()
+      at' = 'at#nil
       switch.type(expr, at) expr.type {
          default {
             'c1.stdout{.ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": type() not implemented for #" expr.type.cp1-name() ''\n}
          }
       }
-      return at;
+      return at
    }
    try-deduce(e-idx'this, at'at) {
-      expr' = e-idx.ptr();
+      expr' = e-idx.ptr()
       switch.try-deduce(expr, at) expr.type {
       }
    }
    wr(e'this, w'wtr, header'bool) {
       if #debug-rd-wr {
-         w.n1(255);
+         w.n1(255)
       }
       if e == #nil {
-         'expr-type#nil.wr(w);
+         'expr-type#nil.wr(w)
       } else {
-         expr' = e.ptr();
-         expr.type.wr(w);
+         expr' = e.ptr()
+         expr.type.wr(w)
          switch.wr(expr, w, header) expr.type {
             default {
                'c1.stdout{"wr() was not implemented in expression #" expr.type.cp1-name() ''\n}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
          }
       }
       if #debug-rd-wr {
-         w.n1(255);
+         w.n1(255)
       }
    }
    alloc()'expr-i {
-      e-idx' = 'expr-i(.expr-c++);
+      e-idx' = 'expr-i(.expr-c++)
       if .expr-cap <= .expr-c {
-         old-cap' = .expr-cap;
-         grow(.expr-cap, .expr-c);
-         realloc(.expr-v, .expr-cap, old-cap);
-         realloc(.expr-is-processed, (.expr-cap + 7) >> 3, (old-cap + 7) >> 3);
+         old-cap' = .expr-cap
+         grow(.expr-cap, .expr-c)
+         realloc(.expr-v, .expr-cap, old-cap)
+         realloc(.expr-is-processed, (.expr-cap + 7) >> 3, (old-cap + 7) >> 3)
       }
-      return e-idx;
+      return e-idx
    }
    rd(e'this&, r'rdr) {
       if #debug-rd-wr {
          if r.n1() != 255 {
             'c1.stdout{"Error reading expr\n"}
-            'c.out.flush();
-            'c.exit(#failure);
+            'c.out.flush()
+            'c.exit(#failure)
          }
       }
-      'expr-type.rd(type?, r);
+      'expr-type.rd(type?, r)
       if type == #nil {
-         e = #nil;
+         e = #nil
       } else {
-         e-idx' = alloc();
-         e = e-idx;
+         e-idx' = alloc()
+         e = e-idx
          switch.rd(e-idx, r) type {
             default {
                'c1.stdout{"rd() was not implemented in expression #" type.cp1-name() ''\n}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
          }
       }
       if #debug-rd-wr {
          if r.n1() != 255 {
             'c1.stdout{"Error reading expr\n"}
-            'c.out.flush();
-            'c.exit(#failure);
+            'c.out.flush()
+            'c.exit(#failure)
          }
       }
    }
    process(e'this)'bool {
       if e == #nil {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Processed a nil expression\n"}
-         return false;
+         return false
       }
-      num' = 'u32(e);
-      n3' = num >> 3;
-      n17' = 1 << (num & 7);
+      num' = 'u32(e)
+      n3' = num >> 3
+      n17' = 1 << (num & 7)
       if (.expr-is-processed[n3] & n17) != 0 { return true }
-      .expr-is-processed[n3] |= n17;
-      expr' = e.ptr();
+      .expr-is-processed[n3] |= n17
+      expr' = e.ptr()
       // if expr.flags & #processed { return true }
-      // expr.flags |= #processed;
-      ok' = false;
+      // expr.flags |= #processed
+      ok' = false
       switch.process(expr, ok) expr.type {
          default {
             'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": process() not implemented for expression #" expr.type.cp1-name() ''\n}
-            return false;
+            return false
          }
       }
       if !ok {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Processing of expression #" expr.type.cp1-name() " failed\n"}
       }
-      return ok;
+      return ok
    }
    write(e'this) {
-      expr' = e.ptr();
+      expr' = e.ptr()
       switch.write(expr) expr.type {
          default {
             'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": write() not implemented in expression #" expr.type.cp1-name() ''\n}
@@ -242,7 +242,7 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
       }
    }
 }
-enum 'expr-flags[#0, #processed = 1]'u8;
+enum 'expr-flags[#0, #processed = 1]'u8
 struct 'expr[
    type'expr-type,
    flags'expr-flags,
@@ -250,8 +250,8 @@ struct 'expr[
    write(e'this, out'c'file) {
       switch e.type {
          case #call {
-            e2'expr-call = e;
-            e2.write(out);
+            e2'expr-call = e
+            e2.write(out)
          }
       }
    }
@@ -267,10 +267,10 @@ enum 'basic-type-id[
    #f32, #f64,
    #count]'u8 {
    wr(e'this, w'wtr) @inline {
-      w.n1('base(e));
+      w.n1('base(e))
    }
    rd(e'this&, r'rdr) @inline {
-      e = 'basic-type-id(r.n1());
+      e = 'basic-type-id(r.n1())
    }
 // write(e:this, out:C.File) {
 //    switch e {
@@ -291,25 +291,25 @@ enum 'basic-type-id[
 //       }
 //    }
 // }
-   cp1-name(e'this)'char[] @cp1-name;
+   cp1-name(e'this)'char[] @cp1-name
 }
 struct 'expr-char[
    base'expr.,
    value'char,
-];
+]
 struct 'expr-bool[
    base'expr.,
    value'bool,
-];
+]
 struct 'expr-null[
    base'expr.,
-];
+]
 struct 'expr-str-node[
    next'expr-str-node,
    macro'bool,
    len'u32,
    buf'char[0],
-];
+]
 struct 'expr-str[
    base'expr.,
    node-c'i32,
@@ -317,31 +317,31 @@ struct 'expr-str[
    last'expr-str-node,
 ] {
    len(s'this)'u32 {
-      len' = 'u32(0);
-      n' = s.first;
+      len' = 'u32(0)
+      n' = s.first
       loop {
-         len += n.len;
-         n = n.next;
+         len += n.len
+         n = n.next
          if n == null {
-            break;
+            break
          }
       }
-      return len;
+      return len
    }
 }
-expr-c'i32;
-expr-cap'i32;
-expr-v'expr[];
+expr-c'i32
+expr-cap'i32
+expr-v'expr[]
 expr-push(e'expr, type'expr-type)'expr-i {
-   e.type = type;
-   e-idx' = .expr-c++;
+   e.type = type
+   e-idx' = .expr-c++
    if .expr-cap <= .expr-c {
-      old-cap' = .expr-cap;
-      grow(.expr-cap, .expr-c);
-      realloc(.expr-v, .expr-cap, old-cap);
+      old-cap' = .expr-cap
+      grow(.expr-cap, .expr-c)
+      realloc(.expr-v, .expr-cap, old-cap)
    }
-   .expr-v[e-idx] = e;
-   return e-idx;
+   .expr-v[e-idx] = e
+   return e-idx
 }
 union 'expr-int-value[
    i32'i32,
@@ -349,16 +349,16 @@ union 'expr-int-value[
    f32'f32,
    f64'f64,
    u64'u64,
-];
+]
 struct 'expr-int-data[
    base'expr.,
    value'expr-int-value.,
    type'expr-int,
-];
+]
 struct 'expr-size-of-type[
    base'expr.,
    type'at,
-];
+]
  
 
 }

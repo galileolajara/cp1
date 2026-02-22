@@ -1,20 +1,20 @@
 include <string.h> {
    using 'libc {
-      strlen(str'char[])'usz @real-name @no-decl;
-      strcmp(s1'char[], s2'char[])'cint @real-name @no-decl;
-      strcpy(s1'char[], s2'char[])'char[] @real-name @no-decl;
-      strtok(s'char[], sep'char[])'char[] @real-name @no-decl;
-      strdup(s'char[])'char[] @real-name @no-decl;
-      strrchr(s'char[], c'cint)'char[] @real-name @no-decl;
-      memcpy(dst'ref, src'ref, n'usz)'ref @real-name @no-decl;
-      memmove(dst'ref, src'ref, n'usz)'ref @real-name @no-decl;
-      memcmp(s1'ref, s2'ref, n'usz)'cint @real-name @no-decl;
-      memset(dst'ref, c'cint, n'usz)'ref @real-name @no-decl;
-      memset(dst'ref)'ref @decl('{# memset(dst, 0, sizeof(dst[0]))});
-      memset-arr(dst'ref, c'cint)'ref @decl('{# memset(dst, 0, (c) * sizeof(dst[0]))});
-      memmem(haystack'ref, hsize'usz, needle'ref, nsize'usz)'ref @real-name @no-decl;
-      memchr(haystack'ref, needle'cint, hsize'usz)'ref @real-name @no-decl;
+      strlen(str'char[])'usz @real-name @no-decl
+      strcmp(s1'char[], s2'char[])'cint @real-name @no-decl
+      strcpy(s1'char[], s2'char[])'char[] @real-name @no-decl
+      strtok(s'char[], sep'char[])'char[] @real-name @no-decl
+      strdup(s'char[])'char[] @real-name @no-decl
+      strrchr(s'char[], c'cint)'char[] @real-name @no-decl
+      memcpy(dst'ref, src'ref, n'usz)'ref @real-name @no-decl
+      memmove(dst'ref, src'ref, n'usz)'ref @real-name @no-decl
+      memcmp(s1'ref, s2'ref, n'usz)'cint @real-name @no-decl
+      memset(dst'ref, c'cint, n'usz)'ref @real-name @no-decl
+      memset(dst'ref)'ref @decl('{# memset(dst, 0, sizeof(dst[0]))})
+      memset-arr(dst'ref, c'cint)'ref @decl('{# memset(dst, 0, (c) * sizeof(dst[0]))})
+      memmem(haystack'ref, hsize'usz, needle'ref, nsize'usz)'ref @real-name @no-decl
+      memchr(haystack'ref, needle'cint, hsize'usz)'ref @real-name @no-decl
 
-      strerror(e'cint)'char[] @real-name @no-decl;
+      strerror(e'cint)'char[] @real-name @no-decl
    }
 }

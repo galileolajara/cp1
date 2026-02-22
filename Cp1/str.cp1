@@ -1,114 +1,114 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
-enum 'str[#nil = -1, #0]'i32;
-str-c'i32;
-str-cap'i32;
-str-ptr'ref[];
-str-len'i32[];
-string-buf'char[] @extern;
-string-len'i32 @extern;
+enum 'str[#nil = -1, #0]'i32
+str-c'i32
+str-cap'i32
+str-ptr'ref[]
+str-len'i32[]
+string-buf'char[] @extern
+string-len'i32 @extern
 expr-str(prev'expr-i, macro'bool)'expr-i {
-   len' = .string-len;
-   n'expr-str-node;
-   quick-alloc-plus(n, len + 1);
-   n.macro = macro;
-   n.len = len;
-   'c.memcpy(n.buf, .string-buf, len);
-   n.buf[len] = ''\0;
-   n.next = null;
+   len' = .string-len
+   n'expr-str-node
+   quick-alloc-plus(n, len + 1)
+   n.macro = macro
+   n.len = len
+   'c.memcpy(n.buf, .string-buf, len)
+   n.buf[len] = ''\0
+   n.next = null
    if prev == #nil {
-      e'expr-str;
-      quick-alloc-one(e);
-      e-idx' = expr-push(e.base, #str);
-      e.node-c = 1;
-      e.first = n;
-      e.last = n;
-      return e-idx;
+      e'expr-str
+      quick-alloc-one(e)
+      e-idx' = expr-push(e.base, #str)
+      e.node-c = 1
+      e.first = n
+      e.last = n
+      return e-idx
    } else {
-      e'expr-str = prev.ptr();
-      e.node-c++;
-      e.last.next = n;
-      e.last = n;
-      return prev;
+      e'expr-str = prev.ptr()
+      e.node-c++
+      e.last.next = n
+      e.last = n
+      return prev
    }
 }
-write-str-node(len'i32, ptr'ref);
+write-str-node(len'i32, ptr'ref)
 using 'expr-i {
    wr-str(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      e'expr-str = expr;
-      w.n(e.node-c);
-      n' = e.first;
+      e'expr-str = expr
+      w.n(e.node-c)
+      n' = e.first
       loop {
          if n.macro {
-            w.n((n.len << 1) | 1);
+            w.n((n.len << 1) | 1)
          } else {
-            w.n(n.len << 1);
+            w.n(n.len << 1)
          }
-         w.copy(n.buf, n.len);
-         n = n.next;
+         w.copy(n.buf, n.len)
+         n = n.next
          if n == null { break }
       }
    }
    rd-str(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      node-c' = r.n();
-      e'expr-str;
-      quick-alloc-one(e);
-      e-idx.set(e.base, #str);
-      first' = true;
+      node-c' = r.n()
+      e'expr-str
+      quick-alloc-one(e)
+      e-idx.set(e.base, #str)
+      first' = true
       loop node-c {
-         len-macro' = r.n();
-         len' = len-macro >> 1;
-         n'expr-str-node;
-         quick-alloc-plus(n, len + 1);
-         n.macro = (len-macro & 1) != 0;
-         n.len = len;
-         r.copy(n.buf, len);
-         n.buf[len] = 0;
-         n.next = null;
+         len-macro' = r.n()
+         len' = len-macro >> 1
+         n'expr-str-node
+         quick-alloc-plus(n, len + 1)
+         n.macro = (len-macro & 1) != 0
+         n.len = len
+         r.copy(n.buf, len)
+         n.buf[len] = 0
+         n.next = null
          if first {
-            first = false;
-            e.first = n;
-            e.last = n;
+            first = false
+            e.first = n
+            e.last = n
          } else {
-            e.last.next = n;
-            e.last = n;
+            e.last.next = n
+            e.last = n
          }
       }
    }
    write-str(expr'expr) @case.write() @inline {
-      e'expr-str = expr;
-      n' = e.first;
+      e'expr-str = expr
+      n' = e.first
       loop {
-         output-reserve(n.len << 1);
-         n = n.next;
+         output-reserve(n.len << 1)
+         n = n.next
          if n == null { break }
       }
-      n = e.first;
+      n = e.first
       loop {
          if n.macro {
             output{n.buf, n.len}
          } else {
-            write-str-node(n.len, n.buf);
+            write-str-node(n.len, n.buf)
          }
-         n = n.next;
+         n = n.next
          if n == null { break }
          output{''\n}
       }
    }
    value-str(s'this, ref'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      v.type = basic-type(#char);
-      v.info.init();
-      v.info.const = true;
-      v.info.array-c = 1;
-      v.info.ref-v[0] = ''\0;
-      v.info.ref-v[1] = ''\0;
-      v.info.star-c = 1;
-      v.ref = 1;
-      ok = true;
+      v.type = basic-type(#char)
+      v.info.init()
+      v.info.const = true
+      v.info.array-c = 1
+      v.info.ref-v[0] = ''\0
+      v.info.ref-v[1] = ''\0
+      v.info.star-c = 1
+      v.ref = 1
+      ok = true
    }
    process-str(expr'expr, ok'bool&) @case.process() @inline {
-      ok = true;
+      ok = true
    }
 }
  

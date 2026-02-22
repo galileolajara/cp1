@@ -1,70 +1,70 @@
-import "LibC/stdio.cp1";
-import "LibC/stdlib.cp1";
-import "LibC/string.cp1";
-import "Posix/fcntl.cp1";
-import "Posix/unistd.cp1";
-using 'c = 'libc;
-using 'x = 'posix;
+import "LibC/stdio.cp1"
+import "LibC/stdlib.cp1"
+import "LibC/string.cp1"
+import "Posix/fcntl.cp1"
+import "Posix/unistd.cp1"
+'c = 'libc
+'x = 'posix
 main(arg-c'cint, arg-v'char[][])'cint {
    if arg-c != 3 {
-      'c.printf("Usage: %s [.h input file] [.cp1 output file]\n", arg-v[0]);
-      'c.exit(#failure);
+      'c.printf("Usage: %s [.h input file] [.cp1 output file]\n", arg-v[0])
+      'c.exit(#failure)
    }
-   in-fd';
+   in-fd'
    if !'x'fd.open(in-fd, arg-v[1], #rdonly) {
-      'c.printf("Cannot open file for reading: %s\n", arg-v[1]);
-      'c.exit(#failure);
+      'c.printf("Cannot open file for reading: %s\n", arg-v[1])
+      'c.exit(#failure)
    }
-   in-size' = in-fd.seek(0, #end);
-   in-fd.seek(0, #set);
-   in-data'char[] = 'c.malloc(in-size);
-   in-fd.read(in-data, in-size);
-   in-fd.close();
+   in-size' = in-fd.seek(0, #end)
+   in-fd.seek(0, #set)
+   in-data'char[] = 'c.malloc(in-size)
+   in-fd.read(in-data, in-size)
+   in-fd.close()
    if !(&&, in-size > 0, in-data[in-size - 1] == ''\n) {
-      'c.printf("Error, file '%s' does not end with a new line\n", arg-v[1]);
-      'c.exit(#failure);
+      'c.printf("Error, file '%s' does not end with a new line\n", arg-v[1])
+      'c.exit(#failure)
    }
-   pos' = 0;
-   out-f' = 'c.fopen(arg-v[2], "w");
+   pos' = 0
+   out-f' = 'c.fopen(arg-v[2], "w")
    out-f.printf(
       '= using 'cp1 {
       '= enum 'token[
       '= #nil,
-   );
+   )
    loop pos < in-size {
-      start' = pos;
+      start' = pos
       loop {
          if in-data[pos] == ''\n {
-            break;
+            break
          }
-         pos++;
+         pos++
       }
-      len' = pos - start;
-      line'char[] = &in-data[start];
-      push'char[64];
-      push-c' = 0;
+      len' = pos - start
+      line'char[] = &in-data[start]
+      push'char[64]
+      push-c' = 0
       loop i' = 18; len - 18; i++ {
          if (&&, line[i] >= ''0, line[i] <= ''9) {
-            push[push-c++] = line[i];
+            push[push-c++] = line[i]
          } elif (&&, line[i] >= ''a, line[i] <= ''z) {
-            push[push-c++] = line[i];
+            push[push-c++] = line[i]
          } elif (&&, line[i] >= ''A, line[i] <= ''Z) {
-            push[push-c++] = line[i] + (''a - ''A);
+            push[push-c++] = line[i] + (''a - ''A)
          } elif line[i] == ''_ {
-            push[push-c++] = ''-;
+            push[push-c++] = ''-
          } else {
-            break;
+            break
          }
       }
-      out-f.printf("#%.*s,\n", push-c, push);
-      pos++;
+      out-f.printf("#%.*s,\n", push-c, push)
+      pos++
    }
    out-f.printf(
       '= ]'cint {
-      '= cp1-name(e'this)'char[] @cp1-name;
+      '= cp1-name(e'this)'char[] @cp1-name
       '= }
       '= }
-   );
-   out-f.close();
-   return 0;
+   )
+   out-f.close()
+   return 0
 }

@@ -1,39 +1,39 @@
 using 'cp1 {
 expr-null()'expr-i {
-   e'expr-null;
-   quick-alloc-one(e);
-   e-idx' = expr-push(e.base, #null);
-   return e-idx;
+   e'expr-null
+   quick-alloc-one(e)
+   e-idx' = expr-push(e.base, #null)
+   return e-idx
 }
 using 'expr-i {
    wr-null(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      e'expr-null = expr;
+      e'expr-null = expr
    }
    rd-null(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      e'expr-null;
-      quick-alloc-one(e);
-      e-idx.set(e.base, #null);
+      e'expr-null
+      quick-alloc-one(e)
+      e-idx.set(e.base, #null)
    }
    write-null(expr'expr) @case.write() @inline {
-      e'expr-null = expr;
+      e'expr-null = expr
       output{"NULL"}
    }
    process-null(expr'expr, ok'bool&) @case.process() @inline {
-      // .include-stddef = true;
-      ok = true;
+      // .include-stddef = true
+      ok = true
    }
    type-null(expr'expr, at'at&) @case.type() @inline {
-      at = basic-type(#ref);
+      at = basic-type(#ref)
    }
    value-null(le'this, ref'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      v.type = basic-type(#ref);
-      v.info.init();
-      v.info.array-c = 0;
-      v.info.ref-v[0] = ''\0;
-      v.info.star-c = 0;
-      v.ref = 1;
-      v.paren = false;
-      ok = true;
+      v.type = basic-type(#ref)
+      v.info.init()
+      v.info.array-c = 0
+      v.info.ref-v[0] = ''\0
+      v.info.star-c = 0
+      v.ref = 1
+      v.paren = false
+      ok = true
    }
 }
  

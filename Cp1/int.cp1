@@ -1,87 +1,87 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
-enum 'expr-int[#i32, #u32, #f32, #oct, #hex, #u64, #f64]'u8;
+enum 'expr-int[#i32, #u32, #f32, #oct, #hex, #u64, #f64]'u8
 expr-int(value'i32, type'expr-int)'expr-i {
-   e'expr-int-data;
-   quick-alloc-one(e);
-   e-idx' = expr-push(e.base, #int);
-   e.value.i32 = value;
-   e.type = type;
-   return e-idx;
+   e'expr-int-data
+   quick-alloc-one(e)
+   e-idx' = expr-push(e.base, #int)
+   e.value.i32 = value
+   e.type = type
+   return e-idx
 }
 expr-int64(value'i64, type'expr-int)'expr-i {
-   e'expr-int-data;
-   quick-alloc-one(e);
-   e-idx' = expr-push(e.base, #int);
-   e.value.u64 = value;
-   e.type = type;
-   return e-idx;
+   e'expr-int-data
+   quick-alloc-one(e)
+   e-idx' = expr-push(e.base, #int)
+   e.value.u64 = value
+   e.type = type
+   return e-idx
 }
 expr-f32(value'f32)'expr-i {
-   e'expr-int-data;
-   quick-alloc-one(e);
-   e-idx' = expr-push(e.base, #int);
-   e.value.f32 = value;
-   e.type = #f32;
-   return e-idx;
+   e'expr-int-data
+   quick-alloc-one(e)
+   e-idx' = expr-push(e.base, #int)
+   e.value.f32 = value
+   e.type = #f32
+   return e-idx
 }
 expr-f64(value'f64)'expr-i {
-   e'expr-int-data;
-   quick-alloc-one(e);
-   e-idx' = expr-push(e.base, #int);
-   e.value.f64 = value;
-   e.type = #f64;
-   return e-idx;
+   e'expr-int-data
+   quick-alloc-one(e)
+   e-idx' = expr-push(e.base, #int)
+   e.value.f64 = value
+   e.type = #f64
+   return e-idx
 }
 using 'expr-i {
    wr-int(expr'expr, w'wtr, header'bool) @case.wr() @inline {
-      e'expr-int-data = expr;
-      w.n1('base(e.type));
+      e'expr-int-data = expr
+      w.n1('base(e.type))
       switch e.type {
          case #i32 {
-            w.i(e.value.i32);
+            w.i(e.value.i32)
          }
          case #f32 {
-            w.f4(e.value.f32);
+            w.f4(e.value.f32)
          }
          case #f64 {
-            w.f8(e.value.f64);
+            w.f8(e.value.f64)
          }
          case #u64 {
-            w.N(e.value.u64);
+            w.N(e.value.u64)
          }
          default {
-            w.n(e.value.u32);
+            w.n(e.value.u32)
          }
       }
    }
    rd-int(e-idx'expr-i, r'rdr) @case.rd() @inline {
-      e'expr-int-data;
-      quick-alloc-one(e);
-      e-idx.set(e.base, #int);
-      e.type = 'expr-int(r.n1());
+      e'expr-int-data
+      quick-alloc-one(e)
+      e-idx.set(e.base, #int)
+      e.type = 'expr-int(r.n1())
       switch e.type {
          case #i32 {
-            e.value.i32 = r.i();
+            e.value.i32 = r.i()
          }
          case #f32 {
-            e.value.f32 = r.f4();
+            e.value.f32 = r.f4()
          }
          case #f64 {
-            e.value.f64 = r.f8();
+            e.value.f64 = r.f8()
          }
          case #u64 {
-            // .include-stdint = true;
-            e.value.u64 = r.N();
+            // .include-stdint = true
+            e.value.u64 = r.N()
          }
          default {
-            e.value.u32 = r.n();
+            e.value.u32 = r.n()
          }
       }
    }
    write-int(expr'expr) @case.write() @inline {
-      e'expr-int-data = expr;
+      e'expr-int-data = expr
       switch e.type {
          case #i32 {
             output{e.value.i32}
@@ -107,54 +107,54 @@ using 'expr-i {
       }
    }
    process-int(expr'expr, ok'bool&) @case.process() @inline {
-      ok = true;
+      ok = true
    }
    type-int(expr'expr, at'at&) @case.type() @inline {
-      e'expr-int-data = expr;
+      e'expr-int-data = expr
       switch e.type {
          case #i32 {
-            at = basic-type(#i32);
+            at = basic-type(#i32)
          }
          case #f32 {
-            at = basic-type(#f32);
+            at = basic-type(#f32)
          }
          case #f64 {
-            at = basic-type(#f64);
+            at = basic-type(#f64)
          }
          case #u64 {
-            at = basic-type(#u64);
+            at = basic-type(#u64)
          }
          default {
-            at = basic-type(#u32);
+            at = basic-type(#u32)
          }
       }
    }
    value-int(le'this, ref'i32, paren'bool, v'value, ok'bool&) @case.value() @inline {
-      e'expr-int-data = le.ptr();
+      e'expr-int-data = le.ptr()
       switch e.type {
          case #i32 {
-            v.type = basic-type(#i32);
+            v.type = basic-type(#i32)
          }
          case #f32 {
-            v.type = basic-type(#f32);
+            v.type = basic-type(#f32)
          }
          case #f64 {
-            v.type = basic-type(#f64);
+            v.type = basic-type(#f64)
          }
          case #u64 {
-            v.type = basic-type(#u64);
+            v.type = basic-type(#u64)
          }
          default {
-            v.type = basic-type(#u32);
+            v.type = basic-type(#u32)
          }
       }
-      v.info.init();
-      v.info.array-c = 0;
-      v.info.ref-v[0] = ''\0;
-      v.info.star-c = 0;
-      v.ref = 1;
-      v.paren = false;
-      ok = true;
+      v.info.init()
+      v.info.array-c = 0
+      v.info.ref-v[0] = ''\0
+      v.info.star-c = 0
+      v.ref = 1
+      v.paren = false
+      ok = true
    }
 }
  

@@ -1,52 +1,52 @@
-require "LibCp1/stdout.cp1";
-require "LibCp1/sprintf.cp1";
-require "LibC/stdio.cp1";
-require "LibC/stdlib.cp1";
-require "LibC/string.cp1";
-require "Posix/unistd.cp1";
-require "Posix/fcntl.cp1";
-using 'c = 'libc;
-using 'c1 = 'libcp1;
-using 'x = 'posix;
+require "LibCp1/stdout.cp1"
+require "LibCp1/sprintf.cp1"
+require "LibC/stdio.cp1"
+require "LibC/stdlib.cp1"
+require "LibC/string.cp1"
+require "Posix/unistd.cp1"
+require "Posix/fcntl.cp1"
+'c = 'libc
+'c1 = 'libcp1
+'x = 'posix
 using 'cp1 {
 #build-common-codes{
-.compile = true;
+.compile = true
 }
-// include-stdint:bool;
-// include-stdbool:bool;
-// include-stddef:bool;
-expr-is-processed'u8[];
-func-head-outputted-c'i32;
-func-head-outputted-v'func[];
-func-body-outputted-c'i32;
-func-body-outputted-v'func[];
+// include-stdint:bool
+// include-stdbool:bool
+// include-stddef:bool
+expr-is-processed'u8[]
+func-head-outputted-c'i32
+func-head-outputted-v'func[]
+func-body-outputted-c'i32
+func-body-outputted-v'func[]
 struct 'basic-type[
    method-c'i32,
    method-cap'i32,
    method-v'func[],
-];
-basic-type'basic-type.['basic-type-id#count];
+]
+basic-type'basic-type.['basic-type-id#count]
 basic-type(t'basic-type-id)'at @inline {
-   return t;
+   return t
 }
-ctx-begin-row'u32;
-ctx-begin-col'u32;
-ctx-end-row'u32;
-ctx-end-col'u32;
-ctx-func'decl-func;
-ctx-func-id'func;
-file-c'file;
-file-cap'file;
-file-v'file-data.[];
+ctx-begin-row'u32
+ctx-begin-col'u32
+ctx-end-row'u32
+ctx-end-col'u32
+ctx-func'decl-func
+ctx-func-id'func
+file-c'file
+file-cap'file
+file-v'file-data.[]
 enum 'file[#nil = -1, #0]'i32 {
    ptr(f'this)'file-data @inline {
-      return .file-v[f];
+      return .file-v[f]
    }
    path(f'this)'char[] @inline {
-      return f.ptr().path;
+      return f.ptr().path
    }
    path-len(f'this)'u16 @inline {
-      return f.ptr().path-len;
+      return f.ptr().path-len
    }
 }
 struct 'file-data[
@@ -56,38 +56,38 @@ struct 'file-data[
    id-table'id[],
    at-table'at[],
    cvar-table'cvar[],
-];
-id-table'id[];
-include-table-cap'i32;
-include-table'include[];
-at-table'at[];
-cvar-table'cvar[];
+]
+id-table'id[]
+include-table-cap'i32
+include-table'include[]
+at-table'at[]
+cvar-table'cvar[]
 id-add(id-len'u8, id-str'char[])'id {
-   found' = .id-map.get-or-insert(id-str, id-len, .id-c);
+   found' = .id-map.get-or-insert(id-str, id-len, .id-c)
    if found != -1 { return found }
    // loop j' = 0; .id-c; j++ {
    //    if (&&, .id-len-v[j] == id-len, C.memcmp(.id-str-v[j], id-str, id-len) == 0) {
-   //       return j;
+   //       return j
    //    }
    // }
-   id-idx' = .id-c++;
+   id-idx' = .id-c++
    if .id-cap <= .id-c {
-      old-cap' = .id-cap;
-      grow(.id-cap, .id-c);
-      realloc(.id-len-v, .id-cap, old-cap);
-      realloc(.id-str-v, .id-cap, old-cap);
-      realloc(.id-c-name-v, .id-cap, old-cap); 
+      old-cap' = .id-cap
+      grow(.id-cap, .id-c)
+      realloc(.id-len-v, .id-cap, old-cap)
+      realloc(.id-str-v, .id-cap, old-cap)
+      realloc(.id-c-name-v, .id-cap, old-cap)
    }
-   .id-len-v[id-idx] = id-len;
-   .id-str-v[id-idx] = id-str;
-   return id-idx;
+   .id-len-v[id-idx] = id-len
+   .id-str-v[id-idx] = id-str
+   return id-idx
 }
-import-new-c'u32;
-import-v'include[];
-import-file-v'file[];
-import-required-v'u8[];
-import-cap'u32;
-import-c'u32;
+import-new-c'u32
+import-v'include[]
+import-file-v'file[]
+import-required-v'u8[]
+import-cap'u32
+import-c'u32
 import(path'include, require'bool, file'file) {
    loop i' = 0; .import-c; i++ {
       // C1.stdout{"import " path " " path:base " checking if exists, " i:u32 " = " path ''\n}
@@ -98,298 +98,298 @@ import(path'include, require'bool, file'file) {
                'c1.stdout{"Error, '" path "' was previously an import-only of '" .import-file-v[i] "' but is now required by '" file "'\n"}
                'c1.stdout{"Consider requiring '" path "' instead of importing it on '" .import-file-v[i] "'.\n"}
                'c1.stdout{"Or you may import '" path "' on '" file "' instead of requiring it.\n"}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
          }
-         return;
+         return
       }
    }
    // C1.stdout{"import " path " " path:base ''\n}
    if true {
-      i' = .import-c++;
+      i' = .import-c++
       if .import-cap < .import-c {
-         grow(.import-cap, .import-c);
-         'c.realloc-arr(.import-v, .import-cap);
-         'c.realloc-arr(.import-file-v, .import-cap);
-         'c.realloc-arr(.import-required-v, (.import-cap + 7) >> 3);
+         grow(.import-cap, .import-c)
+         'c.realloc-arr(.import-v, .import-cap)
+         'c.realloc-arr(.import-file-v, .import-cap)
+         'c.realloc-arr(.import-required-v, (.import-cap + 7) >> 3)
       }
-      .import-v[i] = path;
-      .import-file-v[i] = file;
+      .import-v[i] = path
+      .import-file-v[i] = file
       if require {
-         .import-required-v[i >> 3] |= 1 << (i & 7);
+         .import-required-v[i >> 3] |= 1 << (i & 7)
       } else {
-         .import-required-v[i >> 3] &= 0xff ^ (1 << (i & 7));
+         .import-required-v[i >> 3] &= 0xff ^ (1 << (i & 7))
       }
       // C1.stdout{"import " path " added as " i:u32 ''\n}
    }
-   .import-new-c++;
+   .import-new-c++
 }
-sqlite-init();
-read-cp1(path'char[], path-len'u32)'ref;
-req-parse(in-path-cp1'char[], in-path-cp1-len'u8, require'bool)'char[];
+sqlite-init()
+read-cp1(path'char[], path-len'u32)'ref
+req-parse(in-path-cp1'char[], in-path-cp1-len'u8, require'bool)'char[]
 read(in-path-cp1'char[], in-path-cp1-len'u16, strdup'bool, require'bool) {
    // C1.stdout{"read " in-path-cp1 "\n"}
-   in-path' = req-parse(in-path-cp1, in-path-cp1-len, require);
+   in-path' = req-parse(in-path-cp1, in-path-cp1-len, require)
 
-   r-begin'rdr.;
-   r-begin.ref = read-file(in-path, in-size?);
+   r-begin'rdr.
+   r-begin.ref = read-file(in-path, in-size?)
    if r-begin.ref == null {
       'c1.stdout{"Cannot open file for reading: " in-path-cp1 ''\n}
-      // i:u8[] = [];
-      // i[0] = 0;
-      'c.exit(#failure);
+      // i:u8[] = []
+      // i[0] = 0
+      'c.exit(#failure)
    }
 
-   file-idx' = .file-c++;
+   file-idx' = .file-c++
    if .file-cap <= .file-c {
-      old-cap' = .file-cap;
-      .file-cap = 'file(grow('base(.file-c)));
-      realloc(.file-v, 'base(.file-cap), 'base(old-cap));
+      old-cap' = .file-cap
+      .file-cap = 'file(grow('base(.file-c)))
+      realloc(.file-v, 'base(.file-cap), 'base(old-cap))
    }
-   file' = .file-v[file-idx];
+   file' = .file-v[file-idx]
    if strdup {
-      path'char[];
-      quick-alloc-arr(path, in-path-cp1-len + 1);
-      'c.memcpy(path, in-path-cp1, in-path-cp1-len);
-      path[in-path-cp1-len] = ''\0;
-      file.path = path;
+      path'char[]
+      quick-alloc-arr(path, in-path-cp1-len + 1)
+      'c.memcpy(path, in-path-cp1, in-path-cp1-len)
+      path[in-path-cp1-len] = ''\0
+      file.path = path
    } else {
-      file.path = in-path-cp1;
+      file.path = in-path-cp1
    }
-   file.path-len = in-path-cp1-len;
-   file.data = r-begin.ref;
+   file.path-len = in-path-cp1-len
+   file.data = r-begin.ref
 
-   r'rdr.;
-   r.ref = r-begin.ref;
+   r'rdr.
+   r.ref = r-begin.ref
    if true {
-      id-c' = r.n();
+      id-c' = r.n()
       // C1.stdout{"There are " id-c " ids\n"}
-      quick-alloc-arr(.id-table, id-c);
-      file.id-table = .id-table;
+      quick-alloc-arr(.id-table, id-c)
+      file.id-table = .id-table
       loop i' = 0; id-c; i++ {
-         id-len' = r.n1();
-         id-str' = r.char;
-         r.pos += id-len + 1;
-         .id-table[i] = id-add(id-len, id-str);
+         id-len' = r.n1()
+         id-str' = r.char
+         r.pos += id-len + 1
+         .id-table[i] = id-add(id-len, id-str)
       }
    }
    if true {
-      include-c' = r.n();
+      include-c' = r.n()
       // C1.stdout{"There are " include-c " includes\n"}
       if .include-table-cap <= include-c {
-         old-cap' = .include-table-cap;
-         grow(.include-table-cap, include-c);
-         realloc(.include-table, .include-table-cap, old-cap);
+         old-cap' = .include-table-cap
+         grow(.include-table-cap, include-c)
+         realloc(.include-table, .include-table-cap, old-cap)
       }
       loop i' = 0; include-c; i++ {
-         include-len' = r.n1();
-         include-str' = r.ref;
-         r.pos += include-len + 1;
-         // found! = -1;
+         include-len' = r.n1()
+         include-str' = r.ref
+         r.pos += include-len + 1
+         // found! = -1
          // loop j' = 0; .include-c; j++ {
          //    if (&&, .include-len-v[j] == include-len, C.memcmp(.include-str-v[j], include-str, include-len) == 0) {
-         //       found = j;
-         //       break;
+         //       found = j
+         //       break
          //    }
          // }
-         .include-table[i] = include-add(include-len, include-str);
+         .include-table[i] = include-add(include-len, include-str)
       }
    }
    if true {
-      at-c' = r.n();
+      at-c' = r.n()
       // C1.stdout{"There are " at-c " at\n"}
-      quick-alloc-arr(.at-table, at-c);
-      file.at-table = .at-table;
-      at-type'name-type;
+      quick-alloc-arr(.at-table, at-c)
+      file.at-table = .at-table
+      at-type'name-type
       loop i' = 0; at-c; i++ {
-         at-type.rd(r);
+         at-type.rd(r)
          if at-type == #basic {
-            'basic-type-id.rd(basic?, r);
-            .at-table[i] = basic-type(basic);
+            'basic-type-id.rd(basic?, r)
+            .at-table[i] = basic-type(basic)
          } else {
-            'at.rd(at-parent?, r);
-            'id.rd(at-name?, r);
+            'at.rd(at-parent?, r)
+            'id.rd(at-name?, r)
             // C1.stdout{"read at type " at-type ''  at-type.cp1-name() ''  at-name ''\n}
             // C1.stdout{"- parent " at-parent ''\n}
             // C1.stdout{"- name " at-name ''\n}
-            found' = .at-map.get-or-insert(at-parent, at-type, at-name, 'base(.at-c));
+            found' = .at-map.get-or-insert(at-parent, at-type, at-name, 'base(.at-c))
             // loop j' = 0; .at-c; j++ {
-            //    at! = .at-v[j];
+            //    at! = .at-v[j]
             //    if (&&, at.parent == at-parent, at.type == at-type, at.name.id == at-name) {
-            //       found = j;
-            //       break;
+            //       found = j
+            //       break
             //    }
             // }
             // C1.stdout{"found " found ''\n}
             // C1.stdout{"at " i ", name-c " at-name-c ", found " found ''\n}
             if found == -1 {
-               at-idx' = .at-c++;
+               at-idx' = .at-c++
                // C1.stdout{"1 as " at-idx ''\n}
                if .at-cap <= .at-c {
-                  old-cap' = .at-cap;
-                  .at-cap = 'at(grow('base(.at-c)));
-                  realloc(.at-v, 'base(.at-cap), 'base(old-cap));
+                  old-cap' = .at-cap
+                  .at-cap = 'at(grow('base(.at-c)))
+                  realloc(.at-v, 'base(.at-cap), 'base(old-cap))
                }
-               at' = .at-v[at-idx];
-               at.init(at-type, at-parent, at-name);
-               .at-table[i] = 'at(at-idx);
+               at' = .at-v[at-idx]
+               at.init(at-type, at-parent, at-name)
+               .at-table[i] = 'at(at-idx)
             } else {
                // C1.stdout{"2 as " found ''\n}
-               .at-table[i] = 'at(found);
+               .at-table[i] = 'at(found)
             }
          }
       }
    }
    if true {
-      cvar-c' = 'cvar(r.n());
-      quick-alloc-arr(.cvar-table, 'base(cvar-c));
-      file.cvar-table = .cvar-table;
+      cvar-c' = 'cvar(r.n())
+      quick-alloc-arr(.cvar-table, 'base(cvar-c))
+      file.cvar-table = .cvar-table
       // C1.stdout{"There are " cvar-c " cvars\n"}
-      // C.out.flush();
-      cvar-begin' = .cvar-c;
-      .cvar-c += cvar-c;
+      // C.out.flush()
+      cvar-begin' = .cvar-c
+      .cvar-c += cvar-c
       if .cvar-cap <= .cvar-c {
-         old-cap' = .cvar-cap;
-         .cvar-cap = 'cvar(grow('base(.cvar-c)));
-         realloc(.cvar-v, 'base(.cvar-cap), 'base(old-cap));
+         old-cap' = .cvar-cap
+         .cvar-cap = 'cvar(grow('base(.cvar-c)))
+         realloc(.cvar-v, 'base(.cvar-cap), 'base(old-cap))
       }
-      // malloc(.cvar-table, .cvar-c);
-      // file.cvar-table = .cvar-table;
-      loop cvar-idx' = cvar-begin, i' = 0; cvar-c; cvar-idx++; i++ {
-         cvar' = .cvar-v[cvar-idx];
-         cvar.file = file-idx;
-         cvar.include.rd(r);
-         cvar.at.rd(r);
-         cvar.decl.rd(r);
-         cvar.flags.rd(r);
-         cvar.row = r.n();
-         cvar.col = r.n();
-         name' = cvar.decl.name;
-         // .cvar-table[i] = cvar-idx;
+      // malloc(.cvar-table, .cvar-c)
+      // file.cvar-table = .cvar-table
+      loop cvar-idx' = cvar-begin, i' = 0; cvar-c; cvar-idx++ i++ {
+         cvar' = .cvar-v[cvar-idx]
+         cvar.file = file-idx
+         cvar.include.rd(r)
+         cvar.at.rd(r)
+         cvar.decl.rd(r)
+         cvar.flags.rd(r)
+         cvar.row = r.n()
+         cvar.col = r.n()
+         name' = cvar.decl.name
+         // .cvar-table[i] = cvar-idx
 
-         at' = cvar.at.ptr();
-         cvar-v' = at.cvar-v;
+         at' = cvar.at.ptr()
+         cvar-v' = at.cvar-v
          loop j' = 0; at.cvar-c; j++ {
-            cvar2' = cvar-v[j].ptr();
+            cvar2' = cvar-v[j].ptr()
             if cvar2.decl.name == name {
                'c1.stdout{file-idx '': cvar.row '': cvar.col ": Cannot declare constant '" name "' because it was already declared at " cvar2.file '': cvar2.row '': cvar2.col "\n"}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
          }
-         at-cvar-idx' = at.cvar-c++;
+         at-cvar-idx' = at.cvar-c++
          if at.cvar-cap <= at.cvar-c {
-            old-cap' = at.cvar-cap;
-            grow(at.cvar-cap, at.cvar-c);
-            realloc(at.cvar-v, at.cvar-cap, old-cap);
-            cvar-v = at.cvar-v;
+            old-cap' = at.cvar-cap
+            grow(at.cvar-cap, at.cvar-c)
+            realloc(at.cvar-v, at.cvar-cap, old-cap)
+            cvar-v = at.cvar-v
          }
-         cvar-v[at-cvar-idx] = cvar-idx;
+         cvar-v[at-cvar-idx] = cvar-idx
          if (cvar.flags & #set-expr) != #0 {
-            cvar.expr-set.rd(r);
+            cvar.expr-set.rd(r)
          } else {
-            cvar.last-cvar.rd(r);
+            cvar.last-cvar.rd(r)
          }
-         .cvar-table[i] = cvar-idx;
+         .cvar-table[i] = cvar-idx
       }
    }
    if true {
-      gvar-c' = 'gvar(r.n());
+      gvar-c' = 'gvar(r.n())
       // C1.stdout{"There are " gvar-c " gvars\n"}
-      // C.out.flush();
-      gvar-begin' = .gvar-c;
-      .gvar-c += gvar-c;
+      // C.out.flush()
+      gvar-begin' = .gvar-c
+      .gvar-c += gvar-c
       if .gvar-cap <= .gvar-c {
-         old-cap' = .gvar-cap;
-         .gvar-cap = 'gvar(grow('base(.gvar-c)));
-         realloc(.gvar-v, 'base(.gvar-cap), 'base(old-cap));
+         old-cap' = .gvar-cap
+         .gvar-cap = 'gvar(grow('base(.gvar-c)))
+         realloc(.gvar-v, 'base(.gvar-cap), 'base(old-cap))
       }
-      // malloc(.gvar-table, .gvar-c);
-      // file.gvar-table = .gvar-table;
-      loop gvar-idx' = gvar-begin, i' = 0; gvar-c; gvar-idx++; i++ {
-         gvar' = .gvar-v[gvar-idx];
-         gvar.include.rd(r);
-         gvar.at.rd(r);
-         gvar.decl.rd(r);
-         gvar.row = r.n();
-         gvar.col = r.n();
-         gvar.file = file-idx;
-         name' = gvar.decl.name;
-         // .gvar-table[i] = gvar-idx;
+      // malloc(.gvar-table, .gvar-c)
+      // file.gvar-table = .gvar-table
+      loop gvar-idx' = gvar-begin, i' = 0; gvar-c; gvar-idx++ i++ {
+         gvar' = .gvar-v[gvar-idx]
+         gvar.include.rd(r)
+         gvar.at.rd(r)
+         gvar.decl.rd(r)
+         gvar.row = r.n()
+         gvar.col = r.n()
+         gvar.file = file-idx
+         name' = gvar.decl.name
+         // .gvar-table[i] = gvar-idx
 
-         at' = gvar.at.ptr();
-         gvar-v' = at.gvar-v;
+         at' = gvar.at.ptr()
+         gvar-v' = at.gvar-v
          loop j' = 0; at.gvar-c; j++ {
-            gvar2' = gvar-v[j].ptr();
+            gvar2' = gvar-v[j].ptr()
             if gvar2.decl.name == name {
                'c1.stdout{file-idx '': gvar.row '': gvar.col ": Cannot declare global variable '" name "' because it was already declared at " gvar2.file '': gvar2.row '': gvar2.col "\n"}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
          }
-         at-gvar-idx' = at.gvar-c++;
+         at-gvar-idx' = at.gvar-c++
          if at.gvar-cap <= at.gvar-c {
-            old-cap' = at.gvar-cap;
-            grow(at.gvar-cap, at.gvar-c);
-            realloc(at.gvar-v, at.gvar-cap, old-cap);
-            gvar-v = at.gvar-v;
+            old-cap' = at.gvar-cap
+            grow(at.gvar-cap, at.gvar-c)
+            realloc(at.gvar-v, at.gvar-cap, old-cap)
+            gvar-v = at.gvar-v
          }
-         gvar-v[at-gvar-idx] = gvar-idx;
+         gvar-v[at-gvar-idx] = gvar-idx
       }
    }
-   enum-c' = 'enum(r.n());
+   enum-c' = 'enum(r.n())
    // C1.stdout{"There are " enum-c " enums\n"}
-      // C.out.flush();
-   e-idx-begin' = .enum-c;
-   .enum-c += enum-c;
+      // C.out.flush()
+   e-idx-begin' = .enum-c
+   .enum-c += enum-c
    if .enum-cap <= .enum-c {
-      old-cap' = .enum-cap;
-      .enum-cap = 'enum(grow('base(.enum-c)));
-      realloc(.enum-v, 'base(.enum-cap), 'base(old-cap));
+      old-cap' = .enum-cap
+      .enum-cap = 'enum(grow('base(.enum-c)))
+      realloc(.enum-v, 'base(.enum-cap), 'base(old-cap))
    }
    loop e-idx' = e-idx-begin; enum-c; e-idx++ {
-      e'enum-data;
-      quick-alloc-one(e);
-      .enum-v[e-idx] = e;
-      e.file = file-idx;
-      e.begin-row = r.n();
-      e.begin-col = r.n();
-      e.end-row = r.n();
-      e.end-col = r.n();
-      e.include.rd(r);
-      e.at.rd(r);
-      e.base-type.rd(r);
-      e.flags.rd(r);
-      e.overload-get-last = #nil;
-      e.overload-set-last = #nil;
-      e.overload-math-last = #nil;
-      e.overload-bools-last = #nil;
-      e.overload-compare-last = #nil;
-      e.overload-if-begin = #nil;
-      e.overload-if-else = #nil;
-      e.overload-if-end = #nil;
-      e.overload-statement = #nil;
-      at-i' = e.at;
-      at' = at-i.ptr();
+      e'enum-data
+      quick-alloc-one(e)
+      .enum-v[e-idx] = e
+      e.file = file-idx
+      e.begin-row = r.n()
+      e.begin-col = r.n()
+      e.end-row = r.n()
+      e.end-col = r.n()
+      e.include.rd(r)
+      e.at.rd(r)
+      e.base-type.rd(r)
+      e.flags.rd(r)
+      e.overload-get-last = #nil
+      e.overload-set-last = #nil
+      e.overload-math-last = #nil
+      e.overload-bools-last = #nil
+      e.overload-compare-last = #nil
+      e.overload-if-begin = #nil
+      e.overload-if-else = #nil
+      e.overload-if-end = #nil
+      e.overload-statement = #nil
+      at-i' = e.at
+      at' = at-i.ptr()
       if at.def != #undefined {
          'c1.stdbuf{file-idx '': e.begin-row '': e.begin-col ": Cannot define enum " at.name.id " because it was already defined as "}
          if at.def == #struct {
-            s' = at.decl.structt.ptr();
+            s' = at.decl.structt.ptr()
             'c1.stdout{"struct at " s.file '': s.begin-row '': s.begin-col "\n"}
          } else {
-            s' = at.decl.enumm.ptr();
+            s' = at.decl.enumm.ptr()
             'c1.stdout{"enum at " s.file '': s.begin-row '': s.begin-col "\n"}
          }
-         'c.exit(#failure);
+         'c.exit(#failure)
       }
-      at.decl.enumm = e-idx;
-      at.def = #enum;
+      at.decl.enumm = e-idx
+      at.def = #enum
       if (e.flags & #real-name) != #0 {
-         e.real-name.rd(r);
+         e.real-name.rd(r)
       } else {
-         e.real-name = #nil;
+         e.real-name = #nil
       }
       if (e.flags & #soa-field) != #0 {
-         e.soa-field-gvar-at.rd(r);
-         e.soa-field-gvar-id.rd(r);
+         e.soa-field-gvar-at.rd(r)
+         e.soa-field-gvar-id.rd(r)
       }
       // C1.stdout{"printing at of enum:\n"}
       // loop {
@@ -399,535 +399,535 @@ read(in-path-cp1'char[], in-path-cp1-len'u16, strdup'bool, require'bool) {
       //       C1.stdout{"- #" at.type.cp1-name() ''  at.name.id ''\n}
       //    }
       //    if at.parent == #root { break }
-      //    at = at.parent.ptr();
+      //    at = at.parent.ptr()
       // }
    }
-   struct-c' = 'struct(r.n());
+   struct-c' = 'struct(r.n())
    // C1.stdout{"There are " struct-c:base " structs\n"}
-   s-idx-begin' = .struct-c;
-   .struct-c += struct-c;
+   s-idx-begin' = .struct-c
+   .struct-c += struct-c
    if .struct-cap <= .struct-c {
-      old-cap' = .struct-cap;
-      .struct-cap = 'struct(grow('base(.struct-c)));
-      realloc(.struct-v, 'base(.struct-cap), 'base(old-cap));
+      old-cap' = .struct-cap
+      .struct-cap = 'struct(grow('base(.struct-c)))
+      realloc(.struct-v, 'base(.struct-cap), 'base(old-cap))
    }
    loop s-idx' = s-idx-begin; struct-c; s-idx++ {
-      fvar-c' = r.n1();
-      s'struct-data;
-      quick-alloc-plus(s, 'fvar-data['usz] * fvar-c);
-      .struct-v[s-idx] = s;
-      s.file = file-idx;
-      s.fvar-c = fvar-c;
-      s.begin-row = r.n();
-      s.begin-col = r.n();
-      s.end-row = r.n();
-      s.end-col = r.n();
-      s.include.rd(r);
-      s.at.rd(r);
-      s.flags.rd(r);
-      at-i' = s.at;
-      at' = at-i.ptr();
+      fvar-c' = r.n1()
+      s'struct-data
+      quick-alloc-plus(s, 'fvar-data['usz] * fvar-c)
+      .struct-v[s-idx] = s
+      s.file = file-idx
+      s.fvar-c = fvar-c
+      s.begin-row = r.n()
+      s.begin-col = r.n()
+      s.end-row = r.n()
+      s.end-col = r.n()
+      s.include.rd(r)
+      s.at.rd(r)
+      s.flags.rd(r)
+      at-i' = s.at
+      at' = at-i.ptr()
       if at.def != #undefined {
          'c1.stdbuf{file-idx '': s.begin-row '': s.begin-col ": Cannot define struct " at.name.id " because it was already defined as "}
          if at.def == #enum {
-            e' = at.decl.enumm.ptr();
+            e' = at.decl.enumm.ptr()
             'c1.stdout{"enum at " e.file '': e.begin-row '': e.begin-col ''\n}
          } else {
-            s2' = at.decl.structt.ptr();
+            s2' = at.decl.structt.ptr()
             'c1.stdout{"struct at " s2.file '': s2.begin-row '': s2.begin-col ''\n}
          }
-         'c.exit(#failure);
+         'c.exit(#failure)
       }
       // C1.stdout{"at(" at-i ") is a struct: " at.name.id ", parent is " at.parent ''\n}
-      at.decl.structt = s-idx;
-      at.def = #struct;
-      // s.name.rd(r);
+      at.decl.structt = s-idx
+      at.def = #struct
+      // s.name.rd(r)
       // C1.stdout{s.begin-row '': s.begin-col " - " s.end-row '': s.end-col ": /" s.name ''(}
       loop j' = 0; fvar-c; j++ {
-         fvar' = s.fvar-v[j];
-         fvar.decl.rd(r);
+         fvar' = s.fvar-v[j]
+         fvar.decl.rd(r)
          // if j != 0 {
          //    C1.stdout{", "}
          // }
-         // fvar.decl.type.write(C.out);
+         // fvar.decl.type.write(C.out)
          // C1.stdout{''  fvar.decl.name ""}
       }
       // C1.stdout{")\n"}
       if (s.flags & #real-name) != #0 {
-         s.real-name.rd(r);
+         s.real-name.rd(r)
       } else {
-         s.real-name = #nil;
+         s.real-name = #nil
       }
       if (s.flags & #aligned) != #0 {
-         s.aligned = r.n();
+         s.aligned = r.n()
       }
    }
-   func-c' = 'func(r.n());
+   func-c' = 'func(r.n())
    // C1.stdout{"There are " func-c " functions\n"}
-      // C.out.flush();
-   f-idx-begin' = .func-c;
-   .func-c += func-c;
+      // C.out.flush()
+   f-idx-begin' = .func-c
+   .func-c += func-c
    if .func-cap <= .func-c {
-      old-cap' = .func-cap;
-      .func-cap = 'func(grow('base(.func-c)));
-      realloc(.func-v, 'base(.func-cap), 'base(old-cap));
+      old-cap' = .func-cap
+      .func-cap = 'func(grow('base(.func-c)))
+      realloc(.func-v, 'base(.func-cap), 'base(old-cap))
    }
    loop f-idx' = f-idx-begin; func-c; f-idx++ {
-      farg-c' = r.n1();
-      f'decl-func;
-      quick-alloc-plus(f, 'farg['usz] * farg-c);
-      .func-v[f-idx] = f;
-      f.farg-c = farg-c;
-      f.file = file-idx;
-      f.begin-row = r.n();
-      f.begin-col = r.n();
-      f.end-row = r.n();
-      f.end-col = r.n();
-      f.include.rd(r);
-      f.at.rd(r);
-      f.angle = r.n1() != 0;
-      at-i' = f.at;
-      f.decl.rd(r);
-      r0'rdr.;
-      r0.ref = f;
+      farg-c' = r.n1()
+      f'decl-func
+      quick-alloc-plus(f, 'farg['usz] * farg-c)
+      .func-v[f-idx] = f
+      f.farg-c = farg-c
+      f.file = file-idx
+      f.begin-row = r.n()
+      f.begin-col = r.n()
+      f.end-row = r.n()
+      f.end-col = r.n()
+      f.include.rd(r)
+      f.at.rd(r)
+      f.angle = r.n1() != 0
+      at-i' = f.at
+      f.decl.rd(r)
+      r0'rdr.
+      r0.ref = f
       // C1.stdout{"func :" f.decl.name " was declared on an at:\n"}
       // if true {
-      //    at-i! = f.at;
+      //    at-i! = f.at
       //    loop {
-      //       at! = at-i.ptr();
+      //       at! = at-i.ptr()
       //       C1.stdout{"- " at.name.id ''\n}
-      //       at-i = at.parent;
+      //       at-i = at.parent
       //       if at-i == #root { break }
       //    }
       // }
       // C1.stdout{f.begin-row '': f.begin-col " - " f.end-row '': f.end-col ": :" f.decl.name ''(}
-      f.lvar-c = #0;
-      .ctx-func = f;
-      .ctx-func-id = f-idx;
-      // grow(f.lvar-cap, farg-c);
-      // malloc(f.lvar-v, f.lvar-cap);
+      f.lvar-c = #0
+      .ctx-func = f
+      .ctx-func-id = f-idx
+      // grow(f.lvar-cap, farg-c)
+      // malloc(f.lvar-v, f.lvar-cap)
       loop j' = 0; farg-c; j++ {
-         farg' = f.farg-v[j];
-         farg.rd(r);
+         farg' = f.farg-v[j]
+         farg.rd(r)
          // if j != 0 {
          //    C1.stdout{", "}
          // }
-         // farg.decl.type.write(C.out);
+         // farg.decl.type.write(C.out)
          // C1.stdout{''  farg.decl.name ""}
       }
-      this-idx' = 'i8(r.n1());
-      f.this-idx = this-idx;
+      this-idx' = 'i8(r.n1())
+      f.this-idx = this-idx
       if this-idx != -1 {
-         f.this-group = r.n1();
+         f.this-group = r.n1()
       }
-      group-c' = r.n1();
-      f.group-c = group-c;
+      group-c' = r.n1()
+      f.group-c = group-c
       loop i' = 0; group-c; i++ {
-         f.group-v[i] = r.n1();
+         f.group-v[i] = r.n1()
       }
       // C1.stdout{")\n"}
-      f.flags.rd(r);
+      f.flags.rd(r)
       if (f.flags & #real-name) != #0 {
-         f.real-name.rd(r);
+         f.real-name.rd(r)
       } else {
-         f.real-name = #nil;
+         f.real-name = #nil
       }
       if (f.flags & #meta-method) != #0 {
-         f.meta-method-prefix1.rd(r);
-         f.meta-method-prefix2.rd(r);
-         f.meta-method-end1.rd(r);
+         f.meta-method-prefix1.rd(r)
+         f.meta-method-prefix2.rd(r)
+         f.meta-method-end1.rd(r)
       }
       if (f.flags & #case) != #0 {
-         f.cas.rd(r);
+         f.cas.rd(r)
       }
       if (f.flags & #decl) != #0 {
-         len' = r.n();
-         f.decl-len = len;
-         f.decl-str = quick-alloc(len + 1);
-         'c.memcpy(f.decl-str, r.ref, len);
-         f.decl-str[len] = 0;
-         r.pos += len;
+         len' = r.n()
+         f.decl-len = len
+         f.decl-str = quick-alloc(len + 1)
+         'c.memcpy(f.decl-str, r.ref, len)
+         f.decl-str[len] = 0
+         r.pos += len
       }
-      f.overload = 'overload(r.n1());
-      at' = at-i.ptr();
-      name' = f.decl.name;
-      func-v' = at.func-v;
+      f.overload = 'overload(r.n1())
+      at' = at-i.ptr()
+      name' = f.decl.name
+      func-v' = at.func-v
       loop i' = 0; at.func-c; i++ {
-         func2' = func-v[i].ptr();
+         func2' = func-v[i].ptr()
          if (func2.decl.name == name) && (func2.farg-c == farg-c) && (func2.group-c == group-c) && ('c.memcmp(func2.group-v, f.group-v, group-c) == 0) {
-            same' = true;
+            same' = true
             if func2.angle != f.angle {
             } elif f.angle {
                loop j' = 0; func2.group-v[0]; j++ {
-                  type1' = f.farg-v[j].decl.type.ptr();
-                  type2' = func2.farg-v[j].decl.type.ptr();
+                  type1' = f.farg-v[j].decl.type.ptr()
+                  type2' = func2.farg-v[j].decl.type.ptr()
                   if (||, type1.type != type2.type, type1.name.id != type2.name.id) {
-                     same = false;
-                     break;
+                     same = false
+                     break
                   }
                }
             }
             if same {
                'c1.stdout{file-idx '': f.begin-row '': f.begin-col ": Cannot declare function '" name "' because it was already declared at " func2.file '': func2.begin-row '': func2.begin-col "\n"}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
          }
       }
-      at-func-idx' = at.func-c++;
+      at-func-idx' = at.func-c++
       if at.func-cap <= at.func-c {
-         old-cap' = at.func-cap;
-         grow(at.func-cap, at.func-c);
-         realloc(at.func-v, at.func-cap, old-cap);
-         func-v = at.func-v;
+         old-cap' = at.func-cap
+         grow(at.func-cap, at.func-c)
+         realloc(at.func-v, at.func-cap, old-cap)
+         func-v = at.func-v
       }
-      func-v[at-func-idx] = f-idx;
+      func-v[at-func-idx] = f-idx
    }
-   'func.rd(func-main?, r);
+   'func.rd(func-main?, r)
    if func-main != #nil {
-      func-main += f-idx-begin;
+      func-main += f-idx-begin
       if .func-main != #nil {
-         first' = .func-main.ptr();
-         second' = func-main.ptr();
+         first' = .func-main.ptr()
+         second' = func-main.ptr()
          'c1.stdout{"There are more than one function with @main attribute, first is " first.file '': first.begin-row '': first.begin-col " and second is " file-idx '': second.begin-row '': second.begin-col ''\n}
-         'c.exit(#failure);
+         'c.exit(#failure)
       }
-      .func-main = func-main;
+      .func-main = func-main
    }
    loop f-idx' = f-idx-begin; func-c; f-idx++ {
-      f' = .func-v[f-idx];
+      f' = .func-v[f-idx]
       if (f.flags & #has-body) == #0 { continue }
-      size' = r.n4();
-      f.body-file-pos = r.pos - r-begin.pos;
-      r.pos += size;
+      size' = r.n4()
+      f.body-file-pos = r.pos - r-begin.pos
+      r.pos += size
    }
    loop r.n() {
-      'include.rd(path?, r);
-      require2' = r.b();
-      import(path, require2 && require, file-idx);
+      'include.rd(path?, r)
+      require2' = r.b()
+      import(path, require2 && require, file-idx)
    }
-   template-code-idx-begin' = .template-code-c;
-   template-code-c' = 'template-code(r.n());
+   template-code-idx-begin' = .template-code-c
+   template-code-c' = 'template-code(r.n())
    // C1.stdout{"there are " template-code-c:base " template codes\n"}
-   old-template-code-c' = .template-code-c;
-   .template-code-c += template-code-c;
+   old-template-code-c' = .template-code-c
+   .template-code-c += template-code-c
    if .template-code-cap <= .template-code-c {
-      old-cap' = .template-code-cap;
-      .template-code-cap = 'template-code(grow('base(.template-code-c)));
-      realloc(.template-code-v, 'base(.template-code-cap), 'base(old-cap));
+      old-cap' = .template-code-cap
+      .template-code-cap = 'template-code(grow('base(.template-code-c)))
+      realloc(.template-code-v, 'base(.template-code-cap), 'base(old-cap))
    }
    loop i' = template-code-idx-begin; template-code-c; i++ {
-      td' = .template-code-v[i];
-      td.name.rd(r);
-      td.row = r.n();
-      td.line-c = r.n();
-      td.no-cache = r.b();
-      td.js = r.b();
-      td.with-reflection = r.b();
-      td.code-len = r.n();
-      td.code-crc32c = r.n4();
-      td.code = r.p1;
-      r.pos += td.code-len;
-      td.at.rd(r);
-      td.file = file-idx;
+      td' = .template-code-v[i]
+      td.name.rd(r)
+      td.row = r.n()
+      td.line-c = r.n()
+      td.no-cache = r.b()
+      td.js = r.b()
+      td.with-reflection = r.b()
+      td.code-len = r.n()
+      td.code-crc32c = r.n4()
+      td.code = r.p1
+      r.pos += td.code-len
+      td.at.rd(r)
+      td.file = file-idx
       loop j' = 0; old-template-code-c; j++ {
-         td2' = .template-code-v[j];
+         td2' = .template-code-v[j]
          if (td2.name == td.name) && (td2.at == td.at) {
             'c1.stdout{file-idx '': td.row ": Template code '" td.name "' was redeclared. Previously declared at " td2.file '': td2.row ''\n}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
       }
       // C1.stdout{"template " td.name "\n"}
    }
    loop r.n() {
-      ti'template-inst-data. = ?;
-      ti.name.rd(r);
-      ti.row = r.n();
-      ti.col = r.n();
-      ti.arg-len = r.n();
-      ti.arg-crc32c = r.n4();
-      ti.arg = r.char;
-      r.pos += ti.arg-len;
-      ti.at.rd(r);
-      ti.file = file-idx;
-      ti.require = require;
-      template-inst(ti);
+      ti'template-inst-data. = ?
+      ti.name.rd(r)
+      ti.row = r.n()
+      ti.col = r.n()
+      ti.arg-len = r.n()
+      ti.arg-crc32c = r.n4()
+      ti.arg = r.char
+      r.pos += ti.arg-len
+      ti.at.rd(r)
+      ti.file = file-idx
+      ti.require = require
+      template-inst(ti)
    }
 }
-// out:C.File;
-process-first'func;
-process-last'func;
-func-in-process'u8[];
-include-is-outputted'u8[];
-include-outputted-c'i32;
-include-outputted-v'include[];
-cvar-is-outputted'u8[];
-cvar-outputted-c'i32;
-cvar-outputted-v'cvar[];
-gvar-is-outputted'u8[];
-gvar-outputted-c'i32;
-gvar-outputted-v'gvar[];
-enum-is-outputted'u8[];
-enum-outputted-c'i32;
-enum-outputted-v'enum[];
-struct-is-outputted'u8[];
-struct-outputted-c'i32;
-struct-outputted-v'struct[];
-// current-dir:char[1024];
-// current-dir-len:u16;
-include-dir'char[4096];
-include-dir-len'u16;
-define-v'char[][];
-define-len-v'u16[];
-define-c'u16;
-include-path-v'char[][];
-include-path-len-v'u16[];
-include-path-c'u8;
+// out:C.File
+process-first'func
+process-last'func
+func-in-process'u8[]
+include-is-outputted'u8[]
+include-outputted-c'i32
+include-outputted-v'include[]
+cvar-is-outputted'u8[]
+cvar-outputted-c'i32
+cvar-outputted-v'cvar[]
+gvar-is-outputted'u8[]
+gvar-outputted-c'i32
+gvar-outputted-v'gvar[]
+enum-is-outputted'u8[]
+enum-outputted-c'i32
+enum-outputted-v'enum[]
+struct-is-outputted'u8[]
+struct-outputted-c'i32
+struct-outputted-v'struct[]
+// current-dir:char[1024]
+// current-dir-len:u16
+include-dir'char[4096]
+include-dir-len'u16
+define-v'char[][]
+define-len-v'u16[]
+define-c'u16
+include-path-v'char[][]
+include-path-len-v'u16[]
+include-path-c'u8
 
-id-add'id;
-id-sub'id;
-id-mul'id;
-id-div'id;
-id-eq'id;
-id-ne'id;
-id-gt'id;
-id-ge'id;
-id-lt'id;
-id-le'id;
-id-and'id;
-id-or'id;
+id-add'id
+id-sub'id
+id-mul'id
+id-div'id
+id-eq'id
+id-ne'id
+id-gt'id
+id-ge'id
+id-lt'id
+id-le'id
+id-and'id
+id-or'id
 
-debug-func-prefix'char @const[];
-debug-func-prefix-len'u8;
+debug-func-prefix'char @const[]
+debug-func-prefix-len'u8
 
-c-init(crc32c'u32);
-deps-init(path'char @const[]);
-deps-output(path'char @const[]);
-deps-close();
-meta-begin(file'char[], file-len'u8, tc-name'char[], tc-name-len'u8, code-crc32c'u32, arg-crc32c'u32, require'bool, js'bool)'bool;
-quickjs-hex(data'char[], code-crc32c'u32)'u32;
-js-end(js-data'char[], js-data-len'u32, require'bool);
-meta-end(js-data'char[], js-data-len'u32, require'bool);
+c-init(crc32c'u32)
+deps-init(path'char @const[])
+deps-output(path'char @const[])
+deps-close()
+meta-begin(file'char[], file-len'u8, tc-name'char[], tc-name-len'u8, code-crc32c'u32, arg-crc32c'u32, require'bool, js'bool)'bool
+quickjs-hex(data'char[], code-crc32c'u32)'u32
+js-end(js-data'char[], js-data-len'u32, require'bool)
+meta-end(js-data'char[], js-data-len'u32, require'bool)
 include "build-crc32c.c" {
-   build-crc32c()'u32 @no-decl;
+   build-crc32c()'u32 @no-decl
 }
 main(arg-c'cint, arg-v'char[][])'cint @main {
-   "#ifdef _WIN32";
+   "#ifdef _WIN32"
    // Remove .exe from binary path
    if true {
-      arg' = arg-v[0];
-      len' = 'c.strlen(arg);
+      arg' = arg-v[0]
+      len' = 'c.strlen(arg)
       if (arg[len - 4] == ''.) && (arg[len - 3] == ''e) && (arg[len - 2] == ''x) && (arg[len - 1] == ''e) {
-         arg[len - 4] = ''\0;
+         arg[len - 4] = ''\0
       }
    }
    // Convert path separators from '\' to '/'
    loop i' = 0; arg-c; i++ {
-      arg' = arg-v[i];
+      arg' = arg-v[i]
       if arg[0] == ''- { continue }
       loop j' = 0; ; j++ {
          if arg[j] == ''\0 {
-            break;
+            break
          } elif arg[j] == ''\\ {
-            arg[j] = ''/;
+            arg[j] = ''/
          }
       }
    }
-   "#endif";
-   input-file-c' = 'u16(0);
-   input-file-v'char[][];
-   input-file-len-v'u8[];
-   'c.malloc-arr(input-file-v, arg-c * 'ref['usz]);
-   'c.malloc-arr(input-file-len-v, arg-c * 'u8['usz]);
-   'c.malloc-arr(.include-path-v, arg-c * 'ref['usz]);
-   'c.malloc-arr(.include-path-len-v, arg-c * 'u16['usz]);
-   'c.malloc-arr(.define-v, arg-c * 'ref['usz]);
-   'c.malloc-arr(.define-len-v, arg-c * 'u8['usz]);
-   output-file'char[] = null;
-   watermark' = false;
-   process-all' = false;
-   comment-for-func'char[] = null;
-   comment-for-func-len' = 0;
-   keyword-for-gvar'char[] = null;
-   keyword-for-gvar-len' = 0;
-   crc32c' = build-crc32c();
+   "#endif"
+   input-file-c' = 'u16(0)
+   input-file-v'char[][]
+   input-file-len-v'u8[]
+   'c.malloc-arr(input-file-v, arg-c * 'ref['usz])
+   'c.malloc-arr(input-file-len-v, arg-c * 'u8['usz])
+   'c.malloc-arr(.include-path-v, arg-c * 'ref['usz])
+   'c.malloc-arr(.include-path-len-v, arg-c * 'u16['usz])
+   'c.malloc-arr(.define-v, arg-c * 'ref['usz])
+   'c.malloc-arr(.define-len-v, arg-c * 'u8['usz])
+   output-file'char[] = null
+   watermark' = false
+   process-all' = false
+   comment-for-func'char[] = null
+   comment-for-func-len' = 0
+   keyword-for-gvar'char[] = null
+   keyword-for-gvar-len' = 0
+   crc32c' = build-crc32c()
    loop i' = 1; i < arg-c {
-      arg' = arg-v[i++];
+      arg' = arg-v[i++]
       if arg[0] == ''- {
          if arg[2] == ''\0 {
             if arg[1] == ''w {
-               watermark = true;
+               watermark = true
             } elif arg[1] == ''c {
-               output-file = arg-v[i++];
+               output-file = arg-v[i++]
                if output-file == null {
                   'c1.stdout{"The option -c must be followed by a path\n"}
-                  "goto usage;";
+                  "goto usage;"
                }
             } elif arg[1] == ''d {
-               .debug-func-prefix = arg-v[i++];
+               .debug-func-prefix = arg-v[i++]
                if .debug-func-prefix == null {
                   'c1.stdout{"The option -d must be followed by a function name prefix\n"}
-                  "goto usage;";
+                  "goto usage;"
                }
-               .debug-func-prefix-len = 'c.strlen(.debug-func-prefix);
+               .debug-func-prefix-len = 'c.strlen(.debug-func-prefix)
             } elif arg[1] == ''g {
-               path' = arg-v[i++];
+               path' = arg-v[i++]
                if path == null {
                   'c1.stdout{"The option -g must be followed by a file path\n"}
-                  "goto usage;";
+                  "goto usage;"
                }
-               deps-init(path);
+               deps-init(path)
             } elif arg[1] == ''F {
                // For hacking the output C code,
                // to determine the beginning and end of function bodies
-               comment-for-func = arg-v[i++];
+               comment-for-func = arg-v[i++]
                if comment-for-func == null {
                   'c1.stdout{"The option -F must be followed by a comment\n"}
-                  "goto usage;";
+                  "goto usage;"
                }
-               comment-for-func-len = 'c.strlen(comment-for-func);
+               comment-for-func-len = 'c.strlen(comment-for-func)
             } elif arg[1] == ''G {
                // For hacking the output C code,
-               keyword-for-gvar = arg-v[i++];
+               keyword-for-gvar = arg-v[i++]
                if keyword-for-gvar == null {
                   'c1.stdout{"The option -G must be followed by a keyword\n"}
-                  "goto usage;";
+                  "goto usage;"
                }
-               keyword-for-gvar-len = 'c.strlen(keyword-for-gvar);
+               keyword-for-gvar-len = 'c.strlen(keyword-for-gvar)
             } elif arg[1] == ''I {
-               arg = arg-v[i++];
+               arg = arg-v[i++]
                if arg == null {
                   'c1.stdout{"The option -I must be followed by a path\n"}
-                  "goto usage;";
+                  "goto usage;"
                }
-               arg-len' = 'c.strlen(arg);
+               arg-len' = 'c.strlen(arg)
                if arg[arg-len] != ''/ {
-                  arg[arg-len++] = ''/;
+                  arg[arg-len++] = ''/
                }
                // Allocate +256 of memory so we can use
                // include paths as scratch when checking for file existence
-               mem'char[];
-               'c.malloc-arr(mem, arg-len + 256);
-               'c.memcpy(mem, arg, arg-len);
-               .include-path-v[.include-path-c] = mem;
-               .include-path-len-v[.include-path-c] = arg-len;
-               .include-path-c++;
+               mem'char[]
+               'c.malloc-arr(mem, arg-len + 256)
+               'c.memcpy(mem, arg, arg-len)
+               .include-path-v[.include-path-c] = mem
+               .include-path-len-v[.include-path-c] = arg-len
+               .include-path-c++
             } elif arg[1] == ''P {
-               process-all = true;
+               process-all = true
             } else {
-               "invalid_option:;";
+               "invalid_option:;"
                if arg[1] == ''\0 {
                   'c1.stdout{"Invalid option '-'\n"}
                } else {
                   'c1.stdout{"Invalid option '-" arg[1] "'\n"}
                }
-               "goto usage;";
+               "goto usage;"
             }
          } elif arg[1] == ''D {
-            def'char[] = &arg[2];
-            def-len' = 'c.strlen(def);
+            def'char[] = &arg[2]
+            def-len' = 'c.strlen(def)
             if def-len == 0 {
                'c1.stdout{"The option -D must follow the syntax -D[key=value] without space.\n"}
-               "goto usage;";
+               "goto usage;"
             }
-            crc32c = crc32c(crc32c, def, def-len);
-            .define-v[.define-c] = def;
-            .define-len-v[.define-c] = def-len;
-            .define-c++;
+            crc32c = crc32c(crc32c, def, def-len)
+            .define-v[.define-c] = def
+            .define-len-v[.define-c] = def-len
+            .define-c++
          } else {
-            "goto invalid_option;";
+            "goto invalid_option;"
          }
       } else {
-         arg-len' = 'c.strlen(arg);
+         arg-len' = 'c.strlen(arg)
          if arg-len > 255 {
             'c1.stdout{"The path '" arg "' exceeds 255 bytes, please use shorter paths\n"}
-            "goto usage;";
+            "goto usage;"
          }
-         input-file-v[input-file-c] = arg;
-         input-file-len-v[input-file-c] = arg-len;
-         input-file-c++;
+         input-file-v[input-file-c] = arg
+         input-file-len-v[input-file-c] = arg-len
+         input-file-c++
       }
    }
-   bin' = arg-v[0];
-   abs-path' = .include-dir; // :char[512];
-   abs-path-len'u16 = 0;
+   bin' = arg-v[0]
+   abs-path' = .include-dir // :char[512]
+   abs-path-len'u16 = 0
    if bin[0] == ''/ {
-      abs-path-len = 'c.strlen(bin);
-      'c.memcpy(abs-path, bin, abs-path-len);
-      abs-path[abs-path-len] = ''\0;
+      abs-path-len = 'c.strlen(bin)
+      'c.memcpy(abs-path, bin, abs-path-len)
+      abs-path[abs-path-len] = ''\0
    } else {
-      has-slash' = false;
+      has-slash' = false
       loop i' = 0; ; i++ {
-         if bin[i] == ''\0 { break; }
+         if bin[i] == ''\0 { break }
          if bin[i] == ''/ {
-            has-slash = true;
-            break;
+            has-slash = true
+            break
          }
       }
       if has-slash {
-         "#ifdef _WIN32";
-         cwd'char[1024];
-         'x.getcwd(cwd, 1024);
-         'c.strcpy(abs-path, &cwd[2]);
-         i' = 0;
+         "#ifdef _WIN32"
+         cwd'char[1024]
+         'x.getcwd(cwd, 1024)
+         'c.strcpy(abs-path, &cwd[2])
+         i' = 0
          loop ; ; i++ {
             if abs-path[i] == ''\0 {
-               break;
+               break
             } elif abs-path[i] == ''\\ {
-               abs-path[i] = ''/;
+               abs-path[i] = ''/
             }
          }
-         abs-path[i++] = ''/;
-         'c.strcpy(&abs-path[i], bin);
-         "#else";
-         'c.realpath(bin, abs-path);
-         "#endif";
+         abs-path[i++] = ''/
+         'c.strcpy(&abs-path[i], bin)
+         "#else"
+         'c.realpath(bin, abs-path)
+         "#endif"
       } else {
-         path' = 'c.strdup('c.getenv("PATH"));
-         found';
-         "#ifdef _WIN32";
+         path' = 'c.strdup('c.getenv("PATH"))
+         found'
+         "#ifdef _WIN32"
          loop i' = 0; path[i] != ''\0; i++ {
             if path[i] == ''\\ {
-               path[i] = ''/;
+               path[i] = ''/
             }
          }
-         found = 'c.strtok(path, ";");
-         "#else";
-         found = 'c.strtok(path, ":");
-         "#endif";
-         fd' = 'x'fd#nil;
+         found = 'c.strtok(path, ";")
+         "#else"
+         found = 'c.strtok(path, ":")
+         "#endif"
+         fd' = 'x'fd#nil
          loop found != null {
-            'c1.sprintf(abs-path, f?);
-            "#ifdef _WIN32";
+            'c1.sprintf(abs-path, f?)
+            "#ifdef _WIN32"
             f.f{found ''/ bin ".exe"}
-            "#else";
+            "#else"
             f.f{found ''/ bin}
-            "#endif";
-            fd = 'x.open(abs-path, #rdonly);
+            "#endif"
+            fd = 'x.open(abs-path, #rdonly)
             if fd != #nil {
-               fd.close();
-               break;
+               fd.close()
+               break
             }
-            "#ifdef _WIN32";
-            found = 'c.strtok(null, ";");
-            "#else";
-            found = 'c.strtok(null, ":");
-            "#endif";
+            "#ifdef _WIN32"
+            found = 'c.strtok(null, ";")
+            "#else"
+            found = 'c.strtok(null, ":")
+            "#endif"
          }
          if fd == #nil {
             'c1.stdout{"Cannot run " bin " because we can't detect its absolute path\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
-         'c.free(path);
+         'c.free(path)
       }
    }
-   slash1' = 'c.strrchr(abs-path, ''/);
-   slash1[0] = ''\0;
-   slash2' = 'c.strrchr(abs-path, ''/);
-   slash2[0] = ''\0;
-   .include-dir-len = 'c.strlen(.include-dir);
-   c-init(crc32c);
+   slash1' = 'c.strrchr(abs-path, ''/)
+   slash1[0] = ''\0
+   slash2' = 'c.strrchr(abs-path, ''/)
+   slash2[0] = ''\0
+   .include-dir-len = 'c.strlen(.include-dir)
+   c-init(crc32c)
    if (input-file-c == 0) || (output-file == null) {
-      "usage:";
+      "usage:"
       'c1.stdout{
         "Usage: " arg-v[0] " [options] [file.cp1] [file2.cp1...]\n"
       '= options
@@ -940,138 +940,138 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
       '=                that says the output is generated by Cp1
       '=    -P          Process all functions.
       }
-      return 1;
+      return 1
    }
-   deps-output(output-file);
+   deps-output(output-file)
 
    if false {
-      quick-alloc-undo(0);
+      quick-alloc-undo(0)
    }
 
-   .id-map.init();
-   .include-map.init();
-   .at-map.init();
-   quick-alloc-init();
-   .func-main = #nil;
+   .id-map.init()
+   .include-map.init()
+   .at-map.init()
+   quick-alloc-init()
+   .func-main = #nil
 
    loop type' = 'basic-type-id(0); 'basic-type-id#count; type++ {
-      at-idx' = .at-c++;
+      at-idx' = .at-c++
       if .at-cap <= .at-c {
-         old-cap' = .at-cap;
-         .at-cap = 'at(grow('base(.at-c)));
-         realloc(.at-v, 'base(.at-cap), 'base(old-cap));
+         old-cap' = .at-cap
+         .at-cap = 'at(grow('base(.at-c)))
+         realloc(.at-v, 'base(.at-cap), 'base(old-cap))
       }
-      at' = .at-v[at-idx];
-      at.init(#basic, #root, 'id(type));
+      at' = .at-v[at-idx]
+      at.init(#basic, #root, 'id(type))
    }
 
    // if true {
-   //    at-i! = basic-type(#bool);
+   //    at-i! = basic-type(#bool)
    // }
 
-   .import-cap = 32;
-   'c.malloc-arr(.import-v, .import-cap);
-   'c.malloc-arr(.import-file-v, .import-cap);
-   'c.malloc-arr(.import-required-v, (.import-cap + 7) >> 3);
-   .template-inst-cap = 'template-inst(32);
-   'c.malloc-arr(.template-inst-v, 'base(.template-inst-cap));
+   .import-cap = 32
+   'c.malloc-arr(.import-v, .import-cap)
+   'c.malloc-arr(.import-file-v, .import-cap)
+   'c.malloc-arr(.import-required-v, (.import-cap + 7) >> 3)
+   .template-inst-cap = 'template-inst(32)
+   'c.malloc-arr(.template-inst-v, 'base(.template-inst-cap))
 
    loop i' = 0; input-file-c; i++ {
-      inc' = include-add(input-file-len-v[i], input-file-v[i]);
+      inc' = include-add(input-file-len-v[i], input-file-v[i])
       if !inc.validate(err?) {
          'c1.stdbuf{"Command line argument path "}
-         err.print(inc);
-         'c.exit(#failure);
+         err.print(inc)
+         'c.exit(#failure)
       }
-      import(inc, true, #nil);
+      import(inc, true, #nil)
    }
    loop {
-      "import_now:;";
-      new-c' = .import-new-c;
+      "import_now:;"
+      new-c' = .import-new-c
       if new-c == 0 { break }
-      .import-new-c = 0;
+      .import-new-c = 0
       loop i' = .import-c - new-c; new-c; i++ {
-         path' = .import-v[i];
-         read(path.str(), path.len(), false, (.import-required-v[i >> 3] & (1 << (i & 7))) != 0);
+         path' = .import-v[i]
+         read(path.str(), path.len(), false, (.import-required-v[i >> 3] & (1 << (i & 7))) != 0)
       }
    }
 
    if 'base(.template-inst-new-c) != 0 {
       // process template instantiations
       if .jscode-buf-cap == 0 {
-         .jscode-buf-cap = 4096;
-         'c.malloc-arr(.jscode-buf-data, .jscode-buf-cap);
+         .jscode-buf-cap = 4096
+         'c.malloc-arr(.jscode-buf-data, .jscode-buf-cap)
       }
-      new-c' = .template-inst-new-c;
-      .template-inst-new-c = 'template-inst(0);
+      new-c' = .template-inst-new-c
+      .template-inst-new-c = 'template-inst(0)
       loop i' = .template-inst-c - new-c; new-c; i++ {
-         ti' = .template-inst-v[i];
-         at' = ti.at;
-         name' = ti.name;
-         found' = false;
+         ti' = .template-inst-v[i]
+         at' = ti.at
+         name' = ti.name
+         found' = false
          // C1.stdout{"template instantiation of " ti.name "; " ti.arg, ti.arg-len " " ti.arg-len "\n"}
          loop j' = 'template-code(0); .template-code-c; j++ {
-            tc' = .template-code-v[j];
+            tc' = .template-code-v[j]
             if (at == tc.at) && (name == tc.name) {
                if meta-begin(tc.file.path(), tc.file.path-len(), tc.name.str(), tc.name.len(), tc.code-crc32c, ti.arg-crc32c, ti.require, tc.js) {
-                  .jscode-buf-len = 0;
+                  .jscode-buf-len = 0
                   if true {
-                     code' = tc.code;
-                     k' = 0;
-                     line-num' = tc.row;
+                     code' = tc.code
+                     k' = 0
+                     line-num' = tc.row
                      loop tc.line-c {
-                        line-num++;
-                        line-len' = 'u16(code[k] | (code[k + 1] << 8));
-                        k += 2;
+                        line-num++
+                        line-len' = 'u16(code[k] | (code[k + 1] << 8))
+                        k += 2
                         if line-len == 0 {
                         } else {
-                           line'char[] = &code[k];
+                           line'char[] = &code[k]
                            if (line-len & 0x8000) == 0 {
                               if (line-len & 0x4000) == 0 {
                               } else {
-                                 line-len &= 0x3fff;
+                                 line-len &= 0x3fff
                               }
                            } else {
-                              line-len &= 0x7fff;
+                              line-len &= 0x7fff
                               if (line-len & 0x4000) == 0 {
                               } else {
-                                 line-len &= 0x3fff;
+                                 line-len &= 0x3fff
                                  jscode{line, line-len}
                               }
                            }
-                           k += line-len;
+                           k += line-len
                         }
                      }
                   }
                   if tc.js {
                      jscode{
-                     '= let cp1_out = [];
+                     '= let cp1_out = []
                      '= function O(line) {
-                     '=    cp1_out.push(line);
+                     '=    cp1_out.push(line)
                      '= }
-                     '= let cp1_path = scriptArgs[0] + ".cp1";
-                     '= let D = {};
+                     '= let cp1_path = scriptArgs[0] + ".cp1"
+                     '= let D = {}
                      }
-                     "#if INTPTR_MAX == INT64_MAX";
+                     "#if INTPTR_MAX == INT64_MAX"
                      jscode{"D.cpubits = 64;\n"}
-                     "#else";
+                     "#else"
                      jscode{"D.cpubits = 32;\n"}
-                     "#endif";
+                     "#endif"
                      loop k' = 0; .define-c; k++ {
-                        def' = .define-v[k];
-                        deflen' = .define-len-v[k];
-                        eq' = 'c.memchr(def, ''=, deflen);
+                        def' = .define-v[k]
+                        deflen' = .define-len-v[k]
+                        eq' = 'c.memchr(def, ''=, deflen)
                         if eq != null {
-                           r-def'rdr. = ?;
-                           r-def.ref = def;
-                           r-eq'rdr. = ?;
-                           r-eq.ref = eq;
-                           r-val'rdr. = ?;
-                           r-val.ref = eq;
-                           r-val.pos++;
-                           r-end'rdr. = ?;
-                           r-end.ref = def;
-                           r-end.pos += deflen;
+                           r-def'rdr. = ?
+                           r-def.ref = def
+                           r-eq'rdr. = ?
+                           r-eq.ref = eq
+                           r-val'rdr. = ?
+                           r-val.ref = eq
+                           r-val.pos++
+                           r-end'rdr. = ?
+                           r-end.ref = def
+                           r-end.pos += deflen
                            jscode{"D[\"" def, r-eq.pos - r-def.pos "\"] = \"" r-val.char, r-end.pos - r-val.pos "\";\n"}
                         }
                      }
@@ -1080,69 +1080,69 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
                         '= let cp1_refl = {
                         '- "root":
                         }
-                        'at#root.jscode-write();
+                        'at#root.jscode-write()
                         jscode{",\n"}
                         loop at-idx' = 'at(2); .at-c - 'at(2); at-idx++ {
-                           at2' = at-idx.ptr();
+                           at2' = at-idx.ptr()
                            if at2.parent == #relative { continue }
                            jscode{''"}
-                           at-idx.jscode-write-name();
+                           at-idx.jscode-write-name()
                            jscode{'<":>}
-                           at-idx.jscode-write();
+                           at-idx.jscode-write()
                            jscode{",\n"}
                         }
                         jscode{
-                        '= };
+                        '= }
                         '= for (let key in cp1_refl) {
-                        '=    let type = cp1_refl[key];
-                        '=    let types = type.types = {};
+                        '=    let type = cp1_refl[key]
+                        '=    let types = type.types = {}
                         '=    if (key == "root") {
                         '=       for (let type2 of type.typev) {
-                        '=          let child = cp1_refl[type2];
-                        '=          types[type2] = child;
-                        '=          child.parent = key;
+                        '=          let child = cp1_refl[type2]
+                        '=          types[type2] = child
+                        '=          child.parent = key
                         '=       }
                         '=    } else {
                         '=       for (let type2 of type.typev) {
-                        '=          let child = cp1_refl[key + "." + type2];
-                        '=          types[type2] = child;
-                        '=          child.parent = key;
+                        '=          let child = cp1_refl[key + "." + type2]
+                        '=          types[type2] = child
+                        '=          child.parent = key
                         '=       }
                         '=    }
-                        '=    let functions = type.functions = {};
+                        '=    let functions = type.functions = {}
                         '=    for (let func of type.functionv) {
-                        '=       functions[func.name] = func;
+                        '=       functions[func.name] = func
                         '=    }
                         '= }
                         '= function cp1_resolve_type(type, name) {
-                        '=    if (!type.startsWith("..")) return type;
-                        '=    let key = name + type.substr(1);
+                        '=    if (!type.startsWith("..")) return type
+                        '=    let key = name + type.substr(1)
                         '=    if (key in cp1_refl) {
-                        '=       return key;
+                        '=       return key
                         '=    }
-                        '=    let parent = cp1_refl[name].parent;
-                        '=    key = parent + type.substr(1);
+                        '=    let parent = cp1_refl[name].parent
+                        '=    key = parent + type.substr(1)
                         '=    if (key in cp1_refl) {
-                        '=       return key;
+                        '=       return key
                         '=    }
                         '=    while (parent in cp1_refl) {
-                        '=       parent = cp1_refl[parent].parent;
-                        '=       key = parent + type.substr(1);
+                        '=       parent = cp1_refl[parent].parent
+                        '=       key = parent + type.substr(1)
                         '=       if (key in cp1_refl) {
-                        '=          return key;
+                        '=          return key
                         '=       }
                         '=    }
-                        '=    return type;
+                        '=    return type
                         '= }
                         '= for (let key in cp1_refl) {
-                        '=    let type = cp1_refl[key];
+                        '=    let type = cp1_refl[key]
                         '=    for (let func of type.functionv) {
                         '=       for (let argv of func.argvv) {
                         '=          for (let arg of argv) {
-                        '=             arg.type = cp1_resolve_type(arg.type, key);
+                        '=             arg.type = cp1_resolve_type(arg.type, key)
                         '=          }
                         '=       }
-                        '=       func.type = cp1_resolve_type(func.type, key);
+                        '=       func.type = cp1_resolve_type(func.type, key)
                         '=    }
                         '= }
                         }
@@ -1152,97 +1152,97 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
                      }
                      if tc.no-cache {
                         jscode{
-                        '= O("// XXXXXXXX - CRC32C\n");
+                        '= O("// XXXXXXXX - CRC32C\n")
                         }
                      } else {
                         jscode{
-                        '= if ("cp1_no_cache" in arg) O("// XXXXXXXX - CRC32C\n");
+                        '= if ("cp1_no_cache" in arg) O("// XXXXXXXX - CRC32C\n")
                         '- else O("
                         }
-                        .jscode-buf-len += quickjs-hex(&.jscode-buf-data[.jscode-buf-len], tc.code-crc32c);
+                        .jscode-buf-len += quickjs-hex(&.jscode-buf-data[.jscode-buf-len], tc.code-crc32c)
                         jscode{
                           "- 'crc32c\\n\");\n"
                         }
                      }
-                     code' = tc.code;
-                     k' = 0;
-                     line-num' = tc.row;
+                     code' = tc.code
+                     k' = 0
+                     line-num' = tc.row
                      loop tc.line-c {
-                        line-num++;
-                        line-len' = 'u16(code[k] | (code[k + 1] << 8));
-                        k += 2;
+                        line-num++
+                        line-len' = 'u16(code[k] | (code[k + 1] << 8))
+                        k += 2
                         if line-len == 0 {
-                           jscode{'= O("\n");
+                           jscode{'= O("\n")
                            }
                         } else {
-                           line'char[] = &code[k];
+                           line'char[] = &code[k]
                            if (line-len & 0x8000) == 0 {
                               jscode{"O(String.raw`" line, line-len " // line " line-num "\n`);\n"}
                            } else {
-                              line-len &= 0x7fff;
+                              line-len &= 0x7fff
                               jscode{"     " line, line-len}
                            }
-                           k += line-len;
+                           k += line-len
                         }
                      }
                      jscode{
                      '= {
                      }
-                     "#ifdef _WIN32";
+                     "#ifdef _WIN32"
                      jscode{
                        "   let tmp_path = scriptArgs[0] + \".cp1-" 'u32('x.getpid()) "\";\n"
                      }
-                     "#else";
+                     "#else"
                      jscode{
-                     '=    let tmp_path = scriptArgs[0] + ".cp1-" + os.getpid();
+                     '=    let tmp_path = scriptArgs[0] + ".cp1-" + os.getpid()
                      }
-                     "#endif";
+                     "#endif"
                      jscode{
-                     '=    let file = std.open(tmp_path, "wb");
-                     '=    file.puts(cp1_out.join(""));
-                     '=    file.close();
-                     '=    if (os.platform == "win32") os.remove(cp1_path);
-                     '=    os.rename(tmp_path, cp1_path);
+                     '=    let file = std.open(tmp_path, "wb")
+                     '=    file.puts(cp1_out.join(""))
+                     '=    file.close()
+                     '=    if (os.platform == "win32") os.remove(cp1_path)
+                     '=    os.rename(tmp_path, cp1_path)
                      '= }
                      }
-                     js-end(.jscode-buf-data, .jscode-buf-len, ti.require);
+                     js-end(.jscode-buf-data, .jscode-buf-len, ti.require)
                   } else {
                      jscode{
-                     // '= require "LibCp1/codegen.cp1";
-                     '= is-64bit'bool;
-                     '= no-cache'bool;
-                     '= using 'c = 'libc;
-                     '= using 'c1 = 'libcp1;
-                     '= using 'x = 'posix;
-                     '= O(str'char @const[], len'u32) @no-decl;
-                     '= D-is(key'char[], key-len'u8, val'char[], val-len'u8)'bool @no-decl;
-                     '= L() @no-decl;
-                     '= D(key'char[], key-len'u8, val'char[], val-len'u8) @no-decl;
-                     '= R(str'char[], len'u32) @no-decl;
+                     // '= require "LibCp1/codegen.cp1"
+                     '= is-64bit'bool
+                     '= no-cache'bool
+                     '= 'c = 'libc
+                     '= 'c1 = 'libcp1
+                     '= 'x = 'posix
+                     '= O(str'char @const[], len'u32) @no-decl
+                     '= D-is(key'char[], key-len'u8, val'char[], val-len'u8)'bool @no-decl
+                     '= L() @no-decl
+                     '= D(key'char[], key-len'u8, val'char[], val-len'u8) @no-decl
+                     '= R(str'char[], len'u32) @no-decl
                      '= main() {
-                     // '= 'c.printf("arg-v[1]: %s\n", arg-v[1]);
+                     // '= 'c.printf("arg-v[1]: %s\n", arg-v[1])
                      }
-                     "#if INTPTR_MAX == INT64_MAX";
+                     "#if INTPTR_MAX == INT64_MAX"
                      jscode{
-                     '= .is-64bit = true;
+                     '= .is-64bit = true
                      }
-                     "#endif";
+                     "#endif"
                      loop k' = 0; .define-c; k++ {
-                        def' = .define-v[k];
-                        deflen' = .define-len-v[k];
-                        eq' = 'c.memchr(def, ''=, deflen);
+                        def' = .define-v[k]
+                        deflen' = .define-len-v[k]
+                        eq' = 'c.memchr(def, ''=, deflen)
                         if eq != null {
-                           r-def'rdr. = ?;
-                           r-def.ref = def;
-                           r-eq'rdr. = ?;
-                           r-eq.ref = eq;
-                           r-val'rdr. = ?;
-                           r-val.ref = eq;
-                           r-val.pos++;
-                           r-end'rdr. = ?;
-                           r-end.ref = def;
-                           r-end.pos += deflen;
-                           jscode{"D(\"" def, r-eq.pos - r-def.pos "\"#, \"" r-val.char, r-end.pos - r-val.pos "\"#);\n"}
+                           r-def'rdr. = ?
+                           r-def.ref = def
+                           r-eq'rdr. = ?
+                           r-eq.ref = eq
+                           r-val'rdr. = ?
+                           r-val.ref = eq
+                           r-val.pos++
+                           r-end'rdr. = ?
+                           r-end.ref = def
+                           r-end.pos += deflen
+                           jscode{"D(\"" def, r-eq.pos - r-def.pos "\"#, \"" r-val.char, r-end.pos - r-val.pos "\"#)\n"}
                         }
                      }
                      jscode{
@@ -1250,526 +1250,526 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
                      }
                      if tc.no-cache {
                         jscode{
-                        '= O("// XXXXXXXX - CRC32C\n"#);
+                        '= O("// XXXXXXXX - CRC32C\n"#)
                         }
                      } else {
                         jscode{
                         '= if .no-cache { O("// XXXXXXXX - CRC32C\n"#) }
                         '- else { O("
                         }
-                        .jscode-buf-len += quickjs-hex(&.jscode-buf-data[.jscode-buf-len], tc.code-crc32c);
+                        .jscode-buf-len += quickjs-hex(&.jscode-buf-data[.jscode-buf-len], tc.code-crc32c)
                         jscode{
                         '= CRC32C\n"#) }
                         }
                      }
-                     code' = tc.code;
-                     k' = 0;
-                     line-num' = tc.row;
+                     code' = tc.code
+                     k' = 0
+                     line-num' = tc.row
                      loop tc.line-c {
-                        line-num++;
-                        line-len' = 'u16(code[k] | (code[k + 1] << 8));
-                        k += 2;
+                        line-num++
+                        line-len' = 'u16(code[k] | (code[k + 1] << 8))
+                        k += 2
                         if line-len == 0 {
-                           jscode{'= L();
+                           jscode{'= L()
                            }
                         } else {
-                           line'char[] = &code[k];
+                           line'char[] = &code[k]
                            if (line-len & 0x8000) == 0 {
                               if (line-len & 0x4000) == 0 {
                                  jscode{
-                                 "O('= " line, line-len "\n , " line-len + 1 ");\n"}
+                                 "O('= " line, line-len "\n , " line-len + 1 ")\n"}
                               } else {
-                                 line-len &= 0x3fff;
+                                 line-len &= 0x3fff
                                  jscode{
-                                 "R('= " line, line-len " , " line-len ");\n"}
+                                 "R('= " line, line-len " , " line-len ")\n"}
                               }
                            } else {
-                              line-len &= 0x7fff;
+                              line-len &= 0x7fff
                               if (line-len & 0x4000) == 0 {
                                  jscode{"    " line, line-len}
                               } else {
-                                 line-len &= 0x3fff;
+                                 line-len &= 0x3fff
                               }
                            }
-                           k += line-len;
+                           k += line-len
                         }
                      }
                      jscode{
-                     '= return;
+                     '= return
                      '= }
                      }
-                     meta-end(.jscode-buf-data, .jscode-buf-len, ti.require);
+                     meta-end(.jscode-buf-data, .jscode-buf-len, ti.require)
                   }
                }
-               found = true;
-               break;
+               found = true
+               break
             }
          }
          if !found {
             'c1.stdout{ti.file '': ti.row ": Error, cannot instantiate the template '" name "' because its code was not found.\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
       }
-      "goto import_now;";
+      "goto import_now;"
    }
 
    loop f-idx' = 'func(0); .func-c; f-idx++ {
-      f' = f-idx.ptr();
+      f' = f-idx.ptr()
       if f.this-idx != -1 {
-         at' = f.at.ptr();
+         at' = f.at.ptr()
          // C1.stdout{"at(" f.at ").type = #" at.type.cp1-name() ", " at.decl.struct ''\n}
-         // C.out.flush();
+         // C.out.flush()
          if at.type == #struct-enum {
             if at.decl.enumm == #nil {
                'c1.stdout{f.file '': f.begin-row '': f.begin-col ": function using 'this' was declared on " at.name.id " which is not defined\n"}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
             if at.def == #struct {
-               t' = at.decl.structt.ptr();
-               t-method-idx' = t.method-c++;
+               t' = at.decl.structt.ptr()
+               t-method-idx' = t.method-c++
                if t.method-cap <= t.method-c {
-                  old-cap' = t.method-cap;
-                  grow(t.method-cap, t.method-c);
-                  realloc(t.method-v, t.method-cap, old-cap);
+                  old-cap' = t.method-cap
+                  grow(t.method-cap, t.method-c)
+                  realloc(t.method-v, t.method-cap, old-cap)
                }
-               t.method-v[t-method-idx] = f-idx;
+               t.method-v[t-method-idx] = f-idx
             } elif at.def == #enum {
-               t' = at.decl.enumm.ptr();
-               t-method-idx' = t.method-c++;
+               t' = at.decl.enumm.ptr()
+               t-method-idx' = t.method-c++
                if t.method-cap <= t.method-c {
-                  old-cap' = t.method-cap;
-                  grow(t.method-cap, t.method-c);
-                  realloc(t.method-v, t.method-cap, old-cap);
+                  old-cap' = t.method-cap
+                  grow(t.method-cap, t.method-c)
+                  realloc(t.method-v, t.method-cap, old-cap)
                }
-               t.method-v[t-method-idx] = f-idx;
+               t.method-v[t-method-idx] = f-idx
             } else {
                'c1.stdout{f.file '': f.begin-row '': f.begin-col ": function using 'this' was declared on " at.name.id " which is not a struct or enum\n"}
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
          } elif at.type == #basic {
-            t' = .basic-type[at.name.basic];
-            t-method-idx' = t.method-c++;
+            t' = .basic-type[at.name.basic]
+            t-method-idx' = t.method-c++
             if t.method-cap <= t.method-c {
-               old-cap' = t.method-cap;
-               grow(t.method-cap, t.method-c);
-               realloc(t.method-v, t.method-cap, old-cap);
+               old-cap' = t.method-cap
+               grow(t.method-cap, t.method-c)
+               realloc(t.method-v, t.method-cap, old-cap)
             }
-            t.method-v[t-method-idx] = f-idx;
+            t.method-v[t-method-idx] = f-idx
          } else {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": function using 'this' was declared on a type that's not a struct or enum\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
       }
    }
 
    if .func-main != #nil {
-      f' = .func-main.ptr();
-      f.real-name = id-add(4, "main");
-      f.flags |= #real-name;
+      f' = .func-main.ptr()
+      f.real-name = id-add(4, "main")
+      f.flags |= #real-name
    }
 
-   .id-add = id-add(3, "add");
-   .id-sub = id-add(3, "sub");
-   .id-mul = id-add(3, "mul");
-   .id-div = id-add(3, "div");
-   .id-eq = id-add(2, "eq");
-   .id-ne = id-add(2, "ne");
-   .id-gt = id-add(2, "gt");
-   .id-ge = id-add(2, "ge");
-   .id-lt = id-add(2, "lt");
-   .id-le = id-add(2, "le");
-   .id-and = id-add(3, "and");
-   .id-or = id-add(2, "or");
+   .id-add = id-add(3, "add")
+   .id-sub = id-add(3, "sub")
+   .id-mul = id-add(3, "mul")
+   .id-div = id-add(3, "div")
+   .id-eq = id-add(2, "eq")
+   .id-ne = id-add(2, "ne")
+   .id-gt = id-add(2, "gt")
+   .id-ge = id-add(2, "ge")
+   .id-lt = id-add(2, "lt")
+   .id-le = id-add(2, "le")
+   .id-and = id-add(3, "and")
+   .id-or = id-add(2, "or")
 
    if true {
-      func-c8' = ('base(.func-c) + 7) >> 3;
-      quick-alloc-arr(.func-in-process, func-c8);
-      quick-alloc-arr(.func-head-outputted-v, 'base(.func-c));
-      quick-alloc-arr(.func-body-outputted-v, 'base(.func-c));
+      func-c8' = ('base(.func-c) + 7) >> 3
+      quick-alloc-arr(.func-in-process, func-c8)
+      quick-alloc-arr(.func-head-outputted-v, 'base(.func-c))
+      quick-alloc-arr(.func-body-outputted-v, 'base(.func-c))
    }
    if true {
-      include-c8' = (.include-c + 7) >> 3;
-      quick-alloc-arr(.include-is-outputted, include-c8);
-      quick-alloc-arr(.include-outputted-v, .include-c);
+      include-c8' = (.include-c + 7) >> 3
+      quick-alloc-arr(.include-is-outputted, include-c8)
+      quick-alloc-arr(.include-outputted-v, .include-c)
    }
    if true {
-      cvar-c8' = ('base(.cvar-c) + 7) >> 3;
-      quick-alloc-arr(.cvar-is-outputted, cvar-c8);
-      quick-alloc-arr(.cvar-outputted-v, 'base(.cvar-c));
+      cvar-c8' = ('base(.cvar-c) + 7) >> 3
+      quick-alloc-arr(.cvar-is-outputted, cvar-c8)
+      quick-alloc-arr(.cvar-outputted-v, 'base(.cvar-c))
    }
    if true {
-      gvar-c8' = ('base(.gvar-c) + 7) >> 3;
-      quick-alloc-arr(.gvar-is-outputted, gvar-c8);
-      quick-alloc-arr(.gvar-outputted-v, 'base(.gvar-c));
+      gvar-c8' = ('base(.gvar-c) + 7) >> 3
+      quick-alloc-arr(.gvar-is-outputted, gvar-c8)
+      quick-alloc-arr(.gvar-outputted-v, 'base(.gvar-c))
    }
    if true {
-      enum-c8' = ('base(.enum-c) + 7) >> 3;
-      quick-alloc-arr(.enum-is-outputted, enum-c8);
-      quick-alloc-arr(.enum-outputted-v, 'base(.enum-c));
+      enum-c8' = ('base(.enum-c) + 7) >> 3
+      quick-alloc-arr(.enum-is-outputted, enum-c8)
+      quick-alloc-arr(.enum-outputted-v, 'base(.enum-c))
    }
    if true {
-      struct-c8' = ('base(.struct-c) + 7) >> 3;
-      quick-alloc-arr(.struct-is-outputted, struct-c8);
-      quick-alloc-arr(.struct-outputted-v, 'base(.struct-c));
+      struct-c8' = ('base(.struct-c) + 7) >> 3
+      quick-alloc-arr(.struct-is-outputted, struct-c8)
+      quick-alloc-arr(.struct-outputted-v, 'base(.struct-c))
    }
 
    // process the main function
-   .process-first = #nil;
-   .process-last = #nil;
+   .process-first = #nil
+   .process-last = #nil
 
    loop f-idx' = 'func(0); .func-c; f-idx++ {
-      f' = f-idx.ptr();
+      f' = f-idx.ptr()
       if f.overload == #get {
          // C1.stdout{"overload-get\n"}
-         at' = f.at.ptr();
+         at' = f.at.ptr()
          if at.def != #enum {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-get is only applicable to enum types\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if (f.farg-c != 1) || (f.group-c != 1) {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-get must have exactly 1 argument only\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if !f-idx.process-later() { return -1 }
          if f.decl.type != f.at {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-get must have a return type same as the namespace where it was declared\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
-         e' = at.decl.enumm.ptr();
-         // e.flags |= #overload-get;
-         f.list1-prev = e.overload-get-last;
-         e.overload-get-last = f-idx;
+         e' = at.decl.enumm.ptr()
+         // e.flags |= #overload-get
+         f.list1-prev = e.overload-get-last
+         e.overload-get-last = f-idx
       } elif f.overload == #set {
-         at' = f.at.ptr();
+         at' = f.at.ptr()
          if at.def != #enum {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-set is only applicable to enum types\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if f.this-idx == -1 {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-set is only applicable to methods\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if f.this-idx != 0 {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-set must have 'this' as the first argument\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if (f.farg-c != 4) || (f.group-c != 1) {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-set must have exactly 3 arguments only\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if !f-idx.process-later() { return -1 }
          // if f.decl.type != f.at {
          //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-set must have a return type same as the namespace where it was declared\n"}
-         //    C.exit(#failure);
+         //    C.exit(#failure)
          // }
-         e' = at.decl.enumm.ptr();
-         // e.flags |= #overload-set;
-         f.list1-prev = e.overload-set-last;
-         e.overload-set-last = f-idx;
+         e' = at.decl.enumm.ptr()
+         // e.flags |= #overload-set
+         f.list1-prev = e.overload-set-last
+         e.overload-set-last = f-idx
       } elif f.overload == #math {
-         at' = f.at.ptr();
+         at' = f.at.ptr()
          if at.def != #enum {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-math is only applicable to enum types\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if f.this-idx == -1 {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-math is only applicable to methods\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if f.this-idx != 0 {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-math must have 'this' as the first argument\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if (f.farg-c != 3) || (f.group-c != 1) {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-math must have exactly 2 arguments only\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if !f-idx.process-later() { return -1 }
          // if f.decl.type != f.at {
          //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-math must have a return type same as the namespace where it was declared\n"}
-         //    C.exit(#failure);
+         //    C.exit(#failure)
          // }
-         e' = at.decl.enumm.ptr();
-         // e.flags |= #overload-math;
-         f.list1-prev = e.overload-math-last;
-         e.overload-math-last = f-idx;
+         e' = at.decl.enumm.ptr()
+         // e.flags |= #overload-math
+         f.list1-prev = e.overload-math-last
+         e.overload-math-last = f-idx
       } elif f.overload == #bools {
-         at' = f.at.ptr();
+         at' = f.at.ptr()
          if at.def != #enum {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-bools is only applicable to enum types\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if f.this-idx == -1 {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-bools is only applicable to methods\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if f.this-idx != 0 {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-bools must have 'this' as the first argument\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if (f.farg-c != 3) || (f.group-c != 1) {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-bools must have exactly 2 arguments only\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if !f-idx.process-later() { return -1 }
          // if f.decl.type != f.at {
          //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-math must have a return type same as the namespace where it was declared\n"}
-         //    C.exit(#failure);
+         //    C.exit(#failure)
          // }
-         e' = at.decl.enumm.ptr();
-         // e.flags |= #overload-math;
-         f.list1-prev = e.overload-bools-last;
-         e.overload-bools-last = f-idx;
+         e' = at.decl.enumm.ptr()
+         // e.flags |= #overload-math
+         f.list1-prev = e.overload-bools-last
+         e.overload-bools-last = f-idx
       } elif f.overload == #compare {
-         at' = f.at.ptr();
+         at' = f.at.ptr()
          if at.def != #enum {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-compare is only applicable to enum types\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if f.this-idx == -1 {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-compare is only applicable to methods\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if f.this-idx != 0 {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-compare must have 'this' as the first argument\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if (f.farg-c != 3) || (f.group-c != 1) {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-compare must have exactly 2 arguments only\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if !f-idx.process-later() { return -1 }
          // if f.decl.type != f.at {
          //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-compare must have a return type same as the namespace where it was declared\n"}
-         //    C.exit(#failure);
+         //    C.exit(#failure)
          // }
-         e' = at.decl.enumm.ptr();
-         // e.flags |= #overload-compare;
-         f.list1-prev = e.overload-compare-last;
-         e.overload-compare-last = f-idx;
+         e' = at.decl.enumm.ptr()
+         // e.flags |= #overload-compare
+         f.list1-prev = e.overload-compare-last
+         e.overload-compare-last = f-idx
       } elif f.overload == #if-begin {
-         at' = f.at.ptr();
+         at' = f.at.ptr()
          if at.def != #enum {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-begin is only applicable to enum types\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if f.this-idx == -1 {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-begin is only applicable to methods\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if f.this-idx != 0 {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-begin must have 'this' as the first argument\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if (f.farg-c != 2) || (f.group-c != 1) {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-begin must have exactly 1 argument\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if !f-idx.process-later() { return -1 }
          // if f.decl.type != f.at {
          //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-begin must have a return type same as the namespace where it was declared\n"}
-         //    C.exit(#failure);
+         //    C.exit(#failure)
          // }
-         e' = at.decl.enumm.ptr();
-         // e.flags |= #overload-if-begin;
+         e' = at.decl.enumm.ptr()
+         // e.flags |= #overload-if-begin
          if e.overload-if-begin != #nil {
-            f2' = e.overload-if-begin.ptr();
+            f2' = e.overload-if-begin.ptr()
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-if-begin because there's already a function with @overload-if-begin at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
-         e.overload-if-begin = f-idx;
+         e.overload-if-begin = f-idx
       } elif f.overload == #if-else {
-         at' = f.at.ptr();
+         at' = f.at.ptr()
          if at.def != #enum {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-else is only applicable to enum types\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          // if f.this-idx == -1 {
          //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-else is only applicable to methods\n"}
-         //    C.exit(#failure);
+         //    C.exit(#failure)
          // }
          // if f.this-idx != 0 {
          //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-else must have 'this' as the first argument\n"}
-         //    C.exit(#failure);
+         //    C.exit(#failure)
          // }
          if (f.farg-c != 1) || (f.group-c != 1) {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-else must have exactly 1 argument\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if !f-idx.process-later() { return -1 }
          // if f.decl.type != f.at {
          //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-else must have a return type same as the namespace where it was declared\n"}
-         //    C.exit(#failure);
+         //    C.exit(#failure)
          // }
-         e' = at.decl.enumm.ptr();
-         // e.flags |= #overload-if-else;
+         e' = at.decl.enumm.ptr()
+         // e.flags |= #overload-if-else
          if e.overload-if-else != #nil {
-            f2' = e.overload-if-else.ptr();
+            f2' = e.overload-if-else.ptr()
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-if-else because there's already a function with @overload-if-else at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
-         e.overload-if-else = f-idx;
+         e.overload-if-else = f-idx
       } elif f.overload == #if-end {
-         at' = f.at.ptr();
+         at' = f.at.ptr()
          if at.def != #enum {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-end is only applicable to enum types\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          // if f.this-idx == -1 {
          //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-if-end is only applicable to methods\n"}
-         //    C.exit(#failure);
+         //    C.exit(#failure)
          // }
          // if f.this-idx != 0 {
          //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-end must have 'this' as the first argument\n"}
-         //    C.exit(#failure);
+         //    C.exit(#failure)
          // }
          if (f.farg-c != 0) || (f.group-c != 1) {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-end must have no arguments\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if !f-idx.process-later() { return -1 }
          // if f.decl.type != f.at {
          //    C1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-if-end must have a return type same as the namespace where it was declared\n"}
-         //    C.exit(#failure);
+         //    C.exit(#failure)
          // }
-         e' = at.decl.enumm.ptr();
-         // e.flags |= #overload-if-end;
+         e' = at.decl.enumm.ptr()
+         // e.flags |= #overload-if-end
          if e.overload-if-end != #nil {
-            f2' = e.overload-if-end.ptr();
+            f2' = e.overload-if-end.ptr()
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-if-end because there's already a function with @overload-if-end at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
-         e.overload-if-end = f-idx;
+         e.overload-if-end = f-idx
       } elif f.overload == #statement {
-         at' = f.at.ptr();
+         at' = f.at.ptr()
          if at.def != #enum {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-statement is only applicable to enum types\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if f.this-idx == -1 {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": @overload-statement is only applicable to methods\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if (f.farg-c != 1) || (f.group-c != 1) {
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": functions with @overload-statement must have no arguments\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
          if !f-idx.process-later() { return -1 }
-         e' = at.decl.enumm.ptr();
+         e' = at.decl.enumm.ptr()
          if e.overload-statement != #nil {
-            f2' = e.overload-statement.ptr();
+            f2' = e.overload-statement.ptr()
             'c1.stdout{f.file '': f.begin-row '': f.begin-col ": cannot activate @overload-statement because there's already a function with @overload-statement at " f2.file '': f2.begin-row '': f2.begin-col "\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
-         e.overload-statement = f-idx;
+         e.overload-statement = f-idx
       }
    }
    if process-all {
       loop f-i' = 'func(0); .func-c; f-i++ {
-         f' = f-i.ptr();
+         f' = f-i.ptr()
          if !f-i.process-later() {
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
       }
    } else {
       if .func-main != #nil {
          if !.func-main.process-later() {
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
       }
 
       loop f-i' = 'func(0); .func-c; f-i++ {
-         f' = f-i.ptr();
+         f' = f-i.ptr()
          if (f.flags & #process) != #0 {
             if !f-i.process-later() {
-               'c.exit(#failure);
+               'c.exit(#failure)
             }
          }
       }
    }
 
    loop .process-first != #nil {
-      f-i' = .process-first;
-      .process-first = #nil;
-      .process-last = #nil;
+      f-i' = .process-first
+      .process-first = #nil
+      .process-last = #nil
       loop {
          if !f-i.process-now() { return -1 }
-         f' = f-i.ptr();
-         f-i = f.process-next; 
+         f' = f-i.ptr()
+         f-i = f.process-next
          if f-i == #nil { break }
       }
    }
 
    loop i' = 0; .func-head-outputted-c; i++ {
-      f-idx' = .func-head-outputted-v[i];
-      f' = f-idx.ptr();
+      f-idx' = .func-head-outputted-v[i]
+      f' = f-idx.ptr()
       if (f.flags & #no-decl) != #0 { continue }
       if (f.flags & #decl) != #0 {
-         continue;
+         continue
       }
-      .ctx-func = f;
+      .ctx-func = f
       loop l' = 'lvar(0); f.lvar-c; l++ {
          if !l.process() {
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
       }
    }
 
    // C1.stdout{"finished processing, writing...\n"}
-   // .out = C.fopen(arg-v[arg-c - 1], "wb");
-   .output-cap = 4096;
-   'c.malloc-arr(.output-data, .output-cap);
+   // .out = C.fopen(arg-v[arg-c - 1], "wb")
+   .output-cap = 4096
+   'c.malloc-arr(.output-data, .output-cap)
    if watermark {
       output{"// Generated by Cp1\n"}
    }
    loop i' = 0; .cvar-outputted-c; i++ {
-      c-i' = .cvar-outputted-v[i];
-      c' = c-i.ptr();
+      c-i' = .cvar-outputted-v[i]
+      c' = c-i.ptr()
       if c.include != #nil {
-         c.include.output();
+         c.include.output()
       }
    }
    loop i' = 0; .enum-outputted-c; i++ {
-      e-i' = .enum-outputted-v[i];
-      e' = e-i.ptr();
+      e-i' = .enum-outputted-v[i]
+      e' = e-i.ptr()
       if e.include != #nil {
-         e.include.output();
+         e.include.output()
       }
    }
    loop i' = 0; .struct-outputted-c; i++ {
-      s-i' = .struct-outputted-v[i];
-      s' = s-i.ptr();
+      s-i' = .struct-outputted-v[i]
+      s' = s-i.ptr()
       if s.include != #nil {
-         s.include.output();
+         s.include.output()
       }
    }
    loop i' = 0; .gvar-outputted-c; i++ {
-      g-i' = .gvar-outputted-v[i];
-      g' = g-i.ptr();
+      g-i' = .gvar-outputted-v[i]
+      g' = g-i.ptr()
       if g.include != #nil {
-         g.include.output();
+         g.include.output()
       }
    }
    loop i' = 0; .func-head-outputted-c; i++ {
-      f-idx' = .func-head-outputted-v[i];
-      f' = f-idx.ptr();
-      row' = f.begin-row;
-      col' = f.begin-col;
+      f-idx' = .func-head-outputted-v[i]
+      f' = f-idx.ptr()
+      row' = f.begin-row
+      col' = f.begin-col
       if f.decl.type != #nil {
-         f.decl.type.output(f.file, row, col);
+         f.decl.type.output(f.file, row, col)
       }
       loop j' = 0; f.farg-c; j++ {
-         f.farg-v[j].decl.type.output(f.file, row, col);
+         f.farg-v[j].decl.type.output(f.file, row, col)
       }
       if f.include != #nil {
-         f.include.output();
+         f.include.output()
       }
       if (f.flags & #cp1-name) != #0 {
-         at' = f.at.ptr();
+         at' = f.at.ptr()
          loop j' = 0, v' = at.cvar-v; at.cvar-c; j++ {
-            cvar' = v[j];
+            cvar' = v[j]
             if (cvar.ptr().flags & #as-enum) != #0 {
-               cvar.process();
+               cvar.process()
             }
          }
       }
@@ -1784,33 +1784,33 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
       output{"#include <stddef.h>\n"}
    // }
    loop i' = 0; .include-outputted-c; i++ {
-      inc' = .include-outputted-v[i];
+      inc' = .include-outputted-v[i]
       if inc.str()[0] == ''[ {
-         str'char[] = &inc.str()[1];
+         str'char[] = &inc.str()[1]
          output{str, inc.len() - 2}
       } else {
          output{"#include " inc ''\n}
       }
    }
    loop i' = 0; .cvar-outputted-c; i++ {
-      c-i' = .cvar-outputted-v[i];
-      c' = c-i.ptr();
+      c-i' = .cvar-outputted-v[i]
+      c' = c-i.ptr()
       if (c.decl.flags & #no-decl) != #0 {
-         continue;
+         continue
       }
       output{"#define "}
-      c-i.write();
+      c-i.write()
       output{'' }
       if (c.flags & #set-expr) != #0 {
          output{''(}
-         c.expr-set.write();
+         c.expr-set.write()
          output{'')}
       } elif c.last-cvar != #nil {
          if (c.last-cvar.ptr().flags & #dont-count) != #0 {
-            c.last-cvar.write();
+            c.last-cvar.write()
          } else {
             output{"("}
-            c.last-cvar.write();
+            c.last-cvar.write()
             output{" + 1)"}
          }
       } else {
@@ -1819,39 +1819,39 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
       output{''\n}
    }
    loop i' = 0; .enum-outputted-c; i++ {
-      e-i' = .enum-outputted-v[i];
-      e' = e-i.ptr();
+      e-i' = .enum-outputted-v[i]
+      e' = e-i.ptr()
       if (e.flags & #no-decl) != #0 {
-         continue;
+         continue
       }
       output{"typedef "}
-      e.base-type.write();
+      e.base-type.write()
       output{'' }
-      e.at.write();
+      e.at.write()
       output{";\n"}
    }
    loop i' = 0; .struct-outputted-c; i++ {
-      s-i' = .struct-outputted-v[i];
-      s' = s-i.ptr();
+      s-i' = .struct-outputted-v[i]
+      s' = s-i.ptr()
       if (s.flags & #union) != #0 {
          output{"union "}
       } else {
          output{"struct "}
       }
-      s.at.write-space();
+      s.at.write-space()
       if (s.flags & #union) != #0 {
          output{";\nunion "}
       } else {
          output{";\nstruct "}
       }
-      s.at.write-space();
+      s.at.write-space()
       if s.fvar-c == 0 {
          output{" {\nchar unused;\n}"}
       } else {
          output{" {\n"}
          loop j' = 0; s.fvar-c; j++ {
-            fvar' = s.fvar-v[j];
-            fvar.decl.write-type-fvar();
+            fvar' = s.fvar-v[j]
+            fvar.decl.write-type-fvar()
             output{";\n"}
          }
          output{"}"}
@@ -1862,8 +1862,8 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
       output{";\n"}
    }
    loop i' = 0; .gvar-outputted-c; i++ {
-      g-i' = .gvar-outputted-v[i];
-      g' = g-i.ptr();
+      g-i' = .gvar-outputted-v[i]
+      g' = g-i.ptr()
       if (g.decl.flags & #no-decl) != #0 { continue }
       if keyword-for-gvar != null {
          output{keyword-for-gvar, keyword-for-gvar-len '' }
@@ -1871,17 +1871,17 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
       if (g.decl.flags & #extern) != #0 {
          output{"extern "}
       }
-      g.decl.write-type-gvar(g.at);
+      g.decl.write-type-gvar(g.at)
       output{";\n"}
    }
    loop i' = 0; .func-head-outputted-c; i++ {
-      f-idx' = .func-head-outputted-v[i];
-      f' = f-idx.ptr();
+      f-idx' = .func-head-outputted-v[i]
+      f' = f-idx.ptr()
       if (f.flags & #no-decl) != #0 { continue }
       if (f.flags & #decl) != #0 {
          if (&&, f.decl-str[0] == ''#, f.decl-str[1] == '' ) {
             output{"#define "}
-            f.write();
+            f.write()
             output{''(}
             loop j' = 0; f.farg-c; j++ {
                if j != 0 {
@@ -1890,27 +1890,27 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
                output{f.farg-v[j].decl.name}
             }
             output{") "}
-            r'rdr. = ?;
-            r.ref = f.decl-str;
-            r.pos += 2;
+            r'rdr. = ?
+            r.ref = f.decl-str
+            r.pos += 2
             output{r.char, f.decl-len - 2}
          } else {
             output{f.decl-str, f.decl-len}
          }
          output{''\n}
-         continue;
+         continue
       }
-      .ctx-func = f;
+      .ctx-func = f
       if (f.flags & #inline) != #0 {
          output{"static inline "}
       }
       if f.decl.type == #nil {
          output{"void"}
       } else {
-         f.decl.type.write-type-info(f.decl.type-info, 0);
+         f.decl.type.write-type-info(f.decl.type-info, 0)
       }
       output{'' }
-      f.write();
+      f.write()
       output{''(}
       // if .func-main == f-idx {
       //    output{" main("}
@@ -1921,7 +1921,7 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
          if j != 0 {
             output{", "}
          }
-         f.farg-v[j].decl.write-lvar-type('lvar(j));
+         f.farg-v[j].decl.write-lvar-type('lvar(j))
       }
       if (f.flags & #cp1-name) != #0 {
          if comment-for-func != null {
@@ -1929,14 +1929,14 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
          } else {
             output{") {\nswitch(_Le_0) {\n"}
          }
-         at' = f.at.ptr();
+         at' = f.at.ptr()
          loop j' = 0, v' = at.cvar-v; at.cvar-c; j++ {
-            cvar-i' = v[j];
-            cvar' = cvar-i.ptr();
+            cvar-i' = v[j]
+            cvar' = cvar-i.ptr()
             if (cvar.flags & #as-enum) == #0 { continue }
             if (cvar.flags & #no-name) != #0 { continue }
             output{"case "}
-            cvar-i.write();
+            cvar-i.write()
             output{": return \"" cvar.decl.name "\";\n"}
          }
          if comment-for-func != null {
@@ -1949,20 +1949,20 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
       }
    }
    loop i' = 0; .func-body-outputted-c; i++ {
-      f-idx' = .func-body-outputted-v[i];
-      f' = f-idx.ptr();
-      .ctx-func = f;
-      .nest-id = 0;
+      f-idx' = .func-body-outputted-v[i]
+      f' = f-idx.ptr()
+      .ctx-func = f
+      .nest-id = 0
       if (f.flags & #inline) != #0 {
          output{"static inline "}
       }
       if f.decl.type == #nil {
          output{"void"}
       } else {
-         f.decl.type.write-type-info(f.decl.type-info, 0);
+         f.decl.type.write-type-info(f.decl.type-info, 0)
       }
       output{'' }
-      f.write();
+      f.write()
       output{''(}
       // if .func-main == f-idx {
       //    output{" main("}
@@ -1973,7 +1973,7 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
          if j != 0 {
             output{", "}
          }
-         f.farg-v[j].decl.write-lvar-type('lvar(j));
+         f.farg-v[j].decl.write-lvar-type('lvar(j))
       }
       if comment-for-func != null {
          output{") { // " comment-for-func, comment-for-func-len ''\n}
@@ -1981,13 +1981,13 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
          output{") {\n"}
       }
       if .debug-func-prefix != null {
-         file' = f.file;
-         file-path' = file.path();
-         file-path-len' = file.path-len();
-         row' = f.begin-row;
+         file' = f.file
+         file-path' = file.path()
+         file-path-len' = file.path-len()
+         row' = f.begin-row
          output{.debug-func-prefix "_begin(\"" file-path, file-path-len "\", " row ");\n"}
       }
-      f.stmt-space.write();
+      f.stmt-space.write()
       if .debug-func-prefix != null {
          output{.debug-func-prefix "_end();\n"}
       }
@@ -1997,194 +1997,194 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
          output{"}\n"}
       }
    }
-   // .out = C.fopen(arg-v[arg-c - 1], "wb");
-   write-file(output-file, .output-data, .output-len);
-   deps-close();
-   return 0;
+   // .out = C.fopen(arg-v[arg-c - 1], "wb")
+   write-file(output-file, .output-data, .output-len)
+   deps-close()
+   return 0
 }
 using 'func {
    in-process(f-idx'this)'bool {
-      num' = 'u32(f-idx);
-      n3' = num >> 3;
-      n17' = 1 << (num & 7);
-      return (.func-in-process[n3] & n17) != 0;
+      num' = 'u32(f-idx)
+      n3' = num >> 3
+      n17' = 1 << (num & 7)
+      return (.func-in-process[n3] & n17) != 0
    }
    process-later(f-idx'this)'bool {
-      num' = 'u32(f-idx);
-      n3' = num >> 3;
-      n17' = 1 << (num & 7);
+      num' = 'u32(f-idx)
+      n3' = num >> 3
+      n17' = 1 << (num & 7)
       if (.func-in-process[n3] & n17) != 0 { return true }
-      .func-in-process[n3] |= n17;
-      f' = f-idx.ptr();
-      old-ctx-func' = .ctx-func;
-      .ctx-func = f;
-      f-at' = f.at;
-      f-file' = f.file;
-      f-row' = f.begin-row;
-      f-col' = f.begin-col;
+      .func-in-process[n3] |= n17
+      f' = f-idx.ptr()
+      old-ctx-func' = .ctx-func
+      .ctx-func = f
+      f-at' = f.at
+      f-file' = f.file
+      f-row' = f.begin-row
+      f-col' = f.begin-col
       loop j' = 0; f.farg-c; j++ {
          if !f.farg-v[j].decl.process(f-file, f.farg-v[j].row, f.farg-v[j].col, f-at) {
-            return false;
+            return false
          }
       }
       if f.decl.type != #nil {
-         f.decl.type = at-validate(f.decl.type, f-at, f-file, f-row, f-col);
+         f.decl.type = at-validate(f.decl.type, f-at, f-file, f-row, f-col)
          if f.decl.type == #nil {
-            return false;
+            return false
          }
-         at' = f.decl.type.ptr();
+         at' = f.decl.type.ptr()
          if (&&, at.type != #basic, at.decl.structt == #nil) {
             'c1.stdout{f-file '': f-row '': f-col ": Error, the type '" at.name.id "' used as return type for function '" f.decl.name "' was not defined\n"}
-            'c.exit(#failure);
+            'c.exit(#failure)
          }
-         f.decl.type.finalize(f.decl.type-info, f-row, f-col);
+         f.decl.type.finalize(f.decl.type-info, f-row, f-col)
       }
-      .func-head-outputted-v[.func-head-outputted-c++] = f-idx;
+      .func-head-outputted-v[.func-head-outputted-c++] = f-idx
       if (f.flags & #has-body) != #0 {
-         f.process-next = #nil;
+         f.process-next = #nil
          if .process-first == #nil {
-            .process-first = f-idx;
-            .process-last = f-idx;
+            .process-first = f-idx
+            .process-last = f-idx
          } else {
-            f-last' = .process-last.ptr();
-            f-last.process-next = f-idx;
-            .process-last = f-idx;
+            f-last' = .process-last.ptr()
+            f-last.process-next = f-idx
+            .process-last = f-idx
          }
       }
       if (f.flags & #meta-method) != #0 {
-         prefix' = f.meta-method-prefix1;
-         prefix-str' = prefix.str();
-         prefix-len' = prefix.len();
-         end' = f.meta-method-end1;
-         end-str' = end.str();
-         end-len' = end.len();
-         name'char[];
-         'c.malloc-arr(name, prefix-len + 1 + 3 + 1);
-         'c.memcpy(name, prefix-str, prefix-len);
-         name[prefix-len] = ''-;
-         'c.memcpy(&name[prefix-len + 1], "arr", 3 + 1);
+         prefix' = f.meta-method-prefix1
+         prefix-str' = prefix.str()
+         prefix-len' = prefix.len()
+         end' = f.meta-method-end1
+         end-str' = end.str()
+         end-len' = end.len()
+         name'char[]
+         'c.malloc-arr(name, prefix-len + 1 + 3 + 1)
+         'c.memcpy(name, prefix-str, prefix-len)
+         name[prefix-len] = ''-
+         'c.memcpy(&name[prefix-len + 1], "arr", 3 + 1)
          // C1.stdout{''\' name "'\n"}
-         f.meta-method-arr1 = id-add(prefix-len + 1 + 3, name);
-         'c.malloc-arr(name, prefix-len + 1 + 4 + 1);
-         'c.memcpy(name, prefix-str, prefix-len);
-         name[prefix-len] = ''-;
-         'c.memcpy(&name[prefix-len + 1], "cstr", 4 + 1);
+         f.meta-method-arr1 = id-add(prefix-len + 1 + 3, name)
+         'c.malloc-arr(name, prefix-len + 1 + 4 + 1)
+         'c.memcpy(name, prefix-str, prefix-len)
+         name[prefix-len] = ''-
+         'c.memcpy(&name[prefix-len + 1], "cstr", 4 + 1)
          // C1.stdout{''\' name "'\n"}
-         f.meta-method-cstr1 = id-add(prefix-len + 1 + 4, name);
-         'c.malloc-arr(name, prefix-len + 1 + end-len + 1);
-         'c.memcpy(name, prefix-str, prefix-len);
-         name[prefix-len] = ''-;
-         'c.memcpy(&name[prefix-len + 1], end-str, end-len + 1);
-         f.meta-method-end1 = id-add(prefix-len + 1 + end-len, name);
-         prefix = f.meta-method-prefix2;
+         f.meta-method-cstr1 = id-add(prefix-len + 1 + 4, name)
+         'c.malloc-arr(name, prefix-len + 1 + end-len + 1)
+         'c.memcpy(name, prefix-str, prefix-len)
+         name[prefix-len] = ''-
+         'c.memcpy(&name[prefix-len + 1], end-str, end-len + 1)
+         f.meta-method-end1 = id-add(prefix-len + 1 + end-len, name)
+         prefix = f.meta-method-prefix2
          if prefix != #nil {
-            prefix-str = prefix.str();
-            prefix-len = prefix.len();
-            'c.malloc-arr(name, prefix-len + 1 + 3 + 1);
-            'c.memcpy(name, prefix-str, prefix-len);
-            name[prefix-len] = ''-;
-            'c.memcpy(&name[prefix-len + 1], "arr", 3 + 1);
+            prefix-str = prefix.str()
+            prefix-len = prefix.len()
+            'c.malloc-arr(name, prefix-len + 1 + 3 + 1)
+            'c.memcpy(name, prefix-str, prefix-len)
+            name[prefix-len] = ''-
+            'c.memcpy(&name[prefix-len + 1], "arr", 3 + 1)
             // C1.stdout{''\' name "'\n"}
-            f.meta-method-arr2 = id-add(prefix-len + 1 + 3, name);
-            'c.malloc-arr(name, prefix-len + 1 + 4 + 1);
-            'c.memcpy(name, prefix-str, prefix-len);
-            name[prefix-len] = ''-;
-            'c.memcpy(&name[prefix-len + 1], "cstr", 4 + 1);
+            f.meta-method-arr2 = id-add(prefix-len + 1 + 3, name)
+            'c.malloc-arr(name, prefix-len + 1 + 4 + 1)
+            'c.memcpy(name, prefix-str, prefix-len)
+            name[prefix-len] = ''-
+            'c.memcpy(&name[prefix-len + 1], "cstr", 4 + 1)
             // C1.stdout{''\' name "'\n"}
-            f.meta-method-cstr2 = id-add(prefix-len + 1 + 4, name);
-            'c.malloc-arr(name, prefix-len + 1 + end-len + 1);
-            'c.memcpy(name, prefix-str, prefix-len);
-            name[prefix-len] = ''-;
-            'c.memcpy(&name[prefix-len + 1], end-str, end-len + 1);
-            f.meta-method-end2 = id-add(prefix-len + 1 + end-len, name);
+            f.meta-method-cstr2 = id-add(prefix-len + 1 + 4, name)
+            'c.malloc-arr(name, prefix-len + 1 + end-len + 1)
+            'c.memcpy(name, prefix-str, prefix-len)
+            name[prefix-len] = ''-
+            'c.memcpy(&name[prefix-len + 1], end-str, end-len + 1)
+            f.meta-method-end2 = id-add(prefix-len + 1 + end-len, name)
          }
       }
-      .ctx-func = old-ctx-func;
-      return true;
+      .ctx-func = old-ctx-func
+      return true
    }
    process-now(f-idx'this)'bool {
-      f' = f-idx.ptr();
-      .ctx-func = f;
+      f' = f-idx.ptr()
+      .ctx-func = f
       // C1.stdout{"func :" f.decl.name ''\n}
 
-      // f.lvar-c = #0;
-      // grow(f.lvar-cap, f.farg-c);
-      // malloc(f.lvar-v, f.farg-c);
+      // f.lvar-c = #0
+      // grow(f.lvar-cap, f.farg-c)
+      // malloc(f.lvar-v, f.farg-c)
       // loop i' = 0; f.farg-c; i ++ {
-      //    farg! = f.farg-v[i];
-      //    f.lvar-v[i].row = f.begin-row;
-      //    f.lvar-v[i].col = f.begin-col;
-      //    f.lvar-v[i].decl.copy-from(farg.decl);
-      //    f.lvar-v[i].flags = #0;
+      //    farg! = f.farg-v[i]
+      //    f.lvar-v[i].row = f.begin-row
+      //    f.lvar-v[i].col = f.begin-col
+      //    f.lvar-v[i].decl.copy-from(farg.decl)
+      //    f.lvar-v[i].flags = #0
       //    // C1.stdout{f.begin-row '': f.begin-col ": lvar '" f.lvar-v[i].decl.name "' has a type of " f.lvar-v[i].decl.type ''\n}
       // }
-      // f.lvar-c = f.farg-c:Lvar;
-      r'rdr.;
-      file' = f.file.ptr();
-      r.ref = file.data;
-      .id-table = file.id-table;
-      .at-table = file.at-table;
-      .cvar-table = file.cvar-table;
-      r.pos += f.body-file-pos;
-      // stmt-c! = r.n();
+      // f.lvar-c = f.farg-c:Lvar
+      r'rdr.
+      file' = f.file.ptr()
+      r.ref = file.data
+      .id-table = file.id-table
+      .at-table = file.at-table
+      .cvar-table = file.cvar-table
+      r.pos += f.body-file-pos
+      // stmt-c! = r.n()
       // C1.stdout{"  function has " stmt-c " statements\n"}
-      // f.stmt-c = 0;
-      // f.stmt-cap = 0;
-      // f.stmt-v = null;
+      // f.stmt-c = 0
+      // f.stmt-cap = 0
+      // f.stmt-v = null
       // if true {
       //    // add a stmt lvars
-      //    quick-alloc-one(+(s:StmtSpace));
-      //    s.lvar-c = 0;
-      //    grow(s.lvar-cap, s.lvar-c);
-      //    malloc(s.lvar-v, s.lvar-cap);
-      //    f.stmt-push(s.base, f.begin-row, f.begin-col, f.begin-row, f.begin-col, #space);
+      //    quick-alloc-one(+(s:StmtSpace))
+      //    s.lvar-c = 0
+      //    grow(s.lvar-cap, s.lvar-c)
+      //    malloc(s.lvar-v, s.lvar-cap)
+      //    f.stmt-push(s.base, f.begin-row, f.begin-col, f.begin-row, f.begin-col, #space)
       // }
-      f.lvars-rd(r);
-      f.stmt-space.rd(r, null);
-      s' = f.stmt-space.stmt-first;
+      f.lvars-rd(r)
+      f.stmt-space.rd(r, null)
+      s' = f.stmt-space.stmt-first
       loop s != null {
-         .ctx-begin-row = s.begin-row;
-         .ctx-begin-col = s.begin-col;
-         .ctx-end-row = s.end-row;
-         .ctx-end-col = s.end-col;
+         .ctx-begin-row = s.begin-row
+         .ctx-begin-col = s.begin-col
+         .ctx-end-row = s.end-row
+         .ctx-end-col = s.end-col
          // C1.stdout{f.decl.name ''  s.begin-row '': s.begin-col " - " s.end-row '': s.end-col ''\n}
          if !s.process() {
-            return false;
+            return false
          }
-         s = s.stmt-next;
+         s = s.stmt-next
       }
       // loop i' = 0; f.stmt-c; i ++ {
-      //    s! = f.stmt-v[i];
-      //    .ctx-begin-row = s.begin-row;
-      //    .ctx-begin-col = s.begin-col;
-      //    .ctx-end-row = s.end-row;
-      //    .ctx-end-col = s.end-col;
+      //    s! = f.stmt-v[i]
+      //    .ctx-begin-row = s.begin-row
+      //    .ctx-begin-col = s.begin-col
+      //    .ctx-end-row = s.end-row
+      //    .ctx-end-col = s.end-col
       //    if !s.process(f-idx) {
-      //       return false;
+      //       return false
       //    }
       // }
 
       if (f.flags & #no-body) == #0 {
-         .func-body-outputted-v[.func-body-outputted-c++] = f-idx;
+         .func-body-outputted-v[.func-body-outputted-c++] = f-idx
       }
-      return true;
+      return true
    }
    is-set(f-idx'this, v'u8[])'bool @inline {
-      return (v[f-idx >> 3] & (1 << (f-idx & 7))) != 0;
+      return (v[f-idx >> 3] & (1 << (f-idx & 7))) != 0
    }
    set(f-idx'this, v'u8[]) @inline {
-      v[f-idx >> 3] |= 1 << (f-idx & 7);
+      v[f-idx >> 3] |= 1 << (f-idx & 7)
    }
 }
 }
 using 'libcp1 {
    using 'fmt {
       f-reserve<id'cp1'file>(fmt'this, f'f-cstr) @inline {
-         ptr' = id.ptr();
-         fmt.f-reserve-cstr(ptr.path, ptr.path-len, f);
+         ptr' = id.ptr()
+         fmt.f-reserve-cstr(ptr.path, ptr.path-len, f)
       }
       // jscode(f'this, jc'js-code) {
-      //    jscode-cstr(f.ptr().path);
+      //    jscode-cstr(f.ptr().path)
       // }
    }
 }

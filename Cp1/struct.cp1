@@ -1,43 +1,43 @@
-using 'c = 'libc;
-using 'c1 = 'libcp1;
+'c = 'libc
+'c1 = 'libcp1
 using 'cp1 {
 enum 'struct[#nil = -1, #0, #1]'i32 {
    wr(s'this, w'wtr) @inline {
-      w.n(s + #1);
+      w.n(s + #1)
    }
    rd(s'this&, r'rdr) @inline {
-      s = 'struct(r.n() - 1);
+      s = 'struct(r.n() - 1)
    }
    ptr(s'this)'struct-data @inline {
-      return .struct-v[s];
+      return .struct-v[s]
    }
    output(s-i'this) {
-      num' = 'u32(s-i);
-      n3' = num >> 3;
-      n17' = 1 << (num & 7);
+      num' = 'u32(s-i)
+      n3' = num >> 3
+      n17' = 1 << (num & 7)
       if (.struct-is-outputted[n3] & n17) != 0 { return }
-      .struct-is-outputted[n3] |= n17;
-      s' = s-i.ptr();
-      s-at' = s.at;
-      s-file' = s.file;
-      s-row' = s.begin-row;
-      s-col' = s.begin-col;
+      .struct-is-outputted[n3] |= n17
+      s' = s-i.ptr()
+      s-at' = s.at
+      s-file' = s.file
+      s-row' = s.begin-row
+      s-col' = s.begin-col
       loop i' = 0; s.fvar-c; i++ {
-         // s.fvar-v[i].decl.type.output(s.file, row, col);
+         // s.fvar-v[i].decl.type.output(s.file, row, col)
          // if !s.fvar-v[i].decl.type.finalize(s.fvar-v[i].decl.type-info, row, col) { return }
-         s.fvar-v[i].decl.type = at-validate(s.fvar-v[i].decl.type, s-at, s-file, s-row, s-col);
+         s.fvar-v[i].decl.type = at-validate(s.fvar-v[i].decl.type, s-at, s-file, s-row, s-col)
          if !s.fvar-v[i].decl.process(s-file, s-row, s-col, s-at) {
-            'c.exit(#failure);
-            return;
+            'c.exit(#failure)
+            return
          }
       }
 
       if s.include != #nil {
-         s.include.output();
+         s.include.output()
       }
 
       if (s.flags & #no-decl) == #0 {
-         .struct-outputted-v[.struct-outputted-c++] = s-i;
+         .struct-outputted-v[.struct-outputted-c++] = s-i
       }
    }
 }
@@ -45,20 +45,20 @@ struct 'fvar-data[
    decl'decl-var-data.,
    ] {
    rd(f'this, r'rdr) {
-      f.decl.rd(r);
+      f.decl.rd(r)
    }
    wr(f'this, w'wtr, header'bool) {
-      f.decl.wr(w, header);
+      f.decl.wr(w, header)
    }
 }
-struct-c'struct;
-struct-cap'struct;
-struct-v'struct-data[];
-decl-struct-row'u32;
-decl-struct-col'u32;
-decl-struct-at'at;
-decl-struct-real-name'id;
-decl-struct-aligned'u32;
+struct-c'struct
+struct-cap'struct
+struct-v'struct-data[]
+decl-struct-row'u32
+decl-struct-col'u32
+decl-struct-at'at
+decl-struct-real-name'id
+decl-struct-aligned'u32
 enum 'struct-flags[
    #0,
    #real-name = 1,
@@ -67,89 +67,89 @@ enum 'struct-flags[
    #aligned = 8,
    ]'u8 {
    wr(f'this, w'wtr) @inline {
-      w.n1('base(f));
+      w.n1('base(f))
    }
    rd(f'this&, r'rdr) @inline {
-      f = 'struct-flags(r.n1());
+      f = 'struct-flags(r.n1())
    }
 }
-decl-struct-flags'struct-flags;
-decl-fvar-c'u32;
-decl-fvar-cap'u32;
-decl-fvar-v'decl-var-data.[];
+decl-struct-flags'struct-flags
+decl-fvar-c'u32
+decl-fvar-cap'u32
+decl-fvar-v'decl-var-data.[]
 decl-var-as-fvar() {
-   fvar' = .decl-fvar-c++;
+   fvar' = .decl-fvar-c++
    if .decl-fvar-cap <= .decl-fvar-c {
-      old-cap' = .decl-fvar-cap;
-      grow(.decl-fvar-cap, .decl-fvar-c);
-      realloc(.decl-fvar-v, .decl-fvar-cap, old-cap);
+      old-cap' = .decl-fvar-cap
+      grow(.decl-fvar-cap, .decl-fvar-c)
+      realloc(.decl-fvar-v, .decl-fvar-cap, old-cap)
    }
-   .decl-fvar-v[fvar].copy-from(.decl-var);
+   .decl-fvar-v[fvar].copy-from(.decl-var)
 }
 decl-at-begin-struct(name'id, row'u32, col'u32) {
-   .decl-struct-row = row;
-   .decl-struct-col = col;
-   .build-at = .decl-at;
-   old-at-c' = .at-c;
-   decl-at-add(name, #struct-enum, row, col);
-   .decl-at-v[.decl-at-c++] = .decl-at;
-   .decl-at = .build-at;
-   .decl-struct-at = .build-at;
-   .decl-fvar-c = 0;
-   .decl-struct-real-name = #nil;
-   .decl-struct-flags = #0;
+   .decl-struct-row = row
+   .decl-struct-col = col
+   .build-at = .decl-at
+   old-at-c' = .at-c
+   decl-at-add(name, #struct-enum, row, col)
+   .decl-at-v[.decl-at-c++] = .decl-at
+   .decl-at = .build-at
+   .decl-struct-at = .build-at
+   .decl-fvar-c = 0
+   .decl-struct-real-name = #nil
+   .decl-struct-flags = #0
 }
 decl-struct-end(row'u32, col'u32) {
-   s-idx' = .struct-c++;
+   s-idx' = .struct-c++
    if .struct-cap <= .struct-c {
-      old-cap' = .struct-cap;
-      .struct-cap = 'struct(grow('base(.struct-c)));
-      realloc(.struct-v, 'base(.struct-cap), 'base(old-cap));
+      old-cap' = .struct-cap
+      .struct-cap = 'struct(grow('base(.struct-c)))
+      realloc(.struct-v, 'base(.struct-cap), 'base(old-cap))
    }
-   s'struct-data;
-   quick-alloc-plus(s, 'fvar-data['usz] * .decl-fvar-c);
-   .struct-v[s-idx] = s;
-   s.begin-row = .decl-struct-row;
-   s.begin-col = .decl-struct-col;
-   s.end-row = row;
-   s.end-col = col;
-   s.include = .decl-include;
-   s.at = .decl-struct-at;
-   s.flags = .decl-struct-flags;
-   // s.name = .decl-struct-name;
-   s.fvar-c = .decl-fvar-c;
+   s'struct-data
+   quick-alloc-plus(s, 'fvar-data['usz] * .decl-fvar-c)
+   .struct-v[s-idx] = s
+   s.begin-row = .decl-struct-row
+   s.begin-col = .decl-struct-col
+   s.end-row = row
+   s.end-col = col
+   s.include = .decl-include
+   s.at = .decl-struct-at
+   s.flags = .decl-struct-flags
+   // s.name = .decl-struct-name
+   s.fvar-c = .decl-fvar-c
    loop i' = 0; .decl-fvar-c; i++ {
-      a' = s.fvar-v[i];
-      a.decl.copy-from(.decl-fvar-v[i]);
+      a' = s.fvar-v[i]
+      a.decl.copy-from(.decl-fvar-v[i])
    }
-   s.real-name = .decl-struct-real-name;
-   s.aligned = .decl-struct-aligned;
+   s.real-name = .decl-struct-real-name
+   s.aligned = .decl-struct-aligned
 }
 struct-attr-real-name(name'id) {
    if (.decl-struct-flags & #real-name) != #0 {
       'c1.stdout{.input-path '': .last-row '': .last-col ": error @real-name specified more than once\n"}
-      'c.exit(#failure);
+      'c.exit(#failure)
    }
-   .decl-struct-flags |= #real-name;
-   .decl-struct-real-name = name;
+   .decl-struct-flags |= #real-name
+   .decl-struct-real-name = name
 }
 struct-attr-aligned(aligned'u32) {
    if (.decl-struct-flags & #aligned) != #0 {
       'c1.stdout{.input-path '': .last-row '': .last-col ": error @aligned specified more than once\n"}
-      'c.exit(#failure);
+      'c.exit(#failure)
    }
-   .decl-struct-flags |= #aligned;
-   .decl-struct-aligned = aligned;
+   .decl-struct-flags |= #aligned
+   .decl-struct-aligned = aligned
 }
 struct-attr-no-decl() {
    if (.decl-struct-flags & #no-decl) != #0 {
       'c1.stdout{.input-path '': .last-row '': .last-col ": error @no-decl specified more than once\n"}
-      'c.exit(#failure);
+      'c.exit(#failure)
    }
-   .decl-struct-flags |= #no-decl;
+   .decl-struct-flags |= #no-decl
 }
 struct-attr-union() {
-   .decl-struct-flags |= #union;
+   .decl-struct-flags |= #union
 }
  
 
