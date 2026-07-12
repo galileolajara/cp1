@@ -50,6 +50,7 @@ enum 'file[#nil = -1, #0]'i32 {
    }
 }
 struct 'file-data[
+   crc32c'u32,
    path'char[],
    path-len'u16,
    data'ref,
@@ -158,6 +159,7 @@ read(in-path-cp1'char[], in-path-cp1-len'u16, strdup'bool, require'bool) {
    }
    file.path-len = in-path-cp1-len
    file.data = r-begin.ref
+   file.crc32c = crc32c(0, in-path-cp1, in-path-cp1-len)
 
    r'rdr.
    r.ref = r-begin.ref
@@ -1987,7 +1989,7 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
          file-path' = file.path()
          file-path-len' = file.path-len()
          row' = f.begin-row
-         output{.debug-func-prefix "_begin(\"" file-path, file-path-len "\", " row ");\n"}
+         output{.debug-func-prefix "_begin(\"" file-path, file-path-len "\", " file-path-len ", 0x" file.ptr().crc32c, #hex ", " row ");\n"}
       }
       f.stmt-space.write()
       if .debug-func-prefix != null {
