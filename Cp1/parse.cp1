@@ -998,7 +998,7 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
    .input-path = arg-v[1]
    // C1.stdout{"reading " .input-path ''\n}
    in-data'u8[]
-   in-data = read-file(.input-path, 0, 2, 0, in-size?)
+   in-data = read-file(.input-path, 1, 2, 0, in-size?)
    // input-path-len! = C.strlen(.input-path)
    // mtime! = file-mtime(.input-path)
    if in-data == null {
@@ -1053,7 +1053,7 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
    //    "Please convert the line endings to Unix-style line endings\n"}
    //    C.exit(#failure)
    // }
-   new-data' = preprocess(.input-path, in-data, in-size)
+   new-data' = preprocess(.input-path, &in-data[1], in-size)
    'c.free(in-data)
    in-data = new-data
    r-end'rdr.
