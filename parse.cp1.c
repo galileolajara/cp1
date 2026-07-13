@@ -1716,7 +1716,7 @@ _Tcp1_Tmap_Finit_1(&_Tcp1_Ginclude_map);
 _Tcp1_Tat_map_Finit_1(&_Tcp1_Gat_map);
 _Tcp1_Gfunc_main = _Tcp1_Tfunc_Cnil;
 input_path = _Larg_v_1[1];
-_Lin_data_6 = _Tcp1_Fread_file_5(input_path, 0, 2, 0, &_Lin_size_7);
+_Lin_data_6 = _Tcp1_Fread_file_5(input_path, 1, 2, 0, &_Lin_size_7);
 if(_Lin_data_6 == NULL) {
 struct _Tlibcp1_Tfmt_Tf_cstr _L_8 = {0};
 struct _Tlibcp1_Tfmt_Tf_cstr _L_9 = {0};
@@ -1754,7 +1754,7 @@ _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_15, &_L_16);
 _Tlibcp1_Tfmt_Ff_stdout_1(&_L_16);
 goto usage;
 }
-_Lnew_data_17 = ((uint8_t*)(_Tcp1_Fpreprocess_3(input_path, _Lin_data_6, &_Lin_size_7)));
+_Lnew_data_17 = ((uint8_t*)(_Tcp1_Fpreprocess_3(input_path, &_Lin_data_6[1], &_Lin_size_7)));
 free(_Lin_data_6);
 _Lin_data_6 = _Lnew_data_17;
 _Lr_end_18._Mref = _Lin_data_6;
