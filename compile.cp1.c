@@ -24,49 +24,49 @@
 #define _Tcp1_Tfunc_Cnil (-1)
 #define _Tcp1_Tbasic_type_id_Croot 0
 #define _Tcp1_Tbasic_type_id_Crelative (_Tcp1_Tbasic_type_id_Croot + 1)
-#define _Tcp1_Tbasic_type_id_Cref (_Tcp1_Tbasic_type_id_Crelative + 1)
-#define _Tcp1_Tbasic_type_id_Cbool (_Tcp1_Tbasic_type_id_Cref + 1)
-#define _Tcp1_Tbasic_type_id_Cchar (_Tcp1_Tbasic_type_id_Cbool + 1)
-#define _Tcp1_Tbasic_type_id_Ccint (_Tcp1_Tbasic_type_id_Cchar + 1)
-#define _Tcp1_Tbasic_type_id_Ci8 (_Tcp1_Tbasic_type_id_Ccint + 1)
-#define _Tcp1_Tbasic_type_id_Cu8 (_Tcp1_Tbasic_type_id_Ci8 + 1)
-#define _Tcp1_Tbasic_type_id_Ci16 (_Tcp1_Tbasic_type_id_Cu8 + 1)
-#define _Tcp1_Tbasic_type_id_Cu16 (_Tcp1_Tbasic_type_id_Ci16 + 1)
-#define _Tcp1_Tbasic_type_id_Ci32 (_Tcp1_Tbasic_type_id_Cu16 + 1)
-#define _Tcp1_Tbasic_type_id_Cu32 (_Tcp1_Tbasic_type_id_Ci32 + 1)
-#define _Tcp1_Tbasic_type_id_Ci64 (_Tcp1_Tbasic_type_id_Cu32 + 1)
-#define _Tcp1_Tbasic_type_id_Cu64 (_Tcp1_Tbasic_type_id_Ci64 + 1)
-#define _Tcp1_Tbasic_type_id_Cisz (_Tcp1_Tbasic_type_id_Cu64 + 1)
-#define _Tcp1_Tbasic_type_id_Cusz (_Tcp1_Tbasic_type_id_Cisz + 1)
-#define _Tcp1_Tbasic_type_id_Cf32 (_Tcp1_Tbasic_type_id_Cusz + 1)
-#define _Tcp1_Tbasic_type_id_Cf64 (_Tcp1_Tbasic_type_id_Cf32 + 1)
-#define _Tcp1_Tbasic_type_id_Ccount (_Tcp1_Tbasic_type_id_Cf64 + 1)
+#define _Tcp1_Tbasic_type_id_Cref (_Tcp1_Tbasic_type_id_Croot + 2)
+#define _Tcp1_Tbasic_type_id_Cbool (_Tcp1_Tbasic_type_id_Croot + 3)
+#define _Tcp1_Tbasic_type_id_Cchar (_Tcp1_Tbasic_type_id_Croot + 4)
+#define _Tcp1_Tbasic_type_id_Ccint (_Tcp1_Tbasic_type_id_Croot + 5)
+#define _Tcp1_Tbasic_type_id_Ci8 (_Tcp1_Tbasic_type_id_Croot + 6)
+#define _Tcp1_Tbasic_type_id_Cu8 (_Tcp1_Tbasic_type_id_Croot + 7)
+#define _Tcp1_Tbasic_type_id_Ci16 (_Tcp1_Tbasic_type_id_Croot + 8)
+#define _Tcp1_Tbasic_type_id_Cu16 (_Tcp1_Tbasic_type_id_Croot + 9)
+#define _Tcp1_Tbasic_type_id_Ci32 (_Tcp1_Tbasic_type_id_Croot + 10)
+#define _Tcp1_Tbasic_type_id_Cu32 (_Tcp1_Tbasic_type_id_Croot + 11)
+#define _Tcp1_Tbasic_type_id_Ci64 (_Tcp1_Tbasic_type_id_Croot + 12)
+#define _Tcp1_Tbasic_type_id_Cu64 (_Tcp1_Tbasic_type_id_Croot + 13)
+#define _Tcp1_Tbasic_type_id_Cisz (_Tcp1_Tbasic_type_id_Croot + 14)
+#define _Tcp1_Tbasic_type_id_Cusz (_Tcp1_Tbasic_type_id_Croot + 15)
+#define _Tcp1_Tbasic_type_id_Cf32 (_Tcp1_Tbasic_type_id_Croot + 16)
+#define _Tcp1_Tbasic_type_id_Cf64 (_Tcp1_Tbasic_type_id_Croot + 17)
+#define _Tcp1_Tbasic_type_id_Ccount (_Tcp1_Tbasic_type_id_Croot + 18)
 #define _Tcp1_Tname_type_Cmodule 0
 #define _Tcp1_Tname_type_Cstruct_enum (_Tcp1_Tname_type_Cmodule + 1)
-#define _Tcp1_Tname_type_Cbasic (_Tcp1_Tname_type_Cstruct_enum + 1)
+#define _Tcp1_Tname_type_Cbasic (_Tcp1_Tname_type_Cmodule + 2)
 #define _Tcp1_Tat_Cnil (-1)
 #define _Tcp1_Tat_Croot (_Tcp1_Tat_Cnil + 1)
 #define _Tcp1_Tfile_Cnil (-1)
-#define _Tcp1_Tat_Crelative (_Tcp1_Tat_Croot + 1)
+#define _Tcp1_Tat_Crelative (_Tcp1_Tat_Cnil + 2)
 #define _Tcp1_Ctype_info_star_limit (8)
 #define _Tcp1_Cexpr_carg_group_limit (256)
 #define _Tcp1_Tenum_Cnil (-1)
 #define _Tcp1_Tat_def_Cundefined 0
 #define _Tcp1_Tat_def_Cmodule (_Tcp1_Tat_def_Cundefined + 1)
-#define _Tcp1_Tat_def_Cstruct (_Tcp1_Tat_def_Cmodule + 1)
-#define _Tcp1_Tat_def_Cenum (_Tcp1_Tat_def_Cstruct + 1)
+#define _Tcp1_Tat_def_Cstruct (_Tcp1_Tat_def_Cundefined + 2)
+#define _Tcp1_Tat_def_Cenum (_Tcp1_Tat_def_Cundefined + 3)
 #define _Tcp1_Tfunc_flags_Creal_name (64)
 #define _Tcp1_Toverload_Cnil 0
 #define _Tcp1_Toverload_Cget (_Tcp1_Toverload_Cnil + 1)
-#define _Tcp1_Toverload_Cset (_Tcp1_Toverload_Cget + 1)
-#define _Tcp1_Toverload_Cassign (_Tcp1_Toverload_Cset + 1)
-#define _Tcp1_Toverload_Cmath (_Tcp1_Toverload_Cassign + 1)
-#define _Tcp1_Toverload_Cbools (_Tcp1_Toverload_Cmath + 1)
-#define _Tcp1_Toverload_Ccompare (_Tcp1_Toverload_Cbools + 1)
-#define _Tcp1_Toverload_Cif_begin (_Tcp1_Toverload_Ccompare + 1)
-#define _Tcp1_Toverload_Cif_else (_Tcp1_Toverload_Cif_begin + 1)
-#define _Tcp1_Toverload_Cif_end (_Tcp1_Toverload_Cif_else + 1)
-#define _Tcp1_Toverload_Cstatement (_Tcp1_Toverload_Cif_end + 1)
+#define _Tcp1_Toverload_Cset (_Tcp1_Toverload_Cnil + 2)
+#define _Tcp1_Toverload_Cassign (_Tcp1_Toverload_Cnil + 3)
+#define _Tcp1_Toverload_Cmath (_Tcp1_Toverload_Cnil + 4)
+#define _Tcp1_Toverload_Cbools (_Tcp1_Toverload_Cnil + 5)
+#define _Tcp1_Toverload_Ccompare (_Tcp1_Toverload_Cnil + 6)
+#define _Tcp1_Toverload_Cif_begin (_Tcp1_Toverload_Cnil + 7)
+#define _Tcp1_Toverload_Cif_else (_Tcp1_Toverload_Cnil + 8)
+#define _Tcp1_Toverload_Cif_end (_Tcp1_Toverload_Cnil + 9)
+#define _Tcp1_Toverload_Cstatement (_Tcp1_Toverload_Cnil + 10)
 #define _Tcp1_Tfunc_flags_Cprocess (4)
 #define _Tcp1_Tfunc_flags_C0 0
 #define _Tcp1_Tfunc_flags_Cno_decl (16)
@@ -94,12 +94,12 @@
 #define _Tcp1_Tstruct_Cnil (-1)
 #define _Tcp1_Tinclude_error_Cnone 0
 #define _Tcp1_Tinclude_error_Csuffix (_Tcp1_Tinclude_error_Cnone + 1)
-#define _Tcp1_Tinclude_error_Cabsolute (_Tcp1_Tinclude_error_Csuffix + 1)
-#define _Tcp1_Tinclude_error_Cdot_slash (_Tcp1_Tinclude_error_Cabsolute + 1)
-#define _Tcp1_Tinclude_error_Cslash (_Tcp1_Tinclude_error_Cdot_slash + 1)
-#define _Tcp1_Tinclude_error_Cdouble_slash (_Tcp1_Tinclude_error_Cslash + 1)
-#define _Tcp1_Tinclude_error_Ccp1 (_Tcp1_Tinclude_error_Cdouble_slash + 1)
-#define _Tcp1_Tinclude_error_Cspace (_Tcp1_Tinclude_error_Ccp1 + 1)
+#define _Tcp1_Tinclude_error_Cabsolute (_Tcp1_Tinclude_error_Cnone + 2)
+#define _Tcp1_Tinclude_error_Cdot_slash (_Tcp1_Tinclude_error_Cnone + 3)
+#define _Tcp1_Tinclude_error_Cslash (_Tcp1_Tinclude_error_Cnone + 4)
+#define _Tcp1_Tinclude_error_Cdouble_slash (_Tcp1_Tinclude_error_Cnone + 5)
+#define _Tcp1_Tinclude_error_Ccp1 (_Tcp1_Tinclude_error_Cnone + 6)
+#define _Tcp1_Tinclude_error_Cspace (_Tcp1_Tinclude_error_Cnone + 7)
 #define _Tcp1_Tenum_flags_Creal_name (1)
 #define _Tcp1_Tid_Cnil (-1)
 #define _Tcp1_Tenum_flags_Csoa_field (4)
@@ -115,29 +115,29 @@
 #define _Tcp1_Tvar_flags_Creal_name (1)
 #define _Tcp1_Texpr_type_Cnil 0
 #define _Tcp1_Texpr_type_Ccall_method (_Tcp1_Texpr_type_Cnil + 1)
-#define _Tcp1_Texpr_type_Clvar (_Tcp1_Texpr_type_Ccall_method + 1)
-#define _Tcp1_Texpr_type_Cgvar (_Tcp1_Texpr_type_Clvar + 1)
-#define _Tcp1_Texpr_type_Cmath (_Tcp1_Texpr_type_Cgvar + 1)
-#define _Tcp1_Texpr_type_Cassign (_Tcp1_Texpr_type_Cmath + 1)
-#define _Tcp1_Texpr_type_Cbools (_Tcp1_Texpr_type_Cassign + 1)
-#define _Tcp1_Texpr_type_Cfunc (_Tcp1_Texpr_type_Cbools + 1)
-#define _Tcp1_Texpr_type_Cmetafunc (_Tcp1_Texpr_type_Cfunc + 1)
-#define _Tcp1_Texpr_type_Cmethod (_Tcp1_Texpr_type_Cmetafunc + 1)
-#define _Tcp1_Texpr_type_Cmetamethod (_Tcp1_Texpr_type_Cmethod + 1)
-#define _Tcp1_Texpr_type_Cfvar (_Tcp1_Texpr_type_Cmetamethod + 1)
-#define _Tcp1_Texpr_type_Csoa_field (_Tcp1_Texpr_type_Cfvar + 1)
-#define _Tcp1_Texpr_type_Cint (_Tcp1_Texpr_type_Csoa_field + 1)
-#define _Tcp1_Texpr_type_Ccvar (_Tcp1_Texpr_type_Cint + 1)
-#define _Tcp1_Texpr_type_Cstr (_Tcp1_Texpr_type_Ccvar + 1)
-#define _Tcp1_Texpr_type_Cindex (_Tcp1_Texpr_type_Cstr + 1)
-#define _Tcp1_Texpr_type_Cunary (_Tcp1_Texpr_type_Cindex + 1)
-#define _Tcp1_Texpr_type_Ccompare (_Tcp1_Texpr_type_Cunary + 1)
-#define _Tcp1_Texpr_type_Cbool (_Tcp1_Texpr_type_Ccompare + 1)
-#define _Tcp1_Texpr_type_Cnull (_Tcp1_Texpr_type_Cbool + 1)
-#define _Tcp1_Texpr_type_Ccast_fast (_Tcp1_Texpr_type_Cnull + 1)
-#define _Tcp1_Texpr_type_Cref (_Tcp1_Texpr_type_Ccast_fast + 1)
-#define _Tcp1_Texpr_type_Cchar (_Tcp1_Texpr_type_Cref + 1)
-#define _Tcp1_Texpr_type_Csize_of_type (_Tcp1_Texpr_type_Cchar + 1)
+#define _Tcp1_Texpr_type_Clvar (_Tcp1_Texpr_type_Cnil + 2)
+#define _Tcp1_Texpr_type_Cgvar (_Tcp1_Texpr_type_Cnil + 3)
+#define _Tcp1_Texpr_type_Cmath (_Tcp1_Texpr_type_Cnil + 4)
+#define _Tcp1_Texpr_type_Cassign (_Tcp1_Texpr_type_Cnil + 5)
+#define _Tcp1_Texpr_type_Cbools (_Tcp1_Texpr_type_Cnil + 6)
+#define _Tcp1_Texpr_type_Cfunc (_Tcp1_Texpr_type_Cnil + 7)
+#define _Tcp1_Texpr_type_Cmetafunc (_Tcp1_Texpr_type_Cnil + 8)
+#define _Tcp1_Texpr_type_Cmethod (_Tcp1_Texpr_type_Cnil + 9)
+#define _Tcp1_Texpr_type_Cmetamethod (_Tcp1_Texpr_type_Cnil + 10)
+#define _Tcp1_Texpr_type_Cfvar (_Tcp1_Texpr_type_Cnil + 11)
+#define _Tcp1_Texpr_type_Csoa_field (_Tcp1_Texpr_type_Cnil + 12)
+#define _Tcp1_Texpr_type_Cint (_Tcp1_Texpr_type_Cnil + 13)
+#define _Tcp1_Texpr_type_Ccvar (_Tcp1_Texpr_type_Cnil + 14)
+#define _Tcp1_Texpr_type_Cstr (_Tcp1_Texpr_type_Cnil + 15)
+#define _Tcp1_Texpr_type_Cindex (_Tcp1_Texpr_type_Cnil + 16)
+#define _Tcp1_Texpr_type_Cunary (_Tcp1_Texpr_type_Cnil + 17)
+#define _Tcp1_Texpr_type_Ccompare (_Tcp1_Texpr_type_Cnil + 18)
+#define _Tcp1_Texpr_type_Cbool (_Tcp1_Texpr_type_Cnil + 19)
+#define _Tcp1_Texpr_type_Cnull (_Tcp1_Texpr_type_Cnil + 20)
+#define _Tcp1_Texpr_type_Ccast_fast (_Tcp1_Texpr_type_Cnil + 21)
+#define _Tcp1_Texpr_type_Cref (_Tcp1_Texpr_type_Cnil + 22)
+#define _Tcp1_Texpr_type_Cchar (_Tcp1_Texpr_type_Cnil + 23)
+#define _Tcp1_Texpr_type_Csize_of_type (_Tcp1_Texpr_type_Cnil + 24)
 #define _Tcp1_Tlvar_flags_Cset_expr (1)
 #define _Twindows_Tcreate_file_share_mode_C0 0
 #define _Twindows_Thandle_Cnull 0
@@ -146,64 +146,64 @@
 #define _Tcp1_Tstmt_type_Cnil (255)
 #define _Tcp1_Tstmt_type_Cspace 0
 #define _Tcp1_Tstmt_type_Cif (_Tcp1_Tstmt_type_Cspace + 1)
-#define _Tcp1_Tstmt_type_Cif_elif (_Tcp1_Tstmt_type_Cif + 1)
-#define _Tcp1_Tstmt_type_Cif_else (_Tcp1_Tstmt_type_Cif_elif + 1)
-#define _Tcp1_Tstmt_type_Cif_end (_Tcp1_Tstmt_type_Cif_else + 1)
-#define _Tcp1_Tstmt_type_Cloop (_Tcp1_Tstmt_type_Cif_end + 1)
-#define _Tcp1_Tstmt_type_Cloop_end (_Tcp1_Tstmt_type_Cloop + 1)
-#define _Tcp1_Tstmt_type_Cwhile (_Tcp1_Tstmt_type_Cloop_end + 1)
-#define _Tcp1_Tstmt_type_Cwhile_end (_Tcp1_Tstmt_type_Cwhile + 1)
-#define _Tcp1_Tstmt_type_Cexpr (_Tcp1_Tstmt_type_Cwhile_end + 1)
-#define _Tcp1_Tstmt_type_Creturn (_Tcp1_Tstmt_type_Cexpr + 1)
-#define _Tcp1_Tstmt_type_Ccontinue (_Tcp1_Tstmt_type_Creturn + 1)
-#define _Tcp1_Tstmt_type_Cbreak (_Tcp1_Tstmt_type_Ccontinue + 1)
-#define _Tcp1_Tstmt_type_Cswitch (_Tcp1_Tstmt_type_Cbreak + 1)
-#define _Tcp1_Tstmt_type_Ccase (_Tcp1_Tstmt_type_Cswitch + 1)
-#define _Tcp1_Tstmt_type_Cdefault (_Tcp1_Tstmt_type_Ccase + 1)
-#define _Tcp1_Tstmt_type_Ccase_end (_Tcp1_Tstmt_type_Cdefault + 1)
-#define _Tcp1_Tstmt_type_Cdefault_end (_Tcp1_Tstmt_type_Ccase_end + 1)
-#define _Tcp1_Tstmt_type_Cswitch_end (_Tcp1_Tstmt_type_Cdefault_end + 1)
+#define _Tcp1_Tstmt_type_Cif_elif (_Tcp1_Tstmt_type_Cspace + 2)
+#define _Tcp1_Tstmt_type_Cif_else (_Tcp1_Tstmt_type_Cspace + 3)
+#define _Tcp1_Tstmt_type_Cif_end (_Tcp1_Tstmt_type_Cspace + 4)
+#define _Tcp1_Tstmt_type_Cloop (_Tcp1_Tstmt_type_Cspace + 5)
+#define _Tcp1_Tstmt_type_Cloop_end (_Tcp1_Tstmt_type_Cspace + 6)
+#define _Tcp1_Tstmt_type_Cwhile (_Tcp1_Tstmt_type_Cspace + 7)
+#define _Tcp1_Tstmt_type_Cwhile_end (_Tcp1_Tstmt_type_Cspace + 8)
+#define _Tcp1_Tstmt_type_Cexpr (_Tcp1_Tstmt_type_Cspace + 9)
+#define _Tcp1_Tstmt_type_Creturn (_Tcp1_Tstmt_type_Cspace + 10)
+#define _Tcp1_Tstmt_type_Ccontinue (_Tcp1_Tstmt_type_Cspace + 11)
+#define _Tcp1_Tstmt_type_Cbreak (_Tcp1_Tstmt_type_Cspace + 12)
+#define _Tcp1_Tstmt_type_Cswitch (_Tcp1_Tstmt_type_Cspace + 13)
+#define _Tcp1_Tstmt_type_Ccase (_Tcp1_Tstmt_type_Cspace + 14)
+#define _Tcp1_Tstmt_type_Cdefault (_Tcp1_Tstmt_type_Cspace + 15)
+#define _Tcp1_Tstmt_type_Ccase_end (_Tcp1_Tstmt_type_Cspace + 16)
+#define _Tcp1_Tstmt_type_Cdefault_end (_Tcp1_Tstmt_type_Cspace + 17)
+#define _Tcp1_Tstmt_type_Cswitch_end (_Tcp1_Tstmt_type_Cspace + 18)
 #define _Tcp1_Tstruct_flags_Cno_decl (2)
 #define _Tcp1_Tassign_Ceq 0
 #define _Tcp1_Tassign_Ccolon_eq (_Tcp1_Tassign_Ceq + 1)
-#define _Tcp1_Tassign_Cplus_eq (_Tcp1_Tassign_Ccolon_eq + 1)
-#define _Tcp1_Tassign_Cminus_eq (_Tcp1_Tassign_Cplus_eq + 1)
-#define _Tcp1_Tassign_Cmul_eq (_Tcp1_Tassign_Cminus_eq + 1)
-#define _Tcp1_Tassign_Cdiv_eq (_Tcp1_Tassign_Cmul_eq + 1)
-#define _Tcp1_Tassign_Clshift_eq (_Tcp1_Tassign_Cdiv_eq + 1)
-#define _Tcp1_Tassign_Crshift_eq (_Tcp1_Tassign_Clshift_eq + 1)
-#define _Tcp1_Tassign_Cand_eq (_Tcp1_Tassign_Crshift_eq + 1)
-#define _Tcp1_Tassign_Cor_eq (_Tcp1_Tassign_Cand_eq + 1)
-#define _Tcp1_Tassign_Cxor_eq (_Tcp1_Tassign_Cor_eq + 1)
+#define _Tcp1_Tassign_Cplus_eq (_Tcp1_Tassign_Ceq + 2)
+#define _Tcp1_Tassign_Cminus_eq (_Tcp1_Tassign_Ceq + 3)
+#define _Tcp1_Tassign_Cmul_eq (_Tcp1_Tassign_Ceq + 4)
+#define _Tcp1_Tassign_Cdiv_eq (_Tcp1_Tassign_Ceq + 5)
+#define _Tcp1_Tassign_Clshift_eq (_Tcp1_Tassign_Ceq + 6)
+#define _Tcp1_Tassign_Crshift_eq (_Tcp1_Tassign_Ceq + 7)
+#define _Tcp1_Tassign_Cand_eq (_Tcp1_Tassign_Ceq + 8)
+#define _Tcp1_Tassign_Cor_eq (_Tcp1_Tassign_Ceq + 9)
+#define _Tcp1_Tassign_Cxor_eq (_Tcp1_Tassign_Ceq + 10)
 #define _Tcp1_Tcompare_Ceq 0
 #define _Tcp1_Tcompare_Cnot_eq (_Tcp1_Tcompare_Ceq + 1)
-#define _Tcp1_Tcompare_Clt (_Tcp1_Tcompare_Cnot_eq + 1)
-#define _Tcp1_Tcompare_Cle (_Tcp1_Tcompare_Clt + 1)
-#define _Tcp1_Tcompare_Cgt (_Tcp1_Tcompare_Cle + 1)
-#define _Tcp1_Tcompare_Cge (_Tcp1_Tcompare_Cgt + 1)
+#define _Tcp1_Tcompare_Clt (_Tcp1_Tcompare_Ceq + 2)
+#define _Tcp1_Tcompare_Cle (_Tcp1_Tcompare_Ceq + 3)
+#define _Tcp1_Tcompare_Cgt (_Tcp1_Tcompare_Ceq + 4)
+#define _Tcp1_Tcompare_Cge (_Tcp1_Tcompare_Ceq + 5)
 #define _Tcp1_Tmath_Cadd 0
 #define _Tcp1_Tmath_Csub (_Tcp1_Tmath_Cadd + 1)
-#define _Tcp1_Tmath_Cmul (_Tcp1_Tmath_Csub + 1)
-#define _Tcp1_Tmath_Cdiv (_Tcp1_Tmath_Cmul + 1)
-#define _Tcp1_Tmath_Cmod (_Tcp1_Tmath_Cdiv + 1)
-#define _Tcp1_Tmath_Clshift (_Tcp1_Tmath_Cmod + 1)
-#define _Tcp1_Tmath_Crshift (_Tcp1_Tmath_Clshift + 1)
-#define _Tcp1_Tmath_Cand (_Tcp1_Tmath_Crshift + 1)
-#define _Tcp1_Tmath_Cor (_Tcp1_Tmath_Cand + 1)
-#define _Tcp1_Tmath_Cxor (_Tcp1_Tmath_Cor + 1)
+#define _Tcp1_Tmath_Cmul (_Tcp1_Tmath_Cadd + 2)
+#define _Tcp1_Tmath_Cdiv (_Tcp1_Tmath_Cadd + 3)
+#define _Tcp1_Tmath_Cmod (_Tcp1_Tmath_Cadd + 4)
+#define _Tcp1_Tmath_Clshift (_Tcp1_Tmath_Cadd + 5)
+#define _Tcp1_Tmath_Crshift (_Tcp1_Tmath_Cadd + 6)
+#define _Tcp1_Tmath_Cand (_Tcp1_Tmath_Cadd + 7)
+#define _Tcp1_Tmath_Cor (_Tcp1_Tmath_Cadd + 8)
+#define _Tcp1_Tmath_Cxor (_Tcp1_Tmath_Cadd + 9)
 #define _Tcp1_Tunary_Cneg 0
 #define _Tcp1_Tunary_Cinc (_Tcp1_Tunary_Cneg + 1)
-#define _Tcp1_Tunary_Cdec (_Tcp1_Tunary_Cinc + 1)
-#define _Tcp1_Tunary_Cnot (_Tcp1_Tunary_Cdec + 1)
+#define _Tcp1_Tunary_Cdec (_Tcp1_Tunary_Cneg + 2)
+#define _Tcp1_Tunary_Cnot (_Tcp1_Tunary_Cneg + 3)
 #define _Tcp1_Tbools_Cand 0
 #define _Tcp1_Tbools_Cor (_Tcp1_Tbools_Cand + 1)
 #define _Tcp1_Texpr_int_Ci32 0
 #define _Tcp1_Texpr_int_Cu32 (_Tcp1_Texpr_int_Ci32 + 1)
-#define _Tcp1_Texpr_int_Cf32 (_Tcp1_Texpr_int_Cu32 + 1)
-#define _Tcp1_Texpr_int_Coct (_Tcp1_Texpr_int_Cf32 + 1)
-#define _Tcp1_Texpr_int_Chex (_Tcp1_Texpr_int_Coct + 1)
-#define _Tcp1_Texpr_int_Cu64 (_Tcp1_Texpr_int_Chex + 1)
-#define _Tcp1_Texpr_int_Cf64 (_Tcp1_Texpr_int_Cu64 + 1)
+#define _Tcp1_Texpr_int_Cf32 (_Tcp1_Texpr_int_Ci32 + 2)
+#define _Tcp1_Texpr_int_Coct (_Tcp1_Texpr_int_Ci32 + 3)
+#define _Tcp1_Texpr_int_Chex (_Tcp1_Texpr_int_Ci32 + 4)
+#define _Tcp1_Texpr_int_Cu64 (_Tcp1_Texpr_int_Ci32 + 5)
+#define _Tcp1_Texpr_int_Cf64 (_Tcp1_Texpr_int_Ci32 + 6)
 #define _Tcp1_Tfunc_flags_Cvar_args (8)
 #define _Tcp1_Tgvar_flags_Cno_decl (1)
 #define _Tcp1_Tgvar_flags_C0 0
@@ -523,6 +523,10 @@ _Tcp1_Tat _Mat;
 _Tcp1_Tgvar_flags _Mflags;
 struct _Tcp1_Tdecl_var_data _Mdecl;
 };
+struct _Tlibcp1_Tfmt_Tf_i32;
+struct _Tlibcp1_Tfmt_Tf_i32 {
+int32_t _Mi32;
+};
 struct _Tcp1_Tfile_data;
 struct _Tcp1_Tfile_data {
 uint32_t _Mcrc32c;
@@ -721,10 +725,6 @@ struct _Tcp1_Texpr_int_data {
 struct _Tcp1_Texpr _Mbase;
 union _Tcp1_Texpr_int_value _Mvalue;
 _Tcp1_Texpr_int _Mtype;
-};
-struct _Tlibcp1_Tfmt_Tf_i32;
-struct _Tlibcp1_Tfmt_Tf_i32 {
-int32_t _Mi32;
 };
 struct _Tlibcp1_Tfmt_Tf_f32;
 struct _Tlibcp1_Tfmt_Tf_f32 {
@@ -1095,6 +1095,8 @@ bool _Tcp1_Tcvar_Fprocess_1(_Tcp1_Tcvar _Lc_0);
 void _Tlibcp1_Tfmt_Ff_reserve_Tinclude_1_2(_Tcp1_Tinclude _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_cstr* _Lf_2);
 static inline void _Tcp1_Tcvar_Fwrite_1(_Tcp1_Tcvar _Lc_0);
 void _Tcp1_Texpr_i_Fwrite_1(_Tcp1_Texpr_i _Le_0);
+static inline void _Tlibcp1_Tfmt_Ff_reserve_Ti32_1_2(int32_t _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2);
+static inline void _Tlibcp1_Tfmt_Tf_i32_Ff_2(struct _Tlibcp1_Tfmt_Tf_i32* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
 void _Tcp1_Tat_Fwrite_1(_Tcp1_Tat _Lat_idx_0);
 void _Tcp1_Tat_Fwrite_space_1(_Tcp1_Tat _Lat_idx_0);
 void _Tcp1_Tdecl_var_data_Fwrite_type_fvar_1(struct _Tcp1_Tdecl_var_data* _Lvd_0);
@@ -1351,8 +1353,6 @@ void _Tcp1_Fwrite_char_1(char _Lc_0);
 void _Tcp1_Tdecl_var_data_Fwrite_fvar_1(struct _Tcp1_Tdecl_var_data* _Lvd_0);
 void _Tcp1_Tgvar_Fwrite_1(_Tcp1_Tgvar _Lg_0);
 void _Tcp1_Fwrite_str_node_2(int32_t _Llen_0, void* _Lptr_1);
-static inline void _Tlibcp1_Tfmt_Ff_reserve_Ti32_1_2(int32_t _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2);
-static inline void _Tlibcp1_Tfmt_Tf_i32_Ff_2(struct _Tlibcp1_Tfmt_Tf_i32* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
 static inline void _Tlibcp1_Tfmt_Ff_reserve_Tf32_1_2(float _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_f32* _Lf_2);
 static inline void _Tlibcp1_Tfmt_Tf_f32_Ff_2(struct _Tlibcp1_Tfmt_Tf_f32* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1);
 static inline void _Tlibcp1_Tfmt_Ff_reserve_Tf64_1_2(double _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_f64* _Lf_2);
@@ -4105,8 +4105,8 @@ struct _Tlibcp1_Tfmt_Tf_cstr _L_633 = {0};
 struct _Tlibcp1_Tfmt _L_634 = {0};
 struct _Tlibcp1_Tfmt_Tf_char _L_635 = {0};
 struct _Tlibcp1_Tfmt _L_636 = {0};
-struct _Tlibcp1_Tfmt_Tf_char _L_647 = {0};
-struct _Tlibcp1_Tfmt _L_648 = {0};
+struct _Tlibcp1_Tfmt_Tf_char _L_651 = {0};
+struct _Tlibcp1_Tfmt _L_652 = {0};
 _Lc_i_631 = ((_Tcp1_Tcvar)(_Tcp1_Gcvar_outputted_v[_Li_630]));
 _Lc_632 = ((struct _Tcp1_Tcvar_data*)(_Tcp1_Tcvar_Fptr_1(_Lc_i_631)));
 if(((*_Lc_632)._Mdecl._Mflags & _Tcp1_Tvar_flags_Cno_decl) != _Tcp1_Tvar_flags_C0) {
@@ -4143,111 +4143,123 @@ _Tlibcp1_Tfmt_Ff_output_1(&_L_640);
 if(((*_Tcp1_Tcvar_Fptr_1((*_Lc_632)._Mlast_cvar))._Mflags & _Tcp1_Tcvar_flags_Cdont_count) != _Tcp1_Tcvar_flags_C0) {
 _Tcp1_Tcvar_Fwrite_1((*_Lc_632)._Mlast_cvar);
 } else {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_641 = {0};
-struct _Tlibcp1_Tfmt _L_642 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_643 = {0};
+int32_t _Lplus_641;
+struct _Tlibcp1_Tfmt_Tf_char _L_643 = {0};
 struct _Tlibcp1_Tfmt _L_644 = {0};
-_Tcp1_Foutput_1(&_L_642);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_642, "(", 1u, &_L_641);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_642);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_641, &_L_642);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_642);
-_Tcp1_Tcvar_Fwrite_1((*_Lc_632)._Mlast_cvar);
-_Tcp1_Foutput_1(&_L_644);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_644, " + 1)", 5u, &_L_643);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_644);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_643, &_L_644);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_644);
+struct _Tlibcp1_Tfmt_Tf_cstr _L_645 = {0};
+struct _Tlibcp1_Tfmt_Tf_i32 _L_646 = {0};
+struct _Tlibcp1_Tfmt_Tf_char _L_647 = {0};
+struct _Tlibcp1_Tfmt _L_648 = {0};
+_Lplus_641 = ((int32_t)(1));
+while(1) {
+struct _Tcp1_Tcvar_data* _Lc2_642;
+_Lc2_642 = ((struct _Tcp1_Tcvar_data*)(_Tcp1_Tcvar_Fptr_1((*_Lc_632)._Mlast_cvar)));
+if(((*_Lc2_642)._Mdecl._Mflags & _Tcp1_Tvar_flags_Cno_decl) != _Tcp1_Tvar_flags_C0) {
+goto break_36;
+}
+if(((*_Lc2_642)._Mflags & _Tcp1_Tcvar_flags_Cset_expr) != _Tcp1_Tcvar_flags_C0) {
+goto break_36;
+}
+if((*_Lc2_642)._Mlast_cvar != _Tcp1_Tcvar_Cnil) {
+if(((*_Tcp1_Tcvar_Fptr_1((*_Lc2_642)._Mlast_cvar))._Mflags & _Tcp1_Tcvar_flags_Cdont_count) != _Tcp1_Tcvar_flags_C0) {
+_Lc_632 = _Lc2_642;
+goto continue_36;
 }
 } else {
-struct _Tlibcp1_Tfmt_Tf_char _L_645 = {0};
-struct _Tlibcp1_Tfmt _L_646 = {0};
-_Tcp1_Foutput_1(&_L_646);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('0', &_L_646, &_L_645);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_646);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_645, &_L_646);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_646);
+goto break_36;
 }
+_Lplus_641++;
+_Lc_632 = _Lc2_642;
+continue_36:;
+}
+break_36:;
+_Tcp1_Foutput_1(&_L_644);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('(', &_L_644, &_L_643);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_644);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_643, &_L_644);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_644);
+_Tcp1_Tcvar_Fwrite_1((*_Lc_632)._Mlast_cvar);
 _Tcp1_Foutput_1(&_L_648);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\n', &_L_648, &_L_647);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_648, " + ", 3u, &_L_645);
+_Tlibcp1_Tfmt_Ff_reserve_Ti32_1_2(_Lplus_641, &_L_648, &_L_646);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(')', &_L_648, &_L_647);
 _Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_648);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_645, &_L_648);
+_Tlibcp1_Tfmt_Tf_i32_Ff_2(&_L_646, &_L_648);
 _Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_647, &_L_648);
 _Tlibcp1_Tfmt_Ff_output_1(&_L_648);
+}
+} else {
+struct _Tlibcp1_Tfmt_Tf_char _L_649 = {0};
+struct _Tlibcp1_Tfmt _L_650 = {0};
+_Tcp1_Foutput_1(&_L_650);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('0', &_L_650, &_L_649);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_650);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_649, &_L_650);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_650);
+}
+_Tcp1_Foutput_1(&_L_652);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\n', &_L_652, &_L_651);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_652);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_651, &_L_652);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_652);
 continue_35:;
 _Li_630++;
 }
 break_35:;
-int32_t _Li_649;
-_Li_649 = ((int32_t)(0));
+int32_t _Li_653;
+_Li_653 = ((int32_t)(0));
 for(int i = _Tcp1_Genum_outputted_c; i > 0; ) {
 i --;
-_Tcp1_Tenum _Le_i_650;
-struct _Tcp1_Tenum_data* _Le_651;
-struct _Tlibcp1_Tfmt_Tf_cstr _L_652 = {0};
-struct _Tlibcp1_Tfmt _L_653 = {0};
-struct _Tlibcp1_Tfmt_Tf_char _L_654 = {0};
-struct _Tlibcp1_Tfmt _L_655 = {0};
+_Tcp1_Tenum _Le_i_654;
+struct _Tcp1_Tenum_data* _Le_655;
 struct _Tlibcp1_Tfmt_Tf_cstr _L_656 = {0};
 struct _Tlibcp1_Tfmt _L_657 = {0};
-_Le_i_650 = ((_Tcp1_Tenum)(_Tcp1_Genum_outputted_v[_Li_649]));
-_Le_651 = ((struct _Tcp1_Tenum_data*)(_Tcp1_Tenum_Fptr_1(_Le_i_650)));
-if(((*_Le_651)._Mflags & _Tcp1_Tenum_flags_Cno_decl) != _Tcp1_Tenum_flags_C0) {
-goto continue_36;
+struct _Tlibcp1_Tfmt_Tf_char _L_658 = {0};
+struct _Tlibcp1_Tfmt _L_659 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_660 = {0};
+struct _Tlibcp1_Tfmt _L_661 = {0};
+_Le_i_654 = ((_Tcp1_Tenum)(_Tcp1_Genum_outputted_v[_Li_653]));
+_Le_655 = ((struct _Tcp1_Tenum_data*)(_Tcp1_Tenum_Fptr_1(_Le_i_654)));
+if(((*_Le_655)._Mflags & _Tcp1_Tenum_flags_Cno_decl) != _Tcp1_Tenum_flags_C0) {
+goto continue_37;
 }
-_Tcp1_Foutput_1(&_L_653);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_653, "typedef ", 8u, &_L_652);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_653);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_652, &_L_653);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_653);
-_Tcp1_Tat_Fwrite_1((*_Le_651)._Mbase_type);
-_Tcp1_Foutput_1(&_L_655);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(' ', &_L_655, &_L_654);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_655);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_654, &_L_655);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_655);
-_Tcp1_Tat_Fwrite_1((*_Le_651)._Mat);
 _Tcp1_Foutput_1(&_L_657);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_657, ";\n", 2u, &_L_656);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_657, "typedef ", 8u, &_L_656);
 _Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_657);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_656, &_L_657);
 _Tlibcp1_Tfmt_Ff_output_1(&_L_657);
-continue_36:;
-_Li_649++;
+_Tcp1_Tat_Fwrite_1((*_Le_655)._Mbase_type);
+_Tcp1_Foutput_1(&_L_659);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(' ', &_L_659, &_L_658);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_659);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_658, &_L_659);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_659);
+_Tcp1_Tat_Fwrite_1((*_Le_655)._Mat);
+_Tcp1_Foutput_1(&_L_661);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_661, ";\n", 2u, &_L_660);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_661);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_660, &_L_661);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_661);
+continue_37:;
+_Li_653++;
 }
-break_36:;
-int32_t _Li_658;
-_Li_658 = ((int32_t)(0));
+break_37:;
+int32_t _Li_662;
+_Li_662 = ((int32_t)(0));
 for(int i = _Tcp1_Gstruct_outputted_c; i > 0; ) {
 i --;
-_Tcp1_Tstruct _Ls_i_659;
-struct _Tcp1_Tstruct_data* _Ls_660;
-struct _Tlibcp1_Tfmt_Tf_cstr _L_683 = {0};
-struct _Tlibcp1_Tfmt _L_684 = {0};
-_Ls_i_659 = ((_Tcp1_Tstruct)(_Tcp1_Gstruct_outputted_v[_Li_658]));
-_Ls_660 = ((struct _Tcp1_Tstruct_data*)(_Tcp1_Tstruct_Fptr_1(_Ls_i_659)));
-if(((*_Ls_660)._Mflags & _Tcp1_Tstruct_flags_Cunion) != _Tcp1_Tstruct_flags_C0) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_661 = {0};
-struct _Tlibcp1_Tfmt _L_662 = {0};
-_Tcp1_Foutput_1(&_L_662);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_662, "union ", 6u, &_L_661);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_662);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_661, &_L_662);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_662);
-} else {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_663 = {0};
-struct _Tlibcp1_Tfmt _L_664 = {0};
-_Tcp1_Foutput_1(&_L_664);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_664, "struct ", 7u, &_L_663);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_664);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_663, &_L_664);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_664);
-}
-_Tcp1_Tat_Fwrite_space_1((*_Ls_660)._Mat);
-if(((*_Ls_660)._Mflags & _Tcp1_Tstruct_flags_Cunion) != _Tcp1_Tstruct_flags_C0) {
+_Tcp1_Tstruct _Ls_i_663;
+struct _Tcp1_Tstruct_data* _Ls_664;
+struct _Tlibcp1_Tfmt_Tf_cstr _L_687 = {0};
+struct _Tlibcp1_Tfmt _L_688 = {0};
+_Ls_i_663 = ((_Tcp1_Tstruct)(_Tcp1_Gstruct_outputted_v[_Li_662]));
+_Ls_664 = ((struct _Tcp1_Tstruct_data*)(_Tcp1_Tstruct_Fptr_1(_Ls_i_663)));
+if(((*_Ls_664)._Mflags & _Tcp1_Tstruct_flags_Cunion) != _Tcp1_Tstruct_flags_C0) {
 struct _Tlibcp1_Tfmt_Tf_cstr _L_665 = {0};
 struct _Tlibcp1_Tfmt _L_666 = {0};
 _Tcp1_Foutput_1(&_L_666);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_666, ";\nunion ", 8u, &_L_665);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_666, "union ", 6u, &_L_665);
 _Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_666);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_665, &_L_666);
 _Tlibcp1_Tfmt_Ff_output_1(&_L_666);
@@ -4255,540 +4267,558 @@ _Tlibcp1_Tfmt_Ff_output_1(&_L_666);
 struct _Tlibcp1_Tfmt_Tf_cstr _L_667 = {0};
 struct _Tlibcp1_Tfmt _L_668 = {0};
 _Tcp1_Foutput_1(&_L_668);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_668, ";\nstruct ", 9u, &_L_667);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_668, "struct ", 7u, &_L_667);
 _Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_668);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_667, &_L_668);
 _Tlibcp1_Tfmt_Ff_output_1(&_L_668);
 }
-_Tcp1_Tat_Fwrite_space_1((*_Ls_660)._Mat);
-if((*_Ls_660)._Mfvar_c == 0) {
+_Tcp1_Tat_Fwrite_space_1((*_Ls_664)._Mat);
+if(((*_Ls_664)._Mflags & _Tcp1_Tstruct_flags_Cunion) != _Tcp1_Tstruct_flags_C0) {
 struct _Tlibcp1_Tfmt_Tf_cstr _L_669 = {0};
 struct _Tlibcp1_Tfmt _L_670 = {0};
 _Tcp1_Foutput_1(&_L_670);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_670, " {\nchar unused;\n}", 17u, &_L_669);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_670, ";\nunion ", 8u, &_L_669);
 _Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_670);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_669, &_L_670);
 _Tlibcp1_Tfmt_Ff_output_1(&_L_670);
 } else {
 struct _Tlibcp1_Tfmt_Tf_cstr _L_671 = {0};
 struct _Tlibcp1_Tfmt _L_672 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_677 = {0};
-struct _Tlibcp1_Tfmt _L_678 = {0};
 _Tcp1_Foutput_1(&_L_672);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_672, " {\n", 3u, &_L_671);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_672, ";\nstruct ", 9u, &_L_671);
 _Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_672);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_671, &_L_672);
 _Tlibcp1_Tfmt_Ff_output_1(&_L_672);
-int32_t _Lj_673;
-_Lj_673 = ((int32_t)(0));
-for(int i = (*_Ls_660)._Mfvar_c; i > 0; ) {
-i --;
-struct _Tcp1_Tfvar_data* _Lfvar_674;
+}
+_Tcp1_Tat_Fwrite_space_1((*_Ls_664)._Mat);
+if((*_Ls_664)._Mfvar_c == 0) {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_673 = {0};
+struct _Tlibcp1_Tfmt _L_674 = {0};
+_Tcp1_Foutput_1(&_L_674);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_674, " {\nchar unused;\n}", 17u, &_L_673);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_674);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_673, &_L_674);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_674);
+} else {
 struct _Tlibcp1_Tfmt_Tf_cstr _L_675 = {0};
 struct _Tlibcp1_Tfmt _L_676 = {0};
-_Lfvar_674 = ((struct _Tcp1_Tfvar_data*)((&(*_Ls_660)._Mfvar_v[_Lj_673])));
-_Tcp1_Tdecl_var_data_Fwrite_type_fvar_1(&(*_Lfvar_674)._Mdecl);
+struct _Tlibcp1_Tfmt_Tf_cstr _L_681 = {0};
+struct _Tlibcp1_Tfmt _L_682 = {0};
 _Tcp1_Foutput_1(&_L_676);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_676, ";\n", 2u, &_L_675);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_676, " {\n", 3u, &_L_675);
 _Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_676);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_675, &_L_676);
 _Tlibcp1_Tfmt_Ff_output_1(&_L_676);
-continue_38:;
-_Lj_673++;
-}
-break_38:;
-_Tcp1_Foutput_1(&_L_678);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_678, "}", 1u, &_L_677);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_678);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_677, &_L_678);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_678);
-}
-if(((*_Ls_660)._Mflags & _Tcp1_Tstruct_flags_Caligned) != _Tcp1_Tstruct_flags_C0) {
+int32_t _Lj_677;
+_Lj_677 = ((int32_t)(0));
+for(int i = (*_Ls_664)._Mfvar_c; i > 0; ) {
+i --;
+struct _Tcp1_Tfvar_data* _Lfvar_678;
 struct _Tlibcp1_Tfmt_Tf_cstr _L_679 = {0};
-struct _Tlibcp1_Tfmt_Tf_u32 _L_680 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_681 = {0};
-struct _Tlibcp1_Tfmt _L_682 = {0};
+struct _Tlibcp1_Tfmt _L_680 = {0};
+_Lfvar_678 = ((struct _Tcp1_Tfvar_data*)((&(*_Ls_664)._Mfvar_v[_Lj_677])));
+_Tcp1_Tdecl_var_data_Fwrite_type_fvar_1(&(*_Lfvar_678)._Mdecl);
+_Tcp1_Foutput_1(&_L_680);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_680, ";\n", 2u, &_L_679);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_680);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_679, &_L_680);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_680);
+continue_39:;
+_Lj_677++;
+}
+break_39:;
 _Tcp1_Foutput_1(&_L_682);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_682, " __attribute__((aligned(", 24u, &_L_679);
-_Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2((*_Ls_660)._Maligned, &_L_682, &_L_680);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_682, ")))", 3u, &_L_681);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_682, "}", 1u, &_L_681);
 _Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_682);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_679, &_L_682);
-_Tlibcp1_Tfmt_Tf_u32_Ff_2(&_L_680, &_L_682);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_681, &_L_682);
 _Tlibcp1_Tfmt_Ff_output_1(&_L_682);
 }
-_Tcp1_Foutput_1(&_L_684);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_684, ";\n", 2u, &_L_683);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_684);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_683, &_L_684);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_684);
-continue_37:;
-_Li_658++;
+if(((*_Ls_664)._Mflags & _Tcp1_Tstruct_flags_Caligned) != _Tcp1_Tstruct_flags_C0) {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_683 = {0};
+struct _Tlibcp1_Tfmt_Tf_u32 _L_684 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_685 = {0};
+struct _Tlibcp1_Tfmt _L_686 = {0};
+_Tcp1_Foutput_1(&_L_686);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_686, " __attribute__((aligned(", 24u, &_L_683);
+_Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2((*_Ls_664)._Maligned, &_L_686, &_L_684);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_686, ")))", 3u, &_L_685);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_686);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_683, &_L_686);
+_Tlibcp1_Tfmt_Tf_u32_Ff_2(&_L_684, &_L_686);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_685, &_L_686);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_686);
 }
-break_37:;
-int32_t _Li_685;
-_Li_685 = ((int32_t)(0));
+_Tcp1_Foutput_1(&_L_688);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_688, ";\n", 2u, &_L_687);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_688);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_687, &_L_688);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_688);
+continue_38:;
+_Li_662++;
+}
+break_38:;
+int32_t _Li_689;
+_Li_689 = ((int32_t)(0));
 for(int i = _Tcp1_Ggvar_outputted_c; i > 0; ) {
 i --;
-_Tcp1_Tgvar _Lg_i_686;
-struct _Tcp1_Tdecl_gvar* _Lg_687;
-struct _Tlibcp1_Tfmt_Tf_cstr _L_694 = {0};
-struct _Tlibcp1_Tfmt _L_695 = {0};
-_Lg_i_686 = ((_Tcp1_Tgvar)(_Tcp1_Ggvar_outputted_v[_Li_685]));
-_Lg_687 = ((struct _Tcp1_Tdecl_gvar*)(_Tcp1_Tgvar_Fptr_1(_Lg_i_686)));
-if(((*_Lg_687)._Mdecl._Mflags & _Tcp1_Tvar_flags_Cno_decl) != _Tcp1_Tvar_flags_C0) {
-goto continue_39;
-}
-if(_Lkeyword_for_gvar_15 != NULL) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_688 = {0};
-struct _Tlibcp1_Tfmt_Tf_char _L_689 = {0};
-struct _Tlibcp1_Tfmt _L_691 = {0};
-_Tcp1_Foutput_1(&_L_691);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lkeyword_for_gvar_15, _Lkeyword_for_gvar_len_16, &_L_691, &_L_688);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(' ', &_L_691, &_L_689);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_691);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_688, &_L_691);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_689, &_L_691);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_691);
-}
-if(((*_Lg_687)._Mdecl._Mflags & _Tcp1_Tvar_flags_Cextern) != _Tcp1_Tvar_flags_C0) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_692 = {0};
-struct _Tlibcp1_Tfmt _L_693 = {0};
-_Tcp1_Foutput_1(&_L_693);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_693, "extern ", 7u, &_L_692);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_693);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_692, &_L_693);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_693);
-}
-_Tcp1_Tdecl_var_data_Fwrite_type_gvar_2(&(*_Lg_687)._Mdecl, (*_Lg_687)._Mat);
-_Tcp1_Foutput_1(&_L_695);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_695, ";\n", 2u, &_L_694);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_695);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_694, &_L_695);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_695);
-continue_39:;
-_Li_685++;
-}
-break_39:;
-int32_t _Li_696;
-_Li_696 = ((int32_t)(0));
-for(int i = _Tcp1_Gfunc_head_outputted_c; i > 0; ) {
-i --;
-_Tcp1_Tfunc _Lf_idx_697;
-struct _Tcp1_Tdecl_func* _Lf_698;
-struct _Tlibcp1_Tfmt_Tf_char _L_723 = {0};
-struct _Tlibcp1_Tfmt _L_724 = {0};
-struct _Tlibcp1_Tfmt_Tf_char _L_725 = {0};
-struct _Tlibcp1_Tfmt _L_726 = {0};
-_Lf_idx_697 = ((_Tcp1_Tfunc)(_Tcp1_Gfunc_head_outputted_v[_Li_696]));
-_Lf_698 = ((struct _Tcp1_Tdecl_func*)(_Tcp1_Tfunc_Fptr_1(_Lf_idx_697)));
-if(((*_Lf_698)._Mflags & _Tcp1_Tfunc_flags_Cno_decl) != _Tcp1_Tfunc_flags_C0) {
+_Tcp1_Tgvar _Lg_i_690;
+struct _Tcp1_Tdecl_gvar* _Lg_691;
+struct _Tlibcp1_Tfmt_Tf_cstr _L_698 = {0};
+struct _Tlibcp1_Tfmt _L_699 = {0};
+_Lg_i_690 = ((_Tcp1_Tgvar)(_Tcp1_Ggvar_outputted_v[_Li_689]));
+_Lg_691 = ((struct _Tcp1_Tdecl_gvar*)(_Tcp1_Tgvar_Fptr_1(_Lg_i_690)));
+if(((*_Lg_691)._Mdecl._Mflags & _Tcp1_Tvar_flags_Cno_decl) != _Tcp1_Tvar_flags_C0) {
 goto continue_40;
 }
-if(((*_Lf_698)._Mflags & _Tcp1_Tfunc_flags_Cdecl) != _Tcp1_Tfunc_flags_C0) {
-struct _Tlibcp1_Tfmt_Tf_char _L_717 = {0};
-struct _Tlibcp1_Tfmt _L_718 = {0};
-if((((*_Lf_698)._Mdecl_str[0] == '#') && ((*_Lf_698)._Mdecl_str[1] == ' '))) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_699 = {0};
-struct _Tlibcp1_Tfmt _L_700 = {0};
-struct _Tlibcp1_Tfmt_Tf_char _L_701 = {0};
-struct _Tlibcp1_Tfmt _L_702 = {0};
+if(_Lkeyword_for_gvar_15 != NULL) {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_692 = {0};
+struct _Tlibcp1_Tfmt_Tf_char _L_693 = {0};
+struct _Tlibcp1_Tfmt _L_695 = {0};
+_Tcp1_Foutput_1(&_L_695);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lkeyword_for_gvar_15, _Lkeyword_for_gvar_len_16, &_L_695, &_L_692);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(' ', &_L_695, &_L_693);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_695);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_692, &_L_695);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_693, &_L_695);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_695);
+}
+if(((*_Lg_691)._Mdecl._Mflags & _Tcp1_Tvar_flags_Cextern) != _Tcp1_Tvar_flags_C0) {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_696 = {0};
+struct _Tlibcp1_Tfmt _L_697 = {0};
+_Tcp1_Foutput_1(&_L_697);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_697, "extern ", 7u, &_L_696);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_697);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_696, &_L_697);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_697);
+}
+_Tcp1_Tdecl_var_data_Fwrite_type_gvar_2(&(*_Lg_691)._Mdecl, (*_Lg_691)._Mat);
+_Tcp1_Foutput_1(&_L_699);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_699, ";\n", 2u, &_L_698);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_699);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_698, &_L_699);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_699);
+continue_40:;
+_Li_689++;
+}
+break_40:;
+int32_t _Li_700;
+_Li_700 = ((int32_t)(0));
+for(int i = _Tcp1_Gfunc_head_outputted_c; i > 0; ) {
+i --;
+_Tcp1_Tfunc _Lf_idx_701;
+struct _Tcp1_Tdecl_func* _Lf_702;
+struct _Tlibcp1_Tfmt_Tf_char _L_727 = {0};
+struct _Tlibcp1_Tfmt _L_728 = {0};
+struct _Tlibcp1_Tfmt_Tf_char _L_729 = {0};
+struct _Tlibcp1_Tfmt _L_730 = {0};
+_Lf_idx_701 = ((_Tcp1_Tfunc)(_Tcp1_Gfunc_head_outputted_v[_Li_700]));
+_Lf_702 = ((struct _Tcp1_Tdecl_func*)(_Tcp1_Tfunc_Fptr_1(_Lf_idx_701)));
+if(((*_Lf_702)._Mflags & _Tcp1_Tfunc_flags_Cno_decl) != _Tcp1_Tfunc_flags_C0) {
+goto continue_41;
+}
+if(((*_Lf_702)._Mflags & _Tcp1_Tfunc_flags_Cdecl) != _Tcp1_Tfunc_flags_C0) {
+struct _Tlibcp1_Tfmt_Tf_char _L_721 = {0};
+struct _Tlibcp1_Tfmt _L_722 = {0};
+if((((*_Lf_702)._Mdecl_str[0] == '#') && ((*_Lf_702)._Mdecl_str[1] == ' '))) {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_703 = {0};
+struct _Tlibcp1_Tfmt _L_704 = {0};
+struct _Tlibcp1_Tfmt_Tf_char _L_705 = {0};
+struct _Tlibcp1_Tfmt _L_706 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_712 = {0};
+struct _Tlibcp1_Tfmt _L_713 = {0};
+union _Tcp1_Trdr _Lr_714;
+struct _Tlibcp1_Tfmt_Tf_cstr _L_715 = {0};
+struct _Tlibcp1_Tfmt _L_717 = {0};
+_Tcp1_Foutput_1(&_L_704);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_704, "#define ", 8u, &_L_703);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_704);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_703, &_L_704);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_704);
+_Tcp1_Tdecl_func_Fwrite_1(_Lf_702);
+_Tcp1_Foutput_1(&_L_706);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('(', &_L_706, &_L_705);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_706);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_705, &_L_706);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_706);
+int32_t _Lj_707;
+_Lj_707 = ((int32_t)(0));
+for(int i = (*_Lf_702)._Mfarg_c; i > 0; ) {
+i --;
+struct _Tlibcp1_Tfmt_Tf_cstr _L_710 = {0};
+struct _Tlibcp1_Tfmt _L_711 = {0};
+if(_Lj_707 != 0) {
 struct _Tlibcp1_Tfmt_Tf_cstr _L_708 = {0};
 struct _Tlibcp1_Tfmt _L_709 = {0};
-union _Tcp1_Trdr _Lr_710;
-struct _Tlibcp1_Tfmt_Tf_cstr _L_711 = {0};
-struct _Tlibcp1_Tfmt _L_713 = {0};
-_Tcp1_Foutput_1(&_L_700);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_700, "#define ", 8u, &_L_699);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_700);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_699, &_L_700);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_700);
-_Tcp1_Tdecl_func_Fwrite_1(_Lf_698);
-_Tcp1_Foutput_1(&_L_702);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('(', &_L_702, &_L_701);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_702);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_701, &_L_702);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_702);
-int32_t _Lj_703;
-_Lj_703 = ((int32_t)(0));
-for(int i = (*_Lf_698)._Mfarg_c; i > 0; ) {
-i --;
-struct _Tlibcp1_Tfmt_Tf_cstr _L_706 = {0};
-struct _Tlibcp1_Tfmt _L_707 = {0};
-if(_Lj_703 != 0) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_704 = {0};
-struct _Tlibcp1_Tfmt _L_705 = {0};
-_Tcp1_Foutput_1(&_L_705);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_705, ", ", 2u, &_L_704);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_705);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_704, &_L_705);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_705);
-}
-_Tcp1_Foutput_1(&_L_707);
-_Tlibcp1_Tfmt_Ff_reserve_Tid_1_2((*_Lf_698)._Mfarg_v[_Lj_703]._Mdecl._Mname, &_L_707, &_L_706);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_707);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_706, &_L_707);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_707);
-continue_41:;
-_Lj_703++;
-}
-break_41:;
 _Tcp1_Foutput_1(&_L_709);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_709, ") ", 2u, &_L_708);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_709, ", ", 2u, &_L_708);
 _Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_709);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_708, &_L_709);
 _Tlibcp1_Tfmt_Ff_output_1(&_L_709);
-_Lr_710._Mref = (*_Lf_698)._Mdecl_str;
-_Lr_710._Mpos += 2;
-_Tcp1_Foutput_1(&_L_713);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lr_710._Mchar, (*_Lf_698)._Mdecl_len - 2, &_L_713, &_L_711);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_713);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_711, &_L_713);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_713);
-} else {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_714 = {0};
-struct _Tlibcp1_Tfmt _L_716 = {0};
-_Tcp1_Foutput_1(&_L_716);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3((*_Lf_698)._Mdecl_str, (*_Lf_698)._Mdecl_len, &_L_716, &_L_714);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_716);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_714, &_L_716);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_716);
 }
-_Tcp1_Foutput_1(&_L_718);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\n', &_L_718, &_L_717);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_718);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_717, &_L_718);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_718);
-goto continue_40;
-}
-_Tcp1_Gctx_func = _Lf_698;
-if(((*_Lf_698)._Mflags & _Tcp1_Tfunc_flags_Cinline) != _Tcp1_Tfunc_flags_C0) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_719 = {0};
-struct _Tlibcp1_Tfmt _L_720 = {0};
-_Tcp1_Foutput_1(&_L_720);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_720, "static inline ", 14u, &_L_719);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_720);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_719, &_L_720);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_720);
-}
-if((*_Lf_698)._Mdecl._Mtype == _Tcp1_Tat_Cnil) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_721 = {0};
-struct _Tlibcp1_Tfmt _L_722 = {0};
-_Tcp1_Foutput_1(&_L_722);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_722, "void", 4u, &_L_721);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_722);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_721, &_L_722);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_722);
-} else {
-_Tcp1_Tat_Fwrite_type_info_3((*_Lf_698)._Mdecl._Mtype, &(*_Lf_698)._Mdecl._Mtype_info, 0);
-}
-_Tcp1_Foutput_1(&_L_724);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(' ', &_L_724, &_L_723);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_724);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_723, &_L_724);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_724);
-_Tcp1_Tdecl_func_Fwrite_1(_Lf_698);
-_Tcp1_Foutput_1(&_L_726);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('(', &_L_726, &_L_725);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_726);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_725, &_L_726);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_726);
-int32_t _Lj_727;
-_Lj_727 = ((int32_t)(0));
-for(int i = (*_Lf_698)._Mfarg_c; i > 0; ) {
-i --;
-if(_Lj_727 != 0) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_728 = {0};
-struct _Tlibcp1_Tfmt _L_729 = {0};
-_Tcp1_Foutput_1(&_L_729);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_729, ", ", 2u, &_L_728);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_729);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_728, &_L_729);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_729);
-}
-_Tcp1_Tdecl_var_data_Fwrite_lvar_type_2(&(*_Lf_698)._Mfarg_v[_Lj_727]._Mdecl, ((_Tcp1_Tlvar)(_Lj_727)));
+_Tcp1_Foutput_1(&_L_711);
+_Tlibcp1_Tfmt_Ff_reserve_Tid_1_2((*_Lf_702)._Mfarg_v[_Lj_707]._Mdecl._Mname, &_L_711, &_L_710);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_711);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_710, &_L_711);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_711);
 continue_42:;
-_Lj_727++;
+_Lj_707++;
 }
 break_42:;
-if(((*_Lf_698)._Mflags & _Tcp1_Tfunc_flags_Ccp1_name) != _Tcp1_Tfunc_flags_C0) {
-struct _Tcp1_Tat_data* _Lat_737;
-if(_Lcomment_for_func_13 != NULL) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_730 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_731 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_732 = {0};
-struct _Tlibcp1_Tfmt _L_734 = {0};
-_Tcp1_Foutput_1(&_L_734);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_734, ") { // ", 7u, &_L_730);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_734, &_L_731);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_734, "\nswitch(_Le_0) {\n", 17u, &_L_732);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_734);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_730, &_L_734);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_731, &_L_734);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_732, &_L_734);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_734);
+_Tcp1_Foutput_1(&_L_713);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_713, ") ", 2u, &_L_712);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_713);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_712, &_L_713);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_713);
+_Lr_714._Mref = (*_Lf_702)._Mdecl_str;
+_Lr_714._Mpos += 2;
+_Tcp1_Foutput_1(&_L_717);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lr_714._Mchar, (*_Lf_702)._Mdecl_len - 2, &_L_717, &_L_715);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_717);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_715, &_L_717);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_717);
 } else {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_735 = {0};
-struct _Tlibcp1_Tfmt _L_736 = {0};
-_Tcp1_Foutput_1(&_L_736);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_736, ") {\nswitch(_Le_0) {\n", 20u, &_L_735);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_736);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_735, &_L_736);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_736);
+struct _Tlibcp1_Tfmt_Tf_cstr _L_718 = {0};
+struct _Tlibcp1_Tfmt _L_720 = {0};
+_Tcp1_Foutput_1(&_L_720);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3((*_Lf_702)._Mdecl_str, (*_Lf_702)._Mdecl_len, &_L_720, &_L_718);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_720);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_718, &_L_720);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_720);
 }
-_Lat_737 = ((struct _Tcp1_Tat_data*)(_Tcp1_Tat_Fptr_1((*_Lf_698)._Mat)));
-int32_t _Lj_738;
-_Tcp1_Tcvar* _Lv_739;
-_Lj_738 = ((int32_t)(0));
-_Lv_739 = ((_Tcp1_Tcvar*)((*_Lat_737)._Mcvar_v));
-for(int i = (*_Lat_737)._Mcvar_c; i > 0; ) {
+_Tcp1_Foutput_1(&_L_722);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\n', &_L_722, &_L_721);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_722);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_721, &_L_722);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_722);
+goto continue_41;
+}
+_Tcp1_Gctx_func = _Lf_702;
+if(((*_Lf_702)._Mflags & _Tcp1_Tfunc_flags_Cinline) != _Tcp1_Tfunc_flags_C0) {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_723 = {0};
+struct _Tlibcp1_Tfmt _L_724 = {0};
+_Tcp1_Foutput_1(&_L_724);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_724, "static inline ", 14u, &_L_723);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_724);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_723, &_L_724);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_724);
+}
+if((*_Lf_702)._Mdecl._Mtype == _Tcp1_Tat_Cnil) {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_725 = {0};
+struct _Tlibcp1_Tfmt _L_726 = {0};
+_Tcp1_Foutput_1(&_L_726);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_726, "void", 4u, &_L_725);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_726);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_725, &_L_726);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_726);
+} else {
+_Tcp1_Tat_Fwrite_type_info_3((*_Lf_702)._Mdecl._Mtype, &(*_Lf_702)._Mdecl._Mtype_info, 0);
+}
+_Tcp1_Foutput_1(&_L_728);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(' ', &_L_728, &_L_727);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_728);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_727, &_L_728);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_728);
+_Tcp1_Tdecl_func_Fwrite_1(_Lf_702);
+_Tcp1_Foutput_1(&_L_730);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('(', &_L_730, &_L_729);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_730);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_729, &_L_730);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_730);
+int32_t _Lj_731;
+_Lj_731 = ((int32_t)(0));
+for(int i = (*_Lf_702)._Mfarg_c; i > 0; ) {
 i --;
-_Tcp1_Tcvar _Lcvar_i_740;
-struct _Tcp1_Tcvar_data* _Lcvar_741;
-struct _Tlibcp1_Tfmt_Tf_cstr _L_742 = {0};
-struct _Tlibcp1_Tfmt _L_743 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_744 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_745 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_746 = {0};
-struct _Tlibcp1_Tfmt _L_747 = {0};
-_Lcvar_i_740 = ((_Tcp1_Tcvar)(_Lv_739[_Lj_738]));
-_Lcvar_741 = ((struct _Tcp1_Tcvar_data*)(_Tcp1_Tcvar_Fptr_1(_Lcvar_i_740)));
-if(((*_Lcvar_741)._Mflags & _Tcp1_Tcvar_flags_Cas_enum) == _Tcp1_Tcvar_flags_C0) {
-goto continue_43;
+if(_Lj_731 != 0) {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_732 = {0};
+struct _Tlibcp1_Tfmt _L_733 = {0};
+_Tcp1_Foutput_1(&_L_733);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_733, ", ", 2u, &_L_732);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_733);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_732, &_L_733);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_733);
 }
-if(((*_Lcvar_741)._Mflags & _Tcp1_Tcvar_flags_Cno_name) != _Tcp1_Tcvar_flags_C0) {
-goto continue_43;
-}
-_Tcp1_Foutput_1(&_L_743);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_743, "case ", 5u, &_L_742);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_743);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_742, &_L_743);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_743);
-_Tcp1_Tcvar_Fwrite_1(_Lcvar_i_740);
-_Tcp1_Foutput_1(&_L_747);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_747, ": return \"", 10u, &_L_744);
-_Tlibcp1_Tfmt_Ff_reserve_Tid_1_2((*_Lcvar_741)._Mdecl._Mname, &_L_747, &_L_745);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_747, "\";\n", 3u, &_L_746);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_747);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_744, &_L_747);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_745, &_L_747);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_746, &_L_747);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_747);
+_Tcp1_Tdecl_var_data_Fwrite_lvar_type_2(&(*_Lf_702)._Mfarg_v[_Lj_731]._Mdecl, ((_Tcp1_Tlvar)(_Lj_731)));
 continue_43:;
-_Lj_738++;
+_Lj_731++;
 }
 break_43:;
+if(((*_Lf_702)._Mflags & _Tcp1_Tfunc_flags_Ccp1_name) != _Tcp1_Tfunc_flags_C0) {
+struct _Tcp1_Tat_data* _Lat_741;
 if(_Lcomment_for_func_13 != NULL) {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_734 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_735 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_736 = {0};
+struct _Tlibcp1_Tfmt _L_738 = {0};
+_Tcp1_Foutput_1(&_L_738);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_738, ") { // ", 7u, &_L_734);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_738, &_L_735);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_738, "\nswitch(_Le_0) {\n", 17u, &_L_736);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_738);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_734, &_L_738);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_735, &_L_738);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_736, &_L_738);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_738);
+} else {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_739 = {0};
+struct _Tlibcp1_Tfmt _L_740 = {0};
+_Tcp1_Foutput_1(&_L_740);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_740, ") {\nswitch(_Le_0) {\n", 20u, &_L_739);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_740);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_739, &_L_740);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_740);
+}
+_Lat_741 = ((struct _Tcp1_Tat_data*)(_Tcp1_Tat_Fptr_1((*_Lf_702)._Mat)));
+int32_t _Lj_742;
+_Tcp1_Tcvar* _Lv_743;
+_Lj_742 = ((int32_t)(0));
+_Lv_743 = ((_Tcp1_Tcvar*)((*_Lat_741)._Mcvar_v));
+for(int i = (*_Lat_741)._Mcvar_c; i > 0; ) {
+i --;
+_Tcp1_Tcvar _Lcvar_i_744;
+struct _Tcp1_Tcvar_data* _Lcvar_745;
+struct _Tlibcp1_Tfmt_Tf_cstr _L_746 = {0};
+struct _Tlibcp1_Tfmt _L_747 = {0};
 struct _Tlibcp1_Tfmt_Tf_cstr _L_748 = {0};
 struct _Tlibcp1_Tfmt_Tf_cstr _L_749 = {0};
-struct _Tlibcp1_Tfmt_Tf_char _L_750 = {0};
-struct _Tlibcp1_Tfmt _L_752 = {0};
-_Tcp1_Foutput_1(&_L_752);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_752, "}\nreturn \"(ERROR)\";\n} // ", 25u, &_L_748);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_752, &_L_749);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\n', &_L_752, &_L_750);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_752);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_748, &_L_752);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_749, &_L_752);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_750, &_L_752);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_752);
-} else {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_753 = {0};
-struct _Tlibcp1_Tfmt _L_754 = {0};
-_Tcp1_Foutput_1(&_L_754);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_754, "}\nreturn \"(ERROR)\";\n}\n", 22u, &_L_753);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_754);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_753, &_L_754);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_754);
+struct _Tlibcp1_Tfmt_Tf_cstr _L_750 = {0};
+struct _Tlibcp1_Tfmt _L_751 = {0};
+_Lcvar_i_744 = ((_Tcp1_Tcvar)(_Lv_743[_Lj_742]));
+_Lcvar_745 = ((struct _Tcp1_Tcvar_data*)(_Tcp1_Tcvar_Fptr_1(_Lcvar_i_744)));
+if(((*_Lcvar_745)._Mflags & _Tcp1_Tcvar_flags_Cas_enum) == _Tcp1_Tcvar_flags_C0) {
+goto continue_44;
 }
-} else {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_755 = {0};
+if(((*_Lcvar_745)._Mflags & _Tcp1_Tcvar_flags_Cno_name) != _Tcp1_Tcvar_flags_C0) {
+goto continue_44;
+}
+_Tcp1_Foutput_1(&_L_747);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_747, "case ", 5u, &_L_746);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_747);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_746, &_L_747);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_747);
+_Tcp1_Tcvar_Fwrite_1(_Lcvar_i_744);
+_Tcp1_Foutput_1(&_L_751);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_751, ": return \"", 10u, &_L_748);
+_Tlibcp1_Tfmt_Ff_reserve_Tid_1_2((*_Lcvar_745)._Mdecl._Mname, &_L_751, &_L_749);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_751, "\";\n", 3u, &_L_750);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_751);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_748, &_L_751);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_749, &_L_751);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_750, &_L_751);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_751);
+continue_44:;
+_Lj_742++;
+}
+break_44:;
+if(_Lcomment_for_func_13 != NULL) {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_752 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_753 = {0};
+struct _Tlibcp1_Tfmt_Tf_char _L_754 = {0};
 struct _Tlibcp1_Tfmt _L_756 = {0};
 _Tcp1_Foutput_1(&_L_756);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_756, ");\n", 3u, &_L_755);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_756, "}\nreturn \"(ERROR)\";\n} // ", 25u, &_L_752);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_756, &_L_753);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\n', &_L_756, &_L_754);
 _Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_756);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_755, &_L_756);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_752, &_L_756);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_753, &_L_756);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_754, &_L_756);
 _Tlibcp1_Tfmt_Ff_output_1(&_L_756);
+} else {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_757 = {0};
+struct _Tlibcp1_Tfmt _L_758 = {0};
+_Tcp1_Foutput_1(&_L_758);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_758, "}\nreturn \"(ERROR)\";\n}\n", 22u, &_L_757);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_758);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_757, &_L_758);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_758);
 }
-continue_40:;
-_Li_696++;
+} else {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_759 = {0};
+struct _Tlibcp1_Tfmt _L_760 = {0};
+_Tcp1_Foutput_1(&_L_760);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_760, ");\n", 3u, &_L_759);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_760);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_759, &_L_760);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_760);
 }
-break_40:;
-int32_t _Li_757;
-_Li_757 = ((int32_t)(0));
+continue_41:;
+_Li_700++;
+}
+break_41:;
+int32_t _Li_761;
+_Li_761 = ((int32_t)(0));
 for(int i = _Tcp1_Gfunc_body_outputted_c; i > 0; ) {
 i --;
-_Tcp1_Tfunc _Lf_idx_758;
-struct _Tcp1_Tdecl_func* _Lf_759;
-struct _Tlibcp1_Tfmt_Tf_char _L_764 = {0};
-struct _Tlibcp1_Tfmt _L_765 = {0};
-struct _Tlibcp1_Tfmt_Tf_char _L_766 = {0};
-struct _Tlibcp1_Tfmt _L_767 = {0};
-_Lf_idx_758 = ((_Tcp1_Tfunc)(_Tcp1_Gfunc_body_outputted_v[_Li_757]));
-_Lf_759 = ((struct _Tcp1_Tdecl_func*)(_Tcp1_Tfunc_Fptr_1(_Lf_idx_758)));
-_Tcp1_Gctx_func = _Lf_759;
+_Tcp1_Tfunc _Lf_idx_762;
+struct _Tcp1_Tdecl_func* _Lf_763;
+struct _Tlibcp1_Tfmt_Tf_char _L_768 = {0};
+struct _Tlibcp1_Tfmt _L_769 = {0};
+struct _Tlibcp1_Tfmt_Tf_char _L_770 = {0};
+struct _Tlibcp1_Tfmt _L_771 = {0};
+_Lf_idx_762 = ((_Tcp1_Tfunc)(_Tcp1_Gfunc_body_outputted_v[_Li_761]));
+_Lf_763 = ((struct _Tcp1_Tdecl_func*)(_Tcp1_Tfunc_Fptr_1(_Lf_idx_762)));
+_Tcp1_Gctx_func = _Lf_763;
 _Tcp1_Gnest_id = 0;
-if(((*_Lf_759)._Mflags & _Tcp1_Tfunc_flags_Cinline) != _Tcp1_Tfunc_flags_C0) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_760 = {0};
-struct _Tlibcp1_Tfmt _L_761 = {0};
-_Tcp1_Foutput_1(&_L_761);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_761, "static inline ", 14u, &_L_760);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_761);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_760, &_L_761);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_761);
-}
-if((*_Lf_759)._Mdecl._Mtype == _Tcp1_Tat_Cnil) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_762 = {0};
-struct _Tlibcp1_Tfmt _L_763 = {0};
-_Tcp1_Foutput_1(&_L_763);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_763, "void", 4u, &_L_762);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_763);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_762, &_L_763);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_763);
-} else {
-_Tcp1_Tat_Fwrite_type_info_3((*_Lf_759)._Mdecl._Mtype, &(*_Lf_759)._Mdecl._Mtype_info, 0);
-}
+if(((*_Lf_763)._Mflags & _Tcp1_Tfunc_flags_Cinline) != _Tcp1_Tfunc_flags_C0) {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_764 = {0};
+struct _Tlibcp1_Tfmt _L_765 = {0};
 _Tcp1_Foutput_1(&_L_765);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(' ', &_L_765, &_L_764);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_765, "static inline ", 14u, &_L_764);
 _Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_765);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_764, &_L_765);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_764, &_L_765);
 _Tlibcp1_Tfmt_Ff_output_1(&_L_765);
-_Tcp1_Tdecl_func_Fwrite_1(_Lf_759);
+}
+if((*_Lf_763)._Mdecl._Mtype == _Tcp1_Tat_Cnil) {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_766 = {0};
+struct _Tlibcp1_Tfmt _L_767 = {0};
 _Tcp1_Foutput_1(&_L_767);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('(', &_L_767, &_L_766);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_767, "void", 4u, &_L_766);
 _Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_767);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_766, &_L_767);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_766, &_L_767);
 _Tlibcp1_Tfmt_Ff_output_1(&_L_767);
-int32_t _Lj_768;
-_Lj_768 = ((int32_t)(0));
-for(int i = (*_Lf_759)._Mfarg_c; i > 0; ) {
-i --;
-if(_Lj_768 != 0) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_769 = {0};
-struct _Tlibcp1_Tfmt _L_770 = {0};
-_Tcp1_Foutput_1(&_L_770);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_770, ", ", 2u, &_L_769);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_770);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_769, &_L_770);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_770);
-}
-_Tcp1_Tdecl_var_data_Fwrite_lvar_type_2(&(*_Lf_759)._Mfarg_v[_Lj_768]._Mdecl, ((_Tcp1_Tlvar)(_Lj_768)));
-continue_45:;
-_Lj_768++;
-}
-break_45:;
-if(_Lcomment_for_func_13 != NULL) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_771 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_772 = {0};
-struct _Tlibcp1_Tfmt_Tf_char _L_773 = {0};
-struct _Tlibcp1_Tfmt _L_775 = {0};
-_Tcp1_Foutput_1(&_L_775);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_775, ") { // ", 7u, &_L_771);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_775, &_L_772);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\n', &_L_775, &_L_773);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_775);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_771, &_L_775);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_772, &_L_775);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_773, &_L_775);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_775);
 } else {
+_Tcp1_Tat_Fwrite_type_info_3((*_Lf_763)._Mdecl._Mtype, &(*_Lf_763)._Mdecl._Mtype_info, 0);
+}
+_Tcp1_Foutput_1(&_L_769);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2(' ', &_L_769, &_L_768);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_769);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_768, &_L_769);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_769);
+_Tcp1_Tdecl_func_Fwrite_1(_Lf_763);
+_Tcp1_Foutput_1(&_L_771);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('(', &_L_771, &_L_770);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_771);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_770, &_L_771);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_771);
+int32_t _Lj_772;
+_Lj_772 = ((int32_t)(0));
+for(int i = (*_Lf_763)._Mfarg_c; i > 0; ) {
+i --;
+if(_Lj_772 != 0) {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_773 = {0};
+struct _Tlibcp1_Tfmt _L_774 = {0};
+_Tcp1_Foutput_1(&_L_774);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_774, ", ", 2u, &_L_773);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_774);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_773, &_L_774);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_774);
+}
+_Tcp1_Tdecl_var_data_Fwrite_lvar_type_2(&(*_Lf_763)._Mfarg_v[_Lj_772]._Mdecl, ((_Tcp1_Tlvar)(_Lj_772)));
+continue_46:;
+_Lj_772++;
+}
+break_46:;
+if(_Lcomment_for_func_13 != NULL) {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_775 = {0};
 struct _Tlibcp1_Tfmt_Tf_cstr _L_776 = {0};
-struct _Tlibcp1_Tfmt _L_777 = {0};
-_Tcp1_Foutput_1(&_L_777);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_777, ") {\n", 4u, &_L_776);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_777);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_776, &_L_777);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_777);
+struct _Tlibcp1_Tfmt_Tf_char _L_777 = {0};
+struct _Tlibcp1_Tfmt _L_779 = {0};
+_Tcp1_Foutput_1(&_L_779);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_779, ") { // ", 7u, &_L_775);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_779, &_L_776);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\n', &_L_779, &_L_777);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_779);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_775, &_L_779);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_776, &_L_779);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_777, &_L_779);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_779);
+} else {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_780 = {0};
+struct _Tlibcp1_Tfmt _L_781 = {0};
+_Tcp1_Foutput_1(&_L_781);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_781, ") {\n", 4u, &_L_780);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_781);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_780, &_L_781);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_781);
 }
 if(_Tcp1_Gdebug_func_prefix != NULL) {
-_Tcp1_Tfile _Lfile_778;
-char* _Lfile_path_779;
-uint16_t _Lfile_path_len_780;
-uint32_t _Lrow_781;
-struct _Tlibcp1_Tfmt_Tf_cstr _L_782 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_783 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_784 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_785 = {0};
-struct _Tlibcp1_Tfmt_Tf_u32 _L_786 = {0};
+_Tcp1_Tfile _Lfile_782;
+char* _Lfile_path_783;
+uint16_t _Lfile_path_len_784;
+uint32_t _Lrow_785;
+struct _Tlibcp1_Tfmt_Tf_cstr _L_786 = {0};
 struct _Tlibcp1_Tfmt_Tf_cstr _L_787 = {0};
-struct _Tlibcp1_Tfmt_Tf_u32_base _L_788 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_788 = {0};
 struct _Tlibcp1_Tfmt_Tf_cstr _L_789 = {0};
 struct _Tlibcp1_Tfmt_Tf_u32 _L_790 = {0};
 struct _Tlibcp1_Tfmt_Tf_cstr _L_791 = {0};
-struct _Tlibcp1_Tfmt _L_794 = {0};
-_Lfile_778 = ((_Tcp1_Tfile)((*_Lf_759)._Mfile));
-_Lfile_path_779 = ((char*)(_Tcp1_Tfile_Fpath_1(_Lfile_778)));
-_Lfile_path_len_780 = ((uint16_t)(_Tcp1_Tfile_Fpath_len_1(_Lfile_778)));
-_Lrow_781 = ((uint32_t)((*_Lf_759)._Mbegin_row));
-_Tcp1_Foutput_1(&_L_794);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Tcp1_Gdebug_func_prefix, &_L_794, &_L_782);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_794, "_begin(\"", 8u, &_L_783);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lfile_path_779, _Lfile_path_len_780, &_L_794, &_L_784);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_794, "\", ", 3u, &_L_785);
-_Tlibcp1_Tfmt_Ff_reserve_Tu16_1_2(_Lfile_path_len_780, &_L_794, &_L_786);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_794, ", 0x", 4u, &_L_787);
-_Tlibcp1_Tfmt_Ff_reserve_Tu32_1_3((*_Tcp1_Tfile_Fptr_1(_Lfile_778))._Mcrc32c, _Tlibcp1_Tfmt_Tu32_base_Chex, &_L_794, &_L_788);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_794, ", ", 2u, &_L_789);
-_Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Lrow_781, &_L_794, &_L_790);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_794, ");\n", 3u, &_L_791);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_794);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_782, &_L_794);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_783, &_L_794);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_784, &_L_794);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_785, &_L_794);
-_Tlibcp1_Tfmt_Tf_u32_Ff_2(&_L_786, &_L_794);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_787, &_L_794);
-_Tlibcp1_Tfmt_Tf_u32_base_Ff_2(&_L_788, &_L_794);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_789, &_L_794);
-_Tlibcp1_Tfmt_Tf_u32_Ff_2(&_L_790, &_L_794);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_791, &_L_794);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_794);
-}
-_Tcp1_Tstmt_space_Fwrite_1(&(*_Lf_759)._Mstmt_space);
-if(_Tcp1_Gdebug_func_prefix != NULL) {
+struct _Tlibcp1_Tfmt_Tf_u32_base _L_792 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_793 = {0};
+struct _Tlibcp1_Tfmt_Tf_u32 _L_794 = {0};
 struct _Tlibcp1_Tfmt_Tf_cstr _L_795 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_796 = {0};
-struct _Tlibcp1_Tfmt _L_797 = {0};
-_Tcp1_Foutput_1(&_L_797);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Tcp1_Gdebug_func_prefix, &_L_797, &_L_795);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_797, "_end();\n", 8u, &_L_796);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_797);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_795, &_L_797);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_796, &_L_797);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_797);
+struct _Tlibcp1_Tfmt _L_798 = {0};
+_Lfile_782 = ((_Tcp1_Tfile)((*_Lf_763)._Mfile));
+_Lfile_path_783 = ((char*)(_Tcp1_Tfile_Fpath_1(_Lfile_782)));
+_Lfile_path_len_784 = ((uint16_t)(_Tcp1_Tfile_Fpath_len_1(_Lfile_782)));
+_Lrow_785 = ((uint32_t)((*_Lf_763)._Mbegin_row));
+_Tcp1_Foutput_1(&_L_798);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Tcp1_Gdebug_func_prefix, &_L_798, &_L_786);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_798, "_begin(\"", 8u, &_L_787);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lfile_path_783, _Lfile_path_len_784, &_L_798, &_L_788);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_798, "\", ", 3u, &_L_789);
+_Tlibcp1_Tfmt_Ff_reserve_Tu16_1_2(_Lfile_path_len_784, &_L_798, &_L_790);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_798, ", 0x", 4u, &_L_791);
+_Tlibcp1_Tfmt_Ff_reserve_Tu32_1_3((*_Tcp1_Tfile_Fptr_1(_Lfile_782))._Mcrc32c, _Tlibcp1_Tfmt_Tu32_base_Chex, &_L_798, &_L_792);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_798, ", ", 2u, &_L_793);
+_Tlibcp1_Tfmt_Ff_reserve_Tu32_1_2(_Lrow_785, &_L_798, &_L_794);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_798, ");\n", 3u, &_L_795);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_798);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_786, &_L_798);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_787, &_L_798);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_788, &_L_798);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_789, &_L_798);
+_Tlibcp1_Tfmt_Tf_u32_Ff_2(&_L_790, &_L_798);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_791, &_L_798);
+_Tlibcp1_Tfmt_Tf_u32_base_Ff_2(&_L_792, &_L_798);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_793, &_L_798);
+_Tlibcp1_Tfmt_Tf_u32_Ff_2(&_L_794, &_L_798);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_795, &_L_798);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_798);
+}
+_Tcp1_Tstmt_space_Fwrite_1(&(*_Lf_763)._Mstmt_space);
+if(_Tcp1_Gdebug_func_prefix != NULL) {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_799 = {0};
+struct _Tlibcp1_Tfmt_Tf_cstr _L_800 = {0};
+struct _Tlibcp1_Tfmt _L_801 = {0};
+_Tcp1_Foutput_1(&_L_801);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_2(_Tcp1_Gdebug_func_prefix, &_L_801, &_L_799);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_801, "_end();\n", 8u, &_L_800);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_801);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_799, &_L_801);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_800, &_L_801);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_801);
 }
 if(_Lcomment_for_func_13 != NULL) {
-struct _Tlibcp1_Tfmt_Tf_cstr _L_798 = {0};
-struct _Tlibcp1_Tfmt_Tf_cstr _L_799 = {0};
-struct _Tlibcp1_Tfmt_Tf_char _L_800 = {0};
-struct _Tlibcp1_Tfmt _L_802 = {0};
-_Tcp1_Foutput_1(&_L_802);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_802, "} // ", 5u, &_L_798);
-_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_802, &_L_799);
-_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\n', &_L_802, &_L_800);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_802);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_798, &_L_802);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_799, &_L_802);
-_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_800, &_L_802);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_802);
-} else {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_802 = {0};
 struct _Tlibcp1_Tfmt_Tf_cstr _L_803 = {0};
-struct _Tlibcp1_Tfmt _L_804 = {0};
-_Tcp1_Foutput_1(&_L_804);
-_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_804, "}\n", 2u, &_L_803);
-_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_804);
-_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_803, &_L_804);
-_Tlibcp1_Tfmt_Ff_output_1(&_L_804);
+struct _Tlibcp1_Tfmt_Tf_char _L_804 = {0};
+struct _Tlibcp1_Tfmt _L_806 = {0};
+_Tcp1_Foutput_1(&_L_806);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_806, "} // ", 5u, &_L_802);
+_Tlibcp1_Tfmt_Ff_reserve_arr_Tchar_1_3(_Lcomment_for_func_13, _Lcomment_for_func_len_14, &_L_806, &_L_803);
+_Tlibcp1_Tfmt_Ff_reserve_Tchar_1_2('\n', &_L_806, &_L_804);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_806);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_802, &_L_806);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_803, &_L_806);
+_Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_804, &_L_806);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_806);
+} else {
+struct _Tlibcp1_Tfmt_Tf_cstr _L_807 = {0};
+struct _Tlibcp1_Tfmt _L_808 = {0};
+_Tcp1_Foutput_1(&_L_808);
+_Tlibcp1_Tfmt_Ff_reserve_cstr_4(&_L_808, "}\n", 2u, &_L_807);
+_Tlibcp1_Tfmt_Ff_reserve_output_1(&_L_808);
+_Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_807, &_L_808);
+_Tlibcp1_Tfmt_Ff_output_1(&_L_808);
 }
-continue_44:;
-_Li_757++;
+continue_45:;
+_Li_761++;
 }
-break_44:;
+break_45:;
 _Tcp1_Fwrite_file_3(_Loutput_file_10, output_data, output_len);
 _Tcp1_Fdeps_close_0();
-int32_t ret_2007_4 = 0;
-return ret_2007_4;
+int32_t ret_2027_4 = 0;
+return ret_2027_4;
 }
 void stdout_then_print_error(char* _Lbuf_0, uint32_t _Llen_1) {
 write(((_Tposix_Tfd)(1)), _Lbuf_0, _Llen_1);
@@ -6778,8 +6808,8 @@ _Lnum_1 = ((uint32_t)(((uint32_t)(_Lf_idx_0))));
 _Ln3_2 = ((uint32_t)((_Lnum_1 >> 3)));
 _Ln17_3 = ((int32_t)((1 << (_Lnum_1 & 7))));
 if((_Tcp1_Gfunc_in_process[_Ln3_2] & _Ln17_3) != 0) {
-bool ret_2020_46 = true;
-return ret_2020_46;
+bool ret_2040_46 = true;
+return ret_2040_46;
 }
 _Tcp1_Gfunc_in_process[_Ln3_2] |= _Ln17_3;
 _Lf_4 = ((struct _Tcp1_Tdecl_func*)(_Tcp1_Tfunc_Fptr_1(_Lf_idx_0)));
@@ -6794,8 +6824,8 @@ _Lj_10 = ((int32_t)(0));
 for(int i = (*_Lf_4)._Mfarg_c; i > 0; ) {
 i --;
 if(!_Tcp1_Tdecl_var_data_Fprocess_5(&(*_Lf_4)._Mfarg_v[_Lj_10]._Mdecl, _Lf_file_7, (*_Lf_4)._Mfarg_v[_Lj_10]._Mrow, (*_Lf_4)._Mfarg_v[_Lj_10]._Mcol, _Lf_at_6)) {
-bool ret_2031_13 = false;
-return ret_2031_13;
+bool ret_2051_13 = false;
+return ret_2051_13;
 }
 continue_0:;
 _Lj_10++;
@@ -6805,8 +6835,8 @@ if((*_Lf_4)._Mdecl._Mtype != _Tcp1_Tat_Cnil) {
 struct _Tcp1_Tat_data* _Lat_11;
 (*_Lf_4)._Mdecl._Mtype = _Tcp1_Fat_validate_5((*_Lf_4)._Mdecl._Mtype, _Lf_at_6, _Lf_file_7, _Lf_row_8, _Lf_col_9);
 if((*_Lf_4)._Mdecl._Mtype == _Tcp1_Tat_Cnil) {
-bool ret_2037_13 = false;
-return ret_2037_13;
+bool ret_2057_13 = false;
+return ret_2057_13;
 }
 _Lat_11 = ((struct _Tcp1_Tat_data*)(_Tcp1_Tat_Fptr_1((*_Lf_4)._Mdecl._Mtype)));
 if((((*_Lat_11)._Mtype != _Tcp1_Tname_type_Cbasic) && ((*_Lat_11)._Mdecl._Mstructt == _Tcp1_Tstruct_Cnil))) {
@@ -6912,8 +6942,8 @@ memcpy(&_Lname_30[(_Lprefix_len_26 + 1)], _Lend_str_28, _Lend_len_29 + 1);
 }
 }
 _Tcp1_Gctx_func = _Lold_ctx_func_5;
-bool ret_2107_7 = true;
-return ret_2107_7;
+bool ret_2127_7 = true;
+return ret_2127_7;
 }
 bool _Tcp1_Tfunc_Fprocess_now_1(_Tcp1_Tfunc _Lf_idx_0) {
 struct _Tcp1_Tdecl_func* _Lf_1;
@@ -6937,8 +6967,8 @@ _Tcp1_Gctx_begin_col = (*_Ls_4)._Mbegin_col;
 _Tcp1_Gctx_end_row = (*_Ls_4)._Mend_row;
 _Tcp1_Gctx_end_col = (*_Ls_4)._Mend_col;
 if(!_Tcp1_Tstmt_Fprocess_1(_Ls_4)) {
-bool ret_2156_13 = false;
-return ret_2156_13;
+bool ret_2176_13 = false;
+return ret_2176_13;
 }
 _Ls_4 = (*_Ls_4)._Mstmt_next;
 continue_0:;
@@ -6947,8 +6977,8 @@ break_0:;
 if(((*_Lf_1)._Mflags & _Tcp1_Tfunc_flags_Cno_body) == _Tcp1_Tfunc_flags_C0) {
 _Tcp1_Gfunc_body_outputted_v[_Tcp1_Gfunc_body_outputted_c++] = _Lf_idx_0;
 }
-bool ret_2174_7 = true;
-return ret_2174_7;
+bool ret_2194_7 = true;
+return ret_2194_7;
 }
 static inline bool _Tcp1_Tlvar_Fprocess_1(_Tcp1_Tlvar _Ll_0) {
 struct _Tcp1_Tlvar_data* _Llvar_1;
@@ -7304,6 +7334,77 @@ _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_12, &_L_14);
 _Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_13, &_L_14);
 _Tlibcp1_Tfmt_Ff_stdout_1(&_L_14);
 break;
+}
+}
+static inline void _Tlibcp1_Tfmt_Ff_reserve_Ti32_1_2(int32_t _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2) {
+(*_Lfmt_1)._Mcap += 11;
+(*_Lf_2)._Mi32 = _Li_0;
+}
+static inline void _Tlibcp1_Tfmt_Tf_i32_Ff_2(struct _Tlibcp1_Tfmt_Tf_i32* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
+int32_t _Lval_2;
+_Lval_2 = ((int32_t)((*_Lf_0)._Mi32));
+if(_Lval_2 == 0) {
+(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen++] = '0';
+} else if(_Lval_2 < 0) {
+char* _Ldata_3 = {0};
+int32_t _Ldigits_4;
+int32_t _Lstart_5;
+int32_t _Lend_6;
+_Lval_2 = -_Lval_2;
+(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen++] = '-';
+_Ldata_3 = ((void*)&(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen]);
+_Ldigits_4 = ((int32_t)(0));
+while(1) {
+_Ldata_3[_Ldigits_4++] = ((_Lval_2 % 10) + '0');
+_Lval_2 /= 10;
+if(_Lval_2 == 0) {
+goto break_0;
+}
+continue_0:;
+}
+break_0:;
+_Lstart_5 = ((int32_t)(0));
+_Lend_6 = ((int32_t)((_Ldigits_4 - 1)));
+while(_Lstart_5 < _Lend_6) {
+char _Ltmp_7;
+_Ltmp_7 = ((char)(_Ldata_3[_Lstart_5]));
+_Ldata_3[_Lstart_5] = _Ldata_3[_Lend_6];
+_Ldata_3[_Lend_6] = _Ltmp_7;
+_Lstart_5++;
+_Lend_6--;
+continue_1:;
+}
+break_1:;
+(*_Lfmt_1)._Mlen += _Ldigits_4;
+} else {
+char* _Ldata_8 = {0};
+int32_t _Ldigits_9;
+int32_t _Lstart_10;
+int32_t _Lend_11;
+_Ldata_8 = ((void*)&(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen]);
+_Ldigits_9 = ((int32_t)(0));
+while(1) {
+_Ldata_8[_Ldigits_9++] = ((_Lval_2 % 10) + '0');
+_Lval_2 /= 10;
+if(_Lval_2 == 0) {
+goto break_2;
+}
+continue_2:;
+}
+break_2:;
+_Lstart_10 = ((int32_t)(0));
+_Lend_11 = ((int32_t)((_Ldigits_9 - 1)));
+while(_Lstart_10 < _Lend_11) {
+char _Ltmp_12;
+_Ltmp_12 = ((char)(_Ldata_8[_Lstart_10]));
+_Ldata_8[_Lstart_10] = _Ldata_8[_Lend_11];
+_Ldata_8[_Lend_11] = _Ltmp_12;
+_Lstart_10++;
+_Lend_11--;
+continue_3:;
+}
+break_3:;
+(*_Lfmt_1)._Mlen += _Ldigits_9;
 }
 }
 void _Tcp1_Tat_Fwrite_1(_Tcp1_Tat _Lat_idx_0) {
@@ -16102,77 +16203,6 @@ void _Tcp1_Tgvar_Fwrite_1(_Tcp1_Tgvar _Lg_0) {
 struct _Tcp1_Tdecl_gvar* _Lgvar_1;
 _Lgvar_1 = ((struct _Tcp1_Tdecl_gvar*)(_Tcp1_Tgvar_Fptr_1(_Lg_0)));
 _Tcp1_Tdecl_var_data_Fwrite_gvar_2(&(*_Lgvar_1)._Mdecl, (*_Lgvar_1)._Mat);
-}
-static inline void _Tlibcp1_Tfmt_Ff_reserve_Ti32_1_2(int32_t _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_i32* _Lf_2) {
-(*_Lfmt_1)._Mcap += 11;
-(*_Lf_2)._Mi32 = _Li_0;
-}
-static inline void _Tlibcp1_Tfmt_Tf_i32_Ff_2(struct _Tlibcp1_Tfmt_Tf_i32* _Lf_0, struct _Tlibcp1_Tfmt* _Lfmt_1) {
-int32_t _Lval_2;
-_Lval_2 = ((int32_t)((*_Lf_0)._Mi32));
-if(_Lval_2 == 0) {
-(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen++] = '0';
-} else if(_Lval_2 < 0) {
-char* _Ldata_3 = {0};
-int32_t _Ldigits_4;
-int32_t _Lstart_5;
-int32_t _Lend_6;
-_Lval_2 = -_Lval_2;
-(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen++] = '-';
-_Ldata_3 = ((void*)&(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen]);
-_Ldigits_4 = ((int32_t)(0));
-while(1) {
-_Ldata_3[_Ldigits_4++] = ((_Lval_2 % 10) + '0');
-_Lval_2 /= 10;
-if(_Lval_2 == 0) {
-goto break_0;
-}
-continue_0:;
-}
-break_0:;
-_Lstart_5 = ((int32_t)(0));
-_Lend_6 = ((int32_t)((_Ldigits_4 - 1)));
-while(_Lstart_5 < _Lend_6) {
-char _Ltmp_7;
-_Ltmp_7 = ((char)(_Ldata_3[_Lstart_5]));
-_Ldata_3[_Lstart_5] = _Ldata_3[_Lend_6];
-_Ldata_3[_Lend_6] = _Ltmp_7;
-_Lstart_5++;
-_Lend_6--;
-continue_1:;
-}
-break_1:;
-(*_Lfmt_1)._Mlen += _Ldigits_4;
-} else {
-char* _Ldata_8 = {0};
-int32_t _Ldigits_9;
-int32_t _Lstart_10;
-int32_t _Lend_11;
-_Ldata_8 = ((void*)&(*_Lfmt_1)._Mptr[(*_Lfmt_1)._Mlen]);
-_Ldigits_9 = ((int32_t)(0));
-while(1) {
-_Ldata_8[_Ldigits_9++] = ((_Lval_2 % 10) + '0');
-_Lval_2 /= 10;
-if(_Lval_2 == 0) {
-goto break_2;
-}
-continue_2:;
-}
-break_2:;
-_Lstart_10 = ((int32_t)(0));
-_Lend_11 = ((int32_t)((_Ldigits_9 - 1)));
-while(_Lstart_10 < _Lend_11) {
-char _Ltmp_12;
-_Ltmp_12 = ((char)(_Ldata_8[_Lstart_10]));
-_Ldata_8[_Lstart_10] = _Ldata_8[_Lend_11];
-_Ldata_8[_Lend_11] = _Ltmp_12;
-_Lstart_10++;
-_Lend_11--;
-continue_3:;
-}
-break_3:;
-(*_Lfmt_1)._Mlen += _Ldigits_9;
-}
 }
 static inline void _Tlibcp1_Tfmt_Ff_reserve_Tf32_1_2(float _Li_0, struct _Tlibcp1_Tfmt* _Lfmt_1, struct _Tlibcp1_Tfmt_Tf_f32* _Lf_2) {
 (*_Lfmt_1)._Mcap += 64;

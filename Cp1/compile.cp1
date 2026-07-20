@@ -1813,9 +1813,29 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
          if (c.last-cvar.ptr().flags & #dont-count) != #0 {
             c.last-cvar.write()
          } else {
-            output{"("}
+            plus' = 1
+            loop {
+               c2' = c.last-cvar.ptr()
+               if (c2.decl.flags & #no-decl) != #0 {
+                  break
+               }
+               if (c2.flags & #set-expr) != #0 {
+                  break
+               }
+               if c2.last-cvar != #nil {
+                  if (c2.last-cvar.ptr().flags & #dont-count) != #0 {
+                     c = c2
+                     continue
+                  }
+               } else {
+                  break
+               }
+               plus++
+               c = c2
+            }
+            output{''(}
             c.last-cvar.write()
-            output{" + 1)"}
+            output{" + " plus '')}
          }
       } else {
          output{''0}
