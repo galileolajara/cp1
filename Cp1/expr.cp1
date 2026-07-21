@@ -211,6 +211,7 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
    process(e'this)'bool {
       if e == #nil {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Processed a nil expression\n"}
+         'c.exit(#failure)
          return false
       }
       num' = 'u32(e)
@@ -225,11 +226,13 @@ enum 'expr-i[#nil = -1, #0, #1]'i32 {
       switch.process(expr, ok) expr.type {
          default {
             'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": process() not implemented for expression #" expr.type.cp1-name() ''\n}
+            'c.exit(#failure)
             return false
          }
       }
       if !ok {
          'c1.stdout{.ctx-func.file '': .ctx-begin-row '': .ctx-begin-col " - " .ctx-end-row '': .ctx-end-col ": Processing of expression #" expr.type.cp1-name() " failed\n"}
+         'c.exit(#failure)
       }
       return ok
    }

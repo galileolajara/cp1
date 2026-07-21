@@ -127,10 +127,8 @@ extern char* input_path;
 #endif
 
 struct cp1_lexer {
-   const char *content;
    const char *start;
    const char *cursor;
-   const char *marker;
 };
 
 void* _Tcp1_Tparser_Falloc_0() {

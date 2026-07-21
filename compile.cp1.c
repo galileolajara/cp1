@@ -9737,15 +9737,16 @@ _Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_8, &_L_11);
 _Tlibcp1_Tfmt_Tf_u32_Ff_2(&_L_9, &_L_11);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_10, &_L_11);
 _Tlibcp1_Tfmt_Ff_stdout_1(&_L_11);
-bool ret_214_10 = false;
-return ret_214_10;
+exit(_Tlibc_Texit_Cfailure);
+bool ret_215_10 = false;
+return ret_215_10;
 }
 _Lnum_12 = ((uint32_t)(((uint32_t)(_Le_0))));
 _Ln3_13 = ((uint32_t)((_Lnum_12 >> 3)));
 _Ln17_14 = ((int32_t)((1 << (_Lnum_12 & 7))));
 if((_Tcp1_Gexpr_is_processed[_Ln3_13] & _Ln17_14) != 0) {
-bool ret_219_48 = true;
-return ret_219_48;
+bool ret_220_48 = true;
+return ret_220_48;
 }
 _Tcp1_Gexpr_is_processed[_Ln3_13] |= _Ln17_14;
 _Lexpr_15 = ((struct _Tcp1_Texpr*)(_Tcp1_Texpr_i_Fptr_1(_Le_0)));
@@ -9861,8 +9862,9 @@ _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_26, &_L_29);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_27, &_L_29);
 _Tlibcp1_Tfmt_Tf_char_Ff_2(&_L_28, &_L_29);
 _Tlibcp1_Tfmt_Ff_stdout_1(&_L_29);
-bool ret_228_13 = false;
-return ret_228_13;
+exit(_Tlibc_Texit_Cfailure);
+bool ret_230_13 = false;
+return ret_230_13;
 break;
 }
 if(!_Lok_16) {
@@ -9906,9 +9908,10 @@ _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_39, &_L_42);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_40, &_L_42);
 _Tlibcp1_Tfmt_Tf_cstr_Ff_2(&_L_41, &_L_42);
 _Tlibcp1_Tfmt_Ff_stdout_1(&_L_42);
+exit(_Tlibc_Texit_Cfailure);
 }
-bool ret_234_7 = _Lok_16;
-return ret_234_7;
+bool ret_237_7 = _Lok_16;
+return ret_237_7;
 }
 char* _Tcp1_Tid_Fc_name_1(_Tcp1_Tid _Lid_0) {
 char* _Lc_name_1;
@@ -17047,8 +17050,8 @@ goto break_0;
 continue_0:;
 }
 break_0:;
-uint32_t ret_329_7 = _Llen_1;
-return ret_329_7;
+uint32_t ret_332_7 = _Llen_1;
+return ret_332_7;
 }
 static inline void _Tcp1_Texpr_i_Fvalue_assign_5(_Tcp1_Texpr_i _Le_0, int8_t _Lref_1, bool _Lparen_2, struct _Tcp1_Tvalue* _Lv_3, bool* _Lok_4) {
 struct _Tcp1_Texpr_assign* _Lexpr_5;

@@ -473,18 +473,12 @@ union 'token-data[
    pointer'ref,
 ]
 struct 'lexer[
-   content'u8[],
    start'u8[],
    cursor'u8[],
-   // limit:u8[],
-   marker'u8[],
-   // ctx-marker:u8[],
 ] {
-   init(lex'this, data'u8[], size'usz) {
+   init(lex'this, data'u8[]) {
       lex.start = data
       lex.cursor = data
-      lex.content = data
-      // lex.limit = & data[size]
    }
    scan(lex'this)'token @real-name(cp1_lexer_scan)
    get-oct(lex'this)'u32 {
@@ -1084,7 +1078,7 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
    malloc-arr(.decl-fvar-v, .decl-fvar-cap)
 
    psr' = 'parser.alloc()
-   'lexer.init(lex?, in-data, in-size)
+   'lexer.init(lex?, in-data)
    next-row' = 1
    next-col' = 1
    .row = 1
