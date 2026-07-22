@@ -16,6 +16,10 @@ using 'libcp1 {
          f.str = str
          f.len = len
       }
+      f-reserve<i'bool>(fmt'this, f'f-bool) @inline {
+         fmt.cap += 5
+         f.val = i
+      }
       f-reserve<i'f32>(fmt'this, f'f-f32) @inline {
          fmt.cap += 64
          f.f32 = i
@@ -222,6 +226,22 @@ using 'libcp1 {
                   }
                   fmt.len += digits
                }
+            }
+         }
+      }
+      struct 'f-bool[val'bool] {
+         f(f'this, fmt'fmt) @inline {
+            if f.val {
+               fmt.ptr[fmt.len++] = ''t
+               fmt.ptr[fmt.len++] = ''r
+               fmt.ptr[fmt.len++] = ''u
+               fmt.ptr[fmt.len++] = ''e
+            } else {
+               fmt.ptr[fmt.len++] = ''f
+               fmt.ptr[fmt.len++] = ''a
+               fmt.ptr[fmt.len++] = ''l
+               fmt.ptr[fmt.len++] = ''s
+               fmt.ptr[fmt.len++] = ''e
             }
          }
       }
