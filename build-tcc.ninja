@@ -116,7 +116,7 @@ build out/cp1-parse: ld2 out/parse2.cp1.c.o out/parse2.c.o out/hashtable.c.o
 build out/cp1-compile: ld2 out/main2.c.o out/compile2.c.o out/hashtable.c.o
 #build out/cp1-compile-redef-output | redefs2: ld2-redef out/compile2.cp1.c.o out/compile2.c.o out/hashtable.c.o out/parse2.cp1.c.o out/parse2.c.o
 
-rule cp1-compile-cm1
- command = out/cp1-compile-cm1 $in -c $out
-build out/cm1_main2.c.o: c2 cm1_main2.c | out/compile2.cm1.c
-build out/cp1-compile-cm1: ld2 out/cm1_main2.c.o out/compile2.c.o out/hashtable.c.o | out/cp1-parse
+#rule cp1-compile-cm1
+# command = out/cp1-compile-cm1 $in -c $out
+#build out/cm1_main2.c.o: c2 cm1_main2.c | out/compile2.cm1.c
+#build out/cp1-compile-cm1: ld2 out/cm1_main2.c.o out/compile2.c.o out/hashtable.c.o | out/cp1-parse
