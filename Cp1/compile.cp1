@@ -884,7 +884,6 @@ main(arg-c'cint, arg-v'char[][])'cint @process {
          'c.realpath(bin, abs-path)
          "#endif"
       } else {
-      'c1.stdout{"hello 2\n"}
          path' = 'c.strdup('c.getenv("PATH"))
          found'
          "#ifdef _WIN32"

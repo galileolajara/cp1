@@ -41,11 +41,11 @@ build out/parse.cp1.c.o: c parse.cp1.c
 #build out/parse-redef.cp1.c.o: objredef out/parse.cp1.c.o | redefs
 # redefs = redefs
 build out/parse.c.o: c parse.c | export.h lex.c cp1_parse.c
-build out/compile.cp1.c.o: c compile.cp1.c
+build out/main.c.o: c main.c | compile.cp1.c
  flags = -DLIBCP1_ON_STDOUT=stdout_then_print_error
 build out/compile.c.o: c compile.c
 build bin/cp1-parse: ld out/parse.cp1.c.o out/parse.c.o out/hashtable.c.o | build-crc32c.h
-build bin/cp1-compile: ld out/compile.cp1.c.o out/compile.c.o out/hashtable.c.o
+build bin/cp1-compile: ld out/main.c.o out/compile.c.o out/hashtable.c.o
 # out/parse-redef.cp1.c.o out/parse.c.o
 #build bin/cp1-compile-redef-output: ld out/compile.cp1.c.o out/compile.c.o out/hashtable.c.o out/parse.cp1.c.o out/parse.c.o
 build bin/cp1-run: ld run.cp1.c
