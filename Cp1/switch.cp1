@@ -273,7 +273,7 @@ struct 'stmt-case[
    base'stmt.,
    fall-through'bool,
    expr-c'u32,
-   expr-v'stmt-case-item.[0],
+   expr-v'stmt-case-item.[1],
 ]
 struct 'stmt-case-end[
    base'stmt.,

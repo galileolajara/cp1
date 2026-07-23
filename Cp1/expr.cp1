@@ -311,7 +311,7 @@ struct 'expr-str-node[
    next'expr-str-node,
    macro'bool,
    len'u32,
-   buf'char[0],
+   buf'char[1],
 ]
 struct 'expr-str[
    base'expr.,

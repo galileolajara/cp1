@@ -39,7 +39,7 @@ meta #build-common-codes {
 #  }
          aligned'u32,
          fvar-c'u32,
-         fvar-v'fvar-data.[0],
+         fvar-v'fvar-data.[1],
       ]
       struct 'stmt-if[
          base'stmt.,
@@ -338,7 +338,7 @@ meta #build-common-codes {
          group-c'u8,
          group-v'u8[#expr-carg-group-limit],
          carg-c'u8,
-         carg-v'carg.[0],
+         carg-v'carg.[1],
       ]
       struct 'expr-meta-func[
          base'expr.,
@@ -350,11 +350,11 @@ meta #build-common-codes {
          group-c'u8,
          group-v'u8[#expr-carg-group-limit],
          carg-c'u8,
-         carg-v'carg.[0],
+         carg-v'carg.[1],
 #  }
 #  if .compile {
          expr-c'u8,
-         expr-v'expr-i[0],
+         expr-v'expr-i[1],
 #  }
       ]
       struct 'expr-meta-method[
@@ -367,11 +367,11 @@ meta #build-common-codes {
          group-c'u8,
          group-v'u8[#expr-carg-group-limit],
          carg-c'u8,
-         carg-v'carg.[0],
+         carg-v'carg.[1],
 #  }
 #  if .compile {
          expr-c'u8,
-         expr-v'expr-i[0],
+         expr-v'expr-i[1],
 #  }
       ]
       struct 'expr-method[
@@ -386,7 +386,7 @@ meta #build-common-codes {
          group-c'u8,
          group-v'u8[#expr-carg-group-limit],
          carg-c'u8,
-         carg-v'carg.[0],
+         carg-v'carg.[1],
       ]
       struct 'decl-func[
 #  if .compile {
@@ -450,7 +450,7 @@ meta #build-common-codes {
          group-c'i8,
          group-v'i8[#expr-carg-group-limit],
          farg-c'u8,
-         farg-v'farg.[0],
+         farg-v'farg.[1],
       ]
       struct 'at-data[
          type'name-type,

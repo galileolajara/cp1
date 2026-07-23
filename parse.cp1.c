@@ -501,7 +501,7 @@ int8_t _Mthis_group;
 int8_t _Mgroup_c;
 int8_t _Mgroup_v[_Tcp1_Cexpr_carg_group_limit];
 uint8_t _Mfarg_c;
-struct _Tcp1_Tfarg _Mfarg_v[0];
+struct _Tcp1_Tfarg _Mfarg_v[1];
 };
 struct _Tcp1_Tfvar_data;
 struct _Tcp1_Tfvar_data {
@@ -519,7 +519,7 @@ _Tcp1_Tstruct_flags _Mflags;
 _Tcp1_Tid _Mreal_name;
 uint32_t _Maligned;
 uint32_t _Mfvar_c;
-struct _Tcp1_Tfvar_data _Mfvar_v[0];
+struct _Tcp1_Tfvar_data _Mfvar_v[1];
 };
 struct _Tcp1_Tparser;
 struct _Tcp1_Tparser {
@@ -674,7 +674,7 @@ bool _Mangle;
 uint8_t _Mgroup_c;
 uint8_t _Mgroup_v[_Tcp1_Cexpr_carg_group_limit];
 uint8_t _Mcarg_c;
-struct _Tcp1_Tcarg _Mcarg_v[0];
+struct _Tcp1_Tcarg _Mcarg_v[1];
 };
 struct _Tcp1_Texpr_meta_func;
 struct _Tcp1_Texpr_meta_func {
@@ -686,7 +686,7 @@ _Tcp1_Texpr_i* _Mlvars;
 uint8_t _Mgroup_c;
 uint8_t _Mgroup_v[_Tcp1_Cexpr_carg_group_limit];
 uint8_t _Mcarg_c;
-struct _Tcp1_Tcarg _Mcarg_v[0];
+struct _Tcp1_Tcarg _Mcarg_v[1];
 };
 struct _Tcp1_Texpr_lvar;
 struct _Tcp1_Texpr_lvar {
@@ -704,7 +704,7 @@ _Tcp1_Texpr_i* _Mlvars;
 uint8_t _Mgroup_c;
 uint8_t _Mgroup_v[_Tcp1_Cexpr_carg_group_limit];
 uint8_t _Mcarg_c;
-struct _Tcp1_Tcarg _Mcarg_v[0];
+struct _Tcp1_Tcarg _Mcarg_v[1];
 };
 struct _Tcp1_Texpr_method;
 struct _Tcp1_Texpr_method {
@@ -715,14 +715,14 @@ bool _Mangle;
 uint8_t _Mgroup_c;
 uint8_t _Mgroup_v[_Tcp1_Cexpr_carg_group_limit];
 uint8_t _Mcarg_c;
-struct _Tcp1_Tcarg _Mcarg_v[0];
+struct _Tcp1_Tcarg _Mcarg_v[1];
 };
 struct _Tcp1_Texpr_str_node;
 struct _Tcp1_Texpr_str_node {
 struct _Tcp1_Texpr_str_node* _Mnext;
 bool _Mmacro;
 uint32_t _Mlen;
-char _Mbuf[0];
+char _Mbuf[1];
 };
 struct _Tcp1_Texpr_str;
 struct _Tcp1_Texpr_str {
@@ -886,7 +886,7 @@ struct _Tcp1_Tstmt_case {
 struct _Tcp1_Tstmt _Mbase;
 bool _Mfall_through;
 uint32_t _Mexpr_c;
-struct _Tcp1_Tstmt_case_item _Mexpr_v[0];
+struct _Tcp1_Tstmt_case_item _Mexpr_v[1];
 };
 struct _Tcp1_Tstmt_case_end;
 struct _Tcp1_Tstmt_case_end {

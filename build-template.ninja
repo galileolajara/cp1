@@ -88,6 +88,10 @@ rule compile
  depfile = $out.d
  command = bin/cp1-compile -g $out.d -w $in -c $out $flags
 
+rule cm1
+ restat = true
+ command = cm1 $in $out
+
 build out/hash-table-size: ld2 hashtable2.c
  flags = -DCP1_GET_SIZE
 build out/hash-table-size.cp1: run out/hash-table-size
@@ -116,9 +120,15 @@ build out/parse2.c.o: c2 parse2.c | out/export.h out/lex.c out/cp1_parse.c
 # redefs = redefs2
 build out/hashtable2.c.o: c2 hashtable2.c
 build out/build-crc32c.h: crc32c out/compile2.cp1.c out/parse2.cp1.c compile2.c parse2.c lex-re2c.c | bin/crc32c
-build out/compile2.cp1.c.o: c2 out/compile2.cp1.c | out/build-crc32c.h
+build out/main2.c.o: c2 main2.c | out/compile2.cp1.c out/build-crc32c.h
  flags = -DLIBCP1_ON_STDOUT=stdout_then_print_error
 build out/compile2.c.o: c2 compile2.c | out/build-crc32c.h
+build out/compile2.cm1.c out/compile2.cm1: cm1 out/compile2.cp1.c compile2.cm1.cfg
 build out/cp1-parse: ld2 out/parse2.cp1.c.o out/parse2.c.o out/hashtable.c.o
-build out/cp1-compile: ld2 out/compile2.cp1.c.o out/compile2.c.o out/hashtable.c.o
+build out/cp1-compile: ld2 out/main2.c.o out/compile2.c.o out/hashtable.c.o
 #build out/cp1-compile-redef-output | redefs2: ld2-redef out/compile2.cp1.c.o out/compile2.c.o out/hashtable.c.o out/parse2.cp1.c.o out/parse2.c.o
+
+rule cp1-compile-cm1
+ command = out/cp1-compile-cm1 $in -c $out
+build out/cm1_main2.c.o: c2 cm1_main2.c | out/compile2.cm1.c
+build out/cp1-compile-cm1: ld2 out/cm1_main2.c.o out/compile2.c.o out/hashtable.c.o | out/cp1-parse

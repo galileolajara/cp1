@@ -712,7 +712,7 @@ meta-end(js-data'char[], js-data-len'u32, require'bool)
 include "build-crc32c.c" {
    build-crc32c()'u32 @no-decl
 }
-main(arg-c'cint, arg-v'char[][])'cint @main {
+main(arg-c'cint, arg-v'char[][])'cint @process {
    "#ifdef _WIN32"
    // Remove .exe from binary path
    if true {
@@ -884,6 +884,7 @@ main(arg-c'cint, arg-v'char[][])'cint @main {
          'c.realpath(bin, abs-path)
          "#endif"
       } else {
+      'c1.stdout{"hello 2\n"}
          path' = 'c.strdup('c.getenv("PATH"))
          found'
          "#ifdef _WIN32"
